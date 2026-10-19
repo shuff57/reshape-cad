@@ -1,0 +1,70 @@
+[
+ {
+  "case": "turn(sketch)",
+  "script": "const sk = sketch('top');\nsk.rect(10, 10);\nturn(sk, [0, 0, 45]);",
+  "interpreter": "turn() needs a shape: turn(shape, [rx, ry, rz]).",
+  "line": 3,
+  "page": "turn() cannot turn a sketch, because a sketch is flat -- pull or spin it into a shape first, then turn that: turn(shape, [rx, ry, rz]).",
+  "features": [
+   "sketch"
+  ]
+ },
+ {
+  "case": "turn(plane)",
+  "script": "const p = plane('top');\nturn(p, [0, 0, 45]);",
+  "interpreter": "turn() needs a shape: turn(shape, [rx, ry, rz]).",
+  "line": 2,
+  "page": "turn() cannot turn a plane, because a plane is only a flat reference, not a part -- turn the shape you build on it instead: turn(shape, [rx, ry, rz]).",
+  "features": [
+   "datum"
+  ]
+ },
+ {
+  "case": "move(sketch)",
+  "script": "const sk = sketch('top');\nsk.rect(10, 10);\nmove(sk, [1, 2, 3]);",
+  "interpreter": "move() needs a shape: move(shape, [x, y, z]).",
+  "line": 3,
+  "page": "move() cannot move a sketch, because a sketch is flat -- pull or spin it into a shape first, then move that: move(shape, [x, y, z]).",
+  "features": [
+   "sketch"
+  ]
+ },
+ {
+  "case": "move(plane)",
+  "script": "const p = plane('top');\nmove(p, [1, 2, 3]);",
+  "interpreter": "move() needs a shape: move(shape, [x, y, z]).",
+  "line": 2,
+  "page": "move() cannot move a plane, because a plane is only a flat reference, not a part -- move the shape you build on it instead: move(shape, [x, y, z]).",
+  "features": [
+   "datum"
+  ]
+ },
+ {
+  "case": "turn(number)",
+  "script": "turn(5, [10, 0, 0]);",
+  "interpreter": "turn() needs a shape: turn(shape, [rx, ry, rz]).",
+  "line": 1,
+  "page": "turn() needs a shape: turn(shape, [rx, ry, rz]).",
+  "features": []
+ },
+ {
+  "case": "move(number)",
+  "script": "move(5, [1, 2, 3]);",
+  "interpreter": "move() needs a shape: move(shape, [x, y, z]).",
+  "line": 1,
+  "page": "move() needs a shape: move(shape, [x, y, z]).",
+  "features": []
+ },
+ {
+  "case": "turn(pulled sketch) control",
+  "script": "const sk = sketch('top');\nsk.rect(10, 10);\nconst v = pull(sk, 5);\nturn(v, [0, 0, 45]);",
+  "interpreter": null,
+  "line": null,
+  "page": null,
+  "features": [
+   "sketch",
+   "extrude",
+   "rotate"
+  ]
+ }
+]

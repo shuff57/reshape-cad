@@ -1,0 +1,3 @@
+case x-cyl-cross-cyl-cut: 4 commands (pristine phase0 translator), budget 45 s
+combine    : {"outcome":"KILLED by the watchdog","messages":[],"waitedMs":45008,"terminateMs":24354} | the page's own 100 ms timer ticked 691 times meanwhile (waited 450 expected)
+next call  : {"outcome":"finished","messages":[{"phase":"first","ok":true,"ms":27,"bodies":["b=1000.000"]}],"waitedMs":185,"terminateMs":41} (a FRESH worker after the kill / trap)

@@ -1,0 +1,6757 @@
+[
+ {
+  "id": "pf-31-000",
+  "script": "const b = cuboid(37,43,40)\nround(b.edge('front','left'), 7.5)\nround(b.edge('bottom','left'), 15)",
+  "dim": {
+   "x": 37,
+   "y": 43,
+   "z": 40
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 7.5,
+  "b": 15,
+  "ratio": 2,
+  "V0": 63640,
+  "truck": {
+   "volume": 61186.830296321765,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 61187.81763864772,
+  "occtSeq": {
+   "volume": 59652.25163174803,
+   "faces": 10,
+   "bbox": [
+    -18.500000100000005,
+    -21.500000100000005,
+    -20.00000010000001,
+    18.5000001,
+    21.5000001,
+    20.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 63157.14586764426,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 61187.81764001241,
+   "faces": 8,
+   "bbox": [
+    -18.500000100000005,
+    -21.5000001,
+    -20.000000100000005,
+    18.5,
+    21.5000001,
+    20.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000016136256595828464,
+  "ms": 2896
+ },
+ {
+  "id": "pf-31-001",
+  "script": "const b = cuboid(38,40,43)\nround(b.edge('top','front'), 3.8)\nround(b.edge('top','left'), 7.6)",
+  "dim": {
+   "x": 38,
+   "y": 40,
+   "z": 43
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 3.8,
+  "b": 7.6,
+  "ratio": 2,
+  "V0": 65360,
+  "truck": {
+   "volume": 64760.08979179195,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 64760.33754847351,
+  "occtSeq": {
+   "volume": 64259.981323192085,
+   "faces": 10,
+   "bbox": [
+    -19.0000001,
+    -20.00000010000001,
+    -21.5000001,
+    19.0000001,
+    20.0000001,
+    21.50000010000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 65242.24368021945,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 64760.337547496754,
+   "faces": 8,
+   "bbox": [
+    -19.0000001,
+    -20.000000100000005,
+    -21.5,
+    19.0000001,
+    20.0000001,
+    21.500000100000005
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000003825747223327173,
+  "ms": 2573
+ },
+ {
+  "id": "pf-31-002",
+  "script": "const b = cuboid(23,37,36)\nbevel(b.edge('bottom','back'), 10.1)\nround(b.edge('back','left'), 12.42)",
+  "dim": {
+   "x": 23,
+   "y": 37,
+   "z": 36
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 10.1,
+  "b": 12.42,
+  "ratio": 1.23,
+  "V0": 30636,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 28513.759236103997,
+  "occtSeq": {
+   "volume": 28513.75922596267,
+   "faces": 8,
+   "bbox": [
+    -11.500000000000002,
+    -18.5,
+    -18,
+    11.500000000000002,
+    18.500000000000004,
+    18
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 29462.885000000006,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 124
+ },
+ {
+  "id": "pf-31-003",
+  "script": "const b = cuboid(32,27,19)\nround(b.edge('top','right'), 3.7)\nbevel(b.edge('front','right'), 9.3)",
+  "dim": {
+   "x": 32,
+   "y": 27,
+   "z": 19
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 3.7,
+  "b": 9.3,
+  "ratio": 2.51,
+  "V0": 16416,
+  "truck": {
+   "volume": 15539.895478524102,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 15539.91612488194,
+  "occtSeq": {
+   "volume": 14905.496573225082,
+   "faces": 10,
+   "bbox": [
+    -16.000000100000005,
+    -13.500000100000006,
+    -9.5000001,
+    16.0000001,
+    13.5000001,
+    9.500000100000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 16336.676723136601,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000013286016264171578,
+  "ms": 5773
+ },
+ {
+  "id": "pf-31-004",
+  "script": "const b = cuboid(46,30,26)\nbevel(b.edge('back','left'), 9.2)\nround(b.edge('top','left'), 11)",
+  "dim": {
+   "x": 46,
+   "y": 30,
+   "z": 26
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 9.2,
+  "b": 11,
+  "ratio": 1.2,
+  "V0": 35880,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 34175.80825651597,
+  "occtSeq": {
+   "volume": 34175.8082450031,
+   "faces": 8,
+   "bbox": [
+    -23.000000000000004,
+    -15,
+    -13,
+    23,
+    15,
+    13.000000000000002
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 34779.68,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 46
+ },
+ {
+  "id": "pf-31-005",
+  "script": "const b = cuboid(17,46,19)\nbevel(b.edge('back','left'), 7.2)\nbevel(b.edge('bottom','left'), 9.18)",
+  "dim": {
+   "x": 17,
+   "y": 46,
+   "z": 19
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 7.2,
+  "b": 9.18,
+  "ratio": 1.27,
+  "V0": 14858,
+  "truck": {
+   "volume": 12602.992399999997,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 12602.992399999224,
+  "occtSeq": {
+   "volume": 12602.9924,
+   "faces": 8,
+   "bbox": [
+    -8.500000000000002,
+    -23,
+    -9.5,
+    8.5,
+    23.000000000000004,
+    9.5
+   ]
+  },
+  "brepSeq": {
+   "volume": 12602.992400000001,
+   "faces": 8,
+   "bbox": [
+    -8.5,
+    -23,
+    -9.5,
+    8.5,
+    23,
+    9.5
+   ]
+  },
+  "occtSim": {
+   "volume": 12602.9924,
+   "faces": 8,
+   "bbox": [
+    -8.500000000000002,
+    -23,
+    -9.5,
+    8.5,
+    23.000000000000004,
+    9.5
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 6.13402334914553e-14,
+  "ms": 191
+ },
+ {
+  "id": "pf-31-006",
+  "script": "const b = cuboid(30,25,18)\nbevel(b.edge('bottom','right'), 4.4)\nbevel(b.edge('bottom','back'), 6.6)",
+  "dim": {
+   "x": 30,
+   "y": 25,
+   "z": 18
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 4.4,
+  "b": 6.6,
+  "ratio": 1.5,
+  "V0": 13500,
+  "truck": {
+   "volume": 12654.290666666666,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 12654.29066666649,
+  "occtSeq": {
+   "volume": 12654.290666666666,
+   "faces": 8,
+   "bbox": [
+    -15,
+    -12.5,
+    -9,
+    15.000000000000004,
+    12.5,
+    9
+   ]
+  },
+  "brepSeq": {
+   "volume": 12654.290666666668,
+   "faces": 8,
+   "bbox": [
+    -15.000000000000002,
+    -12.5,
+    -9,
+    15,
+    12.5,
+    9
+   ]
+  },
+  "occtSim": {
+   "volume": 12654.290666666666,
+   "faces": 8,
+   "bbox": [
+    -15,
+    -12.5,
+    -9,
+    15.000000000000004,
+    12.5,
+    9
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 1.394325267150103e-14,
+  "ms": 189
+ },
+ {
+  "id": "pf-31-007",
+  "script": "const b = cuboid(20,32,44)\nround(b.edge('front','right'), 1.4)\nround(b.edge('bottom','right'), 1.4)",
+  "dim": {
+   "x": 20,
+   "y": 32,
+   "z": 44
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 1.4,
+  "b": 1.4,
+  "ratio": 1,
+  "V0": 28160,
+  "truck": {
+   "volume": 28128.28435988037,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 28128.29597862701,
+  "occtSeq": {
+   "volume": 28120.079875817213,
+   "faces": 10,
+   "bbox": [
+    -10,
+    -16,
+    -22,
+    10.000000000000002,
+    16,
+    22
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 28141.492737611403,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 28128.295978645012,
+   "faces": 8,
+   "bbox": [
+    -10,
+    -16,
+    -22,
+    10,
+    16,
+    22
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 4.130625847318365e-7,
+  "ms": 880
+ },
+ {
+  "id": "pf-31-008",
+  "script": "const b = cuboid(45,26,15)\nround(b.edge('bottom','left'), 2.8)\nbevel(b.edge('bottom','back'), 8.1)",
+  "dim": {
+   "x": 45,
+   "y": 26,
+   "z": 15
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 2.8,
+  "b": 8.1,
+  "ratio": 2.89,
+  "V0": 17550,
+  "truck": {
+   "volume": 16042.594646015901,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 16042.60636374695,
+  "occtSeq": {
+   "volume": 15737.120663321968,
+   "faces": 10,
+   "bbox": [
+    -22.5000001,
+    -13.0000001,
+    -7.500000100000001,
+    22.500000100000005,
+    13.000000100000001,
+    7.5000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 17506.255561626935,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 7.304131750006385e-7,
+  "ms": 5346
+ },
+ {
+  "id": "pf-31-009",
+  "script": "const b = cuboid(30,26,46)\nbevel(b.edge('front','left'), 8.1)\nround(b.edge('top','front'), 5.7)",
+  "dim": {
+   "x": 30,
+   "y": 26,
+   "z": 46
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 8.1,
+  "b": 5.7,
+  "ratio": 0.7,
+  "V0": 35880,
+  "truck": {
+   "volume": 34209.33514951848,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 34209.39688242086,
+  "occtSeq": {
+   "volume": 34209.39688053737,
+   "faces": 8,
+   "bbox": [
+    -15,
+    -13,
+    -23,
+    15,
+    13,
+    23
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 34370.97,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000018045597993339923,
+  "ms": 239
+ },
+ {
+  "id": "pf-31-010",
+  "script": "const b = cuboid(31,38,28)\nround(b.edge('top','front'), 3.7)\nround(b.edge('top','right'), 6.7)",
+  "dim": {
+   "x": 31,
+   "y": 38,
+   "z": 28
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 3.7,
+  "b": 6.7,
+  "ratio": 1.81,
+  "V0": 32984,
+  "truck": {
+   "volume": 32753.04898328138,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 32538.106383225193,
+  "occtSeq": {
+   "volume": 32290.156997300954,
+   "faces": 10,
+   "bbox": [
+    -15.5000001,
+    -19.0000001,
+    -14.0000001,
+    15.500000100000001,
+    19.000000099999998,
+    14.000000100000003
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 32892.925126564245,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 32538.106383437505,
+   "faces": 8,
+   "bbox": [
+    -15.5000001,
+    -19.0000001,
+    -14,
+    15.5000001,
+    19.0000001,
+    14.000000100000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.006605873050037089,
+  "ms": 2112
+ },
+ {
+  "id": "pf-31-011",
+  "script": "const b = cuboid(45,48,28)\nround(b.edge('back','right'), 7.3)\nbevel(b.edge('top','back'), 8.8)",
+  "dim": {
+   "x": 45,
+   "y": 48,
+   "z": 28
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 7.3,
+  "b": 8.8,
+  "ratio": 1.21,
+  "V0": 60480,
+  "truck": {
+   "volume": 58499.2866708836,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 58499.37867159221,
+  "occtSeq": {
+   "volume": 56631.3038677108,
+   "faces": 10,
+   "bbox": [
+    -22.5000001,
+    -24.000000100000005,
+    -14.0000001,
+    22.5000001,
+    24.000000100000005,
+    14.000000100000008
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 60159.788307568604,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.00000157267838905064,
+  "ms": 5577
+ },
+ {
+  "id": "pf-31-012",
+  "script": "const b = cuboid(39,40,24)\nround(b.edge('front','right'), 10.6)\nbevel(b.edge('bottom','right'), 4.2)",
+  "dim": {
+   "x": 39,
+   "y": 40,
+   "z": 24
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 10.6,
+  "b": 4.2,
+  "ratio": 0.4,
+  "V0": 37440,
+  "truck": {
+   "volume": 36223.852794673345,
+   "faces": 10,
+   "curved": true
+  },
+  "mitre": 36559.54048680657,
+  "occtSeq": {
+   "volume": 36224.039406240525,
+   "faces": 10,
+   "bbox": [
+    -19.5,
+    -20,
+    -12,
+    19.5,
+    20,
+    12
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 36861.296103344095,
+    "faces": 7
+   }
+  },
+  "class": "CHAIN(=OCCT sequential)",
+  "dMitre": 0.009181945059029493,
+  "ms": 4358
+ },
+ {
+  "id": "pf-31-013",
+  "script": "const b = cuboid(23,17,15)\nbevel(b.edge('bottom','left'), 0.9)\nbevel(b.edge('bottom','front'), 0.6)",
+  "dim": {
+   "x": 23,
+   "y": 17,
+   "z": 15
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 0.9,
+  "b": 0.6,
+  "ratio": 0.67,
+  "V0": 5865,
+  "truck": {
+   "volume": 5854.101,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 5854.100999999999,
+  "occtSeq": {
+   "volume": 5854.101,
+   "faces": 8,
+   "bbox": [
+    -11.5,
+    -8.5,
+    -7.500000000000001,
+    11.500000000000004,
+    8.500000000000002,
+    7.5
+   ]
+  },
+  "brepSeq": {
+   "volume": 5854.101,
+   "faces": 8,
+   "bbox": [
+    -11.5,
+    -8.5,
+    -7.5,
+    11.500000000000002,
+    8.5,
+    7.5
+   ]
+  },
+  "occtSim": {
+   "volume": 5854.101000000001,
+   "faces": 8,
+   "bbox": [
+    -11.500000000000002,
+    -8.5,
+    -7.500000000000001,
+    11.500000000000002,
+    8.500000000000002,
+    7.5
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 1.5536026825859828e-16,
+  "ms": 195
+ },
+ {
+  "id": "pf-31-014",
+  "script": "const b = cuboid(37,23,32)\nround(b.edge('top','left'), 2.9)\nround(b.edge('front','left'), 2.9)",
+  "dim": {
+   "x": 37,
+   "y": 23,
+   "z": 32
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 2.9,
+  "b": 2.9,
+  "ratio": 1,
+  "V0": 27232,
+  "truck": {
+   "volume": 27135.038904584173,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 27135.074102151713,
+  "occtSeq": {
+   "volume": 27070.041090157032,
+   "faces": 10,
+   "bbox": [
+    -18.5,
+    -11.500000000000002,
+    -16,
+    18.5,
+    11.5,
+    16
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 27190.489566745968,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 27135.074102103597,
+   "faces": 8,
+   "bbox": [
+    -18.5,
+    -11.500000000000002,
+    -16,
+    18.5,
+    11.5,
+    16
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000012971244304623878,
+  "ms": 769
+ },
+ {
+  "id": "pf-31-015",
+  "script": "const b = cuboid(28,35,20)\nbevel(b.edge('top','left'), 5.4)\nbevel(b.edge('back','left'), 3.8)",
+  "dim": {
+   "x": 28,
+   "y": 35,
+   "z": 20
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 5.4,
+  "b": 3.8,
+  "ratio": 0.7,
+  "V0": 19600,
+  "truck": {
+   "volume": 18975.142666666667,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 18975.14266666655,
+  "occtSeq": {
+   "volume": 18975.142666666667,
+   "faces": 8,
+   "bbox": [
+    -14.000000000000002,
+    -17.5,
+    -10,
+    14,
+    17.500000000000004,
+    10.000000000000004
+   ]
+  },
+  "brepSeq": {
+   "volume": 18975.14266666667,
+   "faces": 8,
+   "bbox": [
+    -14,
+    -17.5,
+    -10,
+    14,
+    17.5,
+    10
+   ]
+  },
+  "occtSim": {
+   "volume": 18975.142666666667,
+   "faces": 8,
+   "bbox": [
+    -14.000000000000002,
+    -17.5,
+    -10,
+    14,
+    17.500000000000004,
+    10.000000000000004
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 6.1351486980617275e-15,
+  "ms": 177
+ },
+ {
+  "id": "pf-31-016",
+  "script": "const b = cuboid(21,22,48)\nbevel(b.edge('bottom','right'), 6.5)\nbevel(b.edge('front','right'), 11.340000000000002)",
+  "dim": {
+   "x": 21,
+   "y": 22,
+   "z": 48
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 6.5,
+  "b": 11.340000000000002,
+  "ratio": 1.74,
+  "V0": 22176,
+  "truck": {
+   "volume": 18818.742266666668,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 18818.74226666609,
+  "occtSeq": {
+   "volume": 18818.742266666668,
+   "faces": 8,
+   "bbox": [
+    -10.5,
+    -11,
+    -24,
+    10.500000000000002,
+    11.000000000000002,
+    24
+   ]
+  },
+  "brepSeq": {
+   "volume": 18818.742266666668,
+   "faces": 8,
+   "bbox": [
+    -10.5,
+    -11,
+    -24,
+    10.5,
+    11,
+    24
+   ]
+  },
+  "occtSim": {
+   "volume": 18818.742266666664,
+   "faces": 8,
+   "bbox": [
+    -10.5,
+    -11,
+    -24,
+    10.500000000000002,
+    11.000000000000002,
+    24
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 3.0737369274256926e-14,
+  "ms": 150
+ },
+ {
+  "id": "pf-31-017",
+  "script": "const b = cuboid(15,14,38)\nbevel(b.edge('front','right'), 1.5)\nround(b.edge('top','front'), 0.6)",
+  "dim": {
+   "x": 15,
+   "y": 14,
+   "z": 38
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 1.5,
+  "b": 0.6,
+  "ratio": 0.4,
+  "V0": 7980,
+  "truck": {
+   "volume": 7936.195119943567,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 7936.196681076885,
+  "occtSeq": {
+   "volume": 7936.196677846993,
+   "faces": 8,
+   "bbox": [
+    -7.5,
+    -7,
+    -19,
+    7.500000000000001,
+    7,
+    19.000000000000004
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 7937.25,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 1.9671051273730756e-7,
+  "ms": 146
+ },
+ {
+  "id": "pf-31-018",
+  "script": "const b = cuboid(33,46,46)\nround(b.edge('top','right'), 8.6)\nround(b.edge('top','front'), 3.4)",
+  "dim": {
+   "x": 33,
+   "y": 46,
+   "z": 46
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 8.6,
+  "b": 3.4,
+  "ratio": 0.4,
+  "V0": 69828,
+  "truck": {
+   "volume": 68913.66189869512,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 69029.52321230082,
+  "occtSeq": {
+   "volume": 68914.02368238202,
+   "faces": 10,
+   "bbox": [
+    -16.5,
+    -23,
+    -23,
+    16.5,
+    23,
+    23.000000000000007
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 69097.89021558427,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 69029.52321296348,
+   "faces": 8,
+   "bbox": [
+    -16.5000001,
+    -23.0000001,
+    -23,
+    16.5000001,
+    23.0000001,
+    23.00000010000296
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "CHAIN(=OCCT sequential)",
+  "dMitre": 0.0016784313177039233,
+  "ms": 9732
+ },
+ {
+  "id": "pf-31-019",
+  "script": "const b = cuboid(27,36,15)\nbevel(b.edge('front','left'), 1.4)\nbevel(b.edge('top','left'), 3.5)",
+  "dim": {
+   "x": 27,
+   "y": 36,
+   "z": 15
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 1.4,
+  "b": 3.5,
+  "ratio": 2.5,
+  "V0": 14580,
+  "truck": {
+   "volume": 14347.772666666664,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 14347.77266666666,
+  "occtSeq": {
+   "volume": 14347.772666666664,
+   "faces": 8,
+   "bbox": [
+    -13.5,
+    -18,
+    -7.5,
+    13.5,
+    18,
+    7.500000000000002
+   ]
+  },
+  "brepSeq": {
+   "volume": 14347.772666666666,
+   "faces": 8,
+   "bbox": [
+    -13.5,
+    -18,
+    -7.5,
+    13.500000000000002,
+    18,
+    7.5
+   ]
+  },
+  "occtSim": {
+   "volume": 14347.772666666664,
+   "faces": 8,
+   "bbox": [
+    -13.5,
+    -18,
+    -7.5,
+    13.5,
+    18,
+    7.500000000000002
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 2.535570427278665e-16,
+  "ms": 181
+ },
+ {
+  "id": "pf-31-020",
+  "script": "const b = cuboid(47,21,30)\nround(b.edge('top','left'), 3.5)\nbevel(b.edge('front','left'), 4.2)",
+  "dim": {
+   "x": 47,
+   "y": 21,
+   "z": 30
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 3.5,
+  "b": 4.2,
+  "ratio": 1.2,
+  "V0": 29610,
+  "truck": {
+   "volume": 29299.162268298987,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 29299.17972156662,
+  "occtSeq": {
+   "volume": 29011.180228865756,
+   "faces": 10,
+   "bbox": [
+    -23.5000001,
+    -10.500000100000005,
+    -15.0000001,
+    23.5000001,
+    10.5000001,
+    15.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 29554.79367753399,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 5.956913400919834e-7,
+  "ms": 4203
+ },
+ {
+  "id": "pf-31-021",
+  "script": "const b = cuboid(45,16,45)\nround(b.edge('top','front'), 3.6)\nround(b.edge('front','left'), 7.2)",
+  "dim": {
+   "x": 45,
+   "y": 16,
+   "z": 45
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 3.6,
+  "b": 7.2,
+  "ratio": 2,
+  "V0": 32400,
+  "truck": {
+   "volume": 31785.792099547525,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 31786.048255049365,
+  "occtSeq": {
+   "volume": 31635.820230552083,
+   "faces": 10,
+   "bbox": [
+    -22.5000001,
+    -8.000000100000005,
+    -22.5000001,
+    22.5000001,
+    8.0000001,
+    22.5000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 32274.844208893395,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 31786.048255406768,
+   "faces": 8,
+   "bbox": [
+    -22.5000001,
+    -8.0000001,
+    -22.5000001,
+    22.5000001,
+    8,
+    22.5000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.00000805874010461243,
+  "ms": 3554
+ },
+ {
+  "id": "pf-31-022",
+  "script": "const b = cuboid(28,39,43)\nbevel(b.edge('bottom','left'), 0.8)\nround(b.edge('bottom','front'), 0.6)",
+  "dim": {
+   "x": 28,
+   "y": 39,
+   "z": 43
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 0.8,
+  "b": 0.6,
+  "ratio": 0.75,
+  "V0": 46956,
+  "truck": {
+   "volume": 46941.40512971716,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 46941.408264819,
+  "occtSeq": {
+   "volume": 46941.40825928709,
+   "faces": 8,
+   "bbox": [
+    -14.000000000000002,
+    -19.5,
+    -21.5,
+    14.000000000000002,
+    19.5,
+    21.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 46943.52,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 6.678755402717991e-8,
+  "ms": 207
+ },
+ {
+  "id": "pf-31-023",
+  "script": "const b = cuboid(27,33,39)\nbevel(b.edge('back','left'), 4.7)\nround(b.edge('top','back'), 7.1)",
+  "dim": {
+   "x": 27,
+   "y": 33,
+   "z": 39
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 4.7,
+  "b": 7.1,
+  "ratio": 1.51,
+  "V0": 34749,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 34060.04232313401,
+  "occtSeq": {
+   "volume": 34060.04214040366,
+   "faces": 8,
+   "bbox": [
+    -13.500000000000007,
+    -16.5,
+    -19.5,
+    13.5,
+    16.500000000000004,
+    19.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 34318.245,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 64
+ },
+ {
+  "id": "pf-31-024",
+  "script": "const b = cuboid(24,14,22)\nround(b.edge('top','left'), 5.3)\nround(b.edge('top','back'), 7.56)",
+  "dim": {
+   "x": 24,
+   "y": 14,
+   "z": 22
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 5.3,
+  "b": 7.56,
+  "ratio": 1.43,
+  "V0": 7392,
+  "truck": {
+   "volume": 7196.064512546269,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 7037.1066921853235,
+  "occtSeq": {
+   "volume": 6796.691633867908,
+   "faces": 10,
+   "bbox": [
+    -12.000000100000003,
+    -7.0000001,
+    -11.0000001,
+    12.000000100000001,
+    7.000000100000003,
+    11.000000100000006
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 7307.60568173768,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 7037.106692555457,
+   "faces": 8,
+   "bbox": [
+    -12.0000001,
+    -7.0000001,
+    -11,
+    12.0000001,
+    7.000000100000002,
+    11.000000100000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.022588519304029782,
+  "ms": 1991
+ },
+ {
+  "id": "pf-31-025",
+  "script": "const b = cuboid(36,36,23)\nround(b.edge('bottom','back'), 8.4)\nround(b.edge('bottom','left'), 12.42)",
+  "dim": {
+   "x": 36,
+   "y": 36,
+   "z": 23
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 8.4,
+  "b": 12.42,
+  "ratio": 1.48,
+  "V0": 29808,
+  "truck": {
+   "volume": 28170.38666370965,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 28171.037528371453,
+  "occtSeq": {
+   "volume": 27541.188205929022,
+   "faces": 10,
+   "bbox": [
+    -18.0000001,
+    -18.0000001,
+    -11.500000100000012,
+    18.0000001,
+    18.000000100000022,
+    11.5000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 29262.87699873566,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 28171.03752992563,
+   "faces": 8,
+   "bbox": [
+    -18.0000001,
+    -18.0000001,
+    -11.500000100000001,
+    18.0000001,
+    18.0000001,
+    11.5
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.00002310403587893039,
+  "ms": 3028
+ },
+ {
+  "id": "pf-31-026",
+  "script": "const b = cuboid(35,25,16)\nround(b.edge('top','front'), 5.2)\nround(b.edge('front','right'), 8.64)",
+  "dim": {
+   "x": 35,
+   "y": 25,
+   "z": 16
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 5.2,
+  "b": 8.64,
+  "ratio": 1.66,
+  "V0": 14000,
+  "truck": {
+   "volume": 14005.817896780316,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 13568.39783441222,
+  "occtSeq": {
+   "volume": 13204.747251246385,
+   "faces": 10,
+   "bbox": [
+    -17.5000001,
+    -12.500000100000005,
+    -8.0000001,
+    17.50000010000001,
+    12.5000001,
+    8.000000100000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 13796.900821839345,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 13568.39783503219,
+   "faces": 8,
+   "bbox": [
+    -17.5000001,
+    -12.500000100000001,
+    -8.0000001,
+    17.5000001,
+    12.5,
+    8.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "ADDED-MATERIAL",
+  "dMitre": 0.03223815130617036,
+  "ms": 2273
+ },
+ {
+  "id": "pf-31-027",
+  "script": "const b = cuboid(18,24,18)\nround(b.edge('back','left'), 2.4)\nbevel(b.edge('top','back'), 7.2)",
+  "dim": {
+   "x": 18,
+   "y": 24,
+   "z": 18
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 2.4,
+  "b": 7.2,
+  "ratio": 3,
+  "V0": 7776,
+  "truck": {
+   "volume": 7295.42207599885,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 7295.427393119493,
+  "occtSeq": {
+   "volume": 6793.0995444884975,
+   "faces": 10,
+   "bbox": [
+    -9.0000001,
+    -12.0000001,
+    -9.0000001,
+    9.000000100000001,
+    12.000000100000003,
+    9.000000100000006
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 7753.750081581049,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 7.288292181171612e-7,
+  "ms": 8482
+ },
+ {
+  "id": "pf-31-028",
+  "script": "const b = cuboid(17,33,34)\nbevel(b.edge('bottom','back'), 6)\nround(b.edge('back','left'), 7.2)",
+  "dim": {
+   "x": 17,
+   "y": 33,
+   "z": 34
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 6,
+  "b": 7.2,
+  "ratio": 1.2,
+  "V0": 19074,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 18438.621469182435,
+  "occtSeq": {
+   "volume": 18438.621465658063,
+   "faces": 8,
+   "bbox": [
+    -8.5,
+    -16.5,
+    -17,
+    8.500000000000002,
+    16.5,
+    17
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 18768,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 174
+ },
+ {
+  "id": "pf-31-029",
+  "script": "const b = cuboid(24,38,35)\nbevel(b.edge('top','left'), 1.3)\nbevel(b.edge('front','left'), 2)",
+  "dim": {
+   "x": 24,
+   "y": 38,
+   "z": 35
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 1.3,
+  "b": 2,
+  "ratio": 1.54,
+  "V0": 31920,
+  "truck": {
+   "volume": 31819.21383333333,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 31819.213833333328,
+  "occtSeq": {
+   "volume": 31819.213833333328,
+   "faces": 8,
+   "bbox": [
+    -12,
+    -19,
+    -17.5,
+    12,
+    19,
+    17.5
+   ]
+  },
+  "brepSeq": {
+   "volume": 31819.21383333333,
+   "faces": 8,
+   "bbox": [
+    -12,
+    -19,
+    -17.5,
+    12,
+    19,
+    17.5
+   ]
+  },
+  "occtSim": {
+   "volume": 31819.213833333328,
+   "faces": 8,
+   "bbox": [
+    -12,
+    -19,
+    -17.5,
+    12,
+    19,
+    17.5
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 1.143327684381888e-16,
+  "ms": 303
+ },
+ {
+  "id": "pf-31-030",
+  "script": "const b = cuboid(38,23,44)\nround(b.edge('top','front'), 1.8)\nround(b.edge('front','right'), 2.2)",
+  "dim": {
+   "x": 38,
+   "y": 23,
+   "z": 44
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 1.8,
+  "b": 2.2,
+  "ratio": 1.22,
+  "V0": 38456,
+  "truck": {
+   "volume": 38411.189212851015,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 38384.62755785621,
+  "occtSeq": {
+   "volume": 38361.449877690706,
+   "faces": 10,
+   "bbox": [
+    -19.0000001,
+    -11.500000100000001,
+    -22.0000001,
+    19.000000100000005,
+    11.5000001,
+    22.000000100000005
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 38429.578221877506,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 38384.627557913875,
+   "faces": 8,
+   "bbox": [
+    -19.0000001,
+    -11.5000001,
+    -22.0000001,
+    19.0000001,
+    11.5,
+    22.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.000691986784416937,
+  "ms": 1851
+ },
+ {
+  "id": "pf-31-031",
+  "script": "const b = cuboid(44,24,24)\nround(b.edge('front','right'), 3.4)\nbevel(b.edge('bottom','front'), 5.1)",
+  "dim": {
+   "x": 44,
+   "y": 24,
+   "z": 24
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 3.4,
+  "b": 5.1,
+  "ratio": 1.5,
+  "V0": 25344,
+  "truck": {
+   "volume": 24722.990489029642,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 24723.008888355766,
+  "occtSeq": {
+   "volume": 24797.50952995111,
+   "faces": 10,
+   "bbox": [
+    -22.0000001,
+    -12.000000100000001,
+    -12.000000100000003,
+    22.0000001,
+    12.0000001,
+    12.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 25284.460866452984,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 7.442187238033836e-7,
+  "ms": 9587
+ },
+ {
+  "id": "pf-31-032",
+  "script": "const b = cuboid(14,17,40)\nbevel(b.edge('top','back'), 3.3)\nround(b.edge('back','right'), 4.9)",
+  "dim": {
+   "x": 14,
+   "y": 17,
+   "z": 40
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 3.3,
+  "b": 4.9,
+  "ratio": 1.48,
+  "V0": 9520,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 9249.08675838211,
+  "occtSeq": {
+   "volume": 9249.086713654127,
+   "faces": 8,
+   "bbox": [
+    -7,
+    -8.5,
+    -20,
+    7.000000000000001,
+    8.5,
+    20
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 9443.770000000002,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 49
+ },
+ {
+  "id": "pf-31-033",
+  "script": "const b = cuboid(27,35,48)\nbevel(b.edge('top','right'), 9.7)\nround(b.edge('top','back'), 11.6)",
+  "dim": {
+   "x": 27,
+   "y": 35,
+   "z": 48
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 9.7,
+  "b": 11.6,
+  "ratio": 1.2,
+  "V0": 45360,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 43139.081081021366,
+  "occtSeq": {
+   "volume": 43139.08106907214,
+   "faces": 8,
+   "bbox": [
+    -13.5,
+    -17.5,
+    -24,
+    13.5,
+    17.5,
+    24
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 43713.424999999996,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 48
+ },
+ {
+  "id": "pf-31-034",
+  "script": "const b = cuboid(36,35,28)\nbevel(b.edge('back','left'), 4.5)\nbevel(b.edge('bottom','left'), 1.8)",
+  "dim": {
+   "x": 36,
+   "y": 35,
+   "z": 28
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 4.5,
+  "b": 1.8,
+  "ratio": 0.4,
+  "V0": 35280,
+  "truck": {
+   "volume": 34946.118,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 34946.11799999999,
+  "occtSeq": {
+   "volume": 34946.118,
+   "faces": 8,
+   "bbox": [
+    -18.000000000000004,
+    -17.5,
+    -14,
+    18,
+    17.5,
+    14
+   ]
+  },
+  "brepSeq": {
+   "volume": 34946.118,
+   "faces": 8,
+   "bbox": [
+    -18,
+    -17.5,
+    -14,
+    18,
+    17.5,
+    14
+   ]
+  },
+  "occtSim": {
+   "volume": 34946.118,
+   "faces": 8,
+   "bbox": [
+    -18.000000000000004,
+    -17.5,
+    -14.000000000000004,
+    18,
+    17.5,
+    14
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 4.1641006386937904e-16,
+  "ms": 167
+ },
+ {
+  "id": "pf-31-035",
+  "script": "const b = cuboid(40,32,26)\nround(b.edge('top','right'), 7.4)\nround(b.edge('front','right'), 14.040000000000001)",
+  "dim": {
+   "x": 40,
+   "y": 32,
+   "z": 26
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 7.4,
+  "b": 14.040000000000001,
+  "ratio": 1.9,
+  "V0": 33280,
+  "truck": {
+   "volume": 32811.450023178506,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 31899.8855043599,
+  "occtSeq": {
+   "volume": 30377.762857101516,
+   "faces": 10,
+   "bbox": [
+    -20.0000001,
+    -16.00000010000001,
+    -13.0000001,
+    20.00000010000001,
+    16.0000001,
+    13.000000100000006
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 32903.94890968461,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 31899.885505515616,
+   "faces": 8,
+   "bbox": [
+    -20,
+    -16.000000100000005,
+    -13.0000001,
+    20.000000100000005,
+    16.0000001,
+    13.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.028575792809476346,
+  "ms": 2512
+ },
+ {
+  "id": "pf-31-036",
+  "script": "const b = cuboid(43,28,43)\nround(b.edge('top','front'), 11.9)\nround(b.edge('front','left'), 8.3)",
+  "dim": {
+   "x": 43,
+   "y": 28,
+   "z": 43
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 11.9,
+  "b": 8.3,
+  "ratio": 0.7,
+  "V0": 51772,
+  "truck": {
+   "volume": 49533.44984156096,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 49921.85610724557,
+  "occtSeq": {
+   "volume": 49534.14442238181,
+   "faces": 10,
+   "bbox": [
+    -21.5,
+    -14.000000000000002,
+    -21.5,
+    21.5,
+    14,
+    21.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 50465.24005850465,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 49921.85610876123,
+   "faces": 8,
+   "bbox": [
+    -21.5000001,
+    -14.000000100000001,
+    -21.5000001,
+    21.5000001,
+    14,
+    21.5000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "CHAIN(=OCCT sequential)",
+  "dMitre": 0.007780284948744816,
+  "ms": 23091
+ },
+ {
+  "id": "pf-31-037",
+  "script": "const b = cuboid(21,43,29)\nround(b.edge('bottom','left'), 8.4)\nbevel(b.edge('bottom','back'), 5.9)",
+  "dim": {
+   "x": 21,
+   "y": 43,
+   "z": 29
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 8.4,
+  "b": 5.9,
+  "ratio": 0.7,
+  "V0": 26187,
+  "truck": {
+   "volume": 25231.27634637669,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 25231.499616265668,
+  "occtSeq": {
+   "volume": 24782.149391523384,
+   "faces": 10,
+   "bbox": [
+    -10.500000000000002,
+    -21.5,
+    -14.500000000000002,
+    10.5,
+    21.5,
+    14.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 25535.88085960093,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.00000884885529492907,
+  "ms": 7802
+ },
+ {
+  "id": "pf-31-038",
+  "script": "const b = cuboid(27,28,46)\nbevel(b.edge('top','right'), 4.1)\nbevel(b.edge('top','front'), 6.1)",
+  "dim": {
+   "x": 27,
+   "y": 28,
+   "z": 46
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 4.1,
+  "b": 6.1,
+  "ratio": 1.49,
+  "V0": 34776,
+  "truck": {
+   "volume": 34078.10866666666,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 34078.10866666653,
+  "occtSeq": {
+   "volume": 34078.10866666667,
+   "faces": 8,
+   "bbox": [
+    -13.5,
+    -14.000000000000004,
+    -23,
+    13.5,
+    14,
+    23.000000000000007
+   ]
+  },
+  "brepSeq": {
+   "volume": 34078.108666666674,
+   "faces": 8,
+   "bbox": [
+    -13.5,
+    -14,
+    -23,
+    13.5,
+    14,
+    23
+   ]
+  },
+  "occtSim": {
+   "volume": 34078.10866666667,
+   "faces": 8,
+   "bbox": [
+    -13.5,
+    -14.000000000000004,
+    -23,
+    13.5,
+    14,
+    23.000000000000007
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 3.8431486423249525e-15,
+  "ms": 241
+ },
+ {
+  "id": "pf-31-039",
+  "script": "const b = cuboid(21,44,22)\nround(b.edge('bottom','front'), 5.2)\nround(b.edge('front','left'), 7.8)",
+  "dim": {
+   "x": 21,
+   "y": 44,
+   "z": 22
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 5.2,
+  "b": 7.8,
+  "ratio": 1.5,
+  "V0": 20328,
+  "truck": {
+   "volume": 19942.911289324617,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 19943.075658586666,
+  "occtSeq": {
+   "volume": 19394.097061909684,
+   "faces": 10,
+   "bbox": [
+    -10.500000100000003,
+    -22.0000001,
+    -11.0000001,
+    10.5000001,
+    22.0000001,
+    11.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 20206.14049310361,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 19943.075659257847,
+   "faces": 8,
+   "bbox": [
+    -10.5000001,
+    -22.0000001,
+    -11.0000001,
+    10.5000001,
+    22,
+    11.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000008241921399840784,
+  "ms": 2519
+ },
+ {
+  "id": "pf-31-040",
+  "script": "const b = cuboid(14,32,18)\nround(b.edge('bottom','back'), 4.1)\nround(b.edge('back','left'), 7.56)",
+  "dim": {
+   "x": 14,
+   "y": 32,
+   "z": 18
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 4.1,
+  "b": 7.56,
+  "ratio": 1.84,
+  "V0": 8064,
+  "truck": {
+   "volume": 7928.889544291306,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 7808.407840702317,
+  "occtSeq": {
+   "volume": 7447.356580985726,
+   "faces": 10,
+   "bbox": [
+    -7.000000100000002,
+    -16.0000001,
+    -9.000000100000001,
+    7.0000001,
+    16.00000010000001,
+    9.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 8013.495603773955,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 7808.407838142943,
+   "faces": 8,
+   "bbox": [
+    -7.000000100000002,
+    -16,
+    -9.0000001,
+    7.0000001,
+    16.0000001,
+    9.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.01542974010155604,
+  "ms": 2289
+ },
+ {
+  "id": "pf-31-041",
+  "script": "const b = cuboid(35,48,39)\nbevel(b.edge('top','front'), 1.3)\nround(b.edge('front','left'), 2.3)",
+  "dim": {
+   "x": 35,
+   "y": 48,
+   "z": 39
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 1.3,
+  "b": 2.3,
+  "ratio": 1.77,
+  "V0": 65520,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 65447.06156184706,
+  "occtSeq": {
+   "volume": 65447.061549761565,
+   "faces": 8,
+   "bbox": [
+    -17.5,
+    -24,
+    -19.5,
+    17.5,
+    24,
+    19.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 65490.42500000001,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 51
+ },
+ {
+  "id": "pf-31-042",
+  "script": "const b = cuboid(32,42,40)\nround(b.edge('back','left'), 2.1)\nround(b.edge('bottom','back'), 0.8)",
+  "dim": {
+   "x": 32,
+   "y": 42,
+   "z": 40
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 2.1,
+  "b": 0.8,
+  "ratio": 0.38,
+  "V0": 53760,
+  "truck": {
+   "volume": 53712.11708789813,
+   "faces": 10,
+   "curved": true
+  },
+  "mitre": 53717.933508011876,
+  "occtSeq": {
+   "volume": 53712.143037849004,
+   "faces": 10,
+   "bbox": [
+    -16,
+    -21,
+    -20.0000001,
+    16,
+    21,
+    20
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 53722.14423602331,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 53717.933507428614,
+   "faces": 8,
+   "bbox": [
+    -16.0000001,
+    -21,
+    -20.0000001,
+    16.0000001,
+    21.000000100000165,
+    20.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.00010827706380180055,
+  "ms": 2428
+ },
+ {
+  "id": "pf-31-043",
+  "script": "const b = cuboid(40,31,48)\nround(b.edge('bottom','right'), 9.9)\nround(b.edge('bottom','back'), 16.740000000000002)",
+  "dim": {
+   "x": 40,
+   "y": 31,
+   "z": 48
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 9.9,
+  "b": 16.740000000000002,
+  "ratio": 1.69,
+  "V0": 59520,
+  "truck": {
+   "volume": 56657.907027516165,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 56659.04837497144,
+  "occtSeq": {
+   "volume": 54105.82960567326,
+   "faces": 10,
+   "bbox": [
+    -20.0000001,
+    -15.5000001,
+    -24.00000010000001,
+    20.000000100000015,
+    15.500000100000006,
+    24.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 58867.97309383209,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 56659.048377814775,
+   "faces": 8,
+   "bbox": [
+    -20.0000001,
+    -15.5000001,
+    -24.000000100000005,
+    20.0000001,
+    15.500000100000003,
+    24
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000020144133867587417,
+  "ms": 1932
+ },
+ {
+  "id": "pf-31-044",
+  "script": "const b = cuboid(48,20,14)\nround(b.edge('back','left'), 1)\nround(b.edge('top','back'), 2.5)",
+  "dim": {
+   "x": 48,
+   "y": 20,
+   "z": 14
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 1,
+  "b": 2.5,
+  "ratio": 2.5,
+  "V0": 13440,
+  "truck": {
+   "volume": 13372.928182747031,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 13372.95341005939,
+  "occtSeq": {
+   "volume": 13347.360382897996,
+   "faces": 10,
+   "bbox": [
+    -24.000000100000005,
+    -10.0000001,
+    -7.0000001,
+    24.0000001,
+    10.000000100000003,
+    7.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 13436.995574287563,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 13372.953410124686,
+   "faces": 8,
+   "bbox": [
+    -24.0000001,
+    -10,
+    -7.0000001,
+    24.0000001,
+    10.000000100001731,
+    7.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000018864428511198704,
+  "ms": 758
+ },
+ {
+  "id": "pf-31-045",
+  "script": "const b = cuboid(34,48,32)\nround(b.edge('bottom','right'), 5.3)\nbevel(b.edge('back','right'), 8)",
+  "dim": {
+   "x": 34,
+   "y": 48,
+   "z": 32
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 5.3,
+  "b": 8,
+  "ratio": 1.51,
+  "V0": 52224,
+  "truck": {
+   "volume": 50951.64359749024,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 50951.73693188233,
+  "occtSeq": {
+   "volume": 49957.305638609025,
+   "faces": 10,
+   "bbox": [
+    -17.0000001,
+    -24.0000001,
+    -16.0000001,
+    17.000000100000005,
+    24.00000010000001,
+    16.000000100000005
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 51934.64805167204,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000018318196338678595,
+  "ms": 6831
+ },
+ {
+  "id": "pf-31-046",
+  "script": "const b = cuboid(28,48,27)\nround(b.edge('top','left'), 4.6)\nbevel(b.edge('back','left'), 1.8)",
+  "dim": {
+   "x": 28,
+   "y": 48,
+   "z": 27
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 4.6,
+  "b": 1.8,
+  "ratio": 0.39,
+  "V0": 36288,
+  "truck": {
+   "volume": 35985.58055367054,
+   "faces": 10,
+   "curved": true
+  },
+  "mitre": 36030.380933507455,
+  "occtSeq": {
+   "volume": 35985.65844643696,
+   "faces": 10,
+   "bbox": [
+    -14.000000000000002,
+    -24,
+    -13.5,
+    14,
+    24.000000000000007,
+    13.500000000000002
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 36070.033206599524,
+    "faces": 7
+   }
+  },
+  "class": "CHAIN(=OCCT sequential)",
+  "dMitre": 0.0012434056670007037,
+  "ms": 5201
+ },
+ {
+  "id": "pf-31-047",
+  "script": "const b = cuboid(28,28,20)\nround(b.edge('top','front'), 6.9)\nbevel(b.edge('front','left'), 6.9)",
+  "dim": {
+   "x": 28,
+   "y": 28,
+   "z": 20
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 6.9,
+  "b": 6.9,
+  "ratio": 1,
+  "V0": 15680,
+  "truck": {
+   "volume": 14972.542129503718,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 14972.570083345263,
+  "occtSeq": {
+   "volume": 14407.780673506182,
+   "faces": 10,
+   "bbox": [
+    -14,
+    -14,
+    -10,
+    14,
+    14.000000000000002,
+    10.000000000000002
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 15393.91858366187,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000018670035531398296,
+  "ms": 17816
+ },
+ {
+  "id": "pf-31-048",
+  "script": "const b = cuboid(31,25,24)\nround(b.edge('top','front'), 9.5)\nround(b.edge('front','right'), 12.96)",
+  "dim": {
+   "x": 31,
+   "y": 25,
+   "z": 24
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 9.5,
+  "b": 12.96,
+  "ratio": 1.36,
+  "V0": 18600,
+  "truck": {
+   "volume": 17263.171346489526,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 17263.633804336252,
+  "occtSeq": {
+   "volume": 16509.355759001388,
+   "faces": 10,
+   "bbox": [
+    -15.5000001,
+    -12.500000100000003,
+    -12.0000001,
+    15.500000100000005,
+    12.5000001,
+    12.000000100000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 17999.597711645212,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 17263.6338064758,
+   "faces": 8,
+   "bbox": [
+    -15.5000001,
+    -12.500000100000001,
+    -12.0000001,
+    15.500000100000001,
+    12.5,
+    12.000000100000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000026787978241887065,
+  "ms": 1737
+ },
+ {
+  "id": "pf-31-049",
+  "script": "const b = cuboid(27,26,16)\nround(b.edge('back','right'), 2.5)\nbevel(b.edge('bottom','back'), 7.5)",
+  "dim": {
+   "x": 27,
+   "y": 26,
+   "z": 16
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 2.5,
+  "b": 7.5,
+  "ratio": 3,
+  "V0": 11232,
+  "truck": {
+   "volume": 10460.470637683016,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 10460.475290355096,
+  "occtSeq": {
+   "volume": 10527.696510483278,
+   "faces": 10,
+   "bbox": [
+    -13.5000001,
+    -13.0000001,
+    -8.0000001,
+    13.5000001,
+    13.000000100000001,
+    8.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 11210.539816339746,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 4.4478591561879146e-7,
+  "ms": 2871
+ },
+ {
+  "id": "pf-31-050",
+  "script": "const b = cuboid(41,23,22)\nround(b.edge('bottom','left'), 8)\nbevel(b.edge('bottom','back'), 11.88)",
+  "dim": {
+   "x": 41,
+   "y": 23,
+   "z": 22
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 8,
+  "b": 11.88,
+  "ratio": 1.49,
+  "V0": 20746,
+  "truck": {
+   "volume": 17675.403279730483,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 17675.47415718701,
+  "occtSeq": {
+   "volume": 16174.090610001567,
+   "faces": 10,
+   "bbox": [
+    -20.5000001,
+    -11.5000001,
+    -11.000000100000001,
+    20.5000001,
+    11.500000100000006,
+    11.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 20430.106096521045,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000040099324011306155,
+  "ms": 2925
+ },
+ {
+  "id": "pf-31-051",
+  "script": "const b = cuboid(31,31,47)\nround(b.edge('back','right'), 9.3)\nround(b.edge('top','right'), 16.740000000000002)",
+  "dim": {
+   "x": 31,
+   "y": 31,
+   "z": 47
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 9.3,
+  "b": 16.740000000000002,
+  "ratio": 1.8,
+  "V0": 45167,
+  "truck": {
+   "volume": 44643.99831885778,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 42607.65206838478,
+  "occtSeq": {
+   "volume": 41023.3540947624,
+   "faces": 10,
+   "bbox": [
+    -15.5000001,
+    -15.5000001,
+    -23.5000001,
+    15.500000100000005,
+    15.500000100000003,
+    23.50000010000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 44294.63709615552,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 42607.652070979966,
+   "faces": 8,
+   "bbox": [
+    -15.5,
+    -15.5000001,
+    -23.5000001,
+    15.500000100000003,
+    15.500000100000003,
+    23.500000100000005
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.04779297031445651,
+  "ms": 2361
+ },
+ {
+  "id": "pf-31-052",
+  "script": "const b = cuboid(16,41,30)\nround(b.edge('bottom','right'), 1.2)\nround(b.edge('bottom','back'), 1.4)",
+  "dim": {
+   "x": 16,
+   "y": 41,
+   "z": 30
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 1.2,
+  "b": 1.4,
+  "ratio": 1.17,
+  "V0": 19680,
+  "truck": {
+   "volume": 19661.39390762747,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 19660.808009899993,
+  "occtSeq": {
+   "volume": 19648.315984752484,
+   "faces": 10,
+   "bbox": [
+    -8.0000001,
+    -20.5000001,
+    -15.0000001,
+    8.0000001,
+    20.500000100000005,
+    15.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 19667.329907566982,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 19660.808009947756,
+   "faces": 8,
+   "bbox": [
+    -8.0000001,
+    -20.5000001,
+    -15.000000100005131,
+    8.0000001,
+    20.5000001,
+    15
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000029800287311769014,
+  "ms": 2365
+ },
+ {
+  "id": "pf-31-053",
+  "script": "const b = cuboid(32,18,17)\nround(b.edge('bottom','back'), 5.3)\nbevel(b.edge('back','right'), 8)",
+  "dim": {
+   "x": 32,
+   "y": 18,
+   "z": 17
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 5.3,
+  "b": 8,
+  "ratio": 1.51,
+  "V0": 9792,
+  "truck": {
+   "volume": 9096.129921136104,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 9096.18758132498,
+  "occtSeq": {
+   "volume": 8634.57647171886,
+   "faces": 10,
+   "bbox": [
+    -16.0000001,
+    -9.0000001,
+    -8.5000001,
+    16.00000010000001,
+    9.000000100000001,
+    8.5000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 9599.098701114699,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.000006338940172623521,
+  "ms": 6300
+ },
+ {
+  "id": "pf-31-054",
+  "script": "const b = cuboid(42,30,26)\nround(b.edge('bottom','back'), 9.7)\nround(b.edge('bottom','right'), 14.040000000000001)",
+  "dim": {
+   "x": 42,
+   "y": 30,
+   "z": 26
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 9.7,
+  "b": 14.040000000000001,
+  "ratio": 1.45,
+  "V0": 32760,
+  "truck": {
+   "volume": 30791.43250344943,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 30792.193709511237,
+  "occtSeq": {
+   "volume": 29837.789666637673,
+   "faces": 10,
+   "bbox": [
+    -21.0000001,
+    -15.0000001,
+    -13.000000100000003,
+    21.000000100000005,
+    15.000000100000003,
+    13.000000100000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 31911.940754150768,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 30792.193711835716,
+   "faces": 8,
+   "bbox": [
+    -21.0000001,
+    -15.0000001,
+    -13.000000100000003,
+    21.000000100000005,
+    15.000000100000001,
+    13
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000024720748024307044,
+  "ms": 2197
+ },
+ {
+  "id": "pf-31-055",
+  "script": "const b = cuboid(37,28,14)\nround(b.edge('bottom','front'), 5.9)\nround(b.edge('bottom','left'), 7.1)",
+  "dim": {
+   "x": 37,
+   "y": 28,
+   "z": 14
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 5.9,
+  "b": 7.1,
+  "ratio": 1.2,
+  "V0": 14504,
+  "truck": {
+   "volume": 14373.506044748938,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 13950.552371299846,
+  "occtSeq": {
+   "volume": 13822.84609614473,
+   "faces": 10,
+   "bbox": [
+    -18.500000100000005,
+    -14.000000100000005,
+    -7.000000100000004,
+    18.5000001,
+    14.0000001,
+    7.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 14227.599272511012,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 13950.552371718979,
+   "faces": 8,
+   "bbox": [
+    -18.5000001,
+    -14.000000100000001,
+    -7.000000100000002,
+    18.5000001,
+    14.0000001,
+    7
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.030318059256149964,
+  "ms": 1351
+ },
+ {
+  "id": "pf-31-056",
+  "script": "const b = cuboid(39,33,38)\nbevel(b.edge('front','right'), 1.9)\nbevel(b.edge('top','right'), 0.8)",
+  "dim": {
+   "x": 39,
+   "y": 33,
+   "z": 38
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 1.9,
+  "b": 0.8,
+  "ratio": 0.42,
+  "V0": 48906,
+  "truck": {
+   "volume": 48827.37266666667,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 48827.37266666667,
+  "occtSeq": {
+   "volume": 48827.37266666667,
+   "faces": 8,
+   "bbox": [
+    -19.5,
+    -16.5,
+    -19,
+    19.500000000000004,
+    16.5,
+    19.000000000000004
+   ]
+  },
+  "brepSeq": {
+   "volume": 48827.37266666666,
+   "faces": 8,
+   "bbox": [
+    -19.5,
+    -16.5,
+    -19,
+    19.5,
+    16.5,
+    19
+   ]
+  },
+  "occtSim": {
+   "volume": 48827.37266666666,
+   "faces": 8,
+   "bbox": [
+    -19.5,
+    -16.5,
+    -19,
+    19.500000000000004,
+    16.5,
+    19.000000000000004
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0,
+  "ms": 178
+ },
+ {
+  "id": "pf-31-057",
+  "script": "const b = cuboid(27,33,48)\nround(b.edge('bottom','left'), 9)\nround(b.edge('bottom','back'), 14.58)",
+  "dim": {
+   "x": 27,
+   "y": 33,
+   "z": 48
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 9,
+  "b": 14.58,
+  "ratio": 1.62,
+  "V0": 42768,
+  "truck": {
+   "volume": 42329.24713617171,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 41101.97643465087,
+  "occtSeq": {
+   "volume": 39130.00837804768,
+   "faces": 10,
+   "bbox": [
+    -13.500000100000014,
+    -16.5000001,
+    -24.0000001,
+    13.5000001,
+    16.500000100000005,
+    24.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 42194.36929076138,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 41101.97643671854,
+   "faces": 8,
+   "bbox": [
+    -13.500000100000001,
+    -16.5000001,
+    -24.0000001,
+    13.5000001,
+    16.5000001,
+    24
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.029859165129738078,
+  "ms": 1667
+ },
+ {
+  "id": "pf-31-058",
+  "script": "const b = cuboid(22,28,30)\nround(b.edge('bottom','front'), 5)\nbevel(b.edge('bottom','left'), 10)",
+  "dim": {
+   "x": 22,
+   "y": 28,
+   "z": 30
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 5,
+  "b": 10,
+  "ratio": 2,
+  "V0": 18480,
+  "truck": {
+   "volume": 17009.60035116536,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 17009.627552536436,
+  "occtSeq": {
+   "volume": 15691.244595374113,
+   "faces": 10,
+   "bbox": [
+    -11.000000100000001,
+    -14.0000001,
+    -15.0000001,
+    11.0000001,
+    14.0000001,
+    15.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 18361.9689898686,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000015991749960785505,
+  "ms": 6960
+ },
+ {
+  "id": "pf-31-059",
+  "script": "const b = cuboid(33,44,37)\nround(b.edge('front','left'), 6.9)\nround(b.edge('top','left'), 8.3)",
+  "dim": {
+   "x": 33,
+   "y": 44,
+   "z": 37
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 6.9,
+  "b": 8.3,
+  "ratio": 1.2,
+  "V0": 53724,
+  "truck": {
+   "volume": 53315.39182609638,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 52736.80955762911,
+  "occtSeq": {
+   "volume": 52275.71114002613,
+   "faces": 10,
+   "bbox": [
+    -16.500000100000005,
+    -22.00000010000001,
+    -18.5000001,
+    16.5000001,
+    22.0000001,
+    18.500000100000012
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 53345.963842696045,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 52736.80955852199,
+   "faces": 8,
+   "bbox": [
+    -16.5000001,
+    -22.0000001,
+    -18.5000001,
+    16.5,
+    22.0000001,
+    18.5000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.010971127630218343,
+  "ms": 1487
+ },
+ {
+  "id": "pf-31-060",
+  "script": "const b = cuboid(27,22,47)\nbevel(b.edge('bottom','right'), 7.4)\nbevel(b.edge('front','right'), 11.88)",
+  "dim": {
+   "x": 27,
+   "y": 22,
+   "z": 47
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 7.4,
+  "b": 11.88,
+  "ratio": 1.61,
+  "V0": 27918,
+  "truck": {
+   "volume": 24256.718666666668,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 24256.71866666582,
+  "occtSeq": {
+   "volume": 24256.718666666668,
+   "faces": 8,
+   "bbox": [
+    -13.5,
+    -11,
+    -23.5,
+    13.500000000000002,
+    11,
+    23.5
+   ]
+  },
+  "brepSeq": {
+   "volume": 24256.718666666668,
+   "faces": 8,
+   "bbox": [
+    -13.500000000000002,
+    -11,
+    -23.5,
+    13.5,
+    11,
+    23.5
+   ]
+  },
+  "occtSim": {
+   "volume": 24256.718666666668,
+   "faces": 8,
+   "bbox": [
+    -13.5,
+    -11,
+    -23.5,
+    13.500000000000002,
+    11,
+    23.5
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 3.494491871306688e-14,
+  "ms": 169
+ },
+ {
+  "id": "pf-31-061",
+  "script": "const b = cuboid(34,46,33)\nround(b.edge('top','back'), 8.5)\nround(b.edge('back','right'), 15.3)",
+  "dim": {
+   "x": 34,
+   "y": 46,
+   "z": 33
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 8.5,
+  "b": 15.3,
+  "ratio": 1.8,
+  "V0": 51612,
+  "truck": {
+   "volume": 50796.88496875772,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 49562.38547306769,
+  "occtSeq": {
+   "volume": 47465.49856112189,
+   "faces": 10,
+   "bbox": [
+    -17.0000001,
+    -23.0000001,
+    -16.5000001,
+    17.00000010000001,
+    23.0000001,
+    16.500000100000005
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 51084.830588385834,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 49562.38547512001,
+   "faces": 8,
+   "bbox": [
+    -17.0000001,
+    -23,
+    -16.5000001,
+    17.0000001,
+    23.0000001,
+    16.5000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.02490799189560511,
+  "ms": 2798
+ },
+ {
+  "id": "pf-31-062",
+  "script": "const b = cuboid(25,29,27)\nbevel(b.edge('bottom','right'), 5.3)\nbevel(b.edge('front','right'), 8)",
+  "dim": {
+   "x": 25,
+   "y": 29,
+   "z": 27
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 5.3,
+  "b": 8,
+  "ratio": 1.51,
+  "V0": 19575,
+  "truck": {
+   "volume": 18391.242166666667,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 18391.242166666358,
+  "occtSeq": {
+   "volume": 18391.242166666667,
+   "faces": 8,
+   "bbox": [
+    -12.5,
+    -14.5,
+    -13.500000000000002,
+    12.500000000000004,
+    14.5,
+    13.500000000000002
+   ]
+  },
+  "brepSeq": {
+   "volume": 18391.242166666667,
+   "faces": 8,
+   "bbox": [
+    -12.5,
+    -14.5,
+    -13.5,
+    12.5,
+    14.5,
+    13.5
+   ]
+  },
+  "occtSim": {
+   "volume": 18391.242166666667,
+   "faces": 8,
+   "bbox": [
+    -12.5,
+    -14.5,
+    -13.500000000000002,
+    12.500000000000004,
+    14.5,
+    13.500000000000004
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 1.6813883249455742e-14,
+  "ms": 168
+ },
+ {
+  "id": "pf-31-063",
+  "script": "const b = cuboid(21,45,21)\nbevel(b.edge('bottom','front'), 2.3)\nround(b.edge('front','left'), 1.6)",
+  "dim": {
+   "x": 21,
+   "y": 45,
+   "z": 21
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 2.3,
+  "b": 1.6,
+  "ratio": 0.7,
+  "V0": 19845,
+  "truck": {
+   "volume": 19778.981322309362,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 19778.985238416433,
+  "occtSeq": {
+   "volume": 19778.985203016055,
+   "faces": 8,
+   "bbox": [
+    -10.5,
+    -22.500000000000004,
+    -10.500000000000002,
+    10.500000000000002,
+    22.5,
+    10.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 19789.455,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 1.9799332592805663e-7,
+  "ms": 187
+ },
+ {
+  "id": "pf-31-064",
+  "script": "const b = cuboid(34,36,24)\nround(b.edge('front','right'), 4.7)\nbevel(b.edge('bottom','front'), 8.5)",
+  "dim": {
+   "x": 34,
+   "y": 36,
+   "z": 24
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 4.7,
+  "b": 8.5,
+  "ratio": 1.81,
+  "V0": 29376,
+  "truck": {
+   "volume": 28069.26462954456,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 28069.29463082734,
+  "occtSeq": {
+   "volume": 27616.250859251977,
+   "faces": 10,
+   "bbox": [
+    -17.0000001,
+    -18.0000001,
+    -12.000000100000001,
+    17.0000001,
+    18.000000100000005,
+    12.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 29262.226690306794,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000010688292375654463,
+  "ms": 8213
+ },
+ {
+  "id": "pf-31-065",
+  "script": "const b = cuboid(28,47,45)\nround(b.edge('top','back'), 4.1)\nround(b.edge('back','right'), 6.1)",
+  "dim": {
+   "x": 28,
+   "y": 47,
+   "z": 45
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 4.1,
+  "b": 6.1,
+  "ratio": 1.49,
+  "V0": 59220,
+  "truck": {
+   "volume": 58771.179761658655,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 58771.367823937995,
+  "occtSeq": {
+   "volume": 58408.193440990566,
+   "faces": 10,
+   "bbox": [
+    -14.0000001,
+    -23.5000001,
+    -22.5000001,
+    14.000000100000003,
+    23.500000100000005,
+    22.500000100000005
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 59118.9912075479,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 58771.3678244078,
+   "faces": 8,
+   "bbox": [
+    -14.0000001,
+    -23.5,
+    -22.5000001,
+    14.0000001,
+    23.5000001,
+    22.500000100000005
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000031998962471492422,
+  "ms": 4130
+ },
+ {
+  "id": "pf-31-066",
+  "script": "const b = cuboid(34,23,48)\nround(b.edge('bottom','left'), 8.6)\nbevel(b.edge('back','left'), 12.42)",
+  "dim": {
+   "x": 34,
+   "y": 23,
+   "z": 48
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 8.6,
+  "b": 12.42,
+  "ratio": 1.44,
+  "V0": 37536,
+  "truck": {
+   "volume": 33635.352119989926,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 33635.431696250635,
+  "occtSeq": {
+   "volume": 31542.593694024374,
+   "faces": 10,
+   "bbox": [
+    -17.0000001,
+    -11.5000001,
+    -24.0000001,
+    17.0000001,
+    11.500000100000003,
+    24.000000100000005
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 37170.94510779213,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000023658462726801844,
+  "ms": 11395
+ },
+ {
+  "id": "pf-31-067",
+  "script": "const b = cuboid(26,40,18)\nround(b.edge('bottom','back'), 1.9)\nround(b.edge('bottom','left'), 1.9)",
+  "dim": {
+   "x": 26,
+   "y": 40,
+   "z": 18
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 1.9,
+  "b": 1.9,
+  "ratio": 1,
+  "V0": 18720,
+  "truck": {
+   "volume": 18669.508090973515,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 18669.526541059062,
+  "occtSeq": {
+   "volume": 18656.072365094147,
+   "faces": 10,
+   "bbox": [
+    -13.000000000000002,
+    -20,
+    -9,
+    13,
+    20,
+    9
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 18699.857471616484,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 18669.52654104047,
+   "faces": 8,
+   "bbox": [
+    -13.000000000000002,
+    -20,
+    -9,
+    13,
+    20,
+    9
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 9.88246033238726e-7,
+  "ms": 3031
+ },
+ {
+  "id": "pf-31-068",
+  "script": "const b = cuboid(35,18,40)\nbevel(b.edge('back','right'), 2.7)\nbevel(b.edge('bottom','right'), 8.1)",
+  "dim": {
+   "x": 35,
+   "y": 18,
+   "z": 40
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 2.7,
+  "b": 8.1,
+  "ratio": 3,
+  "V0": 25200,
+  "truck": {
+   "volume": 24489.954,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 24489.953999999958,
+  "occtSeq": {
+   "volume": 24489.954,
+   "faces": 8,
+   "bbox": [
+    -17.5,
+    -9,
+    -20,
+    17.5,
+    9.000000000000002,
+    20
+   ]
+  },
+  "brepSeq": {
+   "volume": 24489.954,
+   "faces": 8,
+   "bbox": [
+    -17.5,
+    -9,
+    -20,
+    17.5,
+    9,
+    20
+   ]
+  },
+  "occtSim": {
+   "volume": 24489.953999999998,
+   "faces": 8,
+   "bbox": [
+    -17.5,
+    -9,
+    -20,
+    17.5,
+    9.000000000000002,
+    20
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 1.78259810880415e-15,
+  "ms": 209
+ },
+ {
+  "id": "pf-31-069",
+  "script": "const b = cuboid(48,42,35)\nround(b.edge('bottom','left'), 5.6)\nbevel(b.edge('bottom','back'), 3.9)",
+  "dim": {
+   "x": 48,
+   "y": 42,
+   "z": 35
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 5.6,
+  "b": 3.9,
+  "ratio": 0.7,
+  "V0": 70560,
+  "truck": {
+   "volume": 69930.09524403552,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 69930.19484008191,
+  "occtSeq": {
+   "volume": 69679.9372329555,
+   "faces": 10,
+   "bbox": [
+    -24.000000000000004,
+    -21,
+    -17.5,
+    24.000000000000004,
+    21,
+    17.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 70277.34362897405,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000014242209194366468,
+  "ms": 9198
+ },
+ {
+  "id": "pf-31-070",
+  "script": "const b = cuboid(16,24,40)\nround(b.edge('top','right'), 2.1)\nround(b.edge('back','right'), 5.3)",
+  "dim": {
+   "x": 16,
+   "y": 24,
+   "z": 40
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 2.1,
+  "b": 5.3,
+  "ratio": 2.52,
+  "V0": 15360,
+  "truck": {
+   "volume": 15099.231423815569,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 15099.331737468508,
+  "occtSeq": {
+   "volume": 15013.245791627116,
+   "faces": 10,
+   "bbox": [
+    -8.0000001,
+    -12.0000001,
+    -20.0000001,
+    8.0000001,
+    12.000000100000001,
+    20.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 15337.286541613985,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 15099.331737571838,
+   "faces": 8,
+   "bbox": [
+    -8,
+    -12.0000001,
+    -20.0000001,
+    8.0000001,
+    12.0000001,
+    20.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000006643582291186988,
+  "ms": 1133
+ },
+ {
+  "id": "pf-31-071",
+  "script": "const b = cuboid(38,45,20)\nbevel(b.edge('front','left'), 8.8)\nbevel(b.edge('top','front'), 10.799999999999999)",
+  "dim": {
+   "x": 38,
+   "y": 45,
+   "z": 20
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 8.8,
+  "b": 10.799999999999999,
+  "ratio": 1.23,
+  "V0": 34200,
+  "truck": {
+   "volume": 31514.03733333333,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 31514.037333331915,
+  "occtSeq": {
+   "volume": 31514.037333333326,
+   "faces": 8,
+   "bbox": [
+    -19,
+    -22.500000000000004,
+    -10,
+    19.000000000000004,
+    22.5,
+    10.000000000000002
+   ]
+  },
+  "brepSeq": {
+   "volume": 31514.03733333333,
+   "faces": 8,
+   "bbox": [
+    -19,
+    -22.5,
+    -10,
+    19,
+    22.5,
+    10
+   ]
+  },
+  "occtSim": {
+   "volume": 31514.037333333326,
+   "faces": 8,
+   "bbox": [
+    -19,
+    -22.5,
+    -10,
+    19.000000000000004,
+    22.5,
+    10.000000000000002
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 4.4906139476514127e-14,
+  "ms": 249
+ },
+ {
+  "id": "pf-31-072",
+  "script": "const b = cuboid(24,26,45)\nround(b.edge('front','right'), 0.8)\nbevel(b.edge('bottom','front'), 1.2)",
+  "dim": {
+   "x": 24,
+   "y": 26,
+   "z": 45
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 0.8,
+  "b": 1.2,
+  "ratio": 1.5,
+  "V0": 28080,
+  "truck": {
+   "volume": 28056.670877611177,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 28056.679738508614,
+  "occtSeq": {
+   "volume": 28128.040325782822,
+   "faces": 10,
+   "bbox": [
+    -12.0000001,
+    -13.0000001,
+    -22.50000010000001,
+    12.0000001,
+    13.0000001,
+    22.5000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 28073.819467105845,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 3.1582131311041935e-7,
+  "ms": 8105
+ },
+ {
+  "id": "pf-31-073",
+  "script": "const b = cuboid(21,28,29)\nround(b.edge('front','left'), 6.5)\nbevel(b.edge('top','left'), 11.340000000000002)",
+  "dim": {
+   "x": 21,
+   "y": 28,
+   "z": 29
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 6.5,
+  "b": 11.340000000000002,
+  "ratio": 1.74,
+  "V0": 17052,
+  "truck": {
+   "volume": 15078.30867795848,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 15078.375462141366,
+  "occtSeq": {
+   "volume": 14034.102783579461,
+   "faces": 10,
+   "bbox": [
+    -10.5000001,
+    -14.0000001,
+    -14.5000001,
+    10.5000001,
+    14.0000001,
+    14.500000100000006
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 16789.05909970272,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.000004429136484555998,
+  "ms": 6822
+ },
+ {
+  "id": "pf-31-074",
+  "script": "const b = cuboid(20,40,27)\nbevel(b.edge('front','left'), 1.2)\nbevel(b.edge('bottom','front'), 0.8)",
+  "dim": {
+   "x": 20,
+   "y": 40,
+   "z": 27
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 1.2,
+  "b": 0.8,
+  "ratio": 0.67,
+  "V0": 21600,
+  "truck": {
+   "volume": 21574.458666666666,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 21574.458666666666,
+  "occtSeq": {
+   "volume": 21574.458666666666,
+   "faces": 8,
+   "bbox": [
+    -10,
+    -20.000000000000004,
+    -13.500000000000002,
+    10,
+    20,
+    13.5
+   ]
+  },
+  "brepSeq": {
+   "volume": 21574.458666666666,
+   "faces": 8,
+   "bbox": [
+    -10,
+    -20,
+    -13.5,
+    10,
+    20,
+    13.5
+   ]
+  },
+  "occtSim": {
+   "volume": 21574.458666666666,
+   "faces": 8,
+   "bbox": [
+    -10,
+    -20.000000000000004,
+    -13.500000000000002,
+    10,
+    20,
+    13.5
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0,
+  "ms": 168
+ },
+ {
+  "id": "pf-31-075",
+  "script": "const b = cuboid(21,35,20)\nround(b.edge('bottom','front'), 4.1)\nround(b.edge('front','left'), 10.3)",
+  "dim": {
+   "x": 21,
+   "y": 35,
+   "z": 20
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 4.1,
+  "b": 10.3,
+  "ratio": 2.51,
+  "V0": 14700,
+  "truck": {
+   "volume": 14192.17309802706,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 14192.368061677069,
+  "occtSeq": {
+   "volume": 13481.53129230976,
+   "faces": 10,
+   "bbox": [
+    -10.500000100000005,
+    -17.5000001,
+    -10.000000100000001,
+    10.5000001,
+    17.5000001,
+    10.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 14624.243405660935,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 14192.36806212872,
+   "faces": 8,
+   "bbox": [
+    -10.500000100000001,
+    -17.5000001,
+    -10.0000001,
+    10.5000001,
+    17.5,
+    10.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000013737217718793097,
+  "ms": 646
+ },
+ {
+  "id": "pf-31-076",
+  "script": "const b = cuboid(38,25,30)\nbevel(b.edge('back','left'), 4.8)\nbevel(b.edge('top','back'), 13.5)",
+  "dim": {
+   "x": 38,
+   "y": 25,
+   "z": 30
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 4.8,
+  "b": 13.5,
+  "ratio": 2.81,
+  "V0": 28500,
+  "truck": {
+   "volume": 24828.738,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 24828.737999999765,
+  "occtSeq": {
+   "volume": 24828.737999999998,
+   "faces": 8,
+   "bbox": [
+    -19,
+    -12.5,
+    -15,
+    19.000000000000004,
+    12.500000000000004,
+    15.000000000000004
+   ]
+  },
+  "brepSeq": {
+   "volume": 24828.738,
+   "faces": 8,
+   "bbox": [
+    -19,
+    -12.5,
+    -15,
+    19,
+    12.5,
+    15
+   ]
+  },
+  "occtSim": {
+   "volume": 24828.738,
+   "faces": 8,
+   "bbox": [
+    -19,
+    -12.5,
+    -15,
+    19,
+    12.500000000000002,
+    15
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 9.523988793186491e-15,
+  "ms": 149
+ },
+ {
+  "id": "pf-31-077",
+  "script": "const b = cuboid(30,18,27)\nbevel(b.edge('top','left'), 6.3)\nround(b.edge('back','left'), 9.719999999999999)",
+  "dim": {
+   "x": 30,
+   "y": 18,
+   "z": 27
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 6.3,
+  "b": 9.719999999999999,
+  "ratio": 1.54,
+  "V0": 14580,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 13759.666220639714,
+  "occtSeq": {
+   "volume": 13759.66596524551,
+   "faces": 8,
+   "bbox": [
+    -15.000000000000004,
+    -9,
+    -13.5,
+    15,
+    9.000000000000002,
+    13.500000000000002
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 14222.790000000003,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 40
+ },
+ {
+  "id": "pf-31-078",
+  "script": "const b = cuboid(47,16,21)\nbevel(b.edge('back','left'), 1.1)\nround(b.edge('top','left'), 1.1)",
+  "dim": {
+   "x": 47,
+   "y": 16,
+   "z": 21
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 1.1,
+  "b": 1.1,
+  "ratio": 1,
+  "V0": 15792,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: a fillet larger than the faces next to it"
+  },
+  "mitre": 15775.362141775426,
+  "occtSeq": {
+   "volume": 15775.362124027437,
+   "faces": 8,
+   "bbox": [
+    -23.5,
+    -8,
+    -10.5,
+    23.5,
+    8.000000000000002,
+    10.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 15779.295,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 40
+ },
+ {
+  "id": "pf-31-079",
+  "script": "const b = cuboid(35,38,18)\nround(b.edge('front','left'), 5.5)\nbevel(b.edge('top','left'), 8.3)",
+  "dim": {
+   "x": 35,
+   "y": 38,
+   "z": 18
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 5.5,
+  "b": 8.3,
+  "ratio": 1.51,
+  "V0": 23940,
+  "truck": {
+   "volume": 22560.117330883808,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 22560.145241954924,
+  "occtSeq": {
+   "volume": 21503.638525196442,
+   "faces": 10,
+   "bbox": [
+    -17.5000001,
+    -19.0000001,
+    -9.0000001,
+    17.5000001,
+    19.000000100000005,
+    9.000000100000003
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 23823.14929996991,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000012371849035946914,
+  "ms": 6760
+ },
+ {
+  "id": "pf-31-080",
+  "script": "const b = cuboid(22,28,28)\nround(b.edge('bottom','front'), 9.8)\nround(b.edge('bottom','right'), 11.88)",
+  "dim": {
+   "x": 22,
+   "y": 28,
+   "z": 28
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 9.8,
+  "b": 11.88,
+  "ratio": 1.21,
+  "V0": 17248,
+  "truck": {
+   "volume": 16749.752712563524,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 16066.283122655954,
+  "occtSeq": {
+   "volume": 15329.400162941256,
+   "faces": 10,
+   "bbox": [
+    -11.0000001,
+    -14.000000100000006,
+    -14.000000100000006,
+    11.000000100000006,
+    14.0000001,
+    14.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 16794.572071479197,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 16066.283125248368,
+   "faces": 8,
+   "bbox": [
+    -11.0000001,
+    -14.000000100000001,
+    -14.000000100003415,
+    11.000000100000001,
+    14.0000001,
+    14
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.042540616562630605,
+  "ms": 1323
+ },
+ {
+  "id": "pf-31-081",
+  "script": "const b = cuboid(38,20,37)\nround(b.edge('back','left'), 6.5)\nbevel(b.edge('top','back'), 10.799999999999999)",
+  "dim": {
+   "x": 38,
+   "y": 20,
+   "z": 37
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 6.5,
+  "b": 10.799999999999999,
+  "ratio": 1.66,
+  "V0": 28120,
+  "truck": {
+   "volume": 25653.0271113449,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 25653.122300489587,
+  "occtSeq": {
+   "volume": 24492.5261433116,
+   "faces": 10,
+   "bbox": [
+    -19.0000001,
+    -10.0000001,
+    -18.5000001,
+    19.000000100000005,
+    10.0000001,
+    18.50000010000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 27784.52367893106,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000037106260817188033,
+  "ms": 7949
+ },
+ {
+  "id": "pf-31-082",
+  "script": "const b = cuboid(40,21,31)\nround(b.edge('top','back'), 6.4)\nround(b.edge('back','right'), 6.4)",
+  "dim": {
+   "x": 40,
+   "y": 21,
+   "z": 31
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 6.4,
+  "b": 6.4,
+  "ratio": 1,
+  "V0": 26040,
+  "truck": {
+   "volume": 25440.82020485174,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 25441.035356737066,
+  "occtSeq": {
+   "volume": 25275.195636165925,
+   "faces": 10,
+   "bbox": [
+    -20,
+    -10.5,
+    -15.5,
+    20,
+    10.500000000000002,
+    15.500000000000002
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 25688.39635091038,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 25441.035357307137,
+   "faces": 8,
+   "bbox": [
+    -20,
+    -10.5,
+    -15.5,
+    20,
+    10.5,
+    15.500000000000002
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000008456884018571545,
+  "ms": 843
+ },
+ {
+  "id": "pf-31-083",
+  "script": "const b = cuboid(14,46,18)\nround(b.edge('bottom','front'), 5.3)\nround(b.edge('bottom','left'), 5.3)",
+  "dim": {
+   "x": 14,
+   "y": 46,
+   "z": 18
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 5.3,
+  "b": 5.3,
+  "ratio": 1,
+  "V0": 11592,
+  "truck": {
+   "volume": 11244.458163121622,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 11244.582952892802,
+  "occtSeq": {
+   "volume": 11146.72573180344,
+   "faces": 10,
+   "bbox": [
+    -7.000000000000001,
+    -23.000000000000004,
+    -9,
+    7,
+    23,
+    9
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 11507.605681737681,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 11244.582953202693,
+   "faces": 8,
+   "bbox": [
+    -7.000000000000001,
+    -23.000000000000004,
+    -9,
+    7,
+    23,
+    9
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.00001109776784989366,
+  "ms": 2012
+ },
+ {
+  "id": "pf-31-084",
+  "script": "const b = cuboid(31,20,21)\nround(b.edge('bottom','front'), 7.5)\nround(b.edge('front','left'), 5.3)",
+  "dim": {
+   "x": 31,
+   "y": 20,
+   "z": 21
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 7.5,
+  "b": 5.3,
+  "ratio": 0.71,
+  "V0": 13020,
+  "truck": {
+   "volume": 12429.065836127722,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 12542.799484532055,
+  "occtSeq": {
+   "volume": 12429.247989848214,
+   "faces": 10,
+   "bbox": [
+    -15.5,
+    -10.000000000000002,
+    -10.500000000000002,
+    15.5,
+    10,
+    10.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 12645.7880474243,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 12542.799484913594,
+   "faces": 8,
+   "bbox": [
+    -15.5000001,
+    -10.000000100000001,
+    -10.500000100000001,
+    15.5000001,
+    10,
+    10.5000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "CHAIN(=OCCT sequential)",
+  "dMitre": 0.009067644631056354,
+  "ms": 13810
+ },
+ {
+  "id": "pf-31-085",
+  "script": "const b = cuboid(41,37,47)\nbevel(b.edge('top','right'), 8.9)\nround(b.edge('front','right'), 13.4)",
+  "dim": {
+   "x": 41,
+   "y": 37,
+   "z": 47
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 8.9,
+  "b": 13.4,
+  "ratio": 1.51,
+  "V0": 71299,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 68251.42608898315,
+  "occtSeq": {
+   "volume": 68251.42528386618,
+   "faces": 8,
+   "bbox": [
+    -20.5,
+    -18.500000000000004,
+    -23.5,
+    20.500000000000007,
+    18.5,
+    23.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 69833.615,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 30
+ },
+ {
+  "id": "pf-31-086",
+  "script": "const b = cuboid(31,34,19)\nround(b.edge('bottom','front'), 2.1)\nround(b.edge('bottom','left'), 1.5)",
+  "dim": {
+   "x": 31,
+   "y": 34,
+   "z": 19
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 2.1,
+  "b": 1.5,
+  "ratio": 0.71,
+  "V0": 20026,
+  "truck": {
+   "volume": 19971.741987807425,
+   "faces": 9,
+   "curved": true
+  },
+  "mitre": 19980.771834149862,
+  "occtSeq": {
+   "volume": 19971.75984905616,
+   "faces": 10,
+   "bbox": [
+    -15.5,
+    -17,
+    -9.5,
+    15.5,
+    17,
+    9.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 19996.661782918065,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 19980.771834216237,
+   "faces": 8,
+   "bbox": [
+    -15.5000001,
+    -17.0000001,
+    -9.500000100001099,
+    15.5000001,
+    17.0000001,
+    9.5
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "CHAIN(=OCCT sequential)",
+  "dMitre": 0.000451926803298144,
+  "ms": 4270
+ },
+ {
+  "id": "pf-31-087",
+  "script": "const b = cuboid(41,29,22)\nbevel(b.edge('bottom','back'), 8.9)\nround(b.edge('back','right'), 8.9)",
+  "dim": {
+   "x": 41,
+   "y": 29,
+   "z": 22
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 8.9,
+  "b": 8.9,
+  "ratio": 1,
+  "V0": 26158,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: a fillet larger than the faces next to it"
+  },
+  "mitre": 24277.72038015356,
+  "occtSeq": {
+   "volume": 24277.720372370237,
+   "faces": 8,
+   "bbox": [
+    -20.5,
+    -14.5,
+    -11,
+    20.5,
+    14.500000000000004,
+    11
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 24534.195000000003,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 40
+ },
+ {
+  "id": "pf-31-088",
+  "script": "const b = cuboid(35,20,20)\nround(b.edge('top','back'), 4.8)\nround(b.edge('back','left'), 5.8)",
+  "dim": {
+   "x": 35,
+   "y": 20,
+   "z": 20
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 4.8,
+  "b": 5.8,
+  "ratio": 1.21,
+  "V0": 14000,
+  "truck": {
+   "volume": 13956.076523321877,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 13696.568308590433,
+  "occtSeq": {
+   "volume": 13565.133683352515,
+   "faces": 10,
+   "bbox": [
+    -17.500000100000005,
+    -10.0000001,
+    -10.0000001,
+    17.5000001,
+    10.00000010000001,
+    10.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 13826.945078963703,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 13696.568309005013,
+   "faces": 8,
+   "bbox": [
+    -17.5000001,
+    -10,
+    -10.0000001,
+    17.5000001,
+    10.0000001,
+    10.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.018946951446858533,
+  "ms": 1417
+ },
+ {
+  "id": "pf-31-089",
+  "script": "const b = cuboid(15,22,22)\nround(b.edge('bottom','back'), 3.2)\nround(b.edge('back','right'), 2.2)",
+  "dim": {
+   "x": 15,
+   "y": 22,
+   "z": 22
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 3.2,
+  "b": 2.2,
+  "ratio": 0.69,
+  "V0": 7260,
+  "truck": {
+   "volume": 7205.91510185943,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 7205.940548284354,
+  "occtSeq": {
+   "volume": 7183.563873842699,
+   "faces": 10,
+   "bbox": [
+    -7.5,
+    -11,
+    -11,
+    7.500000000000001,
+    11,
+    11
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 7227.037157897849,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 7205.940548481019,
+   "faces": 8,
+   "bbox": [
+    -7.5000001,
+    -11,
+    -11.0000001,
+    7.500000100000001,
+    11.00000010000738,
+    11.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000035313120824755666,
+  "ms": 7380
+ },
+ {
+  "id": "pf-31-090",
+  "script": "const b = cuboid(39,38,39)\nbevel(b.edge('top','back'), 14.6)\nbevel(b.edge('back','left'), 20.52)",
+  "dim": {
+   "x": 39,
+   "y": 38,
+   "z": 39
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 14.6,
+  "b": 20.52,
+  "ratio": 1.41,
+  "V0": 57798,
+  "truck": {
+   "volume": 47098.839466666665,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 47098.839466660174,
+  "occtSeq": {
+   "volume": 47098.83946666665,
+   "faces": 8,
+   "bbox": [
+    -19.5,
+    -19,
+    -19.5,
+    19.500000000000004,
+    19.000000000000004,
+    19.5
+   ]
+  },
+  "brepSeq": {
+   "volume": 47098.83946666668,
+   "faces": 8,
+   "bbox": [
+    -19.5,
+    -19,
+    -19.5,
+    19.5,
+    19,
+    19.500000000000004
+   ]
+  },
+  "occtSim": {
+   "volume": 47098.83946666665,
+   "faces": 8,
+   "bbox": [
+    -19.5,
+    -19,
+    -19.5,
+    19.500000000000004,
+    19.000000000000004,
+    19.5
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 1.3779860109813952e-13,
+  "ms": 163
+ },
+ {
+  "id": "pf-31-091",
+  "script": "const b = cuboid(46,16,20)\nround(b.edge('top','front'), 2.6)\nround(b.edge('front','right'), 4.7)",
+  "dim": {
+   "x": 46,
+   "y": 16,
+   "z": 20
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 2.6,
+  "b": 4.7,
+  "ratio": 1.81,
+  "V0": 14720,
+  "truck": {
+   "volume": 14716.22498992702,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 14562.35210553585,
+  "occtSeq": {
+   "volume": 14494.020892652647,
+   "faces": 10,
+   "bbox": [
+    -23.0000001,
+    -8.0000001,
+    -10.0000001,
+    23.0000001,
+    8.0000001,
+    10.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 14653.267412890069,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 14562.35210564794,
+   "faces": 8,
+   "bbox": [
+    -23.0000001,
+    -8.0000001,
+    -10.0000001,
+    23.0000001,
+    8,
+    10.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.01056648563886009,
+  "ms": 1986
+ },
+ {
+  "id": "pf-31-092",
+  "script": "const b = cuboid(18,45,47)\nround(b.edge('front','left'), 0.8)\nround(b.edge('top','left'), 1.6)",
+  "dim": {
+   "x": 18,
+   "y": 45,
+   "z": 47
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 0.8,
+  "b": 1.6,
+  "ratio": 2,
+  "V0": 38070,
+  "truck": {
+   "volume": 38038.93394906951,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 38038.95243624101,
+  "occtSeq": {
+   "volume": 38029.36937737481,
+   "faces": 10,
+   "bbox": [
+    -9.0000001,
+    -22.500000100000005,
+    -23.5000001,
+    9.0000001,
+    22.500000100000005,
+    23.5000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 38063.544776755,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 38038.952436285195,
+   "faces": 8,
+   "bbox": [
+    -9.0000001,
+    -22.5000001,
+    -23.5000001,
+    9,
+    22.5000001,
+    23.5000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 4.860063253975044e-7,
+  "ms": 2020
+ },
+ {
+  "id": "pf-31-093",
+  "script": "const b = cuboid(15,48,40)\nbevel(b.edge('bottom','back'), 0.4)\nbevel(b.edge('back','left'), 0.2)",
+  "dim": {
+   "x": 15,
+   "y": 48,
+   "z": 40
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 0.4,
+  "b": 0.2,
+  "ratio": 0.5,
+  "V0": 28800,
+  "truck": {
+   "volume": 28798.006666666668,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 28798.006666666668,
+  "occtSeq": {
+   "volume": 28798.006666666664,
+   "faces": 8,
+   "bbox": [
+    -7.500000000000002,
+    -24,
+    -20,
+    7.5,
+    24.000000000000004,
+    20
+   ]
+  },
+  "brepSeq": {
+   "volume": 28798.006666666664,
+   "faces": 8,
+   "bbox": [
+    -7.5,
+    -24,
+    -20,
+    7.5,
+    24,
+    20
+   ]
+  },
+  "occtSim": {
+   "volume": 28798.006666666664,
+   "faces": 8,
+   "bbox": [
+    -7.500000000000002,
+    -24,
+    -20,
+    7.5,
+    24.000000000000004,
+    20
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0,
+  "ms": 165
+ },
+ {
+  "id": "pf-31-094",
+  "script": "const b = cuboid(29,39,29)\nround(b.edge('bottom','back'), 6.5)\nround(b.edge('bottom','right'), 7.8)",
+  "dim": {
+   "x": 29,
+   "y": 39,
+   "z": 29
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 6.5,
+  "b": 7.8,
+  "ratio": 1.2,
+  "V0": 32799,
+  "truck": {
+   "volume": 32456.723502195,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 32061.297833117875,
+  "occtSeq": {
+   "volume": 31704.849411550855,
+   "faces": 10,
+   "bbox": [
+    -14.5000001,
+    -19.5000001,
+    -14.500000100000001,
+    14.500000100000003,
+    19.500000100000005,
+    14.5000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 32536.05909970272,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 32061.297833689165,
+   "faces": 8,
+   "bbox": [
+    -14.5000001,
+    -19.5000001,
+    -14.5000001,
+    14.5000001,
+    19.5000001,
+    14.5
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.012333426773156651,
+  "ms": 1247
+ },
+ {
+  "id": "pf-31-095",
+  "script": "const b = cuboid(27,40,15)\nbevel(b.edge('top','left'), 0.6)\nround(b.edge('back','left'), 1.2)",
+  "dim": {
+   "x": 27,
+   "y": 40,
+   "z": 15
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 0.6,
+  "b": 1.2,
+  "ratio": 2,
+  "V0": 16200,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 16188.271805209555,
+  "occtSeq": {
+   "volume": 16188.271803668791,
+   "faces": 8,
+   "bbox": [
+    -13.5,
+    -20,
+    -7.5,
+    13.5,
+    20,
+    7.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 16192.800000000001,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 36
+ },
+ {
+  "id": "pf-31-096",
+  "script": "const b = cuboid(35,48,47)\nbevel(b.edge('top','left'), 4.5)\nround(b.edge('back','left'), 6.8)",
+  "dim": {
+   "x": 35,
+   "y": 48,
+   "z": 47
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 4.5,
+  "b": 6.8,
+  "ratio": 1.51,
+  "V0": 78960,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 78037.36561507579,
+  "occtSeq": {
+   "volume": 78037.36542951468,
+   "faces": 8,
+   "bbox": [
+    -17.5,
+    -24,
+    -23.5,
+    17.5,
+    24.000000000000004,
+    23.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 78474,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 40
+ },
+ {
+  "id": "pf-31-097",
+  "script": "const b = cuboid(40,14,19)\nbevel(b.edge('back','left'), 2.2)\nround(b.edge('top','back'), 6.6)",
+  "dim": {
+   "x": 40,
+   "y": 14,
+   "z": 19
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 2.2,
+  "b": 6.6,
+  "ratio": 3,
+  "V0": 10640,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 10229.368996034267,
+  "occtSeq": {
+   "volume": 10229.368989975981,
+   "faces": 8,
+   "bbox": [
+    -20,
+    -7,
+    -9.5,
+    20,
+    7.000000000000001,
+    9.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 10594.020000000002,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 63
+ },
+ {
+  "id": "pf-31-098",
+  "script": "const b = cuboid(17,24,33)\nround(b.edge('top','left'), 2.3)\nround(b.edge('back','left'), 5.8)",
+  "dim": {
+   "x": 17,
+   "y": 24,
+   "z": 33
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 2.3,
+  "b": 5.8,
+  "ratio": 2.52,
+  "V0": 13464,
+  "truck": {
+   "volume": 13202.581756726295,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 13202.683115594717,
+  "occtSeq": {
+   "volume": 13093.53606863757,
+   "faces": 10,
+   "bbox": [
+    -8.500000100000001,
+    -12.0000001,
+    -16.5000001,
+    8.5000001,
+    12.000000100000003,
+    16.500000100000005
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 13436.754150824941,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 13202.68311571918,
+   "faces": 8,
+   "bbox": [
+    -8.5000001,
+    -12.0000001,
+    -16.5000001,
+    8.5,
+    12.0000001,
+    16.5000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000007677141648737235,
+  "ms": 633
+ },
+ {
+  "id": "pf-31-099",
+  "script": "const b = cuboid(36,23,17)\nround(b.edge('bottom','back'), 5.2)\nround(b.edge('bottom','left'), 9.18)",
+  "dim": {
+   "x": 36,
+   "y": 23,
+   "z": 17
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 5.2,
+  "b": 9.18,
+  "ratio": 1.77,
+  "V0": 14076,
+  "truck": {
+   "volume": 13955.439740460904,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 13481.33416619186,
+  "occtSeq": {
+   "volume": 13229.513392430623,
+   "faces": 10,
+   "bbox": [
+    -18.0000001,
+    -11.5000001,
+    -8.500000100000005,
+    18.0000001,
+    11.50000010000001,
+    8.5000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 13867.097988177613,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 13481.334166637342,
+   "faces": 8,
+   "bbox": [
+    -18.0000001,
+    -11.5000001,
+    -8.500000100000001,
+    18.0000001,
+    11.5000001,
+    8.5
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.03516755600183799,
+  "ms": 1354
+ },
+ {
+  "id": "pf-31-100",
+  "script": "const b = cuboid(27,17,20)\nround(b.edge('bottom','back'), 7)\nround(b.edge('bottom','right'), 9.18)",
+  "dim": {
+   "x": 27,
+   "y": 17,
+   "z": 20
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 7,
+  "b": 9.18,
+  "ratio": 1.31,
+  "V0": 9180,
+  "truck": {
+   "volume": 8792.723643296811,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 8637.484328435969,
+  "occtSeq": {
+   "volume": 8313.990406886875,
+   "faces": 10,
+   "bbox": [
+    -13.5000001,
+    -8.5000001,
+    -10.000000100000003,
+    13.500000100000006,
+    8.500000100000003,
+    10.0000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 8896.081770174824,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 8637.484329214507,
+   "faces": 8,
+   "bbox": [
+    -13.5000001,
+    -8.5000001,
+    -10.000000100000001,
+    13.500000100000001,
+    8.5000001,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.01797274634117368,
+  "ms": 796
+ },
+ {
+  "id": "pf-31-101",
+  "script": "const b = cuboid(42,48,17)\nbevel(b.edge('top','right'), 2.2)\nbevel(b.edge('top','back'), 3.3)",
+  "dim": {
+   "x": 42,
+   "y": 48,
+   "z": 17
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 2.2,
+  "b": 3.3,
+  "ratio": 1.5,
+  "V0": 34272,
+  "truck": {
+   "volume": 33933.361333333334,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 33933.361333333305,
+  "occtSeq": {
+   "volume": 33933.36133333333,
+   "faces": 8,
+   "bbox": [
+    -21,
+    -24,
+    -8.5,
+    21,
+    24.000000000000007,
+    8.500000000000004
+   ]
+  },
+  "brepSeq": {
+   "volume": 33933.36133333333,
+   "faces": 8,
+   "bbox": [
+    -21,
+    -24,
+    -8.5,
+    21,
+    24,
+    8.5
+   ]
+  },
+  "occtSim": {
+   "volume": 33933.361333333334,
+   "faces": 8,
+   "bbox": [
+    -21,
+    -24,
+    -8.5,
+    21,
+    24.000000000000007,
+    8.500000000000004
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 8.57676024807614e-16,
+  "ms": 119
+ },
+ {
+  "id": "pf-31-102",
+  "script": "const b = cuboid(28,20,24)\nbevel(b.edge('bottom','back'), 7.1)\nbevel(b.edge('bottom','right'), 10.799999999999999)",
+  "dim": {
+   "x": 28,
+   "y": 20,
+   "z": 24
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 7.1,
+  "b": 10.799999999999999,
+  "ratio": 1.52,
+  "V0": 13440,
+  "truck": {
+   "volume": 11780.422166666665,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 11780.422166665914,
+  "occtSeq": {
+   "volume": 11780.422166666665,
+   "faces": 8,
+   "bbox": [
+    -14,
+    -10,
+    -12.000000000000002,
+    14.000000000000004,
+    10.000000000000002,
+    12
+   ]
+  },
+  "brepSeq": {
+   "volume": 11780.422166666669,
+   "faces": 8,
+   "bbox": [
+    -14,
+    -10,
+    -12,
+    14,
+    10,
+    12
+   ]
+  },
+  "occtSim": {
+   "volume": 11780.422166666667,
+   "faces": 8,
+   "bbox": [
+    -14,
+    -10,
+    -12.000000000000004,
+    14.000000000000004,
+    10.000000000000002,
+    12
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 6.377043309960214e-14,
+  "ms": 117
+ },
+ {
+  "id": "pf-31-103",
+  "script": "const b = cuboid(41,29,15)\nbevel(b.edge('bottom','front'), 5.1)\nround(b.edge('front','left'), 8.1)",
+  "dim": {
+   "x": 41,
+   "y": 29,
+   "z": 15
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 5.1,
+  "b": 8.1,
+  "ratio": 1.59,
+  "V0": 17835,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 17137.350627111406,
+  "occtSeq": {
+   "volume": 17137.350434581884,
+   "faces": 8,
+   "bbox": [
+    -20.5,
+    -14.500000000000002,
+    -7.500000000000002,
+    20.500000000000004,
+    14.5,
+    7.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 17301.795000000002,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 32
+ },
+ {
+  "id": "pf-31-104",
+  "script": "const b = cuboid(37,42,41)\nbevel(b.edge('top','back'), 14.2)\nbevel(b.edge('back','left'), 19.98)",
+  "dim": {
+   "x": 37,
+   "y": 42,
+   "z": 41
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 14.2,
+  "b": 19.98,
+  "ratio": 1.41,
+  "V0": 63714,
+  "truck": {
+   "volume": 53337.22073333333,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 53337.22073332734,
+  "occtSeq": {
+   "volume": 53337.220733333335,
+   "faces": 8,
+   "bbox": [
+    -18.5,
+    -21,
+    -20.5,
+    18.500000000000004,
+    21.000000000000004,
+    20.500000000000004
+   ]
+  },
+  "brepSeq": {
+   "volume": 53337.22073333335,
+   "faces": 8,
+   "bbox": [
+    -18.5,
+    -21,
+    -20.5,
+    18.5,
+    21,
+    20.5
+   ]
+  },
+  "occtSim": {
+   "volume": 53337.220733333335,
+   "faces": 8,
+   "bbox": [
+    -18.5,
+    -21,
+    -20.5,
+    18.500000000000004,
+    21.000000000000004,
+    20.500000000000004
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 1.1226893779134117e-13,
+  "ms": 252
+ },
+ {
+  "id": "pf-31-105",
+  "script": "const b = cuboid(16,18,19)\nbevel(b.edge('top','right'), 5.5)\nround(b.edge('front','right'), 2.2)",
+  "dim": {
+   "x": 16,
+   "y": 18,
+   "z": 19
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 5.5,
+  "b": 2.2,
+  "ratio": 0.4,
+  "V0": 5472,
+  "truck": {
+   "volume": 5185.212013906082,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 5185.217502281273,
+  "occtSeq": {
+   "volume": 5185.217465128983,
+   "faces": 8,
+   "bbox": [
+    -8,
+    -9,
+    -9.5,
+    8.000000000000002,
+    9.000000000000002,
+    9.500000000000002
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 5199.750000000001,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000010584657612709094,
+  "ms": 220
+ },
+ {
+  "id": "pf-31-106",
+  "script": "const b = cuboid(38,28,45)\nbevel(b.edge('front','right'), 10.9)\nround(b.edge('bottom','front'), 15.12)",
+  "dim": {
+   "x": 38,
+   "y": 28,
+   "z": 45
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 10.9,
+  "b": 15.12,
+  "ratio": 1.39,
+  "V0": 47880,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 43712.40581103416,
+  "occtSeq": {
+   "volume": 43712.40580906848,
+   "faces": 8,
+   "bbox": [
+    -19,
+    -14.000000000000005,
+    -22.500000000000004,
+    19,
+    14,
+    22.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 45206.775,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 29
+ },
+ {
+  "id": "pf-31-107",
+  "script": "const b = cuboid(45,24,44)\nbevel(b.edge('top','right'), 0.8)\nbevel(b.edge('front','right'), 1.6)",
+  "dim": {
+   "x": 45,
+   "y": 24,
+   "z": 44
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 0.8,
+  "b": 1.6,
+  "ratio": 2,
+  "V0": 47520,
+  "truck": {
+   "volume": 47456.42666666666,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 47456.426666666666,
+  "occtSeq": {
+   "volume": 47456.426666666666,
+   "faces": 8,
+   "bbox": [
+    -22.5,
+    -12.000000000000002,
+    -22,
+    22.5,
+    12,
+    22
+   ]
+  },
+  "brepSeq": {
+   "volume": 47456.42666666666,
+   "faces": 8,
+   "bbox": [
+    -22.5,
+    -12,
+    -22.000000000000004,
+    22.5,
+    12,
+    22
+   ]
+  },
+  "occtSim": {
+   "volume": 47456.426666666666,
+   "faces": 8,
+   "bbox": [
+    -22.5,
+    -12.000000000000002,
+    -22,
+    22.5,
+    12,
+    22
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 1.533186993890134e-16,
+  "ms": 142
+ },
+ {
+  "id": "pf-31-108",
+  "script": "const b = cuboid(29,25,23)\nround(b.edge('bottom','back'), 2.8)\nround(b.edge('back','right'), 4.2)",
+  "dim": {
+   "x": 29,
+   "y": 25,
+   "z": 23
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 2.8,
+  "b": 4.2,
+  "ratio": 1.5,
+  "V0": 16675,
+  "truck": {
+   "volume": 16542.8535234824,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 16542.914185663456,
+  "occtSeq": {
+   "volume": 16453.383264349693,
+   "faces": 10,
+   "bbox": [
+    -14.5000001,
+    -12.5000001,
+    -11.5000001,
+    14.500000100000003,
+    12.5000001,
+    11.500000100000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 16626.208126430047,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 16542.914186549722,
+   "faces": 8,
+   "bbox": [
+    -14.5000001,
+    -12.5,
+    -11.5000001,
+    14.5000001,
+    12.500000104884156,
+    11.5000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.0000036669585765829843,
+  "ms": 1508
+ },
+ {
+  "id": "pf-31-109",
+  "script": "const b = cuboid(29,34,27)\nround(b.edge('bottom','left'), 4.2)\nbevel(b.edge('back','left'), 1.7)",
+  "dim": {
+   "x": 29,
+   "y": 34,
+   "z": 27
+  },
+  "kinds": [
+   "fillet",
+   "chamfer"
+  ],
+  "a": 4.2,
+  "b": 1.7,
+  "ratio": 0.4,
+  "V0": 26622,
+  "truck": {
+   "volume": 26416.21587505163,
+   "faces": 10,
+   "curved": true
+  },
+  "mitre": 26457.562237031838,
+  "occtSeq": {
+   "volume": 26416.261459988542,
+   "faces": 10,
+   "bbox": [
+    -14.5,
+    -17,
+    -13.5,
+    14.5,
+    17,
+    13.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+   "shapeWithout": {
+    "volume": 26493.290402479255,
+    "faces": 7
+   }
+  },
+  "class": "CHAIN(=OCCT sequential)",
+  "dMitre": 0.0015627426899647765,
+  "ms": 3830
+ },
+ {
+  "id": "pf-31-110",
+  "script": "const b = cuboid(24,30,44)\nbevel(b.edge('top','back'), 7.6)\nbevel(b.edge('top','right'), 5.3)",
+  "dim": {
+   "x": 24,
+   "y": 30,
+   "z": 44
+  },
+  "kinds": [
+   "chamfer",
+   "chamfer"
+  ],
+  "a": 7.6,
+  "b": 5.3,
+  "ratio": 0.7,
+  "V0": 31680,
+  "truck": {
+   "volume": 30647.45916666667,
+   "faces": 8,
+   "curved": false
+  },
+  "mitre": 30647.45916666636,
+  "occtSeq": {
+   "volume": 30647.459166666664,
+   "faces": 8,
+   "bbox": [
+    -12,
+    -15,
+    -22,
+    12,
+    15,
+    22
+   ]
+  },
+  "brepSeq": {
+   "volume": 30647.459166666664,
+   "faces": 8,
+   "bbox": [
+    -12,
+    -15,
+    -22,
+    12,
+    15,
+    22
+   ]
+  },
+  "occtSim": {
+   "volume": 30647.459166666667,
+   "faces": 8,
+   "bbox": [
+    -12,
+    -15,
+    -22,
+    12,
+    15,
+    22
+   ],
+   "types": {
+    "plane": 8
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 1.0208551896862483e-14,
+  "ms": 113
+ },
+ {
+  "id": "pf-31-111",
+  "script": "const b = cuboid(39,30,31)\nround(b.edge('bottom','front'), 2.7)\nround(b.edge('front','left'), 6.8)",
+  "dim": {
+   "x": 39,
+   "y": 30,
+   "z": 31
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 2.7,
+  "b": 6.8,
+  "ratio": 2.52,
+  "V0": 36270,
+  "truck": {
+   "volume": 35907.94437709499,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 35908.0910019538,
+  "occtSeq": {
+   "volume": 35632.268893273926,
+   "faces": 10,
+   "bbox": [
+    -19.500000100000005,
+    -15.0000001,
+    -15.5000001,
+    19.5000001,
+    15.0000001,
+    15.5000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 36208.98655183553,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 35908.09100217539,
+   "faces": 8,
+   "bbox": [
+    -19.5000001,
+    -15.0000001,
+    -15.5000001,
+    19.5000001,
+    15,
+    15.5000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000004083337618902849,
+  "ms": 584
+ },
+ {
+  "id": "pf-31-112",
+  "script": "const b = cuboid(42,34,42)\nround(b.edge('top','right'), 6.8)\nround(b.edge('back','right'), 17)",
+  "dim": {
+   "x": 42,
+   "y": 34,
+   "z": 42
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 6.8,
+  "b": 17,
+  "ratio": 2.5,
+  "V0": 59976,
+  "truck": {
+   "volume": 57139.0946354587,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 57140.17410727636,
+  "occtSeq": {
+   "volume": 54921.62414874438,
+   "faces": 10,
+   "bbox": [
+    -21.0000001,
+    -17.0000001,
+    -21.0000001,
+    21.00000010000001,
+    17.00000010000002,
+    21.000000100000015
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 59638.61157656694,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 57140.17410912519,
+   "faces": 8,
+   "bbox": [
+    -21,
+    -17.0000001,
+    -21.0000001,
+    21.000000100000005,
+    17.000000100000005,
+    21.0000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000018891643830757282,
+  "ms": 602
+ },
+ {
+  "id": "pf-31-113",
+  "script": "const b = cuboid(21,20,17)\nround(b.edge('bottom','back'), 2.4)\nround(b.edge('back','left'), 7.2)",
+  "dim": {
+   "x": 21,
+   "y": 20,
+   "z": 17
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 2.4,
+  "b": 7.2,
+  "ratio": 3,
+  "V0": 7140,
+  "truck": {
+   "volume": 6930.719552668385,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 6930.8005218141625,
+  "occtSeq": {
+   "volume": 6738.807025019406,
+   "faces": 10,
+   "bbox": [
+    -10.500000100000001,
+    -10.0000001,
+    -8.500000100000003,
+    10.5000001,
+    10.000000100000006,
+    8.5000001
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 7114.041761844556,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 6930.8005219307925,
+   "faces": 8,
+   "bbox": [
+    -10.5000001,
+    -10,
+    -8.5000001,
+    10.5000001,
+    10.0000001,
+    8.5000001
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000011682509909532876,
+  "ms": 654
+ },
+ {
+  "id": "pf-31-114",
+  "script": "const b = cuboid(27,35,38)\nround(b.edge('bottom','right'), 6.8)\nround(b.edge('bottom','front'), 6.8)",
+  "dim": {
+   "x": 27,
+   "y": 35,
+   "z": 38
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 6.8,
+  "b": 6.8,
+  "ratio": 1,
+  "V0": 35910,
+  "truck": {
+   "volume": 35324.69810353063,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 35324.90698878267,
+  "occtSeq": {
+   "volume": 34970.318371925234,
+   "faces": 10,
+   "bbox": [
+    -13.5,
+    -17.5,
+    -19,
+    13.500000000000004,
+    17.5,
+    19
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 35562.68838764243,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 35324.906989460454,
+   "faces": 8,
+   "bbox": [
+    -13.5,
+    -17.5,
+    -19,
+    13.5,
+    17.5,
+    19
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 0.000005913256957916747,
+  "ms": 1701
+ },
+ {
+  "id": "pf-31-115",
+  "script": "const b = cuboid(46,26,27)\nround(b.edge('back','right'), 10.9)\nround(b.edge('top','back'), 14.040000000000001)",
+  "dim": {
+   "x": 46,
+   "y": 26,
+   "z": 27
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 10.9,
+  "b": 14.040000000000001,
+  "ratio": 1.29,
+  "V0": 32292,
+  "truck": {
+   "volume": 30399.143223169638,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 29837.43629983463,
+  "occtSeq": {
+   "volume": 28922.410713266516,
+   "faces": 10,
+   "bbox": [
+    -23.0000001,
+    -13.0000001,
+    -13.5000001,
+    23.000000100000005,
+    13.000000100000003,
+    13.500000100000003
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 31603.585206417778,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 29837.436303501112,
+   "faces": 8,
+   "bbox": [
+    -23.0000001,
+    -13,
+    -13.5000001,
+    23.0000001,
+    13.000000100003348,
+    13.500000100000003
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "NEITHER",
+  "dMitre": 0.018825575953994467,
+  "ms": 1041
+ },
+ {
+  "id": "pf-31-116",
+  "script": "const b = cuboid(17,30,34)\nround(b.edge('front','right'), 0.5)\nround(b.edge('top','right'), 0.5)",
+  "dim": {
+   "x": 17,
+   "y": 30,
+   "z": 34
+  },
+  "kinds": [
+   "fillet",
+   "fillet"
+  ],
+  "a": 0.5,
+  "b": 0.5,
+  "ratio": 1,
+  "V0": 17340,
+  "truck": {
+   "volume": 17336.57332982146,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 17336.578354406603,
+  "occtSeq": {
+   "volume": 17335.675238353677,
+   "faces": 10,
+   "bbox": [
+    -8.5,
+    -15,
+    -17,
+    8.5,
+    15,
+    17
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "shapeWithout": {
+    "volume": 17338.17588438888,
+    "faces": 7
+   }
+  },
+  "occtSim": {
+   "volume": 17336.5783544132,
+   "faces": 8,
+   "bbox": [
+    -8.5,
+    -15,
+    -17,
+    8.5,
+    15,
+    17
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "edgeDist": 0,
+   "distinctEdges": 2
+  },
+  "class": "MITRE",
+  "dMitre": 2.898256529598113e-7,
+  "ms": 869
+ },
+ {
+  "id": "pf-31-117",
+  "script": "const b = cuboid(44,19,41)\nbevel(b.edge('top','back'), 1.2)\nround(b.edge('top','left'), 1.4)",
+  "dim": {
+   "x": 44,
+   "y": 19,
+   "z": 41
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 1.2,
+  "b": 1.4,
+  "ratio": 1.17,
+  "V0": 34276,
+  "truck": {
+   "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "mitre": 34236.701484733276,
+  "occtSeq": {
+   "volume": 34236.70146612108,
+   "faces": 8,
+   "bbox": [
+    -22,
+    -9.5,
+    -20.5,
+    22,
+    9.500000000000009,
+    20.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 34244.32,
+    "faces": 7
+   }
+  },
+  "class": "REFUSED",
+  "ms": 44
+ },
+ {
+  "id": "pf-31-118",
+  "script": "const b = cuboid(46,37,45)\nbevel(b.edge('top','front'), 5.3)\nround(b.edge('front','left'), 2.1)",
+  "dim": {
+   "x": 46,
+   "y": 37,
+   "z": 45
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 5.3,
+  "b": 2.1,
+  "ratio": 0.4,
+  "V0": 76590,
+  "truck": {
+   "volume": 75905.90006739741,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 75905.91422662184,
+  "occtSeq": {
+   "volume": 75905.91415502918,
+   "faces": 8,
+   "bbox": [
+    -23,
+    -18.5,
+    -22.5,
+    23,
+    18.5,
+    22.5
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 75943.93000000001,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 1.86536511376268e-7,
+  "ms": 144
+ },
+ {
+  "id": "pf-31-119",
+  "script": "const b = cuboid(25,37,48)\nbevel(b.edge('top','back'), 4.5)\nround(b.edge('back','right'), 1.8)",
+  "dim": {
+   "x": 25,
+   "y": 37,
+   "z": 48
+  },
+  "kinds": [
+   "chamfer",
+   "fillet"
+  ],
+  "a": 4.5,
+  "b": 1.8,
+  "ratio": 0.4,
+  "V0": 44400,
+  "truck": {
+   "volume": 44116.33810696643,
+   "faces": 8,
+   "curved": true
+  },
+  "mitre": 44116.34945922413,
+  "occtSeq": {
+   "volume": 44116.34941716244,
+   "faces": 8,
+   "bbox": [
+    -12.5,
+    -18.5,
+    -24,
+    12.5,
+    18.5,
+    24
+   ]
+  },
+  "brepSeq": {
+   "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "shapeWithout": {
+    "volume": 44146.875,
+    "faces": 7
+   }
+  },
+  "class": "MITRE",
+  "dMitre": 2.5732540974886703e-7,
+  "ms": 159
+ }
+]

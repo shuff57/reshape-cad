@@ -1,0 +1,343 @@
+{
+ "n": 24,
+ "different": 0,
+ "worstRelativeVolumeDifference": 1.3699828041104347e-16,
+ "rows": [
+  {
+   "id": "40x30x10 fillet1",
+   "rig": {
+    "volume": 11965.641188238826,
+    "faces": 7,
+    "refused": null
+   },
+   "pane": {
+    "volume": 11965.641188238826,
+    "faces": 7,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "40x30x10 chamfer1",
+   "rig": {
+    "volume": 11920.000000000002,
+    "faces": 7,
+    "refused": null
+   },
+   "pane": {
+    "volume": 11920.000000000002,
+    "faces": 7,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "40x30x10 fillet 2 then 2 touching",
+   "rig": {
+    "volume": 11940.656764545996,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 11940.656764545996,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "40x30x10 chamfer 3 then 5 touching",
+   "rig": {
+    "volume": 11463,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 11463,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "40x30x10 fillet 3 then 5 touching",
+   "rig": {
+    "volume": 11935.373983180318,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 11935.373983180318,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "40x30x10 one call two edges",
+   "rig": {
+    "volume": 11940.656678449564,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 11940.656678449564,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "37x23x32 fillet1",
+   "rig": {
+    "volume": 27200.21809403266,
+    "faces": 7,
+    "refused": null
+   },
+   "pane": {
+    "volume": 27200.21809403266,
+    "faces": 7,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "37x23x32 chamfer1",
+   "rig": {
+    "volume": 27158,
+    "faces": 7,
+    "refused": null
+   },
+   "pane": {
+    "volume": 27158,
+    "faces": 7,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "37x23x32 fillet 2 then 2 touching",
+   "rig": {
+    "volume": 27181.243998797785,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 27181.243998797785,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "37x23x32 chamfer 3 then 5 touching",
+   "rig": {
+    "volume": 26796,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 26796,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "37x23x32 fillet 3 then 5 touching",
+   "rig": {
+    "volume": 27190.40771819072,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 27190.40771819072,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "37x23x32 one call two edges",
+   "rig": {
+    "volume": 27181.24392693365,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 27181.24392693365,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "48x14x20 fillet1",
+   "rig": {
+    "volume": 13398.769422886146,
+    "faces": 7,
+    "refused": null
+   },
+   "pane": {
+    "volume": 13398.769422886146,
+    "faces": 7,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "48x14x20 chamfer1",
+   "rig": {
+    "volume": 13344,
+    "faces": 7,
+    "refused": null
+   },
+   "pane": {
+    "volume": 13344,
+    "faces": 7,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "48x14x20 fillet 2 then 2 touching",
+   "rig": {
+    "volume": 13387.52654860345,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 13387.52654860345,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "48x14x20 chamfer 3 then 5 touching",
+   "rig": {
+    "volume": 13067,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 13067,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "48x14x20 fillet 3 then 5 touching",
+   "rig": {
+    "volume": 13277.461571694495,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 13277.461571694497,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "48x14x20 one call two edges",
+   "rig": {
+    "volume": 13387.526477426369,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 13387.526477426369,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "22x22x22 fillet1",
+   "rig": {
+    "volume": 10629.10265188111,
+    "faces": 7,
+    "refused": null
+   },
+   "pane": {
+    "volume": 10629.10265188111,
+    "faces": 7,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "22x22x22 chamfer1",
+   "rig": {
+    "volume": 10604,
+    "faces": 7,
+    "refused": null
+   },
+   "pane": {
+    "volume": 10604,
+    "faces": 7,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "22x22x22 fillet 2 then 2 touching",
+   "rig": {
+    "volume": 10610.983576033643,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 10610.983576033643,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "22x22x22 chamfer 3 then 5 touching",
+   "rig": {
+    "volume": 10292,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 10292,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "22x22x22 fillet 3 then 5 touching",
+   "rig": {
+    "volume": 10585.583995871306,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 10585.583995871306,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  },
+  {
+   "id": "22x22x22 one call two edges",
+   "rig": {
+    "volume": 10610.983524391138,
+    "faces": 8,
+    "refused": null
+   },
+   "pane": {
+    "volume": 10610.983524391138,
+    "faces": 8,
+    "refused": null
+   },
+   "same": true
+  }
+ ]
+}

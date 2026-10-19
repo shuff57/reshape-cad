@@ -1,0 +1,89 @@
+ds-pocket-piece1                   PASS               vol 920.000000 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 2
+ds-pocket-piece2                   WRONG-SILENT       vol 1000.000000 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 2
+ds-pocket-island                   WRONG-SILENT       vol 5497.768656 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 2
+ds-hole-piece1                     WRONG-SILENT       vol 1000.000000 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 2
+ds-hole-piece2                     WRONG-SILENT       vol 1000.000000 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 2
+ds-hole-between                    WRONG-SILENT       vol 874.357167 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 2
+ds-hole-island                     WRONG-SILENT       vol 5497.768656 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 2
+ds-groove-island                   WRONG-SILENT       vol 5497.768656 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 2
+ds-groove-two-rects                NO-EXPECT          vol 979.058662 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 2
+ds-repeat-two-rects                WRONG-SILENT       vol 2000.000000 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 2
+ds-repeat-ring                     WRONG-SILENT       vol 6282.968143 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 2
+ds-mirror-two-rects                WRONG-SILENT       vol 2000.000000 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 2
+ds-hollow-open-top                 TRUCK-REFUSED        | occt undefined brep undefined
+ds-hollow-closed                   TRUCK-REFUSED        | occt undefined brep undefined
+ds-round-edge                      TRUCK-REFUSED        | occt undefined brep undefined
+ds-draft-face                      TRUCK-REFUSED        | occt undefined brep undefined
+ds-control-single-pocket           PASS               vol 920.000000 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 1
+ds-control-single-hole             PASS               vol 874.357167 occt undefined brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies 1
+circle-neg-3                       PASS               vol 70.674092 occt 70.685835 brep 70.685835 exact 70.68583470577035 dOcct 1.7e-4 dBbox 5.3e-16 dCom 3.0e-9 dExact 1.7e-4 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-neg-4                       PASS               vol 125.644501 occt 125.663706 brep 125.663706 exact 125.66370614359172 dOcct 1.5e-4 dBbox 3.6e-16 dCom 7.9e-14 dExact 1.5e-4 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-zero-first                  ALL-REFUSED        pull1 (extrude): solidcraft refused it -- sketch.circle.center: invalid parameters for `sketch.circle.center`: radius must be positive  | occt OCCT threw: undefined brep extrude pull1: this circle has no size (its diameter is 0), so there is nothing to pull.
+circle-neg-second                  SCRIPT-REFUSED      line 1: .circle() needs an across above 0. You gave -4. | occt undefined brep undefined
+circle-zero-second                 SCRIPT-REFUSED      line 1: .circle() needs an across above 0. You gave 0. | occt undefined brep undefined
+geom-square-norules                PASS               vol 3000.000000 occt undefined brep undefined exact 3000 dOcct - dBbox - dCom - dExact 0.0e+0 dBbxEx - faces o/b/t undefined/undefined/6  bodies 1
+geom-square-withrules              PASS               vol 3000.000000 occt 3000.000000 brep 3000.000000 exact 3000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 3.3e-17 dExact 0.0e+0 dBbxEx - faces o/b/t 6/6/6  bodies 1
+geom-no-rules-gap-1e-9             PASS               vol 2000.000000 occt undefined brep undefined exact 1999.99999995 dOcct - dBbox - dCom - dExact 2.5e-11 dBbxEx - faces o/b/t undefined/undefined/6  bodies 1
+geom-no-rules-gap-1e-7             FAIL               vol 1999.999990 occt undefined brep undefined exact 1999.999995 dOcct - dBbox - dCom - dExact 2.5e-9 dBbxEx - faces o/b/t undefined/undefined/6  bodies 1
+geom-no-rules-gap-0.000001         FAIL               vol 1999.999900 occt undefined brep undefined exact 1999.99995 dOcct - dBbox - dCom - dExact 2.5e-8 dBbxEx - faces o/b/t undefined/undefined/6  bodies 1
+geom-no-rules-gap-0.00001          ALL-REFUSED        pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt sk1: Sketch 1: edge 1 has a loose end at (20.0, 0.0) mm; nothing says it meets another edge, so the outline does not close brep extrude pull1: edge 1 has a loose end; the outline must close
+geom-no-rules-gap-0.0001           ALL-REFUSED        pull1 (extrude): solidcraft refused it -- solid.extrude: sk_sk1_0 has no closed profiles  | occt sk1: Sketch 1: edge 1 has a loose end at (20.0, 0.0) mm; nothing says it meets another edge, so the outline does not close brep extrude pull1: edge 1 has a loose end; the outline must close
+geom-no-rules-gap-0.001            ALL-REFUSED        pull1 (extrude): solidcraft refused it -- solid.extrude: sk_sk1_0 has no closed profiles  | occt sk1: Sketch 1: edge 1 has a loose end at (20.0, 0.0) mm; nothing says it meets another edge, so the outline does not close brep extrude pull1: edge 1 has a loose end; the outline must close
+geom-no-rules-gap-0.01             ALL-REFUSED        pull1 (extrude): solidcraft refused it -- solid.extrude: sk_sk1_0 has no closed profiles  | occt sk1: Sketch 1: edge 1 has a loose end at (20.0, 0.0) mm; nothing says it meets another edge, so the outline does not close brep extrude pull1: edge 1 has a loose end; the outline must close
+fr-lines-coords-square             PASS               vol 3000.000000 occt undefined brep undefined exact 3000 dOcct - dBbox - dCom - dExact 0.0e+0 dBbxEx - faces o/b/t undefined/undefined/6  bodies 1
+fr-lines-handles-square            PASS               vol 3000.000000 occt 3000.000000 brep 3000.000000 exact 3000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 3.3e-17 dExact 0.0e+0 dBbxEx - faces o/b/t 6/6/6  bodies 1
+fr-remove-rectangle                SCRIPT-REFUSED      line 4: sk.remove() needs its argument to be a line or a circle or an arc or a point drawn on this sketch (for example the result of sk.line(...)), but got a { } object. | occt undefined brep undefined
+fr-remove-point                    PASS               vol 1500.000000 occt 1500.000000 brep 1500.000000 exact 1500 dOcct 1.5e-16 dBbox 0.0e+0 dCom 3.3e-17 dExact 0.0e+0 dBbxEx - faces o/b/t 5/5/5  bodies 1
+bulge-cross-tri-neg4               BUILT              vol 954.589721 occt 949.970684 brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies undefined
+bulge-cross-rect-neg5              BUILT              vol 203.629314 occt 192.699082 brep undefined exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies undefined
+bulge-ok-tri-neg1                  BUILT              vol 1366.531892 occt 1366.400380 brep 1366.400380 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies undefined
+bulge-ok-rect-neg0.5               BUILT              vol 166.632973 occt 166.600095 brep 166.600095 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies undefined
+bulge-cross-rect-pos5              BUILT              vol 592.654770 occt 592.699082 brep 592.699082 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/undefined/undefined  bodies undefined
+round-crosses-spike                FAIL               vol 905.193075 occt 903.849541 brep undefined exact - dOcct 1.5e-3 dBbox 5.3e-16 dCom 4.2e-4 dExact - dBbxEx - faces o/b/t 10/undefined/18 FACEDIFF {"cylinder":"UNEXPLAINED","plane":"UNEXPLAINED"} bodies 3
+round-ok-spike                     PASS               vol 955.352574 occt 955.353982 brep 955.353982 exact - dOcct 1.5e-6 dBbox 5.3e-16 dCom 4.1e-7 dExact - dBbxEx - faces o/b/t 10/10/10  bodies 1
+chamfer-crosses-spike              FAIL               vol 792.611111 occt 777.500000 brep undefined exact - dOcct 1.9e-2 dBbox 1.8e-16 dCom 5.6e-3 dExact - dBbxEx - faces o/b/t 10/undefined/18 FACEDIFF {"plane":"UNEXPLAINED"} bodies 3
+round-pair-r4.9                    PASS               vol 2896.880621 occt 2896.948198 brep 2896.948198 exact 2896.9481980634546 dOcct 2.3e-5 dBbox 5.3e-16 dCom 9.5e-6 dExact 2.3e-5 dBbxEx - faces o/b/t 8/8/8  bodies 1
+round-pair-r4.99                   PASS               vol 2893.057774 occt 2893.127856 brep 2893.127856 exact 2893.1278561682557 dOcct 2.4e-5 dBbox 8.9e-16 dCom 9.9e-6 dExact 2.4e-5 dBbxEx - faces o/b/t 8/8/8  bodies 1
+round-pair-r4.999                  PASS               vol 2892.671662 occt 2892.741998 brep 2892.741998 exact 2892.741997774008 dOcct 2.4e-5 dBbox 5.3e-16 dCom 9.9e-6 dExact 2.4e-5 dBbxEx - faces o/b/t 8/8/8  bodies 1
+round-pair-r4.9999                 PASS               vol 2892.633013 occt 2892.703374 brep 2892.703374 exact 2892.703373692536 dOcct 2.4e-5 dBbox 8.9e-16 dCom 9.9e-6 dExact 2.4e-5 dBbxEx - faces o/b/t 8/8/8  bodies 1
+round-pair-r4.99999                PASS               vol 2892.629147 occt 2892.699511 brep 2892.699511 exact 2892.699510901968 dOcct 2.4e-5 dBbox 5.3e-16 dCom 9.9e-6 dExact 2.4e-5 dBbxEx - faces o/b/t 8/8/8  bodies 1
+round-pair-r4.999999               TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 2892.699124627879 brep 2892.6991246190864
+round-single-r0.1                  PASS               vol 11999.976527 occt 11999.978540 brep 11999.978540 exact 11999.97853981634 dOcct 1.7e-7 dBbox 3.6e-16 dCom 6.6e-8 dExact 1.7e-7 dBbxEx - faces o/b/t 7/7/7  bodies 1
+round-single-r0.01                 PASS               vol 11999.999569 occt 11999.999785 brep 11999.999785 exact 11999.999785398162 dOcct 1.8e-8 dBbox 1.8e-16 dCom 7.1e-9 dExact 1.8e-8 dBbxEx - faces o/b/t 7/7/7  bodies 1
+round-single-r0.001                PASS               vol 11999.999995 occt 11999.999998 brep 11999.999998 exact 11999.999997853982 dOcct 2.4e-10 dBbox 2.2e-19 dCom 9.3e-11 dExact 2.4e-10 dBbxEx - faces o/b/t 7/7/7  bodies 1
+round-single-r0.0001               PASS               vol 12000.000000 occt 12000.000000 brep 12000.000000 exact 11999.99999997854 dOcct 2.4e-12 dBbox 0.0e+0 dCom 9.3e-13 dExact 2.4e-12 dBbxEx - faces o/b/t 7/7/7  bodies 1
+round-single-r0.00001              PASS               vol 11999.999333 occt 12000.000000 brep 12000.000000 exact 11999.999999999785 dOcct 5.6e-8 dBbox 0.0e+0 dCom 1.6e-8 dExact 5.6e-8 dBbxEx - faces o/b/t 7/7/7  bodies 1
+round-single-r0.000001             TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- sketch.arc.three_point: invalid parameters for `sketch.arc.three_point`: the points are collinear  | occt 11999.999999999998 brep 11999.999999999998
+chamfer-near-ceiling-d29           PASS               vol 7795.000000 occt 7795.000000 brep 7795.000000 exact 7795 dOcct 0.0e+0 dBbox 0.0e+0 dCom 1.4e-16 dExact 0.0e+0 dBbxEx - faces o/b/t 7/7/7  bodies 1
+chamfer-near-ceiling-d29.9         PASS               vol 7529.950000 occt 7529.950000 brep 7529.950000 exact 7529.950000000001 dOcct 0.0e+0 dBbox 0.0e+0 dCom 7.0e-17 dExact 0.0e+0 dBbxEx - faces o/b/t 7/7/7  bodies 1
+chamfer-near-ceiling-d29.99        PASS               vol 7502.999500 occt 7502.999500 brep 7502.999500 exact 7502.999500000001 dOcct 2.4e-16 dBbox 1.8e-16 dCom 7.0e-17 dExact 2.4e-16 dBbxEx - faces o/b/t 7/7/7  bodies 1
+chamfer-near-ceiling-d29.9999      PASS               vol 7500.030000 occt 7500.030000 brep 7500.030000 exact 7500.02999995 dOcct 2.4e-16 dBbox 0.0e+0 dCom 1.4e-16 dExact 1.2e-16 dBbxEx - faces o/b/t 7/7/7  bodies 1
+chamfer-near-ceiling-d29.999999    TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 7500.000299999994 brep 7500.000299999995
+chamfer-single-d0.001              PASS               vol 11999.999995 occt 11999.999995 brep 11999.999995 exact 11999.999995 dOcct 1.5e-16 dBbox 0.0e+0 dCom 7.0e-17 dExact 0.0e+0 dBbxEx - faces o/b/t 7/7/7  bodies 1
+chamfer-single-d0.00001            FAIL               vol 11999.999333 occt 12000.000000 brep 12000.000000 exact 11999.9999999995 dOcct 5.6e-8 dBbox 0.0e+0 dCom 1.6e-8 dExact 5.6e-8 dBbxEx - faces o/b/t 7/7/7  bodies 1
+chamfer-single-d0.000001           TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 11999.999999999993 brep 11999.999999999995
+slot-micro-r0.5                    PASS               vol 107.852677 occt undefined brep 107.853982 exact 107.85398163397448 dOcct - dBbox - dCom - dExact 1.2e-5 dBbxEx - faces o/b/t undefined/6/6  bodies 1
+slot-micro-r0.1                    PASS               vol 20.313981 occt undefined brep 20.314159 exact 20.314159265358978 dOcct - dBbox - dCom - dExact 8.8e-6 dBbxEx - faces o/b/t undefined/6/6  bodies 1
+slot-micro-r0.01                   PASS               vol 2.002988 occt undefined brep 2.003142 exact 2.00314159265359 dOcct - dBbox - dCom - dExact 7.7e-5 dBbxEx - faces o/b/t undefined/6/6  bodies 1
+slot-micro-r0.005                  PASS               vol 1.000700 occt undefined brep undefined exact 1.0007853981633976 dOcct - dBbox - dCom - dExact 8.5e-5 dBbxEx - faces o/b/t undefined/undefined/6  bodies 1
+slot-micro-r0.002                  FAIL               vol -0.133360 occt undefined brep undefined exact 0.40012566370614355 dOcct - dBbox - dCom - dExact 5.3e-1 dBbxEx - faces o/b/t undefined/undefined/6  bodies 1
+slot-micro-r0.001                  FAIL               vol -0.066673 occt undefined brep undefined exact 0.20003141592653592 dOcct - dBbox - dCom - dExact 2.7e-1 dBbxEx - faces o/b/t undefined/undefined/6  bodies 1
+circle-across-0.001                FAIL               vol -0.000003 occt 0.000008 brep 0.000008 exact 0.000007853981633974484 dOcct 1.1e-5 dBbox 3.3e-19 dCom 2.5e-1 dExact 1.1e-5 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.0005               TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile: cannot attach a plane to a wire that is not on one plane.  | occt 0.0000019634954084936214 brep 0.0000019634954084936218
+frame-shear-1e-7                   FAIL               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 6.7e-8 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 6.7e-8 faces o/b/t 6/6/6  bodies 1
+frame-shear-5e-7                   FAIL               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 3.3e-7 dCom 3.1e-18 dExact 0.0e+0 dBbxEx 3.3e-7 faces o/b/t 6/6/6  bodies 1
+frame-shear-9e-7                   FAIL               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 6.0e-7 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 6.0e-7 faces o/b/t 6/6/6  bodies 1
+frame-u-length-9e-7                FAIL               vol 6000.000000 occt 6000.005400 brep 6000.000000 exact 6000.005400000001 dOcct 9.0e-7 dBbox 9.0e-7 dCom 4.1e-18 dExact 9.0e-7 dBbxEx 9.0e-7 faces o/b/t 6/6/6  bodies 1
+host-warn-round-over               INFO                 | occt undefined brep undefined
+host-warn-chamfer-over             INFO                 | occt undefined brep undefined
+host-warn-round-zero               INFO                 | occt undefined brep undefined
+host-warn-round-neg                INFO                 | occt undefined brep undefined
+host-warn-round-circle             INFO                 | occt undefined brep undefined
+round-over-10x20                   PASS               vol 1946.329699 occt 1946.349541 brep 1946.349541 exact 1946.349540849362 dOcct 1.0e-5 dBbox 2.7e-15 dCom 3.5e-6 dExact 1.0e-5 dBbxEx - faces o/b/t 7/7/7  bodies 1
+chamfer-over-10x20                 TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- sketch.line: invalid parameters for `sketch.line`: zero-length line  | occt OCCT threw: undefined brep 1499.9999999999998
+perf-1-holes                       TIMED                | occt undefined brep undefined
+perf-5-holes                       TIMED                | occt undefined brep undefined
+perf-10-holes                      TIMED                | occt undefined brep undefined
+perf-25-holes                      TIMED                | occt undefined brep undefined
+perf-25-holes-then-pocket          TIMED                | occt undefined brep undefined
+wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/u4/round3.json 88

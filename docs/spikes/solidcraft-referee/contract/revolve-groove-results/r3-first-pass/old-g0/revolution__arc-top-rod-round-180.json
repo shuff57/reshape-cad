@@ -1,0 +1,298 @@
+[
+ {
+  "id": "revolution__arc-top-rod-round-180",
+  "src": "const sk = sketch('top'); sk.polygon([[0,0],[12,0],[12,30],[0,30]]); sk.round(3, 5); revolve(sk, 180);",
+  "translator": "g0",
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "revolution__arc-top-rod-round-180",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "occt": {
+    "volume": 6602.406762973612,
+    "com": [
+     1.36595048209541e-9,
+     5.040535010453582,
+     14.615606909173438
+    ],
+    "bbox": [
+     -12,
+     0,
+     0,
+     12,
+     12,
+     30
+    ],
+    "faces": 6,
+    "area": 2206.1692886770343,
+    "types": {
+     "plane": 4,
+     "cylinder": 1,
+     "other": 1
+    },
+    "components": {
+     "plane": 3,
+     "cylinder": 1,
+     "other": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 2
+   },
+   "brep": {
+    "volume": 6602.406762973616,
+    "bbox": [
+     -12,
+     0,
+     0,
+     12,
+     12,
+     30
+    ],
+    "faces": 5,
+    "dVol": 6.887599737669807e-16,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 916,
+   "load": [
+    6,
+    6
+   ],
+   "cpuMs": 1247,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "side": 1,
+      "kernelAngle": -180,
+      "nudgeDeg": null
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        12,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        12,
+        0
+       ],
+       [
+        12,
+        25
+       ]
+      ]
+     }
+    },
+    {
+     "command": "sketch.arc.three_point",
+     "params": {
+      "start": [
+       12,
+       25
+      ],
+      "end": [
+       6.999999999999999,
+       30
+      ],
+      "through": [
+       10.535533905932738,
+       28.535533905932738
+      ]
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        6.999999999999999,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ]
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        30
+       ],
+       [
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "angle": -180,
+      "operation": "new",
+      "body_name": "b_rev1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": 0.00003155828593149176,
+    "area": 2206.099665755809,
+    "faceTypes": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 3
+    },
+    "occtTypes": {
+     "plane": 4,
+     "cylinder": 1,
+     "other": 1
+    },
+    "occtComponents": {
+     "plane": 3,
+     "cylinder": 1,
+     "other": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "volume": 6601.751671722316,
+    "bbox": [
+     -12.000000000000002,
+     -8.535614943233018e-30,
+     -2.022479965304871e-60,
+     12,
+     12,
+     30.00000000000001
+    ],
+    "com": [
+     1.1312872317762648e-11,
+     5.0402864163826555,
+     14.615598624178046
+    ],
+    "faces": 5,
+    "kernelFaces": 6,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.00009922006850130844,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 0.000006176369348838944,
+    "tol": 0.0003,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "volume": 6602.406762973611,
+   "bbox": [
+    -12,
+    0,
+    -2.6645352591003765e-15,
+    12,
+    12.000000000000005,
+    30
+   ],
+   "faces": 5,
+   "com": [
+    -7.181185942789312e-17,
+    5.040535008084975,
+    14.615606909173435
+   ]
+  },
+  "vsFc": {
+   "occt": {
+    "dVol": 1.3775199475339617e-16,
+    "dBbox": 5.329070518200751e-15,
+    "faces": 6,
+    "dCom": 2.3686075323325895e-9
+   },
+   "brep": {
+    "dVol": 8.26511968520377e-16,
+    "dBbox": 5.329070518200751e-15,
+    "faces": 5
+   },
+   "truck": {
+    "dVol": 0.0000992200685011707,
+    "dBbox": 1.0658141036401503e-14,
+    "faces": 5,
+    "dCom": 0.0002485917023191675
+   }
+  },
+  "caseMs": 966
+ }
+]

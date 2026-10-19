@@ -1,0 +1,1 @@
+sl9-77-boxtan-top-m1                     PASS     occtV 69149.2932 | tr-occt dV 5.5e-6 dBb 1.8e-16 dCom 6.4e-7 F o/b/t 16/14/14 | brep-occt dV 2.7e-12      | ms 3539 cpu 3896

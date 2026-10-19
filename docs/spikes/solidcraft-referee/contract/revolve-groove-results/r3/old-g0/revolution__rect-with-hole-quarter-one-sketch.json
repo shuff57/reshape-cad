@@ -1,0 +1,41 @@
+[
+ {
+  "id": "revolution__rect-with-hole-quarter-one-sketch",
+  "src": "const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); sk.circle(4, { at: [15, 15] }); revolve(sk, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "revolution__rect-with-hole-quarter-one-sketch",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "invalid": "OCCT: Spin 1: sketch Sketch 1 is drawn as rows and rules, which this reference path cannot spin yet"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "revolve rev1: this sketch's outline has a hole in it, and a spin builds only a solid outline -- draw the outline without the hole -- rev1 is shown without it."
+   },
+   "ms": 2,
+   "load": [
+    29.7,
+    29.7
+   ],
+   "cpuMs": 4,
+   "truck": {
+    "refused": "rev1 (revolve): the sketch holds more than one shape (or a hole, geom() or slot()), and a spin takes one plain outline, so draw one rect, circle or polygon per sketch."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: Spin 1: sketch Sketch 1 is drawn as rows and rules, which this reference path cannot spin yet",
+  "caseMs": 20
+ }
+]

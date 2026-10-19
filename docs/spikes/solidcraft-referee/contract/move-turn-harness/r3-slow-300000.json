@@ -1,0 +1,151 @@
+{
+ "boxMs": 300000,
+ "TIME_NOTE": 300,
+ "rows": [
+  {
+   "case": "s01 box cut by cylinder turned [30,0,0]",
+   "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nconst c = cylinder(10, 60, { at: [0, 0, 0] });\nturn(c, [30, 0, 0]);\ncut(a, c);",
+   "wallSec": 55.914,
+   "scCalls": 3,
+   "slowestCallSec": 54.957,
+   "scCpuSec": 54.792,
+   "timedOutCalls": 0,
+   "verdict": "PASS",
+   "refusal": null,
+   "dVol": 0.000008155001338296652,
+   "dBbox": 5.3608902028656755e-8,
+   "dCom": 8.840100560192394e-10,
+   "faces": 7,
+   "occtFaces": 7,
+   "occtVolume": 30186.200635765923,
+   "brep": {
+    "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+   },
+   "occtRefusals": {},
+   "boxMs": 300000
+  },
+  {
+   "case": "s02 box cut by cylinder turned [30,45,60]",
+   "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nconst c = cylinder(10, 60, { at: [0, 0, 0] });\nturn(c, [30, 45, 60]);\ncut(a, c);",
+   "wallSec": 64.111,
+   "scCalls": 3,
+   "slowestCallSec": 62.827,
+   "scCpuSec": 61.683,
+   "timedOutCalls": 0,
+   "verdict": "PASS",
+   "refusal": null,
+   "dVol": 0.000009912127346415764,
+   "dBbox": 9.810071386340268e-8,
+   "dCom": 3.193130194503177e-9,
+   "faces": 7,
+   "occtFaces": 7,
+   "occtVolume": 29434.900339676988,
+   "brep": {
+    "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+   },
+   "occtRefusals": {},
+   "boxMs": 300000
+  },
+  {
+   "case": "s06 two perpendicular equal cylinders join",
+   "script": "const a = cylinder(20, 40, { at: [0, 0, 0] });\nconst b = cylinder(20, 40, { at: [0, 0, 0] });\nturn(b, [0, 90, 0]);\njoin(a, b);",
+   "wallSec": 302.371,
+   "scCalls": 3,
+   "slowestCallSec": 300.156,
+   "scCpuSec": 2.167,
+   "timedOutCalls": 1,
+   "verdict": "REFUSED",
+   "refusal": "Join 1 is not built: it took longer than 300 seconds to compute, so it is shown without it -- try a simpler shape.",
+   "occtVolume": 19799.407895386572,
+   "brep": {
+    "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+   },
+   "occtRefusals": {},
+   "boxMs": 300000
+  },
+  {
+   "case": "s07 two perpendicular UNEQUAL cylinders join (control)",
+   "script": "const a = cylinder(20, 40, { at: [0, 0, 0] });\nconst b = cylinder(12, 40, { at: [0, 0, 0] });\nturn(b, [0, 90, 0]);\njoin(a, b);",
+   "wallSec": 135.842,
+   "scCalls": 3,
+   "slowestCallSec": 133.048,
+   "scCpuSec": 131.651,
+   "timedOutCalls": 0,
+   "verdict": "PASS",
+   "refusal": null,
+   "dVol": 0.00005007316767151909,
+   "dBbox": 0.000023627475213120058,
+   "dCom": 1.8281928351898565e-8,
+   "faces": 7,
+   "occtFaces": 7,
+   "occtVolume": 14935.30141497526,
+   "brep": {
+    "volume": 14935.301415303999,
+    "bbox": [
+     -20,
+     -10,
+     -20,
+     20,
+     10,
+     20
+    ],
+    "faces": 7,
+    "dVol": 2.201084998630227e-11,
+    "dBbox": 9.999999839225292e-9
+   },
+   "occtRefusals": {},
+   "boxMs": 300000
+  },
+  {
+   "case": "s08 join two overlapping copied rings",
+   "script": "const t = ring(30, 6, { at: [0, 0, 0] });\nconst c = move(t, [10, 0, 0], { copy: true });\njoin(t, c);",
+   "wallSec": 352.996,
+   "scCalls": 3,
+   "slowestCallSec": 300.116,
+   "scCpuSec": 48.971,
+   "timedOutCalls": 1,
+   "verdict": "REFUSED",
+   "refusal": "Join 1 is not built: it took longer than 300 seconds to compute, so it is shown without it -- try a simpler shape.",
+   "occtVolume": 3876.21375191063,
+   "brep": {
+    "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+   },
+   "occtRefusals": {},
+   "boxMs": 300000
+  },
+  {
+   "case": "s09 cylinder + turned ring join",
+   "script": "const a = cylinder(20, 40, { at: [0, 0, 0] });\nconst t = ring(30, 6, { at: [0, 0, 0] });\nturn(t, [90, 0, 0]);\njoin(a, t);",
+   "wallSec": 311.379,
+   "scCalls": 3,
+   "slowestCallSec": 300.139,
+   "scCpuSec": 11.379,
+   "timedOutCalls": 1,
+   "verdict": "REFUSED",
+   "refusal": "Join 1 is not built: it took longer than 300 seconds to compute, so it is shown without it -- try a simpler shape.",
+   "occtVolume": 13333.641975209293,
+   "brep": {
+    "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+   },
+   "occtRefusals": {},
+   "boxMs": 300000
+  },
+  {
+   "case": "s11 ring, hole",
+   "script": "const t = ring(30, 6, { at: [0, 0, 0] });\nhole(t, { across: 3 });",
+   "wallSec": 18.147,
+   "scCalls": 2,
+   "slowestCallSec": 14.29,
+   "scCpuSec": 18.676,
+   "timedOutCalls": 0,
+   "verdict": "REFUSED",
+   "refusal": "Hole 1 could not be built by this engine, so it is shown without it.",
+   "occtVolume": 2131.8345506353003,
+   "brep": {
+    "refused": "hole1 does not touch the part, so it cuts nothing -- hole1 is shown without it."
+   },
+   "occtRefusals": {},
+   "boxMs": 300000
+  }
+ ]
+}

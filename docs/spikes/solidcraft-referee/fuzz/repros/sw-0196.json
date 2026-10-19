@@ -1,0 +1,73 @@
+{
+ "id": "sw-0196",
+ "seed": 9,
+ "desc": "S4 pocket top floor=1.5 t=1",
+ "t": 1,
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 40,
+    "width": 30,
+    "height": 10,
+    "center": [
+     0,
+     0,
+     5
+    ],
+    "body_name": "b1"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 8,
+    "width": 6,
+    "height": 9.5,
+    "center": [
+     0,
+     0,
+     6.25
+    ],
+    "body_name": "f1"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "f1"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -11.852,
+      -6.393,
+      10
+     ]
+    ],
+    "thickness": 1,
+    "body": "b1"
+   }
+  }
+ ],
+ "oracleFamily": "plate",
+ "p7": {
+  "cls": "WRONG",
+  "expectedP": 2736.0000000000005,
+  "built": 2776,
+  "rel": 0.014619883040935503
+ },
+ "base": {
+  "cls": "WRONG",
+  "expectedP": 2736.0000000000005,
+  "built": 2776,
+  "rel": 0.014619883040935503
+ }
+}

@@ -1,0 +1,2 @@
+r2-ring-10-12                  refused-by-solidcraft  ring1 (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/ringthin/r2-ring-10-12/primitives-measure.json

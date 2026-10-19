@@ -1,0 +1,20 @@
+{
+ "id": "cone",
+ "outcome": "built",
+ "volume": 4523.068636100784,
+ "faces": 2,
+ "bbox": [
+  -12,
+  -11.999849725959445,
+  -15.000000000000002,
+  12,
+  11.999849725959447,
+  15
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "cone"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_c1_0\",\"plane\":{\"origin\":[0,0,-15],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[12,0],[0,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_c1_0\",\"operation\":\"new\",\"body_name\":\"b_c1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

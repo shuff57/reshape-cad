@@ -1,0 +1,21 @@
+{
+ "id": "pattern-circular-6",
+ "outcome": "built",
+ "volume": 5999.999999999999,
+ "faces": 36,
+ "bbox": [
+  -35,
+  -32.81088913245536,
+  -5,
+  35,
+  32.81088913245535,
+  5.000000000000002
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "pattern"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":10,\"width\":10,\"height\":10,\"center\":[30,0,0],\"body_name\":\"b_b1\"}},{\"command\":\"solid.pattern.circular\",\"params\":{\"bodies\":[\"b_b1\"],\"axis\":\"Z\",\"count\":6}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_b1\",\"tools\":[\"b_b1 (2)\",\"b_b1 (3)\",\"b_b1 (4)\",\"b_b1 (5)\",\"b_b1 (6)\"],\"operation\":\"join\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

@@ -1,0 +1,1 @@
+X-groove-through-height-180              PASS     occtV 35625.6607 | tr-occt dV 1.1e-4 dBb 8.9e-16 dCom 1.0e-6 F o/b/t 7/7/7 | brep-occt dV 1.5e-12  | ANALYTIC 35625.6607 dTruck 1.1e-4 dOcct 1.5e-12 dBrep 2.0e-16    | ms 6176 cpu 6685

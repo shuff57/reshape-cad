@@ -1,0 +1,1273 @@
+[
+ {
+  "label": "rows-and-rules sketch extrude: swept edge1 shell open",
+  "id": "sh1",
+  "ms": 43,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can.",
+    "raw": "sh1 (shell): pull1.face[sk1.edge1]: sk1 is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       30,
+       0
+      ]
+     ],
+     "ids": [
+      "g1"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       30,
+       0
+      ],
+      [
+       30,
+       20
+      ]
+     ],
+     "ids": [
+      "g2"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       30,
+       20
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "ids": [
+      "g3"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       20
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "ids": [
+      "g4"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.constraint.fix",
+    "params": {
+     "entity": "g1.start",
+     "fixed": true
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g1.end",
+     "b": "g2.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g2.end",
+     "b": "g3.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g3.end",
+     "b": "g4.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g4.end",
+     "b": "g1.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g1",
+     "mode": "horizontal"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g2",
+     "mode": "vertical"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g3",
+     "mode": "horizontal"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g4",
+     "mode": "vertical"
+    }
+   },
+   {
+    "command": "sketch.dimension",
+    "params": {
+     "entities": [
+      "g1"
+     ],
+     "type": "length",
+     "value": 30
+    }
+   },
+   {
+    "command": "sketch.dimension",
+    "params": {
+     "entities": [
+      "g2"
+     ],
+     "type": "length",
+     "value": 20
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 3871.999999999997,
+    "com": [
+     15.000000000000005,
+     10.000000000000007,
+     6.000000000000003
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     12
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 12
+    },
+    "components": {
+     "plane": 12
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 3616,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {
+    "sh1": "Hollow 1 could not find the face to leave open -- Hollow 1 is shown closed."
+   },
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "sh1": "sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can."
+  },
+  "outcome": "REFUSED",
+  "sentence": "sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can.",
+  "names": [
+   "pull1.face[sk1.edge1]"
+  ]
+ },
+ {
+  "label": "rows-and-rules sketch extrude: cap top shell open",
+  "id": "sh1",
+  "ms": 85,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       15,
+       10,
+       12
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pull1.cap[top]",
+     "rule": "planar face, outward normal along the sketch normal at the sketch plane + height",
+     "engineFace": "F2:top",
+     "target": {
+      "candidates": 1,
+      "face": "F2:top",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 12,
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       30,
+       0
+      ]
+     ],
+     "ids": [
+      "g1"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       30,
+       0
+      ],
+      [
+       30,
+       20
+      ]
+     ],
+     "ids": [
+      "g2"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       30,
+       20
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "ids": [
+      "g3"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       20
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "ids": [
+      "g4"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.constraint.fix",
+    "params": {
+     "entity": "g1.start",
+     "fixed": true
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g1.end",
+     "b": "g2.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g2.end",
+     "b": "g3.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g3.end",
+     "b": "g4.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g4.end",
+     "b": "g1.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g1",
+     "mode": "horizontal"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g2",
+     "mode": "vertical"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g3",
+     "mode": "horizontal"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g4",
+     "mode": "vertical"
+    }
+   },
+   {
+    "command": "sketch.dimension",
+    "params": {
+     "entities": [
+      "g1"
+     ],
+     "type": "length",
+     "value": 30
+    }
+   },
+   {
+    "command": "sketch.dimension",
+    "params": {
+     "entities": [
+      "g2"
+     ],
+     "type": "length",
+     "value": 20
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       15,
+       10,
+       12
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 3040,
+    "com": [
+     14.999999999999991,
+     10,
+     4.6315789473684195
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 3040.0000000000014,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 3040,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    12
+   ],
+   "com": [
+    15,
+    10,
+    4.631578947368421
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 2.337311630789803e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.487638331116422e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0,
+   "dCom": 0.07202216066481998,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "pull1.cap[top]"
+  ]
+ },
+ {
+  "label": "hole, turn, then round edge(top,right)",
+  "src": "const b = box(40,30,20)\nhole(b,{across:6})\nturn(b,[0,0,20])\nround(b.edge('top','right'), 2)",
+  "id": "round1",
+  "ms": 855,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "turn1",
+    "kind": "rotate",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.",
+    "raw": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 22,
+     "base": [
+      0,
+      0,
+      -11
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      0,
+      8.881784197001252e-16
+     ]
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 20
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      0,
+      -8.881784197001252e-16
+     ]
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23408.76110197828,
+    "com": [
+     -0.02021349117311112,
+     -0.007357109117614538,
+     -0.010509644229560201
+    ],
+    "bbox": [
+     -23.924154565603203,
+     -20.935792178302002,
+     -10,
+     23.924154565603203,
+     20.935792178302002,
+     10
+    ],
+    "faces": 8,
+    "types": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 23434.513322353843,
+    "bbox": [
+     -23.924154565603203,
+     -20.935792178302002,
+     -10,
+     23.924154565603203,
+     20.935792178302002,
+     10
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box before you hollow, chamfer or cut it -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.",
+  "names": [
+   "box1.edge[box1.face[+x] ^ box1.face[+z]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "hole1_diameter",
+    "caption": "Hole 1 diameter",
+    "value": 6,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "hole1_depth",
+    "caption": "Hole 1 depth",
+    "value": 22,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "hole1_x",
+    "caption": "Hole 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "hole1_y",
+    "caption": "Hole 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "turn1_rx",
+    "caption": "Turn 1 turn x",
+    "value": 0,
+    "min": -180,
+    "max": 180,
+    "step": 5
+   },
+   {
+    "name": "turn1_ry",
+    "caption": "Turn 1 turn y",
+    "value": 0,
+    "min": -180,
+    "max": 180,
+    "step": 5
+   },
+   {
+    "name": "turn1_rz",
+    "caption": "Turn 1 turn z",
+    "value": 20,
+    "min": -180,
+    "max": 180,
+    "step": 5
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 9.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "turn built part then hollow open top",
+  "src": "const b = box(40,30,20)\nhole(b,{across:6})\nturn(b,[0,0,20])\nhollow(b,{wall:2, open:'top'})",
+  "id": "shell1",
+  "ms": 1652,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "turn1",
+    "kind": "rotate",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       12.253835265308956,
+       -1.5318872325586859,
+       9.999999999999996
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on box1's own shape",
+     "engineFace": "F1:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+z",
+      "pickSource": "interior point (largest display triangle); the centroid is off the face"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 10,
+       "got": 10,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+z",
+       "got": "F1:+z",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 22,
+     "base": [
+      0,
+      0,
+      -11
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      0,
+      8.881784197001252e-16
+     ]
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 20
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      0,
+      -8.881784197001252e-16
+     ]
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       12.253835265308956,
+       -1.5318872325586859,
+       9.999999999999996
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 8000.230016469245,
+    "com": [
+     -5.16372086453135e-15,
+     -4.804907099606915e-16,
+     -1.9292299439030671
+    ],
+    "bbox": [
+     -23.924154565603203,
+     -20.935792178302002,
+     -10,
+     23.924154565603203,
+     20.935792178302002,
+     10
+    ],
+    "faces": 14,
+    "types": {
+     "plane": 12,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 12,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2
+   },
+   "brep": {
+    "refused": "brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- shell1 is shown without it."
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- shell1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 8000.160829051741,
+   "bbox": [
+    -23.924154565603203,
+    -20.935792178302005,
+    -10.000000000000005,
+    23.924154565603203,
+    20.935792178302002,
+    10.000000000000007
+   ],
+   "com": [
+    5.531991340713881e-15,
+    1.9816157426979173e-15,
+    -1.9292670175673707
+   ],
+   "faces": 14,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 12
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- shell1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 0.000008648178535127072,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 5.562147417994054e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 14,
+    "truck": 14,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.000008648178534672337,
+   "dCom": 0.05788887965274726,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "box1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "hole1_diameter",
+    "caption": "Hole 1 diameter",
+    "value": 6,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "hole1_depth",
+    "caption": "Hole 1 depth",
+    "value": 22,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "hole1_x",
+    "caption": "Hole 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "hole1_y",
+    "caption": "Hole 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "turn1_rx",
+    "caption": "Turn 1 turn x",
+    "value": 0,
+    "min": -180,
+    "max": 180,
+    "step": 5
+   },
+   {
+    "name": "turn1_ry",
+    "caption": "Turn 1 turn y",
+    "value": 0,
+    "min": -180,
+    "max": 180,
+    "step": 5
+   },
+   {
+    "name": "turn1_rz",
+    "caption": "Turn 1 turn z",
+    "value": 20,
+    "min": -180,
+    "max": 180,
+    "step": 5
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ }
+]

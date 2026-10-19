@@ -1,0 +1,398 @@
+{
+ "generatedAt": "2026-10-17T04:46:18.581Z",
+ "url": "http://127.0.0.1:8801",
+ "cases": [
+  {
+   "name": "rim w=3",
+   "expect": "exact",
+   "ok": true,
+   "volume": 2824,
+   "P": 2824,
+   "relToP": 0,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2824,
+     "f": 28
+    }
+   ]
+  },
+  {
+   "name": "rim w=2.5",
+   "expect": "exact",
+   "ok": true,
+   "volume": 2848,
+   "P": 2848,
+   "relToP": 0,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2848,
+     "f": 28
+    }
+   ]
+  },
+  {
+   "name": "rim w=2.05",
+   "expect": "exact",
+   "ok": true,
+   "volume": 2869.5999999999985,
+   "P": 2869.6,
+   "relToP": 4.754119224489101e-16,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2869.5999999999985,
+     "f": 28
+    }
+   ]
+  },
+  {
+   "name": "rim w=2.006",
+   "expect": "exact",
+   "ok": true,
+   "volume": 2871.7119999999995,
+   "P": 2871.712,
+   "relToP": 1.5835409361609525e-16,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2871.7119999999995,
+     "f": 28
+    }
+   ]
+  },
+  {
+   "name": "rim w=2.002",
+   "expect": "exact",
+   "ok": true,
+   "volume": 2871.904,
+   "P": 2871.904,
+   "relToP": 0,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2871.904,
+     "f": 28
+    }
+   ]
+  },
+  {
+   "name": "rim w=2",
+   "expect": "refused",
+   "ok": false,
+   "volume": null,
+   "P": null,
+   "relToP": null,
+   "refusal": "not supported yet: a wall standing on the open face is only 2.0000 mm thick and the shell is 1.0000 mm, so its two sides would cross (a wall needs more than twice the shell thickness; use a thinner shell or a thicker wall)",
+   "failedAt": "solid.shell"
+  },
+  {
+   "name": "rim w=1.95",
+   "expect": "refused",
+   "ok": false,
+   "volume": null,
+   "P": null,
+   "relToP": null,
+   "refusal": "not supported yet: a wall standing on the open face is only 1.9500 mm thick and the shell is 1.0000 mm, so its two sides would cross (a wall needs more than twice the shell thickness; use a thinner shell or a thicker wall)",
+   "failedAt": "solid.shell"
+  },
+  {
+   "name": "rim w=1.5",
+   "expect": "refused",
+   "ok": false,
+   "volume": null,
+   "P": null,
+   "relToP": null,
+   "refusal": "not supported yet: a wall standing on the open face is only 1.5000 mm thick and the shell is 1.0000 mm, so its two sides would cross (a wall needs more than twice the shell thickness; use a thinner shell or a thicker wall)",
+   "failedAt": "solid.shell"
+  },
+  {
+   "name": "ligament: hole web 1.0 east",
+   "expect": "refused",
+   "ok": false,
+   "volume": null,
+   "P": 2524.93,
+   "relToP": null,
+   "refusal": "not supported yet: a ligament between a hole and a wall (or another hole) is only 1.0000 mm thick; its two offset sides would cross (it needs at least twice the shell thickness, 2.0000 mm)",
+   "failedAt": "solid.shell"
+  },
+  {
+   "name": "ligament: hole web 1.0 north",
+   "expect": "refused",
+   "ok": false,
+   "volume": null,
+   "P": 2524.87,
+   "relToP": null,
+   "refusal": "not supported yet: a ligament between a hole and a wall (or another hole) is only 1.0000 mm thick; its two offset sides would cross (it needs at least twice the shell thickness, 2.0000 mm)",
+   "failedAt": "solid.shell"
+  },
+  {
+   "name": "ligament: hole web 1.5 east",
+   "expect": "refused",
+   "ok": false,
+   "volume": null,
+   "P": null,
+   "relToP": null,
+   "refusal": "not supported yet: a ligament between a hole and a wall (or another hole) is only 1.5000 mm thick; its two offset sides would cross (it needs at least twice the shell thickness, 2.0000 mm)",
+   "failedAt": "solid.shell"
+  },
+  {
+   "name": "ligament: hole web 1.9 east",
+   "expect": "refused",
+   "ok": false,
+   "volume": null,
+   "P": 2551.88,
+   "relToP": null,
+   "refusal": "not supported yet: a ligament between a hole and a wall (or another hole) is only 1.9000 mm thick; its two offset sides would cross (it needs at least twice the shell thickness, 2.0000 mm)",
+   "failedAt": "solid.shell"
+  },
+  {
+   "name": "ligament: hole web 2.0 east (exactly 2t)",
+   "expect": "built",
+   "ok": true,
+   "volume": 2552.7961835910796,
+   "P": 2552.8052987971814,
+   "relToP": 0.000003570662481032675,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2552.7961835910796,
+     "f": 14
+    }
+   ]
+  },
+  {
+   "name": "ligament: hole web 2.1 east",
+   "expect": "exact",
+   "ok": true,
+   "volume": 2552.7953187390176,
+   "P": 2552.8052987971814,
+   "relToP": 0.000003909447449251829,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2552.7953187390176,
+     "f": 14
+    }
+   ]
+  },
+  {
+   "name": "ligament: hole web 3.0 east",
+   "expect": "exact",
+   "ok": true,
+   "volume": 2552.79531873902,
+   "P": 2552.8052987971814,
+   "relToP": 0.000003909447448361147,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2552.79531873902,
+     "f": 14
+    }
+   ]
+  },
+  {
+   "name": "ligament: two holes, edge gap 1.0",
+   "expect": "refused",
+   "ok": false,
+   "volume": null,
+   "P": 2661.1,
+   "relToP": null,
+   "refusal": "not supported yet: a ligament between a hole and a wall (or another hole) is only 1.0000 mm thick; its two offset sides would cross (it needs at least twice the shell thickness, 2.0000 mm)",
+   "failedAt": "solid.shell"
+  },
+  {
+   "name": "ligament: two holes, edge gap 1.9",
+   "expect": "refused",
+   "ok": false,
+   "volume": null,
+   "P": null,
+   "relToP": null,
+   "refusal": "not supported yet: a ligament between a hole and a wall (or another hole) is only 1.9000 mm thick; its two offset sides would cross (it needs at least twice the shell thickness, 2.0000 mm)",
+   "failedAt": "solid.shell"
+  },
+  {
+   "name": "ligament: two holes, edge gap 2.1",
+   "expect": "exact",
+   "ok": true,
+   "volume": 2681.590637478033,
+   "P": 2681.610597594363,
+   "relToP": 0.000007443331387419963,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2681.590637478033,
+     "f": 17
+    }
+   ]
+  },
+  {
+   "name": "ligament: hole clear of the wall (centre)",
+   "expect": "exact",
+   "ok": true,
+   "volume": 2552.7953187390135,
+   "P": 2552.8052987971814,
+   "relToP": 0.000003909447450855056,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2552.7953187390135,
+     "f": 14
+    }
+   ]
+  },
+  {
+   "name": "counterbore plate (r2 hole at (-8,-6), r4 x 2 counterbore), open top",
+   "expect": "exact",
+   "ok": true,
+   "volume": 2628.1883672130043,
+   "P": 2628.2035224833367,
+   "relToP": 0.000005766399064111784,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2628.1883672130043,
+     "f": 18
+    }
+   ]
+  },
+  {
+   "name": "n7 boss 8x8x8 touching the open face at one vertex",
+   "expect": "built (the notes: a separate piece, hollowed closed)",
+   "ok": true,
+   "volume": 2720.000000000001,
+   "P": 2720,
+   "relToP": 3.343730521224001e-16,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2720.000000000001,
+     "f": 23
+    }
+   ]
+  },
+  {
+   "name": "n6 rounded-corner plate, wall-flush boss",
+   "expect": "exact",
+   "ok": true,
+   "volume": 2729.6377082729136,
+   "P": 2729.646,
+   "relToP": 0.00000303765656299157,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2729.6377082729136,
+     "f": 28
+    }
+   ]
+  },
+  {
+   "name": "n9 corner boss with a hole through it",
+   "expect": "exact",
+   "ok": true,
+   "volume": 3002.177392581841,
+   "P": 3002.195,
+   "relToP": 0.000005864848272367153,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 3002.177392581841,
+     "f": 20
+    }
+   ]
+  },
+  {
+   "name": "n10 round boss r4 at (16,11)",
+   "expect": "refused",
+   "ok": false,
+   "volume": null,
+   "P": 2584.221,
+   "relToP": null,
+   "refusal": "not supported yet: a boss or wall stands on the open face of a body with round faces (or on a round wall); solid.shell would cut it short here, so it is not built (open a face nothing stands on, or shell before adding the boss)",
+   "failedAt": "solid.shell"
+  },
+  {
+   "name": "n11 round pocket floor open",
+   "expect": "refused",
+   "ok": false,
+   "volume": null,
+   "P": 3393.752,
+   "relToP": null,
+   "refusal": "not supported yet: a boss or wall stands on the open face of a body with round faces (or on a round wall); solid.shell would cut it short here, so it is not built (open a face nothing stands on, or shell before adding the boss)",
+   "failedAt": "solid.shell"
+  },
+  {
+   "name": "n13 bottom-rounded box r2 (MY reconstruction: the critic script is not in the repo; r2 chosen because the notes hand loss of ~92 mm3 fits r2), corner boss",
+   "expect": "whatever it measures (notes: 2686.883 for the critic case, not independently verified; 2776 ignores the rounding)",
+   "ok": true,
+   "volume": 2686.8834506223375,
+   "P": null,
+   "relToP": null,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2686.8834506223375,
+     "f": 26
+    }
+   ]
+  },
+  {
+   "name": "n8b pad 0.5 mm, t=1",
+   "expect": "refused",
+   "ok": false,
+   "volume": null,
+   "P": 2474,
+   "relToP": null,
+   "refusal": "not supported yet: what stands on the open face is only 0.5000 mm tall and the shell is 1.0000 mm thick, so its top would move below the open face (use a shell thinner than the pad is tall, or shell before adding it)",
+   "failedAt": "solid.shell"
+  },
+  {
+   "name": "control: plain open top 40x30x10 t=1 (no material on the open face)",
+   "expect": "exact",
+   "ok": true,
+   "volume": 2424,
+   "P": 2424,
+   "relToP": 0,
+   "refusal": null,
+   "failedAt": null,
+   "bodies": [
+    {
+     "n": "b1",
+     "v": 2424,
+     "f": 11
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,2911 @@
+{
+ "url": "http://127.0.0.1:8796/",
+ "generatedAt": "2026-10-14T17:00:04.960Z",
+ "rows": [
+  {
+   "id": "shell-open-top",
+   "asym": false,
+   "names": [
+    {
+     "by": "shell1",
+     "name": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     },
+     "browser": {
+      "kind": "face",
+      "point": [
+       0,
+       0,
+       10.000000000000002
+      ],
+      "evidence": {
+       "name": "b1.face[+z]",
+       "candidates": 1,
+       "engineFace": "F1:+z",
+       "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+       "checks": [
+        {
+         "check": "doc plane",
+         "expected": 10,
+         "got": 10.000000000000002,
+         "agree": true
+        },
+        {
+         "check": "engine persistent name",
+         "expected": "F1:+z",
+         "got": "F1:+z",
+         "agree": true
+        }
+       ],
+       "pickPoint": "target b_b1: centroid",
+       "target": {
+        "body": "b_b1",
+        "candidates": 1,
+        "face": "F1:+z",
+        "faceIndex": 5,
+        "point": [
+         0,
+         0,
+         10.000000000000002
+        ],
+        "pickSource": "centroid",
+        "centroidHit": {
+         "dist": 1.7763568394002505e-15,
+         "index": 5
+        },
+        "innerHit": {
+         "dist": 4.440892098500626e-16,
+         "index": 5
+        }
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       0,
+       0,
+       10
+      ]
+     },
+     "brep": {
+      "kind": "face",
+      "centroid": [
+       3.552713678800501e-15,
+       3.552713678800501e-15,
+       10
+      ]
+     },
+     "distBrowserToOcct": 1.7763568394002505e-15,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 8671.999999999995,
+    "occtVolume": 8671.999999999993,
+    "faces": 11,
+    "occtFaces": 11,
+    "faceTypes": {
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 11
+    },
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 2.0975431313951314e-16,
+    "dBbox": 0,
+    "dCom": 2.960594732333751e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "brepVolume": 8671.999999999995,
+    "pass": true
+   }
+  },
+  {
+   "id": "round-one-edge",
+   "asym": false,
+   "names": [
+    {
+     "by": "r1",
+     "name": {
+      "cause": "between",
+      "feature": "b1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+z"
+       },
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+x"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       20,
+       0,
+       10
+      ],
+      "evidence": {
+       "name": "b1.edge[b1.face[+z] ^ b1.face[+x]]",
+       "candidates": 1,
+       "loop": false,
+       "engineEdges": [
+        "F1:+x|F1:+z"
+       ],
+       "pointOn": "F1:+x|F1:+z",
+       "facesA": [
+        "F1:+z"
+       ],
+       "facesB": [
+        "F1:+x"
+       ],
+       "checks": [
+        {
+         "check": "geometry vs persistent names",
+         "agree": true,
+         "geometric": 1,
+         "named": 1
+        }
+       ],
+       "target": {
+        "body": "b_b1",
+        "candidates": 1,
+        "edges": [
+         "F1:+x|F1:+z"
+        ],
+        "point": [
+         20,
+         0,
+         10
+        ]
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       20,
+       0,
+       10
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       20,
+       0,
+       10
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 31862.564752955306,
+    "occtVolume": 31862.654824611505,
+    "faces": 7,
+    "occtFaces": 7,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0.0000028268722959509783,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 8.714973363702084e-7,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "brepVolume": 31862.654824574365,
+    "pass": true
+   }
+  },
+  {
+   "id": "bevel-one-edge",
+   "asym": false,
+   "names": [
+    {
+     "by": "r1",
+     "name": {
+      "cause": "between",
+      "feature": "b1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+z"
+       },
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+x"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       20,
+       0,
+       10
+      ],
+      "evidence": {
+       "name": "b1.edge[b1.face[+z] ^ b1.face[+x]]",
+       "candidates": 1,
+       "loop": false,
+       "engineEdges": [
+        "F1:+x|F1:+z"
+       ],
+       "pointOn": "F1:+x|F1:+z",
+       "facesA": [
+        "F1:+z"
+       ],
+       "facesB": [
+        "F1:+x"
+       ],
+       "checks": [
+        {
+         "check": "geometry vs persistent names",
+         "agree": true,
+         "geometric": 1,
+         "named": 1
+        }
+       ],
+       "target": {
+        "body": "b_b1",
+        "candidates": 1,
+        "edges": [
+         "F1:+x|F1:+z"
+        ],
+        "point": [
+         20,
+         0,
+         10
+        ]
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       20,
+       0,
+       10
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       20,
+       0,
+       10
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 31680,
+    "occtVolume": 31680,
+    "faces": 7,
+    "occtFaces": 7,
+    "faceTypes": {
+     "plane": 7
+    },
+    "occtTypes": {
+     "plane": 7
+    },
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 3.5850951836854015e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "brepVolume": 31680,
+    "pass": true
+   }
+  },
+  {
+   "id": "draft-one-face",
+   "asym": false,
+   "names": [
+    {
+     "by": "d1",
+     "name": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+x"
+     },
+     "browser": {
+      "kind": "face",
+      "point": [
+       20.000000000000004,
+       0,
+       0
+      ],
+      "evidence": {
+       "name": "b1.face[+x]",
+       "candidates": 1,
+       "engineFace": "F1:+x",
+       "rule": "planar face with outward normal +x at the extreme along it on b1's own shape",
+       "checks": [
+        {
+         "check": "doc plane",
+         "expected": 20,
+         "got": 20.000000000000004,
+         "agree": true
+        },
+        {
+         "check": "engine persistent name",
+         "expected": "F1:+x",
+         "got": "F1:+x",
+         "agree": true
+        }
+       ],
+       "pickPoint": "target b_b1: centroid",
+       "target": {
+        "body": "b_b1",
+        "candidates": 1,
+        "face": "F1:+x",
+        "faceIndex": 2,
+        "point": [
+         20.000000000000004,
+         0,
+         0
+        ],
+        "pickSource": "centroid",
+        "centroidHit": {
+         "dist": 3.552713678800501e-15,
+         "index": 2
+        },
+        "innerHit": {
+         "dist": 1.7763568394002505e-15,
+         "index": 2
+        }
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       20,
+       0,
+       0
+      ]
+     },
+     "brep": {
+      "kind": "face",
+      "centroid": [
+       20,
+       3.552713678800501e-15,
+       1.7763568394002505e-15
+      ]
+     },
+     "distBrowserToOcct": 3.552713678800501e-15,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 30875.67332238088,
+    "occtVolume": 30875.673322380862,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 5.891335176899041e-16,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 2.960594732333751e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "brepVolume": 30875.67332238087,
+    "pass": true
+   }
+  },
+  {
+   "id": "shell-cylinder-open-top",
+   "asym": false,
+   "names": [
+    {
+     "by": "sh1",
+     "name": {
+      "cause": "primitive",
+      "feature": "c1",
+      "kind": "face",
+      "part": "+z"
+     },
+     "browser": {
+      "kind": "face",
+      "point": [
+       -4.0997731110774777e-16,
+       -1.038740591123957e-15,
+       14.99999999999999
+      ],
+      "evidence": {
+       "name": "c1.face[+z]",
+       "candidates": 1,
+       "engineFace": "F1:top",
+       "rule": "planar face with outward normal +z at the extreme along it on c1's own shape",
+       "checks": [
+        {
+         "check": "doc plane",
+         "expected": 15,
+         "got": 14.99999999999999,
+         "agree": true
+        },
+        {
+         "check": "engine persistent name",
+         "expected": "F1:top",
+         "got": "F1:top",
+         "agree": true
+        }
+       ],
+       "pickPoint": "target b_c1: centroid",
+       "target": {
+        "body": "b_c1",
+        "candidates": 1,
+        "face": "F1:top",
+        "faceIndex": 3,
+        "point": [
+         -4.0997731110774777e-16,
+         -1.038740591123957e-15,
+         14.99999999999999
+        ],
+        "pickSource": "centroid",
+        "centroidHit": {
+         "dist": 3.567771929675835e-15,
+         "index": 3
+        },
+        "innerHit": {
+         "dist": 4.440892098500626e-16,
+         "index": 3
+        }
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       5.329070518200751e-15,
+       -1.0085978362443483e-15,
+       15
+      ]
+     },
+     "brep": {
+      "kind": "face",
+      "centroid": [
+       -3.552713678800501e-15,
+       -4.816642480570265e-16,
+       15
+      ]
+     },
+     "distBrowserToOcct": 1.0658141036401503e-14,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 4774.728976887152,
+    "occtVolume": 4775.220833456484,
+    "faces": 5,
+    "occtFaces": 5,
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 3
+    },
+    "occtTypes": {
+     "cylinder": 2,
+     "plane": 3
+    },
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0.00010300184776490827,
+    "dBbox": 0.00002686625935736468,
+    "dCom": 6.169873645866258e-7,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "brepVolume": 4775.220833456492,
+    "pass": true
+   }
+  },
+  {
+   "id": "fillet-cylinder-edge",
+   "asym": false,
+   "names": [
+    {
+     "by": "r1",
+     "name": {
+      "cause": "between",
+      "feature": "c1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "c1",
+        "kind": "face",
+        "part": "+z"
+       },
+       {
+        "cause": "primitive",
+        "feature": "c1",
+        "kind": "face",
+        "part": "side"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       -6.904867347122082,
+       9.814418317895726,
+       14.999999999999998
+      ],
+      "evidence": {
+       "name": "c1.edge[c1.face[+z] ^ c1.face[side]]",
+       "candidates": 2,
+       "loop": true,
+       "engineEdges": [
+        "F1:side#1|F1:top",
+        "F1:side#2|F1:top"
+       ],
+       "pointOn": "F1:side#1|F1:top",
+       "facesA": [
+        "F1:top"
+       ],
+       "facesB": [
+        "F1:side#1",
+        "F1:side#2"
+       ],
+       "checks": [
+        {
+         "check": "persistent names + plane of the planar face",
+         "agree": true,
+         "named": 2
+        }
+       ],
+       "target": {
+        "body": "b_c1",
+        "candidates": 2,
+        "edges": [
+         "F1:side#1|F1:top",
+         "F1:side#2|F1:top"
+        ],
+        "point": [
+         -6.904867347122082,
+         9.814418317895726,
+         14.999999999999998
+        ]
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       5.6843418860808e-14,
+       1.0362081563168126e-15,
+       14.999999999999996
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       0,
+       0,
+       15
+      ]
+     },
+     "distBrowserToOcct": 5.617333549722722e-15,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 12,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": false
+    }
+   ],
+   "solid": {
+    "volume": 13433.641165336332,
+    "occtVolume": 13434.186897988171,
+    "faces": 4,
+    "occtFaces": 4,
+    "faceTypes": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "faceKeys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0.00004062267824491224,
+    "dBbox": 0.00002362580858609338,
+    "dCom": 2.417517149721306e-7,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "brepVolume": 13434.186897988176,
+    "pass": true
+   }
+  },
+  {
+   "id": "chamfer-cylinder-edge",
+   "asym": false,
+   "names": [
+    {
+     "by": "r1",
+     "name": {
+      "cause": "between",
+      "feature": "c1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "c1",
+        "kind": "face",
+        "part": "-z"
+       },
+       {
+        "cause": "primitive",
+        "feature": "c1",
+        "kind": "face",
+        "part": "side"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       6.904867347122084,
+       -9.814418317895731,
+       -15
+      ],
+      "evidence": {
+       "name": "c1.edge[c1.face[-z] ^ c1.face[side]]",
+       "candidates": 2,
+       "loop": true,
+       "engineEdges": [
+        "F1:bottom|F1:side#2",
+        "F1:bottom|F1:side#1"
+       ],
+       "pointOn": "F1:bottom|F1:side#2",
+       "facesA": [
+        "F1:bottom"
+       ],
+       "facesB": [
+        "F1:side#1",
+        "F1:side#2"
+       ],
+       "checks": [
+        {
+         "check": "persistent names + plane of the planar face",
+         "agree": true,
+         "named": 2
+        }
+       ],
+       "target": {
+        "body": "b_c1",
+        "candidates": 2,
+        "edges": [
+         "F1:bottom|F1:side#2",
+         "F1:bottom|F1:side#1"
+        ],
+        "point": [
+         6.904867347122084,
+         -9.814418317895731,
+         -15
+        ]
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       5.6843418860808e-14,
+       1.0362081563168126e-15,
+       -15
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       0,
+       0,
+       -15
+      ]
+     },
+     "distBrowserToOcct": 8.747542958250513e-15,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 12,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": false
+    }
+   ],
+   "solid": {
+    "volume": 13259.230052635146,
+    "occtVolume": 13260.662590802518,
+    "faces": 4,
+    "occtFaces": 4,
+    "faceTypes": {
+     "cone": 1,
+     "cylinder": 1,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 1,
+     "cone": 1,
+     "plane": 2
+    },
+    "faceKeys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0.00010802915446813344,
+    "dBbox": 0.00002686625935736468,
+    "dCom": 0.0000014523554133930197,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "brepVolume": 13260.662590802523,
+    "pass": true
+   }
+  },
+  {
+   "id": "name-primitive-face",
+   "asym": false,
+   "names": [
+    {
+     "by": "(resolve)",
+     "name": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     },
+     "browser": {
+      "kind": "face",
+      "point": [
+       0,
+       0,
+       10.000000000000002
+      ],
+      "evidence": {
+       "name": "b1.face[+z]",
+       "candidates": 1,
+       "engineFace": "F1:+z",
+       "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+       "checks": [
+        {
+         "check": "doc plane",
+         "expected": 10,
+         "got": 10.000000000000002,
+         "agree": true
+        },
+        {
+         "check": "engine persistent name",
+         "expected": "F1:+z",
+         "got": "F1:+z",
+         "agree": true
+        }
+       ],
+       "pickPoint": "own shape: centroid"
+      }
+     },
+     "occt": {
+      "centroid": [
+       0,
+       0,
+       10
+      ]
+     },
+     "brep": {
+      "kind": "face",
+      "centroid": [
+       3.552713678800501e-15,
+       3.552713678800501e-15,
+       10
+      ]
+     },
+     "distBrowserToOcct": 1.7763568394002505e-15,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 32000,
+    "occtVolume": 31999.999999999993,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "brepVolume": 31999.999999999996,
+    "pass": true
+   }
+  },
+  {
+   "id": "name-between-edge",
+   "asym": false,
+   "names": [
+    {
+     "by": "(resolve)",
+     "name": {
+      "cause": "between",
+      "feature": "b1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+z"
+       },
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+x"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       20,
+       0,
+       10
+      ],
+      "evidence": {
+       "name": "b1.edge[b1.face[+z] ^ b1.face[+x]]",
+       "candidates": 1,
+       "loop": false,
+       "engineEdges": [
+        "F1:+x|F1:+z"
+       ],
+       "pointOn": "F1:+x|F1:+z",
+       "facesA": [
+        "F1:+z"
+       ],
+       "facesB": [
+        "F1:+x"
+       ],
+       "checks": [
+        {
+         "check": "geometry vs persistent names",
+         "agree": true,
+         "geometric": 1,
+         "named": 1
+        }
+       ]
+      }
+     },
+     "occt": {
+      "centroid": [
+       20,
+       0,
+       10
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       20,
+       0,
+       10
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 32000,
+    "occtVolume": 31999.999999999993,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "brepVolume": 31999.999999999996,
+    "pass": true
+   }
+  },
+  {
+   "id": "name-carried-after-cut",
+   "asym": false,
+   "names": [
+    {
+     "by": "(resolve)",
+     "name": {
+      "cause": "carried",
+      "feature": "op1",
+      "kind": "face",
+      "of": {
+       "cause": "primitive",
+       "feature": "b1",
+       "kind": "face",
+       "part": "+x"
+      }
+     },
+     "browser": {
+      "kind": "face",
+      "point": [
+       20.000000000000004,
+       0,
+       0
+      ],
+      "evidence": {
+       "name": "op1.same[b1.face[+x]]",
+       "candidates": 1,
+       "engineFace": "F1:+x",
+       "rule": "the planar face on F1:+x's plane on op1's own shape",
+       "checks": [
+        {
+         "check": "doc plane",
+         "expected": 20,
+         "got": 20.000000000000004,
+         "agree": true
+        },
+        {
+         "check": "engine persistent name",
+         "expected": "F1:+x",
+         "got": "F1:+x",
+         "agree": true
+        },
+        {
+         "check": "lift",
+         "from": "b1",
+         "to": "op1",
+         "flipped": false,
+         "plane": {
+          "n": [
+           1,
+           0,
+           0
+          ],
+          "d": 20.000000000000004
+         }
+        },
+        {
+         "check": "area vs original",
+         "ratio": 1
+        },
+        {
+         "check": "engine persistent name kept",
+         "expected": "F1:+x",
+         "got": "F1:+x",
+         "agree": true
+        }
+       ],
+       "liftedFrom": {
+        "name": "b1.face[+x]",
+        "candidates": 1,
+        "engineFace": "F1:+x",
+        "rule": "planar face with outward normal +x at the extreme along it on b1's own shape",
+        "checks": [
+         {
+          "check": "doc plane",
+          "expected": 20,
+          "got": 20.000000000000004,
+          "agree": true
+         },
+         {
+          "check": "engine persistent name",
+          "expected": "F1:+x",
+          "got": "F1:+x",
+          "agree": true
+         }
+        ]
+       },
+       "pickPoint": "own shape: centroid"
+      }
+     },
+     "occt": {
+      "centroid": [
+       20,
+       0,
+       0
+      ]
+     },
+     "brep": {
+      "kind": "face",
+      "centroid": [
+       20,
+       3.552713678800501e-15,
+       1.7763568394002505e-15
+      ]
+     },
+     "distBrowserToOcct": 3.552713678800501e-15,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 27979.429345959823,
+    "occtVolume": 27978.761403405064,
+    "faces": 7,
+    "occtFaces": 7,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0.00002387319957193586,
+    "dBbox": 1.2434497875801752e-15,
+    "dCom": 4.61458676501673e-17,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "brepVolume": 27978.76140340506,
+    "pass": true
+   }
+  },
+  {
+   "id": "name-extrude-side",
+   "asym": false,
+   "names": [
+    {
+     "by": "(resolve)",
+     "name": {
+      "cause": "swept",
+      "feature": "e1",
+      "kind": "face",
+      "from": "sk1",
+      "edge": 0
+     },
+     "browser": {
+      "kind": "face",
+      "point": [
+       20,
+       0,
+       6
+      ],
+      "evidence": {
+       "name": "e1.face[sk1.edge0]",
+       "candidates": 1,
+       "engineFace": "F2:side:l1",
+       "rule": "planar wall through sketch edge 0 lifted by the height (centroid and area match)",
+       "checks": [
+        {
+         "check": "doc wall centroid",
+         "expected": [
+          20,
+          0,
+          6
+         ],
+         "agree": true
+        }
+       ],
+       "pickPoint": "own shape: centroid"
+      }
+     },
+     "occt": {
+      "centroid": [
+       20,
+       0,
+       5.999999999999999
+      ]
+     },
+     "brep": {
+      "kind": "face",
+      "centroid": [
+       20,
+       0,
+       6.000000000000001
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 12000,
+    "occtVolume": 12000,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "brepVolume": 12000,
+    "pass": true
+   }
+  },
+  {
+   "id": "name-extrude-cap-top",
+   "asym": false,
+   "names": [
+    {
+     "by": "(resolve)",
+     "name": {
+      "cause": "cap",
+      "feature": "e1",
+      "kind": "face",
+      "end": "top"
+     },
+     "browser": {
+      "kind": "face",
+      "point": [
+       20,
+       12.499999999999998,
+       12
+      ],
+      "evidence": {
+       "name": "e1.cap[top]",
+       "candidates": 1,
+       "engineFace": "F2:top",
+       "rule": "planar face, outward normal along the sketch normal at the sketch plane + height",
+       "checks": [
+        {
+         "check": "doc plane",
+         "expected": 12,
+         "agree": true
+        }
+       ],
+       "pickPoint": "own shape: centroid"
+      }
+     },
+     "occt": {
+      "centroid": [
+       20,
+       12.5,
+       12
+      ]
+     },
+     "brep": {
+      "kind": "face",
+      "centroid": [
+       19.999999999999996,
+       12.499999999999998,
+       12
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 12000,
+    "occtVolume": 12000,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "brepVolume": 12000,
+    "pass": true
+   }
+  },
+  {
+   "id": "hole-then-round",
+   "asym": false,
+   "names": [
+    {
+     "by": "round1",
+     "name": {
+      "cause": "between",
+      "feature": "box1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "box1",
+        "kind": "face",
+        "part": "+z"
+       },
+       {
+        "cause": "primitive",
+        "feature": "box1",
+        "kind": "face",
+        "part": "-y"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       0,
+       -20,
+       10
+      ],
+      "evidence": {
+       "name": "box1.edge[box1.face[+z] ^ box1.face[-y]]",
+       "candidates": 1,
+       "loop": false,
+       "engineEdges": [
+        "F1:+z|F1:-y"
+       ],
+       "pointOn": "F1:+z|F1:-y",
+       "facesA": [
+        "F1:+z"
+       ],
+       "facesB": [
+        "F1:-y"
+       ],
+       "checks": [
+        {
+         "check": "geometry vs persistent names",
+         "agree": true,
+         "geometric": 1,
+         "named": 1
+        }
+       ],
+       "target": {
+        "body": "b_box1",
+        "candidates": 1,
+        "edges": [
+         "F1:+z|F1:-y"
+        ],
+        "point": [
+         0,
+         -20,
+         10
+        ]
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       0,
+       -20,
+       10
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       0,
+       -20,
+       10
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 30917.516092360645,
+    "occtVolume": 30917.433689706,
+    "faces": 8,
+    "occtFaces": 8,
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0.0000026652488519591557,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 5.116411265570821e-7,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "brepVolume": 30917.433689674344,
+    "pass": true
+   }
+  },
+  {
+   "id": "asym-fillet-short-edge",
+   "asym": true,
+   "names": [
+    {
+     "by": "r1",
+     "name": {
+      "cause": "between",
+      "feature": "b1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+x"
+       },
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+y"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       35,
+       8,
+       3
+      ],
+      "evidence": {
+       "name": "b1.edge[b1.face[+x] ^ b1.face[+y]]",
+       "candidates": 1,
+       "loop": false,
+       "engineEdges": [
+        "F1:+x|F1:+y"
+       ],
+       "pointOn": "F1:+x|F1:+y",
+       "facesA": [
+        "F1:+x"
+       ],
+       "facesB": [
+        "F1:+y"
+       ],
+       "checks": [
+        {
+         "check": "geometry vs persistent names",
+         "agree": true,
+         "geometric": 1,
+         "named": 1
+        }
+       ],
+       "target": {
+        "body": "b_b1",
+        "candidates": 1,
+        "edges": [
+         "F1:+x|F1:+y"
+        ],
+        "point": [
+         35,
+         8,
+         3
+        ]
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       35,
+       8,
+       3
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       35,
+       8,
+       3
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 14376.807794073191,
+    "occtVolume": 14376.823001657938,
+    "faces": 7,
+    "occtFaces": 7,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0.0000010577847933096948,
+    "dBbox": 5.921189464667501e-16,
+    "dCom": 3.8753028446136863e-7,
+    "tol": 0.0003,
+    "comTol": 0.000001,
+    "brepVolume": 14376.823001646922,
+    "pass": true
+   },
+   "control": {
+    "name": {
+     "cause": "between",
+     "feature": "b1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "b1",
+       "kind": "face",
+       "part": "-x"
+      },
+      {
+       "cause": "primitive",
+       "feature": "b1",
+       "kind": "face",
+       "part": "-y"
+      }
+     ]
+    },
+    "dVol": 0.0000010571900559078514,
+    "dBbox": 8.881784197001252e-16,
+    "dCom": 0.0012124444293063472,
+    "scorePasses": false,
+    "rejected": true
+   }
+  },
+  {
+   "id": "asym-fillet-r1",
+   "asym": true,
+   "names": [
+    {
+     "by": "r1",
+     "name": {
+      "cause": "between",
+      "feature": "b1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+x"
+       },
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+y"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       35,
+       8,
+       3
+      ],
+      "evidence": {
+       "name": "b1.edge[b1.face[+x] ^ b1.face[+y]]",
+       "candidates": 1,
+       "loop": false,
+       "engineEdges": [
+        "F1:+x|F1:+y"
+       ],
+       "pointOn": "F1:+x|F1:+y",
+       "facesA": [
+        "F1:+x"
+       ],
+       "facesB": [
+        "F1:+y"
+       ],
+       "checks": [
+        {
+         "check": "geometry vs persistent names",
+         "agree": true,
+         "geometric": 1,
+         "named": 1
+        }
+       ],
+       "target": {
+        "body": "b_b1",
+        "candidates": 1,
+        "edges": [
+         "F1:+x|F1:+y"
+        ],
+        "point": [
+         35,
+         8,
+         3
+        ]
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       35,
+       8,
+       3
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       35,
+       8,
+       3
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 14397.423086080036,
+    "occtVolume": 14397.424777964949,
+    "faces": 7,
+    "occtFaces": 7,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 1.1751302322834012e-7,
+    "dBbox": 8.881784197001252e-16,
+    "dCom": 4.477428157545969e-8,
+    "tol": 0.0003,
+    "comTol": 0.000001,
+    "brepVolume": 14397.424777960769,
+    "pass": true
+   },
+   "control": {
+    "name": {
+     "cause": "between",
+     "feature": "b1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "b1",
+       "kind": "face",
+       "part": "-x"
+      },
+      {
+       "cause": "primitive",
+       "feature": "b1",
+       "kind": "face",
+       "part": "-y"
+      }
+     ]
+    },
+    "dVol": 1.173150483019576e-7,
+    "dBbox": 1.1842378929335002e-15,
+    "dCom": 0.00013763302051462986,
+    "scorePasses": false,
+    "rejected": true
+   }
+  },
+  {
+   "id": "asym-fillet-r0p5",
+   "asym": true,
+   "names": [
+    {
+     "by": "r1",
+     "name": {
+      "cause": "between",
+      "feature": "b1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+x"
+       },
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+y"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       35,
+       8,
+       3
+      ],
+      "evidence": {
+       "name": "b1.edge[b1.face[+x] ^ b1.face[+y]]",
+       "candidates": 1,
+       "loop": false,
+       "engineEdges": [
+        "F1:+x|F1:+y"
+       ],
+       "pointOn": "F1:+x|F1:+y",
+       "facesA": [
+        "F1:+x"
+       ],
+       "facesB": [
+        "F1:+y"
+       ],
+       "checks": [
+        {
+         "check": "geometry vs persistent names",
+         "agree": true,
+         "geometric": 1,
+         "named": 1
+        }
+       ],
+       "target": {
+        "body": "b_b1",
+        "candidates": 1,
+        "edges": [
+         "F1:+x|F1:+y"
+        ],
+        "point": [
+         35,
+         8,
+         3
+        ]
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       35,
+       8,
+       3
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       35,
+       8,
+       3
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 14399.355240553044,
+    "occtVolume": 14399.356194492344,
+    "faces": 7,
+    "occtFaces": 7,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 6.624874658434217e-8,
+    "dBbox": 7.894919286223335e-16,
+    "dCom": 2.551992800183017e-8,
+    "tol": 0.0003,
+    "comTol": 0.000001,
+    "brepVolume": 14399.356194490194,
+    "pass": true
+   },
+   "control": {
+    "name": {
+     "cause": "between",
+     "feature": "b1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "b1",
+       "kind": "face",
+       "part": "-x"
+      },
+      {
+       "cause": "primitive",
+       "feature": "b1",
+       "kind": "face",
+       "part": "-y"
+      }
+     ]
+    },
+    "dVol": 6.614977056684847e-8,
+    "dBbox": 8.881784197001252e-16,
+    "dCom": 0.00003461218126606566,
+    "scorePasses": false,
+    "rejected": true
+   }
+  },
+  {
+   "id": "asym-fillet-3x-r3",
+   "asym": true,
+   "names": [
+    {
+     "by": "r1",
+     "name": {
+      "cause": "between",
+      "feature": "b1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+x"
+       },
+       {
+        "cause": "primitive",
+        "feature": "b1",
+        "kind": "face",
+        "part": "+y"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       105,
+       24,
+       9
+      ],
+      "evidence": {
+       "name": "b1.edge[b1.face[+x] ^ b1.face[+y]]",
+       "candidates": 1,
+       "loop": false,
+       "engineEdges": [
+        "F1:+x|F1:+y"
+       ],
+       "pointOn": "F1:+x|F1:+y",
+       "facesA": [
+        "F1:+x"
+       ],
+       "facesB": [
+        "F1:+y"
+       ],
+       "checks": [
+        {
+         "check": "geometry vs persistent names",
+         "agree": true,
+         "geometric": 1,
+         "named": 1
+        }
+       ],
+       "target": {
+        "body": "b_b1",
+        "candidates": 1,
+        "edges": [
+         "F1:+x|F1:+y"
+        ],
+        "point": [
+         105,
+         24,
+         9
+        ]
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       105,
+       24,
+       9
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       105,
+       24,
+       9
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 388730.42332416103,
+    "occtVolume": 388730.4690050536,
+    "faces": 7,
+    "occtFaces": 7,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 1.1751302298033682e-7,
+    "dBbox": 5.26327952414889e-16,
+    "dCom": 4.477428152939817e-8,
+    "tol": 0.0003,
+    "comTol": 0.000001,
+    "brepVolume": 388730.46900494077,
+    "pass": true
+   },
+   "control": {
+    "name": {
+     "cause": "between",
+     "feature": "b1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "b1",
+       "kind": "face",
+       "part": "-x"
+      },
+      {
+       "cause": "primitive",
+       "feature": "b1",
+       "kind": "face",
+       "part": "-y"
+      }
+     ]
+    },
+    "dVol": 1.1731504799312331e-7,
+    "dBbox": 7.894919286223335e-16,
+    "dCom": 0.0001376330205146759,
+    "scorePasses": false,
+    "rejected": true
+   }
+  },
+  {
+   "id": "asym-shell-open-side",
+   "asym": true,
+   "names": [
+    {
+     "by": "sh1",
+     "name": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+x"
+     },
+     "browser": {
+      "kind": "face",
+      "point": [
+       35,
+       -7,
+       3
+      ],
+      "evidence": {
+       "name": "b1.face[+x]",
+       "candidates": 1,
+       "engineFace": "F1:+x",
+       "rule": "planar face with outward normal +x at the extreme along it on b1's own shape",
+       "checks": [
+        {
+         "check": "doc plane",
+         "expected": 35,
+         "got": 35,
+         "agree": true
+        },
+        {
+         "check": "engine persistent name",
+         "expected": "F1:+x",
+         "got": "F1:+x",
+         "agree": true
+        }
+       ],
+       "pickPoint": "target b_b1: centroid",
+       "target": {
+        "body": "b_b1",
+        "candidates": 1,
+        "face": "F1:+x",
+        "faceIndex": 2,
+        "point": [
+         35,
+         -7,
+         3
+        ],
+        "pickSource": "centroid",
+        "centroidHit": {
+         "dist": 0,
+         "index": 2
+        },
+        "innerHit": {
+         "dist": 4.440892098500626e-16,
+         "index": 2
+        }
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       35,
+       -7,
+       3
+      ]
+     },
+     "brep": {
+      "kind": "face",
+      "centroid": [
+       35,
+       -7.0000000000000036,
+       2.999999999999999
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 6496,
+    "occtVolume": 6495.999999999996,
+    "faces": 11,
+    "occtFaces": 11,
+    "faceTypes": {
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 11
+    },
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 5.600336833577147e-16,
+    "dBbox": 0,
+    "dCom": 1.727306834419049e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "brepVolume": 6496,
+    "pass": true
+   },
+   "control": {
+    "name": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "-x"
+    },
+    "dVol": 5.600336833577147e-16,
+    "dBbox": 0,
+    "dCom": 0.0473260420865393,
+    "scorePasses": false,
+    "rejected": true
+   }
+  },
+  {
+   "id": "asym-shell-thin-3x",
+   "asym": true,
+   "names": [
+    {
+     "by": "sh1",
+     "name": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+x"
+     },
+     "browser": {
+      "kind": "face",
+      "point": [
+       105,
+       -21,
+       9
+      ],
+      "evidence": {
+       "name": "b1.face[+x]",
+       "candidates": 1,
+       "engineFace": "F1:+x",
+       "rule": "planar face with outward normal +x at the extreme along it on b1's own shape",
+       "checks": [
+        {
+         "check": "doc plane",
+         "expected": 105,
+         "got": 105,
+         "agree": true
+        },
+        {
+         "check": "engine persistent name",
+         "expected": "F1:+x",
+         "got": "F1:+x",
+         "agree": true
+        }
+       ],
+       "pickPoint": "target b_b1: centroid",
+       "target": {
+        "body": "b_b1",
+        "candidates": 1,
+        "face": "F1:+x",
+        "faceIndex": 2,
+        "point": [
+         105,
+         -21,
+         9
+        ],
+        "pickSource": "centroid",
+        "centroidHit": {
+         "dist": 0,
+         "index": 2
+        },
+        "innerHit": {
+         "dist": 0,
+         "index": 2
+        }
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       105,
+       -21,
+       9
+      ]
+     },
+     "brep": {
+      "kind": "face",
+      "centroid": [
+       105,
+       -21,
+       9
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 9978.227999999983,
+    "occtVolume": 9978.227999999937,
+    "faces": 11,
+    "occtFaces": 11,
+    "faceTypes": {
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 11
+    },
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 4.557395871155349e-15,
+    "dBbox": 0,
+    "dCom": 2.94793699740851e-15,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "brepVolume": 9978.227999999925,
+    "pass": true
+   },
+   "control": {
+    "name": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "-x"
+    },
+    "dVol": 2.7344375226932094e-15,
+    "dBbox": 0,
+    "dCom": 0.0738330454679073,
+    "scorePasses": false,
+    "rejected": true
+   }
+  },
+  {
+   "id": "asym-draft-face",
+   "asym": true,
+   "names": [
+    {
+     "by": "d1",
+     "name": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+x"
+     },
+     "browser": {
+      "kind": "face",
+      "point": [
+       35,
+       -7,
+       3
+      ],
+      "evidence": {
+       "name": "b1.face[+x]",
+       "candidates": 1,
+       "engineFace": "F1:+x",
+       "rule": "planar face with outward normal +x at the extreme along it on b1's own shape",
+       "checks": [
+        {
+         "check": "doc plane",
+         "expected": 35,
+         "got": 35,
+         "agree": true
+        },
+        {
+         "check": "engine persistent name",
+         "expected": "F1:+x",
+         "got": "F1:+x",
+         "agree": true
+        }
+       ],
+       "pickPoint": "target b_b1: centroid",
+       "target": {
+        "body": "b_b1",
+        "candidates": 1,
+        "face": "F1:+x",
+        "faceIndex": 2,
+        "point": [
+         35,
+         -7,
+         3
+        ],
+        "pickSource": "centroid",
+        "centroidHit": {
+         "dist": 0,
+         "index": 2
+        },
+        "innerHit": {
+         "dist": 4.440892098500626e-16,
+         "index": 2
+        }
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       35,
+       -7,
+       3
+      ]
+     },
+     "brep": {
+      "kind": "face",
+      "centroid": [
+       35,
+       -7.0000000000000036,
+       2.999999999999999
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 14096.431797042833,
+    "occtVolume": 14096.431797042835,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 1.290389958065449e-16,
+    "dBbox": 4.440892098500624e-16,
+    "dCom": 3.4546136688380976e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "brepVolume": 14096.431797042833,
+    "pass": true
+   },
+   "control": {
+    "name": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "-x"
+    },
+    "dVol": 1.290389958065449e-16,
+    "dBbox": 4.440892098500624e-16,
+    "dCom": 0.016281495140082772,
+    "scorePasses": false,
+    "rejected": true
+   }
+  },
+  {
+   "id": "asym-draft-1deg-3x",
+   "asym": true,
+   "names": [
+    {
+     "by": "d1",
+     "name": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+x"
+     },
+     "browser": {
+      "kind": "face",
+      "point": [
+       105,
+       -21,
+       9
+      ],
+      "evidence": {
+       "name": "b1.face[+x]",
+       "candidates": 1,
+       "engineFace": "F1:+x",
+       "rule": "planar face with outward normal +x at the extreme along it on b1's own shape",
+       "checks": [
+        {
+         "check": "doc plane",
+         "expected": 105,
+         "got": 105,
+         "agree": true
+        },
+        {
+         "check": "engine persistent name",
+         "expected": "F1:+x",
+         "got": "F1:+x",
+         "agree": true
+        }
+       ],
+       "pickPoint": "target b_b1: centroid",
+       "target": {
+        "body": "b_b1",
+        "candidates": 1,
+        "face": "F1:+x",
+        "faceIndex": 2,
+        "point": [
+         105,
+         -21,
+         9
+        ],
+        "pickSource": "centroid",
+        "centroidHit": {
+         "dist": 0,
+         "index": 2
+        },
+        "innerHit": {
+         "dist": 0,
+         "index": 2
+        }
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       105,
+       -21,
+       9
+      ]
+     },
+     "brep": {
+      "kind": "face",
+      "centroid": [
+       105,
+       -21,
+       9
+      ]
+     },
+     "distBrowserToOcct": 0,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 0,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": true
+    }
+   ],
+   "solid": {
+    "volume": 387782.0206133861,
+    "occtVolume": 387782.0206133863,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 4.50312220417509e-16,
+    "dBbox": 5.921189464667501e-16,
+    "dCom": 2.3030757792253987e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "brepVolume": 387782.02061338635,
+    "pass": true
+   },
+   "control": {
+    "name": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "-x"
+    },
+    "dVol": 0,
+    "dBbox": 1.4802973661668753e-16,
+    "dCom": 0.0020349877548967352,
+    "scorePasses": false,
+    "rejected": true
+   }
+  },
+  {
+   "id": "asym-cylinder-one-rim",
+   "asym": true,
+   "names": [
+    {
+     "by": "r1",
+     "name": {
+      "cause": "between",
+      "feature": "c1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "c1",
+        "kind": "face",
+        "part": "+z"
+       },
+       {
+        "cause": "primitive",
+        "feature": "c1",
+        "kind": "face",
+        "part": "side"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       -1.9048673471220803,
+       12.814418317895727,
+       17
+      ],
+      "evidence": {
+       "name": "c1.edge[c1.face[+z] ^ c1.face[side]]",
+       "candidates": 2,
+       "loop": true,
+       "engineEdges": [
+        "F1:side#1|F1:top",
+        "F1:side#2|F1:top"
+       ],
+       "pointOn": "F1:side#1|F1:top",
+       "facesA": [
+        "F1:top"
+       ],
+       "facesB": [
+        "F1:side#1",
+        "F1:side#2"
+       ],
+       "checks": [
+        {
+         "check": "persistent names + plane of the planar face",
+         "agree": true,
+         "named": 2
+        }
+       ],
+       "target": {
+        "body": "b_c1",
+        "candidates": 2,
+        "edges": [
+         "F1:side#1|F1:top",
+         "F1:side#2|F1:top"
+        ],
+        "point": [
+         -1.9048673471220803,
+         12.814418317895727,
+         17
+        ]
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       5.000000000000057,
+       3.000000000000001,
+       16.999999999999996
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       5,
+       3,
+       17
+      ]
+     },
+     "distBrowserToOcct": 3.794299872214038e-15,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 12,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": false
+    }
+   ],
+   "solid": {
+    "volume": 13433.641165336643,
+    "occtVolume": 13434.186897988171,
+    "faces": 4,
+    "occtFaces": 4,
+    "faceTypes": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "faceKeys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0.000040622678221758836,
+    "dBbox": 0.00003150107802748556,
+    "dCom": 2.417678299087993e-7,
+    "tol": 0.0003,
+    "comTol": 0.000001,
+    "brepVolume": 13434.186897988175,
+    "pass": true
+   },
+   "control": {
+    "name": {
+     "cause": "between",
+     "feature": "c1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "c1",
+       "kind": "face",
+       "part": "-z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "c1",
+       "kind": "face",
+       "part": "side"
+      }
+     ]
+    },
+    "dVol": 0.000040622678224737634,
+    "dBbox": 0.00003150107802728818,
+    "dCom": 0.006467556892482996,
+    "scorePasses": false,
+    "rejected": true
+   }
+  },
+  {
+   "id": "asym-cylinder-rim-r0p5",
+   "asym": true,
+   "names": [
+    {
+     "by": "r1",
+     "name": {
+      "cause": "between",
+      "feature": "c1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "c1",
+        "kind": "face",
+        "part": "+z"
+       },
+       {
+        "cause": "primitive",
+        "feature": "c1",
+        "kind": "face",
+        "part": "side"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       -1.9048673471220803,
+       12.814418317895727,
+       17
+      ],
+      "evidence": {
+       "name": "c1.edge[c1.face[+z] ^ c1.face[side]]",
+       "candidates": 2,
+       "loop": true,
+       "engineEdges": [
+        "F1:side#1|F1:top",
+        "F1:side#2|F1:top"
+       ],
+       "pointOn": "F1:side#1|F1:top",
+       "facesA": [
+        "F1:top"
+       ],
+       "facesB": [
+        "F1:side#1",
+        "F1:side#2"
+       ],
+       "checks": [
+        {
+         "check": "persistent names + plane of the planar face",
+         "agree": true,
+         "named": 2
+        }
+       ],
+       "target": {
+        "body": "b_c1",
+        "candidates": 2,
+        "edges": [
+         "F1:side#1|F1:top",
+         "F1:side#2|F1:top"
+        ],
+        "point": [
+         -1.9048673471220803,
+         12.814418317895727,
+         17
+        ]
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       5.000000000000057,
+       3.000000000000001,
+       16.999999999999996
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       5,
+       3,
+       17
+      ]
+     },
+     "distBrowserToOcct": 3.794299872214038e-15,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 12,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": false
+    }
+   ],
+   "solid": {
+    "volume": 13567.54882238512,
+    "occtVolume": 13567.672762382434,
+    "faces": 4,
+    "occtFaces": 4,
+    "faceTypes": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "faceKeys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0.0000091349488953242,
+    "dBbox": 3.1286410655846044e-7,
+    "dCom": 3.7578809056235024e-8,
+    "tol": 0.0003,
+    "comTol": 0.000001,
+    "brepVolume": 13567.672762382426,
+    "pass": true
+   },
+   "control": {
+    "name": {
+     "cause": "between",
+     "feature": "c1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "c1",
+       "kind": "face",
+       "part": "-z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "c1",
+       "kind": "face",
+       "part": "side"
+      }
+     ]
+    },
+    "dVol": 0.000009134948893715387,
+    "dBbox": 3.128641064315778e-7,
+    "dCom": 0.00019419005036323115,
+    "scorePasses": false,
+    "rejected": true
+   }
+  },
+  {
+   "id": "asym-cylinder-rim-3x-r3",
+   "asym": true,
+   "names": [
+    {
+     "by": "r1",
+     "name": {
+      "cause": "between",
+      "feature": "c1",
+      "kind": "edge",
+      "of": [
+       {
+        "cause": "primitive",
+        "feature": "c1",
+        "kind": "face",
+        "part": "+z"
+       },
+       {
+        "cause": "primitive",
+        "feature": "c1",
+        "kind": "face",
+        "part": "side"
+       }
+      ]
+     },
+     "browser": {
+      "kind": "edge",
+      "point": [
+       -5.714602041366246,
+       38.44325495368719,
+       50.99999999999999
+      ],
+      "evidence": {
+       "name": "c1.edge[c1.face[+z] ^ c1.face[side]]",
+       "candidates": 2,
+       "loop": true,
+       "engineEdges": [
+        "F1:side#1|F1:top",
+        "F1:side#2|F1:top"
+       ],
+       "pointOn": "F1:side#1|F1:top",
+       "facesA": [
+        "F1:top"
+       ],
+       "facesB": [
+        "F1:side#1",
+        "F1:side#2"
+       ],
+       "checks": [
+        {
+         "check": "persistent names + plane of the planar face",
+         "agree": true,
+         "named": 2
+        }
+       ],
+       "target": {
+        "body": "b_c1",
+        "candidates": 2,
+        "edges": [
+         "F1:side#1|F1:top",
+         "F1:side#2|F1:top"
+        ],
+        "point": [
+         -5.714602041366246,
+         38.44325495368719,
+         50.99999999999999
+        ]
+       }
+      }
+     },
+     "occt": {
+      "centroid": [
+       15.00000000000017,
+       9.000000000000002,
+       50.999999999999986
+      ]
+     },
+     "brep": {
+      "kind": "edge",
+      "centroid": [
+       15,
+       9,
+       51
+      ]
+     },
+     "distBrowserToOcct": 7.160723346098895e-15,
+     "onSameOcctEntity": true,
+     "distBrepToOcct": 36,
+     "brepCentroidIsOcctCentroid": true,
+     "browserEqualsBrepCentroid": false
+    }
+   ],
+   "solid": {
+    "volume": 366000.93512745714,
+    "occtVolume": 366006.6229981606,
+    "faces": 4,
+    "occtFaces": 4,
+    "faceTypes": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "faceKeys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    },
+    "faceOk": true,
+    "dVol": 0.00001554034912502543,
+    "dBbox": 0.00002647506302011493,
+    "dCom": 4.942252131037903e-8,
+    "tol": 0.0003,
+    "comTol": 0.000001,
+    "brepVolume": 366006.6229981608,
+    "pass": true
+   },
+   "control": {
+    "name": {
+     "cause": "between",
+     "feature": "c1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "c1",
+       "kind": "face",
+       "part": "-z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "c1",
+       "kind": "face",
+       "part": "side"
+      }
+     ]
+    },
+    "dVol": 0.00001554034912518446,
+    "dBbox": 0.000026475063020284107,
+    "dCom": 0.000764191976573292,
+    "scorePasses": false,
+    "rejected": true
+   }
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "id": "boolean-sphere-minus-box",
+ "outcome": "built",
+ "volume": 11250.224697858315,
+ "faces": 5,
+ "bbox": [
+  -15.000000000000002,
+  -15.000000000000002,
+  -14.142135882968669,
+  15.000000000000002,
+  15.000000000000002,
+  14.142135881129526
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sphere",
+  "box",
+  "combine"
+ ],
+ "scriptSource": "[{\"command\":\"solid.sphere\",\"params\":{\"radius\":15,\"center\":[0,0,0],\"body_name\":\"b_s\"}},{\"command\":\"solid.box\",\"params\":{\"length\":10,\"width\":10,\"height\":40,\"center\":[0,0,0],\"body_name\":\"b_b\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_s\",\"tools\":[\"b_b\"],\"operation\":\"cut\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

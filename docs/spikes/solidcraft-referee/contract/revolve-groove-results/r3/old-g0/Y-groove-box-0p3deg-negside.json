@@ -1,0 +1,117 @@
+[
+ {
+  "id": "Y-groove-box-0p3deg-negside",
+  "src": "const b = box(60,60,40); const s = sketch('top'); s.rect(10,10,{at:[-30,0]}); groove(s, b, 0.3);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "Y-groove-box-0p3deg-negside",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 143992.80030151177,
+    "com": [
+     0.0013787964019357298,
+     0.0000036097475107112643,
+     1.1861051630642224e-16
+    ],
+    "bbox": [
+     -30,
+     -30,
+     -20,
+     30,
+     30,
+     20
+    ],
+    "faces": 11,
+    "area": 16901.182238337067,
+    "types": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 143992.80030151177,
+    "bbox": [
+     -30,
+     -30,
+     -20,
+     30,
+     30,
+     20
+    ],
+    "faces": 11,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 20,
+   "load": [
+    30.9,
+    30.9
+   ],
+   "cpuMs": 73,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a turn of 0.3 degrees is too thin to build as a curved part here; use a turn of 1 degree or more."
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 60,
+      "width": 60,
+      "height": 40,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_box1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a turn of 0.3 degrees is too thin to build as a curved part here; use a turn of 1 degree or more.",
+    "firstRefusal": "groove1 (groove): a turn of 0.3 degrees is too thin to build as a curved part here; use a turn of 1 degree or more."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 161
+ }
+]

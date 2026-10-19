@@ -1,0 +1,26 @@
+plane-top-0                        PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+plane-top-12.5                     PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+plane-top--4                       PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+plane-front-0                      PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+plane-front-7                      PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+plane-side-0                       PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+plane-side--4                      PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+datum-plane-top-5                  PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 4.7e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+datum-plane-front-3                PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+datum-plane-side-2                 PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+datum-plane-default-offset         PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+datum-frame                        PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 4.7e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+frame-yz                           PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 4.7e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+frame-swapped                      PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 1.2e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+frame-xy-origin                    PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 4.7e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+frame-tilt45                       PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 2.2e-16 dCom 4.2e-17 dExact 1.5e-16 dBbxEx 2.2e-16 faces o/b/t 6/6/6  bodies 1
+frame-neg-u                        PASS               vol 6000.000000 occt 6000.000000 brep 6000.000000 exact 6000 dOcct 1.5e-16 dBbox 0.0e+0 dCom 2.4e-17 dExact 0.0e+0 dBbxEx 0.0e+0 faces o/b/t 6/6/6  bodies 1
+frame-nonunit-u                    SCRIPT-REFUSED      line 1: sketch()'s u has to be a unit-length direction (its length is 2, not 1). Divide it by its length -- sketches are never silently rescaled. | occt undefined brep undefined
+frame-nonorth2                     SCRIPT-REFUSED      line 1: sketch()'s u and v have to be at right angles to each other (their dot product is 0.70710678, not 0). | occt undefined brep undefined
+frame-parallel                     SCRIPT-REFUSED      line 1: sketch()'s u and v have to be at right angles to each other (their dot product is 1, not 0). | occt undefined brep undefined
+frame-offset-with-frame            SCRIPT-REFUSED      line 1: sketch({ origin, u, v }) takes no offset: the origin already says where the plane sits. | occt undefined brep undefined
+plane-bad-word                     SCRIPT-REFUSED      line 1: sketch() needs a plane word: 'top', 'front' or 'side' (or a frame { origin, u, v }). You gave it the text "bottom". | occt undefined brep undefined
+plane-offset-on-datum              SCRIPT-REFUSED      line 1: sketch(plane(...)) takes no offset: give the offset to plane(), like plane('top', 10). | occt undefined brep undefined
+plane-frame-offset                 SCRIPT-REFUSED      line 1: plane({ origin, u, v }) takes no offset: the origin already says where the plane sits. | occt undefined brep undefined
+datum-only: ["pl1:datum:noop","pl2:datum:noop"]
+wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/u4/planes.json 25

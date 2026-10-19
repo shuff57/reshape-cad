@@ -1,0 +1,178 @@
+[
+ {
+  "id": "Z-groove-join-cylprims-360",
+  "src": "const a = cylinder(40, 30); const b = cylinder(20, 20, { at: [0, 0, 15] }); const j = union(a, b); const g = sketch('top'); g.polygon([[18,0],[20,0],[20,5],[18,5]]); groove(g, j, 360);",
+  "translator": "g0",
+  "kinds": [
+   "cylinder",
+   "cylinder",
+   "combine",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "Z-groove-join-cylprims-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "cylinder",
+    "combine",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 39646.8992883032,
+    "com": [
+     7.340758288585772e-16,
+     -1.5818968197559011e-15,
+     1.5095087163232974
+    ],
+    "bbox": [
+     -20,
+     -20,
+     -15,
+     20,
+     20,
+     25
+    ],
+    "faces": 9,
+    "area": 7326.194068171399,
+    "types": {
+     "cylinder": 4,
+     "plane": 5
+    },
+    "components": {
+     "cylinder": 4,
+     "plane": 5
+    },
+    "bigCylinderComponents": 4,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 39646.89928830321,
+    "bbox": [
+     -20,
+     -20,
+     -15,
+     20,
+     20,
+     25
+    ],
+    "faces": 9,
+    "dVol": 3.670379144292886e-16,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 1496,
+   "load": [
+    16.9,
+    16.9
+   ],
+   "cpuMs": 1871,
+   "truckFeatures": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "cyl2",
+     "kind": "cylinder",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a full-turn ring cut into a round part takes a minute or more here unless its axis is the part's own axis, so it is not built; centre the ring on the axis of the round part",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": null,
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": false,
+       "curved": 2,
+       "headTypes": {
+        "cylinder": 2,
+        "plane": 3
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 20,
+       "nearest": 19.99946267481286,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.cylinder",
+     "params": {
+      "radius": 20,
+      "height": 30,
+      "base": [
+       0,
+       0,
+       -15
+      ],
+      "axis": "Z",
+      "body_name": "b_cyl1"
+     }
+    },
+    {
+     "command": "solid.cylinder",
+     "params": {
+      "radius": 10,
+      "height": 20,
+      "base": [
+       0,
+       0,
+       5
+      ],
+      "axis": "Z",
+      "body_name": "b_cyl2"
+     }
+    },
+    {
+     "command": "solid.combine",
+     "params": {
+      "target": "b_cyl1",
+      "tools": [
+       "b_cyl2"
+      ],
+      "operation": "join"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a full-turn ring cut into a round part takes a minute or more here unless its axis is the part's own axis, so it is not built; centre the ring on the axis of the round part",
+    "firstRefusal": "groove1 (groove): a full-turn ring cut into a round part takes a minute or more here unless its axis is the part's own axis, so it is not built; centre the ring on the axis of the round part"
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 1761
+ }
+]

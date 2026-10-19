@@ -1,0 +1,40 @@
+[
+ {
+  "id": "revolution__two-rects-one-sketch",
+  "src": "const sk = sketch('top'); sk.rect(4, 20, { at: [10, 10] }); sk.rect(4, 20, { at: [30, 10] }); revolve(sk, 360);",
+  "translator": "g0",
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "revolution__two-rects-one-sketch",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "invalid": "OCCT: Spin 1: sketch Sketch 1 is drawn as rows and rules, which this reference path cannot spin yet"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "revolve rev1: this sketch has 2 separate outlines, near (10.0, 10.0) mm and (30.0, 10.0) mm; a spin takes one outline, with no other shape beside it -- rev1 is shown without it."
+   },
+   "ms": 3,
+   "load": [
+    5.9,
+    5.9
+   ],
+   "cpuMs": 2,
+   "truck": {
+    "refused": "rev1 (revolve): the sketch holds more than one shape (or a hole, geom() or slot()), and a spin takes one plain outline, so draw one rect, circle or polygon per sketch."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: Spin 1: sketch Sketch 1 is drawn as rows and rules, which this reference path cannot spin yet",
+  "caseMs": 22
+ }
+]

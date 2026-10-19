@@ -1,0 +1,4 @@
+r2-cyl-needle-1-100                                   dVol 5.7e-4 dBbox 9.0e-7 dCom 1.9e-16 dAn 5.7e-4 faces 3/3
+r2-cyl-needle-2-100                                   dVol 4.5e-4 dBbox 1.8e-6 dCom 2.7e-16 dAn 4.5e-4 faces 3/3
+r2-cyl-needle-0.5-100                                 dVol 1.8e-3 dBbox 1.2e-6 dCom 2.4e-16 dAn 1.8e-3 faces 3/3
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/r2-cyl-needle/primitives-measure.json

@@ -1,0 +1,94 @@
+[
+ {
+  "id": "P-spin-800-patched",
+  "src": "const s = sketch('top'); s.rect(10,30,{at:[15,15]}); spin(s, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "P-spin-800-patched",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "occt": {
+    "volume": 6283.185307161941,
+    "com": [
+     10.971591508175145,
+     9.206258387937542,
+     15
+    ],
+    "bbox": [
+     1.736481776669302,
+     0,
+     0,
+     20,
+     19.696155060244163,
+     30
+    ],
+    "faces": 6,
+    "area": 2275.5160819145567,
+    "types": {
+     "plane": 4,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 4,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 28274.33388230814,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 4,
+    "dVol": 3.500000000012638,
+    "dBbox": 20,
+    "pass": false
+   },
+   "ms": 9,
+   "load": [
+    39,
+    39
+   ],
+   "cpuMs": 21,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "refused",
+     "refusal": "rev1 (revolve): a spin turns at most two full turns (720 degrees) either way, and 800 is more; use 360 for one full turn."
+    }
+   ],
+   "commands": [],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "rev1 (revolve): a spin turns at most two full turns (720 degrees) either way, and 800 is more; use 360 for one full turn.",
+    "firstRefusal": "rev1 (revolve): a spin turns at most two full turns (720 degrees) either way, and 800 is more; use 360 for one full turn."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 73
+ }
+]

@@ -1,0 +1,1 @@
+P-spin-800-patched                       REFUSED  occtV 6283.1853 | tr-occt dV - dBb - dCom - F o/b/t 6/4/- | brep-occt dV 3.5e+0    | TRUCK REFUSED: rev1 (revolve): a spin turns at most two full turns (720 degrees) either way, and 800 is more; use 360 for one full turn.  | ms 9 cpu 21

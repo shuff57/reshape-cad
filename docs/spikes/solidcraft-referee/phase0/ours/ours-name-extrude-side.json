@@ -1,0 +1,21 @@
+{
+ "id": "name-extrude-side",
+ "outcome": "built",
+ "volume": 12000,
+ "faces": 6,
+ "bbox": [
+  0,
+  0,
+  0,
+  40,
+  25,
+  12
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "extrude"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[40,0],[40,25],[0,25]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":12,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_e1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

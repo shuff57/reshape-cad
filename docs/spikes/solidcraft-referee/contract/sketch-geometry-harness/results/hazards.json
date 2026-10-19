@@ -1,0 +1,358 @@
+[
+ {
+  "id": "hz-pull-0-rect",
+  "feature": "pull distance",
+  "what": "pull(sk, 0) on a rectangle (OCCT oracle hangs; not run)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "OCCT not run: it does not return on this input (see cases-hazards)"
+  },
+  "brep": {
+   "refused": "extrude pull1: the pull height is 0, so there is nothing to pull -- pull1 is shown without it."
+  },
+  "curved": false,
+  "truck": {
+   "refused": "pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: extrude distance is zero",
+   "guard": null
+  },
+  "outcome": "ALL-REFUSED"
+ },
+ {
+  "id": "hz-pull-0-circle",
+  "feature": "pull distance",
+  "what": "pull(sk, 0) on a circle (OCCT oracle hangs; not run)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -5,
+       0
+      ],
+      [
+       5,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "OCCT not run: it does not return on this input (see cases-hazards)"
+  },
+  "brep": {
+   "refused": "extrude pull1: the pull height is 0, so there is nothing to pull -- pull1 is shown without it."
+  },
+  "curved": false,
+  "truck": {
+   "refused": "pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: extrude distance is zero",
+   "guard": null
+  },
+  "outcome": "ALL-REFUSED"
+ },
+ {
+  "id": "hz-pull-nan",
+  "feature": "pull distance",
+  "what": "pull(sk, NaN)",
+  "scriptErrors": [
+   "line 1: pull's height has to be a number, and you gave it NaN."
+  ],
+  "warnings": [],
+  "outcome": "SCRIPT-REFUSED"
+ },
+ {
+  "id": "hz-pull-neg-control",
+  "feature": "pull distance",
+  "what": "pull(sk, -5): negative control, builds downward",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": -5
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 499.9999999999999,
+   "bbox": [
+    -5,
+    -5,
+    -5,
+    5,
+    5,
+    0
+   ],
+   "com": [
+    0,
+    1.5543122344752196e-17,
+    -2.5
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 499.99999999999994,
+   "bbox": [
+    -5,
+    -5,
+    -5,
+    5,
+    5,
+    0
+   ],
+   "faces": 6
+  },
+  "exact": {
+   "volume": 500
+  },
+  "curved": false,
+  "truck": {
+   "volume": 500,
+   "bbox": [
+    -5,
+    -5,
+    -5,
+    5,
+    5,
+    0
+   ],
+   "com": [
+    0,
+    0,
+    -2.5
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolOcct": 2.273736754432321e-16,
+   "dBboxOcct": 0,
+   "dComOcct": 1.036208156316813e-18,
+   "comTol": 0.000001,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 1.1368683772161603e-16,
+   "dBboxBrep": 0,
+   "dVolExact": 0,
+   "occtVolExact": 2.2737367544323206e-16,
+   "brepVolExact": 1.1368683772161603e-16
+  },
+  "translatorReported": {
+   "volume": 500,
+   "bodies": 1,
+   "faces": 6
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -5,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "hz-bulge-roundtrip-volume",
+  "feature": "edge bulges",
+  "custom": true,
+  "outcome": "WRONG-SILENT",
+  "summary": {
+   "text": "const sk1 = sketch('top')\nsk1.polygon([[0, 0], [20, 0], [20, 20], [0, 20]])\nconst pull1 = extrude(sk1, 10)\n",
+   "bulgesAfter": null,
+   "errors": [],
+   "warnings": [],
+   "before": {
+    "occt": 4698.898778163558,
+    "brep": 4698.898778127518
+   },
+   "after": {
+    "occt": 3999.999999999999,
+    "brep": 3999.9999999999995
+   },
+   "volumeChange": -0.1487367170817638
+  }
+ }
+]

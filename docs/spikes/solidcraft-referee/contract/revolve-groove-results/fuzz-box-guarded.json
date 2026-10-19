@@ -1,0 +1,1406 @@
+[
+ {
+  "plane": "top",
+  "ang": 180,
+  "u0": 10,
+  "w": 1,
+  "c": 5,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(1,30,{at:[10.5,5]}); groove(s, b, 180);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31340.381171951263,
+   "faces": 10,
+   "bodies": 1
+  },
+  "ms": 2274
+ },
+ {
+  "plane": "top",
+  "ang": 135,
+  "u0": 5,
+  "w": 2,
+  "c": 10,
+  "h": 4,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(2,4,{at:[6,10]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31943.462443165405,
+   "faces": 11,
+   "bodies": 1
+  },
+  "ms": 482
+ },
+ {
+  "plane": "front",
+  "ang": 180,
+  "u0": 15,
+  "w": 6,
+  "c": 0,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(6,8,{at:[18,0]}); groove(s, b, 180);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31048.21675331375,
+   "faces": 16,
+   "bodies": 1
+  },
+  "ms": 1339
+ },
+ {
+  "plane": "side",
+  "ang": 270,
+  "u0": 5,
+  "w": 6,
+  "c": 10,
+  "h": 2,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(6,2,{at:[8,10]}); groove(s, b, 270);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31566.12186589353,
+   "faces": 13,
+   "bodies": 1
+  },
+  "ms": 893
+ },
+ {
+  "plane": "top",
+  "ang": 90,
+  "u0": 15,
+  "w": 1,
+  "c": 0,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(1,30,{at:[15.5,0]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31513.101491859965,
+   "faces": 10,
+   "bodies": 1
+  },
+  "ms": 979
+ },
+ {
+  "plane": "side",
+  "ang": 135,
+  "u0": 25,
+  "w": 1,
+  "c": 0,
+  "h": 24,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(1,24,{at:[25.5,0]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+  },
+  "ms": 2
+ },
+ {
+  "plane": "top",
+  "ang": 90,
+  "u0": 22,
+  "w": 1,
+  "c": 0,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(1,30,{at:[22.5,0]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31720.740287718498,
+   "faces": 12,
+   "bodies": 2
+  },
+  "ms": 1143
+ },
+ {
+  "plane": "side",
+  "ang": 315,
+  "u0": 20,
+  "w": 1,
+  "c": 0,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(1,12,{at:[20.5,0]}); groove(s, b, 315);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31777.880747101877,
+   "faces": 17,
+   "bodies": 1
+  },
+  "ms": 10416
+ },
+ {
+  "plane": "front",
+  "ang": 270,
+  "u0": 8,
+  "w": 6,
+  "c": 0,
+  "h": 2,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(6,2,{at:[11,0]}); groove(s, b, 270);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31539.844926484628,
+   "faces": 13,
+   "bodies": 1
+  },
+  "ms": 1275
+ },
+ {
+  "plane": "side",
+  "ang": 90,
+  "u0": 2,
+  "w": 6,
+  "c": 0,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(6,12,{at:[5,0]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31434.52491068128,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 446
+ },
+ {
+  "plane": "top",
+  "ang": 315,
+  "u0": 5,
+  "w": 1,
+  "c": -5,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(1,12,{at:[5.5,-5]}); groove(s, b, 315);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31667.428182908974,
+   "faces": 11,
+   "bodies": 1
+  },
+  "ms": 1934
+ },
+ {
+  "plane": "top",
+  "ang": 180,
+  "u0": 20,
+  "w": 4,
+  "c": -5,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(4,12,{at:[22,-5]}); groove(s, b, 180);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 30542.52859748472,
+   "faces": 13,
+   "bodies": 1
+  },
+  "ms": 14076
+ },
+ {
+  "plane": "top",
+  "ang": 45,
+  "u0": 10,
+  "w": 1,
+  "c": -5,
+  "h": 24,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(1,24,{at:[10.5,-5]}); groove(s, b, 45);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31859.818649483714,
+   "faces": 11,
+   "bodies": 1
+  },
+  "ms": 452
+ },
+ {
+  "plane": "side",
+  "ang": 360,
+  "u0": 8,
+  "w": 2,
+  "c": 10,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(2,8,{at:[9,10]}); groove(s, b, 360);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): this ring cannot be cut out of the part reliably, so the part is shown without it."
+  },
+  "ms": 422
+ },
+ {
+  "plane": "top",
+  "ang": 315,
+  "u0": 15,
+  "w": 6,
+  "c": 10,
+  "h": 2,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(6,2,{at:[18,10]}); groove(s, b, 315);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31436.261520420012,
+   "faces": 17,
+   "bodies": 1
+  },
+  "ms": 2520
+ },
+ {
+  "plane": "front",
+  "ang": 270,
+  "u0": 5,
+  "w": 2,
+  "c": 10,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(2,8,{at:[6,10]}); groove(s, b, 270);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31547.65217270721,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 355
+ },
+ {
+  "plane": "side",
+  "ang": 45,
+  "u0": 25,
+  "w": 2,
+  "c": 5,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(2,8,{at:[26,5]}); groove(s, b, 45);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+  },
+  "ms": 1
+ },
+ {
+  "plane": "top",
+  "ang": 135,
+  "u0": 10,
+  "w": 2,
+  "c": 5,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(2,12,{at:[11,5]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31429.925166226225,
+   "faces": 11,
+   "bodies": 1
+  },
+  "ms": 792
+ },
+ {
+  "plane": "front",
+  "ang": 45,
+  "u0": 25,
+  "w": 6,
+  "c": 5,
+  "h": 2,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(6,2,{at:[28,5]}); groove(s, b, 45);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+  },
+  "ms": 1
+ },
+ {
+  "plane": "side",
+  "ang": 135,
+  "u0": 20,
+  "w": 1,
+  "c": 0,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(1,8,{at:[20.5,0]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): this ring cannot be cut out of the part reliably, so the part is shown without it."
+  },
+  "ms": 1910
+ },
+ {
+  "plane": "top",
+  "ang": 360,
+  "u0": 2,
+  "w": 1,
+  "c": 5,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(1,30,{at:[2.5,5]}); groove(s, b, 360);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31685.896210753435,
+   "faces": 10,
+   "bodies": 2
+  },
+  "ms": 2329
+ },
+ {
+  "plane": "front",
+  "ang": 270,
+  "u0": 25,
+  "w": 4,
+  "c": 10,
+  "h": 24,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(4,24,{at:[27,10]}); groove(s, b, 270);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+  },
+  "ms": 2
+ },
+ {
+  "plane": "front",
+  "ang": 90,
+  "u0": 18,
+  "w": 4,
+  "c": 0,
+  "h": 2,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(4,2,{at:[20,0]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31940.833805872735,
+   "faces": 11,
+   "bodies": 1
+  },
+  "ms": 691
+ },
+ {
+  "plane": "top",
+  "ang": 45,
+  "u0": 15,
+  "w": 4,
+  "c": 5,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(4,12,{at:[17,5]}); groove(s, b, 45);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31412.58099778196,
+   "faces": 11,
+   "bodies": 1
+  },
+  "ms": 433
+ },
+ {
+  "plane": "top",
+  "ang": 270,
+  "u0": 12,
+  "w": 6,
+  "c": 5,
+  "h": 24,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(6,24,{at:[15,5]}); groove(s, b, 270);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 24790.732121005236,
+   "faces": 11,
+   "bodies": 1
+  },
+  "ms": 2192
+ },
+ {
+  "plane": "side",
+  "ang": 225,
+  "u0": 8,
+  "w": 1,
+  "c": 5,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(1,12,{at:[8.5,5]}); groove(s, b, 225);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31599.554719645108,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 196
+ },
+ {
+  "plane": "front",
+  "ang": 180,
+  "u0": 18,
+  "w": 1,
+  "c": 10,
+  "h": 2,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(1,2,{at:[18.5,10]}); groove(s, b, 180);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31957.79376327228,
+   "faces": 16,
+   "bodies": 1
+  },
+  "ms": 599
+ },
+ {
+  "plane": "side",
+  "ang": 315,
+  "u0": 22,
+  "w": 1,
+  "c": 10,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(1,30,{at:[22.5,10]}); groove(s, b, 315);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31987.508162939197,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 1824
+ },
+ {
+  "plane": "top",
+  "ang": 270,
+  "u0": 8,
+  "w": 10,
+  "c": -5,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(10,12,{at:[13,-5]}); groove(s, b, 270);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 25261.90896773528,
+   "faces": 11,
+   "bodies": 1
+  },
+  "ms": 1743
+ },
+ {
+  "plane": "top",
+  "ang": 135,
+  "u0": 22,
+  "w": 4,
+  "c": -5,
+  "h": 24,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(4,24,{at:[24,-5]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31001.28384848457,
+   "faces": 14,
+   "bodies": 1
+  },
+  "ms": 1796
+ },
+ {
+  "plane": "top",
+  "ang": 360,
+  "u0": 25,
+  "w": 4,
+  "c": -5,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(4,8,{at:[27,-5]}); groove(s, b, 360);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31637.797282085285,
+   "faces": 18,
+   "bodies": 1
+  },
+  "ms": 2062
+ },
+ {
+  "plane": "top",
+  "ang": 90,
+  "u0": 15,
+  "w": 1,
+  "c": -5,
+  "h": 4,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(1,4,{at:[15.5,-5]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31902.620100293116,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 69
+ },
+ {
+  "plane": "top",
+  "ang": 90,
+  "u0": 18,
+  "w": 6,
+  "c": 0,
+  "h": 4,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(6,4,{at:[21,0]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31496.36618164775,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 819
+ },
+ {
+  "plane": "top",
+  "ang": 135,
+  "u0": 25,
+  "w": 6,
+  "c": -5,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(6,12,{at:[28,-5]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): this ring cannot be cut out of the part reliably, so the part is shown without it."
+  },
+  "ms": 5463
+ },
+ {
+  "plane": "side",
+  "ang": 90,
+  "u0": 2,
+  "w": 1,
+  "c": 5,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(1,12,{at:[2.5,5]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31952.88074595939,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 209
+ },
+ {
+  "plane": "front",
+  "ang": 45,
+  "u0": 20,
+  "w": 10,
+  "c": 5,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(10,8,{at:[25,5]}); groove(s, b, 45);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): this ring cannot be cut out of the part reliably, so the part is shown without it."
+  },
+  "ms": 2609
+ },
+ {
+  "plane": "side",
+  "ang": 225,
+  "u0": 18,
+  "w": 1,
+  "c": 5,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(1,30,{at:[18.5,5]}); groove(s, b, 225);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31049.506517759775,
+   "faces": 16,
+   "bodies": 1
+  },
+  "ms": 2061
+ },
+ {
+  "plane": "top",
+  "ang": 90,
+  "u0": 18,
+  "w": 10,
+  "c": 10,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(10,8,{at:[23,10]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31418.10191463387,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 1049
+ },
+ {
+  "plane": "top",
+  "ang": 135,
+  "u0": 25,
+  "w": 10,
+  "c": 10,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(10,8,{at:[30,10]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): this ring cannot be cut out of the part reliably, so the part is shown without it."
+  },
+  "ms": 3234
+ },
+ {
+  "plane": "top",
+  "ang": 180,
+  "u0": 12,
+  "w": 6,
+  "c": 0,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(6,8,{at:[15,0]}); groove(s, b, 180);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 29738.436810849555,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 231
+ },
+ {
+  "plane": "front",
+  "ang": 135,
+  "u0": 15,
+  "w": 2,
+  "c": 5,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(2,12,{at:[16,5]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31740.605226292144,
+   "faces": 11,
+   "bodies": 1
+  },
+  "ms": 367
+ },
+ {
+  "plane": "top",
+  "ang": 315,
+  "u0": 2,
+  "w": 4,
+  "c": 10,
+  "h": 4,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(4,4,{at:[4,10]}); groove(s, b, 315);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31824.074892820583,
+   "faces": 11,
+   "bodies": 1
+  },
+  "ms": 1170
+ },
+ {
+  "plane": "side",
+  "ang": 360,
+  "u0": 25,
+  "w": 6,
+  "c": 10,
+  "h": 2,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(6,2,{at:[28,10]}); groove(s, b, 360);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+  },
+  "ms": 2
+ },
+ {
+  "plane": "top",
+  "ang": 270,
+  "u0": 25,
+  "w": 2,
+  "c": 0,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(2,12,{at:[26,0]}); groove(s, b, 270);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31652.997103403522,
+   "faces": 18,
+   "bodies": 1
+  },
+  "ms": 1964
+ },
+ {
+  "plane": "front",
+  "ang": 45,
+  "u0": 22,
+  "w": 1,
+  "c": 0,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(1,30,{at:[22.5,0]}); groove(s, b, 45);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31994.98512896932,
+   "faces": 9,
+   "bodies": 1
+  },
+  "ms": 578
+ },
+ {
+  "plane": "side",
+  "ang": 90,
+  "u0": 25,
+  "w": 4,
+  "c": 10,
+  "h": 24,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(4,24,{at:[27,10]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+  },
+  "ms": 1
+ },
+ {
+  "plane": "front",
+  "ang": 225,
+  "u0": 15,
+  "w": 1,
+  "c": 5,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(1,30,{at:[15.5,5]}); groove(s, b, 225);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31021.695387469532,
+   "faces": 14,
+   "bodies": 1
+  },
+  "ms": 2532
+ },
+ {
+  "plane": "side",
+  "ang": 270,
+  "u0": 8,
+  "w": 10,
+  "c": -5,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(10,30,{at:[13,-5]}); groove(s, b, 270);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 21200.858959679335,
+   "faces": 13,
+   "bodies": 1
+  },
+  "ms": 3184
+ },
+ {
+  "plane": "side",
+  "ang": 270,
+  "u0": 18,
+  "w": 1,
+  "c": 10,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(1,30,{at:[18.5,10]}); groove(s, b, 270);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31208.6325834079,
+   "faces": 14,
+   "bodies": 1
+  },
+  "ms": 2596
+ },
+ {
+  "plane": "side",
+  "ang": 270,
+  "u0": 18,
+  "w": 6,
+  "c": 10,
+  "h": 4,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(6,4,{at:[21,10]}); groove(s, b, 270);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31643.007363168697,
+   "faces": 14,
+   "bodies": 1
+  },
+  "ms": 1454
+ },
+ {
+  "plane": "front",
+  "ang": 90,
+  "u0": 2,
+  "w": 1,
+  "c": 0,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(1,12,{at:[2.5,0]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31952.88074595939,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 247
+ },
+ {
+  "plane": "side",
+  "ang": 315,
+  "u0": 22,
+  "w": 4,
+  "c": 0,
+  "h": 4,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(4,4,{at:[24,0]}); groove(s, b, 315);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31997.994051908056,
+   "faces": 15,
+   "bodies": 1
+  },
+  "ms": 1158
+ },
+ {
+  "plane": "side",
+  "ang": 180,
+  "u0": 8,
+  "w": 1,
+  "c": -5,
+  "h": 4,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(1,4,{at:[8.5,-5]}); groove(s, b, 180);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31893.20416117707,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 127
+ },
+ {
+  "plane": "front",
+  "ang": 135,
+  "u0": 18,
+  "w": 10,
+  "c": 5,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(10,30,{at:[23,5]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): this ring cannot be cut out of the part reliably, so the part is shown without it."
+  },
+  "ms": 3591
+ },
+ {
+  "plane": "top",
+  "ang": 180,
+  "u0": 5,
+  "w": 6,
+  "c": -5,
+  "h": 2,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(6,2,{at:[8,-5]}); groove(s, b, 180);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31698.44123027126,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 317
+ },
+ {
+  "plane": "front",
+  "ang": 45,
+  "u0": 2,
+  "w": 10,
+  "c": 0,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(10,8,{at:[7,0]}); groove(s, b, 45);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31560.202196829156,
+   "faces": 13,
+   "bodies": 1
+  },
+  "ms": 135
+ },
+ {
+  "plane": "side",
+  "ang": 135,
+  "u0": 20,
+  "w": 1,
+  "c": 5,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(1,30,{at:[20.5,5]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): this ring cannot be cut out of the part reliably, so the part is shown without it."
+  },
+  "ms": 4730
+ },
+ {
+  "plane": "front",
+  "ang": 270,
+  "u0": 12,
+  "w": 2,
+  "c": 0,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(2,12,{at:[13,0]}); groove(s, b, 270);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31176.76271080242,
+   "faces": 15,
+   "bodies": 1
+  },
+  "ms": 936
+ },
+ {
+  "plane": "top",
+  "ang": 135,
+  "u0": 8,
+  "w": 4,
+  "c": 5,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(4,8,{at:[10,5]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31246.179988890362,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 159
+ },
+ {
+  "plane": "side",
+  "ang": 315,
+  "u0": 8,
+  "w": 1,
+  "c": 10,
+  "h": 4,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(1,4,{at:[8.5,10]}); groove(s, b, 315);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31813.09720083358,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 231
+ },
+ {
+  "plane": "side",
+  "ang": 45,
+  "u0": 25,
+  "w": 10,
+  "c": 5,
+  "h": 4,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(10,4,{at:[30,5]}); groove(s, b, 45);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+  },
+  "ms": 1
+ },
+ {
+  "plane": "side",
+  "ang": 315,
+  "u0": 2,
+  "w": 4,
+  "c": 10,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(4,12,{at:[4,10]}); groove(s, b, 315);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 30944.447974961397,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 1127
+ },
+ {
+  "plane": "front",
+  "ang": 315,
+  "u0": 15,
+  "w": 2,
+  "c": 5,
+  "h": 24,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(2,24,{at:[16,5]}); groove(s, b, 315);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 30443.67475787214,
+   "faces": 16,
+   "bodies": 1
+  },
+  "ms": 1573
+ },
+ {
+  "plane": "top",
+  "ang": 45,
+  "u0": 22,
+  "w": 6,
+  "c": 5,
+  "h": 24,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(6,24,{at:[25,5]}); groove(s, b, 45);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31621.989365729296,
+   "faces": 10,
+   "bodies": 1
+  },
+  "ms": 615
+ },
+ {
+  "plane": "side",
+  "ang": 270,
+  "u0": 2,
+  "w": 1,
+  "c": 5,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(1,8,{at:[2.5,5]}); groove(s, b, 270);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31905.76130640143,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 589
+ },
+ {
+  "plane": "front",
+  "ang": 360,
+  "u0": 15,
+  "w": 10,
+  "c": -5,
+  "h": 4,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(10,4,{at:[20,-5]}); groove(s, b, 360);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31007.835076351515,
+   "faces": 14,
+   "bodies": 1
+  },
+  "ms": 2507
+ },
+ {
+  "plane": "front",
+  "ang": 135,
+  "u0": 22,
+  "w": 10,
+  "c": 0,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(10,8,{at:[27,0]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31998.6627011383,
+   "faces": 9,
+   "bodies": 1
+  },
+  "ms": 518
+ },
+ {
+  "plane": "side",
+  "ang": 180,
+  "u0": 25,
+  "w": 10,
+  "c": 10,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(10,12,{at:[30,10]}); groove(s, b, 180);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+  },
+  "ms": 2
+ },
+ {
+  "plane": "front",
+  "ang": 180,
+  "u0": 25,
+  "w": 2,
+  "c": 0,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(2,12,{at:[26,0]}); groove(s, b, 180);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+  },
+  "ms": 1
+ },
+ {
+  "plane": "top",
+  "ang": 90,
+  "u0": 10,
+  "w": 1,
+  "c": 5,
+  "h": 2,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(1,2,{at:[10.5,5]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31967.01362691905,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 88
+ },
+ {
+  "plane": "front",
+  "ang": 90,
+  "u0": 22,
+  "w": 1,
+  "c": 0,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(1,30,{at:[22.5,0]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31994.98512941996,
+   "faces": 9,
+   "bodies": 1
+  },
+  "ms": 439
+ },
+ {
+  "plane": "front",
+  "ang": 90,
+  "u0": 12,
+  "w": 6,
+  "c": 5,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(6,8,{at:[15,5]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31470.691525269285,
+   "faces": 11,
+   "bodies": 1
+  },
+  "ms": 725
+ },
+ {
+  "plane": "top",
+  "ang": 90,
+  "u0": 15,
+  "w": 2,
+  "c": 5,
+  "h": 2,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(2,2,{at:[16,5]}); groove(s, b, 90);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31899.478655823623,
+   "faces": 12,
+   "bodies": 1
+  },
+  "ms": 123
+ },
+ {
+  "plane": "front",
+  "ang": 360,
+  "u0": 5,
+  "w": 2,
+  "c": 0,
+  "h": 2,
+  "src": "const b = box(40,40,20); const s = sketch('front'); s.rect(2,2,{at:[6,0]}); groove(s, b, 360);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31849.227590634982,
+   "faces": 10,
+   "bodies": 1
+  },
+  "ms": 421
+ },
+ {
+  "plane": "top",
+  "ang": 45,
+  "u0": 18,
+  "w": 4,
+  "c": 5,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(4,30,{at:[20,5]}); groove(s, b, 45);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 30989.96549312348,
+   "faces": 11,
+   "bodies": 1
+  },
+  "ms": 1442
+ },
+ {
+  "plane": "side",
+  "ang": 180,
+  "u0": 25,
+  "w": 2,
+  "c": 10,
+  "h": 24,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(2,24,{at:[26,10]}); groove(s, b, 180);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+  },
+  "ms": 1
+ },
+ {
+  "plane": "top",
+  "ang": 315,
+  "u0": 22,
+  "w": 2,
+  "c": -5,
+  "h": 12,
+  "src": "const b = box(40,40,20); const s = sketch('top'); s.rect(2,12,{at:[23,-5]}); groove(s, b, 315);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 30934.831669606385,
+   "faces": 23,
+   "bodies": 1
+  },
+  "ms": 5503
+ },
+ {
+  "plane": "side",
+  "ang": 45,
+  "u0": 20,
+  "w": 2,
+  "c": 5,
+  "h": 2,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(2,2,{at:[21,5]}); groove(s, b, 45);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "refused": "groove1 (groove): this ring cannot be cut out of the part reliably, so the part is shown without it."
+  },
+  "ms": 3372
+ },
+ {
+  "plane": "side",
+  "ang": 135,
+  "u0": 12,
+  "w": 6,
+  "c": 0,
+  "h": 8,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(6,8,{at:[15,0]}); groove(s, b, 135);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 31425.69288979664,
+   "faces": 15,
+   "bodies": 1
+  },
+  "ms": 1445
+ },
+ {
+  "plane": "side",
+  "ang": 180,
+  "u0": 12,
+  "w": 6,
+  "c": 0,
+  "h": 30,
+  "src": "const b = box(40,40,20); const s = sketch('side'); s.rect(6,30,{at:[15,0]}); groove(s, b, 180);",
+  "raw": {
+   "skipped": true
+  },
+  "guarded": {
+   "vol": 28029.94282653175,
+   "faces": 16,
+   "bodies": 1
+  },
+  "ms": 2349
+ }
+]

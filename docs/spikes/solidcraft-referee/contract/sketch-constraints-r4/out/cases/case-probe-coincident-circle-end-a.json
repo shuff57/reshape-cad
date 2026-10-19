@@ -1,0 +1,28 @@
+[
+ {
+  "id": "probe-coincident-circle-end-a",
+  "feats": [
+   "rule:coincident",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "geometry 5 is a circle and has no point 'a'"
+     }
+    ]
+   }
+  },
+  "script": {
+   "thrown": "undefined is not an object (evaluating 'A.findIndex')"
+  }
+ }
+]

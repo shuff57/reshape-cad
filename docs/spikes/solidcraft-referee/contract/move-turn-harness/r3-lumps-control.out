@@ -1,0 +1,29 @@
+cut/copy-at-origin                           WRONG         box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | op1:FAIL occt=10000.000 dVol=5.0e-1 dCom=2.7e-1 f=6/12 bodies=1
+cut/x07 copy moved +20                       WRONG         box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | op1:FAIL occt=10000.000 dVol=5.0e-1 dCom=2.7e-1 f=6/12 bodies=1
+cut/tool moved (no copy)                     WRONG         op1:FAIL occt=10000.000 dVol=6.0e-1 dCom=3.3e-1 f=6/12 bodies=1
+cut/turned tool 90                           WRONG         op1:FAIL occt=8000.000 dVol=5.0e-1 dCom=3.1e-1 f=6/12 bodies=1
+cut/turned tool 45                           WRONG         op1:FAIL occt=9171.573 dVol=5.0e-1 dCom=2.8e-1 f=6/12 bodies=1
+cut-split then move result                   WRONG         box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | move2:FAIL occt=10000.000 dVol=5.0e-1 dCom=2.7e-1 f=6/12 bodies=1
+cut-split then turn result                   WRONG         box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | turn1:FAIL occt=10000.000 dVol=5.0e-1 dCom=2.1e-1 f=6/12 bodies=1
+cut-split then copy-move result              WRONG         box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | op1:FAIL occt=10000.000 dVol=5.0e-1 dCom=2.7e-1 f=6/12 bodies=1 | move2:FAIL occt=10000.000 dVol=5.0e-1 dCom=2.7e-1 f=6/12 bodies=1
+cut-split then hole                          WRONG         box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | hole1:FAIL occt=10000.000 dVol=5.1e-1 dCom=2.7e-1 f=7/12 bodies=1
+cut-split then round edge                    REFUSED-some  box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | round1:REFUSED(Round 1 is not built: it picks the edge by name on a shape that Copy 1 moved, and a name cannot be followed through a move or a turn yet -- round the )
+cut-split then mirror                        WRONG         box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | op1:FAIL occt=10000.000 dVol=5.0e-1 dCom=2.7e-1 f=6/12 bodies=1 | mir1:FAIL occt=20000.000 dVol=5.0e-1 dCom=2.6e-1 f=6/20 bodies=1
+cut-split then repeat                        WRONG         box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | pat1:FAIL occt=20000.000 dVol=5.0e-1 dCom=2.0e-1 f=12/24 bodies=1
+cut-split then join with box                 WRONG         box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | op2:FAIL occt=10320.000 dVol=4.5e-1 dCom=1.9e-1 f=16/26 bodies=1
+cut by round tool (2 pieces)                 WRONG         cyl1:PASS occt=21205.750 dVol=1.1e-4 dCom=1.1e-16 f=3/3 bodies=1 | op1:FAIL occt=6480.158 dVol=5.0e-1 dCom=3.4e-1 f=7/13 bodies=1
+cut by round tool, then move result          WRONG         cyl1:PASS occt=21205.750 dVol=1.1e-4 dCom=1.1e-16 f=3/3 bodies=1 | move2:FAIL occt=6480.158 dVol=5.0e-1 dCom=3.4e-1 f=7/13 bodies=1
+cut by round tool, then turn result          WRONG         cyl1:PASS occt=21205.750 dVol=1.1e-4 dCom=1.1e-16 f=3/3 bodies=1 | turn1:FAIL occt=6480.158 dVol=5.0e-1 dCom=2.8e-1 f=7/13 bodies=1
+cut by joined disjoint tools (3 pieces)      WRONG         op2:FAIL occt=8000.000 dVol=8.8e-1 dCom=4.3e-1 f=6/18 bodies=1
+cut by joined disjoint tools, then turn result WRONG         turn1:FAIL occt=8000.000 dVol=8.8e-1 dCom=4.3e-1 f=6/18 bodies=1
+cut by one of two copies (2 pieces; second copy stays a separate shape) WRONG         move1:PASS occt=4800.000 dVol=0.0e+0 dCom=0.0e+0 f=6/6 bodies=1 | op1:FAIL occt=10800.000 dVol=2.2e-1 dCom=1.1e-1 f=6/12 bodies=1
+pocket-split                                 WRONG         move1:FAIL occt=10000.000 dVol=5.0e-1 dCom=2.7e-1 f=6/12 bodies=1
+pocket-split then turn                       WRONG         turn1:FAIL occt=10000.000 dVol=5.0e-1 dCom=2.2e-1 f=6/12 bodies=1
+pocket-split alone                           WRONG         pocket1:FAIL occt=10000.000 dVol=5.0e-1 dCom=2.7e-1 f=6/12 bodies=1
+keep(a, two disjoint tools) 2 pieces         WRONG         op2:FAIL occt=4000.000 dVol=5.0e-1 dCom=3.8e-1 f=6/12 bodies=1
+join disjoint copy                           ALL-PASS      op1:PASS occt=24000.000 dVol=3.0e-16 dCom=6.0e-18 f=12/12 bodies=1
+join disjoint copy then move                 ALL-PASS      move2:PASS occt=24000.000 dVol=3.0e-16 dCom=1.8e-18 f=12/12 bodies=1
+join disjoint copy then turn                 ALL-PASS      turn1:PASS occt=24000.000 dVol=0.0e+0 dCom=6.5e-17 f=12/12 bodies=1
+cut (no split) by copy: control              ALL-PASS      cyl1:PASS occt=376.991 dVol=1.7e-4 dCom=1.8e-16 f=3/3 bodies=1 | op1:PASS occt=11874.336 dVol=1.8e-6 dCom=1.4e-7 f=7/7 bodies=1
+cut by overlapping copies 1 piece: control   ALL-PASS      box2:PASS occt=2000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | op1:PASS occt=11000.000 dVol=0.0e+0 dCom=4.2e-18 f=10/10 bodies=1
+WRONG scenarios: 22

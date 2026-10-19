@@ -1,0 +1,29 @@
+[
+ {
+  "id": "rect-reference-distanceX-zero",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is a reference distanceX of 0; solidcraft has no reference form of a point-pair level constraint"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ }
+]

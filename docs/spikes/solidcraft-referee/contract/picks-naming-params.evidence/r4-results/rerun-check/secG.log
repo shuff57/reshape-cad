@@ -1,0 +1,291 @@
+box+turn+whole round           box1_width             40 -> 50               rt-ok PASS dVol 7.0e-6 dCOM 7.2e-11 
+box+turn+whole round           box1_depth             30 -> 37.5             rt-ok PASS dVol 6.8e-6 dCOM 6.4e-11 
+box+turn+whole round           box1_height            20 -> 25               rt-ok PASS dVol 6.6e-6 dCOM 5.0e-11 
+box+turn+whole round           box1_x                 5 -> 8                 rt-ok PASS dVol 7.8e-6 dCOM 6.5e-11 
+box+turn+whole round           box1_y                 -3 -> 0                rt-ok PASS dVol 7.8e-6 dCOM 7.3e-11 
+box+turn+whole round           box1_z                 2 -> 5                 rt-ok PASS dVol 7.8e-6 dCOM 7.5e-11 
+box+turn+whole round           box1_round             2 -> 2.5               rt-ok PASS dVol 1.2e-5 dCOM 7.5e-11 
+box+turn+whole round           box1_rx                0 -> 10                rt-ok PASS dVol 7.8e-6 dCOM 5.6e-11 
+box+turn+whole round           box1_ry                0 -> 10                rt-ok PASS dVol 7.8e-6 dCOM 5.5e-11 
+box+turn+whole round           box1_rz                15 -> 25               rt-ok PASS dVol 7.8e-6 dCOM 6.2e-11 
+cylinder+round+turn            cyl1_radius            20 -> 25               rt-ok PASS dVol 3.1e-5 dCOM 4.0e-11 
+cylinder+round+turn            cyl1_height            30 -> 37.5             rt-ok PASS dVol 3.6e-5 dCOM 4.1e-11 
+cylinder+round+turn            cyl1_x                 4 -> 7                 rt-ok PASS dVol 3.6e-5 dCOM 7.8e-11 
+cylinder+round+turn            cyl1_y                 -2 -> 1                rt-ok PASS dVol 3.6e-5 dCOM 4.4e-11 
+cylinder+round+turn            cyl1_z                 1 -> 4                 rt-ok PASS dVol 3.6e-5 dCOM 4.9e-11 
+cylinder+round+turn            cyl1_round             2 -> 2.5               rt-ok PASS dVol 4.0e-5 dCOM 4.4e-11 
+cylinder+round+turn            cyl1_rx                10 -> 20               rt-ok PASS dVol 3.6e-5 dCOM 4.3e-11 
+cylinder+round+turn            cyl1_ry                0 -> 10                rt-ok PASS dVol 3.6e-5 dCOM 4.1e-11 
+cylinder+round+turn            cyl1_rz                0 -> 10                rt-ok PASS dVol 3.6e-5 dCOM 4.0e-11 
+cone+turn                      cone1_radius           20 -> 25               rt-ok PASS dVol 1.8e-4 dCOM 9.9e-17 
+cone+turn                      cone1_height           30 -> 37.5             rt-ok PASS dVol 1.8e-4 dCOM 7.3e-17 
+cone+turn                      cone1_x                4 -> 7                 rt-ok PASS dVol 1.8e-4 dCOM 4.2e-17 
+cone+turn                      cone1_y                -2 -> 1                rt-ok PASS dVol 1.8e-4 dCOM 1.3e-16 
+cone+turn                      cone1_z                1 -> 4                 rt-ok PASS dVol 1.8e-4 dCOM 3.7e-17 
+cone+turn                      cone1_rx               0 -> 10                rt-ok PASS dVol 1.8e-4 dCOM 1.3e-16 
+cone+turn                      cone1_ry               20 -> 30               rt-ok PASS dVol 1.8e-4 dCOM 7.1e-17 
+cone+turn                      cone1_rz               0 -> 10                rt-ok PASS dVol 1.8e-4 dCOM 8.4e-17 
+ring                           ring1_ring             40 -> 50               rt-ok PASS dVol 1.5e-4 dCOM 6.8e-7 
+ring                           ring1_tube             10 -> 12.5             rt-ok PASS dVol 1.5e-4 dCOM 7.8e-7 
+ring                           ring1_x                3 -> 6                 rt-ok PASS dVol 1.5e-4 dCOM 8.0e-7 
+ring                           ring1_y                2 -> 5                 rt-ok PASS dVol 1.5e-4 dCOM 8.0e-7 
+ring                           ring1_z                1 -> 4                 rt-ok FAIL dVol 1.5e-4 dCOM 8.0e-7   <<<<
+sphere                         ball1_radius           30 -> 37.5             rt-ok PASS dVol 7.1e-5 dCOM 4.2e-13 
+sphere                         ball1_x                3 -> 6                 rt-ok PASS dVol 7.1e-5 dCOM 5.2e-13 
+sphere                         ball1_y                2 -> 5                 rt-ok PASS dVol 7.1e-5 dCOM 1.3e-12 
+sphere                         ball1_z                1 -> 4                 rt-ok PASS dVol 7.1e-5 dCOM 1.0e-12 
+prism+turn                     prism1_radius          30 -> 37.5             rt-ok PASS dVol 2.0e-16 dCOM 8.1e-18 
+prism+turn                     prism1_height          20 -> 25               rt-ok PASS dVol 0.0e+0 dCOM 2.8e-17 
+prism+turn                     prism1_x               applyParam changed nothing
+prism+turn                     prism1_y               applyParam changed nothing
+prism+turn                     prism1_z               applyParam changed nothing
+prism+turn                     turn1_rx               0 -> 10                rt-ok PASS dVol 1.6e-16 dCOM 3.3e-17 
+prism+turn                     turn1_ry               0 -> 10                rt-ok PASS dVol 1.6e-16 dCOM 4.4e-17 
+prism+turn                     turn1_rz               20 -> 30               rt-ok PASS dVol 0.0e+0 dCOM 1.5e-17 
+wedge+turn                     wedge1_width           30 -> 37.5             rt-ok PASS dVol 0.0e+0 dCOM 7.1e-17 
+wedge+turn                     wedge1_depth           20 -> 25               rt-ok PASS dVol 0.0e+0 dCOM 6.9e-17 
+wedge+turn                     wedge1_height          10 -> 12.5             rt-ok PASS dVol 3.6e-16 dCOM 5.3e-17 
+wedge+turn                     wedge1_x               applyParam changed nothing
+wedge+turn                     wedge1_y               applyParam changed nothing
+wedge+turn                     wedge1_z               applyParam changed nothing
+wedge+turn                     turn1_rx               0 -> 10                rt-ok PASS dVol 0.0e+0 dCOM 3.1e-17 
+wedge+turn                     turn1_ry               0 -> 10                rt-ok PASS dVol 3.0e-16 dCOM 4.7e-17 
+wedge+turn                     turn1_rz               20 -> 30               rt-ok PASS dVol 0.0e+0 dCOM 1.1e-17 
+plate sketch extrude pocket    sk1_p0u                0 -> 3                 rt-ok PASS dVol 0.0e+0 dCOM 0.0e+0 
+plate sketch extrude pocket    sk1_p0v                0 -> 3                 rt-ok PASS dVol 3.3e-16 dCOM 1.4e-16 
+plate sketch extrude pocket    sk1_p1u                40 -> 43               rt-ok PASS dVol 1.5e-16 dCOM 6.8e-17 
+plate sketch extrude pocket    sk1_p1v                0 -> 3                 rt-ok PASS dVol 0.0e+0 dCOM 7.1e-17 
+plate sketch extrude pocket    sk1_p2u                40 -> 43               rt-ok PASS dVol 9.1e-16 dCOM 3.4e-16 
+plate sketch extrude pocket    sk1_p2v                30 -> 33               rt-ok PASS dVol 2.1e-13 dCOM 4.7e-14 
+plate sketch extrude pocket    sk1_p3u                0 -> 3                 rt-ok PASS dVol 1.6e-16 dCOM 1.1e-16 
+plate sketch extrude pocket    sk1_p3v                30 -> 33               rt-ok PASS dVol 2.1e-13 dCOM 4.8e-14 
+plate sketch extrude pocket    sk1_offset             0 -> 3                 rt-ok PASS dVol 1.6e-16 dCOM 2.8e-16 
+plate sketch extrude pocket    pull1_height           10 -> 12.5             rt-ok PASS dVol 1.2e-16 dCOM 6.9e-17 
+plate sketch extrude pocket    sk2_p0u                15 -> 18               rt-ok PASS dVol 1.6e-16 dCOM 7.0e-17 
+plate sketch extrude pocket    sk2_p0v                10 -> 13               rt-ok PASS dVol 3.1e-16 dCOM 2.1e-16 
+plate sketch extrude pocket    sk2_p1u                25 -> 28               rt-ok PASS dVol 1.6e-16 dCOM 7.0e-17 
+plate sketch extrude pocket    sk2_p1v                10 -> 13               rt-ok PASS dVol 6.2e-16 dCOM 2.1e-16 
+plate sketch extrude pocket    sk2_p2u                25 -> 28               rt-ok PASS dVol 6.3e-16 dCOM 1.4e-16 
+plate sketch extrude pocket    sk2_p2v                20 -> 23               rt-ok PASS dVol 1.6e-16 dCOM 0.0e+0 
+plate sketch extrude pocket    sk2_p3u                15 -> 18               rt-ok PASS dVol 4.7e-16 dCOM 1.4e-16 
+plate sketch extrude pocket    sk2_p3v                20 -> 23               rt-ok PASS dVol 1.6e-16 dCOM 1.4e-16 
+plate sketch extrude pocket    sk2_offset             10 -> 13               rt-ok PASS dVol 1.5e-16 dCOM 1.4e-16 
+plate sketch extrude pocket    pocket1_depth          4 -> 5                 rt-ok PASS dVol 3.2e-16 dCOM 1.4e-16 
+circle sketch extrude          sk1_across             20 -> 25               rt-ok PASS dVol 8.7e-5 dCOM 1.0e-10 
+circle sketch extrude          sk1_x                  5 -> 8                 rt-ok PASS dVol 1.1e-4 dCOM 2.0e-10 
+circle sketch extrude          sk1_y                  3 -> 6                 rt-ok PASS dVol 1.1e-4 dCOM 1.3e-10 
+circle sketch extrude          sk1_offset             0 -> 3                 rt-ok PASS dVol 1.1e-4 dCOM 1.3e-10 
+circle sketch extrude          pull1_height           15 -> 18.75            rt-ok PASS dVol 1.1e-4 dCOM 1.2e-10 
+rounded rect sketch extrude    sk1_p0u                0 -> 3                 rt-ok PASS dVol 2.0e-6 dCOM 7.0e-7 
+rounded rect sketch extrude    sk1_p0v                0 -> 3                 rt-ok PASS dVol 2.0e-6 dCOM 7.3e-7 
+rounded rect sketch extrude    sk1_p1u                40 -> 43               rt-ok PASS dVol 1.8e-6 dCOM 6.7e-7 
+rounded rect sketch extrude    sk1_p1v                0 -> 3                 rt-ok PASS dVol 2.0e-6 dCOM 7.3e-7 
+rounded rect sketch extrude    sk1_p2u                40 -> 43               rt-ok PASS dVol 1.8e-6 dCOM 6.7e-7 
+rounded rect sketch extrude    sk1_p2v                30 -> 33               rt-ok PASS dVol 1.8e-6 dCOM 6.4e-7 
+rounded rect sketch extrude    sk1_p3u                0 -> 3                 rt-ok PASS dVol 2.0e-6 dCOM 7.0e-7 
+rounded rect sketch extrude    sk1_p3v                30 -> 33               rt-ok PASS dVol 1.8e-6 dCOM 6.4e-7 
+rounded rect sketch extrude    sk1_r0                 4 -> 5                 rt-ok PASS dVol 2.9e-6 dCOM 1.0e-6 
+rounded rect sketch extrude    sk1_offset             0 -> 3                 rt-ok PASS dVol 1.9e-6 dCOM 6.8e-7 
+rounded rect sketch extrude    pull1_height           10 -> 12.5             rt-ok PASS dVol 1.9e-6 dCOM 6.7e-7 
+polygon sketch extrude         sk1_p0u                0 -> 3                 rt-ok PASS dVol 1.2e-16 dCOM 7.4e-17 
+polygon sketch extrude         sk1_p0v                0 -> 3                 rt-ok PASS dVol 0.0e+0 dCOM 3.7e-17 
+polygon sketch extrude         sk1_p1u                40 -> 43               rt-ok PASS dVol 0.0e+0 dCOM 7.0e-17 
+polygon sketch extrude         sk1_p1v                0 -> 3                 rt-ok PASS dVol 0.0e+0 dCOM 3.7e-17 
+polygon sketch extrude         sk1_p2u                30 -> 33               rt-ok PASS dVol 0.0e+0 dCOM 7.4e-17 
+polygon sketch extrude         sk1_p2v                25 -> 28               rt-ok PASS dVol 4.2e-16 dCOM 3.6e-17 
+polygon sketch extrude         sk1_p3u                0 -> 3                 rt-ok PASS dVol 0.0e+0 dCOM 7.4e-17 
+polygon sketch extrude         sk1_p3v                20 -> 23               rt-ok PASS dVol 0.0e+0 dCOM 7.4e-17 
+polygon sketch extrude         sk1_offset             0 -> 3                 rt-ok PASS dVol 2.3e-16 dCOM 0.0e+0 
+polygon sketch extrude         pull1_height           10 -> 12.5             rt-ok PASS dVol 3.6e-16 dCOM 0.0e+0 
+revolve                        sk1_p0u                5 -> 8                 rt-ok PASS dVol 9.8e-5 dCOM 2.5e-6 
+revolve                        sk1_p0v                0 -> 3                 rt-ok PASS dVol 1.0e-4 dCOM 2.4e-6 
+revolve                        sk1_p1u                15 -> 18               rt-ok PASS dVol 4.7e-5 dCOM 1.4e-6 
+revolve                        sk1_p1v                0 -> 3                 rt-ok PASS dVol 9.0e-5 dCOM 2.3e-6 
+revolve                        sk1_p2u                15 -> 18               rt-ok PASS dVol 4.8e-5 dCOM 1.4e-6 
+revolve                        sk1_p2v                20 -> 23               rt-ok PASS dVol 1.0e-4 dCOM 2.4e-6 
+revolve                        sk1_p3u                5 -> 8                 rt-ok PASS dVol 9.8e-5 dCOM 2.5e-6 
+revolve                        sk1_p3v                20 -> 23               rt-ok PASS dVol 9.3e-5 dCOM 2.3e-6 
+revolve                        sk1_offset             0 -> 3                 rt-ok PASS dVol 9.7e-5 dCOM 2.4e-6 
+revolve                        rev1_angle             270 -> 280             rt-ok PASS dVol 1.0e-4 dCOM 2.5e-6 
+groove                         box1_width             40 -> 50               rt-ok PASS dVol 2.1e-6 dCOM 5.6e-7 
+groove                         box1_depth             40 -> 50               rt-ok PASS dVol 3.0e-6 dCOM 8.4e-7 
+groove                         box1_height            20 -> 25               rt-ok PASS dVol 2.1e-6 dCOM 6.1e-7 
+groove                         box1_x                 0 -> 3                 rt-ok PASS dVol 2.7e-6 dCOM 7.9e-7 
+groove                         box1_y                 0 -> 3                 rt-ok PASS dVol 3.7e-6 dCOM 9.9e-7 
+groove                         box1_z                 0 -> 3                 rt-ok PASS dVol 2.0e-6 dCOM 5.9e-7 
+groove                         sk1_p0u                0 -> 3                 rt-ok REFUSED(refs also refuse) groove1 is not built: these two shapes touch or cross in a way that cannot be cut yet -- change their sizes or positions.   <<<<
+groove                         sk1_p0v                15 -> 18               rt-ok PASS dVol 1.3e-6 dCOM 4.0e-7 
+groove                         sk1_p1u                8 -> 11                rt-ok PASS dVol 1.2e-6 dCOM 3.5e-7 
+groove                         sk1_p1v                15 -> 18               rt-ok PASS dVol 9.9e-7 dCOM 3.1e-7 
+groove                         sk1_p2u                8 -> 11                rt-ok PASS dVol 1.1e-6 dCOM 3.2e-7 
+groove                         sk1_p2v                22 -> 25               rt-ok PASS dVol 1.6e-6 dCOM 4.9e-7 
+groove                         sk1_p3u                0 -> 3                 rt-ok REFUSED(refs also refuse) groove1 is not built: these two shapes touch or cross in a way that cannot be cut yet -- change their sizes or positions.   <<<<
+groove                         sk1_p3v                22 -> 25               rt-ok PASS dVol 1.6e-6 dCOM 4.9e-7 
+groove                         sk1_offset             0 -> 3                 rt-ok PASS dVol 1.1e-6 dCOM 3.3e-7 
+groove                         groove1_angle          180 -> 190             rt-ok PASS dVol 2.9e-6 dCOM 8.5e-7 
+hole                           box1_width             40 -> 50               rt-ok PASS dVol 1.6e-6 dCOM 1.3e-7 
+hole                           box1_depth             30 -> 37.5             rt-ok PASS dVol 1.6e-6 dCOM 1.4e-7 
+hole                           box1_height            20 -> 25               rt-ok PASS dVol 1.6e-6 dCOM 1.4e-7 
+hole                           box1_x                 5 -> 8                 rt-ok PASS dVol 2.0e-6 dCOM 1.9e-7 
+hole                           box1_y                 -3 -> 0                rt-ok PASS dVol 2.0e-6 dCOM 1.9e-7 
+hole                           box1_z                 2 -> 5                 rt-ok PASS dVol 2.0e-6 dCOM 1.9e-7 
+hole                           hole1_diameter         6 -> 7.5               rt-ok PASS dVol 3.1e-6 dCOM 2.9e-7 
+hole                           hole1_depth            10 -> 12.5             rt-ok PASS dVol 2.5e-6 dCOM 1.8e-7 
+hole                           hole1_x                3 -> 6                 rt-ok PASS dVol 2.0e-6 dCOM 2.2e-7 
+hole                           hole1_y                2 -> 5                 rt-ok PASS dVol 2.0e-6 dCOM 1.9e-7 
+hole counterbore               box1_width             40 -> 50               rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole counterbore               box1_depth             30 -> 37.5             rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole counterbore               box1_height            20 -> 25               rt-ok REFUSED(refs also refuse) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole counterbore               box1_x                 5 -> 8                 rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole counterbore               box1_y                 -3 -> 0                rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole counterbore               box1_z                 2 -> 5                 rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole counterbore               hole1_diameter         6 -> 7.5               rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole counterbore               hole1_depth            22 -> 27.5             rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole counterbore               hole1_x                0 -> 3                 rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole counterbore               hole1_y                0 -> 3                 rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole counterbore               hole1_counterboreAcross 12 -> 13               rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole counterbore               hole1_counterboreDeep  4 -> 5                 rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole countersink               box1_width             40 -> 50               rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole countersink               box1_depth             30 -> 37.5             rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole countersink               box1_height            20 -> 25               rt-ok REFUSED(refs also refuse) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole countersink               box1_x                 5 -> 8                 rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole countersink               box1_y                 -3 -> 0                rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole countersink               box1_z                 2 -> 5                 rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole countersink               hole1_diameter         6 -> 7.5               rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole countersink               hole1_depth            22 -> 27.5             rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole countersink               hole1_x                0 -> 3                 rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole countersink               hole1_y                0 -> 3                 rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole countersink               hole1_countersinkAcross 12 -> 13               rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+hole countersink               hole1_countersinkAngle 90 -> 100              rt-ok REFUSED(refs build) hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole.   <<<<
+holes corners                  box1_width             50 -> 62.5             rt-ok PASS dVol 5.4e-6 dCOM 3.4e-16 
+holes corners                  box1_depth             40 -> 50               rt-ok PASS dVol 5.4e-6 dCOM 3.6e-16 
+holes corners                  box1_height            20 -> 25               rt-ok PASS dVol 5.9e-6 dCOM 2.1e-16 
+holes corners                  box1_x                 5 -> 8                 rt-ok PASS dVol 6.8e-6 dCOM 4.8e-16 
+holes corners                  box1_y                 -3 -> 0                rt-ok PASS dVol 6.8e-6 dCOM 3.0e-16 
+holes corners                  box1_z                 2 -> 5                 rt-ok PASS dVol 6.8e-6 dCOM 7.4e-16 
+holes corners                  hole1_diameter         5 -> 6.25              rt-ok PASS dVol 1.1e-5 dCOM 6.0e-16 
+holes corners                  hole1_depth            22 -> 27.5             rt-ok PASS dVol 6.8e-6 dCOM 5.3e-16 
+holes corners                  hole1_x                0 -> 3                 rt-ok PASS dVol 6.8e-6 dCOM 3.2e-7 
+holes corners                  hole1_y                0 -> 3                 rt-ok PASS dVol 6.8e-6 dCOM 3.2e-7 
+holes corners                  hole1_dx               10 -> 12.5             rt-ok PASS dVol 6.8e-6 dCOM 4.2e-16 
+holes corners                  hole1_dy               10 -> 12.5             rt-ok PASS dVol 6.8e-6 dCOM 4.1e-16 
+hollow                         box1_width             40 -> 50               rt-ok PASS dVol 6.4e-16 dCOM 2.9e-17 
+hollow                         box1_depth             30 -> 37.5             rt-ok PASS dVol 2.2e-16 dCOM 3.0e-17 
+hollow                         box1_height            20 -> 25               rt-ok PASS dVol 4.3e-16 dCOM 3.2e-17 
+hollow                         box1_x                 5 -> 8                 rt-ok PASS dVol 1.3e-16 dCOM 1.2e-16 
+hollow                         box1_y                 -3 -> 0                rt-ok PASS dVol 5.1e-16 dCOM 6.6e-17 
+hollow                         box1_z                 2 -> 5                 rt-ok PASS dVol 3.8e-16 dCOM 9.9e-17 
+hollow                         shell1_thickness       2 -> 2.5               rt-ok PASS dVol 4.2e-16 dCOM 4.9e-17 
+round edge                     box1_width             40 -> 50               rt-ok PASS dVol 5.6e-7 dCOM 2.2e-7 
+round edge                     box1_depth             30 -> 37.5             rt-ok PASS dVol 7.0e-7 dCOM 2.3e-7 
+round edge                     box1_height            20 -> 25               rt-ok PASS dVol 5.6e-7 dCOM 1.9e-7 
+round edge                     box1_x                 5 -> 8                 rt-ok PASS dVol 7.0e-7 dCOM 2.5e-7 
+round edge                     box1_y                 -3 -> 0                rt-ok PASS dVol 7.0e-7 dCOM 2.5e-7 
+round edge                     box1_z                 2 -> 5                 rt-ok PASS dVol 7.0e-7 dCOM 2.5e-7 
+round edge                     round1_size            2 -> 2.5               rt-ok PASS dVol 1.1e-6 dCOM 3.9e-7 
+bevel edge                     box1_width             40 -> 50               rt-ok PASS dVol 1.2e-16 dCOM 2.2e-17 
+bevel edge                     box1_depth             30 -> 37.5             rt-ok PASS dVol 2.4e-16 dCOM 3.0e-17 
+bevel edge                     box1_height            20 -> 25               rt-ok PASS dVol 2.4e-16 dCOM 4.8e-17 
+bevel edge                     box1_x                 5 -> 8                 rt-ok PASS dVol 1.5e-16 dCOM 1.6e-17 
+bevel edge                     box1_y                 -3 -> 0                rt-ok PASS dVol 1.5e-16 dCOM 3.3e-17 
+bevel edge                     box1_z                 2 -> 5                 rt-ok PASS dVol 1.5e-16 dCOM 3.3e-17 
+bevel edge                     bevel1_size            2 -> 2.5               rt-ok PASS dVol 0.0e+0 dCOM 3.3e-17 
+draft face                     box1_width             40 -> 50               rt-ok PASS dVol 1.2e-16 dCOM 2.1e-17 
+draft face                     box1_depth             30 -> 37.5             rt-ok PASS dVol 2.4e-16 dCOM 5.3e-17 
+draft face                     box1_height            20 -> 25               rt-ok PASS dVol 3.7e-16 dCOM 3.9e-17 
+draft face                     box1_x                 5 -> 8                 rt-ok PASS dVol 4.6e-16 dCOM 1.5e-16 
+draft face                     box1_y                 -3 -> 0                rt-ok PASS dVol 1.5e-16 dCOM 1.1e-16 
+draft face                     box1_z                 2 -> 5                 rt-ok PASS dVol 3.1e-16 dCOM 4.9e-17 
+draft face                     draft1_angle           5 -> 15                rt-ok PASS dVol 3.1e-16 dCOM 8.0e-17 
+move                           box1_width             40 -> 50               rt-ok PASS dVol 1.2e-16 dCOM 2.9e-17 
+move                           box1_depth             30 -> 37.5             rt-ok PASS dVol 1.2e-16 dCOM 1.2e-16 
+move                           box1_height            20 -> 25               rt-ok PASS dVol 1.2e-16 dCOM 6.4e-17 
+move                           box1_x                 0 -> 3                 rt-ok PASS dVol 1.5e-16 dCOM 6.6e-17 
+move                           box1_y                 0 -> 3                 rt-ok PASS dVol 1.5e-16 dCOM 6.6e-17 
+move                           box1_z                 0 -> 3                 rt-ok PASS dVol 1.5e-16 dCOM 6.6e-17 
+move                           move1_x                10 -> 13               rt-ok PASS dVol 1.5e-16 dCOM 6.6e-17 
+move                           move1_y                5 -> 8                 rt-ok PASS dVol 1.5e-16 dCOM 6.6e-17 
+move                           move1_z                3 -> 6                 rt-ok PASS dVol 1.5e-16 dCOM 6.6e-17 
+turn of built part             box1_width             40 -> 50               rt-ok PASS dVol 3.2e-6 dCOM 5.0e-17 
+turn of built part             box1_depth             30 -> 37.5             rt-ok PASS dVol 3.2e-6 dCOM 1.5e-17 
+turn of built part             box1_height            20 -> 25               rt-ok PASS dVol 3.5e-6 dCOM 1.8e-17 
+turn of built part             box1_x                 0 -> 3                 rt-ok PASS dVol 4.0e-6 dCOM 8.4e-17 
+turn of built part             box1_y                 0 -> 3                 rt-ok PASS dVol 4.0e-6 dCOM 1.0e-16 
+turn of built part             box1_z                 0 -> 3                 rt-ok PASS dVol 4.0e-6 dCOM 2.7e-16 
+turn of built part             hole1_diameter         6 -> 7.5               rt-ok PASS dVol 6.3e-6 dCOM 1.2e-17 
+turn of built part             hole1_depth            22 -> 27.5             rt-ok PASS dVol 4.0e-6 dCOM 3.2e-17 
+turn of built part             hole1_x                0 -> 3                 rt-ok PASS dVol 4.0e-6 dCOM 1.6e-7 
+turn of built part             hole1_y                0 -> 3                 rt-ok PASS dVol 4.0e-6 dCOM 1.6e-7 
+turn of built part             turn1_rx               0 -> 10                rt-ok PASS dVol 4.0e-6 dCOM 3.0e-17 
+turn of built part             turn1_ry               0 -> 10                rt-ok PASS dVol 4.0e-6 dCOM 2.0e-17 
+turn of built part             turn1_rz               25 -> 35               rt-ok PASS dVol 4.0e-6 dCOM 2.1e-17 
+repeat linear                  box1_width             10 -> 12.5             rt-ok PASS dVol 3.6e-16 dCOM 4.0e-17 
+repeat linear                  box1_depth             10 -> 12.5             rt-ok PASS dVol 2.4e-16 dCOM 2.1e-18 
+repeat linear                  box1_height            10 -> 12.5             rt-ok PASS dVol 2.4e-16 dCOM 1.2e-16 
+repeat linear                  box1_x                 0 -> 3                 rt-ok PASS dVol 3.0e-16 dCOM 3.8e-18 
+repeat linear                  box1_y                 0 -> 3                 rt-ok PASS dVol 3.0e-16 dCOM 4.2e-17 
+repeat linear                  box1_z                 0 -> 3                 rt-ok PASS dVol 3.0e-16 dCOM 4.2e-17 
+repeat linear                  pat1_count             3 -> 4                 rt-ok PASS dVol 2.3e-16 dCOM 4.9e-18 
+repeat linear                  pat1_stepx             15 -> 18               rt-ok PASS dVol 0.0e+0 dCOM 4.7e-18 
+repeat linear                  pat1_stepy             0 -> 3                 rt-ok PASS dVol 3.0e-16 dCOM 8.0e-17 
+repeat linear                  pat1_stepz             0 -> 3                 rt-ok PASS dVol 3.0e-16 dCOM 1.2e-16 
+repeatAround                   box1_width             10 -> 12.5             rt-ok PASS dVol 1.8e-16 dCOM 1.1e-17 
+repeatAround                   box1_depth             10 -> 12.5             rt-ok PASS dVol 0.0e+0 dCOM 1.0e-17 
+repeatAround                   box1_height            10 -> 12.5             rt-ok PASS dVol 1.8e-16 dCOM 5.1e-18 
+repeatAround                   box1_x                 20 -> 23               rt-ok PASS dVol 0.0e+0 dCOM 1.3e-17 
+repeatAround                   box1_y                 0 -> 3                 rt-ok PASS dVol 1.1e-16 dCOM 1.2e-17 
+repeatAround                   box1_z                 0 -> 3                 rt-ok PASS dVol 2.3e-16 dCOM 8.0e-18 
+repeatAround                   pat1_count             4 -> 5                 rt-ok PASS dVol 0.0e+0 dCOM 2.7e-17 
+repeatAround                   pat1_totalangle        360 -> 324             rt-ok REFUSED(refs build) pat1 is not built: a circular pattern over less than 360 degrees is not supported yet -- use the full 360 degrees.   <<<<
+union                          box1_width             30 -> 37.5             rt-ok PASS dVol 0.0e+0 dCOM 1.7e-17 
+union                          box1_depth             30 -> 37.5             rt-ok PASS dVol 1.1e-16 dCOM 1.6e-17 
+union                          box1_height            10 -> 12.5             rt-ok PASS dVol 0.0e+0 dCOM 8.7e-18 
+union                          box1_x                 0 -> 3                 rt-ok PASS dVol 1.4e-16 dCOM 1.8e-17 
+union                          box1_y                 0 -> 3                 rt-ok PASS dVol 1.3e-16 dCOM 1.8e-17 
+union                          box1_z                 0 -> 3                 rt-ok PASS dVol 0.0e+0 dCOM 1.8e-17 
+union                          box2_width             20 -> 25               rt-ok PASS dVol 0.0e+0 dCOM 1.3e-18 
+union                          box2_depth             20 -> 25               rt-ok PASS dVol 2.4e-16 dCOM 1.8e-17 
+union                          box2_height            20 -> 25               rt-ok PASS dVol 0.0e+0 dCOM 2.1e-19 
+union                          box2_x                 10 -> 13               rt-ok PASS dVol 3.7e-16 dCOM 1.7e-17 
+union                          box2_y                 0 -> 3                 rt-ok PASS dVol 1.3e-16 dCOM 1.8e-17 
+union                          box2_z                 5 -> 8                 rt-ok PASS dVol 2.4e-16 dCOM 3.4e-17 
+subtract                       box1_width             30 -> 37.5             rt-ok PASS dVol 1.2e-5 dCOM 1.4e-6 
+subtract                       box1_depth             30 -> 37.5             rt-ok PASS dVol 1.2e-5 dCOM 1.4e-6 
+subtract                       box1_height            10 -> 12.5             rt-ok PASS dVol 1.6e-5 dCOM 2.0e-6 
+subtract                       box1_x                 0 -> 3                 rt-ok PASS dVol 1.6e-5 dCOM 8.0e-7 
+subtract                       box1_y                 0 -> 3                 rt-ok PASS dVol 1.6e-5 dCOM 2.0e-6 
+subtract                       box1_z                 0 -> 3                 rt-ok PASS dVol 1.6e-5 dCOM 2.0e-6 
+subtract                       cyl1_radius            10 -> 12.5             rt-ok PASS dVol 2.6e-5 dCOM 3.5e-6 
+subtract                       cyl1_height            30 -> 37.5             rt-ok PASS dVol 1.6e-5 dCOM 2.0e-6 
+subtract                       cyl1_x                 5 -> 8                 rt-ok PASS dVol 1.6e-5 dCOM 3.2e-6 
+subtract                       cyl1_y                 0 -> 3                 rt-ok PASS dVol 1.6e-5 dCOM 2.0e-6 
+subtract                       cyl1_z                 0 -> 3                 rt-ok PASS dVol 1.6e-5 dCOM 2.0e-6 
+intersect                      box1_width             30 -> 37.5             rt-ok FAIL dVol 5.2e-5 dCOM 1.5e-6   <<<<
+intersect                      box1_depth             30 -> 37.5             rt-ok REFUSED(refs build) op1 is not built: these two shapes touch or cross in a way that cannot be intersected yet -- change their sizes or positions.   <<<<
+intersect                      box1_height            10 -> 12.5             rt-ok FAIL dVol 4.8e-5 dCOM 3.7e-6   <<<<
+intersect                      box1_x                 0 -> 3                 rt-ok FAIL dVol 3.9e-5 dCOM 2.1e-6   <<<<
+intersect                      box1_y                 0 -> 3                 rt-ok REFUSED(refs build) op1 is not built: these two shapes touch or cross in a way that cannot be intersected yet -- change their sizes or positions.   <<<<
+intersect                      box1_z                 0 -> 3                 rt-ok FAIL dVol 3.9e-5 dCOM 3.0e-6   <<<<
+intersect                      ball1_radius           30 -> 37.5             rt-ok PASS dVol 1.6e-5 dCOM 4.7e-6 
+intersect                      ball1_x                5 -> 8                 rt-ok FAIL dVol 4.3e-5 dCOM 3.4e-6   <<<<
+intersect                      ball1_y                0 -> 3                 rt-ok REFUSED(refs build) op1 is not built: these two shapes touch or cross in a way that cannot be intersected yet -- change their sizes or positions.   <<<<
+intersect                      ball1_z                0 -> 3                 rt-ok FAIL dVol 3.9e-5 dCOM 3.0e-6   <<<<
+mirror                         box1_width             20 -> 25               rt-ok PASS dVol 1.8e-16 dCOM 8.5e-18 
+mirror                         box1_depth             10 -> 12.5             rt-ok PASS dVol 1.8e-16 dCOM 6.2e-17 
+mirror                         box1_height            10 -> 12.5             rt-ok PASS dVol 1.8e-16 dCOM 6.2e-17 
+mirror                         box1_x                 15 -> 18               rt-ok PASS dVol 3.4e-16 dCOM 2.1e-17 
+mirror                         box1_y                 0 -> 3                 rt-ok PASS dVol 3.4e-16 dCOM 1.0e-16 
+mirror                         box1_z                 0 -> 3                 rt-ok PASS dVol 3.4e-16 dCOM 1.0e-16 
+datum plane sketch             pl1_offset             7 -> 10                rt-ok PASS dVol 0.0e+0 dCOM 7.7e-17 
+datum plane sketch             sk1_p0u                -10 -> -7              rt-ok PASS dVol 0.0e+0 dCOM 4.1e-17 
+datum plane sketch             sk1_p0v                -5 -> -2               rt-ok PASS dVol 1.1e-16 dCOM 7.9e-17 
+datum plane sketch             sk1_p1u                10 -> 13               rt-ok PASS dVol 0.0e+0 dCOM 7.3e-17 
+datum plane sketch             sk1_p1v                -5 -> -2               rt-ok PASS dVol 1.1e-16 dCOM 7.9e-17 
+datum plane sketch             sk1_p2u                10 -> 13               rt-ok PASS dVol 0.0e+0 dCOM 4.1e-17 
+datum plane sketch             sk1_p2v                5 -> 8                 rt-ok PASS dVol 0.0e+0 dCOM 7.5e-17 
+datum plane sketch             sk1_p3u                -10 -> -7              rt-ok PASS dVol 2.0e-16 dCOM 8.1e-17 
+datum plane sketch             sk1_p3v                5 -> 8                 rt-ok PASS dVol 1.6e-16 dCOM 1.5e-16 
+datum plane sketch             pull1_height           6 -> 7.5               rt-ok PASS dVol 1.5e-16 dCOM 6.4e-18 
+slots 288
+{"PASS":245,"FAIL":7,"NOOP-applyParam":6,"REFUSED(refs also refuse)":4,"REFUSED(refs build)":26}
+roundtrip bad: 

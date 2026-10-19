@@ -1,0 +1,64 @@
+[
+ {
+  "id": "X-spin-torus-neg-200-front",
+  "src": "const s = sketch('front'); s.circle(10,{at:[20,15]}); spin(s, -200);",
+  "translator": "g0",
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "X-spin-torus-neg-200-front",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "invalid": "OCCT: OCCT built nothing"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "revolve rev1: a circle sketch has no outline to spin"
+   },
+   "ms": 3387,
+   "load": [
+    5.4,
+    5.7
+   ],
+   "cpuMs": 3649,
+   "truck": {
+    "volume": 5482.303995995059,
+    "bbox": [
+     -24.999774308187263,
+     10.000449087084796,
+     -8.550482915935987,
+     24.999939573132803,
+     19.999550912915204,
+     24.99989825686238
+    ],
+    "faces": 3,
+    "faceTypes": {
+     "other": 1,
+     "plane": 2
+    },
+    "com": [
+     -1.990243460796825,
+     15.000051860881447,
+     11.287231555834243
+    ],
+    "bodies": 1
+   }
+  },
+  "analytic": {
+   "volume": 5483.113556160754,
+   "dTruck": 0.00014764606959224175,
+   "dBrep": null
+  },
+  "fcNote": "fixture invalid: OCCT: OCCT built nothing",
+  "caseMs": 3393
+ }
+]

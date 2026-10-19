@@ -1,0 +1,1 @@
+R3-box-trapezoid-90                      PASS     occtV 70044.1654 | tr-occt dV 8.8e-7 dBb 6.7e-9 dCom 5.2e-7 F o/b/t 12/-/12 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it. | ms 2000 cpu 2574

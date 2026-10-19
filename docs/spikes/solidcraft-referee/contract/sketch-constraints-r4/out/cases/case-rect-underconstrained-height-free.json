@@ -1,0 +1,32 @@
+[
+ {
+  "id": "rect-underconstrained-height-free",
+  "feats": [
+   "rough start: solution branch chosen by the drawn start state"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5100
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 10
+  }
+ }
+]

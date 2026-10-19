@@ -1,0 +1,36 @@
+thick 10 depth 10: bevel edge(wall1, wall2) 1 REFUSED: bevel1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11005.0000 BREP:builds V=11005.0000
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11005.0000 SC=undefined faces=undefined rel=-
+thick 10 depth 10: bevel edge(wall1, wall2) 2 REFUSED: bevel1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11020.0000 BREP:builds V=11020.0000
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11020.0000 SC=undefined faces=undefined rel=-
+thick 10 depth 10: round edge(wall1, wall2) 1 PASS[OCCT] V=11002.147427 (OCCT 11002.146018, brep 11002.146018) dVol 1.3e-7 dBbox 1.1e-15 dCOM 1.2e-8 faces occt/truck/brep 11/11/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11002.1460 SC=11002.1474 faces=11 rel=1.3e-7
+thick 10 depth 10: round edge(wall1, wall2) 2 PASS[OCCT] V=11008.589705 (OCCT 11008.584073, brep 11008.584073) dVol 5.1e-7 dBbox 1.1e-15 dCOM 4.2e-8 faces occt/truck/brep 11/11/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11008.5841 SC=11008.5897 faces=11 rel=5.1e-7
+thick 10 depth 9.5: bevel edge(wall1, wall2) 1 REFUSED: bevel1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11054.7500 BREP:refusals {"bevel1":"brep-rs can only chamfer an inside corner (a concave edge) when it is a straight edge bet
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11054.7500 SC=undefined faces=undefined rel=-
+thick 10 depth 9.5: bevel edge(wall1, wall2) 2 REFUSED: bevel1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11069.0000 BREP:refusals {"bevel1":"brep-rs can only chamfer an inside corner (a concave edge) when it is a straight edge bet
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11069.0000 SC=undefined faces=undefined rel=-
+thick 10 depth 9.5: round edge(wall1, wall2) 1 PASS[OCCT] V=11052.040055 (OCCT 11052.038717, brep 11050.000000) dVol 1.2e-7 dBbox 7.1e-16 dCOM 1.1e-8 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11052.0387 SC=11052.0401 faces=12 rel=1.2e-7
+thick 10 depth 9.5: round edge(wall1, wall2) 2 PASS[OCCT] V=11058.160219 (OCCT 11058.154870, brep 11050.000000) dVol 4.8e-7 dBbox 3.6e-16 dCOM 4.0e-8 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11058.1549 SC=11058.1602 faces=12 rel=4.8e-7
+thick 10 depth 12: bevel edge(wall1, wall2) 1 REFUSED: bevel1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11005.0000 BREP:builds V=11005.0000
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11005.0000 SC=undefined faces=undefined rel=-
+thick 10 depth 12: bevel edge(wall1, wall2) 2 REFUSED: bevel1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11020.0000 BREP:builds V=11020.0000
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11020.0000 SC=undefined faces=undefined rel=-
+thick 10 depth 12: round edge(wall1, wall2) 1 PASS[OCCT] V=11002.147427 (OCCT 11002.146018, brep 11002.146018) dVol 1.3e-7 dBbox 1.1e-15 dCOM 1.2e-8 faces occt/truck/brep 11/11/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11002.1460 SC=11002.1474 faces=11 rel=1.3e-7
+thick 10 depth 12: round edge(wall1, wall2) 2 PASS[OCCT] V=11008.589705 (OCCT 11008.584073, brep 11008.584073) dVol 5.1e-7 dBbox 1.1e-15 dCOM 4.2e-8 faces occt/truck/brep 11/11/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11008.5841 SC=11008.5897 faces=11 rel=5.1e-7

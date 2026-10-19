@@ -1,0 +1,2300 @@
+[
+ {
+  "id": "band-round-pair-flat0.00001",
+  "feature": ".round",
+  "what": "two adjacent corners of a 10-wide plate, flat left 0.00001",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       10,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "rounds": {
+      "0": 4.999995,
+      "1": 4.999995
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 2892.6992963092453,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    30,
+    10
+   ],
+   "com": [
+    4.999999999999999,
+    15.514976787241432,
+    5.000000000000001
+   ],
+   "faces": 8,
+   "types": {
+    "cylinder": 2,
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 2892.6992963004527,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    30,
+    10
+   ],
+   "faces": 8
+  },
+  "exact": {
+   "volume": 2892.699296300453
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "edge-sliver",
+    "sentence": "After the rounds and chamfers, one edge of this outline is only 0.00001 mm long; leave at least 0.0001 mm of it (or make the two corners eat it exactly, with nothing left).",
+    "near": 4
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "edge-sliver",
+  "truck": {
+   "refused": "After the rounds and chamfers, one edge of this outline is only 0.00001 mm long; leave at least 0.0001 mm of it (or make the two corners eat it exactly, with nothing left).",
+   "guard": "edge-sliver"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-round-pair-flat0.000005",
+  "feature": ".round",
+  "what": "two adjacent corners of a 10-wide plate, flat left 0.000005",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       10,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "rounds": {
+      "0": 4.9999975,
+      "1": 4.9999975
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 2892.699189008408,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    30,
+    10
+   ],
+   "com": [
+    4.999999999999999,
+    15.514977300607425,
+    5
+   ],
+   "faces": 8,
+   "types": {
+    "cylinder": 2,
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 2892.699188999615,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    30,
+    10
+   ],
+   "faces": 8
+  },
+  "exact": {
+   "volume": 2892.6991889996157
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "edge-sliver",
+    "sentence": "After the rounds and chamfers, one edge of this outline is only 0.000005 mm long; leave at least 0.0001 mm of it (or make the two corners eat it exactly, with nothing left).",
+    "near": 4
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "edge-sliver",
+  "truck": {
+   "refused": "After the rounds and chamfers, one edge of this outline is only 0.000005 mm long; leave at least 0.0001 mm of it (or make the two corners eat it exactly, with nothing left).",
+   "guard": "edge-sliver"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-round-pair-flat0.000003",
+  "feature": ".round",
+  "what": "two adjacent corners of a 10-wide plate, flat left 0.000003",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       10,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "rounds": {
+      "0": 4.9999985,
+      "1": 4.9999985
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 2892.699146088058,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    30,
+    10
+   ],
+   "com": [
+    5,
+    15.5149775059539,
+    4.999999999999999
+   ],
+   "faces": 8,
+   "types": {
+    "cylinder": 2,
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 2892.699146079265,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    30,
+    10
+   ],
+   "faces": 8
+  },
+  "exact": {
+   "volume": 2892.699146079265
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "edge-sliver",
+    "sentence": "After the rounds and chamfers, one edge of this outline is only 0.000003 mm long; leave at least 0.0001 mm of it (or make the two corners eat it exactly, with nothing left).",
+    "near": 4
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "edge-sliver",
+  "truck": {
+   "refused": "After the rounds and chamfers, one edge of this outline is only 0.000003 mm long; leave at least 0.0001 mm of it (or make the two corners eat it exactly, with nothing left).",
+   "guard": "edge-sliver"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-round-single-r0.000005",
+  "feature": ".round",
+  "what": "one corner of a 40x30 plate, r=0.000005",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "rounds": {
+      "0": 0.000005
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 11999.999999999947,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    20.000000000000085,
+    15.000000000000066,
+    4.999999999999999
+   ],
+   "faces": 7,
+   "types": {
+    "cylinder": 1,
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 11999.999999999947,
+   "bbox": [
+    -8.470329472543003e-22,
+    -8.470329472543003e-22,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 11999.999999999945
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "treatment-tiny",
+    "sentence": "The round on corner 1 is 0.000005 mm, smaller than the 0.0001 mm this build keeps exact; use 0 for a sharp corner or at least 0.0001."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "treatment-tiny",
+  "truck": {
+   "refused": "The round on corner 1 is 0.000005 mm, smaller than the 0.0001 mm this build keeps exact; use 0 for a sharp corner or at least 0.0001.",
+   "guard": "treatment-tiny"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-round-single-r0.000003",
+  "feature": ".round",
+  "what": "one corner of a 40x30 plate, r=0.000003",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "rounds": {
+      "0": 0.000003
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 11999.999999999978,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    20.000000000000036,
+    15.000000000000025,
+    5
+   ],
+   "faces": 7,
+   "types": {
+    "cylinder": 1,
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 11999.99999999998,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 11999.999999999982
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "treatment-tiny",
+    "sentence": "The round on corner 1 is 0.000003 mm, smaller than the 0.0001 mm this build keeps exact; use 0 for a sharp corner or at least 0.0001."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "treatment-tiny",
+  "truck": {
+   "refused": "The round on corner 1 is 0.000003 mm, smaller than the 0.0001 mm this build keeps exact; use 0 for a sharp corner or at least 0.0001.",
+   "guard": "treatment-tiny"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-round-single-r0.000002",
+  "feature": ".round",
+  "what": "one corner of a 40x30 plate, r=0.000002",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "rounds": {
+      "0": 0.000002
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 11999.999999999989,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    20.000000000000018,
+    15.000000000000014,
+    5.000000000000001
+   ],
+   "faces": 7,
+   "types": {
+    "cylinder": 1,
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 11999.99999999999,
+   "bbox": [
+    -4.235164736271502e-22,
+    -4.235164736271502e-22,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 11999.99999999999
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "treatment-tiny",
+    "sentence": "The round on corner 1 is 0.000002 mm, smaller than the 0.0001 mm this build keeps exact; use 0 for a sharp corner or at least 0.0001."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "treatment-tiny",
+  "truck": {
+   "refused": "The round on corner 1 is 0.000002 mm, smaller than the 0.0001 mm this build keeps exact; use 0 for a sharp corner or at least 0.0001.",
+   "guard": "treatment-tiny"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-chamfer-ceiling-flat0.00001",
+  "feature": ".chamfer",
+  "what": "corner 1 of 40x30, chamfer leaving 0.00001 of the 30 edge",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "chamfers": {
+      "0": 29.99999
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 7500.0029999994995,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    25.99999560000149,
+    17.999998799999677,
+    5
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 7
+   }
+  },
+  "brep": {
+   "volume": 7500.002999999499,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 7500.0029999995
+  },
+  "curved": false,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "edge-sliver",
+    "sentence": "After the rounds and chamfers, one edge of this outline is only 0.00001 mm long; leave at least 0.0001 mm of it (or make the two corners eat it exactly, with nothing left).",
+    "near": 4
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "edge-sliver",
+  "truck": {
+   "refused": "After the rounds and chamfers, one edge of this outline is only 0.00001 mm long; leave at least 0.0001 mm of it (or make the two corners eat it exactly, with nothing left).",
+   "guard": "edge-sliver"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-chamfer-ceiling-flat0.000005",
+  "feature": ".chamfer",
+  "what": "corner 1 of 40x30, chamfer leaving 0.000005 of the 30 edge",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "chamfers": {
+      "0": 29.999995
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 7500.001499999875,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    25.999997800000376,
+    17.999999399999915,
+    5.000000000000001
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 7
+   }
+  },
+  "brep": {
+   "volume": 7500.001499999874,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 7500.001499999876
+  },
+  "curved": false,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "edge-sliver",
+    "sentence": "After the rounds and chamfers, one edge of this outline is only 0.000005 mm long; leave at least 0.0001 mm of it (or make the two corners eat it exactly, with nothing left).",
+    "near": 4
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "edge-sliver",
+  "truck": {
+   "refused": "After the rounds and chamfers, one edge of this outline is only 0.000005 mm long; leave at least 0.0001 mm of it (or make the two corners eat it exactly, with nothing left).",
+   "guard": "edge-sliver"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-chamfer-ceiling-flat0.000003",
+  "feature": ".chamfer",
+  "what": "corner 1 of 40x30, chamfer leaving 0.000003 of the 30 edge",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "chamfers": {
+      "0": 29.999997
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 7500.000899999954,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    25.99999868000014,
+    17.999999639999974,
+    5
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 7
+   }
+  },
+  "brep": {
+   "volume": 7500.000899999953,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 7500.0008999999545
+  },
+  "curved": false,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "edge-sliver",
+    "sentence": "After the rounds and chamfers, one edge of this outline is only 0.000003 mm long; leave at least 0.0001 mm of it (or make the two corners eat it exactly, with nothing left).",
+    "near": 4
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "edge-sliver",
+  "truck": {
+   "refused": "After the rounds and chamfers, one edge of this outline is only 0.000003 mm long; leave at least 0.0001 mm of it (or make the two corners eat it exactly, with nothing left).",
+   "guard": "edge-sliver"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-chamfer-single-d0.000005",
+  "feature": ".chamfer",
+  "what": "one corner of a 40x30 plate, chamfer 0.000005",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "chamfers": {
+      "0": 0.000005
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 11999.999999999874,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    20.000000000000206,
+    15.000000000000156,
+    4.999999999999999
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 7
+   }
+  },
+  "brep": {
+   "volume": 11999.999999999874,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 11999.999999999874
+  },
+  "curved": false,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "treatment-tiny",
+    "sentence": "The chamfer on corner 1 is 0.000005 mm, smaller than the 0.0001 mm this build keeps exact; use 0 for a sharp corner or at least 0.0001."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "treatment-tiny",
+  "truck": {
+   "refused": "The chamfer on corner 1 is 0.000005 mm, smaller than the 0.0001 mm this build keeps exact; use 0 for a sharp corner or at least 0.0001.",
+   "guard": "treatment-tiny"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-chamfer-single-d0.000003",
+  "feature": ".chamfer",
+  "what": "one corner of a 40x30 plate, chamfer 0.000003",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "chamfers": {
+      "0": 0.000003
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 11999.999999999953,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    20.000000000000078,
+    15.000000000000057,
+    5
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 7
+   }
+  },
+  "brep": {
+   "volume": 11999.999999999955,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 11999.999999999955
+  },
+  "curved": false,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "treatment-tiny",
+    "sentence": "The chamfer on corner 1 is 0.000003 mm, smaller than the 0.0001 mm this build keeps exact; use 0 for a sharp corner or at least 0.0001."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "treatment-tiny",
+  "truck": {
+   "refused": "The chamfer on corner 1 is 0.000003 mm, smaller than the 0.0001 mm this build keeps exact; use 0 for a sharp corner or at least 0.0001.",
+   "guard": "treatment-tiny"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-chamfer-single-d0.000002",
+  "feature": ".chamfer",
+  "what": "one corner of a 40x30 plate, chamfer 0.000002",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "chamfers": {
+      "0": 0.000002
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 11999.999999999978,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    20.000000000000032,
+    15.000000000000025,
+    5.000000000000001
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 7
+   }
+  },
+  "brep": {
+   "volume": 11999.999999999978,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 11999.99999999998
+  },
+  "curved": false,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "treatment-tiny",
+    "sentence": "The chamfer on corner 1 is 0.000002 mm, smaller than the 0.0001 mm this build keeps exact; use 0 for a sharp corner or at least 0.0001."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "treatment-tiny",
+  "truck": {
+   "refused": "The chamfer on corner 1 is 0.000002 mm, smaller than the 0.0001 mm this build keeps exact; use 0 for a sharp corner or at least 0.0001.",
+   "guard": "treatment-tiny"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-slot-r0.004",
+  "feature": ".slot",
+  "what": "slot (0,0)-(10,0), r=0.004",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ],
+     "geoms": [
+      {
+       "k": "arc",
+       "id": 1,
+       "c": [
+        0,
+        0
+       ],
+       "r": 0.004,
+       "a": [
+        0,
+        -0.004
+       ],
+       "b": [
+        0,
+        0.004
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "arc",
+       "id": 2,
+       "c": [
+        10,
+        0
+       ],
+       "r": 0.004,
+       "a": [
+        10,
+        0.004
+       ],
+       "b": [
+        10,
+        -0.004
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "line",
+       "id": 3,
+       "a": [
+        0,
+        0.004
+       ],
+       "b": [
+        10,
+        0.004
+       ]
+      },
+      {
+       "k": "line",
+       "id": 4,
+       "a": [
+        10,
+        -0.004
+       ],
+       "b": [
+        0,
+        -0.004
+       ]
+      }
+     ],
+     "geom": [
+      {
+       "k": "arc",
+       "id": 1,
+       "c": [
+        0,
+        0
+       ],
+       "r": 0.004,
+       "a": [
+        0,
+        -0.004
+       ],
+       "b": [
+        0,
+        0.004
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "arc",
+       "id": 2,
+       "c": [
+        10,
+        0
+       ],
+       "r": 0.004,
+       "a": [
+        10,
+        0.004
+       ],
+       "b": [
+        10,
+        -0.004
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "line",
+       "id": 3,
+       "a": [
+        0,
+        0.004
+       ],
+       "b": [
+        10,
+        0.004
+       ]
+      },
+      {
+       "k": "line",
+       "id": 4,
+       "a": [
+        10,
+        -0.004
+       ],
+       "b": [
+        0,
+        -0.004
+       ]
+      }
+     ],
+     "rules": [
+      {
+       "k": "coincident",
+       "a": 3,
+       "aEnd": "a",
+       "b": 1,
+       "bEnd": "b"
+      },
+      {
+       "k": "tangent",
+       "a": 3,
+       "aEnd": "a",
+       "b": 1,
+       "bEnd": "b"
+      },
+      {
+       "k": "coincident",
+       "a": 3,
+       "aEnd": "b",
+       "b": 2,
+       "bEnd": "a"
+      },
+      {
+       "k": "tangent",
+       "a": 3,
+       "aEnd": "b",
+       "b": 2,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 4,
+       "aEnd": "a",
+       "b": 2,
+       "bEnd": "b"
+      },
+      {
+       "k": "tangent",
+       "a": 4,
+       "aEnd": "a",
+       "b": 2,
+       "bEnd": "b"
+      },
+      {
+       "k": "coincident",
+       "a": 4,
+       "aEnd": "b",
+       "b": 1,
+       "bEnd": "a"
+      },
+      {
+       "k": "tangent",
+       "a": 4,
+       "aEnd": "b",
+       "b": 1,
+       "bEnd": "a"
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "sk1: Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 and edge 3 nearly touch but nothing says they meet. Add a coincident rule."
+  },
+  "exact": {
+   "volume": 0.8005026548245744
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [],
+  "pieceNote": null,
+  "guardCode": "curves-too-small",
+  "truck": {
+   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 0.004 mm on a part about 20 mm across, so the 3D build could be off by about 0.057% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller.",
+   "guard": "curves-too-small"
+  },
+  "outcome": "ALL-REFUSED"
+ },
+ {
+  "id": "band-slot-r0.003",
+  "feature": ".slot",
+  "what": "slot (0,0)-(10,0), r=0.003",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ],
+     "geoms": [
+      {
+       "k": "arc",
+       "id": 1,
+       "c": [
+        0,
+        0
+       ],
+       "r": 0.003,
+       "a": [
+        0,
+        -0.003
+       ],
+       "b": [
+        0,
+        0.003
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "arc",
+       "id": 2,
+       "c": [
+        10,
+        0
+       ],
+       "r": 0.003,
+       "a": [
+        10,
+        0.003
+       ],
+       "b": [
+        10,
+        -0.003
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "line",
+       "id": 3,
+       "a": [
+        0,
+        0.003
+       ],
+       "b": [
+        10,
+        0.003
+       ]
+      },
+      {
+       "k": "line",
+       "id": 4,
+       "a": [
+        10,
+        -0.003
+       ],
+       "b": [
+        0,
+        -0.003
+       ]
+      }
+     ],
+     "geom": [
+      {
+       "k": "arc",
+       "id": 1,
+       "c": [
+        0,
+        0
+       ],
+       "r": 0.003,
+       "a": [
+        0,
+        -0.003
+       ],
+       "b": [
+        0,
+        0.003
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "arc",
+       "id": 2,
+       "c": [
+        10,
+        0
+       ],
+       "r": 0.003,
+       "a": [
+        10,
+        0.003
+       ],
+       "b": [
+        10,
+        -0.003
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "line",
+       "id": 3,
+       "a": [
+        0,
+        0.003
+       ],
+       "b": [
+        10,
+        0.003
+       ]
+      },
+      {
+       "k": "line",
+       "id": 4,
+       "a": [
+        10,
+        -0.003
+       ],
+       "b": [
+        0,
+        -0.003
+       ]
+      }
+     ],
+     "rules": [
+      {
+       "k": "coincident",
+       "a": 3,
+       "aEnd": "a",
+       "b": 1,
+       "bEnd": "b"
+      },
+      {
+       "k": "tangent",
+       "a": 3,
+       "aEnd": "a",
+       "b": 1,
+       "bEnd": "b"
+      },
+      {
+       "k": "coincident",
+       "a": 3,
+       "aEnd": "b",
+       "b": 2,
+       "bEnd": "a"
+      },
+      {
+       "k": "tangent",
+       "a": 3,
+       "aEnd": "b",
+       "b": 2,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 4,
+       "aEnd": "a",
+       "b": 2,
+       "bEnd": "b"
+      },
+      {
+       "k": "tangent",
+       "a": 4,
+       "aEnd": "a",
+       "b": 2,
+       "bEnd": "b"
+      },
+      {
+       "k": "coincident",
+       "a": 4,
+       "aEnd": "b",
+       "b": 1,
+       "bEnd": "a"
+      },
+      {
+       "k": "tangent",
+       "a": 4,
+       "aEnd": "b",
+       "b": 1,
+       "bEnd": "a"
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "sk1: Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 and edge 3 nearly touch but nothing says they meet. Add a coincident rule."
+  },
+  "exact": {
+   "volume": 0.600282743338823
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [],
+  "pieceNote": null,
+  "guardCode": "curves-too-small",
+  "truck": {
+   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 0.003 mm on a part about 20 mm across, so the 3D build could be off by about 0.042% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller.",
+   "guard": "curves-too-small"
+  },
+  "outcome": "ALL-REFUSED"
+ },
+ {
+  "id": "band-circle-across-0.002",
+  "feature": ".circle",
+  "what": "circle across 0.002",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.001,
+       0
+      ],
+      [
+       0.001,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.00003141592653589794,
+   "bbox": [
+    -0.001,
+    -0.001,
+    0,
+    0.001,
+    0.001,
+    10
+   ],
+   "com": [
+    3.291247082939905e-19,
+    -1.1560505378826416e-19,
+    5
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.00003141592653589795,
+   "bbox": [
+    -0.001,
+    -0.001,
+    0,
+    0.001,
+    0.001,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.000031415926535897935
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "too-small-curved",
+    "sentence": "This circle is 0.002 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "too-small-curved",
+  "truck": {
+   "refused": "This circle is 0.002 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger.",
+   "guard": "too-small-curved"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-circle-across-0.003",
+  "feature": ".circle",
+  "what": "circle across 0.003",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.0015,
+       0
+      ],
+      [
+       0.0015,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.00007068583470577034,
+   "bbox": [
+    -0.0015,
+    -0.0015,
+    0,
+    0.0015,
+    0.0015,
+    10
+   ],
+   "com": [
+    -2.3404423700906e-19,
+    -1.4774042461196916e-19,
+    5
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.0000706858347057704,
+   "bbox": [
+    -0.0015,
+    -0.0015,
+    0,
+    0.0015,
+    0.0015,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.00007068583470577034
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "too-small-curved",
+    "sentence": "This circle is 0.003 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "too-small-curved",
+  "truck": {
+   "refused": "This circle is 0.003 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger.",
+   "guard": "too-small-curved"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "band-circle-across-0.005",
+  "feature": ".circle",
+  "what": "circle across 0.005",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.0025,
+       0
+      ],
+      [
+       0.0025,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.00019634954084936203,
+   "bbox": [
+    -0.0025,
+    -0.0025,
+    0,
+    0.0025,
+    0.0025,
+    10
+   ],
+   "com": [
+    -1.145880584396358e-18,
+    -2.369697899716733e-19,
+    4.999999999999999
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.0001963495408493621,
+   "bbox": [
+    -0.0025,
+    -0.0025,
+    0,
+    0.0025,
+    0.0025,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.0001963495408493621
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "too-small-curved",
+    "sentence": "This circle is 0.005 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "too-small-curved",
+  "truck": {
+   "refused": "This circle is 0.005 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger.",
+   "guard": "too-small-curved"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "slot-short-micro-r0.001",
+  "feature": ".slot",
+  "what": "slot centres 0.003 apart, r=0.001",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ],
+     "geoms": [
+      {
+       "k": "arc",
+       "id": 1,
+       "c": [
+        0,
+        0
+       ],
+       "r": 0.001,
+       "a": [
+        0,
+        -0.001
+       ],
+       "b": [
+        0,
+        0.001
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "arc",
+       "id": 2,
+       "c": [
+        0.003,
+        0
+       ],
+       "r": 0.001,
+       "a": [
+        0.003,
+        0.001
+       ],
+       "b": [
+        0.003,
+        -0.001
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "line",
+       "id": 3,
+       "a": [
+        0,
+        0.001
+       ],
+       "b": [
+        0.003,
+        0.001
+       ]
+      },
+      {
+       "k": "line",
+       "id": 4,
+       "a": [
+        0.003,
+        -0.001
+       ],
+       "b": [
+        0,
+        -0.001
+       ]
+      }
+     ],
+     "geom": [
+      {
+       "k": "arc",
+       "id": 1,
+       "c": [
+        0,
+        0
+       ],
+       "r": 0.001,
+       "a": [
+        0,
+        -0.001
+       ],
+       "b": [
+        0,
+        0.001
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "arc",
+       "id": 2,
+       "c": [
+        0.003,
+        0
+       ],
+       "r": 0.001,
+       "a": [
+        0.003,
+        0.001
+       ],
+       "b": [
+        0.003,
+        -0.001
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "line",
+       "id": 3,
+       "a": [
+        0,
+        0.001
+       ],
+       "b": [
+        0.003,
+        0.001
+       ]
+      },
+      {
+       "k": "line",
+       "id": 4,
+       "a": [
+        0.003,
+        -0.001
+       ],
+       "b": [
+        0,
+        -0.001
+       ]
+      }
+     ],
+     "rules": [
+      {
+       "k": "coincident",
+       "a": 3,
+       "aEnd": "a",
+       "b": 1,
+       "bEnd": "b"
+      },
+      {
+       "k": "tangent",
+       "a": 3,
+       "aEnd": "a",
+       "b": 1,
+       "bEnd": "b"
+      },
+      {
+       "k": "coincident",
+       "a": 3,
+       "aEnd": "b",
+       "b": 2,
+       "bEnd": "a"
+      },
+      {
+       "k": "tangent",
+       "a": 3,
+       "aEnd": "b",
+       "b": 2,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 4,
+       "aEnd": "a",
+       "b": 2,
+       "bEnd": "b"
+      },
+      {
+       "k": "tangent",
+       "a": 4,
+       "aEnd": "a",
+       "b": 2,
+       "bEnd": "b"
+      },
+      {
+       "k": "coincident",
+       "a": 4,
+       "aEnd": "b",
+       "b": 1,
+       "bEnd": "a"
+      },
+      {
+       "k": "tangent",
+       "a": 4,
+       "aEnd": "b",
+       "b": 1,
+       "bEnd": "a"
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "sk1: Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "brep": {
+   "volume": 0.00009141592653589795,
+   "bbox": [
+    -0.001,
+    -0.001,
+    0,
+    0.004,
+    0.001,
+    10
+   ],
+   "faces": 6
+  },
+  "exact": {
+   "volume": 0.00009141592653589792
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "too-small-curved",
+    "sentence": "Arc 1 has a radius of 0.001 mm; arcs under 0.003 mm cannot be built exactly here; make it larger."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "too-small-curved",
+  "truck": {
+   "refused": "Arc 1 has a radius of 0.001 mm; arcs under 0.003 mm cannot be built exactly here; make it larger.",
+   "guard": "too-small-curved"
+  },
+  "outcome": "TRUCK-REFUSED"
+ }
+]

@@ -1,0 +1,1 @@
+R3-chain-both-built                      PASS     occtV 31143.2779 | tr-occt dV 4.6e-6 dBb 6.3e-15 dCom 1.6e-7 F o/b/t 10/10/10 | brep-occt dV 1.6e-12      | ms 1656 cpu 2191

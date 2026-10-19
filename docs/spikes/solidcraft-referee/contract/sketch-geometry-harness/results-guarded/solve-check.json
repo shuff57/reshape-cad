@@ -1,0 +1,3685 @@
+{
+ "a5-A-arc-mismatch": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 2,
+  "mine": {
+   "residual": 2,
+   "moved": 1.0481324641361995,
+   "dof": 5,
+   "dofMoved": 5,
+   "converged": true
+  },
+  "brepMoved": 1.1608981363004878,
+  "brepDof": 5,
+  "apartFromBrep": 0.1079552919436894
+ },
+ "a5-A-two-squares-apart": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "a5-A-ring-disc": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 9,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 9,
+  "apartFromBrep": 0
+ },
+ "a5-A-crossing": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "a5-B-hole-near-edge-1e-4": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "a5-B-hole-near-edge-1e-3": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "a5-B-hole-near-edge-0.01": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "a5-B-hole-r.999R": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "a5-B-hole-r.99R": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "a5-B-two-holes-close": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 10,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 10,
+  "apartFromBrep": 0
+ },
+ "a5-B-two-holes-gap-1e-3": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 10,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 10,
+  "apartFromBrep": 0
+ },
+ "a5-C-far-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "a5-C-big-plate-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "a5-D-hole-first-then-outer": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "a5-D-3level-polys": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 24,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "a5-D-slot-in-hole-in-plate": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "a5-D-frame-swapped-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "a5-D-tilted-frame-two-pieces": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "a5-D-polygon-with-polygon-hole-concave": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 10,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 20,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 20,
+  "apartFromBrep": 0
+ },
+ "a5-D-hole-through-pocket": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "a5-E-slot-small-gap": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "a5-E-slot-1": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "a5-slide-slot-g1r-0": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 3,
+   "moved": 2.3124473453464196,
+   "dof": 6,
+   "dofMoved": 6,
+   "converged": true
+  },
+  "brepMoved": null,
+  "brepDof": null,
+  "apartFromBrep": null
+ },
+ "a5-slide-slot-g1r-6": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 3,
+   "moved": 2.317082851901577,
+   "dof": 6,
+   "dofMoved": 6,
+   "converged": true
+  },
+  "brepMoved": 2.5033600372090854,
+  "brepDof": 6,
+  "apartFromBrep": 0.18627718530750847
+ },
+ "a5-slide-slot-both-6": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 3,
+   "moved": 2.3124583903893754,
+   "dof": 6,
+   "dofMoved": 6,
+   "converged": true
+  },
+  "brepMoved": 2.340247448190397,
+  "brepDof": 6,
+  "apartFromBrep": 0.02778905787353203
+ },
+ "a5-uc-shrink-hole-outside": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 9,
+  "mine": {
+   "residual": 10,
+   "moved": 5.000000023081423,
+   "dof": 6,
+   "dofMoved": 3,
+   "converged": true
+  },
+  "brepMoved": 4.999999999999066,
+  "brepDof": 6,
+  "apartFromBrep": 0.0012480291531626485
+ },
+ "a5-uc-shrink-hole-edge": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 9,
+  "mine": {
+   "residual": 10,
+   "moved": 5.000000023081423,
+   "dof": 6,
+   "dofMoved": 3,
+   "converged": true
+  },
+  "brepMoved": 4.999999999999066,
+  "brepDof": 6,
+  "apartFromBrep": 0.0012480291531626485
+ },
+ "a5-uc-grow-hole": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 10,
+  "mine": {
+   "residual": 20,
+   "moved": 10.00000057021469,
+   "dof": 5,
+   "dofMoved": 2,
+   "converged": true
+  },
+  "brepMoved": 13.124404897066569,
+  "brepDof": 5,
+  "apartFromBrep": 0.003942351415647681
+ },
+ "a5-uc-hole-radius-rule-big": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 9,
+  "mine": {
+   "residual": 11,
+   "moved": 10.99999999999999,
+   "dof": 6,
+   "dofMoved": 2,
+   "converged": true
+  },
+  "brepMoved": 10.99999999991211,
+  "brepDof": 6,
+  "apartFromBrep": 0.01176041455808318
+ },
+ "a5-uc-hole-diam-eq-width": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 9,
+  "mine": {
+   "residual": 14,
+   "moved": 6.999999999999998,
+   "dof": 6,
+   "dofMoved": 2,
+   "converged": true
+  },
+  "brepMoved": 6.99999999994407,
+  "brepDof": 6,
+  "apartFromBrep": 0.02557604925607964
+ },
+ "a5-uc-two-circles-equal-radius": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 9,
+  "mine": {
+   "residual": 6,
+   "moved": 3.000000000000134,
+   "dof": 9,
+   "dofMoved": 5,
+   "converged": true
+  },
+  "brepMoved": 2.9999999999970024,
+  "brepDof": 9,
+  "apartFromBrep": 0.007834152806512623
+ },
+ "a5-uc-equal-big-overlap": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 9,
+  "mine": {
+   "residual": 6,
+   "moved": 3.000000000000134,
+   "dof": 9,
+   "dofMoved": 5,
+   "converged": true
+  },
+  "brepMoved": 2.9999999999970024,
+  "brepDof": 9,
+  "apartFromBrep": 0.007834152806512623
+ },
+ "a5-uc-hole-pointon-edge": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 10,
+  "mine": {
+   "residual": 12.5,
+   "moved": 10.499999982270483,
+   "dof": 5,
+   "dofMoved": 5,
+   "converged": true
+  },
+  "brepMoved": 346575.44481491763,
+  "brepDof": 5,
+  "apartFromBrep": 346575.44464576256
+ },
+ "slot-short": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "param-values-arc-rule": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 5,
+  "mine": {
+   "residual": 1.5596934910894493,
+   "moved": 3.633249580712927,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 3.6332495807112135,
+  "brepDof": 0,
+  "apartFromBrep": 1.7132961721218772e-12
+ },
+ "param-arc-rule-default": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 5,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 0,
+  "apartFromBrep": 0
+ },
+ "geom-arc-off-circle-b": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 2,
+  "mine": {
+   "residual": 2,
+   "moved": 1.0719411747893726,
+   "dof": 5,
+   "dofMoved": 5,
+   "converged": true
+  },
+  "brepMoved": 1.2027424493077978,
+  "brepDof": 5,
+  "apartFromBrep": 0.10327885774147921
+ },
+ "geom-arc-r-mismatch": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 2,
+  "mine": {
+   "residual": 3,
+   "moved": 1.5015771060929364,
+   "dof": 5,
+   "dofMoved": 5,
+   "converged": true
+  },
+  "brepMoved": 1.8757357961788228,
+  "brepDof": 5,
+  "apartFromBrep": 0.28878912562230624
+ },
+ "geom-no-rules-gap": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 16,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 16,
+  "apartFromBrep": 0
+ },
+ "geom-no-rules-tiny-gap": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 16,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 16,
+  "apartFromBrep": 0
+ },
+ "geom-T-junction": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 16,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 16,
+  "apartFromBrep": 0
+ },
+ "geom-cross-lines": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 4,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "param-values-geom-r": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 3,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 3,
+  "apartFromBrep": 0
+ },
+ "param-values-arc-r": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 2,
+  "mine": {
+   "residual": 4,
+   "moved": 3.076923076753598,
+   "dof": 5,
+   "dofMoved": 5,
+   "converged": true
+  },
+  "brepMoved": 2.9976669515679717,
+  "brepDof": 5,
+  "apartFromBrep": 0.26161439293260086
+ },
+ "far-slot-at-0": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "far-slot-at-1e2": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "far-slot-at-1e3": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "far-slot-at-1e4": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "far-slot-at-1e5": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "far-slot-at-1e6": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "far-plate-hole-at-0": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "far-plate-hole-at-1e2": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "far-plate-hole-at-1e3": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "far-plate-hole-at-1e4": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "far-plate-hole-at-1e5": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "far-plate-hole-at-1e6": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "fc-ring-with-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "fc-two-circle-calls-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "fc-rect-and-rect-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "fc-rect-with-round-hole-geom": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 4,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 11,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 11,
+  "apartFromBrep": 0
+ },
+ "fc-circle-in-rect-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "fc-rect-in-circle-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "fc-two-holes-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 10,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 10,
+  "apartFromBrep": 0
+ },
+ "fc-polygon-with-rect-hole-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 11,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 10,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 10,
+  "apartFromBrep": 0
+ },
+ "fc-rect-off-centre-hole-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "fc-two-disjoint-rects-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "fc-two-disjoint-circles-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "fc-rect-and-circle-apart-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "fc-three-deep-circles-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 9,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 9,
+  "apartFromBrep": 0
+ },
+ "fc-three-deep-rects-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 24,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "fc-four-deep-circles-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "fc-island-and-far-disc-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "fc-holed-plate-and-far-rect-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 11,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 11,
+  "apartFromBrep": 0
+ },
+ "fc-crossing-rects-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "fc-crossing-circles-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "fc-tangent-inside-circles-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "fc-tangent-outside-circles-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "fc-shared-edge-rects-one-sketch": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "frame-swapped-slot": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "frame-swapped-dshape-cw": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 2,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ },
+ "frame-swapped-plate-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "frame-yzFrame-slot": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "frame-yzFrame-dshape-cw": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 2,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ },
+ "frame-yzFrame-plate-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "frame-tilt-slot": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "frame-tilt-dshape-cw": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 2,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ },
+ "frame-tilt-plate-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "frame-negU-slot": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "frame-negU-dshape-cw": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 2,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ },
+ "frame-negU-plate-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "gallery-fr-rect-dims": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 12,
+  "mine": {
+   "residual": 3,
+   "moved": 3.8999999999997037,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 4.687216657665597,
+  "brepDof": 0,
+  "apartFromBrep": 6.262269906536277e-10
+ },
+ "gallery-fr-plate-hole-dims": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 14,
+  "mine": {
+   "residual": 1.3000000000000007,
+   "moved": 0.9999999999999964,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 1.4142135623481193,
+  "brepDof": 0,
+  "apartFromBrep": 1.1239533684863357e-10
+ },
+ "gallery-fr-slot-tangent": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 13,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 0,
+  "apartFromBrep": 0
+ },
+ "gallery-fr-triangle-angle": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 1.4953249591689186,
+   "moved": 1,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 1.4142135623594174,
+  "brepDof": 0,
+  "apartFromBrep": 2.693712798379523e-11
+ },
+ "gallery-fr-hexagon": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 20,
+  "mine": {
+   "residual": 0.9598207796155229,
+   "moved": 0.6000000000000014,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0.5999999999928605,
+  "brepDof": 0,
+  "apartFromBrep": 3.5187719571010725e-10
+ },
+ "gallery-fr-bracket-rounded": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 34,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 0,
+  "apartFromBrep": 0
+ },
+ "gallery-fr-symmetric-profile": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 23,
+  "mine": {
+   "residual": 1.5,
+   "moved": 1.0000000000077094,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 1.1180339892878954,
+  "brepDof": 0,
+  "apartFromBrep": 6.647464577710116e-10
+ },
+ "gallery-fr-symmetric-axis": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 20,
+  "mine": {
+   "residual": 1.5,
+   "moved": 1.0000000000046896,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": null,
+  "brepDof": null,
+  "apartFromBrep": null
+ },
+ "fr-line-triangle": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 3,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "fr-line-not-joined": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "fr-circle-r": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 3,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 3,
+  "apartFromBrep": 0
+ },
+ "fr-circle-across": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 3,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 3,
+  "apartFromBrep": 0
+ },
+ "fr-circle-construction": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "fr-arc-cw-D": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 2,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ },
+ "fr-arc-ccw-D": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 2,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ },
+ "fr-arc-pie-ccw": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 3,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "fr-arc-pie-cw": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 3,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "fr-point": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "fr-lines-closed": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 4,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "fr-lines-open": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 2,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "fr-rectangle": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 4,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 4,
+  "apartFromBrep": 0
+ },
+ "fr-rectangle-handles": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 9,
+  "mine": {
+   "residual": 3,
+   "moved": 3,
+   "dof": 2,
+   "dofMoved": 2,
+   "converged": true
+  },
+  "brepMoved": 3.6055512754622385,
+  "brepDof": 2,
+  "apartFromBrep": 4.712684077827734e-12
+ },
+ "fr-axes-triangle": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 1,
+   "moved": 1.9999999999981,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": null,
+  "brepDof": null,
+  "apartFromBrep": null
+ },
+ "fr-remove": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 3,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "fr-handles-abc": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 10,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ },
+ "fr-dimensions-rect": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 12,
+  "mine": {
+   "residual": 13,
+   "moved": 17.999999999999915,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 22.803508500653248,
+  "brepDof": 0,
+  "apartFromBrep": 2.210149372062885e-9
+ },
+ "fr-symmetric": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 12,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 0,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": null,
+  "brepDof": null,
+  "apartFromBrep": null
+ },
+ "fr-equal-parallel": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ },
+ "grid-hole-d0.2-h10": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "grid-hole-d0.2-h100": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "grid-hole-d0.5-h10": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "grid-hole-d0.5-h100": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "grid-hole-d1-h10": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "grid-hole-d1-h100": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "grid-hole-d2-h10": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "grid-hole-d2-h100": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "grid-hole-d5-h10": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "grid-hole-d5-h100": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "grid-slot-r0.25-h10": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "grid-slot-r0.25-h100": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "grid-slot-r1-h10": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "grid-slot-r1-h100": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "dup-circle": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "dup-circle-x3": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 9,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 9,
+  "apartFromBrep": 0
+ },
+ "dup-rect": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "dup-slot": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "dup-rect-polygon": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 12,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "dup-hole-same-as-outer-circle": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "geom-arc-full-circle": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 1,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 4,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 4,
+  "apartFromBrep": 0
+ },
+ "geom-arc-full-circle-norule": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ },
+ "dshape-r10-control": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 2,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ },
+ "dshape-r9.9": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 2,
+  "mine": {
+   "residual": 0.09999999999999964,
+   "moved": 0.07692307691722355,
+   "dof": 5,
+   "dofMoved": 5,
+   "converged": true
+  },
+  "brepMoved": 0.4916332193423211,
+  "brepDof": 5,
+  "apartFromBrep": 0.4916332193423211
+ },
+ "dshape-r10.5": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 2,
+  "mine": {
+   "residual": 0.5,
+   "moved": 0.384615384596696,
+   "dof": 5,
+   "dofMoved": 5,
+   "converged": true
+  },
+  "brepMoved": 0.374842567434408,
+  "brepDof": 5,
+  "apartFromBrep": 0.06519715808519512
+ },
+ "dshape-r10.0001": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 2,
+  "mine": {
+   "residual": 0.00009999999999976694,
+   "moved": 0.00007692307691620215,
+   "dof": 5,
+   "dofMoved": 5,
+   "converged": true
+  },
+  "brepMoved": 0.0009569736408565472,
+  "brepDof": 5,
+  "apartFromBrep": 0.0009569736408565472
+ },
+ "slot-radius-slider-4": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-radius-slider-6": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 2,
+   "moved": 1.5498755851847967,
+   "dof": 6,
+   "dofMoved": 6,
+   "converged": true
+  },
+  "brepMoved": 1.6905391673081818,
+  "brepDof": 6,
+  "apartFromBrep": 0.14066358212338503
+ },
+ "slot-radius-both-6": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 2,
+   "moved": 1.544076368777568,
+   "dof": 6,
+   "dofMoved": 6,
+   "converged": true
+  },
+  "brepMoved": 1.6026362101869136,
+  "brepDof": 6,
+  "apartFromBrep": 0.05855984146416837
+ },
+ "floor-slot-long-r0.002": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "floor-slot-long-r0.001": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": null,
+  "brepDof": null,
+  "apartFromBrep": null
+ },
+ "floor-slot-long-r0.0005": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": null,
+  "brepDof": null,
+  "apartFromBrep": null
+ },
+ "floor-circle-in-big-r0.05": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "floor-circle-in-big-r0.2": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "floor-slot-r0.1": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "floor-slot-r0.25": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "floor-slot-r0.5": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "floor-slot-r1": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "floor-long-slot-w5": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "floor-long-slot-w0.4": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "contact-corner-corner": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "contact-corner-on-edge": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 12,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "contact-circle-on-edge": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "contact-ring-tangent-in": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "contact-two-tangent-out": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "contact-nested-ok": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "contact-side-by-side-ok": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "contact-circle-crosses-rect": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "geom-vertex-on-edge": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 6,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "geom-chord-pointonobject": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 6,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 10,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 10,
+  "apartFromBrep": 0
+ },
+ "contact-shared-edge-rects": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "contact-partial-shared-edge": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "fr-remove-rectangle-sides": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 3,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 3,
+  "apartFromBrep": 0
+ },
+ "holdout-slot-r3-h50": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "holdout-slot-r3-h500": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "holdout-slot-r8-h50": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "holdout-slot-r8-h500": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-h": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-v": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-diag": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 8.881784197001252e-16,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-fat": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-front": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "band-slot-r0.004": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "band-slot-r0.003": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-short-micro-r0.001": {
+  "sketch": "sk1",
+  "outcome": "TRUCK-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "geom-square-norules": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 16,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 16,
+  "apartFromBrep": 0
+ },
+ "geom-square-withrules": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 4,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "geom-no-rules-gap-1e-9": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 16,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 16,
+  "apartFromBrep": 0
+ },
+ "geom-no-rules-gap-1e-7": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 16,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 16,
+  "apartFromBrep": 0
+ },
+ "geom-no-rules-gap-0.000001": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 16,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 16,
+  "apartFromBrep": 0
+ },
+ "geom-no-rules-gap-0.00001": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 16,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 16,
+  "apartFromBrep": 0
+ },
+ "geom-no-rules-gap-0.0001": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 16,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 16,
+  "apartFromBrep": 0
+ },
+ "geom-no-rules-gap-0.001": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 16,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 16,
+  "apartFromBrep": 0
+ },
+ "geom-no-rules-gap-0.01": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 16,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 16,
+  "apartFromBrep": 0
+ },
+ "fr-lines-coords-square": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 16,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 16,
+  "apartFromBrep": 0
+ },
+ "fr-lines-handles-square": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 4,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "fr-remove-point": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 3,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-micro-r0.5": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-micro-r0.1": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-micro-r0.01": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-micro-r0.005": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-micro-r0.002": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "slot-micro-r0.001": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "geom-triangle-norules": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "geom-triangle-joined": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 3,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "geom-rect-hv": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 4,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 4,
+  "apartFromBrep": 0
+ },
+ "geom-D-cw": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 2,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ },
+ "geom-D-ccw": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 2,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ },
+ "geom-pie-ccw90": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 3,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "geom-pie-cw270": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 3,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "geom-circle-only": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 3,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 3,
+  "apartFromBrep": 0
+ },
+ "geom-circle-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "geom-construction-line": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 4,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 14,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 14,
+  "apartFromBrep": 0
+ },
+ "geom-construction-circle-inside": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 4,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 11,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 11,
+  "apartFromBrep": 0
+ },
+ "geom-construction-only": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 3,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 3,
+  "apartFromBrep": 0
+ },
+ "geom-points-only": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 4,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 4,
+  "apartFromBrep": 0
+ },
+ "geom-open-3-lines": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 2,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "geom-front-plane": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "geom-side-circle": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 3,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 3,
+  "apartFromBrep": 0
+ },
+ "geom-arc-off-circle": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 2,
+   "moved": 0.7979872500460097,
+   "dof": 9,
+   "dofMoved": 5,
+   "converged": true
+  },
+  "brepMoved": 0.8462484829041064,
+  "brepDof": 9,
+  "apartFromBrep": 0.12448396597205524
+ },
+ "geom-line-zero": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 4,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 4,
+  "apartFromBrep": 0
+ },
+ "geom-construction-nonbool": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 4,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 4,
+  "apartFromBrep": 0
+ },
+ "rules-bad-ref": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 1,
+  "mine": {
+   "unsupported": "null is not an object (evaluating 'ga.r')"
+  }
+ },
+ "multi-plate-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "multi-island": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 10,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 10,
+  "apartFromBrep": 0
+ },
+ "multi-concentric3": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 9,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 9,
+  "apartFromBrep": 0
+ },
+ "multi-concentric4": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "multi-apart-rects": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "multi-apart-circles": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "multi-rect-circle-apart": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "multi-ring-and-far-rect": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 10,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 10,
+  "apartFromBrep": 0
+ },
+ "multi-rect-in-rect": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "multi-rect-off-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "multi-poly-with-rect-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 12,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "multi-slot-hole": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 10,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 10,
+  "apartFromBrep": 0
+ },
+ "multi-two-slots": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 12,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 12,
+  "apartFromBrep": 0
+ },
+ "multi-slot-then-circle": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 9,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 9,
+  "apartFromBrep": 0
+ },
+ "multi-touch-share-edge": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "multi-overlap-rects": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 16,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 8,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 8,
+  "apartFromBrep": 0
+ },
+ "multi-overlap-circles": {
+  "sketch": "sk1",
+  "outcome": "ALL-REFUSED",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "multi-tangent-ext-circles": {
+  "sketch": "sk1",
+  "outcome": "NO-ORACLE",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "multi-tangent-int-circles": {
+  "sketch": "sk1",
+  "outcome": "NO-ORACLE",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 6,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 6,
+  "apartFromBrep": 0
+ },
+ "multi-shape-on-front": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "multi-circle-then-rect": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "multi-polygon-then-circle": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 4,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 11,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 11,
+  "apartFromBrep": 0
+ },
+ "multi-rect-rules-then-shape": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 8,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 7,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 7,
+  "apartFromBrep": 0
+ },
+ "param-geom-circle-r": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 0,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 3,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 3,
+  "apartFromBrep": 0
+ },
+ "param-geom-arc-r": {
+  "sketch": "sk1",
+  "outcome": "PASS",
+  "rules": 2,
+  "mine": {
+   "residual": 0,
+   "moved": 0,
+   "dof": 5,
+   "dofMoved": 0,
+   "converged": true
+  },
+  "brepMoved": 0,
+  "brepDof": 5,
+  "apartFromBrep": 0
+ }
+}

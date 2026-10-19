@@ -1,0 +1,10218 @@
+[
+ {
+  "label": "rim(sk2) round 1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 1)",
+  "id": "round4",
+  "ms": 438,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+     "engineEdges": [
+      "F2:top|F4:side:l1"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:top|F4:side:l1"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+    "raw": "round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked"
+   },
+   {
+    "id": "round3",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+    "raw": "round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)"
+   },
+   {
+    "id": "round4",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round4 is not built because round3 could not be built, so round4 is shown without it.",
+    "raw": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked))"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11593.370204219173,
+    "com": [
+     20.001054301182467,
+     14.999999999999996,
+     4.893759465170332
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 11,
+     "cylinder": 5
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 3
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 11591.03244517641,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 15
+   },
+   "occtRefusals": {
+    "round2": "Round 2's edge could not be found -- Round 2 is shown without it."
+   },
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "round2": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "round3": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4": "round4 is not built because round3 could not be built, so round4 is shown without it."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round4 is not built because round3 could not be built, so round4 is shown without it.",
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "round2_size",
+    "caption": "Round 2 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "round3_size",
+    "caption": "Round 3 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "round4_size",
+    "caption": "Round 4 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "rim(sk2) bevel 1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nbevel(part.rim(sk2), 1)",
+  "id": "bevel4",
+  "ms": 200,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "distance": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+     "engineEdges": [
+      "F2:top|F4:side:l1"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:top|F4:side:l1"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   },
+   {
+    "id": "bevel2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel2 is not built: bevel1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+    "raw": "bevel2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked"
+   },
+   {
+    "id": "bevel3",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel3 is not built because bevel2 could not be built, so bevel3 is shown without it.",
+    "raw": "bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)"
+   },
+   {
+    "id": "bevel4",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel4 is not built because bevel3 could not be built, so bevel4 is shown without it.",
+    "raw": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked))"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "distance": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11584.333333332957,
+    "com": [
+     20.0026112853568,
+     15.000000000000123,
+     4.890095819065858
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10.000000000000002
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 14
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11578.666666666666,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 15
+   },
+   "occtRefusals": {
+    "bevel2": "Bevel 2's edge could not be found -- Bevel 2 is shown without it."
+   },
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "bevel2": "bevel2 is not built: bevel1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "bevel3": "bevel3 is not built because bevel2 could not be built, so bevel3 is shown without it.",
+   "bevel4": "bevel4 is not built because bevel3 could not be built, so bevel4 is shown without it."
+  },
+  "outcome": "REFUSED",
+  "sentence": "bevel4 is not built because bevel3 could not be built, so bevel4 is shown without it.",
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "bevel1_size",
+    "caption": "Bevel 1 cut",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "bevel2_size",
+    "caption": "Bevel 2 cut",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "bevel3_size",
+    "caption": "Bevel 3 cut",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "bevel4_size",
+    "caption": "Bevel 4 cut",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "edge(top, wall 1) round 1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk2, 1)), 1)",
+  "id": "round1",
+  "ms": 212,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+     "engineEdges": [
+      "F2:top|F4:side:l1"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:top|F4:side:l1"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11597.853981633574,
+    "com": [
+     19.999999999999996,
+     15.000966510156715,
+     4.895648734464526
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11597.853981633974,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11597.852573171076,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10.000000000000004
+   ],
+   "com": [
+    20.000000000538925,
+    15.000967165844237,
+    4.895648162987224
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 11
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.2144164777193302e-7,
+   "dBbox": 3.552713678800501e-16,
+   "dCom": 1.2859090268382987e-8,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.450445827424729e-14
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.fillet: invalid parameters for `solid.fillet`: no edge at [20, 20, 0]: the nearest edge is 6.000 mm away"
+  },
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "edge(top, wall 2) round 1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk2, 2)), 1)",
+  "id": "round1",
+  "ms": 227,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       15,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+     "engineEdges": [
+      "F2:top|F4:side:l2"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:top|F4:side:l2"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       25,
+       15,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11597.853981633574,
+    "com": [
+     19.999033489843285,
+     15,
+     4.895648734464526
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11597.853981633976,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11597.8525753589,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    19.99903283486339,
+    14.999999999932594,
+    4.895648163337029
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 11
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.2125300735023275e-7,
+   "dBbox": 0,
+   "dCom": 1.2845212581585683e-8,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.4661296720948414e-14
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.fillet: invalid parameters for `solid.fillet`: no edge at [15, 15, 0]: the nearest edge is 6.000 mm away"
+  },
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "edge(top, wall 3) round 1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk2, 3)), 1)",
+  "id": "round1",
+  "ms": 217,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       20,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]",
+     "engineEdges": [
+      "F2:top|F4:side:l3"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:top|F4:side:l3"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       20,
+       20,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11597.853981633572,
+    "com": [
+     20,
+     14.999033489843285,
+     4.895648734464528
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11597.853981633974,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11597.852575046358,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    19.999999999528352,
+    14.999032834964394,
+    4.8956481632870394
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 11
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.2127995548898342e-7,
+   "dBbox": 0,
+   "dCom": 1.2843231702203365e-8,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.4661296720948414e-14
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.fillet: invalid parameters for `solid.fillet`: no edge at [20, 10, 0]: the nearest edge is 6.000 mm away"
+  },
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "edge(top, wall 4) round 1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk2, 4)), 1)",
+  "id": "round1",
+  "ms": 169,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       15,
+       15,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]",
+     "engineEdges": [
+      "F2:top|F4:side:l4"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:top|F4:side:l4"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       15,
+       15,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11597.853981633574,
+    "com": [
+     20.000966510156715,
+     15,
+     4.895648734464526
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11597.853981633976,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11597.85257285853,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10.000000000000004
+   ],
+   "com": [
+    20.00096716621483,
+    15.00000000053894,
+    4.895648162937235
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 11
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.21468596381199e-7,
+   "dBbox": 3.552713678800501e-16,
+   "dCom": 1.2866358219034848e-8,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.4661296720948414e-14
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.fillet: invalid parameters for `solid.fillet`: no edge at [25, 15, 0]: the nearest edge is 6.000 mm away"
+  },
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "edge(wall 1, wall 2) round 1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge(part.wall(sk2, 1), part.wall(sk2, 2)), 1)",
+  "id": "round1",
+  "ms": 194,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       10,
+       8
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]",
+     "engineEdges": [
+      "F4:side:l1|F4:side:l2"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F4:side:l1|F4:side:l2"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       25,
+       10,
+       8
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11600.858407346035,
+    "com": [
+     20.000353447633707,
+     14.999646552366288,
+     4.896781364282187
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11600,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "brep-rs can only round an inside corner (a concave edge) when it is a straight edge between two flat faces that ends on a plain flat face at each end, with nothing else within reach of the blend -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11600.858970606552,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10.000000000000007
+   ],
+   "com": [
+    20.000353670985216,
+    14.999646328788458,
+    4.896781514926888
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 11
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "brep-rs can only round an inside corner (a concave edge) when it is a straight edge between two flat faces that ends on a plain flat face at each end, with nothing else within reach of the blend -- round1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 4.8553348149343314e-8,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 4.384721992756847e-9,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.fillet: invalid parameters for `solid.fillet`: no edge at [15, 20, 2]: the nearest edge is 4.000 mm away"
+  },
+  "names": [
+   "pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "edge(wall 2, wall 3) round 1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge(part.wall(sk2, 2), part.wall(sk2, 3)), 1)",
+  "id": "round1",
+  "ms": 197,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       20,
+       8
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pull2.face[sk2.edge1] ^ pull2.face[sk2.edge2]]",
+     "engineEdges": [
+      "F4:side:l2|F4:side:l3"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F4:side:l2|F4:side:l3"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       25,
+       20,
+       8
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11600.858407346035,
+    "com": [
+     20.00035344763371,
+     15.000353447633707,
+     4.896781364282187
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11600,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "brep-rs can only round an inside corner (a concave edge) when it is a straight edge between two flat faces that ends on a plain flat face at each end, with nothing else within reach of the blend -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11600.858971356662,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10.000000000000005
+   ],
+   "com": [
+    20.000353670855873,
+    15.000353670969035,
+    4.896781514955118
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 11
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "brep-rs can only round an inside corner (a concave edge) when it is a straight edge between two flat faces that ends on a plain flat face at each end, with nothing else within reach of the blend -- round1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 4.861800796734359e-8,
+   "dBbox": 5.329070518200751e-16,
+   "dCom": 4.379966154312983e-9,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.fillet: invalid parameters for `solid.fillet`: no edge at [15, 10, 2]: the nearest edge is 4.000 mm away"
+  },
+  "names": [
+   "pocket1.edge[pull2.face[sk2.edge1] ^ pull2.face[sk2.edge2]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "edge(wall 3, wall 4) round 1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge(part.wall(sk2, 3), part.wall(sk2, 4)), 1)",
+  "id": "round1",
+  "ms": 184,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       15,
+       20,
+       8
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pull2.face[sk2.edge2] ^ pull2.face[sk2.edge3]]",
+     "engineEdges": [
+      "F4:side:l3|F4:side:l4"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F4:side:l3|F4:side:l4"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       15,
+       20,
+       8
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11600.858407346033,
+    "com": [
+     19.999646552366293,
+     15.000353447633708,
+     4.896781364282188
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11600,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "brep-rs can only round an inside corner (a concave edge) when it is a straight edge between two flat faces that ends on a plain flat face at each end, with nothing else within reach of the blend -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11600.858970356514,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10.000000000000007
+   ],
+   "com": [
+    19.999646328928538,
+    15.00035367103372,
+    4.8967815148276745
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 11
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "brep-rs can only round an inside corner (a concave edge) when it is a straight edge between two flat faces that ends on a plain flat face at each end, with nothing else within reach of the blend -- round1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 4.853179487667656e-8,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 4.381974903474338e-9,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.fillet: invalid parameters for `solid.fillet`: no edge at [25, 10, 2]: the nearest edge is 4.000 mm away"
+  },
+  "names": [
+   "pocket1.edge[pull2.face[sk2.edge2] ^ pull2.face[sk2.edge3]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "edge(wall 4, wall 1) round 1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge(part.wall(sk2, 4), part.wall(sk2, 1)), 1)",
+  "id": "round1",
+  "ms": 208,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       15,
+       10,
+       8
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pull2.face[sk2.edge3] ^ pull2.face[sk2.edge0]]",
+     "engineEdges": [
+      "F4:side:l1|F4:side:l4"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F4:side:l1|F4:side:l4"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       15,
+       10,
+       8
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11600.858407346033,
+    "com": [
+     19.999646552366293,
+     14.99964655236629,
+     4.896781364282188
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11600,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "brep-rs can only round an inside corner (a concave edge) when it is a straight edge between two flat faces that ends on a plain flat face at each end, with nothing else within reach of the blend -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11600.858969606401,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10.000000000000004
+   ],
+   "com": [
+    19.999646329445806,
+    14.999646329370366,
+    4.896781514799449
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 11
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "brep-rs can only round an inside corner (a concave edge) when it is a straight edge between two flat faces that ends on a plain flat face at each end, with nothing else within reach of the blend -- round1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 4.8467134745080623e-8,
+   "dBbox": 3.552713678800501e-16,
+   "dCom": 4.373309875636547e-9,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.fillet: invalid parameters for `solid.fillet`: no edge at [25, 20, 2]: the nearest edge is 4.000 mm away"
+  },
+  "names": [
+   "pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge3]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "edge(wall1, wall3) opposite walls",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge(part.wall(sk2, 1), part.wall(sk2, 3)), 1)",
+  "id": "round1",
+  "ms": 77,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: wall 1 and wall 3 of the pocket do not touch, so there is no edge between them -- name two walls that meet.",
+    "raw": "round1 (fillet): pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge2]] matches no edge on b_pull1 (the two faces do not meet there any more, or never did); not guessing"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11600.000000000002,
+    "com": [
+     19.999999999999993,
+     14.999999999999993,
+     4.896551724137928
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11600,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepRefusals": {
+    "round1": "round1's edge could not be found -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: wall 1 and wall 3 of the pocket do not touch, so there is no edge between them -- name two walls that meet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: wall 1 and wall 3 of the pocket do not touch, so there is no edge between them -- name two walls that meet.",
+  "names": [
+   "pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge2]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "edge(wall1, wall1)",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge(part.wall(sk2, 1), part.wall(sk2, 1)), 1)",
+  "scriptError": ".edge() needs two DIFFERENT faces to name the edge between them.",
+  "line": 5
+ },
+ {
+  "label": "wall(sk2, 5) out of range",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk2, 5)), 1)",
+  "scriptError": ".wall() needs a side number from 1 to 4 (the sketch has 4), and you gave it 5.",
+  "line": 5
+ },
+ {
+  "label": "wall(sk2, 0)",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk2, 0)), 1)",
+  "scriptError": ".wall() needs a side number from 1 to 4 (the sketch has 4), and you gave it 0.",
+  "line": 5
+ },
+ {
+  "label": "wall of non-pocket sketch",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk1, 1)), 1)",
+  "scriptError": ".wall() names a face a pocket cut, and no pocket(...) was cut from that sketch.",
+  "line": 5
+ },
+ {
+  "label": "edge(bottom, wall 1) (pocket floor edge?)",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('bottom', part.wall(sk2, 1)), 1)",
+  "id": "round1",
+  "ms": 85,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.",
+    "raw": "round1 (fillet): pocket1.edge[pocket1.same[pull1.face[-z]] ^ pull2.face[sk2.edge0]] matches no edge on b_pull1 (the two faces do not meet there any more, or never did); not guessing"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11600.000000000002,
+    "com": [
+     19.999999999999993,
+     14.999999999999993,
+     4.896551724137928
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11600,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepRefusals": {
+    "round1": "round1's edge could not be found -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.",
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[-z]] ^ pull2.face[sk2.edge0]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "edge(front, wall 1)",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('front', part.wall(sk2, 1)), 1)",
+  "id": "round1",
+  "ms": 143,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.",
+    "raw": "round1 (fillet): pocket1.edge[pocket1.same[pull1.face[-y]] ^ pull2.face[sk2.edge0]] matches no edge on b_pull1 (the two faces do not meet there any more, or never did); not guessing"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11600.000000000002,
+    "com": [
+     19.999999999999993,
+     14.999999999999993,
+     4.896551724137928
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11600,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepRefusals": {
+    "round1": "round1's edge could not be found -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.",
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[-y]] ^ pull2.face[sk2.edge0]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "rim thru pocket (deep 10)",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 10);\nround(part.rim(sk2), 1)",
+  "id": "round4",
+  "ms": 321,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+     "engineEdges": [
+      "F2:top|F4:side:l1"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:top|F4:side:l1"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+    "raw": "round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked"
+   },
+   {
+    "id": "round3",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+    "raw": "round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)"
+   },
+   {
+    "id": "round4",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round4 is not built because round3 could not be built, so round4 is shown without it.",
+    "raw": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked))"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -10,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 10993.370204220166,
+    "com": [
+     20.00111184320623,
+     14.999999999999998,
+     4.997117730924986
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 15,
+    "types": {
+     "plane": 10,
+     "cylinder": 5
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 3
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 10991.03244517641,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 14
+   },
+   "occtRefusals": {
+    "round2": "Round 2's edge could not be found -- Round 2 is shown without it."
+   },
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "round2": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "round3": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4": "round4 is not built because round3 could not be built, so round4 is shown without it."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round4 is not built because round3 could not be built, so round4 is shown without it.",
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "round2_size",
+    "caption": "Round 2 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "round3_size",
+    "caption": "Round 3 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "round4_size",
+    "caption": "Round 4 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "rim off-centre pocket",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(8, 8, { at: [12, 9] });\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 1)",
+  "id": "round4",
+  "ms": 335,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       12,
+       5,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+     "engineEdges": [
+      "F2:top|F4:side:l1"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:top|F4:side:l1"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+    "raw": "round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked"
+   },
+   {
+    "id": "round3",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+    "raw": "round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)"
+   },
+   {
+    "id": "round4",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round4 is not built because round3 could not be built, so round4 is shown without it.",
+    "raw": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked))"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       8,
+       5
+      ],
+      [
+       16,
+       5
+      ],
+      [
+       16,
+       13
+      ],
+      [
+       8,
+       13
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       12,
+       5,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11738.65781523897,
+    "com": [
+     20.178794711536707,
+     15.133580272399849,
+     4.932399817839003
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 11,
+     "cylinder": 5
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 3
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 11736.749259869232,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 15
+   },
+   "occtRefusals": {
+    "round2": "Round 2's edge could not be found -- Round 2 is shown without it."
+   },
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "round2": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "round3": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4": "round4 is not built because round3 could not be built, so round4 is shown without it."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round4 is not built because round3 could not be built, so round4 is shown without it.",
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 8,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 16,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 16,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 13,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 8,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 13,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "round2_size",
+    "caption": "Round 2 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "round3_size",
+    "caption": "Round 3 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "round4_size",
+    "caption": "Round 4 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "rim round too big (r 5 in 10 pocket)",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 5)",
+  "id": "round4",
+  "ms": 109,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: a round of 5 is too large for the 4 mm tall pocket wall it sits on -- use a smaller size.",
+    "raw": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 is not built because round1 could not be built, so round2 is shown without it.",
+    "raw": "round2 (fillet): its target round1 was refused (round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)"
+   },
+   {
+    "id": "round3",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+    "raw": "round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces))"
+   },
+   {
+    "id": "round4",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round4 is not built because round3 could not be built, so round4 is shown without it.",
+    "raw": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)))"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11600.000000000002,
+    "com": [
+     19.999999999999993,
+     14.999999999999993,
+     4.896551724137928
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11600,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {
+    "round1": "Rounding Round 1 at 5 would not fit its edge -- Round 1 is shown without it.",
+    "round2": "Rounding Round 2 at 5 would not fit its edge -- Round 2 is shown without it.",
+    "round3": "Rounding Round 3 at 5 would not fit its edge -- Round 3 is shown without it.",
+    "round4": "Rounding Round 4 at 5 would not fit its edge -- Round 4 is shown without it."
+   },
+   "brepRefusals": {
+    "round1": "Rounding round1 at 5 would not fit its edge -- round1 is shown without it.",
+    "round2": "Rounding round2 at 5 would not fit its edge -- round2 is shown without it.",
+    "round3": "Rounding round3 at 5 would not fit its edge -- round3 is shown without it.",
+    "round4": "Rounding round4 at 5 would not fit its edge -- round4 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: a round of 5 is too large for the 4 mm tall pocket wall it sits on -- use a smaller size.",
+   "round2": "round2 is not built because round1 could not be built, so round2 is shown without it.",
+   "round3": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4": "round4 is not built because round3 could not be built, so round4 is shown without it."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round4 is not built because round3 could not be built, so round4 is shown without it.",
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 5,
+    "min": 0.5,
+    "max": 5,
+    "step": 0.5
+   },
+   {
+    "name": "round2_size",
+    "caption": "Round 2 radius",
+    "value": 5,
+    "min": 0.5,
+    "max": 5,
+    "step": 0.5
+   },
+   {
+    "name": "round3_size",
+    "caption": "Round 3 radius",
+    "value": 5,
+    "min": 0.5,
+    "max": 5,
+    "step": 0.5
+   },
+   {
+    "name": "round4_size",
+    "caption": "Round 4 radius",
+    "value": 5,
+    "min": 0.5,
+    "max": 5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "rim round 2 deep 4",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 2)",
+  "id": "round4",
+  "ms": 313,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "radius": 2,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+     "engineEdges": [
+      "F2:top|F4:side:l1"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:top|F4:side:l1"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+    "raw": "round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked"
+   },
+   {
+    "id": "round3",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+    "raw": "round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)"
+   },
+   {
+    "id": "round4",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round4 is not built because round3 could not be built, so round4 is shown without it.",
+    "raw": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked))"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       25,
+       10
+      ],
+      [
+       25,
+       20
+      ],
+      [
+       15,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "radius": 2,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11572.713854150526,
+    "com": [
+     20.00477856095039,
+     15.00000000000138,
+     4.885547579725616
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 11,
+     "cylinder": 5
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 3
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 11562.595855267695,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 15
+   },
+   "occtRefusals": {
+    "round2": "Round 2's edge could not be found -- Round 2 is shown without it."
+   },
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "round2": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "round3": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4": "round4 is not built because round3 could not be built, so round4 is shown without it."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round4 is not built because round3 could not be built, so round4 is shown without it.",
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   },
+   {
+    "name": "round2_size",
+    "caption": "Round 2 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   },
+   {
+    "name": "round3_size",
+    "caption": "Round 3 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   },
+   {
+    "name": "round4_size",
+    "caption": "Round 4 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "triangle pocket rim",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.polygon([[12,8],[28,8],[20,22]]);\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 1)",
+  "id": "round3",
+  "ms": 351,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       8,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+     "engineEdges": [
+      "F2:top|F4:side:l1"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:top|F4:side:l1"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+    "raw": "round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked"
+   },
+   {
+    "id": "round3",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+    "raw": "round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       12,
+       8
+      ],
+      [
+       28,
+       8
+      ],
+      [
+       20,
+       22
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       20,
+       8,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11544.88518028608,
+    "com": [
+     20.001358837225933,
+     15.092763534642131,
+     4.8806393212642485
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 13,
+    "types": {
+     "plane": 10,
+     "cylinder": 3
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 3
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11552,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 10
+   },
+   "occtRefusals": {
+    "round2": "Round 2's edge could not be found -- Round 2 is shown without it."
+   },
+   "brepRefusals": {
+    "round1": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+    "round2": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "round3": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round3 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round2": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "round3": "round3 is not built because round2 could not be built, so round3 is shown without it."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 12,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 8,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 28,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 8,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 22,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "round2_size",
+    "caption": "Round 2 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   },
+   {
+    "name": "round3_size",
+    "caption": "Round 3 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "circle pocket rim",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.circle(12, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 1)",
+  "id": "round1",
+  "ms": 756,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can.",
+    "raw": "round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] cannot be resolved: pull2.face[sk2.edge0]: sk2 is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      20,
+      15
+     ],
+     "diameter": 12
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11539.219173687821,
+    "com": [
+     20,
+     15,
+     4.878910442136944
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 7,
+     "other": 1,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 7,
+     "other": 1,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 11539.219173687823,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 9
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can.",
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_across",
+    "caption": "Sketch 2 across",
+    "value": 12,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_x",
+    "caption": "Sketch 2 centre x",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_y",
+    "caption": "Sketch 2 centre y",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "circle pocket wall1 edge(top,wall)",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.circle(12, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk2, 1)), 1)",
+  "id": "round1",
+  "ms": 724,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can.",
+    "raw": "round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] cannot be resolved: pull2.face[sk2.edge0]: sk2 is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      20,
+      15
+     ],
+     "diameter": 12
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11539.219173687821,
+    "com": [
+     20,
+     15,
+     4.878910442136944
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 7,
+     "other": 1,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 7,
+     "other": 1,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 11539.219173687823,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 9
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can.",
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_across",
+    "caption": "Sketch 2 across",
+    "value": 12,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_x",
+    "caption": "Sketch 2 centre x",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_y",
+    "caption": "Sketch 2 centre y",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "rounded-corner pocket rim",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(12, 12, { at: [20, 15] }); sk2.round(1, 2);\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 0.5)",
+  "id": "round4",
+  "ms": 254,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can.",
+    "raw": "round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] cannot be resolved: pull2.face[sk2.edge0]: sk2 has rounded or chamfered corners (its outline has 5 segments for 4 design edges), so the sketch edge index does not map to one straight wall; not resolved"
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 is not built because round1 could not be built, so round2 is shown without it.",
+    "raw": "round2 (fillet): its target round1 was refused (round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] cannot be resolved: pull2.face[sk2.edge0]: sk2 has rounded or chamfered corners (its outline has 5 segments for 4 design edges), so the sketch edge index does not map to one straight wall; not resolved)"
+   },
+   {
+    "id": "round3",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+    "raw": "round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] cannot be resolved: pull2.face[sk2.edge0]: sk2 has rounded or chamfered corners (its outline has 5 segments for 4 design edges), so the sketch edge index does not map to one straight wall; not resolved))"
+   },
+   {
+    "id": "round4",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round4 is not built because round3 could not be built, so round4 is shown without it.",
+    "raw": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] cannot be resolved: pull2.face[sk2.edge0]: sk2 has rounded or chamfered corners (its outline has 5 segments for 4 design edges), so the sketch edge index does not map to one straight wall; not resolved)))"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      14,
+      11
+     ],
+     "end": [
+      16,
+      9
+     ],
+     "through": [
+      14.585786437626904,
+      9.585786437626904
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       16,
+       9
+      ],
+      [
+       26,
+       9
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       26,
+       9
+      ],
+      [
+       26,
+       21
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       26,
+       21
+      ],
+      [
+       14,
+       21
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       14,
+       21
+      ],
+      [
+       14,
+       11
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11425.526870961436,
+    "com": [
+     19.998660871852728,
+     14.998303604848235,
+     4.8488454002986785
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 17,
+    "types": {
+     "plane": 11,
+     "cylinder": 5,
+     "other": 1
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 4,
+     "other": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "no shape"
+   },
+   "occtRefusals": {
+    "round2": "Round 2's edge could not be found -- Round 2 is shown without it.",
+    "round4": "Rounding Round 4 at 0.5 would not fit its edge -- Round 4 is shown without it."
+   },
+   "brepRefusals": {
+    "pocket1": "combine pocket1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- pocket1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can.",
+   "round2": "round2 is not built because round1 could not be built, so round2 is shown without it.",
+   "round3": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4": "round4 is not built because round3 could not be built, so round4 is shown without it."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round4 is not built because round3 could not be built, so round4 is shown without it.",
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]",
+   "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 14,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 9,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 26,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 9,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 26,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 21,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 14,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 21,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_r0",
+    "caption": "Sketch 2 corner 1 round",
+    "value": 2,
+    "min": 0,
+    "max": 5.999999999999999,
+    "step": 0.5
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 0.5,
+    "min": 0.5,
+    "max": 0.5,
+    "step": 0.5
+   },
+   {
+    "name": "round2_size",
+    "caption": "Round 2 radius",
+    "value": 0.5,
+    "min": 0.5,
+    "max": 0.5,
+    "step": 0.5
+   },
+   {
+    "name": "round3_size",
+    "caption": "Round 3 radius",
+    "value": 0.5,
+    "min": 0.5,
+    "max": 0.5,
+    "step": 0.5
+   },
+   {
+    "name": "round4_size",
+    "caption": "Round 4 radius",
+    "value": 0.5,
+    "min": 0.5,
+    "max": 0.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "pocket from front plane: rim",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('front', 0); sk2.rect(10, 6, { at: [20, 5] });\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 1)",
+  "scriptError": ".rim() finds the opening of a pocket cut down from a top-plane sketch; for another pocket name its edges one at a time with .edge(face, part.wall(sketch, n)).",
+  "line": 5
+ },
+ {
+  "label": "pocket from front plane: edge(front, wall1)",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('front', 0); sk2.rect(10, 6, { at: [20, 5] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('front', part.wall(sk2, 1)), 1)",
+  "id": "round1",
+  "ms": 204,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       2
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    },
+    "evidence": {
+     "name": "pocket1.edge[pocket1.same[pull1.face[-y]] ^ pull2.face[sk2.edge0]]",
+     "engineEdges": [
+      "F2:side:l1|F4:side:l1"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:side:l1|F4:side:l1"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_1",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       2
+      ],
+      [
+       25,
+       2
+      ],
+      [
+       25,
+       8
+      ],
+      [
+       15,
+       8
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": -4,
+     "sketch": "sk_sk2_1",
+     "operation": "new",
+     "body_name": "b_pull2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_pull1",
+     "tools": [
+      "b_pull2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       20,
+       0,
+       2
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11757.853981634338,
+    "com": [
+     19.999999999999996,
+     15.268051544860336,
+     5.000588322259339
+    ],
+    "bbox": [
+     0,
+     -2.220446049250313e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11757.853981633974,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11757.852574296243,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    20.00000000003983,
+    15.268053324908678,
+    5.000588728789232
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 11
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.1969344894938068e-7,
+   "dBbox": 2.220446049250313e-16,
+   "dCom": 3.490962011167207e-8,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.0940840163300233e-14
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.0005480331666676128,
+   "dCom": 0.00026186231270106916,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "pocket1.edge[pocket1.same[pull1.face[-y]] ^ pull2.face[sk2.edge0]]"
+  ],
+  "params": [
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 40,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 30,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull1_height",
+    "caption": "Pull 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0u",
+    "caption": "Sketch 2 corner 1 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p0v",
+    "caption": "Sketch 2 corner 1 up",
+    "value": 2,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1u",
+    "caption": "Sketch 2 corner 2 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p1v",
+    "caption": "Sketch 2 corner 2 up",
+    "value": 2,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2u",
+    "caption": "Sketch 2 corner 3 across",
+    "value": 25,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p2v",
+    "caption": "Sketch 2 corner 3 up",
+    "value": 8,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3u",
+    "caption": "Sketch 2 corner 4 across",
+    "value": 15,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_p3v",
+    "caption": "Sketch 2 corner 4 up",
+    "value": 8,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk2_offset",
+    "caption": "Sketch 2 offset",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pull2_height",
+    "caption": "Pull 2 height",
+    "value": -4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "pocket depth is param: wall named",
+  "src": "const d = param('d', 4, {min:1,max:8})\nconst sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, d);\nround(part.rim(sk2), 1)",
+  "scriptError": "A pocket whose depth is a param() cannot have its walls named yet -- give pocket() a plain number for the depth, or cut it as subtract(shape, pull(sketch, -depth)).",
+  "line": 6
+ },
+ {
+  "label": "through pocket rim",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4, { through: true });\nround(part.rim(sk2), 1)",
+  "scriptError": "A pocket with a direction option (through, reversed, midplane, length2, taper, direction) cannot have its walls named yet -- name the walls of a plain one-sided pocket.",
+  "line": 5
+ }
+]

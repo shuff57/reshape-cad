@@ -1,0 +1,30 @@
+[
+ {
+  "id": "triangle-angle-wrong-orientation-start",
+  "feats": [
+   "rule:angle",
+   "rough start: angle orientation branch"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the directed angle 120 deg from line 1 to line 2; from this starting geometry solidcraft would apply the value to the opposite orientation (it would hold 60.000000 deg from 1 to 2); its angle dimension is undirected and takes its orientation from the start state"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 8
+  }
+ }
+]

@@ -1,0 +1,33 @@
+# From the REAL repo root (no shadow root needed: sg-core.mjs walks up to node_modules/ and takes brep-rs from archive/ when packages/brep-rs/pkg is gone).
+# SolidCraft pkg: see contract/RIG.md (wasm-bindgen --target nodejs of fe3717f).
+export SOLIDCRAFT_REFEREE_PKG=<pkg dir>
+H=docs/spikes/solidcraft-referee/contract/sketch-geometry-harness
+
+# 1. UNGUARDED path (translate-p4 alone): the "before" of every row.  output: $H/results/<name>.json
+sh $H/repro.sh                       # every cases-*.mjs  (planes outline soup fc friendly extra extra2 2d micro round2 frames2 round3 round3b guard grid holdout)
+sh $H/repro.sh outline               # or one group
+sh $H/repro.sh control-noprofiles    # negative control (no even-odd profile selection); sets SG_NO_PROFILES=1 itself
+
+# 2. GUARDED path (translate-p4 + contract/sketch-geometry.guard.mjs, SG_GUARD=1): the "after".  output: $H/results-guarded/<name>.json
+sh $H/repro-guarded.sh               # every cases-*.mjs except the negative control
+sh $H/repro-guarded.sh guard grid    # or some groups
+bun $H/solve-moves.mjs               # how far the rig's solver stand-in moves the rows each soup case writes -> results-guarded/solve-moves.json
+
+# 3. analysis
+bun $H/cmp-guard.mjs regress         # cases that built and matched before and are refused now (the over-refusals, each with its sentence)
+bun $H/cmp-guard.mjs changed         # every case whose outcome changed
+bun $H/calibrate.mjs                 # estimate of the curve-size rule against the measured error (unguarded builds)
+
+# 4. rows:  reads results-guarded/ (guarded) and results/ (unguarded); VERIFIES every label against the data (chk/agg) and lints every refusal sentence
+bun $H/build-rows.mjs                # writes contract/sketch-geometry.json
+bun $H/build-rows-before.mjs         # the round-3 table (unguarded path only): contract/sketch-geometry.before-guard.json
+
+# Heavy jobs run under: systemd-run --user --scope -p MemoryMax=16G -p MemorySwapMax=0 (repro.sh and repro-guarded.sh do this).
+
+# ---- round 5 ----
+# new groups: attacks (critic attacks, a5-*), far (curved outlines far from the origin), hazards (pull 0, bulge save/reload)
+sh $H/repro.sh attacks far hazards control-noprofiles     # unguarded
+sh $H/repro-guarded.sh attacks far hazards                # guarded
+bun $H/solve-check.mjs                                    # independent solver vs the retired brep-rs session (comparison only) -> results-guarded/solve-check.json
+bun $H/pkg-probe.mjs                                      # the pre-built pkg has no @sketch command -> results-guarded/pkg-probe.json
+bun docs/spikes/solidcraft-referee/contract/sketch-geometry.guard-check.mjs   # unit checks of the guard pieces

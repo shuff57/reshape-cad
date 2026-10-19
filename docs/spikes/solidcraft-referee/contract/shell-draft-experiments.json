@@ -1,0 +1,567 @@
+{
+ "shell wall 11.9 open top (40x30x12)": [
+  {
+   "name": "B",
+   "vol": 14389.955999999998,
+   "faces": 11,
+   "bbox": [
+    -5,
+    -22,
+    -3,
+    35,
+    8,
+    9
+   ]
+  }
+ ],
+ "shell wall 12 open top (40x30x12)": [
+  {
+   "name": "B",
+   "vol": 14400,
+   "faces": 6,
+   "bbox": [
+    -5,
+    -22,
+    -3,
+    35,
+    8,
+    9
+   ]
+  }
+ ],
+ "shell wall 12.5 open top (40x30x12)": [
+  {
+   "name": "B",
+   "vol": 14400,
+   "faces": 6,
+   "bbox": [
+    -5,
+    -22,
+    -3,
+    35,
+    8,
+    9
+   ]
+  }
+ ],
+ "shell wall 13 open top (40x30x12)": [
+  {
+   "name": "B",
+   "vol": 14400,
+   "faces": 6,
+   "bbox": [
+    -5,
+    -22,
+    -3,
+    35,
+    8,
+    9
+   ]
+  }
+ ],
+ "shell wall 14.9 open top (40x30x12)": [
+  {
+   "name": "B",
+   "vol": 14400,
+   "faces": 6,
+   "bbox": [
+    -5,
+    -22,
+    -3,
+    35,
+    8,
+    9
+   ]
+  }
+ ],
+ "shell wall 15 open top (40x30x12)": {
+  "command": "solid.shell",
+  "error": "the cut could not be computed reliably: it came out empty. The result was refused rather than kept wrong; where the bodies only touch (faces flush with each other), overlapping them slightly usually helps (refined tolerance 2.570992e-2 mm)",
+  "index": 1
+ },
+ "shell wall 16 open top (40x30x12)": {
+  "command": "solid.shell",
+  "error": "invalid input: the planes don't enclose a solid",
+  "index": 1
+ },
+ "shell wall 14.9 open top (40x30x50)": [
+  {
+   "name": "B",
+   "vol": 59928.39600000001,
+   "faces": 11,
+   "bbox": [
+    -5,
+    -22,
+    -22,
+    35,
+    8,
+    28.000000000000004
+   ]
+  }
+ ],
+ "shell wall 15 open top (40x30x50)": [
+  {
+   "name": "B",
+   "vol": 60000,
+   "faces": 8,
+   "bbox": [
+    -5,
+    -22,
+    -22,
+    35,
+    8,
+    28
+   ]
+  }
+ ],
+ "shell wall 15.5 open top (40x30x50)": {
+  "command": "solid.shell",
+  "error": "invalid input: the planes don't enclose a solid",
+  "index": 1
+ },
+ "draft 4 sides in one call 5deg neutral 0": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 13966.772636204856,
+    "faces": 6,
+    "bbox": [
+     -5.262465990577773,
+     -22.262465990577773,
+     -3.0000000000000004,
+     35.26246599057777,
+     8.262465990577773,
+     9.000000000000004
+    ]
+   }
+  ],
+  "closedFormVolume": 13966.77263620486,
+  "rel": 2.6047383327922834e-16
+ },
+ "draft 4 sides in one call 5deg neutral -3": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 13535.749701088433,
+    "faces": 6,
+    "bbox": [
+     -5,
+     -22,
+     -3.0000000000000004,
+     34.99999999999999,
+     8,
+     9
+    ]
+   }
+  ],
+  "closedFormVolume": 13535.749701088438,
+  "rel": 4.031522694453166e-16
+ },
+ "draft 4 sides in one call 5deg neutral 3": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 14404.408857357432,
+    "faces": 6,
+    "bbox": [
+     -5.524931981155547,
+     -22.524931981155543,
+     -3.0000000000000044,
+     35.52493198115555,
+     8.52493198115555,
+     9.000000000000004
+    ]
+   }
+  ],
+  "closedFormVolume": 14404.408857357439,
+  "rel": 5.051201813441331e-16
+ },
+ "draft 4 sides in one call -5deg neutral 0": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 14848.658364546174,
+    "faces": 6,
+    "bbox": [
+     -5.7873979717333155,
+     -22.787397971733316,
+     -3,
+     35.78739797173332,
+     8.787397971733316,
+     9.000000000000002
+    ]
+   }
+  ],
+  "closedFormVolume": 14848.658364546172,
+  "rel": 1.225019364637696e-16
+ },
+ "draft 4 sides in one call 20deg neutral 0": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 12699.124145381587,
+    "faces": 6,
+    "bbox": [
+     -6.091910702798608,
+     -23.091910702798607,
+     -3.000000000000025,
+     36.09191070279861,
+     9.091910702798607,
+     9
+    ]
+   }
+  ],
+  "closedFormVolume": 12699.12414538159,
+  "rel": 1.4323739044691405e-16
+ },
+ "draft right 60deg neutral 0": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 12529.385127825612,
+    "faces": 6,
+    "bbox": [
+     -5,
+     -22.000000000000004,
+     -3,
+     40.19615242270663,
+     8,
+     9
+    ]
+   }
+  ],
+  "exactClipVolume": 12529.385127825612,
+  "rel": 0
+ },
+ "draft right 70deg neutral 0": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 11432.724386989008,
+    "faces": 6,
+    "bbox": [
+     -5,
+     -22,
+     -3,
+     43.24243225836386,
+     8,
+     9
+    ]
+   }
+  ],
+  "exactClipVolume": 11432.72438698901,
+  "rel": 1.5910375707263212e-16
+ },
+ "draft right 74deg neutral 0": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 10633.59240065182,
+    "faces": 6,
+    "bbox": [
+     -5,
+     -22.000000000000007,
+     -3,
+     45.46224333152273,
+     8,
+     9
+    ]
+   }
+  ],
+  "exactClipVolume": 10633.592400651818,
+  "rel": 1.7106066651890438e-16
+ },
+ "draft right 76deg neutral 0": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 10068.356591781288,
+    "faces": 6,
+    "bbox": [
+     -5,
+     -22,
+     -3.0000000000000084,
+     47.03234280060754,
+     8,
+     9.000000000000002
+    ]
+   }
+  ],
+  "exactClipVolume": 10068.356591781292,
+  "rel": 3.613279658828693e-16
+ },
+ "draft right 80deg neutral 0": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 8597.47058265155,
+    "faces": 5,
+    "bbox": [
+     -5.000000000000014,
+     -22,
+     -3.000000000000003,
+     52.01384545885314,
+     8,
+     7.053079228338602
+    ]
+   }
+  ],
+  "exactClipVolume": 8597.470582651553,
+  "rel": 4.2314524628122903e-16
+ },
+ "draft right 85deg neutral 0": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 7242.784985494956,
+    "faces": 5,
+    "bbox": [
+     -5,
+     -22,
+     -3,
+     69.29015690828405,
+     8,
+     3.499546541036959
+    ]
+   }
+  ],
+  "exactClipVolume": 7242.784985494956,
+  "rel": 0
+ },
+ "draft right 89deg neutral 0": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 11753.066378429705,
+    "faces": 5,
+    "bbox": [
+     -5,
+     -22,
+     -3.0000000000000004,
+     206.86988489227744,
+     8,
+     0.6982025971287067
+    ]
+   }
+  ],
+  "exactClipVolume": 11753.066378429803,
+  "rel": 8.357429850966183e-15
+ },
+ "draft right -80deg neutral 0": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 20524.984365187123,
+    "faces": 6,
+    "bbox": [
+     -5,
+     -22,
+     -3,
+     86.04153637655936,
+     8,
+     9.000000000000002
+    ]
+   }
+  ],
+  "exactClipVolume": 20524.984365187123,
+  "rel": 0
+ },
+ "draft right -89deg neutral 0": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 80826.2249396496,
+    "faces": 5,
+    "bbox": [
+     -5.000000000000114,
+     -22.000000000000007,
+     -0.6982025971287069,
+     550.6096546768323,
+     8,
+     9.000000000000005
+    ]
+   }
+  ],
+  "exactClipVolume": 80826.22493965048,
+  "rel": 1.0802371561382819e-14
+ },
+ "E4 L-extrude 40x40 arm 10 high 10, open top wall 1": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 2104,
+    "faces": 15,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     40,
+     10
+    ]
+   }
+  ],
+  "closedForm": 2102.0685834705764,
+  "rel": 0.0009188170855180955
+ },
+ "E4 L-extrude 40x40 arm 10 high 10, open top wall 2": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 3832,
+    "faces": 15,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     40,
+     10
+    ]
+   }
+  ],
+  "closedForm": 3825.1327412287183,
+  "rel": 0.0017952994669345314
+ },
+ "E4 notch 40x40x20 (10 wide, 5 deep), open top wall 2": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 8932,
+    "faces": 19,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ]
+   }
+  ],
+  "closedForm": 8901.097335529234,
+  "rel": 0.0034717814338931824
+ },
+ "E5 cylinder side draft 5deg, point on the surface": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 13624.44685473528,
+    "faces": 3,
+    "bbox": [
+     -13.312124360103768,
+     -13.311972300379692,
+     -15.000000000000046,
+     13.312124360103766,
+     13.311972300379699,
+     15.000000000009301
+    ]
+   }
+  ],
+  "frustumClosedForm": 13625.785083370607,
+  "either": [
+   13625.785083370607,
+   13625.785083370607
+  ]
+ },
+ "E5 cylinder side draft -5deg, point on the surface": {
+  "got": [
+   {
+    "name": "B",
+    "vol": 13624.446822452655,
+    "faces": 3,
+    "bbox": [
+     -13.312124360103772,
+     -13.311972300379695,
+     -15.000000000000068,
+     13.31212436010376,
+     13.3119723003797,
+     15.000000000000028
+    ]
+   }
+  ],
+  "frustumClosedForm": 13625.785083370607,
+  "either": [
+   13625.785083370607,
+   13625.785083370607
+  ]
+ },
+ "E6 L arm15 (critic outline) h20, undrafted 16500": {
+  "10 deg": {
+   "oneCallFourFaces": "13222.2 (8 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "22 deg": {
+   "oneCallFourFaces": "9725.4 (8 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "40 deg": {
+   "oneCallFourFaces": "13823.9 (8 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "45 deg": {
+   "oneCallFourFaces": "5916.7 (8 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "60 deg": {
+   "oneCallFourFaces": "8517.7 (8 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "80 deg": {
+   "oneCallFourFaces": "190444.5 (8 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  }
+ },
+ "E6 L arm10 h10, undrafted 7000": {
+  "10 deg": {
+   "oneCallFourFaces": "6149.5 (8 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "22 deg": {
+   "oneCallFourFaces": "5143.1 (8 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "40 deg": {
+   "oneCallFourFaces": "3508.6 (8 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "45 deg": {
+   "oneCallFourFaces": "8333.3 (8 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "60 deg": {
+   "oneCallFourFaces": "7649.1 (8 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "80 deg": {
+   "oneCallFourFaces": "16597.1 (8 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  }
+ },
+ "E6 T shoulder10 stem10 h20, undrafted 12000": {
+  "10 deg": {
+   "oneCallFourFaces": "9344.6 (10 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "22 deg": {
+   "oneCallFourFaces": "6406.2 (10 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "40 deg": {
+   "oneCallFourFaces": "8567.1 (10 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "45 deg": {
+   "oneCallFourFaces": "6666.7 (4 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "60 deg": {
+   "oneCallFourFaces": "8150.3 (10 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  },
+  "80 deg": {
+   "oneCallFourFaces": "129504.9 (10 faces)",
+   "fourCallsOneFaceEach": "offset: draft: faces next to the drafted walls must be square to the pull direction"
+  }
+ }
+}

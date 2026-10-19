@@ -1,0 +1,30 @@
+[
+ {
+  "id": "groove-half-turn-180",
+  "ms": 85.2,
+  "volume": 37102.209238895455,
+  "faces": 8,
+  "refused": null
+ },
+ {
+  "id": "groove-90",
+  "ms": 62.6,
+  "volume": 37400.6605409865,
+  "faces": 8,
+  "refused": null
+ },
+ {
+  "id": "groove-270",
+  "ms": 97.1,
+  "volume": 36803.75793680443,
+  "faces": 8,
+  "refused": null
+ },
+ {
+  "id": "groove-coaxial-360",
+  "ms": 67.1,
+  "volume": 36505.30663471341,
+  "faces": 7,
+  "refused": null
+ }
+]

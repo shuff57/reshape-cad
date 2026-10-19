@@ -1,0 +1,15 @@
+sk1:sketch pull1:extrude sk2:sketch pull2:extrude pocket1:combine round1:fillet shell1:shell
+topoRefs(round1)                                         {"name":"pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]","topoRefs":["pocket1","pull1","pull2"],"dependsOn":["pocket1","pull1","pull2"],"rootFeature":"pull1","featureChain":["pocket1","pull1","pull2"]}
+topoRefs(shell1)                                         {"name":"pocket1.face[-z]","topoRefs":["pocket1"],"dependsOn":["round1","pocket1"],"rootFeature":"pocket1","featureChain":["pocket1"]}
+orphanedBy(pull1) cascade                                ["pull1","pocket1","round1","shell1"]
+orphanedBy(sk2) cascade                                  ["sk2","pull2","pocket1","round1","shell1"]
+withoutFeatures(pull2) -> features left                  ["sk1","pull1","sk2"]
+danglingRefs on intact doc                               []
+danglingRefs after raw removal of pull2                  [{"feature":"pocket1","missing":"pull2"},{"feature":"round1","missing":"pull2"}]
+firstOrderViolation moved fillet to front                {"feature":"round1","missing":["pocket1","pull1","pull2"]}
+whyDeletingCosts(pull2)                                  "pocket1, round1 and shell1 are built from pull2, so they go too."
+nameIsStructurallyValid intact                           {"v":true,"why":null}
+after deleting pull2                                     {"v":false,"why":"That face was made by pull2, which is no longer in the model."}
+swept edge 3 after sketch lost a corner                  {"v":false,"why":"That face was pulled from edge 4 of sk2, which now has only 3 edges."}
+SC translator, swept edge 3 on a triangle (name lost)    {"fillet":"refused","sentence":"round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]] cannot be resolved: pull2.face[sk2.edge3]: sk2 has no edge 3","occtRefusals":{"round1":"That face was pulled from edge 4 of Sketch 2, which now has only 3 edges."},"brepRefusals":{"round1":"round1's edge could not be found -- round1 is shown without it.","shell1":"brep-rs cannot hollow a part with a bli
+SC cascade: refused upstream -> dependents               [{"id":"pull1","refusal":"pull1 (extrude): the midplane option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)"},{"id":"shell1","refusal":"shell1 (shell): its target pull1 was refused (pull1 (extrude): the midplane option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))"}]

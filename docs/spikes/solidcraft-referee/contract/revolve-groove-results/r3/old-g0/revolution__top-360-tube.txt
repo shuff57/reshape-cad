@@ -1,0 +1,1 @@
+revolution__top-360-tube                 PASS     occtV 8293.8046 | tr-occt dV 1.6e-4 dBb 0.0e+0 dCom 2.2e-15 F o/b/t 4/4/4 | brep-occt dV 0.0e+0 | FC: occt 4.4e-16 brep 4.4e-16 truck 1.6e-4 dCom 9.9e-14 F 4     | ms 820 cpu 1519

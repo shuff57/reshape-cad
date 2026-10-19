@@ -1,0 +1,2 @@
+r2-big-cyl-100000                                     dVol 1.1e-4 dBbox 7.8e-6 dCom 9.2e-17 dAn 1.1e-4 faces 3/3
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/big/r2-big-cyl-100000/primitives-measure.json

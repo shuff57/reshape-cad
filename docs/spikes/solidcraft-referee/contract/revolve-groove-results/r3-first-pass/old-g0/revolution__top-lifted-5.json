@@ -1,0 +1,239 @@
+[
+ {
+  "id": "revolution__top-lifted-5",
+  "src": "const sk = sketch('top', 5); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, 120);",
+  "translator": "g0",
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "revolution__top-lifted-5",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "occt": {
+    "volume": 9424.777959785584,
+    "com": [
+     6.432169889232666,
+     11.140845051065655,
+     20
+    ],
+    "bbox": [
+     -9.999999999999996,
+     0,
+     5,
+     20,
+     20,
+     35
+    ],
+    "faces": 6,
+    "area": 3113.2741228718346,
+    "types": {
+     "plane": 4,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 4,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 9424.777960769386,
+    "bbox": [
+     -9.999999999999996,
+     0,
+     5,
+     20,
+     20,
+     35
+    ],
+    "faces": 6,
+    "dVol": 1.0438465946836605e-10,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 288,
+   "load": [
+    4.3,
+    4.3
+   ],
+   "cpuMs": 593,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "side": 1,
+      "kernelAngle": -120,
+      "nudgeDeg": null
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        5
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        10,
+        0
+       ],
+       [
+        20,
+        0
+       ],
+       [
+        20,
+        30
+       ],
+       [
+        10,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "angle": -120,
+      "operation": "new",
+      "body_name": "b_rev1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": 0.000013506433980065865,
+    "area": 3113.232073640432,
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "occtTypes": {
+     "plane": 4,
+     "cylinder": 2
+    },
+    "occtComponents": {
+     "plane": 4,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 9424.780991378762,
+    "bbox": [
+     -9.999999999999996,
+     0,
+     5,
+     20,
+     20,
+     35
+    ],
+    "com": [
+     6.431926706291311,
+     11.140423845855679,
+     20.000000000000615
+    ],
+    "faces": 6,
+    "kernelFaces": 10,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 3.216620265250563e-7,
+    "dBbox": 0,
+    "dCom": 0.000008980125249967308,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "volume": 9424.77796076938,
+   "bbox": [
+    -9.999999999999996,
+    1.1102230246251565e-15,
+    4.999999999999993,
+    20,
+    20.000000000000007,
+    35
+   ],
+   "faces": 6,
+   "com": [
+    6.432170446587577,
+    11.140846016432677,
+    20
+   ]
+  },
+  "vsFc": {
+   "occt": {
+    "dVol": 1.0438388745438996e-10,
+    "dBbox": 7.105427357601002e-15,
+    "faces": 6,
+    "dCom": 9.65367021876773e-7
+   },
+   "brep": {
+    "dVol": 7.720030800162705e-16,
+    "dBbox": 7.105427357601002e-15,
+    "faces": 6
+   },
+   "truck": {
+    "dVol": 3.215576426040256e-7,
+    "dBbox": 7.105427357601002e-15,
+    "faces": 6,
+    "dCom": 0.00042217057699822647
+   }
+  },
+  "caseMs": 319
+ }
+]

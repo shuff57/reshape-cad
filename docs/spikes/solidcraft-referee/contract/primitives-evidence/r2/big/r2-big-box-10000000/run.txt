@@ -1,0 +1,2 @@
+r2-big-box-10000000            refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.box: invalid input: box needs a positive size in x, y and z
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/big/r2-big-box-10000000/primitives-measure.json

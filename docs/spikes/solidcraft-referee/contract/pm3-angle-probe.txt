@@ -1,0 +1,11 @@
+SOLID count 3 angle 90: pattern.totalAngle=90 OCCT bbox 12.268,-2,-2,32,28.713,2 vol 192.000; brep bbox 12.268,-2,-2,32,28.713,2; model rule angle/count=30 deg (copies at 0,30,...) vs n-1 rule 45 deg
+   measured COM direction 30 deg; predicted mean copy angle: angle/count rule 30 deg, angle/(n-1) rule 45 deg
+SOLID count 4 angle 90: pattern.totalAngle=90 OCCT bbox 8.867,-2,-2,32,30.33,2 vol 256.000; brep bbox 8.867,-2,-2,32,30.33,2; model rule angle/count=22.5 deg (copies at 0,22.5,...) vs n-1 rule 30 deg
+   measured COM direction 33.75 deg; predicted mean copy angle: angle/count rule 33.75 deg, angle/(n-1) rule 45 deg
+SOLID count 3 angle 180: pattern.totalAngle=180 OCCT bbox -17.732,-2,-2,32,28.713,2 vol 192.000; brep bbox -17.732,-2,-2,32,28.713,2; model rule angle/count=60 deg (copies at 0,60,...) vs n-1 rule 90 deg
+   measured COM direction 60 deg; predicted mean copy angle: angle/count rule 60 deg, angle/(n-1) rule 90 deg
+SOLID count 3 angle -90: pattern.totalAngle=-90 OCCT bbox 12.268,-28.713,-2,32,2,2 vol 192.000; brep bbox 12.268,-28.713,-2,32,2,2; model rule angle/count=-30 deg (copies at 0,-30,...) vs n-1 rule -45 deg
+   measured COM direction -30 deg; predicted mean copy angle: angle/count rule -30 deg, angle/(n-1) rule -45 deg
+POCKET count 3 angle 90: feature kinds sketch,extrude,sketch,pocket,sketch,pocket,sketch,pocket; copy angles about z (from the lowered doc): [0,0,45,90]
+HOLE count 3 angle 90: feature kinds cylinder,hole,hole,hole; copy angles about z (from the lowered doc): [0,45,90]
+PAD count 3 angle 90: feature kinds sketch,extrude,sketch,extrude,pattern,combine; copy angles about z (from the lowered doc): [0,0]

@@ -1,0 +1,82 @@
+[
+ {
+  "label": "rule param 30 -> SC vs OCCT",
+  "outcome": "PASS",
+  "dVol": 1.5158245029548806e-16,
+  "truckV": 3000,
+  "occtV": 2999.9999999999995,
+  "expectedVolume": 3000
+ },
+ {
+  "label": "rule param 45 -> SC vs OCCT",
+  "outcome": "PASS",
+  "dVol": 6.334125323018376e-13,
+  "truckV": 4499.999999999832,
+  "expectedVolume": 4500
+ },
+ {
+  "label": "rule param 12 -> SC vs OCCT",
+  "outcome": "PASS",
+  "dVol": 2.8499395436094437e-12,
+  "truckV": 1200.0000000002015,
+  "expectedVolume": 1200
+ },
+ {
+  "label": "box width -5",
+  "size": [
+   -5,
+   30,
+   20
+  ],
+  "outcome": "PASS",
+  "dVol": 1.5158245029548806e-16,
+  "truckV": 3000,
+  "occt": 2999.9999999999995,
+  "occtRef": {},
+  "brep": 999.9999999999999
+ },
+ {
+  "label": "box width 0",
+  "size": [
+   0,
+   30,
+   20
+  ],
+  "outcome": "REFUSED",
+  "sentence": "box1 (box): solidcraft refused it -- solid.box: invalid input: box needs a positive size in x, y and z",
+  "occt": {
+   "error": "undefined"
+  },
+  "brep": {
+   "refused": "box1 builds an empty solid (nothing is left of it) -- box1 is shown without it."
+  }
+ },
+ {
+  "label": "box width 1e-9",
+  "size": [
+   1e-9,
+   30,
+   20
+  ],
+  "outcome": "REFUSED",
+  "sentence": "box1 (box): solidcraft refused it -- solid.box: invalid input: box needs a positive size in x, y and z",
+  "occt": {
+   "error": "undefined"
+  },
+  "brep": 6.000000000000002e-7
+ },
+ {
+  "label": "box width 500",
+  "size": [
+   500,
+   30,
+   20
+  ],
+  "outcome": "PASS",
+  "dVol": 1.9402553637822474e-16,
+  "truckV": 300000,
+  "occt": 299999.99999999994,
+  "occtRef": {},
+  "brep": 300000
+ }
+]

@@ -1,0 +1,80 @@
+[
+ {
+  "id": "rect-diagonal-two-point-distance",
+  "feats": [
+   "rule:distance"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.489493221626617e-12,
+      "db": 1.0658141036401502e-15,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2399.999999989225
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.6210500436718575e-12,
+      "db": 4.457088608185484e-36,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2399.9999999937095
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.768653454647089e-12,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2399.9999999933552
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.941712141871297e-12,
+      "db": 7.882761110522552e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.00000000946
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.249169822083786e-12,
+      "db": 6.498090954210056e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.000000007798
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ }
+]

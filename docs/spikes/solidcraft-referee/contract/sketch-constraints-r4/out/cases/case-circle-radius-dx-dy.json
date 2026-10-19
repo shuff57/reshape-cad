@@ -1,0 +1,83 @@
+[
+ {
+  "id": "circle-radius-dx-dy",
+  "feats": [
+   "rule:radius",
+   "rule:distanceX",
+   "rule:distanceY",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812272733947,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644701
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812272733947,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644701
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812272733947,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644701
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812272733947,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644701
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812272733947,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644701
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 3
+  }
+ }
+]

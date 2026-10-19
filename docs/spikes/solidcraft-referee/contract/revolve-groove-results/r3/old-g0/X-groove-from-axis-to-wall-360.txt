@@ -1,0 +1,1 @@
+X-groove-from-axis-to-wall-360           PASS     occtV 31415.9265 | tr-occt dV 6.7e-5 dBb 2.4e-15 dCom 2.3e-7 F o/b/t 6/6/6 | brep-occt dV 1.2e-16  | ANALYTIC 31415.9265 dTruck 6.7e-5 dOcct 2.3e-16 dBrep 3.5e-16 | 2 BODIES   | ms 1320 cpu 1870

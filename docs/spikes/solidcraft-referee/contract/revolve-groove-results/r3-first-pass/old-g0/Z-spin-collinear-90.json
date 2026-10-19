@@ -1,0 +1,79 @@
+[
+ {
+  "id": "Z-spin-collinear-90",
+  "src": "const s = sketch('top'); s.polygon([[10,0],[15,0],[20,0]]); spin(s, 90);",
+  "translator": "g0",
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "Z-spin-collinear-90",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "occt": {
+    "volume": 0,
+    "com": [
+     0,
+     0,
+     0
+    ],
+    "bbox": [
+     6.123233995736766e-16,
+     0,
+     0,
+     20,
+     20,
+     0
+    ],
+    "faces": 5,
+    "area": 471.2388980384691,
+    "types": {
+     "plane": 5
+    },
+    "components": {
+     "plane": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 2
+   },
+   "brep": {
+    "refused": "revolve rev1: this sketch's outline cannot be spun: it has no area (its corners lie on one line, or on top of each other), so there is nothing to spin -- rev1 is shown without it."
+   },
+   "ms": 2,
+   "load": [
+    8.4,
+    8.4
+   ],
+   "cpuMs": 4,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "refused",
+     "refusal": "rev1 (revolve): the sketch has no area (all its corners lie on one line), so give it at least three corners that are not in a row."
+    }
+   ],
+   "commands": [],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "rev1 (revolve): the sketch has no area (all its corners lie on one line), so give it at least three corners that are not in a row.",
+    "firstRefusal": "rev1 (revolve): the sketch has no area (all its corners lie on one line), so give it at least three corners that are not in a row."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 23
+ }
+]

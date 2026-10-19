@@ -1,0 +1,187 @@
+{
+ "rows": [
+  {
+   "id": "legacy-X1-two-lengths-one-edge",
+   "raw": "that would over-constrain the sketch (conflicts with k10, k11)",
+   "failedRule": 10,
+   "failedOrdinal": 11,
+   "maxKInError": 11,
+   "numberingHolds": true,
+   "resolvedAllIds": true,
+   "sentence": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "problems": []
+  },
+  {
+   "id": "legacy-X2-opposite-sides-different-lengths",
+   "raw": "that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k7, k9, k10, k11)",
+   "failedRule": 10,
+   "failedOrdinal": 11,
+   "maxKInError": 11,
+   "numberingHolds": true,
+   "resolvedAllIds": true,
+   "sentence": "Edge 3 = 30 cannot be added because it contradicts edge 2 up, edge 4 up and edge 1 = 40.",
+   "problems": []
+  },
+  {
+   "id": "legacy-X3-equal-vs-two-lengths",
+   "raw": "invalid parameters for `sketch.constraint.equal`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+   "failedRule": 11,
+   "failedOrdinal": 12,
+   "maxKInError": null,
+   "numberingHolds": null,
+   "resolvedAllIds": true,
+   "sentence": "Edge 1 = edge 2 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "problems": []
+  },
+  {
+   "id": "legacy-X4-lock-vs-horizontal",
+   "raw": "that would over-constrain the sketch (conflicts with k3, k7)",
+   "failedRule": 6,
+   "failedOrdinal": 7,
+   "maxKInError": 7,
+   "numberingHolds": true,
+   "resolvedAllIds": true,
+   "sentence": "Edge 1 across cannot be added because it contradicts the other rules already on this sketch.",
+   "problems": []
+  },
+  {
+   "id": "legacy-X5-three-lengths-one-edge",
+   "raw": "that would over-constrain the sketch (conflicts with k5, k6)",
+   "failedRule": 5,
+   "failedOrdinal": 6,
+   "maxKInError": 6,
+   "numberingHolds": true,
+   "resolvedAllIds": true,
+   "sentence": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "problems": []
+  },
+  {
+   "id": "legacy-X6-triangle-three-perpendicular",
+   "raw": "invalid parameters for `sketch.constraint.perpendicular`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+   "failedRule": 4,
+   "failedOrdinal": 5,
+   "maxKInError": null,
+   "numberingHolds": null,
+   "resolvedAllIds": true,
+   "sentence": "Edge 2 ⊥ edge 3 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "problems": []
+  },
+  {
+   "id": "script-T-3-perpendicular-triangle",
+   "raw": "invalid parameters for `sketch.constraint.perpendicular`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+   "failedRule": 5,
+   "failedOrdinal": 6,
+   "maxKInError": null,
+   "numberingHolds": null,
+   "resolvedAllIds": true,
+   "sentence": "Edge 3 ⊥ edge 1 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "problems": []
+  },
+  {
+   "id": "script-P-pin1-pin2-length100",
+   "raw": "that would over-constrain the sketch (conflicts with k3, k7)",
+   "failedRule": 6,
+   "failedOrdinal": 7,
+   "maxKInError": 7,
+   "numberingHolds": true,
+   "resolvedAllIds": true,
+   "sentence": "Edge 1 = 100 cannot be added because it contradicts the other rules already on this sketch.",
+   "problems": []
+  },
+  {
+   "id": "script-X-length40-then-60",
+   "raw": "that would over-constrain the sketch (conflicts with k6, k7)",
+   "failedRule": 6,
+   "failedOrdinal": 7,
+   "maxKInError": 7,
+   "numberingHolds": true,
+   "resolvedAllIds": true,
+   "sentence": "Edge 1 = 60 cannot be added because it contradicts edge 1 = 40.",
+   "problems": []
+  },
+  {
+   "id": "sk-conflict__width-30-vs-35",
+   "raw": "that would over-constrain the sketch (conflicts with k10, k12)",
+   "failedRule": 11,
+   "failedOrdinal": 12,
+   "maxKInError": 12,
+   "numberingHolds": true,
+   "resolvedAllIds": true,
+   "sentence": "The 35 across size of line 1 cannot be added because it contradicts the 30 across size of line 1.",
+   "problems": []
+  },
+  {
+   "id": "sk-conflict__radius-vs-diameter",
+   "raw": "that would over-constrain the sketch (conflicts with k2, k3)",
+   "failedRule": 2,
+   "failedOrdinal": 3,
+   "maxKInError": 3,
+   "numberingHolds": true,
+   "resolvedAllIds": true,
+   "sentence": "The 12 diameter of circle 1 cannot be added because it contradicts the 5 radius of circle 1.",
+   "problems": []
+  },
+  {
+   "id": "sk-conflict__equal-vs-two-radii",
+   "raw": "that would over-constrain the sketch (conflicts with k3, k4, k5)",
+   "failedRule": 4,
+   "failedOrdinal": 5,
+   "maxKInError": 5,
+   "numberingHolds": true,
+   "resolvedAllIds": true,
+   "sentence": "The 6 radius of circle 2 cannot be added because it contradicts circle 1 and circle 2 being equal and the 5 radius of circle 1.",
+   "problems": []
+  },
+  {
+   "id": "sk-conflict__redundant-width(no if_redundant flag)",
+   "raw": "invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+   "failedRule": 11,
+   "failedOrdinal": 12,
+   "maxKInError": 10,
+   "numberingHolds": null,
+   "resolvedAllIds": true,
+   "sentence": "The 30 across size of line 1 cannot be added as a driving size because the other rules already fix it; remove it, or keep it only as a reference measurement.",
+   "problems": []
+  },
+  {
+   "id": "sk-conflict__redundant-height(no if_redundant flag)",
+   "raw": "invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+   "failedRule": 11,
+   "failedOrdinal": 12,
+   "maxKInError": 11,
+   "numberingHolds": null,
+   "resolvedAllIds": true,
+   "sentence": "The 20 up size of line 2 cannot be added as a driving size because the other rules already fix it; remove it, or keep it only as a reference measurement.",
+   "problems": []
+  },
+  {
+   "id": "sk-circle-arc-tangent__slot-extra-radius(no if_redundant flag)",
+   "raw": "invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (RadialDimension), k12 (Equal); add it as a driven (reference) dimension with driven: true",
+   "failedRule": 13,
+   "failedOrdinal": 14,
+   "maxKInError": 12,
+   "numberingHolds": null,
+   "resolvedAllIds": true,
+   "sentence": "The 6 radius of arc 4 cannot be added as a driving size because the other rules already fix it; remove it, or keep it only as a reference measurement.",
+   "problems": []
+  },
+  {
+   "id": "legacy-R1(no if_redundant flag)",
+   "raw": "invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (Coincident), k3 (Coincident), k4 (Coincident), k5 (Coincident), k7 (Vertical), k9 (Vertical), k10 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+   "failedRule": 11,
+   "failedOrdinal": 12,
+   "maxKInError": 10,
+   "numberingHolds": null,
+   "resolvedAllIds": true,
+   "sentence": "Edge 3 = 40 cannot be added as a driving size because the other rules already fix it; remove it, or keep it only as a reference measurement.",
+   "problems": []
+  }
+ ],
+ "summary": {
+  "total": 16,
+  "refused": 16,
+  "plain": 16,
+  "numberingHolds": "9/9",
+  "allIdsResolved": 16
+ }
+}

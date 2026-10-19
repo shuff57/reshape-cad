@@ -1,0 +1,505 @@
+[
+ {
+  "id": "slot-line-pinned-R10-L40",
+  "amp": 0.05,
+  "N": 20,
+  "shipped": {
+   "MATCH": 20
+  },
+  "guarded": {
+   "BUILT-MATCH": 20
+  },
+  "brep": {
+   "MATCH": 20
+  },
+  "sentences": {},
+  "wrongPassed": [],
+  "shippedWrong": []
+ },
+ {
+  "id": "slot-line-pinned-R10-L40",
+  "amp": 0.3,
+  "N": 20,
+  "shipped": {
+   "MATCH": 20
+  },
+  "guarded": {
+   "BUILT-MATCH": 20
+  },
+  "brep": {
+   "MATCH": 20
+  },
+  "sentences": {},
+  "wrongPassed": [],
+  "shippedWrong": []
+ },
+ {
+  "id": "slot-line-pinned-R10-L40",
+  "amp": 0.8,
+  "N": 20,
+  "shipped": {
+   "MATCH": 20
+  },
+  "guarded": {
+   "BUILT-MATCH": 20
+  },
+  "brep": {
+   "MATCH": 20
+  },
+  "sentences": {},
+  "wrongPassed": [],
+  "shippedWrong": []
+ },
+ {
+  "id": "rounded-rect-line-pinned",
+  "amp": 0.05,
+  "N": 20,
+  "shipped": {
+   "MATCH": 14,
+   "REFUSED": 6
+  },
+  "guarded": {
+   "BUILT-MATCH": 20
+  },
+  "brep": {
+   "MATCH": 20
+  },
+  "sentences": {},
+  "wrongPassed": [],
+  "shippedWrong": []
+ },
+ {
+  "id": "rounded-rect-line-pinned",
+  "amp": 0.3,
+  "N": 20,
+  "shipped": {
+   "MATCH": 19,
+   "REFUSED": 1
+  },
+  "guarded": {
+   "BUILT-MATCH": 20
+  },
+  "brep": {
+   "MATCH": 20
+  },
+  "sentences": {},
+  "wrongPassed": [],
+  "shippedWrong": []
+ },
+ {
+  "id": "rounded-rect-line-pinned",
+  "amp": 0.8,
+  "N": 20,
+  "shipped": {
+   "MATCH": 18,
+   "REFUSED": 2
+  },
+  "guarded": {
+   "BUILT-MATCH": 20
+  },
+  "brep": {
+   "MATCH": 20
+  },
+  "sentences": {},
+  "wrongPassed": [],
+  "shippedWrong": []
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "amp": 0.05,
+  "N": 20,
+  "shipped": {
+   "VOLUME": 20
+  },
+  "guarded": {
+   "REFUSED": 20
+  },
+  "brep": {
+   "MATCH": 20
+  },
+  "sentences": {
+   "preflight: Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's ": 20
+  },
+  "wrongPassed": [],
+  "shippedWrong": [
+   {
+    "k": 0,
+    "cls": "VOLUME",
+    "volume": 1100.7596060026992,
+    "bodies": 1
+   },
+   {
+    "k": 1,
+    "cls": "VOLUME",
+    "volume": 1105.276831376371,
+    "bodies": 1
+   },
+   {
+    "k": 2,
+    "cls": "VOLUME",
+    "volume": 1102.915928944514,
+    "bodies": 1
+   },
+   {
+    "k": 3,
+    "cls": "VOLUME",
+    "volume": 1094.4036226986661,
+    "bodies": 1
+   },
+   {
+    "k": 4,
+    "cls": "VOLUME",
+    "volume": 1095.226819665357,
+    "bodies": 1
+   },
+   {
+    "k": 5,
+    "cls": "VOLUME",
+    "volume": 1111.5700726086818,
+    "bodies": 1
+   },
+   {
+    "k": 6,
+    "cls": "VOLUME",
+    "volume": 1111.6565045868485,
+    "bodies": 1
+   },
+   {
+    "k": 7,
+    "cls": "VOLUME",
+    "volume": 1103.4622950226747,
+    "bodies": 1
+   },
+   {
+    "k": 8,
+    "cls": "VOLUME",
+    "volume": 1093.6326002590438,
+    "bodies": 1
+   },
+   {
+    "k": 9,
+    "cls": "VOLUME",
+    "volume": 1088.8440893955842,
+    "bodies": 1
+   },
+   {
+    "k": 10,
+    "cls": "VOLUME",
+    "volume": 1101.957401177526,
+    "bodies": 1
+   },
+   {
+    "k": 11,
+    "cls": "VOLUME",
+    "volume": 1077.7987294136374,
+    "bodies": 1
+   },
+   {
+    "k": 12,
+    "cls": "VOLUME",
+    "volume": 1104.611550902939,
+    "bodies": 1
+   },
+   {
+    "k": 13,
+    "cls": "VOLUME",
+    "volume": 1110.7075917549234,
+    "bodies": 1
+   },
+   {
+    "k": 14,
+    "cls": "VOLUME",
+    "volume": 1101.1156004102172,
+    "bodies": 1
+   },
+   {
+    "k": 15,
+    "cls": "VOLUME",
+    "volume": 1098.0625720647647,
+    "bodies": 1
+   },
+   {
+    "k": 16,
+    "cls": "VOLUME",
+    "volume": 1092.669134127421,
+    "bodies": 1
+   },
+   {
+    "k": 17,
+    "cls": "VOLUME",
+    "volume": 1104.6497706380162,
+    "bodies": 1
+   },
+   {
+    "k": 18,
+    "cls": "VOLUME",
+    "volume": 1109.8782468548113,
+    "bodies": 1
+   },
+   {
+    "k": 19,
+    "cls": "VOLUME",
+    "volume": 1101.1387469849292,
+    "bodies": 1
+   }
+  ]
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "amp": 0.3,
+  "N": 20,
+  "shipped": {
+   "VOLUME": 19,
+   "REFUSED": 1
+  },
+  "guarded": {
+   "REFUSED": 20
+  },
+  "brep": {
+   "MATCH": 20
+  },
+  "sentences": {
+   "preflight: Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's ": 20
+  },
+  "wrongPassed": [],
+  "shippedWrong": [
+   {
+    "k": 0,
+    "cls": "VOLUME",
+    "volume": 1009.3829843414337,
+    "bodies": 1
+   },
+   {
+    "k": 2,
+    "cls": "VOLUME",
+    "volume": 1086.612192645662,
+    "bodies": 1
+   },
+   {
+    "k": 3,
+    "cls": "VOLUME",
+    "volume": 1066.3410520868517,
+    "bodies": 1
+   },
+   {
+    "k": 4,
+    "cls": "VOLUME",
+    "volume": 1075.3742269780955,
+    "bodies": 1
+   },
+   {
+    "k": 5,
+    "cls": "VOLUME",
+    "volume": 1013.5833393196781,
+    "bodies": 1
+   },
+   {
+    "k": 6,
+    "cls": "VOLUME",
+    "volume": 1028.0162467183522,
+    "bodies": 1
+   },
+   {
+    "k": 7,
+    "cls": "VOLUME",
+    "volume": 1011.6157910239489,
+    "bodies": 1
+   },
+   {
+    "k": 8,
+    "cls": "VOLUME",
+    "volume": 1128.8921019832499,
+    "bodies": 1
+   },
+   {
+    "k": 9,
+    "cls": "VOLUME",
+    "volume": 1097.955055978927,
+    "bodies": 1
+   },
+   {
+    "k": 10,
+    "cls": "VOLUME",
+    "volume": 1121.6497846091786,
+    "bodies": 1
+   },
+   {
+    "k": 11,
+    "cls": "VOLUME",
+    "volume": 1114.7064143375428,
+    "bodies": 1
+   },
+   {
+    "k": 12,
+    "cls": "VOLUME",
+    "volume": 1125.3716526081919,
+    "bodies": 1
+   },
+   {
+    "k": 13,
+    "cls": "VOLUME",
+    "volume": 1106.9280874522622,
+    "bodies": 1
+   },
+   {
+    "k": 14,
+    "cls": "VOLUME",
+    "volume": 1012.9225905991146,
+    "bodies": 1
+   },
+   {
+    "k": 15,
+    "cls": "VOLUME",
+    "volume": 1093.6459655341125,
+    "bodies": 1
+   },
+   {
+    "k": 16,
+    "cls": "VOLUME",
+    "volume": 1101.4403335842023,
+    "bodies": 1
+   },
+   {
+    "k": 17,
+    "cls": "VOLUME",
+    "volume": 1039.4170106650615,
+    "bodies": 1
+   },
+   {
+    "k": 18,
+    "cls": "VOLUME",
+    "volume": 1163.905265060467,
+    "bodies": 1
+   },
+   {
+    "k": 19,
+    "cls": "VOLUME",
+    "volume": 1080.8212349806736,
+    "bodies": 1
+   }
+  ]
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "amp": 0.8,
+  "N": 20,
+  "shipped": {
+   "REFUSED": 3,
+   "VOLUME": 17
+  },
+  "guarded": {
+   "REFUSED": 20
+  },
+  "brep": {
+   "MATCH": 20
+  },
+  "sentences": {
+   "preflight: Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's ": 20
+  },
+  "wrongPassed": [],
+  "shippedWrong": [
+   {
+    "k": 1,
+    "cls": "VOLUME",
+    "volume": 1084.8668210781873,
+    "bodies": 1
+   },
+   {
+    "k": 2,
+    "cls": "VOLUME",
+    "volume": 1327.0161197072082,
+    "bodies": 1
+   },
+   {
+    "k": 3,
+    "cls": "VOLUME",
+    "volume": 1054.748545145883,
+    "bodies": 1
+   },
+   {
+    "k": 5,
+    "cls": "VOLUME",
+    "volume": 887.5812748932794,
+    "bodies": 1
+   },
+   {
+    "k": 7,
+    "cls": "VOLUME",
+    "volume": 1207.2052861507398,
+    "bodies": 1
+   },
+   {
+    "k": 8,
+    "cls": "VOLUME",
+    "volume": 861.1216917183228,
+    "bodies": 1
+   },
+   {
+    "k": 9,
+    "cls": "VOLUME",
+    "volume": 1423.5279801735815,
+    "bodies": 1
+   },
+   {
+    "k": 10,
+    "cls": "VOLUME",
+    "volume": 1018.9591399938114,
+    "bodies": 1
+   },
+   {
+    "k": 11,
+    "cls": "VOLUME",
+    "volume": 1469.221543933695,
+    "bodies": 1
+   },
+   {
+    "k": 12,
+    "cls": "VOLUME",
+    "volume": 3601.0871866595303,
+    "bodies": 1
+   },
+   {
+    "k": 13,
+    "cls": "VOLUME",
+    "volume": 1113.5622555298396,
+    "bodies": 1
+   },
+   {
+    "k": 14,
+    "cls": "VOLUME",
+    "volume": 929.6714760043052,
+    "bodies": 1
+   },
+   {
+    "k": 15,
+    "cls": "VOLUME",
+    "volume": 5042.019575036344,
+    "bodies": 1
+   },
+   {
+    "k": 16,
+    "cls": "VOLUME",
+    "volume": 1156.9599528884157,
+    "bodies": 1
+   },
+   {
+    "k": 17,
+    "cls": "VOLUME",
+    "volume": 1042.7330320396356,
+    "bodies": 1
+   },
+   {
+    "k": 18,
+    "cls": "VOLUME",
+    "volume": 998.5227206365613,
+    "bodies": 1
+   },
+   {
+    "k": 19,
+    "cls": "VOLUME",
+    "volume": 906.8736926094836,
+    "bodies": 1
+   }
+  ]
+ }
+]

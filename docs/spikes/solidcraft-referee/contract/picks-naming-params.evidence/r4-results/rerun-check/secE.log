@@ -1,0 +1,27 @@
+--- box edge round + hollow open front (w, r, wall)
+  {}                                                                     nameStable=true PASS[brep-rs (OCCT refused or no-opped a feature)] V=7846.230884 (OCCT 23974.247780, brep 7846.247780) dVol 2.2e-6 dBbox 1.0e-15 dCOM null faces occt/truck/brep null/12/12 | ctl rej=true
+  {"box1_width":25}                                                      nameStable=true PASS[brep-rs (OCCT refused or no-opped a feature)] V=5566.230887 (OCCT 14974.247780, brep 5566.247780) dVol 3.0e-6 dBbox 7.4e-16 dCOM null faces occt/truck/brep null/12/12 | ctl rej=true
+  {"box1_width":70,"round1_size":4}                                      nameStable=true PASS[OCCT] V=12353.004203 (OCCT 12353.026524, brep 12353.026524) dVol 1.8e-6 dBbox 8.9e-16 dCOM 8.0e-7 faces occt/truck/brep 13/13/13 | ctl rej=true
+  {"box1_width":33,"round1_size":1,"shell1_thickness":3.5}               nameStable=true PASS[brep-rs (OCCT refused or no-opped a feature)] V=10836.557719 (OCCT 19793.561945, brep 10836.561945) dVol 3.9e-7 dBbox 7.4e-16 dCOM null faces occt/truck/brep null/12/12 | ctl rej=false
+  {"round1_size":5.9,"shell1_thickness":1}                               nameStable=true PASS[OCCT] V=4089.331542 (OCCT 4089.316415, brep 4089.316415) dVol 3.7e-6 dBbox 5.9e-16 dCOM 8.8e-7 faces occt/truck/brep 13/13/13 | ctl rej=true
+--- plate+pocket edge(top,wall2) (t, p, r)
+  {}                                                                     nameStable=true PASS[OCCT] V=11597.852575 (OCCT 11597.853982, brep 11597.853982) dVol 1.2e-7 dBbox 0.0e+0 dCOM 1.3e-8 faces occt/truck/brep 12/12/12 | ctl rej=undefined
+  {"pull1_height":16}                                                    nameStable=true REFUSED: round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round. 
+  {"sk2_offset":10}                                                      nameStable=true PASS[OCCT] V=11597.852575 (OCCT 11597.853982, brep 11597.853982) dVol 1.2e-7 dBbox 0.0e+0 dCOM 1.3e-8 faces occt/truck/brep 12/12/12 | ctl rej=undefined
+  {"pull1_height":14,"sk2_offset":14}                                    nameStable=true PASS[OCCT] V=16397.852575 (OCCT 16397.853982, brep 16397.853982) dVol 8.6e-8 dBbox 0.0e+0 dCOM 1.1e-8 faces occt/truck/brep 12/12/12 | ctl rej=undefined
+  {"pull1_height":14,"sk2_offset":14,"round1_size":2.5}                  nameStable=true PASS[OCCT] V=16386.578592 (OCCT 16386.587385, brep 16386.587385) dVol 5.4e-7 dBbox 0.0e+0 dCOM 6.3e-8 faces occt/truck/brep 12/12/12 | ctl rej=undefined
+--- cylinder rim round + draft none (d, h, r)
+  {}                                                                     nameStable=true PASS[OCCT] V=9372.922565 (OCCT 9373.252121, brep 9373.252121) dVol 3.5e-5 dBbox 2.4e-5 dCOM 3.5e-7 faces occt/truck/brep 4/4/4 | ctl rej=true
+  {"cyl1_radius":7}                                                      nameStable=true PASS[OCCT] V=1137.934224 (OCCT 1138.067421, brep 1138.067421) dVol 1.2e-4 dBbox 2.7e-5 dCOM 1.9e-6 faces occt/truck/brep 4/4/4 | ctl rej=true
+  {"cyl1_height":12,"round1_size":1}                                     nameStable=true PASS[OCCT] V=3756.637819 (OCCT 3756.728539, brep 3756.728539) dVol 2.4e-5 dBbox 2.4e-5 dCOM 3.5e-8 faces occt/truck/brep 4/4/4 | ctl rej=true
+  {"cyl1_radius":18,"cyl1_height":50,"round1_size":3.5}                  nameStable=true PASS[OCCT] V=12586.605355 (OCCT 12587.704340, brep 12587.704340) dVol 8.7e-5 dBbox 2.7e-5 dCOM 2.2e-7 faces occt/truck/brep 4/4/4 | ctl rej=true
+--- hole then round edge (hole across, r)
+  {}                                                                     nameStable=true PASS[OCCT] V=23408.812774 (OCCT 23408.761102, brep 23408.761102) dVol 2.2e-6 dBbox 5.9e-16 dCOM 2.6e-7 faces occt/truck/brep 8/8/8 | ctl rej=true
+  {"hole1_diameter":12}                                                  nameStable=true PASS[OCCT] V=21712.423444 (OCCT 21712.301069, brep 21712.301069) dVol 5.6e-6 dBbox 1.1e-15 dCOM 2.8e-7 faces occt/truck/brep 8/8/8 | ctl rej=true
+  {"hole1_diameter":3,"round1_size":4}                                   nameStable=true PASS[OCCT] V=23755.604837 (OCCT 23755.619449, brep 23755.619449) dVol 6.2e-7 dBbox 7.4e-16 dCOM 5.5e-7 faces occt/truck/brep 8/8/8 | ctl rej=true
+  {"hole1_diameter":16,"round1_size":0.5}                                nameStable=true PASS[OCCT] V=19977.262949 (OCCT 19977.151890, brep 19977.151890) dVol 5.6e-6 dBbox 8.9e-16 dCOM 4.4e-8 faces occt/truck/brep 8/8/8 | ctl rej=true
+--- draft face right (angle) after box size
+  {}                                                                     nameStable=true PASS[OCCT] V=23895.013604 (OCCT 23895.013604, brep 23895.013604) dVol 4.6e-16 dBbox 8.9e-16 dCOM 4.9e-17 faces occt/truck/brep 6/6/6 | ctl rej=undefined
+  {"draft1_angle":12}                                                    nameStable=true PASS[OCCT] V=23744.932126 (OCCT 23744.932126, brep 23744.932126) dVol 0.0e+0 dBbox 2.7e-16 dCOM 9.7e-17 faces occt/truck/brep 6/6/6 | ctl rej=undefined
+  {"box1_width":70,"draft1_angle":2}                                     nameStable=true PASS[OCCT] V=41958.095077 (OCCT 41958.095077, brep 41958.095077) dVol 3.5e-16 dBbox 2.4e-16 dCOM 2.4e-16 faces occt/truck/brep 6/6/6 | ctl rej=undefined
+  {"box1_height":55,"draft1_angle":8}                                    nameStable=true PASS[OCCT] V=65536.215245 (OCCT 65536.215245, brep 65536.215245) dVol 0.0e+0 dBbox 3.0e-16 dCOM 1.0e-16 faces occt/truck/brep 6/6/6 | ctl rej=undefined

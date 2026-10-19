@@ -1,0 +1,77 @@
+{
+ "id": "sw-0195",
+ "seed": 9,
+ "desc": "S2 blind top floor=1.5 t=1",
+ "t": 1,
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 40,
+    "width": 30,
+    "height": 10,
+    "center": [
+     0,
+     0,
+     5
+    ],
+    "body_name": "b1"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "radius": 2,
+    "height": 9.5,
+    "base": [
+     0,
+     0,
+     1.5
+    ],
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "body_name": "f1"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "f1"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -10.37,
+      -5.41,
+      10
+     ]
+    ],
+    "thickness": 1,
+    "body": "b1"
+   }
+  }
+ ],
+ "oracleFamily": "plate",
+ "p7": {
+  "cls": "WRONG",
+  "expectedP": 2571.6492187500007,
+  "built": 2585.777196550815,
+  "rel": 0.00549374218606745
+ },
+ "base": {
+  "cls": "WRONG",
+  "expectedP": 2571.6492187500007,
+  "built": 2585.777196550815,
+  "rel": 0.00549374218606745
+ }
+}

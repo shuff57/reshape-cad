@@ -1,0 +1,22 @@
+{
+ "id": "tangent-union-cylinder",
+ "outcome": "built",
+ "volume": 38164.79491322506,
+ "faces": 9,
+ "bbox": [
+  -20,
+  -20,
+  -10.000000000000007,
+  38.99984556213239,
+  20,
+  10.000000000000005
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "cylinder",
+  "combine"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_a\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":10,\"height\":20,\"base\":[29,0,-10],\"axis\":\"Z\",\"body_name\":\"b_c\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_a\",\"tools\":[\"b_c\"],\"operation\":\"join\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

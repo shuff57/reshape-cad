@@ -1,0 +1,14 @@
+s01 box cut by cylinder turned [30,0,0]                  wall=58.6s calls=3 slowest=57.8s cpu=57.6s timeouts=0 PASS     dVol=8.2e-6 dCom=8.8e-10 f=7/7
+s02 box cut by cylinder turned [30,45,60]                wall=60.5s calls=3 slowest=59.2s cpu=57.9s timeouts=0 PASS     dVol=9.9e-6 dCom=3.2e-9 f=7/7
+s03 box cut by cylinder turned [90,0,0] (axis-aligned)   wall=2.4s calls=3 slowest=1.0s cpu=2.0s timeouts=0 PASS     dVol=1.8e-5 dCom=9.5e-17 f=7/7
+s04 box cut by cylinder turned [0,90,0] (axis-aligned)   wall=2.1s calls=3 slowest=0.9s cpu=1.9s timeouts=0 PASS     dVol=1.8e-5 dCom=6.2e-17 f=7/7
+s05 box cut by box turned [30,0,0] (planar control)      wall=1.1s calls=3 slowest=0.4s cpu=0.4s timeouts=0 PASS     dVol=3.9e-16 dCom=2.3e-17 f=10/10
+s06 two perpendicular equal cylinders join               wall=123.0s calls=3 slowest=120.1s cpu=2.5s timeouts=1 REFUSED  Join 1 is not built: it took longer than 120 seconds to compute, so it is shown without it -- try a simpler shape.
+s07 two perpendicular UNEQUAL cylinders join (control)   wall=122.8s calls=3 slowest=120.1s cpu=2.5s timeouts=1 REFUSED  Join 1 is not built: it took longer than 120 seconds to compute, so it is shown without it -- try a simpler shape.
+s08 join two overlapping copied rings                    wall=154.8s calls=3 slowest=120.1s cpu=33.9s timeouts=1 REFUSED  Join 1 is not built: it took longer than 120 seconds to compute, so it is shown without it -- try a simpler shape.
+s09 cylinder + turned ring join                          wall=133.7s calls=3 slowest=120.1s cpu=13.7s timeouts=1 REFUSED  Join 1 is not built: it took longer than 120 seconds to compute, so it is shown without it -- try a simpler shape.
+s10 sphere, hole, turn                                   wall=34.4s calls=3 slowest=14.2s cpu=34.5s timeouts=0 PASS     dVol=6.3e-5 dCom=2.9e-9 f=2/2
+s11 ring, hole                                           wall=15.1s calls=2 slowest=12.6s cpu=15.6s timeouts=0 REFUSED  Hole 1 could not be built by this engine, so it is shown without it.
+s12 cone, hole, turn                                     wall=8.2s calls=3 slowest=4.5s cpu=8.8s timeouts=0 PASS     dVol=1.4e-5 dCom=7.6e-7 f=3/3
+s13 box copy joined (the common copy use)                wall=0.7s calls=3 slowest=0.3s cpu=0.4s timeouts=0 PASS     dVol=0.0e+0 dCom=2.0e-18 f=6/14
+s14 cylinder copy joined                                 wall=4.1s calls=3 slowest=1.6s cpu=4.4s timeouts=0 PASS     dVol=9.2e-5 dCom=6.6e-9 f=4/9

@@ -1,0 +1,154 @@
+[
+ {
+  "id": "x-box-minus-tor-cross",
+  "result": "done",
+  "scRunMs": 15397,
+  "commands": 3,
+  "bodies": "b_box1=46443.242",
+  "parentWallS": 15.6
+ },
+ {
+  "id": "x-tor-union-cyl-touch",
+  "result": "done",
+  "scRunMs": 17930,
+  "commands": 3,
+  "bodies": "b_ring1=8190.483",
+  "parentWallS": 18.1
+ },
+ {
+  "id": "x-sph-cut-cyl",
+  "result": "done",
+  "scRunMs": 8968,
+  "commands": 3,
+  "bodies": "b_ball1=11847.117",
+  "parentWallS": 9.1
+ },
+ {
+  "id": "x-sph-minus-box",
+  "result": "done",
+  "scRunMs": 10086,
+  "commands": 3,
+  "bodies": "b_s=11250.225",
+  "parentWallS": 10.3
+ },
+ {
+  "id": "x-box-minus-sph-void",
+  "result": "done",
+  "scRunMs": 2014,
+  "commands": 3,
+  "bodies": "b_box1=29855.951",
+  "parentWallS": 2.2
+ },
+ {
+  "id": "x-sph-union-box",
+  "result": "done",
+  "scRunMs": 9991,
+  "commands": 3,
+  "bodies": "b_ball1=15249.233",
+  "parentWallS": 10.2
+ },
+ {
+  "id": "x-sph-keep-box",
+  "result": "done",
+  "scRunMs": 15948,
+  "commands": 3,
+  "bodies": "b_ball1=7900.632",
+  "parentWallS": 16.2
+ },
+ {
+  "id": "hg-tor-void-in-box",
+  "result": "done",
+  "scRunMs": 18999,
+  "commands": 3,
+  "bodies": "b_box1=103579.067",
+  "parentWallS": 19.2
+ },
+ {
+  "id": "hg-tor-half-d0",
+  "result": "done",
+  "scRunMs": 8097,
+  "commands": 3,
+  "bodies": "b_ring1=2210.466",
+  "parentWallS": 8.2
+ },
+ {
+  "id": "hg-tor-equator-z0",
+  "result": "done",
+  "scRunMs": 12984,
+  "commands": 3,
+  "bodies": "b_ring1=2210.430",
+  "parentWallS": 13.1
+ },
+ {
+  "id": "hg-tor-equator-z2",
+  "result": "done",
+  "scRunMs": 16681,
+  "commands": 3,
+  "bodies": "b_ring1=3556.758",
+  "parentWallS": 16.9
+ },
+ {
+  "id": "hg-cyl-inside-perp",
+  "result": "done",
+  "scRunMs": 1911,
+  "commands": 4,
+  "bodies": "b_c1=12440.298",
+  "parentWallS": 2.1
+ },
+ {
+  "id": "hg-tor-miss",
+  "result": "done",
+  "scRunMs": 23242,
+  "commands": 3,
+  "bodies": "b_ring1=5420.933",
+  "parentWallS": 23.6
+ },
+ {
+  "id": "sl-esc-rot-3op",
+  "result": "done",
+  "scRunMs": 48787,
+  "commands": 7,
+  "bodies": "b_a=31347.090",
+  "parentWallS": 49.1
+ },
+ {
+  "id": "trap-tor-union-box-tangent",
+  "result": "done",
+  "scRunMs": 10104,
+  "commands": 3,
+  "bodies": "b_t=8420.933",
+  "parentWallS": 10.2
+ },
+ {
+  "id": "reuse-tool-three-parts",
+  "result": "done",
+  "scRunMs": 114,
+  "commands": 5,
+  "bodies": "b_box1=29006.392 b_box2=32000.000 b_box3=32000.000",
+  "parentWallS": 0.2
+ },
+ {
+  "id": "sp-cut-tube-360-through",
+  "result": "done",
+  "scRunMs": 14083,
+  "commands": 6,
+  "bodies": "b_box1=74867.987",
+  "parentWallS": 14.2
+ },
+ {
+  "id": "sp-cut-tube-360-blind",
+  "result": "done",
+  "scRunMs": 1914,
+  "commands": 6,
+  "bodies": "ERR boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Cut: implausible result volume 12533.8518; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cylinder)",
+  "parentWallS": 2
+ },
+ {
+  "id": "reuse-tool-two-tools",
+  "result": "done",
+  "scRunMs": 517,
+  "commands": 5,
+  "bodies": "b_box1=27935.599 b_box2=32000.000",
+  "parentWallS": 0.6
+ }
+]

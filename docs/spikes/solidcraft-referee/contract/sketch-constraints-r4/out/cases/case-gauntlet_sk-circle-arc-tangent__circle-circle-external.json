@@ -1,0 +1,86 @@
+[
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-external",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 38,
+     "REFUSED": 2
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "asks for external tangency but the circles start internally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ }
+]

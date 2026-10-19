@@ -1,0 +1,15 @@
+overlap(-10..10 | 0..20)           join  ok cpu 2.3 vol 9423.691 faces 3
+overlap(-10..10 | 0..20)           cut   ok cpu 0.93 vol 3141.353 faces 3
+overlap(-10..10 | 0..20)           keep  FAIL boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or 
+contained(-10..10 | -5..5)         join  ok cpu 1.48 vol 6282.476 faces 3
+contained(-10..10 | -5..5)         cut   ok cpu 1.48 vol 1570.694,1570.694 faces 3,3
+contained(-10..10 | -5..5)         keep  ok cpu 1.16 vol 3141.353 faces 3
+longer(-10..10 | -20..20)          join  ok cpu 1.22 vol 12564.707 faces 3
+longer(-10..10 | -20..20)          cut   ok cpu 0.36 vol  faces 
+longer(-10..10 | -20..20)          keep  ok cpu 1.07 vol 6282.476 faces 3
+stacked-touch(-10..0 | 0..10)      join  ok cpu 1.78 vol 6282.476 faces 3
+stacked-touch(-10..0 | 0..10)      cut   ok cpu 1.16 vol 3141.353 faces 3
+stacked-touch(-10..0 | 0..10)      keep  ok cpu 0.45 vol  faces 
+unequal r10|r6 coaxial overlap     join  ok cpu 2.26 vol 7413.246 faces 5
+unequal r10|r6 coaxial overlap     cut   ok cpu 1.32 vol 5151.658 faces 5
+unequal r10|r6 coaxial overlap     keep  ok cpu 2.1 vol 1130.846 faces 3

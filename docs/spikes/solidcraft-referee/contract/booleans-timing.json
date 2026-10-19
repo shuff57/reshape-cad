@@ -1,0 +1,122 @@
+[
+ {
+  "id": "cut-box-cyl-through",
+  "result": "done",
+  "scRunMs": 768,
+  "commands": 3,
+  "bodies": "b_box1=27979.429",
+  "parentWallS": 1.1
+ },
+ {
+  "id": "x-sph-minus-box",
+  "result": "done",
+  "scRunMs": 14819,
+  "commands": 3,
+  "bodies": "b_s=11250.225",
+  "parentWallS": 15.1
+ },
+ {
+  "id": "x-sph-union-sph",
+  "result": "done",
+  "scRunMs": 28152,
+  "commands": 3,
+  "bodies": "b_ball1=16736.080",
+  "parentWallS": 28.4
+ },
+ {
+  "id": "x-sph-cut-sph",
+  "result": "done",
+  "scRunMs": 19315,
+  "commands": 3,
+  "bodies": "b_ball1=9498.753",
+  "parentWallS": 19.5
+ },
+ {
+  "id": "x-sph-keep-sph",
+  "result": "done",
+  "scRunMs": 18167,
+  "commands": 3,
+  "bodies": "b_ball1=4637.485",
+  "parentWallS": 18.3
+ },
+ {
+  "id": "x-box-minus-tor-void",
+  "result": "done",
+  "scRunMs": 12540,
+  "commands": 3,
+  "bodies": "b_box1=45579.067",
+  "parentWallS": 12.7
+ },
+ {
+  "id": "x-tor-union-cyl-axis",
+  "result": "done",
+  "scRunMs": 16236,
+  "commands": 3,
+  "bodies": "b_ring1=5777.937",
+  "parentWallS": 16.4
+ },
+ {
+  "id": "x-cyl-cross-cyl-cut",
+  "result": "done",
+  "scRunMs": 133846,
+  "commands": 4,
+  "bodies": "b_c1=10410.432",
+  "parentWallS": 134.1
+ },
+ {
+  "id": "x-cyl-cross-cyl-union",
+  "result": "done",
+  "scRunMs": 130320,
+  "commands": 4,
+  "bodies": "b_c1=14933.713",
+  "parentWallS": 130.6
+ },
+ {
+  "id": "x-cyl-cross-cyl-keep",
+  "result": "done",
+  "scRunMs": 148635,
+  "commands": 4,
+  "bodies": "b_c1=2154.652",
+  "parentWallS": 148.7
+ },
+ {
+  "id": "x-tor-half",
+  "result": "done",
+  "scRunMs": 25678,
+  "commands": 3,
+  "bodies": "b_ring1=2210.472",
+  "parentWallS": 25.9
+ },
+ {
+  "id": "x-tor-union-box",
+  "result": "done",
+  "scRunMs": 256029,
+  "commands": 3,
+  "bodies": "b_ring1=7906.764",
+  "parentWallS": 256.3
+ },
+ {
+  "id": "x-tor-keep-box",
+  "result": "done",
+  "scRunMs": 201834,
+  "commands": 3,
+  "bodies": "b_ring1=2101.164",
+  "parentWallS": 202.1
+ },
+ {
+  "id": "x-tor-minus-box",
+  "result": "done",
+  "scRunMs": 260251,
+  "commands": 3,
+  "bodies": "b_ring1=3906.808",
+  "parentWallS": 260.6
+ },
+ {
+  "id": "x-cyl-cross-cyl-equal-keep",
+  "result": "done",
+  "scRunMs": 346411,
+  "commands": 4,
+  "bodies": "b_c1=2730.637",
+  "parentWallS": 346.6
+ }
+]

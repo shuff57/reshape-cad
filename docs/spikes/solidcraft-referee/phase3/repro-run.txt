@@ -1,0 +1,18 @@
+baseline         {"cls":"pass","vol":32000,"verdict":"EXPECTED REFUSAL matched: round1 refused with the expected sentence; built 1 feature(s), volume 32000.000 = reference 32000.000"}
+syntaxError      {"cls":"fail","ms":3,"vol":null,"bodies":null,"verdict":"SCRIPT ERROR (syntax error; the interpreter reports no line for these): Unexpected token '}'"}
+zeroSize         {"cls":"fail","ms":2,"vol":null,"bodies":null,"verdict":"SCRIPT ERROR (line 1): box(): a size has to be a positive number -- got 0 for width."}
+runaway          {"cls":"fail","ms":10003,"vol":null,"bodies":null,"verdict":"ERROR: the script took longer than 10 s in the sandbox; the sandbox was restarted"}
+afterRunaway     {"cls":"mut","ms":206,"vol":1000,"bodies":1,"verdict":"Custom script: no reference. Built 1, refused 0."}
+custom           {"cls":"mut","ms":195,"vol":2238.5,"bodies":1,"verdict":"Custom script: no reference. Built 1, refused 0."}
+huge             {"cls":"fail","ms":9,"vol":null,"bodies":null,"verdict":"REFUSED BEFORE BUILD: feature box1 has the value 1000000000; this demo accepts dimensions up to 1,000,000 mm (solidcraft builds a 1,000,000 mm box, re"}
+huge1e7          {"cls":"fail","ms":1,"vol":null,"bodies":null,"verdict":"REFUSED BEFORE BUILD: feature box1 has the value 10000000; this demo accepts dimensions up to 1,000,000 mm (solidcraft builds a 1,000,000 mm box, refu"}
+pattern1000      {"cls":"fail","ms":1,"vol":null,"bodies":null,"verdict":"REFUSED BEFORE BUILD: feature pat1 has a count of 1000; this demo builds patterns of 1 to 100 copies (the engine itself allows up to 1000, but this de"}
+pattern101       {"cls":"fail","ms":1,"vol":null,"bodies":null,"verdict":"REFUSED BEFORE BUILD: feature pat1 has a count of 101; this demo builds patterns of 1 to 100 copies (the engine itself allows up to 1000, but this dem"}
+pattern100       {"cls":"mut","ms":4135,"vol":50000,"bodies":1,"verdict":"Custom script: no reference. Built 2, refused 0."}
+features61       {"cls":"fail","ms":3,"vol":null,"bodies":null,"verdict":"REFUSED BEFORE BUILD: the document has 61 features, more than the 60 this demo accepts (it replays the feature list for every feature: 60 features too"}
+features60       {"cls":"mut","ms":7335,"vol":7500,"bodies":60,"verdict":"Custom script: no reference. Built 60, refused 0."}
+tamperId         {"cls":"fail","verdict":"FAIL: expected box1 to be refused but it was built; round1 was refused but is not in the expected list"}
+tamperSentence   {"cls":"fail","verdict":"FAIL: round1 was refused with a different sentence (wanted it to contain \"a sentence that is not there\")"}
+tamperVolume     {"cls":"fail","verdict":"FAIL: built volume 32000.000 differs from the reference of what should build, 12345.000 (rel 1.59e+0)"}
+untampered       {"cls":"pass","vol":32000,"verdict":"EXPECTED REFUSAL matched: round1 refused with the expected sentence; built 1 feature(s), volume 32000.000 = reference 32000.000"}
+conflictRow      {"verdict":"sk1at refusal (sketch.dimension)solvedMISMATCH: solidcraft says solved; independent rule check residual 1.00e+1 mm (the refused rule is not in solidcr"}

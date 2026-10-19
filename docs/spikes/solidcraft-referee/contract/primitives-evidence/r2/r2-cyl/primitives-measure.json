@@ -1,0 +1,1755 @@
+[
+ {
+  "id": "r2-cyl-h2-flat",
+  "feature": "cyl.corner.half",
+  "note": "",
+  "script": "cylinder(48, 10, { corner: 5 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 24,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 5
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 16552.810345574897,
+  "occt": {
+   "refused": "Rounding cylinder cyl1 (radius 24, height 10) at radius 5 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding cylinder by 5 would not fit its radius or height -- cyl1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 24,
+     "height": 10,
+     "base": [
+      0,
+      0,
+      -5
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       24,
+       0,
+       5
+      ],
+      [
+       24,
+       0,
+       -5
+      ]
+     ],
+     "radius": 5,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 16552.105391326604,
+   "bbox": [
+    -23.99962934911771,
+    -23.99943318056068,
+    -5,
+    23.99962934911772,
+    23.999433180560672,
+    5
+   ],
+   "com": [
+    7.47284266966625e-15,
+    1.4652632685620098e-15,
+    4.029473988545527e-15
+   ],
+   "faces": 3,
+   "faceTypes": {
+    "other": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolAnalytic": 0.00004258819098239933,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 8337
+ },
+ {
+  "id": "r2-cyl-h2-tall",
+  "feature": "cyl.corner.half",
+  "note": "",
+  "script": "cylinder(24, 10, { corner: 5 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 12,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 5
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 3790.159946047935,
+  "occt": {
+   "refused": "Rounding cylinder cyl1 (radius 12, height 10) at radius 5 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding cylinder by 5 would not fit its radius or height -- cyl1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 12,
+     "height": 10,
+     "base": [
+      0,
+      0,
+      -5
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       12,
+       0,
+       5
+      ],
+      [
+       12,
+       0,
+       -5
+      ]
+     ],
+     "radius": 5,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 3789.5560011828406,
+   "bbox": [
+    -11.999814674558852,
+    -11.999677604887717,
+    -5,
+    11.99981467455886,
+    11.99967760488771,
+    5
+   ],
+   "com": [
+    -4.72000654675233e-15,
+    -8.000011096190389e-15,
+    1.6800023301999818e-15
+   ],
+   "faces": 3,
+   "faceTypes": {
+    "other": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolAnalytic": 0.00015934548243121883,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 4956
+ },
+ {
+  "id": "r2-cyl-R-eq-h2",
+  "feature": "cyl.corner.half",
+  "note": "",
+  "script": "cylinder(10, 10, { corner: 5 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 5,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 5
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 523.5987755982989,
+  "occt": {
+   "refused": "Rounding cylinder cyl1 (radius 5, height 10) at radius 5 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding cylinder by 5 would not fit its radius or height -- cyl1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 246
+ },
+ {
+  "id": "r2-cyl-R-eq-h2b",
+  "feature": "cyl.corner.half",
+  "note": "",
+  "script": "cylinder(10, 30, { corner: 5 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 5,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 5
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 2094.3951023931954,
+  "occt": {
+   "volume": 2094.3951023931954,
+   "com": [
+    -1.0991996979137913e-15,
+    -4.790159146352903e-16,
+    0
+   ],
+   "bbox": [
+    -5,
+    -5,
+    -15,
+    5,
+    5,
+    15
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "sphere": 2
+   }
+  },
+  "brep": {
+   "refused": "Rounding cylinder by 5 would not fit its radius or height -- cyl1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 293
+ },
+ {
+  "id": "r2-cyl-R-under",
+  "feature": "cyl.corner.under",
+  "note": "",
+  "script": "cylinder(10, 30, { corner: 4.99 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 5,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 4.99
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 2095.2912617378615,
+  "occt": {
+   "volume": 2095.291261737861,
+   "com": [
+    -1.1515066784961722e-15,
+    -5.674869643779792e-16,
+    1.7763568394002505e-15
+   ],
+   "bbox": [
+    -5.0000001,
+    -5,
+    -15,
+    5,
+    5,
+    15
+   ],
+   "faces": 5,
+   "types": {
+    "cylinder": 1,
+    "torus": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 2095.2912617378606,
+   "bbox": [
+    -5,
+    -5,
+    -15,
+    5,
+    5,
+    15
+   ],
+   "faces": 5,
+   "dVol": 2.1703300118251384e-16,
+   "dBbox": 3.015113451491947e-9
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 5,
+     "height": 30,
+     "base": [
+      0,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       5,
+       0,
+       15
+      ],
+      [
+       5,
+       0,
+       -15
+      ]
+     ],
+     "radius": 4.99,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 2094.961405149934,
+   "bbox": [
+    -5.048350319556843,
+    -5.527854996440322,
+    -15.00000000000003,
+    5.048350319556843,
+    5.527854996440322,
+    15.000000000000012
+   ],
+   "com": [
+    1.1233226230575964e-14,
+    8.75504266602056e-15,
+    1.0998070125910123e-14
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2,
+    "sphere": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.000157427558617143,
+   "dBboxOcct": 0.01591542695741264,
+   "dComOcct": 3.734137468256148e-16,
+   "facesOcct": 5,
+   "typesOcct": {
+    "cylinder": 1,
+    "torus": 2,
+    "plane": 2
+   },
+   "dVolAnalytic": 0.00015742755861736,
+   "dVolBrep": 0.000157427558616926,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 14776
+ },
+ {
+  "id": "r2-cyl-h2-under",
+  "feature": "cyl.corner.under",
+  "note": "",
+  "script": "cylinder(48, 10, { corner: 4.99 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 24,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 4.99
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 16558.82523686897,
+  "occt": {
+   "volume": 16558.82523686897,
+   "com": [
+    -4.174305625307296e-15,
+    -2.4870332200372235e-15,
+    0
+   ],
+   "bbox": [
+    -24,
+    -24,
+    -5.0000001,
+    24,
+    24,
+    5
+   ],
+   "faces": 5,
+   "types": {
+    "cylinder": 1,
+    "torus": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 16558.82523686896,
+   "bbox": [
+    -24,
+    -24,
+    -5,
+    24,
+    24,
+    5
+   ],
+   "faces": 5,
+   "dVol": 4.3940059213761006e-16,
+   "dBbox": 1.4574100971001966e-9
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 24,
+     "height": 10,
+     "base": [
+      0,
+      0,
+      -5
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       24,
+       0,
+       5
+      ],
+      [
+       24,
+       0,
+       -5
+      ]
+     ],
+     "radius": 4.99,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 16558.121477228437,
+   "bbox": [
+    -23.99962934911771,
+    -23.99943318058921,
+    -5,
+    23.999629349117715,
+    23.999433180589204,
+    5
+   ],
+   "com": [
+    1.2743158763601354e-14,
+    -7.030708283366264e-15,
+    -1.977386704696762e-15
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "cylinder": 1,
+    "other": 2,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00004250057781663708,
+   "dBboxOcct": 0.000008260883302101134,
+   "dComOcct": 2.465568334858621e-16,
+   "facesOcct": 5,
+   "typesOcct": {
+    "cylinder": 1,
+    "torus": 2,
+    "plane": 2
+   },
+   "dVolAnalytic": 0.00004250057781663708,
+   "dVolBrep": 0.0000425005778161977,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 21740
+ },
+ {
+  "id": "r2-cyl-R-over",
+  "feature": "cyl.corner.over",
+  "note": "",
+  "script": "cylinder(10, 30, { corner: 5.5 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 5,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 5.5
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": null,
+  "occt": {
+   "refused": "Rounding cylinder cyl1 (radius 5, height 30) at radius 5.5 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding cylinder by 5.5 would not fit its radius or height -- cyl1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 291
+ },
+ {
+  "id": "r2-cyl-h2-over",
+  "feature": "cyl.corner.over",
+  "note": "",
+  "script": "cylinder(48, 10, { corner: 5.5 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 24,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 5.5
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": null,
+  "occt": {
+   "volume": 28301.656697200226,
+   "com": [
+    -1.181080888367301,
+    -3.737355016320678e-15,
+    0
+   ],
+   "bbox": [
+    -24,
+    -24.0000001,
+    -5,
+    24,
+    24,
+    5
+   ],
+   "faces": 6,
+   "types": {
+    "cylinder": 2,
+    "torus": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "refused": "Rounding cylinder by 5.5 would not fit its radius or height -- cyl1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 471
+ },
+ {
+  "id": "r2-cyl-chamfer-R-0.1",
+  "feature": "cyl.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "cylinder",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "radius": 12,
+     "height": 30,
+     "round": 11.9,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": null,
+  "occt": {
+   "volume": 6423.926563665305,
+   "com": [
+    -2.4865028520929607e-15,
+    -1.0472974990632018e-15,
+    3.552713678800501e-15
+   ],
+   "bbox": [
+    -12,
+    -12,
+    -15,
+    12,
+    12,
+    15.000000000000002
+   ],
+   "faces": 5,
+   "types": {
+    "cylinder": 1,
+    "cone": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 6423.926563665306,
+   "bbox": [
+    -12,
+    -12,
+    -15,
+    12,
+    12,
+    15
+   ],
+   "faces": 5,
+   "dVol": 1.4157924950717324e-16,
+   "dBbox": 3.9214035191323755e-17
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 12,
+     "height": 30,
+     "base": [
+      0,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_x1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       12,
+       0,
+       15
+      ],
+      [
+       12,
+       0,
+       -15
+      ]
+     ],
+     "distance": 11.9,
+     "body": "b_x1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 6423.8796146801,
+   "bbox": [
+    -11.999997809951257,
+    -11.999999707584891,
+    -15.000000000000009,
+    11.999997809951255,
+    11.999999707584887,
+    15.000000000000002
+   ],
+   "com": [
+    3.2327498234905854e-14,
+    -4.615517266239113e-14,
+    9.438685616030907e-15
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "cone": 2,
+    "cylinder": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.0000073084560884141326,
+   "dBboxOcct": 4.834650710550109e-8,
+   "dComOcct": 9.957806702046414e-16,
+   "facesOcct": 5,
+   "typesOcct": {
+    "cylinder": 1,
+    "cone": 2,
+    "plane": 2
+   },
+   "dVolBrep": 0.000007308456088555711,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 6426
+ },
+ {
+  "id": "r2-cyl-chamfer-R",
+  "feature": "cyl.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "cylinder",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "radius": 12,
+     "height": 30,
+     "round": 12,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": null,
+  "occt": {
+   "volume": 6333.450789637025,
+   "com": [
+    -1.2565154297139815e-15,
+    -1.288718978837694e-15,
+    0
+   ],
+   "bbox": [
+    -12,
+    -12,
+    -15,
+    12,
+    12,
+    15
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "cone": 2
+   }
+  },
+  "brep": {
+   "refused": "Rounding cylinder by 12 would not fit its radius or height -- x1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "x1 (cylinder): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than a corner radius"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 159
+ },
+ {
+  "id": "r2-cyl-chamfer-R+1",
+  "feature": "cyl.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "cylinder",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "radius": 12,
+     "height": 30,
+     "round": 13,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": null,
+  "occt": {
+   "volume": 9891.82826503895,
+   "com": [
+    0.8033163891938814,
+    -6.385727200297046e-14,
+    -3.0020430585864233e-13
+   ],
+   "bbox": [
+    -12.0000001,
+    -12.0000001,
+    -15.0000001,
+    12.000000100037235,
+    12.0000001,
+    15.000000100000044
+   ],
+   "faces": 5,
+   "types": {
+    "cylinder": 1,
+    "other": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "refused": "Rounding cylinder by 13 would not fit its radius or height -- x1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "x1 (cylinder): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than a corner radius"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 219
+ },
+ {
+  "id": "r2-cyl-chamfer-h2",
+  "feature": "cyl.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "cylinder",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "radius": 12,
+     "height": 10,
+     "round": 5,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": null,
+  "occt": {
+   "refused": "Chamfering cylinder x1 (radius 12, height 10) at radius 5 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding cylinder by 5 would not fit its radius or height -- x1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 12,
+     "height": 10,
+     "base": [
+      0,
+      0,
+      -5
+     ],
+     "axis": "Z",
+     "body_name": "b_x1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       12,
+       0,
+       5
+      ],
+      [
+       12,
+       0,
+       -5
+      ]
+     ],
+     "distance": 5,
+     "body": "b_x1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 2900.605795767062,
+   "bbox": [
+    -11.999814674558856,
+    -11.999677604887715,
+    -5,
+    11.999814674558857,
+    11.99967760488771,
+    5
+   ],
+   "com": [
+    8.944412778925575e-11,
+    6.913768038193313e-11,
+    1.5701841542599315e-9
+   ],
+   "faces": 4,
+   "faceTypes": {
+    "cone": 2,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 778
+ },
+ {
+  "id": "r2-cyl-chamfer-h2+",
+  "feature": "cyl.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "cylinder",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "radius": 12,
+     "height": 10,
+     "round": 6,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": null,
+  "occt": {
+   "volume": 5277.875658030853,
+   "com": [
+    -0.714285714285715,
+    -1.910992667922464e-15,
+    0
+   ],
+   "bbox": [
+    -12,
+    -12,
+    -5,
+    12,
+    12,
+    5
+   ],
+   "faces": 6,
+   "types": {
+    "cylinder": 2,
+    "cone": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "refused": "Rounding cylinder by 6 would not fit its radius or height -- x1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "x1 (cylinder): solidcraft refused it -- solid.chamfer: not supported yet: the blend is taller than the walls"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 185
+ },
+ {
+  "id": "r2-cyl-chamfer-3",
+  "feature": "cyl.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "cylinder",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "radius": 12,
+     "height": 30,
+     "round": 3,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": null,
+  "occt": {
+   "volume": 12949.644918097125,
+   "com": [
+    -4.354456965157276e-15,
+    -1.3585240829929695e-15,
+    0
+   ],
+   "bbox": [
+    -12,
+    -12,
+    -15,
+    12,
+    12,
+    15
+   ],
+   "faces": 5,
+   "types": {
+    "cylinder": 1,
+    "cone": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 12949.644918097134,
+   "bbox": [
+    -12,
+    -12,
+    -15,
+    12,
+    12,
+    15
+   ],
+   "faces": 5,
+   "dVol": 7.023317685737543e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 12,
+     "height": 30,
+     "base": [
+      0,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_x1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       12,
+       0,
+       15
+      ],
+      [
+       12,
+       0,
+       -15
+      ]
+     ],
+     "distance": 3,
+     "body": "b_x1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 12948.31124469854,
+   "bbox": [
+    -11.999814674558857,
+    -11.999677604887715,
+    -15.000000000000012,
+    11.99981467455886,
+    11.999677604887712,
+    15
+   ],
+   "com": [
+    -1.8473228056223564e-14,
+    -1.1425773499920278e-14,
+    -2.1540392663784133e-15
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "cone": 2,
+    "cylinder": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00010298918673217249,
+   "dBboxOcct": 0.000007117045966426205,
+   "dComOcct": 3.116794858685305e-16,
+   "facesOcct": 5,
+   "typesOcct": {
+    "cylinder": 1,
+    "cone": 2,
+    "plane": 2
+   },
+   "dVolBrep": 0.00010298918673287475,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 878
+ },
+ {
+  "id": "r2-cyl-chamfer-9",
+  "feature": "cyl.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "cylinder",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "radius": 12,
+     "height": 30,
+     "round": 9,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": null,
+  "occt": {
+   "volume": 8991.23817457399,
+   "com": [
+    -2.8449405955788266e-15,
+    -1.1357091112382606e-15,
+    -1.7763568394002505e-15
+   ],
+   "bbox": [
+    -12,
+    -12,
+    -15,
+    12,
+    12,
+    15
+   ],
+   "faces": 5,
+   "types": {
+    "cylinder": 1,
+    "cone": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 8991.238174573991,
+   "bbox": [
+    -12,
+    -12,
+    -15,
+    12,
+    12,
+    15
+   ],
+   "faces": 5,
+   "dVol": 2.0230688679671655e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 12,
+     "height": 30,
+     "base": [
+      0,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_x1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       12,
+       0,
+       15
+      ],
+      [
+       12,
+       0,
+       -15
+      ]
+     ],
+     "distance": 9,
+     "body": "b_x1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 8990.940386916447,
+   "bbox": [
+    -11.999814674558857,
+    -11.999716590294605,
+    -15.000000000000009,
+    11.999814674558857,
+    11.9997165902946,
+    15
+   ],
+   "com": [
+    -1.4031114919248456e-10,
+    -1.0328452568558329e-10,
+    -2.1474009253804123e-10
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "cone": 2,
+    "cylinder": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00003311976078939398,
+   "dBboxOcct": 0.000006256422085139812,
+   "dComOcct": 4.740464134727765e-12,
+   "facesOcct": 5,
+   "typesOcct": {
+    "cylinder": 1,
+    "cone": 2,
+    "plane": 2
+   },
+   "dVolBrep": 0.00003311976078959628,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 1968
+ },
+ {
+  "id": "r2-cyl-needle-1-100",
+  "feature": "cyl.thin",
+  "note": "",
+  "script": "cylinder(1, 100);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 0.5,
+     "height": 100,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 78.53981633974483,
+  "occt": {
+   "volume": 78.53981633974483,
+   "com": [
+    -1.6962958301138755e-17,
+    -5.099054832295797e-17,
+    7.105427357601002e-15
+   ],
+   "bbox": [
+    -0.5,
+    -0.5,
+    -50,
+    0.5,
+    0.5,
+    50
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 78.53981633974486,
+   "bbox": [
+    -0.5,
+    -0.5,
+    -50,
+    0.5,
+    0.5,
+    50
+   ],
+   "faces": 3,
+   "dVol": 3.618764437576268e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 0.5,
+     "height": 100,
+     "base": [
+      0,
+      0,
+      -50
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 78.495323144242,
+   "bbox": [
+    -0.4999100236269105,
+    -0.4999865668703214,
+    -50.00000000000006,
+    0.49991002362691067,
+    0.49998656687032134,
+    50.00000000000002
+   ],
+   "com": [
+    8.568792238947718e-17,
+    4.7875327339168855e-17,
+    -1.158661007231797e-14
+   ],
+   "faces": 3,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.0005665049598584608,
+   "dBboxOcct": 8.99673768016071e-7,
+   "dComOcct": 1.8690168506509821e-16,
+   "facesOcct": 3,
+   "typesOcct": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "dVolAnalytic": 0.0005665049598584608,
+   "dVolBrep": 0.0005665049598588225,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 195
+ },
+ {
+  "id": "r2-cyl-needle-2-100",
+  "feature": "cyl.thin",
+  "note": "",
+  "script": "cylinder(2, 100);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 1,
+     "height": 100,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 314.1592653589793,
+  "occt": {
+   "volume": 314.1592653589793,
+   "com": [
+    -3.392591660227751e-17,
+    -1.0198109664591593e-16,
+    7.105427357601002e-15
+   ],
+   "bbox": [
+    -1,
+    -1,
+    -50,
+    1,
+    1,
+    50
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 314.15926535897944,
+   "bbox": [
+    -1,
+    -1,
+    -50,
+    1,
+    1,
+    50
+   ],
+   "faces": 3,
+   "dVol": 3.618764437576268e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 100,
+     "base": [
+      0,
+      0,
+      -50
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 314.0174885788335,
+   "bbox": [
+    -0.999820047253821,
+    -0.9999731337406428,
+    -50.00000000000006,
+    0.9998200472538213,
+    0.9999731337406427,
+    50.00000000000002
+   ],
+   "com": [
+    1.3046161789929586e-16,
+    -3.4191668376723767e-17,
+    -2.027423039787865e-14
+   ],
+   "faces": 3,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.0004512895075172878,
+   "dBboxOcct": 0.0000017988080824040592,
+   "dComOcct": 2.7368712459117643e-16,
+   "facesOcct": 3,
+   "typesOcct": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "dVolAnalytic": 0.0004512895075172878,
+   "dVolBrep": 0.0004512895075176495,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 244
+ },
+ {
+  "id": "r2-cyl-needle-0.5-100",
+  "feature": "cyl.thin",
+  "note": "",
+  "script": "cylinder(0.5, 100);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 0.25,
+     "height": 100,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 19.634954084936208,
+  "occt": {
+   "volume": 19.634954084936208,
+   "com": [
+    -8.481479150569377e-18,
+    -2.5495274161478984e-17,
+    7.105427357601002e-15
+   ],
+   "bbox": [
+    -0.25,
+    -0.25,
+    -50,
+    0.25,
+    0.25,
+    50
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 19.634954084936215,
+   "bbox": [
+    -0.25,
+    -0.25,
+    -50,
+    0.25,
+    0.25,
+    50
+   ],
+   "faces": 3,
+   "dVol": 3.618764437576268e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 0.25,
+     "height": 100,
+     "base": [
+      0,
+      0,
+      -50
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 19.599537871476475,
+   "bbox": [
+    -0.24988448047062156,
+    -0.2499932834351607,
+    -50.00000000000006,
+    0.24988448047062164,
+    0.2499932834351607,
+    50.00000000000001
+   ],
+   "com": [
+    5.1511881026940025e-17,
+    -1.871952377525398e-17,
+    -1.6434709276828814e-14
+   ],
+   "faces": 3,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.0018037329400685572,
+   "dBboxOcct": 0.000001155166414984989,
+   "dComOcct": 2.353954815308191e-16,
+   "facesOcct": 3,
+   "typesOcct": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "dVolAnalytic": 0.0018037329400685572,
+   "dVolBrep": 0.0018037329400689185,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 130
+ },
+ {
+  "id": "r2-cyl-disc-100-0.2",
+  "feature": "cyl.thin",
+  "note": "",
+  "script": "cylinder(100, 0.2);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 50,
+     "height": 0.2,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 1570.7963267948967,
+  "occt": {
+   "volume": 1570.796326794897,
+   "com": [
+    1.042204158021965e-14,
+    -5.298440271327098e-15,
+    -2.7755575615628914e-17
+   ],
+   "bbox": [
+    -50,
+    -50,
+    -0.1,
+    50,
+    50,
+    0.1
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 1570.7963267948983,
+   "bbox": [
+    -50,
+    -50,
+    -0.1,
+    50,
+    50,
+    0.1
+   ],
+   "faces": 3,
+   "dVol": 8.685034650183041e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 50,
+     "height": 0.2,
+     "base": [
+      0,
+      0,
+      -0.1
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 1570.6996165546946,
+   "bbox": [
+    -49.99922781066192,
+    -49.99881912622752,
+    -0.10000000000000014,
+    49.9992278106619,
+    49.99881912622751,
+    0.10000000000000007
+   ],
+   "com": [
+    2.0733781120482775e-15,
+    -5.197393460147199e-15,
+    -2.865031573012165e-17
+   ],
+   "faces": 3,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00006156765110323775,
+   "dBboxOcct": 0.000008350030172508033,
+   "dComOcct": 5.903390648800681e-17,
+   "facesOcct": 3,
+   "typesOcct": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "dVolAnalytic": 0.000061567651103093,
+   "dVolBrep": 0.00006156765110410619,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 164
+ }
+]

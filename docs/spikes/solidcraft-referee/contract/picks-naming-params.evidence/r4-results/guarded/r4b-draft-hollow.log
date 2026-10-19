@@ -1,0 +1,18 @@
+hollow then draft front 4 deg            PASS[OCCT] V=4990.631739 (OCCT 4990.631739, brep 5116.500000) dVol 1.8e-16 dBbox 3.7e-16 dCOM 1.0e-16 faces occt/truck/brep 11/11/11  
+    names: box1.face[+z] ; box1.face[-y]
+   pierces=false closed=4990.6317 SC=4990.6317 rel=1.1e-14
+hollow then draft front 6 deg            PASS[OCCT] V=4927.312377 (OCCT 4927.312377, brep 5116.500000) dVol 1.8e-16 dBbox 7.1e-16 dCOM 8.6e-17 faces occt/truck/brep 11/11/11  
+    names: box1.face[+z] ; box1.face[-y]
+   pierces=false closed=4927.3124 SC=4927.3124 rel=1.3e-15
+hollow then draft front 6.5 deg          PASS[OCCT] V=4911.415905 (OCCT 4911.415905, brep 5116.500000) dVol 5.6e-16 dBbox 1.8e-16 dCOM 2.1e-16 faces occt/truck/brep 11/11/11  
+    names: box1.face[+z] ; box1.face[-y]
+   pierces=false closed=4911.4159 SC=4911.4159 rel=1.9e-16
+hollow then draft front 7 deg            FAIL[OCCT] V=4739.626723 (OCCT 4895.487790, brep 5116.500000) dVol 3.2e-2 dBbox 5.4e-16 dCOM 6.7e-3 faces occt/truck/brep 11/11/11  
+    names: box1.face[+z] ; box1.face[-y]
+   pierces=true closed=4896.5053 SC=4739.6267 rel=3.2e-2
+hollow then draft front 8 deg            FAIL[OCCT] V=4729.594428 (OCCT 4863.526498, brep 5116.500000) dVol 2.8e-2 dBbox 3.6e-16 dCOM 5.8e-3 faces occt/truck/brep 11/11/11  
+    names: box1.face[+z] ; box1.face[-y]
+   pierces=true closed=4873.7998 SC=4729.5944 rel=3.0e-2
+hollow then draft front 10 deg           FAIL[OCCT] V=4709.375256 (OCCT 4799.111435, brep 5116.500000) dVol 1.9e-2 dBbox 3.6e-16 dCOM 4.0e-3 faces occt/truck/brep 11/11/11  
+    names: box1.face[+z] ; box1.face[-y]
+   pierces=true closed=4847.1666 SC=4709.3753 rel=2.8e-2

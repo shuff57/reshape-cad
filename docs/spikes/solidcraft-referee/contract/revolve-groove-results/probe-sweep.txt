@@ -1,0 +1,17 @@
+ran 144 mismatching 16
+{"r0":10,"th":10,"h":30,"a":10,"faces":8,"exFaces":6,"ft":{"cylinder":4,"plane":4},"dV":0.0000793}
+{"r0":30,"th":10,"h":30,"a":5,"faces":7,"exFaces":6,"ft":{"cylinder":3,"plane":4},"dV":0.0000198}
+{"r0":30,"th":10,"h":30,"a":10,"faces":7,"exFaces":6,"ft":{"cylinder":3,"plane":4},"dV":0.0000198}
+{"r0":60,"th":5,"h":20,"a":3,"faces":8,"exFaces":6,"ft":{"cylinder":4,"plane":4},"dV":0.00000714}
+{"r0":60,"th":5,"h":20,"a":5,"faces":8,"exFaces":6,"ft":{"cylinder":4,"plane":4},"dV":0.0000198}
+{"r0":60,"th":5,"h":20,"a":90,"faces":6,"exFaces":6,"ft":{"cylinder":2,"plane":4},"dV":0.000399}
+{"r0":100,"th":10,"h":30,"a":2,"faces":8,"exFaces":6,"ft":{"cylinder":4,"plane":4},"dV":0.0000127}
+{"r0":100,"th":10,"h":30,"a":3,"faces":8,"exFaces":6,"ft":{"cylinder":4,"plane":4},"dV":0.00000714}
+{"r0":100,"th":10,"h":30,"a":5,"faces":8,"exFaces":6,"ft":{"cylinder":4,"plane":4},"dV":0.0000198}
+{"r0":100,"th":10,"h":30,"a":90,"faces":6,"exFaces":6,"ft":{"cylinder":2,"plane":4},"dV":0.000327}
+{"r0":200,"th":20,"h":50,"a":2,"faces":8,"exFaces":6,"ft":{"cylinder":4,"plane":4},"dV":0.0000127}
+{"r0":200,"th":20,"h":50,"a":3,"faces":8,"exFaces":6,"ft":{"cylinder":4,"plane":4},"dV":0.00000714}
+{"r0":200,"th":20,"h":50,"a":5,"faces":8,"exFaces":6,"ft":{"cylinder":4,"plane":4},"dV":0.00000496}
+{"r0":200,"th":20,"h":50,"a":90,"faces":6,"exFaces":6,"ft":{"cylinder":2,"plane":4},"dV":0.000324}
+{"r0":0,"th":20,"h":30,"a":180,"faces":4,"exFaces":5,"ft":{"cylinder":1,"plane":3},"dV":0.0000989}
+{"r0":0,"th":100,"h":30,"a":180,"faces":4,"exFaces":5,"ft":{"cylinder":1,"plane":3},"dV":0.0000839}

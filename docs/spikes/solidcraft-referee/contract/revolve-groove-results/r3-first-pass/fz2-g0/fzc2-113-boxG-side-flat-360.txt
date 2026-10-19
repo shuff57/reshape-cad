@@ -1,0 +1,1 @@
+fzc2-113-boxG-side-flat-360              FAIL     occtV 69281.9570 | tr-occt dV 2.1e-4 dBb 1.6e-15 dCom 8.5e-5 F o/b/t 11/11/12 | brep-occt dV 6.7e-13      | ms 3410 cpu 3920

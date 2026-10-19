@@ -1,0 +1,384 @@
+{
+ "posted": [
+  "source",
+  "errors",
+  "doc"
+ ],
+ "namedParamsStaysInSandbox": [
+  {
+   "name": "w",
+   "caption": "Width",
+   "value": 40,
+   "min": 20,
+   "max": 80,
+   "step": 5,
+   "slots": [
+    "box1_width"
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "fam": "box edge round + hollow open front",
+   "args": [
+    40,
+    2,
+    2
+   ],
+   "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('top','right'), 2)\nhollow(b, { wall: 2, open: 'front' })",
+   "names": "box1.edge[box1.face[+x] ^ box1.face[+z]] ; box1.face[-y]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 7846.230884002683,
+   "dVol": 0.000002153335643671222,
+   "refKind": "brep-rs (OCCT refused or no-opped a feature)",
+   "occt": 23974.24777962415,
+   "brep": 7846.2477796076955
+  },
+  {
+   "fam": "box edge round + hollow open front",
+   "args": [
+    25,
+    2,
+    2
+   ],
+   "src": "const b = box(25, 30, 20, { at: [5, -3, 2] })\nround(b.edge('top','right'), 2)\nhollow(b, { wall: 2, open: 'front' })",
+   "names": "box1.edge[box1.face[+x] ^ box1.face[+z]] ; box1.face[-y]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 5566.230886628073,
+   "dVol": 0.000003034895371463979,
+   "refKind": "brep-rs (OCCT refused or no-opped a feature)",
+   "occt": 14974.247779619403,
+   "brep": 5566.2477796076955
+  },
+  {
+   "fam": "box edge round + hollow open front",
+   "args": [
+    70,
+    4,
+    2
+   ],
+   "src": "const b = box(70, 30, 20, { at: [5, -3, 2] })\nround(b.edge('top','right'), 4)\nhollow(b, { wall: 2, open: 'front' })",
+   "names": "box1.edge[box1.face[+x] ^ box1.face[+z]] ; box1.face[-y]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 12353.004202739816,
+   "dVol": 0.0000018069592409957992,
+   "refKind": "OCCT",
+   "occt": 12353.026524155248,
+   "brep": 12353.02652413026
+  },
+  {
+   "fam": "box edge round + hollow open front",
+   "args": [
+    33,
+    1,
+    3.5
+   ],
+   "src": "const b = box(33, 30, 20, { at: [5, -3, 2] })\nround(b.edge('top','right'), 1)\nhollow(b, { wall: 3.5, open: 'front' })",
+   "names": "box1.edge[box1.face[+x] ^ box1.face[+z]] ; box1.face[-y]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 10836.557719439492,
+   "dVol": 3.899264776979299e-7,
+   "refKind": "brep-rs (OCCT refused or no-opped a feature)",
+   "occt": 19793.561944909678,
+   "brep": 10836.561944901921
+  },
+  {
+   "fam": "box edge round + hollow open front",
+   "args": [
+    40,
+    5.9,
+    1
+   ],
+   "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('top','right'), 5.9)\nhollow(b, { wall: 1, open: 'front' })",
+   "names": "box1.edge[box1.face[+x] ^ box1.face[+z]] ; box1.face[-y]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 4089.331541748788,
+   "dVol": 0.00000369912635874982,
+   "refKind": "OCCT",
+   "occt": 4089.3164148506485,
+   "brep": 4089.316414843945
+  },
+  {
+   "fam": "plate + pocket edge(top, wall 2)",
+   "args": [
+    10,
+    10,
+    1
+   ],
+   "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk2, 2)), 1)",
+   "names": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 11597.8525753589,
+   "dVol": 1.2125300735023275e-7,
+   "refKind": "OCCT",
+   "occt": 11597.853981633574,
+   "brep": 11597.853981633976
+  },
+  {
+   "fam": "plate + pocket edge(top, wall 2)",
+   "args": [
+    16,
+    10,
+    1
+   ],
+   "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 16);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk2, 2)), 1)",
+   "names": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "nameStable": true,
+   "outcome": "REFUSED",
+   "sentence": "round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] matches no edge on b_pull1 (the two faces do not meet there any more, or never did); not guessing",
+   "occt": 18799.99999999999,
+   "brep": 18799.999999999996
+  },
+  {
+   "fam": "plate + pocket edge(top, wall 2)",
+   "args": [
+    14,
+    14,
+    1
+   ],
+   "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 14);\nconst sk2 = sketch('top', 14); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk2, 2)), 1)",
+   "names": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 16397.852575108864,
+   "dVol": 8.577493268814854e-8,
+   "refKind": "OCCT",
+   "occt": 16397.853981633685,
+   "brep": 16397.85398163398
+  },
+  {
+   "fam": "plate + pocket edge(top, wall 2)",
+   "args": [
+    14,
+    14,
+    2.5
+   ],
+   "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 14);\nconst sk2 = sketch('top', 14); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk2, 2)), 2.5)",
+   "names": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 16386.578591851892,
+   "dVol": 5.366192866279214e-7,
+   "refKind": "OCCT",
+   "occt": 16386.587385210725,
+   "brep": 16386.587385212344
+  },
+  {
+   "fam": "plate + pocket edge(top, wall 2)",
+   "args": [
+    16,
+    10,
+    1.5
+   ],
+   "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 16);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.edge('top', part.wall(sk2, 2)), 1.5)",
+   "names": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+   "nameStable": true,
+   "outcome": "REFUSED",
+   "sentence": "round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] matches no edge on b_pull1 (the two faces do not meet there any more, or never did); not guessing",
+   "occt": 18799.99999999999,
+   "brep": 18799.999999999996
+  },
+  {
+   "fam": "cylinder rim round",
+   "args": [
+    20,
+    30,
+    2
+   ],
+   "src": "const c = cylinder(20, 30)\nround(c.edge('top','side'), 2)",
+   "names": "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 9372.922564848386,
+   "dVol": 0.000035159205668659654,
+   "refKind": "OCCT",
+   "occt": 9373.25212094749,
+   "brep": 9373.252120947489
+  },
+  {
+   "fam": "cylinder rim round",
+   "args": [
+    14,
+    30,
+    2
+   ],
+   "src": "const c = cylinder(14, 30)\nround(c.edge('top','side'), 2)",
+   "names": "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 4582.568783333504,
+   "dVol": 0.000049571244997622745,
+   "refKind": "OCCT",
+   "occt": 4582.795958234724,
+   "brep": 4582.795958234727
+  },
+  {
+   "fam": "cylinder rim round",
+   "args": [
+    20,
+    12,
+    1
+   ],
+   "src": "const c = cylinder(20, 12)\nround(c.edge('top','side'), 1)",
+   "names": "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 3756.637818513836,
+   "dVol": 0.00002414874592814859,
+   "refKind": "OCCT",
+   "occt": 3756.7285387968404,
+   "brep": 3756.728538796839
+  },
+  {
+   "fam": "cylinder rim round",
+   "args": [
+    36,
+    50,
+    3.5
+   ],
+   "src": "const c = cylinder(36, 50)\nround(c.edge('top','side'), 3.5)",
+   "names": "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 50607.644675035895,
+   "dVol": 0.00003460165382295941,
+   "refKind": "OCCT",
+   "occt": 50609.39584383107,
+   "brep": 50609.39584383107
+  },
+  {
+   "fam": "hole then round edge",
+   "args": [
+    6,
+    2
+   ],
+   "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nhole(b, { across: 6 })\nround(b.edge('top','right'), 2)",
+   "names": "box1.edge[box1.face[+x] ^ box1.face[+z]]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 23408.812773714355,
+   "dVol": 0.000002207367397696334,
+   "refKind": "OCCT",
+   "occt": 23408.761101978278,
+   "brep": 23408.761101961532
+  },
+  {
+   "fam": "hole then round edge",
+   "args": [
+    12,
+    2
+   ],
+   "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nhole(b, { across: 12 })\nround(b.edge('top','right'), 2)",
+   "names": "box1.edge[box1.face[+x] ^ box1.face[+z]]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 21712.423444345302,
+   "dVol": 0.000005636220017243367,
+   "refKind": "OCCT",
+   "occt": 21712.301069039397,
+   "brep": 21712.301069023037
+  },
+  {
+   "fam": "hole then round edge",
+   "args": [
+    3,
+    4
+   ],
+   "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nhole(b, { across: 3 })\nround(b.edge('top','right'), 4)",
+   "names": "box1.edge[box1.face[+x] ^ box1.face[+z]]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 23755.604837249633,
+   "dVol": 6.150880742082441e-7,
+   "refKind": "OCCT",
+   "occt": 23755.619449047852,
+   "brep": 23755.619449019232
+  },
+  {
+   "fam": "hole then round edge",
+   "args": [
+    16,
+    0.5
+   ],
+   "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nhole(b, { across: 16 })\nround(b.edge('top','right'), 0.5)",
+   "names": "box1.edge[box1.face[+x] ^ box1.face[+z]]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 19977.262948928517,
+   "dVol": 0.0000055593156657187945,
+   "refKind": "OCCT",
+   "occt": 19977.15188963506,
+   "brep": 19977.151889630542
+  },
+  {
+   "fam": "draft face right",
+   "args": [
+    5,
+    40
+   ],
+   "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\ndraft(b.face('right'), 5)",
+   "names": "box1.face[+x]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 23895.013603768897,
+   "dVol": 4.567453529113587e-16,
+   "refKind": "OCCT",
+   "occt": 23895.013603768886,
+   "brep": 23895.01360376889
+  },
+  {
+   "fam": "draft face right",
+   "args": [
+    12,
+    40
+   ],
+   "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\ndraft(b.face('right'), 12)",
+   "names": "box1.face[+x]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 23744.932125995972,
+   "dVol": 0,
+   "refKind": "OCCT",
+   "occt": 23744.932125995972,
+   "brep": 23744.932125995972
+  },
+  {
+   "fam": "draft face right",
+   "args": [
+    2,
+    70
+   ],
+   "src": "const b = box(70, 30, 20, { at: [5, -3, 2] })\ndraft(b.face('right'), 2)",
+   "names": "box1.face[+x]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 41958.0950766099,
+   "dVol": 3.4682020720428316e-16,
+   "refKind": "OCCT",
+   "occt": 41958.09507660988,
+   "brep": 41958.095076609905
+  },
+  {
+   "fam": "draft face right",
+   "args": [
+    8,
+    40
+   ],
+   "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\ndraft(b.face('right'), 8)",
+   "names": "box1.face[+x]",
+   "nameStable": true,
+   "outcome": "PASS",
+   "sc": 23831.35099835713,
+   "dVol": 1.5265516450756426e-16,
+   "refKind": "OCCT",
+   "occt": 23831.350998357128,
+   "brep": 23831.35099835713
+  }
+ ]
+}

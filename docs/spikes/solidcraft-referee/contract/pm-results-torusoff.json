@@ -1,0 +1,316 @@
+[
+ {
+  "id": "r2-torus-mirror",
+  "row": "torus",
+  "src": "const t = ring(30, 6, { at: [0, 0, 10] }); mirror(t, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "torus",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "ring1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r2-torus-mirror",
+   "kind": "torus",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "torus",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 4263.6691012706,
+    "com": [
+     -2.559752213890782e-15,
+     -2.180917951912419e-15,
+     7.000000000000002
+    ],
+    "bbox": [
+     -15,
+     -15,
+     0.9999999,
+     15.0000001,
+     15,
+     13.0000001
+    ],
+    "faces": 4,
+    "types": {
+     "other": 4
+    },
+    "components": {
+     "other": 4
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 4263.669101270603,
+    "bbox": [
+     -15,
+     -15,
+     1,
+     15,
+     15,
+     13
+    ],
+    "faces": 2,
+    "dVol": 8.53250737963594e-16,
+    "dBbox": 9.999999994736442e-8,
+    "pass": true,
+    "com": [
+     -2.5391580851096063e-15,
+     -6.9556370103086656e-15,
+     7.000000000000435
+    ]
+   },
+   "ms": 45060,
+   "truckFeatures": [
+    {
+     "id": "ring1",
+     "kind": "torus",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 2,
+      "at": 7,
+      "how": "analytic"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "other": 2
+    },
+    "occtTypes": {
+     "other": 4
+    },
+    "occtComponents": {
+     "other": 4
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "other": "occt-other-surface-is-truck-plane"
+    },
+    "volume": 4263.043414082621,
+    "bbox": [
+     -14.999963743879764,
+     -14.999963743879768,
+     1.000269452250878,
+     14.999963743879785,
+     14.999963743879766,
+     12.999730547749122
+    ],
+    "com": [
+     1.8489812675439514e-14,
+     2.417898580634398e-14,
+     7.000000000013777
+    ],
+    "faces": 2,
+    "kernelFaces": 12,
+    "curved": true,
+    "bodies": 2,
+    "dVol": 0.00014674853350889666,
+    "dBbox": 0.00026955225087788026,
+    "dCom": 3.124380244649779e-13,
+    "tol": 0.0003,
+    "faceKey": "occt-other-surface-is-truck-plane",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 2,
+     "at": 7,
+     "how": "analytic"
+    }
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r2-torus-mirror-tie",
+  "row": "torus",
+  "src": "const t = ring(30, 6); mirror(t, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "torus",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "ring1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r2-torus-mirror-tie",
+   "kind": "torus",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "torus",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 4263.669101270603,
+    "com": [
+     8.532507379635933e-16,
+     -2.307878365123058e-15,
+     -3
+    ],
+    "bbox": [
+     -15.0000001,
+     -15,
+     -9.0000001,
+     15.0000001,
+     15.0000001,
+     3.0000001
+    ],
+    "faces": 4,
+    "types": {
+     "other": 4
+    },
+    "components": {
+     "other": 4
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 4263.669101270604,
+    "bbox": [
+     -15,
+     -15,
+     -9,
+     15,
+     15,
+     3
+    ],
+    "faces": 2,
+    "dVol": 2.1331268449089833e-16,
+    "dBbox": 3.3333332167669634e-8,
+    "pass": true,
+    "com": [
+     2.276472158212504e-15,
+     7.787711780265306e-15,
+     -2.9999999999999423
+    ]
+   },
+   "ms": 63234,
+   "truckFeatures": [
+    {
+     "id": "ring1",
+     "kind": "torus",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 2,
+      "at": -3,
+      "how": "analytic"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "other": 2
+    },
+    "occtTypes": {
+     "other": 4
+    },
+    "occtComponents": {
+     "other": 4
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "other": "occt-other-surface-is-truck-plane"
+    },
+    "volume": 4263.043414082707,
+    "bbox": [
+     -14.99996374387977,
+     -14.999963743879766,
+     -8.99973054774912,
+     14.999963743879784,
+     14.999963743879768,
+     2.9997305477491194
+    ],
+    "com": [
+     -1.0667199620445657e-14,
+     0,
+     -3.000000000006069
+    ],
+    "faces": 2,
+    "kernelFaces": 12,
+    "curved": true,
+    "bodies": 2,
+    "dVol": 0.00014674853348948508,
+    "dBbox": 0.00008985074729845302,
+    "dCom": 1.376459712817557e-13,
+    "tol": 0.0003,
+    "faceKey": "occt-other-surface-is-truck-plane",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 2,
+     "at": -3,
+     "how": "analytic"
+    }
+   }
+  ],
+  "outcome": "PASS"
+ }
+]

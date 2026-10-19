@@ -1,0 +1,1 @@
+revolution__front-neg-90                 PASS     occtV 7068.5835 | tr-occt dV 1.0e-4 dBb 8.9e-16 dCom 1.2e-5 F o/b/t 6/6/6 | brep-occt dV 8.4e-12 | FC: occt 8.4e-12 brep 1.3e-16 truck 1.0e-4 dCom 4.9e-4 F 6     | ms 167 cpu 459

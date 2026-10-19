@@ -1,0 +1,1 @@
+revolution__top-cup-section              PASS     occtV 4172.0350 | tr-occt dV 7.3e-5 dBb 2.2e-16 dCom 6.9e-6 F o/b/t 6/6/6 | brep-occt dV 6.5e-16 | FC: occt 0.0e+0 brep 6.5e-16 truck 7.3e-5 dCom 3.4e-4 F 6     | ms 564 cpu 889

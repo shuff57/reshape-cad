@@ -1,0 +1,19 @@
+top/front (legs 20,30; sum 50) d 20 16000.000 f6
+top/front (legs 20,30; sum 50) d 25 12000.000 f6
+top/front (legs 20,30; sum 50) d 40 2000.000 f5
+top/front (legs 20,30; sum 50) d 45 500.000 f5
+top/front (legs 20,30; sum 50) d 49 20.000 f5
+top/front (legs 20,30; sum 50) d 49.9 0.200 f5
+top/front (legs 20,30; sum 50) d 50 REFUSED not supported yet: the blend is larger than the neighbouring faces
+top/front (legs 20,30; sum 50) d 50.1 REFUSED not supported yet: the blend is larger than the neighbouring faces
+top/front (legs 20,30; sum 50) d 55 REFUSED not supported yet: the blend is larger than the neighbouring faces
+top/front (legs 20,30; sum 50) d 60 REFUSED not supported yet: the blend is larger than the neighbouring faces
+top/front (legs 20,30; sum 50) d 70 REFUSED not supported yet: the blend is larger than the neighbouring faces
+top/front (legs 20,30; sum 50) d 100 REFUSED not supported yet: the blend is larger than the neighbouring faces
+front/left vertical (legs 30,40; sum 70) d 30 15000.000 f6
+front/left vertical (legs 30,40; sum 70) d 40 9000.000 f5
+front/left vertical (legs 30,40; sum 70) d 60 1000.000 f5
+front/left vertical (legs 30,40; sum 70) d 69 10.000 f5
+front/left vertical (legs 30,40; sum 70) d 70 REFUSED not supported yet: the blend is larger than the neighbouring faces
+front/left vertical (legs 30,40; sum 70) d 71 REFUSED not supported yet: the blend is larger than the neighbouring faces
+front/left vertical (legs 30,40; sum 70) d 80 REFUSED not supported yet: the blend is larger than the neighbouring faces

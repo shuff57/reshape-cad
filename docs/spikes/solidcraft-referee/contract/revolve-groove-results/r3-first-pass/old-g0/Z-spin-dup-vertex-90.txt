@@ -1,0 +1,1 @@
+Z-spin-dup-vertex-90                     NO-OCCT OCCT: OCCT built nothing | truck REFUSED rev1 (revolve): two corners of the sketch are in the same place, so delete one of them. | brep V 7068.5835 F 6 bbox 0,0,0,20,20,30  | ms 3 cpu 6

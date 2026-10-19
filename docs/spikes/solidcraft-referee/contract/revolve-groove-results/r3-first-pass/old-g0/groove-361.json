@@ -1,0 +1,9 @@
+[
+ {
+  "id": "groove-361",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const s2 = sketch('top'); s2.rect(2,5,{at:[19,12.5]}); groove(s2, cyl, 361);",
+  "translator": "g0",
+  "scriptRefusal": "groove(): the angle is how far the sketch turns, more than 0 and at most 360 degrees -- got 361. A negative angle or one past a full turn is not a turn this kernel builds.",
+  "scriptSentence": "groove(): a groove turns the ring more than 0 and at most 360 degrees, and 361 is not in that range; use 360 for a full turn."
+ }
+]

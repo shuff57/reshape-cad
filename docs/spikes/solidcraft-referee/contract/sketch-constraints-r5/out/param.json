@@ -1,0 +1,1086 @@
+{
+ "rows": {
+  "angle": [
+   {
+    "stored": 20,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 20,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 20,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 20,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 20,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (line 2 would end up pointing the opposite way (or turned more than a quarter turn)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 20,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 20,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 30,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 30,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 30,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 30,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 30,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 30,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 30,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 40,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 40,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 40,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 40,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 40,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 40,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (line 2 would end up pointing the opposite way (or turned more than a quarter turn)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 40,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 50,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 50,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 50,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 50,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 50,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 50,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 50,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 60,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 60,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 60,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 60,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 60,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 60,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 60,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (line 2 would end up pointing the opposite way (or turned more than a quarter turn)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 70,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 70,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 70,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 70,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 70,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 70,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 70,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 80,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 80,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 80,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 80,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 80,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 80,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 80,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 95,
+    "value": 30,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 95,
+    "value": 50,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 95,
+    "value": 70,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 95,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 95,
+    "value": 110,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 95,
+    "value": 130,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 95,
+    "value": 150,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 105,
+    "value": 30,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 105,
+    "value": 50,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 105,
+    "value": 70,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 105,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 105,
+    "value": 110,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 105,
+    "value": 130,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 105,
+    "value": 150,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 115,
+    "value": 30,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 115,
+    "value": 50,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 115,
+    "value": 70,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 115,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 115,
+    "value": 110,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 115,
+    "value": 130,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 115,
+    "value": 150,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 125,
+    "value": 30,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 125,
+    "value": 50,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 125,
+    "value": 70,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 125,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 125,
+    "value": 110,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 125,
+    "value": 130,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 125,
+    "value": 150,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 135,
+    "value": 30,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 135,
+    "value": 50,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 135,
+    "value": 70,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 135,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 135,
+    "value": 110,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 135,
+    "value": 130,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 135,
+    "value": 150,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 150,
+    "value": 30,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 150,
+    "value": 50,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   {
+    "stored": 150,
+    "value": 70,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 150,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 150,
+    "value": 110,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 150,
+    "value": 130,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 150,
+    "value": 150,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   }
+  ],
+  "dx": [
+   {
+    "stored": -12,
+    "value": -12,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -12,
+    "value": -8,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -12,
+    "value": -4,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -12,
+    "value": 4,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -12,
+    "value": 8,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -12,
+    "value": 12,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -8,
+    "value": -12,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -8,
+    "value": -8,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -8,
+    "value": -4,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -8,
+    "value": 4,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -8,
+    "value": 8,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -8,
+    "value": 12,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -4,
+    "value": -12,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -4,
+    "value": -8,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -4,
+    "value": -4,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -4,
+    "value": 4,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -4,
+    "value": 8,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -4,
+    "value": 12,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 4,
+    "value": -12,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 4,
+    "value": -8,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 4,
+    "value": -4,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 4,
+    "value": 4,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 4,
+    "value": 8,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 4,
+    "value": 12,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 8,
+    "value": -12,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 8,
+    "value": -8,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 8,
+    "value": -4,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 8,
+    "value": 4,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 8,
+    "value": 8,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 8,
+    "value": 12,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 12,
+    "value": -12,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 12,
+    "value": -8,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 12,
+    "value": -4,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 12,
+    "value": 4,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 12,
+    "value": 8,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 12,
+    "value": 12,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   }
+  ]
+ },
+ "angle": {
+  "unguarded": {
+   "MATCH": 52,
+   "MAPPER-REFUSED": 39
+  },
+  "guarded": {
+   "MATCH": 78,
+   "REFUSED": 13
+  },
+  "brep": {
+   "MATCH": 80,
+   "WRONG": 11
+  }
+ },
+ "dx": {
+  "unguarded": {
+   "MATCH": 18,
+   "MAPPER-REFUSED": 18
+  },
+  "guarded": {
+   "MATCH": 36
+  },
+  "brep": {
+   "MATCH": 36
+  }
+ }
+}

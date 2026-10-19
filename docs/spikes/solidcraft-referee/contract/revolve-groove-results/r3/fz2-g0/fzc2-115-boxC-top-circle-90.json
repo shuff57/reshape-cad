@@ -1,0 +1,43 @@
+[
+ {
+  "id": "fzc2-115-boxC-top-circle-90",
+  "src": "const t = box(60, 40, 30); const sk = sketch('top', -0.8); sk.circle(8.8, { at: [8.5, 26.5] }); groove(sk, t, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc2-115-boxC-top-circle-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "invalid": "OCCT: OCCT built nothing"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "groove groove1: a circle sketch has no outline to spin"
+   },
+   "ms": 17,
+   "load": [
+    24,
+    24
+   ],
+   "cpuMs": 56,
+   "truck": {
+    "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: OCCT built nothing",
+  "caseMs": 33
+ }
+]

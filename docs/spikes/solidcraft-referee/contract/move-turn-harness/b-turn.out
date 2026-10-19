@@ -1,0 +1,76 @@
+{
+ "box/box": {
+  "n": 14,
+  "PASS": 14,
+  "FAIL": 0,
+  "REFUSED": 0
+ },
+ "box@/box": {
+  "n": 14,
+  "PASS": 14,
+  "FAIL": 0,
+  "REFUSED": 0
+ },
+ "cylinder/cylinder": {
+  "n": 14,
+  "PASS": 14,
+  "FAIL": 0,
+  "REFUSED": 0
+ },
+ "cylinder@/cylinder": {
+  "n": 14,
+  "PASS": 14,
+  "FAIL": 0,
+  "REFUSED": 0
+ },
+ "cone/cone": {
+  "n": 14,
+  "PASS": 14,
+  "FAIL": 0,
+  "REFUSED": 0
+ },
+ "cone@/cone": {
+  "n": 14,
+  "PASS": 14,
+  "FAIL": 0,
+  "REFUSED": 0
+ },
+ "ring/torus": {
+  "n": 14,
+  "PASS": 14,
+  "FAIL": 0,
+  "REFUSED": 0
+ },
+ "ring@/torus": {
+  "n": 14,
+  "PASS": 14,
+  "FAIL": 0,
+  "REFUSED": 0
+ },
+ "prism/prism>rotate": {
+  "n": 14,
+  "PASS": 14,
+  "FAIL": 0,
+  "REFUSED": 0
+ },
+ "prism@/prism>rotate": {
+  "n": 14,
+  "PASS": 14,
+  "FAIL": 0,
+  "REFUSED": 0
+ },
+ "wedge/wedge>rotate": {
+  "n": 14,
+  "PASS": 14,
+  "FAIL": 0,
+  "REFUSED": 0
+ },
+ "wedge@/wedge>rotate": {
+  "n": 14,
+  "PASS": 14,
+  "FAIL": 0,
+  "REFUSED": 0
+ }
+}
+cases 168
+worst PASS dVol 0.00018231752867170522 dBbox 0.00028663019628933647 dCom 6.84743088310253e-7 brep dVol 1.7065014759271878e-15 brep dBbox 9.999999050247674e-8

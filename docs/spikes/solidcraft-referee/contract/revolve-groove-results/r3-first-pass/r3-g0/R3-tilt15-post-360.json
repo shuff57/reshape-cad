@@ -1,0 +1,166 @@
+[
+ {
+  "id": "R3-tilt15-post-360",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.258819, 0.965926] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, cyl, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R3-tilt15-post-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 36976.08228632015,
+    "com": [
+     -1.6226330078440064e-9,
+     -0.001395444487032128,
+     15.198495065873704
+    ],
+    "bbox": [
+     -20,
+     -20,
+     -8.881784197001252e-16,
+     20,
+     20,
+     30
+    ],
+    "faces": 9,
+    "area": 6847.343384344959,
+    "types": {
+     "cylinder": 5,
+     "plane": 4
+    },
+    "components": {
+     "cylinder": 3,
+     "plane": 4
+    },
+    "bigCylinderComponents": 3,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: the ring is spun about the normal of its sketch, which crosses the axis of pull1's round wall -- sketch the ring on a plane square to that axis (the top plane for an upright post) -- groove1 is shown without it."
+   },
+   "ms": 345,
+   "load": [
+    24.3,
+    24.3
+   ],
+   "cpuMs": 592,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a full-turn ring about a tilted axis took from 19 to 42 seconds here and is not reliable, so it is not built; sketch the ring on the top, front or side plane, or turn it less than 360 degrees",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": "cylinder",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": false,
+       "curved": 1,
+       "headTypes": {
+        "cylinder": 1,
+        "plane": 2
+       },
+       "touchesAxis": false,
+       "worldAxis": false,
+       "reachesWall": false,
+       "rOuter": 9,
+       "nearest": null,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.circle.center",
+     "params": {
+      "center": [
+       0,
+       0
+      ],
+      "diameter": 40
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a full-turn ring about a tilted axis took from 19 to 42 seconds here and is not reliable, so it is not built; sketch the ring on the top, front or side plane, or turn it less than 360 degrees",
+    "firstRefusal": "groove1 (groove): a full-turn ring about a tilted axis took from 19 to 42 seconds here and is not reliable, so it is not built; sketch the ring on the top, front or side plane, or turn it less than 360 degrees"
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 540
+ }
+]

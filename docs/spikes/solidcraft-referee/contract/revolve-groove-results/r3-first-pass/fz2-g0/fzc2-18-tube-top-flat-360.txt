@@ -1,0 +1,1 @@
+fzc2-18-tube-top-flat-360                REFUSED  occtV 28042.9894 | tr-occt dV - dBb - dCom - F o/b/t 8/8/- | brep-occt dV 3.9e-16    | TRUCK REFUSED: groove1 (groove): a full-turn ring cut into a round part takes a minute or more here unless its axis is the part's own axis, so it is not built; centre the ring on the axis of the round part  | ms 660 cpu 983

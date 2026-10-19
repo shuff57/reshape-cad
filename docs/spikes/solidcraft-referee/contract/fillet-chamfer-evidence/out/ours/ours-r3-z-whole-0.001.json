@@ -1,0 +1,20 @@
+{
+ "id": "r3-z-whole-0.001",
+ "outcome": "fail",
+ "volume": 23999.99981854549,
+ "faces": 26,
+ "bbox": [
+  -20.000000000000007,
+  -15.000000000000002,
+  -10.000000000000002,
+  20,
+  15.000000000000004,
+  10.000000000000002
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":30,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}},{\"command\":\"solid.fillet\",\"params\":{\"edges\":[[0,-15,-10],[0,-15,10],[0,15,-10],[0,15,10],[-20,0,-10],[-20,0,10],[20,0,-10],[20,0,10],[-20,-15,0],[-20,15,0],[20,-15,0],[20,15,0]],\"radius\":0.001,\"body\":\"b_box1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

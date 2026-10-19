@@ -1,0 +1,1 @@
+spin-90-asym                             PASS     occtV 7068.5835 | tr-occt dV 1.0e-4 dBb 8.9e-16 dCom 1.2e-5 F o/b/t 6/6/6 | brep-occt dV 8.4e-12      | ms 183 cpu 442

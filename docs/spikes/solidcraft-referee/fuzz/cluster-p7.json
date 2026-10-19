@@ -1,0 +1,1347 @@
+{
+ "single": [
+  {
+   "tag": "vthru",
+   "MATCH": 8,
+   "WRONG": 17,
+   "REFUSED": 20,
+   "n": 45,
+   "wrongRate": 0.37777777777777777,
+   "wrongOfBuilt": 0.68
+  },
+  {
+   "tag": "minLayoutGap=1t",
+   "MATCH": 16,
+   "WRONG": 24,
+   "REFUSED": 84,
+   "n": 124,
+   "wrongRate": 0.1935483870967742,
+   "wrongOfBuilt": 0.6
+  },
+  {
+   "tag": "minLayoutGap<1t",
+   "MATCH": 8,
+   "WRONG": 11,
+   "REFUSED": 74,
+   "n": 93,
+   "wrongRate": 0.11827956989247312,
+   "wrongOfBuilt": 0.5789473684210527
+  },
+  {
+   "tag": "convex+blind/top",
+   "MATCH": 8,
+   "WRONG": 11,
+   "REFUSED": 10,
+   "n": 29,
+   "wrongRate": 0.3793103448275862,
+   "wrongOfBuilt": 0.5789473684210527
+  },
+  {
+   "tag": "convex+cbore/bot",
+   "MATCH": 10,
+   "WRONG": 11,
+   "REFUSED": 11,
+   "n": 32,
+   "wrongRate": 0.34375,
+   "wrongOfBuilt": 0.5238095238095238
+  },
+  {
+   "tag": "open=top+bot",
+   "MATCH": 11,
+   "WRONG": 12,
+   "REFUSED": 29,
+   "n": 52,
+   "wrongRate": 0.23076923076923078,
+   "wrongOfBuilt": 0.5217391304347826
+  },
+  {
+   "tag": "open=top",
+   "MATCH": 56,
+   "WRONG": 61,
+   "REFUSED": 135,
+   "n": 252,
+   "wrongRate": 0.24206349206349206,
+   "wrongOfBuilt": 0.5213675213675214
+  },
+  {
+   "tag": "minLayoutGap1-2t",
+   "MATCH": 41,
+   "WRONG": 43,
+   "REFUSED": 65,
+   "n": 149,
+   "wrongRate": 0.28859060402684567,
+   "wrongOfBuilt": 0.5119047619047619
+  },
+  {
+   "tag": "nFeat=1",
+   "MATCH": 93,
+   "WRONG": 95,
+   "REFUSED": 244,
+   "n": 432,
+   "wrongRate": 0.2199074074074074,
+   "wrongOfBuilt": 0.5053191489361702
+  },
+  {
+   "tag": "open=bot",
+   "MATCH": 8,
+   "WRONG": 7,
+   "REFUSED": 18,
+   "n": 33,
+   "wrongRate": 0.21212121212121213,
+   "wrongOfBuilt": 0.4666666666666667
+  },
+  {
+   "tag": "convex+vthru/",
+   "MATCH": 24,
+   "WRONG": 18,
+   "REFUSED": 15,
+   "n": 57,
+   "wrongRate": 0.3157894736842105,
+   "wrongOfBuilt": 0.42857142857142855
+  },
+  {
+   "tag": "convex/bfillet/s<1t",
+   "MATCH": 8,
+   "WRONG": 6,
+   "REFUSED": 2,
+   "n": 16,
+   "wrongRate": 0.375,
+   "wrongOfBuilt": 0.42857142857142855
+  },
+  {
+   "tag": "convex/bfillet/s1-2t",
+   "MATCH": 9,
+   "WRONG": 6,
+   "REFUSED": 1,
+   "n": 16,
+   "wrongRate": 0.375,
+   "wrongOfBuilt": 0.4
+  },
+  {
+   "tag": "t=2.5",
+   "MATCH": 73,
+   "WRONG": 41,
+   "REFUSED": 162,
+   "n": 276,
+   "wrongRate": 0.14855072463768115,
+   "wrongOfBuilt": 0.35964912280701755
+  },
+  {
+   "tag": "open=top+xp",
+   "MATCH": 12,
+   "WRONG": 6,
+   "REFUSED": 22,
+   "n": 40,
+   "wrongRate": 0.15,
+   "wrongOfBuilt": 0.3333333333333333
+  },
+  {
+   "tag": "open=top+yp",
+   "MATCH": 8,
+   "WRONG": 4,
+   "REFUSED": 18,
+   "n": 30,
+   "wrongRate": 0.13333333333333333,
+   "wrongOfBuilt": 0.3333333333333333
+  },
+  {
+   "tag": "open=top+xp+xn",
+   "MATCH": 4,
+   "WRONG": 2,
+   "REFUSED": 9,
+   "n": 15,
+   "wrongRate": 0.13333333333333333,
+   "wrongOfBuilt": 0.3333333333333333
+  },
+  {
+   "tag": "t=2",
+   "MATCH": 85,
+   "WRONG": 42,
+   "REFUSED": 156,
+   "n": 283,
+   "wrongRate": 0.14840989399293286,
+   "wrongOfBuilt": 0.33070866141732286
+  },
+  {
+   "tag": "convex/bfillet/s=1t",
+   "MATCH": 18,
+   "WRONG": 8,
+   "REFUSED": 4,
+   "n": 30,
+   "wrongRate": 0.26666666666666666,
+   "wrongOfBuilt": 0.3076923076923077
+  },
+  {
+   "tag": "cbore/top/ring>=3t",
+   "MATCH": 7,
+   "WRONG": 3,
+   "REFUSED": 6,
+   "n": 16,
+   "wrongRate": 0.1875,
+   "wrongOfBuilt": 0.3
+  },
+  {
+   "tag": "convex/bfillet",
+   "MATCH": 50,
+   "WRONG": 21,
+   "REFUSED": 15,
+   "n": 86,
+   "wrongRate": 0.2441860465116279,
+   "wrongOfBuilt": 0.29577464788732394
+  },
+  {
+   "tag": "convex+blind/bot",
+   "MATCH": 18,
+   "WRONG": 7,
+   "REFUSED": 10,
+   "n": 35,
+   "wrongRate": 0.2,
+   "wrongOfBuilt": 0.28
+  },
+  {
+   "tag": "convex/bchamfer/s<1t",
+   "MATCH": 8,
+   "WRONG": 3,
+   "REFUSED": 4,
+   "n": 15,
+   "wrongRate": 0.2,
+   "wrongOfBuilt": 0.2727272727272727
+  },
+  {
+   "tag": "convex+cbore/top",
+   "MATCH": 11,
+   "WRONG": 4,
+   "REFUSED": 14,
+   "n": 29,
+   "wrongRate": 0.13793103448275862,
+   "wrongOfBuilt": 0.26666666666666666
+  },
+  {
+   "tag": "minLayoutGap=2t",
+   "MATCH": 38,
+   "WRONG": 13,
+   "REFUSED": 19,
+   "n": 70,
+   "wrongRate": 0.18571428571428572,
+   "wrongOfBuilt": 0.2549019607843137
+  },
+  {
+   "tag": "open=xp",
+   "MATCH": 9,
+   "WRONG": 3,
+   "REFUSED": 13,
+   "n": 25,
+   "wrongRate": 0.12,
+   "wrongOfBuilt": 0.25
+  },
+  {
+   "tag": "t=1.5",
+   "MATCH": 104,
+   "WRONG": 34,
+   "REFUSED": 66,
+   "n": 204,
+   "wrongRate": 0.16666666666666666,
+   "wrongOfBuilt": 0.2463768115942029
+  },
+  {
+   "tag": "csink/bot/straight>=3t",
+   "MATCH": 10,
+   "WRONG": 3,
+   "REFUSED": 2,
+   "n": 15,
+   "wrongRate": 0.2,
+   "wrongOfBuilt": 0.23076923076923078
+  },
+  {
+   "tag": "convex/vchamfer/s=1t",
+   "MATCH": 18,
+   "WRONG": 5,
+   "REFUSED": 5,
+   "n": 28,
+   "wrongRate": 0.17857142857142858,
+   "wrongOfBuilt": 0.21739130434782608
+  },
+  {
+   "tag": "stepped/hhole",
+   "MATCH": 11,
+   "WRONG": 3,
+   "REFUSED": 31,
+   "n": 45,
+   "wrongRate": 0.06666666666666667,
+   "wrongOfBuilt": 0.21428571428571427
+  },
+  {
+   "tag": "t=1",
+   "MATCH": 127,
+   "WRONG": 30,
+   "REFUSED": 51,
+   "n": 208,
+   "wrongRate": 0.14423076923076922,
+   "wrongOfBuilt": 0.1910828025477707
+  },
+  {
+   "tag": "convex/vchamfer",
+   "MATCH": 49,
+   "WRONG": 11,
+   "REFUSED": 16,
+   "n": 76,
+   "wrongRate": 0.14473684210526316,
+   "wrongOfBuilt": 0.18333333333333332
+  },
+  {
+   "tag": "convex/bchamfer",
+   "MATCH": 41,
+   "WRONG": 9,
+   "REFUSED": 22,
+   "n": 72,
+   "wrongRate": 0.125,
+   "wrongOfBuilt": 0.18
+  },
+  {
+   "tag": "convex/vfillet",
+   "MATCH": 52,
+   "WRONG": 11,
+   "REFUSED": 7,
+   "n": 70,
+   "wrongRate": 0.15714285714285714,
+   "wrongOfBuilt": 0.1746031746031746
+  },
+  {
+   "tag": "stepped/L/low",
+   "MATCH": 41,
+   "WRONG": 8,
+   "REFUSED": 14,
+   "n": 63,
+   "wrongRate": 0.12698412698412698,
+   "wrongOfBuilt": 0.16326530612244897
+  },
+  {
+   "tag": "csink/bot/dep>=3t",
+   "MATCH": 11,
+   "WRONG": 2,
+   "REFUSED": 5,
+   "n": 18,
+   "wrongRate": 0.1111111111111111,
+   "wrongOfBuilt": 0.15384615384615385
+  },
+  {
+   "tag": "convex/vchamfer/s1-2t",
+   "MATCH": 13,
+   "WRONG": 2,
+   "REFUSED": 3,
+   "n": 18,
+   "wrongRate": 0.1111111111111111,
+   "wrongOfBuilt": 0.13333333333333333
+  },
+  {
+   "tag": "t=0.5",
+   "MATCH": 117,
+   "WRONG": 17,
+   "REFUSED": 28,
+   "n": 162,
+   "wrongRate": 0.10493827160493827,
+   "wrongOfBuilt": 0.12686567164179105
+  },
+  {
+   "tag": "convex/vfillet/s=1t",
+   "MATCH": 23,
+   "WRONG": 3,
+   "REFUSED": 1,
+   "n": 27,
+   "wrongRate": 0.1111111111111111,
+   "wrongOfBuilt": 0.11538461538461539
+  },
+  {
+   "tag": "stepped/vhole",
+   "MATCH": 108,
+   "WRONG": 14,
+   "REFUSED": 73,
+   "n": 195,
+   "wrongRate": 0.07179487179487179,
+   "wrongOfBuilt": 0.11475409836065574
+  },
+  {
+   "tag": "convex/bchamfer/s=1t",
+   "MATCH": 16,
+   "WRONG": 2,
+   "REFUSED": 6,
+   "n": 24,
+   "wrongRate": 0.08333333333333333,
+   "wrongOfBuilt": 0.1111111111111111
+  },
+  {
+   "tag": "stepped/T/top",
+   "MATCH": 20,
+   "WRONG": 2,
+   "REFUSED": 17,
+   "n": 39,
+   "wrongRate": 0.05128205128205128,
+   "wrongOfBuilt": 0.09090909090909091
+  },
+  {
+   "tag": "stepped/U/floor",
+   "MATCH": 30,
+   "WRONG": 3,
+   "REFUSED": 25,
+   "n": 58,
+   "wrongRate": 0.05172413793103448,
+   "wrongOfBuilt": 0.09090909090909091
+  },
+  {
+   "tag": "convex/bfillet/s=2t",
+   "MATCH": 10,
+   "WRONG": 1,
+   "REFUSED": 4,
+   "n": 15,
+   "wrongRate": 0.06666666666666667,
+   "wrongOfBuilt": 0.09090909090909091
+  },
+  {
+   "tag": "convex/bchamfer/s=2t",
+   "MATCH": 10,
+   "WRONG": 1,
+   "REFUSED": 4,
+   "n": 15,
+   "wrongRate": 0.06666666666666667,
+   "wrongOfBuilt": 0.09090909090909091
+  },
+  {
+   "tag": "stepped/L/high",
+   "MATCH": 44,
+   "WRONG": 3,
+   "REFUSED": 15,
+   "n": 62,
+   "wrongRate": 0.04838709677419355,
+   "wrongOfBuilt": 0.06382978723404255
+  },
+  {
+   "tag": "stepped/T/under",
+   "MATCH": 19,
+   "WRONG": 1,
+   "REFUSED": 20,
+   "n": 40,
+   "wrongRate": 0.025,
+   "wrongOfBuilt": 0.05
+  },
+  {
+   "tag": "stepped/U/wallTop",
+   "MATCH": 29,
+   "WRONG": 0,
+   "REFUSED": 40,
+   "n": 69,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "stepped/nohole",
+   "MATCH": 87,
+   "WRONG": 0,
+   "REFUSED": 55,
+   "n": 142,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "stepped/T/stem",
+   "MATCH": 23,
+   "WRONG": 0,
+   "REFUSED": 28,
+   "n": 51,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "bossBox/bot",
+   "MATCH": 10,
+   "WRONG": 0,
+   "REFUSED": 5,
+   "n": 15,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "nFeat=0",
+   "MATCH": 15,
+   "WRONG": 0,
+   "REFUSED": 0,
+   "n": 15,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "bossBox/top",
+   "MATCH": 2,
+   "WRONG": 0,
+   "REFUSED": 14,
+   "n": 16,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  }
+ ],
+ "all": [
+  {
+   "tag": "slot/top/floor=2t",
+   "MATCH": 0,
+   "WRONG": 3,
+   "REFUSED": 13,
+   "n": 16,
+   "wrongRate": 0.1875,
+   "wrongOfBuilt": 1
+  },
+  {
+   "tag": "rim/top/wall1-2t",
+   "MATCH": 0,
+   "WRONG": 12,
+   "REFUSED": 42,
+   "n": 54,
+   "wrongRate": 0.2222222222222222,
+   "wrongOfBuilt": 1
+  },
+  {
+   "tag": "cbore/top/ring1-2t",
+   "MATCH": 0,
+   "WRONG": 1,
+   "REFUSED": 18,
+   "n": 19,
+   "wrongRate": 0.05263157894736842,
+   "wrongOfBuilt": 1
+  },
+  {
+   "tag": "rim/bot/wall1-2t",
+   "MATCH": 0,
+   "WRONG": 20,
+   "REFUSED": 24,
+   "n": 44,
+   "wrongRate": 0.45454545454545453,
+   "wrongOfBuilt": 1
+  },
+  {
+   "tag": "pocket/bot/floor1-2t",
+   "MATCH": 0,
+   "WRONG": 1,
+   "REFUSED": 21,
+   "n": 22,
+   "wrongRate": 0.045454545454545456,
+   "wrongOfBuilt": 1
+  },
+  {
+   "tag": "pocket/bot/floor=2t",
+   "MATCH": 0,
+   "WRONG": 4,
+   "REFUSED": 34,
+   "n": 38,
+   "wrongRate": 0.10526315789473684,
+   "wrongOfBuilt": 1
+  },
+  {
+   "tag": "blind/top/floor1-2t",
+   "MATCH": 1,
+   "WRONG": 9,
+   "REFUSED": 32,
+   "n": 42,
+   "wrongRate": 0.21428571428571427,
+   "wrongOfBuilt": 0.9
+  },
+  {
+   "tag": "nFeat=3",
+   "MATCH": 4,
+   "WRONG": 36,
+   "REFUSED": 141,
+   "n": 181,
+   "wrongRate": 0.19889502762430938,
+   "wrongOfBuilt": 0.9
+  },
+  {
+   "tag": "cbore/bot/ring=2t",
+   "MATCH": 1,
+   "WRONG": 7,
+   "REFUSED": 16,
+   "n": 24,
+   "wrongRate": 0.2916666666666667,
+   "wrongOfBuilt": 0.875
+  },
+  {
+   "tag": "blind/bot/floor>=3t",
+   "MATCH": 2,
+   "WRONG": 11,
+   "REFUSED": 14,
+   "n": 27,
+   "wrongRate": 0.4074074074074074,
+   "wrongOfBuilt": 0.8461538461538461
+  },
+  {
+   "tag": "cbore/bot/ring>=3t",
+   "MATCH": 5,
+   "WRONG": 27,
+   "REFUSED": 34,
+   "n": 66,
+   "wrongRate": 0.4090909090909091,
+   "wrongOfBuilt": 0.84375
+  },
+  {
+   "tag": "vthru",
+   "MATCH": 24,
+   "WRONG": 96,
+   "REFUSED": 148,
+   "n": 268,
+   "wrongRate": 0.3582089552238806,
+   "wrongOfBuilt": 0.8
+  },
+  {
+   "tag": "csink/top/dep2-3t",
+   "MATCH": 2,
+   "WRONG": 8,
+   "REFUSED": 11,
+   "n": 21,
+   "wrongRate": 0.38095238095238093,
+   "wrongOfBuilt": 0.8
+  },
+  {
+   "tag": "blind/top/floor=2t",
+   "MATCH": 3,
+   "WRONG": 11,
+   "REFUSED": 21,
+   "n": 35,
+   "wrongRate": 0.3142857142857143,
+   "wrongOfBuilt": 0.7857142857142857
+  },
+  {
+   "tag": "csink/top/dep>=3t",
+   "MATCH": 2,
+   "WRONG": 7,
+   "REFUSED": 12,
+   "n": 21,
+   "wrongRate": 0.3333333333333333,
+   "wrongOfBuilt": 0.7777777777777778
+  },
+  {
+   "tag": "pocket/top/floor1-2t",
+   "MATCH": 1,
+   "WRONG": 3,
+   "REFUSED": 22,
+   "n": 26,
+   "wrongRate": 0.11538461538461539,
+   "wrongOfBuilt": 0.75
+  },
+  {
+   "tag": "hhole/g1-2t",
+   "MATCH": 5,
+   "WRONG": 14,
+   "REFUSED": 34,
+   "n": 53,
+   "wrongRate": 0.2641509433962264,
+   "wrongOfBuilt": 0.7368421052631579
+  },
+  {
+   "tag": "blind/top/floor2-3t",
+   "MATCH": 2,
+   "WRONG": 5,
+   "REFUSED": 12,
+   "n": 19,
+   "wrongRate": 0.2631578947368421,
+   "wrongOfBuilt": 0.7142857142857143
+  },
+  {
+   "tag": "minLayoutGap=1t",
+   "MATCH": 29,
+   "WRONG": 70,
+   "REFUSED": 224,
+   "n": 323,
+   "wrongRate": 0.21671826625386997,
+   "wrongOfBuilt": 0.7070707070707071
+  },
+  {
+   "tag": "nFeat=2",
+   "MATCH": 44,
+   "WRONG": 103,
+   "REFUSED": 320,
+   "n": 467,
+   "wrongRate": 0.22055674518201285,
+   "wrongOfBuilt": 0.7006802721088435
+  },
+  {
+   "tag": "csink/top/straight>=3t",
+   "MATCH": 7,
+   "WRONG": 15,
+   "REFUSED": 11,
+   "n": 33,
+   "wrongRate": 0.45454545454545453,
+   "wrongOfBuilt": 0.6818181818181818
+  },
+  {
+   "tag": "minLayoutGap<1t",
+   "MATCH": 16,
+   "WRONG": 32,
+   "REFUSED": 261,
+   "n": 309,
+   "wrongRate": 0.10355987055016182,
+   "wrongOfBuilt": 0.6666666666666666
+  },
+  {
+   "tag": "cbore/top/ring>=3t",
+   "MATCH": 10,
+   "WRONG": 20,
+   "REFUSED": 32,
+   "n": 62,
+   "wrongRate": 0.3225806451612903,
+   "wrongOfBuilt": 0.6666666666666666
+  },
+  {
+   "tag": "slot/bot/floor1-2t",
+   "MATCH": 1,
+   "WRONG": 2,
+   "REFUSED": 13,
+   "n": 16,
+   "wrongRate": 0.125,
+   "wrongOfBuilt": 0.6666666666666666
+  },
+  {
+   "tag": "pocket/bot/floor=1t",
+   "MATCH": 1,
+   "WRONG": 2,
+   "REFUSED": 13,
+   "n": 16,
+   "wrongRate": 0.125,
+   "wrongOfBuilt": 0.6666666666666666
+  },
+  {
+   "tag": "cbore/bot/ring2-3t",
+   "MATCH": 4,
+   "WRONG": 8,
+   "REFUSED": 13,
+   "n": 25,
+   "wrongRate": 0.32,
+   "wrongOfBuilt": 0.6666666666666666
+  },
+  {
+   "tag": "open=bot",
+   "MATCH": 11,
+   "WRONG": 21,
+   "REFUSED": 50,
+   "n": 82,
+   "wrongRate": 0.25609756097560976,
+   "wrongOfBuilt": 0.65625
+  },
+  {
+   "tag": "minLayoutGap1-2t",
+   "MATCH": 56,
+   "WRONG": 103,
+   "REFUSED": 174,
+   "n": 333,
+   "wrongRate": 0.30930930930930933,
+   "wrongOfBuilt": 0.6477987421383647
+  },
+  {
+   "tag": "blind/bot/floor1-2t",
+   "MATCH": 6,
+   "WRONG": 11,
+   "REFUSED": 19,
+   "n": 36,
+   "wrongRate": 0.3055555555555556,
+   "wrongOfBuilt": 0.6470588235294118
+  },
+  {
+   "tag": "open=top",
+   "MATCH": 77,
+   "WRONG": 141,
+   "REFUSED": 397,
+   "n": 615,
+   "wrongRate": 0.22926829268292684,
+   "wrongOfBuilt": 0.6467889908256881
+  },
+  {
+   "tag": "open=top+bot",
+   "MATCH": 13,
+   "WRONG": 21,
+   "REFUSED": 75,
+   "n": 109,
+   "wrongRate": 0.1926605504587156,
+   "wrongOfBuilt": 0.6176470588235294
+  },
+  {
+   "tag": "open=top+xp",
+   "MATCH": 15,
+   "WRONG": 23,
+   "REFUSED": 63,
+   "n": 101,
+   "wrongRate": 0.22772277227722773,
+   "wrongOfBuilt": 0.6052631578947368
+  },
+  {
+   "tag": "hhole/g=1t",
+   "MATCH": 2,
+   "WRONG": 3,
+   "REFUSED": 14,
+   "n": 19,
+   "wrongRate": 0.15789473684210525,
+   "wrongOfBuilt": 0.6
+  },
+  {
+   "tag": "cbore/top/ring=2t",
+   "MATCH": 2,
+   "WRONG": 3,
+   "REFUSED": 11,
+   "n": 16,
+   "wrongRate": 0.1875,
+   "wrongOfBuilt": 0.6
+  },
+  {
+   "tag": "blind/bot/floor=2t",
+   "MATCH": 7,
+   "WRONG": 10,
+   "REFUSED": 24,
+   "n": 41,
+   "wrongRate": 0.24390243902439024,
+   "wrongOfBuilt": 0.5882352941176471
+  },
+  {
+   "tag": "convex+blind/top",
+   "MATCH": 8,
+   "WRONG": 11,
+   "REFUSED": 10,
+   "n": 29,
+   "wrongRate": 0.3793103448275862,
+   "wrongOfBuilt": 0.5789473684210527
+  },
+  {
+   "tag": "cbore/bot/ring1-2t",
+   "MATCH": 3,
+   "WRONG": 4,
+   "REFUSED": 9,
+   "n": 16,
+   "wrongRate": 0.25,
+   "wrongOfBuilt": 0.5714285714285714
+  },
+  {
+   "tag": "blind/bot/floor=1t",
+   "MATCH": 4,
+   "WRONG": 5,
+   "REFUSED": 7,
+   "n": 16,
+   "wrongRate": 0.3125,
+   "wrongOfBuilt": 0.5555555555555556
+  },
+  {
+   "tag": "convex+cbore/bot",
+   "MATCH": 10,
+   "WRONG": 11,
+   "REFUSED": 11,
+   "n": 32,
+   "wrongRate": 0.34375,
+   "wrongOfBuilt": 0.5238095238095238
+  },
+  {
+   "tag": "nFeat=1",
+   "MATCH": 93,
+   "WRONG": 95,
+   "REFUSED": 244,
+   "n": 432,
+   "wrongRate": 0.2199074074074074,
+   "wrongOfBuilt": 0.5053191489361702
+  },
+  {
+   "tag": "hhole/g=2t",
+   "MATCH": 4,
+   "WRONG": 4,
+   "REFUSED": 25,
+   "n": 33,
+   "wrongRate": 0.12121212121212122,
+   "wrongOfBuilt": 0.5
+  },
+  {
+   "tag": "slot/bot/floor>=3t",
+   "MATCH": 1,
+   "WRONG": 1,
+   "REFUSED": 13,
+   "n": 15,
+   "wrongRate": 0.06666666666666667,
+   "wrongOfBuilt": 0.5
+  },
+  {
+   "tag": "pocket/top/floor=2t",
+   "MATCH": 1,
+   "WRONG": 1,
+   "REFUSED": 29,
+   "n": 31,
+   "wrongRate": 0.03225806451612903,
+   "wrongOfBuilt": 0.5
+  },
+  {
+   "tag": "csink/bot/straight2-3t",
+   "MATCH": 4,
+   "WRONG": 4,
+   "REFUSED": 7,
+   "n": 15,
+   "wrongRate": 0.26666666666666666,
+   "wrongOfBuilt": 0.5
+  },
+  {
+   "tag": "open=top+yp",
+   "MATCH": 13,
+   "WRONG": 13,
+   "REFUSED": 43,
+   "n": 69,
+   "wrongRate": 0.18840579710144928,
+   "wrongOfBuilt": 0.5
+  },
+  {
+   "tag": "hhole/g2-3t",
+   "MATCH": 2,
+   "WRONG": 2,
+   "REFUSED": 18,
+   "n": 22,
+   "wrongRate": 0.09090909090909091,
+   "wrongOfBuilt": 0.5
+  },
+  {
+   "tag": "cbore/top/ring2-3t",
+   "MATCH": 8,
+   "WRONG": 8,
+   "REFUSED": 9,
+   "n": 25,
+   "wrongRate": 0.32,
+   "wrongOfBuilt": 0.5
+  },
+  {
+   "tag": "pocket/bot/floor2-3t",
+   "MATCH": 1,
+   "WRONG": 1,
+   "REFUSED": 14,
+   "n": 16,
+   "wrongRate": 0.0625,
+   "wrongOfBuilt": 0.5
+  },
+  {
+   "tag": "t=2.5",
+   "MATCH": 78,
+   "WRONG": 69,
+   "REFUSED": 264,
+   "n": 411,
+   "wrongRate": 0.1678832116788321,
+   "wrongOfBuilt": 0.46938775510204084
+  },
+  {
+   "tag": "minLayoutGap2-3t",
+   "MATCH": 6,
+   "WRONG": 5,
+   "REFUSED": 5,
+   "n": 16,
+   "wrongRate": 0.3125,
+   "wrongOfBuilt": 0.45454545454545453
+  },
+  {
+   "tag": "convex+vthru/",
+   "MATCH": 24,
+   "WRONG": 18,
+   "REFUSED": 15,
+   "n": 57,
+   "wrongRate": 0.3157894736842105,
+   "wrongOfBuilt": 0.42857142857142855
+  },
+  {
+   "tag": "convex/bfillet/s<1t",
+   "MATCH": 8,
+   "WRONG": 6,
+   "REFUSED": 2,
+   "n": 16,
+   "wrongRate": 0.375,
+   "wrongOfBuilt": 0.42857142857142855
+  },
+  {
+   "tag": "open=xp",
+   "MATCH": 16,
+   "WRONG": 11,
+   "REFUSED": 36,
+   "n": 63,
+   "wrongRate": 0.1746031746031746,
+   "wrongOfBuilt": 0.4074074074074074
+  },
+  {
+   "tag": "t=2",
+   "MATCH": 96,
+   "WRONG": 64,
+   "REFUSED": 262,
+   "n": 422,
+   "wrongRate": 0.15165876777251186,
+   "wrongOfBuilt": 0.4
+  },
+  {
+   "tag": "convex/bfillet/s1-2t",
+   "MATCH": 9,
+   "WRONG": 6,
+   "REFUSED": 1,
+   "n": 16,
+   "wrongRate": 0.375,
+   "wrongOfBuilt": 0.4
+  },
+  {
+   "tag": "t=1.5",
+   "MATCH": 113,
+   "WRONG": 67,
+   "REFUSED": 183,
+   "n": 363,
+   "wrongRate": 0.18457300275482094,
+   "wrongOfBuilt": 0.37222222222222223
+  },
+  {
+   "tag": "minLayoutGap=2t",
+   "MATCH": 48,
+   "WRONG": 24,
+   "REFUSED": 40,
+   "n": 112,
+   "wrongRate": 0.21428571428571427,
+   "wrongOfBuilt": 0.3333333333333333
+  },
+  {
+   "tag": "t=1",
+   "MATCH": 137,
+   "WRONG": 65,
+   "REFUSED": 134,
+   "n": 336,
+   "wrongRate": 0.19345238095238096,
+   "wrongOfBuilt": 0.3217821782178218
+  },
+  {
+   "tag": "csink/bot/straight>=3t",
+   "MATCH": 15,
+   "WRONG": 7,
+   "REFUSED": 8,
+   "n": 30,
+   "wrongRate": 0.23333333333333334,
+   "wrongOfBuilt": 0.3181818181818182
+  },
+  {
+   "tag": "bossBox/bot",
+   "MATCH": 11,
+   "WRONG": 5,
+   "REFUSED": 41,
+   "n": 57,
+   "wrongRate": 0.08771929824561403,
+   "wrongOfBuilt": 0.3125
+  },
+  {
+   "tag": "convex/bfillet/s=1t",
+   "MATCH": 18,
+   "WRONG": 8,
+   "REFUSED": 4,
+   "n": 30,
+   "wrongRate": 0.26666666666666666,
+   "wrongOfBuilt": 0.3076923076923077
+  },
+  {
+   "tag": "convex/bfillet",
+   "MATCH": 50,
+   "WRONG": 21,
+   "REFUSED": 15,
+   "n": 86,
+   "wrongRate": 0.2441860465116279,
+   "wrongOfBuilt": 0.29577464788732394
+  },
+  {
+   "tag": "bossBox/top",
+   "MATCH": 5,
+   "WRONG": 2,
+   "REFUSED": 53,
+   "n": 60,
+   "wrongRate": 0.03333333333333333,
+   "wrongOfBuilt": 0.2857142857142857
+  },
+  {
+   "tag": "blind/top/floor>=3t",
+   "MATCH": 5,
+   "WRONG": 2,
+   "REFUSED": 11,
+   "n": 18,
+   "wrongRate": 0.1111111111111111,
+   "wrongOfBuilt": 0.2857142857142857
+  },
+  {
+   "tag": "convex+blind/bot",
+   "MATCH": 18,
+   "WRONG": 7,
+   "REFUSED": 10,
+   "n": 35,
+   "wrongRate": 0.2,
+   "wrongOfBuilt": 0.28
+  },
+  {
+   "tag": "convex/bchamfer/s<1t",
+   "MATCH": 8,
+   "WRONG": 3,
+   "REFUSED": 4,
+   "n": 15,
+   "wrongRate": 0.2,
+   "wrongOfBuilt": 0.2727272727272727
+  },
+  {
+   "tag": "convex+cbore/top",
+   "MATCH": 11,
+   "WRONG": 4,
+   "REFUSED": 14,
+   "n": 29,
+   "wrongRate": 0.13793103448275862,
+   "wrongOfBuilt": 0.26666666666666666
+  },
+  {
+   "tag": "open=top+xp+xn",
+   "MATCH": 11,
+   "WRONG": 4,
+   "REFUSED": 41,
+   "n": 56,
+   "wrongRate": 0.07142857142857142,
+   "wrongOfBuilt": 0.26666666666666666
+  },
+  {
+   "tag": "t=0.5",
+   "MATCH": 130,
+   "WRONG": 38,
+   "REFUSED": 81,
+   "n": 249,
+   "wrongRate": 0.15261044176706828,
+   "wrongOfBuilt": 0.2261904761904762
+  },
+  {
+   "tag": "convex/vchamfer/s=1t",
+   "MATCH": 18,
+   "WRONG": 5,
+   "REFUSED": 5,
+   "n": 28,
+   "wrongRate": 0.17857142857142858,
+   "wrongOfBuilt": 0.21739130434782608
+  },
+  {
+   "tag": "stepped/hhole",
+   "MATCH": 11,
+   "WRONG": 3,
+   "REFUSED": 31,
+   "n": 45,
+   "wrongRate": 0.06666666666666667,
+   "wrongOfBuilt": 0.21428571428571427
+  },
+  {
+   "tag": "csink/bot/dep>=3t",
+   "MATCH": 20,
+   "WRONG": 5,
+   "REFUSED": 9,
+   "n": 34,
+   "wrongRate": 0.14705882352941177,
+   "wrongOfBuilt": 0.2
+  },
+  {
+   "tag": "convex/vchamfer",
+   "MATCH": 49,
+   "WRONG": 11,
+   "REFUSED": 16,
+   "n": 76,
+   "wrongRate": 0.14473684210526316,
+   "wrongOfBuilt": 0.18333333333333332
+  },
+  {
+   "tag": "convex/bchamfer",
+   "MATCH": 41,
+   "WRONG": 9,
+   "REFUSED": 22,
+   "n": 72,
+   "wrongRate": 0.125,
+   "wrongOfBuilt": 0.18
+  },
+  {
+   "tag": "convex/vfillet",
+   "MATCH": 52,
+   "WRONG": 11,
+   "REFUSED": 7,
+   "n": 70,
+   "wrongRate": 0.15714285714285714,
+   "wrongOfBuilt": 0.1746031746031746
+  },
+  {
+   "tag": "stepped/L/low",
+   "MATCH": 41,
+   "WRONG": 8,
+   "REFUSED": 14,
+   "n": 63,
+   "wrongRate": 0.12698412698412698,
+   "wrongOfBuilt": 0.16326530612244897
+  },
+  {
+   "tag": "convex/vchamfer/s1-2t",
+   "MATCH": 13,
+   "WRONG": 2,
+   "REFUSED": 3,
+   "n": 18,
+   "wrongRate": 0.1111111111111111,
+   "wrongOfBuilt": 0.13333333333333333
+  },
+  {
+   "tag": "convex/vfillet/s=1t",
+   "MATCH": 23,
+   "WRONG": 3,
+   "REFUSED": 1,
+   "n": 27,
+   "wrongRate": 0.1111111111111111,
+   "wrongOfBuilt": 0.11538461538461539
+  },
+  {
+   "tag": "stepped/vhole",
+   "MATCH": 108,
+   "WRONG": 14,
+   "REFUSED": 73,
+   "n": 195,
+   "wrongRate": 0.07179487179487179,
+   "wrongOfBuilt": 0.11475409836065574
+  },
+  {
+   "tag": "convex/bchamfer/s=1t",
+   "MATCH": 16,
+   "WRONG": 2,
+   "REFUSED": 6,
+   "n": 24,
+   "wrongRate": 0.08333333333333333,
+   "wrongOfBuilt": 0.1111111111111111
+  },
+  {
+   "tag": "stepped/T/top",
+   "MATCH": 20,
+   "WRONG": 2,
+   "REFUSED": 17,
+   "n": 39,
+   "wrongRate": 0.05128205128205128,
+   "wrongOfBuilt": 0.09090909090909091
+  },
+  {
+   "tag": "stepped/U/floor",
+   "MATCH": 30,
+   "WRONG": 3,
+   "REFUSED": 25,
+   "n": 58,
+   "wrongRate": 0.05172413793103448,
+   "wrongOfBuilt": 0.09090909090909091
+  },
+  {
+   "tag": "convex/bfillet/s=2t",
+   "MATCH": 10,
+   "WRONG": 1,
+   "REFUSED": 4,
+   "n": 15,
+   "wrongRate": 0.06666666666666667,
+   "wrongOfBuilt": 0.09090909090909091
+  },
+  {
+   "tag": "convex/bchamfer/s=2t",
+   "MATCH": 10,
+   "WRONG": 1,
+   "REFUSED": 4,
+   "n": 15,
+   "wrongRate": 0.06666666666666667,
+   "wrongOfBuilt": 0.09090909090909091
+  },
+  {
+   "tag": "stepped/L/high",
+   "MATCH": 44,
+   "WRONG": 3,
+   "REFUSED": 15,
+   "n": 62,
+   "wrongRate": 0.04838709677419355,
+   "wrongOfBuilt": 0.06382978723404255
+  },
+  {
+   "tag": "stepped/T/under",
+   "MATCH": 19,
+   "WRONG": 1,
+   "REFUSED": 20,
+   "n": 40,
+   "wrongRate": 0.025,
+   "wrongOfBuilt": 0.05
+  },
+  {
+   "tag": "rboss/h2-3t",
+   "MATCH": 0,
+   "WRONG": 0,
+   "REFUSED": 21,
+   "n": 21,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "stepped/U/wallTop",
+   "MATCH": 29,
+   "WRONG": 0,
+   "REFUSED": 40,
+   "n": 69,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "stepped/nohole",
+   "MATCH": 87,
+   "WRONG": 0,
+   "REFUSED": 55,
+   "n": 142,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "stepped/T/stem",
+   "MATCH": 23,
+   "WRONG": 0,
+   "REFUSED": 28,
+   "n": 51,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "pocket/bot/floor>=3t",
+   "MATCH": 2,
+   "WRONG": 0,
+   "REFUSED": 16,
+   "n": 18,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "rboss/h>=3t",
+   "MATCH": 0,
+   "WRONG": 0,
+   "REFUSED": 50,
+   "n": 50,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "rim/top/wall2-3t",
+   "MATCH": 4,
+   "WRONG": 0,
+   "REFUSED": 12,
+   "n": 16,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "rboss/h1-2t",
+   "MATCH": 0,
+   "WRONG": 0,
+   "REFUSED": 24,
+   "n": 24,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "pocket/top/floor>=3t",
+   "MATCH": 1,
+   "WRONG": 0,
+   "REFUSED": 15,
+   "n": 16,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  },
+  {
+   "tag": "nFeat=0",
+   "MATCH": 15,
+   "WRONG": 0,
+   "REFUSED": 0,
+   "n": 15,
+   "wrongRate": 0,
+   "wrongOfBuilt": 0
+  }
+ ]
+}

@@ -1,0 +1,1 @@
+R3-sealed-post-ecc-180                   PASS     occtV 37246.7225 | tr-occt dV 3.3e-5 dBb 8.9e-16 dCom 1.7e-7 F o/b/t 9/-/9 | brep-occt dV -     | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 2708 cpu 3300

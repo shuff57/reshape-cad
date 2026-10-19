@@ -1,0 +1,63 @@
+Running as unit: run-p1887674-i1871606.scope; invocation ID: d5cdde39c62a484fa42b69ee861edb62
+--- primitive (doc-level)
+primitive box +x as shell open           PASS[OCCT] V=8192.000000 (OCCT 8192.000000, brep 8192.000000) dVol 2.2e-16 dBbox 0.0e+0 dCOM 4.9e-17 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"7.2e-2"} 
+    names: b1.face[+x]
+--- swept
+swept edge0 shell open                   PASS[OCCT] V=5376.000000 (OCCT 5376.000000, brep 5376.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 0.0e+0 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"5.1e-2"} 
+    names: e1.face[sk1.edge0]
+swept edge1 shell open                   PASS[OCCT] V=5616.000000 (OCCT 5616.000000, brep 5616.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 1.5e-16 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"4.7e-2"} 
+    names: e1.face[sk1.edge1]
+swept edge2 shell open                   PASS[OCCT] V=5376.000000 (OCCT 5376.000000, brep 5376.000000) dVol 5.1e-16 dBbox 0.0e+0 dCOM 7.3e-17 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"5.1e-2"} 
+    names: e1.face[sk1.edge2]
+swept edge3 shell open                   PASS[OCCT] V=5616.000000 (OCCT 5616.000000, brep 5616.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 1.5e-16 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"4.7e-2"} 
+    names: e1.face[sk1.edge3]
+swept edge0 draft face                   PASS[OCCT] V=11748.032649 (OCCT 11748.032649, brep 11748.032649) dVol 1.5e-16 dBbox 1.3e-15 dCOM 7.3e-17 faces occt/truck/brep 6/6/6 | ctl {"rej":true,"dCom":"1.1e-2"} 
+    names: e1.face[sk1.edge0]
+swept edge1 draft face                   PASS[OCCT] V=11842.520406 (OCCT 11842.520406, brep 11842.520406) dVol 1.5e-16 dBbox 1.2e-15 dCOM 7.3e-17 faces occt/truck/brep 6/6/6 | ctl {"rej":true,"dCom":"1.1e-2"} 
+    names: e1.face[sk1.edge1]
+swept edge2 draft face                   PASS[OCCT] V=11748.032649 (OCCT 11748.032649, brep 11748.032649) dVol 3.1e-16 dBbox 1.9e-15 dCOM 7.3e-17 faces occt/truck/brep 6/6/6 | ctl {"rej":true,"dCom":"1.1e-2"} 
+    names: e1.face[sk1.edge2]
+swept edge3 draft face                   PASS[OCCT] V=11842.520406 (OCCT 11842.520406, brep 11842.520406) dVol 3.1e-16 dBbox 3.0e-16 dCOM 0.0e+0 faces occt/truck/brep 6/6/6 | ctl {"rej":true,"dCom":"1.1e-2"} 
+    names: e1.face[sk1.edge3]
+round between(cap top, swept0)           PASS[OCCT] V=11965.641185 (OCCT 11965.663706, brep 11965.663706) dVol 1.9e-6 dBbox 6.7e-15 dCOM 4.5e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.4e-3"} 
+    names: e1.edge[e1.cap[top] ^ e1.face[sk1.edge0]]
+round between(cap top, swept1)           PASS[OCCT] V=11978.525740 (OCCT 11978.539816, brep 11978.539816) dVol 1.2e-6 dBbox 2.7e-15 dCOM 4.6e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.4e-3"} 
+    names: e1.edge[e1.cap[top] ^ e1.face[sk1.edge1]]
+round between(cap top, swept2)           PASS[OCCT] V=11965.641185 (OCCT 11965.663706, brep 11965.663706) dVol 1.9e-6 dBbox 1.8e-15 dCOM 4.5e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.4e-3"} 
+    names: e1.edge[e1.cap[top] ^ e1.face[sk1.edge2]]
+round between(cap top, swept3)           PASS[OCCT] V=11978.525740 (OCCT 11978.539816, brep 11978.539816) dVol 1.2e-6 dBbox 1.9e-15 dCOM 4.6e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.4e-3"} 
+    names: e1.edge[e1.cap[top] ^ e1.face[sk1.edge3]]
+round between(cap bottom, swept0)        PASS[OCCT] V=11965.641191 (OCCT 11965.663706, brep 11965.663706) dVol 1.9e-6 dBbox 2.0e-15 dCOM 4.5e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.4e-3"} 
+    names: e1.edge[e1.cap[bottom] ^ e1.face[sk1.edge0]]
+round between(cap bottom, swept2)        PASS[OCCT] V=11965.641178 (OCCT 11965.663706, brep 11965.663706) dVol 1.9e-6 dBbox 1.6e-15 dCOM 4.5e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.4e-3"} 
+    names: e1.edge[e1.cap[bottom] ^ e1.face[sk1.edge2]]
+round between(swept0, swept1) vertical edge PASS[OCCT] V=11989.692351 (OCCT 11989.699112, brep 11989.699112) dVol 5.6e-7 dBbox 4.4e-16 dCOM 2.2e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"6.9e-4"} 
+    names: e1.edge[e1.face[sk1.edge0] ^ e1.face[sk1.edge1]]
+swept on xz-plane sketch                 PASS[OCCT] V=5616.000000 (OCCT 5616.000000, brep 5616.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 1.5e-16 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"4.7e-2"} 
+    names: e1.face[sk1.edge1]
+swept on offset sketch 5                 PASS[OCCT] V=5376.000000 (OCCT 5376.000000, brep 5376.000000) dVol 1.7e-16 dBbox 0.0e+0 dCOM 7.3e-17 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"5.1e-2"} 
+    names: e1.face[sk1.edge2]
+swept on circle sketch                   REFUSED: sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can.   | OCCT:refusals {"sh1":"Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot h BREP:refusals {"sh1":"sh1 could not find the face to leave open -- sh1 is shown closed."}
+    names: e1.face[sk1.edge0]
+swept on arc (bulge) sketch              REFUSED: sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can.   | OCCT:builds V=6533.3959 BREP:brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- sh1 is shown without it.
+    names: e1.face[sk1.edge0]
+swept on extrude midplane                REFUSED: sh1 is not built because e1 could not be built, so sh1 is shown without it.   | OCCT:builds V=5616.0000 BREP:builds V=5616.0000
+    names: e1.face[sk1.edge1]
+swept on extrude taper                   REFUSED: sh1 is not built because e1 could not be built, so sh1 is shown without it.   | OCCT:builds V=5616.0000 BREP:builds V=5952.9894
+    names: e1.face[sk1.edge1]
+--- cap
+cap top shell open                       PASS[OCCT] V=4440.000000 (OCCT 4440.000000, brep 4440.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 2.2e-16 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"7.0e-2"} 
+    names: e1.cap[top]
+cap bottom shell open                    PASS[OCCT] V=4440.000000 (OCCT 4440.000000, brep 4440.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 2.2e-16 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"7.0e-2"} 
+    names: e1.cap[bottom]
+cap top draft                            REFUSED: d1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.   | OCCT:refusals {"d1":"Tilting Draft 1 at 5 degrees would not fit -- Draft 1 is shown without it."} BREP:refusals {"d1":"brep-rs can only tilt a side wall of an axis-aligned box yet -- d1 is shown without it."}
+    names: e1.cap[top]
+cap on reversed extrude                  REFUSED: sh1 is not built because e1 could not be built, so sh1 is shown without it.   | OCCT:builds V=4440.0000 BREP:builds V=4440.0000
+    names: e1.cap[top]
+--- rounded
+rounded corner0 shell open               REFUSED: sh1 is not built: a face made by a rounded sketch corner cannot be picked yet.   | OCCT:refusals {"sh1":"Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a sha BREP:refusals {"sh1":"sh1 could not find the face to leave open -- sh1 is shown closed."}
+    names: e1.face[sk1.corner0]
+rounded corner0 draft                    REFUSED: d1 is not built: a face made by a rounded sketch corner cannot be picked yet.   | OCCT:builds V=11563.6267 BREP:refusals {"d1":"brep-rs can only tilt a side wall of an axis-aligned box yet -- d1 is shown without it."}
+    names: e1.face[sk1.corner0]
+round between(cap top, rounded0)         REFUSED: r1 is not built: a face made by a rounded sketch corner cannot be picked yet.   | OCCT:builds V=11905.0761 BREP:refusals {"r1":"brep-rs can only round a straight edge between two flat faces yet, and this edge is not one o
+    names: e1.edge[e1.cap[top] ^ e1.face[sk1.corner0]]

@@ -1,0 +1,1 @@
+R3-tiltwall15-box-90                     PASS     occtV 68260.8422 | tr-occt dV 2.6e-6 dBb 0.0e+0 dCom 3.2e-7 F o/b/t 12/-/12 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by box1, or its surface pair is unsupported) -- groove1 is shown without it. | ms 5599 cpu 5983

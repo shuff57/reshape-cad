@@ -1,0 +1,1 @@
+X-spin-torus-neg-200-front               NO-OCCT OCCT: OCCT built nothing | truck V 5482.3040 F 3 bbox -24.9998,10.0004,-8.5505,24.9999,19.9996,24.9999 types {"other":1,"plane":2} bodies 1 | brep REFUSED revolve rev1: a circle sketch has no outline to spin | ANALYTIC 5483.1136 dTruck 1.5e-4 dBrep - | ms 3387 cpu 3649

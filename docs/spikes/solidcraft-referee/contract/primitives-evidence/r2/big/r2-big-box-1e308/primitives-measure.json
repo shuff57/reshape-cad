@@ -1,0 +1,40 @@
+[
+ {
+  "id": "r2-big-box-1e308",
+  "feature": "oversize",
+  "note": "",
+  "script": "box(1e308, 1e308, 1e308);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      1e+308,
+      1e+308,
+      1e+308
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {},
+  "brep": {
+   "refused": "box box1: it has a size or position of 1.000e308, past the 1e6 brep-rs builds exactly -- box1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "box1 (box): solidcraft refused it -- solid.box: invalid parameters for `solid.box`: `length` must be a number or an expression"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 10
+ }
+]

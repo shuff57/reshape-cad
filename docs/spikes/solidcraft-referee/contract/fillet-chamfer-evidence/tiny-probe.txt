@@ -1,0 +1,18 @@
+solid.fillet size 0 REFUSED invalid input: fillet size must be positive
+solid.fillet size 1e-9 REFUSED invalid input: fillet size must be positive
+solid.fillet size 1e-7 REFUSED invalid input: fillet size must be positive
+solid.fillet size 0.000001 REFUSED invalid input: fillet size must be positive
+solid.fillet size 0.000003 BUILT volume 23999.999399994234 faces 7
+solid.fillet size 0.00001 BUILT volume 23999.997999980897 faces 7
+solid.fillet size 0.0001 BUILT volume 23999.9999998 faces 7
+solid.fillet size 0.001 BUILT volume 23999.9999798387 faces 7
+solid.fillet size 0.01 BUILT volume 23999.998274898735 faces 7
+solid.chamfer size 0 REFUSED invalid input: chamfer size must be positive
+solid.chamfer size 1e-9 REFUSED invalid input: chamfer size must be positive
+solid.chamfer size 1e-7 REFUSED invalid input: chamfer size must be positive
+solid.chamfer size 0.000001 REFUSED invalid input: chamfer size must be positive
+solid.chamfer size 0.000003 BUILT volume 24000 faces 6
+solid.chamfer size 0.00001 BUILT volume 24000 faces 6
+solid.chamfer size 0.0001 BUILT volume 24000 faces 6
+solid.chamfer size 0.001 BUILT volume 24000 faces 6
+solid.chamfer size 0.01 BUILT volume 23999.998000000003 faces 7

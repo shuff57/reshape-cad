@@ -1,0 +1,1 @@
+spin-string                              SCRIPT-REFUSAL: spin's angle has to be a number, and you gave it the text "90".

@@ -1,0 +1,11 @@
+closed hollow                      REFUSED  Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' }). | OCCT vol 3504.000 | brep dVol=2.6e-16
+      shell1 -> Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' }).
+closed hollow;move                 REFUSED  Move 1 is not built because Hollow 1, which it uses, was refused. | OCCT vol 3504.000 | brep dVol=2.6e-16
+      shell1 -> Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' }).
+      move1 -> Move 1 is not built because Hollow 1, which it uses, was refused.
+closed hollow;turn                 REFUSED  Turn 1 is not built because Hollow 1, which it uses, was refused. | OCCT vol 3504.000 | brep dVol=0.0e+0
+      shell1 -> Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' }).
+      turn1 -> Turn 1 is not built because Hollow 1, which it uses, was refused.
+open hollow;turn;move (control)    PASS     dVol=3.4e-16 dBbox=3.1e-16 dCom=5.4e-17 | OCCT vol 2672.000 | brep dVol=0.0e+0
+cut(box, cyl r10 overhang);move    PASS     dVol=3.3e-5 dBbox=1.3e-14 dCom=1.0e-5 | OCCT vol 5214.602 | brep move move1 cannot find op1
+cut(box, cyl offset);move          PASS     dVol=3.7e-6 dBbox=8.3e-16 dCom=2.2e-7 | OCCT vol 26410.951 | brep dVol=0.0e+0

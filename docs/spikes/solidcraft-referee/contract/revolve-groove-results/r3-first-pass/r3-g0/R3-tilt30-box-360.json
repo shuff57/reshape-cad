@@ -1,0 +1,127 @@
+[
+ {
+  "id": "R3-tilt30-box-360",
+  "src": "const b = box(60, 40, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.500000, 0.866025] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, b, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R3-tilt30-box-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 70586.2833058846,
+    "com": [
+     1.9327296873635774e-17,
+     0.01734493404112748,
+     -0.010014107006799942
+    ],
+    "bbox": [
+     -30,
+     -20,
+     -15,
+     30,
+     20,
+     15
+    ],
+    "faces": 10,
+    "area": 12025.221134900019,
+    "types": {
+     "plane": 8,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 8,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it."
+   },
+   "ms": 13,
+   "load": [
+    24.3,
+    24.3
+   ],
+   "cpuMs": 45,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a full-turn ring about a tilted axis took from 19 to 42 seconds here and is not reliable, so it is not built; sketch the ring on the top, front or side plane, or turn it less than 360 degrees",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": false,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": false,
+       "reachesWall": false,
+       "rOuter": 9,
+       "nearest": null,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 60,
+      "width": 40,
+      "height": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_box1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a full-turn ring about a tilted axis took from 19 to 42 seconds here and is not reliable, so it is not built; sketch the ring on the top, front or side plane, or turn it less than 360 degrees",
+    "firstRefusal": "groove1 (groove): a full-turn ring about a tilted axis took from 19 to 42 seconds here and is not reliable, so it is not built; sketch the ring on the top, front or side plane, or turn it less than 360 degrees"
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 174
+ }
+]

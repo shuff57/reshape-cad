@@ -1,0 +1,21 @@
+{
+ "id": "asym-shell-thin-3x",
+ "outcome": "fail",
+ "volume": 9978.227999999965,
+ "faces": 11,
+ "bbox": [
+  -15,
+  -66,
+  -9,
+  105,
+  24,
+  27
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "shell"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":120,\"width\":90,\"height\":36,\"center\":[45,-21,9],\"body_name\":\"b_b1\"}},{\"command\":\"solid.shell\",\"params\":{\"faces\":[[-15,-21,9]],\"thickness\":0.3,\"body\":\"b_b1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

@@ -1,0 +1,10 @@
+import { L, T, D, save } from './common.mjs';
+const CH = `const b = box(40,30,10)\nconst sk = sketch('top', 5); sk.rect(10, 40, {at:[0,0]})\nconst p = pocket(sk, b, 3)\n`;
+await T('channel splits top: hollow open top', CH + `hollow(p,{wall:1, open:'top'})`);
+await T('channel splits top: draft face(left)', CH + `draft(p.face('left'), 5)`);
+await T('channel splits top: round edge(top,left)', CH + `round(p.edge('top','left'), 1)`);
+await T('channel splits top: round edge(top,front)', CH + `round(p.edge('top','front'), 1)`);
+await T('channel: hollow open bottom', CH + `hollow(p,{wall:1, open:'bottom'})`);
+await T('two coplanar bosses: edge(top,right)', `const a = box(40,30,10)\nconst c1 = box(10,10,6,{at:[-12,0,8]})\nconst c2 = box(10,10,6,{at:[12,0,8]})\nconst u = join(a, c1, c2)\nround(u.edge('top','right'), 1)`);
+await T('two coplanar bosses: hollow open top', `const a = box(40,30,10)\nconst c1 = box(10,10,6,{at:[-12,0,8]})\nconst c2 = box(10,10,6,{at:[12,0,8]})\nconst u = join(a, c1, c2)\nhollow(u,{wall:1, open:'top'})`);
+save('resM.json');

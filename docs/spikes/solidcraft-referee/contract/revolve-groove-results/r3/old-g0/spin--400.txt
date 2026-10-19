@@ -1,0 +1,1 @@
+spin--400                                FAIL     occtV 3141.5927 | tr-occt dV 8.0e+0 dBb 2.0e+1 dCom 4.1e-1 F o/b/t 6/4/4 | brep-occt dV 8.0e+0      | ms 719 cpu 1297

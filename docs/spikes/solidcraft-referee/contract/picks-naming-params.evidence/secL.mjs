@@ -1,0 +1,15 @@
+import { L, T, D, save } from './common.mjs';
+console.log('--- face words on built (non-primitive) shapes: extreme-face semantics');
+await T('stepped union: hollow open top', `const a = box(40,30,10)\nconst b = box(20,20,10,{at:[0,0,10]})\nconst u = join(a,b)\nhollow(u,{wall:2, open:'top'})`);
+await T('stepped union: hollow open bottom', `const a = box(40,30,10)\nconst b = box(20,20,10,{at:[0,0,10]})\nconst u = join(a,b)\nhollow(u,{wall:2, open:'bottom'})`);
+await T('stepped union: hollow open right', `const a = box(40,30,10)\nconst b = box(20,20,10,{at:[0,0,10]})\nconst u = join(a,b)\nhollow(u,{wall:2, open:'right'})`);
+await T('stepped union: round edge(top,right)', `const a = box(40,30,10)\nconst b = box(20,20,10,{at:[0,0,10]})\nconst u = join(a,b)\nround(u.edge('top','right'), 1)`);
+await T('stepped union: draft face right', `const a = box(40,30,10)\nconst b = box(20,20,10,{at:[0,0,10]})\nconst u = join(a,b)\ndraft(u.face('right'), 5)`);
+await T('equal-height union: hollow open top (two coplanar tops)', `const a = box(20,30,10,{at:[-10,0,0]})\nconst b = box(20,30,10,{at:[10,0,0]})\nconst u = join(a,b)\nhollow(u,{wall:2, open:'top'})`);
+await T('L-shape (cut): round edge(top,right)', `const a = box(40,30,10)\nconst b = box(20,15,10,{at:[10,7.5,0]})\nconst u = cut(a,b)\nround(u.edge('top','right'), 1)`);
+await T('plate with through hole: hollow open top (annular)', `const b = box(40,30,10)\nhole(b,{across:8})\nhollow(b,{wall:2, open:'top'})`);
+await T('plate with blind hole in top: hollow open bottom', `const b = box(40,30,10)\nhole(b,{across:8, deep:4})\nhollow(b,{wall:2, open:'bottom'})`);
+await T('hole off-centre then round edge(top,front)', `const b = box(40,30,10)\nhole(b,{across:8, at:[8,6]})\nround(b.edge('top','front'), 1.5)`);
+await T('cylinder with hole: round rim (top,side)', `const c = cylinder(30,20)\nhole(c,{across:6})\nround(c.edge('top','side'), 1.5)`);
+await T('cylinder hollow open top then round rim', `const c = cylinder(30,20)\nhollow(c,{wall:2, open:'top'})\nround(c.edge('top','side'), 0.8)`);
+save('resL.json');

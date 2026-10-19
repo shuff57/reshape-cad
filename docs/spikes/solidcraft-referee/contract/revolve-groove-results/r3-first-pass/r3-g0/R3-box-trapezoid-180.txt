@@ -1,0 +1,1 @@
+R3-box-trapezoid-180                     FAIL     occtV 68787.7111 | tr-occt dV 7.1e-6 dBb 3.6e-8 dCom 1.8e-6 F o/b/t 12/-/14 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it. | ms 18026 cpu 18480

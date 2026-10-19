@@ -1,0 +1,206 @@
+MATCH                          rect-origin-dims                                           stored vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 2.5e-10 
+MATCH                          rect-origin-dims                                           rough  vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 2.1e-10 
+MATCH                          rect-corner-dx-dy-positive                                 stored vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 1.3e-10 
+MATCH                          rect-corner-dx-dy-positive                                 rough  vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 1.3e-10 
+MATCH                          rect-corner-dx-dy-negative                                 stored vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 7.8e-11 
+MATCH                          rect-corner-dx-dy-negative                                 rough  vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 4.4e-11 
+MATCH                          rect-diagonal-two-point-distance                           stored vol 2400/2400 bodies 1 faces 6 worst closed form/volume 4.5e-12 
+MATCH                          rect-diagonal-two-point-distance                           rough  vol 2400/2400 bodies 1 faces 6 worst closed form/volume 7.0e-12 
+MATCH                          circle-radius-dx-dy                                        stored vol 1539.206699/1539.3804 bodies 1 faces 3 worst closed form/volume 1.1e-4 
+MATCH                          circle-radius-dx-dy                                        rough  vol 1539.206699/1539.3804 bodies 1 faces 3 worst closed form/volume 1.1e-4 
+MATCH                          circle-diameter-origin-c                                   stored vol 4523.56641/4523.893421 bodies 1 faces 3 worst closed form/volume 7.2e-5 
+MATCH                          circle-diameter-origin-c                                   rough  vol 4523.56641/4523.893421 bodies 1 faces 3 worst closed form/volume 7.2e-5 
+MATCH                          rect-parallel-perpendicular-axes                           stored vol 6000/6000 bodies 1 faces 6 worst closed form/volume 5.8e-11 
+MATCH                          rect-parallel-perpendicular-axes                           rough  vol 6000/6000 bodies 1 faces 6 worst closed form/volume 5.6e-11 
+MATCH                          right-trapezoid-par-perp-neg-dx                            stored vol 4160/4160 bodies 1 faces 6 worst brep-rs/bbox 2.1e-11 
+MATCH                          right-trapezoid-par-perp-neg-dx                            rough  vol 4160/4160 bodies 1 faces 6 worst brep-rs/bbox 9.9e-11 
+MATCH                          square-by-equal-lines                                      stored vol 4840/4840 bodies 1 faces 6 worst brep-rs/bbox 7.0e-11 
+MATCH                          square-by-equal-lines                                      rough  vol 4840/4840 bodies 1 faces 6 worst brep-rs/bbox 5.9e-11 
+MATCH                          two-circles-equal                                          stored vol 2261.691477/2261.946711 bodies 2 faces 6 worst closed form/volume 1.1e-4 TRANSLATOR-UNDERREPORTS 
+MATCH                          two-circles-equal                                          rough  vol 2261.691477/2261.946711 bodies 2 faces 6 worst closed form/volume 1.1e-4 TRANSLATOR-UNDERREPORTS 
+MATCH                          triangle-apex-on-diagonal-line                             stored vol 4500/4500 bodies 1 faces 5 worst brep-rs/bbox 1.1e-11 
+MATCH                          triangle-apex-on-diagonal-line                             rough  vol 4500/4500 bodies 1 faces 5 worst brep-rs/bbox 2.3e-10 
+MATCH                          hexagon-equal-pointOn-circle                               stored vol 10392.30485/10392.30485 bodies 1 faces 8 worst brep-rs/bbox 5.8e-12 
+MATCH                          hexagon-equal-pointOn-circle                               rough  vol 10392.30485/10392.30485 bodies 1 faces 8 worst brep-rs/bbox 2.0e-10 
+MATCH                          symmetric-trapezoid-about-Y-axis                           stored vol 4500/4500 bodies 1 faces 6 worst closed form/bbox 5.1e-11 
+MATCH                          symmetric-trapezoid-about-Y-axis                           rough  vol 4500/4500 bodies 1 faces 6 worst closed form/bbox 1.7e-10 
+MATCH                          symmetric-about-construction-line                          stored vol 2400/2400 bodies 1 faces 6 worst closed form/bbox 6.1e-10 
+MATCH                          symmetric-about-construction-line                          rough  vol 2400/2400 bodies 1 faces 6 worst closed form/bbox 5.9e-13 
+MATCH                          symmetric-3point-midpoint                                  stored vol 8640/8640 bodies 1 faces 6 worst brep-rs/bbox 5.1e-12 
+MATCH                          symmetric-3point-midpoint                                  rough  vol 8640/8640 bodies 1 faces 6 worst closed form/bbox 3.3e-12 
+MATCH                          tangent-line-circle                                        stored vol 1130.845738/1130.973355 bodies 1 faces 3 worst closed form/volume 1.1e-4 
+MATCH                          tangent-line-circle                                        rough  vol 1130.845738/1130.973355 bodies 1 faces 3 worst brep-rs/volume 1.1e-4 
+MATCH                          tangent-line-circle-side-matching                          stored vol 1130.845738/1130.973355 bodies 1 faces 3 worst closed form/volume 1.1e-4 
+REFUSED-EXPECTED               tangent-line-circle-side-opposite                          stored   | pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 3 (tangent): records side -1 for the line/circle tangency but the circle starts on the other side of the line; solidcraft's tangent has no side parameter, so it cannot be requested
+MATCH                          circle-circle-external-mode                                stored vol 2795.749631/2796.017462 bodies 2 faces 6 worst closed form/volume 9.6e-5 TRANSLATOR-UNDERREPORTS 
+MATCH                          circle-circle-external-mode                                rough  vol 2795.749631/2796.017462 bodies 2 faces 6 worst closed form/volume 9.6e-5 TRANSLATOR-UNDERREPORTS 
+MATCH                          circle-circle-external-no-mode                             stored vol 2795.749631/2796.017462 bodies 2 faces 6 worst closed form/volume 9.6e-5 TRANSLATOR-UNDERREPORTS 
+MATCH                          circle-circle-external-no-mode                             rough  vol 2795.749631/2796.017462 bodies 2 faces 6 worst closed form/volume 9.6e-5 TRANSLATOR-UNDERREPORTS 
+MATCH                          circle-circle-internal-mode                                stored vol 1225.134743/1225.221135 bodies 1 faces 4 worst closed form/volume 7.1e-5 
+MATCH                          circle-circle-internal-mode                                rough  vol 1225.134743/1225.221135 bodies 1 faces 4 worst closed form/volume 7.1e-5 
+MATCH                          circle-circle-internal-no-mode                             stored vol 1225.134743/1225.221135 bodies 1 faces 4 worst closed form/volume 7.1e-5 
+MATCH                          circle-circle-internal-no-mode                             rough  vol 1225.134743/1225.221135 bodies 1 faces 4 worst closed form/volume 7.1e-5 
+REFUSED-EXPECTED               circle-circle-mode-request-external-start-internal         stored   | pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 5 (tangent): asks for external tangency but the circles start internally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot b
+REFUSED-EXPECTED               circle-circle-mode-request-internal-start-external         stored   | pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 5 (tangent): asks for internal tangency but the circles start externally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot b
+MATCH                          slot-hand-rows-R10-L40                                     stored vol 11141.23882/11141.59265 bodies 1 faces 6 worst brep-rs/volume 3.2e-5 
+MATCH                          slot-hand-rows-R10-L40                                     rough  vol 11141.2177/11141.59265 bodies 1 faces 6 worst brep-rs/volume 3.4e-5 
+MATCH                          slot-sketch-sugar-R6-L30                                   stored vol 4730.793327/4730.973355 bodies 1 faces 6 worst closed form/volume 3.8e-5 
+MATCH                          slot-dims-from-points                                      stored vol 3285.273148/3285.398163 bodies 1 faces 6 worst brep-rs/volume 3.8e-5 
+MATCH                          slot-dims-from-points                                      rough  vol 3285.273145/3285.398163 bodies 1 faces 6 worst brep-rs/volume 3.8e-5 
+MATCH                          oval-four-arcs-endpoint-tangent                            stored vol 1099.093733/1099.206266 bodies 1 faces 6 worst closed form/volume 1.0e-4 
+REFUSED                        oval-four-arcs-endpoint-tangent                            rough    | pull1 (extrude): solidcraft refused it -- sketch.constraint.equal: invalid parameters for `sketch.constraint.equal`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)
+MATCH                          triangle-length-angle-120                                  stored vol 5196.152423/5196.152423 bodies 1 faces 5 worst brep-rs/bbox 1.1e-11 
+MATCH                          triangle-length-angle-120                                  rough  vol 5196.152423/5196.152423 bodies 1 faces 5 worst brep-rs/bbox 4.3e-11 
+MATCH                          triangle-angle-120-with-quadrant                           stored vol 5196.152423/5196.152423 bodies 1 faces 5 worst brep-rs/bbox 1.1e-11 
+REFUSED-EXPECTED               triangle-angle-wrong-orientation-start                     stored   | pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 8 (angle): is the directed angle 120 deg from line 1 to line 2; from this starting geometry solidcraft would apply the value to the opposite orientation (it would hold 60.000000 deg from
+MATCH                          rect-lock-offset-corner                                    stored vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 1.5e-11 
+MATCH                          rect-lock-offset-corner                                    rough  vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 1.5e-11 
+MATCH                          rect-param-width                                           stored vol 6000/6000 bodies 1 faces 6 worst OCCT/volume 1.5e-16 
+MATCH                          rect-reference-dim-correct                                 stored vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 2.5e-10 
+MATCH                          rect-reference-dim-correct                                 rough  vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 2.3e-10 
+MATCH                          rect-reference-dim-wrong-value                             stored vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 2.5e-10 
+REFUSED-EXPECTED               rect-reference-distanceX-zero                              stored   | pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 12 (distanceX): is a reference distanceX of 0; solidcraft has no reference form of a point-pair level constraint
+MATCH                          rect-inactive-conflicting-rule                             stored vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 2.5e-10 
+MATCH                          rect-inactive-conflicting-rule                             rough  vol 6000/6000 bodies 1 faces 6 worst brep-rs/bbox 2.4e-10 
+MATCH                          plate-with-hole-default-profiles                           stored vol 9214.732294/9214.601837 bodies 1 faces 7 worst closed form/volume 1.4e-5 
+MATCH                          rect-underconstrained-height-free                          stored vol 5100/5100 bodies 1 faces 6 worst OCCT/volume 1.8e-16 
+REFUSED-EXPECTED               rect-redundant-width-dimension                             stored   | pull1 (extrude): solidcraft refused it -- sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k2 (Coincident), k3 (Coincident), k4 (Coincident), k6 (Vertical), k8 (Vertical), k10 (LinearDimensio
+REFUSED-EXPECTED               rect-conflicting-width-dimension                           stored   | pull1 (extrude): solidcraft refused it -- sketch.dimension: that would over-constrain the sketch (conflicts with k1, k2, k3, k4, k6, k8, k10, k12)
+WRONG                          slot-arc-rows-inconsistent-with-lock-c                     stored vol 11141.1361/11141.59265 bodies 1 faces 6 worst closed form/bbox 1.5e-1 FAILS[closed form/bbox 1.5e-1>3.0e-4, closed form/com 2.3e-3>3.0e-5, brep-rs/bbox 1.5e-1>3.0e-4, brep-rs/com 2.3e-3>3.0e-4] 
+REFUSED-EXPECTED-SCRIPT        probe-coincident-circle-end-a                              stored   | .rules() row 12 names point 'a' on geometry 5, but a circle has no 'a'.
+REFUSED-EXPECTED-SCRIPT        probe-equal-line-vs-circle                                 stored   | .rules() equal between a line and a circle is not defined; constrain lengths to lengths or radii to radii.
+REFUSED-EXPECTED               probe-distance-names-no-end                                stored   | pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 12 (distance): needs a point of geometry 1 and the row names none (brep-rs refuses the same row); rule 12 (distance): needs a point of geometry 2 and the row names none (brep-rs refuses 
+REFUSED-EXPECTED               probe-radius-zero                                          stored   | pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 12 (radius): has value 0; a radius or diameter must be positive
+REFUSED-EXPECTED               probe-tangent-endpoint-no-coincident-row                   stored   | pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 12 (tangent): is the endpoint tangent form with no coincident row joining those two ends before it; solidcraft's tangent is between curves, and it only treats it as tangent-at-the-joint 
+REFUSED-EXPECTED               probe-lock-as-reference                                    stored   | pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 12 (lock): a lock cannot be a reference measurement
+REFUSED-EXPECTED               probe-pointOn-target-is-point                              stored   | pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 12 (pointOnObject): geometry 6 is a point, not a curve
+REFUSED-EXPECTED               probe-angle-line-vs-circle                                 stored   | pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 12 (angle): geometry 5 is a circle; this rule needs line
+REFUSED-EXPECTED               probe-distanceX-start-level                                stored   | pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 12 (distanceX): the two points start level in x, so the side (sign) of the signed distanceX 5 is not carried by the starting geometry
+REFUSED-EXPECTED               probe-tangent-line-vs-line                                 stored   | pull1 (extrude): solidcraft refused it -- sketch.constraint.tangent: `g1` is the wrong kind of entity for this: tangent needs a circle or arc
+REFUSED-EXPECTED-SCRIPT        legacy-edge-number-9-of-4                                  stored   | .across()'s edge has to be a whole number from 1 to 4 -- you gave it 9.
+REFUSED-EXPECTED-SCRIPT        legacy-edge-number-0                                       stored   | .across()'s edge has to be a whole number from 1 to 4 -- you gave it 0.
+MATCH                          legacy-across-up-length-pin                                stored vol 5999.999793/6000 bodies 1 faces 6 worst closed form/bbox 1.4e-6 
+MATCH                          legacy-pin-offset-corner                                   stored vol 5999.999953/6000 bodies 1 faces 6 worst closed form/bbox 8.9e-8 
+MATCH                          legacy-equal-edges-square                                  stored vol 4840.000216/4840 bodies 1 faces 6 worst closed form/bbox 8.8e-8 
+MATCH                          legacy-parallel-perpendicular-trapezoid                    stored vol 4160.000112/4160 bodies 1 faces 6 worst closed form/bbox 1.4e-6 
+MATCH                          legacy-distX-distY-rect                                    stored vol 5999.999723/6000 bodies 1 faces 6 worst closed form/bbox 1.8e-6 
+MATCH                          legacy-symmetric-midpoint-corner                           stored vol 3000.008295/3000 bodies 1 faces 6 worst closed form/bbox 4.5e-6 
+MATCH                          legacy-angle-triangle                                      stored vol 5196.152423/5196.152423 bodies 1 faces 5 worst closed form/bbox 5.1e-9 
+MATCH                          legacy-rect-helper-dimensions                              stored vol 6000/6000 bodies 1 faces 6 worst OCCT/volume 4.2e-13 
+MATCH                          gauntlet:sk-rect-dof__corner-origin-25x60                  stored vol 15000/15000 bodies 1 faces 6 worst OCCT/volume 2.4e-16 
+MATCH                          gauntlet:sk-rect-dof__corner-origin-25x60                  rough  vol 15000/15000 bodies 1 faces 6 worst brep-rs/bbox 1.6e-11 
+MATCH                          gauntlet:sk-rect-dof__offset-corner-30x18                  stored vol 5400/5400 bodies 1 faces 6  
+MATCH                          gauntlet:sk-rect-dof__offset-corner-30x18                  rough  vol 5400/5400 bodies 1 faces 6 worst brep-rs/volume 1.4e-11 
+MATCH                          gauntlet:sk-rect-dof__square-by-equal                      stored vol 4840/4840 bodies 1 faces 6 worst OCCT/volume 1.9e-16 
+MATCH                          gauntlet:sk-rect-dof__square-by-equal                      rough  vol 4840/4840 bodies 1 faces 6 worst closed form/bbox 5.5e-11 
+MATCH                          gauntlet:sk-rect-dof__right-triangle                       stored vol 3000/3000 bodies 1 faces 5 worst OCCT/com 4.7e-17 
+MATCH                          gauntlet:sk-rect-dof__right-triangle                       rough  vol 3000/3000 bodies 1 faces 5 worst brep-rs/bbox 2.0e-10 
+MATCH                          gauntlet:sk-rect-dof__parallelogram                        stored vol 4500/4500 bodies 1 faces 6  
+MATCH                          gauntlet:sk-rect-dof__parallelogram                        rough  vol 4500/4500 bodies 1 faces 6 worst brep-rs/bbox 3.8e-11 
+MATCH                          gauntlet:sk-rect-dof__circle-pinned                        stored vol 1539.206699/1539.3804 bodies 1 faces 3 worst brep-rs/volume 1.1e-4 
+MATCH                          gauntlet:sk-rect-dof__circle-pinned                        rough  vol 1539.206699/1539.3804 bodies 1 faces 3 worst OCCT/volume 1.1e-4 
+MATCH                          gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored       stored vol 4730.793327/4730.973355 bodies 1 faces 6 worst closed form/volume 3.8e-5 
+MATCH                          gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored       rough  vol 4730.796969/4730.973355 bodies 1 faces 6 worst closed form/volume 3.7e-5 
+MATCH                          gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored      stored vol 8843.382954/8843.893421 bodies 1 faces 6 worst closed form/volume 5.8e-5 
+MATCH                          gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored      rough  vol 8843.425618/8843.893421 bodies 1 faces 6 worst closed form/volume 5.3e-5 
+MATCH                          gauntlet:sk-circle-arc-tangent__slot-arc-first-order       stored vol 4730.793327/4730.973355 bodies 1 faces 6 worst closed form/volume 3.8e-5 
+MATCH                          gauntlet:sk-circle-arc-tangent__slot-arc-first-order       rough  vol 4730.796133/4730.973355 bodies 1 faces 6 worst closed form/volume 3.7e-5 
+MATCH                          gauntlet:sk-circle-arc-tangent__circle-circle-external     stored vol 2795.749631/2796.017462 bodies 2 faces 6 worst closed form/volume 9.6e-5 TRANSLATOR-UNDERREPORTS 
+MATCH                          gauntlet:sk-circle-arc-tangent__circle-circle-external     rough  vol 2795.749631/2796.017462 bodies 2 faces 6 worst closed form/volume 9.6e-5 TRANSLATOR-UNDERREPORTS 
+MATCH                          gauntlet:sk-circle-arc-tangent__circle-circle-no-mode      stored vol 2795.749631/2796.017462 bodies 2 faces 6 worst closed form/volume 9.6e-5 TRANSLATOR-UNDERREPORTS 
+MATCH                          gauntlet:sk-circle-arc-tangent__circle-circle-no-mode      rough  vol 2795.749631/2796.017462 bodies 2 faces 6 worst closed form/volume 9.6e-5 TRANSLATOR-UNDERREPORTS 
+MATCH                          gauntlet:sk-circle-arc-tangent__circle-circle-internal     stored vol 1225.134743/1225.221135 bodies 1 faces 4 worst closed form/volume 7.1e-5 
+MATCH                          gauntlet:sk-circle-arc-tangent__circle-circle-internal     rough  vol 1225.134743/1225.221135 bodies 1 faces 4 worst brep-rs/com 1.2e-4 
+
+--- rough-start sweeps (SolidCraft via the mapper; any WRONG = built, not refused, and disagrees with the closed form of the REQUESTED branch) ---
+sweep rect-corner-dx-dy-negative amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep rect-corner-dx-dy-negative amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep rect-corner-dx-dy-negative amplitude 0.4 x diagonal, N=40: {"MATCH":22,"TOL-MISS":0,"POSE":5,"VOLUME":0,"MAPPER-REFUSED":13,"SC-REFUSED":0} brep-rs on the same start: {"POSE / BREP-MATCHES-CLOSED-FORM":5}
+sweep rect-corner-dx-dy-negative amplitude 0.8 x diagonal, N=40: {"MATCH":7,"TOL-MISS":0,"POSE":11,"VOLUME":0,"MAPPER-REFUSED":22,"SC-REFUSED":0} brep-rs on the same start: {"POSE / BREP-MATCHES-CLOSED-FORM":10,"POSE / BREP-OTHER":1}
+sweep right-trapezoid-par-perp-neg-dx amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep right-trapezoid-par-perp-neg-dx amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep right-trapezoid-par-perp-neg-dx amplitude 0.4 x diagonal, N=40: {"MATCH":24,"TOL-MISS":0,"POSE":0,"VOLUME":10,"MAPPER-REFUSED":6,"SC-REFUSED":0} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":9,"VOLUME / BREP-OTHER":1}
+sweep right-trapezoid-par-perp-neg-dx amplitude 0.8 x diagonal, N=40: {"MATCH":11,"TOL-MISS":0,"POSE":1,"VOLUME":13,"MAPPER-REFUSED":15,"SC-REFUSED":0} brep-rs on the same start: {"VOLUME / BREP-OTHER":8,"POSE / BREP-MATCHES-CLOSED-FORM":1,"VOLUME / BREP-MATCHES-CLOSED-FORM":5}
+sweep triangle-length-angle-120 amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep triangle-length-angle-120 amplitude 0.15 x diagonal, N=40: {"MATCH":38,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":2,"SC-REFUSED":0}
+sweep triangle-length-angle-120 amplitude 0.4 x diagonal, N=40: {"MATCH":29,"TOL-MISS":0,"POSE":2,"VOLUME":0,"MAPPER-REFUSED":9,"SC-REFUSED":0} brep-rs on the same start: {"POSE / BREP-MATCHES-CLOSED-FORM":2}
+sweep triangle-length-angle-120 amplitude 0.8 x diagonal, N=40: {"MATCH":18,"TOL-MISS":0,"POSE":4,"VOLUME":0,"MAPPER-REFUSED":18,"SC-REFUSED":0} brep-rs on the same start: {"POSE / BREP-OTHER":2,"POSE / BREP-SAME-AS-SOLIDCRAFT":1,"POSE / BREP-MATCHES-CLOSED-FORM":1}
+sweep circle-circle-external-mode amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep circle-circle-external-mode amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep circle-circle-external-mode amplitude 0.4 x diagonal, N=40: {"MATCH":29,"TOL-MISS":0,"POSE":0,"VOLUME":7,"MAPPER-REFUSED":4,"SC-REFUSED":0} brep-rs on the same start: {"VOLUME / BREP-REFUSED":7}
+sweep circle-circle-external-mode amplitude 0.8 x diagonal, N=40: {"MATCH":25,"TOL-MISS":0,"POSE":2,"VOLUME":12,"MAPPER-REFUSED":1,"SC-REFUSED":0} brep-rs on the same start: {"VOLUME / BREP-REFUSED":12,"POSE / BREP-REFUSED":2}
+sweep circle-circle-internal-mode amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep circle-circle-internal-mode amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep circle-circle-internal-mode amplitude 0.4 x diagonal, N=40: {"MATCH":22,"TOL-MISS":0,"POSE":0,"VOLUME":4,"MAPPER-REFUSED":14,"SC-REFUSED":0} brep-rs on the same start: {"VOLUME / BREP-REFUSED":4}
+sweep circle-circle-internal-mode amplitude 0.8 x diagonal, N=40: {"MATCH":5,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":35,"SC-REFUSED":0}
+sweep tangent-line-circle-side-matching amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep tangent-line-circle-side-matching amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep tangent-line-circle-side-matching amplitude 0.4 x diagonal, N=40: {"MATCH":20,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":20,"SC-REFUSED":0}
+sweep tangent-line-circle-side-matching amplitude 0.8 x diagonal, N=40: {"MATCH":13,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":27,"SC-REFUSED":0}
+sweep slot-hand-rows-R10-L40 amplitude 0.035 x diagonal, N=40: {"MATCH":39,"TOL-MISS":0,"POSE":0,"VOLUME":1,"MAPPER-REFUSED":0,"SC-REFUSED":0} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":1}
+sweep slot-hand-rows-R10-L40 amplitude 0.15 x diagonal, N=40: {"MATCH":29,"TOL-MISS":0,"POSE":0,"VOLUME":10,"MAPPER-REFUSED":0,"SC-REFUSED":1} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":10}
+sweep slot-hand-rows-R10-L40 amplitude 0.4 x diagonal, N=40: {"MATCH":18,"TOL-MISS":0,"POSE":0,"VOLUME":21,"MAPPER-REFUSED":0,"SC-REFUSED":1} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":21}
+sweep slot-hand-rows-R10-L40 amplitude 0.8 x diagonal, N=40: {"MATCH":7,"TOL-MISS":0,"POSE":0,"VOLUME":30,"MAPPER-REFUSED":0,"SC-REFUSED":3} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":26,"VOLUME / BREP-REFUSED":4}
+sweep slot-dims-from-points amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep slot-dims-from-points amplitude 0.15 x diagonal, N=40: {"MATCH":30,"TOL-MISS":0,"POSE":0,"VOLUME":10,"MAPPER-REFUSED":0,"SC-REFUSED":0} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":10}
+sweep slot-dims-from-points amplitude 0.4 x diagonal, N=40: {"MATCH":8,"TOL-MISS":0,"POSE":0,"VOLUME":25,"MAPPER-REFUSED":0,"SC-REFUSED":7} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":25}
+sweep slot-dims-from-points amplitude 0.8 x diagonal, N=40: {"MATCH":1,"TOL-MISS":0,"POSE":0,"VOLUME":22,"MAPPER-REFUSED":4,"SC-REFUSED":13} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":20,"VOLUME / BREP-REFUSED":2}
+sweep oval-four-arcs-endpoint-tangent amplitude 0.035 x diagonal, N=40: {"MATCH":35,"TOL-MISS":0,"POSE":0,"VOLUME":4,"MAPPER-REFUSED":0,"SC-REFUSED":1} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":4}
+sweep oval-four-arcs-endpoint-tangent amplitude 0.15 x diagonal, N=40: {"MATCH":35,"TOL-MISS":0,"POSE":0,"VOLUME":4,"MAPPER-REFUSED":0,"SC-REFUSED":1} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":4}
+sweep oval-four-arcs-endpoint-tangent amplitude 0.4 x diagonal, N=40: {"MATCH":11,"TOL-MISS":0,"POSE":0,"VOLUME":11,"MAPPER-REFUSED":0,"SC-REFUSED":18} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":11}
+sweep oval-four-arcs-endpoint-tangent amplitude 0.8 x diagonal, N=40: {"MATCH":6,"TOL-MISS":0,"POSE":0,"VOLUME":15,"MAPPER-REFUSED":0,"SC-REFUSED":19} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":15}
+sweep hexagon-equal-pointOn-circle amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep hexagon-equal-pointOn-circle amplitude 0.15 x diagonal, N=40: {"MATCH":21,"TOL-MISS":0,"POSE":0,"VOLUME":4,"MAPPER-REFUSED":0,"SC-REFUSED":15} brep-rs on the same start: {"VOLUME / BREP-MATCHES-CLOSED-FORM":4}
+sweep hexagon-equal-pointOn-circle amplitude 0.4 x diagonal, N=40: {"MATCH":0,"TOL-MISS":0,"POSE":0,"VOLUME":8,"MAPPER-REFUSED":0,"SC-REFUSED":32} brep-rs on the same start: {"VOLUME / BREP-REFUSED":5,"VOLUME / BREP-MATCHES-CLOSED-FORM":3}
+sweep hexagon-equal-pointOn-circle amplitude 0.8 x diagonal, N=40: {"MATCH":2,"TOL-MISS":0,"POSE":0,"VOLUME":5,"MAPPER-REFUSED":0,"SC-REFUSED":33} brep-rs on the same start: {"VOLUME / BREP-REFUSED":5}
+sweep symmetric-trapezoid-about-Y-axis amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep symmetric-trapezoid-about-Y-axis amplitude 0.15 x diagonal, N=40: {"MATCH":37,"TOL-MISS":3,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0} tol-miss max 1.1e-9
+sweep symmetric-trapezoid-about-Y-axis amplitude 0.4 x diagonal, N=40: {"MATCH":13,"TOL-MISS":3,"POSE":11,"VOLUME":9,"MAPPER-REFUSED":4,"SC-REFUSED":0} brep-rs on the same start: {"POSE / BREP-REFUSED":11,"VOLUME / BREP-REFUSED":9} tol-miss max 1.2e-9
+sweep symmetric-trapezoid-about-Y-axis amplitude 0.8 x diagonal, N=40: {"MATCH":9,"TOL-MISS":0,"POSE":4,"VOLUME":12,"MAPPER-REFUSED":15,"SC-REFUSED":0} brep-rs on the same start: {"VOLUME / BREP-REFUSED":12,"POSE / BREP-REFUSED":4}
+sweep rect-origin-dims amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep rect-origin-dims amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep rect-origin-dims amplitude 0.4 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep rect-origin-dims amplitude 0.8 x diagonal, N=40: {"MATCH":39,"TOL-MISS":0,"POSE":1,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0} brep-rs on the same start: {"POSE / BREP-SAME-AS-SOLIDCRAFT":1}
+sweep rect-lock-offset-corner amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep rect-lock-offset-corner amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep rect-lock-offset-corner amplitude 0.4 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep rect-lock-offset-corner amplitude 0.8 x diagonal, N=40: {"MATCH":38,"TOL-MISS":0,"POSE":2,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0} brep-rs on the same start: {"POSE / BREP-SAME-AS-SOLIDCRAFT":2}
+sweep symmetric-about-construction-line amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep symmetric-about-construction-line amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep symmetric-about-construction-line amplitude 0.4 x diagonal, N=40: {"MATCH":31,"TOL-MISS":0,"POSE":1,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":8} brep-rs on the same start: {"POSE / BREP-REFUSED":1}
+sweep symmetric-about-construction-line amplitude 0.8 x diagonal, N=40: {"MATCH":21,"TOL-MISS":0,"POSE":5,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":14} brep-rs on the same start: {"POSE / BREP-REFUSED":5}
+sweep tangent-line-circle amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep tangent-line-circle amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep tangent-line-circle amplitude 0.4 x diagonal, N=40: {"MATCH":20,"TOL-MISS":0,"POSE":9,"VOLUME":0,"MAPPER-REFUSED":11,"SC-REFUSED":0} brep-rs on the same start: {"POSE / BREP-MATCHES-CLOSED-FORM":9}
+sweep tangent-line-circle amplitude 0.8 x diagonal, N=40: {"MATCH":17,"TOL-MISS":0,"POSE":10,"VOLUME":0,"MAPPER-REFUSED":13,"SC-REFUSED":0} brep-rs on the same start: {"POSE / BREP-MATCHES-CLOSED-FORM":10}
+sweep triangle-apex-on-diagonal-line amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep triangle-apex-on-diagonal-line amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep triangle-apex-on-diagonal-line amplitude 0.4 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep triangle-apex-on-diagonal-line amplitude 0.8 x diagonal, N=40: {"MATCH":33,"TOL-MISS":0,"POSE":7,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0} brep-rs on the same start: {"POSE / BREP-SAME-AS-SOLIDCRAFT":3,"POSE / BREP-OTHER":1,"POSE / BREP-REFUSED":2,"POSE / BREP-MATCHES-CLOSED-FORM":1}
+sweep rect-diagonal-two-point-distance amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep rect-diagonal-two-point-distance amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep rect-diagonal-two-point-distance amplitude 0.4 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep rect-diagonal-two-point-distance amplitude 0.8 x diagonal, N=40: {"MATCH":34,"TOL-MISS":0,"POSE":6,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0} brep-rs on the same start: {"POSE / BREP-MATCHES-CLOSED-FORM":4,"POSE / BREP-OTHER":2}
+sweep circle-radius-dx-dy amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep circle-radius-dx-dy amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep circle-radius-dx-dy amplitude 0.4 x diagonal, N=40: {"MATCH":35,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":5,"SC-REFUSED":0}
+sweep circle-radius-dx-dy amplitude 0.8 x diagonal, N=40: {"MATCH":29,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":11,"SC-REFUSED":0}
+sweep symmetric-3point-midpoint amplitude 0.035 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep symmetric-3point-midpoint amplitude 0.15 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep symmetric-3point-midpoint amplitude 0.4 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+sweep symmetric-3point-midpoint amplitude 0.8 x diagonal, N=40: {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0}
+
+--- controls ---
+control lock-hoisting seed 0: hoisted MATCH dBbox 0.0e+0; fix moved to the end: POSE dBbox 3.5e-1 bbox [4.44902574,1.936755308,0,34.44902574,21.93675531,10]
+control lock-hoisting seed 1: hoisted MATCH dBbox 0.0e+0; fix moved to the end: POSE dBbox 3.7e-1 bbox [4.125859304,1.885579387,0,34.1258593,21.88557939,10]
+control lock-hoisting seed 2: hoisted MATCH dBbox 0.0e+0; fix moved to the end: POSE dBbox 4.9e-1 bbox [4.137381931,1.524313208,0,34.13738193,21.52431321,10]
+control mode stripped (external requested, circles start internal): VOLUME volume 2010.440091 vs requested-branch 2796.017462 bbox [-8,-8,0,8,8,10]
+control mode stripped (internal requested, circles start external): VOLUME volume 2795.749631 vs requested-branch 1225.221135 bodies 2
+control angle 120 requested but triangle drawn with the opposite turn, mapper bypassed: BUILT volume 5196.152423 want 5196.152423 bbox {"max":[40,0,10],"min":[0,-25.98076211353316,0]}
+control signed distanceX -8 requested, rect drawn on the positive side: MAPPER-REFUSED | is the SIGNED distanceX -8 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested | is the SIGNED distanceY -4 (
+control same start with |d| (sign dropped): POSE bbox [8,4,0,38,24,10] vs requested [-8,-4,22,16]
+
+--- oval (4-arc endpoint tangent) rough start, 40 seeds x 3.5% , rule order permutations ---
+oval order "as written (joints, radii, equals, locks)": {"MATCH":36,"TOL-MISS":0,"POSE":0,"VOLUME":3,"MAPPER-REFUSED":0,"SC-REFUSED":1} WRONG {"k":4,"dVol":2.2508706037846182,"dBbox":3.3298221281360822,"brep":"BREP-MATCHES-CLOSED-FORM"} | solid.extrude: sk has no closed profiles
+oval order "radii and equals first": {"MATCH":40,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":0} 
+oval order "equals first, then joints": {"MATCH":39,"TOL-MISS":0,"POSE":0,"VOLUME":0,"MAPPER-REFUSED":0,"SC-REFUSED":1} | sketch.constraint.tangent: invalid parameters for `sketch.constraint.tangent`: that would over-constrain the sketch (it conflicts with what the other constraints already determine)

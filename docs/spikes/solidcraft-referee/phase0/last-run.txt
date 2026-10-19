@@ -1,0 +1,125 @@
+output dir: /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/phase0
+tolerances: truck volume/bbox planar 1e-9, curved 0.0003; centre of mass 0.000001 x bbox diagonal (0.00003 for non-pick curved results, tessellation-limited); brep-rs: gate tol
+fixture                                   OCCT vol  brep dVol  truck dVol     dBbox      dCOM  faces O/B/T(k)  outcome
+box                                     24000.0000    1.5e-16     1.5e-16    0.0e+0   6.6e-17        6/6/6(6)  PASS
+cylinder                                13571.6803    4.0e-16      1.1e-4    2.7e-5   6.3e-17        3/3/3(4)  PASS
+cone                                     4523.8934    2.0e-16      1.8e-4    1.3e-5   5.9e-17        2/2/2(4)  PASS
+sphere                                  14137.1669    1.3e-16      7.1e-5   1.2e-16   1.1e-13        1/1/1(6)  PASS
+torus                                    4421.5828    1.9e-15      1.5e-4    9.0e-5    7.4e-7        1/1/1(6)  PASS
+prism-hex                                5196.1524     0.0e+0     1.8e-16   3.6e-16   9.3e-17        8/8/8(8)  PASS
+prism-tri                                2598.0762     0.0e+0      0.0e+0   3.6e-16   4.3e-17        5/5/5(5)  PASS
+wedge                                     600.0000     0.0e+0      0.0e+0    0.0e+0   2.9e-17        5/5/5(5)  PASS
+wedge-2                                  1440.0000     0.0e+0      0.0e+0    0.0e+0   2.7e-17        5/5/5(5)  PASS
+box-round-fillet                        30712.2592    1.4e-11      2.5e-5   7.1e-16   1.1e-10    26/26/26(26)  PASS
+box-round-chamfer                       29141.3333    1.2e-16      1.5e-3   3.6e-16   1.2e-17    26/26/18(18)  FAIL (geometry, tol 1e-9/0.000001 unexplained faces)
+cylinder-round-fillet                   13296.6935    4.1e-16      4.0e-5    2.4e-5   4.6e-16        5/5/5(8)  PASS
+sketch-extrude                          12000.0000     0.0e+0      0.0e+0    0.0e+0    0.0e+0        6/6/6(6)  PASS
+sketch-on-xz                            12000.0000     0.0e+0      0.0e+0    0.0e+0    0.0e+0        6/6/6(6)  PASS
+sketch-on-yz-offset                     12000.0000     0.0e+0      0.0e+0    0.0e+0    0.0e+0        6/6/6(6)  PASS
+circle-extrude                          14137.1669    6.4e-16      9.6e-5   5.3e-16   8.6e-11        3/3/3(4)  PASS
+rounded-corner                          11907.2920    1.3e-12      5.1e-6   3.6e-15    1.9e-6        7/7/7(7)  PASS
+chamfered-corner                        11784.0000     0.0e+0      0.0e+0    0.0e+0   1.8e-17        7/7/7(7)  PASS
+bowed-edge                              14640.1407    2.7e-12      5.0e-5   4.4e-16    1.4e-5        6/6/6(6)  PASS
+revolve-on-xy                           28274.3339    1.3e-16      1.6e-4   1.8e-16   6.3e-15       4/4/4(12)  PASS
+revolve-on-xz                           28274.3339    1.3e-16      1.6e-4   1.8e-16   6.3e-15       4/4/4(12)  PASS
+revolve-on-yz                           28274.3339    1.3e-16      1.6e-4   1.8e-16   6.3e-15       4/4/4(12)  PASS
+blend                                   21000.0000    1.7e-16     1.7e-16    1.0e-7   5.0e-16        6/6/6(6)  REFEREE-ARTIFACT
+groove-full                             30994.6904    2.3e-16      5.9e-6   5.3e-16    1.8e-6       8/8/8(10)  PASS
+groove-half                             31497.3452     0.0e+0      2.7e-6   5.3e-16    7.9e-7      10/10/9(9)  PASS
+groove-straddle                         31547.6107    1.2e-16      2.6e-6   3.6e-16    8.0e-7       8/8/8(10)  PASS
+pocket-xy                               31600.0000    2.3e-16     3.5e-16    0.0e+0   9.9e-18    11/11/11(11)  PASS
+pocket-xz                               31600.0000    2.3e-16     3.5e-16    0.0e+0   1.4e-17    11/11/11(11)  PASS
+pocket-G1-xy-slab                       12400.0000    2.9e-16     1.5e-16    0.0e+0   3.3e-18    11/11/11(11)  PASS
+pocket-G3-yz-slab                       12400.0000    1.5e-16      0.0e+0    0.0e+0   7.8e-18    11/11/11(11)  PASS
+pocket-G5-circle                        28407.3009    1.3e-16      2.3e-6    0.0e+0    3.3e-7        8/8/8(9)  PASS
+boolean-cut                             27978.7614    1.3e-16      2.4e-5   1.2e-15   4.6e-17        7/7/7(8)  PASS
+boolean-union                           36021.2386    2.0e-16      1.9e-5   2.3e-15   1.3e-16    10/10/10(12)  PASS
+boolean-intersect                       14137.1669    5.1e-16      9.6e-5    2.7e-5   1.6e-16        3/3/3(4)  PASS
+mirror                                  16000.0000    2.3e-16     3.4e-16    0.0e+0   7.3e-17      10/12/6(6)  PASS
+moved                                    8000.0000    1.1e-16     2.3e-16    0.0e+0    0.0e+0        6/6/6(6)  PASS
+pattern-linear-3                        96000.0000    1.5e-16     3.0e-16    0.0e+0   4.3e-17    18/18/18(18)  PASS
+pattern-circular-6                       6000.0000     0.0e+0      0.0e+0   3.6e-16   6.3e-17    36/36/36(36)  PASS
+hole-through                            31434.5133     0.0e+0      3.0e-6   7.1e-16   2.7e-17        7/7/7(8)  PASS
+hole-blind                              31717.2567    2.3e-16      1.5e-6   7.1e-16    1.2e-7        8/8/8(9)  PASS
+hole-corners                            29738.0533    1.2e-16      1.3e-5   1.4e-15   1.2e-16    10/10/10(14)  PASS
+hole-x-axis                             30869.0266    1.2e-16      6.1e-6   7.1e-16   7.9e-18        7/7/7(8)  PASS
+shell-open-top                           8672.0000    2.1e-16     2.1e-16    0.0e+0   3.0e-17    11/11/11(11)  PASS
+round-one-edge                          31862.6548    1.2e-12      2.8e-6   5.3e-16    8.7e-7        7/7/7(7)  PASS
+bevel-one-edge                          31680.0000     0.0e+0      0.0e+0   3.6e-16   3.6e-17        7/7/7(7)  PASS
+draft-one-face                          30875.6733    2.4e-16     5.9e-16   5.3e-16   3.0e-17        6/6/6(6)  PASS
+coplanar-union-shared-face              16000.0000    2.3e-16     3.4e-16    0.0e+0   3.6e-17       10/6/6(6)  PASS
+coplanar-subtract-flush-top             31000.0000    1.2e-16     2.3e-16    0.0e+0   3.7e-18    11/11/11(11)  PASS
+coplanar-subtract-caps                  27978.7614    1.3e-16      2.4e-5   1.2e-15   4.6e-17        7/7/7(8)  PASS
+coplanar-intersect-offset                4000.0000    1.1e-16     2.3e-16    0.0e+0   3.0e-17        6/6/6(6)  PASS
+tangent-union-cylinder                  38165.7335    3.7e-11      2.5e-5    4.0e-6    8.5e-6      13/8/9(10)  PASS
+tangent-subtract-touching               32000.0000    1.1e-16     2.3e-16    0.0e+0   3.8e-18        7/6/6(6)  PASS
+boolean-cut-x-axis-cylinder             28858.4073    1.3e-16      1.8e-5   1.1e-15   6.2e-17        7/7/7(8)  PASS
+boolean-sphere-minus-box                11251.3519    4.0e-12      1.0e-4    1.8e-8   8.0e-12       5/5/5(10)  PASS
+boolean-nonconvex-l-minus-cylinder       5717.2567     0.0e+0      8.2e-6   5.3e-16    1.7e-6       9/9/9(10)  PASS
+boolean-cylinder-minus-cylinder         10055.3450    1.5e-10      7.6e-5    7.3e-5    9.1e-6        4/4/4(6)  PASS
+boolean-cylinder-intersect-cylinder      3516.3353    6.6e-15      1.9e-4    5.2e-5    3.6e-6        5/4/4(6)  PASS
+boolean-cylinder-union-cylinder         16087.2029    1.1e-10      1.2e-4    7.3e-5    2.7e-6        9/4/4(6)  PASS
+shell-cylinder-open-top                  4775.2208    1.7e-15      1.0e-4    2.7e-5    6.2e-7        5/5/5(7)  PASS
+fillet-cylinder-edge                    13434.1869    4.1e-16      4.1e-5    2.4e-5    2.4e-7        4/4/4(6)  PASS
+chamfer-cylinder-edge                   13260.6626    4.1e-16      1.1e-4    2.7e-5    1.5e-6        4/4/4(6)  PASS
+name-primitive-face                     32000.0000    1.1e-16     2.3e-16    0.0e+0    0.0e+0        6/6/6(6)  PASS
+name-between-edge                       32000.0000    1.1e-16     2.3e-16    0.0e+0    0.0e+0        6/6/6(6)  PASS
+name-carried-after-cut                  27978.7614    1.3e-16      2.4e-5   1.2e-15   4.6e-17        7/7/7(8)  PASS
+name-extrude-side                       12000.0000     0.0e+0      0.0e+0    0.0e+0    0.0e+0        6/6/6(6)  PASS
+name-extrude-cap-top                    12000.0000     0.0e+0      0.0e+0    0.0e+0    0.0e+0        6/6/6(6)  PASS
+bores-blind-stacked                     46812.4780    4.7e-16      4.2e-6   5.9e-16    4.8e-7    12/12/12(15)  PASS
+bore-through-then-blind                 46812.4780     0.0e+0      4.2e-6   7.1e-16    5.8e-7       9/9/9(11)  PASS
+boolean-rounded-corner-cap              11643.2920    1.1e-12      5.2e-6   3.0e-16    1.9e-6    10/10/10(10)  PASS
+chamfer-on-boolean-result               15840.0000     0.0e+0      0.0e+0    0.0e+0   1.5e-17    12/12/12(12)  PASS
+sphere-bore-through                     32385.7341    1.8e-15      6.6e-5    2.0e-8   1.6e-12        2/2/2(8)  PASS
+sphere-bore-blind                       33230.7712    6.6e-16      6.9e-5    2.0e-8    3.1e-7        3/3/3(9)  PASS
+cone-bore-through                        1876.5780    1.2e-16      6.9e-6    1.3e-5    1.6e-6        3/3/3(6)  PASS
+cross-bore-through                       9174.7135    2.9e-11      2.6e-5    2.4e-5    1.1e-9        4/4/4(6)  PASS
+cross-bore-blind                         9274.6130    1.7e-12      3.1e-5    2.4e-5    2.4e-7        5/5/5(7)  PASS
+hole-then-round                         30917.4337    1.0e-12      2.7e-6   7.1e-16    5.1e-7        8/8/8(9)  PASS
+
+REFUSED by truck/translator (2):
+  shell-2: shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points
+  shell-cylinder-closed: sh1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points
+
+FACE-TYPE COMPARISON (every fixture whose per-type counts differ; pl plane, cy cylinder, sp sphere, co cone, to torus, ot other):
+fixture                              OCCT types           truck types          OCCT components     explanation per type
+box-round-chamfer                    pl26                 pl18                 pl26                plane: UNEXPLAINED
+blend                                ot4 pl2              pl6                  ot4 pl2             plane: occt-other-surface-is-truck-plane; other: occt-other-surface-is-truck-plane
+groove-half                          pl9 cy1              cy1 pl8              pl8 cy1             plane: truck-merges-edge-connected-same-surface-faces
+mirror                               pl10                 pl6                  pl6                 plane: truck-merges-edge-connected-same-surface-faces
+coplanar-union-shared-face           pl10                 pl6                  pl6                 plane: truck-merges-edge-connected-same-surface-faces
+tangent-union-cylinder               pl11 cy2             cy2 pl7              pl7 cy1             cylinder: truck-splits-cylinder-patch-over-180deg; plane: truck-merges-edge-connected-same-surface-faces
+tangent-subtract-touching            pl7                  pl6                  pl6                 plane: truck-merges-edge-connected-same-surface-faces
+boolean-cylinder-intersect-cylinder  cy3 pl2              cy2 pl2              cy2 pl2             cylinder: truck-merges-edge-connected-same-surface-faces
+boolean-cylinder-union-cylinder      pl6 cy3              cy2 pl2              pl2 cy2             cylinder: truck-merges-edge-connected-same-surface-faces; plane: truck-merges-edge-connected-same-surface-faces
+  truck-merges-edge-connected-same-surface-faces: truck count for that type == edge-connected components of same-surface faces in the live OCCT shape.
+  truck-splits-cylinder-patch-over-180deg: truck cylinder count == components + components whose summed angular span (face UV bounds) exceeds 180 degrees.
+  occt-other-surface-is-truck-plane: OCCT holds a face as a non-analytic surface where truck gives a plane; counts match once the two are paired.
+
+CLASSIFICATION NOTES (live evidence; a diagnosis never downgrades a FAIL):
+  box-round-chamfer: FAIL -- DIAGNOSIS, outcome stays FAIL (volume delta 1.46e-3 vs live OCCT, bar 1e-9): truck is the exact union of 12 wedge prisms (matches an independent 12-cut build to 1.3e-14); OCCT and brep-rs add 8 corner triangles (live: 8 triangular planar faces = 26 - 18)
+  blend: REFEREE-ARTIFACT -- truck bbox equals the bbox of the lofted sketches (4.7e-14); OCCT AddOptimal is 1.0e-7 off it
+
+ASYMMETRIC FIXTURES. Pick controls = opposite edge/face through the part centre; REJECTED needs a failed score and control dCOM >= 10 x 0.000001.
+fixture                         OCCT==brep  true dVol  true dCOM   pos   ctl dVol   ctl dCOM   ctl/tol  control
+asym-fillet-short-edge                true     1.1e-6     3.9e-7  PASS     1.1e-6     1.2e-3     1212x  REJECTED (FAIL)
+asym-fillet-r1                        true     1.2e-7     4.5e-8  PASS     1.2e-7     1.4e-4      138x  REJECTED (FAIL)
+asym-fillet-r0p5                      true     6.6e-8     2.6e-8  PASS     6.6e-8     3.5e-5       35x  REJECTED (FAIL)
+asym-fillet-3x-r3                     true     1.2e-7     4.5e-8  PASS     1.2e-7     1.4e-4      138x  REJECTED (FAIL)
+asym-shell-open-side                  true    5.6e-16    1.7e-16  PASS    5.6e-16     4.7e-2    47326x  REJECTED (FAIL)
+asym-shell-thin-3x                    true    4.6e-15    2.9e-15  PASS    2.7e-15     7.4e-2    73833x  REJECTED (FAIL)
+asym-draft-face                       true    1.3e-16    3.5e-17  PASS    1.3e-16     1.6e-2    16281x  REJECTED (FAIL)
+asym-draft-1deg-3x                    true    4.5e-16    2.3e-16  PASS     0.0e+0     2.0e-3     2035x  REJECTED (FAIL)
+asym-cylinder-one-rim                 true     4.1e-5     2.4e-7  PASS     4.1e-5     6.5e-3     6468x  REJECTED (FAIL)
+asym-cylinder-rim-r0p5                true     9.1e-6     3.8e-8  PASS     9.1e-6     1.9e-4      194x  REJECTED (FAIL)
+asym-cylinder-rim-3x-r3               true     1.6e-5     4.9e-8  PASS     1.6e-5     7.6e-4      764x  REJECTED (FAIL)
+asym-revolve-90-xy                       -     9.9e-5     1.4e-5  PASS  (no pick: partial-revolve direction fixture)
+asym-revolve-200-xz-offset               -     6.2e-7     7.6e-6  PASS  (no pick: partial-revolve direction fixture)
+asym-groove-270-yz-offset                -     3.1e-6     9.7e-8  PASS  (no pick: partial-revolve direction fixture)
+  pick coincidence (OCCT resolve == brep-rs resolve): 11/11
+
+fixtures 78: PASS 74, FAIL 1, CONVENTION 0, REFEREE-ARTIFACT 1, REFUSED 2, unexplained face-type mismatches 1
+brep-rs on the same fixtures: PASS 78, refused 0
+asymmetric: 14 fixtures, positive PASS 14, pick controls rejected 11/11
+Named picks (fillet / shell open / draft) take their point from brep-rs resolve; OCCT-vs-brep-rs coincidence is asserted above only for the asymmetric fixtures.

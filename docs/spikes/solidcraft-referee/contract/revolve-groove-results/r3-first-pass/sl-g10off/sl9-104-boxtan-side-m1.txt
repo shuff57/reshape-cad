@@ -1,0 +1,1 @@
+sl9-104-boxtan-side-m1                   PASS     occtV 70189.7715 | tr-occt dV 1.4e-6 dBb 4.6e-14 dCom 3.1e-7 F o/b/t 10/10/10 | brep-occt dV 4.6e-13      | ms 1976 cpu 2283

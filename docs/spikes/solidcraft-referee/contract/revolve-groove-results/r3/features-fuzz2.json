@@ -1,0 +1,4620 @@
+[
+ {
+  "id": "fzc2-0-post-top-flat-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 14.899999999999999,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-1-post-top-circle-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 23.3,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-2-tube-top-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 13,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-3-boxC-front-cone-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 32.5,
+     "nearest": 15,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-4-post-side-round-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "torus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 2.6,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-5-boxC-front-circle-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 10.95,
+     "nearest": 15,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-6-tube-top-flat-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 10.05,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-7-boxC-top-circle-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 27,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-8-boxG-side-cone-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 16.1,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-9-boxG-top-cone-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 25.1,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-10-boxG-top-cone-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 21.9,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-11-boxG-top-circle-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 31,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-12-boxG-top-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "torus",
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 37.9,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-13-tube-side-flat-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 16.7,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-14-post-side-flat-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 23.549999999999997,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-15-boxC-side-round-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 31.5,
+     "nearest": 15,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-16-post-top-cone-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 8.8,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-17-post-front-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 22.35,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-18-tube-top-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 10.95,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-19-boxC-top-circle-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 25.8,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-20-boxC-top-round-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "torus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 5.1,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-21-boxG-top-round-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "torus",
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 22.6,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-22-post-top-flat-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 22.299999999999997,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-23-join-side-cone-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 4.2,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-24-join-top-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 11.100000000000001,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-25-post-front-flat-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 20.6,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-26-boxC-front-flat-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 35.550000000000004,
+     "nearest": 15,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-27-post-front-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": false,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 23,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-28-post-front-circle-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 14.65,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-29-tube-front-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 25.2,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-30-tube-front-round-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus",
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 5.3,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-31-tube-side-circle-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 3.1,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-32-join-front-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 22.4,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-33-join-side-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 16.8,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-34-join-side-circle-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 19.849999999999998,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-35-tube-front-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 12.350000000000001,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-36-post-top-circle-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 21.85,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-37-post-top-cone-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 23.3,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-38-tube-top-circle-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 13.950000000000001,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-39-tube-top-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 23.4,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-40-post-front-round-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "torus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 5.8,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-41-tube-front-flat-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 23.65,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-42-boxC-front-flat-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 16.75,
+     "nearest": 15,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-43-post-top-circle-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 23,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-44-post-top-flat-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 14.15,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-45-boxG-top-cone-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 12.7,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-46-join-side-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 16.8,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-47-tube-side-flat-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 14.15,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-48-boxC-side-cone-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 26.7,
+     "nearest": 15,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-49-boxG-top-circle-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 16,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-50-boxC-side-cone-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 6.3,
+     "nearest": 15,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-51-boxC-top-cone-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 10.4,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-52-post-top-cone-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 6.8,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-53-post-top-circle-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 19.8,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-54-join-top-round-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 23.8,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-55-boxC-top-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 21.9,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-56-post-side-circle-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 9,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-57-tube-top-flat-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 19.8,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-58-boxC-front-cone-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 34.6,
+     "nearest": 15,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-59-boxC-top-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 12.15,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-60-join-top-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 13.5,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-61-join-top-circle-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 26,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-62-boxG-top-flat-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 17.6,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-63-post-side-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 21.75,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-64-tube-top-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 7.2,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-65-boxC-top-flat-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 37.35,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-66-boxG-top-flat-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 29.299999999999997,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-67-post-top-round-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus",
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 24.7,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-68-boxC-top-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 20.400000000000002,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-69-join-top-circle-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 22.95,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-70-post-top-circle-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 24.950000000000003,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-71-post-front-flat-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 12.1,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-72-post-side-flat-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 11.35,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-73-tube-top-flat-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 10.6,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-74-post-top-flat-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 11.25,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-75-join-top-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 15.1,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-76-join-top-flat-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 15.3,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-77-tube-top-flat-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 23.8,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-78-boxC-front-circle-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 13.049999999999999,
+     "nearest": 15,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-79-boxG-front-flat-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 24.6,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-80-boxG-front-cone-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 33.6,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-81-boxC-front-cone-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 40.9,
+     "nearest": 15,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-82-join-front-round-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "torus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 13.3,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-83-post-top-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 25.25,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-84-tube-top-flat-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 23.4,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-85-boxC-top-flat-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 30.3,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-86-tube-front-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 16,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-87-join-top-round-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "torus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 3.5,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-88-boxC-top-flat-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 4.449999999999999,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-89-join-top-circle-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 10.149999999999999,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-90-post-side-cone-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 13.5,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-91-boxC-top-flat-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 11,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-92-boxC-top-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "torus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 36.9,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-93-boxC-top-cone-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 24.1,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-94-tube-side-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 15.600000000000001,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-95-post-top-flat-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 20.85,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-96-post-top-circle-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 10.65,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-97-boxC-top-flat-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 16.150000000000002,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-98-post-top-round-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "torus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 10.5,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-99-boxG-top-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 33.35,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-100-boxG-top-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 34.25,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-101-post-front-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 17.150000000000002,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-102-post-front-round-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 8.2,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-103-tube-top-cone-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 10.7,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-104-post-top-circle-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 6,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-105-post-top-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": false,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 8,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-106-join-side-cone-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 10.3,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-107-boxC-top-flat-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 9.65,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-108-join-front-cone-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 20.3,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-109-boxG-top-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 10,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-110-join-side-cone-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 19.3,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-111-boxG-front-round-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "torus",
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 23.9,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-112-tube-top-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 6.9,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-113-boxG-side-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 31.05,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-114-post-front-flat-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 17.15,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-115-boxC-top-circle-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 12.9,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-116-post-front-circle-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 17.7,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-117-post-top-round-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus",
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 19.5,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-118-post-top-flat-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 16.2,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-119-post-front-circle-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 12.1,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-120-join-top-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 19.25,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-121-post-front-flat-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 17.7,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-122-tube-top-cone-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 3.4,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-123-join-top-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 14.7,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-124-post-front-flat-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 10.05,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-125-tube-top-flat-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 10.25,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-126-join-top-cone-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 24.6,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-127-post-top-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 8.55,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-128-post-top-round-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 11.5,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-129-post-top-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 19.4,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-130-post-side-flat-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 14.95,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-131-post-top-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 16.8,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-132-tube-top-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 14.2,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-133-join-front-cone-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 14.9,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-134-boxG-front-flat-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 23.8,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-135-boxC-top-cone-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 18.2,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-136-tube-top-circle-45",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 6.15,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-137-join-front-cone-180",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 15.8,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-138-boxC-top-flat-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 29.2,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-139-tube-front-cone-270",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 8.7,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-140-join-top-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder",
+      "torus"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 20.2,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-141-post-top-circle-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus"
+     ],
+     "partial": false,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 7.5,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-142-post-top-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 13.5,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-143-tube-top-round-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "torus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 16.6,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-144-post-top-circle-90",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "torus",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "torus"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 21.15,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-145-boxC-front-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 26.15,
+     "nearest": 15,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-146-post-top-cone-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "cone",
+     "shape": "cylinder",
+     "coaxial": true,
+     "kinds": [
+      "annulus",
+      "cone",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 1,
+     "headTypes": {
+      "cylinder": 1,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 25.7,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-147-tube-front-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 2
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 11.35,
+     "nearest": 0,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-148-boxC-front-flat-135",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": "box",
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": true,
+     "curved": 0,
+     "headTypes": {
+      "plane": 6
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": true,
+     "rOuter": 36.9,
+     "nearest": 15,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ },
+ {
+  "id": "fzc2-149-join-top-flat-360",
+  "grooves": [
+   {
+    "id": "groove1",
+    "status": "refused",
+    "cost": {
+     "tool": "flat",
+     "shape": null,
+     "coaxial": false,
+     "kinds": [
+      "annulus",
+      "cylinder"
+     ],
+     "partial": false,
+     "curved": 2,
+     "headTypes": {
+      "cylinder": 2,
+      "plane": 3
+     },
+     "touchesAxis": false,
+     "worldAxis": true,
+     "reachesWall": false,
+     "rOuter": 16.65,
+     "nearest": 20,
+     "bodies": 1
+    },
+    "refusal": "groove1 (groove): this groove cannot be built here, so it is not built."
+   }
+  ]
+ }
+]

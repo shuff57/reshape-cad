@@ -1,0 +1,129 @@
+MATCH     own-rect-rough-dims                                  stored   bodies 1 faces 6 dClosed 2.2e-14 dBbox 0.0e+0 brep 1.5e-11 occt 1.7e-11 45ms
+MATCH     own-rect-rough-dims                                  rough3.5 bodies 1 faces 6 dClosed 2.1e-14 dBbox 0.0e+0 brep 1.3e-11 occt 1.4e-11 16ms
+MATCH     own-rect-rough-dims                                  rough15  bodies 1 faces 6 dClosed 1.7e-14 dBbox 0.0e+0 brep 9.6e-14 occt 2.0e-12 12ms
+MATCH     own-symmetric-trapezoid                              stored   bodies 1 faces 6 dClosed 1.8e-12 dBbox 5.1e-11 brep solve: line -3 has zero length; a mirror occt Sketch 1: rule 5 names geometry -3, whic 13ms
+MATCH     own-symmetric-trapezoid                              rough3.5 bodies 1 faces 6 dClosed 7.6e-12 dBbox 2.2e-10 brep solve: line -3 has zero length; a mirror occt Sketch 1: rule 1 (coincident) is off by  10ms
+MATCH     own-symmetric-trapezoid                              rough15  bodies 1 faces 6 dClosed 2.6e-11 dBbox 7.6e-10 brep solve: line -3 has zero length; a mirror occt Sketch 1: rule 1 (coincident) is off by  9ms
+MATCH     own-symmetric-3pt-rect                               stored   bodies 1 faces 6 dClosed 8.1e-13 dBbox 3.2e-12 brep 2.0e-12 occt Sketch 1: rule 9 is a symmetric rule, an 9ms
+MATCH     own-symmetric-3pt-rect                               rough3.5 bodies 1 faces 6 dClosed 9.5e-13 dBbox 3.8e-12 brep 1.8e-12 occt Sketch 1: rule 9 is a symmetric rule, an 10ms
+MATCH     own-symmetric-3pt-rect                               rough15  bodies 1 faces 6 dClosed 1.4e-12 dBbox 5.6e-12 brep 6.5e-12 occt Sketch 1: rule 9 is a symmetric rule, an 11ms
+MATCH     own-triangle-length-angle                            stored   bodies 1 faces 5 dClosed 3.5e-16 dBbox 1.4e-16 brep 2.0e-13 occt Sketch 1: rule 7 is a angle rule, and th 6ms
+MATCH     own-triangle-length-angle                            rough3.5 bodies 1 faces 5 dClosed 3.5e-16 dBbox 1.4e-16 brep 2.0e-13 occt Sketch 1: rule 7 is a angle rule, and th 5ms
+MATCH     own-triangle-length-angle                            rough15  bodies 1 faces 5 dClosed 3.5e-16 dBbox 1.4e-16 brep 3.1e-14 occt Sketch 1: rule 7 is a angle rule, and th 5ms
+MATCH     own-hexagon-equal-oncircle                           stored   bodies 1 faces 8 dClosed 1.4e-15 dBbox 3.0e-12 brep 6.6e-13 occt Sketch 1: circle 7 is construction geome 20ms
+MATCH     own-hexagon-equal-oncircle                           rough3.5 bodies 1 faces 8 dClosed 7.9e-15 dBbox 1.2e-11 brep 1.4e-11 occt Sketch 1: circle 7 is construction geome 22ms
+MATCH     own-hexagon-equal-oncircle                           rough15  bodies 1 faces 8 dClosed 3.0e-14 dBbox 3.9e-11 brep 3.6e-11 occt Sketch 1: circle 7 is construction geome 17ms
+MATCH     own-circle-diameter                                  stored   bodies 1 faces 3 dClosed 1.1e-4 dBbox 8.9e-16 brep 1.1e-4 occt 1.1e-4 261ms
+MATCH     own-circle-diameter                                  rough3.5 bodies 1 faces 3 dClosed 1.1e-4 dBbox 8.9e-16 brep 1.1e-4 occt 1.1e-4 237ms
+MATCH     own-circle-diameter                                  rough15  bodies 1 faces 3 dClosed 1.1e-4 dBbox 8.9e-16 brep 1.1e-4 occt 1.1e-4 243ms
+MISMATCH  own-washer-dims                                      stored   bodies 1 faces 6 dClosed 8.5e-2 dBbox 0.0e+0 brep 8.5e-2 occt 8.5e-2 8ms
+MISMATCH  own-washer-dims                                      rough3.5 bodies 1 faces 6 dClosed 8.5e-2 dBbox 0.0e+0 brep 8.5e-2 occt 8.5e-2 8ms
+MISMATCH  own-washer-dims                                      rough15  bodies 1 faces 6 dClosed 8.5e-2 dBbox 3.4e-48 brep 8.5e-2 occt 8.5e-2 7ms
+MATCH     own-l-shape-dims                                     stored   bodies 1 faces 8 dClosed 3.5e-12 dBbox 1.2e-11 brep 1.7e-11 occt 1.7e-11 9ms
+MATCH     own-l-shape-dims                                     rough3.5 bodies 1 faces 8 dClosed 5.4e-12 dBbox 1.8e-11 brep 2.2e-10 occt 2.5e-10 8ms
+MATCH     own-l-shape-dims                                     rough15  bodies 1 faces 8 dClosed 1.1e-11 dBbox 3.8e-11 brep 1.1e-11 occt 1.1e-11 9ms
+MATCH     own-xz-plane-rect                                    stored   bodies 1 faces 6 dClosed 2.7e-11 dBbox 0.0e+0 brep 2.6e-11 occt 2.5e-11 6ms
+MATCH     own-xz-plane-rect                                    rough3.5 bodies 1 faces 6 dClosed 4.6e-11 dBbox 4.1e-32 brep 4.9e-11 occt 4.9e-11 6ms
+MATCH     own-xz-plane-rect                                    rough15  bodies 1 faces 6 dClosed 1.4e-14 dBbox 5.0e-35 brep 9.7e-11 occt 1.1e-10 6ms
+MATCH     own-right-trapezoid-par-perp                         stored   bodies 1 faces 6 dClosed 4.7e-14 dBbox 1.8e-16 brep 2.8e-12 occt 2.9e-12 5ms
+MATCH     own-right-trapezoid-par-perp                         rough3.5 bodies 1 faces 6 dClosed 6.1e-12 dBbox 7.0e-13 brep 1.8e-11 occt 1.7e-11 5ms
+MATCH     own-right-trapezoid-par-perp                         rough15  bodies 1 faces 6 dClosed 2.4e-14 dBbox 6.7e-15 brep 1.8e-13 occt 1.9e-13 5ms
+MATCH     own-slot-dims-from-points                            stored   bodies 1 faces 6 dClosed 3.8e-5 dBbox 6.9e-11 brep 3.8e-5 occt Sketch 1: rule 2 is a tangent rule, and  242ms
+MATCH     own-slot-dims-from-points                            rough3.5 bodies 1 faces 6 dClosed 3.8e-5 dBbox 7.0e-11 brep 3.8e-5 occt Sketch 1: rule 2 is a tangent rule, and  225ms
+MATCH     own-slot-dims-from-points                            rough15  bodies 1 faces 6 dClosed 3.8e-5 dBbox 2.7e-11 brep 3.8e-5 occt Sketch 1: rule 2 is a tangent rule, and  208ms
+MATCH     sk-rect-dof__corner-origin-25x60                     stored   bodies 1 faces 6 dClosed 0.0e+0 dBbox - brep 0.0e+0 occt 2.4e-16 5ms
+MATCH     sk-rect-dof__corner-origin-25x60                     rough3.5 bodies 1 faces 6 dClosed 2.3e-15 dBbox - brep 4.5e-13 occt 4.3e-13 5ms
+MATCH     sk-rect-dof__corner-origin-25x60                     rough15  bodies 1 faces 6 dClosed 1.0e-14 dBbox - brep 1.9e-12 occt 1.9e-12 5ms
+MATCH     sk-rect-dof__offset-corner-30x18                     stored   bodies 1 faces 6 dClosed 0.0e+0 dBbox - brep 0.0e+0 occt 0.0e+0 5ms
+MATCH     sk-rect-dof__offset-corner-30x18                     rough3.5 bodies 1 faces 6 dClosed 6.4e-15 dBbox - brep 6.7e-13 occt 6.4e-13 5ms
+MATCH     sk-rect-dof__offset-corner-30x18                     rough15  bodies 1 faces 6 dClosed 2.8e-14 dBbox - brep 2.9e-12 occt 2.7e-12 5ms
+MATCH     sk-rect-dof__square-by-equal                         stored   bodies 1 faces 6 dClosed 0.0e+0 dBbox - brep 1.9e-16 occt 1.9e-16 5ms
+MATCH     sk-rect-dof__square-by-equal                         rough3.5 bodies 1 faces 6 dClosed 1.2e-11 dBbox - brep 1.3e-11 occt 1.3e-11 4ms
+MATCH     sk-rect-dof__square-by-equal                         rough15  bodies 1 faces 6 dClosed 6.4e-15 dBbox - brep 4.7e-12 occt 4.8e-12 5ms
+MATCH     sk-rect-dof__right-triangle                          stored   bodies 1 faces 5 dClosed 0.0e+0 dBbox - brep 0.0e+0 occt 0.0e+0 3ms
+MATCH     sk-rect-dof__right-triangle                          rough3.5 bodies 1 faces 5 dClosed 0.0e+0 dBbox - brep 6.6e-14 occt 6.6e-14 3ms
+MATCH     sk-rect-dof__right-triangle                          rough15  bodies 1 faces 5 dClosed 0.0e+0 dBbox - brep 1.1e-12 occt 1.1e-12 3ms
+MATCH     sk-rect-dof__parallelogram                           stored   bodies 1 faces 6 dClosed 0.0e+0 dBbox - brep 0.0e+0 occt 0.0e+0 4ms
+MATCH     sk-rect-dof__parallelogram                           rough3.5 bodies 1 faces 6 dClosed 3.4e-12 dBbox - brep 6.9e-12 occt 6.3e-12 5ms
+MATCH     sk-rect-dof__parallelogram                           rough15  bodies 1 faces 6 dClosed 7.9e-11 dBbox - brep 3.7e-11 occt 2.6e-11 5ms
+MATCH     sk-rect-dof__circle-pinned                           stored   bodies 1 faces 3 dClosed 1.1e-4 dBbox - brep 1.1e-4 occt 1.1e-4 225ms
+MATCH     sk-rect-dof__circle-pinned                           rough3.5 bodies 1 faces 3 dClosed 1.1e-4 dBbox - brep 1.1e-4 occt 1.1e-4 230ms
+MATCH     sk-rect-dof__circle-pinned                           rough15  bodies 1 faces 3 dClosed 1.1e-4 dBbox - brep 1.1e-4 occt 1.1e-4 235ms
+MATCH     sk-rect-underconstrained__hv-only-30x15              stored   bodies 1 faces 6 dClosed - dBbox - brep 0.0e+0 occt 2.0e-16 5ms
+MISMATCH  sk-rect-underconstrained__hv-only-30x15              rough3.5 bodies 1 faces 6 dClosed - dBbox - brep 2.0e-2 occt 2.0e-2 4ms
+MISMATCH  sk-rect-underconstrained__hv-only-30x15              rough15  bodies 1 faces 6 dClosed - dBbox - brep 7.2e-2 occt 7.2e-2 4ms
+MATCH     sk-rect-underconstrained__width-only                 stored   bodies 1 faces 6 dClosed - dBbox - brep 0.0e+0 occt 2.0e-16 4ms
+MISMATCH  sk-rect-underconstrained__width-only                 rough3.5 bodies 1 faces 6 dClosed - dBbox - brep 3.4e-2 occt 3.4e-2 5ms
+MISMATCH  sk-rect-underconstrained__width-only                 rough15  bodies 1 faces 6 dClosed - dBbox - brep 1.6e-1 occt 1.6e-1 4ms
+MATCH     sk-rect-underconstrained__width-and-height           stored   bodies 1 faces 6 dClosed 0.0e+0 dBbox - brep 0.0e+0 occt 2.0e-16 4ms
+MATCH     sk-rect-underconstrained__width-and-height           rough3.5 bodies 1 faces 6 dClosed 8.7e-14 dBbox - brep 8.8e-13 occt 4.5e-11 5ms
+MATCH     sk-rect-underconstrained__width-and-height           rough15  bodies 1 faces 6 dClosed 3.7e-13 dBbox - brep 3.7e-13 occt 3.8e-13 4ms
+MATCH     sk-rect-underconstrained__pinned-corner-only         stored   bodies 1 faces 6 dClosed - dBbox - brep 0.0e+0 occt 2.0e-16 4ms
+MISMATCH  sk-rect-underconstrained__pinned-corner-only         rough3.5 bodies 1 faces 6 dClosed - dBbox - brep 1.5e-2 occt 1.5e-2 4ms
+MISMATCH  sk-rect-underconstrained__pinned-corner-only         rough15  bodies 1 faces 6 dClosed - dBbox - brep 6.2e-2 occt 6.2e-2 4ms
+REFUSED sk-rect-underconstrained__free-line stored [solidcraft] command 3 solid.extrude: sk has no closed profiles
+REFUSED sk-rect-underconstrained__free-line rough3.5 [solidcraft] command 3 solid.extrude: sk has no closed profiles
+REFUSED sk-rect-underconstrained__free-line rough15 [solidcraft] command 3 solid.extrude: sk has no closed profiles
+MATCH     sk-rect-underconstrained__free-circle                stored   bodies 1 faces 3 dClosed - dBbox - brep 1.1e-4 occt 1.1e-4 318ms
+MATCH     sk-rect-underconstrained__free-circle                rough3.5 bodies 1 faces 3 dClosed - dBbox - brep 1.1e-4 occt 1.1e-4 321ms
+MATCH     sk-rect-underconstrained__free-circle                rough15  bodies 1 faces 3 dClosed - dBbox - brep 1.1e-4 occt 1.1e-4 317ms
+MATCH     sk-rect-underconstrained__triangle-joined            stored   bodies 1 faces 5 dClosed - dBbox - brep 1.5e-16 occt 0.0e+0 2ms
+MISMATCH  sk-rect-underconstrained__triangle-joined            rough3.5 bodies 1 faces 5 dClosed - dBbox - brep 7.9e-4 occt 7.9e-4 2ms
+MISMATCH  sk-rect-underconstrained__triangle-joined            rough15  bodies 1 faces 5 dClosed - dBbox - brep 5.6e-3 occt 5.6e-3 3ms
+MATCH     sk-rect-underconstrained__circle-radius-only         stored   bodies 1 faces 3 dClosed 1.1e-4 dBbox - brep 1.1e-4 occt 1.1e-4 382ms
+MATCH     sk-rect-underconstrained__circle-radius-only         rough3.5 bodies 1 faces 3 dClosed 1.1e-4 dBbox - brep 1.1e-4 occt 1.1e-4 350ms
+MATCH     sk-rect-underconstrained__circle-radius-only         rough15  bodies 1 faces 3 dClosed 1.1e-4 dBbox - brep 1.1e-4 occt 1.1e-4 374ms
+REFUSED sk-conflict__width-30-vs-35 stored [solidcraft] command 16 sketch.dimension: that would over-constrain the sketch (conflicts with k10, k12)
+REFUSED sk-conflict__width-30-vs-35 rough3.5 [solidcraft] command 16 sketch.dimension: that would over-constrain the sketch (conflicts with k10, k12)
+REFUSED sk-conflict__width-30-vs-35 rough15 [solidcraft] command 16 sketch.dimension: that would over-constrain the sketch (conflicts with k10, k12)
+REFUSED sk-conflict__redundant-width stored [solidcraft] command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (refer
+REFUSED sk-conflict__redundant-width rough3.5 [solidcraft] command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (refer
+REFUSED sk-conflict__redundant-width rough15 [solidcraft] command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (refer
+REFUSED sk-conflict__redundant-height stored [solidcraft] command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (refer
+REFUSED sk-conflict__redundant-height rough3.5 [solidcraft] command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (refer
+REFUSED sk-conflict__redundant-height rough15 [solidcraft] command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (refer
+MATCH     sk-conflict__redundant-perpendicular                 stored   bodies 1 faces 6 dClosed - dBbox - brep 0.0e+0 occt 1.5e-16 6ms
+MATCH     sk-conflict__redundant-perpendicular                 rough3.5 bodies 1 faces 6 dClosed - dBbox - brep 3.5e-12 occt 3.7e-12 6ms
+MATCH     sk-conflict__redundant-perpendicular                 rough15  bodies 1 faces 6 dClosed - dBbox - brep 2.4e-11 occt 2.4e-11 7ms
+REFUSED sk-conflict__radius-vs-diameter stored [solidcraft] command 4 sketch.dimension: that would over-constrain the sketch (conflicts with k2, k3)
+REFUSED sk-conflict__radius-vs-diameter rough3.5 [solidcraft] command 4 sketch.dimension: that would over-constrain the sketch (conflicts with k2, k3)
+REFUSED sk-conflict__radius-vs-diameter rough15 [solidcraft] command 4 sketch.dimension: that would over-constrain the sketch (conflicts with k2, k3)
+REFUSED sk-conflict__equal-vs-two-radii stored [solidcraft] command 7 sketch.dimension: that would over-constrain the sketch (conflicts with k3, k4, k5)
+REFUSED sk-conflict__equal-vs-two-radii rough3.5 [solidcraft] command 7 sketch.dimension: that would over-constrain the sketch (conflicts with k3, k4, k5)
+REFUSED sk-conflict__equal-vs-two-radii rough15 [solidcraft] command 7 sketch.dimension: that would over-constrain the sketch (conflicts with k3, k4, k5)
+REFUSED sk-conflict__horizontal-and-vertical stored [solidcraft] command 5 solid.extrude: sk has no closed profiles
+REFUSED sk-conflict__horizontal-and-vertical rough3.5 [solidcraft] command 5 solid.extrude: sk has no closed profiles
+REFUSED sk-conflict__horizontal-and-vertical rough15 [solidcraft] command 5 solid.extrude: sk has no closed profiles
+MATCH     sk-conflict__clean-30x20                             stored   bodies 1 faces 6 dClosed 0.0e+0 dBbox - brep 0.0e+0 occt 1.5e-16 5ms
+MATCH     sk-conflict__clean-30x20                             rough3.5 bodies 1 faces 6 dClosed 5.0e-15 dBbox - brep 4.7e-13 occt 4.8e-13 6ms
+MATCH     sk-conflict__clean-30x20                             rough15  bodies 1 faces 6 dClosed 2.2e-14 dBbox - brep 2.0e-12 occt 2.1e-12 6ms
+MATCH     sk-circle-arc-tangent__slot-r6-L30-anchored          stored   bodies 1 faces 6 dClosed 3.8e-5 dBbox - brep brep-rs no shape occt Sketch 1: rule 2 is a tangent rule, and  235ms
+MATCH     sk-circle-arc-tangent__slot-r6-L30-anchored          rough3.5 bodies 1 faces 6 dClosed 3.7e-5 dBbox - brep brep-rs no shape occt Sketch 1: rule 2 is a tangent rule, and  264ms
+MATCH     sk-circle-arc-tangent__slot-r6-L30-anchored          rough15  bodies 1 faces 6 dClosed 3.5e-5 dBbox - brep brep-rs no shape occt Sketch 1: rule 2 is a tangent rule, and  261ms
+MATCH     sk-circle-arc-tangent__slot-r6-L30-floating          stored   bodies 1 faces 6 dClosed 3.8e-5 dBbox - brep brep-rs no shape occt Sketch 1: rule 2 is a tangent rule, and  212ms
+MISMATCH  sk-circle-arc-tangent__slot-r6-L30-floating          rough3.5 bodies 1 faces 6 dClosed 2.3e-1 dBbox - brep brep-rs no shape occt Sketch 1: rule 2 is a tangent rule, and  234ms
+REFUSED sk-circle-arc-tangent__slot-r6-L30-floating rough15 [solidcraft] command 13 sketch.constraint.horizontal_vertical: that would over-constrain the sketch (conflicts with k1, k2, k3, k4, k5, k6, k7, k8, k9)
+MATCH     sk-circle-arc-tangent__slot-r12-L18-anchored         stored   bodies 1 faces 6 dClosed 5.8e-5 dBbox - brep brep-rs no shape occt Sketch 1: rule 2 is a tangent rule, and  151ms
+MATCH     sk-circle-arc-tangent__slot-r12-L18-anchored         rough3.5 bodies 1 faces 6 dClosed 5.9e-5 dBbox - brep brep-rs no shape occt Sketch 1: rule 2 is a tangent rule, and  179ms
+MATCH     sk-circle-arc-tangent__slot-r12-L18-anchored         rough15  bodies 1 faces 6 dClosed 5.8e-5 dBbox - brep brep-rs no shape occt Sketch 1: rule 2 is a tangent rule, and  164ms
+MATCH     sk-circle-arc-tangent__slot-arc-first-order          stored   bodies 1 faces 6 dClosed 3.8e-5 dBbox - brep brep-rs no shape occt Sketch 1: rule 2 is a tangent rule, and  224ms
+MATCH     sk-circle-arc-tangent__slot-arc-first-order          rough3.5 bodies 1 faces 6 dClosed 3.6e-5 dBbox - brep brep-rs no shape occt Sketch 1: rule 2 is a tangent rule, and  211ms
+REFUSED sk-circle-arc-tangent__slot-arc-first-order rough15 [solidcraft] command 19 solid.extrude: invalid input: profile: cannot attach a plane to a wire that is not on one plane.
+REFUSED sk-circle-arc-tangent__slot-extra-radius stored [solidcraft] command 18 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (RadialDimension), k12 (Equal); add it as a 
+REFUSED sk-circle-arc-tangent__slot-extra-radius rough3.5 [solidcraft] command 18 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k6 (Coincident), k7 (Tangent), k8 (Coincident), 
+REFUSED sk-circle-arc-tangent__slot-extra-radius rough15 [solidcraft] command 18 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k6 (Coincident), k7 (Tangent), k8 (Coincident), 
+NO-REFERENCE sk-circle-arc-tangent__line-circle-tangent           stored   bodies 1 faces 3 dClosed - dBbox - brep brep-rs no shape occt Sketch 1: rule 5 is a tangent rule, and  329ms
+NO-REFERENCE sk-circle-arc-tangent__line-circle-tangent           rough3.5 bodies 1 faces 3 dClosed - dBbox - brep brep-rs no shape occt Sketch 1: rule 5 is a tangent rule, and  357ms
+NO-REFERENCE sk-circle-arc-tangent__line-circle-tangent           rough15  bodies 1 faces 3 dClosed - dBbox - brep brep-rs no shape occt Sketch 1: rule 5 is a tangent rule, and  349ms
+MATCH     sk-circle-arc-tangent__circle-circle-external        stored   bodies 2 faces 6 dClosed 9.6e-5 dBbox - brep brep-rs no shape occt Sketch 1: rule 4 is a tangent rule, and  760ms
+MATCH     sk-circle-arc-tangent__circle-circle-external        rough3.5 bodies 2 faces 6 dClosed 9.6e-5 dBbox - brep brep-rs no shape occt Sketch 1: rule 4 is a tangent rule, and  563ms
+MATCH     sk-circle-arc-tangent__circle-circle-external        rough15  bodies 2 faces 6 dClosed 9.6e-5 dBbox - brep brep-rs no shape occt Sketch 1: rule 4 is a tangent rule, and  545ms
+MATCH     sk-circle-arc-tangent__circle-circle-no-mode         stored   bodies 2 faces 6 dClosed 9.6e-5 dBbox - brep solve: a circle-circle tangency must rec occt Sketch 1: rule 4 is a tangent rule, and  554ms
+MATCH     sk-circle-arc-tangent__circle-circle-no-mode         rough3.5 bodies 2 faces 6 dClosed 9.6e-5 dBbox - brep solve: a circle-circle tangency must rec occt Sketch 1: rule 2 (radius) is off by 6.54 537ms
+MATCH     sk-circle-arc-tangent__circle-circle-no-mode         rough15  bodies 2 faces 6 dClosed 9.6e-5 dBbox - brep solve: a circle-circle tangency must rec occt Sketch 1: rule 2 (radius) is off by 6.54 565ms
+MISMATCH  sk-circle-arc-tangent__circle-circle-internal        stored   bodies 1 faces 3 dClosed 6.4e-1 dBbox - brep brep-rs no shape occt Sketch 1: rule 4 is a tangent rule, and  326ms
+MISMATCH  sk-circle-arc-tangent__circle-circle-internal        rough3.5 bodies 1 faces 3 dClosed 6.4e-1 dBbox - brep brep-rs no shape occt Sketch 1: rule 4 is a tangent rule, and  389ms
+MISMATCH  sk-circle-arc-tangent__circle-circle-internal        rough15  bodies 1 faces 3 dClosed 6.4e-1 dBbox - brep brep-rs no shape occt Sketch 1: rule 4 is a tangent rule, and  380ms
+REFUSED sk-circle-arc-tangent__arc-centre-radius stored [solidcraft] command 5 solid.extrude: sk has no closed profiles
+REFUSED sk-circle-arc-tangent__arc-centre-radius rough3.5 [solidcraft] command 5 solid.extrude: sk has no closed profiles
+REFUSED sk-circle-arc-tangent__arc-centre-radius rough15 [solidcraft] command 5 solid.extrude: sk has no closed profiles

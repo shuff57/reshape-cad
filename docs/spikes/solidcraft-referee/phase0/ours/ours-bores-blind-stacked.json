@@ -1,0 +1,21 @@
+{
+ "id": "bores-blind-stacked",
+ "outcome": "built",
+ "volume": 46812.675228728884,
+ "faces": 12,
+ "bbox": [
+  -20,
+  -20,
+  -15,
+  20,
+  20,
+  15.000000000000009
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "hole"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":30,\"center\":[0,0,0],\"body_name\":\"b_b1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":8,\"base\":[-12,0,7],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_b1\"]}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":14,\"base\":[0,0,1],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_b1\"]}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":20,\"base\":[12,0,-5],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_b1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

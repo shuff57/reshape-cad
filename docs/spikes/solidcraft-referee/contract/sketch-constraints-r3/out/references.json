@@ -1,0 +1,570 @@
+{
+ "tally": {
+  "cases": 13,
+  "built": 13,
+  "builtRight": 13,
+  "measuredRight": 13,
+  "brepMeasuredMatches": 13,
+  "mapperRefusedBefore": 5
+ },
+ "rough": {
+  "n": 30,
+  "built": 30,
+  "refused": 0,
+  "wrong": 0
+ },
+ "bad": [
+  {
+   "name": "horizontal as a reference",
+   "guarded": "Row 12 of sk.rules() (it makes geometry 3 horizontal) is marked as a reference, and only a dimension (a distance, offset, radius, diameter or angle) can be a reference.",
+   "brepOpen": "rules row 12 is a horizontal rule, and only a dimension (distance, distanceX, distanceY, radius, diameter or angle) can be a reference measurement -- keep it driving, or switch it off with active: false"
+  },
+  {
+   "name": "parallel as a reference",
+   "guarded": "Row 12 of sk.rules() (it makes geometry 1 parallel to geometry 3) is marked as a reference, and only a dimension (a distance, offset, radius, diameter or angle) can be a reference.",
+   "brepOpen": "rules row 12 is a parallel rule, and only a dimension (distance, distanceX, distanceY, radius, diameter or angle) can be a reference measurement -- keep it driving, or switch it off with active: false"
+  },
+  {
+   "name": "lock as a reference",
+   "guarded": "Row 12 of sk.rules() (it pins geometry 1) is marked as a reference, and only a dimension (a distance, offset, radius, diameter or angle) can be a reference.",
+   "brepOpen": "rules row 12 is a lock rule, and only a dimension (distance, distanceX, distanceY, radius, diameter or angle) can be a reference measurement -- keep it driving, or switch it off with active: false"
+  },
+  {
+   "name": "coincident as a reference",
+   "guarded": "Row 12 of sk.rules() (it joins geometry 1 and geometry 4) is marked as a reference, and only a dimension (a distance, offset, radius, diameter or angle) can be a reference.",
+   "brepOpen": "rules row 12 is a coincident rule, and only a dimension (distance, distanceX, distanceY, radius, diameter or angle) can be a reference measurement -- keep it driving, or switch it off with active: false"
+  }
+ ],
+ "rows": [
+  {
+   "id": "reference diagonal, correct value",
+   "shippedMapper": "built",
+   "guarded": {
+    "volume": 5999.999999999902,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 11,
+      "stored": 36.05551275463989,
+      "measured": 36.05551275463989,
+      "stale": false
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 11,
+      "value": 36.055512754477355
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 5999.999999941251,
+     "vsGuarded": 9.77509747230085e-12
+    }
+   }
+  },
+  {
+   "id": "reference diagonal, STALE value 99",
+   "shippedMapper": "built",
+   "guarded": {
+    "volume": 5999.999999999902,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 11,
+      "stored": 99,
+      "measured": 36.05551275463989,
+      "stale": true
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 11,
+      "value": 36.055512754477355
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 5999.999999941251,
+     "vsGuarded": 9.77509747230085e-12
+    }
+   }
+  },
+  {
+   "id": "reference width 35 on a 30 wide rectangle (would conflict if driving)",
+   "shippedMapper": "built",
+   "guarded": {
+    "volume": 5999.999999999902,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 11,
+      "stored": 35,
+      "measured": 30,
+      "stale": true
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 11,
+      "value": 29.99999999999027
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 5999.999999941251,
+     "vsGuarded": 9.77509747230085e-12
+    }
+   }
+  },
+  {
+   "id": "reference distanceX +30, drawn side",
+   "shippedMapper": "built",
+   "guarded": {
+    "volume": 5999.999999999902,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 11,
+      "stored": 30,
+      "measured": 30,
+      "stale": false
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 11,
+      "value": 29.999999999989402
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 5999.999999941251,
+     "vsGuarded": 9.77509747230085e-12
+    }
+   }
+  },
+  {
+   "id": "reference distanceX -30, OPPOSITE of the drawn side (mapper refused this)",
+   "shippedMapper": "refused: is the SIGNED distanceX -30 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested",
+   "guarded": {
+    "volume": 5999.999999999902,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 11,
+      "stored": -30,
+      "measured": 30,
+      "stale": true
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 11,
+      "value": 29.999999999989402
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 5999.999999941251,
+     "vsGuarded": 9.77509747230085e-12
+    }
+   }
+  },
+  {
+   "id": "reference distanceY -20, OPPOSITE of the drawn side",
+   "shippedMapper": "refused: is the SIGNED distanceY -20 (brep-rs) but the points start positive; solidcraft's vertical dimension is |d| and keeps the starting side, so the sign cannot be requested",
+   "guarded": {
+    "volume": 5999.999999999902,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 11,
+      "stored": -20,
+      "measured": 20,
+      "stale": true
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 11,
+      "value": 19.999999999728857
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 5999.999999941251,
+     "vsGuarded": 9.77509747230085e-12
+    }
+   }
+  },
+  {
+   "id": "reference distanceX 0 (mapper refused: \"a reference offset of 0\")",
+   "shippedMapper": "refused: is a reference distanceX of 0; solidcraft has no reference form of a point-pair level constraint",
+   "guarded": {
+    "volume": 5999.999999999902,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 11,
+      "stored": 0,
+      "measured": 1.2918259624871915e-35,
+      "stale": false
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 11,
+      "value": -4.282753012338216e-12
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 5999.999999941251,
+     "vsGuarded": 9.77509747230085e-12
+    }
+   }
+  },
+  {
+   "id": "reference distanceX with the sketch drawn on the negative side, stored +8 (measured -8)",
+   "shippedMapper": "refused: is the SIGNED distanceX 8 (brep-rs) but the points start negative; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested",
+   "guarded": {
+    "volume": 5999.999999999903,
+    "bbox": [
+     -8,
+     -4.000000000000002,
+     0,
+     22,
+     16,
+     10
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 12,
+      "stored": 8,
+      "measured": -8,
+      "stale": true
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 12,
+      "value": -8.000000000031992
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 5999.9999999213505,
+     "vsGuarded": 1.309202464974262e-11
+    }
+   }
+  },
+  {
+   "id": "reference angle, stale value 60 (measured 120)",
+   "shippedMapper": "refused: is the directed angle 60 deg from line 1 to line 2; from this starting geometry solidcraft would apply the value to the opposite orientation (it would hold 120.000000 deg from 1 to 2); its angle dimension is undirected and takes its orientation from the start state",
+   "guarded": {
+    "volume": 5196.15242270663,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25.98076211353316,
+     10
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 8,
+      "stored": 60,
+      "measured": 120,
+      "stale": true
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 8,
+      "value": 119.99999999999912
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 5196.152422707686,
+     "vsGuarded": 2.0321254321637738e-13
+    }
+   }
+  },
+  {
+   "id": "reference diameter on a hole, stale 7 (measured 10)",
+   "shippedMapper": "built",
+   "guarded": {
+    "volume": 9214.732294344925,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25.000000001061423,
+     10.000000000000005
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 14,
+      "stored": 7,
+      "measured": 10,
+      "stale": true
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 14,
+      "value": 10
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 9214.601836621781,
+     "vsGuarded": 0.000014157716790920898
+    }
+   }
+  },
+  {
+   "id": "reference radius on a hole, stale 9 (measured 5)",
+   "shippedMapper": "built",
+   "guarded": {
+    "volume": 9214.732294344925,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25.000000001061423,
+     10.000000000000005
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 14,
+      "stored": 9,
+      "measured": 5,
+      "stale": true
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 14,
+      "value": 5
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 9214.601836621781,
+     "vsGuarded": 0.000014157716790920898
+    }
+   }
+  },
+  {
+   "id": "reference length of a slot side, stale 5 (measured 40)",
+   "shippedMapper": "built",
+   "guarded": {
+    "volume": 11141.215389447234,
+    "bbox": [
+     -9.999999999727008,
+     -8.433964637788449e-11,
+     0,
+     50.000192901992385,
+     19.999999999721,
+     10.000000000000007
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 13,
+      "stored": 5,
+      "measured": 40,
+      "stale": true
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 13,
+      "value": 40.00000000035022
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 11141.592653721977,
+     "vsGuarded": 0.00003386089282456395
+    }
+   }
+  },
+  {
+   "id": "two references, one right one stale",
+   "shippedMapper": "built",
+   "guarded": {
+    "volume": 5999.999999999902,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "vsReferenceDeleted": {
+     "vol": 0,
+     "bbox": 0
+    },
+    "builtRight": true,
+    "references": [
+     {
+      "rule": 11,
+      "stored": 30,
+      "measured": 30,
+      "stale": false
+     },
+     {
+      "rule": 12,
+      "stored": 10,
+      "measured": 36.05551275463989,
+      "stale": true
+     }
+    ],
+    "measuredMatchesClosedForm": true,
+    "brepReferences": [
+     {
+      "rule": 11,
+      "value": 29.99999999999027
+     },
+     {
+      "rule": 12,
+      "value": 36.055512754477355
+     }
+    ],
+    "brepMatchesClosedForm": true,
+    "brepBuild": {
+     "volume": 5999.999999941251,
+     "vsGuarded": 9.77509747230085e-12
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,71 @@
+{
+ "id": "s1-00201",
+ "seed": 1,
+ "desc": "plate 16.8x13.6x12 open=top [vthru]",
+ "t": 2.5,
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 16.8,
+    "width": 13.6,
+    "height": 12,
+    "center": [
+     0,
+     0,
+     6
+    ],
+    "body_name": "b1"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "radius": 3,
+    "height": 14,
+    "base": [
+     -0.15,
+     1.3,
+     -1
+    ],
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "body_name": "f1"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "f1"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      4.8,
+      -3.157,
+      12
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  }
+ ],
+ "oracleFamily": "plate",
+ "p7": {
+  "cls": "WRONG",
+  "expectedP": 2187.0094531250006,
+  "built": 2354.626905989008,
+  "rel": 0.0766423083469072
+ }
+}

@@ -1,0 +1,55 @@
+Running as unit: run-p1813438-i26953523.scope; invocation ID: 867577dd163a4b8ba313ba631c2bc176
+
+== rect width param 30 -> 5..120
+  drag : 40:ok 50:ok 60:ok 80:ok 100:ok 120:ok
+  drag : 25:ok 20:ok 15:ok 10:ok 5:ok
+  jump : 40:ok 50:ok 60:ok 80:ok 100:ok 120:ok 25:ok 20:ok 15:ok 10:ok 5:ok 
+  brep : 40:RIGHT 50:RIGHT 60:RIGHT 80:RIGHT 100:RIGHT 120:RIGHT 25:RIGHT 20:RIGHT 15:RIGHT 10:RIGHT 5:REFUSED
+
+== hole diameter param 10 in a 40x25 plate, centre (20,12.5)
+  drag : 12:ok 14:ok 16:ok 18:ok 20:ok 22:ok 24:ok 24.5:ok 25:built(touching) 25.5:ref(invalid) 26:ref(invalid) 28:ref(invalid) 30:ref(invalid) 38:ref(invalid)
+  drag : 8:ok 6:ok 4:ok 2:ok 1:ok
+  jump : 12:ok 14:ok 16:ok 18:ok 20:ok 22:ok 24:ok 24.5:ok 25:built(touching) 25.5:ref(invalid) 26:ref(invalid) 28:ref(invalid) 30:ref(invalid) 38:ref(invalid) 8:ok 6:ok 4:ok 2:ok 1:ok 
+  brep : 12:RIGHT 14:RIGHT 16:RIGHT 18:RIGHT 20:RIGHT 22:RIGHT 24:RIGHT 24.5:RIGHT 25:REFUSED 25.5:REFUSED 26:REFUSED 28:REFUSED 30:REFUSED 38:REFUSED 8:RIGHT 6:RIGHT 4:REFUSED 2:REFUSED 1:REFUSED
+
+== hole centre distanceX param 20 -> -12 (hole r5, plate x 0..40)
+  drag : 18:ok 16:ok 14:ok 12:ok 10:ok 8:ok 6:ok 5.5:ok 5:built(touching) 4.5:ref(invalid) 4:ref(invalid) 2:ref(invalid) 1:ref(invalid) 0.5:ref(invalid) 0:ref(invalid) -0.5:ref(invalid) -2:ref(invalid) -4:ref(invalid) -5:ref(touching) -5.5:REF(valid) -6:REF(valid) -8:REF(valid) -12:REF(valid)
+  drag : 25:ok 30:ok 34:ok 34.5:ok 35:built(touching) 35.5:ref(invalid) 36:ref(invalid) 38:ref(invalid) 40:ref(invalid) 44:ref(invalid) 46:REF(valid)
+  jump : 18:ok 16:ok 14:ok 12:ok 10:ok 8:ok 6:ok 5.5:ok 5:built(touching) 4.5:ref(invalid) 4:ref(invalid) 2:ref(invalid) 1:ref(invalid) 0.5:ref(invalid) 0:ref(invalid) -0.5:ref(invalid) -2:ref(invalid) -4:ref(invalid) -5:ref(touching) -5.5:REF(valid) -6:REF(valid) -8:REF(valid) -12:REF(valid) 25:ok 30:ok 34:ok 34.5:ok 35:built(touching) 35.5:ref(invalid) 36:ref(invalid) 38:ref(invalid) 40:ref(invalid) 44:ref(invalid) 46:REF(valid) 
+  brep : 18:RIGHT 16:RIGHT 14:RIGHT 12:RIGHT 10:RIGHT 8:RIGHT 6:RIGHT 5.5:RIGHT 5:REFUSED 4.5:REFUSED 4:REFUSED 2:REFUSED 1:REFUSED 0.5:REFUSED 0:REFUSED -0.5:REFUSED -2:REFUSED -4:REFUSED -5:REFUSED -5.5:RIGHT -6:RIGHT -8:RIGHT -12:RIGHT 25:RIGHT 30:RIGHT 34:RIGHT 34.5:RIGHT 35:REFUSED 35.5:REFUSED 36:REFUSED 38:REFUSED 40:REFUSED 44:REFUSED 46:RIGHT
+
+== circle-circle EXTERNAL tangent, small radius param 5 -> 1..14
+  drag : 6:ok 7:ok 8:ok 9:ok 10:ok 12:ok 14:ok
+  drag : 4:ok 3:ok 2:ok 1:ok
+  jump : 6:ok 7:ok 8:ok 9:ok 10:ok 12:ok 14:ok 4:ok 3:ok 2:ok 1:ok 
+  brep : 6:REFUSED 7:REFUSED 8:REFUSED 9:REFUSED 10:REFUSED 12:REFUSED 14:REFUSED 4:REFUSED 3:REFUSED 2:REFUSED 1:REFUSED
+
+== circle-circle INTERNAL tangent, small radius param 5 -> 1..7.5 and past 8
+  drag : 4:ok 3:ok 2:ok 1:ok
+  drag : 6:ok 7:ok 7.5:ok 7.9:ok 8:ref(invalid) 8.1:REF(valid) 9:REF(valid) 10:REF(valid) 12:REF(valid)
+  jump : 4:ok 3:ok 2:ok 1:ok 6:ok 7:ok 7.5:ok 7.9:ok 8:ref(invalid) 8.1:ok 9:ok 10:ok 12:ok 
+  brep : 4:REFUSED 3:REFUSED 2:REFUSED 1:REFUSED 6:REFUSED 7:REFUSED 7.5:REFUSED 7.9:REFUSED 8:REFUSED 8.1:REFUSED 9:REFUSED 10:REFUSED 12:REFUSED
+
+== slot cap radius param 10 -> 1..25 (left cap centre locked at (0,10), length 40)
+  drag : 9:ok 8:ok 6:ok 4:ok 3:ok 2:ok 1:ok
+  drag : 12:ok 14:ok 16:ok 18:ok 20:ok 25:ok
+  jump : 9:ok 8:ok 6:ok 4:ok 3:ok 2:ok 1:ok 12:ok 14:ok 16:ok 18:ok 20:ok 25:ok 
+  brep : 9:RIGHT 8:RIGHT 6:RIGHT 4:RIGHT 3:REFUSED 2:REFUSED 1:REFUSED 12:RIGHT 14:RIGHT 16:RIGHT 18:RIGHT 20:RIGHT 25:RIGHT
+
+== triangle angle param 120 -> 10 and 120 -> 175 (steps of 5 degrees)
+  drag : 115:ok 110:ok 105:ok 100:ok 95:ok 90:ok 85:ok 80:ok 70:ok 60:ok 50:ok 40:ok 30:ok 20:ok 10:REF(valid)
+  drag : 125:ok 130:ok 140:ok 150:ok 160:ok 170:ok 175:REF(valid)
+  jump : 115:ok 110:ok 105:ok 100:ok 95:ok 90:ok 85:REF(valid) 80:REF(valid) 70:REF(valid) 60:REF(valid) 50:REF(valid) 40:REF(valid) 30:REF(valid) 20:REF(valid) 10:REF(valid) 125:ok 130:ok 140:ok 150:ok 160:ok 170:ok 175:REF(valid) 
+  brep : 115:RIGHT 110:RIGHT 105:RIGHT 100:RIGHT 95:RIGHT 90:RIGHT 85:RIGHT 80:RIGHT 70:RIGHT 60:RIGHT 50:RIGHT 40:RIGHT 30:RIGHT 20:RIGHT 10:REFUSED 125:RIGHT 130:RIGHT 140:RIGHT 150:RIGHT 160:RIGHT 170:REFUSED 175:REFUSED
+
+== rect corner distanceX param +12 -> -12 (steps of 2)
+  drag : 10:ok 8:ok 6:ok 4:ok 2:ok 0:ok -2:REF(valid) -4:REF(valid) -6:REF(valid) -8:REF(valid) -10:REF(valid) -12:REF(valid)
+  jump : 10:ok 8:ok 6:ok 4:ok 2:ok 0:ok -2:REF(valid) -4:REF(valid) -6:REF(valid) -8:REF(valid) -10:REF(valid) -12:REF(valid) 
+  brep : 10:RIGHT 8:RIGHT 6:RIGHT 4:RIGHT 2:RIGHT 0:RIGHT -2:RIGHT -4:RIGHT -6:RIGHT -8:RIGHT -10:RIGHT -12:RIGHT
+
+== rect height param 20 -> 0.1, 0, -5
+  drag : 10:ok 5:ok 1:ok 0.1:ok 0:ref(invalid) -5:ref(invalid)
+  jump : 10:ok 5:ok 1:ok 0.1:ok 0:ref(invalid) -5:ref(invalid) 
+  brep : 10:RIGHT 5:RIGHT 1:REFUSED 0.1:REFUSED 0:REFUSED -5:REFUSED
+
+TALLY (steps + jumps) {"RIGHT":192,"REFUSED-VALID":38,"REFUSED-INVALID":44,"WRONG":0,"BUILT-TOUCHING":6,"REFUSED-TOUCHING":2}

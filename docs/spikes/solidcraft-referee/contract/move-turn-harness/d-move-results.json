@@ -1,0 +1,1628 @@
+{
+ "move/derived/hole_box": {
+  "script": "const s = box(40, 30, 20, { at: [3, -2, 1] });\nhole(s, { across: 8, at: [5, 3] });\nmove(s, [12, -7, 3.5]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "hole",
+   "move"
+  ],
+  "v": {
+   "move1": "PASS"
+  },
+  "truck": {
+   "move1": {
+    "volume": 22994.85733649007,
+    "occtVolume": 22994.690350851262,
+    "dVol": 0.0000072619216114345,
+    "dBbox": 2.2608177956003187e-15,
+    "dCom": 7.037251708275794e-7,
+    "faces": 7,
+    "occtFaces": 7,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "curved": true,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -5,
+     -24,
+     -5.500000000000012,
+     35,
+     6,
+     14.500000000000007
+    ],
+    "occtBbox": [
+     -5,
+     -24,
+     -5.5,
+     35,
+     6,
+     14.5
+    ]
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 22994.690350851262,
+    "bbox": [
+     -5,
+     -24,
+     -5.5,
+     35,
+     6,
+     14.5
+    ],
+    "faces": 7,
+    "dVol": 0,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/derived/corner_box": {
+  "script": "const s = box(30, 20, 10, { corner: 2 });\nmove(s, [12, -7, 3.5]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move"
+  ],
+  "v": {
+   "move1": "PASS"
+  },
+  "truck": {
+   "move1": {
+    "volume": 5804.578299102682,
+    "occtVolume": 5804.696111204562,
+    "dVol": 0.000020295998209584572,
+    "dBbox": 3.256654205567125e-15,
+    "dCom": 2.0949881506301234e-10,
+    "faces": 26,
+    "occtFaces": 26,
+    "faceTypes": {
+     "cylinder": 12,
+     "plane": 6,
+     "sphere": 8
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 12,
+     "sphere": 8
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "sphere": "equal"
+    },
+    "curved": true,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -3.0000000000000053,
+     -17.000000000000004,
+     -1.5000000000000053,
+     27.000000000000007,
+     3.0000000000000018,
+     8.500000000000005
+    ],
+    "occtBbox": [
+     -3.0000000000000004,
+     -17,
+     -1.5000000000000004,
+     27,
+     3,
+     8.5
+    ]
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 5804.69611112753,
+    "bbox": [
+     -3,
+     -17,
+     -1.5,
+     27,
+     3,
+     8.5
+    ],
+    "faces": 26,
+    "dVol": 1.3270700270091847e-11,
+    "dBbox": 2.96059473233375e-16
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/derived/fillet_box": {
+  "script": "const s = box(30, 20, 10);\nround(s.edge('top', 'front'), 2);\nmove(s, [12, -7, 3.5]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "fillet",
+   "move"
+  ],
+  "v": {
+   "move1": "PASS"
+  },
+  "truck": {
+   "move1": {
+    "volume": 5974.230889866125,
+    "occtVolume": 5974.247779614656,
+    "dVol": 0.0000028270920715053692,
+    "dBbox": 1.1842378929335002e-15,
+    "dCom": 6.987629032629608e-7,
+    "faces": 7,
+    "occtFaces": 7,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "curved": true,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -3.0000000000000036,
+     -17,
+     -1.5,
+     27.000000000000014,
+     3,
+     8.500000000000004
+    ],
+    "occtBbox": [
+     -3,
+     -17,
+     -1.5,
+     27,
+     3,
+     8.5
+    ]
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 5974.247779607693,
+    "bbox": [
+     -3,
+     -17,
+     -1.5,
+     27,
+     3,
+     8.5
+    ],
+    "faces": 7,
+    "dVol": 1.1655176841732306e-12,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/derived/hollow_box": {
+  "script": "const s = box(30, 20, 10);\nhollow(s, { wall: 2 });\nmove(s, [12, -7, 3.5]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "shell",
+   "move"
+  ],
+  "v": {
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "move1": {
+    "refused": "Move 1 is not built because Hollow 1, which it uses, was refused."
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 3504,
+    "bbox": [
+     -3,
+     -17,
+     -1.5,
+     27,
+     3,
+     8.5
+    ],
+    "faces": 12,
+    "dVol": 2.5955899023200015e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' })."
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "Move 1 is not built because Hollow 1, which it uses, was refused."
+   }
+  ]
+ },
+ "move/derived/join": {
+  "script": "const s0 = box(30, 20, 10);\nconst c = cylinder(10, 30, { at: [10, 0, 0] });\nconst s = join(s0, c);\nmove(s, [12, -7, 3.5]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "cylinder",
+   "combine",
+   "move"
+  ],
+  "v": {
+   "move1": "PASS"
+  },
+  "truck": {
+   "move1": {
+    "volume": 7570.382100620849,
+    "occtVolume": 7570.796326794894,
+    "dVol": 0.000054713686138838206,
+    "dBbox": 1.853589745461131e-15,
+    "dCom": 0.000009346269862565957,
+    "faces": 10,
+    "occtFaces": 11,
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 8
+    },
+    "occtTypes": {
+     "plane": 9,
+     "cylinder": 2
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "curved": true,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -3,
+     -17,
+     -11.500000000000021,
+     27.00000000000001,
+     3,
+     18.499999999999996
+    ],
+    "occtBbox": [
+     -3,
+     -17,
+     -11.5,
+     27,
+     3,
+     18.5
+    ]
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 7570.796326794894,
+    "bbox": [
+     -3,
+     -17,
+     -11.5,
+     27,
+     3,
+     18.5
+    ],
+    "faces": 10,
+    "dVol": 0,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/derived/cut": {
+  "script": "const s0 = box(30, 20, 10);\nconst c = cylinder(10, 30, { at: [10, 0, 0] });\nconst s = cut(s0, c);\nmove(s, [12, -7, 3.5]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "cylinder",
+   "combine",
+   "move"
+  ],
+  "v": {
+   "move1": "PASS"
+  },
+  "truck": {
+   "move1": {
+    "volume": 5214.771959408129,
+    "occtVolume": 5214.601836602551,
+    "dVol": 0.00003262431359264477,
+    "dBbox": 1.3026616822268503e-14,
+    "dCom": 0.00001045592928699457,
+    "faces": 7,
+    "occtFaces": 8,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 7,
+     "cylinder": 1
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "curved": true,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -3,
+     -17,
+     -1.5000000000000195,
+     27.000000000000007,
+     3,
+     8.500000000000005
+    ],
+    "occtBbox": [
+     -3,
+     -17,
+     -1.5,
+     27,
+     3,
+     8.5
+    ]
+   }
+  },
+  "brep": {
+   "move1": {
+    "refused": "move move1 cannot find op1"
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/derived/mirror": {
+  "script": "const s0 = box(30, 20, 10, { at: [20, 0, 0] });\nconst s = mirror(s0, 'left-right');\nmove(s, [12, -7, 3.5]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "mirror",
+   "move"
+  ],
+  "v": {
+   "move1": "PASS"
+  },
+  "truck": {
+   "move1": {
+    "volume": 12000,
+    "occtVolume": 11999.999999999998,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 10,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 10
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -13,
+     -17,
+     -1.5,
+     47,
+     3,
+     8.5
+    ],
+    "occtBbox": [
+     -13,
+     -17,
+     -1.5,
+     47,
+     3,
+     8.5
+    ]
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 12000,
+    "bbox": [
+     -13,
+     -17,
+     -1.5,
+     47,
+     3,
+     8.5
+    ],
+    "faces": 12,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/derived/repeat": {
+  "script": "const s = box(10, 10, 10);\nrepeat(s, { count: 3, step: 15 });\nmove(s, [12, -7, 3.5]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "pattern",
+   "move"
+  ],
+  "v": {
+   "move1": "PASS"
+  },
+  "truck": {
+   "move1": {
+    "volume": 3000,
+    "occtVolume": 2999.999999999999,
+    "dVol": 3.0316490059097617e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 18,
+    "occtFaces": 18,
+    "faceTypes": {
+     "plane": 18
+    },
+    "occtTypes": {
+     "plane": 18
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     7,
+     -12,
+     -1.5,
+     47,
+     -2,
+     8.5
+    ],
+    "occtBbox": [
+     7,
+     -12,
+     -1.5,
+     47,
+     -2,
+     8.5
+    ]
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 2999.9999999999986,
+    "bbox": [
+     7,
+     -12,
+     -1.5,
+     47,
+     -2,
+     8.5
+    ],
+    "faces": 18,
+    "dVol": 1.5158245029548808e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/derived/pull": {
+  "script": "const sk = sketch('top');\nsk.rect(30, 20);\nconst s = pull(sk, 12);\nmove(s, [12, -7, 3.5]);",
+  "errors": [],
+  "kinds": [
+   "sketch",
+   "extrude",
+   "move"
+  ],
+  "v": {
+   "move1": "PASS"
+  },
+  "truck": {
+   "move1": {
+    "volume": 7200,
+    "occtVolume": 7199.999999999998,
+    "dVol": 2.526374171591468e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_pull1"
+    ],
+    "bbox": [
+     -3,
+     -17,
+     3.5,
+     27,
+     3,
+     15.5
+    ],
+    "occtBbox": [
+     -3,
+     -17,
+     3.5,
+     27,
+     3,
+     15.5
+    ]
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 7200,
+    "bbox": [
+     -3,
+     -17,
+     3.5,
+     27,
+     3,
+     15.5
+    ],
+    "faces": 6,
+    "dVol": 2.526374171591468e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/zero": {
+  "script": "const a = box(20, 10, 6, { at: [5, 2, -1] });\nmove(a, [0, 0, 0]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move"
+  ],
+  "v": {
+   "move1": "PASS"
+  },
+  "truck": {
+   "move1": {
+    "volume": 1200,
+    "occtVolume": 1200,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -5,
+     -3,
+     -4,
+     15,
+     7,
+     2
+    ],
+    "occtBbox": [
+     -5,
+     -3,
+     -4,
+     15,
+     7,
+     2
+    ]
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 1200,
+    "bbox": [
+     -5,
+     -3,
+     -4,
+     15,
+     7,
+     2
+    ],
+    "faces": 6,
+    "dVol": 0,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/negative": {
+  "script": "const a = box(20, 10, 6, { at: [5, 2, -1] });\nmove(a, [-100, -50.5, -20]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move"
+  ],
+  "v": {
+   "move1": "PASS"
+  },
+  "truck": {
+   "move1": {
+    "volume": 1200,
+    "occtVolume": 1200,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -105,
+     -53.5,
+     -24,
+     -85,
+     -43.5,
+     -18
+    ],
+    "occtBbox": [
+     -105,
+     -53.5,
+     -24,
+     -85,
+     -43.5,
+     -18
+    ]
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 1199.9999999999998,
+    "bbox": [
+     -105,
+     -53.5,
+     -24,
+     -85,
+     -43.5,
+     -18
+    ],
+    "faces": 6,
+    "dVol": 1.8947806286936006e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/large": {
+  "script": "const a = box(20, 10, 6, { at: [5, 2, -1] });\nmove(a, [5000, -3000, 12000]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move"
+  ],
+  "v": {
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "move1": {
+    "refused": "Move 1 is not built: it puts the part 12002 mm from the origin, and this build cannot place a part accurately beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin."
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 1200,
+    "bbox": [
+     4995,
+     -3003,
+     11996,
+     5015,
+     -2993,
+     12002
+    ],
+    "faces": 6,
+    "dVol": 0,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "Move 1 is not built: it puts the part 12002 mm from the origin, and this build cannot place a part accurately beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin."
+   }
+  ]
+ },
+ "move/chain2": {
+  "script": "const a = box(20, 10, 6, { at: [5, 2, -1] });\nmove(a, [10, 0, 0]);\nmove(a, [0, 5, 0]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move",
+   "move"
+  ],
+  "v": {
+   "move2": "PASS"
+  },
+  "truck": {
+   "move2": {
+    "volume": 1200,
+    "occtVolume": 1200,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     5,
+     2,
+     -4,
+     25,
+     12,
+     2
+    ],
+    "occtBbox": [
+     5,
+     2,
+     -4,
+     25,
+     12,
+     2
+    ]
+   }
+  },
+  "brep": {
+   "move2": {
+    "volume": 1200,
+    "bbox": [
+     5,
+     2,
+     -4,
+     25,
+     12,
+     2
+    ],
+    "faces": 6,
+    "dVol": 0,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "move2",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/chain3-mixed": {
+  "script": "const a = box(20, 10, 6, { at: [5, 2, -1] });\nmove(a, [10, 0, 0]);\nturn(a, [0, 0, 30]);\nmove(a, [0, 5, 0]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move",
+   "rotate",
+   "move"
+  ],
+  "v": {
+   "move2": "PASS"
+  },
+  "truck": {
+   "move2": {
+    "volume": 1200.0000000000002,
+    "occtVolume": 1200,
+    "dVol": 1.8947806286936006e-16,
+    "dBbox": 6.939352981582457e-16,
+    "dCom": 1.195982865842066e-16,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     3.839745962155611,
+     -2.3301270189221928,
+     -4,
+     26.16025403784439,
+     16.33012701892219,
+     2
+    ],
+    "occtBbox": [
+     3.8397459621556136,
+     -2.3301270189221936,
+     -4,
+     26.16025403784439,
+     16.33012701892219,
+     2
+    ]
+   }
+  },
+  "brep": {
+   "move2": {
+    "volume": 1200,
+    "bbox": [
+     3.839745962155614,
+     -2.3301270189221928,
+     -4,
+     26.16025403784439,
+     16.33012701892219,
+     2
+    ],
+    "faces": 6,
+    "dVol": 0,
+    "dBbox": 3.811716754011781e-16
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "turn1",
+    "kind": "rotate",
+    "status": "built"
+   },
+   {
+    "id": "move2",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/after-turn-primitive": {
+  "script": "const a = box(20, 10, 6, { at: [5, 2, -1] });\nturn(a, [30, 40, 50]);\nmove(a, [7, -3, 2]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move"
+  ],
+  "v": {
+   "move1": "PASS"
+  },
+  "truck": {
+   "move1": {
+    "volume": 1200,
+    "occtVolume": 1199.9999999999995,
+    "dVol": 3.789561257387202e-16,
+    "dBbox": 6.913771792014083e-16,
+    "dCom": 5.771704767143031e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     2.569302101426131,
+     -11.197723959130863,
+     -9.333229049169656,
+     21.430697898573868,
+     9.197723959130863,
+     11.333229049169653
+    ],
+    "occtBbox": [
+     2.569302101426133,
+     -11.197723959130863,
+     -9.333229049169654,
+     21.430697898573868,
+     9.197723959130867,
+     11.333229049169654
+    ]
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 1200,
+    "bbox": [
+     2.569302101426132,
+     -11.197723959130865,
+     -9.33322904916965,
+     21.430697898573868,
+     9.197723959130865,
+     11.333229049169653
+    ],
+    "faces": 6,
+    "dVol": 3.789561257387202e-16,
+    "dBbox": 3.8065214729907155e-16
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "move/turn-after-move": {
+  "script": "const a = box(20, 10, 6, { at: [5, 2, -1] });\nmove(a, [7, -3, 2]);\nturn(a, [30, 40, 50]);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move",
+   "rotate"
+  ],
+  "v": {
+   "turn1": "PASS"
+  },
+  "truck": {
+   "turn1": {
+    "volume": 1200,
+    "occtVolume": 1200,
+    "dVol": 0,
+    "dBbox": 3.862600894076204e-16,
+    "dCom": 1.0260808474920947e-16,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     2.569302101426131,
+     -11.197723959130863,
+     -9.333229049169656,
+     21.430697898573868,
+     9.197723959130863,
+     11.333229049169653
+    ],
+    "occtBbox": [
+     2.56930210142613,
+     -11.197723959130863,
+     -9.333229049169653,
+     21.430697898573868,
+     9.197723959130867,
+     11.333229049169653
+    ]
+   }
+  },
+  "brep": {
+   "turn1": {
+    "volume": 1199.9999999999998,
+    "bbox": [
+     2.569302101426133,
+     -11.197723959130865,
+     -9.333229049169653,
+     21.430697898573868,
+     9.197723959130863,
+     11.333229049169653
+    ],
+    "faces": 6,
+    "dVol": 1.8947806286936006e-16,
+    "dBbox": 1.0370657688021136e-15
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "turn1",
+    "kind": "rotate",
+    "status": "built"
+   }
+  ]
+ },
+ "move/join-moved": {
+  "script": "const a = box(20, 10, 6);\nconst c = box(10, 10, 10);\nmove(c, [15, 0, 0]);\njoin(a, c);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "box",
+   "move",
+   "combine"
+  ],
+  "v": {
+   "op1": "PASS"
+  },
+  "truck": {
+   "op1": {
+    "volume": 2200,
+    "occtVolume": 2199.999999999999,
+    "dVol": 4.1340668262405844e-16,
+    "dBbox": 0,
+    "dCom": 9.949588417356452e-17,
+    "faces": 12,
+    "occtFaces": 12,
+    "faceTypes": {
+     "plane": 12
+    },
+    "occtTypes": {
+     "plane": 12
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -5,
+     60,
+     5,
+     5
+    ],
+    "occtBbox": [
+     -10,
+     -5,
+     -5,
+     60,
+     5,
+     5
+    ]
+   }
+  },
+  "brep": {
+   "op1": {
+    "volume": 2200.0000000000005,
+    "bbox": [
+     -10,
+     -5,
+     -5,
+     60,
+     5,
+     5
+    ],
+    "faces": 12,
+    "dVol": 6.201100239360877e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ]
+ },
+ "move/cut-moved-cyl": {
+  "script": "const a = box(30, 30, 10);\nconst c = cylinder(8, 30);\nmove(c, [6, 4, 0]);\ncut(a, c);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "cylinder",
+   "move",
+   "combine"
+  ],
+  "v": {
+   "op1": "PASS"
+  },
+  "truck": {
+   "op1": {
+    "volume": 9000,
+    "occtVolume": 8999.999999999998,
+    "dVol": 2.0210993372731742e-16,
+    "dBbox": 0,
+    "dCom": 2.7168280528466674e-18,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -5,
+     15,
+     15,
+     5
+    ],
+    "occtBbox": [
+     -15,
+     -15,
+     -5,
+     15,
+     15,
+     5
+    ]
+   }
+  },
+  "brep": {
+   "op1": {
+    "volume": 9000,
+    "bbox": [
+     -15,
+     -15,
+     -5,
+     15,
+     15,
+     5
+    ],
+    "faces": 6,
+    "dVol": 2.0210993372731742e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ]
+ },
+ "move/hole-after-move": {
+  "script": "const a = box(30, 30, 10);\nmove(a, [10, 10, 10]);\nhole(a, { across: 6 });",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move",
+   "hole"
+  ],
+  "v": {
+   "hole1": "PASS"
+  },
+  "truck": {
+   "hole1": {
+    "volume": 8717.303625887824,
+    "occtVolume": 8717.256661176918,
+    "dVol": 0.000005387556284180784,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 1.5485919901226002e-15,
+    "faces": 7,
+    "occtFaces": 7,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "curved": true,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -5,
+     -5,
+     4.9999999999999964,
+     25,
+     25,
+     15.000000000000009
+    ],
+    "occtBbox": [
+     -5,
+     -5,
+     5,
+     25,
+     25,
+     15
+    ]
+   }
+  },
+  "brep": {
+   "hole1": {
+    "volume": 8717.256661176916,
+    "bbox": [
+     -5,
+     -5,
+     5,
+     25,
+     25,
+     15
+    ],
+    "faces": 7,
+    "dVol": 2.0866534900215665e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built"
+   }
+  ]
+ },
+ "move/round-after-move": {
+  "script": "const a = box(30, 30, 10);\nmove(a, [10, 10, 10]);\nround(a.edge('top', 'front'), 2);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move",
+   "fillet"
+  ],
+  "v": {
+   "round1": "REFUSED"
+  },
+  "truck": {
+   "round1": {
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  "brep": {
+   "round1": {
+    "volume": 8974.247779607695,
+    "bbox": [
+     -5,
+     -5,
+     5,
+     25,
+     25,
+     15
+    ],
+    "faces": 7,
+    "dVol": 1.1283746847884586e-12,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  ]
+ }
+}

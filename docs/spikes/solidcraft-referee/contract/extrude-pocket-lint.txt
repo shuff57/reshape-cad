@@ -1,0 +1,30 @@
+SCRIPT      : const a = pull(s,10,{twist:5});
+interpreter : pull() takes a sketch and a height; the third argument (a { } object) was ignored. To move the result, use move(...).
+contract    : pull() has no option called twist. pull() takes midplane, length2, reversed, taper, direction, alongNormal.
+SCRIPT      : const a = pull(s,10,{through:true});
+interpreter : pull() takes a sketch and a height; the third argument (a { } object) was ignored. To move the result, use move(...).
+contract    : through is a pocket option (cut all the way); a pull has nothing to cut through. pull() takes midplane, length2, reversed, taper, direction, alongNormal.
+SCRIPT      : const a = extrude(s,10,{midplane:true, depth:3});
+interpreter : pull() takes a sketch and a height; the third argument (a { } object) was ignored. To move the result, use move(...).
+contract    : pull() has no option called depth. pull() takes midplane, length2, reversed, taper, direction, alongNormal.
+SCRIPT      : const a = pull(s,10);const t=sketch('top',10); t.rect(2,2); const b = pocket(t,a,3,{deep:true});
+interpreter : pocket() takes a sketch, a shape and a depth; the fourth argument (a { } object) was ignored.
+contract    : pocket() has no option called deep. pocket() takes midplane, length2, reversed, taper, direction, alongNormal, through.
+SCRIPT      : const a = pull(s,10,{midplane:true});const t=sketch('top',10); t.rect(2,2); const b = pocket(t,a,3,{through:true, wibble: [1,2]});
+interpreter : pocket() takes a sketch, a shape and a depth; the fourth argument (a { } object) was ignored.
+contract    : pocket() has no option called wibble. pocket() takes midplane, length2, reversed, taper, direction, alongNormal, through.
+5/5 named the wrong key
+--- raw solidcraft errors -> the one plain sentence a student sees
+solid.extrude: boolean Cut: the operation failed: no result; the operation failed: pushing a fa => pocket1: this pocket cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so nothing is cut; change the sketch, the length or the options
+solid.extrude: invalid input: the taper closes the profile                                      => pull1: the taper makes the outline fold over itself or close up before the end of the pull, so nothing is built; use a smaller taper or a shorter length
+solid.extrude: invalid input: extrude distance is zero                                          => pull1: the length is too small to build; make it at least 0.001 mm
+solid.extrude: invalid input: profile: cannot attach a plane to a wire that is not on one plane => pull1: the outline is too small or too thin to build; draw it larger
+solid.extrude: through all needs a body to cut                                                  => pocket1: there is no part to cut through
+WASM TRAP: Unreachable code should not be executed                                              => pocket1: this pocket cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so nothing is cut; change the sketch, the length or the options
+solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness => op1: the parts of this join only touch along a line or at a point (or stop just short of each other), so they would not be one solid; overlap them a little, share a whole face, or keep them clearly apart
+solid.combine: boolean Join: implausible result volume 160.7; the operation failed: not support => op1: this join cannot be built from these parts (the solid it makes does not close up cleanly), so nothing is combined; change the sizes or positions so the parts overlap by a clear amount
+solid.combine: a body cannot be combined with itself                                            => op1: this subtract cannot be built from these parts (the solid it makes does not close up cleanly), so nothing is combined; change the sizes or positions so the parts overlap by a clear amount
+solid.extrude: invalid input: profile loop is not closed                                        => pull1: the outline does not close: two ends that should meet are a hair apart (less than 0.00001 mm); add a coincident rule between them or make them meet exactly
+solid.fillet: not supported yet: the blend is larger than the neighbouring faces                => hole1: this hole cannot be built as drawn (the solid it makes does not close up cleanly); change its sizes, positions or options
+solid.shell: invalid input: the planes don't enclose a solid                                    => shell1: this shell cannot be built as drawn (the solid it makes does not close up cleanly); change its sizes, positions or options
+solid.fillet: invalid parameters for `solid.fillet`: no edge at [1, 2, 3]: the nearest edge is  => round1: this round cannot be built as drawn (the solid it makes does not close up cleanly); change its sizes, positions or options

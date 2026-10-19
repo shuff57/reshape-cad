@@ -1,0 +1,1 @@
+fzc2-66-boxG-top-flat-135                PASS     occtV 70386.1005 | tr-occt dV 4.8e-6 dBb 0.0e+0 dCom 9.0e-7 F o/b/t 15/15/16 | brep-occt dV 5.4e-14      | ms 1822 cpu 2363

@@ -1,0 +1,39 @@
+Running as unit: run-p1784179-i26952492.scope; invocation ID: e3551727e62e430da18f2aa57dce97d3
+parallel       slot b X axis  guarded BUILT right 6000.000 | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+parallel       slot a X axis  guarded BUILT right 6000.000 | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+perpendicular  slot b X axis  guarded BUILT right 6000.000 | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+perpendicular  slot a X axis  guarded BUILT right 6000.000 | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+pointOnObject  slot b X axis  guarded BUILT right 6000.000 | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+symmetric      slot c X axis  guarded BUILT right 6000.000 | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+tangent        slot b X axis  guarded REFUSED[preflight] Row 3 of sk.rules() makes a curve tangent to an axis, and that cannot be checked after the solve; draw a const | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+tangent        slot a X axis  guarded REFUSED[preflight] Row 3 of sk.rules() makes a curve tangent to an axis, and that cannot be checked after the solve; draw a const | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+equal          slot b X axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+angle          slot b X axis  guarded REFUSED[map] Row 11 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+angle          slot a X axis  guarded REFUSED[map] Row 11 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+horizontal     slot a X axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs built 6000.000
+vertical       slot a X axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs built 6000.000
+coincident     slot b X axis  guarded REFUSED[map] Row 11 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs built 6000.000
+distance       slot b X axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolv
+distanceX      slot b X axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolv
+distanceY      slot b X axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolv
+radius         slot a X axis  guarded REFUSED[map] Row 3 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+diameter       slot a X axis  guarded REFUSED[map] Row 3 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+lock           slot a X axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs built 6000.000
+parallel       slot b Y axis  guarded BUILT right 6000.000 | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+parallel       slot a Y axis  guarded BUILT right 6000.000 | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+perpendicular  slot b Y axis  guarded BUILT right 6000.000 | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+perpendicular  slot a Y axis  guarded BUILT right 6000.000 | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+pointOnObject  slot b Y axis  guarded BUILT right 6000.000 | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+symmetric      slot c Y axis  guarded BUILT right 6000.000 | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+equal          slot b Y axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+angle          slot b Y axis  guarded REFUSED[map] Row 11 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+angle          slot a Y axis  guarded REFUSED[map] Row 11 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+horizontal     slot a Y axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs built 6000.000
+vertical       slot a Y axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs built 6000.000
+coincident     slot b Y axis  guarded REFUSED[map] Row 11 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs built 6000.000
+distance       slot b Y axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolv
+distanceX      slot b Y axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolv
+distanceY      slot b Y axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolv
+radius         slot a Y axis  guarded REFUSED[map] Row 3 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+diameter       slot a Y axis  guarded REFUSED[map] Row 3 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs refused: extrude pull1: the sketch's rules cannot be solved; resolve the conflict first
+lock           slot a Y axis  guarded REFUSED[map] Row 12 of sk.rules() names an axis where it needs a point or a different kind of line. | brep-rs built 6000.000

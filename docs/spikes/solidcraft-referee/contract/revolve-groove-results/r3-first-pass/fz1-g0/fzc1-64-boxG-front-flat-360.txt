@@ -1,0 +1,1 @@
+fzc1-64-boxG-front-flat-360              PASS     occtV 70734.2523 | tr-occt dV 8.5e-7 dBb 1.1e-15 dCom 1.7e-7 F o/b/t 10/10/10 | brep-occt dV 1.0e-12      | ms 777 cpu 1149

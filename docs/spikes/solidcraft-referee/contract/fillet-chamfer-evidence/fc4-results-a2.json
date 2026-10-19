@@ -1,0 +1,5151 @@
+[
+ {
+  "id": "a2-adj-round-3-5",
+  "group": "a2-adjacent",
+  "note": "closed form = the literal mitre (fc4-mitre.mjs)",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 3)\nround(plate.edge('top','right'), 5)",
+  "pane": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 2103
+  },
+  "contract": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 5357
+  },
+  "grouped": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1641
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11722.360179433374,
+    "faces": 10,
+    "bbox": [
+     -1e-7,
+     -1.0000000321964677e-7,
+     -1e-7,
+     40.0000001,
+     30.0000001,
+     10.000000100000003
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11922.74333882308,
+     "faces": 7
+    }
+   },
+   "closedForm": {
+    "volume": 11767.155701462845,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 1.9611614024556225e-9,
+   "grouped": 1.9611614024556225e-9,
+   "contract": 1.9611614024556225e-9
+  },
+  "ms": 16050,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-round-4-5",
+  "group": "a2-adjacent",
+  "note": "closed form = the literal mitre (fc4-mitre.mjs)",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 4)\nround(plate.edge('top','right'), 5)",
+  "pane": {
+   "volume": 11862.564752953316,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11862.564752953316,
+     "faces": 7,
+     "bbox": [
+      -1.4210854715202004e-14,
+      0,
+      0,
+      40.00000000000002,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 2879
+  },
+  "contract": {
+   "volume": 11862.564752953316,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11862.564752953316,
+     "faces": 7,
+     "bbox": [
+      -1.4210854715202004e-14,
+      0,
+      0,
+      40.00000000000002,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 2801
+  },
+  "grouped": {
+   "volume": 11862.564752953316,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11862.564752953316,
+     "faces": 7,
+     "bbox": [
+      -1.4210854715202004e-14,
+      0,
+      0,
+      40.00000000000002,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 1496
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11664.888620530148,
+    "faces": 10,
+    "bbox": [
+     -1e-7,
+     -1.0000000199840144e-7,
+     -1e-7,
+     40.00000010000001,
+     30.0000001,
+     10.0000001
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11862.654824574367,
+     "faces": 7
+    }
+   },
+   "closedForm": {
+    "volume": 11710.214748026496,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 1.9611613785050313e-9,
+   "grouped": 1.9611613785050313e-9,
+   "contract": 1.9611613785050313e-9
+  },
+  "ms": 14121,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-round-2-6",
+  "group": "a2-adjacent",
+  "note": "closed form = the literal mitre (fc4-mitre.mjs)",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 2)\nround(plate.edge('top','right'), 6)",
+  "pane": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1161
+  },
+  "contract": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 2050
+  },
+  "grouped": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1670
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11677.695368120612,
+    "faces": 10,
+    "bbox": [
+     -1e-7,
+     -1.0000000244249065e-7,
+     -1e-7,
+     40.00000010000001,
+     30.0000001,
+     10.000000100000003
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11965.66370614359,
+     "faces": 7
+    }
+   },
+   "closedForm": {
+    "volume": 11737.29827500329,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 1.961161387214337e-9,
+   "grouped": 1.961161387214337e-9,
+   "contract": 1.961161387214337e-9
+  },
+  "ms": 9807,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-round-3-3",
+  "group": "a2-adjacent",
+  "note": "closed form = the literal mitre (fc4-mitre.mjs)",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 3)\nround(plate.edge('top','right'), 3)",
+  "pane": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1832
+  },
+  "contract": {
+   "volume": 11867.340871301536,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11867.340871301536,
+     "faces": 8,
+     "bbox": [
+      -1.853146486398033e-14,
+      -1.0658141046250769e-14,
+      0,
+      40.00000000000002,
+      30.00000000000001,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       15,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1616
+  },
+  "grouped": {
+   "volume": 11867.340871301536,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11867.340871301536,
+     "faces": 8,
+     "bbox": [
+      -1.853146486398033e-14,
+      -1.0658141046250769e-14,
+      0,
+      40.00000000000002,
+      30.00000000000001,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       15,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1251
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11850.006593387812,
+    "faces": 10,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11922.74333882308,
+     "faces": 7
+    }
+   },
+   "occtSim": {
+    "volume": 11867.389342068023,
+    "faces": 8,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "edgeDist": 0,
+    "distinctEdges": 2
+   },
+   "closedForm": {
+    "volume": 11867.389342064998,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "match",
+   "contract": "match",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "match"
+   }
+  },
+  "bboxDelta": {
+   "pane": 2.786977903755656e-16,
+   "grouped": 4.1804668556334836e-16,
+   "contract": 4.1804668556334836e-16
+  },
+  "ms": 9163,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-round-1-1",
+  "group": "a2-adjacent",
+  "note": "closed form = the literal mitre (fc4-mitre.mjs)",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 1)\nround(plate.edge('top','right'), 1)",
+  "pane": {
+   "volume": 11991.410295184303,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11991.410295184303,
+     "faces": 7,
+     "bbox": [
+      -8.104628079763644e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 1447
+  },
+  "contract": {
+   "volume": 11985.068242262329,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11985.068242262329,
+     "faces": 8,
+     "bbox": [
+      -1.6993706898575226e-14,
+      -7.105427364167172e-15,
+      0,
+      40.000000000000014,
+      30.000000000000018,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       15,
+       10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 1650
+  },
+  "grouped": {
+   "volume": 11985.068242262329,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11985.068242262329,
+     "faces": 8,
+     "bbox": [
+      -1.6993706898575226e-14,
+      -7.105427364167172e-15,
+      0,
+      40.000000000000014,
+      30.000000000000018,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       15,
+       10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 3449
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11982.999257372743,
+    "faces": 10,
+    "bbox": [
+     0,
+     -2.220446049250313e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11991.415926535898,
+     "faces": 7
+    }
+   },
+   "occtSim": {
+    "volume": 11985.073741786182,
+    "faces": 8,
+    "bbox": [
+     0,
+     -2.220446049250313e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "edgeDist": 0,
+    "distinctEdges": 2
+   },
+   "closedForm": {
+    "volume": 11985.07374177577,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "match",
+   "contract": "match",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "match"
+   }
+  },
+  "bboxDelta": {
+   "pane": 2.786977903755656e-16,
+   "grouped": 3.48372237969457e-16,
+   "contract": 3.48372237969457e-16
+  },
+  "ms": 11755,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-round-5-3",
+  "group": "a2-adjacent",
+  "note": "closed form = the literal mitre (fc4-mitre.mjs)",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 5)\nround(plate.edge('top','right'), 3)",
+  "pane": {
+   "volume": 11785.25742961502,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11785.25742961502,
+     "faces": 7,
+     "bbox": [
+      -1.1546319456101628e-14,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 5
+    }
+   ],
+   "ms": 2210
+  },
+  "contract": {
+   "volume": 11785.25742961502,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11785.25742961502,
+     "faces": 7,
+     "bbox": [
+      -1.1546319456101628e-14,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 5
+    }
+   ],
+   "ms": 5370
+  },
+  "grouped": {
+   "volume": 11785.25742961502,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11785.25742961502,
+     "faces": 7,
+     "bbox": [
+      -1.1546319456101628e-14,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 5
+    }
+   ],
+   "ms": 3286
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11714.319360099325,
+    "faces": 10,
+    "bbox": [
+     0,
+     -8.881784197001252e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11785.398163397449,
+     "faces": 7
+    }
+   },
+   "closedForm": {
+    "volume": 11732.819407606437,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 2.786977903755656e-16,
+   "grouped": 2.786977903755656e-16,
+   "contract": 2.786977903755656e-16
+  },
+  "ms": 19632,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-round-2-2",
+  "group": "a2-adjacent",
+  "note": "closed form = the literal mitre (fc4-mitre.mjs)",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 2)\nround(plate.edge('top','right'), 2)",
+  "pane": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 2233
+  },
+  "contract": {
+   "volume": 11940.656678444699,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11940.656678444699,
+     "faces": 8,
+     "bbox": [
+      -1.8842331005452012e-14,
+      -3.552713682083584e-15,
+      0,
+      40.000000000000014,
+      30.00000000000002,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       15,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 5334
+  },
+  "grouped": {
+   "volume": 11940.656678444699,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11940.656678444699,
+     "faces": 8,
+     "bbox": [
+      -1.8842331005452012e-14,
+      -3.552713682083584e-15,
+      0,
+      40.000000000000014,
+      30.00000000000002,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       15,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1933
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11932.666646597792,
+    "faces": 10,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11965.66370614359,
+     "faces": 7
+    }
+   },
+   "occtSim": {
+    "volume": 11940.678448467608,
+    "faces": 8,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "edgeDist": 0,
+    "distinctEdges": 2
+   },
+   "closedForm": {
+    "volume": 11940.678448454873,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "match",
+   "contract": "match",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "match"
+   }
+  },
+  "bboxDelta": {
+   "pane": 2.786977903755656e-16,
+   "grouped": 4.1804668556334836e-16,
+   "contract": 4.1804668556334836e-16
+  },
+  "ms": 16148,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-round-3-4",
+  "group": "a2-adjacent",
+  "note": "closed form = the literal mitre (fc4-mitre.mjs)",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 3)\nround(plate.edge('top','right'), 4)",
+  "pane": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 2339
+  },
+  "contract": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 4560
+  },
+  "grouped": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 4846
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11793.638074535189,
+    "faces": 10,
+    "bbox": [
+     -1e-7,
+     -1.000000045519144e-7,
+     -1e-7,
+     40.0000001,
+     30.0000001,
+     10.000000100000001
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11922.74333882308,
+     "faces": 7
+    }
+   },
+   "closedForm": {
+    "volume": 11823.67101441072,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 1.9611614285835403e-9,
+   "grouped": 1.9611614285835403e-9,
+   "contract": 1.9611614285835403e-9
+  },
+  "ms": 19230,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-round-3-6",
+  "group": "a2-adjacent",
+  "note": "closed form = the literal mitre (fc4-mitre.mjs)",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 3)\nround(plate.edge('top','right'), 6)",
+  "pane": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 7001
+  },
+  "contract": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 3203
+  },
+  "grouped": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1936
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11636.632512077058,
+    "faces": 10,
+    "bbox": [
+     -1e-7,
+     -1.0000000122124532e-7,
+     -1e-7,
+     40.00000010000001,
+     30.0000001,
+     10.000000100000008
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11922.74333882308,
+     "faces": 7
+    }
+   },
+   "closedForm": {
+    "volume": 11697.817805860848,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 1.9611615015803715e-9,
+   "grouped": 1.9611615015803715e-9,
+   "contract": 1.9611615015803715e-9
+  },
+  "ms": 17046,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-round-2-3",
+  "group": "a2-adjacent",
+  "note": "closed form = the literal mitre (fc4-mitre.mjs)",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 2)\nround(plate.edge('top','right'), 3)",
+  "pane": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3048
+  },
+  "contract": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1741
+  },
+  "grouped": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 2081
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11891.644218815922,
+    "faces": 10,
+    "bbox": [
+     -1e-7,
+     -1.0000000555111512e-7,
+     -1e-7,
+     40.0000001,
+     30.0000001,
+     10.0000001
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11965.66370614359,
+     "faces": 7
+    }
+   },
+   "closedForm": {
+    "volume": 11909.096689991151,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 1.9611614481794784e-9,
+   "grouped": 1.9611614481794784e-9,
+   "contract": 1.9611614481794784e-9
+  },
+  "ms": 11430,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-round-2-4",
+  "group": "a2-adjacent",
+  "note": "closed form = the literal mitre (fc4-mitre.mjs)",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 2)\nround(plate.edge('top','right'), 4)",
+  "pane": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 4830
+  },
+  "contract": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3751
+  },
+  "grouped": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3131
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11835.108402719503,
+    "faces": 10,
+    "bbox": [
+     -1e-7,
+     -1.0000000266453525e-7,
+     -1e-7,
+     40.0000001,
+     30.0000001,
+     10.0000001
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11965.66370614359,
+     "faces": 7
+    }
+   },
+   "closedForm": {
+    "volume": 11864.682809928003,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 1.96116139156899e-9,
+   "grouped": 1.96116139156899e-9,
+   "contract": 1.96116139156899e-9
+  },
+  "ms": 19380,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-vert-round-3-5",
+  "group": "a2-adjacent",
+  "note": null,
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 3)\nround(plate.edge('front','right'), 5)",
+  "pane": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 3390
+  },
+  "contract": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 3912
+  },
+  "grouped": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 4421
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11722.360179430303,
+    "faces": 10,
+    "bbox": [
+     -1e-7,
+     -1.0000000088817842e-7,
+     -1e-7,
+     40.00000010000001,
+     30.0000001,
+     10.0000001
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11922.74333882308,
+     "faces": 7
+    }
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 1.9611613622314774e-9,
+   "grouped": 1.9611613622314774e-9,
+   "contract": 1.9611613622314774e-9
+  },
+  "ms": 21757,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-vert-round-2-2",
+  "group": "a2-adjacent",
+  "note": null,
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 2)\nround(plate.edge('front','right'), 2)",
+  "pane": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 2727
+  },
+  "contract": {
+   "volume": 11957.831175225743,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11957.831175225743,
+     "faces": 8,
+     "bbox": [
+      -1.5791768449943852e-14,
+      0,
+      -1.6190595354337006e-14,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       0,
+       5
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3397
+  },
+  "grouped": {
+   "volume": 11957.831175225743,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11957.831175225743,
+     "faces": 8,
+     "bbox": [
+      -1.5791768449943852e-14,
+      0,
+      -1.6190595354337006e-14,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       0,
+       5
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 2593
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11932.666646597792,
+    "faces": 10,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11965.66370614359,
+     "faces": 7
+    }
+   },
+   "occtSim": {
+    "volume": 11957.846595365585,
+    "faces": 8,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "edgeDist": 0,
+    "distinctEdges": 2
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 2.786977903755656e-16,
+   "grouped": 3.1752369864788107e-16,
+   "contract": 3.1752369864788107e-16
+  },
+  "ms": 15045,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-vert-round-4-1",
+  "group": "a2-adjacent",
+  "note": null,
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 4)\nround(plate.edge('front','right'), 1)",
+  "pane": {
+   "volume": 11862.564752953316,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11862.564752953316,
+     "faces": 7,
+     "bbox": [
+      -1.4210854715202004e-14,
+      0,
+      0,
+      40.00000000000002,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 5173
+  },
+  "contract": {
+   "volume": 11862.564752953316,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11862.564752953316,
+     "faces": 7,
+     "bbox": [
+      -1.4210854715202004e-14,
+      0,
+      0,
+      40.00000000000002,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 6834
+  },
+  "grouped": {
+   "volume": 11862.564752953316,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11862.564752953316,
+     "faces": 7,
+     "bbox": [
+      -1.4210854715202004e-14,
+      0,
+      0,
+      40.00000000000002,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 5437
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11854.514479109057,
+    "faces": 10,
+    "bbox": [
+     0,
+     -8.881784197001252e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11862.654824574367,
+     "faces": 7
+    }
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 4.1804668556334836e-16,
+   "grouped": 4.1804668556334836e-16,
+   "contract": 4.1804668556334836e-16
+  },
+  "ms": 30084,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-bevel-3-5",
+  "group": "a2-adjacent",
+  "note": null,
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nbevel(plate.edge('top','front'), 3)\nbevel(plate.edge('top','right'), 5)",
+  "pane": {
+   "volume": 11820,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11820,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 3460
+  },
+  "contract": {
+   "volume": 11820,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11820,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": "The bevel bevel2 touches an edge that bevel1 already changed with a different size, so bevel2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1815
+  },
+  "grouped": {
+   "volume": 11820,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11820,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": "The bevel bevel2 touches an edge that bevel1 already changed with a different size, so bevel2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1040
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11463,
+    "faces": 8,
+    "bbox": [
+     0,
+     -2.6645352591003757e-15,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 11463,
+    "faces": 8,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "closedForm": {
+    "volume": 11462.999999999944,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 5.225583569541854e-17,
+   "grouped": 5.225583569541854e-17,
+   "contract": 5.225583569541854e-17
+  },
+  "ms": 12769,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-bevel-2-2",
+  "group": "a2-adjacent",
+  "note": null,
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nbevel(plate.edge('top','front'), 2)\nbevel(plate.edge('top','right'), 2)",
+  "pane": {
+   "volume": 11920,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11920,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1310
+  },
+  "contract": {
+   "volume": 11862.666666666666,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11862.666666666666,
+     "faces": 8,
+     "bbox": [
+      0,
+      -4.440892098500626e-16,
+      0,
+      40,
+      30.000000000000007,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "plane": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2"
+     ]
+    },
+    {
+     "id": "bevel2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       15,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1388
+  },
+  "grouped": {
+   "volume": 11862.666666666666,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11862.666666666666,
+     "faces": 8,
+     "bbox": [
+      0,
+      -4.440892098500626e-16,
+      0,
+      40,
+      30.000000000000007,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "plane": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2"
+     ]
+    },
+    {
+     "id": "bevel2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       15,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1451
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11862.666666666664,
+    "faces": 8,
+    "bbox": [
+     0,
+     -1.7763568394002505e-15,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 11862.666666666664,
+    "faces": 8,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10.000000000000004
+    ]
+   },
+   "occtSim": {
+    "volume": 11862.666666666666,
+    "faces": 8,
+    "bbox": [
+     0,
+     -4.440892098500626e-15,
+     0,
+     40,
+     30,
+     10
+    ],
+    "types": {
+     "plane": 8
+    },
+    "edgeDist": 0,
+    "distinctEdges": 2
+   },
+   "closedForm": {
+    "volume": 11862.66666666665,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "match",
+   "contract": "match",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "match"
+   }
+  },
+  "bboxDelta": {
+   "pane": 8.709305949236424e-17,
+   "grouped": 1.3934889518778278e-16,
+   "contract": 1.3934889518778278e-16
+  },
+  "ms": 9044,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-bevel-3-1",
+  "group": "a2-adjacent",
+  "note": null,
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nbevel(plate.edge('top','front'), 3)\nbevel(plate.edge('top','right'), 1)",
+  "pane": {
+   "volume": 11820,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11820,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1500
+  },
+  "contract": {
+   "volume": 11820,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11820,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": "The bevel bevel2 touches an edge that bevel1 already changed with a different size, so bevel2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1493
+  },
+  "grouped": {
+   "volume": 11820,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11820,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": "The bevel bevel2 touches an edge that bevel1 already changed with a different size, so bevel2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1593
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11806.333333333334,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 11806.333333333334,
+    "faces": 8,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "closedForm": {
+    "volume": 11806.333333333332,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 0,
+   "grouped": 0,
+   "contract": 0
+  },
+  "ms": 9651,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-bevel-4-6",
+  "group": "a2-adjacent",
+  "note": null,
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nbevel(plate.edge('top','front'), 4)\nbevel(plate.edge('top','right'), 6)",
+  "pane": {
+   "volume": 11680,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11680,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 1261
+  },
+  "contract": {
+   "volume": 11680,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11680,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": "The bevel bevel2 touches an edge that bevel1 already changed with a different size, so bevel2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 2076
+  },
+  "grouped": {
+   "volume": 11680,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11680,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": "The bevel bevel2 touches an edge that bevel1 already changed with a different size, so bevel2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 2080
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11177.333333333334,
+    "faces": 8,
+    "bbox": [
+     0,
+     -8.881784197001252e-16,
+     0,
+     40,
+     30.000000000000004,
+     10.000000000000004
+    ]
+   },
+   "brepSeq": {
+    "volume": 11177.333333333334,
+    "faces": 8,
+    "bbox": [
+     0,
+     -8.881784197001252e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "closedForm": {
+    "volume": 11177.3333333332,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 6.967444759389139e-17,
+   "grouped": 6.967444759389139e-17,
+   "contract": 6.967444759389139e-17
+  },
+  "ms": 13358,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-round-then-bevel-2-2",
+  "group": "a2-adjacent",
+  "note": null,
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 2)\nbevel(plate.edge('top','right'), 2)",
+  "pane": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1502
+  },
+  "contract": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The bevel bevel1 touches an edge that round1 already changed with a different kind of blend, so bevel1 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "bevel1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1726
+  },
+  "grouped": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The bevel bevel1 touches an edge that round1 already changed with a different kind of blend, so bevel1 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "bevel1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1806
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11889.474915950479,
+    "faces": 10,
+    "bbox": [
+     0,
+     -6.661338147750939e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+    "shapeWithout": {
+     "volume": 11965.66370614359,
+     "faces": 7
+    }
+   },
+   "closedForm": {
+    "volume": 11906.997039469215,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 2.786977903755656e-16,
+   "grouped": 2.786977903755656e-16,
+   "contract": 2.786977903755656e-16
+  },
+  "ms": 12216,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-bevel-then-round-3-2",
+  "group": "a2-adjacent",
+  "note": null,
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nbevel(plate.edge('top','front'), 3)\nround(plate.edge('top','right'), 2)",
+  "pane": {
+   "volume": 11820,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11820,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 2506
+  },
+  "contract": {
+   "volume": 11820,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11820,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The round round1 touches an edge that bevel1 already changed with a different kind of blend, so round1 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1963
+  },
+  "grouped": {
+   "volume": 11820,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11820,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The round round1 touches an edge that bevel1 already changed with a different kind of blend, so round1 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 2975
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11796.439483563256,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+    "shapeWithout": {
+     "volume": 11820,
+     "faces": 7
+    }
+   },
+   "closedForm": {
+    "volume": 11796.439520275877,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 0,
+   "grouped": 0,
+   "contract": 0
+  },
+  "ms": 14984,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-bevel-then-round-2-3",
+  "group": "a2-adjacent",
+  "note": null,
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nbevel(plate.edge('top','front'), 2)\nround(plate.edge('top','right'), 3)",
+  "pane": {
+   "volume": 11920,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11920,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1574
+  },
+  "contract": {
+   "volume": 11920,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11920,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The round round1 touches an edge that bevel1 already changed with a different kind of blend, so round1 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 2951
+  },
+  "grouped": {
+   "volume": 11920,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11920,
+     "faces": 7,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The round round1 touches an edge that bevel1 already changed with a different kind of blend, so round1 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3349
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11864.640116152132,
+    "faces": 8,
+    "bbox": [
+     0,
+     -1.1102230246251565e-15,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+    "shapeWithout": {
+     "volume": 11920,
+     "faces": 7
+    }
+   },
+   "closedForm": {
+    "volume": 11864.64013559087,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 6.96744475938914e-17,
+   "grouped": 6.96744475938914e-17,
+   "contract": 6.96744475938914e-17
+  },
+  "ms": 14486,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "a2-adj-round-then-bevel-3-1",
+  "group": "a2-adjacent",
+  "note": null,
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 3)\nbevel(plate.edge('top','right'), 1)",
+  "pane": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 3747
+  },
+  "contract": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The bevel bevel1 touches an edge that round1 already changed with a different kind of blend, so bevel1 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "bevel1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 11760
+  },
+  "grouped": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The bevel bevel1 touches an edge that round1 already changed with a different kind of blend, so bevel1 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "bevel1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 6842
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11903.648943735301,
+    "faces": 10,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+    "shapeWithout": {
+     "volume": 11922.74333882308,
+     "faces": 7
+    }
+   },
+   "closedForm": {
+    "volume": 11908.614040939025,
+    "faces": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused",
+   "closedForm": {
+    "pane": "refused-or-partial",
+    "contract": "refused-or-partial"
+   }
+  },
+  "bboxDelta": {
+   "pane": 2.786977903755656e-16,
+   "grouped": 2.786977903755656e-16,
+   "contract": 2.786977903755656e-16
+  },
+  "ms": 33136,
+  "tailOnlyBlends": true
+ }
+]

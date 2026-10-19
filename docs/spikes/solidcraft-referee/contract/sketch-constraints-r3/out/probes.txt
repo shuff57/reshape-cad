@@ -1,0 +1,78 @@
+Running as unit: run-p1720674-i26843423.scope; invocation ID: 96304b27bf274cc9bb11452700affde3
+tangent-line-circle-side-opposite                    REFUSED[map] Row 3 of sk.rules() asks for the circle on one side of the line but it is drawn on the other side; redraw it on the side you mean.
+    (unguarded: mapper: records side -1 for the line/circle tangency but the circle starts on the other side of the line; solidcraft's tangent has no side parameter, so it cannot be requested)
+circle-circle-mode-request-external-start-internal   REFUSED[map] Row 5 of sk.rules() asks for external tangency but the two circles are drawn internally; draw them externally (or ask for internal tangency).
+    (unguarded: mapper: asks for external tangency but the circles start internally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested)
+circle-circle-mode-request-internal-start-external   REFUSED[map] Row 5 of sk.rules() asks for internal tangency but the two circles are drawn externally; draw them internally (or ask for external tangency).
+    (unguarded: mapper: asks for internal tangency but the circles start externally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested)
+triangle-angle-wrong-orientation-start               REFUSED[map] Row 8 of sk.rules() asks for 120 degrees from line 1 to line 2, but the lines are drawn at about -120 degrees (they turn the other way round); the solver cannot swing a line across that far, so redraw the lines near 120 degrees first.
+    (unguarded: mapper: is the directed angle 120 deg from line 1 to line 2; from this starting geometry solidcraft would apply the value to the opposite orientation (it would hold 60.000000 deg from 1 to 2); its ang)
+rect-reference-distanceX-zero                        BUILT 
+    (unguarded: mapper: is a reference distanceX of 0; solidcraft has no reference form of a point-pair level constraint)
+rect-redundant-width-dimension                       BUILT 
+    (unguarded: solidcraft: invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k2 (Coincident), k3 (Coincident), k4 (Coincident), k6 (Vertical), k8 (Vertical), k10 (Li)
+rect-conflicting-width-dimension                     REFUSED[residual] Row 12 of sk.rules() (it sets the length of geometry 3 to 35) cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.
+    (unguarded: solidcraft: that would over-constrain the sketch (conflicts with k1, k2, k3, k4, k6, k8, k10, k12))
+probe-coincident-circle-end-a                        REFUSED[map] Row 12 of sk.rules() names point 'a' of geometry 5, but a circle has no 'a'.
+    (unguarded: mapper: geometry 5 is a circle and has no point 'a')
+probe-equal-line-vs-circle                           REFUSED[map] Row 12 of sk.rules() sets a line equal to a circle; equal needs two lengths or two radii, not one of each.
+    (unguarded: mapper: equal across a line and a circle/arc is refused by brep-rs too (a radius is not a length))
+probe-distance-names-no-end                          REFUSED[map] Row 12 of sk.rules() needs one point of geometry 1 ('a', 'b' or 'c') and does not say which.
+    (unguarded: mapper: needs a point of geometry 1 and the row names none (brep-rs refuses the same row) | needs a point of geometry 2 and the row names none (brep-rs refuses the same row))
+probe-radius-zero                                    REFUSED[map] Row 12 of sk.rules() sets a radius or diameter of 0; it has to be more than zero.
+    (unguarded: mapper: has value 0; a radius or diameter must be positive)
+probe-tangent-endpoint-no-coincident-row             REFUSED[map] Row 12 of sk.rules() makes two curves tangent at their ends, but no earlier row joins those two ends; add a coincident row for them first.
+    (unguarded: mapper: is the endpoint tangent form with no coincident row joining those two ends before it; solidcraft's tangent is between curves, and it only treats it as tangent-at-the-joint when the ends are ti)
+probe-lock-as-reference                              REFUSED[preflight] Row 12 of sk.rules() (it pins geometry 1) is marked as a reference, and only a dimension (a distance, offset, radius, diameter or angle) can be a reference.
+    (unguarded: mapper: a lock cannot be a reference measurement)
+probe-pointOn-target-is-point                        REFUSED[map] Row 12 of sk.rules() needs a line or circle but geometry 6 is a point.
+    (unguarded: mapper: geometry 6 is a point, not a curve)
+probe-angle-line-vs-circle                           REFUSED[map] Row 12 of sk.rules() needs a line but geometry 5 is a circle.
+    (unguarded: mapper: geometry 5 is a circle; this rule needs line)
+probe-distanceX-start-level                          REFUSED[map] Row 12 of sk.rules() sets a signed offset but the two points are drawn level, so the side it means cannot be told; draw them a little apart on the side you want.
+    (unguarded: mapper: the two points start level in x, so the side (sign) of the signed distanceX 5 is not carried by the starting geometry)
+probe-tangent-line-vs-line                           REFUSED[preflight] Row 12 of sk.rules() makes a line tangent to a line; tangent needs at least one circle or arc.
+    (unguarded: solidcraft: `g1` is the wrong kind of entity for this: tangent needs a circle or arc)
+kind-probe horizontal on a circle                   REFUSED[map] Row 12 of sk.rules() needs a line but geometry 5 is a circle.
+kind-probe vertical on a circle                     REFUSED[map] Row 12 of sk.rules() needs a line but geometry 5 is a circle.
+kind-probe parallel line to circle                  REFUSED[map] Row 12 of sk.rules() needs a line but geometry 5 is a circle.
+kind-probe perpendicular line to circle             REFUSED[map] Row 12 of sk.rules() needs a line but geometry 5 is a circle.
+kind-probe symmetric about a circle                 REFUSED[map] Row 12 of sk.rules() needs a line but geometry 5 is a circle.
+kind-probe radius on a line                         REFUSED[map] Row 12 of sk.rules() needs a circle or an arc but geometry 1 is a line.
+kind-probe diameter on a line                       REFUSED[map] Row 12 of sk.rules() needs a circle or an arc but geometry 1 is a line.
+kind-probe distanceY names a missing geometry       REFUSED[map] Row 12 of sk.rules() names geometry 99, but the sketch has no geometry 99.
+kind-probe tangent endpoint on a circle end         REFUSED[map] Row 12 of sk.rules() makes two curves tangent at their ends, but no earlier row joins those two ends; add a coincident row for them first.
+kind-probe pointOnObject on a missing curve         REFUSED[map] Row 12 of sk.rules() names geometry 42, but the sketch has no geometry 42.
+kind-probe unknown rule kind                        REFUSED[map] Row 12 of sk.rules() is a 'collinear' rule, which the sketch does not know.
+kind-probe distance with no value                   REFUSED[map] Row 12 of sk.rules() has no number to hold.
+legacy-number-probe across(9) on a 4-corner polygon      REFUSED[script] .across()'s edge has to be a whole number from 1 to 4 -- you gave it 9.
+legacy-number-probe across(0)                            REFUSED[script] .across()'s edge has to be a whole number from 1 to 4 -- you gave it 0.
+legacy-number-probe pin(7) on a 4-corner polygon         REFUSED[script] .pin()'s corner has to be a whole number from 1 to 4 -- you gave it 7.
+legacy-number-probe distX(0, 2, 5)                       REFUSED[script] .distX()'s corner has to be a whole number from 1 to 4 -- you gave it 0.
+REPRO arc rows off the circle + lock on c {"unguardedVolume":11141.136098946576,"wantVolume":11141.592653589794,"unguardedLockViolationMm":0.15756539330819833,"guardedBuilt":false,"guardedSentence":"Arc 1 has an end that is not on its circle (off by 0.20) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."}
+REPRO origin (-1) without an end in distanceX {"unguardedScBuilt":true,"unguardedScBbox":[5,3,0,35,23,10],"brepRsOpenError":"this rule needs a point of geometry -1 and the row names none","brepRsSolved":false,"guardedBuilt":false,"guardedSentence":"Row 9 of sk.rules() measures from the origin but does not say which point of it; write aEnd: 'a'."}
+REPRO conflicting equal + tangent (over-constrained circles) {"unguarded":"that would over-constrain the sketch (conflicts with k2, k3, k5, k6)","guardedBuilt":false,"guardedSentence":"Row 3 of sk.rules() (it sets the radius of geometry 2 to 5) cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean."}
+slot slot-hand-rows-R10-L40 as written        0.02: unguarded {"MATCH":24} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-hand-rows-R10-L40 as written        0.04: unguarded {"MATCH":23,"VOLUME":1} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-hand-rows-R10-L40 as written        0.06: unguarded {"VOLUME":1,"MATCH":23} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-hand-rows-R10-L40 reversed          0.02: unguarded {"MATCH":23,"VOLUME":1} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-hand-rows-R10-L40 reversed          0.04: unguarded {"MATCH":18,"VOLUME":6} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-hand-rows-R10-L40 reversed          0.06: unguarded {"MATCH":21,"VOLUME":3} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-hand-rows-R10-L40 dimensions first  0.02: unguarded {"MATCH":23,"VOLUME":1} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-hand-rows-R10-L40 dimensions first  0.04: unguarded {"MATCH":20,"VOLUME":4} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-hand-rows-R10-L40 dimensions first  0.06: unguarded {"MATCH":21,"VOLUME":3} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-hand-rows-R10-L40 tangents first    0.02: unguarded {"MATCH":18,"REFUSED":3,"VOLUME":3} guarded {"MATCH":24} unguarded SolidCraft error texts {"that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#, k#, k#)":1,"that would over#constrain the sketch (conflicts with k#)":1,"invalid input: profile: cannot attach a plane to a wire that is not on one plane#":1}
+slot slot-hand-rows-R10-L40 tangents first    0.04: unguarded {"VOLUME":12,"REFUSED":3,"MATCH":9} guarded {"MATCH":24} unguarded SolidCraft error texts {"invalid input: profile: cannot attach a plane to a wire that is not on one plane#":1,"that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#, k#, k#)":2}
+slot slot-hand-rows-R10-L40 tangents first    0.06: unguarded {"VOLUME":16,"MATCH":5,"REFUSED":3} guarded {"MATCH":24} unguarded SolidCraft error texts {"that would over#constrain the sketch (conflicts with k#)":1,"invalid input: profile: cannot attach a plane to a wire that is not on one plane#":1,"that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#, k#, k#, k#, k#)":1}
+slot slot-dims-from-points as written        0.02: unguarded {"MATCH":24} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-dims-from-points as written        0.04: unguarded {"MATCH":24} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-dims-from-points as written        0.06: unguarded {"MATCH":24} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-dims-from-points reversed          0.02: unguarded {"MATCH":19,"VOLUME":5} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-dims-from-points reversed          0.04: unguarded {"MATCH":24} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-dims-from-points reversed          0.06: unguarded {"MATCH":23,"VOLUME":1} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-dims-from-points dimensions first  0.02: unguarded {"MATCH":15,"VOLUME":4,"REFUSED":5} guarded {"MATCH":24} unguarded SolidCraft error texts {"that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#)":1,"invalid parameters for `sketch#constraint#horizontal_vertical`: that would over#constrain the sketch (it conflicts with what the o":2,"invalid input: profile loop is not closed":1,"invalid input: profile: cannot attach a plane to a wire that is not on one plane#":1}
+slot slot-dims-from-points dimensions first  0.04: unguarded {"MATCH":10,"REFUSED":3,"VOLUME":11} guarded {"MATCH":24} unguarded SolidCraft error texts {"that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#, k#, k#, k#)":1,"invalid input: profile loop is not closed":2}
+slot slot-dims-from-points dimensions first  0.06: unguarded {"VOLUME":11,"REFUSED":3,"MATCH":10} guarded {"MATCH":24} unguarded SolidCraft error texts {"that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#, k#, k#)":1,"invalid input: profile: cannot attach a plane to a wire that is not on one plane#":2}
+slot slot-dims-from-points tangents first    0.02: unguarded {"MATCH":22,"VOLUME":2} guarded {"MATCH":24} unguarded SolidCraft error texts {}
+slot slot-dims-from-points tangents first    0.04: unguarded {"MATCH":15,"REFUSED":3,"VOLUME":6} guarded {"MATCH":24} unguarded SolidCraft error texts {"that would over#constrain the sketch (conflicts with k#, k#, k#)":1,"invalid parameters for `sketch#constraint#coincident`: that conflicts with the sketch: neither entity can move to satisfy it (they":1,"invalid input: profile loop is not closed":1}
+slot slot-dims-from-points tangents first    0.06: unguarded {"VOLUME":4,"MATCH":18,"REFUSED":2} guarded {"MATCH":24} unguarded SolidCraft error texts {"that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#)":1,"that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#, k#)":1}

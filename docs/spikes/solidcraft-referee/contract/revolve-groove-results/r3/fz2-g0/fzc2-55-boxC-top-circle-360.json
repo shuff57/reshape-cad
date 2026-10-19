@@ -1,0 +1,43 @@
+[
+ {
+  "id": "fzc2-55-boxC-top-circle-360",
+  "src": "const t = box(60, 40, 30); const sk = sketch('top'); sk.circle(2, { at: [20.9, 4.7] }); groove(sk, t, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc2-55-boxC-top-circle-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "invalid": "OCCT: OCCT built nothing"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "groove groove1: a circle sketch has no outline to spin"
+   },
+   "ms": 33,
+   "load": [
+    22.5,
+    22.5
+   ],
+   "cpuMs": 81,
+   "truck": {
+    "refused": "groove1 (groove): the round wall of the ring touches or passes within 0.1 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: OCCT built nothing",
+  "caseMs": 61
+ }
+]

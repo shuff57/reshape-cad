@@ -1,0 +1,1 @@
+sl9-115-boxlip-side-m1                   PASS     occtV 70941.9725 | tr-occt dV 2.2e-6 dBb 4.5e-8 dCom 7.5e-7 F o/b/t 10/10/10 | brep-occt dV 8.4e-13      | ms 1112 cpu 1431

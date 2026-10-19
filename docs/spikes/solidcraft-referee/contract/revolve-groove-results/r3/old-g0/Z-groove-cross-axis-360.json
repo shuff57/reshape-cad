@@ -1,0 +1,44 @@
+[
+ {
+  "id": "Z-groove-cross-axis-360",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch('top'); g.polygon([[-1,10],[1,10],[1,15],[-1,15]]); groove(g, cyl, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "Z-groove-cross-axis-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "invalid": "OCCT: undefined"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "groove groove1: this sketch's outline crosses the axis it spins about, so the two sides would overlap -- draw the whole outline on one side of that line -- groove1 is shown without it."
+   },
+   "ms": 601,
+   "load": [
+    56.7,
+    56.7
+   ],
+   "cpuMs": 1145,
+   "truck": {
+    "refused": "groove1 (groove): the outline crosses the line it is turned about, so one side would overlap the other; draw the whole outline on one side of that line."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: undefined",
+  "caseMs": 646
+ }
+]

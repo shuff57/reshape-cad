@@ -1,0 +1,1 @@
+P-spin-0-patched                         REFUSED  occtV 0.0000 | tr-occt dV - dBb - dCom - F o/b/t 6/-/- | brep-occt dV -    | TRUCK REFUSED: rev1 (revolve): a spin needs an angle other than 0 degrees. | BREP REFUSED: revolve rev1: a spin needs an angle other than 0 -- rev1 is shown without it. | ms 2 cpu 3

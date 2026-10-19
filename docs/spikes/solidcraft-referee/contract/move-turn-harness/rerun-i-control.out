@@ -1,0 +1,2 @@
+truck bbox [ -9.430698, -10.197724, -10.333229, 9.430698, 10.197724, 10.333229 ]
+dBbox vs correct XYZ order 0.00e+0 | vs reversed order (z,y,x) 7.28e-1 | vs negated angles 5.52e-2

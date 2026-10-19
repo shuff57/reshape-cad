@@ -1,0 +1,74 @@
+{
+ "id": "s2-00591",
+ "desc": "convex bfillet s=0.75 30x24x6",
+ "t": 0.5,
+ "p7": {
+  "expectedP": 640.0139279314126
+ },
+ "p8": {
+  "cls": "WRONG",
+  "expectedP": 640.0139279314126,
+  "built": 641.2127532809593,
+  "rel": 0.0018731238450098169
+ },
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 30,
+    "width": 24,
+    "height": 6,
+    "center": [
+     0,
+     0,
+     3
+    ],
+    "body_name": "b1"
+   }
+  },
+  {
+   "command": "solid.fillet",
+   "params": {
+    "edges": [
+     [
+      0,
+      12,
+      0
+     ],
+     [
+      0,
+      -12,
+      0
+     ],
+     [
+      15,
+      0,
+      0
+     ],
+     [
+      -15,
+      0,
+      0
+     ]
+    ],
+    "radius": 0.75,
+    "body": "b1"
+   }
+  },
+  {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -2.951,
+      0,
+      6
+     ]
+    ],
+    "thickness": 0.5,
+    "body": "b1"
+   }
+  }
+ ],
+ "feats": []
+}

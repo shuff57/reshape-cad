@@ -1,0 +1,16 @@
+# census 1: 239 distinct raw SolidCraft messages (numbers folded) x 19 feature kinds
+mapped 4541 (raw x kind) pairs, 101 distinct sentence shapes, 0 with a banned phrase or more than one sentence
+   x 229  opN: this join cannot be built from these parts (the solid it makes does not close up cleanly), so nothing is combined; change the sizes or positions so the parts overlap by a clear amount
+   x 229  opN: this subtract cannot be built from these parts (the solid it makes does not close up cleanly), so nothing is combined; change the sizes or positions so the parts overlap by a clear amou
+   x 229  opN: this intersect cannot be built from these parts (the solid it makes does not close up cleanly), so nothing is combined; change the sizes or positions so the parts overlap by a clear amo
+   x 226  pullN: this pull cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so nothing is added; change the sketch, the length or the options
+   x 226  pocketN: this pocket cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so nothing is cut; change the sketch, the length or the options
+   x 226  holeN: this hole cannot be built as drawn (the solid it makes does not close up cleanly); change its sizes, positions or options
+   x 226  shellN: this shell cannot be built as drawn (the solid it makes does not close up cleanly); change its sizes, positions or options
+   x 226  roundN: this round cannot be built as drawn (the solid it makes does not close up cleanly); change its sizes, positions or options
+   x 226  draftN: this draft cannot be built as drawn (the solid it makes does not close up cleanly); change its sizes, positions or options
+   x 226  spinN: this revolve cannot be built as drawn (the solid it makes does not close up cleanly); change its sizes, positions or options
+   x 226  grooveN: this groove cannot be built as drawn (the solid it makes does not close up cleanly); change its sizes, positions or options
+   x 226  mirrorN: this mirror cannot be built as drawn (the solid it makes does not close up cleanly); change its sizes, positions or options
+# census 2: 139 refusal sentences over 418 measured cases, 41 distinct shapes (numbers folded), 0 with a banned phrase or more than one sentence
+CENSUS CLEAN

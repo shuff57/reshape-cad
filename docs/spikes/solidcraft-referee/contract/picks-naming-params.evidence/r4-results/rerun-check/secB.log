@@ -1,0 +1,65 @@
+--- cylinder faces / side
+cyl round edge(top,side)                 PASS[OCCT] V=9372.922565 (OCCT 9373.252121, brep 9373.252121) dVol 3.5e-5 dBbox 3.0e-5 dCOM 3.5e-7 faces occt/truck/brep 4/4/4 | ctl {"rej":true,"dCom":"3.9e-3"} 
+    names: cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]
+cyl round edge(bottom,side)              PASS[OCCT] V=9372.922565 (OCCT 9373.252121, brep 9373.252121) dVol 3.5e-5 dBbox 3.0e-5 dCOM 3.5e-7 faces occt/truck/brep 4/4/4 | ctl {"rej":true,"dCom":"3.9e-3"} 
+    names: cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]]
+cyl bevel edge(top,side)                 PASS[OCCT] V=9306.449143 (OCCT 9307.491835, brep 9307.491835) dVol 1.1e-4 dBbox 3.4e-5 dCOM 1.1e-6 faces occt/truck/brep 4/4/4 | ctl {"rej":true,"dCom":"8.8e-3"} 
+    names: cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]
+cyl hollow open top                      PASS[OCCT] V=3794.701671 (OCCT 3795.043926, brep 3795.043926) dVol 9.0e-5 dBbox 3.4e-5 dCOM 1.5e-6 faces occt/truck/brep 5/5/5 | ctl {"rej":true,"dCom":"7.2e-2"} 
+    names: cyl1.face[+z]
+cyl hollow open bottom                   PASS[OCCT] V=3794.701671 (OCCT 3795.043926, brep 3795.043926) dVol 9.0e-5 dBbox 3.4e-5 dCOM 1.5e-6 faces occt/truck/brep 5/5/5 | ctl {"rej":true,"dCom":"7.2e-2"} 
+    names: cyl1.face[-z]
+cyl draft face(side)                     REFUSED: draft1 is not built: the curved side of a cylinder cannot be drafted yet -- draft a flat face instead.   | OCCT:builds V=9314.6919 BREP:refusals {"draft1":"brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without i
+    names: cyl1.face[side]
+cyl draft face(top)                      REFUSED: draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.   | OCCT:refusals {"draft1":"Tilting Draft 1 at 5 degrees would not fit -- Draft 1 is shown without it."} BREP:refusals {"draft1":"brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without i
+    names: cyl1.face[+z]
+cyl hollow open side                         SCRIPT ERROR: hollow: "side" is the curved wall of a cylinder, not a flat face here.
+cyl edge(top,bottom)                     REFUSED: round1 is not built: the top and bottom faces never meet, so there is no edge between them -- name two faces that touch.   | OCCT:refusals {"round1":"Round 1's edge could not be found -- Round 1 is shown without it."} BREP:refusals {"round1":"round1's edge could not be found -- round1 is shown without it."}
+    names: cyl1.edge[cyl1.face[+z] ^ cyl1.face[-z]]
+cyl edge(top,front)                      REFUSED: round1 is not built: a cylinder has no left, right, front or back face, only a top, a bottom and one curved side.   | OCCT:builds V=9373.2521 BREP:builds V=9373.2521
+    names: cyl1.edge[cyl1.face[+z] ^ cyl1.face[-y]]
+cyl edge(side,side)                          SCRIPT ERROR: .edge() needs two DIFFERENT faces to name the edge between them.
+cyl face(left)                           REFUSED: draft1 is not built: a cylinder has no left, right, front or back face, only a top, a bottom and one curved side.   | OCCT:builds V=9314.6919 BREP:refusals {"draft1":"brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without i
+    names: cyl1.face[-x]
+--- errors
+box face(side)                               SCRIPT ERROR: .face(): "side" is the curved wall of a cylinder, not a flat face here.
+box edge(top,top)                            SCRIPT ERROR: .edge() needs two DIFFERENT faces to name the edge between them.
+box edge(top,bottom)                     REFUSED: round1 is not built: the top and bottom faces never meet, so there is no edge between them -- name two faces that touch.   | OCCT:refusals {"round1":"Round 1's edge could not be found -- Round 1 is shown without it."} BREP:refusals {"round1":"round1's edge could not be found -- round1 is shown without it."}
+    names: box1.edge[box1.face[+z] ^ box1.face[-z]]
+box edge(front,back)                     REFUSED: round1 is not built: the front and back faces never meet, so there is no edge between them -- name two faces that touch.   | OCCT:refusals {"round1":"Round 1's edge could not be found -- Round 1 is shown without it."} BREP:refusals {"round1":"round1's edge could not be found -- round1 is shown without it."}
+    names: box1.edge[box1.face[+y] ^ box1.face[-y]]
+box face(bogus)                              SCRIPT ERROR: .face() does not know the face "up". Faces are named top, bottom, front, back, left, right.
+box face(side) via edge                      SCRIPT ERROR: .edge(): "side" is the curved wall of a cylinder, not a flat face here.
+round(face)                                  SCRIPT ERROR: round() on a single reference needs an edge -- try round(shape.edge(faceA, faceB), size).
+bevel(face)                                  SCRIPT ERROR: bevel() needs one edge -- try bevel(shape.edge(faceA, faceB), size).
+draft(edge)                                  SCRIPT ERROR: draft() needs a flat face -- try draft(shape.face("right"), angle).
+hollow open: edge                            SCRIPT ERROR: hollow needs a face word (top, bottom, front, back, left, right), and you gave it an edge.
+--- other primitives
+prism face(top)                          PASS[OCCT] V=4159.718979 (OCCT 4159.718979, brep 4159.718979) dVol 4.4e-16 dBbox 1.4e-16 dCOM 8.3e-17 faces occt/truck/brep 15/15/15 | ctl {"rej":true,"dCom":"8.1e-2"} 
+    names: prism1.face[+z]
+prism round edge(top,side?)              REFUSED: round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked.   | OCCT:builds V=11678.0240 BREP:refusals {"round1":"brep-rs can only round a straight edge between two flat faces whose ends are plain flat f
+    names: prism1.edge[prism1.face[+x] ^ prism1.face[+z]]
+prism draft face(right)                  REFUSED: draft1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked.   | OCCT:builds V=11688.3968 BREP:refusals {"draft1":"brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without i
+    names: prism1.face[+x]
+sphere face(top) draft                   REFUSED: draft1 is not built: the faces of a sphere cannot be picked by direction yet.   | OCCT:refusals {"draft1":"Tilting Draft 1 at 5 degrees would not fit -- Draft 1 is shown without it."} BREP:refusals {"draft1":"brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without i
+    names: ball1.face[+z]
+sphere hollow open top                   REFUSED: shell1 is not built: the faces of a sphere cannot be picked by direction yet.   | OCCT:refusals {"shell1":"Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a  BREP:brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- shell1 is shown without it.
+    names: ball1.face[+z]
+sphere edge(top,front)                   REFUSED: round1 is not built: the faces of a sphere cannot be picked by direction yet.   | OCCT:refusals {"round1":"Round 1's edge could not be found -- Round 1 is shown without it."} BREP:refusals {"round1":"brep-rs cannot round a flat edge -- round1 is shown without it."}
+    names: ball1.edge[ball1.face[+z] ^ ball1.face[-y]]
+cone hollow open bottom                  REFUSED: shell1 is not built: the faces of a cone cannot be picked by direction yet.   | OCCT:refusals {"shell1":"Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel canno BREP:builds V=1985.3120
+    names: cone1.face[-z]
+cone hollow open top                     REFUSED: shell1 is not built: the faces of a cone cannot be picked by direction yet.   | OCCT:builds V=1277.0574 BREP:refusals {"shell1":"shell1 could not find the face to leave open -- shell1 is shown closed."}
+    names: cone1.face[+z]
+cone edge(bottom,side?)                  REFUSED: round1 is not built: the faces of a cone cannot be picked by direction yet.   | OCCT:builds V=4411.9347 BREP:refusals {"round1":"round1's edge could not be found -- round1 is shown without it."}
+    names: cone1.edge[cone1.face[-y] ^ cone1.face[-z]]
+ring hollow open top                     REFUSED: shell1 is not built: the faces of a ring cannot be picked by direction yet.   | OCCT:refusals {"shell1":"Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a  BREP:brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- shell1 is shown without it.
+    names: ring1.face[+z]
+wedge hollow open bottom                 REFUSED: shell1 is not built: the faces of a wedge cannot be picked by direction yet.   | OCCT:builds V=1779.4068 BREP:builds V=1779.4068
+    names: wedge1.face[-z]
+wedge hollow open top                    REFUSED: shell1 is not built: the faces of a wedge cannot be picked by direction yet.   | OCCT:builds V=1779.4068 BREP:builds V=1779.4068
+    names: wedge1.face[+z]
+wedge hollow open front                  REFUSED: shell1 is not built: the faces of a wedge cannot be picked by direction yet.   | OCCT:builds V=1809.8217 BREP:builds V=1809.8217
+    names: wedge1.face[-y]
+wedge edge(bottom,front)                 REFUSED: round1 is not built: the faces of a wedge cannot be picked by direction yet.   | OCCT:builds V=2974.8230 BREP:refusals {"round1":"brep-rs can only round a straight edge between two flat faces whose ends are plain flat f
+    names: wedge1.edge[wedge1.face[-y] ^ wedge1.face[-z]]

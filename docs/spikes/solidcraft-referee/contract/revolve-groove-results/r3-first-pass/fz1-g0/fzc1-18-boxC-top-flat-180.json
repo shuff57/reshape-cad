@@ -1,0 +1,248 @@
+[
+ {
+  "id": "fzc1-18-boxC-top-flat-180",
+  "src": "const t = box(60, 40, 30); const sk = sketch('top'); sk.rect(5.2, 11, { at: [30.3, 17.3] }); groove(sk, t, 180);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc1-18-boxC-top-flat-180",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 71440.83677017625,
+    "com": [
+     -1.4608523884481099e-15,
+     -0.09457086494115854,
+     -0.10488101229472338
+    ],
+    "bbox": [
+     -30.000000000000004,
+     -20,
+     -15,
+     30.000000000000004,
+     20.000000000000007,
+     15.000000000000002
+    ],
+    "faces": 16,
+    "area": 10875.277808888513,
+    "types": {
+     "plane": 12,
+     "cylinder": 4
+    },
+    "components": {
+     "plane": 12,
+     "cylinder": 4
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 2
+   },
+   "brep": {
+    "volume": 71440.83677017626,
+    "bbox": [
+     -30.000000000000004,
+     -20,
+     -15,
+     30.000000000000004,
+     20.00000000000001,
+     15
+    ],
+    "faces": 16,
+    "dVol": 2.0369183629777566e-16,
+    "dBbox": 1.7763568394002498e-16,
+    "pass": true
+   },
+   "ms": 1499,
+   "load": [
+    15.2,
+    15.2
+   ],
+   "cpuMs": 1869,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 32.9,
+       "nearest": 20,
+       "bodies": 1
+      },
+      "side": 1,
+      "kernelAngle": -180,
+      "nudgeDeg": null
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 60,
+      "width": 40,
+      "height": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_box1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        27.7,
+        11.8
+       ],
+       [
+        32.9,
+        11.8
+       ],
+       [
+        32.9,
+        22.8
+       ],
+       [
+        27.7,
+        22.8
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "angle": -180,
+      "operation": "cut",
+      "targets": [
+       "b_box1"
+      ]
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": 4.979335173202451e-7,
+    "area": 10875.272393723182,
+    "faceTypes": {
+     "cylinder": 4,
+     "plane": 12
+    },
+    "occtTypes": {
+     "plane": 12,
+     "cylinder": 4
+    },
+    "occtComponents": {
+     "plane": 12,
+     "cylinder": 4
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 71440.75338093135,
+    "bbox": [
+     -30,
+     -20,
+     -15,
+     30,
+     20,
+     15
+    ],
+    "com": [
+     2.826739728941213e-9,
+     -0.09457410827334478,
+     -0.10489684158547201
+    ],
+    "faces": 16,
+    "kernelFaces": 16,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000001167248994705388,
+    "dBbox": 3.5527136788004996e-16,
+    "dCom": 2.026732999005046e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "caseMs": 1629
+ }
+]

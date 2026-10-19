@@ -1,0 +1,26 @@
+rect 10x10 depth4 r1                               rim edges 4, built 1, refused 3 | SC shown 11597.8526 | OCCT 11593.3702 {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} | BREP 11591.0324
+      REFUSED: round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+      REFUSED: round3 is not built because round2 could not be built, so round3 is shown without it.
+rect 10x10 depth4 r0.2                             rim edges 4, built 1, refused 3 | SC shown 11599.9139 | OCCT 11599.7409 {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} | BREP 11599.6536
+      REFUSED: round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+      REFUSED: round3 is not built because round2 could not be built, so round3 is shown without it.
+rect 10x10 depth4 bevel 1                          rim edges 4, built 1, refused 3 | SC shown 11595.0000 | OCCT 11584.3333 {"bevel2":"Bevel 2's edge could not be found -- Bevel 2 is shown without it."} | BREP 11578.6667
+      REFUSED: bevel2 is not built: bevel1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+      REFUSED: bevel3 is not built because bevel2 could not be built, so bevel3 is shown without it.
+rect 10x10 depth 8 (deep) r1                       rim edges 4, built 1, refused 3 | SC shown 11197.8526 | OCCT 11193.3702 {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} | BREP 11191.0324
+      REFUSED: round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+      REFUSED: round3 is not built because round2 could not be built, so round3 is shown without it.
+triangle depth4 r1                                 rim edges 3, built 1, refused 2 | SC shown 11548.5099 | OCCT 11544.8852 {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} | BREP 11552.0000
+      REFUSED: round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+      REFUSED: round3 is not built because round2 could not be built, so round3 is shown without it.
+circle pocket r1                                   rim edges 1, built 0, refused 1 | SC shown 11547.6858 | OCCT 11539.2192 {} | BREP 11539.2192
+      REFUSED: round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can.
+rounded-corner rect pocket r0.5                    rim edges 4, built 0, refused 4 | SC shown 11427.4359 | OCCT 11425.5269 {"round2":"Round 2's edge could not be found -- Round 2 is shown without it.","r | BREP no shape
+      REFUSED: round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can.
+      REFUSED: round2 is not built because round1 could not be built, so round2 is shown without it.
+wall flush with plate edge (pocket x 0..10) r1     rim edges 4, built 1, refused 3 | SC shown 11597.8526 | OCCT 11595.7080 {"round2":"Round 2's edge could not be found -- Round 2 is shown without it.","r | BREP 11600.0000
+      REFUSED: round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+      REFUSED: round3 is not built because round2 could not be built, so round3 is shown without it.
+through pocket (depth 10) r1                       rim edges 4, built 1, refused 3 | SC shown 10997.8526 | OCCT 10993.3702 {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} | BREP 10991.0324
+      REFUSED: round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+      REFUSED: round3 is not built because round2 could not be built, so round3 is shown without it.

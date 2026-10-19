@@ -1,0 +1,1133 @@
+diff --git a/crates/engine/src/tests/robustness.rs b/crates/engine/src/tests/robustness.rs
+index 55637a41..58fa5277 100644
+--- a/crates/engine/src/tests/robustness.rs
++++ b/crates/engine/src/tests/robustness.rs
+@@ -49,11 +49,35 @@ fn shell_with_a_hole_through_a_curved_side() {
+         {"command": "sketch.arc.three_point", "params": {"end": [0, 0], "start": [0, 20.0], "through": [-10.0, 10.0]}},
+         {"command": "sketch.finish", "params": {}},
+         {"command": "solid.extrude", "params": {"distance": 27.5}},
+-        {"command": "solid.cylinder", "params": {"axis": [1.0, 0.0, 0.0], "base": [-10.000000000000002, 12.5, 12.5], "height": 17.5, "operation": "cut", "radius": 5.0}},
++        {"command": "solid.cylinder", "params": {"axis": [1.0, 0.0, 0.0], "base": [-10.000000000000002, 10.0, 12.5], "height": 17.5, "operation": "cut", "radius": 5.0}},
+         {"command": "solid.shell", "params": {"faces": [[42.5, 10.0, 13.75]], "thickness": 2.0}}
+     ]));
+ }
+ 
++/// The same plate with the hole 2.5 mm from the side wall (it was centred at y = 12.5 here): a
++/// ligament narrower than twice the 2 mm shell, so the shell is refused (it used to build with a
++/// cavity that was too small there).
++#[test]
++fn shell_with_a_hole_through_a_curved_side_near_a_wall_is_refused() {
++    let mut s = Session::default();
++    let steps = [
++        ("sketch.create", json!({"plane": "XY"})),
++        ("sketch.line", json!({"points": [[0, 0], [42.5, 0], [42.5, 20.0], [0, 20.0]]})),
++        ("sketch.arc.three_point", json!({"end": [0, 0], "start": [0, 20.0], "through": [-10.0, 10.0]})),
++        ("sketch.finish", json!({})),
++        ("solid.extrude", json!({"distance": 27.5})),
++        (
++            "solid.cylinder",
++            json!({"axis": [1.0, 0.0, 0.0], "base": [-10.000000000000002, 12.5, 12.5], "height": 17.5, "operation": "cut", "radius": 5.0}),
++        ),
++    ];
++    for (c, p) in &steps {
++        s.execute(c, p).unwrap_or_else(|e| panic!("{c}: {e}"));
++    }
++    let e = s.execute("solid.shell", &json!({"faces": [[42.5, 10.0, 13.75]], "thickness": 2.0})).expect_err("refused").to_string();
++    assert!(e.contains("ligament between a hole and a wall") || e.contains("too thin for a"), "{e}");
++}
++
+ /// Shell of a body in two pieces (a cylinder joined clear of a ring): each piece is shelled.
+ #[test]
+ fn shell_of_a_body_in_two_pieces() {
+@@ -352,3 +376,262 @@ fn lip_on_a_rounded_shelled_rim() {
+         assert!((v - want).abs() < 1e-3 * want, "{extra}: {v} vs {want}");
+     }
+ }
++
++/// Robustness seed 73: a D-shaped block, a fillet, a box joined on the round wall, then a shell
++/// opened at the box's underside. With the open face left on its plane the shell built, and
++/// measuring the result recursed in the tessellator without end (66 GB). A body with curved
++/// faces keeps the old refusal; the run must end in seconds with the shell refused.
++#[test]
++fn shell_open_underside_on_a_round_wall_ends() {
++    let mut s = Session::default();
++    let steps = [
++        ("sketch.create", json!({"plane": "XY"})),
++        ("sketch.line", json!({"points": [[0, 0], [45.0, 0], [45.0, 25.0], [0, 25.0]]})),
++        ("sketch.arc.three_point", json!({"end": [0, 0], "start": [0, 25.0], "through": [-10.0, 12.5]})),
++        ("sketch.finish", json!({})),
++        ("solid.extrude", json!({"distance": 27.5})),
++        ("solid.fillet", json!({"edges": [[-9.999999999999998, 12.5, 0.0], [45.0, 0.0, 13.75]], "radius": 3.0})),
++        ("solid.box", json!({"corner": [-10.0, 0.0, 12.5], "height": 12.5, "length": 10.0, "operation": "join", "width": 15.0})),
++    ];
++    for (c, p) in &steps {
++        let _ = s.execute(c, p);
++    }
++    let t = std::time::Instant::now();
++    let r = s.execute("solid.shell", &json!({"faces": [[-9.917910263100657, 14.166666666666636, 12.500000000009761]], "thickness": 1.5}));
++    let measured: Vec<f64> = s.model.state().bodies.iter().filter_map(|b| solidcraft_kernel::measure(&b.body).ok()).map(|m| m.volume).collect();
++    assert!(t.elapsed().as_secs() < 60, "took {:?}", t.elapsed());
++    assert!(r.is_err(), "the shell was expected to be refused: {measured:?}");
++}
++
++/// Robustness seed 48: a profile with a hole, a box joined on its top, shelled open at the top.
++/// The box's wall runs down to the open face (cavity worked out by hand: 7141.39 before the cut
++/// box; the shell once cut the wall away to the internal margin and gave 7044.77).
++#[test]
++fn shell_open_top_with_a_box_on_it_keeps_the_wall() {
++    let mut s = Session::default();
++    let steps = [
++        ("sketch.create", json!({"plane": "XY"})),
++        ("sketch.line", json!({"points": [[0, 0], [32.5, 0], [32.5, 32.5], [0, 32.5]]})),
++        ("sketch.arc.three_point", json!({"end": [0, 0], "start": [0, 32.5], "through": [-12.5, 16.25]})),
++        ("sketch.finish", json!({})),
++        ("solid.extrude", json!({"distance": 22.5})),
++        ("solid.hole", json!({"depth": 15.0, "diameter": 4.0, "position": [16.25, 0.0, 11.25]})),
++        ("solid.pattern.circular", json!({"axis": "Z", "count": 2, "features": ["Hole1"]})),
++        ("solid.box", json!({"corner": [-7.5, 22.5, 22.500000000000004], "height": 20.0, "length": 5.0, "operation": "join", "width": 5.0})),
++        ("solid.shell", json!({"faces": [[11.821766724298977, 16.085624724957388, 22.499999999999996]], "thickness": 1.5})),
++        ("solid.box", json!({"corner": [-5.0, 32.5, 27.5], "height": 12.5, "length": 7.5, "operation": "cut", "width": 2.5})),
++    ];
++    for (c, p) in &steps {
++        s.execute(c, p).unwrap_or_else(|e| panic!("{c}: {e}"));
++    }
++    let v = volume(&mut s);
++    assert!((v - 7141.547).abs() < 0.05, "{v}");
++}
++
++/// Bodies where material stands on the opened face and the exact plane-offset path does not
++/// apply (a round face beside it, a torus, a pad lower than the shell is thick): the shell says
++/// so instead of returning a part with the boss cut short (these gave -1.7% to -5.5% before).
++/// Case scripts are lists of solid commands; the shell is the last one.
++fn shell_script(cmds: &str) -> (Session, Result<serde_json::Value, String>) {
++    let steps: Value = serde_json::from_str(cmds).unwrap_or_default();
++    let list = steps.as_array().cloned().unwrap_or_default();
++    let mut s = Session::default();
++    let mut last = Ok(json!(null));
++    for st in &list {
++        let (c, p) = (st["command"].as_str().unwrap_or(""), &st["params"]);
++        last = s.execute(c, p).map_err(|e| e.to_string());
++        if c != "solid.shell" {
++            assert!(last.is_ok(), "{c}: {last:?}");
++        }
++    }
++    (s, last)
++}
++
++#[test]
++fn shell_with_material_on_the_open_face_is_refused_where_not_exact() {
++    for (name, cmds) in [
++        (
++            "n10-round-boss-r4",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.cylinder","params":{"radius":4,"height":6,"base":[16,11,5],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[0,0,5]],"thickness":1,"body":"b1"}}]"#,
++        ),
++        (
++            "n11-cyl-pocket-floor",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.cylinder","params":{"radius":8,"height":4,"base":[0,0,2],"body_name":"p1"}},{"command":"solid.combine","params":{"target":"b1","tools":["p1"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[0,0,2]],"thickness":1,"body":"b1"}}]"#,
++        ),
++        (
++            "n8b-pad-0.5",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.box","params":{"length":10,"width":10,"height":0.5,"center":[15,10,5.25],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[0,0,5]],"thickness":1,"body":"b1"}}]"#,
++        ),
++    ] {
++        let (_, r) = shell_script(cmds);
++        let e = r.expect_err(name);
++        assert!(e.contains("not supported yet"), "{name}: {e}");
++    }
++}
++
++#[test]
++fn shell_with_material_on_the_open_face_keeps_the_exact_cases() {
++    for (name, cmds, want, tol) in [
++        (
++            "n6-rounded-plate-edge-boss",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.fillet","params":{"edges":[[20,15,0],[-20,15,0],[20,-15,0],[-20,-15,0]],"radius":3,"body":"b1"}},{"command":"solid.box","params":{"length":10,"width":10,"height":8,"center":[15,0,9],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[-5,8,5]],"thickness":1,"body":"b1"}}]"#,
++            2729.646,
++            0.00001,
++        ),
++        (
++            "n9-boss-with-hole",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.box","params":{"length":10,"width":10,"height":8,"center":[15,10,9],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.cylinder","params":{"radius":2,"height":30,"base":[15,10,-10],"body_name":"h1"}},{"command":"solid.combine","params":{"target":"b1","tools":["h1"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[0,0,5]],"thickness":1,"body":"b1"}}]"#,
++            3002.195,
++            0.00001,
++        ),
++        (
++            "n6b-rounded-plate-control",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.fillet","params":{"edges":[[20,15,0],[-20,15,0],[20,-15,0],[-20,-15,0]],"radius":3,"body":"b1"}},{"command":"solid.shell","params":{"faces":[[0,0,5]],"thickness":1,"body":"b1"}}]"#,
++            2377.646,
++            0.0001,
++        ),
++        (
++            "n19-step-boss",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.box","params":{"length":20,"width":30,"height":10,"center":[-10,0,10],"body_name":"a2"}},{"command":"solid.combine","params":{"target":"b1","tools":["a2"],"operation":"join"}},{"command":"solid.box","params":{"length":10,"width":10,"height":8,"center":[15,10,9],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[10,-5,5]],"thickness":1,"body":"b1"}}]"#,
++            4240.0,
++            1e-06,
++        ),
++        (
++            "n5-L-open-boss",
++            r#"[{"command":"solid.box","params":{"length":60,"width":20,"height":20,"center":[30,10,10],"body_name":"b1"}},{"command":"solid.box","params":{"length":20,"width":20,"height":20,"center":[10,30,10],"body_name":"a2"}},{"command":"solid.combine","params":{"target":"b1","tools":["a2"],"operation":"join"}},{"command":"solid.box","params":{"length":8,"width":8,"height":6,"center":[4,4,23],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[10,10,20]],"thickness":1,"body":"b1"}}]"#,
++            5528.0,
++            1e-06,
++        ),
++        (
++            "n2-two-bosses",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.box","params":{"length":10,"width":10,"height":8,"center":[15,10,9],"body_name":"b2"}},{"command":"solid.box","params":{"length":10,"width":10,"height":8,"center":[-15,-10,9],"body_name":"b3"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.combine","params":{"target":"b1","tools":["b3"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[0,0,5]],"thickness":1,"body":"b1"}}]"#,
++            3128.0,
++            1e-06,
++        ),
++    ] {
++        let (mut s, r) = shell_script(cmds);
++        assert!(r.is_ok(), "{name}: {r:?}");
++        let v = volume(&mut s);
++        assert!((v - want).abs() < tol * want, "{name}: {v} vs {want}");
++    }
++}
++
++/// Bodies that were reported as wrong and are right (checked against closed forms): shelling a
++/// counterbored plate (open top or bottom), a box joined on a cylinder wall with the cylinder's
++/// top open (cavity = cylinder r14 x 29 + the box's inner part outside it, 3760.854). Pinned so
++/// that a later change cannot "fix" them. (A boss touching the open face at a single vertex was
++/// pinned here too, as 2720; it is now refused, see `shell_of_pieces_that_touch_at_a_point_is_refused`.)
++#[test]
++fn shell_bodies_that_are_exact_stay_exact() {
++    for (name, cmds, want, tol) in [
++        (
++            "counterbore plate, open top: 2424 + 65 pi",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.cylinder","params":{"radius":2,"height":20,"base":[-8,-6,-10],"body_name":"h1"}},{"command":"solid.combine","params":{"target":"b1","tools":["h1"],"operation":"cut"}},{"command":"solid.cylinder","params":{"radius":4,"height":3,"base":[-8,-6,3],"body_name":"h2"}},{"command":"solid.combine","params":{"target":"b1","tools":["h2"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[0,8,5]],"thickness":1,"body":"b1"}}]"#,
++            2424.0 + 65.0 * std::f64::consts::PI,
++            1e-5,
++        ),
++        (
++            "counterbore plate, open bottom: 2424 + 49 pi",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.cylinder","params":{"radius":2,"height":20,"base":[-8,-6,-10],"body_name":"h1"}},{"command":"solid.combine","params":{"target":"b1","tools":["h1"],"operation":"cut"}},{"command":"solid.cylinder","params":{"radius":4,"height":3,"base":[-8,-6,3],"body_name":"h2"}},{"command":"solid.combine","params":{"target":"b1","tools":["h2"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[0,8,-5]],"thickness":1,"body":"b1"}}]"#,
++            2424.0 + 49.0 * std::f64::consts::PI,
++            1e-5,
++        ),
++        (
++            "n17b box joined on a cylinder wall, cylinder top open: outer - cylinder cavity - box cavity, integrated",
++            r#"[{"command":"solid.cylinder","params":{"radius":15,"height":30,"base":[0,0,0],"body_name":"b1"}},{"command":"solid.box","params":{"length":14,"width":10,"height":10,"center":[19,0,15],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[0,0,30]],"thickness":1,"body":"b1"}}]"#,
++            3760.8537,
++            1e-5,
++        ),
++    ] {
++        let (mut s, r) = shell_script(cmds);
++        assert!(r.is_ok(), "{name}: {r:?}");
++        let v = volume(&mut s);
++        assert!((v - want).abs() < tol * want, "{name}: {v} vs {want}");
++    }
++}
++
++/// Material between two faces of the part thinner than twice the shell: the offsets cross (a floor
++/// under a hole or pocket, the wall between pockets, a countersink near a wall) and the cut used to
++/// come out wrong (+0.8% .. +13% for floors between t and 2t, -3% for a countersink; plane-offset
++/// oracle in docs/spikes/solidcraft-referee/phase7). Now refused in a plain sentence, with the
++/// controls at exactly twice the thickness and above built.
++#[test]
++fn shell_refuses_material_thinner_than_twice_the_shell() {
++    for (name, cmds) in [
++        (
++            "blind from top r2 d=8.5 t=1",
++            r#"[{"command":"solid.box","params":{"length":30,"width":24,"height":10,"center":[0,0,5],"body_name":"b1"}},{"command":"solid.cylinder","params":{"radius":2,"height":9.5,"base":[3,2,1.5],"axis":[0,0,1],"body_name":"h1"}},{"command":"solid.combine","params":{"target":"b1","tools":["h1"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[-14,-11,10]],"thickness":1,"body":"b1"}}]"#,
++        ),
++        (
++            "floor slot3 d=8.8 t=1",
++            r#"[{"command":"solid.box","params":{"length":30,"width":24,"height":10,"center":[0,0,5],"body_name":"b1"}},{"command":"solid.box","params":{"length":3,"width":16,"height":8.8,"center":[0,0,5.6],"body_name":"s"}},{"command":"solid.combine","params":{"target":"b1","tools":["s"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[-14,-11,10]],"thickness":1,"body":"b1"}}]"#,
++        ),
++        (
++            "floor pocket10x8 d=8.8 t=1",
++            r#"[{"command":"solid.box","params":{"length":30,"width":24,"height":10,"center":[0,0,5],"body_name":"b1"}},{"command":"solid.box","params":{"length":10,"width":8,"height":8.8,"center":[0,0,5.6],"body_name":"s"}},{"command":"solid.combine","params":{"target":"b1","tools":["s"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[-14,-11,10]],"thickness":1,"body":"b1"}}]"#,
++        ),
++        (
++            "floor pocket10x8 d=6 t=2.5",
++            r#"[{"command":"solid.box","params":{"length":30,"width":24,"height":10,"center":[0,0,5],"body_name":"b1"}},{"command":"solid.box","params":{"length":10,"width":8,"height":6,"center":[0,0,7],"body_name":"s"}},{"command":"solid.combine","params":{"target":"b1","tools":["s"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[-14,-11,10]],"thickness":2.5,"body":"b1"}}]"#,
++        ),
++        (
++            "opposed blind holes web=1.5 t=1",
++            r#"[{"command":"solid.box","params":{"length":30,"width":24,"height":10,"center":[0,0,5],"body_name":"b1"}},{"command":"solid.cylinder","params":{"radius":2,"height":6,"base":[3,2,5],"axis":[0,0,1],"body_name":"h1"}},{"command":"solid.combine","params":{"target":"b1","tools":["h1"],"operation":"cut"}},{"command":"solid.cylinder","params":{"radius":2,"height":4.5,"base":[3,2,-1],"axis":[0,0,1],"body_name":"h2"}},{"command":"solid.combine","params":{"target":"b1","tools":["h2"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[-14,-11,10]],"thickness":1,"body":"b1"}}]"#,
++        ),
++        (
++            "csink top D=10 t=2.5 c=3,2",
++            r#"[{"command":"solid.box","params":{"length":30,"width":24,"height":10,"center":[0,0,5],"body_name":"b1"}},{"command":"solid.hole","params":{"position":[3,2,10],"diameter":4,"type":"countersink","cs_diameter":10}},{"command":"solid.shell","params":{"faces":[[-14,-11,10]],"thickness":2.5,"body":"b1"}}]"#,
++        ),
++        (
++            "csink top D=18 t=1",
++            r#"[{"command":"solid.box","params":{"length":30,"width":24,"height":10,"center":[0,0,5],"body_name":"b1"}},{"command":"solid.hole","params":{"position":[3,2,10],"diameter":4,"type":"countersink","cs_diameter":18}},{"command":"solid.shell","params":{"faces":[[-14,-11,10]],"thickness":1,"body":"b1"}}]"#,
++        ),
++    ] {
++        let (_, r) = shell_script(cmds);
++        let e = r.expect_err(name);
++        assert!(e.contains("too thin for a") || e.contains("kernel cannot build"), "{name}: {e}");
++        for internal in ["boolean", "fallback", "offset:", "coincident"] {
++            assert!(!e.contains(internal), "{name}: {e}");
++        }
++    }
++}
++
++#[test]
++fn shell_builds_material_at_twice_the_shell_and_more() {
++    for (name, cmds, want, tol) in [
++        (
++            "blind from top r2 d=8 t=1 (floor 2.0)",
++            r#"[{"command":"solid.box","params":{"length":30,"width":24,"height":10,"center":[0,0,5],"body_name":"b1"}},{"command":"solid.cylinder","params":{"radius":2,"height":9,"base":[3,2,2],"axis":[0,0,1],"body_name":"h1"}},{"command":"solid.combine","params":{"target":"b1","tools":["h1"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[-14,-11,10]],"thickness":1,"body":"b1"}}]"#,
++            1656.0 + 49.0 * std::f64::consts::PI,
++            2e-4,
++        ),
++        (
++            "csink top D=10 t=2 (oracle 3474.865)",
++            r#"[{"command":"solid.box","params":{"length":30,"width":24,"height":10,"center":[0,0,5],"body_name":"b1"}},{"command":"solid.hole","params":{"position":[3,2,10],"diameter":4,"type":"countersink","cs_diameter":10}},{"command":"solid.shell","params":{"faces":[[-14,-11,10]],"thickness":2,"body":"b1"}}]"#,
++            3474.865,
++            1e-3,
++        ),
++        (
++            "csink top D=8 t=1 (oracle 1821.104)",
++            r#"[{"command":"solid.box","params":{"length":30,"width":24,"height":10,"center":[0,0,5],"body_name":"b1"}},{"command":"solid.hole","params":{"position":[3,2,10],"diameter":4,"type":"countersink","cs_diameter":8}},{"command":"solid.shell","params":{"faces":[[-14,-11,10]],"thickness":1,"body":"b1"}}]"#,
++            1821.104,
++            5e-4,
++        ),
++    ] {
++        let (mut s, r) = shell_script(cmds);
++        assert!(r.is_ok(), "{name}: {r:?}");
++        let v = volume(&mut s);
++        assert!((v - want).abs() < tol * want, "{name}: {v} vs {want}");
++    }
++}
++
++/// Two pieces that meet only at a point (a boss on a plate's corner): the shell hollowed the boss
++/// closed and built 2720; the contact has no side that is wall, so it is refused.
++#[test]
++fn shell_of_pieces_that_touch_at_a_point_is_refused() {
++    let (_, r) = shell_script(
++        r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.box","params":{"length":8,"width":8,"height":8,"center":[24,19,9],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[0,0,5]],"thickness":1,"body":"b1"}}]"#,
++    );
++    let e = r.expect_err("n7");
++    assert!(e.contains("meet only at a point"), "{e}");
++}
+diff --git a/crates/kernel/src/offset.rs b/crates/kernel/src/offset.rs
+index 8e5113a5..90f6f084 100644
+--- a/crates/kernel/src/offset.rs
++++ b/crates/kernel/src/offset.rs
+@@ -67,7 +67,7 @@ impl Surf {
+         }
+     }
+     /// The gradient of [`Surf::dist`] (the normal before orientation).
+-    fn grad(&self, p: Vec3) -> Option<Vec3> {
++    pub(crate) fn grad(&self, p: Vec3) -> Option<Vec3> {
+         match *self {
+             Surf::Plane { n, .. } => Some(n),
+             Surf::Cylinder { convex, .. } | Surf::Sphere { convex, .. } | Surf::Cone { convex, .. } | Surf::Torus { convex, .. } => {
+@@ -98,7 +98,7 @@ impl Surf {
+             }
+         }
+     }
+-    fn dist(&self, p: Vec3) -> f64 {
++    pub(crate) fn dist(&self, p: Vec3) -> f64 {
+         match *self {
+             Surf::Plane { n, d } => n.dot(p) - d,
+             Surf::Cylinder { o, a, r, .. } => {
+diff --git a/crates/kernel/src/polyhedron.rs b/crates/kernel/src/polyhedron.rs
+index 6b7675ef..ee33243c 100644
+--- a/crates/kernel/src/polyhedron.rs
++++ b/crates/kernel/src/polyhedron.rs
+@@ -490,13 +490,327 @@ fn shell_planar(b: &Body, open: &[Vec3], thickness: f64) -> Result<Body> {
+             "the rim would have no thickness: an open face meets a round of radius {r:.4} mm tangentially, and the shell is {thickness:.4} mm thick (make the round smaller than the thickness)"
+         )));
+     }
+-    let margin = thickness + size * 0.05;
+-    shell_opened(b, &healed, open, &opened, thickness, margin).map_err(|e| match rim_without_thickness(&healed, &opened, thickness, false) {
+-        Some(r) => unsupported_shell(&format!(
+-            "the rim would have no thickness: an open face meets a round of radius {r:.4} mm tangentially, and the shell is {thickness:.4} mm thick (make the round smaller than the thickness)"
+-        )),
+-        None => e,
+-    })
++    let web = thin_web(&healed, &mesh, &opened, thickness);
++    // Pushing an open face out by the margin carries every corner on it along. Material that
++    // stands on the open face's plane (a boss on the opened top, a pocket's walls above its
++    // floor) would be cut away up to the margin, so its inner wall would start above the
++    // plane. The open faces then stay on their plane; the cut is clean because they are
++    // coplanar with the body's own faces there, which the Boolean handles.
++    // Only verified for bodies of planes and cylinders: with other faces (tori from fillets,
++    // spheres, cones, free-form) the margin-0 cut can produce intersection curves that the
++    // tessellator recurses on without end (a robustness seed took 66 GB), so those bodies keep
++    // the old path and its refusals.
++    let tol = (healed.size() * 1e-7).max(1e-9) * 100.0;
++    let simple = healed
++        .solid
++        .face_iter()
++        .all(|f| matches!(crate::offset::surf_of(f, tol), Some(crate::offset::Surf::Plane { .. } | crate::offset::Surf::Cylinder { .. })));
++    let (standing, stands_up) = faces_standing_on(&healed, &mesh, &opened);
++    // Where what stands on the open face meets a round wall (a box joined on a cylinder) the cut
++    // is not verified either: that is the seed that ran away.
++    let rises = simple && !standing.is_empty() && !meets_a_round(&healed, &standing, tol);
++    // Material stands on the open face but the exact path above does not apply: the old path
++    // (open face pushed out by the margin) cuts what stands there short, so it may only report
++    // its own refusals, never a part.
++    let unverified = !standing.is_empty() && !rises;
++    // What stands on the open face must be taller than the shell is thick: its top moves in by
++    // the thickness, and a lower pad would have its top below the open plane (the offset then
++    // crosses itself and the part comes out too heavy).
++    if rises && stands_up <= thickness + tol {
++        return Err(unsupported_shell(&format!(
++            "what stands on the open face is only {stands_up:.4} mm tall and the shell is {thickness:.4} mm thick, so its top would move below the open face (use a shell thinner than the pad is tall, or shell before adding it)"
++        )));
++    }
++    // A wall or rim standing on the open face needs two shell thicknesses: its outer side moves in
++    // by the thickness and its inner side the other way, and at a thinner wall they cross (the
++    // offset is then not a solid, and the cut leaves an artefact). Exactly two is a wall of zero
++    // thickness in the cavity, refused the same way.
++    let wall = if rises { thin_standing_wall(&healed, &mesh, &standing, thickness) } else { None };
++    // A cone (a countersink) flares past the open plane by the margin, far enough to cross the
++    // cavity's other walls there and spoil the cut (D = 10, t = 2: 3392.9 against 3474.9); with a
++    // sliver of margin the cut is exact.
++    let flares = healed.solid.face_iter().any(|f| matches!(crate::offset::surf_of(f, tol), Some(crate::offset::Surf::Cone { .. })));
++    let margin = if rises {
++        0.0
++    } else if flares {
++        size * 5e-3
++    } else {
++        thickness + size * 0.05
++    };
++    let shelled =
++        shell_opened(b, &healed, open, &opened, thickness, margin).map_err(|e| match rim_without_thickness(&healed, &opened, thickness, false).filter(|_| !e.to_string().contains("too thin for a")) {
++            Some(r) => unsupported_shell(&format!(
++                "the rim would have no thickness: an open face meets a round of radius {r:.4} mm tangentially, and the shell is {thickness:.4} mm thick (make the round smaller than the thickness)"
++            )),
++            None => plain_shell_error(e),
++        })?;
++    // These only replace a part the shell built; where the shell fails by itself its own message
++    // stands (so no failing case changes its text).
++    if let Some(w) = web {
++        return Err(unsupported_shell(&format!(
++            "a ligament between a hole and a wall (or another hole) is only {w:.4} mm thick; its two offset sides would cross (it needs at least twice the shell thickness, {:.4} mm)",
++            2.0 * thickness
++        )));
++    }
++    if let Some(w) = wall {
++        return Err(unsupported_shell(&format!(
++            "a wall standing on the open face is only {w:.4} mm thick and the shell is {thickness:.4} mm, so its two sides would cross (a wall needs more than twice the shell thickness; use a thinner shell or a thicker wall)"
++        )));
++    }
++    // Two pieces of the part that meet only at a point or along an edge: the shell cannot say which
++    // side of the contact is wall (it hollowed the boss on its own, sealed).
++    if let Err(e) = healed.lumps()
++        && e.to_string().contains("touch")
++    {
++        return Err(unsupported_shell(
++            "two pieces of this part meet only at a point or along an edge, so the shell cannot tell which side of the contact is wall; join them along a face or separate them first",
++        ));
++    }
++    // Every face moves in along its plane, so a wall standing on an open face loses the
++    // floor under it: where it is not attached to a wall it would be left free of the part.
++    // Each piece of the input may leave one piece only (a piece swallowed whole by the shell
++    // cannot hide another one coming apart).
++    if rises && comes_apart(b, &shelled)? {
++        return Err(unsupported_shell(&format!(
++            "something stands on the open face (a boss, a rim or a pocket's walls) and the {thickness:.4} mm shell would leave part of it free of the rest of the part: every face moves in by the thickness, so nothing is left under it (a thinner shell does not help unless it touches a wall; shell first and add the boss afterwards)"
++        )));
++    }
++    if unverified {
++        return Err(unsupported_shell(
++            "a boss or wall stands on the open face of a body with round faces (or on a round wall); solid.shell would cut it short here, so it is not built (open a face nothing stands on, or shell before adding the boss)",
++        ));
++    }
++    Ok(shelled)
++}
++
++/// Whether shelling `before` into `after` split a piece in two: some piece of `before`
++/// has more than one piece of `after` inside its bounding box.
++fn comes_apart(before: &Body, after: &Body) -> Result<bool> {
++    let boxes = |b: &Body| -> Result<Vec<(Vec3, Vec3)>> { b.lumps()?.iter().map(|l| crate::measure(l).map(|m| (m.bbox.min, m.bbox.max))).collect() };
++    let tol = (before.size() * 1e-6).max(1e-9);
++    let (was, now) = (boxes(before)?, boxes(after)?);
++    let inside = |o: &(Vec3, Vec3), i: &(Vec3, Vec3)| {
++        o.0.x >= i.0.x - tol && o.0.y >= i.0.y - tol && o.0.z >= i.0.z - tol && o.1.x <= i.1.x + tol && o.1.y <= i.1.y + tol && o.1.z <= i.1.z + tol
++    };
++    Ok(was.iter().any(|w| now.iter().filter(|n| inside(n, w)).count() > 1) || now.len() > was.len())
++}
++
++/// The faces of `b` other than the `opened` ones that stand on an opened planar face, and how far
++/// they reach beyond its plane: a face stands on it when it meets the open face along an edge that
++/// is concave (the face's outward normal there points back over the open face), as a boss wall, a
++/// pocket's wall or a notch's floor do. A face that only runs along the plane or lies on the
++/// body's side of it, and material elsewhere (another piece, a far step), does not.
++fn faces_standing_on(b: &Body, mesh: &solidcraft_geom::Mesh, opened: &[usize]) -> (Vec<usize>, f64) {
++    use mt::{BoundedCurve, ParametricCurve};
++    let size = b.size();
++    let tol = (size * 1e-6).max(1e-9);
++    let faces: Vec<mt::Face> = b.solid.face_iter().cloned().collect();
++    let planes: Vec<(usize, Vec3, f64)> = opened
++        .iter()
++        .filter_map(|i| match crate::offset::surf_of(faces.get(*i)?, tol * 100.0) {
++            Some(crate::offset::Surf::Plane { n, d }) => Some((*i, n, d)),
++            _ => None,
++        })
++        .collect();
++    let mut by_edge: HashMap<mt::EdgeID, Vec<usize>> = HashMap::new();
++    for (i, f) in faces.iter().enumerate() {
++        for e in f.edge_iter() {
++            let v = by_edge.entry(e.id()).or_default();
++            if !v.contains(&i) {
++                v.push(i);
++            }
++        }
++    }
++    // Whether `p` (on the plane with normal `n`) lies in the triangle.
++    let in_tri = |p: Vec3, t: &[Vec3; 3], n: Vec3| {
++        let side = |a: Vec3, c: Vec3| (c - a).cross(p - a).dot(n);
++        let s = [side(t[0], t[1]), side(t[1], t[2]), side(t[2], t[0])];
++        s.iter().all(|x| *x >= -1e-12) || s.iter().all(|x| *x <= 1e-12)
++    };
++    let mut out: Vec<usize> = Vec::new();
++    for (gi, n, _) in &planes {
++        let Some(g) = faces.get(*gi) else { continue };
++        let gtris: Vec<[Vec3; 3]> =
++            mesh.triangles.iter().zip(&mesh.tri_face).filter(|(_, f)| **f as usize == *gi).filter_map(|(t, _)| mesh.tri(t)).collect();
++        for e in g.edge_iter() {
++            let c = e.curve();
++            let (t0, t1) = c.range_tuple();
++            let at = |k: f64| from_p3(c.subs(t0 + (t1 - t0) * k));
++            let m = at(0.5);
++            let (Some(tg), true) = ((at(0.55) - at(0.45)).normalized(), t1 > t0) else { continue };
++            let Some(w) = n.cross(tg).normalized() else { continue };
++            let delta = size * 1e-4;
++            let inward = if gtris.iter().any(|t| in_tri(m + w * delta, t, *n)) {
++                w
++            } else if gtris.iter().any(|t| in_tri(m - w * delta, t, *n)) {
++                -w
++            } else {
++                continue;
++            };
++            let across = -inward;
++            for fi in by_edge.get(&e.id()).into_iter().flatten() {
++                if opened.contains(fi) || out.contains(fi) {
++                    continue;
++                }
++                let Some(f) = faces.get(*fi) else { continue };
++                // An outward normal pointing back over the open face: the edge is concave. A face
++                // whose surface is not known counts as standing (the caller then refuses).
++                match crate::offset::surf_of(f, tol * 100.0).and_then(|s| s.normal(m)) {
++                    Some(nf) if nf.dot(across) >= -1e-3 => {}
++                    _ => out.push(*fi),
++                }
++            }
++        }
++    }
++    let mut height = 0.0f64;
++    for (t, f) in mesh.triangles.iter().zip(&mesh.tri_face) {
++        if !out.contains(&(*f as usize)) {
++            continue;
++        }
++        if let Some(tri) = mesh.tri(t) {
++            height = tri.iter().flat_map(|p| planes.iter().map(move |(_, n, d)| n.dot(*p) - d)).fold(height, f64::max);
++        }
++    }
++    (out, height)
++}
++
++/// The thickness of a standing wall thinner than twice `t` (or exactly that): the standing face
++/// and a face looking the other way behind it, a plane parallel to it that overlaps it, or a
++/// cylinder coaxial inside it.
++fn thin_standing_wall(b: &Body, mesh: &solidcraft_geom::Mesh, standing: &[usize], t: f64) -> Option<f64> {
++    use crate::offset::{Surf, surf_of};
++    let tol = (b.size() * 1e-6).max(1e-9);
++    let faces: Vec<mt::Face> = b.solid.face_iter().cloned().collect();
++    let surfs: Vec<Option<Surf>> = faces.iter().map(|f| surf_of(f, tol * 100.0)).collect();
++    // Extent of each face in the plane square to `n`.
++    let extent = |face: usize, u: Vec3, w: Vec3| -> Option<[f64; 4]> {
++        let mut e = [f64::INFINITY, f64::NEG_INFINITY, f64::INFINITY, f64::NEG_INFINITY];
++        for (tri, f) in mesh.triangles.iter().zip(&mesh.tri_face) {
++            if *f as usize != face {
++                continue;
++            }
++            for p in mesh.tri(tri)? {
++                e = [e[0].min(p.dot(u)), e[1].max(p.dot(u)), e[2].min(p.dot(w)), e[3].max(p.dot(w))];
++            }
++        }
++        e[0].is_finite().then_some(e)
++    };
++    // Exact: a wall of 2t or less is refused, anything thicker is built (the cut is right just above 2t).
++    let eps = b.size() * 1e-9;
++    let limit = 2.0 * t + eps;
++    for &si in standing {
++        let Some(sf) = surfs.get(si).copied().flatten() else { continue };
++        match sf {
++            Surf::Plane { n, d } => {
++                let (u, w) = (n.any_perp(), n.cross(n.any_perp()));
++                let Some(es) = extent(si, u, w) else { continue };
++                for (oi, o) in surfs.iter().enumerate() {
++                    let Some(Surf::Plane { n: n2, d: d2 }) = *o else { continue };
++                    let wall = d + d2;
++                    if oi == si || n2.dot(n) > -1.0 + 1e-9 || wall <= eps || wall > limit {
++                        continue;
++                    }
++                    let Some(eo) = extent(oi, u, w) else { continue };
++                    let overlap = |a: (f64, f64), c: (f64, f64)| a.1.min(c.1) - a.0.max(c.0) > tol * 100.0;
++                    if overlap((es[0], es[1]), (eo[0], eo[1])) && overlap((es[2], es[3]), (eo[2], eo[3])) {
++                        return Some(wall);
++                    }
++                }
++            }
++            Surf::Cylinder { o, a, r, convex: true } => {
++                for sf in surfs.iter().flatten() {
++                    if let Surf::Cylinder { o: o2, a: a2, r: r2, convex: false } = *sf {
++                        let v = o2 - o;
++                        let coaxial = a.cross(a2).len() < 1e-6 && (v - a * v.dot(a)).len() < tol * 100.0;
++                        let wall = r - r2;
++                        if coaxial && wall > eps && wall <= limit {
++                            return Some(wall);
++                        }
++                    }
++                }
++            }
++            _ => {}
++        }
++    }
++    None
++}
++
++/// The width of a ligament narrower than twice `t` between a round hole and a wall parallel to
++/// its axis, or between two parallel round holes: the hole's wall moves out by `t` into the
++/// material and the other side moves in by `t`, and where they are closer than `2t` the offsets
++/// cross, which the topology-keeping offset does not see (the cavity then comes out too small).
++/// A ligament of exactly `2t` is fine (measured).
++fn thin_web(b: &Body, mesh: &solidcraft_geom::Mesh, opened: &[usize], t: f64) -> Option<f64> {
++    use crate::offset::{Surf, surf_of};
++    let tol = (b.size() * 1e-6).max(1e-9);
++    let eps = b.size() * 1e-9;
++    let faces: Vec<mt::Face> = b.solid.face_iter().cloned().collect();
++    let surfs: Vec<Option<Surf>> = faces.iter().map(|f| surf_of(f, tol * 100.0)).collect();
++    if faces.len() > 2000 {
++        return None;
++    }
++    let extent = |face: usize, u: Vec3, w: Vec3| -> Option<[f64; 4]> {
++        let mut e = [f64::INFINITY, f64::NEG_INFINITY, f64::INFINITY, f64::NEG_INFINITY];
++        for (tri, f) in mesh.triangles.iter().zip(&mesh.tri_face) {
++            if *f as usize != face {
++                continue;
++            }
++            for p in mesh.tri(tri)? {
++                e = [e[0].min(p.dot(u)), e[1].max(p.dot(u)), e[2].min(p.dot(w)), e[3].max(p.dot(w))];
++            }
++        }
++        e[0].is_finite().then_some(e)
++    };
++    let overlap = |a: (f64, f64), c: (f64, f64)| a.1.min(c.1) - a.0.max(c.0) > tol * 100.0;
++    let thin = |web: f64| web > eps && web < 2.0 * t - eps;
++    for (hi, hs) in surfs.iter().enumerate() {
++        let Some(Surf::Cylinder { o, a, r, convex: false }) = *hs else { continue };
++        let v_dir = a.any_perp();
++        for (oi, os) in surfs.iter().enumerate() {
++            match *os {
++                // A wall parallel to the hole's axis, with material between.
++                Some(Surf::Plane { n, d }) if !opened.contains(&oi) && n.dot(a).abs() < 1e-6 => {
++                    let web = d - n.dot(o) - r;
++                    if !thin(web) {
++                        continue;
++                    }
++                    let tangent = n.cross(a);
++                    let (Some(eh), Some(ep)) = (extent(hi, a, tangent), extent(oi, a, tangent)) else { continue };
++                    let c = o.dot(tangent);
++                    if overlap((eh[0], eh[1]), (ep[0], ep[1])) && overlap((c - r, c + r), (ep[2], ep[3])) {
++                        return Some(web);
++                    }
++                }
++                // Another parallel hole.
++                Some(Surf::Cylinder { o: o2, a: a2, r: r2, convex: false }) if oi > hi && a.cross(a2).len() < 1e-6 => {
++                    let v = o2 - o;
++                    let perp = (v - a * v.dot(a)).len();
++                    let web = perp - r - r2;
++                    if !thin(web) {
++                        continue;
++                    }
++                    let (Some(e1), Some(e2)) = (extent(hi, a, v_dir), extent(oi, a, v_dir)) else { continue };
++                    if overlap((e1[0], e1[1]), (e2[0], e2[1])) {
++                        return Some(web);
++                    }
++                }
++                _ => {}
++            }
++        }
++    }
++    None
++}
++
++/// Whether any of the faces `standing` shares an edge with a face that is not a plane.
++fn meets_a_round(b: &Body, standing: &[usize], tol: f64) -> bool {
++    let faces: Vec<mt::Face> = b.solid.face_iter().cloned().collect();
++    let round: Vec<usize> = (0..faces.len())
++        .filter(|i| faces.get(*i).is_some_and(|f| !matches!(crate::offset::surf_of(f, tol), Some(crate::offset::Surf::Plane { .. }))))
++        .collect();
++    standing
++        .iter()
++        .filter_map(|i| faces.get(*i))
++        .any(|f| f.edge_iter().any(|e| round.iter().filter_map(|r| faces.get(*r)).any(|g| g.edge_iter().any(|e2| e2.id() == e.id()))))
+ }
+ 
+ /// The radius of a convex round (cylinder or torus) that meets an open face tangentially and
+@@ -559,16 +873,27 @@ fn shell_opened(b: &Body, healed: &Body, open: &[Vec3], opened: &[usize], thickn
+     // and the opening is the open face's copy swept out through the body.
+     let cavity = match offset_planar(healed, |fi, _| if opened.contains(&fi) { margin } else { -thickness }) {
+         Ok(c) => c,
+-        Err(e) => return shell_by_opening(healed, opened, thickness, margin).map_err(|_| e),
++        Err(e) => {
++            return shell_by_opening(healed, opened, thickness, margin).map_err(|e2| if e2.to_string().contains("too thin for a") { e2 } else { e });
++        }
+     };
+     let r = crate::ops::boolean(healed, &cavity, crate::BoolOp::Cut);
+-    if r.is_err()
+-        && let Ok(x) = shell_by_opening(healed, opened, thickness, margin)
+-    {
+-        return Ok(x);
++    if r.is_err() {
++        match shell_by_opening(healed, opened, thickness, margin) {
++            Ok(x) => return Ok(x),
++            // The way round found a thin web: say so, not what the first cut tripped on.
++            Err(e) if e.to_string().contains("too thin for a") => return Err(e),
++            Err(_) => {}
++        }
+     }
+     match r {
+         Ok(Some(r)) => {
++            // The cavity is only right if every one of its faces keeps the thickness from the rest
++            // of the part (a floor, wall or ligament thinner than twice the thickness makes
++            // offsets cross, which the cut does not notice): checked against the part itself.
++            if let Some((at, short)) = cavity_too_close(healed, &cavity, opened, thickness, margin) {
++                return Err(too_thin(at, short, thickness));
++            }
+             // Over `[healed]`, the cavity's faces offsets of the faces they line; then over `[b]`.
+             Ok(record::after(hollowed(r, healed, offsets(&cavity)), healed, &record::counts(&[b])))
+         }
+@@ -602,11 +927,187 @@ fn shell_opened(b: &Body, healed: &Body, open: &[Vec3], opened: &[usize], thickn
+     }
+ }
+ 
++/// The shell's own failures in words a user can act on: the cutting step's and the offset's
++/// internal wording is replaced, the cause is kept where it is known.
++fn plain_shell_error(e: KernelError) -> KernelError {
++    let KernelError::Failed(m) = &e else { return e };
++    if m.contains("boolean ") || m.contains("exact fallback") || m.contains("implausible result") {
++        return unsupported_shell(
++            "the kernel cannot build this shell yet: its inner wall meets the part's own faces in a way it cannot cut (a feature close to the opening or to a wall); another shell thickness, or opening another face, may work",
++        );
++    }
++    // Only the offset's size limits (a rim, ledge or wall thinner than the move) are reworded;
++    // its corner message is left as it is.
++    let plain =
++        if m.starts_with("offset: not supported yet") { m.replace("the operation failed: ", "").replacen("offset: ", "", 1) } else { m.clone() };
++    if plain == *m { e } else { KernelError::Failed(plain) }
++}
++
++fn too_thin(at: Vec3, short: f64, thickness: f64) -> KernelError {
++    unsupported_shell(&format!(
++        "a floor, wall or ligament near [{:.2}, {:.2}, {:.2}] is too thin for a {thickness:.4} mm shell: the walls on its two sides would overlap by about {short:.3} mm (material between two faces needs more than twice the shell thickness, {:.4} mm)",
++        at.x,
++        at.y,
++        at.z,
++        2.0 * thickness
++    ))
++}
++
++/// Where a face of the shell's `cavity` comes closer than `t` to a face of `part` (not an opened
++/// one), and by how much it falls short: the offsets of two faces of a thin web have crossed
++/// there. The face a cavity face was moved from is exactly `t` away, so it never counts. Sampled
++/// on the cavity's mesh and measured square to the part's faces (a foot inside the triangle), as
++/// the edges of the part's faces next to the open face are not walls in front of the cavity; a
++/// curved face on either side is given the room its meshing can be out by. `None` when meshing
++/// fails (the shell is then left as it was).
++fn cavity_too_close(part: &Body, cavity: &Body, opened: &[usize], t: f64, margin: f64) -> Option<(Vec3, f64)> {
++    use crate::offset::{Surf, surf_of};
++    // A round thinner than the shell collapses in the offset and its faces are dropped: the
++    // cavity then has pinched lines and corners that are not walls. Left to the old path.
++    if cavity.face_count() != part.face_count() {
++        return None;
++    }
++    let size = part.size();
++    let sag = (size * 2e-4).max(1e-4);
++    let pm = part.tessellate_with(sag, true).ok()?;
++    let cm = cavity.tessellate_with(sag, true).unwrap_or_default();
++    let faces: Vec<mt::Face> = part.solid.face_iter().cloned().collect();
++    let is_plane = |f: &mt::Face| matches!(surf_of(f, size * 1e-5), Some(Surf::Plane { .. }));
++    let planar: Vec<bool> = faces.iter().map(is_plane).collect();
++    let cplanar: Vec<bool> = cavity.solid.face_iter().map(is_plane).collect();
++    // The cavity's faces that stand where the open faces were (moved out by `margin`): the
++    // opening itself, not walls.
++    let open_planes: Vec<(Vec3, f64)> = opened
++        .iter()
++        .filter_map(|i| match surf_of(faces.get(*i)?, size * 1e-5) {
++            Some(Surf::Plane { n, d }) => Some((n, d + margin)),
++            _ => None,
++        })
++        .collect();
++    let is_opening: Vec<bool> = cavity
++        .solid
++        .face_iter()
++        .map(|f| match surf_of(f, size * 1e-5) {
++            Some(Surf::Plane { n, d }) => open_planes.iter().any(|(n2, d2)| n.dot(*n2) > 1.0 - 1e-9 && (d - d2).abs() < size * 1e-6),
++            _ => false,
++        })
++        .collect();
++    let tris: Vec<(usize, [Vec3; 3])> = pm
++        .triangles
++        .iter()
++        .zip(&pm.tri_face)
++        .filter(|(_, f)| !opened.contains(&(**f as usize)))
++        .filter_map(|(tr, f)| pm.tri(tr).map(|v| (*f as usize, v)))
++        .collect();
++    // The distance from `p` to a triangle's plane, when the foot lies inside the triangle.
++    // The open face extruded out by `t` is part of the space the cut sees as solid, so what
++    // stands on the open face is no wall until `t` above it: feet that low are not counted.
++    let ext_planes: Vec<(Vec3, f64)> = opened
++        .iter()
++        .filter_map(|i| match surf_of(faces.get(*i)?, size * 1e-5) {
++            Some(Surf::Plane { n, d }) => Some((n, d)),
++            _ => None,
++        })
++        .collect();
++    let square = |p: Vec3, v: &[Vec3; 3]| -> Option<f64> {
++        let n = (v[1] - v[0]).cross(v[2] - v[0]);
++        let nn = n.normalized()?;
++        let q = p - nn * (p - v[0]).dot(nn);
++        let inside = [(v[0], v[1]), (v[1], v[2]), (v[2], v[0])].iter().all(|(a, b)| (*b - *a).cross(q - *a).dot(n) >= -1e-12 * n.len());
++        if ext_planes.iter().any(|(on, od)| {
++            let h = on.dot(q) - od;
++            h > -size * 1e-6 && h < t
++        }) {
++            return None;
++        }
++        inside.then(|| (p - v[0]).dot(nn).abs())
++    };
++    let cavity_surfs: Vec<Option<Surf>> = cavity.solid.face_iter().map(|f| surf_of(f, size * 1e-5)).collect();
++    // Bounded work: a grid of samples per triangle, thinned when the product is large.
++    let mut samples: Vec<(usize, Vec3)> = Vec::new();
++    for (tr, f) in cm.triangles.iter().zip(&cm.tri_face) {
++        if is_opening.get(*f as usize).copied().unwrap_or(false) {
++            continue;
++        }
++        if let Some([a, b, c]) = cm.tri(tr) {
++            // A grid over the triangle of a flat face; of a curved face only its corners (a long
++            // triangle there reaches past the trimmed edge of the face).
++            let n: usize = if cplanar.get(*f as usize).copied().unwrap_or(false) { 4 } else { 1 };
++            for i in 0..=n {
++                for j in 0..=(n - i) {
++                    let mut q = a + (b - a) * (i as f64 / n as f64) + (c - a) * (j as f64 / n as f64);
++                    // Onto the face's own surface: a long triangle of a curved face cuts through it.
++                    if let Some(Some(sf)) = cavity_surfs.get(*f as usize)
++                        && let Some(g) = sf.grad(q)
++                    {
++                        q = q - g * sf.dist(q);
++                    }
++                    samples.push((*f as usize, q));
++                }
++            }
++        }
++    }
++    // The cavity's corners and edges as well (they need no meshing of the cavity's faces).
++    {
++        use mt::{BoundedCurve, ParametricCurve};
++        for v in cavity.solid.vertex_iter() {
++            samples.push((usize::MAX, from_p3(v.point())));
++        }
++        for e in cavity.solid.edge_iter() {
++            let c = e.curve();
++            let (t0, t1) = c.range_tuple();
++            for k in 1..8 {
++                samples.push((usize::MAX, from_p3(c.subs(t0 + (t1 - t0) * k as f64 / 8.0))));
++            }
++        }
++    }
++    // Cavity above an open plane is outside the part (the opening's margin): not material.
++    samples.retain(|(_, p)| !ext_planes.iter().any(|(on, od)| on.dot(*p) - od > size * 1e-6));
++    let stride = (samples.len() * tris.len()).div_ceil(40_000_000).max(1);
++    let mut worst: Option<(Vec3, f64)> = None;
++    for (f, p) in samples.iter().step_by(stride) {
++        for (j, v) in &tris {
++            let Some(d) = square(*p, v) else { continue };
++            let curved = !(cplanar.get(*f).copied().unwrap_or(false) && planar.get(*j).copied().unwrap_or(false));
++            let room = if curved { size * 1e-3 } else { size * 1e-6 };
++            let short = t - room - d;
++            // Edges where curved faces meet are rebuilt through their moved points and lie a
++            // little off (measured 5% of the thickness on a hole through a round wall): a curved
++            // face must fall short by a tenth of the thickness to count.
++            let least = if curved { t * 0.1 } else { (size * 1e-5).max(t * 2e-3) };
++            if short > least && worst.is_none_or(|(_, w)| short > w) {
++                worst = Some((*p, short));
++            }
++        }
++    }
++    worst
++}
++
+ /// A shell made from the cavity with every face moved in by the thickness (open faces too),
+ /// joined with each open face's moved copy swept out through the body. No history: the
+ /// opening's walls, swept from the cavity's edges, come from nothing of `b`.
+ fn shell_by_opening(b: &Body, opened: &[usize], thickness: f64, reach: f64) -> Result<Body> {
++    // Closed up that way the cone of a countersink stops at the moved open plane instead of running
++    // on to the opening, so the cut is not the cone's offset there (measured -2.7% .. -3.9%): a
++    // countersink cone (hollow, material outside it) that reaches the open face is not built this
++    // way; a convex cone (a chamfer on a turned part) was not measured wrong and is left alone.
++    let cone_blocked;
++    {
++        let tol = (b.size() * 1e-7).max(1e-9) * 100.0;
++        let faces: Vec<mt::Face> = b.solid.face_iter().cloned().collect();
++        let open_edges: Vec<mt::EdgeID> =
++            opened.iter().filter_map(|i| faces.get(*i)).flat_map(|f| f.edge_iter().map(|e| e.id()).collect::<Vec<_>>()).collect();
++        let cone_at_opening = faces.iter().enumerate().any(|(i, f)| {
++            !opened.contains(&i)
++                && matches!(crate::offset::surf_of(f, tol), Some(crate::offset::Surf::Cone { convex: false, .. }))
++                && f.edge_iter().any(|e| open_edges.contains(&e.id()))
++        });
++        cone_blocked = cone_at_opening;
++    }
+     let closed = offset_planar(b, |_, _| -thickness)?;
++    // Both refusals below only replace a shell this way round would have built; where it fails
++    // by itself its own message stands.
++    let thin = cavity_too_close(b, &closed, opened, thickness, -thickness);
+     let faces: Vec<mt::Face> = closed.solid.face_iter().cloned().collect();
+     let mut cavity = closed.clone();
+     for fi in opened {
+@@ -624,6 +1125,14 @@ fn shell_by_opening(b: &Body, opened: &[usize], thickness: f64, reach: f64) -> R
+         cavity = crate::ops::boolean(&cavity, &prism, crate::BoolOp::Union)?.ok_or_else(|| KernelError::Failed("shell: opening".into()))?;
+     }
+     let r = crate::ops::boolean(b, &cavity, crate::BoolOp::Cut)?.ok_or_else(|| KernelError::Failed("the shell removed everything".into()))?;
++    if cone_blocked {
++        return Err(unsupported_shell(
++            "the kernel cannot build a shell of this part yet: a cone (a countersink) reaches the opening and a wall is close to it",
++        ));
++    }
++    if let Some((at, short)) = thin {
++        return Err(too_thin(at, short, thickness));
++    }
+     Ok(r.without_history())
+ }
+ 
+diff --git a/crates/kernel/src/tests.rs b/crates/kernel/src/tests.rs
+index abd2a89a..dbdc22a4 100644
+--- a/crates/kernel/src/tests.rs
++++ b/crates/kernel/src/tests.rs
+@@ -2312,3 +2312,199 @@ fn shell_of_a_disc_rounded_smaller_than_the_wall() {
+         }
+     }
+ }
++
++/// A 40x30x10 base with a boss standing on its top face, shelled open at the base's top.
++fn stub_shell(size: Vec3, centre: Vec3, t: f64) -> Result<Body> {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let c = Vec3::new(centre.x - size.x / 2.0, centre.y - size.y / 2.0, centre.z - size.z / 2.0);
++    let stub = box_solid(c, c + size).unwrap();
++    let u = boolean(&base, &stub, BoolOp::Union).unwrap().unwrap();
++    shell(&u, &[Vec3::new(-17.0, -12.0, 5.0)], t)
++}
++
++/// Shell of a body with a boss standing on the face that is opened. Every face moves in along
++/// its plane, so the boss's wall must run the whole way down to the opened face's plane (it
++/// once started at that plane plus the shell's internal margin, 8.657 for a plane at 5).
++/// A boss standing clear of the part's wall would be left floating: refused, not built wrong.
++#[test]
++fn shell_open_face_with_a_boss_on_it() {
++    let plane = 2776.0; // 12800 outer, less 38x28x9 and 8x8x7 cavities
++    // Boss against the base's +x wall (x 10..20): one piece, the exact plane-offset volume.
++    let flush = stub_shell(Vec3::new(10.0, 10.0, 8.0), Vec3::new(15.0, 0.0, 9.0), 1.0).unwrap();
++    let v = measure(&flush).unwrap().volume;
++    assert!(rel(v, plane) < 1e-3, "{v} vs {plane}");
++    assert_eq!(flush.lumps().unwrap().len(), 1);
++    let corner = stub_shell(Vec3::new(10.0, 10.0, 8.0), Vec3::new(15.0, 10.0, 9.0), 1.0).unwrap();
++    let v = measure(&corner).unwrap().volume;
++    assert!(rel(v, plane) < 1e-3, "{v} vs {plane}");
++    // Boss clear of every wall: its tube would rest on nothing.
++    for (size, centre) in [([10.0, 10.0, 8.0], [0.0, 0.0, 9.0]), ([10.0, 10.0, 8.0], [10.0, 0.0, 9.0]), ([12.0, 12.0, 2.0], [5.0, -5.0, 6.0])] {
++        let e = stub_shell(Vec3::new(size[0], size[1], size[2]), Vec3::new(centre[0], centre[1], centre[2]), 1.0).unwrap_err().to_string();
++        assert!(e.contains("free of the rest of the part"), "{e}");
++    }
++}
++
++/// The same shell without a boss is unchanged: outer volume less the plain cavity.
++#[test]
++fn shell_open_top_of_a_plain_body_is_unchanged() {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let s = shell(&base, &[Vec3::new(0.0, 0.0, 5.0)], 1.0).unwrap();
++    let v = measure(&s).unwrap().volume;
++    assert!(rel(v, 12000.0 - 38.0 * 28.0 * 9.0) < 1e-9, "{v}");
++}
++
++/// A ledge standing on the opened face that the shell is thicker than: the kernel's own offset
++/// limit, with its own sentence, not a diagnosis about bosses.
++#[test]
++fn shell_open_face_with_a_thin_rib_keeps_the_offset_limit_text() {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let rib = box_solid(Vec3::new(-1.0, -15.0, 5.0), Vec3::new(1.0, 15.0, 10.0)).unwrap();
++    let u = boolean(&base, &rib, BoolOp::Union).unwrap().unwrap();
++    let e = shell(&u, &[Vec3::new(-10.0, 0.0, 5.0)], 1.0).unwrap_err().to_string();
++    assert!(!e.contains("free of the rest"), "{e}");
++    println!("RIB: {e}");
++}
++
++/// Two bosses on the opened face, one against a wall and one clear of it: the free one is refused.
++#[test]
++fn shell_open_face_with_one_attached_and_one_free_boss_is_refused() {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let a = box_solid(Vec3::new(10.0, -5.0, 5.0), Vec3::new(20.0, 5.0, 13.0)).unwrap();
++    let c = box_solid(Vec3::new(-5.0, -5.0, 5.0), Vec3::new(5.0, 5.0, 13.0)).unwrap();
++    let u = boolean(&boolean(&base, &a, BoolOp::Union).unwrap().unwrap(), &c, BoolOp::Union).unwrap().unwrap();
++    let e = shell(&u, &[Vec3::new(-15.0, 10.0, 5.0)], 1.0).unwrap_err().to_string();
++    assert!(e.contains("free of the rest of the part"), "{e}");
++}
++
++/// A second piece in the same body does not hide a boss coming apart.
++#[test]
++fn shell_open_face_with_a_free_boss_and_a_second_piece_is_refused() {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let boss = box_solid(Vec3::new(-5.0, -5.0, 5.0), Vec3::new(5.0, 5.0, 13.0)).unwrap();
++    let plate = box_solid(Vec3::new(40.0, -5.0, -5.0), Vec3::new(50.0, 5.0, -2.0)).unwrap();
++    let u = boolean(&base, &boss, BoolOp::Union).unwrap().unwrap();
++    let both = boolean(&u, &plate, BoolOp::Union).unwrap().unwrap();
++    let r = shell(&both, &[Vec3::new(-15.0, 10.0, 5.0)], 1.0);
++    let e = r.expect_err("a floating boss slipped through").to_string();
++    assert!(e.contains("free of the rest of the part"), "{e}");
++}
++
++/// Robustness seed 73: a D-shaped block with a box joined on its round wall, shelled open at the
++/// box's underside. The margin-0 cut once produced intersection curves that the tessellator
++/// recursed on without end (66 GB). A body with curved faces keeps the old path: it finishes in
++/// seconds and either refuses or returns a part smaller than the block.
++#[test]
++fn shell_open_underside_of_a_box_on_a_round_wall_terminates() {
++    let slab = box_solid(Vec3::new(0.0, 0.0, 0.0), Vec3::new(45.0, 25.0, 27.5)).unwrap();
++    let round = cylinder(Vec3::new(2.8, 12.5, 0.0), Vec3::Z, 12.8, 27.5).unwrap();
++    let d = boolean(&slab, &round, BoolOp::Union).unwrap().unwrap();
++    let tab = box_solid(Vec3::new(-10.0, 0.0, 12.5), Vec3::new(0.0, 15.0, 25.0)).unwrap();
++    let both = boolean(&d, &tab, BoolOp::Union).unwrap().unwrap();
++    let whole = measure(&both).unwrap().volume;
++    let t = std::time::Instant::now();
++    match shell(&both, &[Vec3::new(-9.92, 14.17, 12.5)], 1.5) {
++        Err(e) => println!("seed73 refused: {e}"),
++        Ok(r) => {
++            let v = measure(&r).unwrap().volume;
++            assert!(v > 0.0 && v < whole, "{v} vs {whole}");
++        }
++    }
++    assert!(t.elapsed().as_secs() < 60, "took {:?}", t.elapsed());
++}
++
++/// A 10x10 rim, 6 mm tall and `w` thick, flush in a corner of a 40x30x10 plate, shelled 1 mm from
++/// the plate's top.
++fn rim_shell(w: f64) -> Result<Body> {
++    rim_shell_t(w, 1.0)
++}
++
++fn rim_shell_t(w: f64, t: f64) -> Result<Body> {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let outer = box_solid(Vec3::new(10.0, 5.0, 5.0), Vec3::new(20.0, 15.0, 11.0)).unwrap();
++    let hole = box_solid(Vec3::new(10.0 + w, 5.0 + w, 4.0), Vec3::new(20.0 - w, 15.0 - w, 12.0)).unwrap();
++    let ring = boolean(&outer, &hole, BoolOp::Cut).unwrap().unwrap();
++    let u = boolean(&base, &ring, BoolOp::Union).unwrap().unwrap();
++    shell(&u, &[Vec3::new(-17.0, -12.0, 5.0)], t)
++}
++
++/// A rim thicker than twice the shell is the exact plane offset (2872 - 48 (w - 2)); at twice the
++/// shell (a wall of no thickness in the cavity) or less its two sides cross, and it is refused
++/// instead of built with the artefact that gave 2839.4 for a 1.5 mm rim (exact path: 2802.25).
++#[test]
++fn shell_open_face_with_a_rim_thinner_than_two_walls_is_refused() {
++    for w in [3.0, 2.5, 2.2, 2.05] {
++        let v = measure(&rim_shell(w).unwrap()).unwrap().volume;
++        let want = 2872.0 - 48.0 * (w - 2.0);
++        assert!(rel(v, want) < 1e-6, "w {w}: {v} vs {want}");
++    }
++    for w in [2.0, 1.95, 1.8, 1.5] {
++        let e = rim_shell(w).unwrap_err().to_string();
++        assert!(e.contains("its two sides would cross") || e.contains("too thin for a"), "w {w}: {e}");
++    }
++}
++
++/// The rim threshold is exact: a wall of exactly twice the shell is refused, anything thicker is
++/// built, and the answer just above the threshold is the exact one (it was refused up to 0.005
++/// above it, with a sentence that was not true there).
++#[test]
++fn shell_rim_threshold_is_exactly_twice_the_shell() {
++    for w in [2.0005, 2.002, 2.005, 2.006] {
++        let v = measure(&rim_shell(w).unwrap()).unwrap().volume;
++        let want = 2872.0 - 48.0 * (w - 2.0);
++        assert!(rel(v, want) < 1e-6, "w {w}: {v} vs {want}");
++    }
++    assert!(rim_shell(2.0).is_err());
++    // t = 2: the volume is linear in the wall above 4; check the points just above 4 on that line.
++    let vol = |w: f64| measure(&rim_shell_t(w, 2.0).unwrap()).unwrap().volume;
++    let (a, b) = (vol(4.1), vol(4.5));
++    let slope = (b - a) / 0.4;
++    for w in [4.002, 4.005, 4.02] {
++        let want = a + slope * (w - 4.1);
++        assert!(rel(vol(w), want) < 1e-6, "w {w}: {} vs {want}", vol(w));
++    }
++    for w in [4.0, 3.9] {
++        assert!(
++            rim_shell_t(w, 2.0).unwrap_err().to_string().contains("its two sides would cross")
++                || rim_shell_t(w, 2.0).unwrap_err().to_string().contains("too thin for a"),
++            "w {w}"
++        );
++    }
++}
++
++/// A 40x30x10 plate with vertical holes (x, y, radius), shelled 1 mm from the top.
++fn plate_with_holes(holes: &[(f64, f64, f64)]) -> Result<Body> {
++    let mut b = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    for &(x, y, r) in holes {
++        let h = cylinder(Vec3::new(x, y, -10.0), Vec3::Z, r, 20.0).unwrap();
++        b = boolean(&b, &h, BoolOp::Cut).unwrap().unwrap();
++    }
++    shell(&b, &[Vec3::new(-17.0, -12.0, 5.0)], 1.0)
++}
++
++/// A ligament between a hole and a wall, or between two holes, narrower than twice the shell
++/// crosses its own offsets, and the cavity came out too small (web 1.0: 2549.09 against the
++/// closed form 2524.93, a hole's segment of 3.0975 mm2 beyond the offset wall). Refused; from
++/// twice the shell the volume is the closed form 2424 + 41 pi (one hole) or 2424 + 82 pi (two).
++#[test]
++fn shell_ligament_thinner_than_twice_the_shell_is_refused() {
++    let one = 2424.0 + 41.0 * std::f64::consts::PI;
++    let two = 2424.0 + 82.0 * std::f64::consts::PI;
++    for web in [2.0, 2.1, 3.0] {
++        let v = measure(&plate_with_holes(&[(18.0 - web, 0.0, 2.0)]).unwrap()).unwrap().volume;
++        assert!(rel(v, one) < 1e-5, "web {web}: {v} vs {one}");
++    }
++    for web in [2.1, 3.0] {
++        let v = measure(&plate_with_holes(&[(-5.0, 0.0, 2.0), (-1.0 + web, 0.0, 2.0)]).unwrap()).unwrap().volume;
++        assert!(rel(v, two) < 1e-5, "two holes {web}: {v} vs {two}");
++    }
++    for web in [1.0, 1.5, 1.9] {
++        let e = plate_with_holes(&[(18.0 - web, 0.0, 2.0)]).unwrap_err().to_string();
++        assert!(e.contains("ligament between a hole and a wall") || e.contains("too thin for a"), "east {web}: {e}");
++    }
++    let e = plate_with_holes(&[(0.0, 12.0, 2.0)]).unwrap_err().to_string();
++    assert!(e.contains("ligament"), "north: {e}");
++    for web in [1.0, 1.9] {
++        let e = plate_with_holes(&[(-5.0, 0.0, 2.0), (-1.0 + web, 0.0, 2.0)]).unwrap_err().to_string();
++        assert!(e.contains("ligament"), "two holes {web}: {e}");
++    }
++}
+diff --git a/tests/robustness/goldens.json b/tests/robustness/goldens.json
+index 10427291..2ca5e0f1 100644
+--- a/tests/robustness/goldens.json
++++ b/tests/robustness/goldens.json
+@@ -49,12 +49,12 @@
+   "45": {"area":14416.876392,"bodies":2,"edges":62,"error":"boolean Union: implausible result volume ","faces":29,"outcome":"failed","rejected":0,"shells":3,"steps":["revolved section","join cylinder","fillet","shell","cut box","join box"],"unsupported":1,"volume":14286.791174},
+   "46": {"area":3445.160599,"bodies":1,"edges":99,"error":null,"faces":31,"outcome":"ok","rejected":0,"shells":1,"steps":["extruded profile","join cylinder","hole","cut cylinder","rectangular pattern","cut box","cut cylinder"],"unsupported":0,"volume":6232.317431},
+   "47": {"area":3098.575624,"bodies":1,"edges":42,"error":null,"faces":16,"outcome":"ok","rejected":0,"shells":1,"steps":["extruded profile","fillet","cut sphere","fillet"],"unsupported":0,"volume":8834.29745},
+-  "48": {"area":9651.031297,"bodies":1,"edges":66,"error":null,"faces":28,"outcome":"ok","rejected":0,"shells":1,"steps":["extruded profile","hole","circular pattern","join box","shell","cut box"],"unsupported":2,"volume":7044.773463},
++  "48": {"area":9786.312872,"bodies":1,"edges":77,"error":null,"faces":33,"outcome":"ok","rejected":0,"shells":1,"steps":["extruded profile","hole","circular pattern","join box","shell","cut box"],"unsupported":2,"volume":7141.547488},
+   "49": {"area":7512.5,"bodies":1,"edges":24,"error":null,"faces":11,"outcome":"ok","rejected":0,"shells":1,"steps":["box","join box"],"unsupported":0,"volume":40546.875},
+   "50": {"area":9387.513718,"bodies":2,"edges":48,"error":null,"faces":20,"outcome":"ok","rejected":0,"shells":2,"steps":["extruded profile","fillet","join cylinder","join cylinder","fillet","cut box","cut cylinder"],"unsupported":2,"volume":40128.141128},
+   "51": {"area":3316.022299,"bodies":1,"edges":51,"error":null,"faces":21,"outcome":"ok","rejected":0,"shells":1,"steps":["box","cut box","hole","rectangular pattern","chamfer","chamfer"],"unsupported":1,"volume":6812.582331},
+   "52": {"area":7851.282527,"bodies":1,"edges":32,"error":null,"faces":14,"outcome":"ok","rejected":0,"shells":1,"steps":["box","shell","cut cylinder","chamfer","fillet"],"unsupported":0,"volume":5741.788461},
+-  "53": {"area":17168.464938,"bodies":1,"edges":110,"error":null,"faces":46,"outcome":"ok","rejected":0,"shells":4,"steps":["extruded profile","cut cylinder","shell","join cylinder","circular pattern","fillet"],"unsupported":1,"volume":16607.030819},
++  "53": {"area":17483.307883,"bodies":1,"edges":110,"error":null,"faces":46,"outcome":"ok","rejected":0,"shells":4,"steps":["extruded profile","cut cylinder","shell","join cylinder","circular pattern","fillet"],"unsupported":1,"volume":16943.636427},
+   "54": {"area":7080.555724,"bodies":4,"edges":90,"error":null,"faces":38,"outcome":"ok","rejected":0,"shells":4,"steps":["extruded profile","join box","circular pattern","cut cylinder","cut box","join cylinder","cut cylinder"],"unsupported":3,"volume":15737.224446},
+   "55": {"area":6796.974648,"bodies":1,"edges":60,"error":"Body","faces":23,"outcome":"invalid","rejected":0,"shells":1,"steps":["box","fillet","cut sphere","circular pattern","rectangular pattern","cut sphere"],"unsupported":0,"volume":24741.239331},
+   "56": {"area":4468.944174,"bodies":1,"edges":33,"error":null,"faces":13,"outcome":"ok","rejected":0,"shells":1,"steps":["box","cut box","chamfer"],"unsupported":0,"volume":11835.9375},
+@@ -101,6 +101,7 @@
+  "notes": [
+   {"reason":"First record: what each seed builds on main at 1a0100cd","seeds":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95]},
+   {"reason":"seed 0 meshes differently since display tessellation plans (#805), which landed alongside these goldens (#826)","seeds":[0]},
+-  {"reason":"the kernel fixes merged together on 13 October (#838, #839, #841, #855, #856) change what these seeds build: several joins that used to fail now succeed, small volume and area shifts, and shell now refuses seeds 6, 14, 43 and 73 with an offset corner error (seed 14 built before: #897)","seeds":[2,6,14,22,36,43,50,63,71,73,94]}
++  {"reason":"the kernel fixes merged together on 13 October (#838, #839, #841, #855, #856) change what these seeds build: several joins that used to fail now succeed, small volume and area shifts, and shell now refuses seeds 6, 14, 43 and 73 with an offset corner error (seed 14 built before: #897)","seeds":[2,6,14,22,36,43,50,63,71,73,94]},
++  {"reason":"solid.shell of a body with material standing on the opened face: the open face is no longer pushed out by the internal margin, so what stands on it keeps its full length (seed 48: a boss wall, +96.8 mm3 to 7141.547, hand-worked cavity 7141.39; seed 53: the floor of a notch opened at its wall, +336.6 mm3, about the 2 x 5.5 x 31 mm lip the old margin cut off)","seeds":[48,53]}
+  ]
+ }

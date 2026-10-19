@@ -1,0 +1,107 @@
+A box1_width       min 1      PASS             SAME-AS-PAGE  
+A box1_width       max 160    PASS             SAME-AS-PAGE  
+A box1_depth       min 1      REFUSED          REFUSED       round1 is not built: a round of 2 is too large for the faces next to this edge -- use a smaller size.
+A box1_depth       max 120    PASS             SAME-AS-PAGE  
+A box1_height      min 1      REFUSED          REFUSED       round1 is not built: a round of 2 is too large for the faces next to this edge -- use a smaller size.
+A box1_height      max 100    PASS             SAME-AS-PAGE  
+A round1_size      min 0.5    PASS             SAME-AS-PAGE  
+A round1_size      max 9.5    PASS             SAME-AS-PAGE  
+B box1_width       min 1      PASS             SAME-AS-PAGE  
+B box1_width       max 160    PASS             SAME-AS-PAGE  
+B box1_depth       min 1      BUILT-NO-ORACLE  REFUSED       bevel1 is not built: a bevel of 2 is too large for the faces next to this edge -- use a smaller size.
+B box1_depth       max 120    PASS             SAME-AS-PAGE  
+B box1_height      min 1      BUILT-NO-ORACLE  REFUSED       bevel1 is not built: a bevel of 2 is too large for the faces next to this edge -- use a smaller size.
+B box1_height      max 100    PASS             SAME-AS-PAGE  
+B bevel1_size      min 0.5    PASS             SAME-AS-PAGE  
+B bevel1_size      max 9.5    PASS             SAME-AS-PAGE  
+C box1_width       min 1      REFUSED          REFUSED       shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall.
+C box1_width       max 160    PASS             SAME-AS-PAGE  
+C box1_depth       min 1      REFUSED          REFUSED       shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall.
+C box1_depth       max 120    PASS             SAME-AS-PAGE  
+C box1_height      min 1      BUILT-NO-ORACLE  REFUSED       shell1 is not built: a wall of 2 would collapse box1 -- the wall has to be under 1.
+C box1_height      max 100    PASS             SAME-AS-PAGE  
+C shell1_thickness min 0.5    PASS             SAME-AS-PAGE  
+C shell1_thickness max 40     REFUSED          REFUSED       shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall.
+D box1_width       min 1      PASS             SAME-AS-PAGE  
+D box1_width       max 160    PASS             SAME-AS-PAGE  
+D box1_depth       min 1      PASS             SAME-AS-PAGE  
+D box1_depth       max 120    PASS             SAME-AS-PAGE  
+D box1_height      min 1      PASS             SAME-AS-PAGE  
+D box1_height      max 100    PASS             SAME-AS-PAGE  
+D draft1_angle     min -89.5  BUILT-NO-ORACLE  REFUSED       draft1 is not built: tilting the right face by -89.5 degrees would run it into the opposite side of the part -- the most it can ti
+D draft1_angle     max 89.5   BUILT-NO-ORACLE  REFUSED       draft1 is not built: tilting the right face by 89.5 degrees would run it into the opposite side of the part -- the most it can til
+D2 box1_width       min 1      PASS             SAME-AS-PAGE  
+D2 box1_width       max 160    PASS             SAME-AS-PAGE  
+D2 box1_depth       min 1      BUILT-NO-ORACLE  REFUSED       draft1 is not built: tilting the front face by 5 degrees would run it into the opposite side of the part -- the most it can tilt h
+D2 box1_depth       max 120    PASS             SAME-AS-PAGE  
+D2 box1_height      min 1      PASS             SAME-AS-PAGE  
+D2 box1_height      max 100    PASS             SAME-AS-PAGE  
+D2 draft1_angle     min -89.5  PASS             SAME-AS-PAGE  
+D2 draft1_angle     max 89.5   BUILT-NO-ORACLE  REFUSED       draft1 is not built: tilting the front face by 89.5 degrees would run it into the opposite side of the part -- the most it can til
+E cyl1_radius      min 1      REFUSED          REFUSED       round1 is not built: a round of 3 is too large for the faces next to this edge -- use a smaller size.
+E cyl1_radius      max 100    PASS             SAME-AS-PAGE  
+E cyl1_height      min 1      REFUSED          REFUSED       round1 is not built: a round of 3 is too large for the faces next to this edge -- use a smaller size.
+E cyl1_height      max 120    PASS             SAME-AS-PAGE  
+E round1_size      min 0.5    PASS             SAME-AS-PAGE  
+E round1_size      max 11.5   PASS             SAME-AS-PAGE  
+F sk1_p0u          min -500   PASS             SAME-AS-PAGE  
+F sk1_p0u          max 500    REFUSED          REFUSED       round1 is not built: the outline of sketch sk1 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk1_p0v          min -500   PASS             SAME-AS-PAGE  
+F sk1_p0v          max 500    REFUSED          REFUSED       round1 is not built: the outline of sketch sk1 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk1_p1u          min -500   REFUSED          REFUSED       round1 is not built: the outline of sketch sk1 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk1_p1u          max 500    PASS             SAME-AS-PAGE  
+F sk1_p1v          min -500   PASS             SAME-AS-PAGE  
+F sk1_p1v          max 500    REFUSED          REFUSED       round1 is not built: the outline of sketch sk1 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk1_p2u          min -500   REFUSED          REFUSED       round1 is not built: the outline of sketch sk1 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk1_p2u          max 500    PASS             SAME-AS-PAGE  
+F sk1_p2v          min -500   REFUSED          REFUSED       round1 is not built: the outline of sketch sk1 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk1_p2v          max 500    PASS             SAME-AS-PAGE  
+F sk1_p3u          min -500   PASS             SAME-AS-PAGE  
+F sk1_p3u          max 500    REFUSED          REFUSED       round1 is not built: the outline of sketch sk1 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk1_p3v          min -500   REFUSED          REFUSED       round1 is not built: the outline of sketch sk1 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk1_p3v          max 500    PASS             SAME-AS-PAGE  
+F sk1_offset       min -500   REFUSED          REFUSED       round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.
+F sk1_offset       max 500    REFUSED          REFUSED       round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.
+F pull1_height     min 1      REFUSED          REFUSED       round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.
+F pull1_height     max 100    REFUSED          REFUSED       round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.
+F sk2_p0u          min -500   PASS             SAME-AS-PAGE  
+F sk2_p0u          max 500    FAIL             REFUSED       round1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk2_p0v          min -500   REFUSED          REFUSED       round1 is not built: a round of 1 is too large for the faces next to this edge -- use a smaller size.
+F sk2_p0v          max 500    REFUSED          REFUSED       round1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk2_p1u          min -500   FAIL             REFUSED       round1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk2_p1u          max 500    PASS             SAME-AS-PAGE  
+F sk2_p1v          min -500   REFUSED          REFUSED       round1 is not built: a round of 1 is too large for the faces next to this edge -- use a smaller size.
+F sk2_p1v          max 500    REFUSED          REFUSED       round1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk2_p2u          min -500   REFUSED          REFUSED       round1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk2_p2u          max 500    REFUSED          REFUSED       round1 is not built: a round of 1 is too large for the faces next to this edge -- use a smaller size.
+F sk2_p2v          min -500   REFUSED          REFUSED       round1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk2_p2v          max 500    PASS             SAME-AS-PAGE  
+F sk2_p3u          min -500   REFUSED          REFUSED       round1 is not built: a round of 1 is too large for the faces next to this edge -- use a smaller size.
+F sk2_p3u          max 500    REFUSED          REFUSED       round1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk2_p3v          min -500   REFUSED          REFUSED       round1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the o
+F sk2_p3v          max 500    PASS             SAME-AS-PAGE  
+F sk2_offset       min -500   REFUSED          REFUSED       round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.
+F sk2_offset       max 500    REFUSED          REFUSED       round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.
+F pull2_height     min 1      REFUSED          REFUSED       round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.
+F pull2_height     max 100    REFUSED          REFUSED       round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.
+F round1_size      min 0.5    PASS             SAME-AS-PAGE  
+G cyl1_radius      min 1      REFUSED          REFUSED       shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall.
+G cyl1_radius      max 100    PASS             SAME-AS-PAGE  
+G cyl1_height      min 1      BUILT-NO-ORACLE  REFUSED       shell1 is not built: a wall of 2 would collapse cyl1 -- the wall has to be under 1.
+G cyl1_height      max 120    PASS             SAME-AS-PAGE  
+G shell1_thickness min 0.5    PASS             SAME-AS-PAGE  
+G shell1_thickness max 40     REFUSED          REFUSED       shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall.
+H box1_width       min 1      BUILT-NO-ORACLE  REFUSED       shell1 is not built: a wall of 2 would collapse box1 -- the wall has to be under 1.
+H box1_width       max 160    PASS             SAME-AS-PAGE  
+H box1_depth       min 1      REFUSED          REFUSED       shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall.
+H box1_depth       max 120    PASS             SAME-AS-PAGE  
+H box1_height      min 1      REFUSED          REFUSED       shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall.
+H box1_height      max 100    PASS             SAME-AS-PAGE  
+H shell1_thickness min 0.5    PASS             SAME-AS-PAGE  
+H shell1_thickness max 40     REFUSED          REFUSED       shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall.
+{
+ "PASS -> SAME-AS-PAGE": 52,
+ "REFUSED -> REFUSED": 38,
+ "BUILT-NO-ORACLE -> REFUSED": 9,
+ "FAIL -> REFUSED": 2
+}

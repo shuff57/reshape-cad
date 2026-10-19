@@ -1,0 +1,86 @@
+{"id":"sph-box-aligned-cutAbyB","ok":true,"cpuS":0.81,"wallS":0.6,"bodies":[],"load1":24.1,"calS":1.03,"ratio":0.8}
+{"id":"sph-box-aligned-cutBbyA","ok":true,"cpuS":10.9,"wallS":10.5,"bodies":[{"n":"B","v":3812.384,"f":7}],"load1":24.1,"calS":0.91,"ratio":12}
+{"id":"sph-box-aligned-keep","ok":true,"cpuS":6.54,"wallS":6.2,"bodies":[{"n":"A","v":4188.493,"f":1}],"load1":24.1,"calS":1.02,"ratio":6.4}
+{"id":"sph-box-aligned-join","ok":true,"cpuS":1.5,"wallS":1.2,"bodies":[{"n":"A","v":8000,"f":6}],"load1":23.9,"calS":0.96,"ratio":1.6}
+{"id":"sph-box-bx45-cutAbyB","ok":true,"cpuS":0.82,"wallS":0.6,"bodies":[],"load1":23.9,"calS":0.93,"ratio":0.9}
+{"id":"sph-box-bx45-cutBbyA","ok":false,"cpuS":8.81,"wallS":8.3,"error":"boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross ","load1":23.5,"calS":0.94,"ratio":null}
+{"id":"sph-box-bx45-keep","ok":true,"cpuS":5.31,"wallS":5,"bodies":[{"n":"A","v":4188.493,"f":1}],"load1":23.4,"calS":0.97,"ratio":5.5}
+{"id":"sph-box-bx45-join","ok":true,"cpuS":1.32,"wallS":1.1,"bodies":[{"n":"A","v":8000,"f":6}],"load1":23.6,"calS":0.95,"ratio":1.4}
+{"id":"sph-box-b30_20_10-cutAbyB","ok":true,"cpuS":0.78,"wallS":0.5,"bodies":[],"load1":23.6,"calS":0.99,"ratio":0.8}
+{"id":"sph-box-b30_20_10-cutBbyA","ok":false,"cpuS":2.66,"wallS":2.3,"error":"boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross ","load1":23.6,"calS":1,"ratio":null}
+{"id":"sph-box-b30_20_10-keep","ok":true,"cpuS":7.5,"wallS":7.2,"bodies":[{"n":"A","v":4188.493,"f":1}],"load1":24.8,"calS":0.72,"ratio":10.4}
+{"id":"sph-box-b30_20_10-join","ok":true,"cpuS":1.48,"wallS":1.1,"bodies":[{"n":"A","v":8000,"f":6}],"load1":24.3,"calS":0.88,"ratio":1.7}
+{"id":"sph-sph-r10-r10-off8-cutAbyB","ok":false,"killed":true,"cpuLimitS":30,"wallS":29.5,"load1":23.9,"signal":"SIGKILL","status":null,"calS":0.99,"ratio":null}
+{"id":"sph-sph-r10-r10-off8-cutBbyA","ok":false,"killed":true,"cpuLimitS":30,"wallS":29.1,"load1":23.8,"signal":"SIGKILL","status":null,"calS":1.26,"ratio":null}
+{"id":"sph-sph-r10-r10-off8-keep","ok":true,"cpuS":23.09,"wallS":22.8,"bodies":[{"n":"A","v":1809.388,"f":2}],"load1":21.6,"calS":0.94,"ratio":24.6}
+{"id":"sph-sph-r10-r10-off8-join","ok":true,"cpuS":28.3,"wallS":28,"bodies":[{"n":"A","v":6567.073,"f":2}],"load1":22.8,"calS":0.78,"ratio":36.3}
+{"id":"sph-sph-r10-r6-off8-cutAbyB","ok":false,"killed":true,"cpuLimitS":30,"wallS":29.5,"load1":24.3,"signal":"SIGKILL","status":null,"calS":0.93,"ratio":null}
+{"id":"sph-sph-r10-r6-off8-cutBbyA","ok":false,"killed":true,"cpuLimitS":30,"wallS":29.1,"load1":21.7,"signal":"SIGKILL","status":null,"calS":1.49,"ratio":null}
+{"id":"sph-sph-r10-r6-off8-keep","ok":true,"cpuS":16.09,"wallS":15.8,"bodies":[{"n":"A","v":569.622,"f":2}],"load1":22.5,"calS":0.81,"ratio":19.9}
+{"id":"sph-sph-r10-r6-off8-join","ok":true,"cpuS":21.69,"wallS":21.2,"bodies":[{"n":"A","v":4523.451,"f":2}],"load1":23.5,"calS":0.95,"ratio":22.8}
+{"id":"sph-cylcentre-aligned-cutAbyB","ok":true,"cpuS":13.68,"wallS":13.2,"bodies":[{"n":"A","v":3224.658,"f":2}],"load1":21.5,"calS":0.82,"ratio":16.7}
+{"id":"sph-cylcentre-aligned-cutBbyA","ok":true,"cpuS":9.95,"wallS":9.5,"bodies":[{"n":"B (1)","v":271.986,"f":3},{"n":"B","v":271.986,"f":3}],"load1":19.7,"calS":0.71,"ratio":14}
+{"id":"sph-cylcentre-aligned-keep","ok":true,"cpuS":9.56,"wallS":9.2,"bodies":[{"n":"A","v":963.796,"f":3}],"load1":19.3,"calS":0.82,"ratio":11.7}
+{"id":"sph-cylcentre-aligned-join","ok":true,"cpuS":17.78,"wallS":17.3,"bodies":[{"n":"A","v":4732.372,"f":5}],"load1":18.7,"calS":0.81,"ratio":22}
+{"id":"cone-box-aligned-cutAbyB","ok":false,"cpuS":18.41,"wallS":18.1,"error":"boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross ","load1":17.9,"calS":1.19,"ratio":null}
+{"id":"cone-box-aligned-cutBbyA","ok":false,"cpuS":13.75,"wallS":13.6,"error":"boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross ","load1":19.8,"calS":1.49,"ratio":null}
+{"id":"cone-box-aligned-keep","ok":false,"cpuS":14.29,"wallS":14.1,"error":"boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or ","load1":19.8,"calS":0.85,"ratio":null}
+{"id":"cone-box-aligned-join","ok":false,"cpuS":13.76,"wallS":13.5,"error":"boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cros","load1":20,"calS":0.79,"ratio":null}
+{"id":"cone-box-offaxis-cutAbyB","ok":false,"cpuS":7.86,"wallS":7.7,"error":"boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross ","load1":19,"calS":0.85,"ratio":null}
+{"id":"cone-box-offaxis-cutBbyA","ok":false,"cpuS":16.48,"wallS":16.3,"error":"boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross ","load1":18.9,"calS":1.04,"ratio":null}
+{"id":"cone-box-offaxis-keep","ok":false,"cpuS":7,"wallS":6.9,"error":"boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or ","load1":19,"calS":1.11,"ratio":null}
+{"id":"cone-box-offaxis-join","ok":false,"cpuS":7.78,"wallS":7.6,"error":"boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cros","load1":19.5,"calS":0.82,"ratio":null}
+{"id":"cone-box-bz45-cutAbyB","ok":false,"cpuS":16.37,"wallS":16.1,"error":"boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross ","load1":19.4,"calS":1.01,"ratio":null}
+{"id":"cone-box-bz45-cutBbyA","ok":false,"cpuS":22.03,"wallS":21.8,"error":"boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross ","load1":19.5,"calS":1.84,"ratio":null}
+{"id":"cone-box-bz45-keep","ok":false,"cpuS":14.9,"wallS":14.6,"error":"boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or ","load1":22.4,"calS":1.62,"ratio":null}
+{"id":"cone-box-bz45-join","ok":false,"cpuS":12.41,"wallS":12.1,"error":"boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cros","load1":21,"calS":0.89,"ratio":null}
+{"id":"cone-box-bx45-cutAbyB","ok":true,"cpuS":26.56,"wallS":26.3,"bodies":[{"n":"A","v":1819.703,"f":6}],"load1":19.5,"calS":0.68,"ratio":39.1}
+{"id":"cone-box-bx45-cutBbyA","ok":true,"cpuS":24.12,"wallS":24.1,"bodies":[{"n":"B","v":725.373,"f":7}],"load1":16.7,"calS":0.65,"ratio":37.1}
+{"id":"cone-box-bx45-keep","ok":false,"killed":true,"cpuLimitS":30,"wallS":30,"load1":15.9,"signal":"SIGKILL","status":null,"calS":1.05,"ratio":null}
+{"id":"cone-box-bx45-join","ok":false,"killed":true,"cpuLimitS":30,"wallS":29.2,"load1":20.4,"signal":"SIGKILL","status":null,"calS":1.75,"ratio":null}
+{"id":"cone-cyl-coax-cutAbyB","ok":true,"cpuS":6.39,"wallS":6.4,"bodies":[{"n":"A","v":1357.125,"f":3}],"load1":26.4,"calS":1.11,"ratio":5.8}
+{"id":"cone-cyl-coax-cutBbyA","ok":true,"cpuS":6.29,"wallS":6.4,"bodies":[{"n":"B","v":251.305,"f":3},{"n":"B (1)","v":547.903,"f":3}],"load1":39.1,"calS":1.01,"ratio":6.2}
+{"id":"cone-cyl-coax-keep","ok":true,"cpuS":5.65,"wallS":5.7,"bodies":[{"n":"A","v":737.108,"f":3}],"load1":42.1,"calS":1.12,"ratio":5}
+{"id":"cone-cyl-coax-join","ok":true,"cpuS":5.7,"wallS":5.4,"bodies":[{"n":"A","v":2864.84,"f":6}],"load1":52.4,"calS":1,"ratio":5.7}
+{"id":"cyl-cyl-par-cutAbyB","ok":true,"cpuS":1.24,"wallS":1.2,"bodies":[{"n":"A","v":7237.186,"f":4}],"load1":56.1,"calS":0.95,"ratio":1.3}
+{"id":"cyl-cyl-par-cutBbyA","ok":true,"cpuS":1.32,"wallS":1.1,"bodies":[{"n":"B","v":2336.557,"f":6}],"load1":56.1,"calS":1.19,"ratio":1.1}
+{"id":"cyl-cyl-par-keep","ok":true,"cpuS":0.94,"wallS":0.8,"bodies":[{"n":"A","v":2186.523,"f":4}],"load1":57.7,"calS":1.19,"ratio":0.8}
+{"id":"cyl-cyl-par-join","ok":true,"cpuS":2.54,"wallS":2.4,"bodies":[{"n":"A","v":11760.248,"f":6}],"load1":57.7,"calS":0.97,"ratio":2.6}
+{"id":"cyl-cyl-par-tilted-cutAbyB","ok":true,"cpuS":1.16,"wallS":1.1,"bodies":[{"n":"A","v":7237.186,"f":4}],"load1":57,"calS":1.01,"ratio":1.1}
+{"id":"cyl-cyl-par-tilted-cutBbyA","ok":true,"cpuS":1.21,"wallS":1.1,"bodies":[{"n":"B","v":2336.557,"f":6}],"load1":57,"calS":0.84,"ratio":1.4}
+{"id":"cyl-cyl-par-tilted-keep","ok":true,"cpuS":0.85,"wallS":0.6,"bodies":[{"n":"A","v":2186.504,"f":4}],"load1":57,"calS":0.91,"ratio":0.9}
+{"id":"cyl-cyl-par-tilted-join","ok":true,"cpuS":2.42,"wallS":2.1,"bodies":[{"n":"A","v":11760.248,"f":6}],"load1":56.8,"calS":0.95,"ratio":2.5}
+{"id":"box-box-b30_20_10-cutAbyB","ok":true,"cpuS":0.29,"wallS":0.4,"bodies":[{"n":"A","v":20046.623,"f":12}],"load1":56.8,"calS":1.16,"ratio":0.3}
+{"id":"box-box-b30_20_10-cutBbyA","ok":true,"cpuS":0.29,"wallS":0.3,"bodies":[{"n":"B (2)","v":2.529,"f":4},{"n":"B","v":1041.565,"f":5},{"n":"B (1)","v":2.529,"f":4}],"load1":54.3,"calS":0.87,"ratio":0.3}
+{"id":"box-box-b30_20_10-keep","ok":true,"cpuS":0.25,"wallS":0.3,"bodies":[{"n":"A","v":6953.377,"f":9}],"load1":54.3,"calS":0.98,"ratio":0.3}
+{"id":"box-box-b30_20_10-join","ok":true,"cpuS":0.26,"wallS":0.2,"bodies":[{"n":"A","v":28046.623,"f":16}],"load1":54.3,"calS":1.04,"ratio":0.3}
+{"id":"prism6-cyl-tilted-cutAbyB","ok":false,"killed":true,"cpuLimitS":30,"wallS":29.7,"load1":54.3,"signal":"SIGKILL","status":null,"calS":0.97,"ratio":null}
+{"id":"prism6-cyl-tilted-cutBbyA","ok":false,"killed":true,"cpuLimitS":30,"wallS":29.3,"load1":43.1,"signal":"SIGKILL","status":null,"calS":1.67,"ratio":null}
+{"id":"prism6-cyl-tilted-keep","ok":false,"killed":true,"cpuLimitS":30,"wallS":29.6,"load1":38.1,"signal":"SIGKILL","status":null,"calS":0.92,"ratio":null}
+{"id":"prism6-cyl-tilted-join","ok":false,"killed":true,"cpuLimitS":30,"wallS":30,"load1":30.9,"signal":"SIGKILL","status":null,"calS":0.81,"ratio":null}
+{"id":"wedge-cyl-vert-cutAbyB","ok":true,"cpuS":1.33,"wallS":1.2,"bodies":[{"n":"A","v":5833.287,"f":7}],"load1":34.8,"calS":2.27,"ratio":0.6}
+{"id":"wedge-cyl-vert-cutBbyA","ok":true,"cpuS":3.01,"wallS":3.5,"bodies":[{"n":"B","v":1340.897,"f":6}],"load1":34.8,"calS":1.76,"ratio":1.7}
+{"id":"wedge-cyl-vert-keep","ok":true,"cpuS":1.02,"wallS":0.9,"bodies":[{"n":"A","v":166.713,"f":4}],"load1":38.2,"calS":1.75,"ratio":0.6}
+{"id":"wedge-cyl-vert-join","ok":true,"cpuS":3.29,"wallS":3.1,"bodies":[{"n":"A","v":7340.897,"f":9}],"load1":39.4,"calS":2.15,"ratio":1.5}
+{"id":"prism6-cyl-vert-cutAbyB","ok":true,"cpuS":1.82,"wallS":1.6,"bodies":[{"n":"A","v":9715.975,"f":9}],"load1":41,"calS":2.18,"ratio":0.8}
+{"id":"prism6-cyl-vert-cutBbyA","ok":true,"cpuS":3.26,"wallS":4.7,"bodies":[{"n":"B (1)","v":502.598,"f":3},{"n":"B","v":502.598,"f":3}],"load1":44.1,"calS":1.88,"ratio":1.7}
+{"id":"prism6-cyl-vert-keep","ok":true,"cpuS":2.4,"wallS":2.3,"bodies":[{"n":"A","v":1507.714,"f":3}],"load1":45.6,"calS":2.12,"ratio":1.1}
+{"id":"prism6-cyl-vert-join","ok":true,"cpuS":3.16,"wallS":2.9,"bodies":[{"n":"A","v":12228.832,"f":12}],"load1":48.3,"calS":2.16,"ratio":1.5}
+{"id":"prism6-cyl-horiz-cutAbyB","ok":true,"cpuS":3.93,"wallS":4,"bodies":[{"n":"A","v":10179.114,"f":9}],"load1":50.2,"calS":2.16,"ratio":1.8}
+{"id":"prism6-cyl-horiz-cutBbyA","ok":true,"cpuS":3.71,"wallS":3.5,"bodies":[{"n":"B","v":734.171,"f":3},{"n":"B (1)","v":734.171,"f":3}],"load1":50.1,"calS":1.16,"ratio":3.2}
+{"id":"prism6-cyl-horiz-keep","ok":true,"cpuS":2.7,"wallS":2.4,"bodies":[{"n":"A","v":1044.589,"f":3}],"load1":48.6,"calS":1.04,"ratio":2.6}
+{"id":"prism6-cyl-horiz-join","ok":true,"cpuS":2.57,"wallS":2.2,"bodies":[{"n":"A","v":12691.971,"f":12}],"load1":47.7,"calS":0.95,"ratio":2.7}
+{"id":"cyl-inside-box-bx45-cutAbyB","ok":true,"cpuS":0.34,"wallS":0.3,"bodies":[],"load1":47.7,"calS":0.86,"ratio":0.4}
+{"id":"cyl-inside-box-bx45-cutBbyA","ok":true,"cpuS":0.91,"wallS":0.6,"bodies":[{"n":"B","v":63717.304,"f":9}],"load1":47.7,"calS":1.02,"ratio":0.9}
+{"id":"cyl-inside-box-bx45-keep","ok":true,"cpuS":1.03,"wallS":0.8,"bodies":[{"n":"A","v":282.709,"f":3}],"load1":46.3,"calS":1.01,"ratio":1}
+{"id":"cyl-inside-box-bx45-join","ok":true,"cpuS":0.43,"wallS":0.3,"bodies":[{"n":"A","v":64000,"f":6}],"load1":46.3,"calS":0.84,"ratio":0.5}
+{"id":"cyl-box-aligned-pair-bx45-cutAbyB","ok":true,"cpuS":1.11,"wallS":0.8,"bodies":[{"n":"A (1)","v":1130.846,"f":3},{"n":"A","v":1130.846,"f":3}],"load1":46.3,"calS":0.87,"ratio":1.3}
+{"id":"cyl-box-aligned-pair-bx45-cutBbyA","ok":true,"cpuS":0.8,"wallS":0.6,"bodies":[{"n":"B","v":23607.644,"f":7}],"load1":46.3,"calS":0.78,"ratio":1}
+{"id":"cyl-box-aligned-pair-bx45-keep","ok":true,"cpuS":1.99,"wallS":1.8,"bodies":[{"n":"A","v":3392.357,"f":3}],"load1":44.5,"calS":0.83,"ratio":2.4}
+{"id":"cyl-box-aligned-pair-bx45-join","ok":true,"cpuS":1.06,"wallS":0.8,"bodies":[{"n":"A","v":29261.571,"f":10}],"load1":44.5,"calS":0.87,"ratio":1.2}
+{"id":"cyl-box-aligned-pair-b30_20_10-cutAbyB","ok":true,"cpuS":1.48,"wallS":1.2,"bodies":[{"n":"A (1)","v":1130.846,"f":3},{"n":"A","v":1130.846,"f":3}],"load1":44.5,"calS":0.73,"ratio":2}
+{"id":"cyl-box-aligned-pair-b30_20_10-cutBbyA","ok":true,"cpuS":0.83,"wallS":0.5,"bodies":[{"n":"B","v":23607.644,"f":7}],"load1":42.4,"calS":0.86,"ratio":1}
+{"id":"cyl-box-aligned-pair-b30_20_10-keep","ok":true,"cpuS":1.74,"wallS":1.4,"bodies":[{"n":"A","v":3392.356,"f":3}],"load1":42.4,"calS":0.78,"ratio":2.2}
+{"id":"cyl-box-aligned-pair-b30_20_10-join","ok":true,"cpuS":1.1,"wallS":0.8,"bodies":[{"n":"A","v":29261.571,"f":10}],"load1":42.4,"calS":0.77,"ratio":1.4}
+{"id":"tor-box-around-cutBbyA","ok":true,"cpuS":17.6,"wallS":17.3,"bodies":[{"n":"B","v":45579.067,"f":7}],"load1":43,"calS":0.8,"ratio":22}
+{"id":"tor-box-around-join","ok":true,"cpuS":4.07,"wallS":3.8,"bodies":[{"n":"A","v":50000,"f":6}],"load1":37.8,"calS":0.97,"ratio":4.2}

@@ -1,0 +1,19 @@
+{
+ "tag": "p8",
+ "seed": 2,
+ "judged": 68,
+ "refused": 1087,
+ "overRefused": 2,
+ "sentences": {
+  "not supported yet: something stands on the open face (a boss, a rim or a pocket's walls) and the # mm shell would leave part of it free of the rest of the part:": {
+   "count": 1,
+   "internals": false,
+   "example": "s2-01833 plate 18.1x10.4x6 open=top [cbore,bossBox]"
+  },
+  "not supported yet: a boss or wall stands on the open face of a body with round faces (or on a round wall); solid.shell would cut it short here, so it is not bui": {
+   "count": 1,
+   "internals": false,
+   "example": "s2-01964 plate 10.6x8.1x5 open=top [rboss]"
+  }
+ }
+}

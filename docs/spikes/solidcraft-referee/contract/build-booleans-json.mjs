@@ -1,0 +1,93 @@
+#!/usr/bin/env node
+// SPIKE, referee only. Rolls booleans-classified.json (one entry per measured case) up into the contract rows of booleans.json.
+// Status of a row = the worst status among its cases (wrong > unsupported > refused > supported) unless the row says otherwise,
+// and every override carries its reason. Numbers in `evidence` are copied from the case results, never retyped.
+//   bun contract/build-booleans-json.mjs --classified=<booleans-classified.json> [--timing=<timing.json>,...] --out=<booleans.json>
+import { readFileSync, writeFileSync } from 'node:fs';
+const arg = (k) => (process.argv.find((a) => a.startsWith(`--${k}=`)) ?? '').slice(k.length + 3);
+const cls = JSON.parse(readFileSync(arg('classified'), 'utf8'));
+const byId = new Map(cls.map((c) => [c.id, c]));
+const timing = new Map();
+for (const f of (arg('timing') || '').split(',').filter(Boolean)) for (const t of JSON.parse(readFileSync(f, 'utf8'))) timing.set(t.id, t);
+const RANK = { supported: 0, refused: 1, unsupported: 2, wrong: 3 };
+
+const CMD = 'S=<scratch>; SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg systemd-run --user --scope -p MemoryMax=16G -p MemorySwapMax=0 bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --all --timeout=60 --out=$S/bool/out (slow cases re-run with --only=<ids> --timeout=420/1500), then bun contract/classify-booleans.mjs; one sc.run timed with contract/time-sc.mjs. Path per case: reSHape Script -> runScript() -> ModelDoc -> phase0/translate.mjs -> SolidCraft wasm (fe3717f build), scored against live OCCT (packages/brep-adapter buildDoc) and live brep-rs (archive/brep-rs/pkg measure_doc). Script cylinder/sphere/ring arguments are DIAMETERS. Bars: planar 1e-9, curved 3e-4 (truck tessellation), COM 1e-6 (curved 3e-5) x bbox diagonal, area as volume, shell count equal. d = relative delta vs OCCT.';
+
+const rows = [];
+function row(feature, ids, { status, sentence, note, withScript = false, tim = [], slow = false } = {}) {
+  const cs = ids.map((id) => { const c = byId.get(id); if (!c) throw new Error(`no result for case ${id}`); return c; });
+  const worst = cs.reduce((w, c) => (RANK[c.status] > RANK[w] ? c.status : w), 'supported');
+  const st = status ?? worst;
+  const sentences = [...new Set(cs.filter((c) => c.status === 'refused' && c.sentence).map((c) => c.sentence))];
+  const lines = cs.map((c) => `${c.short}${withScript || c.status !== 'supported' ? `  [script: ${c.source}]` : ''}${c.flags?.length ? `  {${c.flags.join(', ')}}` : ''}`);
+  const t = tim.map((id) => timing.get(id)).filter(Boolean).map((x) => `${x.id}: one sc.run ${x.result === 'done' ? `${(x.scRunMs / 1000).toFixed(1)}s` : `no result in ${x.limitS}s`}`);
+  const counts = cs.reduce((a, c) => { a[c.status] = (a[c.status] ?? 0) + 1; return a; }, {});
+  rows.push({
+    feature, status: st,
+    ...(sentence !== undefined ? { refusalSentence: sentence } : sentences.length ? { refusalSentence: sentences.join(' | ') } : {}),
+    evidence: `${st === 'wrong' ? (cs.some((c) => c.flags?.includes('silent wrong solid')) ? 'WRONG SOLID. ' : 'WRONG (face census only: volume, area, bbox, COM, shell count agree with OCCT). ') : ''}${slow ? 'SLOW: minutes per rebuild, unusable interactively. ' : ''}cases ${JSON.stringify(counts)}. ${note ? note + ' ' : ''}${t.length ? 'Timing: ' + t.join('; ') + '. ' : ''}Command: ${CMD}\nMeasured: ${lines.join('\n          ')}`,
+  });
+}
+
+// ---- parents (the five features as asked) ----
+const JOIN = ['join-box-cyl-through', 'join-box-cyl-sideways-overlap', 'join-three', 'join-four', 'join-bridge', 'join-pull-boss', 'join-pull-sunk', 'join-pull-circle', 'join-spin', 'join-hole-boss', 'join-hole-cover', 'join-chain'];
+const CUTOK = ['cut-box-cyl-through', 'cut-box-cyl-blind', 'cut-box-cyl-inside', 'cut-three', 'cut-four', 'cut-pull-slot', 'cut-spin-bore', 'cut-spin-cone-groove', 'cut-hole-target', 'cut-hole-as-tool', 'cut-of-cut', 'cut-of-join'];
+const SPLIT = ['split-cut-slot-two-pieces', 'split-cut-ring-pieces', 'split-keep-two-pieces', 'split-then-cut-other-piece', 'split-then-join-other-piece'];
+const KEEP2 = ['keep-box-cyl', 'keep-box-cyl-clip', 'keep-pull', 'keep-spin', 'keep-hole-target', 'keep-chain', 'keep-of-cut'];
+const KEEPN = ['keep-three', 'keep-three-sph', 'keep-four', 'dis-keep-three-pairwise-overlap'];
+
+row("join(a,b,...) / union: CombineFeature op 'union', targets[2+]", JOIN, { status: 'supported', note: 'Every join with 2, 3 and 4 operands (primitives, pull, spin, holed plate, earlier combine) matches OCCT; join(a,c,b) where only the 3rd operand bridges two disjoint solids is one solid with 1 shell. The one way a join goes wrong is when an upstream cut split a part in two (see "result with more than one solid"), not the join itself. Faces are fewer than OCCT where coplanar neighbours merge (explained by the phase0 face census).' });
+row("cut(a,b,...) / subtract: op 'subtract', targets[0] is the target, rest are tools", [...CUTOK, ...SPLIT.slice(0, 1)], { status: 'wrong', note: 'WRONG when the cut separates the part into pieces (a slot all the way through a plate, a slit through a disc): SolidCraft makes both pieces, but the phase0 translator reports only the one named after the target, so the student would see HALF the part (12000 instead of 24000) with no message. Every cut that leaves one solid matches, including target plus 2 or 3 tools (equal to a left fold a-b-c). See the split rows.' });
+row("keep(a,b,...) / intersect: op 'intersect'", [...KEEP2, ...KEEPN], { status: 'wrong', note: 'Two-operand keep matches everywhere it builds. WRONG for three or more operands: the translator emits one solid.combine {target, tools:[b,c], operation:"intersect"} and SolidCraft computes target & (b | c), not (target & b) & c. keep(a,b,c) came out 19096.8 vs 11039.7; keep(a,b,c) with empty common part returned a 2000 mm3 solid instead of nothing. Pairwise intersects give the right answer (probe-nary-intersect.mjs).' });
+row('requires two or more shape handles, otherwise a sentence; operands are primitives, pulls, spins, holes, or earlier combine results',
+  ['arity-join-one', 'arity-cut-one', 'arity-keep-one', 'arity-join-zero', 'arity-cut-number', 'arity-keep-sketch', ...JOIN.slice(0, 1), 'join-pull-boss', 'join-spin', 'join-hole-boss', 'join-chain', 'cut-pull-slot', 'cut-spin-bore', 'cut-hole-target', 'cut-of-join', 'keep-pull', 'keep-spin', 'keep-hole-target', 'keep-of-cut'],
+  { status: 'supported', sentence: 'join() needs two or more shapes: join(a, b).  (cut(): "cut() needs two or more shapes: cut(a, b)."  keep(): "keep() needs two or more shapes: keep(a, b).")', note: 'The interpreter refuses 0 or 1 operands and a non-shape operand (a number or a sketch) before any kernel runs; every operand kind builds and matches OCCT in all three operations. Wart: keep(a, sketch) has two arguments yet says "needs two or more shapes".' });
+row('booleans on curved operands (cylinder in box, sphere in box, torus), coplanar faces, tangent contact, disjoint operands, empty intersection',
+  ['cut-box-cyl-through', 'x-cut-x-axis-cylinder', 'x-cyl-cross-cyl-union', 'x-cyl-cross-cyl-equal-keep', 'x-sph-union-sph', 'x-sph-cut-sph', 'x-tor-union-box', 'x-tor-minus-box', 'x-tor-half', 'x-tor-keep-box', 'cop-union-partial-overlap', 'tan-cut-sph-inscribed', 'dis-union', 'dis-keep', 'emp-cut-total'],
+  { status: 'wrong', note: 'Mixed. Cylinder/sphere/torus against a box, coplanar faces and disjoint union/cut are right. Wrong or unusable: sphere with sphere (3 spurious cone faces), torus & box (spurious cylinder/sphere faces), a sphere inscribed in a cube (void pinched into one shell); torus minus box, equal-radius crossing cylinders and the unequal crossing cylinders take 130-350 s for one sc.run (the 60 s and 420 s harness limits both expired for two of them); crossing cylinders need 130-150 s for one sc.run (box minus cylinder: 0.8 s). Empty results are refused with a developer-worded sentence. See the individual rows.' });
+
+// ---- granular rows ----
+row('join(a,b): box + cylinder (through the box, straddling a face)', ['join-box-cyl-through', 'join-box-cyl-sideways-overlap'], { withScript: true });
+row('join(a,b,c,...) with three or four operands (targets[2+])', ['join-three', 'join-four', 'join-bridge', 'cop-union-identical'], { withScript: true });
+row('join with a pull() operand (boss on a plate, sunk boss, round boss)', ['join-pull-boss', 'join-pull-sunk', 'join-pull-circle'], { withScript: true });
+row('join with a spin() operand', ['join-spin'], { withScript: true });
+row('join with a hole() result operand (boss beside the hole, boss that closes the hole into an internal void)', ['join-hole-boss', 'join-hole-cover'], { withScript: true });
+row('join / cut / keep of an earlier combine result (join(join(a,b),c), cut(join(a,b),c), cut(cut(a,b),c), keep(cut(a,b),c), keep(keep(a,b),c))', ['join-chain', 'cut-of-join', 'cut-of-cut', 'keep-of-cut', 'keep-chain'], { withScript: true });
+row('cut(a,b): box - cylinder (through, blind from the top face, cylinder entirely inside = internal void)', ['cut-box-cyl-through', 'cut-box-cyl-blind', 'cut-box-cyl-inside'], { withScript: true });
+row('cut(a,b,c,...): target plus two or three tools (targets[2+])', ['cut-three', 'cut-four'], { withScript: true });
+row('cut with a pull() operand', ['cut-pull-slot'], { withScript: true });
+row('cut with a spin() operand (cylinder bore; cone fully inside = void)', ['cut-spin-bore', 'cut-spin-cone-groove'], { withScript: true });
+row('cut with a hole() result operand (holed plate as target; holed plate as the TOOL)', ['cut-hole-target', 'cut-hole-as-tool'], { withScript: true });
+row('result with more than one solid: a cut that separates the part (slot through a plate, slit through a disc, keep of two separate cylinders)', SPLIT.slice(0, 3), { withScript: true, note: 'Kernel total is right (sc.run returns two bodies "b_box1" and "b_box1 (1)", 24000 mm3, 12 faces, same as OCCT); the translator aggregates only the target\'s name, so one piece is dropped silently. Fixable in the translator by collecting every new body of the combine.' });
+row('operating on a part after a cut split it (cut or join aimed at the second piece)', SPLIT.slice(3), { withScript: true, note: 'The follow-up feature is applied to the piece that kept the target\'s name only; the other piece (and any change meant for it) is lost without a message.' });
+row('keep(a,b): two operands (box & cylinder, & pull, & spin, & holed plate)', KEEP2.slice(0, 5), { withScript: true });
+row('keep(a,b,c,...): three or more operands (targets[2+])', KEEPN, { withScript: true, note: 'Root cause measured with SolidCraft alone (probe-nary-intersect.mjs): n-ary solid.combine intersect = target & (union of tools). Slabs A,B,C with empty common part: n-ary gives 2000, pairwise gives nothing; A,P,Q: n-ary 24000, pairwise 8000 (closed form 8000). cut and join n-ary are right (cut A-P-Q = four 2000 blocks = 8000).' });
+row('same handle twice: join(a, a) / cut(a, a)', ['arity-join-same-twice', 'arity-cut-same-twice'], { withScript: true });
+row('combine with a single target written directly in a ModelDoc (bypassing the interpreter)', ['arity-modeldoc-one-target'], { withScript: true });
+row('using a shape again after a combine consumed it (same cutter used on two parts; same target cut twice)', ['reuse-tool-twice', 'reuse-target-after-union'], { withScript: true, note: 'OCCT and brep-rs build these. SolidCraft consumes the operands in place and the phase0 translator has no copy command, so it refuses. A student doing cut(a,c); cut(b,c) is a normal pattern.' });
+row('curved: cylinder in box with a rotated (x) axis: cut, join, keep', ['x-cut-x-axis-cylinder', 'x-join-x-axis-cylinder', 'x-keep-x-axis-cylinder'], { withScript: true });
+row('curved: parallel cylinders (cylinder - cylinder reaching the wall)', ['x-cyl-minus-cyl-parallel'], { withScript: true });
+row('curved: cylinder crossing cylinder at right angles, unequal radii (union, cut, keep)', ['x-cyl-cross-cyl-union', 'x-cyl-cross-cyl-cut', 'x-cyl-cross-cyl-keep'], { slow: true, tim: ['x-cyl-cross-cyl-union', 'x-cyl-cross-cyl-cut', 'x-cyl-cross-cyl-keep'], note: 'Correct, but one sc.run takes 130-150 s here (a box minus a cylinder takes 0.8 s): the page would be frozen for minutes.' });
+row('curved: equal-radius crossing cylinders (Steinmetz solid, keep)', ['x-cyl-cross-cyl-equal-keep'], { slow: true, tim: ['x-cyl-cross-cyl-equal-keep'], note: 'Volume is right (closed form 16/3 r^3 = 2730.667; SolidCraft 2730.637, OCCT 2730.667) and one sc.run returns after 346 s, but SolidCraft reports 3 cylinder faces (6 kernel faces, Euler 2) where OCCT has 4: not explained. The 60 s and 420 s harness limits both expired first.' });
+row('curved: sphere with box (box - sphere dimple, box - sphere internal void, sphere - box, sphere + box, sphere & box, sphere - cylinder)', ['x-box-minus-sph-hemi', 'x-box-minus-sph-void', 'x-box-minus-box-void', 'x-sph-minus-box', 'x-sph-union-box', 'x-sph-keep-box', 'x-sph-cut-cyl'], { withScript: true, tim: ['x-sph-minus-box', 'x-sph-cut-sph'], note: 'All match. Sphere booleans are slow: one sc.run is 15 s for sphere minus box (0.8 s for box minus cylinder).' });
+row('curved: sphere with sphere (union, cut, keep)', ['x-sph-union-sph', 'x-sph-cut-sph', 'x-sph-keep-sph'], { tim: ['x-sph-union-sph', 'x-sph-cut-sph', 'x-sph-keep-sph'], withScript: true, note: 'Union and cut: volume, area, bbox and COM agree but SolidCraft reports 3 cone faces that OCCT does not have (OCCT: 2 sphere faces). Treated as WRONG until the extra faces are explained; the lens (keep) is fine.' });
+row('curved: torus with box (union)', ['x-tor-union-box'], { withScript: true, slow: true, tim: ['x-tor-union-box'], note: 'Correct.' });
+row('curved: torus minus box', ['x-tor-minus-box'], { slow: true, tim: ['x-tor-minus-box'], note: 'Matches OCCT (vol 3906.808 vs 3907.042, dVol 6.0e-5, area 1.6e-5, 5 faces each, 1 shell) after a 260 s sc.run; the 60 s and 420 s harness limits both expired first.' });
+row('curved: torus & box (half ring, slab through the tube)', ['x-tor-half', 'x-tor-keep-box'], { withScript: true, slow: true, tim: ['x-tor-half', 'x-tor-keep-box'], note: 'Volume/area/COM agree to 1e-4; face census does not (x-tor-half: extra cylinder face; x-tor-keep-box: 4 faces typed sphere where OCCT has torus pieces).' });
+row('curved: box - torus (torus fully inside = void; torus piercing the top face)', ['x-box-minus-tor-void', 'x-box-minus-tor-cross'], { withScript: true, tim: ['x-box-minus-tor-void'], note: 'Match.' });
+row('curved: torus joined with a cylinder (cylinder in the hole; cylinder tangent to the inner equator)', ['x-tor-union-cyl-axis', 'x-tor-union-cyl-touch'], { withScript: true, tim: ['x-tor-union-cyl-axis'], note: 'Result is two shells (disjoint / tangent along a circle), same as OCCT\'s two solids.' });
+row('coplanar faces (shared face, partial overlap, flush inside, identical operands, stacked, L shape, flush cut, coplanar caps, coplanar intersect)', ['cop-union-shared-face', 'cop-union-partial-overlap', 'cop-union-inside-flush', 'cop-union-identical', 'cop-union-step', 'cop-union-l-shape', 'cop-cut-flush-top', 'cop-cut-caps', 'cop-cut-same-box', 'cop-keep-offset', 'cop-keep-partial'], { note: 'All planar results match to 1e-9 in volume, area, bbox, COM.' });
+row('tangent / touching contact that leaves one solid (cylinder overlapping 1 mm, tangent subtract, edge-touch cut, sphere touching at a point cut, internally tangent cylinders, cylinder stacked on a face, inscribed sphere union / intersect, inscribed cylinder union)', ['tan-union-cyl-overlap1', 'tan-subtract-touching', 'tan-cut-edge-touch', 'tan-cut-sph-point', 'tan-cyl-in-cyl-internal', 'tan-union-cyl-on-face', 'tan-union-sph-inscribed', 'tan-keep-sph-inscribed', 'tan-union-cyl-inscribed'], {});
+row('tangent / touching contact that leaves several shells (union of operands touching only along a line, at an edge, at a vertex or at a point; inscribed cylinder cut into four corner pieces)', ['tan-union-cyl-exact', 'tan-union-sph-point', 'tan-union-edge-touch', 'tan-union-vertex-touch', 'tan-cut-cyl-inscribed'], { note: 'SolidCraft returns one body with several shells and the same volume/area as OCCT\'s several solids. brep-rs REFUSES edge/vertex touching unions with the sentence "the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little". A pinched-union policy decision is open.' });
+row('tangent contact that pinches a void into the shell (sphere inscribed in a cube, cube - sphere)', ['tan-cut-sph-inscribed'], { withScript: true, note: 'OCCT: 2 shells (cube + sphere void touching at 6 points). SolidCraft: 1 shell, Euler V-E+F = 4 (a single shell would give 2): the void was glued to the outer shell at the touching points. Volume off 3.1e-4. brep-rs refuses with a plain sentence: "the cut touches the part\'s surface along a line or at a point, which leaves a solid no CAD kernel can hold as one body; move it a little or make it go all the way through".' });
+row('tangent along a line, intersect (keep of a cylinder tangent to a box face): result is empty', ['tan-keep-cyl-exact'], {});
+row('disjoint operands: union (two separate solids) and cut', ['dis-union', 'dis-union-curved', 'dis-cut', 'dis-cut-curved'], { withScript: true, note: 'Disjoint union is ONE body with two shells (OCCT: compound of two solids); volumes/areas equal.' });
+row('empty intersection: keep() of operands with nothing in common (disjoint, face-touching, edge-touching, curved)', ['dis-keep', 'dis-keep-face-touch', 'dis-keep-edge-touch', 'dis-keep-curved'], { note: 'Refused, but the sentence names an internal body id and says nothing useful. brep-rs says "the two shapes do not overlap, so keeping their overlap leaves nothing" (a better candidate).' });
+row('empty result: cut that removes everything (small - big, a - copy of a, tools that between them consume the target)', ['emp-cut-total', 'emp-cut-identical', 'emp-cut-cyl-total', 'emp-cut-three-total'], { note: 'Refused, same internal wording as the empty keep.' });
+row('keep of identical or contained operands (whole box, small box inside big, sphere inside box)', ['emp-keep-identical', 'emp-keep-contained', 'emp-keep-contained-sph'], { withScript: true });
+
+const out = { group: 'booleans', rows };
+writeFileSync(arg('out'), JSON.stringify(out, null, 1));
+const tally = {}; for (const r of rows) tally[r.status] = (tally[r.status] ?? 0) + 1;
+console.log(JSON.stringify(tally), rows.length, 'rows ->', arg('out'));
+for (const r of rows) console.log(r.status.padEnd(12), r.feature.slice(0, 150));

@@ -1,0 +1,2995 @@
+[
+ {
+  "id": "ov-c-box-top-front-20",
+  "script": "const b = cuboid(40,30,20)\nbevel(b.edge('top','front'), 20)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 20,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 16000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.000000000000002
+   ],
+   "min": [
+    -20,
+    -15,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "ov-c-box-top-front-25",
+  "script": "const b = cuboid(40,30,20)\nbevel(b.edge('top','front'), 25)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 25,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10
+   ],
+   "min": [
+    -20,
+    -10.000000000000004,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "ov-c-box-top-front-35",
+  "script": "const b = cuboid(40,30,20)\nbevel(b.edge('top','front'), 35)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 35,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 4499.999999999997,
+  "faces": 5,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000004,
+    15,
+    4.999999999999995
+   ],
+   "min": [
+    -20,
+    -3.552713678800501e-15,
+    -10.000000000000004
+   ]
+  }
+ },
+ {
+  "id": "ov-c-box-front-left-35",
+  "script": "const b = cuboid(40,30,20)\nbevel(b.edge('front','left'), 35)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       -20,
+       -15,
+       0
+      ]
+     ],
+     "distance": 35,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10
+   ],
+   "min": [
+    -15,
+    -15,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "ov-c-plate-top-front-10.001",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nbevel(pad.edge('top','front'), 10.001)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "distance": 10.001,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 9999.599999999997,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    30,
+    10
+   ],
+   "min": [
+    0,
+    0.0010000000000004736,
+    0
+   ]
+  }
+ },
+ {
+  "id": "ov-c-plate-top-front-12",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nbevel(pad.edge('top','front'), 12)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "distance": 12,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 9200,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    30,
+    10
+   ],
+   "min": [
+    0,
+    1.9999999999999991,
+    0
+   ]
+  }
+ },
+ {
+  "id": "ov-f-box-top-front-25",
+  "script": "const b = cuboid(40,30,20)\nround(b.edge('top','front'), 25)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 1, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces",
+    "pick": null
+   }
+  ],
+  "volume": 24000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10
+   ],
+   "min": [
+    -20,
+    -15,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "ov-c-pair-top-front-back-15",
+  "script": "const b = cuboid(40,30,20)\nbevel(b.edge('top','front'), 15)\nbevel(b.edge('top','back'), 15)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 15,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "bevel2",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       15,
+       10
+      ]
+     ],
+     "distance": 15,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 15000.000000000005,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15.000000000000018,
+    10
+   ],
+   "min": [
+    -20.000000000000014,
+    -15.000000000000002,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "ov-c-pair-top-front-back-16",
+  "script": "const b = cuboid(40,30,20)\nbevel(b.edge('top','front'), 16)\nbevel(b.edge('top','back'), 16)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 16,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "bevel2",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       15,
+       10
+      ]
+     ],
+     "distance": 16,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 13800.000000000007,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15.000000000000021,
+    9.000000000000007
+   ],
+   "min": [
+    -20.000000000000018,
+    -15.000000000000002,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "ov-f-pair-top-front-back-16",
+  "script": "const b = cuboid(40,30,20)\nround(b.edge('top','front'), 16)\nround(b.edge('top','back'), 16)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 16,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces",
+    "pick": null
+   }
+  ],
+  "volume": 21801.664448969637,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.00000000000001,
+    15,
+    10.000000000000002
+   ],
+   "min": [
+    -20.00000000000002,
+    -15,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "ov-c-pair-vert-20-21",
+  "script": "const b = cuboid(40,30,20)\nbevel(b.edge('front','left'), 20)\nbevel(b.edge('front','right'), 21)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       -20,
+       -15,
+       0
+      ]
+     ],
+     "distance": 20,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "bevel2",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       -15,
+       0
+      ]
+     ],
+     "distance": 21,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 15595,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.000000000000004
+   ],
+   "min": [
+    -20,
+    -14.5,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "ov-c-pair-plate-front-6",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nbevel(pad.edge('top','front'), 6)\nbevel(pad.edge('bottom','front'), 6)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "distance": 6,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "bevel2",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       0
+      ]
+     ],
+     "distance": 6,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 10599.999999999998,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    30,
+    10
+   ],
+   "min": [
+    0,
+    1.0000000000000027,
+    0
+   ]
+  }
+ },
+ {
+  "id": "gr-br-d1-r1",
+  "script": "const b = cuboid(40,30,12)\nbevel(b.edge('top','front'), 1)\nround(b.edge('top','right'), 1)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "distance": 1,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 14379.999999999998,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    6
+   ],
+   "min": [
+    -20.000000000000036,
+    -15,
+    -6
+   ]
+  }
+ },
+ {
+  "id": "gr-br-d2-r1",
+  "script": "const b = cuboid(40,30,12)\nbevel(b.edge('top','front'), 2)\nround(b.edge('top','right'), 1)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 14319.999999999998,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    6.000000000000002
+   ],
+   "min": [
+    -20.00000000000003,
+    -15,
+    -6
+   ]
+  }
+ },
+ {
+  "id": "gr-rb-r2-d1",
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','front'), 2)\nbevel(b.edge('top','right'), 1)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 14365.64118773875,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000007,
+    15,
+    6.000000000000004
+   ],
+   "min": [
+    -20.000000000000014,
+    -15,
+    -6
+   ]
+  }
+ },
+ {
+  "id": "gr-rb-r2-d2",
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','front'), 2)\nbevel(b.edge('top','right'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 14365.64118773875,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000007,
+    15,
+    6.000000000000004
+   ],
+   "min": [
+    -20.000000000000014,
+    -15,
+    -6
+   ]
+  }
+ },
+ {
+  "id": "sq-f-top-front-r3-top-right-r3",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nround(pad.edge('top','front'), 3)\nround(pad.edge('top','right'), 3)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 3,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 11922.69267166096,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.000000000000014,
+    30,
+    10
+   ],
+   "min": [
+    -2.6096948363226262e-15,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "ls-round-2adj",
+  "script": "const b = cuboid(40,30,12)\nround([b.edge('top','front'), b.edge('top','right')], 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 14365.64118773875,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000007,
+    15,
+    6.000000000000004
+   ],
+   "min": [
+    -20.000000000000014,
+    -15,
+    -6
+   ]
+  }
+ },
+ {
+  "id": "ls-round-vert4",
+  "script": "const b = cuboid(40,30,12)\nround([b.edge('front','left'), b.edge('front','right'), b.edge('back','left'), b.edge('back','right')], 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 5, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       -20,
+       -15,
+       0
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       -15,
+       0
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "round3",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       -20,
+       15,
+       0
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "round4",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 14358.769410135144,
+  "faces": 10,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15.000000000000005,
+    6.000000000000003
+   ],
+   "min": [
+    -20.000000000000004,
+    -15,
+    -6.000000000000004
+   ]
+  }
+ },
+ {
+  "id": "ls-bevel-top4",
+  "script": "const b = cuboid(40,30,12)\nbevel([b.edge('top','front'), b.edge('top','right'), b.edge('top','back'), b.edge('top','left')], 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 3.",
+  "noNewBuild": null,
+  "refusals": [
+   "bevel2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+   "bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked)",
+   "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked))"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "bevel2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   },
+   {
+    "id": "bevel3",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked)",
+    "pick": null
+   },
+   {
+    "id": "bevel4",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked))",
+    "pick": null
+   }
+  ],
+  "volume": 14319.999999999998,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    6.000000000000002
+   ],
+   "min": [
+    -20.00000000000003,
+    -15,
+    -6
+   ]
+  }
+ },
+ {
+  "id": "ring4-one-by-one-r3",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nround(pad.edge('top','front'), 3)\nround(pad.edge('top','right'), 3)\nround(pad.edge('top','back'), 3)\nround(pad.edge('top','left'), 3)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 3.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+   "round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked)",
+   "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked))"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 3,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   },
+   {
+    "id": "round3",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked)",
+    "pick": null
+   },
+   {
+    "id": "round4",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked))",
+    "pick": null
+   }
+  ],
+  "volume": 11922.69267166096,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.000000000000014,
+    30,
+    10
+   ],
+   "min": [
+    -2.6096948363226262e-15,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "pr-thin-bevel6-then-round5-top-front",
+  "script": "const sk = sketch('top')\nsk.rect(40, 6.3662, { at: [20, 3.1831] })\nconst pad = extrude(sk, 10)\nbevel(pad.edge('bottom','front'), 6)\nround(pad.edge('top','front'), 5)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       0
+      ]
+     ],
+     "distance": 6,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces",
+    "pick": null
+   }
+  ],
+  "volume": 1826.4800000000002,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    6.3662,
+    10
+   ],
+   "min": [
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "pr-thin-bevel6-then-round55-top-front",
+  "script": "const sk = sketch('top')\nsk.rect(40, 6.3662, { at: [20, 3.1831] })\nconst pad = extrude(sk, 10)\nbevel(pad.edge('bottom','front'), 6)\nround(pad.edge('top','front'), 5.5)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       0
+      ]
+     ],
+     "distance": 6,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces",
+    "pick": null
+   }
+  ],
+  "volume": 1826.4800000000002,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    6.3662,
+    10
+   ],
+   "min": [
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "bo-union-ambiguous-3edge",
+  "script": "const b = cuboid(40,40,20)\nconst k = cuboid(10,10,10,{at:[0,0,15]})\nconst d = join(b, k)\nround(d.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[-y]] matches no edge on b_box1 (the two faces do not meet there any more, or never did); not guessing"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[-y]] matches no edge on b_box1 (the two faces do not meet there any more, or never did); not guessing",
+    "pick": null
+   }
+  ],
+  "volume": 33000,
+  "faces": 11,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    20,
+    20
+   ],
+   "min": [
+    -20,
+    -20,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "bo-union-edge-of-operand",
+  "script": "const a = box(40,30,10)\nconst b = box(20,30,10,{at:[10,0,5]})\nconst u = join(a, b)\nround(a.edge('bottom','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): its target box1 was already changed in place by op1, and a solidcraft command list has no second copy of it"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): its target box1 was already changed in place by op1, and a solidcraft command list has no second copy of it",
+    "pick": null
+   }
+  ],
+  "volume": 15000,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10
+   ],
+   "min": [
+    -20,
+    -15,
+    -5
+   ]
+  }
+ },
+ {
+  "id": "cs-round1-then-round3",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nround(pad.edge('top','front'), 1)\nround(pad.edge('top','front'), 3)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[-y]] resolves to F2:side:l1|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[-y]] resolves to F2:side:l1|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 11991.410295184303,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.000000000000014,
+    30,
+    10.000000000000002
+   ],
+   "min": [
+    -8.104628079763644e-15,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "cs-round3-then-round1",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nround(pad.edge('top','front'), 3)\nround(pad.edge('top','front'), 1)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[-y]] resolves to F2:side:l1|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 3,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[-y]] resolves to F2:side:l1|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 11922.69267166096,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.000000000000014,
+    30,
+    10
+   ],
+   "min": [
+    -2.6096948363226262e-15,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "cs-bevel1-then-bevel3",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nbevel(pad.edge('top','front'), 1)\nbevel(pad.edge('top','front'), 3)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[-y]] resolves to F2:side:l1|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "distance": 1,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "bevel2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[-y]] resolves to F2:side:l1|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 11980,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    30,
+    10.000000000000002
+   ],
+   "min": [
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "mv-turn-xyz-bevel",
+  "script": "const b = box(30,20,20)\nturn(b,[30,40,50])\nbevel(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 1, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+    "pick": null
+   }
+  ],
+  "volume": 11999.999999999998,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    19.36274864206318,
+    17.88148931862621,
+    20.10617584258236
+   ],
+   "min": [
+    -19.362748642063178,
+    -17.88148931862621,
+    -20.10617584258236
+   ]
+  }
+ },
+ {
+  "id": "sz-edge-round-0",
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','front'), 0)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 1, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+    "pick": null
+   }
+  ],
+  "volume": 14400,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    6
+   ],
+   "min": [
+    -20,
+    -15,
+    -6
+   ]
+  }
+ },
+ {
+  "id": "sz-edge-bevel-neg",
+  "script": "const b = cuboid(40,30,12)\nbevel(b.edge('top','front'), -1)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 1, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid input: chamfer size must be positive"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid input: chamfer size must be positive",
+    "pick": null
+   }
+  ],
+  "volume": 14400,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    6
+   ],
+   "min": [
+    -20,
+    -15,
+    -6
+   ]
+  }
+ },
+ {
+  "id": "tu-z10-round-top-front",
+  "script": "const b = box(30,20,20)\nturn(b,[0,0,10])\nround(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 1, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+    "pick": null
+   }
+  ],
+  "volume": 11999.999999999995,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    16.508598071852425,
+    12.452800195126034,
+    10
+   ],
+   "min": [
+    -16.508598071852425,
+    -12.452800195126034,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "tu-z90-bevel-top-front",
+  "script": "const b = box(30,20,20)\nturn(b,[0,0,90])\nbevel(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 1, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+    "pick": null
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    10.000000000000002,
+    15,
+    10
+   ],
+   "min": [
+    -10.000000000000002,
+    -15,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "tu-x90-round-top-front",
+  "script": "const b = box(30,20,20)\nturn(b,[90,0,0])\nround(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 1, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+    "pick": null
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    15,
+    10,
+    10
+   ],
+   "min": [
+    -15,
+    -10,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "tu-y90-bevel-left-back",
+  "script": "const b = box(30,20,20)\nturn(b,[0,90,0])\nbevel(b.edge('left','back'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 1, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "bevel1 (fillet): box1.edge[box1.face[-x] ^ box1.face[+y]] cannot be resolved: box1.face[-x]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel1 (fillet): box1.edge[box1.face[-x] ^ box1.face[+y]] cannot be resolved: box1.face[-x]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+    "pick": null
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    10.000000000000002,
+    10,
+    15
+   ],
+   "min": [
+    -10.000000000000002,
+    -10,
+    -15
+   ]
+  }
+ },
+ {
+  "id": "tu-x30y40z50-round-top-front",
+  "script": "const b = box(30,20,20)\nturn(b,[30,40,50])\nround(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 1, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+    "pick": null
+   }
+  ],
+  "volume": 11999.999999999998,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    19.36274864206318,
+    17.88148931862621,
+    20.10617584258236
+   ],
+   "min": [
+    -19.362748642063178,
+    -17.88148931862621,
+    -20.10617584258236
+   ]
+  }
+ },
+ {
+  "id": "tu-x45-round-top-front",
+  "script": "const b = box(30,20,20)\nturn(b,[45,0,0])\nround(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 1, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+    "pick": null
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    15,
+    14.142135623730951,
+    14.142135623730951
+   ],
+   "min": [
+    -15,
+    -14.142135623730951,
+    -14.142135623730951
+   ]
+  }
+ },
+ {
+  "id": "tu-x45-bevel-top-front",
+  "script": "const b = box(30,20,20)\nturn(b,[45,0,0])\nbevel(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 1, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+    "pick": null
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    15,
+    14.142135623730951,
+    14.142135623730951
+   ],
+   "min": [
+    -15,
+    -14.142135623730951,
+    -14.142135623730951
+   ]
+  }
+ },
+ {
+  "id": "mo-15_0_0-round",
+  "script": "const b = box(30,20,20)\nmove(b,[15,0,0])\nround(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    30,
+    10,
+    10
+   ],
+   "min": [
+    0,
+    -10,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "mo-m15_0_0-round",
+  "script": "const b = box(30,20,20)\nmove(b,[-15,0,0])\nround(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    0,
+    10,
+    10
+   ],
+   "min": [
+    -30,
+    -10,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "mo-m15_0_0-bevel",
+  "script": "const b = box(30,20,20)\nmove(b,[-15,0,0])\nbevel(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    0,
+    10,
+    10
+   ],
+   "min": [
+    -30,
+    -10,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "mo-0_10_0-round",
+  "script": "const b = box(30,20,20)\nmove(b,[0,10,0])\nround(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    15,
+    20,
+    10
+   ],
+   "min": [
+    -15,
+    0,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "mo-1_1_1-round",
+  "script": "const b = box(30,20,20)\nmove(b,[1,1,1])\nround(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    16,
+    11,
+    11
+   ],
+   "min": [
+    -14,
+    -9,
+    -9
+   ]
+  }
+ },
+ {
+  "id": "mo-m15_m10_0-bevel",
+  "script": "const b = box(30,20,20)\nmove(b,[-15,-10,0])\nbevel(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    0,
+    0,
+    10
+   ],
+   "min": [
+    -30,
+    -20,
+    -10
+   ]
+  }
+ },
+ {
+  "id": "sg-V-a2-b2",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nround(pad.edge('top','front'), 2)\nround(pad.edge('front','right'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 2,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 11965.641185737959,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.000000000000014,
+    30,
+    10.000000000000002
+   ],
+   "min": [
+    -2.24073944016881e-15,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "sg-H-a3-b4",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nround(pad.edge('top','front'), 3)\nround(pad.edge('top','right'), 4)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 3,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 11922.69267166096,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.000000000000014,
+    30,
+    10
+   ],
+   "min": [
+    -2.6096948363226262e-15,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "sg-V-a3-b5",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nround(pad.edge('top','front'), 3)\nround(pad.edge('front','right'), 5)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 3,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 11922.69267166096,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.000000000000014,
+    30,
+    10
+   ],
+   "min": [
+    -2.6096948363226262e-15,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "sg-H-a3-b5",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nround(pad.edge('top','front'), 3)\nround(pad.edge('top','right'), 5)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 3,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 11922.69267166096,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.000000000000014,
+    30,
+    10
+   ],
+   "min": [
+    -2.6096948363226262e-15,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "sg-V-a4-b2",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nround(pad.edge('top','front'), 4)\nround(pad.edge('front','right'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 4,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 11862.564752953316,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.00000000000002,
+    30,
+    10
+   ],
+   "min": [
+    -1.4210854715202004e-14,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "sg-V-a4-b5",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nround(pad.edge('top','front'), 4)\nround(pad.edge('front','right'), 5)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 4,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 11862.564752953316,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.00000000000002,
+    30,
+    10
+   ],
+   "min": [
+    -1.4210854715202004e-14,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "sg-H-a5-b6",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nround(pad.edge('top','front'), 5)\nround(pad.edge('top','right'), 6)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 5,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 11785.25742961502,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.000000000000014,
+    30,
+    10
+   ],
+   "min": [
+    -1.1546319456101628e-14,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "sg-V-a6-b3",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nround(pad.edge('top','front'), 6)\nround(pad.edge('front','right'), 3)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 6,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pull1.edge[pull1.face[-y] ^ pull1.face[+x]] resolves to F2:side:l1|F2:side:l2 on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 11690.770716643829,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.000000000000014,
+    30,
+    10
+   ],
+   "min": [
+    -5.15138289189007e-15,
+    0,
+    0
+   ]
+  }
+ }
+]

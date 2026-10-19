@@ -1,0 +1,155 @@
+[
+ {
+  "id": "Z-groove-undrawn-90",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch('top'); groove(g, cyl, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "Z-groove-undrawn-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 29845.130209198946,
+    "com": [
+     -2.23375357470912,
+     -2.2337535663138,
+     15.657894736834328
+    ],
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 6,
+    "area": 6497.787143782139,
+    "types": {
+     "cylinder": 1,
+     "plane": 5
+    },
+    "components": {
+     "cylinder": 1,
+     "plane": 5
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 2
+   },
+   "brep": {
+    "volume": 29845.130209103037,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 6,
+    "dVol": 3.2135237681689793e-12,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 924,
+   "load": [
+    49.4,
+    49.4
+   ],
+   "cpuMs": 1687,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): the sketch is exactly the default 40 by 25 rectangle at the corner (an undrawn sketch looks the same), so the groove is not built; draw your outline, for example with rect(10, 30, { at: [15, 15] }), or move this rectangle by a fraction of a millimetre if it is the one you want."
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.circle.center",
+     "params": {
+      "center": [
+       0,
+       0
+      ],
+      "diameter": 40
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): the sketch is exactly the default 40 by 25 rectangle at the corner (an undrawn sketch looks the same), so the groove is not built; draw your outline, for example with rect(10, 30, { at: [15, 15] }), or move this rectangle by a fraction of a millimetre if it is the one you want.",
+    "firstRefusal": "groove1 (groove): the sketch is exactly the default 40 by 25 rectangle at the corner (an undrawn sketch looks the same), so the groove is not built; draw your outline, for example with rect(10, 30, { at: [15, 15] }), or move this rectangle by a fraction of a millimetre if it is the one you want."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 1348
+ }
+]

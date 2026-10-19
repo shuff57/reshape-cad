@@ -1,0 +1,1 @@
+P-groove-400-patched                     REFUSED  occtV 37566.4668 | tr-occt dV - dBb - dCom - F o/b/t 8/7/- | brep-occt dV 2.8e-2  | ANALYTIC 36505.3066 dTruck - dOcct 2.9e-2 dBrep 4.0e-16  | TRUCK REFUSED: groove1 (groove): a groove turns the ring more than 0 and at most 360 degrees, and 400 is not in that range; use 360 for a full turn.  | ms 313 cpu 708

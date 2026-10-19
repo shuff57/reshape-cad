@@ -1,0 +1,1 @@
+sl9-19-boxlip-top-p0.003                 FAIL     occtV 70549.1704 | tr-occt dV 1.4e-5 dBb 4.4e-16 dCom 2.7e-6 F o/b/t 16/14/15 | brep-occt dV 1.3e-12      | ms 4468 cpu 4943

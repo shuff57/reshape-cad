@@ -1,0 +1,1 @@
+Z-spin-small-2                           PASS     occtV 157.0796 | tr-occt dV 5.1e-5 dBb 2.4e-13 dCom 1.2e-5 F o/b/t 6/6/6 | brep-occt dV 5.4e-16  | ANALYTIC 157.0796 dTruck 5.1e-5 dOcct 0.0e+0 dBrep 5.4e-16    | ms 50 cpu 188

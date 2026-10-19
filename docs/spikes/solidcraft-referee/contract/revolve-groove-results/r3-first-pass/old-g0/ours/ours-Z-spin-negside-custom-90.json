@@ -1,0 +1,21 @@
+{
+ "id": "Z-spin-negside-custom-90",
+ "outcome": "built",
+ "volume": 7067.878425404648,
+ "faces": 6,
+ "bbox": [
+  5,
+  -17,
+  -18,
+  35,
+  2.999999999999999,
+  2.000000000000001
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[5,3,2],\"x_dir\":[0,1,0],\"y_dir\":[1,0,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-20,0],[-10,0],[-10,30],[-20,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":90,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

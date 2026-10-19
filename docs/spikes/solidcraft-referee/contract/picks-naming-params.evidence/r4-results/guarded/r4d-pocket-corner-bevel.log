@@ -1,0 +1,48 @@
+bevel edge(wall 1, wall 2) size 0.5      PASS[OCCT] V=11600.500000 (OCCT 11600.500000, brep 11600.000000) dVol 1.6e-16 dBbox 0.0e+0 dCOM 7.0e-17 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11600.5000 SC=11600.5000 rel=0.0e+0
+bevel edge(wall 3, wall 4) size 0.5      PASS[OCCT] V=11600.500000 (OCCT 11600.500000, brep 11600.000000) dVol 1.6e-16 dBbox 0.0e+0 dCOM 7.0e-17 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge2] ^ pull2.face[sk2.edge3]]
+   closed=11600.5000 SC=11600.5000 rel=0.0e+0
+bevel edge(wall 1, wall 2) size 1        PASS[OCCT] V=11602.000000 (OCCT 11602.000000, brep 11600.000000) dVol 1.6e-16 dBbox 0.0e+0 dCOM 3.5e-17 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11602.0000 SC=11602.0000 rel=0.0e+0
+bevel edge(wall 3, wall 4) size 1        PASS[OCCT] V=11602.000000 (OCCT 11602.000000, brep 11600.000000) dVol 1.6e-16 dBbox 0.0e+0 dCOM 1.4e-16 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge2] ^ pull2.face[sk2.edge3]]
+   closed=11602.0000 SC=11602.0000 rel=0.0e+0
+bevel edge(wall 1, wall 2) size 2        PASS[OCCT] V=11608.000000 (OCCT 11608.000000, brep 11600.000000) dVol 1.6e-16 dBbox 0.0e+0 dCOM 7.0e-17 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11608.0000 SC=11608.0000 rel=0.0e+0
+bevel edge(wall 3, wall 4) size 2        PASS[OCCT] V=11608.000000 (OCCT 11608.000000, brep 11600.000000) dVol 1.6e-16 dBbox 0.0e+0 dCOM 7.0e-17 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge2] ^ pull2.face[sk2.edge3]]
+   closed=11608.0000 SC=11608.0000 rel=0.0e+0
+bevel edge(wall 1, wall 2) size 3        PASS[OCCT] V=11618.000000 (OCCT 11618.000000, brep 11600.000000) dVol 3.1e-16 dBbox 0.0e+0 dCOM 1.4e-16 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11618.0000 SC=11618.0000 rel=0.0e+0
+bevel edge(wall 3, wall 4) size 3        PASS[OCCT] V=11618.000000 (OCCT 11618.000000, brep 11600.000000) dVol 3.1e-16 dBbox 0.0e+0 dCOM 7.0e-17 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge2] ^ pull2.face[sk2.edge3]]
+   closed=11618.0000 SC=11618.0000 rel=0.0e+0
+round edge(wall 1, wall 2) size 0.5      PASS[OCCT] V=11600.214919 (OCCT 11600.214602, brep 11600.000000) dVol 2.7e-8 dBbox 5.3e-16 dCOM 2.6e-9 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11600.2146 SC=11600.2149 rel=2.7e-8
+round edge(wall 3, wall 4) size 0.5      PASS[OCCT] V=11600.214919 (OCCT 11600.214602, brep 11600.000000) dVol 2.7e-8 dBbox 3.6e-16 dCOM 2.6e-9 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge2] ^ pull2.face[sk2.edge3]]
+   closed=11600.2146 SC=11600.2149 rel=2.7e-8
+round edge(wall 1, wall 2) size 1        PASS[OCCT] V=11600.858971 (OCCT 11600.858407, brep 11600.000000) dVol 4.9e-8 dBbox 7.1e-16 dCOM 4.4e-9 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11600.8584 SC=11600.8590 rel=4.9e-8
+round edge(wall 3, wall 4) size 1        PASS[OCCT] V=11600.858970 (OCCT 11600.858407, brep 11600.000000) dVol 4.9e-8 dBbox 7.1e-16 dCOM 4.4e-9 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge2] ^ pull2.face[sk2.edge3]]
+   closed=11600.8584 SC=11600.8590 rel=4.9e-8
+round edge(wall 1, wall 2) size 2        PASS[OCCT] V=11603.435882 (OCCT 11603.433629, brep 11600.000000) dVol 1.9e-7 dBbox 7.1e-16 dCOM 1.6e-8 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11603.4336 SC=11603.4359 rel=1.9e-7
+round edge(wall 3, wall 4) size 2        PASS[OCCT] V=11603.435881 (OCCT 11603.433629, brep 11600.000000) dVol 1.9e-7 dBbox 3.6e-16 dCOM 1.6e-8 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge2] ^ pull2.face[sk2.edge3]]
+   closed=11603.4336 SC=11603.4359 rel=1.9e-7
+round edge(wall 1, wall 2) size 3        PASS[OCCT] V=11607.730733 (OCCT 11607.725666, brep 11600.000000) dVol 4.4e-7 dBbox 5.3e-16 dCOM 3.3e-8 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+   closed=11607.7257 SC=11607.7307 rel=4.4e-7
+round edge(wall 3, wall 4) size 3        PASS[OCCT] V=11607.730732 (OCCT 11607.725666, brep 11600.000000) dVol 4.4e-7 dBbox 3.6e-16 dCOM 3.3e-8 faces occt/truck/brep 12/12/11  
+    names: pocket1.edge[pull2.face[sk2.edge2] ^ pull2.face[sk2.edge3]]
+   closed=11607.7257 SC=11607.7307 rel=4.4e-7

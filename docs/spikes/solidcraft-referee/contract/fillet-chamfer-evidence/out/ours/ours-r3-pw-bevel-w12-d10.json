@@ -1,0 +1,23 @@
+{
+ "id": "r3-pw-bevel-w12-d10",
+ "outcome": "fail",
+ "volume": 5898.976989607562,
+ "faces": 13,
+ "bbox": [
+  -3.552713678800501e-15,
+  0,
+  0,
+  40,
+  30.000000000000007,
+  10.000000000000002
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "extrude",
+  "combine",
+  "fillet"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[40,0],[40,30],[0,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[15,12],[25,12],[25,18],[15,18]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":-4,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"cut\"}},{\"command\":\"solid.chamfer\",\"params\":{\"edges\":[[25,12,8]],\"distance\":10,\"body\":\"b_pull1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

@@ -1,0 +1,20 @@
+{
+ "id": "wedge-2",
+ "outcome": "built",
+ "volume": 1440,
+ "faces": 5,
+ "bbox": [
+  -15,
+  -6,
+  -4,
+  15,
+  6,
+  4
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "wedge"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_wedge1_0\",\"plane\":{\"origin\":[0,0,-4],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-15,-6],[15,-6],[-15,6]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":8,\"sketch\":\"sk_wedge1_0\",\"operation\":\"new\",\"body_name\":\"b_wedge1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

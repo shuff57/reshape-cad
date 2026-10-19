@@ -1,0 +1,140 @@
+{
+ "generatedAt": "2026-10-15T02:59:01.057Z",
+ "url": "http://127.0.0.1:8800",
+ "examples": [],
+ "errorPaths": [
+  {
+   "name": "syntax error",
+   "headline": "SCRIPT ERROR (syntax error; the interpreter reports no line for these): missing ) after argument list",
+   "verdictClass": "fail",
+   "features": "SCRIPT ERROR (syntax error; the interpreter reports no line for these): missing ) after argument list No new build. The viewport still shows the previous run.",
+   "result": "-No new build. The viewport still shows the previous run.",
+   "status": "script error",
+   "seconds": 3.171,
+   "designUnchanged": true,
+   "red": true,
+   "noStalePanels": true,
+   "matchedExpected": true
+  },
+  {
+   "name": "runtime error on line 3",
+   "headline": "SCRIPT ERROR (line 3): undefinedThing is not a tool here.",
+   "verdictClass": "fail",
+   "features": "SCRIPT ERROR (line 3): undefinedThing is not a tool here. No new build. The viewport still shows the previous run.",
+   "result": "-No new build. The viewport still shows the previous run.",
+   "status": "script error",
+   "seconds": 2.518,
+   "designUnchanged": true,
+   "red": true,
+   "noStalePanels": true,
+   "matchedExpected": true
+  },
+  {
+   "name": "runaway loop (10 s kill)",
+   "headline": "ERROR: the script took longer than 10 s in the sandbox; the sandbox was restarted",
+   "verdictClass": "fail",
+   "features": "ERROR: the script took longer than 10 s in the sandbox; the sandbox was restarted No new build. The viewport still shows the previous run.",
+   "result": "-No new build. The viewport still shows the previous run.",
+   "status": "error: the script took longer than 10 s in the sandbox; the sandbox was restarted",
+   "seconds": 12.723,
+   "designUnchanged": true,
+   "red": true,
+   "noStalePanels": true,
+   "matchedExpected": true
+  },
+  {
+   "name": "huge pattern count",
+   "headline": "REFUSED BEFORE BUILD: feature pat1 has a count of 100000; this demo builds patterns of 1 to 100 copies (the engine itself allows up to 1000, but this demo repla",
+   "verdictClass": "fail",
+   "features": "REFUSED BEFORE BUILD: feature pat1 has a count of 100000; this demo builds patterns of 1 to 100 copies (the engine itself allows up to 1000, but this demo replays the whole feature list for every feature and a count of 200 already took 35 s, 1000 over 170 s) No new build. The viewport still shows the previous run.",
+   "result": "-No new build. The viewport still shows the previous run.",
+   "status": "refused",
+   "seconds": 2.746,
+   "designUnchanged": true,
+   "red": true,
+   "noStalePanels": true,
+   "matchedExpected": true
+  },
+  {
+   "name": "huge dimension",
+   "headline": "REFUSED BEFORE BUILD: feature box1 has the value 1000000000000; this demo accepts dimensions up to 1,000,000 mm (solidcraft builds a 1,000,000 mm box, refuses 1",
+   "verdictClass": "fail",
+   "features": "REFUSED BEFORE BUILD: feature box1 has the value 1000000000000; this demo accepts dimensions up to 1,000,000 mm (solidcraft builds a 1,000,000 mm box, refuses 10,000,000 and rejects 1e9 outright) No new build. The viewport still shows the previous run.",
+   "result": "-No new build. The viewport still shows the previous run.",
+   "status": "refused",
+   "seconds": 2.665,
+   "designUnchanged": true,
+   "red": true,
+   "noStalePanels": true,
+   "matchedExpected": true
+  },
+  {
+   "name": "tampered doc: doc with unknown kind",
+   "refusedWith": "feature x has the kind 'rm_rf', which is not in the ModelDoc vocabulary",
+   "refused": true
+  },
+  {
+   "name": "tampered doc: count 1e9",
+   "refusedWith": "feature p has a count of 1000000000; this demo builds patterns of 1 to 100 copies (the engine itself allows up to 1000, but this demo replays the whole feature list for every feature and a count of 200 already took 35 s, 1000 over 170 s)",
+   "refused": true
+  },
+  {
+   "name": "tampered doc: value 1e30",
+   "refusedWith": "feature b has the value 1e+30; this demo accepts dimensions up to 1,000,000 mm (solidcraft builds a 1,000,000 mm box, refuses 10,000,000 and rejects 1e9 outright)",
+   "refused": true
+  },
+  {
+   "name": "tampered doc: not a doc",
+   "refusedWith": "the sandbox did not return a ModelDoc",
+   "refused": true
+  },
+  {
+   "name": "tampered doc: 300k chars",
+   "refusedWith": "the document is 300060 characters, more than the 200000 this demo accepts",
+   "refused": true
+  },
+  {
+   "name": "forged reshape-result posted by the page itself is ignored (source check)",
+   "ok": true
+  }
+ ],
+ "manualWork": [
+  {
+   "step": "hand-made cylinder added",
+   "bodies": [
+    "b_box1:11717.304",
+    "Body1:1507.714"
+   ],
+   "changed": true
+  },
+  {
+   "step": "Run with hand work asks first",
+   "shown": true,
+   "txt": "Run will replace the design on screen (2 body(ies), 13225.018 mm3, changed by hand since the last run).Your design is kept in memory so Restore my design can bring it back; closing the tab drops it.\n ",
+   "designBeforeAnswer": [
+    "b_box1:11717.304",
+    "Body1:1507.714"
+   ]
+  },
+  {
+   "step": "Cancel leaves the hand-made design untouched",
+   "unchanged": true
+  },
+  {
+   "step": "Replace and run builds the script result and enables Restore my design",
+   "bodies": [
+    "b_box1:1000.000"
+   ],
+   "restoreEnabled": true
+  },
+  {
+   "step": "Restore my design brings the hand-made design back exactly",
+   "bodies": [
+    "b_box1:11717.304",
+    "Body1:1507.714"
+   ],
+   "same": true
+  }
+ ],
+ "security": []
+}

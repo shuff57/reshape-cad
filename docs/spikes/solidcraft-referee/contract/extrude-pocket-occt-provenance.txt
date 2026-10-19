@@ -1,0 +1,9 @@
+option                 repo occt-build.js        brep-rs    closed form
+plain                           1000.0000      1000.0000           1000
+length2: 4                      1000.0000      1400.0000           1400
+midplane                        1000.0000      1000.0000           1000
+reversed                        1000.0000      1000.0000           1000
+taper: 10                       1000.0000      1394.1089 (see ep-results pt-*)
+direction [1,0,1]               1000.0000      1000.0000           1000
+pocket through (plate 40x30x10, rect 8x6): repo occt-build.js ignores `through`?
+occt-build.js 11904.0000  brep-rs 11760.0000  closed form (cut from z=5 down only)  11760.0000

@@ -1,0 +1,1 @@
+Z-groove-box-2                           PASS     occtV 143951.9396 | tr-occt dV 3.8e-8 dBb 0.0e+0 dCom 1.0e-8 F o/b/t 11/11/11 | brep-occt dV 2.0e-16      | ms 568 cpu 966

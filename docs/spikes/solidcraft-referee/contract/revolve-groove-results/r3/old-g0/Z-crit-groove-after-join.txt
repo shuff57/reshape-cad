@@ -1,0 +1,1 @@
+Z-crit-groove-after-join                 REFUSED  occtV 40275.2178 | tr-occt dV - dBb - dCom - F o/b/t 9/9/- | brep-occt dV 1.8e-16    | TRUCK REFUSED: groove1 (groove): a full-turn ring cut into a round part takes a minute or more here unless its axis is the part's own axis, so it is not built; centre the ring on the axis of the round part.  | ms 2534 cpu 3118

@@ -1,0 +1,1 @@
+X-spin-tube-135-front-offset-neg7        PASS     occtV 10602.8752 | tr-occt dV 4.9e-7 dBb 1.9e-5 dCom 1.1e-5 F o/b/t 6/6/6 | brep-occt dV 7.0e-11  | ANALYTIC 10602.8752 dTruck 4.9e-7 dOcct 7.0e-11 dBrep 8.6e-16    | ms 327 cpu 645

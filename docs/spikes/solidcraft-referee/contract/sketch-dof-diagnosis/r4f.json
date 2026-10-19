@@ -1,0 +1,113 @@
+{
+ "want": 6000,
+ "rows": [
+  {
+   "case": "control: no extra rule",
+   "raw": {
+    "status": "built",
+    "volume": 6000,
+    "relErr": 0
+   },
+   "guard": {
+    "outcome": "built",
+    "stage": "built",
+    "volume": 6000,
+    "relErr": 0,
+    "sentence": null,
+    "problems": null
+   }
+  },
+  {
+   "case": "reference length(3) = 30 (equal to what the others fix)",
+   "raw": {
+    "status": "built",
+    "volume": 6000,
+    "relErr": 0
+   },
+   "guard": {
+    "outcome": "built",
+    "stage": "built",
+    "volume": 6000,
+    "relErr": 0,
+    "sentence": null,
+    "problems": null
+   }
+  },
+  {
+   "case": "reference length(3) = 99 (a value the sketch can NOT have; a reference only measures)",
+   "raw": {
+    "status": "built",
+    "volume": 6000,
+    "relErr": 0
+   },
+   "guard": {
+    "outcome": "built",
+    "stage": "built",
+    "volume": 6000,
+    "relErr": 0,
+    "sentence": null,
+    "problems": null
+   }
+  },
+  {
+   "case": "reference distanceX(1a,1b) = -5 (wrong sign and size, reference)",
+   "raw": {
+    "status": "mapper-refused",
+    "error": "is the SIGNED distanceX -5 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign "
+   },
+   "guard": {
+    "outcome": "built",
+    "stage": "built",
+    "volume": 6000,
+    "relErr": 0,
+    "sentence": null,
+    "problems": null
+   }
+  },
+  {
+   "case": "inactive length(3) = 99 (active:false)",
+   "raw": {
+    "status": "built",
+    "volume": 6000,
+    "relErr": 0
+   },
+   "guard": {
+    "outcome": "built",
+    "stage": "built",
+    "volume": 6000,
+    "relErr": 0,
+    "sentence": null,
+    "problems": null
+   }
+  },
+  {
+   "case": "inactive horizontal(2) (active:false; would collapse the part if it were on)",
+   "raw": {
+    "status": "built",
+    "volume": 6000,
+    "relErr": 0
+   },
+   "guard": {
+    "outcome": "built",
+    "stage": "built",
+    "volume": 6000,
+    "relErr": 0,
+    "sentence": null,
+    "problems": null
+   }
+  },
+  {
+   "case": "driving length(3) = 99 (control: this one must conflict)",
+   "raw": {
+    "status": "refused",
+    "error": "that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k7, k9, k10, k12)"
+   },
+   "guard": {
+    "outcome": "refused",
+    "stage": "preflight:infeasible",
+    "sentence": "The 99 length of line 3 cannot hold together with line 3 staying level, line 4 staying upright and the 30 length of line 1, so the part is not built; remove or change one of them.",
+    "problems": []
+   }
+  }
+ ]
+}

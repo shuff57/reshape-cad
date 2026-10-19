@@ -1,0 +1,21 @@
+{
+ "id": "cross-bore-through",
+ "outcome": "built",
+ "volume": 9174.479552541585,
+ "faces": 4,
+ "bbox": [
+  -9.999999590561206,
+  -9.999763825245505,
+  -15.000000000000025,
+  9.999996231880521,
+  9.999763825245505,
+  15.000000000000009
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "cylinder",
+  "hole"
+ ],
+ "scriptSource": "[{\"command\":\"solid.cylinder\",\"params\":{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":2,\"height\":22,\"base\":[-11,0,-8.881784197001252e-15],\"axis\":\"X\",\"operation\":\"cut\",\"targets\":[\"b_cyl1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

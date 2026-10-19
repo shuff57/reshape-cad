@@ -1,0 +1,1 @@
+sl9-80-postlip-m0.2                      PASS     occtV 35268.5144 | tr-occt dV 1.2e-4 dBb 8.9e-16 dCom 1.5e-6 F o/b/t 7/7/7 | brep-occt dV 0.0e+0      | ms 26202 cpu 26246

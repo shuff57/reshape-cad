@@ -1,0 +1,104 @@
+[
+ {
+  "id": "through-ring-misses",
+  "row": "through",
+  "script": "const t = ring(30, 6); hole(t, { across: 2 });",
+  "note": "ring 30 / tube 6: the centre is empty, the bore touches no material",
+  "featureKinds": [
+   "ring1:torus",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "ring1",
+   "diameter": 2,
+   "depth": 8,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z"
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 2131.8345506353003,
+   "com": [
+    -5.329070518200751e-15,
+    -2.7943795966422723e-15,
+    -2.8977219813137624e-16
+   ],
+   "bbox": [
+    -15.0000001,
+    -15.0000001,
+    -3.0000001,
+    15.0000001,
+    15.0000001,
+    3.0000001
+   ],
+   "faces": 1,
+   "types": {
+    "other": 1
+   },
+   "components": {
+    "other": 1
+   },
+   "bigCylinderComponents": 0,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 2131.8345506353003,
+  "brepRefusals": {
+   "hole1": "hole1 does not touch the part, so it cuts nothing -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole1 does not touch the part, so it cuts nothing -- hole1 is shown without it."
+  },
+  "truckMs": 10926,
+  "translateCpuMs": 11354.63,
+  "loadavg": 15.35,
+  "truckFeatures": [
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.",
+    "guard": "G-ENGINE",
+    "raw": "solid.cylinder: the cut could not be computed reliably: it came out empty. The result was refused rather than kept wrong; where the bodies only touch (faces flush with each other), overlapping them slightly usually helps (refined tolerance 1.693712e-2 mm)"
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 2131.521707040342,
+  "truck": {
+   "refused": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.",
+   "guard": "G-ENGINE",
+   "raw": "solid.cylinder: the cut could not be computed reliably: it came out empty. The result was refused rather than kept wrong; where the bodies only touch (faces flush with each other), overlapping them slightly usually helps (refined tolerance 1.693712e-2 mm)",
+   "firstRefusal": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped."
+  },
+  "verdict": "truck-refused",
+  "ms": 10990,
+  "unguardedTruck": {
+   "refused": "hole1 (hole): solidcraft refused it -- solid.cylinder: the cut could not be computed reliably: it came out empty. The result was refused rather than kept wrong; where the bodies only touch (faces flush with each other), overlapping them slightly usually helps (refined tolerance 1.693712e-2 mm)"
+  }
+ },
+ {
+  "id": "through-ring-offset-hits",
+  "row": "through",
+  "script": "const t = ring(30, 6); hole(t, { across: 2, at: [12, 0] });",
+  "note": "ring 30 / tube 6: ring radius 12, tube radius 3; bore across 2 on the ring centreline",
+  "verdict": "timeout",
+  "timeoutSeconds": 200
+ }
+]

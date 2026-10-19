@@ -1,0 +1,1 @@
+Z-crit-box-front0-270-lift1              PASS     occtV 30616.9160 | tr-occt dV 2.2e-6 dBb 6.1e-8 dCom 4.8e-7 F o/b/t 11/11/11 | brep-occt dV 3.0e-15      | ms 554 cpu 844

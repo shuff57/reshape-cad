@@ -1,0 +1,21 @@
+{
+ "id": "r3-z-edge-0.001",
+ "outcome": "built",
+ "volume": 23999.9999798387,
+ "faces": 7,
+ "bbox": [
+  -20,
+  -15,
+  -10,
+  20,
+  15,
+  10.000000000000002
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "fillet"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":30,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}},{\"command\":\"solid.fillet\",\"params\":{\"edges\":[[0,-15,10]],\"radius\":0.001,\"body\":\"b_box1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

@@ -1,0 +1,122 @@
+[
+ {
+  "slider": 40,
+  "docWidth": 40,
+  "closedForm": 12000,
+  "occt": 12000,
+  "brep": 12000,
+  "sc": 12000,
+  "relErr": 1.516e-16,
+  "warnings": []
+ },
+ {
+  "slider": 30,
+  "docWidth": 30,
+  "closedForm": 9000,
+  "occt": 9000,
+  "brep": 9000,
+  "sc": 9000,
+  "relErr": 2.22e-11,
+  "warnings": []
+ },
+ {
+  "slider": 20,
+  "docWidth": 20,
+  "closedForm": 6000,
+  "occt": 6000,
+  "brep": 6000,
+  "sc": 6000,
+  "relErr": 1.77e-11,
+  "warnings": []
+ },
+ {
+  "slider": 12,
+  "docWidth": 12,
+  "closedForm": 3600,
+  "occt": 3600,
+  "brep": 3600,
+  "sc": 3600,
+  "relErr": 1.036e-11,
+  "warnings": []
+ },
+ {
+  "slider": 10.5,
+  "docWidth": 10.5,
+  "closedForm": 3150,
+  "occt": 3150,
+  "brep": 3150,
+  "sc": 3150,
+  "relErr": 3.354e-12,
+  "warnings": []
+ },
+ {
+  "slider": 10.1,
+  "docWidth": 10.1,
+  "closedForm": 3030,
+  "occt": 3030,
+  "brep": 3030,
+  "sc": 3030,
+  "relErr": 1.168e-10,
+  "warnings": []
+ },
+ {
+  "slider": 10,
+  "docWidth": 40,
+  "closedForm": 3000,
+  "occt": 12000,
+  "brep": 12000,
+  "sc": 12000,
+  "relErr": 3,
+  "warnings": [
+   "edge 1 = 10 cannot hold along with the rules already on this sketch -- the shape is as close as it can get to all of them. Remove one to settle it."
+  ]
+ },
+ {
+  "slider": 9.9,
+  "docWidth": 40,
+  "closedForm": 2970,
+  "occt": 12000,
+  "brep": 12000,
+  "sc": 12000,
+  "relErr": 3.04,
+  "warnings": [
+   "edge 1 = 9.9 cannot hold along with the rules already on this sketch -- the shape is as close as it can get to all of them. Remove one to settle it."
+  ]
+ },
+ {
+  "slider": 8,
+  "docWidth": 40,
+  "closedForm": 2400,
+  "occt": 12000,
+  "brep": 12000,
+  "sc": 12000,
+  "relErr": 4,
+  "warnings": [
+   "edge 1 = 8 cannot hold along with the rules already on this sketch -- the shape is as close as it can get to all of them. Remove one to settle it."
+  ]
+ },
+ {
+  "slider": 5,
+  "docWidth": 40,
+  "closedForm": 1500,
+  "occt": 12000,
+  "brep": 12000,
+  "sc": 12000,
+  "relErr": 7,
+  "warnings": [
+   "edge 1 = 5 cannot hold along with the rules already on this sketch -- the shape is as close as it can get to all of them. Remove one to settle it."
+  ]
+ },
+ {
+  "slider": 2,
+  "docWidth": 40,
+  "closedForm": 600,
+  "occt": 12000,
+  "brep": 12000,
+  "sc": 12000,
+  "relErr": 19,
+  "warnings": [
+   "edge 1 = 2 cannot hold along with the rules already on this sketch -- the shape is as close as it can get to all of them. Remove one to settle it."
+  ]
+ }
+]

@@ -1,0 +1,1 @@
+X-spin-tube-neg-360p5deg-script-allows   FAIL     occtV 39.2699 | tr-occt dV 7.2e+2 dBb 2.0e+1 dCom 4.9e-1 F o/b/t 6/4/4 | brep-occt dV 7.2e+2      | ms 592 cpu 1003

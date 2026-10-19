@@ -1,0 +1,30 @@
+[
+ {
+  "id": "probe-distanceX-start-level",
+  "feats": [
+   "rule:distanceX",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "the two points start level in x, so the side (sign) of the signed distanceX 5 is not carried by the starting geometry"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ }
+]

@@ -1,0 +1,26 @@
+Running as unit: run-p1895994-i1855169.scope; invocation ID: be23e2b2eb214a96bfb3b417ef335f8f
+--- face words on built (non-primitive) shapes: extreme-face semantics
+stepped union: hollow open top           REFUSED: Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 2, so shell1 is shown without it -- hollow the plain shape first, or leave the hollow out.   | OCCT:builds V=7253.9941 BREP:brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.
+    names: op1.face[+z]
+stepped union: hollow open bottom        REFUSED: Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 2, so shell1 is shown without it -- hollow the plain shape first, or leave the hollow out.   | OCCT:builds V=5893.9941 BREP:brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.
+    names: op1.face[-z]
+stepped union: hollow open right         REFUSED: Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 2, so shell1 is shown without it -- hollow the plain shape first, or leave the hollow out.   | OCCT:builds V=7453.9941 BREP:brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.
+    names: op1.face[+x]
+stepped union: round edge(top,right)     REFUSED: round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.   | OCCT:refusals {"round1":"Round 1's edge could not be found -- Round 1 is shown without it."} BREP:refusals {"round1":"3 edges of the part lie between a top face and a right face, so round1 cannot tell which 
+    names: op1.edge[op1.face[+x] ^ op1.face[+z]]
+stepped union: draft face right          PASS[OCCT] V=16000.000000 (OCCT 16000.000000, brep 16000.000000) dVol 2.3e-16 dBbox 5.2e-16 dCOM 2.0e-17 faces occt/truck/brep 11/11/11 | ctl {"refused":"solid.draft: invalid input: no face at [-19.56255668237037, "} 
+    names: op1.face[+x]
+equal-height union: hollow open top (two coplanar tops) PASS[brep-rs (OCCT refused or no-opped a feature)] V=4512.000000 (OCCT 12000.000000, brep 4512.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM null faces occt/truck/brep null/11/11 | ctl {"rej":false} 
+    names: op1.face[+z]
+L-shape (cut): round edge(top,right)     PASS[OCCT] V=8996.778861 (OCCT 8996.780972, brep 8996.780972) dVol 2.3e-7 dBbox 3.6e-16 dCOM 1.1e-7 faces occt/truck/brep 9/9/9 | ctl {"rej":true,"dCom":"3.9e-4"} 
+    names: op1.edge[op1.face[+x] ^ op1.face[+z]]
+plate with through hole: hollow open top (annular) PASS[OCCT] V=4914.097652 (OCCT 4914.123860, brep 4914.123860) dVol 5.3e-6 dBbox 1.1e-15 dCOM 5.8e-7 faces occt/truck/brep 14/14/14 | ctl {"rej":true,"dCom":"5.3e-2"} 
+    names: box1.face[+z]
+plate with blind hole in top: hollow open bottom REFUSED: Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.   | OCCT:builds V=4733.3757 BREP:brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.
+    names: box1.face[-z]
+hole off-centre then round edge(top,front) PASS[OCCT] V=11478.057696 (OCCT 11478.031010, brep 11478.031010) dVol 2.3e-6 dBbox 7.1e-16 dCOM 7.3e-7 faces occt/truck/brep 8/8/8 | ctl {"rej":true,"dCom":"9.7e-4"} 
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]]
+cylinder with hole: round rim (top,side) PASS[OCCT] V=13526.912518 (OCCT 13527.188835, brep 13527.188835) dVol 2.0e-5 dBbox 2.4e-5 dCOM 3.3e-8 faces occt/truck/brep 5/5/5 | ctl {"rej":true,"dCom":"1.4e-3"} 
+    names: cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]
+cylinder hollow open top then round rim  PASS[OCCT] V=4567.619927 (OCCT 4567.651818, brep 4567.651818) dVol 7.0e-6 dBbox 1.8e-7 dCOM 2.6e-8 faces occt/truck/brep 6/6/6 | ctl {"rej":true,"dCom":"1.2e-3"} 
+    names: cyl1.face[+z] ; cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]

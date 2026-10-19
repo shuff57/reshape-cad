@@ -1,0 +1,248 @@
+[
+ {
+  "id": "fzc1-38-boxC-side-flat-135",
+  "src": "const t = box(60, 40, 30); const sk = sketch('side', -0.7); sk.rect(8, 6.2, { at: [17.2, 12.5] }); groove(sk, t, 135);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc1-38-boxC-side-flat-135",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 70818.49626941726,
+    "com": [
+     -0.19686585786291522,
+     -0.1390098021917092,
+     -0.16253232994011632
+    ],
+    "bbox": [
+     -30,
+     -20,
+     -15,
+     30,
+     20,
+     15.000000000000004
+    ],
+    "faces": 13,
+    "area": 11295.31884528125,
+    "types": {
+     "plane": 10,
+     "cylinder": 3
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 3
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 70818.4962696371,
+    "bbox": [
+     -30,
+     -20,
+     -15,
+     30,
+     20,
+     15.000000000000004
+    ],
+    "faces": 13,
+    "dVol": 3.1042142227732308e-12,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 954,
+   "load": [
+    17.7,
+    17.7
+   ],
+   "cpuMs": 1197,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 21.2,
+       "nearest": 15,
+       "bodies": 1
+      },
+      "side": 1,
+      "kernelAngle": -135,
+      "nudgeDeg": null
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 60,
+      "width": 40,
+      "height": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_box1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        -0.7,
+        0,
+        0
+       ],
+       "x_dir": [
+        0,
+        1,
+        0
+       ],
+       "y_dir": [
+        1,
+        0,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        13.2,
+        9.4
+       ],
+       [
+        21.2,
+        9.4
+       ],
+       [
+        21.2,
+        15.6
+       ],
+       [
+        13.2,
+        15.6
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "angle": -135,
+      "operation": "cut",
+      "targets": [
+       "b_box1"
+      ]
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": 0.000004764926666213997,
+    "area": 11295.37266664722,
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 10,
+     "cylinder": 3
+    },
+    "occtComponents": {
+     "plane": 10,
+     "cylinder": 3
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "UNEXPLAINED",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 70818.30369737097,
+    "bbox": [
+     -30,
+     -20,
+     -15,
+     30,
+     20,
+     15.000000725955907
+    ],
+    "com": [
+     -0.1968984801923474,
+     -0.13900513866104908,
+     -0.1625568973522956
+    ],
+    "faces": 13,
+    "kernelFaces": 14,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0000027192337656671106,
+    "dBbox": 4.839706022607969e-8,
+    "dCom": 4.1768612766401645e-7,
+    "tol": 0.0003,
+    "faceKey": "truck-types-a-face-differently-same-count-same-area",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "caseMs": 1097
+ }
+]

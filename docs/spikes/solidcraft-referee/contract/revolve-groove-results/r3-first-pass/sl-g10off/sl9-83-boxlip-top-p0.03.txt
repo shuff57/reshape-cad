@@ -1,0 +1,1 @@
+sl9-83-boxlip-top-p0.03                  FAIL     occtV 64798.3687 | tr-occt dV 3.5e-4 dBb 1.1e-16 dCom 7.2e-5 F o/b/t 12/11/12 | brep-occt dV 4.3e-12      | ms 8261 cpu 9406

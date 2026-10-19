@@ -1,0 +1,14 @@
+turn(sketch)                 | interpreter: turn() needs a shape: turn(shape, [rx, ry, rz]). 
+                              | page: turn() cannot turn a sketch, because a sketch is flat -- pull or spin it into a shape first, then turn that: turn(shape, [rx, ry, rz]).
+turn(plane)                  | interpreter: turn() needs a shape: turn(shape, [rx, ry, rz]). 
+                              | page: turn() cannot turn a plane, because a plane is only a flat reference, not a part -- turn the shape you build on it instead: turn(shape, [rx, ry, rz]).
+move(sketch)                 | interpreter: move() needs a shape: move(shape, [x, y, z]). 
+                              | page: move() cannot move a sketch, because a sketch is flat -- pull or spin it into a shape first, then move that: move(shape, [x, y, z]).
+move(plane)                  | interpreter: move() needs a shape: move(shape, [x, y, z]). 
+                              | page: move() cannot move a plane, because a plane is only a flat reference, not a part -- move the shape you build on it instead: move(shape, [x, y, z]).
+turn(number)                 | interpreter: turn() needs a shape: turn(shape, [rx, ry, rz]). 
+                              | page: turn() needs a shape: turn(shape, [rx, ry, rz]).
+move(number)                 | interpreter: move() needs a shape: move(shape, [x, y, z]). 
+                              | page: move() needs a shape: move(shape, [x, y, z]).
+turn(pulled sketch) control  | interpreter: null 
+                              | page: null

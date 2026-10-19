@@ -1,0 +1,17 @@
+import { runCase } from './runner.mjs';
+const D = Math.PI / 180;
+const Rx = (a) => [[1, 0, 0], [0, Math.cos(a), -Math.sin(a)], [0, Math.sin(a), Math.cos(a)]];
+const Ry = (a) => [[Math.cos(a), 0, Math.sin(a)], [0, 1, 0], [-Math.sin(a), 0, Math.cos(a)]];
+const Rz = (a) => [[Math.cos(a), -Math.sin(a), 0], [Math.sin(a), Math.cos(a), 0], [0, 0, 1]];
+const mul = (A, B) => A.map((r, i) => B[0].map((_, j) => r.reduce((s, _, k) => s + A[i][k] * B[k][j], 0)));
+const app = (R, v) => R.map((r) => r[0] * v[0] + r[1] * v[1] + r[2] * v[2]);
+const a = [30, 40, 50];
+const good = mul(Rz(a[2] * D), mul(Ry(a[1] * D), Rx(a[0] * D)));
+const wrongOrder = mul(Rx(a[0] * D), mul(Ry(a[1] * D), Rz(a[2] * D)));
+const wrongSign = mul(Rz(-a[2] * D), mul(Ry(-a[1] * D), Rx(-a[0] * D)));
+const r = runCase({ script: `const s = box(20, 10, 6);\nturn(s, [${a}]);`, ids: ['box1'] });
+const m = r.measures.box1.bbox;
+const bb = (R) => { const lo = [1e9,1e9,1e9], hi = [-1e9,-1e9,-1e9]; for (const sx of [-1,1]) for (const sy of [-1,1]) for (const sz of [-1,1]) app(R, [sx*10, sy*5, sz*3]).forEach((v,k)=>{lo[k]=Math.min(lo[k],v);hi[k]=Math.max(hi[k],v);}); return [...lo,...hi]; };
+const d = (e) => Math.max(...e.map((v, i) => Math.abs(m[i] - v) / Math.max(1, Math.abs(v))));
+console.log('truck bbox', m.map((v) => +v.toFixed(6)));
+console.log('dBbox vs correct XYZ order', d(bb(good)).toExponential(2), '| vs reversed order (z,y,x)', d(bb(wrongOrder)).toExponential(2), '| vs negated angles', d(bb(wrongSign)).toExponential(2));

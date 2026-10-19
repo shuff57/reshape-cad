@@ -1,0 +1,1 @@
+fzc1-109-post-top-cone-360               PASS     occtV 34283.0220 | tr-occt dV 1.3e-4 dBb 3.1e-12 dCom 2.8e-6 F o/b/t 5/-/5 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- groove1 is shown without it. | ms 24631 cpu 25026

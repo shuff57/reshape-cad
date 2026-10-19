@@ -1,0 +1,1 @@
+Y-spin-negside-45                        PASS     occtV 3534.2917 | tr-occt dV 1.0e-4 dBb 2.5e-16 dCom 2.0e-5 F o/b/t 6/6/6 | brep-occt dV 1.1e-14  | ANALYTIC 3534.2917 dTruck 1.0e-4 dOcct 1.1e-14 dBrep 1.3e-16    | ms 146 cpu 434

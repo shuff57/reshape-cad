@@ -1,0 +1,34 @@
+cases 368 PAGE {
+ "hollow-box EXACT": 61,
+ "hollow-box SILENT-WRONG": 28,
+ "hollow-box REFUSED-OK": 79,
+ "hollow-cyl EXACT": 13,
+ "hollow-cyl SILENT-WRONG": 11,
+ "hollow-cyl REFUSED-OK": 8,
+ "bevel EXACT": 29,
+ "round EXACT": 29,
+ "bevel SILENT-WRONG": 40,
+ "round REFUSED-OK": 55,
+ "bevel REFUSED-OK": 15
+} GUARDED {
+ "hollow-box EXACT": 61,
+ "hollow-box REFUSED-OK": 107,
+ "hollow-cyl EXACT": 13,
+ "hollow-cyl REFUSED-OK": 19,
+ "bevel EXACT": 23,
+ "round EXACT": 29,
+ "bevel REFUSED-AT-EQUALITY": 6,
+ "bevel REFUSED-OK": 55,
+ "round REFUSED-OK": 55
+}
+limit stated in the hollow sentence == independent min(depth, lateral/2): 39 / 39
+example guard sentences: shell1 is not built: a wall of 15 would collapse box1 -- the wall has to be under 15.
+   shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall.
+   shell1 is not built: a wall of 10 would collapse box1 -- the wall has to be under 10.
+   shell1 is not built: a wall of 5 would collapse box1 -- the wall has to be under 5.
+   shell1 is not built: a wall of 10 would collapse box1 -- the wall has to be under 5.
+   shell1 is not built: a wall of 14.5 would collapse box1 -- the wall has to be under 5.
+   shell1 is not built: a wall of 2.5 would collapse box1 -- the wall has to be under 2.5.
+   shell1 is not built: a wall of 3 would collapse box1 -- the wall has to be under 3.
+   shell1 is not built: a wall of 5 would collapse box1 -- the wall has to be under 3.
+   shell1 is not built: a wall of 10 would collapse box1 -- the wall has to be under 3.

@@ -1,0 +1,11 @@
+import { createRequire } from 'node:module';
+const sc = createRequire(import.meta.url)(process.env.SOLIDCRAFT_REFEREE_PKG + '/solidcraft_referee.js');
+const base = [{ command: 'sketch.create', params: { name: 's', plane: { origin: [0, 0, 0], x_dir: [1, 0, 0], y_dir: [0, 1, 0] } } }, { command: 'sketch.line', params: { points: [[0, 0], [40, 0], [40, 30], [0, 30]], closed: true } }, { command: 'sketch.finish', params: {} }, { command: 'solid.extrude', params: { distance: 10, sketch: 's', operation: 'new', body_name: 'b' } }];
+const run = (cmds) => { const r = JSON.parse(sc.run(JSON.stringify({ commands: cmds }))); return r.ok ? r.measure.bodies.map((b) => [b.name, b.volume_mm3, b.faces, b.bbox, b.face_types]) : r.failed; };
+const f = (p, r) => ({ command: 'solid.fillet', params: { edges: [p], radius: r, body: 'b' } });
+console.log('r3 then r5 vert', JSON.stringify(run([...base, f([20, 0, 10], 3), f([40, 0, 5], 5)])));
+console.log('r3 then r5 vert (pick z=2)', JSON.stringify(run([...base, f([20, 0, 10], 3), f([40, 0, 2], 5)])));
+console.log('r5 vert alone', JSON.stringify(run([...base, f([40, 0, 5], 5)])));
+console.log('r3 alone', JSON.stringify(run([...base, f([20, 0, 10], 3)])));
+console.log('r5 vert then r3 top', JSON.stringify(run([...base, f([40, 0, 5], 5), f([20, 0, 10], 3)])));
+console.log('simul r3 top/front + r5 vert is not expressible (one radius)');

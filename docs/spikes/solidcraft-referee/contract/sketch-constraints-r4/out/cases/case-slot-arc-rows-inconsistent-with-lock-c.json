@@ -1,0 +1,33 @@
+[
+ {
+  "id": "slot-arc-rows-inconsistent-with-lock-c",
+  "feats": [
+   "rule:lock",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-OTHER-POSE": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-OTHER-POSE",
+      "dv": 0.000040977502715603504,
+      "db": 0.1484661206115322,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 11141.136098946576
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ }
+]

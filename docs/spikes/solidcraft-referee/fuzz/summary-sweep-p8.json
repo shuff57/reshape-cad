@@ -1,0 +1,431 @@
+{
+ "seed": 9,
+ "tol": 0.001,
+ "generated": 474,
+ "bins": {
+  "p7": {
+   "noOracleConeCombined_outcomes_informational_only": {
+    "MATCH": 0,
+    "REFUSED": 0,
+    "WRONG(unverified oracle)": 0,
+    "other": 0
+   },
+   "label": "p7",
+   "classes": {
+    "MATCH": 306,
+    "REFUSED": 120,
+    "WRONG": 48,
+    "TIMEOUT": 0,
+    "ERROR_OTHER": 0,
+    "MISSING": 0
+   },
+   "refusedOpaqueCount": 108,
+   "refusedWithAllGapsClear": 13,
+   "refusalSentences": [
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target ",
+     "count": 45,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 2,
+     "example": "sw-0000",
+     "exampleText": "step 4 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 2 curved faces (cylinder) and the tool has 2 curved fa",
+     "byFamily": {
+      "plate": 45
+     }
+    },
+    {
+     "sentence": "offset: not supported yet: the move is larger than a wall or step is thick (faces would cross)",
+     "count": 28,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 1,
+     "example": "sw-0094",
+     "exampleText": "step 6 (solid.shell): offset: not supported yet: the move is larger than a wall or step is thick (faces would cross)",
+     "byFamily": {
+      "plate": 28
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where t",
+     "count": 17,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "sw-0032",
+     "exampleText": "step 4 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow an",
+     "byFamily": {
+      "plate": 17
+     }
+    },
+    {
+     "sentence": "not supported yet: something stands on the open face (a boss, a rim or a pocket's walls) and the # mm shell would leave part of it free of the rest of the part: every face moves in by the thickness, so nothing is left un",
+     "count": 12,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 10,
+     "example": "sw-0126",
+     "exampleText": "step 6 (solid.shell): not supported yet: something stands on the open face (a boss, a rim or a pocket's walls) and the 0.5000 mm shell would leave part of it free of the rest of the part: every face moves in by the thickness, so nothing is left under it (a thinner shell does not help unless it touch",
+     "byFamily": {
+      "plate": 12
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed",
+     "count": 9,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "sw-0027",
+     "exampleText": "step 4 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: planar boolean: This shell is not oriented and closed.",
+     "byFamily": {
+      "plate": 9
+     }
+    },
+    {
+     "sentence": "lumps: cannot mesh a complete shell boundary",
+     "count": 6,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "sw-0124",
+     "exampleText": "step 6 (solid.shell): lumps: cannot mesh a complete shell boundary",
+     "byFamily": {
+      "plate": 6
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: planar boolean: This shell is not oriented and cl",
+     "count": 3,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "sw-0033",
+     "exampleText": "step 4 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: the oper",
+     "byFamily": {
+      "plate": 3
+     }
+    }
+   ],
+   "wrongIds": [
+    "sw-0003",
+    "sw-0004",
+    "sw-0005",
+    "sw-0016",
+    "sw-0017",
+    "sw-0018",
+    "sw-0034",
+    "sw-0035",
+    "sw-0036",
+    "sw-0037",
+    "sw-0038",
+    "sw-0039",
+    "sw-0149",
+    "sw-0150",
+    "sw-0151",
+    "sw-0152",
+    "sw-0162",
+    "sw-0163",
+    "sw-0164",
+    "sw-0175",
+    "sw-0176",
+    "sw-0177",
+    "sw-0193",
+    "sw-0194",
+    "sw-0195",
+    "sw-0196",
+    "sw-0197",
+    "sw-0198",
+    "sw-0308",
+    "sw-0309",
+    "sw-0310",
+    "sw-0321",
+    "sw-0322",
+    "sw-0323",
+    "sw-0334",
+    "sw-0335",
+    "sw-0336",
+    "sw-0352",
+    "sw-0353",
+    "sw-0354",
+    "sw-0355",
+    "sw-0356",
+    "sw-0357",
+    "sw-0412",
+    "sw-0452",
+    "sw-0453",
+    "sw-0454",
+    "sw-0467"
+   ]
+  },
+  "base": {
+   "noOracleConeCombined_outcomes_informational_only": {
+    "MATCH": 0,
+    "REFUSED": 0,
+    "WRONG(unverified oracle)": 0,
+    "other": 0
+   },
+   "label": "baseline",
+   "classes": {
+    "MATCH": 306,
+    "REFUSED": 94,
+    "WRONG": 74,
+    "TIMEOUT": 0,
+    "ERROR_OTHER": 0,
+    "MISSING": 0
+   },
+   "refusedOpaqueCount": 94,
+   "refusedWithAllGapsClear": 3,
+   "refusalSentences": [
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target ",
+     "count": 45,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 2,
+     "example": "sw-0000",
+     "exampleText": "step 4 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 2 curved faces (cylinder) and the tool has 2 curved fa",
+     "byFamily": {
+      "plate": 45
+     }
+    },
+    {
+     "sentence": "offset: not supported yet: the move is larger than a wall or step is thick (faces would cross)",
+     "count": 34,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 1,
+     "example": "sw-0094",
+     "exampleText": "step 6 (solid.shell): offset: not supported yet: the move is larger than a wall or step is thick (faces would cross)",
+     "byFamily": {
+      "plate": 34
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed",
+     "count": 9,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "sw-0027",
+     "exampleText": "step 4 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: planar boolean: This shell is not oriented and closed.",
+     "byFamily": {
+      "plate": 9
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where t",
+     "count": 3,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "sw-0032",
+     "exampleText": "step 4 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow an",
+     "byFamily": {
+      "plate": 3
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: planar boolean: This shell is not oriented and cl",
+     "count": 3,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "sw-0033",
+     "exampleText": "step 4 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: the oper",
+     "byFamily": {
+      "plate": 3
+     }
+    }
+   ],
+   "wrongIds": [
+    "sw-0003",
+    "sw-0004",
+    "sw-0005",
+    "sw-0016",
+    "sw-0017",
+    "sw-0018",
+    "sw-0034",
+    "sw-0035",
+    "sw-0036",
+    "sw-0037",
+    "sw-0038",
+    "sw-0039",
+    "sw-0120",
+    "sw-0121",
+    "sw-0122",
+    "sw-0123",
+    "sw-0124",
+    "sw-0125",
+    "sw-0126",
+    "sw-0127",
+    "sw-0128",
+    "sw-0129",
+    "sw-0130",
+    "sw-0131",
+    "sw-0132",
+    "sw-0149",
+    "sw-0150",
+    "sw-0151",
+    "sw-0152",
+    "sw-0162",
+    "sw-0163",
+    "sw-0164",
+    "sw-0175",
+    "sw-0176",
+    "sw-0177",
+    "sw-0193",
+    "sw-0194",
+    "sw-0195",
+    "sw-0196",
+    "sw-0197",
+    "sw-0198",
+    "sw-0279",
+    "sw-0280",
+    "sw-0281",
+    "sw-0282",
+    "sw-0283",
+    "sw-0284",
+    "sw-0285",
+    "sw-0286",
+    "sw-0287",
+    "sw-0288",
+    "sw-0289",
+    "sw-0290",
+    "sw-0291",
+    "sw-0308",
+    "sw-0309",
+    "sw-0310",
+    "sw-0321",
+    "sw-0322",
+    "sw-0323",
+    "sw-0334",
+    "sw-0335",
+    "sw-0336",
+    "sw-0352",
+    "sw-0353",
+    "sw-0354",
+    "sw-0355",
+    "sw-0356",
+    "sw-0357",
+    "sw-0412",
+    "sw-0452",
+    "sw-0453",
+    "sw-0454",
+    "sw-0467"
+   ]
+  },
+  "p8": {
+   "noOracleConeCombined_outcomes_informational_only": {
+    "MATCH": 0,
+    "REFUSED": 0,
+    "WRONG(unverified oracle)": 0,
+    "other": 0
+   },
+   "label": "p8final",
+   "classes": {
+    "MATCH": 299,
+    "REFUSED": 175,
+    "WRONG": 0,
+    "TIMEOUT": 0,
+    "ERROR_OTHER": 0,
+    "MISSING": 0
+   },
+   "refusedOpaqueCount": 0,
+   "refusedWithAllGapsClear": 13,
+   "refusalSentences": [
+    {
+     "sentence": "not supported yet: the kernel cannot build this shell yet: its inner wall meets the part's own faces in a way it cannot cut (a feature close to the opening or to a wall); another shell thickness, or opening another face,",
+     "count": 74,
+     "opaque": false,
+     "vague": true,
+     "clearGaps": 2,
+     "example": "sw-0000",
+     "exampleText": "step 4 (solid.shell): not supported yet: the kernel cannot build this shell yet: its inner wall meets the part's own faces in a way it cannot cut (a feature close to the opening or to a wall); another shell thickness, or opening another face, may work",
+     "byFamily": {
+      "plate": 74
+     }
+    },
+    {
+     "sentence": "not supported yet: a floor, wall or ligament near [..] is too thin for a # mm shell: the walls on its two sides would overlap by about # mm (material between two faces needs more than twice the shell thickness, # mm)",
+     "count": 49,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "sw-0003",
+     "exampleText": "step 4 (solid.shell): not supported yet: a floor, wall or ligament near [-20.00, 0.08, 0.50] is too thin for a 0.5000 mm shell: the walls on its two sides would overlap by about 0.448 mm (material between two faces needs more than twice the shell thickness, 1.0000 mm)",
+     "byFamily": {
+      "plate": 49
+     }
+    },
+    {
+     "sentence": "not supported yet: the move is larger than a wall or step is thick (faces would cross)",
+     "count": 28,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 1,
+     "example": "sw-0094",
+     "exampleText": "step 6 (solid.shell): not supported yet: the move is larger than a wall or step is thick (faces would cross)",
+     "byFamily": {
+      "plate": 28
+     }
+    },
+    {
+     "sentence": "not supported yet: something stands on the open face (a boss, a rim or a pocket's walls) and the # mm shell would leave part of it free of the rest of the part: every face moves in by the thickness, so nothing is left un",
+     "count": 10,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 10,
+     "example": "sw-0128",
+     "exampleText": "step 6 (solid.shell): not supported yet: something stands on the open face (a boss, a rim or a pocket's walls) and the 0.5000 mm shell would leave part of it free of the rest of the part: every face moves in by the thickness, so nothing is left under it (a thinner shell does not help unless it touch",
+     "byFamily": {
+      "plate": 10
+     }
+    },
+    {
+     "sentence": "not supported yet: a wall standing on the open face is only # mm thick and the shell is # mm, so its two sides would cross (a wall needs more than twice the shell thickness; use a thinner shell or a thicker wall)",
+     "count": 8,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "sw-0124",
+     "exampleText": "step 6 (solid.shell): not supported yet: a wall standing on the open face is only 0.5500 mm thick and the shell is 0.5000 mm, so its two sides would cross (a wall needs more than twice the shell thickness; use a thinner shell or a thicker wall)",
+     "byFamily": {
+      "plate": 8
+     }
+    },
+    {
+     "sentence": "not supported yet: a ligament between a hole and a wall (or another hole) is only # mm thick; its two offset sides would cross (it needs at least twice the shell thickness, # mm)",
+     "count": 6,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "sw-0019",
+     "exampleText": "step 6 (solid.shell): not supported yet: a ligament between a hole and a wall (or another hole) is only 0.9000 mm thick; its two offset sides would cross (it needs at least twice the shell thickness, 1.0000 mm)",
+     "byFamily": {
+      "plate": 6
+     }
+    }
+   ],
+   "wrongIds": []
+  }
+ },
+ "exclusions": {
+  "noOracleErr": 0,
+  "baseMultiBody": 0,
+  "baseFail": 0,
+  "modelMismatch": 0,
+  "euclidDisagree": 0,
+  "noOracleConeUnchecked": 0,
+  "baseMissing": 0,
+  "modelMismatchFamilies": {}
+ },
+ "eligible": 474,
+ "euclidChecked": 132,
+ "euclidRelDelta": {
+  "n": 132,
+  "min": 0.0002938333563839056,
+  "median": 0.0010293529317097424,
+  "max": 0.005163799923200322
+ }
+}

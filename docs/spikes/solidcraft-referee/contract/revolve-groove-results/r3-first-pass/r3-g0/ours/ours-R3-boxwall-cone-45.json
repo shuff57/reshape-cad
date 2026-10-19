@@ -1,0 +1,22 @@
+{
+ "id": "R3-boxwall-cone-45",
+ "outcome": "built",
+ "volume": 70821.86112088543,
+ "faces": 11,
+ "bbox": [
+  -20,
+  -15,
+  0,
+  40,
+  25,
+  30
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "extrude",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-20,-15],[40,-15],[40,25],[-20,25]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":30,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[21,4],[33,4],[21,14]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk2_1\",\"angle\":-45,\"operation\":\"cut\",\"targets\":[\"b_pull1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

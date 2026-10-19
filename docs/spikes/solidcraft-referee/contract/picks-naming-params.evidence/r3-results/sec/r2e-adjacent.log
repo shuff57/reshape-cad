@@ -1,0 +1,16 @@
+round top|front, then round top|right (adjacent)                   REFUSED      SC undefined | built box1,round1 | OCCT 23924.083 {} | BREP 23965.664
+     REFUSED round2 : round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+bevel top|front, then bevel top|right                              REFUSED      SC undefined | built box1,bevel1 | OCCT 23862.667 {} | BREP 23862.667
+     REFUSED bevel2 : bevel2 is not built: bevel1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+round top|front, then bevel top|right                              REFUSED      SC undefined | built box1,round1 | OCCT 23869.475 {} | BREP 23965.664
+     REFUSED bevel1 : bevel1 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+round top|front, then round front|right (vertical, shares corner)  REFUSED      SC undefined | built box1,round1 | OCCT 23924.083 {} | BREP 23965.664
+     REFUSED round2 : round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+round top|front, then round bottom|back (no shared corner)         PASS         SC 23931.282 | built box1,round1,round2 | OCCT 23931.327 {} | BREP 23931.327
+round top|front, then round top|back (parallel, no shared corner)  PASS         SC 23931.282 | built box1,round1,round2 | OCCT 23931.327 {} | BREP 23931.327
+round top|front, then round bottom|front (parallel, no shared corner) PASS         SC 23931.282 | built box1,round1,round2 | OCCT 23931.327 {} | BREP 23931.327
+round([top|front, top|right], 2) list                              REFUSED      SC undefined | built box1,round1 | OCCT 23924.083 {} | BREP 23965.664
+     REFUSED round2 : round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+round of whole box round(b,2)                                      PASS         SC 23701.502 | built box1 | OCCT 23701.687 {} | BREP 23701.687
+round(b.edge(top,front)) at origin box then top|right              REFUSED      SC undefined | built box1,round1 | OCCT 23924.083 {} | BREP 23965.664
+     REFUSED round2 : round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.

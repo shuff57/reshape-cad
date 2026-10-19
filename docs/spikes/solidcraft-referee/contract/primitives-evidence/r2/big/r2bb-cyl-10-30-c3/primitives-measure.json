@@ -1,0 +1,137 @@
+[
+ {
+  "id": "r2bb-cyl-10-30-c3",
+  "feature": "cyl.corner.bbox",
+  "note": "",
+  "script": "cylinder(10, 30, { corner: 3 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 5,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 3
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 2251.104030588872,
+  "occt": {
+   "volume": 2251.104030588872,
+   "com": [
+    -1.1426236497736196e-15,
+    -4.922162810403961e-16,
+    1.7763568394002505e-15
+   ],
+   "bbox": [
+    -5,
+    -5,
+    -15,
+    5.0000001,
+    5,
+    15
+   ],
+   "faces": 5,
+   "types": {
+    "cylinder": 1,
+    "torus": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 2251.1040305888714,
+   "bbox": [
+    -5,
+    -5,
+    -15,
+    5,
+    5,
+    15
+   ],
+   "faces": 5,
+   "dVol": 2.0201081100970072e-16,
+   "dBbox": 3.015113451491947e-9
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 5,
+     "height": 30,
+     "base": [
+      0,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       5,
+       0,
+       15
+      ],
+      [
+       5,
+       0,
+       -15
+      ]
+     ],
+     "radius": 3,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 2250.8732425755215,
+   "bbox": [
+    -4.999922781066191,
+    -4.999865668703215,
+    -15.000000000000018,
+    4.999922781066191,
+    4.999865668703214,
+    15.000000000000007
+   ],
+   "com": [
+    3.2156684191276495e-15,
+    2.289690602101363e-15,
+    -1.2930017517748873e-14
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "cylinder": 1,
+    "other": 2,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00010252214478508485,
+   "dBboxOcct": 0.000004050240987589231,
+   "dComOcct": 4.4341387022569417e-16,
+   "facesOcct": 5,
+   "typesOcct": {
+    "cylinder": 1,
+    "torus": 2,
+    "plane": 2
+   },
+   "dVolAnalytic": 0.00010252214478508485,
+   "dVolBrep": 0.00010252214478488286,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 5155
+ }
+]

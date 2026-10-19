@@ -1,0 +1,152 @@
+r3-h-fillet-r2                     PASS     OCCTvol 23400.1770 brep 7.2e-13 truck dV 2.0e-6 dCom 2.4e-7 faces O/B/T 8/8/8  closed dT 2.0e-6 dO 7.2e-13  
+r3-h-ref-r2                        PASS     OCCTvol 23400.1770 brep 7.2e-13 truck dV 2.0e-6 dCom 2.4e-7 faces O/B/T 8/8/8  closed dT 2.0e-6 dO 7.2e-13  
+r3-h-fillet-r3                     PASS     OCCTvol 23357.2567 brep 3.3e-3 truck dV 1.9e-6 dCom 3.5e-7 faces O/B/T 8/7/8  closed dT 1.9e-6 dO 9.7e-13  
+r3-h-ref-r3                        PASS     OCCTvol 23357.2567 brep REFUSED truck dV 1.9e-6 dCom 3.5e-7 faces O/B/T 8/-/8  closed dT 1.9e-6 dO 8.5e-13  
+r3-h-fillet-r3.5                   FAIL     OCCTvol 23329.5674 brep 4.5e-3 truck dV 1.4e-4 dCom 2.3e-5 faces O/B/T 10/7/8 FACE? closed dT 1.5e-4 dO 8.6e-6  
+r3-h-ref-r3.5                      PASS     OCCTvol 23329.3677 brep REFUSED truck dV 2.4e-6 dCom 2.7e-7 faces O/B/T 8/-/8  closed dT 2.4e-6 dO 7.4e-13  
+r3-h-fillet-r4                     FAIL     OCCTvol 23298.2581 brep 5.8e-3 truck dV 3.1e-4 dCom 4.7e-5 faces O/B/T 10/7/8 FACE? closed dT 3.5e-4 dO 4.3e-5  
+r3-h-ref-r4                        PASS     OCCTvol 23297.2595 brep REFUSED truck dV 1.7e-6 dCom 3.4e-7 faces O/B/T 8/-/8  closed dT 1.7e-6 dO 7.5e-12  
+r3-h-fillet-r5                     FAIL     OCCTvol 23225.3174 brep 9.0e-3 truck dV 9.0e-4 dCom 1.2e-4 faces O/B/T 10/7/8 FACE? closed dT 1.1e-3 dO 2.0e-4  
+r3-h-ref-r5                        PASS     OCCTvol 23220.7238 brep REFUSED truck dV 3.7e-7 dCom 5.1e-7 faces O/B/T 8/-/8  closed dT 3.7e-7 dO 2.6e-12  
+r3-h-fillet-r6                     FAIL     OCCTvol 23434.5133 brep 1.6e-16 truck dV 1.1e-2 dCom 3.1e-3 faces O/B/T 7/7/8  closed dT 1.9e-3 dO 1.3e-2  
+r3-h-ref-r6                        PASS     OCCTvol 23128.2275 brep REFUSED truck dV 1.2e-6 dCom 6.9e-7 faces O/B/T 8/-/8  closed dT 1.2e-6 dO 7.1e-12  
+r3-h-fillet-r7                     FAIL     OCCTvol 23434.5133 brep 1.6e-16 truck dV 1.5e-2 dCom 4.2e-3 faces O/B/T 7/7/8  closed dT 2.6e-3 dO 1.8e-2  
+r3-h-ref-r7                        PASS     OCCTvol 23020.1670 brep REFUSED truck dV 3.0e-6 dCom 9.6e-7 faces O/B/T 8/-/8  closed dT 3.0e-6 dO 2.3e-11  
+r3-h-bevel-d3                      PASS     OCCTvol 23254.5133 brep 7.7e-3 truck dV 4.0e-6 dCom 7.0e-7 faces O/B/T 8/7/8  closed dT 4.0e-6 dO 1.6e-16  
+r3-h-bevelref-d3                   PASS     OCCTvol 23254.5133 brep REFUSED truck dV 4.0e-6 dCom 7.0e-7 faces O/B/T 8/-/8  closed dT 4.0e-6 dO 0.0e+0  
+r3-h-bevel-d4                      FAIL     OCCTvol 23434.5133 brep 1.6e-16 truck dV 1.4e-2 dCom 3.6e-3 faces O/B/T 7/7/8 FACE? closed dT 3.1e-6 dO 1.4e-2  
+r3-h-bevelref-d4                   PASS     OCCTvol 23115.7719 brep REFUSED truck dV 3.1e-6 dCom 5.4e-7 faces O/B/T 8/-/8  closed dT 3.1e-6 dO 1.7e-12  
+r3-h-bevel-d5                      FAIL     OCCTvol 23434.5133 brep 1.6e-16 truck dV 2.1e-2 dCom 5.4e-3 faces O/B/T 7/7/8 FACE? closed dT 3.1e-6 dO 2.1e-2  
+r3-h-bevelref-d5                   PASS     OCCTvol 22941.3481 brep REFUSED truck dV 3.0e-6 dCom 5.2e-7 faces O/B/T 8/-/8  closed dT 3.0e-6 dO 3.9e-11  
+r3-h-bevel-d6                      FAIL     OCCTvol 23434.5133 brep 1.6e-16 truck dV 3.0e-2 dCom 7.6e-3 faces O/B/T 7/7/8 FACE? closed dT 3.0e-6 dO 3.1e-2  
+r3-h-bevelref-d6                   PASS     OCCTvol 22732.5133 brep REFUSED truck dV 2.9e-6 dCom 5.2e-7 faces O/B/T 8/-/8  closed dT 2.9e-6 dO 3.4e-11  
+r3-h-bevel-d7                      FAIL     OCCTvol 23434.5133 brep 1.6e-16 truck dV 4.0e-2 dCom 1.0e-2 faces O/B/T 7/7/8 FACE? closed dT 3.0e-6 dO 4.2e-2  
+r3-h-bevelref-d7                   PASS     OCCTvol 22489.6224 brep REFUSED truck dV 2.9e-6 dCom 5.2e-7 faces O/B/T 8/-/8  closed dT 2.9e-6 dO 7.2e-11  
+r3-hp-y6                           PASS     OCCTvol 23297.1681 brep 1.2e-12 truck dV 1.9e-6 dCom 3.5e-7 faces O/B/T 8/8/8  closed dT 1.9e-6 dO 1.2e-12  
+r3-hpref-y6                        PASS     OCCTvol 23297.1681 brep 1.2e-12 truck dV 1.9e-6 dCom 3.5e-7 faces O/B/T 8/8/8  closed dT 1.9e-6 dO 1.2e-12  
+r3-hp-y12                          FAIL     OCCTvol 23434.5133 brep REFUSED truck dV 3.0e-3 dCom 1.1e-3 faces O/B/T 9/-/8  closed dT 2.3e-3 dO 5.3e-3  
+r3-hpref-y12                       FAIL     OCCTvol 23309.8954 brep REFUSED truck dV 6.7e-7 dCom 1.4e-7 faces O/B/T 11/-/8 FACE? closed dT 6.7e-7 dO 6.5e-11  
+r3-hp-y12b                         FAIL     OCCTvol 23434.5133 brep REFUSED truck dV 1.9e-2 dCom 5.3e-3 faces O/B/T 9/-/8  closed dT 1.5e-3 dO 2.1e-2  
+r3-hpref-y12b                      PASS     OCCTvol 22944.8333 brep REFUSED truck dV 4.1e-7 dCom 4.0e-7 faces O/B/T 10/-/8  closed dT 4.1e-7 dO 2.6e-10  
+r3-hp-x10                          FAIL     OCCTvol 23225.3174 brep 9.0e-3 truck dV 9.8e-4 dCom 1.3e-4 faces O/B/T 10/7/8 FACE? closed dT 1.2e-3 dO 2.0e-4  
+r3-hpref-x10                       PASS     OCCTvol 23220.7238 brep REFUSED truck dV 3.7e-7 dCom 7.0e-7 faces O/B/T 8/-/8  closed dT 3.7e-7 dO 2.7e-12  
+r3-hp-x17                          FAIL     OCCTvol 23225.3174 brep REFUSED truck dV 9.6e-4 dCom 2.2e-4 faces O/B/T 11/-/8 FACE? closed dT 1.2e-3 dO 2.0e-4  
+r3-hpref-x17                       FAIL     OCCTvol 23220.7238 brep REFUSED truck dV 2.3e-7 dCom 1.2e-6 faces O/B/T 10/-/8 FACE? closed dT 2.3e-7 dO 2.5e-12  
+r3-hp-far                          PASS     OCCTvol 23219.9115 brep 1.4e-12 truck dV 6.3e-7 dCom 8.4e-7 faces O/B/T 8/8/8  closed dT 6.3e-7 dO 1.4e-12  
+r3-hpref-far                       PASS     OCCTvol 23219.9115 brep 1.4e-12 truck dV 6.3e-7 dCom 8.4e-7 faces O/B/T 8/8/8  closed dT 6.3e-7 dO 1.4e-12  
+r3-hp-far-r12                      PASS     OCCTvol 22198.4067 brep 5.6e-2 truck dV 5.6e-6 dCom 1.9e-6 faces O/B/T 8/7/8  closed dT 5.6e-6 dO 2.4e-13  
+r3-hpref-far-r12                   PASS     OCCTvol 22198.4067 brep REFUSED truck dV 5.6e-6 dCom 1.9e-6 faces O/B/T 8/-/8  closed dT 5.6e-6 dO 1.3e-13  
+r3-hp-clear-edge                   PASS     OCCTvol 23357.7708 brep 9.7e-13 truck dV 1.9e-6 dCom 3.5e-7 faces O/B/T 8/8/8  closed dT 1.9e-6 dO 9.7e-13  
+r3-hpref-clear-edge                PASS     OCCTvol 23357.7708 brep 9.7e-13 truck dV 1.9e-6 dCom 3.5e-7 faces O/B/T 8/8/8  closed dT 1.9e-6 dO 9.7e-13  
+r3-hp-touch                        PASS     OCCTvol 23357.2567 brep 3.3e-3 truck dV 1.9e-6 dCom 3.5e-7 faces O/B/T 8/7/8  closed dT 1.9e-6 dO 9.7e-13  
+r3-hpref-touch                     PASS     OCCTvol 23357.2567 brep REFUSED truck dV 1.9e-6 dCom 3.5e-7 faces O/B/T 8/-/8  closed dT 1.9e-6 dO 8.5e-13  
+r3-hb-deep8-r5                     FAIL     OCCTvol 23564.6094 brep 8.9e-3 truck dV 8.8e-4 dCom 1.2e-4 faces O/B/T 11/8/9 FACE?   
+r3-hbref-deep8-r5                  PASS     OCCTvol 23560.0158 brep REFUSED truck dV 1.8e-6 dCom 5.7e-7 faces O/B/T 9/-/9    
+r3-hb-deep3-r5                     FAIL     OCCTvol 23705.9811 brep 8.8e-3 truck dV 8.8e-4 dCom 1.2e-4 faces O/B/T 11/8/9 FACE?   
+r3-hbref-deep3-r5                  PASS     OCCTvol 23701.3874 brep REFUSED truck dV 2.7e-6 dCom 7.2e-7 faces O/B/T 9/-/9    
+r3-hb-deep1-r5                     FAIL     OCCTvol 23762.5297 brep 8.8e-3 truck dV 8.7e-4 dCom 1.2e-4 faces O/B/T 11/8/9 FACE?   
+r3-hbref-deep1-r5                  PASS     OCCTvol 23757.9361 brep REFUSED truck dV 3.1e-6 dCom 7.8e-7 faces O/B/T 9/-/9    
+r3-hb-deep12-r6                    FAIL     OCCTvol 23660.7080 brep 0.0e+0 truck dV 1.1e-2 dCom 3.1e-3 faces O/B/T 8/8/9    
+r3-hbref-deep12-r6                 PASS     OCCTvol 23354.4222 brep REFUSED truck dV 2.6e-6 dCom 7.9e-7 faces O/B/T 9/-/9    
+r3-pk-fillet-r1.5                  PASS     OCCTvol 11740.6858 brep 6.3e-13 truck dV 1.1e-6 dCom 3.1e-7 faces O/B/T 12/12/12  closed dT 1.1e-6 dO 6.3e-13  
+r3-pkref-fillet-r1.5               PASS     OCCTvol 11740.6858 brep 6.3e-13 truck dV 1.1e-6 dCom 3.1e-7 faces O/B/T 12/12/12  closed dT 1.1e-6 dO 6.3e-13  
+r3-pk-fillet-r2                    FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 2.9e-3 dCom 8.5e-4 faces O/B/T 11/11/12 FACE? closed dT 1.9e-6 dO 2.9e-3  
+r3-pkref-fillet-r2                 PASS     OCCTvol 11725.6637 brep REFUSED truck dV 1.9e-6 dCom 5.4e-7 faces O/B/T 12/-/12  closed dT 1.9e-6 dO 7.3e-13  
+r3-pk-fillet-r2.5                  FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 1.9e-2 dCom 4.9e-3 faces O/B/T 11/11/12 FACE? closed dT 1.4e-2 dO 4.6e-3  
+r3-pkref-fillet-r2.5               PASS     OCCTvol 11706.4334 brep 6.0e-13 truck dV 4.7e-6 dCom 1.3e-6 faces O/B/T 12/16/12  closed dT 4.7e-6 dO 6.0e-13  
+r3-pk-fillet-r3                    FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 1.8e-2 dCom 4.6e-3 faces O/B/T 11/11/12 FACE? closed dT 1.1e-2 dO 6.6e-3  
+r3-pkref-fillet-r3                 PASS     OCCTvol 11683.3085 brep 6.0e-13 truck dV 5.9e-6 dCom 1.6e-6 faces O/B/T 12/16/12  closed dT 5.9e-6 dO 6.0e-13  
+r3-pk-fillet-r4                    FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 1.7e-2 dCom 4.5e-3 faces O/B/T 11/11/12 FACE? closed dT 6.0e-3 dO 1.2e-2  
+r3-pkref-fillet-r4                 PASS     OCCTvol 11626.1259 brep 5.5e-13 truck dV 7.1e-6 dCom 2.0e-6 faces O/B/T 12/16/12  closed dT 7.1e-6 dO 5.5e-13  
+r3-pk-fillet-r5                    FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 1.8e-2 dCom 4.9e-3 faces O/B/T 11/11/12 FACE? closed dT 8.4e-4 dO 1.8e-2  
+r3-pkref-fillet-r5                 PASS     OCCTvol 11554.9605 brep 4.1e-13 truck dV 1.1e-5 dCom 3.0e-6 faces O/B/T 12/16/12  closed dT 1.1e-5 dO 4.1e-13  
+r3-pk-bevel-d1.5                   PASS     OCCTvol 11715.0000 brep 3.1e-16 truck dV 3.1e-16 dCom 3.5e-17 faces O/B/T 12/12/12  closed dT 0.0e+0 dO 3.1e-16  
+r3-pkref-bevel-d1.5                PASS     OCCTvol 11715.0000 brep 3.1e-16 truck dV 3.1e-16 dCom 5.2e-17 faces O/B/T 12/12/12  closed dT 0.0e+0 dO 3.1e-16  
+r3-pk-bevel-d2                     FAIL     OCCTvol 11760.0000 brep 6.8e-3 truck dV 6.8e-3 dCom 2.0e-3 faces O/B/T 11/12/12 FACE? closed dT 0.0e+0 dO 6.8e-3  
+r3-pkref-bevel-d2                  PASS     OCCTvol 11680.0000 brep 1.6e-16 truck dV 1.6e-16 dCom 7.0e-17 faces O/B/T 12/12/12  closed dT 0.0e+0 dO 1.6e-16  
+r3-pk-bevel-d3                     FAIL     OCCTvol 11760.0000 brep 1.5e-2 truck dV 1.5e-2 dCom 4.2e-3 faces O/B/T 11/12/12 FACE? closed dT 0.0e+0 dO 1.5e-2  
+r3-pkref-bevel-d3                  PASS     OCCTvol 11585.0000 brep 1.6e-16 truck dV 1.6e-16 dCom 7.0e-17 faces O/B/T 12/12/12  closed dT 0.0e+0 dO 1.6e-16  
+r3-pk-bevel-d4                     FAIL     OCCTvol 11760.0000 brep 2.6e-2 truck dV 2.6e-2 dCom 7.2e-3 faces O/B/T 11/12/12 FACE? closed dT 0.0e+0 dO 2.6e-2  
+r3-pkref-bevel-d4                  PASS     OCCTvol 11460.0000 brep 1.6e-16 truck dV 1.6e-16 dCom 7.0e-17 faces O/B/T 12/12/12  closed dT 0.0e+0 dO 1.6e-16  
+r3-pkpos-y0                        FAIL     OCCTvol 11760.0000 brep 2.5e-3 truck dV 2.5e-3 dCom 7.1e-4 faces O/B/T 10/11/11 FACE? closed dT 2.5e-3 dO 5.0e-3  
+r3-pkpos-y1                        FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 1.2e-2 dCom 3.2e-3 faces O/B/T 11/11/12 FACE? closed dT 6.1e-3 dO 6.2e-3  
+r3-pkpos-y3                        FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 6.6e-3 dCom 1.9e-3 faces O/B/T 11/11/12 FACE? closed dT 4.3e-6 dO 6.6e-3  
+r3-pkpos-y6                        PASS     OCCTvol 11682.7433 brep 1.1e-12 truck dV 4.3e-6 dCom 1.2e-6 faces O/B/T 12/12/12  closed dT 4.3e-6 dO 1.1e-12  
+r3-pkpos-y20                       PASS     OCCTvol 11545.3982 brep 2.5e-12 truck dV 1.2e-5 dCom 3.1e-6 faces O/B/T 12/12/12  closed dT 1.2e-5 dO 2.5e-12  
+r3-pw-bevel-w12-d1                 PASS     OCCTvol 11762.0000 brep 1.7e-4 truck dV 1.5e-16 dCom 3.5e-17 faces O/B/T 12/11/12  closed dT 0.0e+0 dO 1.5e-16  
+r3-pw-bevel-w12-d3                 PASS     OCCTvol 11778.0000 brep 1.5e-3 truck dV 3.1e-16 dCom 7.0e-17 faces O/B/T 12/11/12  closed dT 0.0e+0 dO 3.1e-16  
+r3-pw-bevel-w12-d5                 PASS     OCCTvol 11810.0000 brep 4.2e-3 truck dV 1.5e-16 dCom 0.0e+0 faces O/B/T 12/11/12  closed dT 0.0e+0 dO 1.5e-16  
+r3-pw-bevel-w12-d5.99              PASS     OCCTvol 11831.7602 brep 6.1e-3 truck dV 4.6e-16 dCom 1.4e-16 faces O/B/T 12/11/12  closed dT 4.6e-16 dO 0.0e+0  
+r3-pw-bevel-w12-d6                 REFUSED  OCCTvol 11760.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 11/11/-  closed dT - dO 6.1e-3 REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces 
+r3-pw-bevel-w12-d6.01              FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 2.0e-1 dCom 5.1e-3 faces O/B/T 11/11/12 FACE?   
+r3-pw-bevel-w12-d7                 FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 2.7e-1 dCom 9.4e-3 faces O/B/T 11/11/13 FACE?   
+r3-pw-bevel-w12-d9                 FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 4.2e-1 dCom 2.1e-2 faces O/B/T 11/11/13 FACE?   
+r3-pw-bevel-w12-d10                FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 5.0e-1 dCom 2.9e-2 faces O/B/T 11/11/13 FACE?   
+r3-pw-bevel-w12-d10.01             FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 5.0e-1 dCom 2.9e-2 faces O/B/T 11/11/16 FACE?   
+r3-pw-bevel-w12-d12                FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 6.4e-1 dCom 5.4e-2 faces O/B/T 11/11/15 FACE?   
+r3-pw-bevel-w23-d1                 PASS     OCCTvol 11762.0000 brep 1.7e-4 truck dV 1.5e-16 dCom 1.7e-17 faces O/B/T 12/11/12  closed dT 0.0e+0 dO 1.5e-16  
+r3-pw-bevel-w23-d3                 PASS     OCCTvol 11778.0000 brep 1.5e-3 truck dV 3.1e-16 dCom 7.0e-17 faces O/B/T 12/11/12  closed dT 0.0e+0 dO 3.1e-16  
+r3-pw-bevel-w23-d5                 PASS     OCCTvol 11810.0000 brep 4.2e-3 truck dV 1.5e-16 dCom 1.7e-17 faces O/B/T 12/11/12  closed dT 0.0e+0 dO 1.5e-16  
+r3-pw-bevel-w23-d5.99              PASS     OCCTvol 11831.7602 brep 6.1e-3 truck dV 0.0e+0 dCom 7.0e-17 faces O/B/T 12/11/12  closed dT 1.5e-16 dO 1.5e-16  
+r3-pw-bevel-w23-d6                 REFUSED  OCCTvol 11760.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 11/11/-  closed dT - dO 6.1e-3 REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces 
+r3-pw-bevel-w23-d6.01              FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 2.0e-1 dCom 6.4e-3 faces O/B/T 11/11/12 FACE?   
+r3-pw-bevel-w23-d7                 FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 2.7e-1 dCom 1.1e-2 faces O/B/T 11/11/13 FACE?   
+r3-pw-bevel-w23-d9                 FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 4.2e-1 dCom 2.5e-2 faces O/B/T 11/11/13 FACE?   
+r3-pw-bevel-w23-d10                FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 5.0e-1 dCom 3.5e-2 faces O/B/T 11/11/16 FACE?   
+r3-pw-bevel-w23-d10.01             FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 5.0e-1 dCom 3.5e-2 faces O/B/T 11/11/16 FACE?   
+r3-pw-bevel-w23-d12                FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 6.4e-1 dCom 6.2e-2 faces O/B/T 11/11/15 FACE?   
+r3-pw-fillet-w12-r1                PASS     OCCTvol 11760.8584 brep 7.3e-5 truck dV 4.8e-8 dCom 4.3e-9 faces O/B/T 12/11/12  closed dT 4.8e-8 dO 2.4e-14  
+r3-pw-fillet-w12-r3                PASS     OCCTvol 11767.7257 brep 6.6e-4 truck dV 4.3e-7 dCom 3.2e-8 faces O/B/T 12/11/12  closed dT 4.3e-7 dO 2.4e-14  
+r3-pw-fillet-w12-r5                PASS     OCCTvol 11781.4602 brep 1.8e-3 truck dV 1.2e-6 dCom 7.2e-8 faces O/B/T 12/11/12  closed dT 1.2e-6 dO 4.0e-14  
+r3-pw-fillet-w12-r5.99             PASS     OCCTvol 11790.7997 brep 2.6e-3 truck dV 1.7e-6 dCom 1.0e-7 faces O/B/T 12/11/12  closed dT 1.7e-6 dO 9.5e-14  
+r3-pw-fillet-w12-r6                FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 2.6e-3 dCom 1.9e-4 faces O/B/T 11/11/11 FACE? closed dT 1.7e-6 dO 2.6e-3  
+r3-pw-fillet-w12-r6.01             REFUSED  OCCTvol 11760.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 11/11/-   REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces 
+r3-pw-fillet-w12-r7                REFUSED  OCCTvol 11760.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 11/11/-   REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces 
+r3-wt-bevel-d3.99                  PASS     OCCTvol 11680.3995 brep 0.0e+0 truck dV 1.6e-16 dCom 7.0e-17 faces O/B/T 12/12/12    
+r3-wt-bevel-d4                     REFUSED  OCCTvol 11760.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 11/11/-   REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces 
+r3-wt-bevel-d4.01                  REFUSED  OCCTvol 11760.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 11/11/-   REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces 
+r3-wt-bevel-d5                     REFUSED  OCCTvol 11760.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 11/11/-   REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces 
+r3-wt-fillet-r3.99                 PASS     OCCTvol 11725.8352 brep 3.0e-13 truck dV 1.9e-6 dCom 1.7e-7 faces O/B/T 12/12/12    
+r3-wt-fillet-r4                    FAIL     OCCTvol 11760.0000 brep 1.5e-16 truck dV 2.9e-3 dCom 2.4e-4 faces O/B/T 11/11/11 FACE?   
+r3-wt-fillet-r4.01                 REFUSED  OCCTvol 11760.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 11/11/-   REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces 
+r3-wt-fillet-r5                    REFUSED  OCCTvol 11760.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 11/11/-   REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces 
+r3-rim-bevel-d1                    REFUSED  OCCTvol 8359.3333 brep 1.3e-3 truck dV - dCom - faces O/B/T 16/15/-   REFUSED: bevel4 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [5, 15, 13.183098861837907]: the nearest edge is 3.183 mm away 
+r3-rim-bevel-d2                    REFUSED  OCCTvol 8234.6667 brep 5.5e-3 truck dV - dCom - faces O/B/T 16/15/-   REFUSED: bevel4 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [5, 15, 13.183098861837907]: the nearest edge is 3.183 mm away 
+r3-rim-bevel-d3                    FAIL     OCCTvol 8022.0000 brep 1.3e-2 truck dV 3.1e-2 dCom 2.9e-3 faces O/B/T 16/15/18 FACE?   
+r3-rim-fillet-r1                   REFUSED  OCCTvol 8382.6401 brep 5.3e-4 truck dV - dCom - faces O/B/T 16/15/-   REFUSED: round4 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [5, 15, 13.183098861837907]: the nearest edge is 3.183 mm away 
+r3-rim-fillet-r2                   REFUSED  OCCTvol 8329.7935 brep 2.2e-3 truck dV - dCom - faces O/B/T 16/15/-   REFUSED: round4 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [5, 15, 13.183098861837907]: the nearest edge is 3.183 mm away 
+r3-rim-fillet-r3                   REFUSED  OCCTvol 8240.3097 brep 5.3e-3 truck dV - dCom - faces O/B/T 16/15/-   REFUSED: round4 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [5, 15, 13.183098861837907]: the nearest edge is 3.183 mm away 
+r3-z-whole-0                       PASS     OCCTvol 24000.0000 brep 1.5e-16 truck dV 1.5e-16 dCom 6.6e-17 faces O/B/T 6/6/6    
+r3-z-whole-0.001                   FAIL     OCCTvol 23999.9999 brep 4.9e-15 truck dV 4.3e-9 dCom 8.1e-12 faces O/B/T 26/26/26 FACE?   
+r3-z-whole-neg2                    OCCT-INVALID OCCT: Rounding box box1 (40x30x20) at radius -2 failed -- the radius is too big for this shape's edges. | brep {"volume":23701.6872295583,"faces":26} | solidcraft {"refused":"box1 (box): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive","first":"box1 (box): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive"}
+r3-z-whole-neg2                    OCCT: Rounding box box1 (40x30x20) at radius -2 failed -- the radius is too big for this shape's edges. OCCTvol undefined brep - truck dV - dCom - faces O/B/T undefined/-/- FACE?   OCCT: Rounding box box1 (40x30x20) at radius -2 failed -- the radius is too big for this shape's edges.
+r3-z-edge-0                        REFUSED  OCCTvol 24000.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 6/6/-   REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -15, 16.366197723675814]: the nearest edge is 6.366 mm away 
+r3-z-edge-neg2                     REFUSED  OCCTvol 24000.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 6/6/-   REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -15, 16.366197723675814]: the nearest edge is 6.366 mm away 
+r3-z-bevel-0                       REFUSED  OCCTvol 24000.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 6/6/-   REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -15, 16.366197723675814]: the nearest edge is 6.366 mm away 
+r3-z-bevel-neg2                    REFUSED  OCCTvol 24000.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 6/6/-   REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -15, 16.366197723675814]: the nearest edge is 6.366 mm away 
+r3-z-edge-0.001                    PASS     OCCTvol 24000.0000 brep 3.0e-16 truck dV 4.8e-10 dCom 1.3e-10 faces O/B/T 7/7/7    
+r3-z-cyl-whole-0                   PASS     OCCTvol 14137.1669 brep 5.1e-16 truck dV 9.6e-5 dCom 1.2e-16 faces O/B/T 3/3/3    
+r3-z-cyl-whole-neg2                OCCT-INVALID OCCT: Rounding cylinder cyl1 (radius 15, height 20) at radius -2 failed -- the radius is too big for this shape's edges. | brep {"volume":13980.1799372449,"faces":5} | solidcraft {"refused":"cyl1 (cylinder): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive","first":"cyl1 (cylinder): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive"}
+r3-z-cyl-whole-neg2                OCCT: Rounding cylinder cyl1 (radius 15, height 20) at radius -2 failed -- the radius is too big for this shape's edges. OCCTvol undefined brep - truck dV - dCom - faces O/B/T undefined/-/- FACE?   OCCT: Rounding cylinder cyl1 (radius 15, height 20) at radius -2 failed -- the radius is too big for this shape's edges.
+r3-half-box-r9.99                  PASS     OCCTvol 17624.9981 brep 1.3e-11 truck dV 1.3e-4 dCom 9.7e-11 faces O/B/T 26/26/26  closed dT 1.3e-4 dO 1.3e-11  
+r3-half-box-r10                    OCCT-INVALID OCCT: Rounding box box1 (40x30x20) at radius 10 failed -- the radius is too big for this shape's edges. | brep {"refused":"Rounding box by 10 would not fit its shortest side -- box1 is shown without it."} | solidcraft {"volume":17611.27429665706,"faces":10,"faceTypes":{"cylinder":4,"plane":2,"sphere":4},"bbox":[-20,-15.000000000000007,-10.000000000000005,20,15.000000000000005,10.000000000000005],"vsClosed":0.0001302330610783434}
+r3-half-box-r10                    OCCT: Rounding box box1 (40x30x20) at radius 10 failed -- the radius is too big for this shape's edges. OCCTvol undefined brep - truck dV - dCom - faces O/B/T undefined/-/- FACE? closed dT - dO Infinity  OCCT: Rounding box box1 (40x30x20) at radius 10 failed -- the radius is too big for this shape's edges.
+r3-half-box-r10.01                 REFUSED  OCCTvol 26356.9379 brep REFUSED truck dV - dCom - faces O/B/T 26/-/-   REFUSED: box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls 
+r3-half-box-r11                    REFUSED  OCCTvol 25410.1755 brep REFUSED truck dV - dCom - faces O/B/T 26/-/-   REFUSED: box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls 
+r3-half-cyl-r9.99                  PASS     OCCTvol 10700.6697 brep 1.7e-16 truck dV 7.7e-5 dCom 5.8e-17 faces O/B/T 5/5/5  closed dT 7.7e-5 dO 1.7e-16  
+r3-half-cyl-r10                    OCCT-INVALID OCCT: Rounding cylinder cyl1 (radius 15, height 20) at radius 10 failed -- the radius is too big for this shape's edges. | brep {"refused":"Rounding cylinder by 10 would not fit its radius or height -- cyl1 is shown without it."} | solidcraft {"volume":10693.56234752843,"faces":3,"faceTypes":{"other":1,"plane":2},"bbox":[-14.99976834319858,-14.999645737850436,-10.000000000000012,14.999768343198584,14.999645737850434,10.000000000000005],"vsClosed":0.0000772727285526738}
+r3-half-cyl-r10                    OCCT: Rounding cylinder cyl1 (radius 15, height 20) at radius 10 failed -- the radius is too big for this shape's edges. OCCTvol undefined brep - truck dV - dCom - faces O/B/T undefined/-/- FACE? closed dT - dO Infinity  OCCT: Rounding cylinder cyl1 (radius 15, height 20) at radius 10 failed -- the radius is too big for this shape's edges.
+r3-half-cyl-r10.01                 REFUSED  OCCTvol 20112.8813 brep REFUSED truck dV - dCom - faces O/B/T 6/-/-   REFUSED: cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls 
+r3-half-cyl-r11                    REFUSED  OCCTvol 19469.0702 brep REFUSED truck dV - dCom - faces O/B/T 6/-/-   REFUSED: cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls 
+r3-bbox-cyl-bevel-14               PASS     OCCTvol 7774.3946 brep 1.2e-16 truck dV 9.6e-6 dCom 1.2e-7 faces O/B/T 4/4/4    
+r3-bbox-cyl-bevel-14.9             PASS     OCCTvol 7139.2683 brep 2.5e-16 truck dV 5.8e-6 dCom 5.3e-8 faces O/B/T 4/4/4    
+r3-bbox-cyl-bevel-14.99            FAIL     OCCTvol 7075.6521 brep 2.6e-16 truck dV 7.2e-5 dCom 1.5e-6 faces O/B/T 4/4/4    
+r3-bbox-cyl-fillet-14              PASS     OCCTvol 10999.3738 brep 1.7e-16 truck dV 1.5e-5 dCom 6.1e-7 faces O/B/T 4/4/4    
+r3-bbox-cyl-fillet-14.9            FAIL     OCCTvol 10643.1554 brep 3.4e-16 truck dV 1.2e-5 dCom 5.0e-7 faces O/B/T 4/4/4 FACE?   
+r3-bbox-cyl-fillet-14.99           FAIL     OCCTvol 10606.9093 brep 1.7e-16 truck dV 9.1e-5 dCom 3.4e-6 faces O/B/T 4/4/4 FACE?   
+r3-k-round1-wall2                  FAIL     OCCTvol 14393.5619 brep 6.5e-1 truck dV 6.5e-1 dCom 3.6e-2 faces O/B/T 7/12/12 FACE?   
+r3-k-round1.99-wall2               FAIL     OCCTvol 14374.5047 brep 6.5e-1 truck dV 6.5e-1 dCom 3.7e-2 faces O/B/T 7/12/12 FACE?   
+r3-k-round2-wall2                  FAIL     OCCTvol 14374.2478 brep REFUSED truck dV 6.5e-1 dCom 3.7e-2 faces O/B/T 7/-/12 FACE?   
+r3-k-round2.01-wall2               FAIL     OCCTvol 14373.9896 brep 6.5e-1 truck dV 6.5e-1 dCom 3.7e-2 faces O/B/T 7/16/14 FACE?   
+r3-k-round3-wall2                  FAIL     OCCTvol 14342.0575 brep REFUSED truck dV 6.5e-1 dCom 3.6e-2 faces O/B/T 7/-/14 FACE?   
+EXIT 0 last: solidcraft run: [{"command":"solid.box","params":{"length":40,"width":30,"height":12,"center":[0,0,0],"body_name":"b_box1"}},{"command":"solid.fillet","params":{"edges":[[20,0,6]],"radius":3,"body":"b_box1"}},{"command":"solid.shell","params":{"faces":[[3.552713678800501e-15,1.7763568394002505e-15,6]],"thickness":2,"body":"b_box1"}}]

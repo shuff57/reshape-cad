@@ -1,0 +1,1 @@
+Z-spin-negside-360                       PASS     occtV 28274.3339 | tr-occt dV 1.6e-4 dBb 1.8e-16 dCom 9.3e-15 F o/b/t 4/4/4 | brep-occt dV 1.3e-16  | ANALYTIC 28274.3339 dTruck 1.6e-4 dOcct 2.6e-16 dBrep 1.3e-16    | ms 436 cpu 772

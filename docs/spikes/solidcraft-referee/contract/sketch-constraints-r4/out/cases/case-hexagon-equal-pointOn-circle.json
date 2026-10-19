@@ -1,0 +1,82 @@
+[
+ {
+  "id": "hexagon-equal-pointOn-circle",
+  "feats": [
+   "rule:pointOnObject",
+   "rule:equal",
+   "hexagon (equal + pointOnObject)",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.4002586957203693e-15,
+      "db": 3.0279226854820447e-12,
+      "bodies": 1,
+      "faces": 8,
+      "volume": 10392.304845413279
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 9.836817337435595e-14,
+      "db": 9.60168600664544e-11,
+      "bodies": 1,
+      "faces": 8,
+      "volume": 10392.304845414286
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.4002586957203693e-15,
+      "db": 1.0635327165631327e-10,
+      "bodies": 1,
+      "faces": 8,
+      "volume": 10392.30484541325
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 2,
+     "REFUSED": 21,
+     "BUILT-RIGHT": 17
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.4999999999876957,
+      "db": 0.42264973073442125,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 5196.152422834502
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "sk has no closed profiles"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 20
+  }
+ }
+]

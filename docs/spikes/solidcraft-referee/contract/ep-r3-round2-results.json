@@ -1,0 +1,6604 @@
+[
+ {
+  "id": "jc-x-edge-top",
+  "feature": "pad = join(base, pull) where the pad only TOUCHES the base along a line or at a point (edge or corner contact) -- refused",
+  "note": "pad x 60..70 on the plane z=20: touches the base along the line x=60, z=20, y 10..50 (the critic's refused-with-raw-text orientation)",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 20); sB.rect(10, 40, { at: [65, 30] }); const pad = join(base, pull(sB, 10));",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 76000,
+   "com": [
+    31.842105263157894,
+    29.999999999999993,
+    10.789473684210524
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    70,
+    60,
+    30
+   ],
+   "faces": 12,
+   "solids": 2
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+  },
+  "shipped": {
+   "ms": 107,
+   "finalId": "op1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "op1",
+     "sentence": "op1 (combine): solidcraft refused it -- solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "op1: {\"command\":\"solid.combine\",\"error\":\"invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap\",\"index\":8}"
+   ],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,10],[70,10],[70,50],[60,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}}]"
+  },
+  "contract": {
+   "ms": 55,
+   "finalId": "op1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "op1",
+     "sentence": "op1 (combine): solidcraft refused it -- solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "op1: {\"command\":\"solid.combine\",\"error\":\"invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap\",\"index\":8}"
+   ],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,10],[70,10],[70,50],[60,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}}]"
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "jc-y-edge-top",
+  "feature": "pad = join(base, pull) where the pad only TOUCHES the base along a line or at a point (edge or corner contact) -- refused",
+  "note": "the same along the other axis: line y=60, z=20, x 10..50",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 20); sB.rect(40, 10, { at: [30, 65] }); const pad = join(base, pull(sB, 10));",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 76000,
+   "com": [
+    30,
+    31.84210526315789,
+    10.789473684210524
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    70,
+    30
+   ],
+   "faces": 12,
+   "solids": 2
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+  },
+  "shipped": {
+   "ms": 39,
+   "finalId": "op1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "op1",
+     "sentence": "op1 (combine): solidcraft refused it -- solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "op1: {\"command\":\"solid.combine\",\"error\":\"invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap\",\"index\":8}"
+   ],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,60],[50,60],[50,70],[10,70]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}}]"
+  },
+  "contract": {
+   "ms": 38,
+   "finalId": "op1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "op1",
+     "sentence": "op1 (combine): solidcraft refused it -- solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "op1: {\"command\":\"solid.combine\",\"error\":\"invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap\",\"index\":8}"
+   ],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,60],[50,60],[50,70],[10,70]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}}]"
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "jc-z-edge",
+  "feature": "pad = join(base, pull) where the pad only TOUCHES the base along a line or at a point (edge or corner contact) -- refused",
+  "note": "pad beside the base, corner to corner: touches along the vertical line (60,60), z 0..20",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 0); sB.rect(10, 10, { at: [65, 65] }); const pad = join(base, pull(sB, 20));",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 20
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 74000,
+   "com": [
+    30.945945945945947,
+    30.945945945945947,
+    10
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    70,
+    70,
+    20
+   ],
+   "faces": 12,
+   "solids": 2
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+  },
+  "shipped": {
+   "ms": 20,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,60],[70,60],[70,70],[60,70]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 74000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     70,
+     70,
+     20
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     30.945945945945947,
+     30.945945945945947,
+     10
+    ],
+    "curved": false,
+    "namedBodyOnly": 74000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 30,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 74000,
+     "devMm3": 0,
+     "tolMm3": 0.00007400000000000001,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,60],[70,60],[70,70],[60,70]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":20}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 74000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     70,
+     70,
+     20
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     30.945945945945947,
+     30.945945945945947,
+     10
+    ],
+    "curved": false,
+    "namedBodyOnly": 74000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "jc-corner-point",
+  "feature": "pad = join(base, pull) where the pad only TOUCHES the base along a line or at a point (edge or corner contact) -- refused",
+  "note": "pad on the top plane z=20 beside the base: touches at the single point (60,60,20)",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 20); sB.rect(10, 10, { at: [65, 65] }); const pad = join(base, pull(sB, 10));",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 73000,
+   "com": [
+    30.47945205479452,
+    30.47945205479452,
+    10.205479452054794
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    70,
+    70,
+    30
+   ],
+   "faces": 12,
+   "solids": 2
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+  },
+  "shipped": {
+   "ms": 24,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,60],[70,60],[70,70],[60,70]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 73000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     70,
+     70,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     30.47945205479452,
+     30.47945205479452,
+     10.205479452054794
+    ],
+    "curved": false,
+    "namedBodyOnly": 73000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 30,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 73000,
+     "devMm3": 0,
+     "tolMm3": 0.000073,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,60],[70,60],[70,70],[60,70]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 73000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     70,
+     70,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     30.47945205479452,
+     30.47945205479452,
+     10.205479452054794
+    ],
+    "curved": false,
+    "namedBodyOnly": 73000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "jc-x-edge-below",
+  "feature": "pad = join(base, pull) where the pad only TOUCHES the base along a line or at a point (edge or corner contact) -- refused",
+  "note": "pad hanging below z=0 and beside the base: line x=60, z=0, y 10..50",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 0); sB.rect(10, 40, { at: [65, 30] }); const pad = join(base, pull(sB, -10));",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": -10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 76000,
+   "com": [
+    31.842105263157894,
+    29.999999999999993,
+    9.210526315789473
+   ],
+   "bbox": [
+    0,
+    0,
+    -10,
+    70,
+    60,
+    20
+   ],
+   "faces": 12,
+   "solids": 2
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+  },
+  "shipped": {
+   "ms": 40,
+   "finalId": "op1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "op1",
+     "sentence": "op1 (combine): solidcraft refused it -- solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "op1: {\"command\":\"solid.combine\",\"error\":\"invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap\",\"index\":8}"
+   ],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,10],[70,10],[70,50],[60,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":-10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}}]"
+  },
+  "contract": {
+   "ms": 40,
+   "finalId": "op1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "op1",
+     "sentence": "op1 (combine): solidcraft refused it -- solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "op1: {\"command\":\"solid.combine\",\"error\":\"invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap\",\"index\":8}"
+   ],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,10],[70,10],[70,50],[60,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10,\"direction\":\"negative\"}}]"
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "jc-corner-point-below",
+  "feature": "pad = join(base, pull) where the pad only TOUCHES the base along a line or at a point (edge or corner contact) -- refused",
+  "note": "pad below the base corner (0,0,0): point contact",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 0); sB.rect(10, 10, { at: [-5, -5] }); const pad = join(base, pull(sB, -10));",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": -10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 73000,
+   "com": [
+    29.52054794520548,
+    29.52054794520548,
+    9.794520547945206
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    60,
+    60,
+    20
+   ],
+   "faces": 12,
+   "solids": 2
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+  },
+  "shipped": {
+   "ms": 26,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-10,-10],[0,-10],[0,0],[-10,0]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":-10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 73000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     -10,
+     -10,
+     -10,
+     60,
+     60,
+     20
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     29.52054794520548,
+     29.52054794520548,
+     9.794520547945206
+    ],
+    "curved": false,
+    "namedBodyOnly": 73000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 32,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 73000,
+     "devMm3": 0,
+     "tolMm3": 0.000073,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-10,-10],[0,-10],[0,0],[-10,0]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10,\"direction\":\"negative\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 73000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     -10,
+     -10,
+     -10,
+     60,
+     60,
+     20
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     29.52054794520548,
+     29.52054794520548,
+     9.794520547945206
+    ],
+    "curved": false,
+    "namedBodyOnly": 73000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "jc-edge-tilted",
+  "feature": "pad = join(base, pull) where the pad only TOUCHES the base along a line or at a point (edge or corner contact) -- refused",
+  "note": "pad pulled with a taper of 10 degrees, still only meeting the base along the top edge",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 20); sB.rect(10, 40, { at: [65, 30] }); const pad = join(base, pull(sB, 10, { taper: 10 }));",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10,
+    "taper": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 76923.08984237665,
+   "com": [
+    32.24000550207047,
+    30.000000000000004,
+    10.98045172968457
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    71.76326990708465,
+    60,
+    30.0000001
+   ],
+   "faces": 12,
+   "solids": 2
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+  },
+  "shipped": {
+   "ms": 4,
+   "finalId": "op1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull2",
+     "sentence": "pull2 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)"
+    },
+    {
+     "id": "op1",
+     "sentence": "op1 (combine): its target pull2 was refused (pull2 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}}]"
+  },
+  "contract": {
+   "ms": 318,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 76923.0898423767,
+     "devMm3": -1.4551915228366852e-11,
+     "tolMm3": 0.0000769230898423767,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,10],[70,10],[70,50],[60,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"taper\":10,\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 76923.08984237669,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     71.76340576411262,
+     60,
+     30.00014675010092
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     32.24001234285752,
+     29.99999586020859,
+     10.980459652438725
+    ],
+    "curved": false,
+    "namedBodyOnly": 76923.08984237669
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 5.675245985900421e-16,
+    "dBbox": 0.000004888336681030309,
+    "dCom": 8.065165204237644e-8,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": false
+   },
+   "vsOcct": {
+    "dVol": 5.675245985900421e-16,
+    "dBbox": 0.000004888336681030309,
+    "dCom": 8.065165204237644e-8,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": false
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "jc-pull-pull-corner",
+  "feature": "pad = join(base, pull) where the pad only TOUCHES the base along a line or at a point (edge or corner contact) -- refused",
+  "note": "join(pull, pull): two squares standing corner to corner share the vertical line x=20, y=20",
+  "script": "const s1 = sketch('top'); s1.rect(20, 20, { at: [10, 10] }); const a = pull(s1, 10); const s2 = sketch('top'); s2.rect(20, 20, { at: [30, 30] }); const b = pull(s2, 10); const pad = join(a, b);",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 7999.999999999997,
+   "com": [
+    20.000000000000004,
+    20.000000000000004,
+    5.000000000000001
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    40,
+    10
+   ],
+   "faces": 12,
+   "solids": 2
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+  },
+  "shipped": {
+   "ms": 19,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[20,0],[20,20],[0,20]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[20,20],[40,20],[40,40],[20,40]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 8000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     40,
+     10
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     20,
+     20,
+     5
+    ],
+    "curved": false,
+    "namedBodyOnly": 8000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 3.410605131648482e-16,
+    "dBbox": 0,
+    "dCom": 6.184480694873352e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 3.410605131648482e-16,
+    "dBbox": 0,
+    "dCom": 6.184480694873352e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 27,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 8000,
+     "devMm3": 0,
+     "tolMm3": 0.000008000000000000001,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[20,0],[20,20],[0,20]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[20,20],[40,20],[40,40],[20,40]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 8000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     40,
+     10
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     20,
+     20,
+     5
+    ],
+    "curved": false,
+    "namedBodyOnly": 8000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 3.410605131648482e-16,
+    "dBbox": 0,
+    "dCom": 6.184480694873352e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 3.410605131648482e-16,
+    "dBbox": 0,
+    "dCom": 6.184480694873352e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "jc-tangent-cylinder",
+  "feature": "pad = join(base, pull) where the pad only TOUCHES the base along a line or at a point (edge or corner contact) -- refused",
+  "note": "a cylinder of d10 along Y whose lowest line rests on the top face of a 60 x 60 x 10 plate: tangent line contact",
+  "script": "const s1 = sketch('top'); s1.rect(60, 60, { at: [30, 30] }); const plate = pull(s1, 10); const s2 = sketch('front', 50); s2.circle(10, { at: [30, 15] }); const rod = pull(s2, 40); const pad = join(plate, rod);",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 40
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 39141.592654168344,
+   "com": [
+    30,
+    30,
+    5.802622565260819
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    20
+   ],
+   "faces": 10,
+   "solids": 2
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+  },
+  "shipped": {
+   "ms": 958,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,50,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[30,15],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":40,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 39141.07082346854,
+    "faces": 9,
+    "shells": 2,
+    "kernelEdges": 18,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     20.000000000000004
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 8
+    },
+    "com": [
+     29.999999999999748,
+     30.000000000000544,
+     5.8024999718670625
+    ],
+    "curved": true,
+    "namedBodyOnly": 39141.07082346854
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0.000013331871914802375,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 0.0000014062426698168714,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0.000013331871914802375,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 0.0000014062426698168714,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "facesVsOcct": "9/10",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 1323,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 39141.07082346854,
+     "devMm3": 0,
+     "tolMm3": 11.742321247040561,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,50,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[30,15],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":40}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 39141.07082346854,
+    "faces": 9,
+    "shells": 2,
+    "kernelEdges": 18,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     20.000000000000004
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 8
+    },
+    "com": [
+     29.999999999999748,
+     30.000000000000544,
+     5.8024999718670625
+    ],
+    "curved": true,
+    "namedBodyOnly": 39141.07082346854
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0.000013331871914802375,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 0.0000014062426698168714,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0.000013331871914802375,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 0.0000014062426698168714,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "facesVsOcct": "9/10",
+   "featureVsScene": 0
+  },
+  "refSource": "occt",
+  "curved": true
+ },
+ {
+  "id": "jcc-face-side",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "control: pad shares part of the face x=60",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 0); sB.rect(10, 40, { at: [65, 30] }); const pad = join(base, pull(sB, 20));",
+  "expect": "build",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 20
+   }
+  ],
+  "analytic": {
+   "volume": 80000,
+   "com": [
+    33.5,
+    30,
+    10
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    70,
+    60,
+    20
+   ]
+  },
+  "occt": {
+   "volume": 79999.99999999997,
+   "com": [
+    33.5,
+    30.00000000000001,
+    10.000000000000005
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    70,
+    60,
+    20
+   ],
+   "faces": 12,
+   "solids": 1,
+   "vsRef": {
+    "dVol": 3.637978807091713e-16,
+    "dBbox": 0,
+    "dCom": 1.129760690339438e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 80000,
+   "bbox": [
+    0,
+    0,
+    0,
+    70,
+    60,
+    20
+   ],
+   "faces": 11,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 19,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,10],[70,10],[70,50],[60,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 80000,
+    "faces": 10,
+    "shells": 1,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     70,
+     60,
+     20
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 10
+    },
+    "com": [
+     33.5,
+     30,
+     10
+    ],
+    "curved": false,
+    "namedBodyOnly": 80000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 3.637978807091714e-16,
+    "dBbox": 0,
+    "dCom": 1.129760690339438e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "10/12",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 25,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 80000,
+     "devMm3": 0,
+     "tolMm3": 0.00008,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,10],[70,10],[70,50],[60,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":20}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 80000,
+    "faces": 10,
+    "shells": 1,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     70,
+     60,
+     20
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 10
+    },
+    "com": [
+     33.5,
+     30,
+     10
+    ],
+    "curved": false,
+    "namedBodyOnly": 80000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 3.637978807091714e-16,
+    "dBbox": 0,
+    "dCom": 1.129760690339438e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "10/12",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "jcc-face-top",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "control: pad stands on the top face",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 20); sB.rect(10, 10, { at: [30, 30] }); const pad = join(base, pull(sB, 10));",
+  "expect": "build",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 73000,
+   "com": [
+    30,
+    30,
+    10.205479452054794
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    30
+   ]
+  },
+  "occt": {
+   "volume": 73000,
+   "com": [
+    30,
+    30,
+    10.20547945205479
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    30
+   ],
+   "faces": 11,
+   "solids": 1,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 3.947459643111668e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 73000,
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    30
+   ],
+   "faces": 11,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 18,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[25,25],[35,25],[35,35],[25,35]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 73000,
+    "faces": 11,
+    "shells": 1,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 11
+    },
+    "com": [
+     30,
+     30,
+     10.205479452054794
+    ],
+    "curved": false,
+    "namedBodyOnly": 73000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 3.947459643111668e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "11/11",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 26,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 73000,
+     "devMm3": 0,
+     "tolMm3": 0.000073,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[25,25],[35,25],[35,35],[25,35]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 73000,
+    "faces": 11,
+    "shells": 1,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 11
+    },
+    "com": [
+     30,
+     30,
+     10.205479452054794
+    ],
+    "curved": false,
+    "namedBodyOnly": 73000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 3.947459643111668e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "11/11",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "jcc-face-top-flush-edge",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "control: pad on the top face with two sides flush with the base edges",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 20); sB.rect(10, 10, { at: [5, 5] }); const pad = join(base, pull(sB, 10));",
+  "expect": "build",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 73000,
+   "com": [
+    29.65753424657534,
+    29.65753424657534,
+    10.205479452054794
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    30
+   ]
+  },
+  "occt": {
+   "volume": 73000.00000000001,
+   "com": [
+    29.65753424657533,
+    29.657534246575338,
+    10.20547945205479
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    30
+   ],
+   "faces": 11,
+   "solids": 1,
+   "vsRef": {
+    "dVol": 1.9934130449817606e-16,
+    "dBbox": 0,
+    "dCom": 1.1842378929335003e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 73000,
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    30
+   ],
+   "faces": 9,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 20,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[10,0],[10,10],[0,10]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 73000,
+    "faces": 9,
+    "shells": 1,
+    "kernelEdges": 21,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 9
+    },
+    "com": [
+     29.65753424657534,
+     29.65753424657534,
+     10.205479452054794
+    ],
+    "curved": false,
+    "namedBodyOnly": 73000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 1.99341304498176e-16,
+    "dBbox": 0,
+    "dCom": 1.1842378929335003e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "9/11",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 27,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 73000,
+     "devMm3": 0,
+     "tolMm3": 0.000073,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[10,0],[10,10],[0,10]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 73000,
+    "faces": 9,
+    "shells": 1,
+    "kernelEdges": 21,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 9
+    },
+    "com": [
+     29.65753424657534,
+     29.65753424657534,
+     10.205479452054794
+    ],
+    "curved": false,
+    "namedBodyOnly": 73000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 1.99341304498176e-16,
+    "dBbox": 0,
+    "dCom": 1.1842378929335003e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "9/11",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "jcc-face-overhang",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "control: pad half over the edge, half on the top face",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 20); sB.rect(20, 20, { at: [60, 30] }); const pad = join(base, pull(sB, 10));",
+  "expect": "build",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 76000,
+   "com": [
+    31.57894736842105,
+    30,
+    10.789473684210526
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    70,
+    60,
+    30
+   ]
+  },
+  "occt": {
+   "volume": 76000.00000000001,
+   "com": [
+    31.57894736842104,
+    29.999999999999993,
+    10.78947368421052
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    70,
+    60,
+    30
+   ],
+   "faces": 12,
+   "solids": 1,
+   "vsRef": {
+    "dVol": 1.914725687943007e-16,
+    "dBbox": 0,
+    "dCom": 1.0993033110567226e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 76000,
+   "bbox": [
+    0,
+    0,
+    0,
+    70,
+    60,
+    30
+   ],
+   "faces": 12,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 20,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[50,20],[70,20],[70,40],[50,40]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 76000,
+    "faces": 12,
+    "shells": 1,
+    "kernelEdges": 28,
+    "bbox": [
+     0,
+     0,
+     0,
+     70,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     31.57894736842105,
+     30,
+     10.789473684210524
+    ],
+    "curved": false,
+    "namedBodyOnly": 76000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.8321721850945378e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 1.9147256879430064e-16,
+    "dBbox": 0,
+    "dCom": 1.0993033110567226e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 26,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 76000,
+     "devMm3": 0,
+     "tolMm3": 0.000076,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[50,20],[70,20],[70,40],[50,40]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 76000,
+    "faces": 12,
+    "shells": 1,
+    "kernelEdges": 28,
+    "bbox": [
+     0,
+     0,
+     0,
+     70,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     31.57894736842105,
+     30,
+     10.789473684210524
+    ],
+    "curved": false,
+    "namedBodyOnly": 76000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.8321721850945378e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 1.9147256879430064e-16,
+    "dBbox": 0,
+    "dCom": 1.0993033110567226e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "jcc-overlap-corner",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "control: pad overlapping the base corner by a volume",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 10); sB.rect(20, 20, { at: [60, 60] }); const pad = join(base, pull(sB, 10));",
+  "expect": "build",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 75000
+  },
+  "occt": {
+   "volume": 75000.00000000003,
+   "com": [
+    31.266666666666662,
+    31.266666666666662,
+    10.199999999999987
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    70,
+    70,
+    20
+   ],
+   "faces": 13,
+   "solids": 1,
+   "vsRef": {
+    "dVol": 3.880510727564494e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 75000,
+   "bbox": [
+    0,
+    0,
+    0,
+    70,
+    70,
+    20
+   ],
+   "faces": 12,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 17,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[50,50],[70,50],[70,70],[50,70]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 75000,
+    "faces": 11,
+    "shells": 1,
+    "kernelEdges": 27,
+    "bbox": [
+     0,
+     0,
+     0,
+     70,
+     70,
+     20
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 11
+    },
+    "com": [
+     31.266666666666666,
+     31.266666666666666,
+     10.2
+    ],
+    "curved": false,
+    "namedBodyOnly": 75000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.2311987519873782e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 3.8805107275644923e-16,
+    "dBbox": 0,
+    "dCom": 1.2311987519873782e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "11/13",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 24,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 75000,
+     "devMm3": 0,
+     "tolMm3": 0.00007500000000000001,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[50,50],[70,50],[70,70],[50,70]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 75000,
+    "faces": 11,
+    "shells": 1,
+    "kernelEdges": 27,
+    "bbox": [
+     0,
+     0,
+     0,
+     70,
+     70,
+     20
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 11
+    },
+    "com": [
+     31.266666666666666,
+     31.266666666666666,
+     10.2
+    ],
+    "curved": false,
+    "namedBodyOnly": 75000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.2311987519873782e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 3.8805107275644923e-16,
+    "dBbox": 0,
+    "dCom": 1.2311987519873782e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "11/13",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic(volume)+occt",
+  "curved": false
+ },
+ {
+  "id": "jcc-gap-line",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "control: a 1 mm gap, two separate pieces (a disjoint join is allowed)",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 20); sB.rect(10, 40, { at: [66, 30] }); const pad = join(base, pull(sB, 10));",
+  "expect": "build",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 76000,
+   "com": [
+    31.894736842105264,
+    30,
+    10.789473684210526
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    71,
+    60,
+    30
+   ]
+  },
+  "occt": {
+   "volume": 76000.00000000003,
+   "com": [
+    31.894736842105246,
+    29.99999999999999,
+    10.789473684210519
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    71,
+    60,
+    30
+   ],
+   "faces": 12,
+   "solids": 2,
+   "vsRef": {
+    "dVol": 3.829451375886014e-16,
+    "dBbox": 0,
+    "dCom": 1.8185835758899405e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 76000,
+   "bbox": [
+    0,
+    0,
+    0,
+    71,
+    60,
+    30
+   ],
+   "faces": 12,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 14,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[61,10],[71,10],[71,50],[61,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 76000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     71,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     31.894736842105264,
+     30,
+     10.789473684210526
+    ],
+    "curved": false,
+    "namedBodyOnly": 76000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 3.8294513758860124e-16,
+    "dBbox": 0,
+    "dCom": 1.8185835758899405e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 21,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 76000,
+     "devMm3": 0,
+     "tolMm3": 0.000076,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[61,10],[71,10],[71,50],[61,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 76000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     71,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     31.894736842105264,
+     30,
+     10.789473684210526
+    ],
+    "curved": false,
+    "namedBodyOnly": 76000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 3.8294513758860124e-16,
+    "dBbox": 0,
+    "dCom": 1.8185835758899405e-16,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "jcc-gap-corner",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "control: a 1 mm gap in every direction, two separate pieces",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 21); sB.rect(10, 10, { at: [66, 66] }); const pad = join(base, pull(sB, 10));",
+  "expect": "build",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 73000,
+   "com": [
+    30.493150684931507,
+    30.493150684931507,
+    10.219178082191782
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    71,
+    71,
+    31
+   ]
+  },
+  "occt": {
+   "volume": 73000.00000000001,
+   "com": [
+    30.4931506849315,
+    30.4931506849315,
+    10.21917808219178
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    71,
+    71,
+    31
+   ],
+   "faces": 12,
+   "solids": 2,
+   "vsRef": {
+    "dVol": 1.9934130449817606e-16,
+    "dBbox": 0,
+    "dCom": 6.761556287196393e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 73000,
+   "bbox": [
+    0,
+    0,
+    0,
+    71,
+    71,
+    31
+   ],
+   "faces": 12,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 14,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,21],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[61,61],[71,61],[71,71],[61,71]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 73000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     71,
+     71,
+     31
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     30.493150684931507,
+     30.493150684931507,
+     10.219178082191782
+    ],
+    "curved": false,
+    "namedBodyOnly": 73000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 1.99341304498176e-16,
+    "dBbox": 0,
+    "dCom": 6.761556287196393e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 20,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 73000,
+     "devMm3": 0,
+     "tolMm3": 0.000073,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,21],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[61,61],[71,61],[71,71],[61,71]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 73000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     71,
+     71,
+     31
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     30.493150684931507,
+     30.493150684931507,
+     10.219178082191782
+    ],
+    "curved": false,
+    "namedBodyOnly": 73000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 1.99341304498176e-16,
+    "dBbox": 0,
+    "dCom": 6.761556287196393e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "jcc-pull-pull-face",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "control: join(pull, pull) sharing a face",
+  "script": "const s1 = sketch('top'); s1.rect(20, 20, { at: [10, 10] }); const a = pull(s1, 10); const s2 = sketch('top'); s2.rect(20, 20, { at: [30, 10] }); const b = pull(s2, 10); const pad = join(a, b);",
+  "expect": "build",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 8000,
+   "com": [
+    20,
+    10,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    20,
+    10
+   ]
+  },
+  "occt": {
+   "volume": 7999.999999999998,
+   "com": [
+    19.999999999999996,
+    9.999999999999998,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    20,
+    10
+   ],
+   "faces": 10,
+   "solids": 1,
+   "vsRef": {
+    "dVol": 2.2737367544323206e-16,
+    "dBbox": 0,
+    "dCom": 7.752656836003964e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 7999.999999999999,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    20,
+    10
+   ],
+   "faces": 7,
+   "vsRef": {
+    "dVol": 1.1368683772161603e-16,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 13,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[20,0],[20,20],[0,20]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[20,0],[40,0],[40,20],[20,20]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 8000,
+    "faces": 6,
+    "shells": 1,
+    "kernelEdges": 12,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20,
+     10
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 6
+    },
+    "com": [
+     20,
+     10,
+     5
+    ],
+    "curved": false,
+    "namedBodyOnly": 8000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 7.752656836003964e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 1.1368683772161603e-16,
+    "dBbox": 0
+   },
+   "facesVsOcct": "6/10",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 20,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 8000,
+     "devMm3": 0,
+     "tolMm3": 0.000008000000000000001,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[20,0],[20,20],[0,20]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[20,0],[40,0],[40,20],[20,20]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 8000,
+    "faces": 6,
+    "shells": 1,
+    "kernelEdges": 12,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20,
+     10
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 6
+    },
+    "com": [
+     20,
+     10,
+     5
+    ],
+    "curved": false,
+    "namedBodyOnly": 8000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 7.752656836003964e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 1.1368683772161603e-16,
+    "dBbox": 0
+   },
+   "facesVsOcct": "6/10",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "jcc-cyl-sunk",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "control: the same rod sunk 1 mm into the plate",
+  "script": "const s1 = sketch('top'); s1.rect(60, 60, { at: [30, 30] }); const plate = pull(s1, 10); const s2 = sketch('front', 50); s2.circle(10, { at: [30, 14] }); const rod = pull(s2, 40); const pad = join(plate, rod);",
+  "expect": "build",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 40
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 38978.09154528372,
+   "com": [
+    29.999999999999996,
+    29.99999999999999,
+    5.70611007218785
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    19
+   ],
+   "faces": 10,
+   "solids": 1
+  },
+  "brep": {
+   "volume": 38978.0915447965,
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    19
+   ],
+   "faces": 9,
+   "vsRef": {
+    "dVol": 1.2499841074890119e-11,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 549,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,50,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[30,14],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":40,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 38977.70075603286,
+    "faces": 9,
+    "shells": 1,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     19.000000000000007
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 8
+    },
+    "com": [
+     29.999999999688736,
+     29.999999999867732,
+     5.706014568033522
+    ],
+    "curved": true,
+    "namedBodyOnly": 38977.70075603286
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0.000010025869286366832,
+    "dBbox": 3.739698609263685e-16,
+    "dCom": 0.0000010983294894941138,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0.000010025869286366832,
+    "dBbox": 3.739698609263685e-16,
+    "dCom": 0.0000010983294894941138,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0.00001002585678665108,
+    "dBbox": 3.739698609263685e-16
+   },
+   "facesVsOcct": "9/10",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 1024,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 38977.700756032864,
+     "devMm3": -7.275957614183426e-12,
+     "tolMm3": 11.693310226809857,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,50,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[30,14],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":40}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 38977.70075603286,
+    "faces": 9,
+    "shells": 1,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     19.000000000000007
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 8
+    },
+    "com": [
+     29.999999999688736,
+     29.999999999867732,
+     5.706014568033522
+    ],
+    "curved": true,
+    "namedBodyOnly": 38977.70075603286
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0.000010025869286366832,
+    "dBbox": 3.739698609263685e-16,
+    "dCom": 0.0000010983294894941138,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0.000010025869286366832,
+    "dBbox": 3.739698609263685e-16,
+    "dCom": 0.0000010983294894941138,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0.00001002585678665108,
+    "dBbox": 3.739698609263685e-16
+   },
+   "facesVsOcct": "9/10",
+   "featureVsScene": 0
+  },
+  "refSource": "occt",
+  "curved": true
+ },
+ {
+  "id": "jcc-gap-edge-1e-3",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "control: a 0.001 mm gap along the edge: apart, two pieces",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 20); sB.rect(10, 40, { at: [65.001, 30] }); const pad = join(base, pull(sB, 10));",
+  "expect": "build",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 76000,
+   "com": [
+    31.842157894736843,
+    30,
+    10.789473684210527
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    70.001,
+    60,
+    30
+   ]
+  },
+  "occt": {
+   "volume": 76000.00000000001,
+   "com": [
+    31.842157894736836,
+    29.999999999999993,
+    10.78947368421052
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    70.001,
+    60,
+    30
+   ],
+   "faces": 12,
+   "solids": 2,
+   "vsRef": {
+    "dVol": 1.914725687943007e-16,
+    "dBbox": 0,
+    "dCom": 7.328634165256263e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 76000,
+   "bbox": [
+    0,
+    0,
+    0,
+    70.001,
+    60,
+    30
+   ],
+   "faces": 12,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 17,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60.001000000000005,10],[70.001,10],[70.001,50],[60.001000000000005,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 76000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     70.001,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     31.842157894736843,
+     30,
+     10.789473684210526
+    ],
+    "curved": false,
+    "namedBodyOnly": 76000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.8321585413140658e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 1.9147256879430064e-16,
+    "dBbox": 0,
+    "dCom": 7.328634165256263e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 26,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 76000,
+     "devMm3": 0,
+     "tolMm3": 0.000076,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60.001000000000005,10],[70.001,10],[70.001,50],[60.001000000000005,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 76000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     70.001,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     31.842157894736843,
+     30,
+     10.789473684210526
+    ],
+    "curved": false,
+    "namedBodyOnly": 76000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.8321585413140658e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 1.9147256879430064e-16,
+    "dBbox": 0,
+    "dCom": 7.328634165256263e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "jc-gap-edge-1e-7",
+  "feature": "pad = join(base, pull) where the pad only TOUCHES the base along a line or at a point (edge or corner contact) -- refused",
+  "note": "a 1e-7 mm gap along the edge is touching for truck: refused like the exact contact",
+  "script": "const sA = sketch('top'); sA.rect(60, 60, { at: [30, 30] }); const base = pull(sA, 20); const sB = sketch('top', 20); sB.rect(10, 40, { at: [65.0000001, 30] }); const pad = join(base, pull(sB, 10));",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 76000.00000307692,
+   "com": [
+    31.842105269444264,
+    30,
+    10.789473684560067
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    70.0000001,
+    60,
+    30
+   ],
+   "faces": 12,
+   "solids": 2
+  },
+  "brep": {
+   "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  "shipped": {
+   "ms": 19,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60.000000099999994,10],[70.0000001,10],[70.0000001,50],[60.000000099999994,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 76000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     70.0000001,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     31.84210526842105,
+     30,
+     10.789473684210524
+    ],
+    "curved": false,
+    "namedBodyOnly": 76000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 4.048572583450302e-11,
+    "dBbox": 0,
+    "dCom": 1.055364156927876e-11,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 4.048572583450302e-11,
+    "dBbox": 0,
+    "dCom": 1.055364156927876e-11,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 28,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 76000,
+     "devMm3": 0,
+     "tolMm3": 0.000076,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60.000000099999994,10],[70.0000001,10],[70.0000001,50],[60.000000099999994,50]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 76000,
+    "faces": 12,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     70.0000001,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 12
+    },
+    "com": [
+     31.84210526842105,
+     30,
+     10.789473684210524
+    ],
+    "curved": false,
+    "namedBodyOnly": 76000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 4.048572583450302e-11,
+    "dBbox": 0,
+    "dCom": 1.055364156927876e-11,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 4.048572583450302e-11,
+    "dBbox": 0,
+    "dCom": 1.055364156927876e-11,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": "12/12",
+   "featureVsScene": 0
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "jcc-pin-in-bore",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "control, parts that are not blocks and whose boxes overlap: a d8 pin standing in a d10 bore of the plate (1 mm clearance all round) is two separate pieces",
+  "script": "const s1 = sketch('top'); s1.rect(60, 60, { at: [30, 30] }); const plate = pull(s1, 10); const sh = sketch('top', 10); sh.circle(10, { at: [30, 30] }); const hole = pocket(sh, plate, 10, { through: true }); const sp = sketch('top'); sp.circle(8, { at: [30, 30] }); const pin = join(hole, pull(sp, 10));",
+  "expect": "build",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pocket1:pocket",
+   "sk3:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "depth": 10,
+    "through": true
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 35717.25666117692
+  },
+  "occt": {
+   "volume": 35717.25666117691,
+   "com": [
+    30,
+    30.000000000000007,
+    5.000000000000002
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    10
+   ],
+   "faces": 10,
+   "solids": 2,
+   "vsRef": {
+    "dVol": 4.0741973456724463e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 35717.25666117692,
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    10
+   ],
+   "faces": 10,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 1262,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[30,30],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"direction\":\"negative\",\"sketch\":\"sk_sk2_1\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"]}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk3_2\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[30,30],\"diameter\":8}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk3_2\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 35717.280620016405,
+    "faces": 10,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     10.000000000000005
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 8
+    },
+    "com": [
+     30,
+     30.00000000000002,
+     5.000000000000004
+    ],
+    "curved": true,
+    "namedBodyOnly": 35717.280620016405
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 6.70791704711933e-7,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 1.6632547385047838e-16,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 6.70791705119353e-7,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 1.6632547385047838e-16,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 6.70791704711933e-7,
+    "dBbox": 5.329070518200751e-16
+   },
+   "facesVsOcct": "10/10",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 2034,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "pocket1",
+     "check": "cut-consistency",
+     "removedByTool": 785.3095405426598,
+     "devMm3": 0.041834675292193424,
+     "tolMm3": 10.799999999999999,
+     "inconclusive": false
+    },
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 35717.33040007981,
+     "devMm3": -0.04978006340388674,
+     "tolMm3": 10.71518418600492,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[30,30],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"through_all\":true,\"direction\":\"negative\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk3_2\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[30,30],\"diameter\":8}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk3_2\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 35717.280620016405,
+    "faces": 10,
+    "shells": 2,
+    "kernelEdges": 24,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     10.000000000000005
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 8
+    },
+    "com": [
+     30,
+     30.00000000000002,
+     5.000000000000004
+    ],
+    "curved": true,
+    "namedBodyOnly": 35717.280620016405
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 6.70791704711933e-7,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 1.6632547385047838e-16,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 6.70791705119353e-7,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 1.6632547385047838e-16,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 6.70791704711933e-7,
+    "dBbox": 5.329070518200751e-16
+   },
+   "facesVsOcct": "10/10",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic(volume)+occt",
+  "curved": true
+ },
+ {
+  "id": "jc-tangent-rods",
+  "feature": "pad = join(base, pull) where the pad only TOUCHES the base along a line or at a point (edge or corner contact) -- refused",
+  "note": "two d10 rods lying side by side, touching along a line (tangent)",
+  "script": "const s1 = sketch('front', 50); s1.circle(10, { at: [10, 5] }); const a = pull(s1, 40); const s2 = sketch('front', 50); s2.circle(10, { at: [20, 5] }); const b = pull(s2, 40); const pad = join(a, b);",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 40
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 40
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 6283.185308115965,
+   "com": [
+    14.999999999999998,
+    29.999999999999996,
+    5.00000014263277
+   ],
+   "bbox": [
+    5,
+    10,
+    0,
+    25,
+    50,
+    10
+   ],
+   "faces": 8,
+   "solids": 2
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+  },
+  "shipped": {
+   "ms": 1596,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,50,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[10,5],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":40,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,50,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[20,5],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":40,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 6282.141646937086,
+    "faces": 6,
+    "shells": 2,
+    "kernelEdges": 12,
+    "bbox": [
+     5,
+     9.999999999999988,
+     -4.884981308350692e-15,
+     25.000000000000004,
+     50.00000000000003,
+     9.999999999999998
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "com": [
+     14.999999999998407,
+     30.00000000000672,
+     4.999999999999497
+    ],
+    "curved": true,
+    "namedBodyOnly": 6282.141646937086
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0.00016610383550697236,
+    "dBbox": 4.884981308350692e-15,
+    "dCom": 3.1125131759686585e-9,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0.00016610383550697236,
+    "dBbox": 4.884981308350692e-15,
+    "dCom": 3.1125131759686585e-9,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "facesVsOcct": "6/8",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 2079,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 6282.141646937137,
+     "devMm3": -5.093170329928398e-11,
+     "tolMm3": 1.8846424940811257,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,50,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[10,5],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":40}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,50,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[20,5],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":40}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 6282.141646937086,
+    "faces": 6,
+    "shells": 2,
+    "kernelEdges": 12,
+    "bbox": [
+     5,
+     9.999999999999988,
+     -4.884981308350692e-15,
+     25.000000000000004,
+     50.00000000000003,
+     9.999999999999998
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "com": [
+     14.999999999998407,
+     30.00000000000672,
+     4.999999999999497
+    ],
+    "curved": true,
+    "namedBodyOnly": 6282.141646937086
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0.00016610383550697236,
+    "dBbox": 4.884981308350692e-15,
+    "dCom": 3.1125131759686585e-9,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0.00016610383550697236,
+    "dBbox": 4.884981308350692e-15,
+    "dCom": 3.1125131759686585e-9,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "facesVsOcct": "6/8",
+   "featureVsScene": 0
+  },
+  "refSource": "occt",
+  "curved": true
+ },
+ {
+  "id": "jcc-rods-boxes-touch-apart",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "OVER-REFUSAL BY DESIGN: two rods whose bounding boxes share the plane x=15 but whose surfaces are 4.5 mm apart (centres 10 and 7 mm apart in x and z, radius 5): the boxes touch, the rods do not, no shell merges; the conservative rule cannot see the difference and refuses",
+  "script": "const s1 = sketch('front', 50); s1.circle(10, { at: [10, 5] }); const a = pull(s1, 40); const s2 = sketch('front', 50); s2.circle(10, { at: [20, 12] }); const b = pull(s2, 40); const pad = join(a, b);",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 40
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 40
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 6283.185307179587,
+   "com": [
+    15,
+    30,
+    8.5
+   ],
+   "bbox": [
+    5,
+    10,
+    0,
+    25,
+    50,
+    17
+   ],
+   "faces": 6,
+   "solids": 2
+  },
+  "brep": {
+   "volume": 6283.185307179588,
+   "bbox": [
+    5,
+    10,
+    0,
+    25,
+    50,
+    17
+   ],
+   "faces": 6,
+   "vsRef": {
+    "dVol": 1.447505775030507e-16,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 2124,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,50,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[10,5],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":40,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,50,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[20,12],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":40,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 6282.141646937125,
+    "faces": 6,
+    "shells": 2,
+    "kernelEdges": 12,
+    "bbox": [
+     4.999999999999999,
+     9.999999999999991,
+     -1.7763568394002505e-15,
+     25,
+     50.000000000000036,
+     17
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "com": [
+     14.999999999998353,
+     30.00000000000646,
+     8.499999999999057
+    ],
+    "curved": true,
+    "namedBodyOnly": 6282.141646937125
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0.00016610368649624258,
+    "dBbox": 1.7763568394002505e-15,
+    "dCom": 1.349991986904411e-13,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0.00016610368649624258,
+    "dBbox": 1.7763568394002505e-15,
+    "dCom": 1.349991986904411e-13,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0.00016610368649638732,
+    "dBbox": 1.7763568394002505e-15
+   },
+   "facesVsOcct": "6/6",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 2346,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 6282.141646937126,
+     "devMm3": -9.094947017729282e-13,
+     "tolMm3": 1.8846424940811375,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,50,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[10,5],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":40}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,50,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[20,12],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":40}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 6282.141646937125,
+    "faces": 6,
+    "shells": 2,
+    "kernelEdges": 12,
+    "bbox": [
+     4.999999999999999,
+     9.999999999999991,
+     -1.7763568394002505e-15,
+     25,
+     50.000000000000036,
+     17
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "com": [
+     14.999999999998353,
+     30.00000000000646,
+     8.499999999999057
+    ],
+    "curved": true,
+    "namedBodyOnly": 6282.141646937125
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0.00016610368649624258,
+    "dBbox": 1.7763568394002505e-15,
+    "dCom": 1.349991986904411e-13,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0.00016610368649624258,
+    "dBbox": 1.7763568394002505e-15,
+    "dCom": 1.349991986904411e-13,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0.00016610368649638732,
+    "dBbox": 1.7763568394002505e-15
+   },
+   "facesVsOcct": "6/6",
+   "featureVsScene": 0
+  },
+  "refSource": "occt",
+  "curved": true
+ },
+ {
+  "id": "jc-L-edge-touch",
+  "feature": "pad = join(base, pull) where the pad only TOUCHES the base along a line or at a point (edge or corner contact) -- refused",
+  "note": "an L-shaped base (not a block) and a block that touches only its top edge: the base is not a block, the rule is the conservative one",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,20],[20,20],[20,60],[0,60]]); const base = pull(s1, 20); const s2 = sketch('top', 20); s2.rect(10, 20, { at: [65, 10] }); const pad = join(base, pull(s2, 10));",
+  "expect": "refuse",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 41999.99999999999,
+   "com": [
+    24.047619047619055,
+    21.42857142857143,
+    10.714285714285719
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    70,
+    60,
+    30
+   ],
+   "faces": 14,
+   "solids": 2
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+  },
+  "shipped": {
+   "ms": 35,
+   "finalId": "op1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "op1",
+     "sentence": "op1 (combine): solidcraft refused it -- solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "op1: {\"command\":\"solid.combine\",\"error\":\"invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap\",\"index\":8}"
+   ],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,20],[20,20],[20,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,0],[70,0],[70,20],[60,20]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}}]"
+  },
+  "contract": {
+   "ms": 31,
+   "finalId": "op1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "op1",
+     "sentence": "op1 (combine): solidcraft refused it -- solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "op1: {\"command\":\"solid.combine\",\"error\":\"invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap\",\"index\":8}"
+   ],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,20],[20,20],[20,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[60,0],[70,0],[70,20],[60,20]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}}]"
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "jcc-L-face-pad",
+  "feature": "pad = join(base, pull) that shares a face, overlaps or leaves a gap -- the controls next to the edge/point contact refusals",
+  "note": "control: the same L-shaped base with the pad standing on its top face",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,20],[20,20],[20,60],[0,60]]); const base = pull(s1, 20); const s2 = sketch('top', 20); s2.rect(10, 10, { at: [30, 10] }); const pad = join(base, pull(s2, 10));",
+  "expect": "build",
+  "finalId": "op1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pull2:extrude",
+   "op1:combine"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 20
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 41000
+  },
+  "occt": {
+   "volume": 41000,
+   "com": [
+    22.195121951219505,
+    21.707317073170724,
+    10.365853658536585
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    30
+   ],
+   "faces": 13,
+   "solids": 1,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 40999.99999999999,
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    60,
+    30
+   ],
+   "faces": 13,
+   "vsRef": {
+    "dVol": 1.774623808337421e-16,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 17,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,20],[20,20],[20,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[25,5],[35,5],[35,15],[25,15]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 41000,
+    "faces": 13,
+    "shells": 1,
+    "kernelEdges": 30,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 13
+    },
+    "com": [
+     22.195121951219512,
+     21.70731707317073,
+     10.365853658536585
+    ],
+    "curved": false,
+    "namedBodyOnly": 41000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 7.894919286223336e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 7.894919286223336e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 1.7746238083374213e-16,
+    "dBbox": 0
+   },
+   "facesVsOcct": "13/13",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 25,
+   "finalId": "op1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "op1",
+     "check": "join-consistency",
+     "expectedMm3": 41000,
+     "devMm3": 0,
+     "tolMm3": 0.000041,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,20],[20,20],[20,60],[0,60]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":20}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,20],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[25,5],[35,5],[35,15],[25,15]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\",\"distance\":10}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}}]",
+   "measure": {
+    "volume": 41000,
+    "faces": 13,
+    "shells": 1,
+    "kernelEdges": 30,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     30
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 13
+    },
+    "com": [
+     22.195121951219512,
+     21.70731707317073,
+     10.365853658536585
+    ],
+    "curved": false,
+    "namedBodyOnly": 41000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 7.894919286223336e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 7.894919286223336e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 1.7746238083374213e-16,
+    "dBbox": 0
+   },
+   "facesVsOcct": "13/13",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic(volume)+occt",
+  "curved": false
+ },
+ {
+  "id": "od-rect-zero-w",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "rect(0,10): a side of 0 mm (the critic's case)",
+  "script": "const sk = sketch('top'); sk.rect(0, 10); const part = pull(sk, 10);",
+  "expect": "refuse",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "refused": "occt: sketch sk1 did not build"
+  },
+  "brep": {
+   "refused": "extrude pull1: this sketch's outline cannot be pulled: it has no area (its corners lie on one line, or on top of each other), so there is nothing to pull."
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "od-rect-zero-h",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "rect(10,0)",
+  "script": "const sk = sketch('top'); sk.rect(10, 0); const part = pull(sk, 10);",
+  "expect": "refuse",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "refused": "occt: sketch sk1 did not build"
+  },
+  "brep": {
+   "refused": "extrude pull1: this sketch's outline cannot be pulled: it has no area (its corners lie on one line, or on top of each other), so there is nothing to pull."
+  },
+  "shipped": {
+   "ms": 1,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "od-polygon-collinear",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "three points on one line",
+  "script": "const sk = sketch('top'); sk.polygon([[0,0],[5,0],[10,0]]); const part = pull(sk, 10);",
+  "expect": "refuse",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 0,
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    0,
+    10
+   ],
+   "faces": 5,
+   "solids": 1
+  },
+  "brep": {
+   "refused": "extrude pull1: this sketch's outline cannot be pulled: it has no area (its corners lie on one line, or on top of each other), so there is nothing to pull."
+  },
+  "shipped": {
+   "ms": 1,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): solidcraft refused it -- solid.extrude: sk_sk1_0 has no closed profiles"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "pull1: {\"command\":\"solid.extrude\",\"error\":\"sk_sk1_0 has no closed profiles\",\"index\":3}"
+   ],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: the outline is 0 mm across, under 0.001 mm, which is too small to build; draw it larger"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "od-polygon-collinear-4",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "four points on one line",
+  "script": "const sk = sketch('top'); sk.polygon([[0,0],[5,0],[10,0],[3,0]]); const part = pull(sk, 10);",
+  "expect": "refuse",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 0,
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    0,
+    10
+   ],
+   "faces": 6,
+   "solids": 1
+  },
+  "brep": {
+   "refused": "extrude pull1: this sketch's outline cannot be pulled: two of its edges touch where they should not (a corner lands on another edge, or two curves just touch), so the outline pinches -- move it so they stay apart."
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): solidcraft refused it -- solid.extrude: sk_sk1_0 has no closed profiles"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "pull1: {\"command\":\"solid.extrude\",\"error\":\"sk_sk1_0 has no closed profiles\",\"index\":3}"
+   ],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: the outline is 0 mm across, under 0.001 mm, which is too small to build; draw it larger"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "od-polygon-dup-mid",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "the same point twice in a row (the critic's case): a plain 10 x 10 square",
+  "script": "const sk = sketch('top'); sk.polygon([[0,0],[10,0],[10,0],[10,10],[0,10]]); const part = pull(sk, 10);",
+  "expect": "build",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 1000,
+   "com": [
+    5,
+    5,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ]
+  },
+  "occt": {
+   "refused": "occt: sketch sk1 did not build"
+  },
+  "brep": {
+   "volume": 999.9999999999999,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ],
+   "faces": 7,
+   "vsRef": {
+    "dVol": 1.1368683772161603e-16,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "od-polygon-dup-last",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "the last point repeated",
+  "script": "const sk = sketch('top'); sk.polygon([[0,0],[10,0],[10,10],[0,10],[0,10]]); const part = pull(sk, 10);",
+  "expect": "build",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 1000,
+   "com": [
+    5,
+    5,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ]
+  },
+  "occt": {
+   "refused": "occt: sketch sk1 did not build"
+  },
+  "brep": {
+   "volume": 999.9999999999999,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ],
+   "faces": 7,
+   "vsRef": {
+    "dVol": 1.1368683772161603e-16,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "od-polygon-closed-explicit",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "the first point repeated at the end (a closed list)",
+  "script": "const sk = sketch('top'); sk.polygon([[0,0],[10,0],[10,10],[0,10],[0,0]]); const part = pull(sk, 10);",
+  "expect": "build",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 1000,
+   "com": [
+    5,
+    5,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ]
+  },
+  "occt": {
+   "refused": "occt: sketch sk1 did not build"
+  },
+  "brep": {
+   "volume": 999.9999999999999,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ],
+   "faces": 7,
+   "vsRef": {
+    "dVol": 1.1368683772161603e-16,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "od-polygon-dup-triple",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "the same point three times in a row",
+  "script": "const sk = sketch('top'); sk.polygon([[0,0],[10,0],[10,0],[10,0],[10,10],[0,10]]); const part = pull(sk, 10);",
+  "expect": "build",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 1000,
+   "com": [
+    5,
+    5,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ]
+  },
+  "occt": {
+   "refused": "occt: sketch sk1 did not build"
+  },
+  "brep": {
+   "volume": 999.9999999999999,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ],
+   "faces": 8,
+   "vsRef": {
+    "dVol": 1.1368683772161603e-16,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "od-polygon-dup-L",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "a repeated point on a concave L",
+  "script": "const sk = sketch('top'); sk.polygon([[0,0],[30,0],[30,10],[30,10],[10,10],[10,25],[0,25]]); const part = pull(sk, 10);",
+  "expect": "build",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 4500
+  },
+  "occt": {
+   "refused": "occt: sketch sk1 did not build"
+  },
+  "brep": {
+   "volume": 4499.999999999999,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    25,
+    10
+   ],
+   "faces": 9,
+   "vsRef": {
+    "dVol": 2.021099337273174e-16,
+    "dBbox": null,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "analytic(volume)+occt",
+  "curved": false
+ },
+ {
+  "id": "od-polygon-dup-two-places",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "two different repeated points",
+  "script": "const sk = sketch('top'); sk.polygon([[0,0],[0,0],[10,0],[10,10],[10,10],[0,10]]); const part = pull(sk, 10);",
+  "expect": "build",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 1000,
+   "com": [
+    5,
+    5,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ]
+  },
+  "occt": {
+   "refused": "occt: sketch sk1 did not build"
+  },
+  "brep": {
+   "volume": 999.9999999999999,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ],
+   "faces": 8,
+   "vsRef": {
+    "dVol": 1.1368683772161603e-16,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "od-pocket-dup",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "a pocket outline with a repeated point",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = pull(s1, 10); const sk = sketch('top', 10); sk.polygon([[10,10],[20,10],[20,10],[20,20],[10,20]]); const cut = pocket(sk, plate, 4);",
+  "expect": "build",
+  "finalId": "pocket1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pocket1:pocket"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "depth": 4
+   }
+  ],
+  "analytic": {
+   "volume": 11600,
+   "com": [
+    20.17241379310345,
+    15,
+    4.896551724137931
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "occt": {
+   "refused": "occt: sketch sk2 did not build"
+  },
+  "brep": {
+   "refused": "pocket pocket1: brep-rs cannot cut this pocket yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- pocket1 is shown without it."
+  },
+  "shipped": {
+   "ms": 2,
+   "finalId": "pocket1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pocket1",
+     "sentence": "pocket1 (pocket): sketch sk2 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[40,0],[40,30],[0,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}}]"
+  },
+  "contract": {
+   "ms": 1,
+   "finalId": "pocket1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pocket1",
+     "sentence": "pocket1: sketch sk2 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[40,0],[40,30],[0,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}}]"
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "od-polygon-dup-round",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "a repeated point on a polygon whose corner 2 is rounded with r5 (corner removed: r^2 (1 - pi/4) = 5.365 mm2)",
+  "script": "const sk = sketch('top'); sk.polygon([[0,0],[40,0],[40,25],[40,25],[0,25]]); sk.round(2, 5); const part = pull(sk, 10);",
+  "expect": "build",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 9946.349540849362
+  },
+  "occt": {
+   "refused": "occt: sketch sk1 did not build"
+  },
+  "brep": {
+   "volume": 9946.34954084936,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    10
+   ],
+   "faces": 8,
+   "vsRef": {
+    "dVol": 1.8288010049066957e-16,
+    "dBbox": null,
+    "dCom": null,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: sketch sk1 has no usable outline (outlineOf refused it)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "analytic(volume)+occt",
+  "curved": true
+ },
+ {
+  "id": "od-circle-zero",
+  "feature": "pull/pocket outlines that repeat a point or have no area",
+  "note": "circle of diameter 0",
+  "script": "const sk = sketch('top'); sk.circle(0); const part = pull(sk, 10);",
+  "expect": "refuse",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "refused": "occt threw: [object WebAssembly.Exception]"
+  },
+  "brep": {
+   "refused": "extrude pull1: this circle has no size (its diameter is 0), so there is nothing to pull."
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): solidcraft refused it -- sketch.circle.center: invalid parameters for `sketch.circle.center`: radius must be positive"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "pull1: {\"command\":\"sketch.circle.center\",\"error\":\"invalid parameters for `sketch.circle.center`: radius must be positive\",\"index\":1}"
+   ],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: the outline is 0 mm across, under 0.001 mm, which is too small to build; draw it larger"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "ro-no-rules-exact",
+  "feature": "sketch drawn as rows (lines) whose end points coincide exactly but with no coincident rule between them, pulled",
+  "note": "four lines, end points exactly equal, no rules at all",
+  "script": "const sk = sketch('top'); sk.geom([{ k: 'line', id: 1, a: [0, 0], b: [30, 0] }, { k: 'line', id: 2, a: [30, 0], b: [30, 20] }, { k: 'line', id: 3, a: [30, 20], b: [0, 20] }, { k: 'line', id: 4, a: [0, 20], b: [0, 0] }]); const part = pull(sk, 10);",
+  "expect": "build",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 6000,
+   "com": [
+    15,
+    10,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "occt": {
+   "refused": "occt: sketch sk1 did not build"
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 has a loose end; the outline must close"
+  },
+  "shipped": {
+   "ms": 3,
+   "finalId": "pull1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[30,0]],\"ids\":[\"g1\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,0],[30,20]],\"ids\":[\"g2\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,20],[0,20]],\"ids\":[\"g3\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,20],[0,0]],\"ids\":[\"g4\"],\"connect\":false}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}}]",
+   "measure": {
+    "volume": 6000,
+    "faces": 6,
+    "shells": 1,
+    "kernelEdges": 12,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 6
+    },
+    "com": [
+     15,
+     10,
+     5
+    ],
+    "curved": false,
+    "namedBodyOnly": 6000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": null,
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 2,
+   "finalId": "pull1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[30,0]],\"ids\":[\"g1\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,0],[30,20]],\"ids\":[\"g2\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,20],[0,20]],\"ids\":[\"g3\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,20],[0,0]],\"ids\":[\"g4\"],\"connect\":false}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}}]",
+   "measure": {
+    "volume": 6000,
+    "faces": 6,
+    "shells": 1,
+    "kernelEdges": 12,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 6
+    },
+    "com": [
+     15,
+     10,
+     5
+    ],
+    "curved": false,
+    "namedBodyOnly": 6000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": null,
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "ro-no-rules-gap-1e-4",
+  "feature": "sketch drawn as rows (lines) whose end points coincide exactly but with no coincident rule between them, pulled",
+  "note": "the same with a 0.0001 mm gap at one corner: must be refused",
+  "script": "const sk = sketch('top'); sk.geom([{ k: 'line', id: 1, a: [0, 0], b: [30, 0] }, { k: 'line', id: 2, a: [30, 0], b: [30, 20] }, { k: 'line', id: 3, a: [30, 20], b: [0, 20] }, { k: 'line', id: 4, a: [0, 19.9999], b: [0, 0] }]); const part = pull(sk, 10);",
+  "expect": "refuse",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "refused": "occt: sketch sk1 did not build"
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 has a loose end; the outline must close"
+  },
+  "shipped": {
+   "ms": 1,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): solidcraft refused it -- solid.extrude: sk_sk1_0 has no closed profiles"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "pull1: {\"command\":\"solid.extrude\",\"error\":\"sk_sk1_0 has no closed profiles\",\"index\":6}"
+   ],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: sketch sk1 has an edge that does not close into a loop (a loose end near [0, 20]), so it has no outline to pull"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "ro-no-rules-gap-1e-6",
+  "feature": "sketch drawn as rows (lines) whose end points coincide exactly but with no coincident rule between them, pulled",
+  "note": "a 1e-6 gap: truck wants the loop closed exactly (\"profile loop is not closed\"), brep-rs refuses too",
+  "script": "const sk = sketch('top'); sk.geom([{ k: 'line', id: 1, a: [0, 0], b: [30, 0] }, { k: 'line', id: 2, a: [30, 0], b: [30, 20] }, { k: 'line', id: 3, a: [30, 20], b: [0, 20] }, { k: 'line', id: 4, a: [0, 19.999999], b: [0, 0] }]); const part = pull(sk, 10);",
+  "expect": "refuse",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "refused": "occt: sketch sk1 did not build"
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 has a loose end; the outline must close"
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "pull1: {\"command\":\"solid.extrude\",\"error\":\"invalid input: profile loop is not closed\",\"index\":6}"
+   ],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 1,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1: this pull cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so nothing is added; change the sketch, the length or the options"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [
+    "pull1: {\"command\":\"solid.extrude\",\"error\":\"invalid input: profile loop is not closed\",\"index\":6}"
+   ],
+   "commands": "[]"
+  },
+  "refSource": "occt",
+  "curved": false
+ },
+ {
+  "id": "ro-with-rules",
+  "feature": "sketch drawn as rows (lines) whose end points coincide exactly but with no coincident rule between them, pulled",
+  "note": "control: the same four lines WITH four coincident rules",
+  "script": "const sk = sketch('top'); sk.geom([{ k: 'line', id: 1, a: [0, 0], b: [30, 0] }, { k: 'line', id: 2, a: [30, 0], b: [30, 20] }, { k: 'line', id: 3, a: [30, 20], b: [0, 20] }, { k: 'line', id: 4, a: [0, 20], b: [0, 0] }]); sk.rules([{ k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' }, { k: 'coincident', a: 2, aEnd: 'b', b: 3, bEnd: 'a' }, { k: 'coincident', a: 3, aEnd: 'b', b: 4, bEnd: 'a' }, { k: 'coincident', a: 4, aEnd: 'b', b: 1, bEnd: 'a' }]); const part = pull(sk, 10);",
+  "expect": "build",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 6000,
+   "com": [
+    15,
+    10,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "occt": {
+   "volume": 5999.999999999999,
+   "com": [
+    15,
+    10,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "faces": 6,
+   "solids": 1,
+   "vsRef": {
+    "dVol": 1.5158245029548803e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "faces": 6,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 4,
+   "finalId": "pull1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[30,0]],\"ids\":[\"g1\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,0],[30,20]],\"ids\":[\"g2\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,20],[0,20]],\"ids\":[\"g3\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,20],[0,0]],\"ids\":[\"g4\"],\"connect\":false}},{\"command\":\"sketch.constraint.coincident\",\"params\":{\"a\":\"g1.end\",\"b\":\"g2.start\"}},{\"command\":\"sketch.constraint.coincident\",\"params\":{\"a\":\"g2.end\",\"b\":\"g3.start\"}},{\"command\":\"sketch.constraint.coincident\",\"params\":{\"a\":\"g3.end\",\"b\":\"g4.start\"}},{\"command\":\"sketch.constraint.coincident\",\"params\":{\"a\":\"g4.end\",\"b\":\"g1.start\"}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}}]",
+   "measure": {
+    "volume": 6000,
+    "faces": 6,
+    "shells": 1,
+    "kernelEdges": 12,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 6
+    },
+    "com": [
+     15,
+     10,
+     5
+    ],
+    "curved": false,
+    "namedBodyOnly": 6000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "6/6",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 3,
+   "finalId": "pull1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[30,0]],\"ids\":[\"g1\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,0],[30,20]],\"ids\":[\"g2\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,20],[0,20]],\"ids\":[\"g3\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,20],[0,0]],\"ids\":[\"g4\"],\"connect\":false}},{\"command\":\"sketch.constraint.coincident\",\"params\":{\"a\":\"g1.end\",\"b\":\"g2.start\"}},{\"command\":\"sketch.constraint.coincident\",\"params\":{\"a\":\"g2.end\",\"b\":\"g3.start\"}},{\"command\":\"sketch.constraint.coincident\",\"params\":{\"a\":\"g3.end\",\"b\":\"g4.start\"}},{\"command\":\"sketch.constraint.coincident\",\"params\":{\"a\":\"g4.end\",\"b\":\"g1.start\"}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}}]",
+   "measure": {
+    "volume": 6000,
+    "faces": 6,
+    "shells": 1,
+    "kernelEdges": 12,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 6
+    },
+    "com": [
+     15,
+     10,
+     5
+    ],
+    "curved": false,
+    "namedBodyOnly": 6000
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "facesVsOcct": "6/6",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "ro-no-rules-pocket",
+  "feature": "sketch drawn as rows (lines) whose end points coincide exactly but with no coincident rule between them, pulled",
+  "note": "a pocket from rows with no rules",
+  "script": "const s1 = sketch('top'); s1.rect(60, 40, { at: [30, 20] }); const plate = pull(s1, 10); const sk = sketch('top', 10); sk.geom([{ k: 'line', id: 1, a: [0, 0], b: [30, 0] }, { k: 'line', id: 2, a: [30, 0], b: [30, 20] }, { k: 'line', id: 3, a: [30, 20], b: [0, 20] }, { k: 'line', id: 4, a: [0, 20], b: [0, 0] }]); const cut = pocket(sk, plate, 4);",
+  "expect": "build",
+  "finalId": "pocket1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pocket1:pocket"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "depth": 4
+   }
+  ],
+  "analytic": {
+   "volume": 21600,
+   "com": [
+    31.666666666666668,
+    21.11111111111111,
+    4.666666666666667
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    40,
+    10
+   ]
+  },
+  "occt": {
+   "refused": "occt: sketch sk2 did not build"
+  },
+  "brep": {
+   "refused": "pocket pocket1: edge 1 has a loose end; the outline must close"
+  },
+  "shipped": {
+   "ms": 10,
+   "finalId": "pocket1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,40],[0,40]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[30,0]],\"ids\":[\"g1\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,0],[30,20]],\"ids\":[\"g2\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,20],[0,20]],\"ids\":[\"g3\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,20],[0,0]],\"ids\":[\"g4\"],\"connect\":false}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":4,\"direction\":\"negative\",\"sketch\":\"sk_sk2_1\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"]}}]",
+   "measure": {
+    "volume": 21600,
+    "faces": 9,
+    "shells": 1,
+    "kernelEdges": 26,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 9
+    },
+    "com": [
+     31.666666666666668,
+     21.11111111111111,
+     4.666666666666667
+    ],
+    "curved": false,
+    "namedBodyOnly": 21600
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": null,
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 15,
+   "finalId": "pocket1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [
+    {
+     "feature": "pocket1",
+     "check": "cut-consistency",
+     "removedByTool": 2400,
+     "devMm3": 0,
+     "tolMm3": 0.000024,
+     "inconclusive": false
+    }
+   ],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[60,0],[60,40],[0,40]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[30,0]],\"ids\":[\"g1\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,0],[30,20]],\"ids\":[\"g2\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,20],[0,20]],\"ids\":[\"g3\"],\"connect\":false}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,20],[0,0]],\"ids\":[\"g4\"],\"connect\":false}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk2_1\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"distance\":4,\"direction\":\"negative\"}}]",
+   "measure": {
+    "volume": 21600,
+    "faces": 9,
+    "shells": 1,
+    "kernelEdges": 26,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "plane": 9
+    },
+    "com": [
+     31.666666666666668,
+     21.11111111111111,
+     4.666666666666667
+    ],
+    "curved": false,
+    "namedBodyOnly": 21600
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "comTol": 0.000001,
+    "ok": true
+   },
+   "facesVsOcct": null,
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": false
+ },
+ {
+  "id": "lf-slant-circle-pull",
+  "feature": "a slanted round pull (pull of a circle with { direction }) is built by solid.loft: its side is a spline, and the part cannot take later features that need a cylinder",
+  "note": "d10 circle pulled 10 along (1,0,1)",
+  "script": "const sk = sketch('top'); sk.circle(10, { at: [0, 0] }); const part = pull(sk, 10, { direction: [1, 0, 1] });",
+  "expect": "build",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10,
+    "direction": [
+     1,
+     0,
+     1
+    ]
+   }
+  ],
+  "analytic": {
+   "volume": 785.3981633974483,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    15,
+    5,
+    10
+   ],
+   "com": [
+    5,
+    0,
+    5
+   ]
+  },
+  "occt": {
+   "volume": 785.4142919762099,
+   "com": [
+    4.97911295001522,
+    -1.4163451622366686e-16,
+    4.999999999999999
+   ],
+   "bbox": [
+    -5,
+    -5,
+    0,
+    15,
+    5,
+    10
+   ],
+   "faces": 3,
+   "solids": 1,
+   "vsRef": {
+    "dVol": 0.000020535544279638733,
+    "dBbox": 0,
+    "dCom": 0.0008527102449119679,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": false
+   }
+  },
+  "brep": {
+   "refused": "extrude pull1: a custom direction is built for a straight-sided outline yet: a circle pulled at an angle is a slanted cylinder, which brep-rs does not build."
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pull1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): the direction option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 451,
+   "finalId": "pull1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_1a\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[0,0],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_2b\",\"plane\":{\"origin\":[10,0,10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[0,0],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.loft\",\"params\":{\"sections\":[{\"sketch\":\"sk_sk1_1a\"},{\"sketch\":\"sk_sk1_2b\"}],\"operation\":\"new\",\"body_name\":\"b_pull1\"}}]",
+   "measure": {
+    "volume": 785.3192356241376,
+    "faces": 3,
+    "shells": 1,
+    "kernelEdges": 6,
+    "bbox": [
+     -5,
+     -4.999995446433673,
+     -1.207671607161842e-7,
+     15.000000000000002,
+     4.999995446433674,
+     10.000000120767158
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "other": 1,
+     "plane": 2
+    },
+    "com": [
+     4.999999999999994,
+     1.7410224891101904e-10,
+     4.999999999999989
+    ],
+    "curved": true,
+    "namedBodyOnly": 785.3192356241376
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0.00010049396215712455,
+    "dBbox": 9.107132653340955e-7,
+    "dCom": 7.107694548383748e-12,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0.00012102702108101285,
+    "dBbox": 9.107132653340955e-7,
+    "dCom": 0.0008527102449117141,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": false
+   },
+   "facesVsOcct": "3/3",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": true
+ },
+ {
+  "id": "lf-straight-circle-pull",
+  "feature": "a slanted round pull (pull of a circle with { direction }) is built by solid.loft: its side is a spline, and the part cannot take later features that need a cylinder",
+  "note": "control: the same circle pulled straight is an extrusion with a true cylinder face",
+  "script": "const sk = sketch('top'); sk.circle(10, { at: [0, 0] }); const part = pull(sk, 10);",
+  "expect": "build",
+  "finalId": "pull1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10
+   }
+  ],
+  "analytic": {
+   "volume": 785.3981633974483,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    5
+   ]
+  },
+  "occt": {
+   "volume": 785.3981633974485,
+   "com": [
+    5.066270212606774e-16,
+    -5.054961573739348e-16,
+    4.999999999999999
+   ],
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    10
+   ],
+   "faces": 3,
+   "solids": 1,
+   "vsRef": {
+    "dVol": 1.447505775030507e-16,
+    "dBbox": 0,
+    "dCom": 5.1279004970228376e-17,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   }
+  },
+  "brep": {
+   "volume": 785.398163397449,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    10
+   ],
+   "faces": 3,
+   "vsRef": {
+    "dVol": 8.685034650183042e-16,
+    "dBbox": 0,
+    "dCom": null,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   }
+  },
+  "shipped": {
+   "ms": 285,
+   "finalId": "pull1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[0,0],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}}]",
+   "measure": {
+    "volume": 785.3095405426548,
+    "faces": 3,
+    "shells": 1,
+    "kernelEdges": 6,
+    "bbox": [
+     -5,
+     -5.000000000000004,
+     0,
+     5,
+     5,
+     10.000000000000005
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "com": [
+     4.96647749425083e-16,
+     -9.096340941834051e-16,
+     5.00000000200619
+    ],
+    "curved": true,
+    "namedBodyOnly": 785.3095405426548
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0.00011283812329051375,
+    "dBbox": 8.881784197001252e-16,
+    "dCom": 1.1582742677759778e-10,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0.00011283812329065848,
+    "dBbox": 8.881784197001252e-16,
+    "dCom": 1.1582747805660275e-10,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0.00011283812329138216,
+    "dBbox": 8.881784197001252e-16
+   },
+   "facesVsOcct": "3/3",
+   "featureVsScene": 0
+  },
+  "contract": {
+   "ms": 296,
+   "finalId": "pull1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[0,0],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}}]",
+   "measure": {
+    "volume": 785.3095405426548,
+    "faces": 3,
+    "shells": 1,
+    "kernelEdges": 6,
+    "bbox": [
+     -5,
+     -5.000000000000004,
+     0,
+     5,
+     5,
+     10.000000000000005
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "com": [
+     4.96647749425083e-16,
+     -9.096340941834051e-16,
+     5.00000000200619
+    ],
+    "curved": true,
+    "namedBodyOnly": 785.3095405426548
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0.00011283812329051375,
+    "dBbox": 8.881784197001252e-16,
+    "dCom": 1.1582742677759778e-10,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0.00011283812329065848,
+    "dBbox": 8.881784197001252e-16,
+    "dCom": 1.1582747805660275e-10,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsBrep": {
+    "dVol": 0.00011283812329138216,
+    "dBbox": 8.881784197001252e-16
+   },
+   "facesVsOcct": "3/3",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": true
+ },
+ {
+  "id": "lf-slant-hole",
+  "feature": "a slanted round pull (pull of a circle with { direction }) is built by solid.loft: its side is a spline, and the part cannot take later features that need a cylinder",
+  "note": "a straight hole bored into a slanted round pull",
+  "script": "const sk = sketch('top'); sk.circle(16, { at: [0, 0] }); const part = pull(sk, 10, { direction: [1, 0, 1] }); const sh = sketch('top', 10); sh.circle(4, { at: [10, 0] }); const bore = pocket(sh, part, 6);",
+  "expect": "refuse",
+  "finalId": "pocket1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "sk2:sketch",
+   "pocket1:pocket"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10,
+    "direction": [
+     1,
+     0,
+     1
+    ]
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "depth": 6
+   }
+  ],
+  "analytic": null,
+  "occt": {
+   "volume": 1935.255728014823,
+   "com": [
+    4.7760339693944305,
+    9.498500537824911e-17,
+    4.922082514945341
+   ],
+   "bbox": [
+    -8,
+    -8,
+    0,
+    18,
+    8,
+    10
+   ],
+   "faces": 5,
+   "solids": 1
+  },
+  "brep": {
+   "refused": "pocket pocket1 cannot find solid pull1"
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "pocket1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): the direction option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)"
+    },
+    {
+     "id": "pocket1",
+     "sentence": "pocket1 (pocket): its solid pull1 was refused (pull1 (extrude): the direction option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 486,
+   "finalId": "pocket1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pocket1",
+     "sentence": "pocket1: the part it cuts was made from a slanted round pull, and cutting into one can freeze or crash SolidCraft, so it is not built yet; cut before slanting, or draw the slanted pull with straight sides"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_1a\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[0,0],\"diameter\":16}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_2b\",\"plane\":{\"origin\":[10,0,10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[0,0],\"diameter\":16}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.loft\",\"params\":{\"sections\":[{\"sketch\":\"sk_sk1_1a\"},{\"sketch\":\"sk_sk1_2b\"}],\"operation\":\"new\",\"body_name\":\"b_pull1\"}}]"
+  },
+  "refSource": "occt",
+  "curved": true
+ },
+ {
+  "id": "lf-slant-hole2",
+  "feature": "a slanted round pull (pull of a circle with { direction }) is built by solid.loft: its side is a spline, and the part cannot take later features that need a cylinder",
+  "note": "a hole() bored into a slanted round pull (a straight d4 bore at x=8 through the oblique cylinder d16)",
+  "script": "const sk = sketch('top'); sk.circle(16, { at: [0, 0] }); const part = pull(sk, 10, { direction: [1, 0, 1] }); const h = hole(part, { across: 4, at: [3, 0] });",
+  "expect": "build",
+  "finalId": "hole1",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "hole1:hole"
+  ],
+  "doc": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "height": 10,
+    "direction": [
+     1,
+     0,
+     1
+    ]
+   }
+  ],
+  "analytic": {
+   "volume": 1890.7066506733856,
+   "com": [
+    4.813197213175238,
+    0,
+    4.986598836147272
+   ],
+   "bbox": [
+    -8,
+    -8,
+    0,
+    18,
+    8,
+    10
+   ]
+  },
+  "occt": {
+   "volume": 1884.9555921538758,
+   "com": [
+    -0.2000000000000004,
+    -1.2742216438279094e-15,
+    5
+   ],
+   "bbox": [
+    -8,
+    -8,
+    0,
+    8,
+    8,
+    10
+   ],
+   "faces": 4,
+   "solids": 1,
+   "vsRef": {
+    "dVol": 0.003041750827639775,
+    "dBbox": 0.5555555555555556,
+    "dCom": 0.15605401289330761,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": false
+   }
+  },
+  "brep": {
+   "refused": "no shape"
+  },
+  "shipped": {
+   "ms": 0,
+   "finalId": "hole1",
+   "finalStatus": "refused",
+   "refusals": [
+    {
+     "id": "pull1",
+     "sentence": "pull1 (extrude): the direction option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)"
+    },
+    {
+     "id": "hole1",
+     "sentence": "hole1 (hole): its target pull1 was refused (pull1 (extrude): the direction option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))"
+    }
+   ],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[]"
+  },
+  "contract": {
+   "ms": 80161,
+   "finalId": "hole1",
+   "finalStatus": "built",
+   "refusals": [],
+   "checks": [],
+   "failedRaw": [],
+   "commands": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_1a\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[0,0],\"diameter\":16}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_2b\",\"plane\":{\"origin\":[10,0,10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[0,0],\"diameter\":16}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.loft\",\"params\":{\"sections\":[{\"sketch\":\"sk_sk1_1a\"},{\"sketch\":\"sk_sk1_2b\"}],\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":2,\"height\":12,\"base\":[8,0,-1],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"]}}]",
+   "measure": {
+    "volume": 1890.676355879189,
+    "faces": 4,
+    "shells": 1,
+    "kernelEdges": 15,
+    "bbox": [
+     -8,
+     -7.999992714293875,
+     -1.1450931758361094e-7,
+     18,
+     7.999992714293876,
+     10.000000152981725
+    ],
+    "bodies": [
+     "b_pull1"
+    ],
+    "faceTypes": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "com": [
+     4.813224480306599,
+     3.815296915982635e-8,
+     4.986600098295993
+    ],
+    "curved": true,
+    "namedBodyOnly": 1890.676355879189
+   },
+   "sceneOk": true,
+   "vsRef": {
+    "dVol": 0.00001602300081073766,
+    "dBbox": 9.107132655783445e-7,
+    "dCom": 8.487887246406634e-7,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": true
+   },
+   "vsOcct": {
+    "dVol": 0.0030349594171480004,
+    "dBbox": 1.25,
+    "dCom": 0.20264758879643444,
+    "tol": 0.0003,
+    "comTol": 0.00003,
+    "ok": false
+   },
+   "facesVsOcct": "4/4",
+   "featureVsScene": 0
+  },
+  "refSource": "analytic",
+  "curved": true
+ }
+]

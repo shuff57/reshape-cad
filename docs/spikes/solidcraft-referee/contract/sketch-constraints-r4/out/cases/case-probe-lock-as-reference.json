@@ -1,0 +1,30 @@
+[
+ {
+  "id": "probe-lock-as-reference",
+  "feats": [
+   "rule:lock",
+   "driving:false reference dimension"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "a lock cannot be a reference measurement"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ }
+]

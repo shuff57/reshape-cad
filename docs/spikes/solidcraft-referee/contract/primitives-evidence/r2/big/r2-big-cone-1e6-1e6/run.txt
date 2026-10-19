@@ -1,0 +1,2 @@
+r2-big-cone-1e6-1e6                                   dVol 5.0e-1 dBbox 5.8e-1 dCom 7.2e-2 dAn 5.0e-1 faces 1/2
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/big/r2-big-cone-1e6-1e6/primitives-measure.json

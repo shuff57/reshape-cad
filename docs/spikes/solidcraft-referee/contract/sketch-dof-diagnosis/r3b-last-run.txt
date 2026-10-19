@@ -1,0 +1,28 @@
+Running as unit: run-p1954264-i22906867.scope; invocation ID: 72d81a4198144cbaa96f364c4ad98e30
+{
+ "feasible(brep-missed)|sc-accepted|guard-collapsed": 6,
+ "feasible(brep-missed)|sc-refused|-": 3,
+ "feasible|mapper-refused": 111,
+ "feasible|sc-accepted|guard-collapsed": 21,
+ "feasible|sc-accepted|guard-pass": 629,
+ "feasible|sc-accepted|guard-rule-not-held": 4,
+ "feasible|sc-refused|-": 187,
+ "infeasible|mapper-refused": 39,
+ "infeasible|sc-accepted|guard-collapsed": 3,
+ "infeasible|sc-accepted|guard-pass": 1,
+ "infeasible|sc-refused|-": 196
+}
+infeasible total 239 silent accepts (no refusal at any rule command) 4 of which solved geometry has a line/radius < 1e-2 of diag 3
+minVsDiag decade histogram, silent accepts of infeasible: {"-6":2,"-7":1,"-2":1}
+minVsDiag decade histogram, feasible accepted: {"-1":513,"-15":4,"-2":120,"-14":5,"-11":2,"-5":12,"-4":1,"-12":1,"-6":2} n 660
+feasible accepted: min of minVsDiag 4.007965443793621e-15  max worstOver (residual / tol) 89999999.99953662
+feasible rule sets where SC collapsed the part although the independent solver keeps every edge >= 1e-2 of the diagonal (SC WRONG, correct part exists): 5 [[1,5,"rect",8.079832996527043e-15,0.564257743162454,[1581.1388289024105]],[2,94,"rect",0.26776047564461675,0.5411961001462268,[9074.53694133019]],[2,227,"cc",0.07262146870235484,0.12771017136282017,[502.5981059471628,162.5066207040652]],[2,267,"cc",0.12771017136282017,0.12771017136282017,[502.5981059471615,3236.425677764124]],[3,26,"cc",0.12771017136282017,0.12771017136282029,[502.5981059471656,502.6133938943894]]]
+GUARD false positives (guard fires although SC and the oracle both keep every edge >= 1e-2 of diag): 4 [[2,94,"rule-not-held","The solver could not keep rule 8; it ends up 90 off from it, so the sketch is not built.","[{\"k\":\"coincident\",\"a\":2,\"aEnd\":\"b\",\"b\":3,\"bEnd\":\"a\"},{\"k\":\"coincident\",\"a\":3,\"aEnd\":\"b\",\"b\":4,\"bEnd\":\"a\"},{\"k\":\"coincident\",\"a\":4,\"aEnd\":\"b\",\"b\":1,\"bEnd\":\"a\"},{\"k\":\"equal\",\"a\":1,\"b\":2},{\"k\":\"distance\",\"a\":1,\"aEnd\":\"a\",\"b\":3,\"bEnd\":\"a\",\"value\":36.05551275463989},{\"k\":\"distance\",\"a\":3,\"aEnd\":\"a\",\"b\":3,\"bEnd\":\"b\",\"value\":30},{\"k\":\"angle\",\"a\":1,\"b\":2,\"value\":45}]"],[2,227,"rule-not-held","The solver could not keep rule 4; it ends up 4.2 mm from it, so the sketch is not built.","[{\"k\":\"pointOnObject\",\"a\":1,\"aEnd\":\"c\",\"b\":3},{\"k\":\"distance\",\"a\":3,\"aEnd\":\"a\",\"b\":3,\"bEnd\":\"b\",\"value\":30.066592756745816},{\"k\":\"distanceY\",\"a\":1,\"aEnd\":\"c\",\"b\":2,\"bEnd\":\"c\",\"value\":2.1},{\"k\":\"distanceX\",\"a\":1,\"aEnd\":\"c\",\"b\":2,\"bEnd\":\"c\",\"value\":15}]"],[2,267,"rule-not-held","The solver could not keep rule 5; it ends up 4.2 mm from
+GUARD false negatives (infeasible, sc accepted, guard passes): 1 [[2,317,"cc",{"minVsDiag":0.09578262852211514,"minVsDrawn":1,"worstOver":7.126203197200079e-8,"worstKind":"pointOnObject","worstResidual":2.2319923687064147e-12},"[{\"k\":\"distance\",\"a\":3,\"aEnd\":\"a\",\"b\":3,\"bEnd\":\"b\",\"value\":30.066592756745816},{\"k\":\"horizontal\",\"a\":3},{\"k\":\"pointOnObject\",\"a\":1,\"aEnd\":\"c\",\"b\":3},{\"k\":\"distanceY\",\"a\":1,\"aEnd\":\"c\",\"b\":2,\"bEnd\":\"c\",\"value\":1},{\"k\":\"pointOnObject\",\"a\":3,\"aEnd\":\"b\",\"b\":2}]"]]
+feasible, sc accepted, a driving rule NOT held by the solved geometry (rule-check): 4 [[2,94,"rect","angle",90,"rule-not-held"],[2,227,"cc","distanceY",4.2,"rule-not-held"],[2,267,"cc","distanceY",4.2,"rule-not-held"],[3,26,"cc","distanceY",2,"rule-not-held"]]
+
+real	3m3.805s
+user	3m4.312s
+sys	0m0.983s
+
+[exited with code 0]

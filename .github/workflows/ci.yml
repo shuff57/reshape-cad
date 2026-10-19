@@ -46,7 +46,7 @@ jobs:
         run: npm ci
 
       # THE KERNEL IS RUST NOW, and this step is why CI has never actually run
-      # the test suite. packages/brep-rs/pkg is wasm-pack output, gitignored
+      # the test suite. archive/brep-rs/pkg is wasm-pack output, gitignored
       # (pkg/.gitignore is `*`), so a fresh checkout has no wasm at all --
       # measured: with pkg/ moved aside the kernel suite exits 1 (1 fail, 1
       # error) because brep-rs-engine-adapter.test.mjs readFileSync's the
@@ -65,8 +65,8 @@ jobs:
             ~/.cargo/bin
             ~/.cargo/registry
             ~/.cargo/git
-            packages/brep-rs/target
-          key: cargo-${{ runner.os }}-${{ hashFiles('packages/brep-rs/Cargo.lock') }}
+            archive/brep-rs/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('archive/brep-rs/Cargo.lock') }}
           restore-keys: cargo-${{ runner.os }}-
 
       - name: Install wasm-pack
@@ -74,7 +74,7 @@ jobs:
 
       - name: Build the kernel wasm
         run: wasm-pack build --release --target web --out-dir pkg
-        working-directory: packages/brep-rs
+        working-directory: archive/brep-rs
 
       # The kernel's own native tests. They never needed wasm and so were never
       # run here either; the toolchain is present now, so there is no reason
@@ -96,7 +96,7 @@ jobs:
       - name: Test the kernel natively
         continue-on-error: true
         run: cargo test --release
-        working-directory: packages/brep-rs
+        working-directory: archive/brep-rs
 
       # The blocking half: 256 pass / 0 fail locally at 3b5aa9a. Each --skip is one
       # pinned known defect -- the two long-standing spikes plus K-H's C0, C2 and C6.
@@ -108,7 +108,7 @@ jobs:
           --skip spike_c0_
           --skip spike_c2_
           --skip spike_c6_
-        working-directory: packages/brep-rs
+        working-directory: archive/brep-rs
 
       # `npm run build`, NOT `npm run build --workspaces`. Measured on this
       # workflow's own first run: --workspaces builds in workspace order

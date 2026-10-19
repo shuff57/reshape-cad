@@ -1,0 +1,5560 @@
+[
+ {
+  "id": "rect-origin-dims",
+  "mode": "stored",
+  "feats": [
+   "rule:coincident",
+   "rule:horizontal",
+   "rule:vertical",
+   "rule:distance",
+   "point-ref:a/b/c ends",
+   "point-ref:origin -1",
+   "value:number",
+   "dimensioned rectangle"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999902,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15.00000000000008,
+    9.999999999999837,
+    4.999999999999999
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.6370904631912707e-14,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 5999.999999941251,
+   "faces": 6,
+   "bbox": [
+    -1.460025165925442e-11,
+    -2.542541488162691e-10,
+    0,
+    29.999999999984304,
+    19.999999999682515,
+    10
+   ],
+   "vsSc": 9.77509747230085e-12,
+   "bboxVsSc": 2.542541488162691e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.99999994616,
+   "vsSc": 8.957006988040763e-12,
+   "bboxVsSc": 2.542541488162691e-10
+  },
+  "round1": {
+   "volume": 5999.999999999902,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "rect-origin-dims",
+  "mode": "rough",
+  "feats": [
+   "rule:coincident",
+   "rule:horizontal",
+   "rule:vertical",
+   "rule:distance",
+   "point-ref:a/b/c ends",
+   "point-ref:origin -1",
+   "value:number",
+   "dimensioned rectangle"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999935,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -3.34021211687354e-35,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15.000000000000052,
+    9.999999999999893,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.076235397097965e-14,
+   "db": 3.34021211687354e-35,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 5999.99999995227,
+   "faces": 6,
+   "bbox": [
+    -1.3525323052886955e-11,
+    -2.0665197231992087e-10,
+    0,
+    29.999999999986084,
+    19.999999999741988,
+    10
+   ],
+   "vsSc": 7.94428463759943e-12,
+   "bboxVsSc": 2.0665197231992087e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.999999956256,
+   "vsSc": 7.279898757944184e-12,
+   "bboxVsSc": 2.0665197231992087e-10
+  }
+ },
+ {
+  "id": "rect-corner-dx-dy-positive",
+  "mode": "stored",
+  "feats": [
+   "rule:distanceX",
+   "rule:distanceY",
+   "dimensioned rectangle",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999869,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ],
+   "com": [
+    20.00000000000011,
+    12.999999999999783,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 2.1827872842550278e-14,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    5,
+    3,
+    35,
+    23
+   ]
+  },
+  "brep": {
+   "volume": 5999.99999991092,
+   "faces": 6,
+   "bbox": [
+    4.999999999965918,
+    2.9999999996066347,
+    0,
+    34.99999999996461,
+    22.999999999508848,
+    10
+   ],
+   "vsSc": 1.482476363911883e-11,
+   "bboxVsSc": 1.311217801175224e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.999999912054,
+   "vsSc": 1.4635891906045082e-11,
+   "bboxVsSc": 1.311217801175224e-10
+  },
+  "round1": {
+   "volume": 5999.999999999869,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "rect-corner-dx-dy-positive",
+  "mode": "rough",
+  "feats": [
+   "rule:distanceX",
+   "rule:distanceY",
+   "dimensioned rectangle",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.99999999985,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ],
+   "com": [
+    20.000000000000124,
+    12.999999999999742,
+    4.999999999999999
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 2.5011104298755527e-14,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    5,
+    3,
+    35,
+    23
+   ]
+  },
+  "brep": {
+   "volume": 5999.999999910012,
+   "faces": 6,
+   "bbox": [
+    4.9999999999677955,
+    2.9999999996006133,
+    0,
+    34.999999999967066,
+    22.999999999501366,
+    10
+   ],
+   "vsSc": 1.4973011275512282e-11,
+   "bboxVsSc": 1.3312891531683846e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.999999911132,
+   "vsSc": 1.478626169674268e-11,
+   "bboxVsSc": 1.3312891531683846e-10
+  }
+ },
+ {
+  "id": "rect-corner-dx-dy-negative",
+  "mode": "stored",
+  "feats": [
+   "rule:distanceX",
+   "rule:distanceY",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999903,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -8,
+    -4.000000000000002,
+    0,
+    22,
+    16,
+    10
+   ],
+   "com": [
+    7.00000000000008,
+    5.9999999999998375,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.621932218161722e-14,
+   "db": 4.440892098500626e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    -8,
+    -4,
+    22,
+    16
+   ]
+  },
+  "brep": {
+   "volume": 5999.9999999213505,
+   "faces": 6,
+   "bbox": [
+    -8.000000000048866,
+    -4.000000000311048,
+    0,
+    21.999999999949058,
+    15.999999999611646,
+    10
+   ],
+   "vsSc": 1.309202464974262e-11,
+   "bboxVsSc": 7.776157495093354e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.999999929492,
+   "vsSc": 1.17350585546637e-11,
+   "bboxVsSc": 7.776157495093354e-11
+  },
+  "round1": {
+   "volume": 5999.999999999903,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "rect-corner-dx-dy-negative",
+  "mode": "rough",
+  "feats": [
+   "rule:distanceX",
+   "rule:distanceY",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999891,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -8,
+    -4,
+    0,
+    22,
+    16,
+    10
+   ],
+   "com": [
+    7.000000000000091,
+    5.999999999999815,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.8189894035458565e-14,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    -8,
+    -4,
+    22,
+    16
+   ]
+  },
+  "brep": {
+   "volume": 5999.999999952699,
+   "faces": 6,
+   "bbox": [
+    -8.000000000052074,
+    -4.000000000177153,
+    0,
+    21.99999999994605,
+    15.999999999778945,
+    10
+   ],
+   "vsSc": 7.86531018099429e-12,
+   "bboxVsSc": 4.428835076257051e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.999999958317,
+   "vsSc": 6.928985385505191e-12,
+   "bboxVsSc": 4.428835076257051e-11
+  }
+ },
+ {
+  "id": "rect-diagonal-two-point-distance",
+  "mode": "stored",
+  "feats": [
+   "rule:distance"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 2399.999999989225,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    24,
+    9.99999999999999,
+    10
+   ],
+   "com": [
+    12.000000000017954,
+    4.999999999977554,
+    4.999999999999999
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 4.489493221626617e-12,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2400,
+   "bbox": [
+    0,
+    0,
+    24,
+    10
+   ]
+  },
+  "brep": {
+   "volume": 2399.9999999970773,
+   "faces": 6,
+   "bbox": [
+    1.1689748098966186e-13,
+    -4.490161086658218e-13,
+    0,
+    24.00000000000452,
+    9.999999999986121,
+    10
+   ],
+   "vsSc": 3.2717177115692243e-12,
+   "bboxVsSc": 1.3868017845217002e-12
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 2399.9999999970387,
+   "vsSc": 3.2556120762253615e-12,
+   "bboxVsSc": 1.3868017845217002e-12
+  },
+  "round1": {
+   "volume": 2399.999999989225,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "rect-diagonal-two-point-distance",
+  "mode": "rough",
+  "feats": [
+   "rule:distance"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 2399.9999999832903,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -3.9966956732936466e-36,
+    0,
+    0,
+    24,
+    10.00000000000001,
+    10
+   ],
+   "com": [
+    12.000000000027851,
+    4.999999999965189,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 6.962371420134635e-12,
+   "db": 2.131628207280303e-15,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2400,
+   "bbox": [
+    0,
+    0,
+    24,
+    10
+   ]
+  },
+  "brep": {
+   "volume": 2399.999999995027,
+   "faces": 6,
+   "bbox": [
+    1.9949154613794105e-13,
+    -7.63979073986041e-13,
+    0,
+    24.000000000007695,
+    9.999999999976383,
+    10
+   ],
+   "vsSc": 4.8902393246054465e-12,
+   "bboxVsSc": 2.3627322320918532e-12
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 2399.999999994961,
+   "vsSc": 4.862765005489466e-12,
+   "bboxVsSc": 2.3627322320918532e-12
+  }
+ },
+ {
+  "id": "circle-radius-dx-dy",
+  "mode": "stored",
+  "feats": [
+   "rule:radius",
+   "rule:distanceX",
+   "rule:distanceY",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1539.2066994644701,
+   "bodies": 1,
+   "faces": 3,
+   "bbox": [
+    2.9999999999999996,
+    -2.0000000000000018,
+    0,
+    17,
+    12,
+    10.000000000000004
+   ],
+   "com": [
+    9.999999991971375,
+    5.000000002007992,
+    5.000000002006108
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00011283812272733947,
+   "db": 8.881784197001252e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1539.3804002589986,
+   "bbox": [
+    3,
+    -2,
+    17,
+    12
+   ]
+  },
+  "brep": {
+   "volume": 1539.3804002568904,
+   "faces": 3,
+   "bbox": [
+    2.9999999999968043,
+    -1.9999999999872156,
+    0,
+    16.999999999987217,
+    12.000000000003196,
+    10
+   ],
+   "vsSc": 0.0001128381213579763,
+   "bboxVsSc": 6.393108265042368e-12
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 1539.3804002568897,
+   "vsSc": 0.00011283812135753324,
+   "bboxVsSc": 6.393108265042368e-12
+  },
+  "round1": {
+   "volume": 1539.2066994644701,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "circle-radius-dx-dy",
+  "mode": "rough",
+  "feats": [
+   "rule:radius",
+   "rule:distanceX",
+   "rule:distanceY",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1539.2066994644701,
+   "bodies": 1,
+   "faces": 3,
+   "bbox": [
+    2.9999999999999996,
+    -2.0000000000000018,
+    0,
+    17,
+    12,
+    10.000000000000004
+   ],
+   "com": [
+    9.999999991971375,
+    5.000000002007992,
+    5.000000002006108
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00011283812272733947,
+   "db": 8.881784197001252e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1539.3804002589986,
+   "bbox": [
+    3,
+    -2,
+    17,
+    12
+   ]
+  },
+  "brep": {
+   "volume": 1539.3804002574318,
+   "faces": 3,
+   "bbox": [
+    2.9999999999969873,
+    -1.999999999984361,
+    0,
+    16.99999999998986,
+    12.000000000008512,
+    10
+   ],
+   "vsSc": 0.00011283812170962145,
+   "bboxVsSc": 7.820410985520754e-12
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 1539.3804002574307,
+   "vsSc": 0.000112838121708883,
+   "bboxVsSc": 7.820410985520754e-12
+  }
+ },
+ {
+  "id": "circle-diameter-origin-c",
+  "mode": "stored",
+  "feats": [
+   "rule:diameter",
+   "rule:coincident",
+   "point-ref:a/b/c ends",
+   "point-ref:origin -1"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 4523.566409680702,
+   "bodies": 1,
+   "faces": 3,
+   "bbox": [
+    -12.000000000000002,
+    -12.000000000000004,
+    0,
+    12,
+    12,
+    10.000000000000005
+   ],
+   "com": [
+    -1.3749602076691868e-16,
+    -2.5163837398663175e-15,
+    5.000000002006266
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00007228540952572688,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4523.893421169302,
+   "bbox": [
+    -12,
+    -12,
+    12,
+    12
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: circle 1: a circle can only be its own outline in this version; use two arcs to join it to other edges"
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 4523.893421163276,
+   "vsSc": 0.00007228540819371577,
+   "bboxVsSc": 1.132131425645708e-12
+  },
+  "round1": {
+   "volume": 4523.566409680702,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "circle-diameter-origin-c",
+  "mode": "rough",
+  "feats": [
+   "rule:diameter",
+   "rule:coincident",
+   "point-ref:a/b/c ends",
+   "point-ref:origin -1"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 4523.566409680702,
+   "bodies": 1,
+   "faces": 3,
+   "bbox": [
+    -12.000000000000002,
+    -12.000000000000004,
+    0,
+    12,
+    12,
+    10.000000000000005
+   ],
+   "com": [
+    -1.3749602076691868e-16,
+    -2.5163837398663175e-15,
+    5.000000002006266
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00007228540952572688,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4523.893421169302,
+   "bbox": [
+    -12,
+    -12,
+    12,
+    12
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: circle 1: a circle can only be its own outline in this version; use two arcs to join it to other edges"
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 4523.893421158337,
+   "vsSc": 0.00007228540710213408,
+   "bboxVsSc": 1.7926401104312994e-12
+  }
+ },
+ {
+  "id": "rect-parallel-perpendicular-axes",
+  "mode": "stored",
+  "feats": [
+   "rule:parallel",
+   "rule:perpendicular",
+   "axis-ref:X/Y axes (-2,-3)"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999650337,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -2.9096725029376103e-12,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15.000000000290902,
+    9.999999999416909,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 5.827723725815303e-11,
+   "db": 2.805094057037347e-15,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 5 names geometry -2, which this sketch does not have"
+  },
+  "round1": {
+   "volume": 5999.999999650292,
+   "volumeDelta": 7.427540064911826e-15
+  }
+ },
+ {
+  "id": "rect-parallel-perpendicular-axes",
+  "mode": "rough",
+  "feats": [
+   "rule:parallel",
+   "rule:perpendicular",
+   "axis-ref:X/Y axes (-2,-3)"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.9999996642555,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -2.662930172447401e-12,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15.000000000279345,
+    9.999999999440131,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 5.5957419438830885e-11,
+   "db": 2.4954742454724666e-13,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 1 (coincident) is off by 1.23e+0 mm: (28.3, -0.4) mm and (28.1, 0.9) mm are not the same point. These rows have not been solved, and this reference reads them rather than solving them"
+  }
+ },
+ {
+  "id": "right-trapezoid-par-perp-neg-dx",
+  "mode": "stored",
+  "feats": [
+   "rule:parallel",
+   "rule:perpendicular",
+   "rule:distanceX",
+   "right trapezoid",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 4159.999999308437,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    16,
+    10
+   ],
+   "com": [
+    13.102564101860777,
+    7.589743588581892,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.66241202000842e-10,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4160,
+   "bbox": [
+    0,
+    0,
+    30,
+    16
+   ]
+  },
+  "brep": {
+   "volume": 4160.000000011399,
+   "faces": 6,
+   "bbox": [
+    1.0093723702532738e-11,
+    2.1272628549147747e-11,
+    0,
+    30.00000000001487,
+    16.00000000007214,
+    10
+   ],
+   "vsSc": 1.68981273418004e-10,
+   "bboxVsSc": 2.1272628549147747e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 4160.000000010849,
+   "vsSc": 1.6884922178344233e-10,
+   "bboxVsSc": 2.1272628549147747e-11
+  },
+  "round1": {
+   "volume": 4159.999999999804,
+   "volumeDelta": 1.6619397823748857e-10
+  }
+ },
+ {
+  "id": "right-trapezoid-par-perp-neg-dx",
+  "mode": "rough",
+  "feats": [
+   "rule:parallel",
+   "rule:perpendicular",
+   "rule:distanceX",
+   "right trapezoid",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 4160.000000128071,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    16.000000000853813,
+    10
+   ],
+   "com": [
+    13.102564102694354,
+    7.589743589958726,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 3.078639565501362e-11,
+   "db": 5.3363313767818e-11,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4160,
+   "bbox": [
+    0,
+    0,
+    30,
+    16
+   ]
+  },
+  "brep": {
+   "volume": 4160.000000052764,
+   "faces": 6,
+   "bbox": [
+    -4.43807356943696e-11,
+    9.884092282734304e-11,
+    0,
+    29.999999999986127,
+    16.000000000335532,
+    10
+   ],
+   "vsSc": 1.810266125013102e-11,
+   "bboxVsSc": 9.884092282734304e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 4160.000000049654,
+   "vsSc": 1.885037083668934e-11,
+   "bboxVsSc": 9.884092282734304e-11
+  }
+ },
+ {
+  "id": "square-by-equal-lines",
+  "mode": "stored",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 4839.999999931048,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    22,
+    22,
+    10
+   ],
+   "com": [
+    11.000000000052237,
+    10.99999999984329,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.424637010748198e-11,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4840,
+   "bbox": [
+    0,
+    0,
+    22,
+    22
+   ]
+  },
+  "brep": {
+   "volume": 4840.000000060462,
+   "faces": 6,
+   "bbox": [
+    9.497338769749328e-12,
+    6.974843707875394e-11,
+    0,
+    22.000000000080526,
+    22.000000000368594,
+    10
+   ],
+   "vsSc": 2.673858049540467e-11,
+   "bboxVsSc": 6.974843707875394e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 4840.000000057576,
+   "vsSc": 2.6142147399678277e-11,
+   "bboxVsSc": 6.974843707875394e-11
+  },
+  "round1": {
+   "volume": 4840.000000000037,
+   "volumeDelta": 1.4254074504748954e-11
+  }
+ },
+ {
+  "id": "square-by-equal-lines",
+  "mode": "rough",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 4839.99999999997,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    22,
+    22,
+    10
+   ],
+   "com": [
+    11.000000000000023,
+    10.999999999999932,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 6.201100239360874e-15,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4840,
+   "bbox": [
+    0,
+    0,
+    22,
+    22
+   ]
+  },
+  "brep": {
+   "volume": 4840.000000054792,
+   "faces": 6,
+   "bbox": [
+    1.6678397215355503e-11,
+    5.925963336372527e-11,
+    0,
+    22.0000000000895,
+    22.00000000032083,
+    10
+   ],
+   "vsSc": 1.1326779367385575e-11,
+   "bboxVsSc": 5.925963336372527e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 4840.000000052282,
+   "vsSc": 1.0808329804960786e-11,
+   "bboxVsSc": 5.925963336372527e-11
+  }
+ },
+ {
+  "id": "two-circles-equal",
+  "mode": "stored",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 2261.691476763529,
+   "bodies": 2,
+   "faces": 6,
+   "bbox": [
+    4,
+    -1.0000000000000018,
+    0,
+    36,
+    11.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    19.999999983942896,
+    5.000000002008062,
+    5.0000000020061215
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00011283812298839518,
+   "db": 1.7763568394002505e-15,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2261.946710584651,
+   "bbox": [
+    4,
+    -1,
+    36,
+    11
+   ]
+  },
+  "brep": {
+   "volume": 2261.946710540204,
+   "faces": 6,
+   "bbox": [
+    4.000000000039805,
+    -0.9999999999442153,
+    0,
+    35.999999999937884,
+    10.999999999960195,
+    10
+   ],
+   "vsSc": 0.00011283810334072154,
+   "bboxVsSc": 5.5786486541364866e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: this sketch draws 2 loops but OpenCascade kept 1 of them; they do not sit one inside another the way an outline and its holes must"
+  },
+  "round1": {
+   "volume": 2261.691476763529,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "two-circles-equal",
+  "mode": "rough",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 2261.691476763529,
+   "bodies": 2,
+   "faces": 6,
+   "bbox": [
+    4,
+    -1.0000000000000018,
+    0,
+    36,
+    11.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    19.999999983942896,
+    5.000000002008062,
+    5.0000000020061215
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00011283812298839518,
+   "db": 1.7763568394002505e-15,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2261.946710584651,
+   "bbox": [
+    4,
+    -1,
+    36,
+    11
+   ]
+  },
+  "brep": {
+   "volume": 2261.9467105594786,
+   "faces": 6,
+   "bbox": [
+    4.000000000011821,
+    -0.9999999999650075,
+    0,
+    35.99999999996061,
+    10.999999999982247,
+    10
+   ],
+   "vsSc": 0.00011283811186094506,
+   "bboxVsSc": 3.4994229736184934e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: this sketch draws 2 loops but OpenCascade kept 1 of them; they do not sit one inside another the way an outline and its holes must"
+  }
+ },
+ {
+  "id": "triangle-apex-on-diagonal-line",
+  "mode": "stored",
+  "feats": [
+   "rule:pointOnObject",
+   "rule:lock",
+   "rule:coincident"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 4500,
+   "bodies": 1,
+   "faces": 5,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    30,
+    10
+   ],
+   "com": [
+    20,
+    10,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4500,
+   "bbox": [
+    0,
+    0,
+    30,
+    30
+   ]
+  },
+  "brep": {
+   "volume": 4499.9999999911915,
+   "faces": 5,
+   "bbox": [
+    -1.0722776418751851e-11,
+    6.281513122189095e-14,
+    0,
+    29.99999999998037,
+    29.99999999995877,
+    10
+   ],
+   "vsSc": 1.9574347081529005e-12,
+   "bboxVsSc": 1.0722776418751851e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: line 4 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  },
+  "round1": {
+   "volume": 4500,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "triangle-apex-on-diagonal-line",
+  "mode": "rough",
+  "feats": [
+   "rule:pointOnObject",
+   "rule:lock",
+   "rule:coincident"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 4500,
+   "bodies": 1,
+   "faces": 5,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    30,
+    10
+   ],
+   "com": [
+    20,
+    10,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4500,
+   "bbox": [
+    0,
+    0,
+    30,
+    30
+   ]
+  },
+  "brep": {
+   "volume": 4500.000000195898,
+   "faces": 5,
+   "bbox": [
+    2.3247708843085665e-10,
+    -1.1807289001342683e-13,
+    0,
+    30.000000000785153,
+    30.00000000094529,
+    10
+   ],
+   "vsSc": 4.353286284349923e-11,
+   "bboxVsSc": 2.3247708843085665e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: line 4 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  }
+ },
+ {
+  "id": "hexagon-equal-pointOn-circle",
+  "mode": "stored",
+  "feats": [
+   "rule:pointOnObject",
+   "rule:equal",
+   "hexagon (equal + pointOnObject)",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 10392.304845413262,
+   "bodies": 1,
+   "faces": 8,
+   "bbox": [
+    -17.320508075688775,
+    -20,
+    0,
+    17.320508075688775,
+    20,
+    10
+   ],
+   "com": [
+    1.2835704710770055e-15,
+    1.925355706615508e-15,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.7503233696504616e-16,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 10392.304845413264,
+   "bbox": [
+    -17.320508075688775,
+    -20,
+    17.320508075688775,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 10392.304845406437,
+   "faces": 8,
+   "bbox": [
+    -17.320508075841882,
+    -20.000000000038856,
+    0,
+    17.320508075736583,
+    19.99999999995274,
+    10
+   ],
+   "vsSc": 6.567213282932846e-13,
+   "bboxVsSc": 8.839679992709706e-12
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: circle 7 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  },
+  "round1": {
+   "volume": 10392.304845413282,
+   "volumeDelta": 1.9253557066155045e-15
+  }
+ },
+ {
+  "id": "hexagon-equal-pointOn-circle",
+  "mode": "rough",
+  "feats": [
+   "rule:pointOnObject",
+   "rule:equal",
+   "hexagon (equal + pointOnObject)",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 10392.304845413031,
+   "bodies": 1,
+   "faces": 8,
+   "bbox": [
+    -17.320508075856175,
+    -19.99999999997869,
+    0,
+    17.32050807576331,
+    20.00000000002106,
+    10
+   ],
+   "com": [
+    5.425594037130301e-12,
+    2.1091805013074788e-11,
+    5.000000000000002
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 2.240413913152591e-14,
+   "db": 9.664861740768762e-12,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 10392.304845413264,
+   "bbox": [
+    -17.320508075688775,
+    -20,
+    17.320508075688775,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 10392.304845851055,
+   "faces": 8,
+   "bbox": [
+    -17.320508079244863,
+    -20.000000001378233,
+    0,
+    17.32050807817014,
+    19.999999999541895,
+    10
+   ],
+   "vsSc": 4.214883693342933e-11,
+   "bboxVsSc": 1.9564601831886332e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: circle 7 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  }
+ },
+ {
+  "id": "symmetric-trapezoid-about-Y-axis",
+  "mode": "stored",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:about axis",
+   "axis-ref:X/Y axes (-2,-3)",
+   "rule:pointOnObject",
+   "symmetric trapezoid"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 4499.999999974248,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -5.713857754048885e-24,
+    0,
+    20,
+    15,
+    10
+   ],
+   "com": [
+    2.365447505373523e-11,
+    6.666666666647591,
+    4.999999999999999
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 5.722742773488992e-12,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4500,
+   "bbox": [
+    -20,
+    0,
+    20,
+    15
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 5 names geometry -3, which this sketch does not have"
+  },
+  "round1": {
+   "volume": 4499.999999991884,
+   "volumeDelta": 3.9191137249134804e-12
+  }
+ },
+ {
+  "id": "symmetric-trapezoid-about-Y-axis",
+  "mode": "rough",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:about axis",
+   "axis-ref:X/Y axes (-2,-3)",
+   "rule:pointOnObject",
+   "symmetric trapezoid"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 4500.000000049871,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -8.913077734868189e-24,
+    0,
+    20,
+    15,
+    10.000000000000002
+   ],
+   "com": [
+    -4.5809496508369076e-11,
+    6.666666666703609,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.108249610600372e-11,
+   "db": 1.7763568394002506e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4500,
+   "bbox": [
+    -20,
+    0,
+    20,
+    15
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 1 (coincident) is off by 2.89e+0 mm: (22.5, -0.5) mm and (19.6, -0.1) mm are not the same point. These rows have not been solved, and this reference reads them rather than solving them"
+  }
+ },
+ {
+  "id": "symmetric-about-construction-line",
+  "mode": "stored",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:about line",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 2400.0000002753172,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    6.2305375112937336e-15,
+    6.105640437681359e-10,
+    0,
+    20.00000000000003,
+    12.000000002639368,
+    10
+   ],
+   "com": [
+    9.999999999818836,
+    6.000000001821667,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.1471551412493378e-10,
+   "db": 8.001892898556145e-15,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2400,
+   "bbox": [
+    0,
+    0,
+    20,
+    12
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: line 5 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  },
+  "round1": {
+   "volume": 2400.00000027532,
+   "volumeDelta": 1.1368683770857425e-15
+  }
+ },
+ {
+  "id": "symmetric-about-construction-line",
+  "mode": "rough",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:about line",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 2400.0000000002647,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -1.0982293628406106e-15,
+    5.897504706808832e-13,
+    0,
+    20,
+    12.000000000002544,
+    10
+   ],
+   "com": [
+    9.999999999999824,
+    6.000000000001758,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.1027623258996755e-13,
+   "db": 6.099748566026347e-10,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2400,
+   "bbox": [
+    0,
+    0,
+    20,
+    12
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: line 5 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  }
+ },
+ {
+  "id": "symmetric-3point-midpoint",
+  "mode": "stored",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:3-point",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 8640.000000006978,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -18.000000000000014,
+    -12,
+    0,
+    18,
+    12.000000000038758,
+    10
+   ],
+   "com": [
+    -4.8468488481943154e-12,
+    9.690539728674146e-12,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 8.075976101854057e-13,
+   "db": 1.9737298215558328e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 8640,
+   "bbox": [
+    -18,
+    -12,
+    18,
+    12
+   ]
+  },
+  "brep": {
+   "volume": 8639.999999989945,
+   "faces": 6,
+   "bbox": [
+    -17.99999999990783,
+    -12.00000000001521,
+    0,
+    18.000000000089063,
+    11.999999999985901,
+    10
+   ],
+   "vsSc": 1.9714139785675026e-12,
+   "bboxVsSc": 5.121434140999303e-12
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 9 is a symmetric rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "round1": {
+   "volume": 8640.000000006978,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "symmetric-3point-midpoint",
+  "mode": "rough",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:3-point",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 8640.000000007085,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -18.000000000000014,
+    -12.000000000000004,
+    0,
+    18,
+    12.000000000039348,
+    10
+   ],
+   "com": [
+    -4.922499719221294e-12,
+    9.837350138867498e-12,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 8.200189498623971e-13,
+   "db": 4.914587255658153e-14,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 8640,
+   "bbox": [
+    -18,
+    -12,
+    18,
+    12
+   ]
+  },
+  "brep": {
+   "volume": 8639.99999999668,
+   "faces": 6,
+   "bbox": [
+    -17.999999999963624,
+    -11.999999999998979,
+    0,
+    18.00000000003517,
+    12.000000000003041,
+    10
+   ],
+   "vsSc": 1.2042383551257289e-12,
+   "bboxVsSc": 3.02557978670771e-12
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 9 is a symmetric rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "tangent-line-circle",
+  "mode": "stored",
+  "feats": [
+   "rule:tangent",
+   "tangent:line-circle",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1130.8457383817545,
+   "bodies": 1,
+   "faces": 3,
+   "bbox": [
+    2,
+    0,
+    0,
+    14,
+    12,
+    10.000000000000005
+   ],
+   "com": [
+    7.9999999935772195,
+    6.000000002409729,
+    5.000000002006165
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00011283812299724105,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1130.9733552923256,
+   "bbox": [
+    2,
+    0,
+    14,
+    12
+   ]
+  },
+  "brep": {
+   "volume": 1130.9733552911239,
+   "faces": 3,
+   "bbox": [
+    2.000000000005585,
+    4.440892098500626e-15,
+    0,
+    13.999999999999208,
+    11.999999999993626,
+    10
+   ],
+   "vsSc": 0.00011283812193485149,
+   "bboxVsSc": 2.792432951529396e-12
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: line 1 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  },
+  "round1": {
+   "volume": 1130.8457383817545,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "tangent-line-circle",
+  "mode": "rough",
+  "feats": [
+   "rule:tangent",
+   "tangent:line-circle",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1130.8457383817545,
+   "bodies": 1,
+   "faces": 3,
+   "bbox": [
+    2,
+    0,
+    0,
+    14,
+    12,
+    10.000000000000005
+   ],
+   "com": [
+    7.9999999935772195,
+    6.000000002409729,
+    5.000000002006165
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00011283812299724105,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1130.9733552923256,
+   "bbox": [
+    2,
+    0,
+    14,
+    12
+   ]
+  },
+  "brep": {
+   "volume": 1130.9733553736467,
+   "faces": 3,
+   "bbox": [
+    1.9999999997947775,
+    9.178968696232914e-11,
+    0,
+    14.000000000226198,
+    12.00000000052321,
+    10
+   ],
+   "vsSc": 0.00011283819489277068,
+   "bboxVsSc": 1.0261125283848453e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: line 1 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  }
+ },
+ {
+  "id": "tangent-line-circle-side-matching",
+  "mode": "stored",
+  "feats": [
+   "tangent:side option"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1130.8457383817545,
+   "bodies": 1,
+   "faces": 3,
+   "bbox": [
+    2,
+    0,
+    0,
+    14,
+    12,
+    10.000000000000005
+   ],
+   "com": [
+    7.9999999935772195,
+    6.000000002409729,
+    5.000000002006165
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00011283812299724105,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1130.9733552923256,
+   "bbox": [
+    2,
+    0,
+    14,
+    12
+   ]
+  },
+  "brep": {
+   "volume": 1130.9733552911239,
+   "faces": 3,
+   "bbox": [
+    2.000000000005585,
+    4.440892098500626e-15,
+    0,
+    13.999999999999208,
+    11.999999999993626,
+    10
+   ],
+   "vsSc": 0.00011283812193485149,
+   "bboxVsSc": 2.792432951529396e-12
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: line 1 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  },
+  "round1": {
+   "volume": 1130.8457383817545,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "tangent-line-circle-side-opposite",
+  "mode": "stored",
+  "feats": [
+   "tangent:side option"
+  ],
+  "expect": "refuse",
+  "curved": true,
+  "sc": {
+   "refused": "Row 3 of sk.rules() asks for the circle on one side of the line but it is drawn on the other side; redraw it on the side you mean.",
+   "stage": "map"
+  }
+ },
+ {
+  "id": "circle-circle-external-mode",
+  "mode": "stored",
+  "feats": [
+   "rule:tangent",
+   "tangent:circle-circle external",
+   "tangent:mode option"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "bodies": 2,
+   "faces": 6,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    3.6516231297924686,
+    -1.426777383604161e-15,
+    5.000000002006136
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00009578994864405292,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2796.017461694916,
+   "bbox": [
+    -8,
+    -8,
+    18,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 4 names geometry -2, which this sketch does not have"
+  },
+  "round1": {
+   "volume": 2795.7496313258525,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "circle-circle-external-mode",
+  "mode": "rough",
+  "feats": [
+   "rule:tangent",
+   "tangent:circle-circle external",
+   "tangent:mode option"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "bodies": 2,
+   "faces": 6,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    3.6516231297924686,
+    -1.426777383604161e-15,
+    5.000000002006136
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00009578994864405292,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2796.017461694916,
+   "bbox": [
+    -8,
+    -8,
+    18,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 3 (radius) is off by 1.59e-1 mm: geometry 2 measures 4.84063460538 where the rule says 5. These rows have not been solved, and this reference reads them rather than solving them"
+  }
+ },
+ {
+  "id": "circle-circle-external-no-mode",
+  "mode": "stored",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "bodies": 2,
+   "faces": 6,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    3.6516231297924686,
+    -1.426777383604161e-15,
+    5.000000002006136
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00009578994864405292,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2796.017461694916,
+   "bbox": [
+    -8,
+    -8,
+    18,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 4 names geometry -2, which this sketch does not have"
+  },
+  "round1": {
+   "volume": 2795.7496313258525,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "circle-circle-external-no-mode",
+  "mode": "rough",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "bodies": 2,
+   "faces": 6,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    3.6516231297924686,
+    -1.426777383604161e-15,
+    5.000000002006136
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00009578994864405292,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2796.017461694916,
+   "bbox": [
+    -8,
+    -8,
+    18,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 3 (radius) is off by 3.57e-1 mm: geometry 2 measures 5.35709422082 where the rule says 5. These rows have not been solved, and this reference reads them rather than solving them"
+  }
+ },
+ {
+  "id": "circle-circle-internal-mode",
+  "mode": "stored",
+  "feats": [
+   "tangent:circle-circle internal",
+   "tangent:mode option"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1225.134743052579,
+   "bodies": 1,
+   "faces": 4,
+   "bbox": [
+    -8,
+    -8.000000000000002,
+    0,
+    8,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    -1.9229852524807538,
+    5.340168850848017e-15,
+    5.000000003292087
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.000070511228527905,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1225.2211349000193,
+   "bbox": [
+    -8,
+    -8,
+    8,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 4 names geometry -2, which this sketch does not have"
+  },
+  "round1": {
+   "volume": 1225.134743052579,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "circle-circle-internal-mode",
+  "mode": "rough",
+  "feats": [
+   "tangent:circle-circle internal",
+   "tangent:mode option"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1225.134743052579,
+   "bodies": 1,
+   "faces": 4,
+   "bbox": [
+    -8,
+    -8.000000000000002,
+    0,
+    8,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    -1.9229852524807538,
+    5.340168850848017e-15,
+    5.000000003292087
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.000070511228527905,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1225.2211349000193,
+   "bbox": [
+    -8,
+    -8,
+    8,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 3 (radius) is off by 2.33e-1 mm: geometry 2 measures 4.76698067063 where the rule says 5. These rows have not been solved, and this reference reads them rather than solving them"
+  }
+ },
+ {
+  "id": "circle-circle-internal-no-mode",
+  "mode": "stored",
+  "feats": [
+   "tangent:circle-circle internal"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1225.134743052579,
+   "bodies": 1,
+   "faces": 4,
+   "bbox": [
+    -8,
+    -8.000000000000002,
+    0,
+    8,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    -1.9229852524807538,
+    5.340168850848017e-15,
+    5.000000003292087
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.000070511228527905,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1225.2211349000193,
+   "bbox": [
+    -8,
+    -8,
+    8,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 4 names geometry -2, which this sketch does not have"
+  },
+  "round1": {
+   "volume": 1225.134743052579,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "circle-circle-internal-no-mode",
+  "mode": "rough",
+  "feats": [
+   "tangent:circle-circle internal"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1225.134743052579,
+   "bodies": 1,
+   "faces": 4,
+   "bbox": [
+    -8,
+    -8.000000000000002,
+    0,
+    8,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    -1.9229852524807538,
+    5.340168850848017e-15,
+    5.000000003292087
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.000070511228527905,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1225.2211349000193,
+   "bbox": [
+    -8,
+    -8,
+    8,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 3 (radius) is off by 3.71e-1 mm: geometry 2 measures 5.37124407431 where the rule says 5. These rows have not been solved, and this reference reads them rather than solving them"
+  }
+ },
+ {
+  "id": "circle-circle-mode-request-external-start-internal",
+  "mode": "stored",
+  "feats": [
+   "tangent:mode option",
+   "rough start: tangent external/internal branch"
+  ],
+  "expect": "refuse",
+  "curved": true,
+  "sc": {
+   "refused": "Row 5 of sk.rules() asks for external tangency but the two circles are drawn internally; draw them externally (or ask for internal tangency).",
+   "stage": "map"
+  }
+ },
+ {
+  "id": "circle-circle-mode-request-internal-start-external",
+  "mode": "stored",
+  "feats": [
+   "tangent:mode option",
+   "rough start: tangent external/internal branch"
+  ],
+  "expect": "refuse",
+  "curved": true,
+  "sc": {
+   "refused": "Row 5 of sk.rules() asks for internal tangency but the two circles are drawn externally; draw them internally (or ask for external tangency).",
+   "stage": "map"
+  }
+ },
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "mode": "stored",
+  "feats": [
+   "rule:tangent",
+   "tangent:endpoint line-arc",
+   "rule:lock",
+   "rule:equal",
+   "rule:radius",
+   "slot with tangent joints",
+   "endpoint tangency curved accuracy",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 11141.215389447234,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -9.999999999727008,
+    -8.433964637788449e-11,
+    0,
+    50.000192901992385,
+    19.999999999721,
+    10.000000000000007
+   ],
+   "com": [
+    20.000096454407483,
+    9.999999997838819,
+    5.000000000000099
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.000033860880961103286,
+   "db": 7.596198070985993e-11,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 11141.592653589794,
+   "bbox": [
+    -10,
+    0,
+    50,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 11141.592653721977,
+   "faces": 6,
+   "bbox": [
+    -9.999999999989097,
+    -4.903174595491343e-11,
+    0,
+    50.00000000097486,
+    20.000000000218208,
+    10
+   ],
+   "vsSc": 0.00003386089282456395,
+   "bboxVsSc": 0.000003858020350473721
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "round1": {
+   "volume": 11141.238823333528,
+   "volumeDelta": 0.0000021033465546676025
+  }
+ },
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "mode": "rough",
+  "feats": [
+   "rule:tangent",
+   "tangent:endpoint line-arc",
+   "rule:lock",
+   "rule:equal",
+   "rule:radius",
+   "slot with tangent joints",
+   "endpoint tangency curved accuracy",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 11141.150159697512,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -9.999999999712664,
+    3.073597070787511e-11,
+    0,
+    49.99986675472233,
+    19.999999999704844,
+    10.000000000000007
+   ],
+   "com": [
+    19.99993336821885,
+    10.000000001905907,
+    5.000000000000102
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.000039715497239930276,
+   "db": 0.0000065229206626604846,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 11141.592653589794,
+   "bbox": [
+    -10,
+    0,
+    50,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 11141.592653634347,
+   "faces": 6,
+   "bbox": [
+    -9.99999999999916,
+    -1.4931973981757083e-11,
+    0,
+    50.000000000291266,
+    20.000000000044956,
+    10
+   ],
+   "vsSc": 0.000039715501238527194,
+   "bboxVsSc": 0.0000026649113786292503
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "slot-dims-from-points",
+  "mode": "stored",
+  "feats": [
+   "tangent:endpoint line-arc",
+   "slot with tangent joints",
+   "endpoint tangency curved accuracy",
+   "rule:distanceX"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 3285.273145303769,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -4.999999999979661,
+    -4.999999999962062,
+    0,
+    29.99999999999116,
+    4.999999999673567,
+    10.000000000000005
+   ],
+   "com": [
+    12.500000016894543,
+    -2.0857127898905579e-10,
+    5.000000000000235
+   ],
+   "rung": "GJTD*",
+   "cls": "MATCH",
+   "dv": 0.000038052646121351254,
+   "db": 3.223235012335084e-11,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 3285.3981633974486,
+   "bbox": [
+    -5,
+    -5,
+    30,
+    5
+   ]
+  },
+  "brep": {
+   "volume": 3285.3981633987314,
+   "faces": 6,
+   "bbox": [
+    -4.999999999993168,
+    -5.0000000000039435,
+    0,
+    30.000000000013003,
+    5.000000000001977,
+    10
+   ],
+   "vsSc": 0.000038052646511804223,
+   "bboxVsSc": 6.568203758658587e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "round1": {
+   "volume": 3285.273147981523,
+   "volumeDelta": 8.150779964037875e-10
+  }
+ },
+ {
+  "id": "slot-dims-from-points",
+  "mode": "rough",
+  "feats": [
+   "tangent:endpoint line-arc",
+   "slot with tangent joints",
+   "endpoint tangency curved accuracy",
+   "rule:distanceX"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 3285.2731389012242,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -4.9999999999859845,
+    -4.999999999785198,
+    0,
+    30.00000000000263,
+    4.999999999679748,
+    10.000000000000005
+   ],
+   "com": [
+    12.499999993109684,
+    1.0320143329654019e-10,
+    5.000000000000242
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00003805459490945015,
+   "db": 3.536904102956689e-11,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 3285.3981633974486,
+   "bbox": [
+    -5,
+    -5,
+    30,
+    5
+   ]
+  },
+  "brep": {
+   "volume": 3285.3981634183897,
+   "faces": 6,
+   "bbox": [
+    -4.999999999888351,
+    -5.0000000000642455,
+    0,
+    30.00000000021248,
+    5.00000000003224,
+    10
+   ],
+   "vsSc": 0.00003805460128320382,
+   "bboxVsSc": 7.04984515205071e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "mode": "stored",
+  "feats": [
+   "rule:tangent",
+   "tangent:endpoint arc-arc",
+   "point-ref:a/b/c ends",
+   "rule:equal",
+   "rule:radius",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1099.0937329157696,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -7.000000000000003,
+    -5.000000000000004,
+    0,
+    7.000000000000002,
+    5.000000000000002,
+    10.000000000000004
+   ],
+   "com": [
+    2.587067063205202e-15,
+    -9.233897381541955e-16,
+    5.000000001366077
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00010237668156301426,
+   "db": 7.105427357601e-16,
+   "dof": 4,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1099.2062660056365,
+   "bbox": [
+    -7,
+    -5,
+    7,
+    5
+   ]
+  },
+  "brep": {
+   "volume": 1099.2062660056363,
+   "faces": 6,
+   "bbox": [
+    -7,
+    -5,
+    0,
+    7,
+    5,
+    10
+   ],
+   "vsSc": 0.00010237668156280744,
+   "bboxVsSc": 8.881784197001252e-16
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "round1": {
+   "volume": 1099.0937329157696,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "mode": "rough",
+  "feats": [
+   "rule:tangent",
+   "tangent:endpoint arc-arc",
+   "point-ref:a/b/c ends",
+   "rule:equal",
+   "rule:radius",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1099.0937332642998,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -7.000000000580242,
+    -5.00000000026038,
+    0,
+    7.000000000640946,
+    5.000000000288352,
+    10.000000000000005
+   ],
+   "com": [
+    -3.01598698902022e-10,
+    1.5056038265839226e-11,
+    5.000000001366239
+   ],
+   "rung": "GJTD*",
+   "cls": "MATCH",
+   "dv": 0.00010237636448859073,
+   "db": 9.156370899583116e-11,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1099.2062660056365,
+   "bbox": [
+    -7,
+    -5,
+    7,
+    5
+   ]
+  },
+  "brep": {
+   "volume": 1099.206266004998,
+   "faces": 6,
+   "bbox": [
+    -6.999999999998504,
+    -4.9999999999977245,
+    0,
+    6.999999999999082,
+    4.99999999999782,
+    10
+   ],
+   "vsSc": 0.00010237636390780809,
+   "bboxVsSc": 9.169490563669603e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "triangle-length-angle-120",
+  "mode": "stored",
+  "feats": [
+   "rule:angle"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5196.15242270663,
+   "bodies": 1,
+   "faces": 5,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25.98076211353316,
+    10
+   ],
+   "com": [
+    21.666666666666668,
+    8.660254037844386,
+    5.000000000000001
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 3.500646739300923e-16,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 5196.152422706632,
+   "bbox": [
+    0,
+    0,
+    40,
+    25.980762113533157
+   ]
+  },
+  "brep": {
+   "volume": 5196.152422707686,
+   "faces": 5,
+   "bbox": [
+    -4.0994308430312135e-13,
+    1.0840702195727518e-11,
+    0,
+    39.999999999999076,
+    25.980762113558907,
+    10
+   ],
+   "vsSc": 2.0321254321637738e-13,
+   "bboxVsSc": 1.0840702195727518e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 7 is a angle rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "round1": {
+   "volume": 5196.15242270663,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "triangle-length-angle-120",
+  "mode": "rough",
+  "feats": [
+   "rule:angle"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5196.15242270663,
+   "bodies": 1,
+   "faces": 5,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25.98076211353316,
+    10
+   ],
+   "com": [
+    21.666666666666668,
+    8.660254037844386,
+    5.000000000000001
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 3.500646739300923e-16,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 5196.152422706632,
+   "bbox": [
+    0,
+    0,
+    40,
+    25.980762113533157
+   ]
+  },
+  "brep": {
+   "volume": 5196.15242271451,
+   "faces": 5,
+   "bbox": [
+    4.250885493582863e-11,
+    -5.034574915367577e-12,
+    0,
+    40.00000000010992,
+    25.980762113530417,
+    10
+   ],
+   "vsSc": 1.5164801674628608e-12,
+   "bboxVsSc": 4.250885493582863e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 7 is a angle rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "triangle-angle-120-with-quadrant",
+  "mode": "stored",
+  "feats": [
+   "angle:quadrant option"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5196.15242270663,
+   "bodies": 1,
+   "faces": 5,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25.98076211353316,
+    10
+   ],
+   "com": [
+    21.666666666666668,
+    8.660254037844386,
+    5.000000000000001
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 3.500646739300923e-16,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 5196.152422706632,
+   "bbox": [
+    0,
+    0,
+    40,
+    25.980762113533157
+   ]
+  },
+  "brep": {
+   "volume": 5196.152422707686,
+   "faces": 5,
+   "bbox": [
+    -4.0994308430312135e-13,
+    1.0840702195727518e-11,
+    0,
+    39.999999999999076,
+    25.980762113558907,
+    10
+   ],
+   "vsSc": 2.0321254321637738e-13,
+   "bboxVsSc": 1.0840702195727518e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 7 is a angle rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "round1": {
+   "volume": 5196.15242270663,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "triangle-angle-wrong-orientation-start",
+  "mode": "stored",
+  "feats": [
+   "rule:angle",
+   "rough start: angle orientation branch"
+  ],
+  "expect": "refuse",
+  "curved": false,
+  "sc": {
+   "refused": "Row 8 of sk.rules() asks for 120 degrees from line 1 to line 2, but the lines are drawn at about -120 degrees (they turn the other way round); the solver cannot swing a line across that far, so redraw the lines near 120 degrees first.",
+   "stage": "map"
+  }
+ },
+ {
+  "id": "rect-lock-offset-corner",
+  "mode": "stored",
+  "feats": [
+   "rule:lock",
+   "lock-hoisting order"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999932,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ],
+   "com": [
+    20.000000000000057,
+    12.999999999999888,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.1368683772161604e-14,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    5,
+    3,
+    35,
+    23
+   ]
+  },
+  "brep": {
+   "volume": 5999.999999982753,
+   "faces": 6,
+   "bbox": [
+    5,
+    2.9999999999537357,
+    0,
+    34.99999999999828,
+    22.99999999993457,
+    10
+   ],
+   "vsSc": 2.863089321189408e-12,
+   "bboxVsSc": 1.5421441901491095e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.999999983658,
+   "vsSc": 2.7122647831445547e-12,
+   "bboxVsSc": 1.5421441901491095e-11
+  },
+  "round1": {
+   "volume": 5999.999999999932,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "rect-lock-offset-corner",
+  "mode": "rough",
+  "feats": [
+   "rule:lock",
+   "lock-hoisting order"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999946,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ],
+   "com": [
+    20.000000000000043,
+    12.99999999999991,
+    5.000000000000001
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 8.943364567433794e-15,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    5,
+    3,
+    35,
+    23
+   ]
+  },
+  "brep": {
+   "volume": 5999.999999983024,
+   "faces": 6,
+   "bbox": [
+    5,
+    2.9999999999537703,
+    0,
+    34.999999999998856,
+    22.99999999993462,
+    10
+   ],
+   "vsSc": 2.82034307020583e-12,
+   "bboxVsSc": 1.5409895582034638e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.999999983908,
+   "vsSc": 2.673004928517805e-12,
+   "bboxVsSc": 1.5409895582034638e-11
+  }
+ },
+ {
+  "id": "rect-param-width",
+  "mode": "stored",
+  "feats": [
+   "value:param()"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 6000,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15,
+    10,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 6000,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "vsSc": 0,
+   "bboxVsSc": 0
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.999999999999,
+   "vsSc": 1.5158245029548806e-16,
+   "bboxVsSc": 0
+  },
+  "round1": {
+   "volume": 6000,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "rect-reference-dim-correct",
+  "mode": "stored",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999902,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15.00000000000008,
+    9.999999999999837,
+    4.999999999999999
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.6370904631912707e-14,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 5999.999999941251,
+   "faces": 6,
+   "bbox": [
+    -1.460025165925442e-11,
+    -2.542541488162691e-10,
+    0,
+    29.999999999984304,
+    19.999999999682515,
+    10
+   ],
+   "vsSc": 9.77509747230085e-12,
+   "bboxVsSc": 2.542541488162691e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.99999994616,
+   "vsSc": 8.957006988040763e-12,
+   "bboxVsSc": 2.542541488162691e-10
+  },
+  "round1": {
+   "volume": 5999.999999999902,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "rect-reference-dim-correct",
+  "mode": "rough",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.99999999991,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -8.907864790068902e-36,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15.000000000000076,
+    9.99999999999985,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.5006662579253317e-14,
+   "db": 8.907864790068902e-36,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 5999.999999947383,
+   "faces": 6,
+   "bbox": [
+    -1.229919277049749e-11,
+    -2.2805561568869625e-10,
+    0,
+    29.99999999998665,
+    19.99999999971526,
+    10
+   ],
+   "vsSc": 8.754492834442388e-12,
+   "bboxVsSc": 2.2805561568869625e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.9999999517895,
+   "vsSc": 8.020075862748419e-12,
+   "bboxVsSc": 2.2805561568869625e-10
+  }
+ },
+ {
+  "id": "rect-reference-dim-wrong-value",
+  "mode": "stored",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999902,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15.00000000000008,
+    9.999999999999837,
+    4.999999999999999
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.6370904631912707e-14,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 5999.999999941251,
+   "faces": 6,
+   "bbox": [
+    -1.460025165925442e-11,
+    -2.542541488162691e-10,
+    0,
+    29.999999999984304,
+    19.999999999682515,
+    10
+   ],
+   "vsSc": 9.77509747230085e-12,
+   "bboxVsSc": 2.542541488162691e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 11 (distance) is off by 6.29e+1 mm: (-0.0, -0.0) mm to (30.0, 20.0) mm measures 36.055512754477355 where the rule says 99. These rows have not been solved, and this reference reads them rather than solving them"
+  },
+  "round1": {
+   "volume": 5999.999999999902,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "rect-reference-distanceX-zero",
+  "mode": "stored",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 6000,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15,
+    10,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 6000,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "vsSc": 0,
+   "bboxVsSc": 0
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.999999999999,
+   "vsSc": 1.5158245029548806e-16,
+   "bboxVsSc": 0
+  }
+ },
+ {
+  "id": "rect-reference-distanceX-opposite-sign",
+  "mode": "stored",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999902,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15.00000000000008,
+    9.999999999999837,
+    4.999999999999999
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.6370904631912707e-14,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 5999.999999941251,
+   "faces": 6,
+   "bbox": [
+    -1.460025165925442e-11,
+    -2.542541488162691e-10,
+    0,
+    29.999999999984304,
+    19.999999999682515,
+    10
+   ],
+   "vsSc": 9.77509747230085e-12,
+   "bboxVsSc": 2.542541488162691e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.99999994616,
+   "vsSc": 8.957006988040763e-12,
+   "bboxVsSc": 2.542541488162691e-10
+  }
+ },
+ {
+  "id": "rect-reference-distanceX-opposite-sign",
+  "mode": "rough",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999914,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -1.1381414329537187e-35,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15.000000000000073,
+    9.999999999999856,
+    5.000000000000001
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.4400332778071365e-14,
+   "db": 1.1381414329537187e-35,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 5999.9999999504835,
+   "faces": 6,
+   "bbox": [
+    -5.096098882354823e-12,
+    -2.1761710901279227e-10,
+    0,
+    29.999999999994085,
+    19.999999999728267,
+    10
+   ],
+   "vsSc": 8.238354591177468e-12,
+   "bboxVsSc": 2.1761710901279227e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.999999954671,
+   "vsSc": 7.54046899000602e-12,
+   "bboxVsSc": 2.1761710901279227e-10
+  }
+ },
+ {
+  "id": "rect-inactive-conflicting-rule",
+  "mode": "stored",
+  "feats": [
+   "active:false suppressed rule"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999902,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15.00000000000008,
+    9.999999999999837,
+    4.999999999999999
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.6370904631912707e-14,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 5999.999999941251,
+   "faces": 6,
+   "bbox": [
+    -1.460025165925442e-11,
+    -2.542541488162691e-10,
+    0,
+    29.999999999984304,
+    19.999999999682515,
+    10
+   ],
+   "vsSc": 9.77509747230085e-12,
+   "bboxVsSc": 2.542541488162691e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 11 (distance) is off by 6.90e+1 mm: (-0.0, -0.0) mm to (30.0, -0.0) mm measures 29.999999999994056 where the rule says 99. These rows have not been solved, and this reference reads them rather than solving them"
+  },
+  "round1": {
+   "volume": 5999.999999999902,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "rect-inactive-conflicting-rule",
+  "mode": "rough",
+  "feats": [
+   "active:false suppressed rule"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5999.999999999886,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15.000000000000096,
+    9.999999999999808,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.8947806286936004e-14,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 5999.999999943987,
+   "faces": 6,
+   "bbox": [
+    -1.5530896240671867e-11,
+    -2.4114613012838346e-10,
+    0,
+    29.99999999998294,
+    19.99999999969892,
+    10
+   ],
+   "vsSc": 9.31656056014826e-12,
+   "bboxVsSc": 2.4114613012838346e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 11 (distance) is off by 6.90e+1 mm: (-0.0, -0.0) mm to (30.0, -0.0) mm measures 29.999999999993463 where the rule says 99. These rows have not been solved, and this reference reads them rather than solving them"
+  }
+ },
+ {
+  "id": "plate-with-hole-default-profiles",
+  "mode": "stored",
+  "feats": [
+   "nested loops (hole) profile selection",
+   "rule:diameter"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 9214.732294344925,
+   "bodies": 1,
+   "faces": 7,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25.000000001061423,
+    10.000000000000005
+   ],
+   "com": [
+    19.999999999846594,
+    12.500000000288082,
+    4.999999999999905
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.000014157718877696816,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 9214.601836602553,
+   "bbox": [
+    0,
+    0,
+    40,
+    25
+   ]
+  },
+  "brep": {
+   "volume": 9214.601836621781,
+   "faces": 7,
+   "bbox": [
+    -1.0463163781506625e-11,
+    2.7162895586566087e-11,
+    0,
+    39.99999999998878,
+    25.000000000112014,
+    10
+   ],
+   "vsSc": 0.000014157716790920898,
+   "bboxVsSc": 3.797637759799992e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 9214.601836620192,
+   "vsSc": 0.000014157716963453501,
+   "bboxVsSc": 3.797637759799992e-11
+  },
+  "round1": {
+   "volume": 9214.732294132637,
+   "volumeDelta": 2.303797761491112e-11
+  }
+ },
+ {
+  "id": "rect-underconstrained-height-free",
+  "mode": "stored",
+  "feats": [
+   "rough start: solution branch chosen by the drawn start state"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5100,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    17,
+    10
+   ],
+   "com": [
+    15,
+    8.5,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0,
+   "db": 0,
+   "dof": 1,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 5100,
+   "bbox": [
+    0,
+    0,
+    30,
+    17
+   ]
+  },
+  "brep": {
+   "volume": 5100,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    17,
+    10
+   ],
+   "vsSc": 0,
+   "bboxVsSc": 0
+  },
+  "brepDof": 1,
+  "occt": {
+   "volume": 5099.999999999999,
+   "vsSc": 1.783322944652801e-16,
+   "bboxVsSc": 0
+  },
+  "round1": {
+   "volume": 5100,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "rect-redundant-width-dimension",
+  "mode": "stored",
+  "feats": [
+   "rule:distance",
+   "redundant/conflicting dimensions"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 6000,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    15,
+    10,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 6000,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "vsSc": 0,
+   "bboxVsSc": 0
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5999.999999999999,
+   "vsSc": 1.5158245029548806e-16,
+   "bboxVsSc": 0
+  }
+ },
+ {
+  "id": "rect-conflicting-width-dimension",
+  "mode": "stored",
+  "feats": [
+   "rule:distance",
+   "redundant/conflicting dimensions"
+  ],
+  "expect": "refuse",
+  "curved": false,
+  "sc": {
+   "refused": "Row 12 of sk.rules() (it sets the length of geometry 3 to 35) cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.",
+   "stage": "residual"
+  }
+ },
+ {
+  "id": "slot-arc-rows-inconsistent-with-lock-c",
+  "mode": "stored",
+  "feats": [
+   "rule:lock",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "refuse",
+  "curved": true,
+  "sc": {
+   "refused": "Arc 1 has an end that is not on its circle (off by 0.20) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead.",
+   "stage": "preflight"
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__corner-origin-25x60",
+  "mode": "stored",
+  "feats": [
+   "dimensioned rectangle",
+   "rule:distanceX",
+   "rule:distanceY"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 15000,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    25,
+    60,
+    10
+   ],
+   "com": [
+    12.5,
+    30,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 15000,
+   "bbox": [
+    0,
+    0,
+    25,
+    60
+   ]
+  },
+  "brep": {
+   "volume": 15000,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    25,
+    60,
+    10
+   ],
+   "vsSc": 0,
+   "bboxVsSc": 0
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 14999.999999999996,
+   "vsSc": 2.425319204727809e-16,
+   "bboxVsSc": 0
+  },
+  "fc": {
+   "bboxVsSc": 0,
+   "dof": 0
+  },
+  "round1": {
+   "volume": 15000,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__corner-origin-25x60",
+  "mode": "rough",
+  "feats": [
+   "dimensioned rectangle",
+   "rule:distanceX",
+   "rule:distanceY"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 15000.000000053888,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -1.7516230804060213e-46,
+    -1.4210854715202004e-14,
+    0,
+    25,
+    60.000000000431115,
+    10
+   ],
+   "com": [
+    12.49999999998503,
+    30.00000000010778,
+    4.999999999999999
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 3.5925040720030667e-12,
+   "db": 7.18524499158472e-12,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 15000,
+   "bbox": [
+    0,
+    0,
+    25,
+    60
+   ]
+  },
+  "brep": {
+   "volume": 14999.999999994276,
+   "faces": 6,
+   "bbox": [
+    0,
+    -1.596276661652539e-11,
+    0,
+    24.99999999999943,
+    59.99999999997742,
+    10
+   ],
+   "vsSc": 3.9741280488685036e-12,
+   "bboxVsSc": 1.594855576181019e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 14999.999999994758,
+   "vsSc": 3.9419925694057215e-12,
+   "bboxVsSc": 1.594855576181019e-11
+  },
+  "fc": {
+   "bboxVsSc": 7.18524499158472e-12,
+   "dof": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__offset-corner-30x18",
+  "mode": "stored",
+  "feats": [
+   "dimensioned rectangle",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5400,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -10,
+    5,
+    0,
+    20,
+    23,
+    10
+   ],
+   "com": [
+    5,
+    14,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 5400,
+   "bbox": [
+    -10,
+    5,
+    20,
+    23
+   ]
+  },
+  "brep": {
+   "volume": 5400,
+   "faces": 6,
+   "bbox": [
+    -10,
+    5,
+    0,
+    20,
+    23,
+    10
+   ],
+   "vsSc": 0,
+   "bboxVsSc": 0
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5400,
+   "vsSc": 0,
+   "bboxVsSc": 0
+  },
+  "fc": {
+   "bboxVsSc": 0,
+   "dof": 0
+  },
+  "round1": {
+   "volume": 5400,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__offset-corner-30x18",
+  "mode": "rough",
+  "feats": [
+   "dimensioned rectangle",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 5399.999999925215,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -10,
+    5,
+    0,
+    20,
+    23,
+    10
+   ],
+   "com": [
+    5.000000000069245,
+    13.999999999875362,
+    4.999999999999999
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 1.3849077933830106e-11,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 5400,
+   "bbox": [
+    -10,
+    5,
+    20,
+    23
+   ]
+  },
+  "brep": {
+   "volume": 5400.000000000329,
+   "faces": 6,
+   "bbox": [
+    -10,
+    5,
+    0,
+    20.000000000001073,
+    23.000000000000814,
+    10
+   ],
+   "vsSc": 1.3910047763836999e-11,
+   "bboxVsSc": 5.3645976549884685e-14
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 5400.000000000293,
+   "vsSc": 1.3903310766046181e-11,
+   "bboxVsSc": 5.3645976549884685e-14
+  },
+  "fc": {
+   "bboxVsSc": 0,
+   "dof": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__square-by-equal",
+  "mode": "stored",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 4840,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    7,
+    -3,
+    0,
+    29,
+    19,
+    10
+   ],
+   "com": [
+    18,
+    8,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4840,
+   "bbox": [
+    7,
+    -3,
+    29,
+    19
+   ]
+  },
+  "brep": {
+   "volume": 4840.000000000001,
+   "faces": 6,
+   "bbox": [
+    7,
+    -3,
+    0,
+    29,
+    19,
+    10
+   ],
+   "vsSc": 1.87912128465481e-16,
+   "bboxVsSc": 0
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 4839.999999999999,
+   "vsSc": 1.8791212846548109e-16,
+   "bboxVsSc": 0
+  },
+  "fc": {
+   "bboxVsSc": 0,
+   "dof": 0
+  },
+  "round1": {
+   "volume": 4840,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__square-by-equal",
+  "mode": "rough",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 4840.000000023698,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    7,
+    -3,
+    0,
+    29,
+    19.00000000021543,
+    10
+   ],
+   "com": [
+    17.999999999982045,
+    8.000000000053857,
+    4.999999999999999
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 4.896238419296574e-12,
+   "db": 1.1338392213426567e-11,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4840,
+   "bbox": [
+    7,
+    -3,
+    29,
+    19
+   ]
+  },
+  "brep": {
+   "volume": 4840.000000004734,
+   "faces": 6,
+   "bbox": [
+    7,
+    -3,
+    0,
+    29.00000000000617,
+    19.00000000002354,
+    10
+   ],
+   "vsSc": 3.918155790629913e-12,
+   "bboxVsSc": 1.0099430064164996e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 4840.000000004686,
+   "vsSc": 3.928115133438613e-12,
+   "bboxVsSc": 1.0099430064164996e-11
+  },
+  "fc": {
+   "bboxVsSc": 1.1338392213426567e-11,
+   "dof": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__right-triangle",
+  "mode": "stored",
+  "feats": [
+   "rule:perpendicular",
+   "rule:distance"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 3000,
+   "bodies": 1,
+   "faces": 5,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    10,
+    6.666666666666667,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 3000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 3000,
+   "faces": 5,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "vsSc": 0,
+   "bboxVsSc": 0
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 3000,
+   "vsSc": 0,
+   "bboxVsSc": 0
+  },
+  "fc": {
+   "bboxVsSc": 0,
+   "dof": 0
+  },
+  "round1": {
+   "volume": 3000,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__right-triangle",
+  "mode": "rough",
+  "feats": [
+   "rule:perpendicular",
+   "rule:distance"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 3000,
+   "bodies": 1,
+   "faces": 5,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "com": [
+    10,
+    6.666666666666667,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 3000,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ]
+  },
+  "brep": {
+   "volume": 3000.0000005845322,
+   "faces": 5,
+   "bbox": [
+    0,
+    0,
+    0,
+    30.000000000987356,
+    20.000000004043738,
+    10
+   ],
+   "vsSc": 1.948440815718561e-10,
+   "bboxVsSc": 2.021868894121803e-10
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 3000.0000005637467,
+   "vsSc": 1.8791555093640191e-10,
+   "bboxVsSc": 2.021868894121803e-10
+  },
+  "fc": {
+   "bboxVsSc": 0,
+   "dof": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__parallelogram",
+  "mode": "stored",
+  "feats": [
+   "rule:parallel"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 4500,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    15,
+    10
+   ],
+   "com": [
+    20,
+    7.5,
+    5
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0,
+   "db": 0,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4500,
+   "bbox": [
+    0,
+    0,
+    40,
+    15
+   ]
+  },
+  "brep": {
+   "volume": 4500,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    15,
+    10
+   ],
+   "vsSc": 0,
+   "bboxVsSc": 0
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 4500,
+   "vsSc": 0,
+   "bboxVsSc": 0
+  },
+  "fc": {
+   "bboxVsSc": 0,
+   "dof": 0
+  },
+  "round1": {
+   "volume": 4500,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__parallelogram",
+  "mode": "rough",
+  "feats": [
+   "rule:parallel"
+  ],
+  "expect": "build",
+  "curved": false,
+  "sc": {
+   "volume": 4499.999999985197,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    15.000000000001455,
+    10
+   ],
+   "com": [
+    20.00000000004451,
+    7.499999999992019,
+    4.999999999999998
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 3.289541281345818e-12,
+   "db": 9.698908343125368e-14,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4500,
+   "bbox": [
+    0,
+    0,
+    40,
+    15
+   ]
+  },
+  "brep": {
+   "volume": 4500.000000048993,
+   "faces": 6,
+   "bbox": [
+    0,
+    -3.294221047315456e-11,
+    0,
+    40.000000000074905,
+    15.00000000057101,
+    10
+   ],
+   "vsSc": 1.4176799191214604e-11,
+   "bboxVsSc": 3.797033798347068e-11
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 4500.000000047673,
+   "vsSc": 1.3883537677383531e-11,
+   "bboxVsSc": 3.797033798347068e-11
+  },
+  "fc": {
+   "bboxVsSc": 9.698908343125368e-14,
+   "dof": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__circle-pinned",
+  "mode": "stored",
+  "feats": [
+   "rule:lock",
+   "rule:radius"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1539.2066994644592,
+   "bodies": 1,
+   "faces": 3,
+   "bbox": [
+    -3.0000000000000004,
+    -13.000000000000005,
+    0,
+    11.000000000000004,
+    0.999999999999998,
+    10.000000000000005
+   ],
+   "com": [
+    3.9999999967886097,
+    -6.000000002409712,
+    5.00000000200614
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.0001128381227344293,
+   "db": 1.9984014443252818e-15,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1539.3804002589986,
+   "bbox": [
+    -3,
+    -13,
+    11,
+    1
+   ]
+  },
+  "brep": {
+   "volume": 1539.3804002589995,
+   "faces": 3,
+   "bbox": [
+    -3,
+    -13,
+    0,
+    11,
+    1,
+    10
+   ],
+   "vsSc": 0.00011283812273502006,
+   "bboxVsSc": 1.9984014443252818e-15
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 1539.3804002589986,
+   "vsSc": 0.0001128381227344293,
+   "bboxVsSc": 1.9984014443252818e-15
+  },
+  "fc": {
+   "bboxVsSc": 1.9984014443252818e-15,
+   "dof": 0
+  },
+  "round1": {
+   "volume": 1539.2066994644592,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__circle-pinned",
+  "mode": "rough",
+  "feats": [
+   "rule:lock",
+   "rule:radius"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1539.2066994644592,
+   "bodies": 1,
+   "faces": 3,
+   "bbox": [
+    -3.0000000000000004,
+    -13.000000000000005,
+    0,
+    11.000000000000004,
+    0.999999999999998,
+    10.000000000000005
+   ],
+   "com": [
+    3.9999999967886097,
+    -6.000000002409712,
+    5.00000000200614
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.0001128381227344293,
+   "db": 1.9984014443252818e-15,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1539.3804002589986,
+   "bbox": [
+    -3,
+    -13,
+    11,
+    1
+   ]
+  },
+  "brep": {
+   "volume": 1539.38040026041,
+   "faces": 3,
+   "bbox": [
+    -3.00000000000321,
+    -13.00000000000321,
+    0,
+    11.00000000000321,
+    1.0000000000032099,
+    10
+   ],
+   "vsSc": 0.00011283812365112874,
+   "bboxVsSc": 3.211875210230268e-12
+  },
+  "brepDof": 0,
+  "occt": {
+   "volume": 1539.3804002604102,
+   "vsSc": 0.00011283812365127644,
+   "bboxVsSc": 3.211875210230268e-12
+  },
+  "fc": {
+   "bboxVsSc": 1.9984014443252818e-15,
+   "dof": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "mode": "stored",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc",
+   "endpoint tangency curved accuracy"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 4730.793327002382,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -6.000000000000003,
+    0,
+    0,
+    36,
+    12.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    14.999999999999632,
+    5.999999999999848,
+    5.00000000000023
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.000038053118549409936,
+   "db": 5.329070518200751e-16,
+   "dof": 4,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4730.973355292325,
+   "bbox": [
+    -6,
+    -1.0877048588327106e-30,
+    36,
+    12
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "fc": {
+   "bboxVsSc": 5.329070518200751e-16,
+   "dof": 0
+  },
+  "round1": {
+   "volume": 4730.793327002382,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "mode": "rough",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc",
+   "endpoint tangency curved accuracy"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 4730.810038032811,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -6.00005411098649,
+    -5.7008829130067e-14,
+    0,
+    36.00008516634484,
+    11.999999999808269,
+    10.000000000000009
+   ],
+   "com": [
+    15.000015536530602,
+    6.000000000506988,
+    5.000000000000225
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.0000345208580242952,
+   "db": 0.000009018497748147778,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4730.973355292325,
+   "bbox": [
+    -6,
+    -1.0877048588327106e-30,
+    36,
+    12
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "fc": {
+   "bboxVsSc": 0.00000901849774829581,
+   "dof": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "mode": "stored",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc",
+   "endpoint tangency curved accuracy"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 8843.382953534847,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -12.000000000000005,
+    0,
+    0,
+    30.000000000000004,
+    24.000000000000004,
+    10.000000000000004
+   ],
+   "com": [
+    9.000000001848854,
+    11.999999995072141,
+    5.000000001026147
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00005771978586200539,
+   "db": 3.552713678800501e-16,
+   "dof": 4,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 8843.893421169303,
+   "bbox": [
+    -12,
+    -5.329070518200751e-15,
+    30,
+    23.999999999999993
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "fc": {
+   "bboxVsSc": 5.329070518200751e-15,
+   "dof": 0
+  },
+  "round1": {
+   "volume": 8843.382953534847,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "mode": "rough",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc",
+   "endpoint tangency curved accuracy"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 8843.34580184199,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -11.999956514814782,
+    -3.552713678800501e-15,
+    0,
+    29.99988869046709,
+    23.99999999988327,
+    10.000000000000007
+   ],
+   "com": [
+    8.999966087851092,
+    11.999999991093608,
+    5.000000001026145
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00006192061586841663,
+   "db": 0.0000037103177637239544,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 8843.893421169303,
+   "bbox": [
+    -12,
+    -5.329070518200751e-15,
+    30,
+    23.999999999999993
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "fc": {
+   "bboxVsSc": 0.0000037103177637239544,
+   "dof": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "mode": "stored",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 4730.793327002382,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -6.000000000000003,
+    0,
+    0,
+    36,
+    12.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    14.999999999999632,
+    5.999999999999848,
+    5.00000000000023
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.000038053118549409936,
+   "db": 5.329070518200751e-16,
+   "dof": 4,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4730.973355292325,
+   "bbox": [
+    -6,
+    0,
+    36,
+    12
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "fc": {
+   "bboxVsSc": 5.329070518200751e-16,
+   "dof": 0
+  },
+  "round1": {
+   "volume": 4730.793327002382,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "mode": "rough",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 4730.801023459518,
+   "bodies": 1,
+   "faces": 6,
+   "bbox": [
+    -5.999955016161423,
+    -7.303971713785014e-14,
+    0,
+    36.00010911683637,
+    11.999999999714587,
+    10.000000000000005
+   ],
+   "com": [
+    15.000077053478831,
+    6.000000000528981,
+    5.000000000000228
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.000036426295365816406,
+   "db": 0.000007497306429608366,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 4730.973355292325,
+   "bbox": [
+    -6,
+    0,
+    36,
+    12
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "fc": {
+   "bboxVsSc": 0.0000074973064294603375,
+   "dof": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-external",
+  "mode": "stored",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "bodies": 2,
+   "faces": 6,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    3.6516231297924686,
+    -1.426777383604161e-15,
+    5.000000002006136
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00009578994864405292,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2796.017461694916,
+   "bbox": [
+    -8,
+    -8,
+    18,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the shapes near (0.0, 0.0) mm and (13.0, 0.0) mm cross or touch each other; draw each shape either wholly inside another (a hole) or clear of the others"
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "fc": {
+   "bboxVsSc": 5.329070518200751e-16,
+   "dof": 0
+  },
+  "round1": {
+   "volume": 2795.7496313258525,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-external",
+  "mode": "rough",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "bodies": 2,
+   "faces": 6,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    3.6516231297924686,
+    -1.426777383604161e-15,
+    5.000000002006136
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00009578994864405292,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2796.017461694916,
+   "bbox": [
+    -8,
+    -8,
+    18,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the shapes near (0.0, 0.0) mm and (13.0, 0.0) mm touch; a profile with several pieces needs them clear of each other, so move one away or draw them as one shape"
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "fc": {
+   "bboxVsSc": 5.329070518200751e-16,
+   "dof": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-no-mode",
+  "mode": "stored",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "bodies": 2,
+   "faces": 6,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    3.6516231297924686,
+    -1.426777383604161e-15,
+    5.000000002006136
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00009578994864405292,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2796.017461694916,
+   "bbox": [
+    -8,
+    -8,
+    18,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "fc": {
+   "bboxVsSc": 5.329070518200751e-16,
+   "dof": 0
+  },
+  "round1": {
+   "volume": 2795.7496313258525,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-no-mode",
+  "mode": "rough",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "bodies": 2,
+   "faces": 6,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    3.6516231297924686,
+    -1.426777383604161e-15,
+    5.000000002006136
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.00009578994864405292,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 2796.017461694916,
+   "bbox": [
+    -8,
+    -8,
+    18,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepDof": null,
+  "occt": {
+   "refused": "Sketch 1: rule 2 (radius) is off by 2.60e-3 mm: geometry 1 measures 7.99739754498 where the rule says 8. These rows have not been solved, and this reference reads them rather than solving them"
+  },
+  "fc": {
+   "bboxVsSc": 5.329070518200751e-16,
+   "dof": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-internal",
+  "mode": "stored",
+  "feats": [
+   "tangent:circle-circle internal"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1225.134743052579,
+   "bodies": 1,
+   "faces": 4,
+   "bbox": [
+    -8,
+    -8.000000000000002,
+    0,
+    8,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    -1.9229852524807538,
+    5.340168850848017e-15,
+    5.000000003292087
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.000070511228527905,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1225.2211349000193,
+   "bbox": [
+    -8,
+    -8,
+    8,
+    8
+   ]
+  },
+  "brep": {
+   "refused": "extrude pull1: the hole near (3.0, 0.0) mm is not fully inside the outline; move it in, or make the outline bigger"
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "fc": {
+   "bboxVsSc": 5.329070518200751e-16,
+   "dof": 0
+  },
+  "round1": {
+   "volume": 1225.134743052579,
+   "volumeDelta": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-internal",
+  "mode": "rough",
+  "feats": [
+   "tangent:circle-circle internal"
+  ],
+  "expect": "build",
+  "curved": true,
+  "sc": {
+   "volume": 1225.134743052579,
+   "bodies": 1,
+   "faces": 4,
+   "bbox": [
+    -8,
+    -8.000000000000002,
+    0,
+    8,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    -1.9229852524807538,
+    5.340168850848017e-15,
+    5.000000003292087
+   ],
+   "rung": "JGTD*",
+   "cls": "MATCH",
+   "dv": 0.000070511228527905,
+   "db": 5.329070518200751e-16,
+   "dof": 0,
+   "status": "solved"
+  },
+  "want": {
+   "volume": 1225.2211349000193,
+   "bbox": [
+    -8,
+    -8,
+    8,
+    8
+   ]
+  },
+  "brep": {
+   "volume": 1225.2211348793087,
+   "faces": 4,
+   "bbox": [
+    -7.999999999993385,
+    -7.999999999993385,
+    0,
+    7.999999999993385,
+    7.999999999993385,
+    10
+   ],
+   "vsSc": 0.00007051121162556984,
+   "bboxVsSc": 8.271161533464255e-13
+  },
+  "brepDof": 0,
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "fc": {
+   "bboxVsSc": 5.329070518200751e-16,
+   "dof": 0
+  }
+ }
+]

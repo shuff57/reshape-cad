@@ -1,0 +1,452 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 951c0af..680c3d8 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -3446,6 +3446,7 @@ dependencies = [
+  "js-sys",
+  "log",
+  "serde_json",
++ "solidcraft-doc",
+  "solidcraft-engine",
+  "solidcraft-ui-egui",
+  "wasm-bindgen",
+diff --git a/apps/solidcraft-web/Cargo.toml b/apps/solidcraft-web/Cargo.toml
+index db51d3d..2edb586 100644
+--- a/apps/solidcraft-web/Cargo.toml
++++ b/apps/solidcraft-web/Cargo.toml
+@@ -15,6 +15,7 @@ path = "src/main.rs"
+ 
+ [dependencies]
+ solidcraft-engine = { workspace = true }
++solidcraft-doc = { workspace = true }
+ solidcraft-ui-egui = { workspace = true }
+ egui = { workspace = true }
+ log = { workspace = true }
+@@ -29,5 +30,5 @@ web-sys = { version = "0.3", features = [
+     "Window", "Document", "Element", "HtmlElement", "HtmlCanvasElement", "Location", "Navigator", "StorageManager",
+     "FileSystemHandle", "FileSystemDirectoryHandle", "FileSystemFileHandle", "FileSystemGetFileOptions", "FileSystemWritableFileStream",
+     "WritableStream", "File", "FileList", "Blob", "BlobPropertyBag", "Url", "HtmlAnchorElement", "HtmlInputElement", "Storage",
+-    "BeforeUnloadEvent", "Event", "EventTarget", "Response",
++    "BeforeUnloadEvent", "Event", "EventTarget", "Response", "MessageEvent",
+ ] }
+diff --git a/apps/solidcraft-web/src/bridge.rs b/apps/solidcraft-web/src/bridge.rs
+new file mode 100644
+index 0000000..f914190
+--- /dev/null
++++ b/apps/solidcraft-web/src/bridge.rs
+@@ -0,0 +1,386 @@
++//! REFEREE / DEMO bridge (reshape-cad docs/spikes/solidcraft-referee/phase1). Not a product surface.
++//!
++//! `window.solidcraft = { execute(json) -> Promise<string>, inspect() -> Promise<string> }`, installed only
++//! when the page URL carries `?bridge=<token>` (8+ chars of [A-Za-z0-9_-]). The same two calls are also
++//! served over `postMessage` to the embedding parent frame (see `on_message`), because a host page on
++//! another origin cannot reach this window's JS object.
++//!
++//! Re-entrancy rule: JS only ENQUEUES. Requests are drained in `drain()` from `Shell::logic()`, so the
++//! session is never touched from JS and never borrowed twice.
++use std::cell::RefCell;
++use std::collections::VecDeque;
++
++use serde_json::{Value, json};
++use solidcraft_engine::Session;
++use solidcraft_ui_egui::SolveApp;
++use wasm_bindgen::JsCast as _;
++use wasm_bindgen::JsValue;
++use wasm_bindgen::closure::Closure;
++
++/// The only command ids a bridge caller may run. Everything the Phase 0 translator emits
++/// (docs/spikes/solidcraft-referee/phase0/COVERAGE.md); nothing that touches files, export, save, open,
++/// edit history, macros or parameters (the translator emits no parameters.* id).
++const ALLOWED: &[&str] = &[
++    "solid.box", "solid.cylinder", "solid.sphere", "solid.torus", "solid.extrude", "solid.revolve", "solid.loft",
++    "solid.fillet", "solid.chamfer", "solid.shell", "solid.hole", "solid.draft", "solid.mirror", "solid.combine",
++    "solid.move", "solid.pattern.rectangular", "solid.pattern.circular",
++    "sketch.create", "sketch.line", "sketch.arc.three_point", "sketch.circle.center", "sketch.finish",
++    // phase 3: constrained sketches (docs/spikes/solidcraft-referee/phase2/CONSTRAINT-COVERAGE.md). Geometry-only.
++    "sketch.point", "sketch.dimension",
++    "sketch.constraint.coincident", "sketch.constraint.horizontal_vertical", "sketch.constraint.parallel",
++    "sketch.constraint.perpendicular", "sketch.constraint.tangent", "sketch.constraint.equal",
++    "sketch.constraint.symmetry", "sketch.constraint.midpoint", "sketch.constraint.fix",
++];
++const MAX_COMMANDS: usize = 2000;
++
++enum Kind {
++    Execute(String),
++    Inspect(String),
++}
++
++struct Request {
++    kind: Kind,
++    /// Came through the postMessage relay (token required on every call); false = the page's own JS.
++    relayed: bool,
++    resolve: js_sys::Function,
++    reject: js_sys::Function,
++}
++
++thread_local! {
++    static QUEUE: RefCell<VecDeque<Request>> = const { RefCell::new(VecDeque::new()) };
++    static CTX: RefCell<Option<egui::Context>> = const { RefCell::new(None) };
++    static TOKEN: RefCell<Option<String>> = const { RefCell::new(None) };
++    /// The ONE origin allowed to drive the relay (`?parent=`). No `parent` param: relay disabled.
++    static PARENT: RefCell<Option<String>> = const { RefCell::new(None) };
++}
++
++fn query_param(name: &str) -> Option<String> {
++    let q = web_sys::window()?.location().search().ok()?;
++    let prefix = format!("{name}=");
++    let raw = q.trim_start_matches('?').split('&').find_map(|kv| kv.strip_prefix(prefix.as_str()))?.to_string();
++    js_sys::decode_uri_component(&raw).ok().and_then(|j| j.as_string())
++}
++
++fn token_from_query() -> Option<String> {
++    let t = query_param("bridge")?;
++    (t.len() >= 8 && t.len() <= 128 && t.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-')).then_some(t)
++}
++
++/// Held requests beyond this are refused at once (the queue is drained once per frame).
++const MAX_QUEUED: usize = 64;
++/// A payload longer than this is refused before any JSON parsing.
++const MAX_PAYLOAD: usize = 1_000_000;
++
++fn enqueue(kind: Kind, relayed: bool, resolve: js_sys::Function, reject: js_sys::Function) {
++    let too_big = match &kind { Kind::Execute(t) | Kind::Inspect(t) => t.len() > MAX_PAYLOAD };
++    let full = QUEUE.with(|q| q.borrow().len() >= MAX_QUEUED);
++    if too_big || full {
++        let msg = if too_big { "The request is larger than 1 MB; nothing ran." } else { "The bridge queue is full; nothing ran." };
++        let _ = resolve.call1(&JsValue::NULL, &JsValue::from_str(&reject_msg(msg.into()).to_string()));
++        return;
++    }
++    QUEUE.with(|q| q.borrow_mut().push_back(Request { kind, relayed, resolve, reject }));
++    CTX.with(|c| {
++        if let Some(ctx) = c.borrow().as_ref() {
++            ctx.request_repaint();
++        }
++    });
++}
++
++fn promise(kind: Kind) -> js_sys::Promise {
++    let mut kind = Some(kind);
++    js_sys::Promise::new(&mut |resolve, reject| {
++        if let Some(k) = kind.take() {
++            enqueue(k, false, resolve, reject);
++        }
++    })
++}
++
++/// Install `window.solidcraft` and the postMessage relay. Does nothing without a valid `?bridge=` token.
++pub fn install(ctx: &egui::Context) {
++    let Some(token) = token_from_query() else { return };
++    TOKEN.with(|t| *t.borrow_mut() = Some(token.clone()));
++    PARENT.with(|p| *p.borrow_mut() = query_param("parent"));
++    CTX.with(|c| *c.borrow_mut() = Some(ctx.clone()));
++    let Some(window) = web_sys::window() else { return };
++    let api = js_sys::Object::new();
++    let exec = Closure::<dyn Fn(String) -> js_sys::Promise>::new(|json: String| promise(Kind::Execute(json)));
++    let insp = Closure::<dyn Fn() -> js_sys::Promise>::new(|| promise(Kind::Inspect(String::new())));
++    let _ = js_sys::Reflect::set(&api, &"execute".into(), exec.as_ref());
++    let _ = js_sys::Reflect::set(&api, &"inspect".into(), insp.as_ref());
++    exec.forget();
++    insp.forget();
++    let _ = js_sys::Reflect::set(&window, &"solidcraft".into(), &api);
++
++    let on_message = Closure::<dyn FnMut(web_sys::MessageEvent)>::new(on_message);
++    let _ = window.add_event_listener_with_callback("message", on_message.as_ref().unchecked_ref());
++    on_message.forget();
++    log::info!("solidcraft bridge installed (referee demo)");
++}
++
++/// postMessage relay: `{solidcraft: 'execute'|'inspect', id, payload}` from the PARENT frame only
++/// (`event.source === window.parent`). The reply goes back to that event's own origin, never `*`.
++fn on_message(ev: web_sys::MessageEvent) {
++    let Some(window) = web_sys::window() else { return };
++    let Ok(Some(parent)) = window.parent() else { return };
++    let from_parent = ev.source().is_some_and(|s| JsValue::from(s) == JsValue::from(parent.clone()));
++    // Both must hold: it is the parent frame AND its origin is exactly the one named in `?parent=`.
++    // Anything else gets no reply at all (not even a refusal), so a stranger learns nothing.
++    let allowed = PARENT.with(|p| p.borrow().as_deref().is_some_and(|want| want == ev.origin()));
++    if !from_parent || !allowed {
++        return;
++    }
++    let data = ev.data();
++    let get = |k: &str| js_sys::Reflect::get(&data, &k.into()).ok();
++    let (Some(what), Some(id)) = (get("solidcraft").and_then(|v| v.as_string()), get("id")) else { return };
++    let payload = get("payload").and_then(|v| v.as_string()).unwrap_or_default();
++    let origin = ev.origin();
++    let reply = {
++        let (parent, origin, id) = (parent.clone(), origin.clone(), id.clone());
++        move |ok: bool, v: JsValue| {
++            let o = js_sys::Object::new();
++            let _ = js_sys::Reflect::set(&o, &"solidcraft_reply".into(), &JsValue::TRUE);
++            let _ = js_sys::Reflect::set(&o, &"id".into(), &id);
++            let _ = js_sys::Reflect::set(&o, &"ok".into(), &JsValue::from_bool(ok));
++            let _ = js_sys::Reflect::set(&o, &"value".into(), &v);
++            let _ = parent.post_message(&o, &origin);
++        }
++    };
++    let reply = std::rc::Rc::new(reply);
++    let (r1, r2) = (reply.clone(), reply);
++    let resolve = Closure::once_into_js(move |v: JsValue| r1(true, v)).unchecked_into::<js_sys::Function>();
++    let reject = Closure::once_into_js(move |v: JsValue| r2(false, v)).unchecked_into::<js_sys::Function>();
++    match what.as_str() {
++        "execute" => enqueue(Kind::Execute(payload), true, resolve, reject),
++        "inspect" => enqueue(Kind::Inspect(payload), true, resolve, reject),
++        _ => {}
++    }
++}
++
++fn token_ok(v: &Value) -> bool {
++    let given = v.get("token").and_then(Value::as_str).unwrap_or("");
++    TOKEN.with(|t| t.borrow().as_deref().is_some_and(|want| want == given))
++}
++
++fn body_list(measure: &Value) -> Value {
++    let names: Vec<Value> = measure
++        .get("bodies")
++        .and_then(Value::as_array)
++        .map(|a| a.iter().filter_map(|b| b.get("name").cloned()).collect())
++        .unwrap_or_default();
++    Value::Array(names)
++}
++
++fn inspect(app: &mut SolveApp) -> Value {
++    match app.session.execute("inspect.measure", &json!({})) {
++        Ok(m) => json!({"ok": true, "bodies": body_list(&m), "measure": m}),
++        Err(e) => json!({"ok": false, "error": e.to_string()}),
++    }
++}
++
++/// Phase 3: the evaluated ACTIVE sketch as solidcraft holds it (solved points/curves, SolveReport with dof / failing /
++/// redundant, profile list with interior points). Read-only; same data the phase 2 `@sketch` pseudo-command dumped.
++fn sketch_snapshot(app: &SolveApp) -> Option<Value> {
++    let f = app.session.active_sketch?;
++    let state = app.session.model.state();
++    let ss = state.sketch(f)?;
++    let profs: Vec<Value> = ss
++        .profiles
++        .iter()
++        .map(|p| {
++            let ip = p.region.interior_point();
++            json!({"outer_curves": p.outer_curves, "hole_curves": p.hole_curves, "area": p.area, "interior": [ip.x, ip.y]})
++        })
++        .collect();
++    Some(json!({
++        "feature": f, "name": ss.name,
++        "report": serde_json::to_value(&ss.report).unwrap_or(Value::Null),
++        "sketch": serde_json::to_value(&ss.sketch).unwrap_or(Value::Null),
++        "profiles": ss.profiles.len(), "profile_list": profs,
++    }))
++}
++
++/// Phase 4: a READ-ONLY snapshot of every body's faces and edges as solidcraft names and measures them
++/// (`model.faces` / `model.edges`: engine-side face centroid, planar normal, area; edge start/mid/end/length and the
++/// persistent `<face>|<face>` name). Only reads; runs after the command list has succeeded; nothing is written back.
++/// Bounded: at most MAX_TOPO_BODIES bodies and MAX_TOPO_ITEMS faces+edges in total, else `truncated: true`.
++const MAX_TOPO_BODIES: usize = 32;
++const MAX_TOPO_ITEMS: usize = 4000;
++fn topology(app: &mut SolveApp, measure: &Value) -> Value {
++    let names: Vec<String> = measure
++        .get("bodies")
++        .and_then(Value::as_array)
++        .map(|a| a.iter().filter_map(|b| b.get("name").and_then(Value::as_str).map(str::to_string)).collect())
++        .unwrap_or_default();
++    let mut out = Vec::new();
++    let world = app.session.world_state();
++    let mut items = 0usize;
++    let mut truncated = names.len() > MAX_TOPO_BODIES;
++    for n in names.iter().take(MAX_TOPO_BODIES) {
++        let p = json!({"body": n});
++        let faces = app.session.execute("model.faces", &p).map(|v| v.get("faces").cloned().unwrap_or(Value::Null));
++        let edges = app.session.execute("model.edges", &p).map(|v| v.get("edges").cloned().unwrap_or(Value::Null));
++        match (faces, edges) {
++            (Ok(mut f), Ok(e)) => {
++                // solidcraft's own pick rule (nearest face within 5% of the body, `face_index_at`) applied to each face's
++                // centroid: which face index a pick AT the centroid would hit, and how far from it. A face with a hole
++                // can have its centroid in the hole; the host refuses such a pick instead of guessing.
++                if let (Some(arr), Some(mb)) = (f.as_array_mut(), world.body(n)) {
++                    // a point that is ON each face by construction: the centroid of its largest display triangle
++                    let m = mb.mesh();
++                    let mut inner: std::collections::HashMap<usize, (f64, [f64; 3])> = std::collections::HashMap::new();
++                    for (t, fi) in m.triangles.iter().zip(&m.tri_face) {
++                        let Some([a, b2, c]) = m.tri(t) else { continue };
++                        let ar = (b2 - a).cross(c - a).len() * 0.5;
++                        let g = (a + b2 + c) * (1.0 / 3.0);
++                        let e = inner.entry(*fi as usize).or_insert((-1.0, [0.0; 3]));
++                        if ar > e.0 {
++                            *e = (ar, [g.x, g.y, g.z]);
++                        }
++                    }
++                    for fv in arr.iter_mut() {
++                        if let Some((_, p)) = fv.get("index").and_then(Value::as_u64).and_then(|i| inner.get(&(i as usize))) {
++                            fv["inner_point"] = json!(p);
++                            let q = serde_json::from_value(json!(p)).ok();
++                            if let Some(q) = q {
++                                if let Some((d, idx)) = solidcraft_doc::appearance::nearest_face(mb, q) {
++                                    fv["inner_hit"] = json!({"index": idx, "dist": d});
++                                }
++                            }
++                        }
++                    }
++                    for fv in arr.iter_mut() {
++                        let c = serde_json::from_value(fv.get("centroid").cloned().unwrap_or(Value::Null)).ok();
++                        if let Some(c) = c {
++                            if let Some((d, idx)) = solidcraft_doc::appearance::nearest_face(mb, c) {
++                                fv["centroid_hit"] = json!({"index": idx, "dist": d});
++                            }
++                        }
++                    }
++                }
++                items += f.as_array().map_or(0, Vec::len) + e.as_array().map_or(0, Vec::len);
++                if items > MAX_TOPO_ITEMS {
++                    truncated = true;
++                    break;
++                }
++                out.push(json!({"name": n, "faces": f, "edges": e}));
++            }
++            (f, e) => out.push(json!({"name": n, "error": format!("{:?} {:?}", f.err().map(|x| x.to_string()), e.err().map(|x| x.to_string()))})),
++        }
++    }
++    json!({"bodies": out, "truncated": truncated})
++}
++
++fn reject_msg(msg: String) -> Value {
++    json!({"ok": false, "rejected": msg})
++}
++
++/// All-or-nothing: validate the whole list first, then run it; the first failure RESTORES the design.
++fn execute(app: &mut SolveApp, text: &str) -> Value {
++    let v: Value = match serde_json::from_str(text) {
++        Ok(v) => v,
++        Err(e) => return reject_msg(format!("The request is not valid JSON ({e}); nothing ran.")),
++    };
++    if !token_ok(&v) {
++        return reject_msg("The bridge token is missing or wrong; nothing ran.".into());
++    }
++    let Some(list) = v.get("commands").and_then(Value::as_array) else {
++        return reject_msg("The request has no `commands` array; nothing ran.".into());
++    };
++    if list.len() > MAX_COMMANDS {
++        return reject_msg(format!("The request has {} commands, more than the {MAX_COMMANDS} allowed; nothing ran.", list.len()));
++    }
++    let mut steps = Vec::with_capacity(list.len());
++    for (i, c) in list.iter().enumerate() {
++        let id = c.get("command").and_then(Value::as_str).unwrap_or("");
++        if !ALLOWED.contains(&id) {
++            return reject_msg(format!(
++                "Command {} (`{id}`) is not on the bridge allowlist, so the whole request was refused and nothing ran.",
++                i + 1
++            ));
++        }
++        steps.push((id.to_string(), c.get("params").cloned().unwrap_or(Value::Null)));
++    }
++    let fresh = v.get("fresh").and_then(Value::as_bool).unwrap_or(false);
++    let want_topology = v.get("topology").and_then(Value::as_bool).unwrap_or(false);
++    // Undo point. `fresh` swaps in an empty design (the old Session is kept until the run succeeds);
++    // otherwise a checkpoint of the live one.
++    let mut old: Option<Session> = None;
++    let mut checkpoint: Option<u64> = None;
++    let rev = app.session.revision;
++    // The open dialog and tool are set aside for the run and put back if it fails.
++    let saved_dialog = app.dialog.take();
++    let saved_tool = app.tool.take();
++    if fresh {
++        old = Some(std::mem::take(&mut app.session));
++        app.session.revision = rev + 1;
++    } else {
++        checkpoint = Some(app.session.checkpoint());
++    }
++    let mut results = Vec::with_capacity(steps.len());
++    let mut sketches: Vec<Value> = Vec::new();
++    for (i, (id, params)) in steps.iter().enumerate() {
++        if id == "sketch.finish" {
++            // the sketch is still active here: record its report before it is closed
++            if let Some(s) = sketch_snapshot(app) {
++                sketches.push(s);
++            }
++        }
++        match app.run(id, params.clone()) {
++            Ok(r) => results.push(r),
++            Err(e) => {
++                let at_failure = sketch_snapshot(app);
++                if let Some(prev) = old.take() {
++                    app.session = prev;
++                    app.session.invalidate_view(rev + 1);
++                } else if let Some(cp) = checkpoint {
++                    let _ = app.session.restore_checkpoint(cp);
++                }
++                app.dialog = saved_dialog;
++                app.tool = saved_tool;
++                let now = inspect(app);
++                return json!({"ok": false, "failed": {"index": i, "command": id, "error": e, "params": params}, "restored": true, "measure": now.get("measure"), "sketches": sketches, "sketch_at_failure": at_failure});
++            }
++        }
++    }
++    if let Some(cp) = checkpoint {
++        app.session.drop_checkpoint(cp);
++    }
++    if fresh {
++        app.session.invalidate_view(rev);
++    }
++    // The model is the demo's output: show it (not the start page) and do not leave an "unsaved work"
++    // autosave/beforeunload prompt behind for a design that is regenerated from a script anyway.
++    app.home.open = false;
++    app.session.mark_saved();
++    app.fit_view();
++    match app.session.execute("inspect.measure", &json!({})) {
++        Ok(m) => {
++            let mut out = json!({"ok": true, "results": results, "measure": m, "bodies": body_list(&m), "sketches": sketches});
++            if want_topology {
++                let t = topology(app, &m);
++                out["topology"] = t;
++            }
++            out
++        }
++        Err(e) => json!({"ok": false, "error": format!("ran, but inspect.measure failed: {e}")}),
++    }
++}
++
++/// Run every queued request. Called from `Shell::logic()` only.
++pub fn drain(app: &mut SolveApp) {
++    let pending: Vec<Request> = QUEUE.with(|q| q.borrow_mut().drain(..).collect());
++    for req in pending {
++        let out = match &req.kind {
++            Kind::Execute(text) => execute(app, text),
++            Kind::Inspect(text) => {
++                // the page's own JS (window.solidcraft.inspect()) may call bare; a relayed call must carry the token
++                let ok = (!req.relayed && text.is_empty()) || serde_json::from_str::<Value>(text).is_ok_and(|v| token_ok(&v));
++                if ok { inspect(app) } else { reject_msg("The bridge token is missing or wrong.".into()) }
++            }
++        };
++        let s = JsValue::from_str(&out.to_string());
++        let _ = req.resolve.call1(&JsValue::NULL, &s);
++        let _ = &req.reject; // reject is only for a bridge that cannot answer at all; every outcome resolves with JSON
++    }
++}
+diff --git a/apps/solidcraft-web/src/main.rs b/apps/solidcraft-web/src/main.rs
+index 48e416c..3ee2599 100644
+--- a/apps/solidcraft-web/src/main.rs
++++ b/apps/solidcraft-web/src/main.rs
+@@ -6,6 +6,8 @@
+ //! sample part.
+ #![deny(clippy::unwrap_used, clippy::expect_used, clippy::panic, clippy::unimplemented, clippy::todo, clippy::unreachable)]
+ 
++#[cfg(target_arch = "wasm32")]
++mod bridge;
+ #[cfg(target_arch = "wasm32")]
+ mod files;
+ 
+@@ -354,6 +356,7 @@ mod web {
+             self.tick_font(ctx);
+             self.app.logic(ctx);
+             self.files_tick(ctx);
++            crate::bridge::drain(&mut self.app);
+             UNSAVED.with(|u| u.set(solidcraft_ui_egui::documents::any_dirty(&self.app)));
+         }
+         fn raw_input_hook(&mut self, _ctx: &egui::Context, raw: &mut egui::RawInput) {
+@@ -417,6 +420,7 @@ mod web {
+                         let files = Rc::new(Files::default());
+                         files::start(&files);
+                         let panel = files.clone();
++                        crate::bridge::install(&cc.egui_ctx);
+                         let services = Services {
+                             // Open shows the browser's files (and the computer's, from there).
+                             pick_open: Some(Box::new(move || {

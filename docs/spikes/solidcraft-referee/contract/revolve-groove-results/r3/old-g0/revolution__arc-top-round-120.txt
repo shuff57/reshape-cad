@@ -1,0 +1,1 @@
+revolution__arc-top-round-120            PASS     occtV 9346.5856 | tr-occt dV 4.3e-5 dBb 5.0e-9 dCom 5.1e-6 F o/b/t 7/7/7 | brep-occt dV 1.1e-10 | FC: occt 1.1e-10 brep 5.8e-16 truck 4.3e-5 dCom 2.4e-4 F 7     | ms 2129 cpu 2796

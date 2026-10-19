@@ -1,0 +1,1 @@
+R3-sealed-bigring-360                    PASS     occtV 140230.0888 | tr-occt dV 3.9e-6 dBb 0.0e+0 dCom 7.6e-7 F o/b/t 10/10/10 | brep-occt dV 0.0e+0  | ANALYTIC 136460.1776 dTruck 2.8e-2 dOcct 2.8e-2 dBrep 2.8e-2    | ms 3114 cpu 3703

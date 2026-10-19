@@ -1,0 +1,112 @@
+[
+ {
+  "input": "box 1e300",
+  "kind": "refused",
+  "ms": 2,
+  "text": "invalid parameters for `solid.box`: `length` must be a number or an expression",
+  "sameInstanceAfter": {
+   "kind": "ok",
+   "ms": 12,
+   "text": "ok=1000.000"
+  }
+ },
+ {
+  "input": "box tiny 1e-300",
+  "kind": "refused",
+  "ms": 1,
+  "text": "invalid input: box needs a positive size in x, y and z",
+  "sameInstanceAfter": {
+   "kind": "ok",
+   "ms": 5,
+   "text": "ok=1000.000"
+  }
+ },
+ {
+  "input": "box NaN via null",
+  "kind": "refused",
+  "ms": 0,
+  "text": "invalid parameters for `solid.box`: `length` must be a number or an expression",
+  "sameInstanceAfter": {
+   "kind": "ok",
+   "ms": 4,
+   "text": "ok=1000.000"
+  }
+ },
+ {
+  "input": "sphere r 1e200",
+  "kind": "refused",
+  "ms": 1,
+  "text": "invalid parameters for `solid.sphere`: needs `radius` or `diameter`",
+  "sameInstanceAfter": {
+   "kind": "ok",
+   "ms": 4,
+   "text": "ok=1000.000"
+  }
+ },
+ {
+  "input": "cut with huge tool",
+  "kind": "refused",
+  "ms": 1,
+  "text": "invalid parameters for `solid.box`: `length` must be a number or an expression",
+  "sameInstanceAfter": {
+   "kind": "ok",
+   "ms": 3,
+   "text": "ok=1000.000"
+  }
+ },
+ {
+  "input": "join far apart 1e15",
+  "kind": "refused",
+  "ms": 0,
+  "text": "invalid parameters for `solid.box`: `center` must be a point [x, y, z] of numbers or length expressions",
+  "sameInstanceAfter": {
+   "kind": "ok",
+   "ms": 2,
+   "text": "ok=1000.000"
+  }
+ },
+ {
+  "input": "combine unknown body",
+  "kind": "refused",
+  "ms": 1,
+  "text": "unknown body `t`",
+  "sameInstanceAfter": {
+   "kind": "ok",
+   "ms": 3,
+   "text": "ok=1000.000"
+  }
+ },
+ {
+  "input": "torus minor tiny",
+  "kind": "refused",
+  "ms": 0,
+  "text": "invalid input: torus needs major > minor > 0",
+  "sameInstanceAfter": {
+   "kind": "ok",
+   "ms": 1,
+   "text": "ok=1000.000"
+  }
+ },
+ {
+  "input": "torus major huge",
+  "kind": "refused",
+  "ms": 0,
+  "text": "invalid parameters for `solid.torus`: `major` must be a number or an expression",
+  "sameInstanceAfter": {
+   "kind": "ok",
+   "ms": 2,
+   "text": "ok=1000.000"
+  }
+ },
+ {
+  "input": "cylinder 0 height",
+  "kind": "refused",
+  "ms": 0,
+  "text": "invalid input: extrude distance is zero",
+  "sameInstanceAfter": {
+   "kind": "ok",
+   "ms": 1,
+   "text": "ok=1000.000"
+  }
+ }
+]

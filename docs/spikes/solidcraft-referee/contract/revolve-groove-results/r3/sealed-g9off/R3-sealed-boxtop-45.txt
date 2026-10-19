@@ -1,0 +1,1 @@
+R3-sealed-boxtop-45                      PASS     occtV 31811.5044 | tr-occt dV 5.6e-7 dBb 0.0e+0 dCom 1.3e-7 F o/b/t 12/-/12 | brep-occt dV -  | ANALYTIC 31811.5044 dTruck 5.6e-7 dOcct 1.1e-16 dBrep -   | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 138 cpu 401

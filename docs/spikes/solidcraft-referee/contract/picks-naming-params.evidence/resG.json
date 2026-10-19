@@ -1,0 +1,8359 @@
+[
+ {
+  "label": "box+turn+whole round",
+  "slot": "box1_width",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000007008387739600754,
+   "dBbox": 0.0000029855384652518497,
+   "dCom": 7.15428671750569e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 26,
+    "truck": 26,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 29667.14301566259,
+  "occtV": 29667.350935961156
+ },
+ {
+  "label": "box+turn+whole round",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000006816646865210389,
+   "dBbox": 0.000002792261827853286,
+   "dCom": 6.385049747813477e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 26,
+    "truck": 26,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 29675.732719052005,
+  "occtV": 29675.93500942136
+ },
+ {
+  "label": "box+turn+whole round",
+  "slot": "box1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000006624976502555865,
+   "dBbox": 0.0000032237984454463153,
+   "dCom": 5.0360476845003096e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 26,
+    "truck": 26,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 29684.32242363489,
+  "occtV": 29684.519082876304
+ },
+ {
+  "label": "box+turn+whole round",
+  "slot": "box1_x",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00000782194191303948,
+   "dBbox": 0.000003543847494352466,
+   "dCom": 6.500409897386903e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 26,
+    "truck": 26,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 23701.50183655084,
+  "occtV": 23701.687229771593
+ },
+ {
+  "label": "box+turn+whole round",
+  "slot": "box1_y",
+  "from": -3,
+  "to": 0,
+  "changed": true,
+  "roundTrip": true,
+  "back": 0,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000007821941888941504,
+   "dBbox": 0.0000029449316394283383,
+   "dCom": 7.344364922624189e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 26,
+    "truck": 26,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 23701.50183655141,
+  "occtV": 23701.687229771593
+ },
+ {
+  "label": "box+turn+whole round",
+  "slot": "box1_z",
+  "from": 2,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000007821941884643778,
+   "dBbox": 0.0000032237984454463153,
+   "dCom": 7.485597326869487e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 26,
+    "truck": 26,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 23701.50183655151,
+  "occtV": 23701.68722977159
+ },
+ {
+  "label": "box+turn+whole round",
+  "slot": "box1_round",
+  "from": 2,
+  "to": 2.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 2.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000012018729827624088,
+   "dBbox": 0.000004057868356779562,
+   "dCom": 7.455678101916188e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 26,
+    "truck": 26,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 23537.788505848133,
+  "occtV": 23538.071403568996
+ },
+ {
+  "label": "box+turn+whole round",
+  "slot": "box1_rx",
+  "from": 0,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000007821941893546214,
+   "dBbox": 0.000007043714289987071,
+   "dCom": 5.618798203729423e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 26,
+    "truck": 26,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 23701.5018365513,
+  "occtV": 23701.68722977159
+ },
+ {
+  "label": "box+turn+whole round",
+  "slot": "box1_ry",
+  "from": 0,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000007821941893239234,
+   "dBbox": 0.00001619955570546133,
+   "dCom": 5.5060579488501876e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 26,
+    "truck": 26,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 23701.501836551306,
+  "occtV": 23701.68722977159
+ },
+ {
+  "label": "box+turn+whole round",
+  "slot": "box1_rz",
+  "from": 15,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000007821941896616017,
+   "dBbox": 0.00000488702225242342,
+   "dCom": 6.238954401867664e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 26,
+    "truck": 26,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 23701.501836551233,
+  "occtV": 23701.687229771596
+ },
+ {
+  "label": "cylinder+round+turn",
+  "slot": "cyl1_radius",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00003108341286751316,
+   "dBbox": 0.000022711451120179217,
+   "dCom": 4.0092472532971106e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.984831324241755e-16
+  },
+  "truckV": 14595.742522332213,
+  "occtV": 14596.196221925675,
+  "brepV": 14596.196221925682
+ },
+ {
+  "label": "cylinder+round+turn",
+  "slot": "cyl1_height",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00003573525832496327,
+   "dBbox": 0.00002573964460313623,
+   "dCom": 4.0908097163140326e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.672893674737363e-16
+  },
+  "truckV": 11677.503457802484,
+  "occtV": 11677.920771317946,
+  "brepV": 11677.920771317951
+ },
+ {
+  "label": "cylinder+round+turn",
+  "slot": "cyl1_x",
+  "from": 4,
+  "to": 7,
+  "changed": true,
+  "roundTrip": true,
+  "back": 7,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00003612141617673925,
+   "dBbox": 0.000051479289206568524,
+   "dCom": 7.773812490464649e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 5.854031802764583e-16
+  },
+  "truckV": 9321.389567171114,
+  "occtV": 9321.7262811256,
+  "brepV": 9321.726281125606
+ },
+ {
+  "label": "cylinder+round+turn",
+  "slot": "cyl1_y",
+  "from": -2,
+  "to": 1,
+  "changed": true,
+  "roundTrip": true,
+  "back": 1,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00003612141617888573,
+   "dBbox": 0.000025739644602692142,
+   "dCom": 4.4376046082429916e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 9321.389567171094,
+  "occtV": 9321.7262811256,
+  "brepV": 9321.7262811256
+ },
+ {
+  "label": "cylinder+round+turn",
+  "slot": "cyl1_z",
+  "from": 1,
+  "to": 4,
+  "changed": true,
+  "roundTrip": true,
+  "back": 4,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00003612141618356895,
+   "dBbox": 0.00002573964460313623,
+   "dCom": 4.9204958264789866e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 7.805375737019445e-16
+  },
+  "truckV": 9321.38956717105,
+  "occtV": 9321.7262811256,
+  "brepV": 9321.726281125608
+ },
+ {
+  "label": "cylinder+round+turn",
+  "slot": "cyl1_round",
+  "from": 2,
+  "to": 2.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 2.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000040005651498164445,
+   "dBbox": 0.00002573964460313623,
+   "dCom": 4.395207810933875e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.9263105131460085e-16
+  },
+  "truckV": 9265.27144299786,
+  "occtV": 9265.642121047462,
+  "brepV": 9265.642121047465
+ },
+ {
+  "label": "cylinder+round+turn",
+  "slot": "cyl1_rx",
+  "from": 10,
+  "to": 20,
+  "changed": true,
+  "roundTrip": true,
+  "back": 20,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00003612141618395922,
+   "dBbox": 0.00002575631084042976,
+   "dCom": 4.279665885310962e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.9513439342548607e-16
+  },
+  "truckV": 9321.389567171049,
+  "occtV": 9321.726281125602,
+  "brepV": 9321.726281125604
+ },
+ {
+  "label": "cylinder+round+turn",
+  "slot": "cyl1_ry",
+  "from": 0,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00003612141617908087,
+   "dBbox": 0.00001539724861384001,
+   "dCom": 4.1286554943272886e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.9513439342548614e-16
+  },
+  "truckV": 9321.38956717109,
+  "occtV": 9321.726281125599,
+  "brepV": 9321.7262811256
+ },
+ {
+  "label": "cylinder+round+turn",
+  "slot": "cyl1_rz",
+  "from": 0,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000361214161905938,
+   "dBbox": 0.00001303999180480721,
+   "dCom": 4.031004170188225e-11,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.756719671274308e-16
+  },
+  "truckV": 9321.389567170983,
+  "occtV": 9321.726281125599,
+  "brepV": 9321.726281125608
+ },
+ {
+  "label": "cone+turn",
+  "slot": "cone1_radius",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00018231752867077194,
+   "dBbox": 0.000014908138943611892,
+   "dCom": 9.872254708927708e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 2,
+    "truck": 2,
+    "brep": 2,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 4907.84357215797,
+  "occtV": 4908.738521234052,
+  "brepV": 4908.738521234052
+ },
+ {
+  "label": "cone+turn",
+  "slot": "cone1_height",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0001823175286708877,
+   "dBbox": 0.00001565354589105894,
+   "dCom": 7.269625989503764e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 2,
+    "truck": 2,
+    "brep": 2,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.316009240048811e-16
+  },
+  "truckV": 3926.274857726376,
+  "occtV": 3926.9908169872424,
+  "brepV": 3926.9908169872433
+ },
+ {
+  "label": "cone+turn",
+  "slot": "cone1_x",
+  "from": 4,
+  "to": 7,
+  "changed": true,
+  "roundTrip": true,
+  "back": 7,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00018231752867039558,
+   "dBbox": 0.000015653545890836895,
+   "dCom": 4.20367661989932e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 2,
+    "truck": 2,
+    "brep": 2,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 7.237528875152536e-16
+  },
+  "truckV": 3141.019886181102,
+  "occtV": 3141.5926535897934,
+  "brepV": 3141.5926535897956
+ },
+ {
+  "label": "cone+turn",
+  "slot": "cone1_y",
+  "from": -2,
+  "to": 1,
+  "changed": true,
+  "roundTrip": true,
+  "back": 1,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00018231752867010607,
+   "dBbox": 0.00001391426301407724,
+   "dCom": 1.261102985969796e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 2,
+    "truck": 2,
+    "brep": 2,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.447505775030507e-16
+  },
+  "truckV": 3141.0198861811027,
+  "occtV": 3141.5926535897934,
+  "brepV": 3141.592653589794
+ },
+ {
+  "label": "cone+turn",
+  "slot": "cone1_z",
+  "from": 1,
+  "to": 4,
+  "changed": true,
+  "roundTrip": true,
+  "back": 4,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00018231752867039558,
+   "dBbox": 0.000015653545890836895,
+   "dCom": 3.678217042411905e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 2,
+    "truck": 2,
+    "brep": 2,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.342517325091521e-16
+  },
+  "truckV": 3141.019886181102,
+  "occtV": 3141.5926535897934,
+  "brepV": 3141.5926535897947
+ },
+ {
+  "label": "cone+turn",
+  "slot": "cone1_rx",
+  "from": 0,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00018231752866996136,
+   "dBbox": 0.000036579562412197,
+   "dCom": 1.2686415328163353e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 2,
+    "truck": 2,
+    "brep": 2,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 3141.0198861811027,
+  "occtV": 3141.592653589793,
+  "brepV": 3141.592653589793
+ },
+ {
+  "label": "cone+turn",
+  "slot": "cone1_ry",
+  "from": 20,
+  "to": 30,
+  "changed": true,
+  "roundTrip": true,
+  "back": 30,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00018231752867097457,
+   "dBbox": 0.000015653545890836895,
+   "dCom": 7.095143218562361e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 2,
+    "truck": 2,
+    "brep": 2,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 7.237528875152536e-16
+  },
+  "truckV": 3141.0198861811,
+  "occtV": 3141.5926535897934,
+  "brepV": 3141.592653589791
+ },
+ {
+  "label": "cone+turn",
+  "slot": "cone1_rz",
+  "from": 0,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0001823175286706851,
+   "dBbox": 0.00001386002999069567,
+   "dCom": 8.42336794035124e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 2,
+    "truck": 2,
+    "brep": 2,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.447505775030507e-16
+  },
+  "truckV": 3141.019886181101,
+  "occtV": 3141.5926535897934,
+  "brepV": 3141.592653589794
+ },
+ {
+  "label": "ring",
+  "slot": "ring1_ring",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00014674853412473713,
+   "dBbox": 0.0001122967683923077,
+   "dCom": 6.847428316160615e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 1,
+    "truck": 1,
+    "brep": 1,
+    "verdict": "explained",
+    "keys": {
+     "other": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.1058129564008174e-15
+  },
+  "truckV": 9868.156051111106,
+  "occtV": 9869.604401089357,
+  "brepV": 9869.604401089367
+ },
+ {
+  "label": "ring",
+  "slot": "ring1_tube",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0001500389329585538,
+   "dBbox": 0.00010694454196272997,
+   "dCom": 7.841058649714469e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 1,
+    "truck": 1,
+    "brep": 1,
+    "verdict": "explained",
+    "keys": {
+     "other": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.715685556597631e-16
+  },
+  "truckV": 10600.523372845631,
+  "occtV": 10602.11410273271,
+  "brepV": 10602.114102732712
+ },
+ {
+  "label": "ring",
+  "slot": "ring1_x",
+  "from": 3,
+  "to": 6,
+  "changed": true,
+  "roundTrip": true,
+  "back": 6,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0001467468853644997,
+   "dBbox": 0.0001122967683923077,
+   "dCom": 8.000235993799833e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 1,
+    "truck": 1,
+    "brep": 1,
+    "verdict": "explained",
+    "keys": {
+     "other": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.914724250670298e-16
+  },
+  "truckV": 7401.117050537789,
+  "occtV": 7402.203300817018,
+  "brepV": 7402.203300817022
+ },
+ {
+  "label": "ring",
+  "slot": "ring1_y",
+  "from": 2,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000146746885366097,
+   "dBbox": 0.0001122967683923077,
+   "dCom": 8.00023599735591e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 1,
+    "truck": 1,
+    "brep": 1,
+    "verdict": "explained",
+    "keys": {
+     "other": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.6860431880027236e-16
+  },
+  "truckV": 7401.117050537777,
+  "occtV": 7402.203300817018,
+  "brepV": 7402.203300817016
+ },
+ {
+  "label": "ring",
+  "slot": "ring1_z",
+  "from": 1,
+  "to": 4,
+  "changed": true,
+  "roundTrip": true,
+  "back": 4,
+  "cls": "FAIL",
+  "score": {
+   "dVol": 0.0001467468849697245,
+   "dBbox": 0.00044918703988020367,
+   "dCom": 8.00023513659216e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 1,
+    "truck": 1,
+    "brep": 1,
+    "verdict": "explained",
+    "keys": {
+     "other": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.2286810626675746e-16
+  },
+  "truckV": 7401.117050540711,
+  "occtV": 7402.203300817018,
+  "brepV": 7402.203300817019
+ },
+ {
+  "label": "sphere",
+  "slot": "ball1_radius",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00007093796175418148,
+   "dBbox": 1.1278456123176193e-16,
+   "dCom": 4.168812174062999e-13,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 1,
+    "truck": 1,
+    "brep": 1,
+    "verdict": "explained",
+    "keys": {
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.317551923227769e-16
+  },
+  "truckV": 27609.6954674732,
+  "occtV": 27611.65418194153,
+  "brepV": 27611.654181941525
+ },
+ {
+  "label": "sphere",
+  "slot": "ball1_x",
+  "from": 3,
+  "to": 6,
+  "changed": true,
+  "roundTrip": true,
+  "back": 6,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00007093796187583365,
+   "dBbox": 2.220446049250313e-16,
+   "dCom": 5.223535841292314e-13,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 1,
+    "truck": 1,
+    "brep": 1,
+    "verdict": "explained",
+    "keys": {
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 7.720030800162702e-16
+  },
+  "truckV": 14136.164079344571,
+  "occtV": 14137.166941154075,
+  "brepV": 14137.166941154064
+ },
+ {
+  "label": "sphere",
+  "slot": "ball1_y",
+  "from": 2,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00007093796177675993,
+   "dBbox": 2.220446049250313e-16,
+   "dCom": 1.309392298913125e-12,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 1,
+    "truck": 1,
+    "brep": 1,
+    "verdict": "explained",
+    "keys": {
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.433359000135585e-16
+  },
+  "truckV": 14136.164079345972,
+  "occtV": 14137.166941154075,
+  "brepV": 14137.166941154066
+ },
+ {
+  "label": "sphere",
+  "slot": "ball1_z",
+  "from": 1,
+  "to": 4,
+  "changed": true,
+  "roundTrip": true,
+  "back": 4,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00007093796176633789,
+   "dBbox": 2.0898315757650005e-16,
+   "dCom": 1.0477326295517062e-12,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 1,
+    "truck": 1,
+    "brep": 1,
+    "verdict": "explained",
+    "keys": {
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.286671800027117e-16
+  },
+  "truckV": 14136.16407934612,
+  "occtV": 14137.166941154075,
+  "brepV": 14137.166941154073
+ },
+ {
+  "label": "prism+turn",
+  "slot": "prism1_radius",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.9914790339134138e-16,
+   "dBbox": 3.645245404753954e-16,
+   "dCom": 8.10037066360376e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.9914790339134138e-16
+  },
+  "truckV": 18267.723361078002,
+  "occtV": 18267.723361078006,
+  "brepV": 18267.72336107801
+ },
+ {
+  "label": "prism+turn",
+  "slot": "prism1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 1.6009864904090451e-16,
+   "dCom": 2.7824608804183716e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.244674396195884e-16
+  },
+  "truckV": 14614.178688862403,
+  "occtV": 14614.178688862403,
+  "brepV": 14614.178688862405
+ },
+ {
+  "label": "prism+turn",
+  "slot": "prism1_x",
+  "from": 3,
+  "to": 6,
+  "changed": false,
+  "roundTrip": false,
+  "back": 3,
+  "cls": "NOOP-applyParam"
+ },
+ {
+  "label": "prism+turn",
+  "slot": "prism1_y",
+  "from": 2,
+  "to": 5,
+  "changed": false,
+  "roundTrip": false,
+  "back": 2,
+  "cls": "NOOP-applyParam"
+ },
+ {
+  "label": "prism+turn",
+  "slot": "prism1_z",
+  "from": 1,
+  "to": 4,
+  "changed": false,
+  "roundTrip": false,
+  "back": 1,
+  "cls": "NOOP-applyParam"
+ },
+ {
+  "label": "prism+turn",
+  "slot": "turn1_rx",
+  "from": 0,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5558429952448551e-16,
+   "dBbox": 2.711201780193256e-16,
+   "dCom": 3.3298283732974466e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.1116859904897103e-16
+  },
+  "truckV": 11691.342951089922,
+  "occtV": 11691.34295108992,
+  "brepV": 11691.342951089924
+ },
+ {
+  "label": "prism+turn",
+  "slot": "turn1_ry",
+  "from": 0,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5558429952448551e-16,
+   "dBbox": 2.640872998387096e-16,
+   "dCom": 4.420974185224467e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.1116859904897103e-16
+  },
+  "truckV": 11691.342951089922,
+  "occtV": 11691.34295108992,
+  "brepV": 11691.342951089924
+ },
+ {
+  "label": "prism+turn",
+  "slot": "turn1_rz",
+  "from": 20,
+  "to": 30,
+  "changed": true,
+  "roundTrip": true,
+  "back": 30,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 2.089831575765e-16,
+   "dCom": 1.4989181908023102e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 11691.34295108992,
+  "occtV": 11691.34295108992,
+  "brepV": 11691.34295108992
+ },
+ {
+  "label": "wedge+turn",
+  "slot": "wedge1_width",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 3.564084161887432e-16,
+   "dCom": 7.062844534342079e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 3750,
+  "occtV": 3750,
+  "brepV": 3750
+ },
+ {
+  "label": "wedge+turn",
+  "slot": "wedge1_depth",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 4.123460094552031e-16,
+   "dCom": 6.947951165267307e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 3750,
+  "occtV": 3750,
+  "brepV": 3750
+ },
+ {
+  "label": "wedge+turn",
+  "slot": "wedge1_height",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.637978807091713e-16,
+   "dBbox": 4.900294729380001e-16,
+   "dCom": 5.3282550443761275e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.637978807091713e-16
+  },
+  "truckV": 3750.0000000000014,
+  "occtV": 3750,
+  "brepV": 3750.0000000000014
+ },
+ {
+  "label": "wedge+turn",
+  "slot": "wedge1_x",
+  "from": 3,
+  "to": 6,
+  "changed": false,
+  "roundTrip": false,
+  "back": 3,
+  "cls": "NOOP-applyParam"
+ },
+ {
+  "label": "wedge+turn",
+  "slot": "wedge1_y",
+  "from": 2,
+  "to": 5,
+  "changed": false,
+  "roundTrip": false,
+  "back": 2,
+  "cls": "NOOP-applyParam"
+ },
+ {
+  "label": "wedge+turn",
+  "slot": "wedge1_z",
+  "from": 1,
+  "to": 4,
+  "changed": false,
+  "roundTrip": false,
+  "back": 1,
+  "cls": "NOOP-applyParam"
+ },
+ {
+  "label": "wedge+turn",
+  "slot": "turn1_rx",
+  "from": 0,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 2.318846127653631e-16,
+   "dCom": 3.1017989589244627e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548803e-16
+  },
+  "truckV": 3000,
+  "occtV": 3000,
+  "brepV": 3000.0000000000005
+ },
+ {
+  "label": "wedge+turn",
+  "slot": "turn1_ry",
+  "from": 0,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.031649005909761e-16,
+   "dBbox": 7.050280223121821e-16,
+   "dCom": 4.692815925207369e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.031649005909761e-16
+  },
+  "truckV": 3000.0000000000005,
+  "occtV": 2999.9999999999995,
+  "brepV": 3000.0000000000005
+ },
+ {
+  "label": "wedge+turn",
+  "slot": "turn1_rz",
+  "from": 20,
+  "to": 30,
+  "changed": true,
+  "roundTrip": true,
+  "back": 30,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 4.739991152121946e-16,
+   "dCom": 1.0787844232004033e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 3000,
+  "occtV": 3000,
+  "brepV": 3000
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk1_p0u",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 0,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 11150.000000032718,
+  "occtV": 11150.000000032718,
+  "brepV": 11150.000000032718
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk1_p0v",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.3072534609793503e-16,
+   "dBbox": 8.881784199864115e-16,
+   "dCom": 1.417616555181887e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.3072534609793503e-16
+  },
+  "truckV": 11000.000000043621,
+  "occtV": 11000.000000043625,
+  "brepV": 11000.000000043621
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk1_p1u",
+  "from": 40,
+  "to": 43,
+  "changed": true,
+  "roundTrip": true,
+  "back": 43,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.509534774727073e-16,
+   "dBbox": 7.105427357601002e-15,
+   "dCom": 6.809201793875875e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.509534774727073e-16
+  },
+  "truckV": 12049.999999998234,
+  "occtV": 12049.999999998236,
+  "brepV": 12049.999999998234
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk1_p1v",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 2.496763993509067e-26,
+   "dCom": 7.088082775909411e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.6536267304896794e-16
+  },
+  "truckV": 11000.000000043596,
+  "occtV": 11000.000000043596,
+  "brepV": 11000.000000043598
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk1_p2u",
+  "from": 40,
+  "to": 43,
+  "changed": true,
+  "roundTrip": true,
+  "back": 43,
+  "cls": "PASS",
+  "score": {
+   "dVol": 9.057208648362464e-16,
+   "dBbox": 7.105427357601002e-15,
+   "dCom": 3.4046008969379427e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 12049.99999999819,
+  "occtV": 12049.999999998201,
+  "brepV": 12049.999999998201
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk1_p2v",
+  "from": 30,
+  "to": 33,
+  "changed": true,
+  "roundTrip": true,
+  "back": 33,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.06947319025916e-13,
+   "dBbox": 0,
+   "dCom": 4.6559834510764e-14,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.078419039784776e-13
+  },
+  "truckV": 12200.000000028975,
+  "occtV": 12200.00000002645,
+  "brepV": 12200.000000028986
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk1_p3u",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.631380630978047e-16,
+   "dBbox": 2.3684757866309208e-15,
+   "dCom": 1.069618011537063e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 11150.000000032696,
+  "occtV": 11150.000000032698,
+  "brepV": 11150.000000032698
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk1_p3v",
+  "from": 30,
+  "to": 33,
+  "changed": true,
+  "roundTrip": true,
+  "back": 33,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.1097295131235538e-13,
+   "dBbox": 7.105427357601002e-15,
+   "dCom": 4.8066182097876936e-14,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.0769280648629757e-13
+  },
+  "truckV": 12200.000000028953,
+  "occtV": 12200.000000031527,
+  "brepV": 12200.000000028993
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk1_offset",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5680943134016e-16,
+   "dBbox": 0,
+   "dCom": 2.786977903755656e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 11600,
+  "occtV": 11600.000000000002
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "pull1_height",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.2458831531136005e-16,
+   "dBbox": 0,
+   "dCom": 6.893277061304074e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 14600,
+  "occtV": 14599.999999999998
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk2_p0u",
+  "from": 15,
+  "to": 18,
+  "changed": true,
+  "roundTrip": true,
+  "back": 18,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.56002521744896e-16,
+   "dBbox": 0,
+   "dCom": 6.96744475938914e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.56002521744896e-16
+  },
+  "truckV": 11660.000000002365,
+  "occtV": 11660.000000002367,
+  "brepV": 11660.000000002365
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk2_p0v",
+  "from": 10,
+  "to": 13,
+  "changed": true,
+  "roundTrip": true,
+  "back": 13,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.120050434898772e-16,
+   "dBbox": 0,
+   "dCom": 2.0902334278167418e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.560025217449386e-16
+  },
+  "truckV": 11659.999999999187,
+  "occtV": 11659.999999999183,
+  "brepV": 11659.999999999185
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk2_p1u",
+  "from": 25,
+  "to": 28,
+  "changed": true,
+  "roundTrip": true,
+  "back": 28,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5762473167640907e-16,
+   "dBbox": 0,
+   "dCom": 6.96744475938914e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.1524946335281814e-16
+  },
+  "truckV": 11540.00000000061,
+  "occtV": 11540.000000000608,
+  "brepV": 11540.000000000604
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk2_p1v",
+  "from": 10,
+  "to": 13,
+  "changed": true,
+  "roundTrip": true,
+  "back": 13,
+  "cls": "PASS",
+  "score": {
+   "dVol": 6.240100869797544e-16,
+   "dBbox": 0,
+   "dCom": 2.0902334278167418e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.120050434898772e-16
+  },
+  "truckV": 11659.99999999919,
+  "occtV": 11659.999999999183,
+  "brepV": 11659.999999999187
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk2_p2u",
+  "from": 25,
+  "to": 28,
+  "changed": true,
+  "roundTrip": true,
+  "back": 28,
+  "cls": "PASS",
+  "score": {
+   "dVol": 6.30498926705636e-16,
+   "dBbox": 0,
+   "dCom": 1.393488951877828e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.57624731676409e-16
+  },
+  "truckV": 11540.000000000606,
+  "occtV": 11540.000000000613,
+  "brepV": 11540.000000000611
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk2_p2v",
+  "from": 20,
+  "to": 23,
+  "changed": true,
+  "roundTrip": true,
+  "back": 23,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5762473167641117e-16,
+   "dBbox": 0,
+   "dCom": 0,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5762473167641117e-16
+  },
+  "truckV": 11540.000000000457,
+  "occtV": 11540.000000000455,
+  "brepV": 11540.000000000453
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk2_p3u",
+  "from": 15,
+  "to": 18,
+  "changed": true,
+  "roundTrip": true,
+  "back": 18,
+  "cls": "PASS",
+  "score": {
+   "dVol": 4.680075652346883e-16,
+   "dBbox": 0,
+   "dCom": 1.393488951877828e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 11660.000000002363,
+  "occtV": 11660.000000002357,
+  "brepV": 11660.000000002357
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk2_p3v",
+  "from": 20,
+  "to": 23,
+  "changed": true,
+  "roundTrip": true,
+  "back": 23,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5762473167641117e-16,
+   "dBbox": 0,
+   "dCom": 1.393488951877828e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.1524946335282233e-16
+  },
+  "truckV": 11540.000000000453,
+  "occtV": 11540.000000000455,
+  "brepV": 11540.000000000451
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "sk2_offset",
+  "from": 10,
+  "to": 13,
+  "changed": true,
+  "roundTrip": true,
+  "back": 13,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5285625239881145e-16,
+   "dBbox": 0,
+   "dCom": 1.393488951877828e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5285625239881145e-16
+  },
+  "truckV": 11900,
+  "occtV": 11900.000000000002,
+  "brepV": 11900
+ },
+ {
+  "label": "plate sketch extrude pocket",
+  "slot": "pocket1_depth",
+  "from": 4,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.1634598322536646e-16,
+   "dBbox": 0,
+   "dCom": 1.393488951877828e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.1634598322536646e-16
+  },
+  "truckV": 11500,
+  "occtV": 11499.999999999996,
+  "brepV": 11500
+ },
+ {
+  "label": "circle sketch extrude",
+  "slot": "sk1_across",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00008688824587404977,
+   "dBbox": 7.47939721852737e-16,
+   "dCom": 1.0452053213475933e-10,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 3,
+    "truck": 3,
+    "brep": 3,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.2352049280260327e-16
+  },
+  "truckV": 7362.468014331732,
+  "occtV": 7363.1077818510785,
+  "brepV": 7363.107781851078
+ },
+ {
+  "label": "circle sketch extrude",
+  "slot": "sk1_x",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00011283812273438202,
+   "dBbox": 4.736951571734001e-16,
+   "dCom": 2.006145420026614e-10,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 3,
+    "truck": 3,
+    "brep": 3,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.930007700040676e-16
+  },
+  "truckV": 4711.85724325855,
+  "occtV": 4712.3889803846905,
+  "brepV": 4712.38898038469
+ },
+ {
+  "label": "circle sketch extrude",
+  "slot": "sk1_y",
+  "from": 3,
+  "to": 6,
+  "changed": true,
+  "roundTrip": true,
+  "back": 6,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00011283812273882104,
+   "dBbox": 4.736951571734001e-16,
+   "dCom": 1.253825594720939e-10,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 3,
+    "truck": 3,
+    "brep": 3,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 4711.857243258529,
+  "occtV": 4712.3889803846905,
+  "brepV": 4712.3889803846905
+ },
+ {
+  "label": "circle sketch extrude",
+  "slot": "sk1_offset",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00011283812273187301,
+   "dBbox": 1.3322676295501878e-15,
+   "dCom": 1.315885077397294e-10,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 3,
+    "truck": 3,
+    "brep": 3,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.930007700040676e-16
+  },
+  "truckV": 4711.8572432585615,
+  "occtV": 4712.3889803846905,
+  "brepV": 4712.388980384691
+ },
+ {
+  "label": "circle sketch extrude",
+  "slot": "pull1_height",
+  "from": 15,
+  "to": 18.75,
+  "changed": true,
+  "roundTrip": true,
+  "back": 18.75,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00011283812319434145,
+   "dBbox": 7.61295788314393e-16,
+   "dCom": 1.1829292374764428e-10,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 3,
+    "truck": 3,
+    "brep": 3,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.632018480097622e-16
+  },
+  "truckV": 5889.821554070478,
+  "occtV": 5890.486225480863,
+  "brepV": 5890.48622548086
+ },
+ {
+  "label": "rounded rect sketch extrude",
+  "slot": "sk1_p0u",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000001955166458310432,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 6.954095382649485e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.621212237244193e-13
+  },
+  "truckV": 11515.641191149962,
+  "occtV": 11515.663706189385,
+  "brepV": 11515.663706178306
+ },
+ {
+  "label": "rounded rect sketch extrude",
+  "slot": "sk1_p0v",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000001980970052198683,
+   "dBbox": 5.329070518200751e-16,
+   "dCom": 7.301290122679297e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.748189585227776e-13
+  },
+  "truckV": 11365.641191160365,
+  "occtV": 11365.66370619979,
+  "brepV": 11365.66370618871
+ },
+ {
+  "label": "rounded rect sketch extrude",
+  "slot": "sk1_p1u",
+  "from": 40,
+  "to": 43,
+  "changed": true,
+  "roundTrip": true,
+  "back": 43,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000018134685058488247,
+   "dBbox": 6.217248937900877e-15,
+   "dCom": 6.680653071219632e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.433625979758741e-13
+  },
+  "truckV": 12415.641190738426,
+  "occtV": 12415.663706153537,
+  "brepV": 12415.663706141824
+ },
+ {
+  "label": "rounded rect sketch extrude",
+  "slot": "sk1_p1v",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000019809700520391676,
+   "dBbox": 5.329070518200751e-16,
+   "dCom": 7.301290123394288e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.74658916008093e-13
+  },
+  "truckV": 11365.641191157343,
+  "occtV": 11365.663706196767,
+  "brepV": 11365.663706185689
+ },
+ {
+  "label": "rounded rect sketch extrude",
+  "slot": "sk1_p2u",
+  "from": 40,
+  "to": 43,
+  "changed": true,
+  "roundTrip": true,
+  "back": 43,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000018134685061418448,
+   "dBbox": 6.217248937900877e-15,
+   "dCom": 6.680653070538722e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.432160903507833e-13
+  },
+  "truckV": 12415.64119073839,
+  "occtV": 12415.663706153504,
+  "brepV": 12415.663706141793
+ },
+ {
+  "label": "rounded rect sketch extrude",
+  "slot": "sk1_p2v",
+  "from": 30,
+  "to": 33,
+  "changed": true,
+  "roundTrip": true,
+  "back": 33,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000017918204007966485,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 6.377655939904345e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 7.303077462095587e-13
+  },
+  "truckV": 12565.641190769175,
+  "occtV": 12565.663706181753,
+  "brepV": 12565.663706172576
+ },
+ {
+  "label": "rounded rect sketch extrude",
+  "slot": "sk1_p3u",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000001955166458469072,
+   "dBbox": 1.1842378932365504e-15,
+   "dCom": 6.954095384086391e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.621212237247547e-13
+  },
+  "truckV": 11515.641191145944,
+  "occtV": 11515.663706185369,
+  "brepV": 11515.66370617429
+ },
+ {
+  "label": "rounded rect sketch extrude",
+  "slot": "sk1_p3v",
+  "from": 30,
+  "to": 33,
+  "changed": true,
+  "roundTrip": true,
+  "back": 33,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000001791820803659445,
+   "dBbox": 7.105427357601002e-15,
+   "dCom": 6.377656036447529e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.1334607835120982e-12
+  },
+  "truckV": 12565.641190769185,
+  "occtV": 12565.663706186826,
+  "brepV": 12565.663706172583
+ },
+ {
+  "label": "rounded rect sketch extrude",
+  "slot": "sk1_r0",
+  "from": 4,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000029448603301598036,
+   "dBbox": 3.552713678800501e-15,
+   "dCom": 0.0000010456035985301104,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.1037559332415005e-12
+  },
+  "truckV": 11946.314360531695,
+  "occtV": 11946.349540862548,
+  "brepV": 11946.349540849362
+ },
+ {
+  "label": "rounded rect sketch extrude",
+  "slot": "sk1_offset",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000018816686937351352,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 6.816189445196326e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.523891773218437e-13
+  },
+  "truckV": 11965.64119074019,
+  "occtV": 11965.663706154986,
+  "brepV": 11965.66370614359
+ },
+ {
+  "label": "rounded rect sketch extrude",
+  "slot": "pull1_height",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000001881668693674328,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 6.743631826386074e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.52358773836534e-13
+  },
+  "truckV": 14957.05148842524,
+  "occtV": 14957.079632693734,
+  "brepV": 14957.07963267949
+ },
+ {
+  "label": "polygon sketch extrude",
+  "slot": "sk1_p0u",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.1811619503544525e-16,
+   "dBbox": 0,
+   "dCom": 7.367984940248286e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.72464780141781e-16
+  },
+  "truckV": 7700,
+  "occtV": 7699.999999999999,
+  "brepV": 7700.000000000003
+ },
+ {
+  "label": "polygon sketch extrude",
+  "slot": "sk1_p0v",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 3.683992470124143e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.6871406828632224e-16
+  },
+  "truckV": 7400,
+  "occtV": 7400,
+  "brepV": 7400.000000000003
+ },
+ {
+  "label": "polygon sketch extrude",
+  "slot": "sk1_p1u",
+  "from": 40,
+  "to": 43,
+  "changed": true,
+  "roundTrip": true,
+  "back": 43,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 7.002545458915708e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.1719276460249033e-16
+  },
+  "truckV": 8375,
+  "occtV": 8375,
+  "brepV": 8375.000000000002
+ },
+ {
+  "label": "polygon sketch extrude",
+  "slot": "sk1_p1v",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 3.683992470124143e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.2046287440701036e-16
+  },
+  "truckV": 7550,
+  "occtV": 7550,
+  "brepV": 7550.000000000001
+ },
+ {
+  "label": "polygon sketch extrude",
+  "slot": "sk1_p2u",
+  "from": 30,
+  "to": 33,
+  "changed": true,
+  "roundTrip": true,
+  "back": 33,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 7.367984940248286e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.3831069964960405e-16
+  },
+  "truckV": 8299.999999999998,
+  "occtV": 8299.999999999998,
+  "brepV": 8300.000000000002
+ },
+ {
+  "label": "polygon sketch extrude",
+  "slot": "sk1_p2v",
+  "from": 25,
+  "to": 28,
+  "changed": true,
+  "roundTrip": true,
+  "back": 28,
+  "cls": "PASS",
+  "score": {
+   "dVol": 4.230207915222923e-16,
+   "dBbox": 7.105427357601002e-15,
+   "dCom": 3.564137224932331e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.1151039576114614e-16
+  },
+  "truckV": 8600.000000000002,
+  "occtV": 8599.999999999998,
+  "brepV": 8600
+ },
+ {
+  "label": "polygon sketch extrude",
+  "slot": "sk1_p3u",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 7.367984940248286e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.1927799367513814e-16
+  },
+  "truckV": 7625,
+  "occtV": 7625,
+  "brepV": 7625.000000000001
+ },
+ {
+  "label": "polygon sketch extrude",
+  "slot": "sk1_p3v",
+  "from": 20,
+  "to": 23,
+  "changed": true,
+  "roundTrip": true,
+  "back": 23,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 7.367984940248286e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.1526501817110727e-16
+  },
+  "truckV": 8450,
+  "occtV": 8450,
+  "brepV": 8450.000000000002
+ },
+ {
+  "label": "polygon sketch extrude",
+  "slot": "sk1_offset",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.273736754432321e-16,
+   "dBbox": 0,
+   "dCom": 0,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 5.684341886080803e-16
+  },
+  "truckV": 8000,
+  "occtV": 7999.999999999998,
+  "brepV": 8000.000000000003
+ },
+ {
+  "label": "polygon sketch extrude",
+  "slot": "pull1_height",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.6379788070917136e-16,
+   "dBbox": 2.842170943040401e-16,
+   "dCom": 0,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.6379788070917136e-16
+  },
+  "truckV": 10000.000000000002,
+  "occtV": 9999.999999999998,
+  "brepV": 10000.000000000002
+ },
+ {
+  "label": "revolve",
+  "slot": "sk1_p0u",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00009769570590963215,
+   "dBbox": 2.3684757858670006e-16,
+   "dCom": 0.000002490471846206054,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.363405057635774e-11
+  },
+  "truckV": 8575.710052940161,
+  "occtV": 8576.547944845901,
+  "brepV": 8576.54794430014
+ },
+ {
+  "label": "revolve",
+  "slot": "sk1_p0v",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00010323891177484355,
+   "dBbox": 1.3322676295501878e-15,
+   "dCom": 0.0000024486143283030926,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.252813212764803e-11
+  },
+  "truckV": 8834.817147692107,
+  "occtV": 8835.72933877378,
+  "brepV": 8835.729338221297
+ },
+ {
+  "label": "revolve",
+  "slot": "sk1_p1u",
+  "from": 15,
+  "to": 18,
+  "changed": true,
+  "roundTrip": true,
+  "back": 18,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000047404199239670066,
+   "dBbox": 9.86864910777917e-16,
+   "dCom": 0.0000013508718080291937,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.318207061826706e-11
+  },
+  "truckV": 11686.170672267604,
+  "occtV": 11686.72467209242,
+  "brepV": 11686.724671354028
+ },
+ {
+  "label": "revolve",
+  "slot": "sk1_p1v",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00009013597376222322,
+   "dBbox": 4.736951571734001e-16,
+   "dCom": 0.000002345640635019325,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.424165465327079e-11
+  },
+  "truckV": 8599.334710475168,
+  "occtV": 8600.109889754543,
+  "brepV": 8600.109889202058
+ },
+ {
+  "label": "revolve",
+  "slot": "sk1_p2u",
+  "from": 15,
+  "to": 18,
+  "changed": true,
+  "roundTrip": true,
+  "back": 18,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00004771979463309275,
+   "dBbox": 1.9737298215558337e-16,
+   "dCom": 0.0000013574470753692074,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.31812923893558e-11
+  },
+  "truckV": 11686.166983991134,
+  "occtV": 11686.72467209242,
+  "brepV": 11686.724671354037
+ },
+ {
+  "label": "revolve",
+  "slot": "sk1_p2v",
+  "from": 20,
+  "to": 23,
+  "changed": true,
+  "roundTrip": true,
+  "back": 23,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0001010608272638333,
+   "dBbox": 2.3684757858670006e-16,
+   "dCom": 0.0000023751274660722644,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.264529912382345e-11
+  },
+  "truckV": 10248.41021548369,
+  "occtV": 10249.446032978778,
+  "brepV": 10249.446032336698
+ },
+ {
+  "label": "revolve",
+  "slot": "sk1_p3u",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00009769816772989335,
+   "dBbox": 1.1842378929335003e-16,
+   "dCom": 0.0000024903664359210465,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.363383848759951e-11
+  },
+  "truckV": 8575.71003182624,
+  "occtV": 8576.5479448459,
+  "brepV": 8576.54794430014
+ },
+ {
+  "label": "revolve",
+  "slot": "sk1_p3v",
+  "from": 20,
+  "to": 23,
+  "changed": true,
+  "roundTrip": true,
+  "back": 23,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00009332472112416039,
+   "dBbox": 2.3684757858670006e-16,
+   "dCom": 0.000002304398552598795,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.411857957080249e-11
+  },
+  "truckV": 10012.892046386207,
+  "occtV": 10013.82658395954,
+  "brepV": 10013.826583317468
+ },
+ {
+  "label": "revolve",
+  "slot": "sk1_offset",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00009702250366592198,
+   "dBbox": 2.3684757858670006e-16,
+   "dCom": 0.0000024058563695789417,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.337296083143947e-11
+  },
+  "truckV": 9423.863545812354,
+  "occtV": 9424.77796136666,
+  "brepV": 9424.777960769385
+ },
+ {
+  "label": "revolve",
+  "slot": "rev1_angle",
+  "from": 270,
+  "to": 280,
+  "changed": true,
+  "roundTrip": true,
+  "back": 280,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00010466018179288144,
+   "dBbox": 0.00002644236782245457,
+   "dCom": 0.000002452190648970833,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.44056114512143e-11
+  },
+  "truckV": 9772.820879527579,
+  "occtV": 9773.843811797737,
+  "brepV": 9773.843811168246
+ },
+ {
+  "label": "groove",
+  "slot": "box1_width",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000002113884312741405,
+   "dBbox": 5.329070518200751e-16,
+   "dCom": 5.584755634502134e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 9,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 39497.42866824399,
+  "occtV": 39497.34517542563,
+  "brepV": 39497.34517542563
+ },
+ {
+  "label": "groove",
+  "slot": "box1_depth",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000029745802031336094,
+   "dBbox": 0,
+   "dCom": 8.350228850761159e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 11,
+    "truck": 10,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 39296.40013554208,
+  "occtV": 39296.28324559588
+ },
+ {
+  "label": "groove",
+  "slot": "box1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000002113884312741405,
+   "dBbox": 5.329070518200751e-16,
+   "dCom": 6.057517983002801e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 9,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 39497.42866824399,
+  "occtV": 39497.34517542563,
+  "brepV": 39497.34517542563
+ },
+ {
+  "label": "groove",
+  "slot": "box1_x",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000002650788595746337,
+   "dBbox": 5.329070518200751e-16,
+   "dCom": 7.854829806012524e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 9,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.756336333795188e-13
+  },
+  "truckV": 31497.428668243996,
+  "occtV": 31497.34517544061,
+  "brepV": 31497.345175425628
+ },
+ {
+  "label": "groove",
+  "slot": "box1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000037349465838532634,
+   "dBbox": 0,
+   "dCom": 9.865530298839667e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 11,
+    "truck": 10,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 31296.400135542077,
+  "occtV": 31296.28324559588
+ },
+ {
+  "label": "groove",
+  "slot": "box1_z",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000020008554099039486,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 5.924013756338405e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 11,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.1540527227709103e-16
+  },
+  "truckV": 31523.569195577064,
+  "occtV": 31523.5061215993,
+  "brepV": 31523.506121599305
+ },
+ {
+  "label": "groove",
+  "slot": "sk1_p0u",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "REFUSED(refs also refuse)",
+  "sentence": "groove1 (groove): solidcraft refused it -- solid.revolve: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cone, cylinder); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cone, cylinder)",
+  "occtV": 31529.562528658866
+ },
+ {
+  "label": "groove",
+  "slot": "sk1_p0v",
+  "from": 15,
+  "to": 18,
+  "changed": true,
+  "roundTrip": true,
+  "back": 18,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00000132503877413888,
+   "dBbox": 0,
+   "dCom": 4.003515497799648e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 9,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 31597.918008751567,
+  "occtV": 31597.8761403405
+ },
+ {
+  "label": "groove",
+  "slot": "sk1_p1u",
+  "from": 8,
+  "to": 11,
+  "changed": true,
+  "roundTrip": true,
+  "back": 11,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000001164927822429662,
+   "dBbox": 0,
+   "dCom": 3.4899909885551437e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 9,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 31228.515323377578,
+  "occtV": 31228.478944453604
+ },
+ {
+  "label": "groove",
+  "slot": "sk1_p1v",
+  "from": 15,
+  "to": 18,
+  "changed": true,
+  "roundTrip": true,
+  "back": 18,
+  "cls": "PASS",
+  "score": {
+   "dVol": 9.93340988940349e-7,
+   "dBbox": 0,
+   "dCom": 3.0787754588534887e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 9,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 31698.438592582435,
+  "occtV": 31698.407105255374
+ },
+ {
+  "label": "groove",
+  "slot": "sk1_p2u",
+  "from": 8,
+  "to": 11,
+  "changed": true,
+  "roundTrip": true,
+  "back": 11,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000010525613582280838,
+   "dBbox": 1.8142331548176567e-8,
+   "dCom": 3.1577103018487485e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 9,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 31350.760169802146,
+  "occtV": 31350.727171238173
+ },
+ {
+  "label": "groove",
+  "slot": "sk1_p2v",
+  "from": 22,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000016466100111855947,
+   "dBbox": 0,
+   "dCom": 4.879247667492296e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 9,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 31497.39703926952,
+  "occtV": 31497.345175425628
+ },
+ {
+  "label": "groove",
+  "slot": "sk1_p3u",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "REFUSED(refs also refuse)",
+  "sentence": "groove1 (groove): solidcraft refused it -- solid.revolve: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cone, cylinder); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cone, cylinder)",
+  "occtV": 31509.36657588579
+ },
+ {
+  "label": "groove",
+  "slot": "sk1_p3v",
+  "from": 22,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000016466100111855947,
+   "dBbox": 0,
+   "dCom": 4.879247667353518e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 9,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 31497.39703926952,
+  "occtV": 31497.345175425628
+ },
+ {
+  "label": "groove",
+  "slot": "sk1_offset",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000010502591855003743,
+   "dBbox": 5.329070518200751e-16,
+   "dCom": 3.346846110439949e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 9,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 31798.971467297048,
+  "occtV": 31798.93807017025,
+  "brepV": 31798.93807017025
+ },
+ {
+  "label": "groove",
+  "slot": "groove1_angle",
+  "from": 180,
+  "to": 190,
+  "changed": true,
+  "roundTrip": true,
+  "back": 190,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000002851627659048134,
+   "dBbox": 5.329070518200751e-16,
+   "dCom": 8.457453462803095e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.074884036538222e-14
+  },
+  "truckV": 31469.509646459086,
+  "occtV": 31469.419907390864,
+  "brepV": 31469.41990739372
+ },
+ {
+  "label": "hole",
+  "slot": "box1_width",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000015803851428308955,
+   "dBbox": 4.440892098500626e-16,
+   "dCom": 1.2940557792651427e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.672592172861392e-16
+  },
+  "truckV": 29717.303625887827,
+  "occtV": 29717.256661176914,
+  "brepV": 29717.256661176925
+ },
+ {
+  "label": "hole",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000015803851425860562,
+   "dBbox": 4.440892098500626e-16,
+   "dCom": 1.3668049251327284e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.89678956381519e-16
+  },
+  "truckV": 29717.303625887816,
+  "occtV": 29717.25666117691,
+  "brepV": 29717.256661176925
+ },
+ {
+  "label": "hole",
+  "slot": "box1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000015803851429533155,
+   "dBbox": 0,
+   "dCom": 1.4269862358657453e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 9,
+    "truck": 9,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 29717.303625887827,
+  "occtV": 29717.25666117691
+ },
+ {
+  "label": "hole",
+  "slot": "box1_x",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00000198019153649653,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 1.860476260551746e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5338952810030377e-16
+  },
+  "truckV": 23717.303625887824,
+  "occtV": 23717.256661176914,
+  "brepV": 23717.256661176918
+ },
+ {
+  "label": "hole",
+  "slot": "box1_y",
+  "from": -3,
+  "to": 0,
+  "changed": true,
+  "roundTrip": true,
+  "back": 0,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000019801915368033094,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 1.8604762604692808e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5338952810030377e-16
+  },
+  "truckV": 23717.30362588783,
+  "occtV": 23717.256661176914,
+  "brepV": 23717.256661176918
+ },
+ {
+  "label": "hole",
+  "slot": "box1_z",
+  "from": 2,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00000198019153649653,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 1.860476259397232e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5338952810030377e-16
+  },
+  "truckV": 23717.303625887824,
+  "occtV": 23717.256661176914,
+  "brepV": 23717.256661176918
+ },
+ {
+  "label": "hole",
+  "slot": "hole1_diameter",
+  "from": 6,
+  "to": 7.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 7.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000031149374159834255,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 2.9463739424551866e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 23558.28691544972,
+  "occtV": 23558.213533088932,
+  "brepV": 23558.213533088932
+ },
+ {
+  "label": "hole",
+  "slot": "hole1_depth",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000024826385640471936,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 1.7546389241392202e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5384804984150935e-16
+  },
+  "truckV": 23646.629532359784,
+  "occtV": 23646.570826471143,
+  "brepV": 23646.570826471147
+ },
+ {
+  "label": "hole",
+  "slot": "hole1_x",
+  "from": 3,
+  "to": 6,
+  "changed": true,
+  "roundTrip": true,
+  "back": 6,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00000198019153649653,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 2.2325715199520277e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5338952810030377e-16
+  },
+  "truckV": 23717.303625887824,
+  "occtV": 23717.256661176914,
+  "brepV": 23717.256661176918
+ },
+ {
+  "label": "hole",
+  "slot": "hole1_y",
+  "from": 2,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.00000198019153664992,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 1.860476264427615e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5338952810030377e-16
+  },
+  "truckV": 23717.303625887827,
+  "occtV": 23717.256661176914,
+  "brepV": 23717.256661176918
+ },
+ {
+  "label": "hole counterbore",
+  "slot": "box1_width",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 29434.513322353832,
+  "brepV": 29095.221315766143
+ },
+ {
+  "label": "hole counterbore",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 29434.513322353832,
+  "brepV": 29095.221315766146
+ },
+ {
+  "label": "hole counterbore",
+  "slot": "box1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "REFUSED(refs also refuse)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 29377.964654589225
+ },
+ {
+  "label": "hole counterbore",
+  "slot": "box1_x",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23095.221315766143
+ },
+ {
+  "label": "hole counterbore",
+  "slot": "box1_y",
+  "from": -3,
+  "to": 0,
+  "changed": true,
+  "roundTrip": true,
+  "back": 0,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23095.221315766135
+ },
+ {
+  "label": "hole counterbore",
+  "slot": "box1_z",
+  "from": 2,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23095.221315766143
+ },
+ {
+  "label": "hole counterbore",
+  "slot": "hole1_diameter",
+  "from": 6,
+  "to": 7.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 7.5,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23116.42706617787,
+  "brepV": 22840.752310825366
+ },
+ {
+  "label": "hole counterbore",
+  "slot": "hole1_depth",
+  "from": 22,
+  "to": 27.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 27.5,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23095.221315766135
+ },
+ {
+  "label": "hole counterbore",
+  "slot": "hole1_x",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23095.221315766143
+ },
+ {
+  "label": "hole counterbore",
+  "slot": "hole1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23095.221315766135
+ },
+ {
+  "label": "hole counterbore",
+  "slot": "hole1_counterboreAcross",
+  "from": 12,
+  "to": 13,
+  "changed": true,
+  "roundTrip": true,
+  "back": 13,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23016.681499426395
+ },
+ {
+  "label": "hole counterbore",
+  "slot": "hole1_counterboreDeep",
+  "from": 4,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23010.398314119215
+ },
+ {
+  "label": "hole countersink",
+  "slot": "box1_width",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 29434.513322353832,
+  "brepV": 29321.415986824606
+ },
+ {
+  "label": "hole countersink",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 29434.513322353832,
+  "brepV": 29321.41598682461
+ },
+ {
+  "label": "hole countersink",
+  "slot": "box1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "REFUSED(refs also refuse)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 29377.964654589225
+ },
+ {
+  "label": "hole countersink",
+  "slot": "box1_x",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23321.415986824602
+ },
+ {
+  "label": "hole countersink",
+  "slot": "box1_y",
+  "from": -3,
+  "to": 0,
+  "changed": true,
+  "roundTrip": true,
+  "back": 0,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23321.415986824602
+ },
+ {
+  "label": "hole countersink",
+  "slot": "box1_z",
+  "from": 2,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23321.415986824606
+ },
+ {
+  "label": "hole countersink",
+  "slot": "hole1_diameter",
+  "from": 6,
+  "to": 7.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 7.5,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23116.42706617787,
+  "brepV": 23044.857658538273
+ },
+ {
+  "label": "hole countersink",
+  "slot": "hole1_depth",
+  "from": 22,
+  "to": 27.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 27.5,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23321.415986824602
+ },
+ {
+  "label": "hole countersink",
+  "slot": "hole1_x",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23321.415986824602
+ },
+ {
+  "label": "hole countersink",
+  "slot": "hole1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23321.415986824602
+ },
+ {
+  "label": "hole countersink",
+  "slot": "hole1_countersinkAcross",
+  "from": 12,
+  "to": 13,
+  "changed": true,
+  "roundTrip": true,
+  "back": 13,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23274.161197326855
+ },
+ {
+  "label": "hole countersink",
+  "slot": "hole1_countersinkAngle",
+  "from": 90,
+  "to": 100,
+  "changed": true,
+  "roundTrip": true,
+  "back": 100,
+  "cls": "REFUSED(refs build)",
+  "sentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+  "occtV": 23434.513322353836,
+  "brepV": 23339.61338982412
+ },
+ {
+  "label": "holes corners",
+  "slot": "box1_width",
+  "from": 50,
+  "to": 62.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 62.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000005387556284598113,
+   "dBbox": 3.774758283725532e-15,
+   "dCom": 3.4093086460015495e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5023905128155276e-16
+  },
+  "truckV": 48429.46458826572,
+  "occtV": 48429.20367320511,
+  "brepV": 48429.203673205106
+ },
+ {
+  "label": "holes corners",
+  "slot": "box1_depth",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000005387556283997157,
+   "dBbox": 3.1086244689504383e-15,
+   "dCom": 3.625973214694715e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 48429.46458826569,
+  "occtV": 48429.20367320511,
+  "brepV": 48429.20367320511
+ },
+ {
+  "label": "holes corners",
+  "slot": "box1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000005945596394651312,
+   "dBbox": 0,
+   "dCom": 2.0673751562677236e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 18,
+    "truck": 18,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 48272.41104709229,
+  "occtV": 48272.12404052563
+ },
+ {
+  "label": "holes corners",
+  "slot": "box1_x",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000067894995389699965,
+   "dBbox": 7.401486830834377e-16,
+   "dCom": 4.766465574234764e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 38429.46458826573,
+  "occtV": 38429.203673205106,
+  "brepV": 38429.203673205106
+ },
+ {
+  "label": "holes corners",
+  "slot": "box1_y",
+  "from": -3,
+  "to": 0,
+  "changed": true,
+  "roundTrip": true,
+  "back": 0,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000006789499538780662,
+   "dBbox": 1.3322676295501878e-15,
+   "dCom": 3.012141439273358e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 38429.46458826572,
+  "occtV": 38429.203673205106,
+  "brepV": 38429.203673205106
+ },
+ {
+  "label": "holes corners",
+  "slot": "box1_z",
+  "from": 2,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000006789499538591328,
+   "dBbox": 4.440892098500626e-15,
+   "dCom": 7.41450200436519e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 38429.46458826571,
+  "occtV": 38429.203673205106,
+  "brepV": 38429.203673205106
+ },
+ {
+  "label": "holes corners",
+  "slot": "hole1_diameter",
+  "from": 5,
+  "to": 6.25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 6.25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000108582483281536,
+   "dBbox": 3.3306690738754696e-15,
+   "dCom": 5.958081967793455e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.8757945842957474e-16
+  },
+  "truckV": 37546.03841916519,
+  "occtV": 37545.630739382985,
+  "brepV": 37545.63073938297
+ },
+ {
+  "label": "holes corners",
+  "slot": "hole1_depth",
+  "from": 22,
+  "to": 27.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 27.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000006789499538780662,
+   "dBbox": 3.1086244689504383e-15,
+   "dCom": 5.32917331563748e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 38429.46458826572,
+  "occtV": 38429.203673205106,
+  "brepV": 38429.203673205106
+ },
+ {
+  "label": "holes corners",
+  "slot": "hole1_x",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000006789499538591328,
+   "dBbox": 3.9968028886505635e-15,
+   "dCom": 3.1604463269009255e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 38429.46458826571,
+  "occtV": 38429.203673205106,
+  "brepV": 38429.203673205106
+ },
+ {
+  "label": "holes corners",
+  "slot": "hole1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000006789499538780662,
+   "dBbox": 1.3322676295501878e-15,
+   "dCom": 3.1604463216048525e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 38429.46458826572,
+  "occtV": 38429.203673205106,
+  "brepV": 38429.203673205106
+ },
+ {
+  "label": "holes corners",
+  "slot": "hole1_dx",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000006789499538401994,
+   "dBbox": 1.7763568394002505e-15,
+   "dCom": 4.2368582882086796e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 38429.464588265706,
+  "occtV": 38429.203673205106,
+  "brepV": 38429.203673205106
+ },
+ {
+  "label": "holes corners",
+  "slot": "hole1_dy",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000006789499538780662,
+   "dBbox": 1.5543122344752192e-15,
+   "dCom": 4.071356011325528e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 38429.46458826572,
+  "occtV": 38429.203673205106,
+  "brepV": 38429.203673205106
+ },
+ {
+  "label": "hollow",
+  "slot": "box1_width",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "PASS",
+  "score": {
+   "dVol": 6.441180607457003e-16,
+   "dBbox": 0,
+   "dCom": 2.881631309228584e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.2882361214914006e-15
+  },
+  "truckV": 8472,
+  "occtV": 8471.999999999995,
+  "brepV": 8472.000000000005
+ },
+ {
+  "label": "hollow",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.1936678769245747e-16,
+   "dBbox": 0,
+   "dCom": 3.043630676402524e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.0968339384622872e-15
+  },
+  "truckV": 8291.999999999998,
+  "occtV": 8291.999999999996,
+  "brepV": 8292.000000000005
+ },
+ {
+  "label": "hollow",
+  "slot": "box1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 4.2941204049713343e-16,
+   "dBbox": 0,
+   "dCom": 3.17764371615651e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.0735301012428337e-15
+  },
+  "truckV": 8472,
+  "occtV": 8471.999999999996,
+  "brepV": 8472.000000000005
+ },
+ {
+  "label": "hollow",
+  "slot": "box1_x",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.2716648514722158e-16,
+   "dBbox": 0,
+   "dCom": 1.15451414405442e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 5.086659405888863e-16
+  },
+  "truckV": 7151.999999999997,
+  "occtV": 7151.999999999996,
+  "brepV": 7152
+ },
+ {
+  "label": "hollow",
+  "slot": "box1_y",
+  "from": -3,
+  "to": 0,
+  "changed": true,
+  "roundTrip": true,
+  "back": 0,
+  "cls": "PASS",
+  "score": {
+   "dVol": 5.086659405888863e-16,
+   "dBbox": 0,
+   "dCom": 6.597223680310971e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 5.086659405888863e-16
+  },
+  "truckV": 7152,
+  "occtV": 7151.999999999996,
+  "brepV": 7152
+ },
+ {
+  "label": "hollow",
+  "slot": "box1_z",
+  "from": 2,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.814994554416647e-16,
+   "dBbox": 0,
+   "dCom": 9.895835520466456e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 5.086659405888863e-16
+  },
+  "truckV": 7151.999999999999,
+  "occtV": 7151.999999999996,
+  "brepV": 7152
+ },
+ {
+  "label": "hollow",
+  "slot": "shell1_thickness",
+  "from": 2,
+  "to": 2.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 2.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 4.187601504566e-16,
+   "dBbox": 0,
+   "dCom": 4.947917760233228e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.093800752283e-16
+  },
+  "truckV": 8687.499999999998,
+  "occtV": 8687.500000000002,
+  "brepV": 8687.5
+ },
+ {
+  "label": "round edge",
+  "slot": "box1_width",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "PASS",
+  "score": {
+   "dVol": 5.635195127781312e-7,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 2.214707040829475e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.544278232453583e-13
+  },
+  "truckV": 29974.230888553808,
+  "occtV": 29974.247779627312,
+  "brepV": 29974.247779607696
+ },
+ {
+  "label": "round edge",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 7.045505876741746e-7,
+   "dBbox": 4.900294729380001e-16,
+   "dCom": 2.3210810335652756e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.862528288030186e-13
+  },
+  "truckV": 29967.788610692238,
+  "occtV": 29967.80972453019,
+  "brepV": 29967.809724509625
+ },
+ {
+  "label": "round edge",
+  "slot": "box1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 5.635507415592768e-7,
+   "dBbox": 4.900294729380001e-16,
+   "dCom": 1.937861966488409e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.018745503475339e-13
+  },
+  "truckV": 29974.230887616166,
+  "occtV": 29974.24777962573,
+  "brepV": 29974.24777960769
+ },
+ {
+  "label": "round edge",
+  "slot": "box1_x",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 7.045505868850991e-7,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 2.5155042142553743e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.863438759676397e-13
+  },
+  "truckV": 23974.230888553808,
+  "occtV": 23974.24777962415,
+  "brepV": 23974.247779607696
+ },
+ {
+  "label": "round edge",
+  "slot": "box1_y",
+  "from": -3,
+  "to": 0,
+  "changed": true,
+  "roundTrip": true,
+  "back": 0,
+  "cls": "PASS",
+  "score": {
+   "dVol": 7.0455059007175e-7,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 2.515530368124002e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.863438759676397e-13
+  },
+  "truckV": 23974.23088855373,
+  "occtV": 23974.24777962415,
+  "brepV": 23974.247779607696
+ },
+ {
+  "label": "round edge",
+  "slot": "box1_z",
+  "from": 2,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 7.045975192705369e-7,
+   "dBbox": 4.736951571734001e-16,
+   "dCom": 2.5156373046667337e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.863438759676397e-13
+  },
+  "truckV": 23974.23088742864,
+  "occtV": 23974.24777962415,
+  "brepV": 23974.247779607696
+ },
+ {
+  "label": "round edge",
+  "slot": "round1_size",
+  "from": 2,
+  "to": 2.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 2.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000011014669034244216,
+   "dBbox": 7.894919286223335e-16,
+   "dCom": 3.8946185235401916e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 8.253860229026317e-13
+  },
+  "truckV": 23959.735764771773,
+  "occtV": 23959.7621556568,
+  "brepV": 23959.762155637025
+ },
+ {
+  "label": "bevel edge",
+  "slot": "box1_width",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.21508978192776e-16,
+   "dBbox": 2.9605947323337506e-16,
+   "dCom": 2.1612234819214376e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.43017956385552e-16
+  },
+  "truckV": 29939.999999999996,
+  "occtV": 29939.999999999993,
+  "brepV": 29940
+ },
+ {
+  "label": "bevel edge",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.431397698975247e-16,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 3.043630676402524e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.431397698975247e-16
+  },
+  "truckV": 29925.000000000004,
+  "occtV": 29924.999999999996,
+  "brepV": 29925.000000000004
+ },
+ {
+  "label": "bevel edge",
+  "slot": "box1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.43017956385552e-16,
+   "dBbox": 2.9605947323337506e-16,
+   "dCom": 4.766465574234764e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.43017956385552e-16
+  },
+  "truckV": 29940,
+  "occtV": 29939.999999999993,
+  "brepV": 29940
+ },
+ {
+  "label": "bevel edge",
+  "slot": "box1_x",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5196235618595295e-16,
+   "dBbox": 0,
+   "dCom": 1.6493059200777427e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5196235618595295e-16
+  },
+  "truckV": 23940,
+  "occtV": 23939.999999999996,
+  "brepV": 23940
+ },
+ {
+  "label": "bevel edge",
+  "slot": "box1_y",
+  "from": -3,
+  "to": 0,
+  "changed": true,
+  "roundTrip": true,
+  "back": 0,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5196235618595295e-16,
+   "dBbox": 0,
+   "dCom": 3.2986118401554854e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5196235618595295e-16
+  },
+  "truckV": 23940,
+  "occtV": 23939.999999999996,
+  "brepV": 23940
+ },
+ {
+  "label": "bevel edge",
+  "slot": "box1_z",
+  "from": 2,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5196235618595295e-16,
+   "dBbox": 0,
+   "dCom": 3.2986118401554854e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5196235618595295e-16
+  },
+  "truckV": 23940,
+  "occtV": 23939.999999999996,
+  "brepV": 23940
+ },
+ {
+  "label": "bevel edge",
+  "slot": "bevel1_size",
+  "from": 2,
+  "to": 2.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 2.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 3.2986118401554854e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 23906.25,
+  "occtV": 23906.25,
+  "brepV": 23906.25
+ },
+ {
+  "label": "draft face",
+  "slot": "box1_width",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.216918264467045e-16,
+   "dBbox": 1.7763568394002506e-16,
+   "dCom": 2.1414553168290704e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.216918264467045e-16
+  },
+  "truckV": 29895.013603768883,
+  "occtV": 29895.013603768886,
+  "brepV": 29895.01360376889
+ },
+ {
+  "label": "draft face",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.435975215527247e-16,
+   "dBbox": 4.440892098500624e-16,
+   "dCom": 5.282734473013733e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.2179876077636234e-16
+  },
+  "truckV": 29868.767004711117,
+  "occtV": 29868.76700471111,
+  "brepV": 29868.767004711106
+ },
+ {
+  "label": "draft face",
+  "slot": "box1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.6539628232908703e-16,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 3.925639458850919e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.6539628232908703e-16
+  },
+  "truckV": 29868.767004711117,
+  "occtV": 29868.767004711106,
+  "brepV": 29868.767004711117
+ },
+ {
+  "label": "draft face",
+  "slot": "box1_x",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 4.567453529113587e-16,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 1.4701277022520906e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5224845097045293e-16
+  },
+  "truckV": 23895.013603768897,
+  "occtV": 23895.013603768886,
+  "brepV": 23895.01360376889
+ },
+ {
+  "label": "draft face",
+  "slot": "box1_y",
+  "from": -3,
+  "to": 0,
+  "changed": true,
+  "roundTrip": true,
+  "back": 0,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5224845097045293e-16,
+   "dBbox": 4.736951571734001e-16,
+   "dCom": 1.1434326573071814e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5224845097045293e-16
+  },
+  "truckV": 23895.01360376889,
+  "occtV": 23895.013603768886,
+  "brepV": 23895.01360376889
+ },
+ {
+  "label": "draft face",
+  "slot": "box1_z",
+  "from": 2,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.0651699588067376e-16,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 4.918170687415519e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.0651699588067376e-16
+  },
+  "truckV": 23737.534009422234,
+  "occtV": 23737.534009422227,
+  "brepV": 23737.534009422234
+ },
+ {
+  "label": "draft face",
+  "slot": "draft1_angle",
+  "from": 5,
+  "to": 15,
+  "changed": true,
+  "roundTrip": true,
+  "back": 15,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.0728169468800204e-16,
+   "dBbox": 6.661338147750939e-16,
+   "dCom": 8.007025900061983e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.145633893760041e-16
+  },
+  "truckV": 23678.46096908265,
+  "occtV": 23678.460969082644,
+  "brepV": 23678.46096908266
+ },
+ {
+  "label": "move",
+  "slot": "box1_width",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.2126596023639044e-16,
+   "dBbox": 0,
+   "dCom": 2.881631309228584e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.4253192047278088e-16
+  },
+  "truckV": 30000,
+  "occtV": 29999.999999999996,
+  "brepV": 30000.000000000004
+ },
+ {
+  "label": "move",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.2126596023639044e-16,
+   "dBbox": 0,
+   "dCom": 1.2174522705610097e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.4253192047278088e-16
+  },
+  "truckV": 30000,
+  "occtV": 29999.999999999996,
+  "brepV": 30000.000000000004
+ },
+ {
+  "label": "move",
+  "slot": "box1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.2126596023639044e-16,
+   "dBbox": 0,
+   "dCom": 6.35528743231302e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.4253192047278088e-16
+  },
+  "truckV": 30000,
+  "occtV": 29999.999999999996,
+  "brepV": 30000.000000000004
+ },
+ {
+  "label": "move",
+  "slot": "box1_x",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 0,
+   "dCom": 6.597223680310971e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548806e-16
+  },
+  "truckV": 24000,
+  "occtV": 23999.999999999996,
+  "brepV": 24000
+ },
+ {
+  "label": "move",
+  "slot": "box1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 0,
+   "dCom": 6.597223680310971e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548806e-16
+  },
+  "truckV": 24000,
+  "occtV": 23999.999999999996,
+  "brepV": 24000
+ },
+ {
+  "label": "move",
+  "slot": "box1_z",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 0,
+   "dCom": 6.597223680310971e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548806e-16
+  },
+  "truckV": 24000,
+  "occtV": 23999.999999999996,
+  "brepV": 24000
+ },
+ {
+  "label": "move",
+  "slot": "move1_x",
+  "from": 10,
+  "to": 13,
+  "changed": true,
+  "roundTrip": true,
+  "back": 13,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 0,
+   "dCom": 6.597223680310971e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548806e-16
+  },
+  "truckV": 24000,
+  "occtV": 23999.999999999996,
+  "brepV": 24000
+ },
+ {
+  "label": "move",
+  "slot": "move1_y",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 0,
+   "dCom": 6.597223680310971e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548806e-16
+  },
+  "truckV": 24000,
+  "occtV": 23999.999999999996,
+  "brepV": 24000
+ },
+ {
+  "label": "move",
+  "slot": "move1_z",
+  "from": 3,
+  "to": 6,
+  "changed": true,
+  "roundTrip": true,
+  "back": 6,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 0,
+   "dCom": 6.597223680310971e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548806e-16
+  },
+  "truckV": 24000,
+  "occtV": 23999.999999999996,
+  "brepV": 24000
+ },
+ {
+  "label": "turn of built part",
+  "slot": "box1_width",
+  "from": 40,
+  "to": 50,
+  "changed": true,
+  "roundTrip": true,
+  "back": 50,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000031911321512295198,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 4.989383027531318e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 29434.60725177566,
+  "occtV": 29434.51332235384,
+  "brepV": 29434.51332235384
+ },
+ {
+  "label": "turn of built part",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000031911321512295206,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 1.4819205619649167e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 29434.60725177565,
+  "occtV": 29434.513322353832,
+  "brepV": 29434.513322353832
+ },
+ {
+  "label": "turn of built part",
+  "slot": "box1_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000035170021207448215,
+   "dBbox": 2.9042724588771703e-16,
+   "dCom": 1.7512476819365925e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 9,
+    "truck": 9,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 29378.067976953214,
+  "occtV": 29377.96465458922
+ },
+ {
+  "label": "turn of built part",
+  "slot": "box1_x",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000004008166097870659,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 8.386733165334603e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.1048042321591537e-16
+  },
+  "truckV": 23434.607251775655,
+  "occtV": 23434.513322353836,
+  "brepV": 23434.51332235383
+ },
+ {
+  "label": "turn of built part",
+  "slot": "box1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000040081660980259,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 1.0322133126565666e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5524021160795769e-16
+  },
+  "truckV": 23434.60725177566,
+  "occtV": 23434.513322353836,
+  "brepV": 23434.513322353832
+ },
+ {
+  "label": "turn of built part",
+  "slot": "box1_z",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000004008166098491621,
+   "dBbox": 7.61295788314393e-16,
+   "dCom": 2.709559945723487e-16,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5524021160795769e-16
+  },
+  "truckV": 23434.60725177567,
+  "occtV": 23434.513322353836,
+  "brepV": 23434.513322353832
+ },
+ {
+  "label": "turn of built part",
+  "slot": "hole1_diameter",
+  "from": 6,
+  "to": 7.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 7.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000006348936242506699,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 1.1858219679367094e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 23116.573830899466,
+  "occtV": 23116.42706617787,
+  "brepV": 23116.42706617787
+ },
+ {
+  "label": "turn of built part",
+  "slot": "hole1_depth",
+  "from": 22,
+  "to": 27.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 27.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000004008166097870659,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 3.205933734566204e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5524021160795769e-16
+  },
+  "truckV": 23434.607251775655,
+  "occtV": 23434.513322353836,
+  "brepV": 23434.513322353832
+ },
+ {
+  "label": "turn of built part",
+  "slot": "hole1_x",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000004008166097249698,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 1.6213452036072113e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.104804232159153e-16
+  },
+  "truckV": 23434.607251775644,
+  "occtV": 23434.51332235384,
+  "brepV": 23434.513322353832
+ },
+ {
+  "label": "turn of built part",
+  "slot": "hole1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000004008166097870659,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 1.621345203796719e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5524021160795769e-16
+  },
+  "truckV": 23434.607251775655,
+  "occtV": 23434.513322353836,
+  "brepV": 23434.513322353832
+ },
+ {
+  "label": "turn of built part",
+  "slot": "turn1_rx",
+  "from": 0,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000004008166098336382,
+   "dBbox": 2.8529436135906323e-16,
+   "dCom": 3.020905353881568e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5524021160795774e-16
+  },
+  "truckV": 23434.60725177566,
+  "occtV": 23434.51332235383,
+  "brepV": 23434.513322353832
+ },
+ {
+  "label": "turn of built part",
+  "slot": "turn1_ry",
+  "from": 0,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000040081660980259,
+   "dBbox": 3.136716040889254e-16,
+   "dCom": 1.9697410146539285e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.104804232159154e-16
+  },
+  "truckV": 23434.607251775655,
+  "occtV": 23434.513322353832,
+  "brepV": 23434.51332235384
+ },
+ {
+  "label": "turn of built part",
+  "slot": "turn1_rz",
+  "from": 25,
+  "to": 35,
+  "changed": true,
+  "roundTrip": true,
+  "back": 35,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.0000040081660980259,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 2.0736457508486894e-17,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.657206348238731e-16
+  },
+  "truckV": 23434.607251775655,
+  "occtV": 23434.513322353832,
+  "brepV": 23434.513322353843
+ },
+ {
+  "label": "repeat linear",
+  "slot": "box1_width",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.637978807091714e-16,
+   "dBbox": 0,
+   "dCom": 3.965862818133897e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 18,
+    "truck": 18,
+    "brep": 18,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.637978807091714e-16
+  },
+  "truckV": 3750,
+  "occtV": 3749.9999999999986,
+  "brepV": 3750
+ },
+ {
+  "label": "repeat linear",
+  "slot": "box1_depth",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.425319204727809e-16,
+   "dBbox": 0,
+   "dCom": 2.1109694105167712e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 18,
+    "truck": 18,
+    "brep": 18,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.063298011819523e-16
+  },
+  "truckV": 3750,
+  "occtV": 3749.999999999999,
+  "brepV": 3750.0000000000014
+ },
+ {
+  "label": "repeat linear",
+  "slot": "box1_height",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.425319204727809e-16,
+   "dBbox": 0,
+   "dCom": 1.2368961389746703e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 18,
+    "truck": 18,
+    "brep": 18,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.425319204727809e-16
+  },
+  "truckV": 3750,
+  "occtV": 3749.999999999999,
+  "brepV": 3750
+ },
+ {
+  "label": "repeat linear",
+  "slot": "box1_x",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.0316490059097617e-16,
+   "dBbox": 0,
+   "dCom": 3.8310255991884125e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 18,
+    "truck": 18,
+    "brep": 18,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548808e-16
+  },
+  "truckV": 3000,
+  "occtV": 2999.999999999999,
+  "brepV": 2999.9999999999995
+ },
+ {
+  "label": "repeat linear",
+  "slot": "box1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.0316490059097617e-16,
+   "dBbox": 0,
+   "dCom": 4.186913223156734e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 18,
+    "truck": 18,
+    "brep": 18,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548808e-16
+  },
+  "truckV": 3000,
+  "occtV": 2999.999999999999,
+  "brepV": 2999.9999999999995
+ },
+ {
+  "label": "repeat linear",
+  "slot": "box1_z",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.0316490059097617e-16,
+   "dBbox": 0,
+   "dCom": 4.186913223156734e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 18,
+    "truck": 18,
+    "brep": 18,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548808e-16
+  },
+  "truckV": 3000,
+  "occtV": 2999.999999999999,
+  "brepV": 2999.9999999999995
+ },
+ {
+  "label": "repeat linear",
+  "slot": "pat1_count",
+  "from": 3,
+  "to": 4,
+  "changed": true,
+  "roundTrip": true,
+  "back": 4,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.273736754432321e-16,
+   "dBbox": 0,
+   "dCom": 4.864024416435858e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 24,
+    "truck": 24,
+    "brep": 24,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.1368683772161606e-16
+  },
+  "truckV": 4000,
+  "occtV": 3999.999999999999,
+  "brepV": 3999.9999999999986
+ },
+ {
+  "label": "repeat linear",
+  "slot": "pat1_stepx",
+  "from": 15,
+  "to": 18,
+  "changed": true,
+  "roundTrip": true,
+  "back": 18,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 4.724663738917244e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 18,
+    "truck": 18,
+    "brep": 18,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548803e-16
+  },
+  "truckV": 3000,
+  "occtV": 3000,
+  "brepV": 2999.9999999999995
+ },
+ {
+  "label": "repeat linear",
+  "slot": "pat1_stepy",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.0316490059097617e-16,
+   "dBbox": 0,
+   "dCom": 8.032963301583153e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 18,
+    "truck": 18,
+    "brep": 18,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548808e-16
+  },
+  "truckV": 3000,
+  "occtV": 2999.999999999999,
+  "brepV": 2999.9999999999995
+ },
+ {
+  "label": "repeat linear",
+  "slot": "pat1_stepz",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.0316490059097617e-16,
+   "dBbox": 0,
+   "dCom": 1.204944495237473e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 18,
+    "truck": 18,
+    "brep": 18,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548808e-16
+  },
+  "truckV": 3000,
+  "occtV": 2999.999999999999,
+  "brepV": 2999.9999999999995
+ },
+ {
+  "label": "repeatAround",
+  "slot": "box1_width",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.8189894035458568e-16,
+   "dBbox": 1.353414734781143e-16,
+   "dCom": 1.1145361710964524e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 24,
+    "truck": 24,
+    "brep": 24,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.8189894035458568e-16
+  },
+  "truckV": 5000,
+  "occtV": 4999.999999999999,
+  "brepV": 5000
+ },
+ {
+  "label": "repeatAround",
+  "slot": "box1_depth",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 1.4210854715202002e-16,
+   "dCom": 1.0135288157427265e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 24,
+    "truck": 24,
+    "brep": 24,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.8189894035458566e-16
+  },
+  "truckV": 5000,
+  "occtV": 5000,
+  "brepV": 5000.000000000001
+ },
+ {
+  "label": "repeatAround",
+  "slot": "box1_height",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.8189894035458568e-16,
+   "dBbox": 1.4210854715202002e-16,
+   "dCom": 5.066326585240251e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 24,
+    "truck": 24,
+    "brep": 24,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.8189894035458568e-16
+  },
+  "truckV": 5000,
+  "occtV": 4999.999999999999,
+  "brepV": 5000
+ },
+ {
+  "label": "repeatAround",
+  "slot": "box1_x",
+  "from": 20,
+  "to": 23,
+  "changed": true,
+  "roundTrip": true,
+  "back": 23,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 1.2688263138573217e-16,
+   "dCom": 1.3491345787087475e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 24,
+    "truck": 24,
+    "brep": 24,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.1368683772161603e-16
+  },
+  "truckV": 4000,
+  "occtV": 4000,
+  "brepV": 3999.9999999999995
+ },
+ {
+  "label": "repeatAround",
+  "slot": "box1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.1368683772161603e-16,
+   "dBbox": 1.4210854715202002e-16,
+   "dCom": 1.1674183743031568e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 24,
+    "truck": 24,
+    "brep": 24,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 4000,
+  "occtV": 3999.9999999999995,
+  "brepV": 3999.9999999999995
+ },
+ {
+  "label": "repeatAround",
+  "slot": "box1_z",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.273736754432321e-16,
+   "dBbox": 1.4210854715202002e-16,
+   "dCom": 8.016025824530346e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 24,
+    "truck": 24,
+    "brep": 24,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.1368683772161606e-16
+  },
+  "truckV": 4000,
+  "occtV": 3999.999999999999,
+  "brepV": 3999.9999999999995
+ },
+ {
+  "label": "repeatAround",
+  "slot": "pat1_count",
+  "from": 4,
+  "to": 5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 3.552713678800501e-16,
+   "dCom": 2.6623125247815957e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 30,
+    "truck": 30,
+    "brep": 30,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.8189894035458568e-16
+  },
+  "truckV": 4999.999999999999,
+  "occtV": 4999.999999999999,
+  "brepV": 5000
+ },
+ {
+  "label": "repeatAround",
+  "slot": "pat1_totalangle",
+  "from": 360,
+  "to": 324,
+  "changed": true,
+  "roundTrip": true,
+  "back": 324,
+  "cls": "REFUSED(refs build)",
+  "sentence": "pat1 (pattern): a circular pattern over less than 360 degrees is not mapped (solidcraft's angle semantics were not verified)",
+  "occtV": 3999.999999999999,
+  "brepV": 4000
+ },
+ {
+  "label": "union",
+  "slot": "box1_width",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 1.678031306301287e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 14,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 15500,
+  "occtV": 15500,
+  "brepV": 15500
+ },
+ {
+  "label": "union",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.1193780944897578e-16,
+   "dBbox": 0,
+   "dCom": 1.613204180680227e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 14,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.1193780944897578e-16
+  },
+  "truckV": 16250,
+  "occtV": 16250.000000000002,
+  "brepV": 16250
+ },
+ {
+  "label": "union",
+  "slot": "box1_height",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 8.748828036748294e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 15875,
+  "occtV": 15875,
+  "brepV": 15875
+ },
+ {
+  "label": "union",
+  "slot": "box1_x",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.3574547787655648e-16,
+   "dBbox": 0,
+   "dCom": 1.842392491113781e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 14,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.3574547787655648e-16
+  },
+  "truckV": 13400,
+  "occtV": 13399.999999999998,
+  "brepV": 13400
+ },
+ {
+  "label": "union",
+  "slot": "box1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.2992781453898973e-16,
+   "dBbox": 0,
+   "dCom": 1.767541118287122e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 14,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.2992781453898973e-16
+  },
+  "truckV": 14000,
+  "occtV": 14000.000000000002,
+  "brepV": 14000
+ },
+ {
+  "label": "union",
+  "slot": "box1_z",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 1.767541118287122e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 14,
+    "truck": 14,
+    "brep": 14,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 14000,
+  "occtV": 14000,
+  "brepV": 14000
+ },
+ {
+  "label": "union",
+  "slot": "box2_width",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 1.3041761810648898e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 14,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 15500,
+  "occtV": 15500,
+  "brepV": 15500
+ },
+ {
+  "label": "union",
+  "slot": "box2_depth",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.3855598735027633e-16,
+   "dBbox": 0,
+   "dCom": 1.767541118287122e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 14,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.3855598735027633e-16
+  },
+  "truckV": 15250,
+  "occtV": 15249.999999999996,
+  "brepV": 15250
+ },
+ {
+  "label": "union",
+  "slot": "box2_height",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 2.0906483364058708e-19,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 14,
+    "truck": 14,
+    "brep": 14,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 16000,
+  "occtV": 16000,
+  "brepV": 16000
+ },
+ {
+  "label": "union",
+  "slot": "box2_x",
+  "from": 10,
+  "to": 13,
+  "changed": true,
+  "roundTrip": true,
+  "back": 13,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.737649459340802e-16,
+   "dBbox": 0,
+   "dCom": 1.695540482063357e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 14,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.737649459340802e-16
+  },
+  "truckV": 14600,
+  "occtV": 14599.999999999995,
+  "brepV": 14600
+ },
+ {
+  "label": "union",
+  "slot": "box2_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.2992781453898973e-16,
+   "dBbox": 0,
+   "dCom": 1.767541118287122e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 14,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.2992781453898973e-16
+  },
+  "truckV": 14000,
+  "occtV": 14000.000000000002,
+  "brepV": 14000
+ },
+ {
+  "label": "union",
+  "slot": "box2_z",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.4415965148266537e-16,
+   "dBbox": 0,
+   "dCom": 3.448099211468952e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 12,
+    "truck": 12,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.4415965148266537e-16
+  },
+  "truckV": 14900,
+  "occtV": 14899.999999999996,
+  "brepV": 14900
+ },
+ {
+  "label": "subtract",
+  "slot": "box1_width",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000012466554592573478,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 0.000001366062199223075,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.738230877722923e-16
+  },
+  "truckV": 10464.732294132637,
+  "occtV": 10464.601836602551,
+  "brepV": 10464.601836602553
+ },
+ {
+  "label": "subtract",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000012466554592573478,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 0.0000013660621992389178,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.738230877722923e-16
+  },
+  "truckV": 10464.732294132637,
+  "occtV": 10464.601836602551,
+  "brepV": 10464.601836602553
+ },
+ {
+  "label": "subtract",
+  "slot": "box1_height",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000015881175111235607,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 0.0000019669329516667157,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.771469332028554e-16
+  },
+  "truckV": 10268.415367665983,
+  "occtV": 10268.252295753187,
+  "brepV": 10268.25229575319
+ },
+ {
+  "label": "subtract",
+  "slot": "box1_x",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000015881175092900898,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 7.983345487469174e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.4286733300713853e-16
+  },
+  "truckV": 8214.732294132635,
+  "occtV": 8214.60183660255,
+  "brepV": 8214.601836602553
+ },
+ {
+  "label": "subtract",
+  "slot": "box1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000015881175092679463,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 0.0000019958363701276746,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.2143366650356922e-16
+  },
+  "truckV": 8214.732294132635,
+  "occtV": 8214.601836602551,
+  "brepV": 8214.601836602553
+ },
+ {
+  "label": "subtract",
+  "slot": "box1_z",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000015881175092900898,
+   "dBbox": 0,
+   "dCom": 0.0000019958363701327686,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.4286733300713853e-16
+  },
+  "truckV": 8214.732294132635,
+  "occtV": 8214.60183660255,
+  "brepV": 8214.601836602553
+ },
+ {
+  "label": "subtract",
+  "slot": "cyl1_radius",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000026224717919395144,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 0.000003483026654847735,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.340193761244653e-16
+  },
+  "truckV": 7773.019209581996,
+  "occtV": 7772.815369691486,
+  "brepV": 7772.815369691488
+ },
+ {
+  "label": "subtract",
+  "slot": "cyl1_height",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000015881175093122333,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 0.0000019958363701378627,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.4286733300713853e-16
+  },
+  "truckV": 8214.732294132637,
+  "occtV": 8214.60183660255,
+  "brepV": 8214.601836602553
+ },
+ {
+  "label": "subtract",
+  "slot": "cyl1_x",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000015881175091572293,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 0.000003193338192310745,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.2143366650356922e-16
+  },
+  "truckV": 8214.732294132626,
+  "occtV": 8214.601836602551,
+  "brepV": 8214.601836602553
+ },
+ {
+  "label": "subtract",
+  "slot": "cyl1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000015881175092236597,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 0.0000019958363701671535,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.2143366650356927e-16
+  },
+  "truckV": 8214.73229413263,
+  "occtV": 8214.60183660255,
+  "brepV": 8214.601836602551
+ },
+ {
+  "label": "subtract",
+  "slot": "cyl1_z",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000015881175093122333,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 0.0000019958363701378627,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.4286733300713853e-16
+  },
+  "truckV": 8214.732294132637,
+  "occtV": 8214.60183660255,
+  "brepV": 8214.601836602553
+ },
+ {
+  "label": "intersect",
+  "slot": "box1_width",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "FAIL",
+  "score": {
+   "dVol": 0.00005172963770284962,
+   "dBbox": 0.04258958235919488,
+   "dCom": 0.0000014811174357879568,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 4,
+    "truck": 4,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 6736.288330644072,
+  "occtV": 6736.636814425818
+ },
+ {
+  "label": "intersect",
+  "slot": "box1_depth",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "REFUSED(refs build)",
+  "sentence": "op1 (combine): solidcraft refused it -- solid.combine: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (sphere); nudged: the operation failed: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (sphere)",
+  "occtV": 6101.193069116052,
+  "brepV": 6101.193068468278
+ },
+ {
+  "label": "intersect",
+  "slot": "box1_height",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "FAIL",
+  "score": {
+   "dVol": 0.00004792838761462468,
+   "dBbox": 0.06252243992108811,
+   "dCom": 0.0000037262957540636468,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 4,
+    "truck": 8,
+    "brep": null,
+    "verdict": "UNEXPLAINED",
+    "keys": {
+     "cone": "UNEXPLAINED",
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 7488.845935145782,
+  "occtV": 7489.204880660228
+ },
+ {
+  "label": "intersect",
+  "slot": "box1_x",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "FAIL",
+  "score": {
+   "dVol": 0.00003943620881490632,
+   "dBbox": 0.04197138394262399,
+   "dCom": 0.0000021276329491025877,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 4,
+    "truck": 4,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 6645.03531252548,
+  "occtV": 6645.29737786051
+ },
+ {
+  "label": "intersect",
+  "slot": "box1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "REFUSED(refs build)",
+  "sentence": "op1 (combine): solidcraft refused it -- solid.combine: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (sphere); nudged: the operation failed: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (sphere)",
+  "occtV": 5784.958968588367,
+  "brepV": 5784.958968346618
+ },
+ {
+  "label": "intersect",
+  "slot": "box1_z",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "FAIL",
+  "score": {
+   "dVol": 0.00003930520576938902,
+   "dBbox": 0.10829236456743638,
+   "dCom": 0.0000029980154874487673,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 4,
+    "truck": 4,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 5887.66887066877,
+  "occtV": 5887.900295801446
+ },
+ {
+  "label": "intersect",
+  "slot": "ball1_radius",
+  "from": 30,
+  "to": 37.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 37.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0.000016017721865240285,
+   "dBbox": 1.2095438724675962e-10,
+   "dCom": 0.000004719577739452905,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.7407396066846332e-12
+  },
+  "truckV": 7868.885295453652,
+  "occtV": 7869.011339088636,
+  "brepV": 7869.011339074938
+ },
+ {
+  "label": "intersect",
+  "slot": "ball1_x",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "FAIL",
+  "score": {
+   "dVol": 0.00004302956941740064,
+   "dBbox": 0.027528875060608284,
+   "dCom": 0.0000033886707500307514,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 4,
+    "truck": 4,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 5383.004625836505,
+  "occtV": 5383.236264175024
+ },
+ {
+  "label": "intersect",
+  "slot": "ball1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "REFUSED(refs build)",
+  "sentence": "op1 (combine): solidcraft refused it -- solid.combine: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (sphere); nudged: the operation failed: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (sphere)",
+  "occtV": 5784.95896865501,
+  "brepV": 5784.958968346614
+ },
+ {
+  "label": "intersect",
+  "slot": "ball1_z",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "FAIL",
+  "score": {
+   "dVol": 0.000039304832501221776,
+   "dBbox": 0.10829236456743659,
+   "dCom": 0.0000029978803721419857,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 4,
+    "truck": 4,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal",
+     "sphere": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "truckV": 5887.668872866531,
+  "occtV": 5887.900295801442
+ },
+ {
+  "label": "mirror",
+  "slot": "box1_width",
+  "from": 20,
+  "to": 25,
+  "changed": true,
+  "roundTrip": true,
+  "back": 25,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.8189894035458568e-16,
+   "dBbox": 0,
+   "dCom": 8.546500828371393e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 10,
+    "truck": 6,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.8189894035458568e-16
+  },
+  "truckV": 5000,
+  "occtV": 4999.999999999999,
+  "brepV": 5000
+ },
+ {
+  "label": "mirror",
+  "slot": "box1_depth",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.8189894035458568e-16,
+   "dBbox": 0,
+   "dCom": 6.184480694873352e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 10,
+    "truck": 6,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.6379788070917136e-16
+  },
+  "truckV": 5000,
+  "occtV": 4999.999999999999,
+  "brepV": 5000.000000000001
+ },
+ {
+  "label": "mirror",
+  "slot": "box1_height",
+  "from": 10,
+  "to": 12.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 12.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.8189894035458568e-16,
+   "dBbox": 0,
+   "dCom": 6.184480694873352e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 10,
+    "truck": 6,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.8189894035458568e-16
+  },
+  "truckV": 5000,
+  "occtV": 4999.999999999999,
+  "brepV": 5000
+ },
+ {
+  "label": "mirror",
+  "slot": "box1_x",
+  "from": 15,
+  "to": 18,
+  "changed": true,
+  "roundTrip": true,
+  "back": 18,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.410605131648482e-16,
+   "dBbox": 0,
+   "dCom": 2.093456611578367e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 10,
+    "truck": 6,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.273736754432321e-16
+  },
+  "truckV": 4000,
+  "occtV": 3999.9999999999986,
+  "brepV": 3999.9999999999995
+ },
+ {
+  "label": "mirror",
+  "slot": "box1_y",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.410605131648482e-16,
+   "dBbox": 0,
+   "dCom": 1.0467283057891835e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 10,
+    "truck": 6,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.273736754432321e-16
+  },
+  "truckV": 4000,
+  "occtV": 3999.9999999999986,
+  "brepV": 3999.9999999999995
+ },
+ {
+  "label": "mirror",
+  "slot": "box1_z",
+  "from": 0,
+  "to": 3,
+  "changed": true,
+  "roundTrip": true,
+  "back": 3,
+  "cls": "PASS",
+  "score": {
+   "dVol": 3.410605131648482e-16,
+   "dBbox": 0,
+   "dCom": 1.0467283057891835e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 10,
+    "truck": 6,
+    "brep": 12,
+    "verdict": "explained",
+    "keys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.273736754432321e-16
+  },
+  "truckV": 4000,
+  "occtV": 3999.9999999999986,
+  "brepV": 3999.9999999999995
+ },
+ {
+  "label": "datum plane sketch",
+  "slot": "pl1_offset",
+  "from": 7,
+  "to": 10,
+  "changed": true,
+  "roundTrip": true,
+  "back": 10,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 7.672692930616877e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 1200,
+  "occtV": 1200,
+  "brepV": 1200
+ },
+ {
+  "label": "datum plane sketch",
+  "slot": "sk1_p0u",
+  "from": -10,
+  "to": -7,
+  "changed": true,
+  "roundTrip": true,
+  "back": -7,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 4.061371598637492e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 1109.9999999977163,
+  "occtV": 1109.9999999977163,
+  "brepV": 1109.9999999977163
+ },
+ {
+  "label": "datum plane sketch",
+  "slot": "sk1_p0v",
+  "from": -5,
+  "to": -2,
+  "changed": true,
+  "roundTrip": true,
+  "back": -2,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.1145768404146558e-16,
+   "dBbox": 0,
+   "dCom": 7.879370439424268e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.1145768404146558e-16
+  },
+  "truckV": 1019.9999999939095,
+  "occtV": 1019.9999999939093,
+  "brepV": 1019.9999999939095
+ },
+ {
+  "label": "datum plane sketch",
+  "slot": "sk1_p1u",
+  "from": 10,
+  "to": 13,
+  "changed": true,
+  "roundTrip": true,
+  "back": 13,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 7.262545375404298e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 1289.9999999987785,
+  "occtV": 1289.9999999987785,
+  "brepV": 1289.9999999987785
+ },
+ {
+  "label": "datum plane sketch",
+  "slot": "sk1_p1v",
+  "from": -5,
+  "to": -2,
+  "changed": true,
+  "roundTrip": true,
+  "back": -2,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.1145768404146568e-16,
+   "dBbox": 0,
+   "dCom": 7.879370439424269e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.34373052124397e-16
+  },
+  "truckV": 1019.9999999939085,
+  "occtV": 1019.9999999939084,
+  "brepV": 1019.9999999939088
+ },
+ {
+  "label": "datum plane sketch",
+  "slot": "sk1_p2u",
+  "from": 10,
+  "to": 13,
+  "changed": true,
+  "roundTrip": true,
+  "back": 13,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 4.0851817736649157e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.7625866313445526e-16
+  },
+  "truckV": 1289.999999998779,
+  "occtV": 1289.999999998779,
+  "brepV": 1289.9999999987788
+ },
+ {
+  "label": "datum plane sketch",
+  "slot": "sk1_p2v",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 0,
+   "dBbox": 1.77635683940025e-16,
+   "dCom": 7.451787988751974e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.295270658595196e-16
+  },
+  "truckV": 1380.0000000009925,
+  "occtV": 1380.0000000009925,
+  "brepV": 1380.000000000993
+ },
+ {
+  "label": "datum plane sketch",
+  "slot": "sk1_p3u",
+  "from": -10,
+  "to": -7,
+  "changed": true,
+  "roundTrip": true,
+  "back": -7,
+  "cls": "PASS",
+  "score": {
+   "dVol": 2.0484114904837582e-16,
+   "dBbox": 2.0898315757432898e-16,
+   "dCom": 8.122743197274914e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "truckV": 1109.9999999977297,
+  "occtV": 1109.9999999977294,
+  "brepV": 1109.9999999977294
+ },
+ {
+  "label": "datum plane sketch",
+  "slot": "sk1_p3v",
+  "from": 5,
+  "to": 8,
+  "changed": true,
+  "roundTrip": true,
+  "back": 8,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.647635329297605e-16,
+   "dBbox": 0,
+   "dCom": 1.4903575977503962e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.647635329297605e-16
+  },
+  "truckV": 1380.000000000987,
+  "occtV": 1380.0000000009868,
+  "brepV": 1380.000000000987
+ },
+ {
+  "label": "datum plane sketch",
+  "slot": "pull1_height",
+  "from": 6,
+  "to": 7.5,
+  "changed": true,
+  "roundTrip": true,
+  "back": 7.5,
+  "cls": "PASS",
+  "score": {
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 0,
+   "dCom": 6.427083038375471e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5158245029548806e-16
+  },
+  "truckV": 1500,
+  "occtV": 1499.9999999999998,
+  "brepV": 1500
+ }
+]

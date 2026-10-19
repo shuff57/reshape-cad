@@ -23,6 +23,8 @@ import {
   ancestorKeys, buildModelTree, DEFAULT_EXPANDED, featureProperties, isShown, ORIGIN_ITEMS, treeLabels, visibleRows,
   type PropGroup, type TreeIcon, type TreeNode,
 } from './model-tree-core.js';
+import { SolidIcon } from '../icons/SolidIcon.js';
+import type { SolidIconId } from '../icons/solidcraft-icons.js';
 import PadProperties from './PadProperties.js';
 import { applyPadProp, padPropertyGroups, parseQuantity, readPaneBinding, type PropRow } from './pad-props-core.js';
 import { isPadFeature, lengthSlot } from './pad-task-core.js';
@@ -68,7 +70,16 @@ interface Props {
 
 /** 16px glyphs, drawn for this project. Outline in currentColor, one accent
  *  fill per family so Pad/Pocket/Chamfer read apart at a glance. */
+const TREE_PACK_ICON: Partial<Record<TreeIcon, SolidIconId>> = {
+  body: '3d-component', axis: '2d-axis', plane: '2d-plane', point: '2d-point',
+  pad: '3d-extrude', pocket: '3d-cut', revolution: '3d-revolve', fillet: '3d-fillet-3d', chamfer: '3d-chamfer',
+  hole: '3d-hole', mirrored: '3d-mirror', 'linear-pattern': '3d-pattern', 'polar-pattern': '3d-pattern-circ',
+  thickness: '3d-shell', draft: '3d-draft', boolean: '3d-combine', transform: '3d-transform', blend: '3d-loft',
+};
+
 function Glyph({ icon }: { icon: TreeIcon }) {
+  const pack = TREE_PACK_ICON[icon];
+  if (pack) return <SolidIcon id={pack} size={18} />;
   const s = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.3, strokeLinejoin: 'round' as const, strokeLinecap: 'round' as const };
   const add = 'var(--tree-add, #8be9fd)';
   const sub = 'var(--tree-sub, #ff9a8a)';

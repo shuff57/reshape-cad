@@ -1,0 +1,29 @@
+# Phase 6 PROGRESS (builder log)
+- [x] read AGENTS.md; NOTE: DECISION.md does not exist in docs/spikes/solidcraft-referee (searched); obeyed REPORT.md/phase5 README spike rules instead.
+- [x] clone ~/.cache/solidcraft-bridge/src-p6 at fe3717f + phase4/bridge.patch (== phase5 patch)
+
+- [ ] index.html pane + pane.js
+- [ ] build dist-p6, run.sh, serve.mjs
+- [ ] verify
+- [x] Rust ribbon hide + bridge stash/inspect.dirty/page token written in clone; patch saved: phase6/solidcraft-pane.patch (re-diff after each Rust change)
+- [x] pane/ (pane.js, src, lib, build.sh, bundle) written
+- [x] dist-p6 built OK first try (2m21s). serve.mjs/run.sh/verify-reference.mjs written
+- [x] app+pane serve on :8800, first example PASS in browser (screenshot read). NEXT: ribbon tests, verify-browser.mjs, security, studio compare, README/VERIFY
+- ribbon FAIL diagnosis: all CHECK bugs (stored() double JSON; Start page after reload has no ribbon by design -> build a design first; pane default width computed at load -> now per layout). Feature fine (Ctrl+., click, URL flag worked). Re-running verify-ribbon.
+- [x] verify-ribbon 19/19 (ribbon-results.json), screenshots read (800x600 ok; compact bar has glyph but no label). verify-browser.mjs written; NEXT run it, studio compare, security/equiv/misuse suites, README, VERIFY
+- [x] verify-browser done: browser-results.json (examples) + browser-results-errors.json (error paths, tamper, manual-work). NEXT: screenshots read, security checks, equiv/misuse suites vs pane runner, studio compare, README/VERIFY
+- [x] equivalence+misuse suites vs bundle: see verify-equivalence.mjs/verify-misuse.mjs
+- [x] removed ?bridge= switch + postMessage relay (pane-only bridge); rebuilt dist-p6, patch refreshed
+- [x] verify-security.mjs 14/14 ok (security-results.json). NEXT: studio side-by-side (vite, out-of-tree config), README, VERIFY, final
+- [x] studio side-by-side screenshots (8) taken+read; spike closed. NEXT: VERIFY.md README.md final
+- [x] README.md written; waiting for final re-run of ribbon/browser/security on rebuilt dist (logs in scratchpad ribbon2/vb2/sec2). then VERIFY.md
+- [x] VERIFY.md written; final re-run on rebuilt dist all green (ribbon 19/19, security 14/14, examples/error/manual). DONE except final read of unread screenshots + answer
+- [x] FINAL. server stopped; all artifacts in phase6/.
+- CRITIC round: blocking 1-6 (restore doc-bound, autosave safety net, stash stack, escape, extra tests). Working.
+- critic: Rust (doc ids in documents.rs, stash stack in bridge.rs, autosave source, any_stash) + pane.js edits done; building -j2
+- [x] rebuilt dist-p6 with doc-bound stash/autosave; patch refreshed. NEXT: regression tests (verify-regress.mjs), re-run suites, README/VERIFY update
+- resumed after session cut: server restart, running verify-regress.mjs (log in scratchpad)
+- regress: R1-R3 pass; fixed test setup (leftover design, forced restore after edits). rerun
+- [x] README updated for doc-bound restore etc (pending final numbers)
+- [x] verify-regress 24/24 (regress-results.json), screenshots r3-recovered, palette-shell, palette-sketch read. running ribbon/security/equiv/misuse/browser re-run on the final build
+- [x] critic round complete: regress 24/24, ribbon 19/19, security 14/14, equiv ok, misuse 19/19 (critic scripts lost), VERIFY/README updated

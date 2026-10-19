@@ -1,0 +1,126 @@
+[
+ {
+  "id": "fzc2-92-boxC-top-round-360",
+  "src": "const t = box(60, 40, 30); const sk = sketch('top'); sk.polygon([[28.7,26.2],[36.9,26.2],[36.9,31],[28.7,31]]); sk.round(2, 1.9); groove(sk, t, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc2-92-boxC-top-round-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 71999.99999999999,
+    "com": [
+     0,
+     6.0948776889644165e-16,
+     0
+    ],
+    "bbox": [
+     -30,
+     -20,
+     -15,
+     30,
+     20,
+     15
+    ],
+    "faces": 6,
+    "area": 10800,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: a groove with a curved outline (an arc or a round) is not built yet -- cut it with a straight outline -- groove1 is shown without it."
+   },
+   "ms": 17,
+   "load": [
+    19.6,
+    19.6
+   ],
+   "cpuMs": 74,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing.",
+     "guard": {
+      "cost": {
+       "tool": "torus",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "torus",
+        "cylinder"
+       ],
+       "partial": false,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 36.9,
+       "nearest": 20,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 60,
+      "width": 40,
+      "height": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_box1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing.",
+    "firstRefusal": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 52
+ }
+]

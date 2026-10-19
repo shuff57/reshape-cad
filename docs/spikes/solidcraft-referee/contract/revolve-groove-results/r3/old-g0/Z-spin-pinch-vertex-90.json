@@ -1,0 +1,82 @@
+[
+ {
+  "id": "Z-spin-pinch-vertex-90",
+  "src": "const s = sketch('top'); s.polygon([[10,0],[20,0],[15,15],[20,30],[10,30],[15,15]]); spin(s, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "Z-spin-pinch-vertex-90",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "occt": {
+    "volume": 3534.291735258843,
+    "com": [
+     9.726135345605012,
+     9.726135345605012,
+     15
+    ],
+    "bbox": [
+     6.123233995736766e-16,
+     0,
+     -1.7763568394002505e-15,
+     20,
+     20,
+     30
+    ],
+    "faces": 8,
+    "area": 2261.427137907884,
+    "types": {
+     "plane": 4,
+     "cone": 4
+    },
+    "components": {
+     "plane": 4,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "revolve rev1: this sketch's outline cannot be spun: two of its edges touch where they should not (a corner lands on another edge, or two curves just touch), so the outline pinches -- move it so they stay apart -- rev1 is shown without it."
+   },
+   "ms": 3,
+   "load": [
+    22.3,
+    22.3
+   ],
+   "cpuMs": 10,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "refused",
+     "refusal": "rev1 (revolve): the sketch crosses itself, so it is not one closed shape; reorder its corners so that no two sides cross."
+    }
+   ],
+   "commands": [],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "rev1 (revolve): the sketch crosses itself, so it is not one closed shape; reorder its corners so that no two sides cross.",
+    "firstRefusal": "rev1 (revolve): the sketch crosses itself, so it is not one closed shape; reorder its corners so that no two sides cross."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 42
+ }
+]

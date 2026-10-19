@@ -1,0 +1,760 @@
+[
+ {
+  "name": "box;pocket;move(a)",
+  "script": "const a = box(30, 20, 10);\nconst k = sketch('top');\nk.circle(8);\npocket(k, a, 5);\nmove(a, [5, 5, 5]);",
+  "top": [
+   "pocket1",
+   "move1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "pocket1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 5748.672587712816,
+    "scVolume": 5748.714334122313,
+    "dVol": 0.00000726192157583736,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 5.06416756079768e-7,
+    "faces": 8,
+    "occtFaces": 8,
+    "brepVol": 5748.672587712816
+   },
+   {
+    "id": "move1",
+    "top": true,
+    "v": "FAIL",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 5748.714334122312,
+    "dVol": 0.041880944312947886,
+    "dBbox": 0,
+    "dCom": 0.0029206060361451768,
+    "faces": 8,
+    "occtFaces": 6,
+    "brepVol": 6000
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "box;pocket;move(a,copy)",
+  "script": "const a = box(30, 20, 10);\nconst k = sketch('top');\nk.circle(8);\npocket(k, a, 5);\nmove(a, [40, 0, 0], { copy: true });",
+  "top": [
+   "pocket1",
+   "move1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "pocket1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 5748.672587712816,
+    "scVolume": 5748.714334122313,
+    "dVol": 0.00000726192157583736,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 5.06416756079768e-7,
+    "faces": 8,
+    "occtFaces": 8,
+    "brepVol": 5748.672587712816
+   },
+   {
+    "id": "move1",
+    "top": true,
+    "v": "FAIL",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 5748.714334122313,
+    "dVol": 0.041880944312947734,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 0.002920606036146451,
+    "faces": 8,
+    "occtFaces": 6,
+    "brepVol": 6000
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "box;pocket;move(pocket result)",
+  "script": "const a = box(30, 20, 10);\nconst k = sketch('top');\nk.circle(8);\nconst p = pocket(k, a, 5);\nmove(p, [5, 5, 5]);",
+  "top": [
+   "move1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "pocket1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5748.672587712816,
+    "scVolume": 5748.714334122313,
+    "dVol": 0.00000726192157583736,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 5.06416756079768e-7,
+    "faces": 8,
+    "occtFaces": 8,
+    "brepVol": 5748.672587712816
+   },
+   {
+    "id": "move1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 5748.672587712816,
+    "scVolume": 5748.714334122312,
+    "dVol": 0.00000726192157567915,
+    "dBbox": 0,
+    "dCom": 5.064167573445351e-7,
+    "faces": 8,
+    "occtFaces": 8,
+    "brepVol": 5748.672587712816
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "box;pocket;turn(a) [own rotate]",
+  "script": "const a = box(30, 20, 10);\nconst k = sketch('top');\nk.circle(8);\npocket(k, a, 5);\nturn(a, [0, 0, 30]);",
+  "top": [
+   "pocket1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 6000,
+    "scVolume": 6000,
+    "dVol": 0,
+    "dBbox": 2.1984268752710748e-16,
+    "dCom": 7.033539832755413e-19,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "pocket1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 5748.6725877128165,
+    "scVolume": 5748.71433412231,
+    "dVol": 0.00000726192157520452,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 3.836592427910203e-7,
+    "faces": 8,
+    "occtFaces": 8,
+    "brepVol": 5748.6725877128165
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "join;pocket;turn(a) [RotateFeature]",
+  "script": "const b1 = box(30, 20, 10, { at: [0, 0, 0] });\nconst b2 = box(10, 10, 10, { at: [0, 0, 8] });\nconst a = join(b1, b2);\nconst k = sketch('top');\nk.circle(8);\npocket(k, a, 5);\nturn(a, [0, 0, 30]);",
+  "top": [
+   "pocket1",
+   "turn1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "box2",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 999.9999999999998,
+    "scVolume": 1000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 999.9999999999999
+   },
+   {
+    "id": "op1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 6799.999999999999,
+    "scVolume": 6800,
+    "dVol": 1.3374922084896005e-16,
+    "dBbox": 0,
+    "dCom": 6.268371991076559e-18,
+    "faces": 11,
+    "occtFaces": 11,
+    "brepVol": 6800
+   },
+   {
+    "id": "pocket1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 6548.672587712816,
+    "scVolume": 6548.714334122312,
+    "dVol": 0.000006374789537433159,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 5.845641238851138e-7,
+    "faces": 13,
+    "occtFaces": 13,
+    "brepVol": 6548.672587712816
+   },
+   {
+    "id": "turn1",
+    "top": true,
+    "v": "FAIL",
+    "occtVolume": 6799.999999999999,
+    "scVolume": 6548.714334122313,
+    "dVol": 0.036953774393777415,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 0.0026461456568506246,
+    "faces": 13,
+    "occtFaces": 11,
+    "brepVol": 6800
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "join;pocket;turn(pocket result)",
+  "script": "const b1 = box(30, 20, 10, { at: [0, 0, 0] });\nconst b2 = box(10, 10, 10, { at: [0, 0, 8] });\nconst a = join(b1, b2);\nconst k = sketch('top');\nk.circle(8);\nconst p = pocket(k, a, 5);\nturn(p, [0, 0, 30]);",
+  "top": [
+   "turn1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "box2",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 999.9999999999998,
+    "scVolume": 1000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 999.9999999999999
+   },
+   {
+    "id": "op1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 6799.999999999999,
+    "scVolume": 6800,
+    "dVol": 1.3374922084896005e-16,
+    "dBbox": 0,
+    "dCom": 6.268371991076559e-18,
+    "faces": 11,
+    "occtFaces": 11,
+    "brepVol": 6800
+   },
+   {
+    "id": "pocket1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 6548.672587712816,
+    "scVolume": 6548.714334122312,
+    "dVol": 0.000006374789537433159,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 5.845641238851138e-7,
+    "faces": 13,
+    "occtFaces": 13,
+    "brepVol": 6548.672587712816
+   },
+   {
+    "id": "turn1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 6548.672587712816,
+    "scVolume": 6548.714334122313,
+    "dVol": 0.000006374789537572041,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 4.564789905797354e-7,
+    "faces": 13,
+    "occtFaces": 13,
+    "brepVol": 6548.6725877128165
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "join;pocket;move(a)",
+  "script": "const b1 = box(30, 20, 10, { at: [0, 0, 0] });\nconst b2 = box(10, 10, 10, { at: [0, 0, 8] });\nconst a = join(b1, b2);\nconst k = sketch('top');\nk.circle(8);\npocket(k, a, 5);\nmove(a, [5, 5, 5]);",
+  "top": [
+   "pocket1",
+   "move1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "box2",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 999.9999999999998,
+    "scVolume": 1000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 999.9999999999999
+   },
+   {
+    "id": "op1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 6799.999999999999,
+    "scVolume": 6800,
+    "dVol": 1.3374922084896005e-16,
+    "dBbox": 0,
+    "dCom": 6.268371991076559e-18,
+    "faces": 11,
+    "occtFaces": 11,
+    "brepVol": 6800
+   },
+   {
+    "id": "pocket1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 6548.672587712816,
+    "scVolume": 6548.714334122312,
+    "dVol": 0.000006374789537433159,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 5.845641238851138e-7,
+    "faces": 13,
+    "occtFaces": 13,
+    "brepVol": 6548.672587712816
+   },
+   {
+    "id": "move1",
+    "top": true,
+    "v": "FAIL",
+    "occtVolume": 6799.999999999999,
+    "scVolume": 6548.714334122312,
+    "dVol": 0.03695377439377755,
+    "dBbox": 1.1102230246251571e-15,
+    "dCom": 0.0033886374828831587,
+    "faces": 13,
+    "occtFaces": 11,
+    "brepVol": 6800
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "box;groove;move(a)",
+  "script": "const a = box(40, 40, 20);\nconst g = sketch('front');\ng.rect(4, 8, { at: [7, 0] });\ngroove(g, a, 360);\nmove(a, [5, 5, 5]);",
+  "top": [
+   "groove1",
+   "move1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 31999.999999999993,
+    "scVolume": 32000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 31999.999999999996
+   },
+   {
+    "id": "groove1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 30592.566491191763,
+    "scVolume": 30592.806679331454,
+    "dVol": 0.00000785119286281611,
+    "dBbox": 0,
+    "dCom": 3.4468856292383535e-17,
+    "faces": 10,
+    "occtFaces": 10,
+    "brepRefused": "groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it."
+   },
+   {
+    "id": "move1",
+    "top": true,
+    "v": "FAIL",
+    "occtVolume": 31999.999999999993,
+    "scVolume": 30592.80667933145,
+    "dVol": 0.04397479127089197,
+    "dBbox": 0,
+    "dCom": 1.6283271027835628e-16,
+    "faces": 10,
+    "occtFaces": 6,
+    "brepVol": 31999.999999999996
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "box;groove control (no move)",
+  "script": "const a = box(40, 40, 20);\nconst g = sketch('front');\ng.rect(4, 8, { at: [7, 0] });\ngroove(g, a, 360);",
+  "top": [
+   "groove1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 31999.999999999993,
+    "scVolume": 32000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 31999.999999999996
+   },
+   {
+    "id": "groove1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 30592.566491191763,
+    "scVolume": 30592.806679331454,
+    "dVol": 0.00000785119286281611,
+    "dBbox": 0,
+    "dCom": 3.4468856292383535e-17,
+    "faces": 10,
+    "occtFaces": 10,
+    "brepRefused": "groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it."
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "box;hole;move(a) control",
+  "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nmove(a, [5, 5, 5]);",
+  "top": [
+   "move1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "hole1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5874.336293856408,
+    "scVolume": 5874.357167061258,
+    "dVol": 0.0000035532873513322003,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 1.144848527143122e-17,
+    "faces": 7,
+    "occtFaces": 7,
+    "brepVol": 5874.336293856409
+   },
+   {
+    "id": "move1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 5874.336293856408,
+    "scVolume": 5874.357167061258,
+    "dVol": 0.0000035532873513322003,
+    "dBbox": 1.7763568394002505e-15,
+    "dCom": 6.17176735471062e-16,
+    "faces": 7,
+    "occtFaces": 7,
+    "brepVol": 5874.336293856409
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "box;hole;pocket;move(a)",
+  "script": "const a = box(30, 20, 10);\nconst k = sketch('top');\nk.circle(8);\nhole(a, { across: 4 });\npocket(k, a, 5);\nmove(a, [5, 5, 5]);",
+  "top": [
+   "pocket1",
+   "move1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "hole1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5874.336293856408,
+    "scVolume": 5874.357167061258,
+    "dVol": 0.0000035532873513322003,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 1.144848527143122e-17,
+    "faces": 7,
+    "occtFaces": 7,
+    "brepVol": 5874.336293856409
+   },
+   {
+    "id": "pocket1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 5685.84073464102,
+    "scVolume": 5685.879530556748,
+    "dVol": 0.00000682325051623338,
+    "dBbox": 8.881784197001252e-16,
+    "dCom": 2.2572399281470084e-7,
+    "faces": 9,
+    "occtFaces": 9,
+    "brepVol": 5685.84073464102
+   },
+   {
+    "id": "move1",
+    "top": true,
+    "v": "FAIL",
+    "occtVolume": 5874.336293856408,
+    "scVolume": 5685.879530556747,
+    "dVol": 0.03208137121750338,
+    "dBbox": 1.998401444325281e-15,
+    "dCom": 0.002214818609295186,
+    "faces": 9,
+    "occtFaces": 7,
+    "brepVol": 5874.336293856409
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "box;pocket;pocket;move(a)",
+  "script": "const a = box(30, 20, 10);\nconst k = sketch('top');\nk.circle(8);\npocket(k, a, 3);\npocket(k, a, 5);\nmove(a, [5, 5, 5]);",
+  "top": [
+   "pocket2",
+   "move1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "pocket1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5849.20355262769,
+    "scVolume": 5849.228600473259,
+    "dVol": 0.000004282266011578906,
+    "dBbox": 0,
+    "dCom": 1.760976409398068e-7,
+    "faces": 9,
+    "occtFaces": 9,
+    "brepRefused": "pocket pocket1 would leave a sealed cavity inside the part instead of opening onto a face -- pocket1 is shown without it."
+   },
+   {
+    "id": "pocket2",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 5748.6725877128165,
+    "scVolume": 5748.7143341220035,
+    "dVol": 0.0000072619215218879145,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 5.064167516682895e-7,
+    "faces": 8,
+    "occtFaces": 9,
+    "brepVol": 5748.672587712816
+   },
+   {
+    "id": "move1",
+    "top": true,
+    "v": "FAIL",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 5748.714334122003,
+    "dVol": 0.04188094431299942,
+    "dBbox": 0,
+    "dCom": 0.002920606036149592,
+    "faces": 8,
+    "occtFaces": 6,
+    "brepVol": 6000
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "box;move;pocket control",
+  "script": "const a = box(30, 20, 10);\nmove(a, [5, 5, 5]);\nconst k = sketch('top');\nk.circle(8);\npocket(k, a, 5);",
+  "top": [
+   "pocket1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "move1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "pocket1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 4.7475133497774e-17,
+    "faces": 6,
+    "occtFaces": 7,
+    "brepRefused": "pocket1 does not touch the part, so it cuts nothing -- pocket1 is shown without it."
+   }
+  ],
+  "occtRefusals": {}
+ },
+ {
+  "name": "box;pocket control (no move)",
+  "script": "const a = box(30, 20, 10);\nconst k = sketch('top');\nk.circle(8);\npocket(k, a, 5);",
+  "top": [
+   "pocket1"
+  ],
+  "per": [
+   {
+    "id": "box1",
+    "top": false,
+    "v": "PASS",
+    "occtVolume": 5999.999999999999,
+    "scVolume": 6000,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "brepVol": 6000
+   },
+   {
+    "id": "pocket1",
+    "top": true,
+    "v": "PASS",
+    "occtVolume": 5748.672587712816,
+    "scVolume": 5748.714334122313,
+    "dVol": 0.00000726192157583736,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 5.06416756079768e-7,
+    "faces": 8,
+    "occtFaces": 8,
+    "brepVol": 5748.672587712816
+   }
+  ],
+  "occtRefusals": {}
+ }
+]

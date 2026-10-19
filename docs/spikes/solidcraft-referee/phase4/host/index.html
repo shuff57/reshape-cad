@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>reSHape script on solidcraft (spike)</title>
+<link rel="icon" href="data:,">
+<style>
+  :root { --bg:#f6f7f9; --fg:#15181d; --mut:#5a6270; --card:#fff; --line:#d5d9e0; --ok:#0b7a3b; --bad:#b3261e; --warn:#8a5a00; --acc:#1f5fd6; --code:#eef1f5; --warnbg:#fff6e0; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#14171c; --fg:#e8eaee; --mut:#9aa3b2; --card:#1c2027; --line:#323844; --ok:#4cc27f; --bad:#ff7b72; --warn:#e3b341; --acc:#7aa7ff; --code:#252a33; --warnbg:#2c2511; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.45 system-ui, sans-serif; }
+  header { padding:8px 16px; border-bottom:1px solid var(--line); background:var(--card); display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; }
+  header b { font-size:15px; } header span { color:var(--mut); }
+  .tag { background:var(--warn); color:#fff; border-radius:4px; padding:1px 7px; font-size:12px; font-weight:700; letter-spacing:.05em; }
+  main { display:grid; grid-template-columns:minmax(420px, 48%) 1fr; gap:12px; padding:12px 16px; height:calc(100vh - 46px); }
+  @media (max-width: 960px) { main { grid-template-columns:1fr; height:auto; } iframe#sc { height:70vh; } }
+  .col { display:flex; flex-direction:column; gap:10px; min-height:0; overflow:auto; padding-right:2px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+  .card.warn { background:var(--warnbg); border-color:var(--warn); }
+  h2 { margin:0 0 6px; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--mut); }
+  textarea { width:100%; height:200px; font:12.5px/1.4 ui-monospace, Menlo, monospace; background:var(--code); color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:8px; resize:vertical; tab-size:2; }
+  button { font:inherit; padding:5px 11px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--fg); cursor:pointer; }
+  button.run { background:var(--acc); color:#fff; border-color:var(--acc); }
+  button.ex { text-align:left; padding:3px 6px; font-size:12px; line-height:1.3; }
+  button.ex.sel { outline:2px solid var(--acc); }
+  button:focus-visible, textarea:focus-visible { outline:2px solid var(--acc); outline-offset:2px; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .gal { display:grid; grid-template-columns:1fr 1fr; gap:3px 6px; }
+  .gal .grp { grid-column:1 / -1; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--mut); margin-top:4px; }
+  .chip { font-size:11px; border-radius:4px; padding:0 5px; margin-right:6px; color:#fff; font-weight:700; }
+  .c3d { background:#5b6b8a; } .c2d { background:#1f7a6d; } .cdiag { background:#7a4fa3; } .crefusal { background:#a2552a; }
+  pre { margin:0; background:var(--code); border-radius:6px; padding:8px; font:12px/1.4 ui-monospace, Menlo, monospace; overflow:auto; max-height:200px; white-space:pre-wrap; word-break:break-word; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  td, th { text-align:left; padding:3px 6px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .built, .pass { color:var(--ok); font-weight:700; } .refused, .fail { color:var(--bad); font-weight:700; } .noop, .mut { color:var(--mut); } .note { color:var(--warn); font-weight:600; }
+  iframe#sc { width:100%; height:100%; min-height:420px; border:1px solid var(--line); border-radius:8px; background:#000; }
+  .scwrap { display:flex; flex-direction:column; min-height:0; gap:6px; } .scwrap iframe { flex:1; }
+  #status { color:var(--mut); }
+  .kv { display:grid; grid-template-columns:auto 1fr; gap:2px 12px; font-size:13px; } .kv dt { color:var(--mut); } .kv dd { margin:0; font-variant-numeric:tabular-nums; }
+  #verdict { font-size:15px; font-weight:700; }
+  details > summary { cursor:pointer; color:var(--mut); font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
+</style>
+</head>
+<body>
+<header><span class="tag">SPIKE</span> <b>reSHape script on solidcraft</b>
+  <span>referee/demo, not a product, not an engine. Geometry comes from solidcraft (truck, wasm), not brep-rs. Policy (referee vs product) is undecided.</span></header>
+<main>
+  <div class="col">
+    <div class="card">
+      <h2>Example gallery (phase 4: each was run and scored; numbers in README)</h2>
+      <div class="gal" id="gallery">loading...</div>
+    </div>
+    <div class="card">
+      <h2>reSHape script (evaluated only in a sandboxed iframe)</h2>
+      <textarea id="src" spellcheck="false" aria-label="reSHape script"></textarea>
+      <div class="row" style="margin-top:8px">
+        <button class="run" id="run">Run</button>
+        <button id="restore" title="Runs a deliberately failing command list and checks the document came back unchanged">Restore self-test</button>
+        <span id="status" role="status">starting...</span>
+      </div>
+      <div id="expect" class="mut" style="margin-top:6px"></div>
+    </div>
+    <div class="card"><h2>Verdict</h2><div id="verdict" class="mut">Not run yet.</div><div id="verdict-detail" class="mut"></div></div>
+    <div class="card"><h2>Sketch solver report (solidcraft's own, per constrained sketch)</h2><div id="sketches">Not run yet.</div></div>
+    <div class="card warn"><h2>Known limits (phase 2 findings, not hidden)</h2>
+      <ul style="margin:0;padding-left:18px">
+        <li>solidcraft's tangent constraint is satisfied only to about 1e-4 mm at the joint while its report says solved; volumes stay inside the 3e-4 bar.</li>
+        <li>Its dof / redundancy report depends on the start state: an already-tangent sketch can read a higher dof than the hand count.</li>
+        <li>It refuses redundant dimensions that brep-rs and FreeCAD accept (stricter, not wrong).</li>
+        <li>Angle and signed distanceX/Y have no branch parameter: mapped only when the drawn start is already on the requested branch; otherwise refused with a sentence.</li>
+        <li>Phase 4: named picks (a round / chamfer edge, a shell's open face, a draft face) are resolved from solidcraft's OWN topology, by geometry, with two cross-checks; a name that matches zero or several candidates, or a cause this demo does not implement (rounded / split / made, a swept name over an arc, rotated or rounded primitives), is refused with a sentence naming the count. Never the nearest one.</li>
+        <li>Demo caps (so a run finishes in seconds): at most 100 pattern copies in total (100 copies took about 4 s, 200 took 35 s, 1000 took over 170 s), at most 60 features (6-8 s; 150 took 33 s), dimensions up to 1,000,000 mm, and a 10 s limit on evaluating the script in the sandbox. Above a cap the run is refused with a sentence before anything is built.</li>
+      </ul></div>
+    <div class="card"><h2>Features: what solidcraft built or refused</h2><div id="features">Not run yet.</div></div>
+    <div class="card"><h2>Bridge result</h2><dl class="kv" id="result"><dt>-</dt><dd>Not run yet.</dd></dl></div>
+    <div class="card"><h2>Translated solidcraft commands</h2><pre id="cmds">(none)</pre></div>
+    <div class="card"><details><summary>ModelDoc from the sandbox (after solveDoc)</summary><pre id="doc">(none)</pre></details></div>
+  </div>
+  <div class="scwrap">
+    <div class="row"><span id="scurl" style="color:var(--mut)"></span></div>
+    <iframe id="sc" title="solidcraft (embedded, bridge build)" allow="fullscreen"></iframe>
+  </div>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>

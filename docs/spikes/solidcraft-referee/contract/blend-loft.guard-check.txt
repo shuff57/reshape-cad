@@ -1,0 +1,26 @@
+{
+ "gate": "blend-loft guard",
+ "stats": {
+  "total": 1420,
+  "pass": 840,
+  "passExact": 840,
+  "refused": 580,
+  "refusedWouldBeWrong": 414,
+  "refusedButExact": 143,
+  "refusedNoSolid": 23
+ },
+ "n7_fuzz_seed4242_holdout99991_and_front_side_planes31337": {
+  "cases": 600,
+  "passed": 575
+ },
+ "n8": {
+  "scripts": 50,
+  "wrongBuilt": 0
+ },
+ "round1": {
+  "withBlend": 61,
+  "guardPass": 28,
+  "falsePass": 0
+ },
+ "violations": 0
+}

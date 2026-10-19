@@ -1,0 +1,22 @@
+# raw SolidCraft, no translator, no guard (2026-10-18). Each line: case | raw result | exact answer | verdict
+soup-hole | 40 x 40 plate with a d16 hole pulled 10: raw 16000 mm3, 1 body | exact 13989.3807 | WRONG (hole filled)
+soup-nested3 | three nested squares 60 / 40 / 20 pulled 15: raw 54000 mm3, 1 body | exact 36000 | WRONG (holes filled)
+taper-fold | rect 20 x 12, height 10, taper -45: raw error "invalid input: the taper closes the profile" | the short walls meet at height 6 < 10, so there is NO solid | refused by the kernel
+taper-fold | rect 40 x 30, height 40, taper -30: raw 11781.2143 mm3 (6 faces) | the short walls meet at height 25.98 < 40, so there is NO solid | WRONG (a folded outline built)
+taper-fold | rect 20 x 12, height 10, taper -60: raw 857.4374 mm3 (6 faces) | the short walls meet at height 3.46 < 10, so there is NO solid | WRONG (a folded outline built)
+taper-fold | rect 20 x 12, height 10, taper -85: raw 140018.6268 mm3 (6 faces) | the short walls meet at height 0.52 < 10, so there is NO solid | WRONG (a folded outline built)
+direction-array | 10 x 10 square, direction [1,0,1], length 10: raw bbox [-5,-5,0,5,5,10] | an oblique sweep reaches x=15; raw max x is 5 | WRONG (plain prism, direction ignored)
+wall | pocket 20 x 20 x 5 leaving a wall of 0.0001 mm at the plate edge: raw 10000 mm3, 10 faces | exact 10000.01, 11 faces | WRONG (off by -1.0e-2, 10 faces)
+wall | pocket 20 x 20 x 5 leaving a wall of 0.001 mm at the plate edge: raw 10000 mm3, 10 faces | exact 10000.1, 11 faces | WRONG (off by -1.0e-1, 10 faces)
+wall | pocket 20 x 20 x 5 leaving a wall of 0.01 mm at the plate edge: raw 10000 mm3, 10 faces | exact 10001, 11 faces | WRONG (off by -1.0e+0, 10 faces)
+wall | pocket 20 x 20 x 5 leaving a wall of 0.1 mm at the plate edge: raw 10000 mm3, 10 faces | exact 10010, 11 faces | WRONG (off by -1.0e+1, 10 faces)
+wall | pocket 20 x 20 x 5 leaving a wall of 0.12 mm at the plate edge: raw 10000 mm3, 10 faces | exact 10012, 11 faces | WRONG (off by -1.2e+1, 10 faces)
+wall | pocket 20 x 20 x 5 leaving a wall of 0.15 mm at the plate edge: raw 10015 mm3, 11 faces | exact 10015, 11 faces | ok
+wall | pocket 20 x 20 x 5 leaving a wall of 0.3 mm at the plate edge: raw 10030 mm3, 11 faces | exact 10030, 11 faces | ok
+wall | pocket 20 x 20 x 5 leaving a wall of 1 mm at the plate edge: raw 10100 mm3, 11 faces | exact 10100, 11 faces | ok
+flat | pad (operation new) on 3 collinear points: raw ok=false, bodies - error "f has no closed profiles" | there is no area to pull | kernel refuses in raw text
+flat | pad (operation join) on 3 collinear points: raw ok=false, bodies - error "f has no closed profiles" | there is no area to pull | kernel refuses in raw text
+flat | pad (operation new) on 4 collinear points: raw ok=false, bodies - error "f has no closed profiles" | there is no area to pull | kernel refuses in raw text
+flat | pad (operation join) on 4 collinear points: raw ok=false, bodies - error "f has no closed profiles" | there is no area to pull | kernel refuses in raw text
+flat | pad on 3 collinear lines drawn as rows with coincident rules: raw ok=false, bodies - error "f has no closed profiles" | there is no area to pull | kernel refuses in raw text
+loft-hole | slanted pull (loft) of a 40 x 30 plate with a d10 hole, 10 along [1,0,1]: raw 12000 mm3 | exact 11214.6018 | WRONG (hole dropped)

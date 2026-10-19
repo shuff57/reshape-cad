@@ -1,0 +1,41 @@
+Running as unit: run-p1871677-i1834764.scope; invocation ID: 3b0914f95154483d8d5a0989a3d2bc28
+prism(3) side faces 3:
+   front exact-flat-faces 0 tied-nearest 1 | OCCT 5840.1513 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   back  exact-flat-faces 0 tied-nearest 1 | OCCT 5840.1513 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   left  exact-flat-faces 1 tied-nearest 1 | OCCT 5840.1513 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   right exact-flat-faces 0 tied-nearest 2 | OCCT 5840.1513 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+prism(4) side faces 4:
+   front exact-flat-faces 0 tied-nearest 2 | OCCT 8995.4476 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   back  exact-flat-faces 0 tied-nearest 2 | OCCT 8995.4476 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   left  exact-flat-faces 0 tied-nearest 2 | OCCT 8995.4476 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   right exact-flat-faces 0 tied-nearest 2 | OCCT 8995.4476 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+prism(5) side faces 5:
+   front exact-flat-faces 0 tied-nearest 1 | OCCT 10695.5705 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   back  exact-flat-faces 0 tied-nearest 1 | OCCT 10695.5705 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   left  exact-flat-faces 1 tied-nearest 1 | OCCT 10695.5705 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   right exact-flat-faces 0 tied-nearest 2 | OCCT 10695.5705 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+prism(6) side faces 6:
+   front exact-flat-faces 1 tied-nearest 1 | OCCT 11688.0686 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   back  exact-flat-faces 1 tied-nearest 1 | OCCT 11688.0686 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   left  exact-flat-faces 0 tied-nearest 2 | OCCT 11688.0686 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   right exact-flat-faces 0 tied-nearest 2 | OCCT 11688.0686 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+prism(7) side faces 7:
+   front exact-flat-faces 0 tied-nearest 1 | OCCT 12310.9760 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   back  exact-flat-faces 0 tied-nearest 1 | OCCT 12310.9760 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   left  exact-flat-faces 1 tied-nearest 1 | OCCT 12310.9760 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   right exact-flat-faces 0 tied-nearest 2 | OCCT 12310.9760 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+prism(8) side faces 8:
+   front exact-flat-faces 0 tied-nearest 2 | OCCT 12725.3624 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   back  exact-flat-faces 0 tied-nearest 2 | OCCT 12725.3624 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   left  exact-flat-faces 0 tied-nearest 2 | OCCT 12725.3624 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   right exact-flat-faces 0 tied-nearest 2 | OCCT 12725.3624 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+prism(10) side faces 10:
+   front exact-flat-faces 1 tied-nearest 1 | OCCT 13223.0467 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   back  exact-flat-faces 1 tied-nearest 1 | OCCT 13223.0467 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   left  exact-flat-faces 0 tied-nearest 2 | OCCT 13223.0467 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   right exact-flat-faces 0 tied-nearest 2 | OCCT 13223.0467 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+prism(12) side faces 12:
+   front exact-flat-faces 0 tied-nearest 2 | OCCT 13498.1676 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   back  exact-flat-faces 0 tied-nearest 2 | OCCT 13498.1676 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   left  exact-flat-faces 0 tied-nearest 2 | OCCT 13498.1676 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back
+   right exact-flat-faces 0 tied-nearest 2 | OCCT 13498.1676 | page REFUSED round1 is not built: picking the sides of a prism by direction (left, right, front or back

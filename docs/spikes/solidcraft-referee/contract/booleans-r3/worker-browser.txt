@@ -1,0 +1,7 @@
+# Worker.terminate() in a real browser (headless Chrome 155 via playwright-cli session bwspike), the wasm package converted for the web with wasm-bindgen --target web from the SAME solidcraft_referee.wasm (no rebuild); page = scratch bw/index.html + worker.js (committed copies: booleans-r3/worker-browser/)
+t+0 hang running; busiest chrome process (cpu% pid) over 2 s:
+89.5 2530043;37 2538803;
+1 s after Worker.terminate(), busiest chrome process (cpu% pid) over 2 s:
+4 2538803;1.5 2538486;
+result:
+"{\"budgetMs\":45000,\"ua\":\"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36\",\"initMs\":321.39999997615814,\"warmBoxMs\":67.89999997615814,\"hangReturnedBeforeBudget\":false,\"ticksAtBudget\":450,\"expectedTicks\":450,\"terminateCallMs\":0,\"ticksAfterTerminate1500\":15,\"freshInitMs\":57,\"freshBox\":{\"id\":1,\"ok\":true,\"kernelOk\":true,\"ms\":2,\"volumes\":[24],\"roundTripMs\":2.4000000059604645},\"freshBoxRoundTripMs\":2.4000000059604645}"

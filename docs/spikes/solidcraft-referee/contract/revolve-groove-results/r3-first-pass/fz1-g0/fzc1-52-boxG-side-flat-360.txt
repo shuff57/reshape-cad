@@ -1,0 +1,1 @@
+fzc1-52-boxG-side-flat-360               PASS     occtV 68864.2768 | tr-occt dV 5.1e-6 dBb 8.7e-11 dCom 1.6e-6 F o/b/t 10/10/10 | brep-occt dV 4.8e-12      | ms 1023 cpu 1329

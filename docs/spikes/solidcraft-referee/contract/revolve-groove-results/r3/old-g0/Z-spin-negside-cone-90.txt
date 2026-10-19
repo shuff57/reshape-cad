@@ -1,0 +1,1 @@
+Z-spin-negside-cone-90                   PASS     occtV 3141.5927 | tr-occt dV 3.3e-5 dBb 0.0e+0 dCom 2.3e-6 F o/b/t 4/4/4 | brep-occt dV 1.2e-11  | ANALYTIC 3141.5927 dTruck 3.3e-5 dOcct 1.2e-11 dBrep 5.8e-16    | ms 159 cpu 488

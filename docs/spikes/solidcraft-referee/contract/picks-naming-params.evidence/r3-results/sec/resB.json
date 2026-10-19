@@ -1,0 +1,4749 @@
+[
+ {
+  "label": "cyl round edge(top,side)",
+  "src": "const c = cylinder(20, 30, { at: [4, -2, 1] })\nround(c.edge('top','side'), 2)",
+  "id": "round1",
+  "ms": 7244,
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -1.7540561226017397,
+       6.1786819315797725,
+       16
+      ]
+     ],
+     "radius": 2,
+     "body": "b_cyl1"
+    },
+    "evidence": {
+     "name": "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]",
+     "engineEdges": [
+      "F1:side#1|F1:top",
+      "F1:side#2|F1:top"
+     ],
+     "target": {
+      "candidates": 2,
+      "edges": [
+       "F1:side#1|F1:top",
+       "F1:side#2|F1:top"
+      ]
+     },
+     "checks": [
+      {
+       "check": "persistent names + plane of the planar face",
+       "agree": true,
+       "named": 2
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 10,
+     "height": 30,
+     "base": [
+      4,
+      -2,
+      -14
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       -1.7540561226017397,
+       6.1786819315797725,
+       16
+      ]
+     ],
+     "radius": 2,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 9373.25212094749,
+    "com": [
+     3.999999999999999,
+     -2.000000000000001,
+     0.9200466474276655
+    ],
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14.0000001,
+     8,
+     16
+    ],
+    "faces": 4,
+    "types": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 9373.252120947482,
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 4
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 9372.922564848493,
+   "bbox": [
+    -5.999845562132384,
+    -11.999763825245504,
+    -14.000000000000009,
+    13.999845562132382,
+    7.999763825245507,
+    16
+   ],
+   "com": [
+    3.9999999995467608,
+    -2.0000000021327207,
+    0.9200320206427687
+   ],
+   "faces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "other": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.00003515920565721001,
+   "dBbox": 0.000029521844311597434,
+   "dCom": 3.547516413051542e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 4,
+    "truck": 4,
+    "brep": 4,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.703085866434503e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.00003515920565565752,
+   "dCom": 0.0038786620333287067,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]"
+  ],
+  "params": [
+   {
+    "name": "cyl1_radius",
+    "caption": "Cylinder 1 across",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cyl1_height",
+    "caption": "Cylinder 1 height",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cyl1_x",
+    "caption": "Cylinder 1 x",
+    "value": 4,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_y",
+    "caption": "Cylinder 1 y",
+    "value": -2,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_z",
+    "caption": "Cylinder 1 z",
+    "value": 1,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 9.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cyl round edge(bottom,side)",
+  "src": "const c = cylinder(20, 30, { at: [4, -2, 1] })\nround(c.edge('bottom','side'), 2)",
+  "id": "round1",
+  "ms": 7685,
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       9.754056122601739,
+       -10.178681931579778,
+       -14
+      ]
+     ],
+     "radius": 2,
+     "body": "b_cyl1"
+    },
+    "evidence": {
+     "name": "cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]]",
+     "engineEdges": [
+      "F1:bottom|F1:side#2",
+      "F1:bottom|F1:side#1"
+     ],
+     "target": {
+      "candidates": 2,
+      "edges": [
+       "F1:bottom|F1:side#2",
+       "F1:bottom|F1:side#1"
+      ]
+     },
+     "checks": [
+      {
+       "check": "persistent names + plane of the planar face",
+       "agree": true,
+       "named": 2
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 10,
+     "height": 30,
+     "base": [
+      4,
+      -2,
+      -14
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       9.754056122601739,
+       -10.178681931579778,
+       -14
+      ]
+     ],
+     "radius": 2,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 9373.25212094749,
+    "com": [
+     3.999999999999999,
+     -2.000000000000001,
+     1.0799533525723342
+    ],
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 4,
+    "types": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 9373.252120947482,
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 4
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 9372.922564848508,
+   "bbox": [
+    -5.999845562132383,
+    -11.999763825245509,
+    -14,
+    13.999845562132382,
+    7.999763825245507,
+    16.000000000000007
+   ],
+   "com": [
+    3.999999999546736,
+    -2.000000002132733,
+    1.0799679801106805
+   ],
+   "faces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "other": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.00003515920565565752,
+   "dBbox": 0.000029521844311597434,
+   "dCom": 3.547699155576568e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 4,
+    "truck": 4,
+    "brep": 4,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.703085866434503e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.00003515920565721001,
+   "dCom": 0.003878662019618001,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]]"
+  ],
+  "params": [
+   {
+    "name": "cyl1_radius",
+    "caption": "Cylinder 1 across",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cyl1_height",
+    "caption": "Cylinder 1 height",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cyl1_x",
+    "caption": "Cylinder 1 x",
+    "value": 4,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_y",
+    "caption": "Cylinder 1 y",
+    "value": -2,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_z",
+    "caption": "Cylinder 1 z",
+    "value": 1,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 9.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cyl bevel edge(top,side)",
+  "src": "const c = cylinder(20, 30, { at: [4, -2, 1] })\nbevel(c.edge('top','side'), 2)",
+  "id": "bevel1",
+  "ms": 2719,
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -1.7540561226017397,
+       6.1786819315797725,
+       16
+      ]
+     ],
+     "distance": 2,
+     "body": "b_cyl1"
+    },
+    "evidence": {
+     "name": "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]",
+     "engineEdges": [
+      "F1:side#1|F1:top",
+      "F1:side#2|F1:top"
+     ],
+     "target": {
+      "candidates": 2,
+      "edges": [
+       "F1:side#1|F1:top",
+       "F1:side#2|F1:top"
+      ]
+     },
+     "checks": [
+      {
+       "check": "persistent names + plane of the planar face",
+       "agree": true,
+       "named": 2
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 10,
+     "height": 30,
+     "base": [
+      4,
+      -2,
+      -14
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       -1.7540561226017397,
+       6.1786819315797725,
+       16
+      ]
+     ],
+     "distance": 2,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 9307.491835035362,
+    "com": [
+     3.9999999999999982,
+     -2.000000000000001,
+     0.8195319531953216
+    ],
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 4,
+    "types": {
+     "cylinder": 1,
+     "cone": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "cone": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 9307.491835035353,
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 4
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 9306.44914326984,
+   "bbox": [
+    -5.999845562132384,
+    -11.99973133740643,
+    -14.000000000000012,
+    13.999845562132387,
+    7.999731337406432,
+    16
+   ],
+   "com": [
+    3.9999999999766027,
+    -1.9999999999667633,
+    0.8195792731093728
+   ],
+   "faces": 4,
+   "faceTypes": {
+    "cone": 1,
+    "cylinder": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.00011202714802255727,
+   "dBbox": 0.0000335828241959657,
+   "dCom": 0.0000011476764931090138,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 4,
+    "truck": 4,
+    "brep": 4,
+    "verdict": "explained",
+    "keys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.771641145570478e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.00011202639089469456,
+   "dCom": 0.008752838182731806,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]"
+  ],
+  "params": [
+   {
+    "name": "cyl1_radius",
+    "caption": "Cylinder 1 across",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cyl1_height",
+    "caption": "Cylinder 1 height",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cyl1_x",
+    "caption": "Cylinder 1 x",
+    "value": 4,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_y",
+    "caption": "Cylinder 1 y",
+    "value": -2,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_z",
+    "caption": "Cylinder 1 z",
+    "value": 1,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "bevel1_size",
+    "caption": "Bevel 1 cut",
+    "value": 2,
+    "min": 0.5,
+    "max": 9.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cyl hollow open top",
+  "src": "const c = cylinder(20, 30, { at: [4, -2, 1] })\nhollow(c, { wall: 2, open: 'top' })",
+  "id": "shell1",
+  "ms": 3713,
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       3.9999999999999964,
+       -2.0000000000000013,
+       15.999999999999986
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_cyl1"
+    },
+    "evidence": {
+     "name": "cyl1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on cyl1's own shape",
+     "engineFace": "F1:top",
+     "target": {
+      "candidates": 1,
+      "face": "F1:top",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 16,
+       "got": 15.999999999999986,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:top",
+       "got": "F1:top",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 10,
+     "height": 30,
+     "base": [
+      4,
+      -2,
+      -14
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       3.9999999999999964,
+       -2.0000000000000013,
+       15.999999999999986
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 3795.043925536471,
+    "com": [
+     3.999999999999992,
+     -2.0000000000000004,
+     -0.4834437086092729
+    ],
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 5,
+    "types": {
+     "cylinder": 2,
+     "plane": 3
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 3
+    },
+    "bigCylinderComponents": 2
+   },
+   "brep": {
+    "volume": 3795.0439255364768,
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 5
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 3794.7016710859994,
+   "bbox": [
+    -5.9998455621323865,
+    -11.999731337406432,
+    -14.000000000000009,
+    13.999845562132382,
+    7.999731337406437,
+    16
+   ],
+   "com": [
+    4.000000000000236,
+    -2.0000000000001497,
+    -0.4833811276865194
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 3
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.0000901845820989066,
+   "dBbox": 0.00003358282419541059,
+   "dCom": 0.0000015178103215361741,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5577462810758767e-15
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.00009018458209818763,
+   "dCom": 0.07195607160441912,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "cyl1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "cyl1_radius",
+    "caption": "Cylinder 1 across",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cyl1_height",
+    "caption": "Cylinder 1 height",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cyl1_x",
+    "caption": "Cylinder 1 x",
+    "value": 4,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_y",
+    "caption": "Cylinder 1 y",
+    "value": -2,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_z",
+    "caption": "Cylinder 1 z",
+    "value": 1,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cyl hollow open bottom",
+  "src": "const c = cylinder(20, 30, { at: [4, -2, 1] })\nhollow(c, { wall: 2, open: 'bottom' })",
+  "id": "shell1",
+  "ms": 3970,
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       3.9999999999999964,
+       -2.0000000000000013,
+       -14.00000000000001
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_cyl1"
+    },
+    "evidence": {
+     "name": "cyl1.face[-z]",
+     "rule": "planar face with outward normal -z at the extreme along it on cyl1's own shape",
+     "engineFace": "F1:bottom",
+     "target": {
+      "candidates": 1,
+      "face": "F1:bottom",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 14,
+       "got": 14.00000000000001,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:bottom",
+       "got": "F1:bottom",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 10,
+     "height": 30,
+     "base": [
+      4,
+      -2,
+      -14
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       3.9999999999999964,
+       -2.0000000000000013,
+       -14.00000000000001
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 3795.043925536471,
+    "com": [
+     3.999999999999992,
+     -2.0000000000000004,
+     2.4834437086092724
+    ],
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 5,
+    "types": {
+     "cylinder": 2,
+     "plane": 3
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 3
+    },
+    "bigCylinderComponents": 2
+   },
+   "brep": {
+    "volume": 3795.0439255364768,
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 5
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 3794.701671086002,
+   "bbox": [
+    -5.9998455621323865,
+    -11.999731337406432,
+    -14.000000000000009,
+    13.999845562132382,
+    7.999731337406437,
+    16
+   ],
+   "com": [
+    4.0000000000002425,
+    -2.0000000000001465,
+    2.483381127686004
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 3
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.00009018458209818763,
+   "dBbox": 0.00003358282419541059,
+   "dCom": 0.0000015178103340248533,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5577462810758767e-15
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.0000901845820989066,
+   "dCom": 0.0719560716044316,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "cyl1.face[-z]"
+  ],
+  "params": [
+   {
+    "name": "cyl1_radius",
+    "caption": "Cylinder 1 across",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cyl1_height",
+    "caption": "Cylinder 1 height",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cyl1_x",
+    "caption": "Cylinder 1 x",
+    "value": 4,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_y",
+    "caption": "Cylinder 1 y",
+    "value": -2,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_z",
+    "caption": "Cylinder 1 z",
+    "value": 1,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cyl draft face(side)",
+  "src": "const c = cylinder(20, 30, { at: [4, -2, 1] })\ndraft(c.face('side'), 5)",
+  "id": "draft1",
+  "ms": 1391,
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 is not built: the curved side of a cylinder cannot be drafted yet -- draft a flat face instead.",
+    "raw": "draft1 (draft): cyl1.face[side] names a set of 2 faces, but this feature needs a face"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 10,
+     "height": 30,
+     "base": [
+      4,
+      -2,
+      -14
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 9314.691932666998,
+    "com": [
+     3.9999999999999982,
+     -2.000000000000001,
+     -0.31622267984215213
+    ],
+    "bbox": [
+     -7.224841289362935,
+     -13.224841289362935,
+     -14.000000000000002,
+     15.224841289362937,
+     9.224841289362935,
+     16
+    ],
+    "faces": 3,
+    "types": {
+     "cone": 1,
+     "plane": 2
+    },
+    "components": {
+     "cone": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 9424.777960769386,
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 3
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "draft1": "draft1 is not built: the curved side of a cylinder cannot be drafted yet -- draft a flat face instead."
+  },
+  "outcome": "REFUSED",
+  "sentence": "draft1 is not built: the curved side of a cylinder cannot be drafted yet -- draft a flat face instead.",
+  "names": [
+   "cyl1.face[side]"
+  ],
+  "params": [
+   {
+    "name": "cyl1_radius",
+    "caption": "Cylinder 1 across",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cyl1_height",
+    "caption": "Cylinder 1 height",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cyl1_x",
+    "caption": "Cylinder 1 x",
+    "value": 4,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_y",
+    "caption": "Cylinder 1 y",
+    "value": -2,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_z",
+    "caption": "Cylinder 1 z",
+    "value": 1,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 5,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cyl draft face(top)",
+  "src": "const c = cylinder(20, 30, { at: [4, -2, 1] })\ndraft(c.face('top'), 5)",
+  "id": "draft1",
+  "ms": 2189,
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.",
+    "raw": "draft1 (draft): solidcraft refused it -- solid.draft: offset: draft: a chosen face isn't parallel to the pull direction"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 10,
+     "height": 30,
+     "base": [
+      4,
+      -2,
+      -14
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 9424.77796076938,
+    "com": [
+     4,
+     -2.000000000000001,
+     0.9999999999999982
+    ],
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 3,
+    "types": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 9424.777960769386,
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 3
+   },
+   "occtRefusals": {
+    "draft1": "Tilting Draft 1 at 5 degrees would not fit -- Draft 1 is shown without it."
+   },
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "draft1": "draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead."
+  },
+  "outcome": "REFUSED",
+  "sentence": "draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.",
+  "names": [
+   "cyl1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "cyl1_radius",
+    "caption": "Cylinder 1 across",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cyl1_height",
+    "caption": "Cylinder 1 height",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cyl1_x",
+    "caption": "Cylinder 1 x",
+    "value": 4,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_y",
+    "caption": "Cylinder 1 y",
+    "value": -2,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_z",
+    "caption": "Cylinder 1 z",
+    "value": 1,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 5,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cyl hollow open side",
+  "src": "const c = cylinder(20, 30, { at: [4, -2, 1] })\nhollow(c, { wall: 2, open: 'side' })",
+  "scriptError": "hollow: \"side\" is the curved wall of a cylinder, not a flat face here.",
+  "line": 2
+ },
+ {
+  "label": "cyl edge(top,bottom)",
+  "src": "const c = cylinder(20, 30, { at: [4, -2, 1] })\nround(c.edge('top','bottom'), 2)",
+  "id": "round1",
+  "ms": 1238,
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: the top and bottom faces never meet, so there is no edge between them -- name two faces that touch.",
+    "raw": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[-z]] matches no edge on b_cyl1 (the two faces do not meet there any more, or never did); not guessing"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 10,
+     "height": 30,
+     "base": [
+      4,
+      -2,
+      -14
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 9424.77796076938,
+    "com": [
+     4,
+     -2.000000000000001,
+     0.9999999999999982
+    ],
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 3,
+    "types": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 9424.777960769386,
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 3
+   },
+   "occtRefusals": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepRefusals": {
+    "round1": "round1's edge could not be found -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: the top and bottom faces never meet, so there is no edge between them -- name two faces that touch."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the top and bottom faces never meet, so there is no edge between them -- name two faces that touch.",
+  "names": [
+   "cyl1.edge[cyl1.face[+z] ^ cyl1.face[-z]]"
+  ],
+  "params": [
+   {
+    "name": "cyl1_radius",
+    "caption": "Cylinder 1 across",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cyl1_height",
+    "caption": "Cylinder 1 height",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cyl1_x",
+    "caption": "Cylinder 1 x",
+    "value": 4,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_y",
+    "caption": "Cylinder 1 y",
+    "value": -2,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_z",
+    "caption": "Cylinder 1 z",
+    "value": 1,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 9.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cyl edge(top,front)",
+  "src": "const c = cylinder(20, 30, { at: [4, -2, 1] })\nround(c.edge('top','front'), 2)",
+  "id": "round1",
+  "ms": 1263,
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: a cylinder has no left, right, front or back face, only a top, a bottom and one curved side.",
+    "raw": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[-y]] cannot be resolved: cyl1.face[-y]: a cylinder has no -y face"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 10,
+     "height": 30,
+     "base": [
+      4,
+      -2,
+      -14
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 9373.25212094749,
+    "com": [
+     3.999999999999999,
+     -2.000000000000001,
+     0.9200466474276655
+    ],
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14.0000001,
+     8,
+     16
+    ],
+    "faces": 4,
+    "types": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 9373.252120947482,
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 4
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: a cylinder has no left, right, front or back face, only a top, a bottom and one curved side."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: a cylinder has no left, right, front or back face, only a top, a bottom and one curved side.",
+  "names": [
+   "cyl1.edge[cyl1.face[+z] ^ cyl1.face[-y]]"
+  ],
+  "params": [
+   {
+    "name": "cyl1_radius",
+    "caption": "Cylinder 1 across",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cyl1_height",
+    "caption": "Cylinder 1 height",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cyl1_x",
+    "caption": "Cylinder 1 x",
+    "value": 4,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_y",
+    "caption": "Cylinder 1 y",
+    "value": -2,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_z",
+    "caption": "Cylinder 1 z",
+    "value": 1,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 9.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cyl edge(side,side)",
+  "src": "const c = cylinder(20, 30, { at: [4, -2, 1] })\nround(c.edge('side','side'), 2)",
+  "scriptError": ".edge() needs two DIFFERENT faces to name the edge between them.",
+  "line": 2
+ },
+ {
+  "label": "cyl face(left)",
+  "src": "const c = cylinder(20, 30, { at: [4, -2, 1] })\ndraft(c.face('left'), 5)",
+  "id": "draft1",
+  "ms": 599,
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 is not built: a cylinder has no left, right, front or back face, only a top, a bottom and one curved side.",
+    "raw": "draft1 (draft): cyl1.face[-x]: a cylinder has no -x face"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 10,
+     "height": 30,
+     "base": [
+      4,
+      -2,
+      -14
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 9314.691932666998,
+    "com": [
+     3.9999999999999982,
+     -2.000000000000001,
+     -0.31622267984215213
+    ],
+    "bbox": [
+     -7.224841289362935,
+     -13.224841289362935,
+     -14.000000000000002,
+     15.224841289362937,
+     9.224841289362935,
+     16
+    ],
+    "faces": 3,
+    "types": {
+     "cone": 1,
+     "plane": 2
+    },
+    "components": {
+     "cone": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 9424.777960769386,
+    "bbox": [
+     -6,
+     -12,
+     -14,
+     14,
+     8,
+     16
+    ],
+    "faces": 3
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "draft1": "draft1 is not built: a cylinder has no left, right, front or back face, only a top, a bottom and one curved side."
+  },
+  "outcome": "REFUSED",
+  "sentence": "draft1 is not built: a cylinder has no left, right, front or back face, only a top, a bottom and one curved side.",
+  "names": [
+   "cyl1.face[-x]"
+  ],
+  "params": [
+   {
+    "name": "cyl1_radius",
+    "caption": "Cylinder 1 across",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cyl1_height",
+    "caption": "Cylinder 1 height",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cyl1_x",
+    "caption": "Cylinder 1 x",
+    "value": 4,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_y",
+    "caption": "Cylinder 1 y",
+    "value": -2,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_z",
+    "caption": "Cylinder 1 z",
+    "value": 1,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 5,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "box face(side)",
+  "src": "const b = box(40,30,20)\ndraft(b.face('side'), 5)",
+  "scriptError": ".face(): \"side\" is the curved wall of a cylinder, not a flat face here.",
+  "line": 2
+ },
+ {
+  "label": "box edge(top,top)",
+  "src": "const b = box(40,30,20)\nround(b.edge('top','top'), 2)",
+  "scriptError": ".edge() needs two DIFFERENT faces to name the edge between them.",
+  "line": 2
+ },
+ {
+  "label": "box edge(top,bottom)",
+  "src": "const b = box(40,30,20)\nround(b.edge('top','bottom'), 2)",
+  "id": "round1",
+  "ms": 33,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: the top and bottom faces never meet, so there is no edge between them -- name two faces that touch.",
+    "raw": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-z]] matches no edge on b_box1 (the two faces do not meet there any more, or never did); not guessing"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23999.999999999996,
+    "com": [
+     -3.552713678800501e-15,
+     0,
+     -1.7763568394002505e-15
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 24000,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepRefusals": {
+    "round1": "round1's edge could not be found -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: the top and bottom faces never meet, so there is no edge between them -- name two faces that touch."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the top and bottom faces never meet, so there is no edge between them -- name two faces that touch.",
+  "names": [
+   "box1.edge[box1.face[+z] ^ box1.face[-z]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 9.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "box edge(front,back)",
+  "src": "const b = box(40,30,20)\nround(b.edge('front','back'), 2)",
+  "id": "round1",
+  "ms": 46,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: the front and back faces never meet, so there is no edge between them -- name two faces that touch.",
+    "raw": "round1 (fillet): box1.edge[box1.face[-y] ^ box1.face[+y]] matches no edge on b_box1 (the two faces do not meet there any more, or never did); not guessing"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23999.999999999996,
+    "com": [
+     -3.552713678800501e-15,
+     0,
+     -1.7763568394002505e-15
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 24000,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepRefusals": {
+    "round1": "round1's edge could not be found -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: the front and back faces never meet, so there is no edge between them -- name two faces that touch."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the front and back faces never meet, so there is no edge between them -- name two faces that touch.",
+  "names": [
+   "box1.edge[box1.face[+y] ^ box1.face[-y]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 9.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "box face(bogus)",
+  "src": "const b = box(40,30,20)\ndraft(b.face('up'), 5)",
+  "scriptError": ".face() does not know the face \"up\". Faces are named top, bottom, front, back, left, right.",
+  "line": 2
+ },
+ {
+  "label": "box face(side) via edge",
+  "src": "const b = box(40,30,20)\nround(b.edge('top','side'), 2)",
+  "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here.",
+  "line": 2
+ },
+ {
+  "label": "round(face)",
+  "src": "const b = box(40,30,20)\nround(b.face('top'), 2)",
+  "scriptError": "round() on a single reference needs an edge -- try round(shape.edge(faceA, faceB), size).",
+  "line": 2
+ },
+ {
+  "label": "bevel(face)",
+  "src": "const b = box(40,30,20)\nbevel(b.face('top'), 2)",
+  "scriptError": "bevel() needs one edge -- try bevel(shape.edge(faceA, faceB), size).",
+  "line": 2
+ },
+ {
+  "label": "draft(edge)",
+  "src": "const b = box(40,30,20)\ndraft(b.edge('top','right'), 5)",
+  "scriptError": "draft() needs a flat face -- try draft(shape.face(\"right\"), angle).",
+  "line": 2
+ },
+ {
+  "label": "hollow open: edge",
+  "src": "const b = box(40,30,20)\nhollow(b, {wall:2, open: b.edge('top','right')})",
+  "scriptError": "hollow needs a face word (top, bottom, front, back, left, right), and you gave it an edge.",
+  "line": 2
+ },
+ {
+  "label": "prism face(top)",
+  "src": "const p = prism(6, 30, 20)\nhollow(p, {wall:2, open:'top'})",
+  "id": "shell1",
+  "ms": 132,
+  "features": [
+   {
+    "id": "prism1",
+    "kind": "prism",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       1.9448037440560688e-16,
+       0,
+       10.000000000000002
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_prism1"
+    },
+    "evidence": {
+     "name": "prism1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on prism1's own shape",
+     "engineFace": "F2:top",
+     "target": {
+      "candidates": 1,
+      "face": "F2:top",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 10,
+       "got": 10.000000000000002,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "agree": null,
+       "note": "feature number or kind not mapped; skipped"
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       0
+      ],
+      [
+       7.500000000000002,
+       12.990381056766578
+      ],
+      [
+       -7.4999999999999964,
+       12.99038105676658
+      ],
+      [
+       -15,
+       1.83697019872103e-15
+      ],
+      [
+       -7.500000000000007,
+       -12.990381056766577
+      ],
+      [
+       7.500000000000002,
+       -12.990381056766578
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 20,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       1.9448037440560688e-16,
+       0,
+       10.000000000000002
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_prism1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4159.718978819072,
+    "com": [
+     3.63455936756663e-16,
+     4.2007232043839255e-16,
+     -1.8106088441602002
+    ],
+    "bbox": [
+     -15,
+     -12.990381056766578,
+     -10,
+     15,
+     12.99038105676658,
+     10
+    ],
+    "faces": 15,
+    "types": {
+     "plane": 15
+    },
+    "components": {
+     "plane": 15
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 4159.718978819075,
+    "bbox": [
+     -15,
+     -12.990381056766578,
+     -10,
+     15,
+     12.99038105676658,
+     10
+    ],
+    "faces": 15
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 4159.71897881907,
+   "bbox": [
+    -15,
+    -12.99038105676658,
+    -10,
+    15.000000000000002,
+    12.99038105676658,
+    10
+   ],
+   "com": [
+    4.063121401711896e-15,
+    3.552953692079909e-16,
+    -1.8106088441602022
+   ],
+   "faces": 15,
+   "faceTypes": {
+    "plane": 15
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 4.3728660825598865e-16,
+   "dBbox": 1.3674401325394234e-16,
+   "dCom": 8.32489770418997e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 15,
+    "truck": 15,
+    "brep": 15,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 8.745732165119773e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 2.1864330412799432e-16,
+   "dCom": 0.08148376415497173,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "prism1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "prism1_radius",
+    "caption": "Prism 1 across",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "prism1_height",
+    "caption": "Prism 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "prism1_x",
+    "caption": "Prism 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "prism1_y",
+    "caption": "Prism 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "prism1_z",
+    "caption": "Prism 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "prism round edge(top,side?)",
+  "src": "const p = prism(6, 30, 20)\nround(p.edge('top','right'), 2)",
+  "id": "round1",
+  "ms": 75,
+  "features": [
+   {
+    "id": "prism1",
+    "kind": "prism",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked.",
+    "raw": "round1 (fillet): prism1.edge[prism1.face[+z] ^ prism1.face[+x]] cannot be resolved: prism1.face[+x]: a prism has no +x face"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       0
+      ],
+      [
+       7.500000000000002,
+       12.990381056766578
+      ],
+      [
+       -7.4999999999999964,
+       12.99038105676658
+      ],
+      [
+       -15,
+       1.83697019872103e-15
+      ],
+      [
+       -7.500000000000007,
+       -12.990381056766577
+      ],
+      [
+       7.500000000000002,
+       -12.990381056766578
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 20,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11678.023988040517,
+    "com": [
+     -0.012379198508606915,
+     -0.0071471335912969116,
+     -0.010902651183050045
+    ],
+    "bbox": [
+     -15,
+     -12.990381056766578,
+     -10,
+     15,
+     12.990381056766582,
+     10
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 8,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 8,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11691.342951089924,
+    "bbox": [
+     -15,
+     -12.990381056766578,
+     -10,
+     15,
+     12.99038105676658,
+     10
+    ],
+    "faces": 8
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked.",
+  "names": [
+   "prism1.edge[prism1.face[+x] ^ prism1.face[+z]]"
+  ],
+  "params": [
+   {
+    "name": "prism1_radius",
+    "caption": "Prism 1 across",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "prism1_height",
+    "caption": "Prism 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "prism1_x",
+    "caption": "Prism 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "prism1_y",
+    "caption": "Prism 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "prism1_z",
+    "caption": "Prism 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "prism draft face(right)",
+  "src": "const p = prism(6, 30, 20)\ndraft(p.face('right'), 5)",
+  "id": "draft1",
+  "ms": 11,
+  "features": [
+   {
+    "id": "prism1",
+    "kind": "prism",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked.",
+    "raw": "draft1 (draft): prism1.face[+x]: a prism has no +x face"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       0
+      ],
+      [
+       7.500000000000002,
+       12.990381056766578
+      ],
+      [
+       -7.4999999999999964,
+       12.99038105676658
+      ],
+      [
+       -15,
+       1.83697019872103e-15
+      ],
+      [
+       -7.500000000000007,
+       -12.990381056766577
+      ],
+      [
+       7.500000000000002,
+       -12.990381056766578
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 20,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11688.396822638373,
+    "com": [
+     -9.483307972902577e-16,
+     -1.1015226953140685e-15,
+     -0.07485086693538001
+    ],
+    "bbox": [
+     -15,
+     -12.990381056766578,
+     -10,
+     15.505116034377327,
+     12.99038105676658,
+     10
+    ],
+    "faces": 8,
+    "types": {
+     "plane": 8
+    },
+    "components": {
+     "plane": 8
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11691.342951089924,
+    "bbox": [
+     -15,
+     -12.990381056766578,
+     -10,
+     15,
+     12.99038105676658,
+     10
+    ],
+    "faces": 8
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "draft1": "draft1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+  },
+  "outcome": "REFUSED",
+  "sentence": "draft1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked.",
+  "names": [
+   "prism1.face[+x]"
+  ],
+  "params": [
+   {
+    "name": "prism1_radius",
+    "caption": "Prism 1 across",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "prism1_height",
+    "caption": "Prism 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "prism1_x",
+    "caption": "Prism 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "prism1_y",
+    "caption": "Prism 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "prism1_z",
+    "caption": "Prism 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 5,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "sphere face(top) draft",
+  "src": "const s = sphere(30)\ndraft(s.face('top'), 5)",
+  "id": "draft1",
+  "ms": 7583,
+  "features": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 is not built: the faces of a sphere cannot be picked by direction yet.",
+    "raw": "draft1 (draft): ball1.face[+z]: faces of a sphere are not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 15,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 14137.166941154075,
+    "com": [
+     -2.037372681401501e-15,
+     -8.589672183410988e-16,
+     -5.810660594660372e-16
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -15,
+     15,
+     15,
+     15
+    ],
+    "faces": 1,
+    "types": {
+     "sphere": 1
+    },
+    "components": {
+     "sphere": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 14137.166941154077,
+    "bbox": [
+     -15,
+     -15,
+     -15,
+     15,
+     15,
+     15
+    ],
+    "faces": 1
+   },
+   "occtRefusals": {
+    "draft1": "Tilting Draft 1 at 5 degrees would not fit -- Draft 1 is shown without it."
+   },
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "draft1": "draft1 is not built: the faces of a sphere cannot be picked by direction yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "draft1 is not built: the faces of a sphere cannot be picked by direction yet.",
+  "names": [
+   "ball1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "ball1_radius",
+    "caption": "Sphere 1 across",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "ball1_x",
+    "caption": "Sphere 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "ball1_y",
+    "caption": "Sphere 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "ball1_z",
+    "caption": "Sphere 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 5,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "sphere hollow open top",
+  "src": "const s = sphere(30)\nhollow(s, {wall:2, open:'top'})",
+  "id": "shell1",
+  "ms": 5065,
+  "features": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 is not built: the faces of a sphere cannot be picked by direction yet.",
+    "raw": "shell1 (shell): ball1.face[+z]: faces of a sphere are not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 15,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 14137.166941154075,
+    "com": [
+     -2.037372681401501e-15,
+     -8.589672183410988e-16,
+     -5.810660594660372e-16
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -15,
+     15,
+     15,
+     15
+    ],
+    "faces": 1,
+    "types": {
+     "sphere": 1
+    },
+    "components": {
+     "sphere": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- shell1 is shown without it."
+   },
+   "occtRefusals": {
+    "shell1": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {
+    "shell1": "brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- shell1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "shell1": "shell1 is not built: the faces of a sphere cannot be picked by direction yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "shell1 is not built: the faces of a sphere cannot be picked by direction yet.",
+  "names": [
+   "ball1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "ball1_radius",
+    "caption": "Sphere 1 across",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "ball1_x",
+    "caption": "Sphere 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "ball1_y",
+    "caption": "Sphere 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "ball1_z",
+    "caption": "Sphere 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "sphere edge(top,front)",
+  "src": "const s = sphere(30)\nround(s.edge('top','front'), 2)",
+  "id": "round1",
+  "ms": 4678,
+  "features": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: the faces of a sphere cannot be picked by direction yet.",
+    "raw": "round1 (fillet): ball1.edge[ball1.face[+z] ^ ball1.face[-y]] cannot be resolved: ball1.face[+z]: faces of a sphere are not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 15,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 14137.166941154075,
+    "com": [
+     -2.037372681401501e-15,
+     -8.589672183410988e-16,
+     -5.810660594660372e-16
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -15,
+     15,
+     15,
+     15
+    ],
+    "faces": 1,
+    "types": {
+     "sphere": 1
+    },
+    "components": {
+     "sphere": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 14137.166941154077,
+    "bbox": [
+     -15,
+     -15,
+     -15,
+     15,
+     15,
+     15
+    ],
+    "faces": 1
+   },
+   "occtRefusals": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepRefusals": {
+    "round1": "brep-rs cannot round a flat edge -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: the faces of a sphere cannot be picked by direction yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the faces of a sphere cannot be picked by direction yet.",
+  "names": [
+   "ball1.edge[ball1.face[+z] ^ ball1.face[-y]]"
+  ],
+  "params": [
+   {
+    "name": "ball1_radius",
+    "caption": "Sphere 1 across",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "ball1_x",
+    "caption": "Sphere 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "ball1_y",
+    "caption": "Sphere 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "ball1_z",
+    "caption": "Sphere 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cone hollow open bottom",
+  "src": "const s = cone(30, 20)\nhollow(s, {wall:2, open:'bottom'})",
+  "id": "shell1",
+  "ms": 33,
+  "features": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 is not built: the faces of a cone cannot be picked by direction yet.",
+    "raw": "shell1 (shell): cone1.face[-z]: faces of a cone are not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       15,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4712.3889803846905,
+    "com": [
+     5.790023100122028e-16,
+     -1.9600536841251426e-16,
+     -4.999999999999998
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ],
+    "faces": 2,
+    "types": {
+     "plane": 1,
+     "cone": 1
+    },
+    "components": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 1985.3120241435497,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ],
+    "faces": 3
+   },
+   "occtRefusals": {
+    "shell1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "shell1": "shell1 is not built: the faces of a cone cannot be picked by direction yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "shell1 is not built: the faces of a cone cannot be picked by direction yet.",
+  "names": [
+   "cone1.face[-z]"
+  ],
+  "params": [
+   {
+    "name": "cone1_radius",
+    "caption": "Cone 1 across",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cone1_height",
+    "caption": "Cone 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cone1_x",
+    "caption": "Cone 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cone1_y",
+    "caption": "Cone 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cone1_z",
+    "caption": "Cone 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cone hollow open top",
+  "src": "const s = cone(30, 20)\nhollow(s, {wall:2, open:'top'})",
+  "id": "shell1",
+  "ms": 29,
+  "features": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 is not built: the faces of a cone cannot be picked by direction yet.",
+    "raw": "shell1 (shell): cone1.face[+z]: faces of a cone are not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       15,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 1277.0574136842515,
+    "com": [
+     3.0267648432372215e-15,
+     -1.4505450128476981e-15,
+     -9.035055350553506
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     -8
+    ],
+    "faces": 3,
+    "types": {
+     "plane": 2,
+     "cone": 1
+    },
+    "components": {
+     "plane": 2,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 2853.9623928611286,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ],
+    "faces": 4
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "shell1 could not find the face to leave open -- shell1 is shown closed."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "shell1": "shell1 is not built: the faces of a cone cannot be picked by direction yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "shell1 is not built: the faces of a cone cannot be picked by direction yet.",
+  "names": [
+   "cone1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "cone1_radius",
+    "caption": "Cone 1 across",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cone1_height",
+    "caption": "Cone 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cone1_x",
+    "caption": "Cone 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cone1_y",
+    "caption": "Cone 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cone1_z",
+    "caption": "Cone 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cone edge(bottom,side?)",
+  "src": "const s = cone(30, 20)\nround(s.edge('bottom','front'), 2)",
+  "id": "round1",
+  "ms": 29,
+  "features": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: the faces of a cone cannot be picked by direction yet.",
+    "raw": "round1 (fillet): cone1.edge[cone1.face[-z] ^ cone1.face[-y]] cannot be resolved: cone1.face[-z]: faces of a cone are not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       15,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4411.9346632179095,
+    "com": [
+     2.7314105303866553e-15,
+     -1.0989169271491398e-15,
+     -4.714276457905795
+    ],
+    "bbox": [
+     -13.0000001,
+     -13.0000001,
+     -10,
+     13,
+     13.0000001,
+     10
+    ],
+    "faces": 3,
+    "types": {
+     "plane": 1,
+     "other": 1,
+     "cone": 1
+    },
+    "components": {
+     "plane": 1,
+     "other": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 4712.38898038469,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ],
+    "faces": 2
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "round1's edge could not be found -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: the faces of a cone cannot be picked by direction yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the faces of a cone cannot be picked by direction yet.",
+  "names": [
+   "cone1.edge[cone1.face[-y] ^ cone1.face[-z]]"
+  ],
+  "params": [
+   {
+    "name": "cone1_radius",
+    "caption": "Cone 1 across",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cone1_height",
+    "caption": "Cone 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cone1_x",
+    "caption": "Cone 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cone1_y",
+    "caption": "Cone 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cone1_z",
+    "caption": "Cone 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "ring hollow open top",
+  "src": "const s = ring(40, 10)\nhollow(s, {wall:1, open:'top'})",
+  "id": "shell1",
+  "ms": 9280,
+  "features": [
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 is not built: the faces of a ring cannot be picked by direction yet.",
+    "raw": "shell1 (shell): ring1.face[+z]: faces of a torus are not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 15,
+     "minor": 5,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ring1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 7402.203300817018,
+    "com": [
+     -1.0658141036401503e-14,
+     -3.746613850627634e-15,
+     -2.8979931944015076e-16
+    ],
+    "bbox": [
+     -20.0000001,
+     -20.0000001,
+     -5.0000001,
+     20.0000001,
+     20.0000001,
+     5.0000001
+    ],
+    "faces": 1,
+    "types": {
+     "other": 1
+    },
+    "components": {
+     "other": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- shell1 is shown without it."
+   },
+   "occtRefusals": {
+    "shell1": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {
+    "shell1": "brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- shell1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "shell1": "shell1 is not built: the faces of a ring cannot be picked by direction yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "shell1 is not built: the faces of a ring cannot be picked by direction yet.",
+  "names": [
+   "ring1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "ring1_ring",
+    "caption": "Ring 1 across",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "ring1_tube",
+    "caption": "Ring 1 tube across",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "ring1_x",
+    "caption": "Ring 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "ring1_y",
+    "caption": "Ring 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "ring1_z",
+    "caption": "Ring 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 1,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "wedge hollow open bottom",
+  "src": "const s = wedge(30, 20, 10)\nhollow(s, {wall:2, open:'bottom'})",
+  "id": "shell1",
+  "ms": 3,
+  "features": [
+   {
+    "id": "wedge1",
+    "kind": "wedge",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 is not built: the faces of a wedge cannot be picked by direction yet.",
+    "raw": "shell1 (shell): wedge1.face[-z]: faces of a wedge are not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_wedge1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -15,
+       -10
+      ],
+      [
+       15,
+       -10
+      ],
+      [
+       -15,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_wedge1_0",
+     "operation": "new",
+     "body_name": "b_wedge1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 1779.4068367285308,
+    "com": [
+     -4.4042362867333065,
+     -3.393460912740634,
+     0.6859550823776481
+    ],
+    "bbox": [
+     -15,
+     -10,
+     -5,
+     15,
+     10,
+     5
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 9
+    },
+    "components": {
+     "plane": 9
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 1779.4068367285317,
+    "bbox": [
+     -15,
+     -10,
+     -5,
+     15,
+     10,
+     5
+    ],
+    "faces": 9
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "shell1": "shell1 is not built: the faces of a wedge cannot be picked by direction yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "shell1 is not built: the faces of a wedge cannot be picked by direction yet.",
+  "names": [
+   "wedge1.face[-z]"
+  ],
+  "params": [
+   {
+    "name": "wedge1_width",
+    "caption": "Wedge 1 width",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "wedge1_depth",
+    "caption": "Wedge 1 depth",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "wedge1_height",
+    "caption": "Wedge 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "wedge1_x",
+    "caption": "Wedge 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "wedge1_y",
+    "caption": "Wedge 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "wedge1_z",
+    "caption": "Wedge 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "wedge hollow open top",
+  "src": "const s = wedge(30, 20, 10)\nhollow(s, {wall:2, open:'top'})",
+  "id": "shell1",
+  "ms": 2,
+  "features": [
+   {
+    "id": "wedge1",
+    "kind": "wedge",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 is not built: the faces of a wedge cannot be picked by direction yet.",
+    "raw": "shell1 (shell): wedge1.face[+z]: faces of a wedge are not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_wedge1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -15,
+       -10
+      ],
+      [
+       15,
+       -10
+      ],
+      [
+       -15,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_wedge1_0",
+     "operation": "new",
+     "body_name": "b_wedge1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 1779.4068367285308,
+    "com": [
+     -4.4042362867333065,
+     -3.393460912740634,
+     -0.6859550823776477
+    ],
+    "bbox": [
+     -15,
+     -10,
+     -5,
+     15,
+     10,
+     5
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 9
+    },
+    "components": {
+     "plane": 9
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 1779.406836728531,
+    "bbox": [
+     -15,
+     -10,
+     -5,
+     15,
+     10,
+     5
+    ],
+    "faces": 9
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "shell1": "shell1 is not built: the faces of a wedge cannot be picked by direction yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "shell1 is not built: the faces of a wedge cannot be picked by direction yet.",
+  "names": [
+   "wedge1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "wedge1_width",
+    "caption": "Wedge 1 width",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "wedge1_depth",
+    "caption": "Wedge 1 depth",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "wedge1_height",
+    "caption": "Wedge 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "wedge1_x",
+    "caption": "Wedge 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "wedge1_y",
+    "caption": "Wedge 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "wedge1_z",
+    "caption": "Wedge 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "wedge hollow open front",
+  "src": "const s = wedge(30, 20, 10)\nhollow(s, {wall:2, open:'front'})",
+  "id": "shell1",
+  "ms": 3,
+  "features": [
+   {
+    "id": "wedge1",
+    "kind": "wedge",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 is not built: the faces of a wedge cannot be picked by direction yet.",
+    "raw": "shell1 (shell): wedge1.face[-y]: faces of a wedge are not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_wedge1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -15,
+       -10
+      ],
+      [
+       15,
+       -10
+      ],
+      [
+       -15,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_wedge1_0",
+     "operation": "new",
+     "body_name": "b_wedge1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 1809.8217475215124,
+    "com": [
+     -5.086466020169697,
+     -2.5141482827508677,
+     6.281659388683232e-17
+    ],
+    "bbox": [
+     -15,
+     -10,
+     -5,
+     15,
+     10,
+     5
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 9
+    },
+    "components": {
+     "plane": 9
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 1809.8217428519667,
+    "bbox": [
+     -15,
+     -10,
+     -5,
+     15,
+     10,
+     5
+    ],
+    "faces": 9
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "shell1": "shell1 is not built: the faces of a wedge cannot be picked by direction yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "shell1 is not built: the faces of a wedge cannot be picked by direction yet.",
+  "names": [
+   "wedge1.face[-y]"
+  ],
+  "params": [
+   {
+    "name": "wedge1_width",
+    "caption": "Wedge 1 width",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "wedge1_depth",
+    "caption": "Wedge 1 depth",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "wedge1_height",
+    "caption": "Wedge 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "wedge1_x",
+    "caption": "Wedge 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "wedge1_y",
+    "caption": "Wedge 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "wedge1_z",
+    "caption": "Wedge 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "wedge edge(bottom,front)",
+  "src": "const s = wedge(30, 20, 10)\nround(s.edge('bottom','front'), 2)",
+  "id": "round1",
+  "ms": 2,
+  "features": [
+   {
+    "id": "wedge1",
+    "kind": "wedge",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 is not built: the faces of a wedge cannot be picked by direction yet.",
+    "raw": "round1 (fillet): wedge1.edge[wedge1.face[-z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[-z]: faces of a wedge are not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_wedge1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -15,
+       -10
+      ],
+      [
+       15,
+       -10
+      ],
+      [
+       -15,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_wedge1_0",
+     "operation": "new",
+     "body_name": "b_wedge1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 2974.8230377727214,
+    "com": [
+     -5.039526613180804,
+     -3.280631006851563,
+     0.03850007312545004
+    ],
+    "bbox": [
+     -15,
+     -10,
+     -5,
+     15.000000000000004,
+     10,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 5,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 5,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 3000,
+    "bbox": [
+     -15,
+     -10,
+     -5,
+     15,
+     10,
+     5
+    ],
+    "faces": 5
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "round1": "round1 is not built: the faces of a wedge cannot be picked by direction yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the faces of a wedge cannot be picked by direction yet.",
+  "names": [
+   "wedge1.edge[wedge1.face[-y] ^ wedge1.face[-z]]"
+  ],
+  "params": [
+   {
+    "name": "wedge1_width",
+    "caption": "Wedge 1 width",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "wedge1_depth",
+    "caption": "Wedge 1 depth",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "wedge1_height",
+    "caption": "Wedge 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "wedge1_x",
+    "caption": "Wedge 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "wedge1_y",
+    "caption": "Wedge 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "wedge1_z",
+    "caption": "Wedge 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ }
+]

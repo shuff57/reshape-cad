@@ -1,0 +1,3 @@
+import { all } from './summ.mjs';
+for (const id of process.argv.slice(2)) { const x = all.find(y => y.id === id); if (!x) { console.log('MISSING', id); continue; }
+  console.log('==', id, x.outcome); console.log('  truck:', x.truck?.refused ?? JSON.stringify({ v: x.truck?.volume, bodies: x.truck?.bodies, bbox: x.truck?.bbox, faces: x.truck?.faces })); console.log('  brep:', JSON.stringify(x.brep).slice(0, 320)); console.log('  occt:', JSON.stringify(x.occt).slice(0, 260)); if (x.scriptErrors?.length) console.log('  script:', x.scriptErrors.join(' | ')); if (x.warnings?.length) console.log('  warn:', x.warnings.join(' | ')); }

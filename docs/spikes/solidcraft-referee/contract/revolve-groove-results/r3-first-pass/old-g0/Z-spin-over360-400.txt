@@ -1,0 +1,1 @@
+Z-spin-over360-400                       FAIL     occtV 3141.5927 | tr-occt dV 8.0e+0 dBb 2.0e+1 dCom 4.1e-1 F o/b/t 6/4/4 | brep-occt dV 8.0e+0 | FC: occt 8.9e-1 brep 1.3e-16 truck 1.6e-4 dCom 4.1e-13 F 4 | ANALYTIC 28274.3339 dTruck 1.6e-4 dOcct 8.9e-1 dBrep 1.3e-16    | ms 436 cpu 853

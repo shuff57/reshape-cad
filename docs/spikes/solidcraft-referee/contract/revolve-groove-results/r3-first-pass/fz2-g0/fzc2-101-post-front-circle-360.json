@@ -1,0 +1,44 @@
+[
+ {
+  "id": "fzc2-101-post-front-circle-360",
+  "src": "const k = sketch('top'); k.circle(40); const t = extrude(k, 30); const sk = sketch('front', -0.1); sk.circle(3.7, { at: [15.3, 27.8] }); groove(sk, t, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc2-101-post-front-circle-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "invalid": "OCCT: OCCT built nothing"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "groove groove1: a circle sketch has no outline to spin"
+   },
+   "ms": 229,
+   "load": [
+    28.1,
+    28.1
+   ],
+   "cpuMs": 493,
+   "truck": {
+    "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: OCCT built nothing",
+  "caseMs": 240
+ }
+]

@@ -1,0 +1,21 @@
+{
+ "id": "revolution__arc-top-cone-round-neg-60",
+ "outcome": "built",
+ "volume": 4011.1244387472984,
+ "faces": 8,
+ "bbox": [
+  5.000000000000002,
+  -18.291100432792867,
+  0,
+  21.120743517294876,
+  1.9539925233402755e-14,
+  30
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,0],[17.120784389125774,0]]}},{\"command\":\"sketch.arc.three_point\",\"params\":{\"start\":[17.120784389125774,0],\"end\":[21.043107091889453,4.784464540552736],\"through\":[20.21415295447738,1.4640443775778471]}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[21.043107091889453,4.784464540552736],[16.48233031891709,27.588348405414553]]}},{\"command\":\"sketch.arc.three_point\",\"params\":{\"start\":[16.48233031891709,27.588348405414553],\"end\":[13.54058829184433,30],\"through\":[15.442555008660943,29.320026424013708]}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[13.54058829184433,30],[10,30]]}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,30],[10,0]]}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":60,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

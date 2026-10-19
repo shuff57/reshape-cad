@@ -1,0 +1,137 @@
+ok   plain        40x30x10 t=1                       2424.0000 2424.0000 1.9e-16 12627ms
+ok   plain        30x24x10 t=0.5                     863.5000 863.5000 2.6e-16 2251ms
+ok   plain        30x24x10 t=2.5                     3637.5000 3637.5000 2.5e-16 3543ms
+ok   plain        20x16x6 t=1.5                      925.5000 925.5000 2.5e-16 1241ms
+ok   rim          w=2                                2872.0000 2872.0000 3.2e-16 5105ms
+ok   rim          w=2.25                             2860.0000 2860.0000 1.6e-16 4307ms
+ok   rim          w=2.5                              2848.0000 2848.0000 1.6e-16 4715ms
+ok   rim          w=3                                2824.0000 2824.0000 1.6e-16 6255ms
+ok   rim          w=3.5                              2800.0000 2800.0000 1.6e-16 6278ms
+ok   rim          w=4                                2776.0000 2776.0000 1.6e-16 10493ms
+ok   cbore        r2 R4 d2 @5,3                      2628.2035 2628.2013 8.6e-7 6964ms
+ok   cbore        r2 R4 d2 @-8,2                     2628.2035 2628.2013 8.6e-7 6042ms
+ok   cbore-gen    d=1                                2615.6372 2615.6341 1.2e-6 4489ms
+ok   cbore-gen    d=2                                2628.2035 2628.2013 8.6e-7 3608ms
+ok   cbore-gen    d=3.5                              2647.0531 2647.0520 4.0e-7 4305ms
+ok   cbore-gen    d=5                                2665.9026 2665.9028 6.7e-8 3831ms
+ok   cbore-gen    d=6.5                              2684.7522 2684.7536 5.2e-7 2599ms
+ok   cbore-gen    d=7.5                              2697.3186 2697.3208 8.2e-7 2650ms
+ok   hole-web     r=2 web=1                          2524.9280 2524.9252 1.1e-6 2464ms
+ok   hole-web     r=2 web=2                          2552.8053 2552.7998 2.1e-6 2451ms
+ok   hole-web     r=2 web=3                          2552.8053 2552.7998 2.1e-6 2570ms
+ok   hole-web     r=1.5 web=1                        2504.8684 2504.8662 8.9e-7 2502ms
+ok   hole-web     r=3 web=1                          2561.0076 2561.0191 4.5e-6 2502ms
+ok   hole-web     r=2 web=1.9                        2551.8804 2551.8731 2.9e-6 2572ms
+ok   hole-web     r=2 web=2.1                        2552.8053 2552.7998 2.1e-6 2623ms
+ok   blind-top    t=1 floor=0.500                    1791.0885 1791.0830 3.1e-6 1585ms
+ok   blind-top    t=1 floor=0.750                    1794.2301 1794.2245 3.1e-6 1506ms
+ok   blind-top    t=1 floor=1.000                    1797.3717 1797.3661 3.1e-6 1458ms
+ok   blind-top    t=1 floor=1.500                    1803.6549 1803.6492 3.1e-6 1424ms
+ok   blind-top    t=1 floor=1.900                    1808.6814 1808.6757 3.1e-6 1576ms
+ok   blind-top    t=1 floor=2.000                    1809.9380 1809.9323 3.1e-6 1531ms
+ok   blind-top    t=1 floor=2.100                    1808.3672 1808.3616 3.1e-6 1571ms
+ok   blind-top    t=1 floor=3.000                    1794.2301 1794.2250 2.8e-6 1541ms
+ok   blind-top    t=0.5 floor=0.250                  927.5100 927.5101 1.4e-7 1467ms
+ok   blind-top    t=0.5 floor=0.400                  929.3949 929.3950 1.2e-7 1407ms
+ok   blind-top    t=0.5 floor=0.500                  930.6515 930.6516 1.0e-7 1503ms
+ok   blind-top    t=0.5 floor=0.750                  933.7931 933.7932 7.2e-8 1584ms
+ok   blind-top    t=0.5 floor=0.950                  936.3064 936.3065 4.6e-8 1532ms
+ok   blind-top    t=0.5 floor=1.000                  936.9347 936.9348 4.0e-8 1592ms
+ok   blind-top    t=0.5 floor=1.050                  936.5813 936.5813 3.9e-8 1433ms
+ok   blind-top    t=0.5 floor=1.500                  933.4004 933.4005 3.5e-8 1414ms
+ok   blind-top    t=2.5 floor=1.250                  4004.6736 4004.6965 5.7e-6 2201ms
+ok   blind-top    t=2.5 floor=1.900                  4012.8418 4012.8645 5.7e-6 2262ms
+ok   blind-top    t=2.5 floor=2.500                  4020.3816 4020.4043 5.6e-6 2223ms
+ok   blind-top    t=2.5 floor=3.750                  4036.0896 4036.1121 5.6e-6 2227ms
+ok   blind-top    t=2.5 floor=4.750                  4048.6559 4048.6784 5.5e-6 2188ms
+ok   blind-top    t=2.5 floor=5.000                  4051.7975 4051.8199 5.5e-6 2255ms
+ok   blind-top    t=2.5 floor=5.250                  4039.0348 4039.0564 5.4e-6 2235ms
+ok   blind-top    t=2.5 floor=7.500                  3924.1703 3924.1852 3.8e-6 2185ms
+ok   blind-bot    t=1 ceiling=0.750                  1794.2301 1794.2245 3.1e-6 1583ms
+ok   blind-bot    t=1 ceiling=1.000                  1797.3717 1797.3661 3.1e-6 1603ms
+ok   blind-bot    t=1 ceiling=1.500                  1789.5177 1789.5124 2.9e-6 1522ms
+ok   blind-bot    t=1 ceiling=2.000                  1781.6637 1781.6588 2.8e-6 1200ms
+ok   blind-bot    t=1 ceiling=2.500                  1773.8097 1773.8051 2.6e-6 1268ms
+ok   blind-bot    t=1 ceiling=3.500                  1758.1018 1758.0977 2.3e-6 1320ms
+ok   blind-bot    t=0.5 ceiling=0.400                929.3949 929.3950 1.2e-7 1859ms
+ok   blind-bot    t=0.5 ceiling=0.500                930.6515 930.6516 1.0e-7 1776ms
+ok   blind-bot    t=0.5 ceiling=0.750                928.8844 928.8845 1.0e-7 1775ms
+ok   blind-bot    t=0.5 ceiling=1.000                927.1173 927.1173 1.0e-7 1788ms
+ok   blind-bot    t=0.5 ceiling=1.250                925.3501 925.3502 9.7e-8 1950ms
+ok   blind-bot    t=0.5 ceiling=1.750                921.8158 921.8159 9.2e-8 1910ms
+ok   blind-bot    t=2.5 ceiling=1.900                4012.8418 4012.8645 5.7e-6 3423ms
+ok   blind-bot    t=2.5 ceiling=2.500                4020.3816 4020.4043 5.6e-6 3221ms
+ok   blind-bot    t=2.5 ceiling=3.750                3956.5680 3956.5869 4.8e-6 3363ms
+ok   blind-bot    t=2.5 ceiling=5.000                3892.7544 3892.7695 3.9e-6 4445ms
+ok   blind-bot    t=2.5 ceiling=6.250                3828.9408 3828.9521 3.0e-6 4325ms
+ok   blind-bot    t=2.5 ceiling=8.750                3701.3136 3701.3174 1.0e-6 4651ms
+ok   pocket-top   t=1 6x5 d=3                        1790.0000 1790.0000 2.5e-16 3159ms
+ok   pocket-bot   t=1 6x5 d=3                        1734.0000 1734.0000 2.6e-16 5533ms
+ok   pocket-top   t=1 6x5 d=8.5                      1905.0000 1905.0000 2.4e-16 5274ms
+ok   pocket-bot   t=1 6x5 d=8.5                      1877.0000 1877.0000 2.4e-16 4782ms
+ok   pocket-top   t=1 6x5 d=7.2                      1899.2000 1899.2000 3.6e-16 5033ms
+ok   pocket-bot   t=1 6x5 d=7.2                      1843.2000 1843.2000 3.7e-16 4970ms
+ok   pocket-top   t=0.5 4x4 d=9.2                    953.8000 953.8000 0.0e+0 4045ms
+ok   pocket-bot   t=0.5 4x4 d=9.2                    946.3000 946.3000 0.0e+0 3989ms
+ok   pocket-top   t=2.5 6x6 d=5.5                    4347.0000 4347.0000 2.1e-16 6231ms
+ok   pocket-bot   t=2.5 6x6 d=5.5                    4105.0000 4105.0000 2.2e-16 4162ms
+ok   pocket-top   t=1 1.5x12 d=4                     1829.0000 1829.0000 2.5e-16 2802ms
+ok   pocket-bot   t=1 1.5x12 d=4                     1780.0000 1780.0000 2.6e-16 2848ms
+ok   vfillet      t=1 R=0.5                          1653.8540 1653.8625 5.2e-6 1241ms
+ok   vfillet      t=1 R=1                            1647.4159 1647.4016 8.7e-6 1035ms
+ok   vfillet      t=1 R=1.5                          1638.6173 1638.6148 1.5e-6 954ms
+ok   vfillet      t=1 R=3                            1609.6460 1609.6577 7.2e-6 642ms
+ok   vfillet      t=1 R=5                            1565.0088 1564.9570 3.3e-5 599ms
+ok   vfillet      t=0.5 R=0.25                       862.9635 862.9656 2.5e-6 778ms
+ok   vfillet      t=0.5 R=0.5                        861.3540 861.3625 9.9e-6 798ms
+ok   vfillet      t=0.5 R=0.75                       859.1811 859.2055 2.8e-5 766ms
+ok   vfillet      t=0.5 R=3                          837.2113 837.2055 6.9e-6 850ms
+ok   vfillet      t=0.5 R=5                          814.0343 813.9870 5.8e-5 862ms
+ok   vfillet      t=2.5 R=1.25                       3624.0874 3624.0891 4.6e-7 776ms
+ok   vfillet      t=2.5 R=2.5                        3583.8495 3583.8266 6.4e-6 772ms
+ok   vfillet      t=2.5 R=3.75                       3526.8459 3526.8551 2.6e-6 749ms
+ok   vfillet      t=2.5 R=3                          3561.8529 3561.8582 1.5e-6 740ms
+ok   vfillet      t=2.5 R=5                          3463.1360 3463.0875 1.4e-5 727ms
+ok   vchamfer     t=1 c=1                            1639.0883 1639.1163 1.7e-5 1330ms
+ok   vchamfer     t=1 c=2                            1612.0000 1612.0514 3.2e-5 828ms
+ok   vchamfer     t=1 c=3                            1580.9117 1580.8955 1.0e-5 765ms
+ok   vchamfer     t=1 c=5                            1506.7351 1506.7580 1.5e-5 703ms
+ok   vchamfer     t=0.5 c=1                          853.0000 853.0281 3.3e-5 777ms
+ok   vchamfer     t=0.5 c=2                          838.8701 838.8853 1.8e-5 716ms
+ok   vchamfer     t=0.5 c=3                          822.7401 822.6991 5.0e-5 739ms
+ok   vchamfer     t=0.5 c=5                          784.4802 784.4509 3.7e-5 786ms
+ok   vchamfer     t=2.5 c=1                          3617.5000 3617.5281 7.8e-6 657ms
+ok   vchamfer     t=2.5 c=2                          3561.8019 3561.8520 1.4e-5 661ms
+ok   vchamfer     t=2.5 c=3                          3492.8680 3492.8426 7.3e-6 674ms
+ok   vchamfer     t=2.5 c=5                          3325.0000 3324.9340 2.0e-5 651ms
+ok   bchamfer     t=1 c=1                            1611.8172 1611.8163 5.5e-7 1351ms
+ok   bchamfer     t=1 c=1.5                          1579.7705 1579.7700 3.2e-7 1381ms
+ok   bchamfer     t=1 c=3                            1478.6599 1478.6593 4.4e-7 728ms
+ok   bchamfer     t=1 c=4                            1407.1107 1407.1103 3.3e-7 727ms
+ok   bchamfer     t=0.5 c=1                          836.3619 836.3615 5.1e-7 750ms
+ok   bchamfer     t=0.5 c=1.5                        819.9244 819.9241 3.3e-7 770ms
+ok   bchamfer     t=0.5 c=3                          768.1264 768.1262 3.1e-7 781ms
+ok   bchamfer     t=0.5 c=4                          731.5234 731.5234 4.7e-8 786ms
+ok   bchamfer     t=2.5 c=1                          3584.8333 3584.8329 1.1e-7 711ms
+ok   bchamfer     t=2.5 c=1.5                        3520.5555 3520.5558 9.5e-8 712ms
+ok   bchamfer     t=2.5 c=3                          3286.4186 3286.4189 1.0e-7 748ms
+ok   bchamfer     t=2.5 c=4                          3119.9720 3119.9726 1.9e-7 737ms
+ok   bfillet      t=1 R=1                            1633.2065 1633.2066 5.6e-8 1610ms
+ok   bfillet      t=1 R=3                            1540.5339 1540.5323 1.1e-6 2133ms
+ok   bfillet      t=1 R=5                            1443.3303 1443.3279 1.7e-6 2128ms
+ok   bfillet      t=0.5 R=1                          846.2382 846.2386 4.5e-7 2055ms
+ok   bfillet      t=0.5 R=3                          798.7603 798.7608 6.5e-7 867ms
+ok   bfillet      t=0.5 R=5                          749.0169 749.0176 8.3e-7 888ms
+ok   bfillet      t=2.5 R=1                          3614.7065 3614.7066 2.6e-8 724ms
+ok   bfillet      t=2.5 R=3                          3443.9343 3443.9353 2.9e-7 808ms
+ok   bfillet      t=2.5 R=5                          3218.0493 3218.0511 5.4e-7 849ms
+ok   csink-top    t=1 D=8                            3152.9618 3152.9755 4.3e-6 12550ms
+ok   csink-top    t=1 D=12                           3222.9699 3223.0091 1.2e-5 15351ms
+ok   csink-top    t=1 D=6                            3131.2864 3131.2895 9.8e-7 7905ms
+ok   csink-top    t=0.5 D=8                          1619.3763 1619.3928 1.0e-5 6964ms
+ok   csink-top    t=0.5 D=12                         1652.8095 1652.8482 2.3e-5 19027ms
+ok   csink-top    t=0.5 D=6                          1609.3240 1609.3315 4.7e-6 7998ms
+ok   csink-top    t=2.5 D=8                          7250.0128 7250.0288 2.2e-6 35593ms
+ok   csink-top    t=2.5 D=12                         7448.5950 7448.6167 2.9e-6 37478ms
+ok   csink-top    t=2.5 D=6                          7184.0433 7184.0578 2.0e-6 19874ms
+selfcheck 136 / 136 ok

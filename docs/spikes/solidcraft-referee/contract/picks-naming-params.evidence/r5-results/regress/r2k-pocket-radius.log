@@ -1,0 +1,12 @@
+Running as unit: run-p1875817-i1893624.scope; invocation ID: a1755c0e19494c139c9e7b78350a279f
+round wall 1 r 3.9 PASS      SC 11647.3377 CF(valid only if r<=4) 11647.3591 d -1.8e-6 | OCCT 11647.3591 {} | BREP 11647.3591
+round wall 1 r 4 NO-REFERENCE SC 11645.6412 CF(valid only if r<=4) 11645.6637 d -1.9e-6 | OCCT 11680.0000 {"round1":"Rounding Round 1 at 4 would not fit its edge -- Round 1 is shown with | BREP 11680.0000
+round wall 1 r 4.5 REFUSED   SC undefined CF(valid only if r<=4) 11636.5431 d undefined | OCCT 11680.0000 {"round1":"Rounding Round 1 at 4.5 would not fit its edge -- Round 1 is shown wi | BREP 11680.0000
+       round1 is not built: a round of 4.5 is too large for the 4 mm tall pocket wall it sits on -- use a smaller size.
+round wall 1 r 6 REFUSED   SC undefined CF(valid only if r<=4) 11602.7433 d undefined | OCCT 11680.0000 {"round1":"Rounding Round 1 at 6 would not fit its edge -- Round 1 is shown with | BREP 11680.0000
+       round1 is not built: a round of 6 is too large for the 4 mm tall pocket wall it sits on -- use a smaller size.
+bevel wall 2 r 3.9 PASS      SC 11619.1600 CF(valid only if r<=4) 11619.1600 d 4.7e-16 | OCCT 11619.1600 {} | BREP 11619.1600
+bevel wall 2 r 4 REFUSED   SC undefined CF(valid only if r<=4) 11616.0000 d undefined | OCCT 11680.0000 {"bevel1":"Chamfering Bevel 1 at 4 would not fit its edge -- Bevel 1 is shown wi | BREP 11680.0000
+       bevel1 is not built: a bevel of 4 is too large for the 4 mm tall pocket wall it sits on -- use a smaller size.
+bevel wall 2 r 4.5 REFUSED   SC undefined CF(valid only if r<=4) 11599.0000 d undefined | OCCT 11680.0000 {"bevel1":"Chamfering Bevel 1 at 4.5 would not fit its edge -- Bevel 1 is shown  | BREP 11680.0000
+       bevel1 is not built: a bevel of 4.5 is too large for the 4 mm tall pocket wall it sits on -- use a smaller size.

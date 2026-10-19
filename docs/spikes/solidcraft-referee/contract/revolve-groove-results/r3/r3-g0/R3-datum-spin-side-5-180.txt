@@ -1,0 +1,1 @@
+R3-datum-spin-side-5-180                 PASS     occtV 14137.1669 | tr-occt dV 1.0e-6 dBb 0.0e+0 dCom 7.0e-6 F o/b/t 6/6/6 | brep-occt dV 1.3e-16  | ANALYTIC 14137.1669 dTruck 1.0e-6 dOcct 2.6e-16 dBrep 1.3e-16    | ms 842 cpu 1433

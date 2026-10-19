@@ -1,0 +1,8 @@
+move;hole;round                kinds box>move>hole>fillet                 shipped REFUSED  guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed th 
+move;hole;hollow(top)          kinds box>move>hole>shell                  shipped REFUSED  guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be fo 
+move(b);round(a) untouched     kinds box>box>move>fillet                  shipped PASS     guard PASS     dVol=2.8e-6 dCom=7.0e-7 
+turn(b);hollow(a) untouched    kinds box>box>shell                        shipped PASS     guard PASS     dVol=5.1e-16 dCom=2.4e-17 
+round;move;hole                kinds box>fillet>move>hole                 shipped PASS     guard PASS     dVol=6.8e-7 dCom=7.1e-7 
+move;mirror;round              kinds box>move>mirror>fillet               shipped REFUSED  guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed th 
+move;repeat;hollow(top)        kinds box>move>pattern>shell               shipped FAIL     guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be fo | OCCT-REFUSES {"shell1":"Hollowing Hollow 1 to 1 thick did not work after the steps before it -- this kernel canno
+turn(prim own);round SCRIPT ERROR .edge() needs a face word (top, bottom, front, back, left, right, or side), and you gave it nothing.

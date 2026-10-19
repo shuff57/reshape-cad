@@ -1,0 +1,1 @@
+Z-crit-box-side0-270-lift3               PASS     occtV 29699.6883 | tr-occt dV 5.4e-6 dBb 2.6e-9 dCom 5.8e-7 F o/b/t 10/10/10 | brep-occt dV 4.9e-12      | ms 1206 cpu 1603

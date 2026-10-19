@@ -1,0 +1,3379 @@
+{
+ "s1": [
+  {
+   "id": "own-rect-rough-dims",
+   "group": "rect with dimensions",
+   "fc": null,
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k9 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k9 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "own-symmetric-trapezoid",
+   "group": "symmetric profile",
+   "fc": null,
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "solveRefused": "line -3 has zero length; a mirror line has no direction"
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k5 (Symmetry), k7 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k5 (Symmetry), k7 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "own-symmetric-3pt-rect",
+   "group": "symmetric profile",
+   "fc": null,
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 18
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k2 (Coincident), k6 (Vertical), k9 (MidPoint), k10 (Coincident), k11 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 18
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k2 (Coincident), k6 (Vertical), k9 (MidPoint), k10 (Coincident), k11 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "own-triangle-length-angle",
+   "group": "polygon with angle and length dimensions",
+   "fc": null,
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 12
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k5 (Coincident))"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 12
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k5 (Coincident))"
+    }
+   }
+  },
+  {
+   "id": "own-hexagon-equal-oncircle",
+   "group": "polygon with angle and length dimensions",
+   "fc": null,
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 27
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k2 (Coincident), k3 (Coincident), k4 (Coincident), k5 (Coincident), k6 (Coincident), k7 (Equal), k8 (Equal), k9 (Equal), k10 (Equal), k11 (Equal), k12 (Coincident), k13 (Coincident), k14 (Coincident), k15 (Coincident), k16 (Coincident), k17 (Coincident), k18 (Coincident), k19 (RadialDimension), k20 (Vertical); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 27
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k2 (Coincident), k3 (Coincident), k4 (Coincident), k5 (Coincident), k6 (Coincident), k7 (Equal), k8 (Equal), k9 (Equal), k10 (Equal), k11 (Equal), k12 (Coincident), k13 (Coincident), k14 (Coincident), k15 (Coincident), k16 (Coincident), k17 (Coincident), k18 (Coincident), k19 (RadialDimension), k20 (Vertical); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "own-circle-diameter",
+   "group": "circle radius/diameter",
+   "fc": null,
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 3
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 3
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "own-washer-dims",
+   "group": "rect with dimensions",
+   "fc": null,
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 19
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k9 (Coincident))"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 19
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k9 (Coincident))"
+    }
+   }
+  },
+  {
+   "id": "own-l-shape-dims",
+   "group": "polygon with angle and length dimensions",
+   "fc": null,
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 24
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k13 (Coincident))"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 24
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k13 (Coincident))"
+    }
+   }
+  },
+  {
+   "id": "own-xz-plane-rect",
+   "group": "rect with dimensions",
+   "fc": null,
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k9 (Coincident))"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k9 (Coincident))"
+    }
+   }
+  },
+  {
+   "id": "own-right-trapezoid-par-perp",
+   "group": "polygon with angle and length dimensions",
+   "fc": null,
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k8 (Coincident))"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k8 (Coincident))"
+    }
+   }
+  },
+  {
+   "id": "own-slot-dims-from-points",
+   "group": "slot-like tangent arcs",
+   "fc": null,
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "conflict": 8,
+      "redundant": 14
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k7 (Coincident), k8 (Tangent), k9 (Horizontal), k10 (RadialDimension), k11 (Equal), k12 (Coincident); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "conflict": 8,
+      "redundant": 14
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k5 (Coincident), k6 (Tangent), k7 (Coincident), k8 (Tangent), k9 (Horizontal), k10 (RadialDimension), k11 (Equal), k12 (Coincident); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-rect-dof__corner-origin-25x60",
+   "group": "sk-rect-dof",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    }
+   }
+  },
+  {
+   "id": "sk-rect-dof__offset-corner-30x18",
+   "group": "sk-rect-dof",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by other constraints; add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by other constraints; add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-rect-dof__square-by-equal",
+   "group": "sk-rect-dof",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by other constraints; add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by other constraints; add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-rect-dof__right-triangle",
+   "group": "sk-rect-dof",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 12
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 12
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    }
+   }
+  },
+  {
+   "id": "sk-rect-dof__parallelogram",
+   "group": "sk-rect-dof",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    }
+   }
+  },
+  {
+   "id": "sk-rect-dof__circle-pinned",
+   "group": "sk-rect-dof",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 3
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by other constraints; add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 3
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by other constraints; add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-rect-underconstrained__hv-only-30x15",
+   "group": "sk-rect-underconstrained",
+   "fc": {
+    "dof": 4,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 4,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 4,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 4,
+     "refused": {
+      "redundant": 12
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k5 (Horizontal), k10 (Horizontal))"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 4,
+     "refused": {
+      "redundant": 12
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k5 (Horizontal), k10 (Horizontal))"
+    }
+   }
+  },
+  {
+   "id": "sk-rect-underconstrained__width-only",
+   "group": "sk-rect-underconstrained",
+   "fc": {
+    "dof": 3,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 3,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 3,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 3,
+     "refused": {
+      "redundant": 13
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k9 (LinearDimension), k10 (Vertical); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 3,
+     "refused": {
+      "redundant": 13
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k9 (LinearDimension), k10 (Vertical); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-rect-underconstrained__width-and-height",
+   "group": "sk-rect-underconstrained",
+   "fc": {
+    "dof": 2,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 2,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 2,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 2,
+     "refused": {
+      "redundant": 14
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k9 (LinearDimension), k11 (Vertical); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 2,
+     "refused": {
+      "redundant": 14
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k9 (LinearDimension), k11 (Vertical); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-rect-underconstrained__pinned-corner-only",
+   "group": "sk-rect-underconstrained",
+   "fc": {
+    "dof": 2,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 2,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 2,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 2,
+     "refused": {
+      "redundant": 14
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by other constraints; add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 2,
+     "refused": {
+      "redundant": 14
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by other constraints; add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-rect-underconstrained__free-line",
+   "group": "sk-rect-underconstrained",
+   "fc": {
+    "dof": 4,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 4,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 4,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 4,
+     "refused": {},
+     "anomalies": []
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 4,
+     "refused": {},
+     "anomalies": []
+    }
+   }
+  },
+  {
+   "id": "sk-rect-underconstrained__free-circle",
+   "group": "sk-rect-underconstrained",
+   "fc": {
+    "dof": 3,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 3,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 3,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 3,
+     "refused": {},
+     "anomalies": []
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 3,
+     "refused": {},
+     "anomalies": []
+    }
+   }
+  },
+  {
+   "id": "sk-rect-underconstrained__triangle-joined",
+   "group": "sk-rect-underconstrained",
+   "fc": {
+    "dof": 6,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 6,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 6,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 6,
+     "refused": {
+      "redundant": 6
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k6 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 6,
+     "refused": {
+      "redundant": 6
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k6 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-rect-underconstrained__circle-radius-only",
+   "group": "sk-rect-underconstrained",
+   "fc": {
+    "dof": 2,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 2,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 2,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 2,
+     "refused": {
+      "redundant": 1
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (RadialDimension); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 2,
+     "refused": {
+      "redundant": 1
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (RadialDimension); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-conflict__width-30-vs-35",
+   "group": "sk-conflict",
+   "fc": {
+    "dof": -1,
+    "bucket": "conflicting"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": false,
+    "dependentRows": 1
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "conflicting",
+    "blame": [
+     11
+    ]
+   },
+   "modes": {
+    "stored": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "rule": 11,
+     "ruleKind": "distanceX",
+     "sentence": "that would over-constrain the sketch (conflicts with k10, k12)"
+    },
+    "rough": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "rule": 11,
+     "ruleKind": "distanceX",
+     "sentence": "that would over-constrain the sketch (conflicts with k10, k12)"
+    }
+   }
+  },
+  {
+   "id": "sk-conflict__redundant-width",
+   "group": "sk-conflict",
+   "fc": {
+    "dof": 0,
+    "bucket": "redundant"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 1
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "redundant",
+    "blame": [
+     11
+    ]
+   },
+   "modes": {
+    "stored": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "rule": 11,
+     "ruleKind": "distanceX",
+     "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "rule": 11,
+     "ruleKind": "distanceX",
+     "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-conflict__redundant-height",
+   "group": "sk-conflict",
+   "fc": {
+    "dof": 0,
+    "bucket": "redundant"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 1
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "redundant",
+    "blame": [
+     11
+    ]
+   },
+   "modes": {
+    "stored": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "rule": 11,
+     "ruleKind": "distanceY",
+     "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "rule": 11,
+     "ruleKind": "distanceY",
+     "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-conflict__redundant-perpendicular",
+   "group": "sk-conflict",
+   "fc": {
+    "dof": 0,
+    "bucket": "redundant"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 1
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "redundant",
+    "blame": [
+     11
+    ]
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    }
+   }
+  },
+  {
+   "id": "sk-conflict__radius-vs-diameter",
+   "group": "sk-conflict",
+   "fc": {
+    "dof": -1,
+    "bucket": "conflicting"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": false,
+    "dependentRows": 1
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "conflicting",
+    "blame": [
+     2
+    ]
+   },
+   "modes": {
+    "stored": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "rule": 2,
+     "ruleKind": "diameter",
+     "sentence": "that would over-constrain the sketch (conflicts with k2, k3)"
+    },
+    "rough": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "rule": 2,
+     "ruleKind": "diameter",
+     "sentence": "that would over-constrain the sketch (conflicts with k2, k3)"
+    }
+   }
+  },
+  {
+   "id": "sk-conflict__equal-vs-two-radii",
+   "group": "sk-conflict",
+   "fc": {
+    "dof": -1,
+    "bucket": "conflicting"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": false,
+    "dependentRows": 1
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "conflicting",
+    "blame": [
+     4
+    ]
+   },
+   "modes": {
+    "stored": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "rule": 4,
+     "ruleKind": "radius",
+     "sentence": "that would over-constrain the sketch (conflicts with k3, k4, k5)"
+    },
+    "rough": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "rule": 4,
+     "ruleKind": "radius",
+     "sentence": "that would over-constrain the sketch (conflicts with k3, k4, k5)"
+    }
+   }
+  },
+  {
+   "id": "sk-conflict__horizontal-and-vertical",
+   "group": "sk-conflict",
+   "fc": {
+    "dof": 2,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 2,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 2,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 2,
+     "refused": {
+      "redundant": 2
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (Vertical), k3 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 2,
+     "refused": {
+      "redundant": 2
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (Vertical), k3 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-conflict__clean-30x20",
+   "group": "sk-conflict",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    }
+   }
+  },
+  {
+   "id": "sk-circle-arc-tangent__slot-r6-L30-anchored",
+   "group": "sk-circle-arc-tangent",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 4,
+     "refused": {
+      "redundant": 18
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16,
+      "conflict": 6
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    }
+   }
+  },
+  {
+   "id": "sk-circle-arc-tangent__slot-r6-L30-floating",
+   "group": "sk-circle-arc-tangent",
+   "fc": {
+    "dof": 2,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 2,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 2,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 6,
+     "refused": {
+      "redundant": 16
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k12 (LinearDimension), k13 (Vertical); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 2,
+     "refused": {
+      "redundant": 10,
+      "conflict": 10
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k12 (LinearDimension), k13 (Vertical); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-circle-arc-tangent__slot-r12-L18-anchored",
+   "group": "sk-circle-arc-tangent",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 4,
+     "refused": {
+      "redundant": 18
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16,
+      "conflict": 6
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    }
+   }
+  },
+  {
+   "id": "sk-circle-arc-tangent__slot-arc-first-order",
+   "group": "sk-circle-arc-tangent",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 4,
+     "refused": {
+      "redundant": 18
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 16,
+      "conflict": 6
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    }
+   }
+  },
+  {
+   "id": "sk-circle-arc-tangent__slot-extra-radius",
+   "group": "sk-circle-arc-tangent",
+   "fc": {
+    "dof": 0,
+    "bucket": "redundant"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 1
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "redundant",
+    "blame": [
+     13
+    ]
+   },
+   "modes": {
+    "stored": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "rule": 13,
+     "ruleKind": "radius",
+     "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (RadialDimension), k12 (Equal); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "rule": 13,
+     "ruleKind": "radius",
+     "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k6 (Coincident), k7 (Tangent), k8 (Coincident), k9 (Tangent), k11 (RadialDimension), k12 (Equal); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  },
+  {
+   "id": "sk-circle-arc-tangent__line-circle-tangent",
+   "group": "sk-circle-arc-tangent",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 7
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 7
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    }
+   }
+  },
+  {
+   "id": "sk-circle-arc-tangent__circle-circle-external",
+   "group": "sk-circle-arc-tangent",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 6
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 6
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    }
+   }
+  },
+  {
+   "id": "sk-circle-arc-tangent__circle-circle-no-mode",
+   "group": "sk-circle-arc-tangent",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "solveRefused": "a circle-circle tangency must record external or internal"
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 6
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 6
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    }
+   }
+  },
+  {
+   "id": "sk-circle-arc-tangent__circle-circle-internal",
+   "group": "sk-circle-arc-tangent",
+   "fc": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 6
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 0,
+     "refused": {
+      "redundant": 6
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by other constraints)"
+    }
+   }
+  },
+  {
+   "id": "sk-circle-arc-tangent__arc-centre-radius",
+   "group": "sk-circle-arc-tangent",
+   "fc": {
+    "dof": 2,
+    "bucket": "consistent"
+   },
+   "indep": {
+    "dof": 2,
+    "consistent": true,
+    "dependentRows": 0
+   },
+   "brep": {
+    "dof": 2,
+    "bucket": "consistent",
+    "blame": []
+   },
+   "modes": {
+    "stored": {
+     "status": "accepted",
+     "probeDof": 2,
+     "refused": {
+      "redundant": 5
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (RadialDimension); add it as a driven (reference) dimension with driven: true"
+    },
+    "rough": {
+     "status": "accepted",
+     "probeDof": 2,
+     "refused": {
+      "conflict": 4,
+      "redundant": 1
+     },
+     "anomalies": [],
+     "sampleSentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (RadialDimension); add it as a driven (reference) dimension with driven: true"
+    }
+   }
+  }
+ ],
+ "s2": [
+  {
+   "id": "D1-rect-lengths-lock",
+   "kinds": [
+    "horizontal",
+    "vertical",
+    "length",
+    "lock"
+   ],
+   "ts": {
+    "iterations": 300,
+    "residual": 0.000001657,
+    "overConstrained": false,
+    "maxDevVsClosedForm": 0.000001701
+   },
+   "tsPointsSatisfyIndependentCheck": {
+    "worstRule": "horizontal",
+    "worstResidual": 0.000001657,
+    "unit": "mm"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "maxDev": 1.589e-14
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "maxDev": 6.828e-11
+   },
+   "sc": {
+    "status": "built",
+    "volRel": 1.346e-14,
+    "bboxDev": 0,
+    "comDev": 1.908e-13,
+    "faces": 6,
+    "bodies": 1
+   },
+   "pipeline": {
+    "warnings": [],
+    "solvedPoints": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      -0.000002
+     ],
+     [
+      40,
+      24.999998
+     ],
+     [
+      0,
+      24.999998
+     ]
+    ],
+    "occt": {
+     "v": 9999.999662269847,
+     "faces": 6
+    },
+    "brep": {
+     "v": 9999.999662269813,
+     "faces": 6
+    },
+    "sc": {
+     "v": 9999.99966226981,
+     "faces": 6
+    },
+    "facesEqual": true,
+    "dVolSCvsOCCT": 3.638e-15,
+    "dVolBrepVsOCCT": 3.456e-15,
+    "dVolOCCTvsClosedForm": 3.377e-8,
+    "dBboxSCvsOCCT": 1.776e-15,
+    "dComSCvsOCCT": 4.974e-14
+   }
+  },
+  {
+   "id": "D2-square-by-equal",
+   "kinds": [
+    "equal"
+   ],
+   "ts": {
+    "iterations": 300,
+    "residual": 5.369e-7,
+    "overConstrained": false,
+    "maxDevVsClosedForm": 5.434e-7
+   },
+   "tsPointsSatisfyIndependentCheck": {
+    "worstRule": "horizontal",
+    "worstResidual": 5.369e-7,
+    "unit": "mm"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "maxDev": 1.812e-14
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "maxDev": 1.037e-10
+   },
+   "sc": {
+    "status": "built",
+    "volRel": 5.831e-12,
+    "bboxDev": 0,
+    "comDev": 6.761e-11,
+    "faces": 6,
+    "bodies": 1
+   },
+   "pipeline": {
+    "warnings": [],
+    "solvedPoints": [
+     [
+      0,
+      0
+     ],
+     [
+      22,
+      -0.000001
+     ],
+     [
+      22,
+      21.999999
+     ],
+     [
+      0,
+      21.999999
+     ]
+    ],
+    "occt": {
+     "v": 4839.999938406181,
+     "faces": 6
+    },
+    "brep": {
+     "v": 4839.999938406168,
+     "faces": 6
+    },
+    "sc": {
+     "v": 4839.999938406168,
+     "faces": 6
+    },
+    "facesEqual": true,
+    "dVolSCvsOCCT": 2.631e-15,
+    "dVolBrepVsOCCT": 2.631e-15,
+    "dVolOCCTvsClosedForm": 1.273e-8,
+    "dBboxSCvsOCCT": 4.039e-28,
+    "dComSCvsOCCT": 2.309e-14
+   }
+  },
+  {
+   "id": "D3-right-trapezoid-parallel-perpendicular-distX",
+   "kinds": [
+    "parallel",
+    "perpendicular",
+    "distanceX"
+   ],
+   "ts": {
+    "iterations": 300,
+    "residual": 2.796e-7,
+    "overConstrained": false,
+    "maxDevVsClosedForm": 2.796e-7
+   },
+   "tsPointsSatisfyIndependentCheck": {
+    "worstRule": "horizontal",
+    "worstResidual": 2.796e-7,
+    "unit": "mm"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "maxDev": 1.034e-12
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "maxDev": 1.149e-10
+   },
+   "sc": {
+    "status": "built",
+    "volRel": 0,
+    "bboxDev": 0,
+    "comDev": 0,
+    "faces": 6,
+    "bodies": 1
+   },
+   "pipeline": {
+    "warnings": [],
+    "solvedPoints": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      0
+     ],
+     [
+      22,
+      16
+     ],
+     [
+      0,
+      16
+     ]
+    ],
+    "occt": {
+     "v": 4160.000012105656,
+     "faces": 6
+    },
+    "brep": {
+     "v": 4160.000012105658,
+     "faces": 6
+    },
+    "sc": {
+     "v": 4160.000012105657,
+     "faces": 6
+    },
+    "facesEqual": true,
+    "dVolSCvsOCCT": 2.186e-16,
+    "dVolBrepVsOCCT": 4.373e-16,
+    "dVolOCCTvsClosedForm": 2.91e-9,
+    "dBboxSCvsOCCT": 7.105e-15,
+    "dComSCvsOCCT": 8.882e-16
+   }
+  },
+  {
+   "id": "D4-rect-diagonal-distX-distY",
+   "kinds": [
+    "distanceX",
+    "distanceY"
+   ],
+   "ts": {
+    "iterations": 266,
+    "residual": 8.154e-10,
+    "overConstrained": false,
+    "maxDevVsClosedForm": 8.154e-10
+   },
+   "tsPointsSatisfyIndependentCheck": {
+    "worstRule": "horizontal",
+    "worstResidual": 8.154e-10,
+    "unit": "mm"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "maxDev": 7.123e-15
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "maxDev": 1.836e-11
+   },
+   "sc": {
+    "status": "built",
+    "volRel": 1.137e-14,
+    "bboxDev": 4.476e-13,
+    "comDev": 1.239e-13,
+    "faces": 6,
+    "bodies": 1
+   },
+   "pipeline": {
+    "warnings": [],
+    "solvedPoints": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      0
+     ],
+     [
+      30,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "occt": {
+     "v": 5999.99999987069,
+     "faces": 6
+    },
+    "brep": {
+     "v": 5999.9999998701705,
+     "faces": 6
+    },
+    "sc": {
+     "v": 5999.9999998701705,
+     "faces": 6
+    },
+    "facesEqual": true,
+    "dVolSCvsOCCT": 8.655e-14,
+    "dVolBrepVsOCCT": 8.655e-14,
+    "dVolOCCTvsClosedForm": 2.155e-11,
+    "dBboxSCvsOCCT": 0,
+    "dComSCvsOCCT": 6.501e-13
+   }
+  },
+  {
+   "id": "D5-pentagon-symmetric-centre",
+   "kinds": [
+    "symmetric"
+   ],
+   "ts": {
+    "iterations": 300,
+    "residual": 7.852e-7,
+    "overConstrained": false,
+    "maxDevVsClosedForm": 0.000002255
+   },
+   "tsPointsSatisfyIndependentCheck": {
+    "worstRule": "distance",
+    "worstResidual": 7.852e-7,
+    "unit": "mm"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "maxDev": 6.248e-14
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "maxDev": 2.83e-10
+   },
+   "sc": {
+    "status": "built",
+    "volRel": 0,
+    "bboxDev": 0,
+    "comDev": 0,
+    "faces": 7,
+    "bodies": 1
+   },
+   "pipeline": {
+    "warnings": [],
+    "solvedPoints": [
+     [
+      0,
+      0
+     ],
+     [
+      10.000001,
+      0
+     ],
+     [
+      10.000002,
+      8
+     ],
+     [
+      0.000002,
+      8
+     ],
+     [
+      5.000001,
+      4
+     ]
+    ],
+    "occt": {
+     "v": 600.0000220260313,
+     "faces": 7
+    },
+    "brep": {
+     "v": 600.0000220260314,
+     "faces": 7
+    },
+    "sc": {
+     "v": 600.0000220260312,
+     "faces": 7
+    },
+    "facesEqual": true,
+    "dVolSCvsOCCT": 1.895e-16,
+    "dVolBrepVsOCCT": 1.895e-16,
+    "dVolOCCTvsClosedForm": 3.671e-8,
+    "dBboxSCvsOCCT": 0,
+    "dComSCvsOCCT": 1.776e-15
+   }
+  },
+  {
+   "id": "D6-triangle-angle-120",
+   "kinds": [
+    "angle"
+   ],
+   "ts": {
+    "iterations": 300,
+    "residual": 9.05e-7,
+    "overConstrained": false,
+    "maxDevVsClosedForm": 9.05e-7
+   },
+   "tsPointsSatisfyIndependentCheck": {
+    "worstRule": "horizontal",
+    "worstResidual": 9.05e-7,
+    "unit": "mm"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "maxDev": 1.136e-12
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "maxDev": 1.838e-11
+   },
+   "sc": {
+    "status": "built",
+    "volRel": 1.75e-16,
+    "bboxDev": 3.553e-15,
+    "comDev": 3.553e-15,
+    "faces": 5,
+    "bodies": 1
+   },
+   "pipeline": {
+    "warnings": [],
+    "solvedPoints": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      0.000001
+     ],
+     [
+      19.999999,
+      17.320509
+     ]
+    ],
+    "occt": {
+     "v": 2598.076211946273,
+     "faces": 5
+    },
+    "brep": {
+     "v": 2598.076211946273,
+     "faces": 5
+    },
+    "sc": {
+     "v": 2598.076211946273,
+     "faces": 5
+    },
+    "facesEqual": true,
+    "dVolSCvsOCCT": 0,
+    "dVolBrepVsOCCT": 0,
+    "dVolOCCTvsClosedForm": 2.282e-10,
+    "dBboxSCvsOCCT": 7.105e-15,
+    "dComSCvsOCCT": 3.553e-15
+   }
+  },
+  {
+   "id": "D7-parallelogram",
+   "kinds": [
+    "parallel",
+    "distanceY"
+   ],
+   "ts": {
+    "iterations": 300,
+    "residual": 0.000002392,
+    "overConstrained": false,
+    "maxDevVsClosedForm": 0.000002401
+   },
+   "tsPointsSatisfyIndependentCheck": {
+    "worstRule": "horizontal",
+    "worstResidual": 0.000002392,
+    "unit": "mm"
+   },
+   "indep": {
+    "dof": 0,
+    "consistent": true,
+    "maxDev": 4.434e-13
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent",
+    "maxDev": 9.421e-11
+   },
+   "sc": {
+    "status": "built",
+    "volRel": 1.152e-10,
+    "bboxDev": 4.084e-9,
+    "comDev": 1.008e-9,
+    "faces": 6,
+    "bodies": 1
+   },
+   "pipeline": {
+    "warnings": [],
+    "solvedPoints": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      0.000002
+     ],
+     [
+      40,
+      15.000002
+     ],
+     [
+      10,
+      15
+     ]
+    ],
+    "occt": {
+     "v": 4499.999761903202,
+     "faces": 6
+    },
+    "brep": {
+     "v": 4499.999761903203,
+     "faces": 6
+    },
+    "sc": {
+     "v": 4499.999761903203,
+     "faces": 6
+    },
+    "facesEqual": true,
+    "dVolSCvsOCCT": 2.021e-16,
+    "dVolBrepVsOCCT": 2.021e-16,
+    "dVolOCCTvsClosedForm": 5.291e-8,
+    "dBboxSCvsOCCT": 0,
+    "dComSCvsOCCT": 7.105e-15
+   }
+  }
+ ],
+ "s3": [
+  {
+   "id": "U1-rect-hv-lock",
+   "expectDof": 2,
+   "tsOver": false,
+   "tsResidual": 5.428e-10,
+   "tsIterations": 60,
+   "tsArea": 847,
+   "brepArea": 847,
+   "scArea": 847,
+   "indepDof": 2,
+   "brepDof": 2,
+   "invariantsHold": {
+    "ts": true
+   }
+  },
+  {
+   "id": "U2-rect-hv-only",
+   "expectDof": 4,
+   "tsOver": false,
+   "tsResidual": 9.424e-10,
+   "tsIterations": 134,
+   "tsArea": 798,
+   "brepArea": 798,
+   "scArea": 798,
+   "indepDof": 4,
+   "brepDof": 4,
+   "invariantsHold": {
+    "ts": true
+   }
+  }
+ ],
+ "s4": [
+  {
+   "id": "X1-two-lengths-one-edge",
+   "added": {
+    "kind": "length",
+    "edge": 0,
+    "value": 30
+   },
+   "ts": {
+    "overConstrained": true,
+    "residual": 5,
+    "iterations": 113,
+    "losingEdges": [
+     0
+    ],
+    "collapsed": false
+   },
+   "settle": {
+    "removed": {
+     "kind": "length",
+     "edge": 0,
+     "value": 40
+    },
+    "removedAlso": null,
+    "note": "Edge 1 no longer has to stay 40 long so edge 1 can stay 30 long. Undo puts it back."
+   },
+   "indep": {
+    "consistent": false,
+    "minimaxResidual": 5,
+    "dependentRows": 1
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "blame": [
+     10
+    ],
+    "build": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "blamedEdges": [
+    0
+   ],
+   "blamedEdgesCoveredByLosingEdges": true,
+   "sc": {
+    "status": "refused",
+    "atRule": 10,
+    "ruleKind": "distance",
+    "command": "sketch.dimension",
+    "sentence": "that would over-constrain the sketch (conflicts with k10, k11)",
+    "ifRefusalIgnored": {
+     "volume": 8800,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      22,
+      10
+     ]
+    }
+   },
+   "settledSet": {
+    "tsOver": false,
+    "tsResidual": 8.658e-10,
+    "tsArea": 660,
+    "indepConsistent": true,
+    "indepDof": 1,
+    "brepBucket": "consistent",
+    "brepDof": 1,
+    "brepArea": 660,
+    "scStatus": "built",
+    "scArea": 660,
+    "scSentence": null,
+    "scVsTsRel": 2.076e-11
+   }
+  },
+  {
+   "id": "X2-opposite-sides-different-lengths",
+   "added": {
+    "kind": "length",
+    "edge": 2,
+    "value": 30
+   },
+   "ts": {
+    "overConstrained": true,
+    "residual": 2.5,
+    "iterations": 6,
+    "losingEdges": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "collapsed": false
+   },
+   "settle": {
+    "removed": {
+     "kind": "vertical",
+     "edge": 1
+    },
+    "removedAlso": null,
+    "note": "Edge 2 no longer has to stay upright so edge 3 can stay 30 long. Undo puts it back."
+   },
+   "indep": {
+    "consistent": false,
+    "minimaxResidual": 1.25,
+    "dependentRows": 1
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "blame": [
+     10
+    ],
+    "build": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "blamedEdges": [
+    2
+   ],
+   "blamedEdgesCoveredByLosingEdges": true,
+   "sc": {
+    "status": "refused",
+    "atRule": 10,
+    "ruleKind": "distance",
+    "command": "sketch.dimension",
+    "sentence": "that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k7, k9, k10, k11)",
+    "ifRefusalIgnored": {
+     "volume": 8800,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      22,
+      10
+     ]
+    }
+   },
+   "settledSet": {
+    "tsOver": false,
+    "tsResidual": 1.855e-7,
+    "tsArea": 770,
+    "indepConsistent": true,
+    "indepDof": 1,
+    "brepBucket": "consistent",
+    "brepDof": 1,
+    "brepArea": 770,
+    "scStatus": "built",
+    "scArea": 770,
+    "scSentence": null,
+    "scVsTsRel": 1.061e-12
+   }
+  },
+  {
+   "id": "X3-equal-vs-two-lengths",
+   "added": {
+    "kind": "equal",
+    "edge": 0,
+    "other": 1
+   },
+   "ts": {
+    "overConstrained": true,
+    "residual": 6.667,
+    "iterations": 10,
+    "losingEdges": [
+     0,
+     1
+    ],
+    "collapsed": false
+   },
+   "settle": {
+    "removed": {
+     "kind": "length",
+     "edge": 1,
+     "value": 20
+    },
+    "removedAlso": null,
+    "note": "Edge 2 no longer has to stay 20 long so edge 1 can stay the same length as edge 2. Undo puts it back."
+   },
+   "indep": {
+    "consistent": false,
+    "minimaxResidual": 6.667,
+    "dependentRows": 1
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "blame": [
+     11
+    ],
+    "build": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "blamedEdges": [
+    0,
+    1
+   ],
+   "blamedEdgesCoveredByLosingEdges": true,
+   "sc": {
+    "status": "refused",
+    "atRule": 11,
+    "ruleKind": "equal",
+    "command": "sketch.constraint.equal",
+    "sentence": "invalid parameters for `sketch.constraint.equal`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+    "ifRefusalIgnored": {
+     "volume": 8000,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      20,
+      10
+     ]
+    }
+   },
+   "settledSet": {
+    "tsOver": false,
+    "tsResidual": 5.45e-7,
+    "tsArea": 1600.000012,
+    "indepConsistent": true,
+    "indepDof": 0,
+    "brepBucket": "consistent",
+    "brepDof": 0,
+    "brepArea": 1600,
+    "scStatus": "built",
+    "scArea": 1600,
+    "scSentence": null,
+    "scVsTsRel": 7.198e-9
+   }
+  },
+  {
+   "id": "X4-lock-vs-horizontal",
+   "added": {
+    "kind": "horizontal",
+    "edge": 0
+   },
+   "ts": {
+    "overConstrained": true,
+    "residual": 25,
+    "iterations": 0,
+    "losingEdges": [
+     0
+    ],
+    "collapsed": false
+   },
+   "settle": {
+    "removed": {
+     "kind": "lock",
+     "corner": 1
+    },
+    "removedAlso": null,
+    "note": "Corner 2 no longer has to stay pinned in place so edge 1 can stay level. Undo puts it back."
+   },
+   "indep": {
+    "consistent": false,
+    "minimaxResidual": 6.25,
+    "dependentRows": 1
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "blame": [
+     6
+    ],
+    "build": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "blamedEdges": [
+    0
+   ],
+   "blamedEdgesCoveredByLosingEdges": true,
+   "sc": {
+    "status": "refused",
+    "atRule": 6,
+    "ruleKind": "horizontal",
+    "command": "sketch.constraint.horizontal_vertical",
+    "sentence": "that would over-constrain the sketch (conflicts with k3, k7)",
+    "ifRefusalIgnored": {
+     "volume": 5100,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      25.5,
+      10
+     ]
+    }
+   },
+   "settledSet": {
+    "tsOver": false,
+    "tsResidual": 1.591e-11,
+    "tsArea": 1010,
+    "indepConsistent": true,
+    "indepDof": 5,
+    "brepBucket": "consistent",
+    "brepDof": 5,
+    "brepArea": 1010,
+    "scStatus": "built",
+    "scArea": 1010,
+    "scSentence": null,
+    "scVsTsRel": 1.126e-16
+   }
+  },
+  {
+   "id": "X5-three-lengths-one-edge",
+   "added": {
+    "kind": "length",
+    "edge": 0,
+    "value": 20
+   },
+   "ts": {
+    "overConstrained": true,
+    "residual": 10,
+    "iterations": 1,
+    "losingEdges": [
+     0
+    ],
+    "collapsed": false
+   },
+   "settle": {
+    "removed": {
+     "kind": "length",
+     "edge": 0,
+     "value": 40
+    },
+    "removedAlso": {
+     "kind": "length",
+     "edge": 0,
+     "value": 30
+    },
+    "note": "Edge 1 no longer has to stay 40 long and edge 1 no longer has to stay 30 long so they can stay 20 long. Undo puts them back."
+   },
+   "indep": {
+    "consistent": false,
+    "minimaxResidual": 10,
+    "dependentRows": 2
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "blame": [
+     6,
+     5
+    ],
+    "build": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "blamedEdges": [
+    0
+   ],
+   "blamedEdgesCoveredByLosingEdges": true,
+   "sc": {
+    "status": "refused",
+    "atRule": 5,
+    "ruleKind": "distance",
+    "command": "sketch.dimension",
+    "sentence": "that would over-constrain the sketch (conflicts with k5, k6)",
+    "ifRefusalIgnored": {
+     "error": "that would over-constrain the sketch (conflicts with k5, k6)"
+    }
+   },
+   "settledSet": {
+    "tsOver": false,
+    "tsResidual": 6.262e-10,
+    "tsArea": 731.190002,
+    "indepConsistent": true,
+    "indepDof": 7,
+    "brepBucket": "consistent",
+    "brepDof": 7,
+    "brepArea": 731.190002,
+    "scStatus": "built",
+    "scArea": 731.190002,
+    "scSentence": null,
+    "scVsTsRel": 3.11e-16
+   }
+  },
+  {
+   "id": "X6-triangle-three-perpendicular",
+   "added": {
+    "kind": "perpendicular",
+    "edge": 2,
+    "other": 0
+   },
+   "ts": {
+    "overConstrained": true,
+    "residual": 15.69,
+    "iterations": 2,
+    "losingEdges": [
+     0,
+     1,
+     2
+    ],
+    "collapsed": false
+   },
+   "settle": {
+    "removed": {
+     "kind": "perpendicular",
+     "edge": 0,
+     "other": 1
+    },
+    "removedAlso": {
+     "kind": "perpendicular",
+     "edge": 1,
+     "other": 2
+    },
+    "note": "Edge 1 no longer has to stay at a right angle to edge 2 and edge 2 no longer has to stay at a right angle to edge 3 so they can meet at a right angle. Undo puts them back."
+   },
+   "indep": {
+    "consistent": false,
+    "minimaxResidual": 0.5,
+    "dependentRows": 1
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "blame": [
+     5
+    ],
+    "build": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "blamedEdges": [
+    0,
+    2
+   ],
+   "blamedEdgesCoveredByLosingEdges": true,
+   "sc": {
+    "status": "refused",
+    "atRule": 4,
+    "ruleKind": "perpendicular",
+    "command": "sketch.constraint.perpendicular",
+    "sentence": "invalid parameters for `sketch.constraint.perpendicular`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+    "ifRefusalIgnored": {
+     "volume": 0.01068,
+     "bbox": [
+      15.08792,
+      -3.99901,
+      0,
+      28.237394,
+      36.062071,
+      10
+     ]
+    }
+   },
+   "settledSet": {
+    "tsOver": false,
+    "tsResidual": 3.069e-10,
+    "tsArea": 239.600312,
+    "indepConsistent": true,
+    "indepDof": 5,
+    "brepBucket": "consistent",
+    "brepDof": 5,
+    "brepArea": 239.600312,
+    "scStatus": "built",
+    "scArea": 239.600312,
+    "scSentence": null,
+    "scVsTsRel": 0
+   }
+  }
+ ],
+ "s5": [
+  {
+   "id": "R1-opposite-sides-equal-and-both-dimensioned",
+   "ts": {
+    "over": false,
+    "residual": 0.000001366,
+    "iterations": 300,
+    "losingEdges": []
+   },
+   "indep": {
+    "consistent": true,
+    "dependentRows": 1
+   },
+   "brep": {
+    "bucket": "redundant",
+    "blame": [
+     11
+    ],
+    "build": "built",
+    "volume": 10000
+   },
+   "sc": {
+    "status": "refused",
+    "rule": 11,
+    "ruleKind": "distance",
+    "command": "sketch.dimension",
+    "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (Coincident), k3 (Coincident), k4 (Coincident), k5 (Coincident), k7 (Vertical), k9 (Vertical), k10 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+   }
+  },
+  {
+   "id": "R2-perpendicular-on-hv-rect",
+   "ts": {
+    "over": false,
+    "residual": 0.000001735,
+    "iterations": 300,
+    "losingEdges": []
+   },
+   "indep": {
+    "consistent": true,
+    "dependentRows": 1
+   },
+   "brep": {
+    "bucket": "redundant",
+    "blame": [
+     11
+    ],
+    "build": "built",
+    "volume": 10000
+   },
+   "sc": {
+    "status": "built",
+    "volume": 9999.999999999865,
+    "area": 999.9999999999866,
+    "faces": 6,
+    "nbodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     10
+    ],
+    "com": [
+     20.000000000000092,
+     12.499999999999833,
+     4.999999999999999
+    ]
+   },
+   "scRefuseProbe": "invalid parameters for `sketch.constraint.perpendicular`: that would over-constrain the sketch (it is already determined by k6 (Horizontal), k7 (Vertical))"
+  }
+ ],
+ "s6": [
+  {
+   "id": "M3-up-on-horizontal-edge-of-rect",
+   "startArea": 1000,
+   "tsSeededArea": 0,
+   "tsRawArea": 0,
+   "tsCollapsed": true,
+   "tsRawOver": false,
+   "tsAdoptedUnchanged": true,
+   "tsSettleRemoved": null,
+   "indep": {
+    "consistent": true,
+    "dof": 3
+   },
+   "brep": {
+    "bucket": "consistent",
+    "build": "refused",
+    "refusal": "extrude e1: edge 1 and edge 2 nearly touch but nothing says they meet. Add a coincident rule."
+   },
+   "sc": {
+    "status": "refused",
+    "rule": -1,
+    "command": "solid.extrude",
+    "sentence": "sk_t has no closed profiles"
+   }
+  },
+  {
+   "id": "M3b-h-and-v-on-one-edge-of-skew-quad",
+   "startArea": 918,
+   "tsSeededArea": 459.5,
+   "tsRawArea": 459.5,
+   "tsCollapsed": true,
+   "tsRawOver": false,
+   "tsAdoptedUnchanged": true,
+   "tsSettleRemoved": null,
+   "indep": {
+    "consistent": true,
+    "dof": 6
+   },
+   "brep": {
+    "bucket": "consistent",
+    "build": "refused",
+    "refusal": "extrude e1: edge 1 and edge 2 nearly touch but nothing says they meet. Add a coincident rule."
+   },
+   "sc": {
+    "status": "built",
+    "area": 459.5,
+    "faces": 5
+   }
+  },
+  {
+   "id": "M3c-h-and-v-on-one-edge-of-hexagon",
+   "startArea": 960,
+   "tsSeededArea": 830,
+   "tsRawArea": 830,
+   "tsCollapsed": true,
+   "tsRawOver": false,
+   "tsAdoptedUnchanged": true,
+   "tsSettleRemoved": null,
+   "indep": {
+    "consistent": true,
+    "dof": 10
+   },
+   "brep": {
+    "bucket": "consistent",
+    "build": "refused",
+    "refusal": "extrude e1: edge 1 and edge 2 nearly touch but nothing says they meet. Add a coincident rule."
+   },
+   "sc": {
+    "status": "built",
+    "area": 830,
+    "faces": 7
+   }
+  },
+  {
+   "id": "S09-trapezoid-add-parallel",
+   "startArea": 725,
+   "tsSeededArea": 736.819848,
+   "tsRawArea": 731.248728,
+   "tsCollapsed": false,
+   "tsRawOver": false,
+   "tsAdoptedUnchanged": false,
+   "tsSettleRemoved": null,
+   "indep": {
+    "consistent": true,
+    "dof": 6
+   },
+   "brep": {
+    "bucket": "consistent",
+    "build": "built",
+    "refusal": null,
+    "volume": 7572
+   },
+   "sc": {
+    "status": "built",
+    "area": 736.819848,
+    "faces": 6
+   }
+  }
+ ],
+ "s6sweep": {
+  "total": 4000,
+  "agree": 4000,
+  "collapsedTrue": 1555
+ },
+ "s7": {
+  "ts": {
+   "across x1": {
+    "errors": [],
+    "warnings": [],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     }
+    ]
+   },
+   "across x2": {
+    "errors": [],
+    "warnings": [],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     }
+    ]
+   },
+   "across x3": {
+    "errors": [],
+    "warnings": [],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     }
+    ]
+   },
+   "length 40 x2": {
+    "errors": [],
+    "warnings": [],
+    "constraints": [
+     {
+      "kind": "length",
+      "edge": 0,
+      "value": 40
+     }
+    ]
+   },
+   "equal x2": {
+    "errors": [],
+    "warnings": [],
+    "constraints": [
+     {
+      "kind": "equal",
+      "edge": 0,
+      "other": 1
+     }
+    ]
+   },
+   "distX x2": {
+    "errors": [],
+    "warnings": [],
+    "constraints": [
+     {
+      "kind": "distanceX",
+      "a": 0,
+      "b": 2,
+      "value": 40
+     }
+    ]
+   },
+   "pin x2": {
+    "errors": [],
+    "warnings": [],
+    "constraints": [
+     {
+      "kind": "lock",
+      "corner": 0
+     }
+    ]
+   },
+   "symmetric x2": {
+    "errors": [],
+    "warnings": [],
+    "constraints": [
+     {
+      "kind": "symmetric",
+      "a": 0,
+      "b": 2,
+      "center": 1
+     }
+    ]
+   },
+   "angle x2": {
+    "errors": [],
+    "warnings": [],
+    "constraints": [
+     {
+      "kind": "angle",
+      "edge": 0,
+      "other": 1,
+      "degrees": 90
+     }
+    ]
+   }
+  },
+  "sc": {
+   "horizontalOnce": {
+    "ok": true,
+    "volume": 9795,
+    "bbox": [
+     0,
+     0,
+     0,
+     41,
+     25,
+     10
+    ]
+   },
+   "horizontalTwice": {
+    "ok": true,
+    "volume": 9795,
+    "bbox": [
+     0,
+     0,
+     0,
+     41,
+     25,
+     10
+    ]
+   },
+   "horizontalThrice": {
+    "ok": true,
+    "volume": 9795,
+    "bbox": [
+     0,
+     0,
+     0,
+     41,
+     25,
+     10
+    ]
+   },
+   "horizontalTwiceRefuse": {
+    "ok": false,
+    "index": 3,
+    "error": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it is already determined by k2 (Horizontal))"
+   },
+   "lengthOnce": {
+    "ok": true,
+    "volume": 9339,
+    "bbox": [
+     0,
+     0,
+     0,
+     41,
+     25,
+     10
+    ]
+   },
+   "lengthTwiceSameValue": {
+    "ok": false,
+    "index": 3,
+    "error": "invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+   },
+   "lengthTwiceDriven": {
+    "ok": true,
+    "volume": 9339,
+    "bbox": [
+     0,
+     0,
+     0,
+     41,
+     25,
+     10
+    ]
+   },
+   "length40then30": {
+    "ok": false,
+    "index": 3,
+    "error": "that would over-constrain the sketch (conflicts with k2, k3)"
+   }
+  }
+ },
+ "s8": {
+  "parallel": {
+   "n": 8,
+   "seedKeepsOthers": 8,
+   "seedExact": 8,
+   "scMatchesSeeded": 8,
+   "scMatchesRawSolve": 0,
+   "worstVsSeeded": 3.376e-11
+  },
+  "perpendicular": {
+   "n": 8,
+   "seedKeepsOthers": 8,
+   "seedExact": 8,
+   "scMatchesSeeded": 8,
+   "scMatchesRawSolve": 0,
+   "worstVsSeeded": 2.457e-16
+  },
+  "equal": {
+   "n": 8,
+   "seedKeepsOthers": 8,
+   "seedExact": 8,
+   "scMatchesSeeded": 0,
+   "scMatchesRawSolve": 0,
+   "worstVsSeeded": 0.004459
+  }
+ },
+ "s9": {
+  "describe": [
+   {
+    "kind": "horizontal",
+    "got": "edge 1 across",
+    "want": "edge 1 across",
+    "ok": true
+   },
+   {
+    "kind": "vertical",
+    "got": "edge 2 up",
+    "want": "edge 2 up",
+    "ok": true
+   },
+   {
+    "kind": "length",
+    "got": "edge 3 = 40",
+    "want": "edge 3 = 40",
+    "ok": true
+   },
+   {
+    "kind": "equal",
+    "got": "edge 1 = edge 2",
+    "want": "edge 1 = edge 2",
+    "ok": true
+   },
+   {
+    "kind": "parallel",
+    "got": "edge 1 ∥ edge 3",
+    "want": "edge 1 ∥ edge 3",
+    "ok": true
+   },
+   {
+    "kind": "perpendicular",
+    "got": "edge 1 ⊥ edge 2",
+    "want": "edge 1 ⊥ edge 2",
+    "ok": true
+   },
+   {
+    "kind": "distanceX",
+    "got": "corner 1→3 across = 12",
+    "want": "corner 1→3 across = 12",
+    "ok": true
+   },
+   {
+    "kind": "distanceY",
+    "got": "corner 1→3 up = -5",
+    "want": "corner 1→3 up = -5",
+    "ok": true
+   },
+   {
+    "kind": "symmetric",
+    "got": "corner 2 centred between 1 and 3",
+    "want": "corner 2 centred between 1 and 3",
+    "ok": true
+   },
+   {
+    "kind": "angle",
+    "got": "edge 2 ∠ edge 4 = 30°",
+    "want": "edge 2 ∠ edge 4 = 30°",
+    "ok": true
+   },
+   {
+    "kind": "lock",
+    "got": "corner 1 pinned",
+    "want": "corner 1 pinned",
+    "ok": true
+   }
+  ],
+  "removalNotes": [
+   {
+    "got": "Edge 3 no longer has to stay level so edge 2 can. Undo puts it back.",
+    "want": "Edge 3 no longer has to stay level so edge 2 can. Undo puts it back.",
+    "ok": true
+   },
+   {
+    "got": "Edge 3 no longer has to stay level and edge 4 no longer has to stay upright so they can meet at a right angle. Undo puts them back.",
+    "want": "Edge 3 no longer has to stay level and edge 4 no longer has to stay upright so they can meet at a right angle. Undo puts them back.",
+    "ok": true
+   }
+  ]
+ },
+ "s10": {
+  "edgeLengths": {
+   "texts": [
+    "40",
+    "25",
+    "40",
+    "25"
+   ],
+   "kinds": [
+    "dimension",
+    "length",
+    "length",
+    "length"
+   ],
+   "want": [
+    "40",
+    "25",
+    "40",
+    "25"
+   ],
+   "offsetFromMidpoint": [
+    3,
+    3,
+    3,
+    3
+   ],
+   "outward": true
+  },
+  "rounding": {
+   "texts": [
+    "17.5",
+    "9.33",
+    "17.5",
+    "9.33"
+   ],
+   "want": [
+    "17.5",
+    "9.33",
+    "17.5",
+    "9.33"
+   ]
+  },
+  "corners": {
+   "texts": [
+    "R3",
+    "C2.5"
+   ],
+   "want": [
+    "R3",
+    "C2.5"
+   ]
+  },
+  "bothOnOneCorner": {
+   "texts": [
+    "R3"
+   ],
+   "want": [
+    "R3"
+   ]
+  },
+  "bow": {
+   "bowTexts": [
+    "+8.28"
+   ],
+   "want": [
+    "+8.28"
+   ],
+   "edgeLabelsSkipForBowedEdge": [
+    1,
+    2,
+    3
+   ]
+  },
+  "bowNegative": {
+   "bowTexts": [
+    "-8.28"
+   ]
+  },
+  "circle": {
+   "x": 5,
+   "y": 0,
+   "text": "⌀10"
+  },
+  "circleWant": {
+   "x": 5,
+   "y": 0,
+   "text": "⌀10"
+  },
+  "built": [
+   {
+    "id": "round R4 on corner 0",
+    "label": "R4",
+    "closedFormVolume": 9965.663706,
+    "occt": {
+     "v": 9965.663706,
+     "rel": 1.038e-12
+    },
+    "brep": {
+     "v": 9965.663706,
+     "rel": 1.825e-16
+    },
+    "sc": {
+     "v": 9965.641191,
+     "rel": 0.000002259,
+     "faces": 7
+    },
+    "scRefusal": null
+   },
+   {
+    "id": "chamfer C2.5 on corner 2",
+    "label": "C2.5",
+    "closedFormVolume": 9968.75,
+    "occt": {
+     "v": 9968.75,
+     "rel": 0
+    },
+    "brep": {
+     "v": 9968.75,
+     "rel": 0
+    },
+    "sc": {
+     "v": 9968.75,
+     "rel": 0,
+     "faces": 7
+    },
+    "scRefusal": null
+   },
+   {
+    "id": "bow +8.2843 on edge 0",
+    "label": "+8.28",
+    "closedFormVolume": 12283.185307,
+    "occt": {
+     "v": 12283.185307,
+     "rel": 3.221e-12
+    },
+    "brep": {
+     "v": 12283.185307,
+     "rel": 1.481e-16
+    },
+    "sc": {
+     "v": 12282.55035,
+     "rel": 0.00005169,
+     "faces": 6
+    },
+    "scRefusal": null
+   },
+   {
+    "id": "bow -8.2843 on edge 0",
+    "label": "-8.28",
+    "closedFormVolume": 7716.814693,
+    "occt": {
+     "v": 7716.814693,
+     "rel": 2.222e-11
+    },
+    "brep": {
+     "v": 7716.814693,
+     "rel": 3.536e-16
+    },
+    "sc": {
+     "v": 7717.44965,
+     "rel": 0.00008228,
+     "faces": 6
+    },
+    "scRefusal": null
+   }
+  ],
+  "treatmentsFromOutline": {
+   "roundsRecovered": {
+    "1": 4.000000000000001
+   },
+   "labels": [
+    "R4"
+   ],
+   "want": {
+    "1": 4
+   }
+  }
+ },
+ "s11": {
+  "legacyDocAdoptedUnchanged": true,
+  "occt": {
+   "outcome": "built",
+   "volume": 9180,
+   "com": [
+    20.209694989106758,
+    12.989651416122006,
+    5.000000000000001
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    41,
+    25,
+    10
+   ],
+   "faces": 6
+  },
+  "brep": {
+   "outcome": "built",
+   "volume": 9180.000000000002,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    41,
+    25,
+    10
+   ]
+  },
+  "sc": {
+   "outcome": "built",
+   "volume": 9180,
+   "bbox": [
+    0,
+    0,
+    0,
+    41,
+    25,
+    10
+   ],
+   "faces": 6,
+   "com": [
+    20.209694989106755,
+    12.989651416122005,
+    5
+   ]
+  },
+  "startArea": 918,
+  "warnings": {
+   "across then up on one edge": {
+    "errors": [],
+    "warnings": [
+     "edge 1 up cannot hold along with the rules already on this sketch -- the shape is as close as it can get to all of them. Remove one to settle it."
+    ],
+    "constraints": [
+     {
+      "kind": "vertical",
+      "edge": 0
+     }
+    ]
+   },
+   "equal then parallel on adjacent edges": {
+    "errors": [],
+    "warnings": [
+     "edge 1 ∥ edge 2 cannot hold along with the rules already on this sketch -- the shape is as close as it can get to all of them. Remove one to settle it."
+    ],
+    "constraints": [
+     {
+      "kind": "parallel",
+      "edge": 0,
+      "other": 1
+     }
+    ]
+   },
+   "settled quietly (older rule dropped, no warning)": {
+    "errors": [],
+    "warnings": [],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     },
+     {
+      "kind": "length",
+      "edge": 0,
+      "value": 40
+     },
+     {
+      "kind": "length",
+      "edge": 2,
+      "value": 30
+     }
+    ]
+   }
+  },
+  "pipelineAcrossUp": {
+   "warnings": [
+    "edge 1 up cannot hold along with the rules already on this sketch -- the shape is as close as it can get to all of them. Remove one to settle it."
+   ],
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     40,
+     0
+    ],
+    [
+     40,
+     25
+    ],
+    [
+     0,
+     25
+    ]
+   ],
+   "occt": 9999.999999999998,
+   "brep": 10000,
+   "sc": 10000
+  }
+ }
+}

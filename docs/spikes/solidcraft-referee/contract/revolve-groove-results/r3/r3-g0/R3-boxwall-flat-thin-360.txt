@@ -1,0 +1,1 @@
+R3-boxwall-flat-thin-360                 PASS     occtV 67541.3948 | tr-occt dV 4.1e-6 dBb 2.7e-15 dCom 2.9e-6 F o/b/t 19/17/17 | brep-occt dV 3.0e-11   | 3 BODIES   | ms 5703 cpu 6047

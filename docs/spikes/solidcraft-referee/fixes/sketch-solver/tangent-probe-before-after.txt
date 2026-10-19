@@ -1,0 +1,36 @@
+== BASELINE
+exact-tangent start:
+{"dof":7,"status":"solved","failing":[],"redundant":true,"report_redundant":["k2"],"max_residual":0,"gap":0,"R":5,"perp_mm":0,"perp_rel":0}
+jitter 0.05 mm start (fixed numbers):
+{"dof":6,"status":"solved","failing":[],"redundant":false,"report_redundant":[],"max_residual":3.638351842027987e-10,"gap":0,"R":4.9977308338530735,"perp_mm":-0.00006030505279756436,"perp_rel":-0.00001206648673215386}
+12 jittered starts (amp 0.05..2 mm):
+amp=0.05 status=solved failing=[] dof=6 max_residual=4.6e-10 gap=0 perp_mm=6.74e-5 perp_rel=1.35e-5 R=4.985655917421603
+amp=0.1 status=solved failing=[] dof=6 max_residual=2.8e-10 gap=0 perp_mm=5.32e-5 perp_rel=1.05e-5 R=5.068095024439108
+amp=0.25 status=solved failing=[] dof=6 max_residual=4.8e-10 gap=0 perp_mm=6.97e-5 perp_rel=1.39e-5 R=5.015480069332136
+amp=0.5 status=solved failing=[] dof=6 max_residual=5.7e-10 gap=0 perp_mm=-7.53e-5 perp_rel=-1.51e-5 R=4.9927176030257
+amp=1 status=solved failing=[] dof=6 max_residual=3.2e-10 gap=0 perp_mm=-5.76e-5 perp_rel=-1.11e-5 R=5.20687492290615
+amp=2 status=solved failing=[] dof=6 max_residual=3.9e-10 gap=0 perp_mm=-6.06e-5 perp_rel=-1.28e-5 R=4.74710269319767
+amp=0.05 status=solved failing=[] dof=6 max_residual=4.5e-10 gap=0 perp_mm=6.71e-5 perp_rel=1.33e-5 R=5.032609704342205
+amp=0.1 status=solved failing=[] dof=6 max_residual=3.9e-10 gap=0 perp_mm=-6.25e-5 perp_rel=-1.26e-5 R=4.952002527494251
+amp=0.25 status=solved failing=[] dof=6 max_residual=8.1e-10 gap=0 perp_mm=8.99e-5 perp_rel=1.80e-5 R=4.982530570621042
+amp=0.5 status=solved failing=[] dof=6 max_residual=4.2e-10 gap=0 perp_mm=6.41e-5 perp_rel=1.30e-5 R=4.946304218912267
+amp=1 status=solved failing=[] dof=6 max_residual=9.9e-10 gap=0 perp_mm=-9.75e-5 perp_rel=-2.04e-5 R=4.778221004557219
+amp=2 status=solved failing=[] dof=6 max_residual=9.8e-10 gap=0 perp_mm=1.09e-4 perp_rel=1.79e-5 R=6.110467301840087
+== FIXED
+exact-tangent start:
+{"dof":6,"status":"solved","failing":[],"redundant":false,"report_redundant":[],"max_residual":0,"gap":0,"R":5,"perp_mm":0,"perp_rel":0}
+jitter 0.05 mm start (fixed numbers):
+{"dof":6,"status":"solved","failing":[],"redundant":false,"report_redundant":[],"max_residual":5.361359482634035e-13,"gap":0,"R":4.997711592532945,"perp_mm":-5.361359482634035e-13,"perp_rel":-1.072762880243913e-13}
+12 jittered starts (amp 0.05..2 mm):
+amp=0.05 status=solved failing=[] dof=6 max_residual=1.5e-12 gap=0 perp_mm=1.55e-12 perp_rel=3.10e-13 R=4.985699264274616
+amp=0.1 status=solved failing=[] dof=6 max_residual=9.0e-14 gap=0 perp_mm=-3.07e-15 perp_rel=-6.06e-16 R=5.067988389839557
+amp=0.25 status=solved failing=[] dof=6 max_residual=5.6e-13 gap=0 perp_mm=5.64e-13 perp_rel=1.13e-13 R=5.01546697392446
+amp=0.5 status=solved failing=[] dof=6 max_residual=2.1e-12 gap=0 perp_mm=1.34e-13 perp_rel=2.68e-14 R=4.9912518198305875
+amp=1 status=solved failing=[] dof=6 max_residual=2.7e-14 gap=0 perp_mm=2.49e-14 perp_rel=4.75e-15 R=5.2316787553165165
+amp=2 status=solved failing=[] dof=6 max_residual=7.1e-11 gap=0 perp_mm=-3.31e-11 perp_rel=-6.96e-12 R=4.75102087938994
+amp=0.05 status=solved failing=[] dof=6 max_residual=4.5e-12 gap=0 perp_mm=2.42e-12 perp_rel=4.81e-13 R=5.032586144207919
+amp=0.1 status=solved failing=[] dof=6 max_residual=4.4e-13 gap=0 perp_mm=-4.38e-13 perp_rel=-8.84e-14 R=4.95200759505283
+amp=0.25 status=solved failing=[] dof=6 max_residual=4.4e-14 gap=0 perp_mm=-4.73e-15 perp_rel=-9.49e-16 R=4.981393761151701
+amp=0.5 status=solved failing=[] dof=6 max_residual=3.6e-14 gap=0 perp_mm=-2.23e-16 perp_rel=-4.50e-17 R=4.946724374456093
+amp=1 status=solved failing=[] dof=6 max_residual=2.3e-10 gap=0 perp_mm=-2.29e-10 perp_rel=-4.53e-11 R=5.040951649872067
+amp=2 status=solved failing=[] dof=6 max_residual=1.1e-11 gap=0 perp_mm=-1.20e-12 perp_rel=-1.96e-13 R=6.099673784719339

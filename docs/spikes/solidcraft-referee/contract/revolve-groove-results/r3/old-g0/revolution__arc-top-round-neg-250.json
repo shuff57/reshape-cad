@@ -1,0 +1,299 @@
+[
+ {
+  "id": "revolution__arc-top-round-neg-250",
+  "src": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, -250);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "revolution__arc-top-round-neg-250",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "occt": {
+    "volume": 19472.053426918126,
+    "com": [
+     -3.343240709608215,
+     -4.774642363822418,
+     14.880198522243125
+    ],
+    "bbox": [
+     -20.0000001,
+     -20,
+     0,
+     20,
+     18.793852415718163,
+     30
+    ],
+    "faces": 7,
+    "area": 5716.979498785901,
+    "types": {
+     "plane": 4,
+     "cylinder": 2,
+     "other": 1
+    },
+    "components": {
+     "plane": 4,
+     "cylinder": 2,
+     "other": 1
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 19472.053425771308,
+    "bbox": [
+     -20.000000000000004,
+     -20.000000000000004,
+     0,
+     20.000000000000004,
+     18.793852415718174,
+     30
+    ],
+    "faces": 7,
+    "dVol": 5.889559894428993e-11,
+    "dBbox": 4.999999855794804e-9,
+    "pass": true
+   },
+   "ms": 5997,
+   "load": [
+    36.8,
+    37.7
+   ],
+   "cpuMs": 6528,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "side": 1,
+      "kernelAngle": 250,
+      "nudgeDeg": null
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        10,
+        0
+       ],
+       [
+        20,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        20,
+        0
+       ],
+       [
+        20,
+        27
+       ]
+      ]
+     }
+    },
+    {
+     "command": "sketch.arc.three_point",
+     "params": {
+      "start": [
+       20,
+       27
+      ],
+      "end": [
+       17,
+       30
+      ],
+      "through": [
+       19.121320343559642,
+       29.121320343559642
+      ]
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        17,
+        30
+       ],
+       [
+        10,
+        30
+       ]
+      ]
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        10,
+        30
+       ],
+       [
+        10,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "angle": 250,
+      "operation": "new",
+      "body_name": "b_rev1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": 0.000007689631087831204,
+    "area": 5716.935537322619,
+    "faceTypes": {
+     "cylinder": 2,
+     "other": 1,
+     "plane": 4
+    },
+    "occtTypes": {
+     "plane": 4,
+     "cylinder": 2,
+     "other": 1
+    },
+    "occtComponents": {
+     "plane": 4,
+     "cylinder": 2,
+     "other": 1
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    },
+    "volume": 19472.017003554713,
+    "bbox": [
+     -19.999742532240013,
+     -19.999999018759436,
+     0,
+     20.000000000000004,
+     18.79385241571817,
+     30.000000000000007
+    ],
+    "com": [
+     -3.343179136522083,
+     -4.774554620005842,
+     14.880172971777537
+    ],
+    "faces": 7,
+    "kernelFaces": 17,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0000018705455770412498,
+    "dBbox": 0.000012878387935001286,
+    "dCom": 0.000001386491677902635,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "volume": 19472.053425771315,
+   "bbox": [
+    -20.0000001,
+    -20,
+    -7.105427357601002e-15,
+    20.0000001,
+    18.793852415718177,
+    30.000000000000004
+   ],
+   "faces": 7,
+   "com": [
+    -3.34324097636527,
+    -4.774642936454616,
+    14.880198522204834
+   ]
+  },
+  "vsFc": {
+   "occt": {
+    "dVol": 5.889522528621119e-11,
+    "dBbox": 1.0000000116860974e-7,
+    "faces": 7,
+    "dCom": 5.726321985477512e-7
+   },
+   "brep": {
+    "dVol": 3.736615474027858e-16,
+    "dBbox": 9.999999761589606e-8,
+    "faces": 7
+   },
+   "truck": {
+    "dVol": 0.00000187048668192613,
+    "dBbox": 0.0002575677599878645,
+    "faces": 7,
+    "dCom": 0.00008831644877371758
+   }
+  },
+  "caseMs": 6108
+ }
+]

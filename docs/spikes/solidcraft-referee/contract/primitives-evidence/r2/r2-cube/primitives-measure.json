@@ -1,0 +1,43 @@
+[
+ {
+  "id": "r2-cube-half",
+  "feature": "box.corner.half",
+  "note": "",
+  "script": "box(20, 20, 20, { corner: 10 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      20,
+      20,
+      20
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 10
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 4188.790204786391,
+  "occt": {
+   "refused": "Rounding box box1 (20x20x20) at radius 10 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding box by 10 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 258
+ }
+]

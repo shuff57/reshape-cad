@@ -1,0 +1,9 @@
+# hollow open:top, wall 2, 40x30x20 box with a blind d8 hole; each probe in its own process, wall-clock limit 150 s; machine load average at start 35.8
+depth 17.9  hole at [8,5] (floor 2.1 above the outer bottom)  built 8502.7614 faces 16 [cpu 3.5 s]  (3.0 s wall)
+depth 18    hole at [8,5] (floor 2.0 above the outer bottom)  refused "boolean Cut: the operation failed: no result; the operation failed: coincident faces were " [cpu 39.4 s]  (39.7 s wall)
+depth 18.5  hole at [8,5] (floor 1.5 above the outer bottom)  refused "boolean Cut: the operation failed: no result; the operation failed: not supported yet: the" [cpu 127.0 s]  (127.2 s wall)
+depth 19    hole at [8,5] (floor 1.0 above the outer bottom)  refused "boolean Cut: the operation failed: no result; the operation failed: not supported yet: the" [cpu 78.7 s]  (78.5 s wall)
+depth 17.9  hole at [0,0] (floor 2.1 above the outer bottom)  built 8502.7614 faces 16 [cpu 3.5 s]  (3.3 s wall)
+depth 18    hole at [0,0] (floor 2.0 above the outer bottom)  refused "boolean Cut: the operation failed: no result; the operation failed: coincident faces were " [cpu 41.1 s]  (41.8 s wall)
+depth 18.5  hole at [0,0] (floor 1.5 above the outer bottom)  refused "boolean Cut: the operation failed: no result; the operation failed: not supported yet: the" [cpu 145.8 s]  (148.1 s wall)
+depth 19    hole at [0,0] (floor 1.0 above the outer bottom)  refused "boolean Cut: the operation failed: no result; the operation failed: not supported yet: the" [cpu 123.5 s]  (125.5 s wall)

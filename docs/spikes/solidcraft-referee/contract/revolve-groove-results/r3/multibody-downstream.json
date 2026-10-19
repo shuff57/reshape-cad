@@ -1,0 +1,112 @@
+[
+ {
+  "k": "groove alone",
+  "status": "built",
+  "refusal": null,
+  "volume": 11169.121796062589,
+  "bodies": 3,
+  "faces": 18,
+  "occtVolume": 11169.197002720912,
+  "occtFaces": 20,
+  "brepVolume": 11169.19700272085
+ },
+ {
+  "k": "move",
+  "status": "built",
+  "refusal": null,
+  "volume": 11169.1217960626,
+  "bodies": 3,
+  "faces": 18,
+  "occtVolume": 11169.197002720912,
+  "occtFaces": 20,
+  "brepVolume": 11169.19700272085
+ },
+ {
+  "k": "turn",
+  "status": "built",
+  "refusal": null,
+  "volume": 11169.121796062589,
+  "bodies": 3,
+  "faces": 18,
+  "occtVolume": 11169.197002720914,
+  "occtFaces": 20,
+  "brepVolume": 11169.19700272085
+ },
+ {
+  "k": "mirror",
+  "status": "built",
+  "refusal": null,
+  "volume": 22338.245818953597,
+  "bodies": 5,
+  "faces": 30,
+  "occtVolume": 22338.39400543946,
+  "occtFaces": 38,
+  "brepVolume": 22338.394005441703
+ },
+ {
+  "k": "spin of a new sketch",
+  "status": "built",
+  "refusal": null,
+  "volume": 754.1420202688859,
+  "bodies": 1,
+  "faces": 6,
+  "occtVolume": 753.9822368552201,
+  "occtFaces": 6,
+  "brepVolume": 753.9822368615502
+ },
+ {
+  "k": "union with a box",
+  "status": "refused",
+  "refusal": "op1 (combine): every target must be a single body",
+  "volume": null,
+  "bodies": null,
+  "faces": null,
+  "occtVolume": 12169.197002721232,
+  "occtFaces": 26,
+  "brepVolume": 12169.19700272085
+ },
+ {
+  "k": "subtract a box",
+  "status": "refused",
+  "refusal": "op1 (combine): every target must be a single body",
+  "volume": null,
+  "bodies": null,
+  "faces": null,
+  "occtVolume": 10169.197002720897,
+  "occtFaces": 24,
+  "brepVolume": 10169.19700272085
+ },
+ {
+  "k": "hole",
+  "status": "refused",
+  "refusal": "hole1 (hole): needs a single measured target body",
+  "volume": null,
+  "bodies": null,
+  "faces": null,
+  "occtVolume": 11027.825333309369,
+  "occtFaces": 21,
+  "brepVolume": 11027.82533330931
+ },
+ {
+  "k": "pocket",
+  "status": "refused",
+  "refusal": "pocket1 (pocket): needs a sketch and a single body",
+  "volume": null,
+  "bodies": null,
+  "faces": null,
+  "occtVolume": 11133.85408536809,
+  "occtFaces": 22,
+  "brepVolume": 11133.854085367966
+ },
+ {
+  "k": "second groove (new handle name, same part)",
+  "status": "refused",
+  "refusal": "groove2 (groove): groove1 was left in 3 separate pieces, and a groove cuts one piece, so cut before the part is split.",
+  "volume": null,
+  "bodies": null,
+  "faces": null,
+  "occtVolume": 10765.308541287108,
+  "occtFaces": 30,
+  "brepVolume": 10765.308541287008
+ }
+]

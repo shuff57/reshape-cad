@@ -1,0 +1,72 @@
+[
+ {
+  "id": "s1-00031",
+  "desc": "plate 11.9x11.8x12 open=top [vthru]",
+  "expectedP": 1092.7044140625003,
+  "cls": "REFUSED",
+  "sentence": "step 4 (solid.shell): not supported yet: a floor, wall or ligament near [5.20, -0.58, 1.50] is too thin for a 1.5000 mm shell: the walls on its two sides would overlap by about 0.729 mm (material betw"
+ },
+ {
+  "id": "s1-00038",
+  "desc": "convex vchamfer s=2 36x16x12 +vthru",
+  "expectedP": 3383.6787500000005,
+  "cls": "REFUSED",
+  "sentence": "step 5 (solid.shell): not supported yet: a floor, wall or ligament near [7.93, -6.30, 3.28] is too thin for a 2.0000 mm shell: the walls on its two sides would overlap by about 0.259 mm (material betw"
+ },
+ {
+  "id": "s1-00201",
+  "desc": "plate 16.8x13.6x12 open=top [vthru]",
+  "expectedP": 2187.0094531250006,
+  "cls": "REFUSED",
+  "sentence": "step 4 (solid.shell): not supported yet: a floor, wall or ligament near [-0.19, 6.80, 2.50] is too thin for a 2.5000 mm shell: the walls on its two sides would overlap by about 2.475 mm (material betw"
+ },
+ {
+  "id": "s1-00501",
+  "desc": "L 30x12 base6 wall8x8 open=low",
+  "expectedP": 2320.2218750000006,
+  "cls": "REFUSED",
+  "sentence": "step 6 (solid.shell): not supported yet: a floor, wall or ligament near [-8.71, 3.39, 2.50] is too thin for a 2.5000 mm shell: the walls on its two sides would overlap by about 0.994 mm (material betw"
+ },
+ {
+  "id": "sw-0164",
+  "desc": "S1 vthru web=1.5 t=1",
+  "expectedP": 2542.6720312500006,
+  "cls": "REFUSED",
+  "sentence": "step 4 (solid.shell): not supported yet: a floor, wall or ligament near [-18.98, -0.03, 1.00] is too thin for a 1.0000 mm shell: the walls on its two sides would overlap by about 0.471 mm (material be"
+ },
+ {
+  "id": "sw-0177",
+  "desc": "S1b two vthru gap=1.5 t=1",
+  "expectedP": 2674.3420312500007,
+  "cls": "REFUSED",
+  "sentence": "step 6 (solid.shell): not supported yet: a floor, wall or ligament near [0.25, -0.09, 9.78] is too thin for a 1.0000 mm shell: the walls on its two sides would overlap by about 0.444 mm (material betw"
+ },
+ {
+  "id": "sw-0195",
+  "desc": "S2 blind top floor=1.5 t=1",
+  "expectedP": 2571.6492187500007,
+  "cls": "REFUSED",
+  "sentence": "step 4 (solid.shell): not supported yet: a floor, wall or ligament near [-1.67, -2.49, 0.50] is too thin for a 1.0000 mm shell: the walls on its two sides would overlap by about 0.500 mm (material bet"
+ },
+ {
+  "id": "sw-0196",
+  "desc": "S4 pocket top floor=1.5 t=1",
+  "expectedP": 2736.0000000000005,
+  "cls": "REFUSED",
+  "sentence": "step 4 (solid.shell): not supported yet: a floor, wall or ligament near [-5.00, -4.00, 0.50] is too thin for a 1.0000 mm shell: the walls on its two sides would overlap by about 0.500 mm (material bet"
+ },
+ {
+  "id": "sw-0286",
+  "desc": "S7 rim wall=2 t=1",
+  "expectedP": 2864.0000000000005,
+  "cls": "REFUSED",
+  "sentence": "step 6 (solid.shell): not supported yet: a wall standing on the open face is only 2.0000 mm thick and the shell is 1.0000 mm, so its two sides would cross (a wall needs more than twice the shell thick"
+ },
+ {
+  "id": "sw-0310",
+  "desc": "S8 hhole g=1.5 bot t=1",
+  "expectedP": 2733.1006250000005,
+  "cls": "REFUSED",
+  "sentence": "step 4 (solid.shell): not supported yet: a floor, wall or ligament near [-0.06, -14.00, 1.10] is too thin for a 1.0000 mm shell: the walls on its two sides would overlap by about 0.537 mm (material be"
+ }
+]

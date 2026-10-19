@@ -1,0 +1,1394 @@
+[
+ {
+  "script": "sketch corners (rect extrude)",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 1",
+  "param": "sk1_p0u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.9122709114163732e-13,
+   "dBbox": 1.7763568394002506e-16,
+   "dCom": 4.195790543855064e-14,
+   "truckV": 11310.000000019305,
+   "occtV": 11310.000000021468
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "sketch corners (rect extrude)",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 2",
+  "param": "sk1_p1u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.529848110633305e-16,
+   "dBbox": 0,
+   "dCom": 1.734538217192173e-17,
+   "truckV": 11890.000000018676,
+   "occtV": 11890.000000018674
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "sketch corners (rect extrude)",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 3",
+  "param": "sk1_p2u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 3.008273584776958e-13,
+   "dBbox": 7.105427357601002e-15,
+   "dCom": 6.686257707262789e-14,
+   "truckV": 12710.00000001006,
+   "occtV": 12710.000000006237
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "sketch corners (rect extrude)",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 4",
+  "param": "sk1_p3u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 3.0090808991633385e-16,
+   "dBbox": 0,
+   "dCom": 1.3983377585458873e-16,
+   "truckV": 12090.000000010754,
+   "occtV": 12090.000000010758
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "sketch corners (rect extrude)",
+  "feature": "pull1",
+  "kind": "extrude",
+  "handle": "size",
+  "label": "height",
+  "param": "pull1_height",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 2.526374171591468e-16,
+   "dBbox": 0,
+   "dCom": 1.7273068344190488e-17,
+   "truckV": 14400,
+   "occtV": 14399.999999999996
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "sketch corners+round",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 1",
+  "param": "sk1_p0u",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.0000031253211560412535,
+   "dBbox": 5.329070518200751e-16,
+   "dCom": 0.0000011090362147903368,
+   "truckV": 11256.314361179846,
+   "occtV": 11256.349540887206
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "sketch corners+round",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 2",
+  "param": "sk1_p1u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.0000029722017065937817,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 0.0000010800742889484011,
+   "truckV": 11836.314360865252,
+   "occtV": 11836.349540883557
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "sketch corners+round",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 3",
+  "param": "sk1_p2u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.0000027796583401475573,
+   "dBbox": 3.552713678800501e-15,
+   "dCom": 9.874543170142196e-7,
+   "truckV": 12656.314360541759,
+   "occtV": 12656.349540869316
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "sketch corners+round",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 4",
+  "param": "sk1_p3u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.0000029228146116412924,
+   "dBbox": 7.105427357601002e-15,
+   "dCom": 0.000001012462027007723,
+   "truckV": 12036.314360857103,
+   "occtV": 12036.349540875412
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "sketch corners+round",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "radius",
+  "label": "round corner 1",
+  "param": "sk1_r0",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.000005796918179760856,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 0.0000019770722485016415,
+   "truckV": 11894.776146636452,
+   "occtV": 11894.845100080258
+  },
+  "afterDrag": {
+   "originOnVertex": true,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "sketch corners+round",
+  "feature": "pull1",
+  "kind": "extrude",
+  "handle": "size",
+  "label": "height",
+  "param": "pull1_height",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.000002944860342569254,
+   "dBbox": 3.552713678800501e-15,
+   "dCom": 0.0000010368669212578611,
+   "truckV": 14335.577232637857,
+   "occtV": 14335.619449035059
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "polygon sketch",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 1",
+  "param": "sk1_p0u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.2290468942877411e-16,
+   "dBbox": 0,
+   "dCom": 7.367984940248286e-17,
+   "truckV": 7400,
+   "occtV": 7399.999999999999
+  },
+  "afterDrag": {
+   "originOnVertex": true,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "polygon sketch",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 2",
+  "param": "sk1_p1u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 1.424222214613585e-16,
+   "truckV": 7950,
+   "occtV": 7950
+  },
+  "afterDrag": {
+   "originOnVertex": true,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "polygon sketch",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 3",
+  "param": "sk1_p2u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0,
+   "dBbox": 1.7763568394002506e-16,
+   "dCom": 7.208525692945474e-17,
+   "truckV": 8600,
+   "occtV": 8600
+  },
+  "afterDrag": {
+   "originOnVertex": true,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "polygon sketch",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 4",
+  "param": "sk1_p3u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 3.3894212488432114e-16,
+   "dBbox": 1.7763568394002506e-16,
+   "dCom": 1.4735969880496573e-16,
+   "truckV": 8050.000000000001,
+   "occtV": 8049.999999999998
+  },
+  "afterDrag": {
+   "originOnVertex": true,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "polygon sketch",
+  "feature": "pull1",
+  "kind": "extrude",
+  "handle": "size",
+  "label": "height",
+  "param": "pull1_height",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.8947806286936006e-16,
+   "dBbox": 2.842170943040401e-16,
+   "dCom": 7.299240575154472e-17,
+   "truckV": 9600.000000000002,
+   "occtV": 9600
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "front-plane sketch",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 1",
+  "param": "sk1_p0u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0,
+   "dBbox": 1.7763568394002506e-16,
+   "dCom": 7.160052122619563e-17,
+   "truckV": 11310.000000019305,
+   "occtV": 11310.000000019305
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "front-plane sketch",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 2",
+  "param": "sk1_p1u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.529848110633305e-16,
+   "dBbox": 0,
+   "dCom": 1.3876305737537383e-16,
+   "truckV": 11890.000000018676,
+   "occtV": 11890.000000018674
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "front-plane sketch",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 3",
+  "param": "sk1_p2u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.084810360257134e-13,
+   "dBbox": 7.105427357601002e-15,
+   "dCom": 3.2023476791760895e-14,
+   "truckV": 12710.00000001006,
+   "occtV": 12710.000000008682
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "front-plane sketch",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 4",
+  "param": "sk1_p3u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 3.0090808991633385e-16,
+   "dBbox": 0,
+   "dCom": 1.3983377585458873e-16,
+   "truckV": 12090.000000010754,
+   "occtV": 12090.000000010758
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "front-plane sketch",
+  "feature": "pull1",
+  "kind": "extrude",
+  "handle": "size",
+  "label": "height",
+  "param": "pull1_height",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 2.526374171591468e-16,
+   "dBbox": 0,
+   "dCom": 1.7273068344190488e-17,
+   "truckV": 14400,
+   "occtV": 14399.999999999996
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 1",
+  "param": "sk1_p0u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.984048936952621e-13,
+   "dBbox": 1.1102230246251565e-15,
+   "dCom": 4.374791846920553e-14,
+   "truckV": 10910.000000019305,
+   "occtV": 10910.00000002147
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 2",
+  "param": "sk1_p1u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.583106530498607e-16,
+   "dBbox": 1.6653345369377348e-15,
+   "dCom": 6.938152868768692e-17,
+   "truckV": 11490.000000018676,
+   "occtV": 11490.000000018677
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 3",
+  "param": "sk1_p2u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 3.0971582370675737e-13,
+   "dBbox": 7.105427357601002e-15,
+   "dCom": 6.832127357903226e-14,
+   "truckV": 12310.00000001005,
+   "occtV": 12310.000000006237
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 4",
+  "param": "sk1_p3u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 3.1120434620088667e-16,
+   "dBbox": 2.220446049250313e-15,
+   "dCom": 2.7966755170917746e-16,
+   "truckV": 11690.000000010754,
+   "occtV": 11690.000000010758
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "pull1",
+  "kind": "extrude",
+  "handle": "size",
+  "label": "height",
+  "param": "pull1_height",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.2992781453898976e-16,
+   "dBbox": 0,
+   "dCom": 3.4546136688380976e-17,
+   "truckV": 14000,
+   "occtV": 13999.999999999998
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk2",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 1",
+  "param": "sk2_p0u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 8.879958547628192e-15,
+   "dBbox": 0,
+   "dCom": 1.2541400566900452e-15,
+   "truckV": 11676.000000000897,
+   "occtV": 11676.000000000793
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk2",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 2",
+  "param": "sk2_p1u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 7.398853830348012e-14,
+   "dBbox": 0,
+   "dCom": 9.824097110738686e-15,
+   "truckV": 11604.000000001683,
+   "occtV": 11604.000000000824
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk2",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 3",
+  "param": "sk2_p2u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.579532305962133e-16,
+   "dBbox": 0,
+   "dCom": 1.741861189847285e-16,
+   "truckV": 11515.999999999141,
+   "occtV": 11515.99999999914
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk2",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 4",
+  "param": "sk2_p3u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 9.405322665698335e-16,
+   "dBbox": 0,
+   "dCom": 1.0451167139083709e-16,
+   "truckV": 11603.999999998703,
+   "occtV": 11603.999999998714
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "pocket1",
+  "kind": "pocket",
+  "handle": "size",
+  "label": "deep",
+  "param": "pocket1_depth",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.595604739952506e-16,
+   "dBbox": 0,
+   "dCom": 6.96744475938914e-17,
+   "truckV": 11400,
+   "occtV": 11399.999999999998
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "width",
+  "param": "box1_width",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.0000014426177767582176,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 5.289421057259472e-7,
+   "truckV": 26342.019502621562,
+   "occtV": 26342.057504141994
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "depth",
+  "param": "box1_depth",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.00000158722860601584,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 5.327859229865344e-7,
+   "truckV": 27134.288769637744,
+   "occtV": 27134.331838025442
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "height",
+  "param": "box1_height",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.0000013221964222645955,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 4.4936713205506257e-7,
+   "truckV": 28742.019501496397,
+   "occtV": 28742.057504141998
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move x",
+  "param": "box1_x",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": false,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.0000015872286049879477,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 5.558021135205744e-7,
+   "truckV": 23942.019502621562,
+   "occtV": 23942.057504140095
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move y",
+  "param": "box1_y",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": false,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.0000015872286096983758,
+   "dBbox": 5.075305255429287e-16,
+   "dCom": 5.558047327173338e-7,
+   "truckV": 23942.01950262145,
+   "occtV": 23942.057504140095
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move z",
+  "param": "box1_z",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": false,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.0000015872756003223795,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 5.558148084261579e-7,
+   "truckV": 23942.019501496397,
+   "occtV": 23942.057504140095
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "round1",
+  "kind": "fillet",
+  "handle": "radius",
+  "label": "round edge",
+  "param": "round1_size",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": true,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0.0000044277035812079425,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 0.0000014919933419680773,
+   "truckV": 23838.943070338777,
+   "occtV": 23839.048622579736
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": true
+  }
+ },
+ {
+  "script": "bevel edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "width",
+  "param": "box1_width",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0,
+   "dBbox": 2.220446049250313e-16,
+   "dCom": 1.5613345148649092e-17,
+   "truckV": 26265,
+   "occtV": 26265
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "bevel edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "depth",
+  "param": "box1_depth",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 4.7429983574580906e-17,
+   "truckV": 27047,
+   "occtV": 27047
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "bevel edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "height",
+  "param": "box1_height",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0,
+   "dBbox": 5.075305255429287e-16,
+   "dCom": 5.204636609285077e-17,
+   "truckV": 28665,
+   "occtV": 28665
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "bevel edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move x",
+  "param": "box1_x",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": false,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0,
+   "dBbox": 2.9605947323337506e-16,
+   "dCom": 4.947917760233228e-17,
+   "truckV": 23865,
+   "occtV": 23865
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "bevel edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move y",
+  "param": "box1_y",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": false,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 3.048798497457963e-16,
+   "dBbox": 2.9605947323337506e-16,
+   "dCom": 1.6493059200777427e-17,
+   "truckV": 23865,
+   "occtV": 23864.999999999993
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "bevel edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move z",
+  "param": "box1_z",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": false,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 2.473958880116614e-17,
+   "truckV": 23865,
+   "occtV": 23865
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "bevel edge",
+  "feature": "bevel1",
+  "kind": "fillet",
+  "handle": "radius",
+  "label": "round edge",
+  "param": "bevel1_size",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": true,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.5398852093509899e-16,
+   "dBbox": 0,
+   "dCom": 1.236979440058307e-17,
+   "truckV": 23625,
+   "occtV": 23624.999999999996
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": true
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "width",
+  "param": "box1_width",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": false,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.3835242156217324e-16,
+   "dBbox": 2.9605947323337506e-16,
+   "dCom": 3.866424267123857e-17,
+   "truckV": 26295.013603768883,
+   "occtV": 26295.013603768886
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "depth",
+  "param": "box1_depth",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 2.686737370066816e-16,
+   "dBbox": 4.440892098500624e-16,
+   "dCom": 3.134078132691229e-17,
+   "truckV": 27081.015417604736,
+   "occtV": 27081.015417604744
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "height",
+  "param": "box1_height",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 2.5374741828408825e-16,
+   "dBbox": 2.537652627714643e-16,
+   "dCom": 3.958299635305384e-17,
+   "truckV": 28674.01632452267,
+   "occtV": 28674.01632452266
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move x",
+  "param": "box1_x",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": false,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 4.567453529113587e-16,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 9.80085134834727e-17,
+   "truckV": 23895.013603768897,
+   "occtV": 23895.013603768886
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move y",
+  "param": "box1_y",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": false,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.5224845097045293e-16,
+   "dBbox": 4.440892098500626e-16,
+   "dCom": 6.53390089889818e-17,
+   "truckV": 23895.013603768883,
+   "occtV": 23895.013603768886
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move z",
+  "param": "box1_z",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": false,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 4.587609894711302e-16,
+   "dBbox": 3.9474596431116675e-16,
+   "dCom": 4.912247060420139e-17,
+   "truckV": 23790.027207537787,
+   "occtV": 23790.027207537776
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "draft1",
+  "kind": "draft",
+  "handle": "size",
+  "label": "draft angle",
+  "param": "draft1_angle",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.5251879797744298e-16,
+   "dBbox": 2.96059473233375e-16,
+   "dCom": 4.881421979423756e-17,
+   "truckV": 23852.65852691651,
+   "occtV": 23852.658526916515
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "datum",
+  "feature": "pl1",
+  "kind": "datum",
+  "handle": "size",
+  "label": "offset",
+  "param": "pl1_offset",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 7.672692930616877e-17,
+   "truckV": 1200,
+   "occtV": 1200
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "datum",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 1",
+  "param": "sk1_p0u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 2.2161176943827788e-16,
+   "dBbox": 0,
+   "dCom": 8.124867067909736e-17,
+   "truckV": 1025.99999999801,
+   "occtV": 1025.9999999980098
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "datum",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 2",
+  "param": "sk1_p1u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 4.010117732688676e-16,
+   "dBbox": 0,
+   "dCom": 2.255975441968606e-16,
+   "truckV": 1133.9999999989238,
+   "occtV": 1133.9999999989234
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "datum",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 3",
+  "param": "sk1_p2u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.640502708820725e-16,
+   "dBbox": 0,
+   "dCom": 1.4528126614474343e-16,
+   "truckV": 1386.0000000041425,
+   "occtV": 1386.0000000041423
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "datum",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 4",
+  "param": "sk1_p3u",
+  "hasSlot": true,
+  "originOnVertex": true,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 1.813187204487872e-16,
+   "dBbox": 1.7763568394002506e-16,
+   "dCom": 7.804863869092657e-17,
+   "truckV": 1254.0000000024982,
+   "occtV": 1254.000000002498
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ },
+ {
+  "script": "datum",
+  "feature": "pull1",
+  "kind": "extrude",
+  "handle": "size",
+  "label": "height",
+  "param": "pull1_height",
+  "hasSlot": true,
+  "originOnVertex": false,
+  "originOnEdgeMid": false,
+  "onPlanarFacePlane": true,
+  "drag": {
+   "outcome": "PASS",
+   "dVol": 2.842170943040402e-16,
+   "dBbox": 0,
+   "dCom": 2.3374411325008925e-18,
+   "truckV": 1600,
+   "occtV": 1599.9999999999995
+  },
+  "afterDrag": {
+   "originOnVertex": false,
+   "originOnEdgeMid": false
+  }
+ }
+]

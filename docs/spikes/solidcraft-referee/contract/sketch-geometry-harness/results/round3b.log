@@ -1,0 +1,19 @@
+band-round-pair-flat0.00001        TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 2892.6992963092453 brep 2892.6992963004527
+band-round-pair-flat0.000005       TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 2892.699189008408 brep 2892.699188999615
+band-round-pair-flat0.000003       TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 2892.699146088058 brep 2892.699146079265
+band-round-single-r0.000005        TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 11999.999999999947 brep 11999.999999999947
+band-round-single-r0.000003        TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 11999.999999999978 brep 11999.99999999998
+band-round-single-r0.000002        TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 11999.999999999989 brep 11999.99999999999
+band-chamfer-ceiling-flat0.00001   TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 7500.0029999994995 brep 7500.002999999499
+band-chamfer-ceiling-flat0.000005  TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 7500.001499999875 brep 7500.001499999874
+band-chamfer-ceiling-flat0.000003  TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 7500.000899999954 brep 7500.000899999953
+band-chamfer-single-d0.000005      TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 11999.999999999874 brep 11999.999999999874
+band-chamfer-single-d0.000003      TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 11999.999999999953 brep 11999.999999999955
+band-chamfer-single-d0.000002      TRUCK-REFUSED      pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: profile loop is not closed  | occt 11999.999999999978 brep 11999.999999999978
+band-slot-r0.004                   PASS               vol 0.800448 occt undefined brep undefined exact 0.8005026548245744 dOcct - dBbox - dCom - dExact 5.5e-5 dBbxEx - faces o/b/t undefined/undefined/6  bodies 1
+band-slot-r0.003                   PASS               vol 0.600084 occt undefined brep undefined exact 0.600282743338823 dOcct - dBbox - dCom - dExact 2.0e-4 dBbxEx - faces o/b/t undefined/undefined/6  bodies 1
+band-circle-across-0.002           FAIL               vol -0.000013 occt 0.000031 brep 0.000031 exact 0.000031415926535897935 dOcct 4.5e-5 dBbox 1.8e-16 dCom 2.5e-1 dExact 4.5e-5 dBbxEx - faces o/b/t 3/3/3  bodies 1
+band-circle-across-0.003           FAIL               vol 0.000030 occt 0.000071 brep 0.000071 exact 0.00007068583470577034 dOcct 4.1e-5 dBbox 6.5e-19 dCom 2.5e-1 dExact 4.1e-5 dBbxEx - faces o/b/t 3/3/3  bodies 1
+band-circle-across-0.005           FAIL               vol 0.000083 occt 0.000196 brep 0.000196 exact 0.0001963495408493621 dOcct 1.1e-4 dBbox 1.8e-16 dCom 2.5e-1 dExact 1.1e-4 dBbxEx - faces o/b/t 3/3/3  bodies 1
+slot-short-micro-r0.001            PASS               vol -0.000020 occt undefined brep 0.000091 exact 0.00009141592653589792 dOcct - dBbox - dCom - dExact 1.1e-4 dBbxEx - faces o/b/t undefined/6/6  bodies 1
+wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/u4/round3b.json 18

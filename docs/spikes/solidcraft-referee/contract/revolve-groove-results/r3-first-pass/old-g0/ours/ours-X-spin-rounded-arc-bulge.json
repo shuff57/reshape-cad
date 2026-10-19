@@ -1,0 +1,21 @@
+{
+ "id": "X-spin-rounded-arc-bulge",
+ "outcome": "built",
+ "volume": 21029.786640079074,
+ "faces": 7,
+ "bbox": [
+  -20,
+  -20,
+  -5.397996448128467e-29,
+  20,
+  20,
+  30
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,0],[17,0]]}},{\"command\":\"sketch.arc.three_point\",\"params\":{\"start\":[17,0],\"end\":[20,3.0000000000000004],\"through\":[19.121320343559642,0.8786796564403576]}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[20,3.0000000000000004],[20,30]]}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[20,30],[10,30]]}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,30],[10,0]]}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-270,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

@@ -1,0 +1,1 @@
+sl9-67-boxtan-top-p0.07                  FAIL     occtV 67940.2898 | tr-occt dV 4.3e-3 dBb 3.6e-16 dCom 2.8e-4 F o/b/t 17/16/16 | brep-occt dV 4.5e-13      | ms 2671 cpu 3113

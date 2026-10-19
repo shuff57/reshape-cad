@@ -1,0 +1,1 @@
+fzc1-49-boxG-top-flat-360                PASS     occtV 69111.9186 | tr-occt dV 1.6e-5 dBb 1.8e-16 dCom 5.6e-7 F o/b/t 15/14/14 | brep-occt dV 1.3e-13      | ms 2648 cpu 2950

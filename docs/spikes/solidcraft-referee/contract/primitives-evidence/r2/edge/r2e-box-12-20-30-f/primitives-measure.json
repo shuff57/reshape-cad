@@ -1,0 +1,63 @@
+[
+ {
+  "id": "r2e-box-12-20-30-f",
+  "feature": "box.corner.edge",
+  "note": "",
+  "script": "box(12, 20, 30, { corner: 6.01 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      12,
+      20,
+      30
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 6.01
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "volume": 8163.894551384185,
+   "com": [
+    0.19362489486334944,
+    0.0034661488311389377,
+    0.007073788775992185
+   ],
+   "bbox": [
+    -6.000000000000001,
+    -10.081379056434477,
+    -15.096146317340905,
+    6.000000100000001,
+    10.092123760831385,
+    15.092123760901176
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 4,
+    "other": 4
+   }
+  },
+  "brep": {
+   "refused": "Rounding box by 6.01 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 395
+ }
+]

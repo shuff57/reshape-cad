@@ -1,0 +1,1 @@
+revolution__front-lifted-5               PASS     occtV 9424.7780 | tr-occt dV 3.2e-7 dBb 0.0e+0 dCom 9.0e-6 F o/b/t 6/6/6 | brep-occt dV 1.0e-10 | FC: occt 1.0e-10 brep 9.7e-16 truck 3.2e-7 dCom 4.2e-4 F 6     | ms 732 cpu 1374

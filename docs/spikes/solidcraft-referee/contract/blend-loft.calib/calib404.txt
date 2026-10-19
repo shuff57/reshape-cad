@@ -1,0 +1,6 @@
+Running as unit: run-p750488-i771656.scope; invocation ID: c11d64fbe55e422b808542815e32e298
+GUARD-PASS-BUT-WRONG [rectcirc] rect5.5x3.4 p->c rc5.1 h3.3: occt 153.2502364829166/7f truck 153.15080174383215/6f d=6.49e-4 bar 0.0003
+[rectcirc] seed 404: {"cases":200,"guardPassed":48,"passBut":1,"refused":152,"refusedWouldBeWrong":32,"refusedExact":120,"refusedNoSolid":0,"maxPassD":0.0006488390580430085,"maxPassCurvedD":0.0006488390580430085}
+[regcirc] seed 404: {"cases":200,"guardPassed":50,"passBut":0,"refused":150,"refusedWouldBeWrong":29,"refusedExact":121,"refusedNoSolid":0,"maxPassD":0.0001668929502971371,"maxPassCurvedD":0.0001668929502971371}
+[rrcirc] seed 404: {"cases":200,"guardPassed":18,"passBut":0,"refused":182,"refusedWouldBeWrong":10,"refusedExact":172,"refusedNoSolid":0,"maxPassD":0.00006207563383067557,"maxPassCurvedD":0.00006207563383067557}
+TOTAL cases 600 guard-passed 116 PASS-BUT-WRONG 1

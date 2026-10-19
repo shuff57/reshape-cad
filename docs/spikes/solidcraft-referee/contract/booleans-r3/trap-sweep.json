@@ -1,0 +1,1239 @@
+[
+ {
+  "id": "cylinder-join-1e-9",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.309541,
+     3
+    ]
+   ]
+  },
+  "ms": 691
+ },
+ {
+  "id": "cylinder-cut-1e-9",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 129
+ },
+ {
+  "id": "cylinder-keep-1e-9",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.298512,
+     3
+    ]
+   ]
+  },
+  "ms": 281
+ },
+ {
+  "id": "cylinder-join-1e-8",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.309541,
+     3
+    ]
+   ]
+  },
+  "ms": 586
+ },
+ {
+  "id": "cylinder-cut-1e-8",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 127
+ },
+ {
+  "id": "cylinder-keep-1e-8",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.298512,
+     3
+    ]
+   ]
+  },
+  "ms": 349
+ },
+ {
+  "id": "cylinder-join-1e-7",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.309541,
+     3
+    ]
+   ]
+  },
+  "ms": 583
+ },
+ {
+  "id": "cylinder-cut-1e-7",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 144
+ },
+ {
+  "id": "cylinder-keep-1e-7",
+  "trap": "Unreachable code should not be executed (evaluating 'wasm.run(ptr0, len0)')",
+  "after": "box ok",
+  "ms": 36
+ },
+ {
+  "id": "cylinder-join-0.000001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.309541,
+     3
+    ]
+   ]
+  },
+  "ms": 565
+ },
+ {
+  "id": "cylinder-cut-0.000001",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 159
+ },
+ {
+  "id": "cylinder-keep-0.000001",
+  "trap": "Unreachable code should not be executed (evaluating 'wasm.run(ptr0, len0)')",
+  "after": "box ok",
+  "ms": 34
+ },
+ {
+  "id": "cylinder-join-0.00001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.309541,
+     3
+    ]
+   ]
+  },
+  "ms": 704
+ },
+ {
+  "id": "cylinder-cut-0.00001",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 151
+ },
+ {
+  "id": "cylinder-keep-0.00001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.309541,
+     3
+    ]
+   ]
+  },
+  "ms": 462
+ },
+ {
+  "id": "cylinder-join-0.0001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.309541,
+     3
+    ]
+   ]
+  },
+  "ms": 537
+ },
+ {
+  "id": "cylinder-cut-0.0001",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 143
+ },
+ {
+  "id": "cylinder-keep-0.0001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.288514,
+     3
+    ]
+   ]
+  },
+  "ms": 376
+ },
+ {
+  "id": "cylinder-join-0.001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.309541,
+     3
+    ]
+   ]
+  },
+  "ms": 674
+ },
+ {
+  "id": "cylinder-cut-0.001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     0.0999826698,
+     3
+    ]
+   ]
+  },
+  "ms": 379
+ },
+ {
+  "id": "cylinder-keep-0.001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.309541,
+     3
+    ]
+   ]
+  },
+  "ms": 513
+ },
+ {
+  "id": "cylinder-join-0.01",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     786.298318,
+     3
+    ]
+   ]
+  },
+  "ms": 668
+ },
+ {
+  "id": "cylinder-cut-0.01",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     0.999826533,
+     3
+    ]
+   ]
+  },
+  "ms": 344
+ },
+ {
+  "id": "cylinder-keep-0.01",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     784.298707,
+     3
+    ]
+   ]
+  },
+  "ms": 415
+ },
+ {
+  "id": "sphere-join-1e-9",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 4609
+ },
+ {
+  "id": "sphere-cut-1e-9",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 362
+ },
+ {
+  "id": "sphere-keep-1e-9",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 4631
+ },
+ {
+  "id": "sphere-join-1e-8",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 4585
+ },
+ {
+  "id": "sphere-cut-1e-8",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 419
+ },
+ {
+  "id": "sphere-keep-1e-8",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 4326
+ },
+ {
+  "id": "sphere-join-1e-7",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 5425
+ },
+ {
+  "id": "sphere-cut-1e-7",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 488
+ },
+ {
+  "id": "sphere-keep-1e-7",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 3923
+ },
+ {
+  "id": "sphere-join-0.000001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 5073
+ },
+ {
+  "id": "sphere-cut-0.000001",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 489
+ },
+ {
+  "id": "sphere-keep-0.000001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 4137
+ },
+ {
+  "id": "sphere-join-0.00001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 4802
+ },
+ {
+  "id": "sphere-cut-0.00001",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 423
+ },
+ {
+  "id": "sphere-keep-0.00001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 4110
+ },
+ {
+  "id": "sphere-join-0.0001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 5414
+ },
+ {
+  "id": "sphere-cut-0.0001",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 416
+ },
+ {
+  "id": "sphere-keep-0.0001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 4205
+ },
+ {
+  "id": "sphere-join-0.001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 4975
+ },
+ {
+  "id": "sphere-cut-0.001",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 409
+ },
+ {
+  "id": "sphere-keep-0.001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 3884
+ },
+ {
+  "id": "sphere-join-0.01",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 4636
+ },
+ {
+  "id": "sphere-cut-0.01",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 418
+ },
+ {
+  "id": "sphere-keep-0.01",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     2144.50845,
+     1
+    ]
+   ]
+  },
+  "ms": 4368
+ },
+ {
+  "id": "box-join-1e-9",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 30
+ },
+ {
+  "id": "box-cut-1e-9",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 24
+ },
+ {
+  "id": "box-keep-1e-9",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 34
+ },
+ {
+  "id": "box-join-1e-8",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 24
+ },
+ {
+  "id": "box-cut-1e-8",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 25
+ },
+ {
+  "id": "box-keep-1e-8",
+  "trap": "Unreachable code should not be executed (evaluating 'wasm.run(ptr0, len0)')",
+  "after": "box ok",
+  "ms": 22
+ },
+ {
+  "id": "box-join-1e-7",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 25
+ },
+ {
+  "id": "box-cut-1e-7",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 22
+ },
+ {
+  "id": "box-keep-1e-7",
+  "trap": "Unreachable code should not be executed (evaluating 'wasm.run(ptr0, len0)')",
+  "after": "box ok",
+  "ms": 19
+ },
+ {
+  "id": "box-join-0.000001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 27
+ },
+ {
+  "id": "box-cut-0.000001",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 23
+ },
+ {
+  "id": "box-keep-0.000001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 28
+ },
+ {
+  "id": "box-join-0.00001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 27
+ },
+ {
+  "id": "box-cut-0.00001",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 21
+ },
+ {
+  "id": "box-keep-0.00001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 22
+ },
+ {
+  "id": "box-join-0.0001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 25
+ },
+ {
+  "id": "box-cut-0.0001",
+  "result": {
+   "ok": true,
+   "bodies": []
+  },
+  "ms": 24
+ },
+ {
+  "id": "box-keep-0.0001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 29
+ },
+ {
+  "id": "box-join-0.001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 27
+ },
+ {
+  "id": "box-cut-0.001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     0.1,
+     6
+    ]
+   ]
+  },
+  "ms": 27
+ },
+ {
+  "id": "box-keep-0.001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 31
+ },
+ {
+  "id": "box-join-0.01",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 26
+ },
+ {
+  "id": "box-cut-0.01",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1,
+     6
+    ]
+   ]
+  },
+  "ms": 21
+ },
+ {
+  "id": "box-keep-0.01",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     999,
+     6
+    ]
+   ]
+  },
+  "ms": 23
+ },
+ {
+  "id": "cylinder-in-box-join-1e-9",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 198
+ },
+ {
+  "id": "cylinder-in-box-cut-1e-9",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     214.686672,
+     13
+    ]
+   ]
+  },
+  "ms": 373
+ },
+ {
+  "id": "cylinder-in-box-keep-1e-9",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.313328,
+     3
+    ]
+   ]
+  },
+  "ms": 331
+ },
+ {
+  "id": "cylinder-in-box-join-1e-8",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 174
+ },
+ {
+  "id": "cylinder-in-box-cut-1e-8",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     214.68667,
+     13
+    ]
+   ]
+  },
+  "ms": 296
+ },
+ {
+  "id": "cylinder-in-box-keep-1e-8",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.313331,
+     3
+    ]
+   ]
+  },
+  "ms": 293
+ },
+ {
+  "id": "cylinder-in-box-join-1e-7",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 188
+ },
+ {
+  "id": "cylinder-in-box-cut-1e-7",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     214.686654,
+     13
+    ]
+   ]
+  },
+  "ms": 310
+ },
+ {
+  "id": "cylinder-in-box-keep-1e-7",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.313359,
+     3
+    ]
+   ]
+  },
+  "ms": 257
+ },
+ {
+  "id": "cylinder-in-box-join-0.000001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 192
+ },
+ {
+  "id": "cylinder-in-box-cut-0.000001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     214.690145,
+     7
+    ]
+   ]
+  },
+  "ms": 3259
+ },
+ {
+  "id": "cylinder-in-box-keep-0.000001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.313642,
+     3
+    ]
+   ]
+  },
+  "ms": 251
+ },
+ {
+  "id": "cylinder-in-box-join-0.00001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 183
+ },
+ {
+  "id": "cylinder-in-box-cut-0.00001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     214.687318,
+     7
+    ]
+   ]
+  },
+  "ms": 3478
+ },
+ {
+  "id": "cylinder-in-box-keep-0.00001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.316469,
+     3
+    ]
+   ]
+  },
+  "ms": 267
+ },
+ {
+  "id": "cylinder-in-box-join-0.0001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 152
+ },
+ {
+  "id": "cylinder-in-box-cut-0.0001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     53.6647272,
+     5
+    ],
+    [
+     "a (3)",
+     53.6647272,
+     5
+    ],
+    [
+     "a (1)",
+     53.6620109,
+     5
+    ],
+    [
+     "a (2)",
+     53.6620109,
+     5
+    ]
+   ]
+  },
+  "ms": 363
+ },
+ {
+  "id": "cylinder-in-box-keep-0.0001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.346524,
+     10
+    ]
+   ]
+  },
+  "ms": 355
+ },
+ {
+  "id": "cylinder-in-box-join-0.001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 183
+ },
+ {
+  "id": "cylinder-in-box-cut-0.001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     53.5942859,
+     5
+    ],
+    [
+     "a (2)",
+     53.5916053,
+     5
+    ],
+    [
+     "a (3)",
+     53.5942859,
+     5
+    ],
+    [
+     "a (1)",
+     53.5916053,
+     5
+    ]
+   ]
+  },
+  "ms": 406
+ },
+ {
+  "id": "cylinder-in-box-keep-0.001",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     785.615689,
+     10
+    ]
+   ]
+  },
+  "ms": 317
+ },
+ {
+  "id": "cylinder-in-box-join-0.01",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     1000,
+     6
+    ]
+   ]
+  },
+  "ms": 205
+ },
+ {
+  "id": "cylinder-in-box-cut-0.01",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a (3)",
+     52.9244949,
+     5
+    ],
+    [
+     "a (2)",
+     52.9219293,
+     5
+    ],
+    [
+     "a",
+     52.9244949,
+     5
+    ],
+    [
+     "a (1)",
+     52.9219293,
+     5
+    ]
+   ]
+  },
+  "ms": 383
+ },
+ {
+  "id": "cylinder-in-box-keep-0.01",
+  "result": {
+   "ok": true,
+   "bodies": [
+    [
+     "a",
+     788.286771,
+     10
+    ]
+   ]
+  },
+  "ms": 317
+ }
+]

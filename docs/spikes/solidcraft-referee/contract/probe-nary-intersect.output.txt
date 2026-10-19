@@ -1,0 +1,8 @@
+A,B,C slabs. closed form: A&B&C = empty (0); A&(B|C) = 2000
+  n-ary, as the translator emits    : A=2000.0000
+  pairwise fold (A&B) then &C      : 
+A, slab P (|x|<10), slab Q (|y|<10). closed form: A&P&Q = 20*20*20 = 8000; A&(P|Q) = 2*(20*40*20)-8000 = 24000
+  n-ary, as the translator emits    : A=24000.0000
+  pairwise fold                    : A=8000.0000
+cut A-P-Q. closed form: 32000 - 24000 = 8000 (four corner blocks of 2000)
+  n-ary                            : A (3)=2000.0000 A (2)=2000.0000 A (1)=2000.0000 A=2000.0000

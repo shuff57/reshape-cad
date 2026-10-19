@@ -1,0 +1,1 @@
+Z-spin-over360-neg720                    PASS     occtV 28274.3339 | tr-occt dV 1.6e-4 dBb 1.8e-16 dCom 6.3e-15 F o/b/t 4/4/4 | brep-occt dV 1.3e-16 | FC: occt 0.0e+0 brep 1.3e-16 truck 1.6e-4 dCom 4.1e-13 F 4 | ANALYTIC 28274.3339 dTruck 1.6e-4 dOcct 2.6e-16 dBrep 1.3e-16    | ms 622 cpu 1086

@@ -1,0 +1,1 @@
+X-spin-L-neg-200-axis-edge               PASS     occtV 1291.5436 | tr-occt dV 1.1e-4 dBb 2.7e-5 dCom 4.8e-6 F o/b/t 7/7/7 | brep-occt dV 2.8e-11      | ms 233 cpu 648

@@ -1,0 +1,1 @@
+X-groove-box-front-ring-135              PASS     occtV 142353.5115 | tr-occt dV 3.2e-6 dBb 1.8e-16 dCom 4.7e-7 F o/b/t 15/15/15 | brep-occt dV 8.2e-16      | ms 876 cpu 1231

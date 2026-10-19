@@ -1,0 +1,17 @@
+ALL 1420 1242
+{
+  n: 1242,
+  labelMiss: 178,
+  worstOcctSavedVsLive: 0,
+  worstAnalyticSavedVsLive: 0,
+  guardDiff: 0,
+  occtRefDiff: 0,
+  guardPassed: 840,
+  noOcct: 0,
+  planarPassed: 721,
+  planarMaxTruckSavedVsLiveOcct: 7.286329888853712e-13,
+  curvedPassed: 119,
+  curvedMax: 0.00020233344761381476,
+  bad: 0,
+}
+[]

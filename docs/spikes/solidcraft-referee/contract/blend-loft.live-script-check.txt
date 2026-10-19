@@ -1,0 +1,21 @@
+--- basic gap30
+{"errors":[],"features":[{"id":"sk1","plane":"xy","offset":5},{"id":"sk2","plane":"xy","offset":35},{"id":"bl1","kind":"blend","targets":["sk1","sk2"]}]}
+toScript: const bl1 = loft(sk1, sk2, 30)
+--- neg gap
+{"errors":[],"features":[{"id":"sk1","plane":"xy","offset":40},{"id":"sk2","plane":"xy","offset":10},{"id":"bl1","kind":"blend","targets":["sk2","sk1"]}]}
+toScript: const bl1 = loft(sk2, sk1, 30)
+--- loft spelling
+{"errors":[],"features":[{"id":"sk1","plane":"xy","offset":0},{"id":"sk2","plane":"xy","offset":30},{"id":"bl1","kind":"blend","targets":["sk1","sk2"]}]}
+toScript: const bl1 = loft(sk1, sk2, 30)
+--- three sketches
+{"errors":[{"message":"blend() takes two sketches and a gap; the fourth argument (30) was ignored.","line":4}],"features":[{"id":"sk1","plane":"xy","offset":0},{"id":"sk2","plane":"xy","offset":0},{"id":"sk3","plane":"xy","offset":0}]}
+toScript: 
+--- extra num
+{"errors":[{"message":"blend() takes two sketches and a gap; the fourth argument (5) was ignored.","line":3}],"features":[{"id":"sk1","plane":"xy","offset":0},{"id":"sk2","plane":"xy","offset":0}]}
+toScript: 
+--- loft extra
+{"errors":[{"message":"blend() takes two sketches and a gap; the fourth argument (5) was ignored.","line":3}],"features":[{"id":"sk1","plane":"xy","offset":0},{"id":"sk2","plane":"xy","offset":0}]}
+toScript: 
+--- one sketch
+{"errors":[{"message":"blend() needs two sketches: blend(sketch1, sketch2, gap).","line":2}],"features":[{"id":"sk1","plane":"xy","offset":0}]}
+toScript: 

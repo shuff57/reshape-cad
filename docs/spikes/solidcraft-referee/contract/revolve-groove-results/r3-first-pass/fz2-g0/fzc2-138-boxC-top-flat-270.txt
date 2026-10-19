@@ -1,0 +1,1 @@
+fzc2-138-boxC-top-flat-270               PASS     occtV 71403.4681 | tr-occt dV 9.4e-7 dBb 1.6e-15 dCom 1.7e-7 F o/b/t 14/14/14 | brep-occt dV 2.9e-13      | ms 2519 cpu 2918

@@ -1,0 +1,1 @@
+R3-ground-front-90-lift1                 PASS     occtV 32000.0000 | tr-occt dV 2.3e-16 dBb 0.0e+0 dCom 1.0e-18 F o/b/t 6/-/6 | brep-occt dV -     | BREP REFUSED: groove1 does not touch the part, so it cuts nothing -- groove1 is shown without it. | ms 193 cpu 671

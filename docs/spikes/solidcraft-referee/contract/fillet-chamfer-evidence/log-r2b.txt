@@ -1,0 +1,57 @@
+tu-z10-round-top-front             PASS     OCCTvol 11974.2478 brep 8.5e-13 truck dV 1.4e-6 dCom 2.8e-7 faces O/B/T 7/7/7    
+tu-z10-bevel-top-front             PASS     OCCTvol 11940.0000 brep 1.5e-16 truck dV 3.0e-16 dCom 2.5e-16 faces O/B/T 7/7/7    
+tu-z10-bevel-left-back             PASS     OCCTvol 11960.0000 brep 4.6e-16 truck dV 1.5e-16 dCom 2.3e-17 faces O/B/T 7/7/7    
+tu-z45-round-top-front             PASS     OCCTvol 11982.8319 brep 7.4e-13 truck dV 9.4e-7 dCom 1.8e-7 faces O/B/T 7/7/7    
+tu-z45-bevel-top-front             PASS     OCCTvol 11960.0000 brep 3.0e-16 truck dV 1.5e-16 dCom 9.6e-17 faces O/B/T 7/7/7    
+tu-z45-bevel-left-back             REFUSED  OCCTvol 12000.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 6/6/-   REFUSED: bevel1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing) 
+tu-z90-round-top-front             PASS     OCCTvol 11982.8319 brep 7.4e-13 truck dV 9.4e-7 dCom 3.2e-7 faces O/B/T 7/7/7    
+tu-z90-bevel-top-front             PASS     OCCTvol 11960.0000 brep 3.0e-16 truck dV 1.5e-16 dCom 1.2e-16 faces O/B/T 7/7/7    
+tu-z90-bevel-left-back             PASS     OCCTvol 11960.0000 brep 1.5e-16 truck dV 0.0e+0 dCom 4.7e-17 faces O/B/T 7/7/7    
+tu-x90-round-top-front             PASS     OCCTvol 11974.2478 brep 8.5e-13 truck dV 1.4e-6 dCom 3.2e-7 faces O/B/T 7/7/7    
+tu-x90-bevel-top-front             PASS     OCCTvol 11940.0000 brep 0.0e+0 truck dV 0.0e+0 dCom 2.9e-17 faces O/B/T 7/7/7    
+tu-x90-bevel-left-back             PASS     OCCTvol 11960.0000 brep 0.0e+0 truck dV 0.0e+0 dCom 3.3e-17 faces O/B/T 7/7/7    
+tu-y90-round-top-front             PASS     OCCTvol 11982.8319 brep 7.4e-13 truck dV 9.4e-7 dCom 3.2e-7 faces O/B/T 7/7/7    
+tu-y90-bevel-top-front             PASS     OCCTvol 11960.0000 brep 3.0e-16 truck dV 1.5e-16 dCom 6.0e-17 faces O/B/T 7/7/7    
+tu-y90-bevel-left-back             PASS     OCCTvol 11940.0000 brep 0.0e+0 truck dV 0.0e+0 dCom 4.9e-17 faces O/B/T 7/7/7    
+tu-x30y20-round-top-front          PASS     OCCTvol 11974.2478 brep 8.5e-13 truck dV 1.4e-6 dCom 3.0e-7 faces O/B/T 7/7/7    
+tu-x30y20-bevel-top-front          PASS     OCCTvol 11940.0000 brep 0.0e+0 truck dV 1.5e-16 dCom 1.3e-16 faces O/B/T 7/7/7    
+tu-x30y20-bevel-left-back          PASS     OCCTvol 11960.0000 brep 4.6e-16 truck dV 1.5e-16 dCom 1.3e-16 faces O/B/T 7/7/7    
+tu-x30y40z50-round-top-front       FAIL     OCCTvol 12000.0000 brep 1.5e-16 truck dV 1.4e-3 dCom 3.1e-4 faces O/B/T 6/6/7 FACE?   
+tu-x30y40z50-bevel-top-front       FAIL     OCCTvol 12000.0000 brep 1.5e-16 truck dV 3.3e-3 dCom 7.0e-4 faces O/B/T 6/6/7 FACE?   
+tu-x30y40z50-bevel-left-back       PASS     OCCTvol 11960.0000 brep 3.0e-16 truck dV 3.0e-16 dCom 1.2e-16 faces O/B/T 7/7/7    
+tu-x45-round-top-front             FAIL     OCCTvol 12000.0000 brep 1.5e-16 truck dV 2.1e-3 dCom 5.8e-4 faces O/B/T 6/6/7 FACE?   
+tu-x45-bevel-top-front             FAIL     OCCTvol 12000.0000 brep 1.5e-16 truck dV 5.0e-3 dCom 1.3e-3 faces O/B/T 6/6/7 FACE?   
+tu-x45-bevel-left-back             PASS     OCCTvol 11960.0000 brep 0.0e+0 truck dV 6.1e-16 dCom 5.5e-17 faces O/B/T 7/7/7    
+mo-15_0_0-round                    PASS     OCCTvol 11974.2478 brep 8.5e-13 truck dV 1.4e-6 dCom 3.2e-7 faces O/B/T 7/7/7  closed dT 1.4e-6 dO 8.5e-13  
+mo-15_0_0-bevel                    PASS     OCCTvol 11940.0000 brep 0.0e+0 truck dV 0.0e+0 dCom 4.3e-17 faces O/B/T 7/7/7  closed dT 0.0e+0 dO 0.0e+0  
+mo-m15_0_0-round                   FAIL     OCCTvol 11974.2478 brep 8.5e-13 truck dV 7.2e-4 dCom 5.1e-4 faces O/B/T 7/7/7  closed dT 7.2e-4 dO 8.5e-13  
+mo-m15_0_0-bevel                   FAIL     OCCTvol 11940.0000 brep 0.0e+0 truck dV 1.7e-3 dCom 1.2e-3 faces O/B/T 7/7/7  closed dT 1.7e-3 dO 0.0e+0  
+mo-0_10_0-round                    REFUSED  OCCTvol 11974.2478 brep 8.5e-13 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 8.5e-13 REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 11.081 mm away 
+mo-0_10_0-bevel                    REFUSED  OCCTvol 11940.0000 brep 0.0e+0 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 0.0e+0 REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 11.081 mm away 
+mo-0_m10_0-round                   REFUSED  OCCTvol 11974.2478 brep 8.5e-13 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 8.5e-13 REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 11.081 mm away 
+mo-0_m10_0-bevel                   REFUSED  OCCTvol 11940.0000 brep 0.0e+0 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 0.0e+0 REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 11.081 mm away 
+mo-0_0_10-round                    REFUSED  OCCTvol 11974.2478 brep 8.5e-13 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 8.5e-13 REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 5.225 mm away 
+mo-0_0_10-bevel                    REFUSED  OCCTvol 11940.0000 brep 0.0e+0 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 0.0e+0 REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 5.225 mm away 
+mo-0_0_m10-round                   REFUSED  OCCTvol 11974.2478 brep 8.5e-13 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 8.5e-13 REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 14.775 mm away 
+mo-0_0_m10-bevel                   REFUSED  OCCTvol 11940.0000 brep 0.0e+0 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 0.0e+0 REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 14.775 mm away 
+mo-1_1_1-round                     PASS     OCCTvol 11974.2478 brep 8.5e-13 truck dV 1.4e-6 dCom 3.2e-7 faces O/B/T 7/7/7  closed dT 1.4e-6 dO 8.5e-13  
+mo-1_1_1-bevel                     PASS     OCCTvol 11940.0000 brep 0.0e+0 truck dV 0.0e+0 dCom 1.6e-17 faces O/B/T 7/7/7  closed dT 0.0e+0 dO 0.0e+0  
+mo-5_5_5-round                     REFUSED  OCCTvol 11974.2478 brep 8.5e-13 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 8.5e-13 REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 5.005 mm away 
+mo-5_5_5-bevel                     REFUSED  OCCTvol 11940.0000 brep 0.0e+0 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 0.0e+0 REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 5.005 mm away 
+mo-m7_3_2-round                    REFUSED  OCCTvol 11974.2478 brep 8.5e-13 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 8.5e-13 REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 4.086 mm away 
+mo-m7_3_2-bevel                    REFUSED  OCCTvol 11940.0000 brep 0.0e+0 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 0.0e+0 REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 4.086 mm away 
+mo-0_0_2-round                     PASS     OCCTvol 11974.2478 brep 8.5e-13 truck dV 1.4e-6 dCom 3.2e-7 faces O/B/T 7/7/7  closed dT 1.4e-6 dO 8.5e-13  
+mo-0_0_2-bevel                     PASS     OCCTvol 11940.0000 brep 0.0e+0 truck dV 0.0e+0 dCom 1.1e-17 faces O/B/T 7/7/7  closed dT 0.0e+0 dO 0.0e+0  
+mo-0_2_0-round                     PASS     OCCTvol 11974.2478 brep 8.5e-13 truck dV 1.4e-6 dCom 3.2e-7 faces O/B/T 7/7/7  closed dT 1.4e-6 dO 8.5e-13  
+mo-0_2_0-bevel                     PASS     OCCTvol 11940.0000 brep 0.0e+0 truck dV 0.0e+0 dCom 1.5e-17 faces O/B/T 7/7/7  closed dT 0.0e+0 dO 0.0e+0  
+mo-2_0_0-round                     PASS     OCCTvol 11974.2478 brep 8.5e-13 truck dV 1.4e-6 dCom 3.2e-7 faces O/B/T 7/7/7  closed dT 1.4e-6 dO 8.5e-13  
+mo-2_0_0-bevel                     PASS     OCCTvol 11940.0000 brep 0.0e+0 truck dV 0.0e+0 dCom 1.5e-17 faces O/B/T 7/7/7  closed dT 0.0e+0 dO 0.0e+0  
+mo-30_0_0-round                    REFUSED  OCCTvol 11974.2478 brep 8.5e-13 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 8.5e-13 REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 15.742 mm away 
+mo-30_0_0-bevel                    REFUSED  OCCTvol 11940.0000 brep 0.0e+0 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 0.0e+0 REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 15.742 mm away 
+mo-0_20_0-round                    REFUSED  OCCTvol 11974.2478 brep 8.5e-13 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 8.5e-13 REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 20.562 mm away 
+mo-0_20_0-bevel                    REFUSED  OCCTvol 11940.0000 brep 0.0e+0 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 0.0e+0 REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 20.562 mm away 
+mo-m15_m10_0-round                 FAIL     OCCTvol 11974.2478 brep 8.5e-13 truck dV 7.2e-4 dCom 5.1e-4 faces O/B/T 7/7/7  closed dT 7.2e-4 dO 8.5e-13  
+mo-m15_m10_0-bevel                 FAIL     OCCTvol 11940.0000 brep 0.0e+0 truck dV 1.7e-3 dCom 1.2e-3 faces O/B/T 7/7/7  closed dT 1.7e-3 dO 0.0e+0  
+mo-15_10_10-round                  REFUSED  OCCTvol 11974.2478 brep 8.5e-13 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 8.5e-13 REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 10.000 mm away 
+mo-15_10_10-bevel                  REFUSED  OCCTvol 11940.0000 brep 0.0e+0 truck dV - dCom - faces O/B/T 7/7/-  closed dT - dO 0.0e+0 REFUSED: bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -10, 14.774648292756861]: the nearest edge is 10.000 mm away 
+EXIT 0 last: solidcraft run: [{"command":"solid.box","params":{"length":30,"width":20,"height":20,"center":[0,0,0],"body_name":"b_box1"}},{"command":"solid.move","params":{"bodies":["b_box1"],"translate":[15,10,10]}},{"command":"solid.chamfer","params":{"edges":[[0,-10,14.774648292756861]],"distance":2,"body":"b_box1"}}]

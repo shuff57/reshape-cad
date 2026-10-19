@@ -1,0 +1,1 @@
+C-front180-side180                       REFUSED  occtV 29233.8320 | tr-occt dV - dBb - dCom - F o/b/t 10/10/- | brep-occt dV 7.6e-12    | TRUCK REFUSED: groove2 (groove): groove1 was not built, so this groove has no finished part to cut; fix groove1 first.  | ms 267 cpu 826

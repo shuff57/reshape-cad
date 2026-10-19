@@ -1,0 +1,1 @@
+X-groove-top-offset3-360                 PASS     occtV 36505.3066 | tr-occt dV 1.2e-4 dBb 8.9e-16 dCom 2.9e-7 F o/b/t 7/7/7 | brep-occt dV 1.0e-15  | ANALYTIC 36505.3066 dTruck 1.2e-4 dOcct 2.0e-16 dBrep 8.0e-16    | ms 10425 cpu 10853

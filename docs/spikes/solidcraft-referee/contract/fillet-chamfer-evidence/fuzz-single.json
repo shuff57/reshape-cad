@@ -1,0 +1,6531 @@
+{
+ "seed": 7,
+ "n": 200,
+ "tally": {
+  "match": 125,
+  "both-refused": 40,
+  "WRONG-UNREFUSED": 35
+ },
+ "rows": [
+  {
+   "i": 0,
+   "script": "const b = cuboid(8.5,10.5,47.1)\nbevel(b.edge('front','left'), 5.4)",
+   "style": "bevel",
+   "D": [
+    8.5,
+    10.5,
+    47.1
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 5.4,
+   "limit": 8.5,
+   "ratio": 0.635,
+   "occt": {
+    "volume": 3516.9570000000003,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 3516.957,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 3516.957,
+    "faces": 7,
+    "dVol": 1.2930136788321953e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 1,
+   "script": "const b = cuboid(26.6,17.6,30.1)\nround(b.edge('front','left'), 4.9)",
+   "style": "round",
+   "D": [
+    26.6,
+    17.6,
+    30.1
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 4.9,
+   "limit": 17.6,
+   "ratio": 0.278,
+   "occt": {
+    "volume": 13936.52303810464,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 13936.523038085505,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 13936.421326415626,
+    "faces": 7,
+    "dVol": 0.000007298211235057791
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 2,
+   "script": "const b = cuboid(38.6,28.7,15.9)\nround(b.edge('bottom','front'), 13.1)",
+   "style": "round",
+   "D": [
+    38.6,
+    28.7,
+    15.9
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 13.1,
+   "limit": 15.9,
+   "ratio": 0.824,
+   "occt": {
+    "volume": 16192.784102455746,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 16192.784102476551,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 16192.258345812466,
+    "faces": 7,
+    "dVol": 0.00003246857612333031
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 3,
+   "script": "const b = cuboid(19.9,47.1,17.9)\nround(b.edge('back','left'), 5.1)",
+   "style": "round",
+   "D": [
+    19.9,
+    47.1,
+    17.9
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 5.1,
+   "limit": 19.9,
+   "ratio": 0.256,
+   "occt": {
+    "volume": 16677.57689153886,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 16677.57689151642,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 16677.51135553099,
+    "faces": 7,
+    "dVol": 0.000003929588110853291
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 4,
+   "script": "const b = cuboid(14.2,19.6,29.9)\nround(b.edge('front','right'), 19.5)",
+   "style": "round",
+   "D": [
+    14.2,
+    19.6,
+    29.9
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 19.5,
+   "limit": 14.2,
+   "ratio": 1.373,
+   "occt": {
+    "volume": 8321.767999999998,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 8321.767999999998,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 5,
+   "script": "const b = cuboid(30.1,32.9,35.2)\nbevel(b.edge('back','right'), 41.7)",
+   "style": "bevel",
+   "D": [
+    30.1,
+    32.9,
+    35.2
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 41.7,
+   "limit": 30.1,
+   "ratio": 1.385,
+   "occt": {
+    "volume": 34858.208,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 34858.208000000006,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 7984.943999999999,
+    "faces": 5,
+    "dVol": 0.7709307374607438
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 6,
+   "script": "const b = cuboid(41.1,9.6,15)\nround(b.edge('bottom','front'), 0.8)",
+   "style": "round",
+   "D": [
+    41.1,
+    9.6,
+    15
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 0.8,
+   "limit": 9.6,
+   "ratio": 0.083,
+   "occt": {
+    "volume": 5912.755113293717,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 5912.755113290007,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 5912.751410770976,
+    "faces": 7,
+    "dVol": 6.261924720721199e-7
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 7,
+   "script": "const b = cuboid(11.5,38.7,22.8)\nround(b.edge('bottom','back'), 32.4)",
+   "style": "round",
+   "D": [
+    11.5,
+    38.7,
+    22.8
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 32.4,
+   "limit": 22.8,
+   "ratio": 1.421,
+   "occt": {
+    "volume": 10147.14,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 10147.140000000001,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 8,
+   "script": "const b = cuboid(36.1,35.5,21.2)\nround(b.edge('bottom','front'), 5.2)",
+   "style": "round",
+   "D": [
+    36.1,
+    35.5,
+    21.2
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 5.2,
+   "limit": 21.2,
+   "ratio": 0.245,
+   "occt": {
+    "volume": 26959.377704846986,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 26959.377704811446,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 26959.240319752484,
+    "faces": 7,
+    "dVol": 0.000005096003921383207
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 9,
+   "script": "const b = cuboid(44.5,20.9,15.6)\nround(b.edge('bottom','right'), 1.8)",
+   "style": "round",
+   "D": [
+    44.5,
+    20.9,
+    15.6
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 1.8,
+   "limit": 15.6,
+   "ratio": 0.115,
+   "occt": {
+    "volume": 14494.248022043117,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 14494.24802203262,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 14494.23848771829,
+    "faces": 7,
+    "dVol": 6.578005849110252e-7
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 10,
+   "script": "const b = cuboid(35.4,44.9,29.9)\nbevel(b.edge('front','right'), 49)",
+   "style": "bevel",
+   "D": [
+    35.4,
+    44.9,
+    29.9
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 49,
+   "limit": 35.4,
+   "ratio": 1.384,
+   "occt": {
+    "volume": 47524.854,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 47524.85399999999,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 14646.365500000002,
+    "faces": 5,
+    "dVol": 0.6918167176273703
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 11,
+   "script": "const b = cuboid(12.7,29.2,34)\nbevel(b.edge('back','left'), 16.1)",
+   "style": "bevel",
+   "D": [
+    12.7,
+    29.2,
+    34
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 16.1,
+   "limit": 12.7,
+   "ratio": 1.268,
+   "occt": {
+    "volume": 12608.559999999998,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 12608.559999999998,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 8398.510000000002,
+    "faces": 6,
+    "dVol": 0.3339041095890408
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 12,
+   "script": "const b = cuboid(31.8,46.6,46.7)\nbevel(b.edge('bottom','left'), 1.9)",
+   "style": "bevel",
+   "D": [
+    31.8,
+    46.6,
+    46.7
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 1.9,
+   "limit": 31.8,
+   "ratio": 0.06,
+   "occt": {
+    "volume": 69119.68299999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 69119.683,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 69119.683,
+    "faces": 7,
+    "dVol": 2.1053214651413915e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 13,
+   "script": "const b = cuboid(28.6,21.1,37)\nbevel(b.edge('bottom','left'), 41.9)",
+   "style": "bevel",
+   "D": [
+    28.6,
+    21.1,
+    37
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 41.9,
+   "limit": 28.6,
+   "ratio": 1.465,
+   "occt": {
+    "volume": 22328.02,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 22328.02,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 5925.829500000003,
+    "faces": 5,
+    "dVol": 0.7346012096012094
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 14,
+   "script": "const b = cuboid(30.3,40.9,25.2)\nbevel(b.edge('bottom','right'), 21.4)",
+   "style": "bevel",
+   "D": [
+    30.3,
+    40.9,
+    25.2
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 21.4,
+   "limit": 25.2,
+   "ratio": 0.849,
+   "occt": {
+    "volume": 21864.321999999993,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 21864.322,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 21864.322,
+    "faces": 7,
+    "dVol": 3.3277764634930954e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 15,
+   "script": "const b = cuboid(20.5,17.5,8.4)\nbevel(b.edge('top','front'), 10.6)",
+   "style": "bevel",
+   "D": [
+    20.5,
+    17.5,
+    8.4
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 10.6,
+   "limit": 8.4,
+   "ratio": 1.262,
+   "occt": {
+    "volume": 3013.5,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 3013.5,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 1911.4199999999992,
+    "faces": 6,
+    "dVol": 0.365714285714286
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 16,
+   "script": "const b = cuboid(33.2,8.6,32.8)\nbevel(b.edge('bottom','right'), 49)",
+   "style": "bevel",
+   "D": [
+    33.2,
+    8.6,
+    32.8
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 49,
+   "limit": 32.8,
+   "ratio": 1.494,
+   "occt": {
+    "volume": 9365.055999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 9365.055999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 1242.7000000000005,
+    "faces": 5,
+    "dVol": 0.8673045841904201
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 17,
+   "script": "const b = cuboid(19.1,47.5,34)\nbevel(b.edge('front','right'), 23.9)",
+   "style": "bevel",
+   "D": [
+    19.1,
+    47.5,
+    34
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 23.9,
+   "limit": 19.1,
+   "ratio": 1.251,
+   "occt": {
+    "volume": 30846.5,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 30846.500000000004,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 21527.610000000004,
+    "faces": 6,
+    "dVol": 0.3021052631578946
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 18,
+   "script": "const b = cuboid(13.6,47.8,28.3)\nround(b.edge('bottom','left'), 8.5)",
+   "style": "round",
+   "D": [
+    13.6,
+    47.8,
+    28.3
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 8.5,
+   "limit": 13.6,
+   "ratio": 0.625,
+   "occt": {
+    "volume": 17656.12582721819,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 17656.12582720126,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 17655.63983920919,
+    "faces": 7,
+    "dVol": 0.000027525178159499484
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 19,
+   "script": "const b = cuboid(16.4,40.5,42.5)\nbevel(b.edge('front','left'), 24.4)",
+   "style": "bevel",
+   "D": [
+    16.4,
+    40.5,
+    42.5
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 24.4,
+   "limit": 16.4,
+   "ratio": 1.488,
+   "occt": {
+    "volume": 28228.5,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 28228.499999999996,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 16937.100000000002,
+    "faces": 6,
+    "dVol": 0.3999999999999999
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 20,
+   "script": "const b = cuboid(32.4,37.5,46.2)\nround(b.edge('bottom','back'), 33.6)",
+   "style": "round",
+   "D": [
+    32.4,
+    37.5,
+    46.2
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 33.6,
+   "limit": 37.5,
+   "ratio": 0.896,
+   "occt": {
+    "volume": 48283.22878150238,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 48283.22878179353,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 48280.32557908317,
+    "faces": 7,
+    "dVol": 0.0000601285890044938
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 21,
+   "script": "const b = cuboid(39.8,42.2,15.6)\nround(b.edge('bottom','left'), 12.7)",
+   "style": "round",
+   "D": [
+    39.8,
+    42.2,
+    15.6
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 12.7,
+   "limit": 15.6,
+   "ratio": 0.814,
+   "occt": {
+    "volume": 24740.46190449161,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 24740.46190447861,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 24739.921678154806,
+    "faces": 7,
+    "dVol": 0.000021835741745265676
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 22,
+   "script": "const b = cuboid(15.2,18,25.6)\nround(b.edge('bottom','back'), 1)",
+   "style": "round",
+   "D": [
+    15.2,
+    18,
+    25.6
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 1,
+   "limit": 18,
+   "ratio": 0.056,
+   "occt": {
+    "volume": 7000.898052086817,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 7000.89805208364,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 7000.895912265096,
+    "faces": 7,
+    "dVol": 3.056496045845802e-7
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 23,
+   "script": "const b = cuboid(14.9,9,12.3)\nbevel(b.edge('back','left'), 1.2)",
+   "style": "bevel",
+   "D": [
+    14.9,
+    9,
+    12.3
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 1.2,
+   "limit": 9,
+   "ratio": 0.133,
+   "occt": {
+    "volume": 1640.574,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 1640.5740000000003,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 1640.5739999999998,
+    "faces": 7,
+    "dVol": 1.3859397713436398e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 24,
+   "script": "const b = cuboid(15,24.2,28)\nround(b.edge('front','left'), 8.6)",
+   "style": "round",
+   "D": [
+    15,
+    24.2,
+    28
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 8.6,
+   "limit": 15,
+   "ratio": 0.573,
+   "occt": {
+    "volume": 9719.585348622606,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 9719.585348616509,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 9719.420983606822,
+    "faces": 7,
+    "dVol": 0.00001691070245164393
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 25,
+   "script": "const b = cuboid(39.7,36.4,40)\nbevel(b.edge('bottom','left'), 25.7)",
+   "style": "bevel",
+   "D": [
+    39.7,
+    36.4,
+    40
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 25.7,
+   "limit": 39.7,
+   "ratio": 0.647,
+   "occt": {
+    "volume": 45782.28199999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 45782.28200000001,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 45782.282,
+    "faces": 7,
+    "dVol": 1.5892518451097364e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 26,
+   "script": "const b = cuboid(30.5,19.7,29.1)\nround(b.edge('front','right'), 8.2)",
+   "style": "round",
+   "D": [
+    30.5,
+    19.7,
+    29.1
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 8.2,
+   "limit": 19.7,
+   "ratio": 0.416,
+   "occt": {
+    "volume": 17064.827019971075,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 17064.827019949178,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 17064.60315515562,
+    "faces": 7,
+    "dVol": 0.000013118493096601045
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 27,
+   "script": "const b = cuboid(41.1,41.1,39)\nround(b.edge('bottom','back'), 54)",
+   "style": "round",
+   "D": [
+    41.1,
+    41.1,
+    39
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 54,
+   "limit": 39,
+   "ratio": 1.385,
+   "occt": {
+    "volume": 65879.19,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 65879.19,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, 20.55, -12.9587318389231]: the nearest edge is 6.541 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 28,
+   "script": "const b = cuboid(18.1,22.5,27.1)\nround(b.edge('front','right'), 26.5)",
+   "style": "round",
+   "D": [
+    18.1,
+    22.5,
+    27.1
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 26.5,
+   "limit": 18.1,
+   "ratio": 1.464,
+   "occt": {
+    "volume": 11036.474999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 11036.475,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 29,
+   "script": "const b = cuboid(30.1,25.5,21.5)\nround(b.edge('bottom','left'), 28.6)",
+   "style": "round",
+   "D": [
+    30.1,
+    25.5,
+    21.5
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 28.6,
+   "limit": 21.5,
+   "ratio": 1.33,
+   "occt": {
+    "volume": 16502.325,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 16502.325,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [-15.05, 0, -6.691548951156669]: the nearest edge is 4.058 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 30,
+   "script": "const b = cuboid(30.9,47.4,41.6)\nround(b.edge('bottom','back'), 44.2)",
+   "style": "round",
+   "D": [
+    30.9,
+    47.4,
+    41.6
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 44.2,
+   "limit": 41.6,
+   "ratio": 1.063,
+   "occt": {
+    "volume": 60929.856,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 60929.856,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, 23.7, -15.882112258460435]: the nearest edge is 4.918 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 31,
+   "script": "const b = cuboid(45.2,30,34.3)\nbevel(b.edge('top','back'), 18.5)",
+   "style": "bevel",
+   "D": [
+    45.2,
+    30,
+    34.3
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 18.5,
+   "limit": 30,
+   "ratio": 0.617,
+   "occt": {
+    "volume": 38775.95,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 38775.950000000004,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 38775.950000000004,
+    "faces": 7,
+    "dVol": 1.8764098917456378e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 32,
+   "script": "const b = cuboid(32.4,42.2,23.4)\nround(b.edge('top','right'), 24.4)",
+   "style": "round",
+   "D": [
+    32.4,
+    42.2,
+    23.4
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 24.4,
+   "limit": 23.4,
+   "ratio": 1.043,
+   "occt": {
+    "volume": 31994.352,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 31994.352000000003,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [16.2, 0, 18.416338598477985]: the nearest edge is 6.716 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 33,
+   "script": "const b = cuboid(37.3,46.6,20.7)\nround(b.edge('top','right'), 22.7)",
+   "style": "round",
+   "D": [
+    37.3,
+    46.6,
+    20.7
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 22.7,
+   "limit": 20.7,
+   "ratio": 1.097,
+   "occt": {
+    "volume": 35980.32599999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 35980.326,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [18.65, 0, 17.766620348082323]: the nearest edge is 7.417 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 34,
+   "script": "const b = cuboid(45,39.4,41.2)\nround(b.edge('back','right'), 57.9)",
+   "style": "round",
+   "D": [
+    45,
+    39.4,
+    41.2
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 57.9,
+   "limit": 39.4,
+   "ratio": 1.47,
+   "occt": {
+    "volume": 73047.6,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 73047.60000000002,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 35,
+   "script": "const b = cuboid(19.3,29.5,23.6)\nbevel(b.edge('front','left'), 18.4)",
+   "style": "bevel",
+   "D": [
+    19.3,
+    29.5,
+    23.6
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 18.4,
+   "limit": 19.3,
+   "ratio": 0.953,
+   "occt": {
+    "volume": 9441.652000000002,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 9441.652000000002,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 9441.652,
+    "faces": 7,
+    "dVol": 1.9265584068824566e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 36,
+   "script": "const b = cuboid(37,32.9,31.8)\nbevel(b.edge('top','right'), 23.8)",
+   "style": "bevel",
+   "D": [
+    37,
+    32.9,
+    31.8
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 23.8,
+   "limit": 31.8,
+   "ratio": 0.748,
+   "occt": {
+    "volume": 29392.201999999997,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 29392.201999999994,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 29392.201999999994,
+    "faces": 7,
+    "dVol": 1.237736052267099e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 37,
+   "script": "const b = cuboid(13.6,36.9,26.6)\nbevel(b.edge('bottom','left'), 18.2)",
+   "style": "bevel",
+   "D": [
+    13.6,
+    36.9,
+    26.6
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 18.2,
+   "limit": 13.6,
+   "ratio": 1.338,
+   "occt": {
+    "volume": 13348.944000000003,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 13348.944000000001,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 7627.968,
+    "faces": 6,
+    "dVol": 0.4285714285714287
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 38,
+   "script": "const b = cuboid(46.1,14.1,12.1)\nbevel(b.edge('top','right'), 7.5)",
+   "style": "bevel",
+   "D": [
+    46.1,
+    14.1,
+    12.1
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 7.5,
+   "limit": 12.1,
+   "ratio": 0.62,
+   "occt": {
+    "volume": 7468.558499999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 7468.5585,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 7468.5585,
+    "faces": 7,
+    "dVol": 1.2177647156046624e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 39,
+   "script": "const b = cuboid(44.4,42.3,29.2)\nround(b.edge('back','left'), 32.4)",
+   "style": "round",
+   "D": [
+    44.4,
+    42.3,
+    29.2
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 32.4,
+   "limit": 42.3,
+   "ratio": 0.766,
+   "occt": {
+    "volume": 48262.915619222564,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 48262.91561943666,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 48260.482697054285,
+    "faces": 7,
+    "dVol": 0.000050409763626242776
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 40,
+   "script": "const b = cuboid(45,35,39.8)\nbevel(b.edge('bottom','front'), 51)",
+   "style": "bevel",
+   "D": [
+    45,
+    35,
+    39.8
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 51,
+   "limit": 35,
+   "ratio": 1.457,
+   "occt": {
+    "volume": 62684.999999999985,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 62685,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 12744.899999999978,
+    "faces": 5,
+    "dVol": 0.7966834170854274
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 41,
+   "script": "const b = cuboid(41.7,8.1,14.7)\nround(b.edge('front','right'), 1.4)",
+   "style": "round",
+   "D": [
+    41.7,
+    8.1,
+    14.7
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 1.4,
+   "limit": 8.1,
+   "ratio": 0.173,
+   "occt": {
+    "volume": 4959.035891888606,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 4959.035891883807,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 4959.031834219301,
+    "faces": 7,
+    "dVol": 8.18237535075437e-7
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 42,
+   "script": "const b = cuboid(44.5,18.9,31.6)\nbevel(b.edge('top','right'), 34.6)",
+   "style": "bevel",
+   "D": [
+    44.5,
+    18.9,
+    31.6
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 34.6,
+   "limit": 31.6,
+   "ratio": 1.095,
+   "occt": {
+    "volume": 26577.179999999993,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 26577.180000000004,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 15349.067999999992,
+    "faces": 6,
+    "dVol": 0.4224719101123597
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 43,
+   "script": "const b = cuboid(10.3,25.9,47.2)\nround(b.edge('top','front'), 15.6)",
+   "style": "round",
+   "D": [
+    10.3,
+    25.9,
+    47.2
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 15.6,
+   "limit": 25.9,
+   "ratio": 0.602,
+   "occt": {
+    "volume": 12053.621319566422,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 12053.621319557353,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 12053.422370374901,
+    "faces": 7,
+    "dVol": 0.00001650534609031339
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 44,
+   "script": "const b = cuboid(39.6,35.7,18.9)\nround(b.edge('bottom','back'), 14.2)",
+   "style": "round",
+   "D": [
+    39.6,
+    35.7,
+    18.9
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 14.2,
+   "limit": 18.9,
+   "ratio": 0.751,
+   "occt": {
+    "volume": 25005.724352424953,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 25005.724352431484,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 25005.090589120842,
+    "faces": 7,
+    "dVol": 0.00002534472887803943
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 45,
+   "script": "const b = cuboid(25.5,29.8,14.7)\nround(b.edge('front','right'), 26.9)",
+   "style": "round",
+   "D": [
+    25.5,
+    29.8,
+    14.7
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 26.9,
+   "limit": 25.5,
+   "ratio": 1.055,
+   "occt": {
+    "volume": 11170.529999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 11170.529999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 46,
+   "script": "const b = cuboid(41.3,9.5,15.3)\nbevel(b.edge('front','left'), 4.4)",
+   "style": "bevel",
+   "D": [
+    41.3,
+    9.5,
+    15.3
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 4.4,
+   "limit": 9.5,
+   "ratio": 0.463,
+   "occt": {
+    "volume": 5854.850999999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 5854.8510000000015,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 5854.851,
+    "faces": 7,
+    "dVol": 1.5534036677840794e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 47,
+   "script": "const b = cuboid(41.6,33.8,20.9)\nround(b.edge('top','back'), 31)",
+   "style": "round",
+   "D": [
+    41.6,
+    33.8,
+    20.9
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 31,
+   "limit": 20.9,
+   "ratio": 1.483,
+   "occt": {
+    "volume": 29387.071999999993,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 29387.071999999996,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, 16.9, 17.070845632622845]: the nearest edge is 6.621 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 48,
+   "script": "const b = cuboid(35.7,18.3,28.7)\nbevel(b.edge('top','front'), 12.2)",
+   "style": "bevel",
+   "D": [
+    35.7,
+    18.3,
+    28.7
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 12.2,
+   "limit": 18.3,
+   "ratio": 0.667,
+   "occt": {
+    "volume": 16093.203000000001,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 16093.203000000007,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 16093.202999999996,
+    "faces": 7,
+    "dVol": 3.390852778429234e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 49,
+   "script": "const b = cuboid(39.2,14.5,37.6)\nround(b.edge('top','left'), 13)",
+   "style": "round",
+   "D": [
+    39.2,
+    14.5,
+    37.6
+   ],
+   "edge": [
+    "top",
+    "left"
+   ],
+   "size": 13,
+   "limit": 37.6,
+   "ratio": 0.346,
+   "occt": {
+    "volume": 20845.95819943011,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 20845.95819940545,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 20845.76370356858,
+    "faces": 7,
+    "dVol": 0.000009330147344181077
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 50,
+   "script": "const b = cuboid(43.2,9.2,9.3)\nbevel(b.edge('back','right'), 6.9)",
+   "style": "bevel",
+   "D": [
+    43.2,
+    9.2,
+    9.3
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 6.9,
+   "limit": 9.2,
+   "ratio": 0.75,
+   "occt": {
+    "volume": 3474.8055000000004,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 3474.805500000001,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 3474.8055,
+    "faces": 7,
+    "dVol": 1.3086987196447802e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 51,
+   "script": "const b = cuboid(31,36.2,14.8)\nround(b.edge('bottom','left'), 13.5)",
+   "style": "round",
+   "D": [
+    31,
+    36.2,
+    14.8
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 13.5,
+   "limit": 14.8,
+   "ratio": 0.912,
+   "occt": {
+    "volume": 15192.735113085359,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 15192.7351131065,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 15192.211475167285,
+    "faces": 7,
+    "dVol": 0.000034466336322963116
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 52,
+   "script": "const b = cuboid(36.9,41.8,10.8)\nround(b.edge('bottom','left'), 1.4)",
+   "style": "round",
+   "D": [
+    36.9,
+    41.8,
+    10.8
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 1.4,
+   "limit": 10.8,
+   "ratio": 0.13,
+   "occt": {
+    "volume": 16640.554100743822,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 16640.554100730824,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 16640.542564968913,
+    "faces": 7,
+    "dVol": 6.932326194966577e-7
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 53,
+   "script": "const b = cuboid(44.8,18.9,14.2)\nround(b.edge('top','right'), 17)",
+   "style": "round",
+   "D": [
+    44.8,
+    18.9,
+    14.2
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 17,
+   "limit": 14.2,
+   "ratio": 1.197,
+   "occt": {
+    "volume": 12023.423999999995,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 12023.423999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [22.4, 0, 10.10802842443682]: the nearest edge is 3.008 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 54,
+   "script": "const b = cuboid(40.9,42.6,38.9)\nbevel(b.edge('front','left'), 39.9)",
+   "style": "bevel",
+   "D": [
+    40.9,
+    42.6,
+    38.9
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 39.9,
+   "limit": 40.9,
+   "ratio": 0.976,
+   "occt": {
+    "volume": 36812.43149999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 36812.431500000006,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 36812.431500000006,
+    "faces": 7,
+    "dVol": 3.9529894210782724e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 55,
+   "script": "const b = cuboid(36.1,35.5,20.3)\nbevel(b.edge('bottom','front'), 10.7)",
+   "style": "bevel",
+   "D": [
+    36.1,
+    35.5,
+    20.3
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 10.7,
+   "limit": 20.3,
+   "ratio": 0.527,
+   "occt": {
+    "volume": 23948.9205,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 23948.920500000007,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 23948.920500000004,
+    "faces": 7,
+    "dVol": 1.5190575320886438e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 56,
+   "script": "const b = cuboid(17.7,27.9,31.9)\nround(b.edge('front','left'), 19.1)",
+   "style": "round",
+   "D": [
+    17.7,
+    27.9,
+    31.9
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 19.1,
+   "limit": 17.7,
+   "ratio": 1.079,
+   "occt": {
+    "volume": 15753.176999999996,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 15753.176999999998,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 57,
+   "script": "const b = cuboid(17.7,37.5,28.8)\nround(b.edge('bottom','back'), 35.5)",
+   "style": "round",
+   "D": [
+    17.7,
+    37.5,
+    28.8
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 35.5,
+   "limit": 28.8,
+   "ratio": 1.233,
+   "occt": {
+    "volume": 19115.999999999996,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 19116,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, 18.75, -11.582957507273452]: the nearest edge is 2.817 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 58,
+   "script": "const b = cuboid(13,30.2,29.6)\nbevel(b.edge('bottom','right'), 2.1)",
+   "style": "bevel",
+   "D": [
+    13,
+    30.2,
+    29.6
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 2.1,
+   "limit": 13,
+   "ratio": 0.162,
+   "occt": {
+    "volume": 11554.368999999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 11554.369,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 11554.369,
+    "faces": 7,
+    "dVol": 1.5742870974138498e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 59,
+   "script": "const b = cuboid(24.8,45.8,36.5)\nbevel(b.edge('bottom','left'), 12.6)",
+   "style": "bevel",
+   "D": [
+    24.8,
+    45.8,
+    36.5
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 12.6,
+   "limit": 24.8,
+   "ratio": 0.508,
+   "occt": {
+    "volume": 37822.556,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 37822.55599999999,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 37822.55599999999,
+    "faces": 7,
+    "dVol": 1.9237085971089384e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 60,
+   "script": "const b = cuboid(47,10.5,38.5)\nround(b.edge('bottom','back'), 8)",
+   "style": "round",
+   "D": [
+    47,
+    10.5,
+    38.5
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 8,
+   "limit": 10.5,
+   "ratio": 0.762,
+   "occt": {
+    "volume": 18354.227675533246,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 18354.227675499526,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 18353.80438587647,
+    "faces": 7,
+    "dVol": 0.000023062242893586883
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 61,
+   "script": "const b = cuboid(17,42.2,48)\nbevel(b.edge('bottom','left'), 5)",
+   "style": "bevel",
+   "D": [
+    17,
+    42.2,
+    48
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 5,
+   "limit": 17,
+   "ratio": 0.294,
+   "occt": {
+    "volume": 33907.7,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 33907.700000000004,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 33907.700000000004,
+    "faces": 7,
+    "dVol": 2.1458127841709778e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 62,
+   "script": "const b = cuboid(27.3,15,9.7)\nbevel(b.edge('front','left'), 5.4)",
+   "style": "bevel",
+   "D": [
+    27.3,
+    15,
+    9.7
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 5.4,
+   "limit": 15,
+   "ratio": 0.36,
+   "occt": {
+    "volume": 3830.723999999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 3830.7240000000006,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 3830.7239999999997,
+    "faces": 7,
+    "dVol": 2.3742109892880003e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 63,
+   "script": "const b = cuboid(8.3,27.3,34.6)\nbevel(b.edge('top','right'), 11.7)",
+   "style": "bevel",
+   "D": [
+    8.3,
+    27.3,
+    34.6
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 11.7,
+   "limit": 8.3,
+   "ratio": 1.41,
+   "occt": {
+    "volume": 7840.014,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 7840.014000000003,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 6129.2595,
+    "faces": 6,
+    "dVol": 0.21820809248554912
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 64,
+   "script": "const b = cuboid(19.8,30,35.8)\nround(b.edge('top','right'), 19.2)",
+   "style": "round",
+   "D": [
+    19.8,
+    30,
+    35.8
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 19.2,
+   "limit": 19.8,
+   "ratio": 0.97,
+   "occt": {
+    "volume": 18891.875368580644,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 18891.875368645055,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 18890.997603624408,
+    "faces": 7,
+    "dVol": 0.00004646256335652254
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 65,
+   "script": "const b = cuboid(12.8,29.9,26.1)\nbevel(b.edge('front','left'), 14.4)",
+   "style": "bevel",
+   "D": [
+    12.8,
+    29.9,
+    26.1
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 14.4,
+   "limit": 12.8,
+   "ratio": 1.125,
+   "occt": {
+    "volume": 9988.992,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 9988.992000000002,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 7316.352,
+    "faces": 6,
+    "dVol": 0.2675585284280937
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 66,
+   "script": "const b = cuboid(31,39.1,29.1)\nbevel(b.edge('front','right'), 29.2)",
+   "style": "bevel",
+   "D": [
+    31,
+    39.1,
+    29.1
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 29.2,
+   "limit": 31,
+   "ratio": 0.942,
+   "occt": {
+    "volume": 22866.198000000004,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 22866.198000000008,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 22866.198000000004,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 67,
+   "script": "const b = cuboid(32,35,38.5)\nbevel(b.edge('front','left'), 41.5)",
+   "style": "bevel",
+   "D": [
+    32,
+    35,
+    38.5
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 41.5,
+   "limit": 32,
+   "ratio": 1.297,
+   "occt": {
+    "volume": 43119.99999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 43120,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 12517.3125,
+    "faces": 5,
+    "dVol": 0.7097098214285714
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 68,
+   "script": "const b = cuboid(35,33.1,14)\nbevel(b.edge('top','right'), 4.8)",
+   "style": "bevel",
+   "D": [
+    35,
+    33.1,
+    14
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 4.8,
+   "limit": 14,
+   "ratio": 0.343,
+   "occt": {
+    "volume": 15837.687999999998,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 15837.688,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 15837.688,
+    "faces": 7,
+    "dVol": 1.1485195336250193e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 69,
+   "script": "const b = cuboid(44.2,9.5,37.9)\nbevel(b.edge('bottom','left'), 16.8)",
+   "style": "bevel",
+   "D": [
+    44.2,
+    9.5,
+    37.9
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 16.8,
+   "limit": 37.9,
+   "ratio": 0.443,
+   "occt": {
+    "volume": 14573.570000000003,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 14573.570000000005,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 14573.570000000002,
+    "faces": 7,
+    "dVol": 1.248142633236644e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 70,
+   "script": "const b = cuboid(15.3,21.1,36)\nround(b.edge('bottom','right'), 3.2)",
+   "style": "round",
+   "D": [
+    15.3,
+    21.1,
+    36
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 3.2,
+   "limit": 15.3,
+   "ratio": 0.209,
+   "occt": {
+    "volume": 11575.512268790022,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 11575.512268776307,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 11575.481860745436,
+    "faces": 7,
+    "dVol": 0.0000026269286299985085
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 71,
+   "script": "const b = cuboid(20.5,45.5,11.8)\nround(b.edge('top','back'), 13.1)",
+   "style": "round",
+   "D": [
+    20.5,
+    45.5,
+    11.8
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 13.1,
+   "limit": 11.8,
+   "ratio": 1.11,
+   "occt": {
+    "volume": 11006.449999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 11006.449999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, 22.75, 9.162676333383855]: the nearest edge is 3.263 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 72,
+   "script": "const b = cuboid(8,36.6,8.2)\nbevel(b.edge('back','right'), 11.7)",
+   "style": "bevel",
+   "D": [
+    8,
+    36.6,
+    8.2
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 11.7,
+   "limit": 8,
+   "ratio": 1.462,
+   "occt": {
+    "volume": 2400.9599999999996,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 2400.9600000000005,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 1895.8400000000001,
+    "faces": 6,
+    "dVol": 0.21038251366120198
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 73,
+   "script": "const b = cuboid(32.4,23.4,38.8)\nround(b.edge('top','right'), 32.7)",
+   "style": "round",
+   "D": [
+    32.4,
+    23.4,
+    38.8
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 32.7,
+   "limit": 32.4,
+   "ratio": 1.009,
+   "occt": {
+    "volume": 29416.607999999986,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 29416.607999999997,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [16.2, 0, 23.12422566835035]: the nearest edge is 3.724 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 74,
+   "script": "const b = cuboid(38.6,29.6,37.5)\nbevel(b.edge('bottom','front'), 12)",
+   "style": "bevel",
+   "D": [
+    38.6,
+    29.6,
+    37.5
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 12,
+   "limit": 29.6,
+   "ratio": 0.405,
+   "occt": {
+    "volume": 40066.8,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 40066.80000000001,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 40066.799999999996,
+    "faces": 7,
+    "dVol": 1.8159567557637308e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 75,
+   "script": "const b = cuboid(10.5,23.9,17)\nround(b.edge('front','right'), 5.5)",
+   "style": "round",
+   "D": [
+    10.5,
+    23.9,
+    17
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 5.5,
+   "limit": 10.5,
+   "ratio": 0.524,
+   "occt": {
+    "volume": 4155.791005533253,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 4155.791005527138,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 4155.732159986907,
+    "faces": 7,
+    "dVol": 0.000014159890684448431
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 76,
+   "script": "const b = cuboid(11.9,21.4,45.4)\nbevel(b.edge('back','left'), 13.2)",
+   "style": "bevel",
+   "D": [
+    11.9,
+    21.4,
+    45.4
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 13.2,
+   "limit": 11.9,
+   "ratio": 1.109,
+   "occt": {
+    "volume": 11561.563999999998,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 11561.563999999998,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 7644.678999999996,
+    "faces": 6,
+    "dVol": 0.3387850467289722
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 77,
+   "script": "const b = cuboid(42.5,8.6,15.9)\nround(b.edge('top','left'), 11.4)",
+   "style": "round",
+   "D": [
+    42.5,
+    8.6,
+    15.9
+   ],
+   "edge": [
+    "top",
+    "left"
+   ],
+   "size": 11.4,
+   "limit": 15.9,
+   "ratio": 0.717,
+   "occt": {
+    "volume": 5571.598969716759,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 5571.598969710139,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 5571.510261823554,
+    "faces": 7,
+    "dVol": 0.00001592144260324205
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 78,
+   "script": "const b = cuboid(14.1,26.3,22.8)\nround(b.edge('top','front'), 22.1)",
+   "style": "round",
+   "D": [
+    14.1,
+    26.3,
+    22.8
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 22.1,
+   "limit": 22.8,
+   "ratio": 0.969,
+   "occt": {
+    "volume": 6977.051069423162,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 6977.051069487764,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 6976.504484915859,
+    "faces": 7,
+    "dVol": 0.00007834033345371563
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 79,
+   "script": "const b = cuboid(25,20,9.7)\nbevel(b.edge('bottom','back'), 12.7)",
+   "style": "bevel",
+   "D": [
+    25,
+    20,
+    9.7
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 12.7,
+   "limit": 9.7,
+   "ratio": 1.309,
+   "occt": {
+    "volume": 4849.999999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 4850,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 2946.375,
+    "faces": 6,
+    "dVol": 0.3924999999999999
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 80,
+   "script": "const b = cuboid(29.7,36.8,47.4)\nround(b.edge('back','right'), 38.8)",
+   "style": "round",
+   "D": [
+    29.7,
+    36.8,
+    47.4
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 38.8,
+   "limit": 29.7,
+   "ratio": 1.306,
+   "occt": {
+    "volume": 51806.30399999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 51806.304,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 81,
+   "script": "const b = cuboid(40.7,39.9,45.5)\nbevel(b.edge('front','left'), 20.6)",
+   "style": "bevel",
+   "D": [
+    40.7,
+    39.9,
+    45.5
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 20.6,
+   "limit": 39.9,
+   "ratio": 0.516,
+   "occt": {
+    "volume": 64234.625,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 64234.62500000001,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 64234.625,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 82,
+   "script": "const b = cuboid(20.1,39.8,21.6)\nround(b.edge('front','right'), 17.8)",
+   "style": "round",
+   "D": [
+    20.1,
+    39.8,
+    21.6
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 17.8,
+   "limit": 20.1,
+   "ratio": 0.886,
+   "occt": {
+    "volume": 15810.887968339392,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 15810.887968362309,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 15810.344780772059,
+    "faces": 7,
+    "dVol": 0.00003435528532114807
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 83,
+   "script": "const b = cuboid(31.1,17.6,26.3)\nbevel(b.edge('bottom','right'), 12.8)",
+   "style": "bevel",
+   "D": [
+    31.1,
+    17.6,
+    26.3
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 12.8,
+   "limit": 26.3,
+   "ratio": 0.487,
+   "occt": {
+    "volume": 12953.776000000003,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 12953.776000000003,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 12953.776,
+    "faces": 7,
+    "dVol": 2.808431153272769e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 84,
+   "script": "const b = cuboid(8.6,31,27.2)\nround(b.edge('top','front'), 17.2)",
+   "style": "round",
+   "D": [
+    8.6,
+    31,
+    27.2
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 17.2,
+   "limit": 27.2,
+   "ratio": 0.632,
+   "occt": {
+    "volume": 6705.524856863439,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 6705.524856871708,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 6705.322922795149,
+    "faces": 7,
+    "dVol": 0.000030114580528821642
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 85,
+   "script": "const b = cuboid(15.3,35.1,37.3)\nbevel(b.edge('front','right'), 18.1)",
+   "style": "bevel",
+   "D": [
+    15.3,
+    35.1,
+    37.3
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 18.1,
+   "limit": 15.3,
+   "ratio": 1.183,
+   "occt": {
+    "volume": 20031.218999999994,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 20031.219,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 14067.508499999996,
+    "faces": 6,
+    "dVol": 0.2977207977207977
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 86,
+   "script": "const b = cuboid(28.1,45.2,44.4)\nbevel(b.edge('bottom','left'), 39.1)",
+   "style": "bevel",
+   "D": [
+    28.1,
+    45.2,
+    44.4
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 39.1,
+   "limit": 28.1,
+   "ratio": 1.391,
+   "occt": {
+    "volume": 56393.327999999994,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 56393.328000000016,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 24576.821999999996,
+    "faces": 6,
+    "dVol": 0.5641891891891893
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 87,
+   "script": "const b = cuboid(21.5,44.4,39.8)\nround(b.edge('bottom','back'), 18.2)",
+   "style": "round",
+   "D": [
+    21.5,
+    44.4,
+    39.8
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 18.2,
+   "limit": 39.8,
+   "ratio": 0.457,
+   "occt": {
+    "volume": 36464.75868436459,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 36464.75868434107,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 36464.19343979807,
+    "faces": 7,
+    "dVol": 0.000015501119078037327
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 88,
+   "script": "const b = cuboid(27.9,46.3,37.3)\nbevel(b.edge('bottom','front'), 42.4)",
+   "style": "bevel",
+   "D": [
+    27.9,
+    46.3,
+    37.3
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 42.4,
+   "limit": 37.3,
+   "ratio": 1.137,
+   "occt": {
+    "volume": 48183.02099999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 48183.021,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 23467.10849999999,
+    "faces": 6,
+    "dVol": 0.5129589632829374
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 89,
+   "script": "const b = cuboid(33.3,36.9,32.8)\nround(b.edge('front','right'), 39.8)",
+   "style": "round",
+   "D": [
+    33.3,
+    36.9,
+    32.8
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 39.8,
+   "limit": 33.3,
+   "ratio": 1.195,
+   "occt": {
+    "volume": 40303.65599999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 40303.65599999999,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 90,
+   "script": "const b = cuboid(44.7,15.2,24.2)\nbevel(b.edge('front','left'), 12)",
+   "style": "bevel",
+   "D": [
+    44.7,
+    15.2,
+    24.2
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 12,
+   "limit": 15.2,
+   "ratio": 0.789,
+   "occt": {
+    "volume": 14700.047999999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 14700.048,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 14700.048,
+    "faces": 7,
+    "dVol": 1.237403717012255e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 91,
+   "script": "const b = cuboid(25,45.8,47.6)\nbevel(b.edge('top','back'), 17.9)",
+   "style": "bevel",
+   "D": [
+    25,
+    45.8,
+    47.6
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 17.9,
+   "limit": 45.8,
+   "ratio": 0.391,
+   "occt": {
+    "volume": 50496.875,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 50496.875,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 50496.875,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 92,
+   "script": "const b = cuboid(30.8,26.8,29.8)\nbevel(b.edge('bottom','front'), 24.9)",
+   "style": "bevel",
+   "D": [
+    30.8,
+    26.8,
+    29.8
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 24.9,
+   "limit": 26.8,
+   "ratio": 0.929,
+   "occt": {
+    "volume": 15049.957999999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 15049.958000000004,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 15049.958000000004,
+    "faces": 7,
+    "dVol": 3.6259026175605076e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 93,
+   "script": "const b = cuboid(41.5,12,15.7)\nround(b.edge('back','left'), 14.8)",
+   "style": "round",
+   "D": [
+    41.5,
+    12,
+    15.7
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 14.8,
+   "limit": 12,
+   "ratio": 1.233,
+   "occt": {
+    "volume": 7818.6,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 7818.599999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 94,
+   "script": "const b = cuboid(20.7,33.7,21.8)\nround(b.edge('front','right'), 5.4)",
+   "style": "round",
+   "D": [
+    20.7,
+    33.7,
+    21.8
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 5.4,
+   "limit": 20.7,
+   "ratio": 0.261,
+   "occt": {
+    "volume": 15071.042187714169,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 15071.042187693796,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 15070.952712854945,
+    "faces": 7,
+    "dVol": 0.00000593687271982874
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 95,
+   "script": "const b = cuboid(26.7,32.3,12.1)\nround(b.edge('back','right'), 25.5)",
+   "style": "round",
+   "D": [
+    26.7,
+    32.3,
+    12.1
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 25.5,
+   "limit": 26.7,
+   "ratio": 0.955,
+   "occt": {
+    "volume": 8746.668384495219,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 8746.668384565208,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 8746.043901389103,
+    "faces": 7,
+    "dVol": 0.00007139668256119025
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 96,
+   "script": "const b = cuboid(28.5,14.9,40.1)\nbevel(b.edge('back','right'), 1.4)",
+   "style": "bevel",
+   "D": [
+    28.5,
+    14.9,
+    40.1
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 1.4,
+   "limit": 14.9,
+   "ratio": 0.094,
+   "occt": {
+    "volume": 16989.167,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 16989.167,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 16989.166999999998,
+    "faces": 7,
+    "dVol": 2.1413520787050434e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 97,
+   "script": "const b = cuboid(15.4,31.5,17)\nround(b.edge('top','right'), 4.5)",
+   "style": "round",
+   "D": [
+    15.4,
+    31.5,
+    17
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 4.5,
+   "limit": 15.4,
+   "ratio": 0.292,
+   "occt": {
+    "volume": 8109.810853487916,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 8109.810853477146,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 8109.721083360694,
+    "faces": 7,
+    "dVol": 0.000011069324407599266
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 98,
+   "script": "const b = cuboid(12.2,27.1,35.5)\nbevel(b.edge('back','right'), 12.3)",
+   "style": "bevel",
+   "D": [
+    12.2,
+    27.1,
+    35.5
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 12.3,
+   "limit": 12.2,
+   "ratio": 1.008,
+   "occt": {
+    "volume": 11737.01,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 11737.01,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 9051.789999999999,
+    "faces": 6,
+    "dVol": 0.22878228782287832
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 99,
+   "script": "const b = cuboid(26.8,22.1,11.5)\nbevel(b.edge('top','right'), 10.9)",
+   "style": "bevel",
+   "D": [
+    26.8,
+    22.1,
+    11.5
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 10.9,
+   "limit": 11.5,
+   "ratio": 0.948,
+   "occt": {
+    "volume": 5498.3695,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 5498.369500000001,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 5498.369500000001,
+    "faces": 7,
+    "dVol": 1.6541171010295475e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 100,
+   "script": "const b = cuboid(43.8,11,18.2)\nround(b.edge('top','front'), 11.9)",
+   "style": "round",
+   "D": [
+    43.8,
+    11,
+    18.2
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 11.9,
+   "limit": 11,
+   "ratio": 1.082,
+   "occt": {
+    "volume": 8768.759999999998,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 8768.76,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -5.5, 16.070986507425015]: the nearest edge is 6.971 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 101,
+   "script": "const b = cuboid(45.3,11.3,38.8)\nround(b.edge('back','right'), 15)",
+   "style": "round",
+   "D": [
+    45.3,
+    11.3,
+    38.8
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 15,
+   "limit": 11.3,
+   "ratio": 1.327,
+   "occt": {
+    "volume": 19861.331999999995,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 19861.332,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 102,
+   "script": "const b = cuboid(41.5,26.5,10.1)\nbevel(b.edge('top','left'), 2.6)",
+   "style": "bevel",
+   "D": [
+    41.5,
+    26.5,
+    10.1
+   ],
+   "edge": [
+    "top",
+    "left"
+   ],
+   "size": 2.6,
+   "limit": 10.1,
+   "ratio": 0.257,
+   "occt": {
+    "volume": 11017.904999999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 11017.905,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 11017.904999999999,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 103,
+   "script": "const b = cuboid(22.7,39.7,35.1)\nbevel(b.edge('bottom','front'), 41.4)",
+   "style": "bevel",
+   "D": [
+    22.7,
+    39.7,
+    35.1
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 41.4,
+   "limit": 35.1,
+   "ratio": 1.179,
+   "occt": {
+    "volume": 31631.769,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 31631.769000000004,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 12661.606000000002,
+    "faces": 5,
+    "dVol": 0.5997186878798969
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 104,
+   "script": "const b = cuboid(35.9,34.6,19.5)\nbevel(b.edge('top','left'), 24.4)",
+   "style": "bevel",
+   "D": [
+    35.9,
+    34.6,
+    19.5
+   ],
+   "edge": [
+    "top",
+    "left"
+   ],
+   "size": 24.4,
+   "limit": 19.5,
+   "ratio": 1.251,
+   "occt": {
+    "volume": 24221.73,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 24221.730000000007,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 14337.375,
+    "faces": 6,
+    "dVol": 0.40807799442896936
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 105,
+   "script": "const b = cuboid(22.8,27.8,32.8)\nround(b.edge('back','left'), 3)",
+   "style": "round",
+   "D": [
+    22.8,
+    27.8,
+    32.8
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 3,
+   "limit": 22.8,
+   "ratio": 0.132,
+   "occt": {
+    "volume": 20726.60153785496,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 20726.601537834926,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 20726.55998135385,
+    "faces": 7,
+    "dVol": 0.0000020049838384735697
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 106,
+   "script": "const b = cuboid(18.5,43.5,41.1)\nbevel(b.edge('back','right'), 13.1)",
+   "style": "bevel",
+   "D": [
+    18.5,
+    43.5,
+    41.1
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 13.1,
+   "limit": 18.5,
+   "ratio": 0.708,
+   "occt": {
+    "volume": 29548.639499999997,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 29548.639500000005,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 29548.6395,
+    "faces": 7,
+    "dVol": 1.2311831842855957e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 107,
+   "script": "const b = cuboid(21.1,22.9,11.7)\nround(b.edge('bottom','back'), 2.5)",
+   "style": "round",
+   "D": [
+    21.1,
+    22.9,
+    11.7
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 2.5,
+   "limit": 11.7,
+   "ratio": 0.214,
+   "occt": {
+    "volume": 5625.022382804884,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 5625.022382798038,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 5625.00382140409,
+    "faces": 7,
+    "dVol": 0.0000032997914552144283
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 108,
+   "script": "const b = cuboid(21.4,29.3,18.4)\nbevel(b.edge('bottom','right'), 27.6)",
+   "style": "bevel",
+   "D": [
+    21.4,
+    29.3,
+    18.4
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 27.6,
+   "limit": 18.4,
+   "ratio": 1.5,
+   "occt": {
+    "volume": 11537.167999999996,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 11537.168,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 2180.5059999999976,
+    "faces": 5,
+    "dVol": 0.8110016253555467
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 109,
+   "script": "const b = cuboid(11,45,41.4)\nbevel(b.edge('front','left'), 7.7)",
+   "style": "bevel",
+   "D": [
+    11,
+    45,
+    41.4
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 7.7,
+   "limit": 11,
+   "ratio": 0.7,
+   "occt": {
+    "volume": 19265.696999999996,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 19265.697,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 19265.697,
+    "faces": 7,
+    "dVol": 1.888319331032619e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 110,
+   "script": "const b = cuboid(39.4,44.7,41.2)\nround(b.edge('bottom','front'), 26.4)",
+   "style": "round",
+   "D": [
+    39.4,
+    44.7,
+    41.2
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 26.4,
+   "limit": 41.2,
+   "ratio": 0.641,
+   "occt": {
+    "volume": 66667.60149597445,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 66667.60149608254,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 66665.42198812503,
+    "faces": 7,
+    "dVol": 0.00003269215931743792
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 111,
+   "script": "const b = cuboid(10.4,8.9,39.2)\nround(b.edge('top','front'), 6)",
+   "style": "round",
+   "D": [
+    10.4,
+    8.9,
+    39.2
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 6,
+   "limit": 8.9,
+   "ratio": 0.674,
+   "occt": {
+    "volume": 3548.0050723839386,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 3548.0050723760055,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 3547.9523863278478,
+    "faces": 7,
+    "dVol": 0.000014849487251551748
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 112,
+   "script": "const b = cuboid(17.6,45.4,36.3)\nbevel(b.edge('bottom','front'), 18.7)",
+   "style": "bevel",
+   "D": [
+    17.6,
+    45.4,
+    36.3
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 18.7,
+   "limit": 36.3,
+   "ratio": 0.515,
+   "occt": {
+    "volume": 25927.88,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 25927.88,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 25927.879999999994,
+    "faces": 7,
+    "dVol": 2.8062292845321044e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 113,
+   "script": "const b = cuboid(18.1,31.7,28.1)\nbevel(b.edge('back','right'), 2.1)",
+   "style": "bevel",
+   "D": [
+    18.1,
+    31.7,
+    28.1
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 2.1,
+   "limit": 18.1,
+   "ratio": 0.116,
+   "occt": {
+    "volume": 16060.9765,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 16060.976500000002,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 16060.976500000002,
+    "faces": 7,
+    "dVol": 1.1325521854451728e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 114,
+   "script": "const b = cuboid(42.7,46.1,39.9)\nround(b.edge('top','front'), 14.8)",
+   "style": "round",
+   "D": [
+    42.7,
+    46.1,
+    39.9
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 14.8,
+   "limit": 39.9,
+   "ratio": 0.371,
+   "occt": {
+    "volume": 76534.78030553099,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 76534.78030544164,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 76534.03795886545,
+    "faces": 7,
+    "dVol": 0.000009699468170967434
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 115,
+   "script": "const b = cuboid(28.4,10.3,14.3)\nround(b.edge('back','left'), 2.7)",
+   "style": "round",
+   "D": [
+    28.4,
+    10.3,
+    14.3
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 2.7,
+   "limit": 10.3,
+   "ratio": 0.262,
+   "occt": {
+    "volume": 4160.664402345377,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 4160.664402339694,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 4160.649727899238,
+    "faces": 7,
+    "dVol": 0.0000035269477948582278
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 116,
+   "script": "const b = cuboid(30.3,43.5,25.7)\nbevel(b.edge('back','left'), 16.7)",
+   "style": "bevel",
+   "D": [
+    30.3,
+    43.5,
+    25.7
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 16.7,
+   "limit": 30.3,
+   "ratio": 0.551,
+   "occt": {
+    "volume": 30290.148499999996,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 30290.1485,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 30290.1485,
+    "faces": 7,
+    "dVol": 1.201043569361079e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 117,
+   "script": "const b = cuboid(8.2,9.4,26.5)\nbevel(b.edge('back','right'), 6.1)",
+   "style": "bevel",
+   "D": [
+    8.2,
+    9.4,
+    26.5
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 6.1,
+   "limit": 8.2,
+   "ratio": 0.744,
+   "occt": {
+    "volume": 1549.5874999999996,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 1549.5875000000003,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 1549.5874999999999,
+    "faces": 7,
+    "dVol": 1.4673174341121885e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 118,
+   "script": "const b = cuboid(28.5,36.4,38.7)\nround(b.edge('bottom','front'), 37.2)",
+   "style": "round",
+   "D": [
+    28.5,
+    36.4,
+    38.7
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 37.2,
+   "limit": 36.4,
+   "ratio": 1.022,
+   "occt": {
+    "volume": 40147.380000000005,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 40147.380000000005,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -18.2, -14.814084121880985]: the nearest edge is 4.536 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 119,
+   "script": "const b = cuboid(14.5,13.7,27.6)\nround(b.edge('bottom','left'), 6)",
+   "style": "round",
+   "D": [
+    14.5,
+    13.7,
+    27.6
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 6,
+   "limit": 14.5,
+   "ratio": 0.414,
+   "occt": {
+    "volume": 5376.898374195469,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 5376.898374187623,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 5376.841947030477,
+    "faces": 7,
+    "dVol": 0.000010494370744047543
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 120,
+   "script": "const b = cuboid(47.5,31.1,39.4)\nbevel(b.edge('back','left'), 20.7)",
+   "style": "bevel",
+   "D": [
+    47.5,
+    31.1,
+    39.4
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 20.7,
+   "limit": 31.1,
+   "ratio": 0.666,
+   "occt": {
+    "volume": 49762.397,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 49762.397,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 49762.397,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 121,
+   "script": "const b = cuboid(42,26.4,38.7)\nround(b.edge('bottom','front'), 32.9)",
+   "style": "round",
+   "D": [
+    42,
+    26.4,
+    38.7
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 32.9,
+   "limit": 26.4,
+   "ratio": 1.246,
+   "occt": {
+    "volume": 42910.56,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 42910.560000000005,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -13.2, -12.665492390140397]: the nearest edge is 6.685 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 122,
+   "script": "const b = cuboid(13.8,13.1,16.4)\nbevel(b.edge('top','left'), 1.1)",
+   "style": "bevel",
+   "D": [
+    13.8,
+    13.1,
+    16.4
+   ],
+   "edge": [
+    "top",
+    "left"
+   ],
+   "size": 1.1,
+   "limit": 13.8,
+   "ratio": 0.08,
+   "occt": {
+    "volume": 2956.866499999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 2956.8664999999996,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 2956.8664999999996,
+    "faces": 7,
+    "dVol": 1.5379367005120598e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 123,
+   "script": "const b = cuboid(29.6,21.8,30.4)\nround(b.edge('top','back'), 2.4)",
+   "style": "round",
+   "D": [
+    29.6,
+    21.8,
+    30.4
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 2.4,
+   "limit": 21.8,
+   "ratio": 0.11,
+   "occt": {
+    "volume": 19579.923245282574,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 19579.923245266607,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 19579.899246101882,
+    "faces": 7,
+    "dVol": 0.0000012257035122865705
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 124,
+   "script": "const b = cuboid(37.4,18.7,19)\nbevel(b.edge('bottom','right'), 8.6)",
+   "style": "bevel",
+   "D": [
+    37.4,
+    18.7,
+    19
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 8.6,
+   "limit": 19,
+   "ratio": 0.453,
+   "occt": {
+    "volume": 12596.693999999996,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 12596.694000000001,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 12596.693999999996,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 125,
+   "script": "const b = cuboid(26.7,23.6,15)\nround(b.edge('back','right'), 27.5)",
+   "style": "round",
+   "D": [
+    26.7,
+    23.6,
+    15
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 27.5,
+   "limit": 23.6,
+   "ratio": 1.165,
+   "occt": {
+    "volume": 9451.8,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 9451.800000000001,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 126,
+   "script": "const b = cuboid(26.8,34.5,42.7)\nround(b.edge('back','left'), 30.8)",
+   "style": "round",
+   "D": [
+    26.8,
+    34.5,
+    42.7
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 30.8,
+   "limit": 26.8,
+   "ratio": 1.149,
+   "occt": {
+    "volume": 39480.42,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 39480.42000000001,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 127,
+   "script": "const b = cuboid(31.2,34.5,47.8)\nbevel(b.edge('front','right'), 18.5)",
+   "style": "bevel",
+   "D": [
+    31.2,
+    34.5,
+    47.8
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 18.5,
+   "limit": 31.2,
+   "ratio": 0.593,
+   "occt": {
+    "volume": 43272.145,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 43272.14500000001,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 43272.145,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 128,
+   "script": "const b = cuboid(8,40.7,43.5)\nround(b.edge('front','right'), 7.3)",
+   "style": "round",
+   "D": [
+    8,
+    40.7,
+    43.5
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 7.3,
+   "limit": 8,
+   "ratio": 0.912,
+   "occt": {
+    "volume": 13666.128263576742,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 13666.128263544078,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 13665.802055424863,
+    "faces": 7,
+    "dVol": 0.000023869829522101177
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 129,
+   "script": "const b = cuboid(28.1,18.4,22.3)\nbevel(b.edge('bottom','front'), 25.6)",
+   "style": "bevel",
+   "D": [
+    28.1,
+    18.4,
+    22.3
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 25.6,
+   "limit": 18.4,
+   "ratio": 1.391,
+   "occt": {
+    "volume": 11529.992000000002,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 11529.992,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 3203.540499999996,
+    "faces": 5,
+    "dVol": 0.7221558783388579
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 130,
+   "script": "const b = cuboid(30,37.9,22.8)\nround(b.edge('bottom','left'), 7)",
+   "style": "round",
+   "D": [
+    30,
+    37.9,
+    22.8
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 7,
+   "limit": 22.8,
+   "ratio": 0.307,
+   "occt": {
+    "volume": 25525.06292928011,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 25525.0629292454,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 25524.80159574893,
+    "faces": 7,
+    "dVol": 0.000010238310945751473
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 131,
+   "script": "const b = cuboid(35.2,21.9,30.4)\nround(b.edge('front','left'), 24.3)",
+   "style": "round",
+   "D": [
+    35.2,
+    21.9,
+    30.4
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 24.3,
+   "limit": 21.9,
+   "ratio": 1.11,
+   "occt": {
+    "volume": 23434.751999999993,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 23434.752000000004,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 132,
+   "script": "const b = cuboid(9.3,46.8,29.1)\nbevel(b.edge('bottom','front'), 32.9)",
+   "style": "bevel",
+   "D": [
+    9.3,
+    46.8,
+    29.1
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 32.9,
+   "limit": 29.1,
+   "ratio": 1.131,
+   "occt": {
+    "volume": 12665.484,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 12665.484000000002,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 7699.4235,
+    "faces": 6,
+    "dVol": 0.39209401709401714
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 133,
+   "script": "const b = cuboid(23.6,34.8,26)\nround(b.edge('top','left'), 16.3)",
+   "style": "round",
+   "D": [
+    23.6,
+    34.8,
+    26
+   ],
+   "edge": [
+    "top",
+    "left"
+   ],
+   "size": 16.3,
+   "limit": 23.6,
+   "ratio": 0.691,
+   "occt": {
+    "volume": 19369.068843504083,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 19369.068843550765,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 19368.33499112046,
+    "faces": 7,
+    "dVol": 0.000037887850446076055
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 134,
+   "script": "const b = cuboid(12.6,15.9,31.7)\nround(b.edge('front','left'), 2.3)",
+   "style": "round",
+   "D": [
+    12.6,
+    15.9,
+    31.7
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 2.3,
+   "limit": 12.6,
+   "ratio": 0.183,
+   "occt": {
+    "volume": 6314.79077422203,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 6314.790774214608,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 6314.7671733701645,
+    "faces": 7,
+    "dVol": 0.0000037373925296566054
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 135,
+   "script": "const b = cuboid(38.8,45.7,13.8)\nround(b.edge('bottom','left'), 15.7)",
+   "style": "round",
+   "D": [
+    38.8,
+    45.7,
+    13.8
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 15.7,
+   "limit": 13.8,
+   "ratio": 1.138,
+   "occt": {
+    "volume": 24469.607999999997,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 24469.608000000007,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [-19.4, 0, 0.37338089929961704]: the nearest edge is 6.527 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 136,
+   "script": "const b = cuboid(14.7,41.5,23.2)\nround(b.edge('back','right'), 13.3)",
+   "style": "round",
+   "D": [
+    14.7,
+    41.5,
+    23.2
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 13.3,
+   "limit": 14.7,
+   "ratio": 0.905,
+   "occt": {
+    "volume": 13272.466682067177,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 13272.46668206229,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 13272.140959212249,
+    "faces": 7,
+    "dVol": 0.000024541244874122628
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 137,
+   "script": "const b = cuboid(20.8,27.8,33.6)\nbevel(b.edge('bottom','left'), 5)",
+   "style": "bevel",
+   "D": [
+    20.8,
+    27.8,
+    33.6
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 5,
+   "limit": 20.8,
+   "ratio": 0.24,
+   "occt": {
+    "volume": 19081.363999999998,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 19081.364,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 19081.364,
+    "faces": 7,
+    "dVol": 1.9065611908518245e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 138,
+   "script": "const b = cuboid(13.2,22.2,13.1)\nround(b.edge('top','front'), 0.7)",
+   "style": "round",
+   "D": [
+    13.2,
+    22.2,
+    13.1
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 0.7,
+   "limit": 13.1,
+   "ratio": 0.053,
+   "occt": {
+    "volume": 3837.435955322438,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 3837.4359553208546,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 3837.4350447573124,
+    "faces": 7,
+    "dVol": 2.372847745869298e-7
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 139,
+   "script": "const b = cuboid(31.5,45.8,32.4)\nround(b.edge('back','right'), 31.5)",
+   "style": "round",
+   "D": [
+    31.5,
+    45.8,
+    32.4
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 31.5,
+   "limit": 31.5,
+   "ratio": 1,
+   "occt": {
+    "volume": 46743.479999999996,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 46743.47999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 39841.715364246054,
+    "faces": 6,
+    "dVol": 0.14765192141778793
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 140,
+   "script": "const b = cuboid(19.4,43.5,37.4)\nround(b.edge('top','front'), 55.6)",
+   "style": "round",
+   "D": [
+    19.4,
+    43.5,
+    37.4
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 55.6,
+   "limit": 37.4,
+   "ratio": 1.487,
+   "occt": {
+    "volume": 31561.85999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 31561.859999999997,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -21.75, 21.787605895982768]: the nearest edge is 3.088 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 141,
+   "script": "const b = cuboid(38.4,37.1,39.8)\nbevel(b.edge('bottom','back'), 37.1)",
+   "style": "bevel",
+   "D": [
+    38.4,
+    37.1,
+    39.8
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 37.1,
+   "limit": 37.1,
+   "ratio": 1,
+   "occt": {
+    "volume": 56700.672,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 56700.672,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 30273.59999999998,
+    "faces": 6,
+    "dVol": 0.4660804020100506
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 142,
+   "script": "const b = cuboid(25.2,31.9,37.6)\nround(b.edge('bottom','right'), 35.9)",
+   "style": "round",
+   "D": [
+    25.2,
+    31.9,
+    37.6
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 35.9,
+   "limit": 25.2,
+   "ratio": 1.425,
+   "occt": {
+    "volume": 30225.887999999995,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 30225.888000000003,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [12.6, 0, -13.72295731536854]: the nearest edge is 5.077 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 143,
+   "script": "const b = cuboid(42.9,44.5,19.2)\nbevel(b.edge('front','left'), 30)",
+   "style": "bevel",
+   "D": [
+    42.9,
+    44.5,
+    19.2
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 30,
+   "limit": 42.9,
+   "ratio": 0.699,
+   "occt": {
+    "volume": 28013.760000000002,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 28013.76,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 28013.76,
+    "faces": 7,
+    "dVol": 1.29863995661122e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 144,
+   "script": "const b = cuboid(26.6,25.2,27.4)\nround(b.edge('bottom','right'), 21.2)",
+   "style": "round",
+   "D": [
+    26.6,
+    25.2,
+    27.4
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 21.2,
+   "limit": 26.6,
+   "ratio": 0.797,
+   "occt": {
+    "volume": 15936.211633958395,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 15936.211634045205,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 15935.312703371887,
+    "faces": 7,
+    "dVol": 0.0000564080477315789
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 145,
+   "script": "const b = cuboid(45.2,14.5,30.6)\nround(b.edge('top','front'), 12)",
+   "style": "round",
+   "D": [
+    45.2,
+    14.5,
+    30.6
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 12,
+   "limit": 14.5,
+   "ratio": 0.828,
+   "occt": {
+    "volume": 18658.43956591302,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 18658.439565921315,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 18657.92296380321,
+    "faces": 7,
+    "dVol": 0.000027687315865141295
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 146,
+   "script": "const b = cuboid(30,47,38.9)\nbevel(b.edge('front','right'), 21.2)",
+   "style": "bevel",
+   "D": [
+    30,
+    47,
+    38.9
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 21.2,
+   "limit": 30,
+   "ratio": 0.707,
+   "occt": {
+    "volume": 46107.392,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 46107.39199999999,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 46107.392,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 147,
+   "script": "const b = cuboid(39.1,43.5,27.1)\nround(b.edge('top','back'), 35.8)",
+   "style": "round",
+   "D": [
+    39.1,
+    43.5,
+    27.1
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 35.8,
+   "limit": 27.1,
+   "ratio": 1.321,
+   "occt": {
+    "volume": 46093.035,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 46093.03500000001,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, 21.75, 19.77295827489311]: the nearest edge is 6.223 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 148,
+   "script": "const b = cuboid(30.5,38.7,46.1)\nround(b.edge('bottom','back'), 26.6)",
+   "style": "round",
+   "D": [
+    30.5,
+    38.7,
+    46.1
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 26.6,
+   "limit": 38.7,
+   "ratio": 0.687,
+   "occt": {
+    "volume": 49782.90289695928,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 49782.90289705171,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 49781.19005525016,
+    "faces": 7,
+    "dVol": 0.000034406224013504234
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 149,
+   "script": "const b = cuboid(32.6,8.2,27.2)\nround(b.edge('bottom','right'), 13.1)",
+   "style": "round",
+   "D": [
+    32.6,
+    8.2,
+    27.2
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 13.1,
+   "limit": 27.2,
+   "ratio": 0.482,
+   "occt": {
+    "volume": 6969.11586633341,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 6969.115866329215,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 6969.004177012329,
+    "faces": 7,
+    "dVol": 0.000016026325752536574
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 150,
+   "script": "const b = cuboid(30.5,11.4,29.9)\nround(b.edge('bottom','left'), 9.2)",
+   "style": "round",
+   "D": [
+    30.5,
+    11.4,
+    29.9
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 9.2,
+   "limit": 29.9,
+   "ratio": 0.308,
+   "occt": {
+    "volume": 10189.161546282603,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 10189.161546269543,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 10189.084962535215,
+    "faces": 7,
+    "dVol": 0.0000075161971905483855
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 151,
+   "script": "const b = cuboid(32.2,37.6,18.4)\nbevel(b.edge('bottom','back'), 3.6)",
+   "style": "bevel",
+   "D": [
+    32.2,
+    37.6,
+    18.4
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 3.6,
+   "limit": 18.4,
+   "ratio": 0.196,
+   "occt": {
+    "volume": 22068.592,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 22068.592000000004,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 22068.592,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 152,
+   "script": "const b = cuboid(23,18.7,35.8)\nbevel(b.edge('back','left'), 14.9)",
+   "style": "bevel",
+   "D": [
+    23,
+    18.7,
+    35.8
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 14.9,
+   "limit": 18.7,
+   "ratio": 0.797,
+   "occt": {
+    "volume": 11423.600999999995,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 11423.600999999997,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 11423.600999999997,
+    "faces": 7,
+    "dVol": 1.5923082428612984e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 153,
+   "script": "const b = cuboid(15.3,29.7,40)\nbevel(b.edge('top','right'), 13.6)",
+   "style": "bevel",
+   "D": [
+    15.3,
+    29.7,
+    40
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 13.6,
+   "limit": 15.3,
+   "ratio": 0.889,
+   "occt": {
+    "volume": 15429.744000000002,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 15429.744,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 15429.744,
+    "faces": 7,
+    "dVol": 1.178885018147972e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 154,
+   "script": "const b = cuboid(18.6,30,43.7)\nbevel(b.edge('back','right'), 21.5)",
+   "style": "bevel",
+   "D": [
+    18.6,
+    30,
+    43.7
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 21.5,
+   "limit": 18.6,
+   "ratio": 1.156,
+   "occt": {
+    "volume": 24384.600000000006,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 24384.600000000006,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 14468.196000000002,
+    "faces": 6,
+    "dVol": 0.40666666666666673
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 155,
+   "script": "const b = cuboid(12.1,23.4,37.6)\nround(b.edge('front','right'), 1.4)",
+   "style": "round",
+   "D": [
+    12.1,
+    23.4,
+    37.6
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 1.4,
+   "limit": 12.1,
+   "ratio": 0.116,
+   "occt": {
+    "volume": 10630.24870305804,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 10630.248703049741,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 10630.238326614317,
+    "faces": 7,
+    "dVol": 9.761242669373813e-7
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 156,
+   "script": "const b = cuboid(40.4,19.1,14.8)\nround(b.edge('bottom','left'), 19.1)",
+   "style": "round",
+   "D": [
+    40.4,
+    19.1,
+    14.8
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 19.1,
+   "limit": 14.8,
+   "ratio": 1.291,
+   "occt": {
+    "volume": 11420.272,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 11420.271999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [-20.2, 0, -4.360140586944799]: the nearest edge is 3.040 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 157,
+   "script": "const b = cuboid(20.5,31.6,40.1)\nbevel(b.edge('front','left'), 7.8)",
+   "style": "bevel",
+   "D": [
+    20.5,
+    31.6,
+    40.1
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 7.8,
+   "limit": 20.5,
+   "ratio": 0.38,
+   "occt": {
+    "volume": 24756.938,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 24756.938000000006,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 24756.938000000006,
+    "faces": 7,
+    "dVol": 2.9389569962906665e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 158,
+   "script": "const b = cuboid(24.5,41,43.5)\nround(b.edge('top','right'), 24.5)",
+   "style": "round",
+   "D": [
+    24.5,
+    41,
+    43.5
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 24.5,
+   "limit": 24.5,
+   "ratio": 1,
+   "occt": {
+    "volume": 43695.74999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 43695.75,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 38412.39184381337,
+    "faces": 6,
+    "dVol": 0.12091240352177555
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 159,
+   "script": "const b = cuboid(10.3,31.2,44.6)\nbevel(b.edge('bottom','front'), 12.7)",
+   "style": "bevel",
+   "D": [
+    10.3,
+    31.2,
+    44.6
+   ],
+   "edge": [
+    "bottom",
+    "front"
+   ],
+   "size": 12.7,
+   "limit": 31.2,
+   "ratio": 0.407,
+   "occt": {
+    "volume": 13502.012499999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 13502.012499999999,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 13502.012500000003,
+    "faces": 7,
+    "dVol": 2.6943974515589533e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 160,
+   "script": "const b = cuboid(38.3,18.5,15.4)\nround(b.edge('top','back'), 16.1)",
+   "style": "round",
+   "D": [
+    38.3,
+    18.5,
+    15.4
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 16.1,
+   "limit": 15.4,
+   "ratio": 1.045,
+   "occt": {
+    "volume": 10911.669999999996,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 10911.669999999998,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, 9.25, 13.795634320419591]: the nearest edge is 6.096 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 161,
+   "script": "const b = cuboid(29,28.9,16.7)\nbevel(b.edge('front','left'), 20.1)",
+   "style": "bevel",
+   "D": [
+    29,
+    28.9,
+    16.7
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 20.1,
+   "limit": 28.9,
+   "ratio": 0.696,
+   "occt": {
+    "volume": 10622.786499999998,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 10622.786499999997,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 10622.786499999997,
+    "faces": 7,
+    "dVol": 1.7123467590597408e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 162,
+   "script": "const b = cuboid(16.1,21.4,29.1)\nround(b.edge('front','left'), 13.9)",
+   "style": "round",
+   "D": [
+    16.1,
+    21.4,
+    29.1
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 13.9,
+   "limit": 16.1,
+   "ratio": 0.863,
+   "occt": {
+    "volume": 8819.534273226991,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 8819.534273265612,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 8819.08802511508,
+    "faces": 7,
+    "dVol": 0.00005059769576114157
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 163,
+   "script": "const b = cuboid(46.6,28.7,31.4)\nbevel(b.edge('back','right'), 38.6)",
+   "style": "bevel",
+   "D": [
+    46.6,
+    28.7,
+    31.4
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 38.6,
+   "limit": 28.7,
+   "ratio": 1.345,
+   "occt": {
+    "volume": 41994.988,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 41994.988000000005,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 20141.373000000003,
+    "faces": 6,
+    "dVol": 0.5203862660944205
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 164,
+   "script": "const b = cuboid(38.6,12.2,8.8)\nbevel(b.edge('back','right'), 5.8)",
+   "style": "bevel",
+   "D": [
+    38.6,
+    12.2,
+    8.8
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 5.8,
+   "limit": 12.2,
+   "ratio": 0.475,
+   "occt": {
+    "volume": 3996.08,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 3996.0800000000004,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 3996.0800000000004,
+    "faces": 7,
+    "dVol": 1.1379836011452828e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 165,
+   "script": "const b = cuboid(47.2,13.7,46.6)\nbevel(b.edge('back','left'), 3.6)",
+   "style": "bevel",
+   "D": [
+    47.2,
+    13.7,
+    46.6
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 3.6,
+   "limit": 13.7,
+   "ratio": 0.263,
+   "occt": {
+    "volume": 29831.456,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 29831.456000000006,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 29831.455999999995,
+    "faces": 7,
+    "dVol": 1.2195109776377368e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 166,
+   "script": "const b = cuboid(11.6,25.4,38.1)\nbevel(b.edge('bottom','left'), 8.7)",
+   "style": "bevel",
+   "D": [
+    11.6,
+    25.4,
+    38.1
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 8.7,
+   "limit": 11.6,
+   "ratio": 0.75,
+   "occt": {
+    "volume": 10264.520999999999,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 10264.521,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 10264.520999999999,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 167,
+   "script": "const b = cuboid(29,33.9,37.6)\nbevel(b.edge('front','left'), 24)",
+   "style": "bevel",
+   "D": [
+    29,
+    33.9,
+    37.6
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 24,
+   "limit": 29,
+   "ratio": 0.828,
+   "occt": {
+    "volume": 26135.760000000002,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 26135.760000000006,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 26135.759999999995,
+    "faces": 7,
+    "dVol": 2.783908948575984e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 168,
+   "script": "const b = cuboid(24.4,20.2,47.2)\nround(b.edge('bottom','left'), 31.4)",
+   "style": "round",
+   "D": [
+    24.4,
+    20.2,
+    47.2
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 31.4,
+   "limit": 24.4,
+   "ratio": 1.287,
+   "occt": {
+    "volume": 23263.935999999998,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 23263.936,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [-12.2, 0, -20.385070149543715]: the nearest edge is 3.215 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 169,
+   "script": "const b = cuboid(47.3,18.9,23)\nbevel(b.edge('top','front'), 13.5)",
+   "style": "bevel",
+   "D": [
+    47.3,
+    18.9,
+    23
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 13.5,
+   "limit": 18.9,
+   "ratio": 0.714,
+   "occt": {
+    "volume": 16251.097499999996,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 16251.097499999998,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 16251.097499999996,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 170,
+   "script": "const b = cuboid(16.2,33.5,24.3)\nround(b.edge('back','right'), 16.5)",
+   "style": "round",
+   "D": [
+    16.2,
+    33.5,
+    24.3
+   ],
+   "edge": [
+    "back",
+    "right"
+   ],
+   "size": 16.5,
+   "limit": 16.2,
+   "ratio": 1.019,
+   "occt": {
+    "volume": 13187.61,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 13187.61,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 171,
+   "script": "const b = cuboid(45.1,11.3,28.5)\nround(b.edge('top','right'), 38.7)",
+   "style": "round",
+   "D": [
+    45.1,
+    11.3,
+    28.5
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 38.7,
+   "limit": 28.5,
+   "ratio": 1.358,
+   "occt": {
+    "volume": 14524.455000000002,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 14524.455000000002,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 172,
+   "script": "const b = cuboid(11.1,36.3,15.3)\nround(b.edge('bottom','right'), 15.8)",
+   "style": "round",
+   "D": [
+    11.1,
+    36.3,
+    15.3
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 15.8,
+   "limit": 11.1,
+   "ratio": 1.423,
+   "occt": {
+    "volume": 6164.828999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 6164.828999999999,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [5.55, 0, -1.8726755657642]: the nearest edge is 5.777 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 173,
+   "script": "const b = cuboid(24,16,20.4)\nround(b.edge('bottom','right'), 6.9)",
+   "style": "round",
+   "D": [
+    24,
+    16,
+    20.4
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 6.9,
+   "limit": 20.4,
+   "ratio": 0.338,
+   "occt": {
+    "volume": 7670.124904959424,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 7670.12490494964,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 7670.064444083561,
+    "faces": 7,
+    "dVol": 0.000007882645538667414
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 174,
+   "script": "const b = cuboid(8.9,12.9,38.9)\nround(b.edge('back','left'), 11.7)",
+   "style": "round",
+   "D": [
+    8.9,
+    12.9,
+    38.9
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 11.7,
+   "limit": 8.9,
+   "ratio": 1.315,
+   "occt": {
+    "volume": 4466.1089999999995,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 4466.109,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 175,
+   "script": "const b = cuboid(43,37.2,17.3)\nround(b.edge('bottom','right'), 3.1)",
+   "style": "round",
+   "D": [
+    43,
+    37.2,
+    17.3
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 3.1,
+   "limit": 17.3,
+   "ratio": 0.179,
+   "occt": {
+    "volume": 27596.361560258425,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 27596.36156022928,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 27596.311237999937,
+    "faces": 7,
+    "dVol": 0.000001823510623984537
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 176,
+   "script": "const b = cuboid(29.1,18.8,16.3)\nbevel(b.edge('top','right'), 6.1)",
+   "style": "bevel",
+   "D": [
+    29.1,
+    18.8,
+    16.3
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 6.1,
+   "limit": 16.3,
+   "ratio": 0.374,
+   "occt": {
+    "volume": 8567.630000000001,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 8567.630000000003,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 8567.630000000001,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 177,
+   "script": "const b = cuboid(38.6,15.8,32.1)\nbevel(b.edge('top','right'), 27.6)",
+   "style": "bevel",
+   "D": [
+    38.6,
+    15.8,
+    32.1
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 27.6,
+   "limit": 32.1,
+   "ratio": 0.86,
+   "occt": {
+    "volume": 13559.244000000002,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 13559.244000000004,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 13559.243999999999,
+    "faces": 7,
+    "dVol": 2.6830248110379256e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 178,
+   "script": "const b = cuboid(41.9,16.6,25.2)\nround(b.edge('bottom','back'), 21.8)",
+   "style": "round",
+   "D": [
+    41.9,
+    16.6,
+    25.2
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 21.8,
+   "limit": 16.6,
+   "ratio": 1.313,
+   "occt": {
+    "volume": 17527.608,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 17527.608000000004,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, 8.3, -5.931407884449585]: the nearest edge is 6.669 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 179,
+   "script": "const b = cuboid(33.7,37.9,29.8)\nbevel(b.edge('top','front'), 34)",
+   "style": "bevel",
+   "D": [
+    33.7,
+    37.9,
+    29.8
+   ],
+   "edge": [
+    "top",
+    "front"
+   ],
+   "size": 34,
+   "limit": 29.8,
+   "ratio": 1.141,
+   "occt": {
+    "volume": 38061.454,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 38061.454,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 18880.088,
+    "faces": 6,
+    "dVol": 0.503957783641161
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 180,
+   "script": "const b = cuboid(20.1,33.1,39.7)\nround(b.edge('top','right'), 6.3)",
+   "style": "round",
+   "D": [
+    20.1,
+    33.1,
+    39.7
+   ],
+   "edge": [
+    "top",
+    "right"
+   ],
+   "size": 6.3,
+   "limit": 20.1,
+   "ratio": 0.313,
+   "occt": {
+    "volume": 26130.876197821668,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 26130.8761977836,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 26130.691326745102,
+    "faces": 7,
+    "dVol": 0.000007074813533486013
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 181,
+   "script": "const b = cuboid(27.3,44.6,43.6)\nbevel(b.edge('top','left'), 25.8)",
+   "style": "bevel",
+   "D": [
+    27.3,
+    44.6,
+    43.6
+   ],
+   "edge": [
+    "top",
+    "left"
+   ],
+   "size": 25.8,
+   "limit": 27.3,
+   "ratio": 0.945,
+   "occt": {
+    "volume": 38242.71600000001,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 38242.71600000001,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 38242.71600000001,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 182,
+   "script": "const b = cuboid(26,22.2,20.8)\nbevel(b.edge('back','left'), 30.5)",
+   "style": "bevel",
+   "D": [
+    26,
+    22.2,
+    20.8
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 30.5,
+   "limit": 22.2,
+   "ratio": 1.374,
+   "occt": {
+    "volume": 12005.759999999998,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 12005.760000000002,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 3258.216000000002,
+    "faces": 5,
+    "dVol": 0.7286122661122659
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 183,
+   "script": "const b = cuboid(36.6,28.9,32.5)\nbevel(b.edge('top','back'), 34.9)",
+   "style": "bevel",
+   "D": [
+    36.6,
+    28.9,
+    32.5
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 34.9,
+   "limit": 28.9,
+   "ratio": 1.208,
+   "occt": {
+    "volume": 34376.549999999996,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 34376.549999999996,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 12851.175000000001,
+    "faces": 5,
+    "dVol": 0.6261644929464998
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 184,
+   "script": "const b = cuboid(46.5,39.7,37.9)\nround(b.edge('bottom','right'), 56)",
+   "style": "round",
+   "D": [
+    46.5,
+    39.7,
+    37.9
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 56,
+   "limit": 37.9,
+   "ratio": 1.478,
+   "occt": {
+    "volume": 69965.295,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 69965.295,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [23.25, 0, -12.631548759251753]: the nearest edge is 6.318 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 185,
+   "script": "const b = cuboid(32.9,27.5,37.9)\nround(b.edge('top','back'), 14.7)",
+   "style": "round",
+   "D": [
+    32.9,
+    27.5,
+    37.9
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 14.7,
+   "limit": 27.5,
+   "ratio": 0.535,
+   "occt": {
+    "volume": 32764.34307234628,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 32764.343072329444,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 32763.77880377093,
+    "faces": 7,
+    "dVol": 0.00001722203232049973
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 186,
+   "script": "const b = cuboid(17.5,32.1,36.7)\nbevel(b.edge('front','left'), 13.1)",
+   "style": "bevel",
+   "D": [
+    17.5,
+    32.1,
+    36.7
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 13.1,
+   "limit": 17.5,
+   "ratio": 0.749,
+   "occt": {
+    "volume": 17467.1815,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 17467.181500000002,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 17467.181500000002,
+    "faces": 7,
+    "dVol": 2.0827509046560908e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 187,
+   "script": "const b = cuboid(26.2,8.6,17.7)\nround(b.edge('top','back'), 2.2)",
+   "style": "round",
+   "D": [
+    26.2,
+    8.6,
+    17.7
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 2.2,
+   "limit": 8.6,
+   "ratio": 0.256,
+   "occt": {
+    "volume": 3960.950770309424,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 3960.950770304103,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 3960.9329225316637,
+    "faces": 7,
+    "dVol": 0.000004505932740735887
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 188,
+   "script": "const b = cuboid(30.3,16.3,12.6)\nbevel(b.edge('bottom','left'), 10.4)",
+   "style": "bevel",
+   "D": [
+    30.3,
+    16.3,
+    12.6
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 10.4,
+   "limit": 12.6,
+   "ratio": 0.825,
+   "occt": {
+    "volume": 5341.51,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 5341.51,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 5341.51,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 189,
+   "script": "const b = cuboid(18.5,19.3,15.3)\nround(b.edge('front','right'), 10)",
+   "style": "round",
+   "D": [
+    18.5,
+    19.3,
+    15.3
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 10,
+   "limit": 18.5,
+   "ratio": 0.541,
+   "occt": {
+    "volume": 5134.524189996321,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 5134.524189998097,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 5134.402753862975,
+    "faces": 7,
+    "dVol": 0.000023650902956601077
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 190,
+   "script": "const b = cuboid(9,24,24.8)\nbevel(b.edge('back','left'), 12.6)",
+   "style": "bevel",
+   "D": [
+    9,
+    24,
+    24.8
+   ],
+   "edge": [
+    "back",
+    "left"
+   ],
+   "size": 12.6,
+   "limit": 9,
+   "ratio": 1.4,
+   "occt": {
+    "volume": 5356.800000000001,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 5356.8,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "volume": 3548.8800000000006,
+    "faces": 6,
+    "dVol": 0.3375
+   },
+   "outcome": "WRONG-UNREFUSED"
+  },
+  {
+   "i": 191,
+   "script": "const b = cuboid(28.9,31.8,23.9)\nround(b.edge('front','right'), 18.6)",
+   "style": "round",
+   "D": [
+    28.9,
+    31.8,
+    23.9
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 18.6,
+   "limit": 28.9,
+   "ratio": 0.644,
+   "occt": {
+    "volume": 20190.154731722523,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 20190.15473175465,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 20189.498465959045,
+    "faces": 7,
+    "dVol": 0.000032504246361592746
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 192,
+   "script": "const b = cuboid(32.1,10.4,36.4)\nbevel(b.edge('bottom','right'), 11.6)",
+   "style": "bevel",
+   "D": [
+    32.1,
+    10.4,
+    36.4
+   ],
+   "edge": [
+    "bottom",
+    "right"
+   ],
+   "size": 11.6,
+   "limit": 32.1,
+   "ratio": 0.361,
+   "occt": {
+    "volume": 11452.063999999998,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 11452.064,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 11452.063999999998,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 193,
+   "script": "const b = cuboid(8.6,17.1,27.1)\nbevel(b.edge('top','back'), 15.4)",
+   "style": "bevel",
+   "D": [
+    8.6,
+    17.1,
+    27.1
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 15.4,
+   "limit": 17.1,
+   "ratio": 0.901,
+   "occt": {
+    "volume": 2965.538,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 2965.5380000000005,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 2965.5380000000005,
+    "faces": 7,
+    "dVol": 1.5334396351908628e-16
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 194,
+   "script": "const b = cuboid(19.1,10.5,12.2)\nround(b.edge('top','back'), 11.5)",
+   "style": "round",
+   "D": [
+    19.1,
+    10.5,
+    12.2
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 11.5,
+   "limit": 10.5,
+   "ratio": 1.095,
+   "occt": {
+    "volume": 2446.7099999999996,
+    "faces": 6,
+    "refused": true
+   },
+   "brep": {
+    "volume": 2446.7099999999996,
+    "faces": 6,
+    "refused": true
+   },
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, 5.25, 9.139859413055202]: the nearest edge is 3.040 mm away"
+   },
+   "outcome": "both-refused"
+  },
+  {
+   "i": 195,
+   "script": "const b = cuboid(37.4,44.5,13.7)\nround(b.edge('top','back'), 1.6)",
+   "style": "round",
+   "D": [
+    37.4,
+    44.5,
+    13.7
+   ],
+   "edge": [
+    "top",
+    "back"
+   ],
+   "size": 1.6,
+   "limit": 13.7,
+   "ratio": 0.117,
+   "occt": {
+    "volume": 22780.36316177267,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 22780.363161756326,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 22780.34968597605,
+    "faces": 7,
+    "dVol": 5.915531954788451e-7
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 196,
+   "script": "const b = cuboid(38.8,25.8,25.7)\nround(b.edge('front','right'), 15.9)",
+   "style": "round",
+   "D": [
+    38.8,
+    25.8,
+    25.7
+   ],
+   "edge": [
+    "front",
+    "right"
+   ],
+   "size": 15.9,
+   "limit": 25.8,
+   "ratio": 0.616,
+   "occt": {
+    "volume": 24332.413298996835,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 24332.413298994677,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 24331.89761439042,
+    "faces": 7,
+    "dVol": 0.000021193319383479792
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 197,
+   "script": "const b = cuboid(27.4,18.6,38.7)\nbevel(b.edge('bottom','back'), 18.4)",
+   "style": "bevel",
+   "D": [
+    27.4,
+    18.6,
+    38.7
+   ],
+   "edge": [
+    "bottom",
+    "back"
+   ],
+   "size": 18.4,
+   "limit": 18.6,
+   "ratio": 0.989,
+   "occt": {
+    "volume": 15084.796,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 15084.796000000004,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 15084.796,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 198,
+   "script": "const b = cuboid(25.7,9.5,18.3)\nround(b.edge('front','left'), 6.8)",
+   "style": "round",
+   "D": [
+    25.7,
+    9.5,
+    18.3
+   ],
+   "edge": [
+    "front",
+    "left"
+   ],
+   "size": 6.8,
+   "limit": 9.5,
+   "ratio": 0.716,
+   "occt": {
+    "volume": 4286.350642686865,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 4286.350642681613,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 4286.283480403098,
+    "faces": 7,
+    "dVol": 0.00001566887297980705
+   },
+   "outcome": "match"
+  },
+  {
+   "i": 199,
+   "script": "const b = cuboid(36.7,36,14.6)\nbevel(b.edge('bottom','left'), 5.2)",
+   "style": "bevel",
+   "D": [
+    36.7,
+    36,
+    14.6
+   ],
+   "edge": [
+    "bottom",
+    "left"
+   ],
+   "size": 5.2,
+   "limit": 14.6,
+   "ratio": 0.356,
+   "occt": {
+    "volume": 18802.8,
+    "faces": 7,
+    "refused": false
+   },
+   "brep": {
+    "volume": 18802.800000000003,
+    "faces": 7,
+    "refused": false
+   },
+   "truck": {
+    "volume": 18802.8,
+    "faces": 7,
+    "dVol": 0
+   },
+   "outcome": "match"
+  }
+ ]
+}

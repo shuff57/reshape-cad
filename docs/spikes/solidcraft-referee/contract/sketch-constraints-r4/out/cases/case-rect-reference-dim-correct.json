@@ -1,0 +1,99 @@
+[
+ {
+  "id": "rect-reference-dim-correct",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.6370904631912707e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999902
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.621932218161722e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999903
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.3339255626002947e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.99999999992
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.530982747984429e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999908
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.721950901711049e-11,
+      "db": 1.1506270238708527e-32,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999836683
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": false,
+   "nRules": 12,
+   "firstDiff": 11,
+   "gotRow": {
+    "k": "distance",
+    "a": 1,
+    "aEnd": "a",
+    "b": 3,
+    "bEnd": "a",
+    "value": 36.0555127546,
+    "driving": false
+   },
+   "wantRow": {
+    "k": "distance",
+    "a": 1,
+    "aEnd": "a",
+    "b": 3,
+    "bEnd": "a",
+    "value": 36.05551275463989,
+    "driving": false
+   }
+  }
+ }
+]

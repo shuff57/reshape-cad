@@ -1,0 +1,21 @@
+{
+ "id": "hole-blind",
+ "outcome": "built",
+ "volume": 31717.303625887827,
+ "faces": 8,
+ "bbox": [
+  -20,
+  -20,
+  -10,
+  20,
+  20,
+  10.000000000000007
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "hole"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_b1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":10,\"base\":[0,0,0],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_b1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

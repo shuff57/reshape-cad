@@ -1,0 +1,160 @@
+[
+ {
+  "id": "P-groove-400-patched",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const s2 = sketch('top'); s2.rect(2,5,{at:[19,12.5]}); groove(s2, cyl, 90);",
+  "translator": "g0",
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "P-groove-400-patched",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 37566.46681992594,
+    "com": [
+     -0.06182657281723162,
+     -0.022503032192146853,
+     15.008827355510132
+    ],
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 8,
+    "area": 6349.261999432235,
+    "types": {
+     "cylinder": 2,
+     "plane": 6
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 6
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 36505.30663471341,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 7,
+    "dVol": 0.02824753763240978,
+    "dBbox": 0,
+    "pass": false
+   },
+   "ms": 214,
+   "load": [
+    5.7,
+    5.7
+   ],
+   "cpuMs": 462,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a groove turns the ring more than 0 and at most 360 degrees, and 400 is not in that range; use 360 for a full turn."
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.circle.center",
+     "params": {
+      "center": [
+       0,
+       0
+      ],
+      "diameter": 40
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a groove turns the ring more than 0 and at most 360 degrees, and 400 is not in that range; use 360 for a full turn.",
+    "firstRefusal": "groove1 (groove): a groove turns the ring more than 0 and at most 360 degrees, and 400 is not in that range; use 360 for a full turn."
+   },
+   "outcome": "REFUSED"
+  },
+  "analytic": {
+   "volume": 36505.30663471339,
+   "dOcct": 0.029068655574679497,
+   "dBrep": 3.9862465405315176e-16,
+   "truckRefused": true
+  },
+  "caseMs": 312
+ }
+]

@@ -1,0 +1,87 @@
+[
+ {
+  "id": "rect-origin-dims",
+  "feats": [
+   "rule:coincident",
+   "rule:horizontal",
+   "rule:vertical",
+   "rule:distance",
+   "point-ref:a/b/c ends",
+   "point-ref:origin -1",
+   "value:number",
+   "dimensioned rectangle"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.6370904631912707e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999902
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.2581343374525507e-14,
+      "db": 3.434843370848582e-35,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.9999999999245
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.6522487082208197e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999901
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 7.477562273076425e-13,
+      "db": 1.896532759724984e-34,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.9999999955135
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.77351466845721e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999894
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ }
+]

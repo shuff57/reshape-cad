@@ -1,0 +1,22 @@
+{
+ "id": "pocket-G1-xy-slab",
+ "outcome": "built",
+ "volume": 12400,
+ "faces": 11,
+ "bbox": [
+  -20,
+  -20,
+  0,
+  20,
+  20,
+  8
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "sketch",
+  "pocket"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":8,\"center\":[0,0,4],\"body_name\":\"b_box1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,8],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-5,-4],[5,-4],[5,4],[-5,4]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":5,\"direction\":\"negative\",\"sketch\":\"sk_sk1_0\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

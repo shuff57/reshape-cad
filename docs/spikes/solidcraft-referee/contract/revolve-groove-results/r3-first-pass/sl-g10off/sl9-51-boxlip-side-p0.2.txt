@@ -1,0 +1,1 @@
+sl9-51-boxlip-side-p0.2                  PASS     occtV 70011.7786 | tr-occt dV 3.4e-6 dBb 3.0e-8 dCom 1.1e-6 F o/b/t 10/10/10 | brep-occt dV 7.1e-12      | ms 3754 cpu 4220

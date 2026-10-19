@@ -1,0 +1,1 @@
+sl9-113-boxtan-top-m0                    PASS     occtV 67774.8616 | tr-occt dV 6.7e-6 dBb 3.6e-16 dCom 1.0e-6 F o/b/t 16/-/16 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- groove1 is shown without it. | ms 10117 cpu 10609

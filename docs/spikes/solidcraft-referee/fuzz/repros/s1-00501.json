@@ -1,0 +1,95 @@
+{
+ "id": "s1-00501",
+ "seed": 1,
+ "desc": "L 30x12 base6 wall8x8 open=low",
+ "t": 2.5,
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 30,
+    "width": 12,
+    "height": 6,
+    "center": [
+     0,
+     0,
+     3
+    ],
+    "body_name": "b1"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 8,
+    "width": 12,
+    "height": 8,
+    "center": [
+     11,
+     0,
+     10
+    ],
+    "body_name": "w"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "w"
+    ],
+    "operation": "join"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "radius": 2,
+    "height": 16,
+    "base": [
+     -8,
+     0,
+     -1
+    ],
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "body_name": "h0"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "h0"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      0.4,
+      0,
+      6
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  }
+ ],
+ "oracleFamily": "stepped",
+ "p7": {
+  "cls": "WRONG",
+  "expectedP": 2320.2218750000006,
+  "built": 2353.968446110514,
+  "rel": 0.014544544844666323
+ }
+}

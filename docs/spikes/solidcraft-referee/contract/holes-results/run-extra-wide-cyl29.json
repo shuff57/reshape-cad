@@ -1,0 +1,169 @@
+[
+ {
+  "id": "wide-cyl29-control",
+  "row": "wide-cyl",
+  "script": "const c = cylinder(30, 20); hole(c, { across: 29 });",
+  "note": "control: leaves a 0.5 mm tube (no closed form: the host cylinder is tessellated, the 0.5 mm tube would amplify it 15x; OCCT and brep-rs are the oracles)",
+  "featureKinds": [
+   "cyl1:cylinder",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "cyl1",
+   "diameter": 29,
+   "depth": 22,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z"
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 926.76983280899,
+   "com": [
+    3.729167420417574e-14,
+    1.6075823882548882e-14,
+    -2.9134120472012295e-16
+   ],
+   "bbox": [
+    -15,
+    -15,
+    -10,
+    15,
+    15,
+    10
+   ],
+   "faces": 4,
+   "types": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "components": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "bigCylinderComponents": 2,
+   "triangles": 0
+  },
+  "occtPrevVolume": 14137.166941154066,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 926.7698328089828,
+   "bbox": [
+    -15,
+    -15,
+    -10,
+    15,
+    15,
+    10
+   ],
+   "faces": 4
+  },
+  "truckMs": 1879,
+  "loadavg": 17.88,
+  "truckFeatures": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built"
+   }
+  ],
+  "truckPrevVolume": 14135.809206739914,
+  "truck": {
+   "volume": 926.902734802935,
+   "bbox": [
+    -14.999768343198578,
+    -14.999597006109653,
+    -10.000000000000536,
+    14.999768343198566,
+    14.999597006109637,
+    10.000000000000004
+   ],
+   "com": [
+    7.69908868828234e-14,
+    7.525075606907805e-14,
+    -1.4472982274675032e-13
+   ],
+   "faces": 4,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cyl1"
+   ]
+  },
+  "allBodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 926.902734802935,
+    "bbox": [
+     -14.999768343198578,
+     -14.999597006109653,
+     -10.000000000000536,
+     14.999768343198566,
+     14.999597006109637,
+     10.000000000000004
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 14.5,
+     "height": 22,
+     "base": [
+      1.7763568394002505e-15,
+      -4.440892098500626e-15,
+      -11.000000000000007
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_cyl1"
+     ]
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.00014340345276686955,
+    "dBbox": 0.000026866259357542312,
+    "dCom": 3.079438773407745e-15,
+    "faces": "4/4",
+    "faceVerdict": {
+     "ok": true,
+     "keys": {
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 13210.397108345076,
+    "removedTruck": 13208.906471936978,
+    "dRemoved": 0.00011283812256910548
+   },
+   "vsBrep": {
+    "dVol": 0.00014340345277472156,
+    "dBbox": 0.000026866259357542312,
+    "faces": "4/4"
+   }
+  },
+  "ms": 3190
+ }
+]

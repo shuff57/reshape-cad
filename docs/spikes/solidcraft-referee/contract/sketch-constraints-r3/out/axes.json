@@ -1,0 +1,846 @@
+[
+ {
+  "kind": "parallel",
+  "slot": "b",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "parallel",
+   "a": 1,
+   "b": -2
+  },
+  "guarded": {
+   "built": true,
+   "volume": 5999.999999999902,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "rightVolume": true
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "parallel",
+  "slot": "a",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "parallel",
+   "a": -2,
+   "b": 1
+  },
+  "guarded": {
+   "built": true,
+   "volume": 5999.999999999902,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "rightVolume": true
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "perpendicular",
+  "slot": "b",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "perpendicular",
+   "a": 2,
+   "b": -2
+  },
+  "guarded": {
+   "built": true,
+   "volume": 5999.999999999903,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "rightVolume": true
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "perpendicular",
+  "slot": "a",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "perpendicular",
+   "a": -2,
+   "b": 2
+  },
+  "guarded": {
+   "built": true,
+   "volume": 5999.999999999903,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "rightVolume": true
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "pointOnObject",
+  "slot": "b",
+  "axis": "X axis",
+  "note": "corner on the axis, the other coordinate by a signed distance",
+  "row": null,
+  "guarded": {
+   "built": true,
+   "volume": 5999.999999999903,
+   "bbox": [
+    3,
+    0,
+    0,
+    33,
+    20,
+    10
+   ],
+   "rightVolume": true
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "symmetric",
+  "slot": "c",
+  "axis": "X axis",
+  "note": "mirror about the axis (centred rectangle)",
+  "row": null,
+  "guarded": {
+   "built": true,
+   "volume": 5999.999999997116,
+   "bbox": [
+    -14.999999999999979,
+    -9.999999999998053,
+    0,
+    15.000000000000053,
+    9.99999999999618,
+    10
+   ],
+   "rightVolume": true
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "tangent",
+  "slot": "b",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "tangent",
+   "a": 1,
+   "b": -2
+  },
+  "guarded": {
+   "refused": "Row 3 of sk.rules() makes a curve tangent to an axis, and that cannot be checked after the solve; draw a construction line along the axis and make the curve tangent to that.",
+   "stage": "preflight"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "tangent",
+  "slot": "a",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "tangent",
+   "a": -2,
+   "b": 1
+  },
+  "guarded": {
+   "refused": "Row 3 of sk.rules() makes a curve tangent to an axis, and that cannot be checked after the solve; draw a construction line along the axis and make the curve tangent to that.",
+   "stage": "preflight"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "equal",
+  "slot": "b",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "equal",
+   "a": 1,
+   "b": -2
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "angle",
+  "slot": "b",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "angle",
+   "a": 1,
+   "b": -2,
+   "value": 180
+  },
+  "guarded": {
+   "refused": "Row 11 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "angle",
+  "slot": "a",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "angle",
+   "a": -2,
+   "b": 2,
+   "value": 90
+  },
+  "guarded": {
+   "refused": "Row 11 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "horizontal",
+  "slot": "a",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "horizontal",
+   "a": -2
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "built": true,
+   "volume": 5999.999999941251
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "vertical",
+  "slot": "a",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "vertical",
+   "a": -2
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "built": true,
+   "volume": 5999.999999941251
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "coincident",
+  "slot": "b",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "coincident",
+   "a": 1,
+   "aEnd": "a",
+   "b": -2,
+   "bEnd": "a"
+  },
+  "guarded": {
+   "refused": "Row 11 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "built": true,
+   "volume": 5999.999999941251
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "distance",
+  "slot": "b",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "distance",
+   "a": 1,
+   "aEnd": "a",
+   "b": -2,
+   "bEnd": "a",
+   "value": 5
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "distanceX",
+  "slot": "b",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "distanceX",
+   "a": -2,
+   "aEnd": "a",
+   "b": 1,
+   "bEnd": "a",
+   "value": 5
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "distanceY",
+  "slot": "b",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "distanceY",
+   "a": 1,
+   "aEnd": "a",
+   "b": -2,
+   "bEnd": "a",
+   "value": 5
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "radius",
+  "slot": "a",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "radius",
+   "a": -2,
+   "value": 5
+  },
+  "guarded": {
+   "refused": "Row 3 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "diameter",
+  "slot": "a",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "diameter",
+   "a": -2,
+   "value": 10
+  },
+  "guarded": {
+   "refused": "Row 3 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "lock",
+  "slot": "a",
+  "axis": "X axis",
+  "note": "",
+  "row": {
+   "k": "lock",
+   "a": -2,
+   "aEnd": "a"
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "built": true,
+   "volume": 5999.999999941251
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "parallel",
+  "slot": "b",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "parallel",
+   "a": 2,
+   "b": -3
+  },
+  "guarded": {
+   "built": true,
+   "volume": 5999.999999999903,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "rightVolume": true
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "parallel",
+  "slot": "a",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "parallel",
+   "a": -3,
+   "b": 2
+  },
+  "guarded": {
+   "built": true,
+   "volume": 5999.999999999903,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "rightVolume": true
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "perpendicular",
+  "slot": "b",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "perpendicular",
+   "a": 1,
+   "b": -3
+  },
+  "guarded": {
+   "built": true,
+   "volume": 5999.999999999902,
+   "bbox": [
+    0,
+    -7.105427357601002e-15,
+    0,
+    30,
+    19.999999999999993,
+    10
+   ],
+   "rightVolume": true
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "perpendicular",
+  "slot": "a",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "perpendicular",
+   "a": -3,
+   "b": 1
+  },
+  "guarded": {
+   "built": true,
+   "volume": 5999.999999999902,
+   "bbox": [
+    0,
+    -7.105427357601002e-15,
+    0,
+    30,
+    19.999999999999993,
+    10
+   ],
+   "rightVolume": true
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "pointOnObject",
+  "slot": "b",
+  "axis": "Y axis",
+  "note": "corner on the axis, the other coordinate by a signed distance",
+  "row": null,
+  "guarded": {
+   "built": true,
+   "volume": 5999.999999999902,
+   "bbox": [
+    0,
+    4,
+    0,
+    30,
+    24,
+    10
+   ],
+   "rightVolume": true
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "symmetric",
+  "slot": "c",
+  "axis": "Y axis",
+  "note": "mirror about the axis (centred rectangle)",
+  "row": null,
+  "guarded": {
+   "built": true,
+   "volume": 6000.0000002990055,
+   "bbox": [
+    -15.000000000000025,
+    -9.999999999500599,
+    0,
+    15.000000000000018,
+    10.000000001866514,
+    10
+   ],
+   "rightVolume": true
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "equal",
+  "slot": "b",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "equal",
+   "a": 1,
+   "b": -3
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "angle",
+  "slot": "b",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "angle",
+   "a": 1,
+   "b": -3,
+   "value": 90
+  },
+  "guarded": {
+   "refused": "Row 11 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "angle",
+  "slot": "a",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "angle",
+   "a": -3,
+   "b": 2,
+   "value": 90
+  },
+  "guarded": {
+   "refused": "Row 11 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "horizontal",
+  "slot": "a",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "horizontal",
+   "a": -3
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "built": true,
+   "volume": 5999.999999941251
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "vertical",
+  "slot": "a",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "vertical",
+   "a": -3
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "built": true,
+   "volume": 5999.999999941251
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "coincident",
+  "slot": "b",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "coincident",
+   "a": 1,
+   "aEnd": "a",
+   "b": -3,
+   "bEnd": "a"
+  },
+  "guarded": {
+   "refused": "Row 11 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "built": true,
+   "volume": 5999.999999941251
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "distance",
+  "slot": "b",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "distance",
+   "a": 1,
+   "aEnd": "a",
+   "b": -3,
+   "bEnd": "a",
+   "value": 5
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "distanceX",
+  "slot": "b",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "distanceX",
+   "a": -3,
+   "aEnd": "a",
+   "b": 1,
+   "bEnd": "a",
+   "value": 5
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "distanceY",
+  "slot": "b",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "distanceY",
+   "a": 1,
+   "aEnd": "a",
+   "b": -3,
+   "bEnd": "a",
+   "value": 5
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "radius",
+  "slot": "a",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "radius",
+   "a": -3,
+   "value": 5
+  },
+  "guarded": {
+   "refused": "Row 3 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "diameter",
+  "slot": "a",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "diameter",
+   "a": -3,
+   "value": 10
+  },
+  "guarded": {
+   "refused": "Row 3 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "brepOpen": null
+ },
+ {
+  "kind": "lock",
+  "slot": "a",
+  "axis": "Y axis",
+  "note": "",
+  "row": {
+   "k": "lock",
+   "a": -3,
+   "aEnd": "a"
+  },
+  "guarded": {
+   "refused": "Row 12 of sk.rules() names an axis where it needs a point or a different kind of line.",
+   "stage": "map"
+  },
+  "brep": {
+   "built": true,
+   "volume": 5999.999999941251
+  },
+  "brepOpen": null
+ }
+]

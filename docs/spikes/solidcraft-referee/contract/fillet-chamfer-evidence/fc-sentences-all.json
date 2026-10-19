@@ -1,0 +1,454 @@
+{
+ "battery": 60,
+ "ran": 60,
+ "silentScripts": 2,
+ "distinctTexts": 46,
+ "bad": 0,
+ "staticLiteralsRelevant": 15,
+ "staticNotReachedByBattery": [
+  ".edge() with a wall needs a wall of a pocket.",
+  "turn() needs a solid shape, and a ${f.kind} is flat. Pull or spin it into a shape first, then turn that."
+ ],
+ "rows": [
+  {
+   "raw": "That shape has no edges to round — it is curved all the way round.",
+   "where": [
+    "whyCannotRound(sphere)",
+    "whyCannotRound(torus)",
+    "whole-sphere",
+    "whole-ring"
+   ],
+   "cls": "whole-other",
+   "sentence": "A sphere has no edges to round -- use a box, cylinder or other shape with edges.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding a cone is not supported yet.",
+   "where": [
+    "whyCannotRound(cone)",
+    "whole-cone"
+   ],
+   "cls": "whole-other",
+   "sentence": "A cone cannot be rounded all over yet -- round one of its edges, or use a box or cylinder.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding does not work on this shape.",
+   "where": [
+    "round() of a prism (whyCannotRound returns null)",
+    "round() of a wedge (whyCannotRound returns null)",
+    "round() of a datum (whyCannotRound returns null)",
+    "round() of a blend (whyCannotRound returns null)"
+   ],
+   "cls": "whole-other",
+   "sentence": "Rounding all over only works on a plain box or cylinder -- this shape is a prism, a wedge or already has a rounded or bevelled edge, so round its edges one at a time.",
+   "lint": []
+  },
+  {
+   "raw": "A circle has no corners to round — it is already round the whole way. Rounding is for shapes with edges, like a box.",
+   "where": [
+    "whyCannotRound(sketch:circle)"
+   ],
+   "cls": "whole-other",
+   "sentence": "A circle has no corners to round -- it is already round all the way, so use a shape with edges.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding works on a solid shape, not a flat sketch. To round a corner here, use Round a corner in the Rules panel.",
+   "where": [
+    "whyCannotRound(sketch:polygon)"
+   ],
+   "cls": "whole-other",
+   "sentence": "A flat sketch cannot be rounded as a shape -- round its corners in the sketch rules, or pull it into a shape first.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding works on a shape you build with a tool like Box or Cylinder, not one pulled from a sketch. If its sketch has corners, use Round a corner in the Rules panel before you pull it.",
+   "where": [
+    "whyCannotRound(extrude)",
+    "whole-pull"
+   ],
+   "cls": "whole-other",
+   "sentence": "A shape pulled from a sketch cannot be rounded all over -- round its sketch corners before you pull it, or round one edge.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding works on a shape, not a combination. Round the shape before you cut it.",
+   "where": [
+    "whyCannotRound(combine:subtract)",
+    "whole-subtract"
+   ],
+   "cls": "whole-other",
+   "sentence": "A combined shape cannot be rounded all over -- round each shape before you join or cut it.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding works on a shape, not a combination. Round the shapes before you join them.",
+   "where": [
+    "whyCannotRound(combine:union)",
+    "whole-union"
+   ],
+   "cls": "whole-other",
+   "sentence": "A combined shape cannot be rounded all over -- round each shape before you join or cut it.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding works on a shape, not a combination. Round the shapes before you overlap them.",
+   "where": [
+    "whyCannotRound(combine:intersect)"
+   ],
+   "cls": "whole-other",
+   "sentence": "A combined shape cannot be rounded all over -- round each shape before you join or cut it.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding works on a shape you build with a tool like Box or Cylinder, not one spun from a sketch. If its sketch has corners, use Round a corner in the Rules panel before you spin it.",
+   "where": [
+    "whyCannotRound(revolve)",
+    "whole-spin"
+   ],
+   "cls": "whole-other",
+   "sentence": "A shape spun from a sketch cannot be rounded all over -- round its sketch corners before you spin it, or round one edge.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding works on the original shape, not a mirrored copy. Round it before you mirror it.",
+   "where": [
+    "whyCannotRound(mirror)"
+   ],
+   "cls": "whole-other",
+   "sentence": "A mirrored copy cannot be rounded all over -- round the shape before you mirror it.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding works on the original shape, not a repeated copy. Round it before you repeat it.",
+   "where": [
+    "whyCannotRound(pattern)",
+    "whole-repeat"
+   ],
+   "cls": "whole-other",
+   "sentence": "A repeated copy cannot be rounded all over -- round the shape before you repeat it.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding works on the shape, not the hole cut into it. Round the shape before you drill it.",
+   "where": [
+    "whyCannotRound(hole)",
+    "whole-hole"
+   ],
+   "cls": "whole-other",
+   "sentence": "A shape with a hole cannot be rounded all over -- round the shape before you drill the hole.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding works on a shape, not a hollowed-out one. A hollow shape rounds its edges one at a time: pick an edge and round that.",
+   "where": [
+    "whyCannotRound(shell)",
+    "whole-hollow"
+   ],
+   "cls": "whole-other",
+   "sentence": "A hollowed shape cannot be rounded all over -- round its edges one at a time.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding the whole shape works on the original, not a copy made by Move — round the original before you copy it, or click one edge of this copy in the viewport to round just that edge.",
+   "where": [
+    "whyCannotRound(move:copy=true)"
+   ],
+   "cls": "whole-other",
+   "sentence": "A copy made by move() cannot be rounded all over -- round the original before you copy it, or round one edge.",
+   "lint": []
+  },
+  {
+   "raw": "Rounding the whole shape works on the original, not a moved copy — round it before you move it, or click one edge of this shape in the viewport to round just that edge.",
+   "where": [
+    "whyCannotRound(move:copy=false)",
+    "whole-move"
+   ],
+   "cls": "whole-other",
+   "sentence": "A moved copy cannot be rounded all over -- round the shape before you move it, or round one edge.",
+   "lint": []
+  },
+  {
+   "raw": "round() on a list needs a list of edges, like round(part.rim(sketch2), 1).",
+   "where": [
+    "round-list-empty",
+    "round-list-nonedge"
+   ],
+   "cls": "arg",
+   "sentence": "A list given to round() or bevel() has to be a list of edges that is not empty -- for example part.rim(sketch).",
+   "lint": []
+  },
+  {
+   "raw": "bevel() on a list needs a list of edges, like bevel(part.rim(sketch2), 1).",
+   "where": [
+    "bevel-list-empty",
+    "bevel-list-nonedge"
+   ],
+   "cls": "arg",
+   "sentence": "A list given to round() or bevel() has to be a list of edges that is not empty -- for example part.rim(sketch).",
+   "lint": []
+  },
+  {
+   "raw": "round() on a single reference needs an edge -- try round(shape.edge(faceA, faceB), size).",
+   "where": [
+    "round-face-ref"
+   ],
+   "cls": "arg",
+   "sentence": "round() and bevel() need an edge such as shape.edge(a, b) -- a face or a number cannot be used.",
+   "lint": []
+  },
+  {
+   "raw": "bevel() needs one edge -- try bevel(shape.edge(faceA, faceB), size).",
+   "where": [
+    "bevel-face-ref",
+    "bevel-number"
+   ],
+   "cls": "arg",
+   "sentence": "round() and bevel() need an edge such as shape.edge(a, b) -- a face or a number cannot be used.",
+   "lint": []
+  },
+  {
+   "raw": "bevel() needs one edge: a whole shape is not supported yet -- chamfer one edge with bevel(shape.edge(faceA, faceB), size), or round the whole box or cylinder with fillet(shape, size).",
+   "where": [
+    "bevel-whole"
+   ],
+   "cls": "arg",
+   "sentence": "bevel() needs one edge: a whole shape is not supported yet -- chamfer one edge with bevel(shape.edge(faceA, faceB), size), or round the whole box or cylinder with fillet(shape, size).",
+   "lint": []
+  },
+  {
+   "raw": "round() needs a shape or an edge (shape.edge(a, b)) to round.",
+   "where": [
+    "round-number",
+    "round-sketch-circle",
+    "round-sketch-rect"
+   ],
+   "cls": "arg",
+   "sentence": "round() needs a shape or an edge such as shape.edge(a, b) -- a sketch cannot be rounded.",
+   "lint": []
+  },
+  {
+   "raw": "round needs a number for size.",
+   "where": [
+    "round-no-size"
+   ],
+   "cls": "arg",
+   "sentence": "The size has to be a number such as 2 -- text cannot be a size.",
+   "lint": []
+  },
+  {
+   "raw": "round's size has to be a number, and you gave it the text \"big\".",
+   "where": [
+    "round-text-size"
+   ],
+   "cls": "arg",
+   "sentence": "The size has to be a number such as 2 -- text cannot be a size.",
+   "lint": []
+  },
+  {
+   "raw": "bevel needs a number for size.",
+   "where": [
+    "bevel-no-size"
+   ],
+   "cls": "arg",
+   "sentence": "The size has to be a number such as 2 -- text cannot be a size.",
+   "lint": []
+  },
+  {
+   "raw": "bevel's size has to be a number, and you gave it the text \"big\".",
+   "where": [
+    "bevel-text-size"
+   ],
+   "cls": "arg",
+   "sentence": "The size has to be a number such as 2 -- text cannot be a size.",
+   "lint": []
+  },
+  {
+   "raw": "round() takes a shape or edge and a size; the third argument (3) was ignored. To pick the edge, use shape.edge(faceA, faceB).",
+   "where": [
+    "round-extra-arg"
+   ],
+   "cls": "arg",
+   "sentence": "round() takes a shape or an edge and one size, so the extra number was ignored -- pick the edge with shape.edge(faceA, faceB).",
+   "lint": []
+  },
+  {
+   "raw": ".edge() needs two DIFFERENT faces to name the edge between them.",
+   "where": [
+    "edge-same-face",
+    "edge-wall-wall-same"
+   ],
+   "cls": "arg",
+   "sentence": "An edge needs two different faces to name it -- try shape.edge('top', 'front').",
+   "lint": []
+  },
+  {
+   "raw": ".edge() does not know the face \"lid\". Faces are named top, bottom, front, back, left, right.",
+   "where": [
+    "edge-unknown-word"
+   ],
+   "cls": "arg",
+   "sentence": "That is not a face name -- use top, bottom, front, back, left or right.",
+   "lint": []
+  },
+  {
+   "raw": ".edge() needs a face word (top, bottom, front, back, left, right), and you gave it 3.",
+   "where": [
+    "edge-not-text"
+   ],
+   "cls": "arg",
+   "sentence": "A face is named with a word in quotes -- use top, bottom, front, back, left or right, like shape.edge('top', 'front').",
+   "lint": []
+  },
+  {
+   "raw": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here.",
+   "where": [
+    "edge-side-on-box",
+    "edge-side-pulled-disc",
+    "edge-side-cone",
+    "edge-side-ring"
+   ],
+   "cls": "arg",
+   "sentence": "\"side\" only names the curved wall of a cylinder made with cylinder() -- on a box use two of top, bottom, front, back, left and right, and for a disc pulled from a circle use cylinder() instead.",
+   "lint": []
+  },
+  {
+   "raw": ".face(): \"side\" is the curved wall of a cylinder, not a flat face here.",
+   "where": [
+    "face-side-on-box"
+   ],
+   "cls": "arg",
+   "sentence": "\"side\" only names the curved wall of a cylinder made with cylinder() -- on a box use two of top, bottom, front, back, left and right, and for a disc pulled from a circle use cylinder() instead.",
+   "lint": []
+  },
+  {
+   "raw": ".wall() names a face a pocket cut, and no pocket(...) was cut from that sketch.",
+   "where": [
+    "edge-wall-no-pocket"
+   ],
+   "cls": "arg",
+   "sentence": "That wall belongs to a pocket that was never cut from this sketch -- cut the pocket first.",
+   "lint": []
+  },
+  {
+   "raw": ".wall() needs a side number from 1 to 4 (the sketch has 4), and you gave it 9.",
+   "where": [
+    "wall-out-of-range"
+   ],
+   "cls": "arg",
+   "sentence": "That wall number does not exist -- use a number from 1 to the number of sides of the sketch.",
+   "lint": []
+  },
+  {
+   "raw": ".wall() needs the sketch the pocket was cut from: part.wall(sketch2, 1).",
+   "where": [
+    "wall-not-sketch"
+   ],
+   "cls": "arg",
+   "sentence": "wall() needs the sketch the pocket was cut from -- for example part.wall(sketch2, 1).",
+   "lint": []
+  },
+  {
+   "raw": ".edge() takes a face word (top, front, ...) or a pocket wall from .wall(sketch, n).",
+   "where": [
+    "edge-a-ref-not-wall"
+   ],
+   "cls": "arg",
+   "sentence": "An edge is named with face words or pocket walls only -- use shape.edge('top', 'front') or shape.edge('top', part.wall(sketch, 1)).",
+   "lint": []
+  },
+  {
+   "raw": ".rim() needs the sketch the pocket was cut from: part.rim(sketch2).",
+   "where": [
+    "rim-not-sketch"
+   ],
+   "cls": "arg",
+   "sentence": "rim() needs the sketch the pocket was cut from -- for example part.rim(sketch2).",
+   "lint": []
+  },
+  {
+   "raw": ".rim() finds the opening of a pocket cut down from a top-plane sketch; for another pocket name its edges one at a time with .edge(face, part.wall(sketch, n)).",
+   "where": [
+    "rim-front-plane"
+   ],
+   "cls": "arg",
+   "sentence": "rim() only works on a pocket cut down from a top-plane sketch -- name its edges one at a time with edge(face, part.wall(sketch, n)).",
+   "lint": []
+  },
+  {
+   "raw": "A pocket whose depth is a param() cannot have its walls named yet -- give pocket() a plain number for the depth, or cut it as subtract(shape, pull(sketch, -depth)).",
+   "where": [
+    "rim-param-depth"
+   ],
+   "cls": "verbatim",
+   "sentence": "A pocket whose depth is a param() cannot have its walls named yet -- give pocket() a plain number for the depth, or cut it as subtract(shape, pull(sketch, -depth)).",
+   "lint": []
+  },
+  {
+   "raw": "A pocket with a direction option (through, reversed, midplane, length2, taper, direction) cannot have its walls named yet -- name the walls of a plain one-sided pocket.",
+   "where": [
+    "rim-through"
+   ],
+   "cls": "verbatim",
+   "sentence": "A pocket with a direction option (through, reversed, midplane, length2, taper, direction) cannot have its walls named yet -- name the walls of a plain one-sided pocket.",
+   "lint": []
+  },
+  {
+   "raw": "turn's angles needs three numbers, like [x, y, z]. You gave it a list of 2.",
+   "where": [
+    "turn-angles-two"
+   ],
+   "cls": "arg",
+   "sentence": "That needs three numbers in brackets, like [10, 0, 5] -- check the commas and the number of values.",
+   "lint": []
+  },
+  {
+   "raw": "turn's angles needs three numbers, like [x, y, z]. You gave it 30.",
+   "where": [
+    "turn-angles-number"
+   ],
+   "cls": "arg",
+   "sentence": "That needs three numbers in brackets, like [10, 0, 5] -- check the commas and the number of values.",
+   "lint": []
+  },
+  {
+   "raw": "turn() needs a shape: turn(shape, [rx, ry, rz]).",
+   "where": [
+    "turn-flat",
+    "turn-not-shape"
+   ],
+   "cls": "arg",
+   "sentence": "turn() needs a solid shape and three angles, like turn(shape, [0, 0, 90]) -- a flat sketch has to be pulled into a shape first.",
+   "lint": []
+  },
+  {
+   "raw": "move's offset needs three numbers, like [x, y, z]. You gave it a list of 2.",
+   "where": [
+    "move-offset-two"
+   ],
+   "cls": "arg",
+   "sentence": "That needs three numbers in brackets, like [10, 0, 5] -- check the commas and the number of values.",
+   "lint": []
+  },
+  {
+   "raw": "move's offset needs three numbers, like [x, y, z]. You gave it 5.",
+   "where": [
+    "move-offset-number"
+   ],
+   "cls": "arg",
+   "sentence": "That needs three numbers in brackets, like [10, 0, 5] -- check the commas and the number of values.",
+   "lint": []
+  },
+  {
+   "raw": "move() needs a shape: move(shape, [x, y, z]).",
+   "where": [
+    "move-not-shape"
+   ],
+   "cls": "verbatim",
+   "sentence": "move() needs a shape: move(shape, [x, y, z]).",
+   "lint": []
+  }
+ ],
+ "unreachedMapped": 2
+}

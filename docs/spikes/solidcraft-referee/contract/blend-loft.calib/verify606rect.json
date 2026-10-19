@@ -1,0 +1,3051 @@
+{
+ "seed": 606,
+ "n": 500,
+ "modes": [
+  "rectcirc"
+ ],
+ "summary": {
+  "rectcirc": {
+   "cases": 500,
+   "guardPassed": 33,
+   "passBut": 0,
+   "refused": 467,
+   "refusedWouldBeWrong": 0,
+   "refusedExact": 0,
+   "refusedNoSolid": 0,
+   "maxPassD": 0.00016087689089893216,
+   "maxPassCurvedD": 0.00016087689089893216
+  }
+ },
+ "violations": 0,
+ "rows": [
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.9x5.5 c->p rc16.2 h3.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect20.2x12.4 c->p rc11.4 h86.5",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.0001232547379836622,
+   "curved": true,
+   "signed": -0.0001232547379836622,
+   "diag": 100.01766675713426,
+   "circleR": 11.402439224580492,
+   "circleRmin": 11.402439224580492,
+   "cornerR": null,
+   "size": 20.169797314256826,
+   "gapAbs": 86.47952057225947,
+   "aspect": 1.6213260077522134,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 28433.708666409548,
+   "truck": 28430.204077097966
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.0x5.7 c->p rc0.7 h2.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect32.6x17.7 p->c rc22.1 h4.1",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.3x0.8 c->p rc10.5 h-40.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect23.3x17.5 c->p rc6.9 h-7.8",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect15.1x8.3 p->c rc46.3 h-20.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.5x5.4 p->c rc10.8 h5.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect29.7x24.1 p->c rc35.2 h22.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.4x0.8 c->p rc1.0 h-8.2",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00014318190446478894,
+   "curved": true,
+   "signed": -0.00014318190446478894,
+   "diag": 12.837321095749958,
+   "circleR": 0.9720646206266372,
+   "circleRmin": 0.9720646206266372,
+   "cornerR": null,
+   "size": 1.3580573888573007,
+   "gapAbs": 8.232228328256081,
+   "aspect": 1.7481003500171934,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 16.01249504760263,
+   "truck": 16.010202348066482
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.4x1.8 p->c rc0.4 h62.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.8x6.1 p->c rc0.3 h-1.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x0.7 p->c rc0.9 h10.2",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00013296053580216975,
+   "curved": true,
+   "signed": -0.00013296053580216975,
+   "diag": 11.303185506131708,
+   "circleR": 0.8756584706669147,
+   "circleRmin": 0.8756584706669147,
+   "cornerR": null,
+   "size": 1.2032569893503098,
+   "gapAbs": 10.237270055453175,
+   "aspect": 1.6509870470035821,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 16.281243336513157,
+   "truck": 16.27907857367561
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.7x2.5 p->c rc1.1 h1.3",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.2x4.8 c->p rc18.0 h1.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.0x6.3 p->c rc2.9 h-55.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.0x1.3 p->c rc12.0 h-5.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.5x4.6 c->p rc35.1 h6.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect8.3x6.3 c->p rc2.8 h-7.4",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect28.7x20.1 p->c rc4.3 h67.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.8x5.1 p->c rc14.5 h1.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect15.9x9.8 p->c rc7.9 h-90.2",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00010991171855208648,
+   "curved": true,
+   "signed": -0.00010991171855208648,
+   "diag": 104.49982737754839,
+   "circleR": 7.94517175633346,
+   "circleRmin": 7.94517175633346,
+   "cornerR": null,
+   "size": 15.860357304571366,
+   "gapAbs": 90.19823034835515,
+   "aspect": 1.6238485762965864,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 16003.066179582836,
+   "truck": 16001.307255076936
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect18.0x15.7 c->p rc1.0 h37.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.8x1.1 c->p rc6.7 h3.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.4x4.3 p->c rc5.1 h-6.3",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.1x1.0 c->p rc56.2 h31.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect14.5x10.8 c->p rc0.9 h20.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.5x1.2 p->c rc17.1 h3.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.3x2.1 c->p rc4.7 h55.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect20.0x11.4 c->p rc0.6 h-95.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.8x1.7 c->p rc5.7 h21.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect42.6x38.1 p->c rc13.1 h3.5",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.8x2.3 p->c rc3.7 h-1.4",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.9x4.3 p->c rc2.9 h-40.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect19.1x9.9 c->p rc1.5 h88.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.0x5.7 c->p rc21.4 h-28.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.9x3.4 p->c rc0.3 h23.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.3x5.4 c->p rc0.9 h20.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.1x3.4 p->c rc1.1 h2.2",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect43.1x26.9 p->c rc29.7 h-80.4",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00006717665589883796,
+   "curved": true,
+   "signed": -0.00006717665589883796,
+   "diag": 116.22593008878188,
+   "circleR": 29.668696141905137,
+   "circleRmin": 29.668696141905137,
+   "cornerR": null,
+   "size": 43.11626149279401,
+   "gapAbs": 80.41526334544231,
+   "aspect": 1.6028919436852447,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 154231.2694370541,
+   "truck": 154220.9086961383
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.9x5.4 c->p rc36.9 h4.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.3x3.2 p->c rc6.9 h2.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect42.9x28.2 p->c rc7.0 h1.5",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect29.0x15.2 p->c rc2.4 h22.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect20.0x12.3 c->p rc3.6 h1.5",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect41.3x40.3 c->p rc24.2 h-3.9",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.1x1.3 c->p rc14.6 h30.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.1x1.9 p->c rc0.7 h2.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect12.1x10.4 c->p rc15.4 h-84.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect48.0x31.6 p->c rc28.6 h3.1",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect29.0x17.8 c->p rc47.9 h-2.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.3x1.0 c->p rc4.1 h-5.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect15.2x7.6 p->c rc1.6 h-1.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.5x2.1 p->c rc10.9 h-3.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.1x0.7 p->c rc1.1 h3.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.4x1.5 p->c rc9.0 h2.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect45.0x30.0 p->c rc0.8 h1.6",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.4x3.2 c->p rc0.3 h30.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.6x1.4 c->p rc2.0 h-71.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.6x7.3 p->c rc0.4 h12.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.3x1.5 c->p rc21.4 h-1.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.7x1.2 c->p rc0.9 h-8.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.7x3.8 c->p rc12.6 h30.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect42.5x23.8 c->p rc3.4 h1.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect27.5x16.4 c->p rc0.6 h13.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.0x2.7 c->p rc2.9 h48.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect39.5x23.9 p->c rc0.3 h16.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect20.8x10.6 c->p rc0.5 h1.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.9x4.4 p->c rc4.2 h24.7",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00013020703880664954,
+   "curved": true,
+   "signed": -0.00013020703880664954,
+   "diag": 54.46751911098366,
+   "circleR": 4.247695133497677,
+   "circleRmin": 4.247695133497677,
+   "cornerR": null,
+   "size": 5.9150330948634915,
+   "gapAbs": 24.735815485738154,
+   "aspect": 1.331363077973947,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 1007.8820220875431,
+   "truck": 1007.7507887539806
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.1x0.9 p->c rc4.3 h7.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.5x0.9 p->c rc7.6 h1.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.8x1.5 c->p rc2.2 h2.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect41.9x28.5 c->p rc32.3 h-6.5",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect19.4x14.4 p->c rc0.5 h7.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.2x8.3 p->c rc10.2 h-4.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.1x8.3 p->c rc0.5 h-83.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect46.1x30.1 p->c rc0.6 h50.6",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.1x1.4 c->p rc46.1 h6.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect11.0x5.7 c->p rc0.5 h10.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.3x2.2 p->c rc6.7 h3.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.1x1.0 c->p rc30.2 h-8.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect29.2x15.4 c->p rc3.2 h31.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.7x1.6 p->c rc17.8 h6.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.6x8.1 p->c rc15.9 h1.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.5x2.2 p->c rc0.6 h-15.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect48.0x33.4 c->p rc13.0 h-44.0",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.1x1.1 c->p rc0.3 h53.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect11.8x8.4 p->c rc22.6 h2.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect32.8x20.4 c->p rc3.4 h1.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect19.3x9.5 c->p rc55.4 h3.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.1x3.0 p->c rc44.4 h-10.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect47.9x37.0 p->c rc57.0 h3.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect18.7x9.7 p->c rc7.7 h7.8",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.7x3.8 c->p rc0.4 h4.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.2x1.1 p->c rc51.8 h1.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.6x3.9 p->c rc18.8 h2.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect32.6x21.2 p->c rc8.4 h10.5",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect13.1x9.8 p->c rc15.9 h1.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.9x4.2 c->p rc1.6 h3.3",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.6x1.8 p->c rc1.4 h-1.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.6x4.9 p->c rc0.5 h3.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.5x4.9 c->p rc1.8 h42.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect26.5x18.3 c->p rc9.2 h1.4",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect11.1x6.3 p->c rc39.3 h1.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.9x1.6 c->p rc0.5 h2.1",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00005303599625630497,
+   "curved": true,
+   "signed": -0.00005303599625630497,
+   "diag": 5.788275893481953,
+   "circleR": 0.5100492566561654,
+   "circleRmin": 0.5100492566561654,
+   "cornerR": null,
+   "size": 1.9127786089276113,
+   "gapAbs": 2.1497580242723053,
+   "aspect": 1.1992685644887389,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 3.9220553308506263,
+   "truck": 3.9218473207387823
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect22.7x16.0 c->p rc6.1 h-3.2",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect18.2x14.0 p->c rc0.4 h-9.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x1.0 p->c rc1.7 h10.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.5x1.3 c->p rc8.7 h6.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect13.8x12.6 p->c rc0.7 h52.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.1x0.7 c->p rc48.1 h2.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.6x2.0 p->c rc3.5 h41.2",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00015236315161522223,
+   "curved": true,
+   "signed": -0.00015236315161522223,
+   "diag": 52.19367729806492,
+   "circleR": 3.503979278622688,
+   "circleRmin": 3.503979278622688,
+   "cornerR": null,
+   "size": 3.5974371325114256,
+   "gapAbs": 41.21878792160138,
+   "aspect": 1.7738085575285365,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 866.2863491918488,
+   "truck": 866.1543590734847
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.8x8.5 p->c rc0.4 h-90.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect8.6x4.8 c->p rc0.6 h54.6",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.4x4.1 c->p rc21.9 h83.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.3x3.2 p->c rc0.3 h58.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.5x3.0 c->p rc3.9 h12.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.8x2.0 c->p rc26.6 h15.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect20.7x11.6 c->p rc2.7 h20.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect21.8x12.9 c->p rc21.1 h6.6",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect8.2x4.8 c->p rc2.0 h-9.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect49.3x25.3 p->c rc36.0 h-2.0",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.8x7.3 c->p rc3.2 h32.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect36.1x20.3 p->c rc11.7 h54.8",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00007432621387901624,
+   "curved": true,
+   "signed": -0.00007432621387901624,
+   "diag": 72.07763763140439,
+   "circleR": 11.690846158478777,
+   "circleRmin": 11.690846158478777,
+   "cornerR": null,
+   "size": 36.088023099872146,
+   "gapAbs": 54.81312357660552,
+   "aspect": 1.774143661407288,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 31764.04672075987,
+   "truck": 31761.68581942964
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect11.0x6.1 p->c rc4.8 h-3.0",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x0.7 p->c rc0.7 h30.6",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.4x3.6 p->c rc4.2 h2.8",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.1x3.4 c->p rc0.8 h-31.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.2x3.0 p->c rc4.1 h-38.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.7x4.8 p->c rc19.4 h88.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect19.0x14.0 p->c rc6.9 h-1.7",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect55.5x52.6 c->p rc16.9 h-11.3",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect19.5x18.2 c->p rc0.4 h35.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect44.7x28.8 c->p rc7.5 h-1.2",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.5x0.8 c->p rc0.5 h79.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.1x1.7 p->c rc10.3 h3.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.3x0.7 c->p rc27.1 h8.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.7x0.9 p->c rc10.4 h18.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.5x2.3 c->p rc2.8 h-82.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect13.0x9.0 c->p rc7.1 h-1.9",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect27.2x21.1 p->c rc0.8 h-24.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.0x1.1 p->c rc5.6 h75.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect33.8x18.5 p->c rc0.3 h29.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect54.3x34.6 p->c rc4.7 h15.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.5x1.5 p->c rc16.0 h-25.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect19.8x14.8 c->p rc14.5 h-1.2",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect17.6x9.6 c->p rc2.7 h47.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.0x0.5 p->c rc15.6 h50.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.4x1.2 p->c rc0.3 h-1.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect26.0x16.8 c->p rc1.4 h-20.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect23.8x12.6 c->p rc5.0 h5.4",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.1x4.6 p->c rc15.8 h-11.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect11.4x6.8 p->c rc44.3 h6.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect27.2x15.9 c->p rc7.0 h1.4",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect14.1x11.8 p->c rc1.1 h14.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.1x0.8 p->c rc3.5 h1.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect18.9x9.4 c->p rc32.4 h-43.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect31.2x17.9 p->c rc20.0 h10.3",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.8x1.5 p->c rc0.4 h1.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect13.9x12.2 c->p rc0.5 h-8.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect28.5x16.4 c->p rc11.9 h8.0",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.0x4.9 c->p rc1.2 h-6.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.2x3.5 p->c rc8.0 h-6.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect11.8x6.2 p->c rc5.8 h78.4",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00008666691625971698,
+   "curved": true,
+   "signed": -0.00008666691625971698,
+   "diag": 83.44539218675625,
+   "circleR": 5.812890697486949,
+   "circleRmin": 5.812890697486949,
+   "cornerR": null,
+   "size": 11.849834771535935,
+   "gapAbs": 78.38641292798084,
+   "aspect": 1.918520352372434,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 7052.307880449325,
+   "truck": 7051.696678672813
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.9x5.3 p->c rc17.5 h-6.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect20.6x10.3 c->p rc1.7 h-12.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x0.7 p->c rc24.5 h1.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.1x0.6 c->p rc1.1 h-1.8",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00015288228953374053,
+   "curved": true,
+   "signed": -0.00015288228953374053,
+   "diag": 15.748844192382972,
+   "circleR": 1.0744538617009516,
+   "circleRmin": 1.0744538617009516,
+   "cornerR": null,
+   "size": 1.0888465903368554,
+   "gapAbs": 1.8407437405235625,
+   "aspect": 1.7456313692848195,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 3.6278847724339807,
+   "truck": 3.6273301331038064
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect21.4x17.7 p->c rc3.1 h-41.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.5x1.1 p->c rc33.9 h12.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.9x1.0 c->p rc1.9 h20.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect26.1x12.8 c->p rc5.2 h-1.2",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect24.5x19.5 p->c rc20.2 h-2.1",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.5x1.2 c->p rc28.7 h12.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect8.4x4.6 p->c rc7.4 h7.9",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect20.6x12.4 c->p rc2.8 h6.6",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect46.5x32.1 p->c rc55.2 h97.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.6x2.7 c->p rc2.2 h-1.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.1x3.3 c->p rc1.6 h1.0",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect16.7x12.8 p->c rc0.5 h15.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.7x1.6 c->p rc5.2 h99.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect22.0x11.7 c->p rc1.7 h4.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.4x2.1 p->c rc5.6 h10.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect23.3x15.7 c->p rc1.1 h42.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.0x1.3 p->c rc1.3 h5.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect14.7x10.2 p->c rc12.9 h29.1",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00006686380030171892,
+   "curved": true,
+   "signed": -0.00006686380030171892,
+   "diag": 52.96663749449851,
+   "circleR": 12.877923038539354,
+   "circleRmin": 12.877923038539354,
+   "cornerR": null,
+   "size": 14.658548321470883,
+   "gapAbs": 29.073840423807454,
+   "aspect": 1.4432608084403908,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 9241.965787161005,
+   "truck": 9241.347834206217
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.0x1.9 p->c rc6.6 h6.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.7x1.1 p->c rc23.7 h-1.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.9x1.8 c->p rc22.0 h-1.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.8x1.0 p->c rc8.9 h-2.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect16.9x11.3 c->p rc0.5 h77.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect24.2x19.5 c->p rc39.3 h59.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.3x0.9 p->c rc15.5 h-21.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.0x3.7 c->p rc1.0 h35.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.7x5.1 c->p rc6.5 h5.3",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.7x2.5 p->c rc3.0 h21.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.9x4.0 p->c rc0.4 h-3.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect51.9x41.1 c->p rc5.7 h-95.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.1x2.9 p->c rc31.7 h-8.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect29.6x18.0 c->p rc13.2 h-5.4",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect20.5x10.0 c->p rc0.8 h-5.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect13.1x12.7 c->p rc5.6 h-58.9",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.0000717623869023518,
+   "curved": true,
+   "signed": -0.0000717623869023518,
+   "diag": 63.110040875152905,
+   "circleR": 5.6335127673238174,
+   "circleRmin": 5.6335127673238174,
+   "cornerR": null,
+   "size": 13.121143619267247,
+   "gapAbs": 58.91863713835955,
+   "aspect": 1.036183495784644,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 7789.307085572114,
+   "truck": 7788.748106303338
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect31.8x17.3 c->p rc1.5 h93.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.5x0.9 c->p rc0.3 h23.6",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect37.9x26.7 p->c rc0.8 h13.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.6x2.2 p->c rc2.0 h-4.9",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.0001338880366974241,
+   "curved": true,
+   "signed": -0.0001338880366974241,
+   "diag": 15.30682463009134,
+   "circleR": 1.9807866294911862,
+   "circleRmin": 1.9807866294911862,
+   "cornerR": null,
+   "size": 2.6268316960816924,
+   "gapAbs": 4.934085476902938,
+   "aspect": 1.2107324469019658,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 43.66024526308861,
+   "truck": 43.65439967856861
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.4x3.8 p->c rc15.5 h51.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect38.1x24.0 c->p rc20.7 h-2.0",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect8.0x6.9 p->c rc1.2 h5.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.6x3.7 p->c rc4.8 h-9.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect22.3x21.7 p->c rc8.6 h-8.2",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.9x1.0 c->p rc33.2 h17.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.4x2.0 c->p rc0.9 h-2.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.3x5.8 c->p rc1.7 h1.2",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect14.7x7.3 p->c rc23.6 h-5.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.0x1.3 p->c rc2.0 h1.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect18.3x12.0 c->p rc3.1 h16.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.5x7.3 p->c rc14.6 h32.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect29.8x16.1 c->p rc8.9 h-1.9",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x1.2 c->p rc4.0 h2.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.4x0.9 p->c rc0.8 h1.4",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect17.9x13.3 p->c rc0.4 h82.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.1x1.1 c->p rc9.9 h1.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.8x1.9 p->c rc0.3 h27.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.0x5.2 p->c rc10.0 h30.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.8x2.2 p->c rc0.4 h-51.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.7x1.7 c->p rc0.4 h2.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect41.6x22.7 p->c rc25.5 h55.6",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00006447425958008209,
+   "curved": true,
+   "signed": -0.00006447425958008209,
+   "diag": 100.96916831380517,
+   "circleR": 25.50165191189576,
+   "circleRmin": 25.50165191189576,
+   "cornerR": null,
+   "size": 41.608950908111524,
+   "gapAbs": 55.62150542536263,
+   "aspect": 1.8352781319408678,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 81766.84974160283,
+   "truck": 81761.57788450754
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x0.8 p->c rc28.5 h7.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect15.9x9.5 p->c rc3.3 h2.8",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect36.5x31.2 p->c rc2.5 h-2.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x0.7 c->p rc7.9 h-6.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect47.1x40.6 c->p rc3.2 h58.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.3x2.8 c->p rc20.8 h10.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect38.1x35.7 c->p rc8.6 h60.2",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.000036662165913146756,
+   "curved": true,
+   "signed": -0.000036662165913146756,
+   "diag": 81.99655102515653,
+   "circleR": 8.591506723380263,
+   "circleRmin": 8.591506723380263,
+   "cornerR": null,
+   "size": 38.11444260820712,
+   "gapAbs": 60.244769653810444,
+   "aspect": 1.067409931938164,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 43448.94655498977,
+   "truck": 43447.35362250242
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.7x1.2 c->p rc0.6 h66.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.7x0.9 p->c rc28.0 h1.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect28.9x26.8 p->c rc34.9 h20.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect51.9x29.3 c->p rc0.4 h31.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.2x5.5 c->p rc1.0 h39.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect12.8x6.8 p->c rc7.6 h7.2",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.1x2.1 c->p rc51.3 h58.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x1.1 c->p rc31.2 h2.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect21.2x13.3 p->c rc13.3 h3.6",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect12.1x6.8 c->p rc2.5 h6.6",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.7x3.4 p->c rc13.3 h13.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.6x1.6 c->p rc24.0 h1.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.2x3.9 p->c rc6.5 h-58.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.3x0.8 p->c rc5.0 h82.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.0x3.8 c->p rc53.1 h-28.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect13.0x6.9 p->c rc3.3 h2.9",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect15.6x9.9 c->p rc2.2 h-1.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect30.8x16.8 p->c rc9.1 h14.5",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect22.9x14.6 p->c rc29.0 h-43.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect28.4x17.8 c->p rc3.3 h2.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.2x3.2 p->c rc12.0 h-27.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect12.0x6.8 c->p rc55.8 h2.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.0x1.0 c->p rc2.8 h-67.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect49.6x25.2 c->p rc45.8 h-2.8",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect21.6x13.7 c->p rc42.3 h-13.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.6x1.2 c->p rc4.3 h-27.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect39.4x22.0 p->c rc1.1 h3.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.7x4.2 c->p rc12.1 h57.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.2x2.3 c->p rc41.2 h2.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect14.7x8.9 p->c rc5.8 h-46.4",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00008464357882147496,
+   "curved": true,
+   "signed": -0.00008464357882147496,
+   "diag": 68.19309700900591,
+   "circleR": 5.764841769130456,
+   "circleRmin": 5.764841769130456,
+   "cornerR": null,
+   "size": 14.734035640880839,
+   "gapAbs": 46.41612302726349,
+   "aspect": 1.6584579612128434,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 5489.322670844273,
+   "truck": 5488.8580349281065
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect26.9x24.8 p->c rc7.4 h3.1",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.9x1.2 p->c rc6.3 h-44.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect12.5x12.4 p->c rc0.6 h53.6",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect14.8x8.9 p->c rc0.5 h3.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.8x7.3 p->c rc39.9 h10.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect13.2x10.5 p->c rc23.9 h2.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect13.7x7.0 c->p rc1.1 h-6.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect35.8x30.1 p->c rc6.4 h94.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.7x1.9 p->c rc24.9 h13.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.4x1.0 c->p rc46.0 h-2.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.3x3.5 c->p rc23.9 h-29.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.6x9.3 c->p rc19.3 h-2.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect22.9x15.4 c->p rc0.3 h34.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect11.1x5.9 p->c rc0.8 h-3.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.8x5.8 p->c rc30.5 h1.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.9x5.5 c->p rc9.8 h-73.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.6x3.0 p->c rc6.4 h2.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect27.1x13.7 c->p rc48.6 h19.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect58.1x34.3 c->p rc8.0 h80.4",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00004429273099217813,
+   "curved": true,
+   "signed": -0.00004429273099217813,
+   "diag": 111.61857910103939,
+   "circleR": 7.9787712019658175,
+   "circleRmin": 7.9787712019658175,
+   "cornerR": null,
+   "size": 58.06835565139265,
+   "gapAbs": 80.41092712343706,
+   "aspect": 1.694988241267856,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 75973.5841212658,
+   "truck": 75970.2190437418
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect35.2x19.0 c->p rc7.5 h-12.6",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect58.7x37.4 p->c rc7.8 h6.2",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect25.3x15.3 c->p rc24.0 h-2.3",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.0x1.0 c->p rc0.9 h27.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.0x8.1 c->p rc17.6 h9.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.4x1.3 c->p rc2.6 h22.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect13.5x11.7 p->c rc10.0 h-22.2",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00009137796273243848,
+   "curved": true,
+   "signed": -0.00009137796273243848,
+   "diag": 48.72857260677525,
+   "circleR": 10.018237037541285,
+   "circleRmin": 10.018237037541285,
+   "cornerR": null,
+   "size": 13.52496098680609,
+   "gapAbs": 22.239633558423414,
+   "aspect": 1.1552824964514001,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 5194.621662475056,
+   "truck": 5194.146988530373
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect24.6x13.4 c->p rc6.6 h13.8",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect24.7x12.5 p->c rc4.5 h84.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect12.0x7.3 p->c rc1.2 h8.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.1x2.2 p->c rc0.9 h-89.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect20.5x14.4 p->c rc0.5 h-3.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.6x7.1 c->p rc33.8 h-3.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect40.6x38.2 p->c rc18.0 h50.9",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00005019640273610684,
+   "curved": true,
+   "signed": -0.00005019640273610684,
+   "diag": 77.37754372996218,
+   "circleR": 18.04032224585402,
+   "circleRmin": 18.04032224585402,
+   "cornerR": null,
+   "size": 40.58330191831085,
+   "gapAbs": 50.864651498488804,
+   "aspect": 1.0628454748191871,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 65291.339544919465,
+   "truck": 65288.06215454449
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect24.8x15.0 c->p rc1.2 h-31.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.8x2.5 c->p rc3.7 h1.1",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect22.0x15.1 p->c rc54.0 h1.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect11.4x9.2 c->p rc3.2 h-22.5",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.000055140961381523846,
+   "curved": true,
+   "signed": -0.000055140961381523846,
+   "diag": 38.308742831602636,
+   "circleR": 3.211532167323852,
+   "circleRmin": 3.211532167323852,
+   "cornerR": null,
+   "size": 11.399012200774635,
+   "gapAbs": 22.526594454272487,
+   "aspect": 1.2325352109153755,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 1481.1320587827238,
+   "truck": 1481.0503877370695
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect35.2x23.1 c->p rc48.2 h10.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect49.7x39.3 p->c rc1.8 h1.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect20.2x13.9 p->c rc1.0 h79.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.7x1.5 c->p rc5.9 h2.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect8.2x4.6 c->p rc0.6 h-13.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.9x3.6 c->p rc0.8 h97.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect26.3x13.3 p->c rc1.3 h-86.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect14.2x12.2 c->p rc27.4 h-36.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect34.8x25.9 p->c rc9.8 h-23.3",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x0.7 c->p rc9.2 h-5.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.6x6.4 c->p rc46.1 h22.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.1x0.7 p->c rc4.3 h19.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect37.4x26.6 c->p rc56.4 h52.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.4x1.3 p->c rc5.1 h1.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect25.7x15.7 p->c rc1.1 h5.6",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect8.5x6.4 c->p rc1.8 h1.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.8x2.4 p->c rc17.2 h4.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect14.9x11.6 c->p rc17.1 h19.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.5x7.1 c->p rc6.4 h10.2",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.0x0.6 c->p rc2.0 h4.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.3x0.7 p->c rc38.1 h50.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect8.7x7.6 c->p rc1.9 h-13.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect35.2x28.3 p->c rc11.4 h45.4",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00006149165104321478,
+   "curved": true,
+   "signed": -0.00006149165104321478,
+   "diag": 76.74067245678822,
+   "circleR": 11.421116585350388,
+   "circleRmin": 11.421116585350388,
+   "cornerR": null,
+   "size": 35.177883451908386,
+   "gapAbs": 45.35872773989307,
+   "aspect": 1.2448361685033886,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 31039.080816870497,
+   "truck": 31037.172172544204
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect20.2x12.1 c->p rc27.6 h-2.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect36.7x33.5 p->c rc4.9 h-25.0",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.3x5.0 c->p rc52.5 h34.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect24.6x13.5 p->c rc25.1 h68.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.5x5.7 p->c rc42.2 h1.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.0x1.0 p->c rc13.3 h2.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.5x0.9 p->c rc29.3 h2.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect32.2x16.3 p->c rc1.3 h30.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.2x4.5 p->c rc0.4 h15.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.0x1.5 c->p rc0.3 h-4.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.4x1.1 p->c rc41.8 h1.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.3x7.3 c->p rc0.6 h5.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.4x1.3 c->p rc41.2 h1.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect19.5x10.0 p->c rc0.6 h3.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.9x1.7 p->c rc3.4 h55.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect21.4x12.2 c->p rc0.4 h-2.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.0x2.2 c->p rc29.9 h-64.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect21.0x16.0 p->c rc0.7 h17.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect12.5x10.0 c->p rc17.4 h47.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.3x4.3 c->p rc5.6 h-85.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect59.5x30.5 c->p rc5.4 h11.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect13.9x7.1 c->p rc1.2 h51.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.3x0.9 c->p rc9.7 h5.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.3x2.1 c->p rc4.3 h-47.2",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00011734333549362154,
+   "curved": true,
+   "signed": -0.00011734333549362154,
+   "diag": 49.90158185528982,
+   "circleR": 4.26832953683365,
+   "circleRmin": 4.26832953683365,
+   "cornerR": null,
+   "size": 4.272805449670508,
+   "gapAbs": 47.21916077572009,
+   "aspect": 1.9875366716179994,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 1416.8430994378084,
+   "truck": 1416.6768423426493
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect45.9x25.4 c->p rc10.6 h37.9",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect14.6x7.3 p->c rc33.7 h-1.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.5x9.0 p->c rc5.0 h-9.2",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect17.9x13.6 p->c rc4.3 h1.3",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.9x5.0 p->c rc46.0 h6.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect22.5x15.3 p->c rc24.9 h-1.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.5x0.8 p->c rc4.2 h1.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect32.4x22.4 c->p rc0.5 h59.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.9x1.2 c->p rc4.4 h1.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.2x3.9 c->p rc2.1 h1.1",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.7x4.1 p->c rc42.8 h6.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect21.1x11.5 p->c rc19.7 h1.7",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x0.8 p->c rc5.4 h10.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect53.0x29.6 c->p rc27.5 h1.1",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect39.7x24.7 p->c rc0.8 h10.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.9x5.1 p->c rc6.3 h-2.0",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.5x3.7 p->c rc45.1 h-6.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.0x0.6 c->p rc0.8 h7.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.6x5.0 c->p rc2.9 h12.1",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00006760382752317959,
+   "curved": true,
+   "signed": -0.00006760382752317959,
+   "diag": 17.09521489484867,
+   "circleR": 2.9168670410765394,
+   "circleRmin": 2.9168670410765394,
+   "cornerR": null,
+   "size": 6.567725073056821,
+   "gapAbs": 12.054760795403183,
+   "aspect": 1.3024069346371105,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 362.1134346327823,
+   "truck": 362.08895437860355
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect13.7x8.9 p->c rc2.2 h8.9",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect34.2x17.4 c->p rc0.4 h-10.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect39.1x23.1 c->p rc0.3 h8.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x1.1 c->p rc0.3 h-1.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.1x3.0 p->c rc7.0 h1.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect21.2x11.5 p->c rc24.3 h20.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.2x2.9 p->c rc13.1 h2.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.0x2.3 c->p rc5.5 h3.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.6x3.1 c->p rc8.0 h-2.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect51.6x25.8 p->c rc1.7 h3.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.7x1.0 p->c rc2.1 h1.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.3x1.4 c->p rc13.5 h20.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.1x4.2 p->c rc0.5 h1.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.9x1.7 p->c rc23.5 h6.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x0.7 c->p rc3.7 h3.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.9x7.6 c->p rc8.2 h4.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect40.8x33.7 c->p rc0.6 h2.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect15.9x10.0 c->p rc0.9 h1.6",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x0.8 p->c rc43.5 h18.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.9x1.6 p->c rc0.3 h3.6",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect30.5x30.1 p->c rc0.5 h15.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect19.9x11.4 p->c rc17.3 h1.8",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect24.4x20.8 c->p rc7.2 h-27.0",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.000057326299099183266,
+   "curved": true,
+   "signed": -0.000057326299099183266,
+   "diag": 53.40522083865558,
+   "circleR": 7.216690838586649,
+   "circleRmin": 7.216690838586649,
+   "cornerR": null,
+   "size": 24.410275611920827,
+   "gapAbs": 27.03381993739099,
+   "aspect": 1.1712621513055637,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 8701.164302128911,
+   "truck": 8700.665496581616
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.5x2.6 p->c rc17.3 h8.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.8x2.1 p->c rc0.7 h-54.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect23.9x17.8 p->c rc34.7 h-50.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.7x1.0 c->p rc3.7 h58.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect18.7x15.8 p->c rc4.3 h7.1",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.0x3.8 c->p rc0.9 h4.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect32.9x23.8 c->p rc26.0 h85.1",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00010443023286795871,
+   "curved": true,
+   "signed": -0.00010443023286795871,
+   "diag": 115.75412693442074,
+   "circleR": 26.005163343010615,
+   "circleRmin": 26.005163343010615,
+   "cornerR": null,
+   "size": 32.925265725470815,
+   "gapAbs": 85.05898462020313,
+   "aspect": 1.3856931175221687,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 119636.18051666745,
+   "truck": 119623.68688247666
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect40.3x25.1 p->c rc1.6 h-1.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.9x2.6 c->p rc0.7 h1.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.4x0.8 p->c rc6.4 h14.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect37.5x23.5 p->c rc1.7 h37.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect49.8x28.7 p->c rc1.1 h-2.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.6x3.0 c->p rc40.7 h77.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.0x6.0 p->c rc7.0 h-52.9",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00014068904170710548,
+   "curved": true,
+   "signed": -0.00014068904170710548,
+   "diag": 69.57266487039917,
+   "circleR": 7.042771686502809,
+   "circleRmin": 7.042771686502809,
+   "cornerR": null,
+   "size": 9.971059257413922,
+   "gapAbs": 52.9293174733996,
+   "aspect": 1.655787133006379,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 5552.800427410856,
+   "truck": 5552.019209239933
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.7x1.0 c->p rc6.1 h31.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.4x7.0 c->p rc4.8 h3.6",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect12.3x9.6 c->p rc17.4 h80.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.3x3.2 c->p rc1.7 h-11.5",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00009361142435124773,
+   "curved": true,
+   "signed": -0.00009361142435124773,
+   "diag": 18.88689559938537,
+   "circleR": 1.697118188225834,
+   "circleRmin": 1.697118188225834,
+   "cornerR": null,
+   "size": 3.281064838828128,
+   "gapAbs": 11.48107912601742,
+   "aspect": 1.0105623499490322,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 113.56838514791542,
+   "truck": 113.55775384962045
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.3x1.3 c->p rc1.5 h2.0",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect14.7x10.7 p->c rc24.7 h-30.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect22.2x21.0 c->p rc9.7 h-7.1",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.4x0.9 c->p rc3.5 h-35.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.0x0.6 c->p rc6.4 h4.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect20.8x10.9 p->c rc2.9 h40.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect35.9x29.8 p->c rc0.6 h3.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.1x0.9 p->c rc7.0 h1.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect8.2x4.3 p->c rc4.0 h56.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect50.9x33.9 p->c rc0.6 h64.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect51.9x30.1 p->c rc5.6 h8.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.5x5.7 p->c rc1.2 h4.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.5x1.6 c->p rc1.1 h4.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect55.7x39.8 c->p rc1.0 h3.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect16.7x9.8 c->p rc12.7 h-41.2",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00007974632539169569,
+   "curved": true,
+   "signed": -0.00007974632539169569,
+   "diag": 58.19471239446825,
+   "circleR": 12.684250527080906,
+   "circleRmin": 12.684250527080906,
+   "cornerR": null,
+   "size": 16.725166825670165,
+   "gapAbs": 41.245447316243784,
+   "aspect": 1.7149534516851417,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 13230.582761001548,
+   "truck": 13229.527670643567
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect24.7x23.8 c->p rc2.6 h40.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect9.8x5.3 p->c rc0.5 h21.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect29.1x15.1 p->c rc1.3 h-33.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect13.8x9.7 c->p rc0.6 h-31.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.4x7.1 c->p rc1.5 h52.2",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect17.3x9.4 c->p rc0.5 h48.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.8x2.8 p->c rc31.5 h7.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect25.6x14.1 c->p rc3.4 h-46.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect50.9x30.1 c->p rc28.6 h-2.2",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect14.8x7.5 p->c rc5.2 h-4.7",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect11.9x6.9 p->c rc9.5 h10.1",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect42.6x29.2 c->p rc52.3 h-73.2",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.8x3.0 p->c rc0.4 h10.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.5x4.6 c->p rc57.5 h1.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.0x3.4 p->c rc36.6 h11.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.0x1.7 p->c rc8.9 h-42.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.2x2.9 p->c rc29.5 h13.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect18.0x11.1 c->p rc16.4 h11.9",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect26.6x13.1 c->p rc0.4 h-2.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.7x1.0 c->p rc7.6 h5.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.3x4.3 p->c rc31.8 h34.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.4x1.0 p->c rc1.5 h32.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.2x0.7 p->c rc1.4 h87.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect45.0x26.5 p->c rc0.4 h19.6",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect24.8x13.2 c->p rc4.6 h73.6",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.8x3.1 c->p rc3.3 h28.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.4x2.5 c->p rc15.0 h-2.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.5x2.3 p->c rc4.4 h13.5",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00016087689089893216,
+   "curved": true,
+   "signed": -0.00016087689089893216,
+   "diag": 41.23925348725356,
+   "circleR": 4.376402407683162,
+   "circleRmin": 4.376402407683162,
+   "cornerR": null,
+   "size": 4.505430736988292,
+   "gapAbs": 13.461296531399269,
+   "aspect": 1.9722187009989283,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 431.0439283965967,
+   "truck": 430.9745833895554
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect6.7x3.3 c->p rc3.6 h-3.7",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.0x4.6 p->c rc9.0 h64.4",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect27.8x18.7 p->c rc2.4 h-85.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.1x0.7 p->c rc3.5 h50.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect22.1x20.8 c->p rc47.5 h2.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect57.9x28.5 c->p rc0.5 h-8.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect8.8x4.6 p->c rc27.4 h2.6",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect32.3x24.5 p->c rc4.9 h-14.8",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect14.5x7.2 p->c rc12.7 h-14.6",
+   "guard": "circle-poly"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.3x2.9 p->c rc6.1 h3.9",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect58.3x37.8 p->c rc58.2 h5.8",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect21.2x11.6 p->c rc5.2 h13.4",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.1x1.5 c->p rc28.6 h56.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect38.2x24.6 p->c rc18.6 h1.8",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.5x2.8 p->c rc4.5 h13.3",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.3x0.8 p->c rc8.6 h-1.8",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.0x0.7 p->c rc0.9 h90.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect16.0x8.0 p->c rc0.5 h49.9",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect15.8x13.2 c->p rc1.8 h4.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.3x0.7 p->c rc26.7 h-4.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.9x1.2 p->c rc3.1 h25.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.1x1.1 c->p rc19.0 h-22.5",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect5.3x4.8 c->p rc1.1 h12.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect22.8x18.2 p->c rc39.4 h-10.0",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect32.7x24.7 c->p rc1.8 h8.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect42.9x34.3 c->p rc47.2 h-10.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect2.8x1.9 p->c rc1.1 h-4.3",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect21.3x16.9 p->c rc2.0 h23.1",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect28.6x20.8 p->c rc0.4 h4.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect56.8x54.8 p->c rc0.5 h1.5",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect30.3x19.9 p->c rc2.8 h83.0",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect23.8x22.0 p->c rc46.0 h5.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect8.8x8.6 p->c rc28.0 h17.7",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect45.1x26.1 p->c rc15.1 h6.5",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect8.1x7.3 c->p rc2.3 h50.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.2x2.6 c->p rc0.8 h17.4",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.2x2.3 c->p rc1.3 h83.8",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect4.7x4.4 p->c rc10.6 h-35.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect53.9x31.8 c->p rc10.2 h3.5",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.8x5.7 p->c rc2.7 h-6.1",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect1.3x1.2 p->c rc0.4 h-41.7",
+   "guard": "coarse"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect32.8x16.1 p->c rc19.4 h3.6",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.2x1.7 c->p rc2.8 h-31.2",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00011657376695090777,
+   "curved": true,
+   "signed": -0.00011657376695090777,
+   "diag": 38.544139127942486,
+   "circleR": 2.7992283377169116,
+   "circleRmin": 2.7992283377169116,
+   "cornerR": null,
+   "size": 3.18023673506412,
+   "gapAbs": 31.179643844791066,
+   "aspect": 1.8956256257602944,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 433.6080060134989,
+   "truck": 433.5574586948578
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect45.9x22.5 p->c rc7.8 h-37.1",
+   "guard": "thin"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect10.1x6.0 c->p rc14.6 h-8.1",
+   "guard": "size-mix"
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect7.6x4.8 c->p rc3.4 h-12.8",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00009612837426204045,
+   "curved": true,
+   "signed": -0.00009612837426204045,
+   "diag": 44.833653336346075,
+   "circleR": 3.360405688413599,
+   "circleRmin": 3.360405688413599,
+   "cornerR": null,
+   "size": 7.558219692560279,
+   "gapAbs": 12.782893248688222,
+   "aspect": 1.590232577419374,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 459.5241348306904,
+   "truck": 459.47996152267496
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect3.4x1.7 p->c rc3.2 h9.1",
+   "guard": null,
+   "post": null,
+   "postD": null,
+   "d": 0.00011750902414339559,
+   "curved": true,
+   "signed": -0.00011750902414339559,
+   "diag": 42.047143082094074,
+   "circleR": 3.2036136823149075,
+   "circleRmin": 3.2036136823149075,
+   "cornerR": null,
+   "size": 3.402534783937923,
+   "gapAbs": 9.147538597425223,
+   "aspect": 1.9574293095385653,
+   "occtFaces": 7,
+   "truckFaces": 6,
+   "occt": 159.6484525788148,
+   "truck": 159.62969244494627
+  },
+  {
+   "mode": "rectcirc",
+   "tag": "rect22.3x16.7 c->p rc0.5 h9.9",
+   "guard": "coarse"
+  }
+ ]
+}

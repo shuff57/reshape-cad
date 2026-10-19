@@ -1,0 +1,1029 @@
+[
+ {
+  "id": "cs-blind-d6-D12-a90-b3",
+  "row": "cs-band",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, deep: 3, countersink: { across: 12, angle: 90 } });",
+  "note": "blind 3 under a 12/90 countersink on a 6 bore (cone alone 3.000 deep, cone TOOL 3.300 deep)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 3,
+   "center": [
+    0,
+    0,
+    8.5
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 12,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31915.176998353076,
+   "com": [
+    -8.025426043738983e-16,
+    2.420931726564736e-16,
+    -0.022590992180180007
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {
+   "hole1": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "truckMs": 1791,
+  "translateCpuMs": 2587.91,
+  "loadavg": 15.96,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width.",
+    "guard": "G-RECESS-VOL",
+    "unguarded": {
+     "volume": 31794.429404156137,
+     "faces": 8,
+     "bbox": [
+      -20,
+      -20,
+      -10,
+      20,
+      20,
+      10.000000000000004
+     ],
+     "shells": 1,
+     "bodies": 1,
+     "allVolume": 31794.429404156137
+    }
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "refused": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width.",
+   "guard": "G-RECESS-VOL",
+   "unguarded": {
+    "volume": 31794.429404156137,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000004
+    ],
+    "shells": 1,
+    "bodies": 1,
+    "allVolume": 31794.429404156137
+   },
+   "firstRefusal": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width."
+  },
+  "verdict": "truck-refused",
+  "closed": {
+   "removed": 197.92033717615698,
+   "volume": 31802.079662823842
+  },
+  "closedFromOcct": {
+   "volume": 31802.079662823835
+  },
+  "ms": 1878
+ },
+ {
+  "id": "cs-blind-d6-D12-a90-b3.1",
+  "row": "cs-band",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, deep: 3.1, countersink: { across: 12, angle: 90 } });",
+  "note": "blind 3.1 under a 12/90 countersink on a 6 bore (cone alone 3.000 deep, cone TOOL 3.300 deep)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 3.1,
+   "center": [
+    0,
+    0,
+    8.45
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 12,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31912.34956496484,
+   "com": [
+    -9.282743275280651e-16,
+    2.687639198181084e-16,
+    -0.02320876357095938
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31799.252229435613,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 9
+  },
+  "truckMs": 3524,
+  "translateCpuMs": 3625.46,
+  "loadavg": 17.24,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width.",
+    "guard": "G-RECESS-VOL",
+    "unguarded": {
+     "volume": 31794.3364980685,
+     "faces": 11,
+     "bbox": [
+      -20,
+      -20,
+      -10,
+      20,
+      20,
+      10.000000000000004
+     ],
+     "shells": 1,
+     "bodies": 1,
+     "allVolume": 31794.3364980685
+    }
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "refused": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width.",
+   "guard": "G-RECESS-VOL",
+   "unguarded": {
+    "volume": 31794.3364980685,
+    "faces": 11,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000004
+    ],
+    "shells": 1,
+    "bodies": 1,
+    "allVolume": 31794.3364980685
+   },
+   "firstRefusal": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width."
+  },
+  "verdict": "truck-refused",
+  "closed": {
+   "removed": 200.74777056438785,
+   "volume": 31799.252229435613
+  },
+  "closedFromOcct": {
+   "volume": 31799.252229435606
+  },
+  "ms": 3567
+ },
+ {
+  "id": "cs-blind-d6-D12-a90-b3.2",
+  "row": "cs-band",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, deep: 3.2, countersink: { across: 12, angle: 90 } });",
+  "note": "blind 3.2 under a 12/90 countersink on a 6 bore (cone alone 3.000 deep, cone TOOL 3.300 deep)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 3.2,
+   "center": [
+    0,
+    0,
+    8.4
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 12,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31909.522131576607,
+   "com": [
+    -1.052998464130095e-15,
+    2.9599607895708846e-16,
+    -0.02381778365788644
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31796.424796047384,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 9
+  },
+  "truckMs": 3345,
+  "translateCpuMs": 3368.533,
+  "loadavg": 17.24,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width.",
+    "guard": "G-RECESS-VOL",
+    "unguarded": {
+     "volume": 31794.061451068585,
+     "faces": 11,
+     "bbox": [
+      -20,
+      -20,
+      -10,
+      20,
+      20,
+      10.000000000000004
+     ],
+     "shells": 1,
+     "bodies": 1,
+     "allVolume": 31794.061451068585
+    }
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "refused": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width.",
+   "guard": "G-RECESS-VOL",
+   "unguarded": {
+    "volume": 31794.061451068585,
+    "faces": 11,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000004
+    ],
+    "shells": 1,
+    "bodies": 1,
+    "allVolume": 31794.061451068585
+   },
+   "firstRefusal": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width."
+  },
+  "verdict": "truck-refused",
+  "closed": {
+   "removed": 203.57520395261866,
+   "volume": 31796.42479604738
+  },
+  "closedFromOcct": {
+   "volume": 31796.424796047373
+  },
+  "ms": 3372
+ },
+ {
+  "id": "cs-blind-d6-D12-a90-b3.34",
+  "row": "cs-band",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, deep: 3.34, countersink: { across: 12, angle: 90 } });",
+  "note": "blind 3.34 under a 12/90 countersink on a 6 bore (cone alone 3.000 deep, cone TOOL 3.300 deep)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 3.34,
+   "center": [
+    0,
+    0,
+    8.33
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 12,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31905.563724833086,
+   "com": [
+    -7.725804782678708e-16,
+    1.9026237089278096e-18,
+    -0.024655705159288128
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31792.466389303856,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 9
+  },
+  "truckMs": 2840,
+  "translateCpuMs": 2872.911,
+  "loadavg": 18.58,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.75,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.08835729338221293,
+     "removed": 0.08833553721706267,
+     "ratio": 0.9997537705794568,
+     "dFaces": 2,
+     "failed": null,
+     "need": 3.35,
+     "expected": 207.5336106961418
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "volume": 31792.480233250742,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10.000000000000004
+   ],
+   "com": [
+    -4.97975443265985e-9,
+    -3.5024936199962574e-9,
+    -0.056978273236865405
+   ],
+   "faces": 9,
+   "kernelFaces": 11,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 1,
+    "cylinder": 1,
+    "plane": 7
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 2632.985,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 31792.480233250742,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000004
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      0,
+      0,
+      10
+     ],
+     "diameter": 6,
+     "body": "b_box1",
+     "depth": 3.34,
+     "type": "countersink",
+     "cs_diameter": 12,
+     "cs_angle": "90 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 207.5336106961418,
+   "volume": 31792.46638930386
+  },
+  "closedFromOcct": {
+   "volume": 31792.466389303852
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.0035443188704522726,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 0.0005387094679596212,
+    "faces": "8/9",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 94.43627516690685,
+    "removedTruck": 207.51976674925754,
+    "dRemoved": 1.1974581947719423
+   },
+   "vsBrep": {
+    "dVol": 4.354474018140136e-7,
+    "dBbox": 3.552713678800501e-16,
+    "faces": "9/9"
+   },
+   "vsClosed": {
+    "removedClosed": 207.5336106961418,
+    "removedTruck": 207.51976674925754,
+    "dRemoved": 0.00006670701115750497,
+    "dVol": 4.3544740169958457e-7
+   }
+  },
+  "ms": 5556
+ },
+ {
+  "id": "cs-blind-d6-D12-a120-b1.8",
+  "row": "cs-band",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, deep: 1.8, countersink: { across: 12, angle: 120 } });",
+  "note": "blind 1.8 under a 12/120 countersink on a 6 bore (cone alone 1.732 deep, cone TOOL 1.905 deep)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 1.8,
+   "center": [
+    0,
+    0,
+    9.1
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 12,
+    "angleDeg": 120
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31949.10619901184,
+   "com": [
+    -6.691409277309683e-16,
+    1.7049773435787602e-16,
+    -0.014495979515275035
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31883.809421899412,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 9
+  },
+  "truckMs": 3351,
+  "translateCpuMs": 3347.33,
+  "loadavg": 19.74,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width.",
+    "guard": "G-RECESS-VOL",
+    "unguarded": {
+     "volume": 31881.239474100705,
+     "faces": 11,
+     "bbox": [
+      -20,
+      -20,
+      -10,
+      20,
+      20,
+      10.000000000000002
+     ],
+     "shells": 1,
+     "bodies": 1,
+     "allVolume": 31881.239474100705
+    }
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "refused": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width.",
+   "guard": "G-RECESS-VOL",
+   "unguarded": {
+    "volume": 31881.239474100705,
+    "faces": 11,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000002
+    ],
+    "shells": 1,
+    "bodies": 1,
+    "allVolume": 31881.239474100705
+   },
+   "firstRefusal": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width."
+  },
+  "verdict": "truck-refused",
+  "closed": {
+   "removed": 116.19057810058652,
+   "volume": 31883.809421899412
+  },
+  "closedFromOcct": {
+   "volume": 31883.809421899405
+  },
+  "ms": 3374
+ },
+ {
+  "id": "cs-blind-d10-D20-a90-b5.4",
+  "row": "cs-band",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 10, deep: 5.4, countersink: { across: 20, angle: 90 } });",
+  "note": "blind 5.4 under a 20/90 countersink on a 10 bore (cone alone 5.000 deep, cone TOOL 5.500 deep)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 10,
+   "depth": 5.4,
+   "center": [
+    0,
+    0,
+    7.3
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 20,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31575.88499176538,
+   "com": [
+    -2.3290296747137586e-17,
+    3.3494477147188244e-17,
+    -0.09805076123504243
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31052.28621616708,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 9
+  },
+  "truckMs": 3986,
+  "translateCpuMs": 3952.947,
+  "loadavg": 20.56,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width.",
+    "guard": "G-RECESS-VOL",
+    "unguarded": {
+     "volume": 31045.841717955755,
+     "faces": 11,
+     "bbox": [
+      -20,
+      -20,
+      -10,
+      20,
+      20,
+      10.000000331402584
+     ],
+     "shells": 1,
+     "bodies": 1,
+     "allVolume": 31045.841717955755
+    }
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "refused": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width.",
+   "guard": "G-RECESS-VOL",
+   "unguarded": {
+    "volume": 31045.841717955755,
+    "faces": 11,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000331402584
+    ],
+    "shells": 1,
+    "bodies": 1,
+    "allVolume": 31045.841717955755
+   },
+   "firstRefusal": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width."
+  },
+  "verdict": "truck-refused",
+  "closed": {
+   "removed": 947.7137838329211,
+   "volume": 31052.28621616708
+  },
+  "closedFromOcct": {
+   "volume": 31052.28621616707
+  },
+  "ms": 4019
+ },
+ {
+  "id": "holes-cs-blind-band",
+  "row": "holes-recess",
+  "script": "const b = cuboid(40, 40, 20);  holes(b, { across: 4, apart: [20, 20], deep: 2.1, countersink: { across: 8, angle: 90 } });",
+  "note": "cone (2 deep, tool 2.2) deeper than the 2.1 deep holes",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 4,
+   "depth": 2.1,
+   "center": [
+    0,
+    0,
+    8.95
+   ],
+   "axis": "z",
+   "corners": {
+    "dx": 10,
+    "dy": 10
+   },
+   "countersink": {
+    "diameter": 8,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31894.442486839373,
+   "com": [
+    -1.416877501871662e-16,
+    1.9604594365519853e-16,
+    -0.029620826361123762
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 14,
+   "types": {
+    "plane": 10,
+    "cylinder": 4
+   },
+   "components": {
+    "plane": 10,
+    "cylinder": 4
+   },
+   "bigCylinderComponents": 4,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31760.4012002862,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 18
+  },
+  "truckMs": 18754,
+  "translateCpuMs": 18991.934,
+  "loadavg": 25.34,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width.",
+    "guard": "G-RECESS-VOL",
+    "unguarded": {
+     "volume": 31756.114165253417,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -20,
+      -10,
+      20,
+      20,
+      10.000000000000004
+     ],
+     "shells": 1,
+     "bodies": 1,
+     "allVolume": 31756.114165253417
+    }
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "refused": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width.",
+   "guard": "G-RECESS-VOL",
+   "unguarded": {
+    "volume": 31756.114165253417,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000004
+    ],
+    "shells": 1,
+    "bodies": 1,
+    "allVolume": 31756.114165253417
+   },
+   "firstRefusal": "hole1 (hole): the countersink did not come out the size that was asked, so hole1 is shown without it -- try a slightly different depth or width."
+  },
+  "verdict": "truck-refused",
+  "ms": 18846
+ }
+]

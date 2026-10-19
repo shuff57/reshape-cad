@@ -1,0 +1,1 @@
+revolution__arc-top-rod-round-180        PASS     occtV 6602.4068 | tr-occt dV 9.9e-5 dBb 3.6e-16 dCom 6.2e-6 F o/b/t 6/5/5 | brep-occt dV 6.9e-16 | FC: occt 1.4e-16 brep 8.3e-16 truck 9.9e-5 dCom 2.5e-4 F 5     | ms 916 cpu 1247

@@ -1,0 +1,1 @@
+sl9-11-boxlip-top-p0.1                   FAIL     occtV 66621.8761 | tr-occt dV 1.1e-3 dBb 3.6e-16 dCom 2.2e-4 F o/b/t 12/11/12 | brep-occt dV 1.5e-12      | ms 3811 cpu 4243

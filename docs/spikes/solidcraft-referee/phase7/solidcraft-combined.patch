@@ -1,0 +1,2103 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 951c0af21934553d82757b53338fa7f9f78a0515..680c3d831dbf56a515791a1b9a5eb13f13d4cc55 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -3446,6 +3446,7 @@ dependencies = [
+  "js-sys",
+  "log",
+  "serde_json",
++ "solidcraft-doc",
+  "solidcraft-engine",
+  "solidcraft-ui-egui",
+  "wasm-bindgen",
+diff --git a/apps/solidcraft-web/Cargo.toml b/apps/solidcraft-web/Cargo.toml
+index db51d3dc0e4c959e533940006c43a5387477fe65..2edb586f47ab4c6fa4f794f396a83d55082893a0 100644
+--- a/apps/solidcraft-web/Cargo.toml
++++ b/apps/solidcraft-web/Cargo.toml
+@@ -15,6 +15,7 @@ path = "src/main.rs"
+ 
+ [dependencies]
+ solidcraft-engine = { workspace = true }
++solidcraft-doc = { workspace = true }
+ solidcraft-ui-egui = { workspace = true }
+ egui = { workspace = true }
+ log = { workspace = true }
+@@ -29,5 +30,5 @@ web-sys = { version = "0.3", features = [
+     "Window", "Document", "Element", "HtmlElement", "HtmlCanvasElement", "Location", "Navigator", "StorageManager",
+     "FileSystemHandle", "FileSystemDirectoryHandle", "FileSystemFileHandle", "FileSystemGetFileOptions", "FileSystemWritableFileStream",
+     "WritableStream", "File", "FileList", "Blob", "BlobPropertyBag", "Url", "HtmlAnchorElement", "HtmlInputElement", "Storage",
+-    "BeforeUnloadEvent", "Event", "EventTarget", "Response",
++    "BeforeUnloadEvent", "Event", "EventTarget", "Response", "MessageEvent",
+ ] }
+diff --git a/apps/solidcraft-web/index.html b/apps/solidcraft-web/index.html
+index b52538c2b5f7a0dae02d04c0f28ec1661b9e4abe..79d247d84d54a3ad1aeb7194443b588a41e2c02a 100644
+--- a/apps/solidcraft-web/index.html
++++ b/apps/solidcraft-web/index.html
+@@ -30,6 +30,20 @@
+   </style>
+ </head>
+ <body>
++  <!-- referee/demo (reshape-cad docs/spikes/solidcraft-referee/phase6): the script pane. Off unless the URL has ?pane=on.
++       The pane makes this page load's own bridge token, then loads pane/pane.js (served beside this page by the demo
++       server, not part of the app). The reSHape interpreter runs only inside the pane's sandboxed iframe. -->
++  <script>
++    (function () {
++      try {
++        if (new URLSearchParams(location.search).get('pane') !== 'on') return;
++        var a = new Uint8Array(16); crypto.getRandomValues(a);
++        window.__sc_pane_token = Array.prototype.map.call(a, function (b) { return b.toString(16).padStart(2, '0'); }).join('');
++        document.documentElement.classList.add('pane-on');
++        var s = document.createElement('script'); s.type = 'module'; s.src = 'pane/pane.js'; document.head.appendChild(s);
++      } catch (e) { /* no pane: the app is unchanged */ }
++    })();
++  </script>
+   <canvas id="solidcraft_canvas"></canvas>
+   <div id="solidcraft_loading">Loading SolidCraft&hellip;</div>
+ </body>
+diff --git a/apps/solidcraft-web/src/bridge.rs b/apps/solidcraft-web/src/bridge.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..530fbb4e2b3b110fcf04131422c8a97cbffcd61d
+--- /dev/null
++++ b/apps/solidcraft-web/src/bridge.rs
+@@ -0,0 +1,539 @@
++//! REFEREE / DEMO bridge (reshape-cad docs/spikes/solidcraft-referee/phase1). Not a product surface.
++//!
++//! `window.solidcraft = { execute(json) -> Promise<string>, inspect() -> Promise<string> }`, installed only
++//! when the page URL carries `?bridge=<token>` (8+ chars of [A-Za-z0-9_-]). The same two calls are also
++//! served over `postMessage` to the embedding parent frame (see `on_message`), because a host page on
++//! another origin cannot reach this window's JS object.
++//!
++//! Re-entrancy rule: JS only ENQUEUES. Requests are drained in `drain()` from `Shell::logic()`, so the
++//! session is never touched from JS and never borrowed twice.
++use std::cell::RefCell;
++use std::collections::VecDeque;
++
++use serde_json::{Value, json};
++use solidcraft_engine::Session;
++use solidcraft_ui_egui::SolveApp;
++use wasm_bindgen::JsCast as _;
++use wasm_bindgen::JsValue;
++use wasm_bindgen::closure::Closure;
++
++/// The only command ids a bridge caller may run. Everything the Phase 0 translator emits
++/// (docs/spikes/solidcraft-referee/phase0/COVERAGE.md); nothing that touches files, export, save, open,
++/// edit history, macros or parameters (the translator emits no parameters.* id).
++const ALLOWED: &[&str] = &[
++    "solid.box", "solid.cylinder", "solid.sphere", "solid.torus", "solid.extrude", "solid.revolve", "solid.loft",
++    "solid.fillet", "solid.chamfer", "solid.shell", "solid.hole", "solid.draft", "solid.mirror", "solid.combine",
++    "solid.move", "solid.pattern.rectangular", "solid.pattern.circular",
++    "sketch.create", "sketch.line", "sketch.arc.three_point", "sketch.circle.center", "sketch.finish",
++    // phase 3: constrained sketches (docs/spikes/solidcraft-referee/phase2/CONSTRAINT-COVERAGE.md). Geometry-only.
++    "sketch.point", "sketch.dimension",
++    "sketch.constraint.coincident", "sketch.constraint.horizontal_vertical", "sketch.constraint.parallel",
++    "sketch.constraint.perpendicular", "sketch.constraint.tangent", "sketch.constraint.equal",
++    "sketch.constraint.symmetry", "sketch.constraint.midpoint", "sketch.constraint.fix",
++];
++const MAX_COMMANDS: usize = 2000;
++
++struct Stash {
++    doc_id: u64,
++    seq: u64,
++    label: String,
++    session: Session,
++}
++const MAX_STASH_PER_DOC: usize = 3;
++const MAX_STASH_TOTAL: usize = 8;
++
++/// For the web shell: the stashed hand work to keep in the autosave slot (so a reload can offer it), if any:
++/// the active design's newest stash, else, when the active design has no unsaved hand work, the newest overall.
++pub fn autosave_stash(app: &SolveApp) -> Option<(solidcraft_engine::doc::Document, Option<String>, u64)> {
++    let active = solidcraft_ui_egui::documents::active_id(app);
++    STASH.with(|s| {
++        let s = s.borrow();
++        let pick = s.iter().rev().find(|e| e.doc_id == active).or_else(|| if app.session.is_dirty() { None } else { s.last() })?;
++        Some((pick.session.design().into_owned(), pick.session.path.clone(), (1u64 << 62) | pick.seq))
++    })
++}
++
++/// Any design set aside (the page must warn before it is left).
++pub fn any_stash() -> bool {
++    STASH.with(|s| !s.borrow().is_empty())
++}
++
++fn has_stash_for(doc_id: u64) -> bool {
++    STASH.with(|s| s.borrow().iter().any(|e| e.doc_id == doc_id))
++}
++
++/// The active design is exactly what a pane run produced (no hand edit since).
++fn produced_untouched(app: &SolveApp) -> bool {
++    let id = solidcraft_ui_egui::documents::active_id(app);
++    RUN_DOC.with(|r| r.borrow().get(&id).is_some_and(|d| std::sync::Arc::ptr_eq(d, &app.session.doc) || **d == *app.session.doc))
++}
++
++enum Kind {
++    Execute(String),
++    Inspect(String),
++}
++
++struct Request {
++    kind: Kind,
++    /// Came through the postMessage relay (token required on every call); false = the page's own JS.
++    relayed: bool,
++    resolve: js_sys::Function,
++    reject: js_sys::Function,
++}
++
++thread_local! {
++    static QUEUE: RefCell<VecDeque<Request>> = const { RefCell::new(VecDeque::new()) };
++    static CTX: RefCell<Option<egui::Context>> = const { RefCell::new(None) };
++    static TOKEN: RefCell<Option<String>> = const { RefCell::new(None) };
++    /// The ONE origin allowed to drive the relay (`?parent=`). No `parent` param: relay disabled.
++    #[allow(dead_code)]
++    static PARENT: RefCell<Option<String>> = const { RefCell::new(None) };
++    /// Phase 6: the user's own designs, set aside by pane runs that asked to keep them. Memory only. Each entry
++    /// is bound to the design (document id) it was taken from; per design at most MAX_STASH_PER_DOC, in total
++    /// MAX_STASH_TOTAL (the oldest of that design goes first, and `inspect` tells the pane before it happens).
++    static STASH: RefCell<Vec<Stash>> = const { RefCell::new(Vec::new()) };
++    /// Per design id: the document a pane run produced, to tell "untouched script result" from "hand-edited".
++    static RUN_DOC: RefCell<std::collections::HashMap<u64, std::sync::Arc<solidcraft_engine::doc::Document>>> = RefCell::new(std::collections::HashMap::new());
++    static SEQ: std::cell::Cell<u64> = const { std::cell::Cell::new(1) };
++}
++
++fn query_param(name: &str) -> Option<String> {
++    let q = web_sys::window()?.location().search().ok()?;
++    let prefix = format!("{name}=");
++    let raw = q.trim_start_matches('?').split('&').find_map(|kv| kv.strip_prefix(prefix.as_str()))?.to_string();
++    js_sys::decode_uri_component(&raw).ok().and_then(|j| j.as_string())
++}
++
++/// Phase 6: the in-page script pane makes its own per-load token (index.html, `?pane=on`) and hands it over as
++/// `window.__sc_pane_token`. It is a switch that keeps the bridge off unless the pane is enabled, not a secret.
++fn token_from_page() -> Option<String> {
++    let w = web_sys::window()?;
++    js_sys::Reflect::get(&w, &"__sc_pane_token".into()).ok()?.as_string()
++}
++
++fn token_from_query() -> Option<String> {
++    // Phase 6: ONLY the in-page pane enables the bridge. The phase 1-5 `?bridge=<token>` URL switch is gone.
++    let t = token_from_page()?;
++    (t.len() >= 8 && t.len() <= 128 && t.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-')).then_some(t)
++}
++
++/// Held requests beyond this are refused at once (the queue is drained once per frame).
++const MAX_QUEUED: usize = 64;
++/// A payload longer than this is refused before any JSON parsing.
++const MAX_PAYLOAD: usize = 1_000_000;
++
++fn enqueue(kind: Kind, relayed: bool, resolve: js_sys::Function, reject: js_sys::Function) {
++    let too_big = match &kind { Kind::Execute(t) | Kind::Inspect(t) => t.len() > MAX_PAYLOAD };
++    let full = QUEUE.with(|q| q.borrow().len() >= MAX_QUEUED);
++    if too_big || full {
++        let msg = if too_big { "The request is larger than 1 MB; nothing ran." } else { "The bridge queue is full; nothing ran." };
++        let _ = resolve.call1(&JsValue::NULL, &JsValue::from_str(&reject_msg(msg.into()).to_string()));
++        return;
++    }
++    QUEUE.with(|q| q.borrow_mut().push_back(Request { kind, relayed, resolve, reject }));
++    CTX.with(|c| {
++        if let Some(ctx) = c.borrow().as_ref() {
++            ctx.request_repaint();
++        }
++    });
++}
++
++fn promise(kind: Kind) -> js_sys::Promise {
++    let mut kind = Some(kind);
++    js_sys::Promise::new(&mut |resolve, reject| {
++        if let Some(k) = kind.take() {
++            enqueue(k, false, resolve, reject);
++        }
++    })
++}
++
++/// Install `window.solidcraft` and the postMessage relay. Does nothing without a valid `?bridge=` token.
++pub fn install(ctx: &egui::Context) {
++    let Some(token) = token_from_query() else { return };
++    TOKEN.with(|t| *t.borrow_mut() = Some(token.clone()));
++    CTX.with(|c| *c.borrow_mut() = Some(ctx.clone()));
++    let Some(window) = web_sys::window() else { return };
++    let api = js_sys::Object::new();
++    let exec = Closure::<dyn Fn(String) -> js_sys::Promise>::new(|json: String| promise(Kind::Execute(json)));
++    let insp = Closure::<dyn Fn() -> js_sys::Promise>::new(|| promise(Kind::Inspect(String::new())));
++    let _ = js_sys::Reflect::set(&api, &"execute".into(), exec.as_ref());
++    let _ = js_sys::Reflect::set(&api, &"inspect".into(), insp.as_ref());
++    exec.forget();
++    insp.forget();
++    let _ = js_sys::Reflect::set(&window, &"solidcraft".into(), &api);
++
++    // Phase 6: no postMessage relay. The pane and the app are one page, and the app refuses to be framed
++    // (`frame-ancestors 'none'` from serve.mjs), so there is no second origin to talk to.
++    log::info!("solidcraft bridge installed (referee demo)");
++}
++
++/// postMessage relay: `{solidcraft: 'execute'|'inspect', id, payload}` from the PARENT frame only
++/// (`event.source === window.parent`). The reply goes back to that event's own origin, never `*`.
++#[allow(dead_code)]
++fn on_message(ev: web_sys::MessageEvent) {
++    let Some(window) = web_sys::window() else { return };
++    let Ok(Some(parent)) = window.parent() else { return };
++    let from_parent = ev.source().is_some_and(|s| JsValue::from(s) == JsValue::from(parent.clone()));
++    // Both must hold: it is the parent frame AND its origin is exactly the one named in `?parent=`.
++    // Anything else gets no reply at all (not even a refusal), so a stranger learns nothing.
++    let allowed = PARENT.with(|p| p.borrow().as_deref().is_some_and(|want| want == ev.origin()));
++    if !from_parent || !allowed {
++        return;
++    }
++    let data = ev.data();
++    let get = |k: &str| js_sys::Reflect::get(&data, &k.into()).ok();
++    let (Some(what), Some(id)) = (get("solidcraft").and_then(|v| v.as_string()), get("id")) else { return };
++    let payload = get("payload").and_then(|v| v.as_string()).unwrap_or_default();
++    let origin = ev.origin();
++    let reply = {
++        let (parent, origin, id) = (parent.clone(), origin.clone(), id.clone());
++        move |ok: bool, v: JsValue| {
++            let o = js_sys::Object::new();
++            let _ = js_sys::Reflect::set(&o, &"solidcraft_reply".into(), &JsValue::TRUE);
++            let _ = js_sys::Reflect::set(&o, &"id".into(), &id);
++            let _ = js_sys::Reflect::set(&o, &"ok".into(), &JsValue::from_bool(ok));
++            let _ = js_sys::Reflect::set(&o, &"value".into(), &v);
++            let _ = parent.post_message(&o, &origin);
++        }
++    };
++    let reply = std::rc::Rc::new(reply);
++    let (r1, r2) = (reply.clone(), reply);
++    let resolve = Closure::once_into_js(move |v: JsValue| r1(true, v)).unchecked_into::<js_sys::Function>();
++    let reject = Closure::once_into_js(move |v: JsValue| r2(false, v)).unchecked_into::<js_sys::Function>();
++    match what.as_str() {
++        "execute" => enqueue(Kind::Execute(payload), true, resolve, reject),
++        "inspect" => enqueue(Kind::Inspect(payload), true, resolve, reject),
++        _ => {}
++    }
++}
++
++fn token_ok(v: &Value) -> bool {
++    let given = v.get("token").and_then(Value::as_str).unwrap_or("");
++    TOKEN.with(|t| t.borrow().as_deref().is_some_and(|want| want == given))
++}
++
++fn body_list(measure: &Value) -> Value {
++    let names: Vec<Value> = measure
++        .get("bodies")
++        .and_then(Value::as_array)
++        .map(|a| a.iter().filter_map(|b| b.get("name").cloned()).collect())
++        .unwrap_or_default();
++    Value::Array(names)
++}
++
++fn inspect(app: &mut SolveApp) -> Value {
++    match app.session.execute("inspect.measure", &json!({})) {
++        // `dirty`: changed since the last bridge run / save (i.e. by hand); `stashed`: a design is set aside for Restore.
++        Ok(m) => {
++            let active = solidcraft_ui_egui::documents::active_id(app);
++            let stash: Vec<Value> = STASH.with(|s| {
++                s.borrow()
++                    .iter()
++                    .map(|e| {
++                        let tab = solidcraft_ui_egui::documents::tab_of(app, e.doc_id);
++                        json!({"doc_id": e.doc_id, "seq": e.seq, "label": e.label, "tab": tab,
++                               "tab_name": tab.map(|i| solidcraft_ui_egui::documents::tab_name(app, i)), "active": e.doc_id == active})
++                    })
++                    .collect()
++            });
++            let depth = stash.iter().filter(|e| e["active"] == json!(true)).count();
++            json!({"ok": true, "bodies": body_list(&m), "measure": m, "dirty": app.session.is_dirty(),
++                   "stashed": !stash.is_empty(), "stash": stash, "stash_depth_active": depth, "stash_max_per_doc": MAX_STASH_PER_DOC,
++                   "active_doc": active, "active_tab": app.docs.active, "tabs": solidcraft_ui_egui::documents::tabs_info(app).len(),
++                   "produced_untouched": produced_untouched(app)})
++        }
++        Err(e) => json!({"ok": false, "error": e.to_string()}),
++    }
++}
++
++/// Phase 3: the evaluated ACTIVE sketch as solidcraft holds it (solved points/curves, SolveReport with dof / failing /
++/// redundant, profile list with interior points). Read-only; same data the phase 2 `@sketch` pseudo-command dumped.
++fn sketch_snapshot(app: &SolveApp) -> Option<Value> {
++    let f = app.session.active_sketch?;
++    let state = app.session.model.state();
++    let ss = state.sketch(f)?;
++    let profs: Vec<Value> = ss
++        .profiles
++        .iter()
++        .map(|p| {
++            let ip = p.region.interior_point();
++            json!({"outer_curves": p.outer_curves, "hole_curves": p.hole_curves, "area": p.area, "interior": [ip.x, ip.y]})
++        })
++        .collect();
++    Some(json!({
++        "feature": f, "name": ss.name,
++        "report": serde_json::to_value(&ss.report).unwrap_or(Value::Null),
++        "sketch": serde_json::to_value(&ss.sketch).unwrap_or(Value::Null),
++        "profiles": ss.profiles.len(), "profile_list": profs,
++    }))
++}
++
++/// Phase 4: a READ-ONLY snapshot of every body's faces and edges as solidcraft names and measures them
++/// (`model.faces` / `model.edges`: engine-side face centroid, planar normal, area; edge start/mid/end/length and the
++/// persistent `<face>|<face>` name). Only reads; runs after the command list has succeeded; nothing is written back.
++/// Bounded: at most MAX_TOPO_BODIES bodies and MAX_TOPO_ITEMS faces+edges in total, else `truncated: true`.
++const MAX_TOPO_BODIES: usize = 32;
++const MAX_TOPO_ITEMS: usize = 4000;
++fn topology(app: &mut SolveApp, measure: &Value) -> Value {
++    let names: Vec<String> = measure
++        .get("bodies")
++        .and_then(Value::as_array)
++        .map(|a| a.iter().filter_map(|b| b.get("name").and_then(Value::as_str).map(str::to_string)).collect())
++        .unwrap_or_default();
++    let mut out = Vec::new();
++    let world = app.session.world_state();
++    let mut items = 0usize;
++    let mut truncated = names.len() > MAX_TOPO_BODIES;
++    for n in names.iter().take(MAX_TOPO_BODIES) {
++        let p = json!({"body": n});
++        let faces = app.session.execute("model.faces", &p).map(|v| v.get("faces").cloned().unwrap_or(Value::Null));
++        let edges = app.session.execute("model.edges", &p).map(|v| v.get("edges").cloned().unwrap_or(Value::Null));
++        match (faces, edges) {
++            (Ok(mut f), Ok(e)) => {
++                // solidcraft's own pick rule (nearest face within 5% of the body, `face_index_at`) applied to each face's
++                // centroid: which face index a pick AT the centroid would hit, and how far from it. A face with a hole
++                // can have its centroid in the hole; the host refuses such a pick instead of guessing.
++                if let (Some(arr), Some(mb)) = (f.as_array_mut(), world.body(n)) {
++                    // a point that is ON each face by construction: the centroid of its largest display triangle
++                    let m = mb.mesh();
++                    let mut inner: std::collections::HashMap<usize, (f64, [f64; 3])> = std::collections::HashMap::new();
++                    for (t, fi) in m.triangles.iter().zip(&m.tri_face) {
++                        let Some([a, b2, c]) = m.tri(t) else { continue };
++                        let ar = (b2 - a).cross(c - a).len() * 0.5;
++                        let g = (a + b2 + c) * (1.0 / 3.0);
++                        let e = inner.entry(*fi as usize).or_insert((-1.0, [0.0; 3]));
++                        if ar > e.0 {
++                            *e = (ar, [g.x, g.y, g.z]);
++                        }
++                    }
++                    for fv in arr.iter_mut() {
++                        if let Some((_, p)) = fv.get("index").and_then(Value::as_u64).and_then(|i| inner.get(&(i as usize))) {
++                            fv["inner_point"] = json!(p);
++                            let q = serde_json::from_value(json!(p)).ok();
++                            if let Some(q) = q {
++                                if let Some((d, idx)) = solidcraft_doc::appearance::nearest_face(mb, q) {
++                                    fv["inner_hit"] = json!({"index": idx, "dist": d});
++                                }
++                            }
++                        }
++                    }
++                    for fv in arr.iter_mut() {
++                        let c = serde_json::from_value(fv.get("centroid").cloned().unwrap_or(Value::Null)).ok();
++                        if let Some(c) = c {
++                            if let Some((d, idx)) = solidcraft_doc::appearance::nearest_face(mb, c) {
++                                fv["centroid_hit"] = json!({"index": idx, "dist": d});
++                            }
++                        }
++                    }
++                }
++                items += f.as_array().map_or(0, Vec::len) + e.as_array().map_or(0, Vec::len);
++                if items > MAX_TOPO_ITEMS {
++                    truncated = true;
++                    break;
++                }
++                out.push(json!({"name": n, "faces": f, "edges": e}));
++            }
++            (f, e) => out.push(json!({"name": n, "error": format!("{:?} {:?}", f.err().map(|x| x.to_string()), e.err().map(|x| x.to_string()))})),
++        }
++    }
++    json!({"bodies": out, "truncated": truncated})
++}
++
++fn reject_msg(msg: String) -> Value {
++    json!({"ok": false, "rejected": msg})
++}
++
++/// All-or-nothing: validate the whole list first, then run it; the first failure RESTORES the design.
++fn execute(app: &mut SolveApp, text: &str) -> Value {
++    let v: Value = match serde_json::from_str(text) {
++        Ok(v) => v,
++        Err(e) => return reject_msg(format!("The request is not valid JSON ({e}); nothing ran.")),
++    };
++    if !token_ok(&v) {
++        return reject_msg("The bridge token is missing or wrong; nothing ran.".into());
++    }
++    if v.get("restore_previous").and_then(Value::as_bool).unwrap_or(false) {
++        // Put back a design a `keep_previous` run set aside, INTO THE DESIGN IT CAME FROM and nowhere else.
++        let want = v.get("doc_id").and_then(Value::as_u64);
++        let into_new = v.get("into_new_tab").and_then(Value::as_bool).unwrap_or(false);
++        let force = v.get("force").and_then(Value::as_bool).unwrap_or(false);
++        let active = solidcraft_ui_egui::documents::active_id(app);
++        let idx = STASH.with(|s| {
++            let s = s.borrow();
++            match want {
++                Some(d) => s.iter().rposition(|e| e.doc_id == d),
++                None => s.iter().rposition(|e| e.doc_id == active).or_else(|| s.len().checked_sub(1)),
++            }
++        });
++        let Some(idx) = idx else {
++            return reject_msg("There is no earlier design to restore; nothing changed.".into());
++        };
++        let doc_id = STASH.with(|s| s.borrow()[idx].doc_id);
++        let tab = solidcraft_ui_egui::documents::tab_of(app, doc_id);
++        match tab {
++            Some(t) => {
++                let name = solidcraft_ui_egui::documents::tab_name(app, t);
++                let untouched = solidcraft_ui_egui::documents::session_at(app, t).is_some_and(|sess| {
++                    RUN_DOC.with(|r| r.borrow().get(&doc_id).is_some_and(|d| std::sync::Arc::ptr_eq(d, &sess.doc) || **d == *sess.doc))
++                });
++                if !untouched && !force {
++                    return json!({"ok": false, "needs_confirm": true, "tab": t, "tab_name": name,
++                        "sentence": format!("Tab \"{name}\" has changes made after the script run; restoring would replace them. Nothing changed.")});
++                }
++                if t != app.docs.active {
++                    solidcraft_ui_egui::documents::switch(app, t);
++                }
++                let prev = STASH.with(|s| s.borrow_mut().remove(idx)).session;
++                let rev = app.session.revision;
++                app.session = prev;
++                app.session.invalidate_view(rev);
++            }
++            None if into_new => {
++                let prev = STASH.with(|s| s.borrow_mut().remove(idx)).session;
++                if let Err(e) = solidcraft_ui_egui::documents::open_tab(app, prev) {
++                    return reject_msg(format!("Could not open a new tab: {e}; the saved design is still kept."));
++                }
++            }
++            None => {
++                return json!({"ok": false, "origin_closed": true,
++                    "sentence": "The tab this design came from was closed. Nothing changed; restore it into a new tab instead."});
++            }
++        }
++        RUN_DOC.with(|r| r.borrow_mut().remove(&doc_id));
++        app.dialog = None;
++        app.tool = None;
++        app.home.open = false;
++        app.fit_view();
++        let mut out = inspect(app);
++        out["restored_previous"] = json!(true);
++        return out;
++    }
++    let Some(list) = v.get("commands").and_then(Value::as_array) else {
++        return reject_msg("The request has no `commands` array; nothing ran.".into());
++    };
++    if list.len() > MAX_COMMANDS {
++        return reject_msg(format!("The request has {} commands, more than the {MAX_COMMANDS} allowed; nothing ran.", list.len()));
++    }
++    let mut steps = Vec::with_capacity(list.len());
++    for (i, c) in list.iter().enumerate() {
++        let id = c.get("command").and_then(Value::as_str).unwrap_or("");
++        if !ALLOWED.contains(&id) {
++            return reject_msg(format!(
++                "Command {} (`{id}`) is not on the bridge allowlist, so the whole request was refused and nothing ran.",
++                i + 1
++            ));
++        }
++        steps.push((id.to_string(), c.get("params").cloned().unwrap_or(Value::Null)));
++    }
++    let fresh = v.get("fresh").and_then(Value::as_bool).unwrap_or(false);
++    let keep_previous = fresh && v.get("keep_previous").and_then(Value::as_bool).unwrap_or(false);
++    let want_topology = v.get("topology").and_then(Value::as_bool).unwrap_or(false);
++    // Undo point. `fresh` swaps in an empty design (the old Session is kept until the run succeeds);
++    // otherwise a checkpoint of the live one.
++    let mut old: Option<Session> = None;
++    let mut checkpoint: Option<u64> = None;
++    let rev = app.session.revision;
++    // The open dialog and tool are set aside for the run and put back if it fails.
++    let saved_dialog = app.dialog.take();
++    let saved_tool = app.tool.take();
++    if fresh {
++        old = Some(std::mem::take(&mut app.session));
++        app.session.revision = rev + 1;
++    } else {
++        checkpoint = Some(app.session.checkpoint());
++    }
++    let mut results = Vec::with_capacity(steps.len());
++    let mut sketches: Vec<Value> = Vec::new();
++    for (i, (id, params)) in steps.iter().enumerate() {
++        if id == "sketch.finish" {
++            // the sketch is still active here: record its report before it is closed
++            if let Some(s) = sketch_snapshot(app) {
++                sketches.push(s);
++            }
++        }
++        match app.run(id, params.clone()) {
++            Ok(r) => results.push(r),
++            Err(e) => {
++                let at_failure = sketch_snapshot(app);
++                if let Some(prev) = old.take() {
++                    app.session = prev;
++                    app.session.invalidate_view(rev + 1);
++                } else if let Some(cp) = checkpoint {
++                    let _ = app.session.restore_checkpoint(cp);
++                }
++                app.dialog = saved_dialog;
++                app.tool = saved_tool;
++                let now = inspect(app);
++                return json!({"ok": false, "failed": {"index": i, "command": id, "error": e, "params": params}, "restored": true, "measure": now.get("measure"), "sketches": sketches, "sketch_at_failure": at_failure});
++            }
++        }
++    }
++    if let Some(cp) = checkpoint {
++        app.session.drop_checkpoint(cp);
++    }
++    if fresh {
++        app.session.invalidate_view(rev);
++        if keep_previous {
++            // `old` is the design that was on screen before this run (still held, because the run succeeded).
++            if let Some(prev) = old.take() {
++                let doc_id = solidcraft_ui_egui::documents::active_id(app);
++                let seq = SEQ.with(|c| c.replace(c.get() + 1));
++                let label = format!("{} ({} features)", prev.doc.name, prev.doc.features.len());
++                STASH.with(|s| {
++                    let mut s = s.borrow_mut();
++                    while s.iter().filter(|e| e.doc_id == doc_id).count() >= MAX_STASH_PER_DOC {
++                        if let Some(p) = s.iter().position(|e| e.doc_id == doc_id) {
++                            s.remove(p);
++                        }
++                    }
++                    while s.len() >= MAX_STASH_TOTAL {
++                        s.remove(0);
++                    }
++                    s.push(Stash { doc_id, seq, label, session: prev });
++                });
++            }
++        }
++    }
++    // The model is the demo's output: show it (not the start page) and do not leave an "unsaved work"
++    // autosave/beforeunload prompt behind for a design that is regenerated from a script anyway.
++    app.home.open = false;
++    if fresh {
++        let id = solidcraft_ui_egui::documents::active_id(app);
++        RUN_DOC.with(|r| r.borrow_mut().insert(id, app.session.doc.clone()));
++    }
++    // Phase 6: while a design is set aside for this document the result stays UNSAVED, so the page still warns on
++    // reload and the autosave (which holds the stashed hand work) is not cleared.
++    if !has_stash_for(solidcraft_ui_egui::documents::active_id(app)) {
++        app.session.mark_saved();
++    }
++    app.fit_view();
++    match app.session.execute("inspect.measure", &json!({})) {
++        Ok(m) => {
++            let mut out = json!({"ok": true, "results": results, "measure": m, "bodies": body_list(&m), "sketches": sketches});
++            if want_topology {
++                let t = topology(app, &m);
++                out["topology"] = t;
++            }
++            out
++        }
++        Err(e) => json!({"ok": false, "error": format!("ran, but inspect.measure failed: {e}")}),
++    }
++}
++
++/// Run every queued request. Called from `Shell::logic()` only.
++pub fn drain(app: &mut SolveApp) {
++    let pending: Vec<Request> = QUEUE.with(|q| q.borrow_mut().drain(..).collect());
++    for req in pending {
++        let out = match &req.kind {
++            Kind::Execute(text) => execute(app, text),
++            Kind::Inspect(text) => {
++                // the page's own JS (window.solidcraft.inspect()) may call bare; a relayed call must carry the token
++                let ok = (!req.relayed && text.is_empty()) || serde_json::from_str::<Value>(text).is_ok_and(|v| token_ok(&v));
++                if ok { inspect(app) } else { reject_msg("The bridge token is missing or wrong.".into()) }
++            }
++        };
++        let s = JsValue::from_str(&out.to_string());
++        let _ = req.resolve.call1(&JsValue::NULL, &s);
++        let _ = &req.reject; // reject is only for a bridge that cannot answer at all; every outcome resolves with JSON
++    }
++}
+diff --git a/apps/solidcraft-web/src/main.rs b/apps/solidcraft-web/src/main.rs
+index 48e416c2a667f3f1ff581713e74c033fad930afb..f77f06fbd04b1cbf38572db1eaea0a2f99e15165 100644
+--- a/apps/solidcraft-web/src/main.rs
++++ b/apps/solidcraft-web/src/main.rs
+@@ -6,6 +6,8 @@
+ //! sample part.
+ #![deny(clippy::unwrap_used, clippy::expect_used, clippy::panic, clippy::unimplemented, clippy::todo, clippy::unreachable)]
+ 
++#[cfg(target_arch = "wasm32")]
++mod bridge;
+ #[cfg(target_arch = "wasm32")]
+ mod files;
+ 
+@@ -107,16 +109,25 @@ mod web {
+             // Unsaved work is kept (at most every AUTOSAVE_S); saved work needs no autosave.
+             if self.files.ready.get() && self.files.recovery.borrow().is_none() {
+                 let s = &self.app.session;
+-                let changed = s.is_dirty() && self.autosaved != Some(s.revision);
++                // Phase 6: a design the script pane set aside is hand work at risk; it takes the autosave slot.
++                let stash = crate::bridge::autosave_stash(&self.app);
++                let (dirty, key) = match &stash {
++                    Some((_, _, k)) => (true, *k),
++                    None => (s.is_dirty(), s.revision),
++                };
++                let changed = dirty && self.autosaved != Some(key);
+                 let wait = AUTOSAVE_S - (now - self.autosaved_at);
+                 if changed && wait <= 0.0 {
+-                    files::autosave(&self.files, Some((&s.design(), s.path.as_deref())));
+-                    self.autosaved = Some(s.revision);
++                    match &stash {
++                        Some((d, p, _)) => files::autosave(&self.files, Some((d, p.as_deref()))),
++                        None => files::autosave(&self.files, Some((&s.design(), s.path.as_deref()))),
++                    }
++                    self.autosaved = Some(key);
+                     self.autosaved_at = now;
+                 } else if changed {
+                     // Come back for it even when nothing else happens.
+                     ctx.request_repaint_after(std::time::Duration::from_secs_f64(wait));
+-                } else if !s.is_dirty() && self.autosaved.is_some() {
++                } else if !dirty && self.autosaved.is_some() {
+                     files::autosave(&self.files, None);
+                     self.autosaved = None;
+                 }
+@@ -354,7 +365,9 @@ mod web {
+             self.tick_font(ctx);
+             self.app.logic(ctx);
+             self.files_tick(ctx);
+-            UNSAVED.with(|u| u.set(solidcraft_ui_egui::documents::any_dirty(&self.app)));
++            crate::bridge::drain(&mut self.app);
++            ribbon_persist(self.app.ui.show_ribbon);
++            UNSAVED.with(|u| u.set(solidcraft_ui_egui::documents::any_dirty(&self.app) || crate::bridge::any_stash()));
+         }
+         fn raw_input_hook(&mut self, _ctx: &egui::Context, raw: &mut egui::RawInput) {
+             files::take_drops(&self.files, raw);
+@@ -375,6 +388,35 @@ mod web {
+         }
+     }
+ 
++    thread_local! {
++        /// The ribbon state last seen or written, so only a CHANGE is stored (a `?ribbon=off` start is not a change).
++        static RIBBON_SEEN: std::cell::Cell<bool> = const { std::cell::Cell::new(true) };
++    }
++    const RIBBON_KEY: &str = "solidcraft.ribbon";
++
++    fn ribbon_storage() -> Option<web_sys::Storage> {
++        web_sys::window()?.local_storage().ok().flatten()
++    }
++
++    /// Initial ribbon state: `?ribbon=off|on` for this load only, else the stored user setting, else shown.
++    fn ribbon_initial() -> bool {
++        let url = query().trim_start_matches('?').split('&').find_map(|kv| kv.strip_prefix("ribbon=").map(str::to_string));
++        match url.as_deref() {
++            Some("off" | "0" | "hide" | "hidden" | "false") => false,
++            Some("on" | "1" | "show" | "true") => true,
++            _ => ribbon_storage().and_then(|s| s.get_item(RIBBON_KEY).ok().flatten()).as_deref() != Some("off"),
++        }
++    }
++
++    /// Store the user setting the moment it changes (eframe's own prefs save only every 30 s).
++    fn ribbon_persist(now: bool) {
++        if RIBBON_SEEN.with(|c| c.replace(now)) != now
++            && let Some(s) = ribbon_storage()
++        {
++            let _ = s.set_item(RIBBON_KEY, if now { "on" } else { "off" });
++        }
++    }
++
+     fn query() -> String {
+         web_sys::window().and_then(|w| w.location().search().ok()).unwrap_or_default()
+     }
+@@ -417,6 +459,7 @@ mod web {
+                         let files = Rc::new(Files::default());
+                         files::start(&files);
+                         let panel = files.clone();
++                        crate::bridge::install(&cc.egui_ctx);
+                         let services = Services {
+                             // Open shows the browser's files (and the computer's, from there).
+                             pick_open: Some(Box::new(move || {
+@@ -434,6 +477,8 @@ mod web {
+                         if let Some(p) = cc.storage.and_then(|s| solidcraft_ui_egui::prefs::stored(|k| s.get_string(k))) {
+                             app.load_prefs(&p);
+                         }
++                        app.ui.show_ribbon = ribbon_initial();
++                        RIBBON_SEEN.with(|c| c.set(app.ui.show_ribbon));
+                         if let Some(rs) = &cc.wgpu_render_state {
+                             // eframe's web painter has no stencil buffer.
+                             app.set_wgpu(rs, DEPTH_BITS, 0, 1);
+diff --git a/crates/engine/src/tests/robustness.rs b/crates/engine/src/tests/robustness.rs
+index 55637a415c6e3d7163ff4026287a3c4defac3706..c59fd7e940f7dccc1b9cb200dc4ffd3d674832c1 100644
+--- a/crates/engine/src/tests/robustness.rs
++++ b/crates/engine/src/tests/robustness.rs
+@@ -49,11 +49,35 @@ fn shell_with_a_hole_through_a_curved_side() {
+         {"command": "sketch.arc.three_point", "params": {"end": [0, 0], "start": [0, 20.0], "through": [-10.0, 10.0]}},
+         {"command": "sketch.finish", "params": {}},
+         {"command": "solid.extrude", "params": {"distance": 27.5}},
+-        {"command": "solid.cylinder", "params": {"axis": [1.0, 0.0, 0.0], "base": [-10.000000000000002, 12.5, 12.5], "height": 17.5, "operation": "cut", "radius": 5.0}},
++        {"command": "solid.cylinder", "params": {"axis": [1.0, 0.0, 0.0], "base": [-10.000000000000002, 10.0, 12.5], "height": 17.5, "operation": "cut", "radius": 5.0}},
+         {"command": "solid.shell", "params": {"faces": [[42.5, 10.0, 13.75]], "thickness": 2.0}}
+     ]));
+ }
+ 
++/// The same plate with the hole 2.5 mm from the side wall (it was centred at y = 12.5 here): a
++/// ligament narrower than twice the 2 mm shell, so the shell is refused (it used to build with a
++/// cavity that was too small there).
++#[test]
++fn shell_with_a_hole_through_a_curved_side_near_a_wall_is_refused() {
++    let mut s = Session::default();
++    let steps = [
++        ("sketch.create", json!({"plane": "XY"})),
++        ("sketch.line", json!({"points": [[0, 0], [42.5, 0], [42.5, 20.0], [0, 20.0]]})),
++        ("sketch.arc.three_point", json!({"end": [0, 0], "start": [0, 20.0], "through": [-10.0, 10.0]})),
++        ("sketch.finish", json!({})),
++        ("solid.extrude", json!({"distance": 27.5})),
++        (
++            "solid.cylinder",
++            json!({"axis": [1.0, 0.0, 0.0], "base": [-10.000000000000002, 12.5, 12.5], "height": 17.5, "operation": "cut", "radius": 5.0}),
++        ),
++    ];
++    for (c, p) in &steps {
++        s.execute(c, p).unwrap_or_else(|e| panic!("{c}: {e}"));
++    }
++    let e = s.execute("solid.shell", &json!({"faces": [[42.5, 10.0, 13.75]], "thickness": 2.0})).expect_err("refused").to_string();
++    assert!(e.contains("ligament between a hole and a wall"), "{e}");
++}
++
+ /// Shell of a body in two pieces (a cylinder joined clear of a ring): each piece is shelled.
+ #[test]
+ fn shell_of_a_body_in_two_pieces() {
+@@ -352,3 +376,182 @@ fn lip_on_a_rounded_shelled_rim() {
+         assert!((v - want).abs() < 1e-3 * want, "{extra}: {v} vs {want}");
+     }
+ }
++
++/// Robustness seed 73: a D-shaped block, a fillet, a box joined on the round wall, then a shell
++/// opened at the box's underside. With the open face left on its plane the shell built, and
++/// measuring the result recursed in the tessellator without end (66 GB). A body with curved
++/// faces keeps the old refusal; the run must end in seconds with the shell refused.
++#[test]
++fn shell_open_underside_on_a_round_wall_ends() {
++    let mut s = Session::default();
++    let steps = [
++        ("sketch.create", json!({"plane": "XY"})),
++        ("sketch.line", json!({"points": [[0, 0], [45.0, 0], [45.0, 25.0], [0, 25.0]]})),
++        ("sketch.arc.three_point", json!({"end": [0, 0], "start": [0, 25.0], "through": [-10.0, 12.5]})),
++        ("sketch.finish", json!({})),
++        ("solid.extrude", json!({"distance": 27.5})),
++        ("solid.fillet", json!({"edges": [[-9.999999999999998, 12.5, 0.0], [45.0, 0.0, 13.75]], "radius": 3.0})),
++        ("solid.box", json!({"corner": [-10.0, 0.0, 12.5], "height": 12.5, "length": 10.0, "operation": "join", "width": 15.0})),
++    ];
++    for (c, p) in &steps {
++        let _ = s.execute(c, p);
++    }
++    let t = std::time::Instant::now();
++    let r = s.execute("solid.shell", &json!({"faces": [[-9.917910263100657, 14.166666666666636, 12.500000000009761]], "thickness": 1.5}));
++    let measured: Vec<f64> = s.model.state().bodies.iter().filter_map(|b| solidcraft_kernel::measure(&b.body).ok()).map(|m| m.volume).collect();
++    assert!(t.elapsed().as_secs() < 60, "took {:?}", t.elapsed());
++    assert!(r.is_err(), "the shell was expected to be refused: {measured:?}");
++}
++
++/// Robustness seed 48: a profile with a hole, a box joined on its top, shelled open at the top.
++/// The box's wall runs down to the open face (cavity worked out by hand: 7141.39 before the cut
++/// box; the shell once cut the wall away to the internal margin and gave 7044.77).
++#[test]
++fn shell_open_top_with_a_box_on_it_keeps_the_wall() {
++    let mut s = Session::default();
++    let steps = [
++        ("sketch.create", json!({"plane": "XY"})),
++        ("sketch.line", json!({"points": [[0, 0], [32.5, 0], [32.5, 32.5], [0, 32.5]]})),
++        ("sketch.arc.three_point", json!({"end": [0, 0], "start": [0, 32.5], "through": [-12.5, 16.25]})),
++        ("sketch.finish", json!({})),
++        ("solid.extrude", json!({"distance": 22.5})),
++        ("solid.hole", json!({"depth": 15.0, "diameter": 4.0, "position": [16.25, 0.0, 11.25]})),
++        ("solid.pattern.circular", json!({"axis": "Z", "count": 2, "features": ["Hole1"]})),
++        ("solid.box", json!({"corner": [-7.5, 22.5, 22.500000000000004], "height": 20.0, "length": 5.0, "operation": "join", "width": 5.0})),
++        ("solid.shell", json!({"faces": [[11.821766724298977, 16.085624724957388, 22.499999999999996]], "thickness": 1.5})),
++        ("solid.box", json!({"corner": [-5.0, 32.5, 27.5], "height": 12.5, "length": 7.5, "operation": "cut", "width": 2.5})),
++    ];
++    for (c, p) in &steps {
++        s.execute(c, p).unwrap_or_else(|e| panic!("{c}: {e}"));
++    }
++    let v = volume(&mut s);
++    assert!((v - 7141.547).abs() < 0.05, "{v}");
++}
++
++/// Bodies where material stands on the opened face and the exact plane-offset path does not
++/// apply (a round face beside it, a torus, a pad lower than the shell is thick): the shell says
++/// so instead of returning a part with the boss cut short (these gave -1.7% to -5.5% before).
++/// Case scripts are lists of solid commands; the shell is the last one.
++fn shell_script(cmds: &str) -> (Session, Result<serde_json::Value, String>) {
++    let steps: Value = serde_json::from_str(cmds).unwrap_or_default();
++    let list = steps.as_array().cloned().unwrap_or_default();
++    let mut s = Session::default();
++    let mut last = Ok(json!(null));
++    for st in &list {
++        let (c, p) = (st["command"].as_str().unwrap_or(""), &st["params"]);
++        last = s.execute(c, p).map_err(|e| e.to_string());
++        if c != "solid.shell" {
++            assert!(last.is_ok(), "{c}: {last:?}");
++        }
++    }
++    (s, last)
++}
++
++#[test]
++fn shell_with_material_on_the_open_face_is_refused_where_not_exact() {
++    for (name, cmds) in [
++        (
++            "n10-round-boss-r4",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.cylinder","params":{"radius":4,"height":6,"base":[16,11,5],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[0,0,5]],"thickness":1,"body":"b1"}}]"#,
++        ),
++        (
++            "n11-cyl-pocket-floor",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.cylinder","params":{"radius":8,"height":4,"base":[0,0,2],"body_name":"p1"}},{"command":"solid.combine","params":{"target":"b1","tools":["p1"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[0,0,2]],"thickness":1,"body":"b1"}}]"#,
++        ),
++        (
++            "n8b-pad-0.5",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.box","params":{"length":10,"width":10,"height":0.5,"center":[15,10,5.25],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[0,0,5]],"thickness":1,"body":"b1"}}]"#,
++        ),
++    ] {
++        let (_, r) = shell_script(cmds);
++        let e = r.expect_err(name);
++        assert!(e.contains("not supported yet"), "{name}: {e}");
++    }
++}
++
++#[test]
++fn shell_with_material_on_the_open_face_keeps_the_exact_cases() {
++    for (name, cmds, want, tol) in [
++        (
++            "n6-rounded-plate-edge-boss",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.fillet","params":{"edges":[[20,15,0],[-20,15,0],[20,-15,0],[-20,-15,0]],"radius":3,"body":"b1"}},{"command":"solid.box","params":{"length":10,"width":10,"height":8,"center":[15,0,9],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[-5,8,5]],"thickness":1,"body":"b1"}}]"#,
++            2729.646,
++            0.00001,
++        ),
++        (
++            "n9-boss-with-hole",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.box","params":{"length":10,"width":10,"height":8,"center":[15,10,9],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.cylinder","params":{"radius":2,"height":30,"base":[15,10,-10],"body_name":"h1"}},{"command":"solid.combine","params":{"target":"b1","tools":["h1"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[0,0,5]],"thickness":1,"body":"b1"}}]"#,
++            3002.195,
++            0.00001,
++        ),
++        (
++            "n6b-rounded-plate-control",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.fillet","params":{"edges":[[20,15,0],[-20,15,0],[20,-15,0],[-20,-15,0]],"radius":3,"body":"b1"}},{"command":"solid.shell","params":{"faces":[[0,0,5]],"thickness":1,"body":"b1"}}]"#,
++            2377.646,
++            0.0001,
++        ),
++        (
++            "n19-step-boss",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.box","params":{"length":20,"width":30,"height":10,"center":[-10,0,10],"body_name":"a2"}},{"command":"solid.combine","params":{"target":"b1","tools":["a2"],"operation":"join"}},{"command":"solid.box","params":{"length":10,"width":10,"height":8,"center":[15,10,9],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[10,-5,5]],"thickness":1,"body":"b1"}}]"#,
++            4240.0,
++            1e-06,
++        ),
++        (
++            "n5-L-open-boss",
++            r#"[{"command":"solid.box","params":{"length":60,"width":20,"height":20,"center":[30,10,10],"body_name":"b1"}},{"command":"solid.box","params":{"length":20,"width":20,"height":20,"center":[10,30,10],"body_name":"a2"}},{"command":"solid.combine","params":{"target":"b1","tools":["a2"],"operation":"join"}},{"command":"solid.box","params":{"length":8,"width":8,"height":6,"center":[4,4,23],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[10,10,20]],"thickness":1,"body":"b1"}}]"#,
++            5528.0,
++            1e-06,
++        ),
++        (
++            "n2-two-bosses",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.box","params":{"length":10,"width":10,"height":8,"center":[15,10,9],"body_name":"b2"}},{"command":"solid.box","params":{"length":10,"width":10,"height":8,"center":[-15,-10,9],"body_name":"b3"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.combine","params":{"target":"b1","tools":["b3"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[0,0,5]],"thickness":1,"body":"b1"}}]"#,
++            3128.0,
++            1e-06,
++        ),
++    ] {
++        let (mut s, r) = shell_script(cmds);
++        assert!(r.is_ok(), "{name}: {r:?}");
++        let v = volume(&mut s);
++        assert!((v - want).abs() < tol * want, "{name}: {v} vs {want}");
++    }
++}
++
++/// Bodies that were reported as wrong and are right (checked against closed forms): shelling a
++/// counterbored plate (open top or bottom), a box joined on a cylinder wall with the cylinder's
++/// top open (cavity = cylinder r14 x 29 + the box's inner part outside it, 3760.854), and a boss
++/// that touches the open face at a single vertex (a separate piece, hollowed closed). Pinned so
++/// that a later change cannot "fix" them.
++#[test]
++fn shell_bodies_that_are_exact_stay_exact() {
++    for (name, cmds, want, tol) in [
++        (
++            "counterbore plate, open top: 2424 + 65 pi",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.cylinder","params":{"radius":2,"height":20,"base":[-8,-6,-10],"body_name":"h1"}},{"command":"solid.combine","params":{"target":"b1","tools":["h1"],"operation":"cut"}},{"command":"solid.cylinder","params":{"radius":4,"height":3,"base":[-8,-6,3],"body_name":"h2"}},{"command":"solid.combine","params":{"target":"b1","tools":["h2"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[0,8,5]],"thickness":1,"body":"b1"}}]"#,
++            2424.0 + 65.0 * std::f64::consts::PI,
++            1e-5,
++        ),
++        (
++            "counterbore plate, open bottom: 2424 + 49 pi",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.cylinder","params":{"radius":2,"height":20,"base":[-8,-6,-10],"body_name":"h1"}},{"command":"solid.combine","params":{"target":"b1","tools":["h1"],"operation":"cut"}},{"command":"solid.cylinder","params":{"radius":4,"height":3,"base":[-8,-6,3],"body_name":"h2"}},{"command":"solid.combine","params":{"target":"b1","tools":["h2"],"operation":"cut"}},{"command":"solid.shell","params":{"faces":[[0,8,-5]],"thickness":1,"body":"b1"}}]"#,
++            2424.0 + 49.0 * std::f64::consts::PI,
++            1e-5,
++        ),
++        (
++            "n17b box joined on a cylinder wall, cylinder top open: outer - cylinder cavity - box cavity, integrated",
++            r#"[{"command":"solid.cylinder","params":{"radius":15,"height":30,"base":[0,0,0],"body_name":"b1"}},{"command":"solid.box","params":{"length":14,"width":10,"height":10,"center":[19,0,15],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[0,0,30]],"thickness":1,"body":"b1"}}]"#,
++            3760.8537,
++            1e-5,
++        ),
++        (
++            "n7 boss touching the open face at one vertex: plate shell 2424 + a closed hollow boss 8^3 - 6^3",
++            r#"[{"command":"solid.box","params":{"length":40,"width":30,"height":10,"center":[0,0,0],"body_name":"b1"}},{"command":"solid.box","params":{"length":8,"width":8,"height":8,"center":[24,19,9],"body_name":"b2"}},{"command":"solid.combine","params":{"target":"b1","tools":["b2"],"operation":"join"}},{"command":"solid.shell","params":{"faces":[[0,0,5]],"thickness":1,"body":"b1"}}]"#,
++            2720.0,
++            1e-6,
++        ),
++    ] {
++        let (mut s, r) = shell_script(cmds);
++        assert!(r.is_ok(), "{name}: {r:?}");
++        let v = volume(&mut s);
++        assert!((v - want).abs() < tol * want, "{name}: {v} vs {want}");
++    }
++}
+diff --git a/crates/kernel/src/polyhedron.rs b/crates/kernel/src/polyhedron.rs
+index 6b7675eff60a537d70557cb5780b3e711b19540c..2349af351bfa1ea0cd19511489c8287c059f8b50 100644
+--- a/crates/kernel/src/polyhedron.rs
++++ b/crates/kernel/src/polyhedron.rs
+@@ -490,13 +490,308 @@ fn shell_planar(b: &Body, open: &[Vec3], thickness: f64) -> Result<Body> {
+             "the rim would have no thickness: an open face meets a round of radius {r:.4} mm tangentially, and the shell is {thickness:.4} mm thick (make the round smaller than the thickness)"
+         )));
+     }
+-    let margin = thickness + size * 0.05;
+-    shell_opened(b, &healed, open, &opened, thickness, margin).map_err(|e| match rim_without_thickness(&healed, &opened, thickness, false) {
+-        Some(r) => unsupported_shell(&format!(
+-            "the rim would have no thickness: an open face meets a round of radius {r:.4} mm tangentially, and the shell is {thickness:.4} mm thick (make the round smaller than the thickness)"
+-        )),
+-        None => e,
+-    })
++    let web = thin_web(&healed, &mesh, &opened, thickness);
++    // Pushing an open face out by the margin carries every corner on it along. Material that
++    // stands on the open face's plane (a boss on the opened top, a pocket's walls above its
++    // floor) would be cut away up to the margin, so its inner wall would start above the
++    // plane. The open faces then stay on their plane; the cut is clean because they are
++    // coplanar with the body's own faces there, which the Boolean handles.
++    // Only verified for bodies of planes and cylinders: with other faces (tori from fillets,
++    // spheres, cones, free-form) the margin-0 cut can produce intersection curves that the
++    // tessellator recurses on without end (a robustness seed took 66 GB), so those bodies keep
++    // the old path and its refusals.
++    let tol = (healed.size() * 1e-7).max(1e-9) * 100.0;
++    let simple = healed
++        .solid
++        .face_iter()
++        .all(|f| matches!(crate::offset::surf_of(f, tol), Some(crate::offset::Surf::Plane { .. } | crate::offset::Surf::Cylinder { .. })));
++    let (standing, stands_up) = faces_standing_on(&healed, &mesh, &opened);
++    // Where what stands on the open face meets a round wall (a box joined on a cylinder) the cut
++    // is not verified either: that is the seed that ran away.
++    let rises = simple && !standing.is_empty() && !meets_a_round(&healed, &standing, tol);
++    // Material stands on the open face but the exact path above does not apply: the old path
++    // (open face pushed out by the margin) cuts what stands there short, so it may only report
++    // its own refusals, never a part.
++    let unverified = !standing.is_empty() && !rises;
++    // What stands on the open face must be taller than the shell is thick: its top moves in by
++    // the thickness, and a lower pad would have its top below the open plane (the offset then
++    // crosses itself and the part comes out too heavy).
++    if rises && stands_up <= thickness + tol {
++        return Err(unsupported_shell(&format!(
++            "what stands on the open face is only {stands_up:.4} mm tall and the shell is {thickness:.4} mm thick, so its top would move below the open face (use a shell thinner than the pad is tall, or shell before adding it)"
++        )));
++    }
++    // A wall or rim standing on the open face needs two shell thicknesses: its outer side moves in
++    // by the thickness and its inner side the other way, and at a thinner wall they cross (the
++    // offset is then not a solid, and the cut leaves an artefact). Exactly two is a wall of zero
++    // thickness in the cavity, refused the same way.
++    let wall = if rises { thin_standing_wall(&healed, &mesh, &standing, thickness) } else { None };
++    let margin = if rises { 0.0 } else { thickness + size * 0.05 };
++    let shelled =
++        shell_opened(b, &healed, open, &opened, thickness, margin).map_err(|e| match rim_without_thickness(&healed, &opened, thickness, false) {
++            Some(r) => unsupported_shell(&format!(
++                "the rim would have no thickness: an open face meets a round of radius {r:.4} mm tangentially, and the shell is {thickness:.4} mm thick (make the round smaller than the thickness)"
++            )),
++            None => e,
++        })?;
++    // These only replace a part the shell built; where the shell fails by itself its own message
++    // stands (so no failing case changes its text).
++    if let Some(w) = web {
++        return Err(unsupported_shell(&format!(
++            "a ligament between a hole and a wall (or another hole) is only {w:.4} mm thick; its two offset sides would cross (it needs at least twice the shell thickness, {:.4} mm)",
++            2.0 * thickness
++        )));
++    }
++    if let Some(w) = wall {
++        return Err(unsupported_shell(&format!(
++            "a wall standing on the open face is only {w:.4} mm thick and the shell is {thickness:.4} mm, so its two sides would cross (a wall needs more than twice the shell thickness; use a thinner shell or a thicker wall)"
++        )));
++    }
++    // Every face moves in along its plane, so a wall standing on an open face loses the
++    // floor under it: where it is not attached to a wall it would be left free of the part.
++    // Each piece of the input may leave one piece only (a piece swallowed whole by the shell
++    // cannot hide another one coming apart).
++    if rises && comes_apart(b, &shelled)? {
++        return Err(unsupported_shell(&format!(
++            "something stands on the open face (a boss, a rim or a pocket's walls) and the {thickness:.4} mm shell would leave part of it free of the rest of the part: every face moves in by the thickness, so nothing is left under it (a thinner shell does not help unless it touches a wall; shell first and add the boss afterwards)"
++        )));
++    }
++    if unverified {
++        return Err(unsupported_shell(
++            "a boss or wall stands on the open face of a body with round faces (or on a round wall); solid.shell would cut it short here, so it is not built (open a face nothing stands on, or shell before adding the boss)",
++        ));
++    }
++    Ok(shelled)
++}
++
++/// Whether shelling `before` into `after` split a piece in two: some piece of `before`
++/// has more than one piece of `after` inside its bounding box.
++fn comes_apart(before: &Body, after: &Body) -> Result<bool> {
++    let boxes = |b: &Body| -> Result<Vec<(Vec3, Vec3)>> { b.lumps()?.iter().map(|l| crate::measure(l).map(|m| (m.bbox.min, m.bbox.max))).collect() };
++    let tol = (before.size() * 1e-6).max(1e-9);
++    let (was, now) = (boxes(before)?, boxes(after)?);
++    let inside = |o: &(Vec3, Vec3), i: &(Vec3, Vec3)| {
++        o.0.x >= i.0.x - tol && o.0.y >= i.0.y - tol && o.0.z >= i.0.z - tol && o.1.x <= i.1.x + tol && o.1.y <= i.1.y + tol && o.1.z <= i.1.z + tol
++    };
++    Ok(was.iter().any(|w| now.iter().filter(|n| inside(n, w)).count() > 1) || now.len() > was.len())
++}
++
++/// The faces of `b` other than the `opened` ones that stand on an opened planar face, and how far
++/// they reach beyond its plane: a face stands on it when it meets the open face along an edge that
++/// is concave (the face's outward normal there points back over the open face), as a boss wall, a
++/// pocket's wall or a notch's floor do. A face that only runs along the plane or lies on the
++/// body's side of it, and material elsewhere (another piece, a far step), does not.
++fn faces_standing_on(b: &Body, mesh: &solidcraft_geom::Mesh, opened: &[usize]) -> (Vec<usize>, f64) {
++    use mt::{BoundedCurve, ParametricCurve};
++    let size = b.size();
++    let tol = (size * 1e-6).max(1e-9);
++    let faces: Vec<mt::Face> = b.solid.face_iter().cloned().collect();
++    let planes: Vec<(usize, Vec3, f64)> = opened
++        .iter()
++        .filter_map(|i| match crate::offset::surf_of(faces.get(*i)?, tol * 100.0) {
++            Some(crate::offset::Surf::Plane { n, d }) => Some((*i, n, d)),
++            _ => None,
++        })
++        .collect();
++    let mut by_edge: HashMap<mt::EdgeID, Vec<usize>> = HashMap::new();
++    for (i, f) in faces.iter().enumerate() {
++        for e in f.edge_iter() {
++            let v = by_edge.entry(e.id()).or_default();
++            if !v.contains(&i) {
++                v.push(i);
++            }
++        }
++    }
++    // Whether `p` (on the plane with normal `n`) lies in the triangle.
++    let in_tri = |p: Vec3, t: &[Vec3; 3], n: Vec3| {
++        let side = |a: Vec3, c: Vec3| (c - a).cross(p - a).dot(n);
++        let s = [side(t[0], t[1]), side(t[1], t[2]), side(t[2], t[0])];
++        s.iter().all(|x| *x >= -1e-12) || s.iter().all(|x| *x <= 1e-12)
++    };
++    let mut out: Vec<usize> = Vec::new();
++    for (gi, n, _) in &planes {
++        let Some(g) = faces.get(*gi) else { continue };
++        let gtris: Vec<[Vec3; 3]> =
++            mesh.triangles.iter().zip(&mesh.tri_face).filter(|(_, f)| **f as usize == *gi).filter_map(|(t, _)| mesh.tri(t)).collect();
++        for e in g.edge_iter() {
++            let c = e.curve();
++            let (t0, t1) = c.range_tuple();
++            let at = |k: f64| from_p3(c.subs(t0 + (t1 - t0) * k));
++            let m = at(0.5);
++            let (Some(tg), true) = ((at(0.55) - at(0.45)).normalized(), t1 > t0) else { continue };
++            let Some(w) = n.cross(tg).normalized() else { continue };
++            let delta = size * 1e-4;
++            let inward = if gtris.iter().any(|t| in_tri(m + w * delta, t, *n)) {
++                w
++            } else if gtris.iter().any(|t| in_tri(m - w * delta, t, *n)) {
++                -w
++            } else {
++                continue;
++            };
++            let across = -inward;
++            for fi in by_edge.get(&e.id()).into_iter().flatten() {
++                if opened.contains(fi) || out.contains(fi) {
++                    continue;
++                }
++                let Some(f) = faces.get(*fi) else { continue };
++                // An outward normal pointing back over the open face: the edge is concave. A face
++                // whose surface is not known counts as standing (the caller then refuses).
++                match crate::offset::surf_of(f, tol * 100.0).and_then(|s| s.normal(m)) {
++                    Some(nf) if nf.dot(across) >= -1e-3 => {}
++                    _ => out.push(*fi),
++                }
++            }
++        }
++    }
++    let mut height = 0.0f64;
++    for (t, f) in mesh.triangles.iter().zip(&mesh.tri_face) {
++        if !out.contains(&(*f as usize)) {
++            continue;
++        }
++        if let Some(tri) = mesh.tri(t) {
++            height = tri.iter().flat_map(|p| planes.iter().map(move |(_, n, d)| n.dot(*p) - d)).fold(height, f64::max);
++        }
++    }
++    (out, height)
++}
++
++/// The thickness of a standing wall thinner than twice `t` (or exactly that): the standing face
++/// and a face looking the other way behind it, a plane parallel to it that overlaps it, or a
++/// cylinder coaxial inside it.
++fn thin_standing_wall(b: &Body, mesh: &solidcraft_geom::Mesh, standing: &[usize], t: f64) -> Option<f64> {
++    use crate::offset::{Surf, surf_of};
++    let tol = (b.size() * 1e-6).max(1e-9);
++    let faces: Vec<mt::Face> = b.solid.face_iter().cloned().collect();
++    let surfs: Vec<Option<Surf>> = faces.iter().map(|f| surf_of(f, tol * 100.0)).collect();
++    // Extent of each face in the plane square to `n`.
++    let extent = |face: usize, u: Vec3, w: Vec3| -> Option<[f64; 4]> {
++        let mut e = [f64::INFINITY, f64::NEG_INFINITY, f64::INFINITY, f64::NEG_INFINITY];
++        for (tri, f) in mesh.triangles.iter().zip(&mesh.tri_face) {
++            if *f as usize != face {
++                continue;
++            }
++            for p in mesh.tri(tri)? {
++                e = [e[0].min(p.dot(u)), e[1].max(p.dot(u)), e[2].min(p.dot(w)), e[3].max(p.dot(w))];
++            }
++        }
++        e[0].is_finite().then_some(e)
++    };
++    // Exact: a wall of 2t or less is refused, anything thicker is built (the cut is right just above 2t).
++    let eps = b.size() * 1e-9;
++    let limit = 2.0 * t + eps;
++    for &si in standing {
++        let Some(sf) = surfs.get(si).copied().flatten() else { continue };
++        match sf {
++            Surf::Plane { n, d } => {
++                let (u, w) = (n.any_perp(), n.cross(n.any_perp()));
++                let Some(es) = extent(si, u, w) else { continue };
++                for (oi, o) in surfs.iter().enumerate() {
++                    let Some(Surf::Plane { n: n2, d: d2 }) = *o else { continue };
++                    let wall = d + d2;
++                    if oi == si || n2.dot(n) > -1.0 + 1e-9 || wall <= eps || wall > limit {
++                        continue;
++                    }
++                    let Some(eo) = extent(oi, u, w) else { continue };
++                    let overlap = |a: (f64, f64), c: (f64, f64)| a.1.min(c.1) - a.0.max(c.0) > tol * 100.0;
++                    if overlap((es[0], es[1]), (eo[0], eo[1])) && overlap((es[2], es[3]), (eo[2], eo[3])) {
++                        return Some(wall);
++                    }
++                }
++            }
++            Surf::Cylinder { o, a, r, convex: true } => {
++                for sf in surfs.iter().flatten() {
++                    if let Surf::Cylinder { o: o2, a: a2, r: r2, convex: false } = *sf {
++                        let v = o2 - o;
++                        let coaxial = a.cross(a2).len() < 1e-6 && (v - a * v.dot(a)).len() < tol * 100.0;
++                        let wall = r - r2;
++                        if coaxial && wall > eps && wall <= limit {
++                            return Some(wall);
++                        }
++                    }
++                }
++            }
++            _ => {}
++        }
++    }
++    None
++}
++
++/// The width of a ligament narrower than twice `t` between a round hole and a wall parallel to
++/// its axis, or between two parallel round holes: the hole's wall moves out by `t` into the
++/// material and the other side moves in by `t`, and where they are closer than `2t` the offsets
++/// cross, which the topology-keeping offset does not see (the cavity then comes out too small).
++/// A ligament of exactly `2t` is fine (measured).
++fn thin_web(b: &Body, mesh: &solidcraft_geom::Mesh, opened: &[usize], t: f64) -> Option<f64> {
++    use crate::offset::{Surf, surf_of};
++    let tol = (b.size() * 1e-6).max(1e-9);
++    let eps = b.size() * 1e-9;
++    let faces: Vec<mt::Face> = b.solid.face_iter().cloned().collect();
++    let surfs: Vec<Option<Surf>> = faces.iter().map(|f| surf_of(f, tol * 100.0)).collect();
++    if faces.len() > 2000 {
++        return None;
++    }
++    let extent = |face: usize, u: Vec3, w: Vec3| -> Option<[f64; 4]> {
++        let mut e = [f64::INFINITY, f64::NEG_INFINITY, f64::INFINITY, f64::NEG_INFINITY];
++        for (tri, f) in mesh.triangles.iter().zip(&mesh.tri_face) {
++            if *f as usize != face {
++                continue;
++            }
++            for p in mesh.tri(tri)? {
++                e = [e[0].min(p.dot(u)), e[1].max(p.dot(u)), e[2].min(p.dot(w)), e[3].max(p.dot(w))];
++            }
++        }
++        e[0].is_finite().then_some(e)
++    };
++    let overlap = |a: (f64, f64), c: (f64, f64)| a.1.min(c.1) - a.0.max(c.0) > tol * 100.0;
++    let thin = |web: f64| web > eps && web < 2.0 * t - eps;
++    for (hi, hs) in surfs.iter().enumerate() {
++        let Some(Surf::Cylinder { o, a, r, convex: false }) = *hs else { continue };
++        let v_dir = a.any_perp();
++        for (oi, os) in surfs.iter().enumerate() {
++            match *os {
++                // A wall parallel to the hole's axis, with material between.
++                Some(Surf::Plane { n, d }) if !opened.contains(&oi) && n.dot(a).abs() < 1e-6 => {
++                    let web = d - n.dot(o) - r;
++                    if !thin(web) {
++                        continue;
++                    }
++                    let tangent = n.cross(a);
++                    let (Some(eh), Some(ep)) = (extent(hi, a, tangent), extent(oi, a, tangent)) else { continue };
++                    let c = o.dot(tangent);
++                    if overlap((eh[0], eh[1]), (ep[0], ep[1])) && overlap((c - r, c + r), (ep[2], ep[3])) {
++                        return Some(web);
++                    }
++                }
++                // Another parallel hole.
++                Some(Surf::Cylinder { o: o2, a: a2, r: r2, convex: false }) if oi > hi && a.cross(a2).len() < 1e-6 => {
++                    let v = o2 - o;
++                    let perp = (v - a * v.dot(a)).len();
++                    let web = perp - r - r2;
++                    if !thin(web) {
++                        continue;
++                    }
++                    let (Some(e1), Some(e2)) = (extent(hi, a, v_dir), extent(oi, a, v_dir)) else { continue };
++                    if overlap((e1[0], e1[1]), (e2[0], e2[1])) {
++                        return Some(web);
++                    }
++                }
++                _ => {}
++            }
++        }
++    }
++    None
++}
++
++/// Whether any of the faces `standing` shares an edge with a face that is not a plane.
++fn meets_a_round(b: &Body, standing: &[usize], tol: f64) -> bool {
++    let faces: Vec<mt::Face> = b.solid.face_iter().cloned().collect();
++    let round: Vec<usize> = (0..faces.len())
++        .filter(|i| faces.get(*i).is_some_and(|f| !matches!(crate::offset::surf_of(f, tol), Some(crate::offset::Surf::Plane { .. }))))
++        .collect();
++    standing
++        .iter()
++        .filter_map(|i| faces.get(*i))
++        .any(|f| f.edge_iter().any(|e| round.iter().filter_map(|r| faces.get(*r)).any(|g| g.edge_iter().any(|e2| e2.id() == e.id()))))
+ }
+ 
+ /// The radius of a convex round (cylinder or torus) that meets an open face tangentially and
+diff --git a/crates/kernel/src/tests.rs b/crates/kernel/src/tests.rs
+index abd2a89ab4dc36a41183745149fe3ce1d471f340..634c891e86191a4d932225416c4b8c2a5b21c915 100644
+--- a/crates/kernel/src/tests.rs
++++ b/crates/kernel/src/tests.rs
+@@ -2312,3 +2312,195 @@ fn shell_of_a_disc_rounded_smaller_than_the_wall() {
+         }
+     }
+ }
++
++/// A 40x30x10 base with a boss standing on its top face, shelled open at the base's top.
++fn stub_shell(size: Vec3, centre: Vec3, t: f64) -> Result<Body> {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let c = Vec3::new(centre.x - size.x / 2.0, centre.y - size.y / 2.0, centre.z - size.z / 2.0);
++    let stub = box_solid(c, c + size).unwrap();
++    let u = boolean(&base, &stub, BoolOp::Union).unwrap().unwrap();
++    shell(&u, &[Vec3::new(-17.0, -12.0, 5.0)], t)
++}
++
++/// Shell of a body with a boss standing on the face that is opened. Every face moves in along
++/// its plane, so the boss's wall must run the whole way down to the opened face's plane (it
++/// once started at that plane plus the shell's internal margin, 8.657 for a plane at 5).
++/// A boss standing clear of the part's wall would be left floating: refused, not built wrong.
++#[test]
++fn shell_open_face_with_a_boss_on_it() {
++    let plane = 2776.0; // 12800 outer, less 38x28x9 and 8x8x7 cavities
++    // Boss against the base's +x wall (x 10..20): one piece, the exact plane-offset volume.
++    let flush = stub_shell(Vec3::new(10.0, 10.0, 8.0), Vec3::new(15.0, 0.0, 9.0), 1.0).unwrap();
++    let v = measure(&flush).unwrap().volume;
++    assert!(rel(v, plane) < 1e-3, "{v} vs {plane}");
++    assert_eq!(flush.lumps().unwrap().len(), 1);
++    let corner = stub_shell(Vec3::new(10.0, 10.0, 8.0), Vec3::new(15.0, 10.0, 9.0), 1.0).unwrap();
++    let v = measure(&corner).unwrap().volume;
++    assert!(rel(v, plane) < 1e-3, "{v} vs {plane}");
++    // Boss clear of every wall: its tube would rest on nothing.
++    for (size, centre) in [([10.0, 10.0, 8.0], [0.0, 0.0, 9.0]), ([10.0, 10.0, 8.0], [10.0, 0.0, 9.0]), ([12.0, 12.0, 2.0], [5.0, -5.0, 6.0])] {
++        let e = stub_shell(Vec3::new(size[0], size[1], size[2]), Vec3::new(centre[0], centre[1], centre[2]), 1.0).unwrap_err().to_string();
++        assert!(e.contains("free of the rest of the part"), "{e}");
++    }
++}
++
++/// The same shell without a boss is unchanged: outer volume less the plain cavity.
++#[test]
++fn shell_open_top_of_a_plain_body_is_unchanged() {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let s = shell(&base, &[Vec3::new(0.0, 0.0, 5.0)], 1.0).unwrap();
++    let v = measure(&s).unwrap().volume;
++    assert!(rel(v, 12000.0 - 38.0 * 28.0 * 9.0) < 1e-9, "{v}");
++}
++
++/// A ledge standing on the opened face that the shell is thicker than: the kernel's own offset
++/// limit, with its own sentence, not a diagnosis about bosses.
++#[test]
++fn shell_open_face_with_a_thin_rib_keeps_the_offset_limit_text() {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let rib = box_solid(Vec3::new(-1.0, -15.0, 5.0), Vec3::new(1.0, 15.0, 10.0)).unwrap();
++    let u = boolean(&base, &rib, BoolOp::Union).unwrap().unwrap();
++    let e = shell(&u, &[Vec3::new(-10.0, 0.0, 5.0)], 1.0).unwrap_err().to_string();
++    assert!(!e.contains("free of the rest"), "{e}");
++    println!("RIB: {e}");
++}
++
++/// Two bosses on the opened face, one against a wall and one clear of it: the free one is refused.
++#[test]
++fn shell_open_face_with_one_attached_and_one_free_boss_is_refused() {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let a = box_solid(Vec3::new(10.0, -5.0, 5.0), Vec3::new(20.0, 5.0, 13.0)).unwrap();
++    let c = box_solid(Vec3::new(-5.0, -5.0, 5.0), Vec3::new(5.0, 5.0, 13.0)).unwrap();
++    let u = boolean(&boolean(&base, &a, BoolOp::Union).unwrap().unwrap(), &c, BoolOp::Union).unwrap().unwrap();
++    let e = shell(&u, &[Vec3::new(-15.0, 10.0, 5.0)], 1.0).unwrap_err().to_string();
++    assert!(e.contains("free of the rest of the part"), "{e}");
++}
++
++/// A second piece in the same body does not hide a boss coming apart.
++#[test]
++fn shell_open_face_with_a_free_boss_and_a_second_piece_is_refused() {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let boss = box_solid(Vec3::new(-5.0, -5.0, 5.0), Vec3::new(5.0, 5.0, 13.0)).unwrap();
++    let plate = box_solid(Vec3::new(40.0, -5.0, -5.0), Vec3::new(50.0, 5.0, -2.0)).unwrap();
++    let u = boolean(&base, &boss, BoolOp::Union).unwrap().unwrap();
++    let both = boolean(&u, &plate, BoolOp::Union).unwrap().unwrap();
++    let r = shell(&both, &[Vec3::new(-15.0, 10.0, 5.0)], 1.0);
++    let e = r.expect_err("a floating boss slipped through").to_string();
++    assert!(e.contains("free of the rest of the part"), "{e}");
++}
++
++/// Robustness seed 73: a D-shaped block with a box joined on its round wall, shelled open at the
++/// box's underside. The margin-0 cut once produced intersection curves that the tessellator
++/// recursed on without end (66 GB). A body with curved faces keeps the old path: it finishes in
++/// seconds and either refuses or returns a part smaller than the block.
++#[test]
++fn shell_open_underside_of_a_box_on_a_round_wall_terminates() {
++    let slab = box_solid(Vec3::new(0.0, 0.0, 0.0), Vec3::new(45.0, 25.0, 27.5)).unwrap();
++    let round = cylinder(Vec3::new(2.8, 12.5, 0.0), Vec3::Z, 12.8, 27.5).unwrap();
++    let d = boolean(&slab, &round, BoolOp::Union).unwrap().unwrap();
++    let tab = box_solid(Vec3::new(-10.0, 0.0, 12.5), Vec3::new(0.0, 15.0, 25.0)).unwrap();
++    let both = boolean(&d, &tab, BoolOp::Union).unwrap().unwrap();
++    let whole = measure(&both).unwrap().volume;
++    let t = std::time::Instant::now();
++    match shell(&both, &[Vec3::new(-9.92, 14.17, 12.5)], 1.5) {
++        Err(e) => println!("seed73 refused: {e}"),
++        Ok(r) => {
++            let v = measure(&r).unwrap().volume;
++            assert!(v > 0.0 && v < whole, "{v} vs {whole}");
++        }
++    }
++    assert!(t.elapsed().as_secs() < 60, "took {:?}", t.elapsed());
++}
++
++/// A 10x10 rim, 6 mm tall and `w` thick, flush in a corner of a 40x30x10 plate, shelled 1 mm from
++/// the plate's top.
++fn rim_shell(w: f64) -> Result<Body> {
++    rim_shell_t(w, 1.0)
++}
++
++fn rim_shell_t(w: f64, t: f64) -> Result<Body> {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let outer = box_solid(Vec3::new(10.0, 5.0, 5.0), Vec3::new(20.0, 15.0, 11.0)).unwrap();
++    let hole = box_solid(Vec3::new(10.0 + w, 5.0 + w, 4.0), Vec3::new(20.0 - w, 15.0 - w, 12.0)).unwrap();
++    let ring = boolean(&outer, &hole, BoolOp::Cut).unwrap().unwrap();
++    let u = boolean(&base, &ring, BoolOp::Union).unwrap().unwrap();
++    shell(&u, &[Vec3::new(-17.0, -12.0, 5.0)], t)
++}
++
++/// A rim thicker than twice the shell is the exact plane offset (2872 - 48 (w - 2)); at twice the
++/// shell (a wall of no thickness in the cavity) or less its two sides cross, and it is refused
++/// instead of built with the artefact that gave 2839.4 for a 1.5 mm rim (exact path: 2802.25).
++#[test]
++fn shell_open_face_with_a_rim_thinner_than_two_walls_is_refused() {
++    for w in [3.0, 2.5, 2.2, 2.05] {
++        let v = measure(&rim_shell(w).unwrap()).unwrap().volume;
++        let want = 2872.0 - 48.0 * (w - 2.0);
++        assert!(rel(v, want) < 1e-6, "w {w}: {v} vs {want}");
++    }
++    for w in [2.0, 1.95, 1.8, 1.5] {
++        let e = rim_shell(w).unwrap_err().to_string();
++        assert!(e.contains("its two sides would cross"), "w {w}: {e}");
++    }
++}
++
++/// The rim threshold is exact: a wall of exactly twice the shell is refused, anything thicker is
++/// built, and the answer just above the threshold is the exact one (it was refused up to 0.005
++/// above it, with a sentence that was not true there).
++#[test]
++fn shell_rim_threshold_is_exactly_twice_the_shell() {
++    for w in [2.0005, 2.002, 2.005, 2.006] {
++        let v = measure(&rim_shell(w).unwrap()).unwrap().volume;
++        let want = 2872.0 - 48.0 * (w - 2.0);
++        assert!(rel(v, want) < 1e-6, "w {w}: {v} vs {want}");
++    }
++    assert!(rim_shell(2.0).is_err());
++    // t = 2: the volume is linear in the wall above 4; check the points just above 4 on that line.
++    let vol = |w: f64| measure(&rim_shell_t(w, 2.0).unwrap()).unwrap().volume;
++    let (a, b) = (vol(4.1), vol(4.5));
++    let slope = (b - a) / 0.4;
++    for w in [4.002, 4.005, 4.02] {
++        let want = a + slope * (w - 4.1);
++        assert!(rel(vol(w), want) < 1e-6, "w {w}: {} vs {want}", vol(w));
++    }
++    for w in [4.0, 3.9] {
++        assert!(rim_shell_t(w, 2.0).unwrap_err().to_string().contains("its two sides would cross"), "w {w}");
++    }
++}
++
++/// A 40x30x10 plate with vertical holes (x, y, radius), shelled 1 mm from the top.
++fn plate_with_holes(holes: &[(f64, f64, f64)]) -> Result<Body> {
++    let mut b = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    for &(x, y, r) in holes {
++        let h = cylinder(Vec3::new(x, y, -10.0), Vec3::Z, r, 20.0).unwrap();
++        b = boolean(&b, &h, BoolOp::Cut).unwrap().unwrap();
++    }
++    shell(&b, &[Vec3::new(-17.0, -12.0, 5.0)], 1.0)
++}
++
++/// A ligament between a hole and a wall, or between two holes, narrower than twice the shell
++/// crosses its own offsets, and the cavity came out too small (web 1.0: 2549.09 against the
++/// closed form 2524.93, a hole's segment of 3.0975 mm2 beyond the offset wall). Refused; from
++/// twice the shell the volume is the closed form 2424 + 41 pi (one hole) or 2424 + 82 pi (two).
++#[test]
++fn shell_ligament_thinner_than_twice_the_shell_is_refused() {
++    let one = 2424.0 + 41.0 * std::f64::consts::PI;
++    let two = 2424.0 + 82.0 * std::f64::consts::PI;
++    for web in [2.0, 2.1, 3.0] {
++        let v = measure(&plate_with_holes(&[(18.0 - web, 0.0, 2.0)]).unwrap()).unwrap().volume;
++        assert!(rel(v, one) < 1e-5, "web {web}: {v} vs {one}");
++    }
++    for web in [2.1, 3.0] {
++        let v = measure(&plate_with_holes(&[(-5.0, 0.0, 2.0), (-1.0 + web, 0.0, 2.0)]).unwrap()).unwrap().volume;
++        assert!(rel(v, two) < 1e-5, "two holes {web}: {v} vs {two}");
++    }
++    for web in [1.0, 1.5, 1.9] {
++        let e = plate_with_holes(&[(18.0 - web, 0.0, 2.0)]).unwrap_err().to_string();
++        assert!(e.contains("ligament between a hole and a wall"), "east {web}: {e}");
++    }
++    let e = plate_with_holes(&[(0.0, 12.0, 2.0)]).unwrap_err().to_string();
++    assert!(e.contains("ligament"), "north: {e}");
++    for web in [1.0, 1.9] {
++        let e = plate_with_holes(&[(-5.0, 0.0, 2.0), (-1.0 + web, 0.0, 2.0)]).unwrap_err().to_string();
++        assert!(e.contains("ligament"), "two holes {web}: {e}");
++    }
++}
+diff --git a/crates/sketch/src/coincident_tangent_tests.rs b/crates/sketch/src/coincident_tangent_tests.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..da4e15a2edef1e34115d2aae6d1a66ac74ef37ec
+--- /dev/null
++++ b/crates/sketch/src/coincident_tangent_tests.rs
+@@ -0,0 +1,262 @@
++//! A line and an arc that meet at two separate points tied by `Coincident` (not at one shared
++//! point), plus `Tangent`. The tangency has to be read at that touch point: the touch-free form
++//! (distance from the centre equals the radius) is a double root there, so it converged to only
++//! sqrt(residual) of tangent and lost a row of rank when the start already was tangent.
++
++use solidcraft_geom::Vec2;
++
++use crate::tests::{Lcg, v};
++use crate::*;
++
++/// Circumcentre of three points.
++fn circumcentre(a: Vec2, t: Vec2, b: Vec2) -> Vec2 {
++    let d = 2.0 * (a.x * (t.y - b.y) + t.x * (b.y - a.y) + b.x * (a.y - t.y));
++    let (a2, t2, b2) = (a.len().powi(2), t.len().powi(2), b.len().powi(2));
++    Vec2::new((a2 * (t.y - b.y) + t2 * (b.y - a.y) + b2 * (a.y - t.y)) / d, (a2 * (b.x - t.x) + t2 * (a.x - b.x) + b2 * (t.x - a.x)) / d)
++}
++
++struct Joint {
++    sk: Sketch,
++    line: usize,
++    arc: usize,
++    line_end: usize,
++    arc_start: usize,
++}
++
++/// Line (0,0)-(10,0) and the arc through (10,0), (15,5), (10,10), each coordinate moved by `j`.
++fn joint(j: [f64; 10]) -> Joint {
++    let mut sk = Sketch::new();
++    let line = sk.add_line(v(j[0], j[1]), v(10.0 + j[2], j[3]), None, None, Some("l")).unwrap();
++    let (a, t, b) = (v(10.0 + j[4], j[5]), v(15.0 + j[6], 5.0 + j[7]), v(10.0 + j[8], 10.0 + j[9]));
++    let arc = sk.add_arc(circumcentre(a, t, b), a, b, [None, None, None], Some("a")).unwrap();
++    let (CurveKind::Line { b: line_end, .. }, CurveKind::Arc { a: arc_start, .. }) = (sk.curves[line].kind.clone(), sk.curves[arc].kind.clone())
++    else {
++        panic!("a line and an arc")
++    };
++    sk.add_constraint(ConstraintKind::Coincident { p: line_end, q: arc_start }, None).unwrap();
++    sk.add_constraint(ConstraintKind::Tangent { a: line, b: arc }, None).unwrap();
++    Joint { sk, line, arc, line_end, arc_start }
++}
++
++/// The centre-to-joint radius's component along the line: the tangency error in mm.
++fn tangency_error(jt: &Joint) -> f64 {
++    let (p0, p1) = match jt.sk.curves[jt.line].kind {
++        CurveKind::Line { a, b } => (jt.sk.points[a].pos, jt.sk.points[b].pos),
++        _ => panic!("line"),
++    };
++    let d = p1 - p0;
++    (jt.sk.points[jt.arc_start].pos - jt.sk.center(jt.arc).unwrap()).dot(d) / d.len()
++}
++
++#[test]
++fn coincident_tangent_holds_in_the_stored_points() {
++    let mut rng = Lcg(12345);
++    for amp in [0.05, 0.1, 0.25, 0.5, 1.0, 2.0, 0.05, 0.1, 0.25, 0.5, 1.0, 2.0] {
++        let mut j = [0.0; 10];
++        for x in &mut j {
++            *x = rng.range(-amp, amp);
++        }
++        let mut jt = joint(j);
++        let rep = solve(&mut jt.sk);
++        assert!(rep.ok(), "amp {amp}: {rep:?}");
++        let err = tangency_error(&jt);
++        // Was 5e-5 .. 1e-4 mm with a reported residual of 1e-10.
++        assert!(err.abs() < 1e-8, "amp {amp}: tangency error {err}");
++        let gap = jt.sk.points[jt.line_end].pos.dist(jt.sk.points[jt.arc_start].pos);
++        assert!(gap < 1e-8, "amp {amp}: gap {gap}");
++        assert_eq!(rep.dof, 6, "amp {amp}: {rep:?}");
++        assert!(rep.redundant.is_empty(), "amp {amp}: {rep:?}");
++    }
++}
++
++#[test]
++fn coincident_tangent_dof_does_not_depend_on_the_start() {
++    let rough = [0.03, -0.04, 0.02, 0.05, -0.05, 0.04, 0.04, -0.03, -0.02, 0.05];
++    let mut reports = Vec::new();
++    for j in [[0.0; 10], rough] {
++        let mut jt = joint(j);
++        reports.push(solve(&mut jt.sk));
++    }
++    for rep in &reports {
++        // 4 (line) + 5 (arc) - 2 (coincident) - 1 (tangent).
++        assert_eq!(rep.dof, 6, "{rep:?}");
++        assert!(rep.redundant.is_empty(), "{rep:?}");
++        assert!(rep.failing.is_empty(), "{rep:?}");
++    }
++}
++
++#[test]
++fn a_coincident_chain_still_finds_the_touch_point() {
++    let mut jt = joint([0.03, -0.04, 0.02, 0.05, -0.05, 0.04, 0.04, -0.03, -0.02, 0.05]);
++    // The line end is tied to the arc start only through a third point.
++    let mid = jt.sk.add_point(v(10.0, 0.0), None).unwrap();
++    jt.sk.constraints.remove(0);
++    jt.sk.add_constraint(ConstraintKind::Coincident { p: jt.line_end, q: mid }, None).unwrap();
++    jt.sk.add_constraint(ConstraintKind::Coincident { p: mid, q: jt.arc_start }, None).unwrap();
++    let rep = solve(&mut jt.sk);
++    assert!(rep.ok(), "{rep:?}");
++    let err = tangency_error(&jt);
++    assert!(err.abs() < 1e-8, "tangency error {err}");
++}
++
++#[test]
++fn a_duplicate_dimension_beside_the_tangent_joint_is_still_redundant() {
++    let mut jt = joint([0.0; 10]);
++    let l = jt.line;
++    jt.sk.add_constraint(ConstraintKind::Length { l, value: 10.0 }, None).unwrap();
++    jt.sk.add_constraint(ConstraintKind::Length { l, value: 10.0 }, None).unwrap();
++    let rep = solve(&mut jt.sk);
++    assert!(rep.ok(), "{rep:?}");
++    assert_eq!(rep.redundant.len(), 1, "{rep:?}");
++    assert_eq!(rep.dof, 5, "{rep:?}");
++}
++
++#[test]
++fn conflicting_dimensions_beside_the_tangent_joint_still_fail() {
++    let mut jt = joint([0.0; 10]);
++    let l = jt.line;
++    jt.sk.add_constraint(ConstraintKind::Length { l, value: 10.0 }, None).unwrap();
++    jt.sk.add_constraint(ConstraintKind::Length { l, value: 12.0 }, None).unwrap();
++    let rep = solve(&mut jt.sk);
++    assert_eq!(rep.status, SolveStatus::Failed, "{rep:?}");
++    assert!(!rep.failing.is_empty(), "{rep:?}");
++}
++
++/// A line at y = 5 and a circle of radius 5 at the origin; the contact is a free point.
++struct FreePoint {
++    sk: Sketch,
++    line: usize,
++    circle: usize,
++    p: usize,
++}
++
++fn free_point_contact(j: [f64; 8], tied_to_line_end: bool) -> FreePoint {
++    let mut sk = Sketch::new();
++    let line =
++        sk.add_line(v(-8.0 + j[0], 5.0 + j[1]), v(if tied_to_line_end { 0.0 } else { 8.0 } + j[2], 5.0 + j[3]), None, None, Some("l")).unwrap();
++    let circle = sk.add_circle(v(j[4], j[5]), 5.0, None, Some("c")).unwrap();
++    let p = sk.add_point(v(j[6], 5.0 + j[7]), None).unwrap();
++    let CurveKind::Line { b: line_end, .. } = sk.curves[line].kind.clone() else { panic!("line") };
++    if tied_to_line_end {
++        // S10: line end ~ free point p, p on the circle.
++        sk.add_constraint(ConstraintKind::Coincident { p, q: line_end }, None).unwrap();
++    } else {
++        // S2b: p on the line and on the circle.
++        sk.add_constraint(ConstraintKind::PointOnCurve { p, c: line }, None).unwrap();
++    }
++    sk.add_constraint(ConstraintKind::PointOnCurve { p, c: circle }, None).unwrap();
++    sk.add_constraint(ConstraintKind::Tangent { a: line, b: circle }, None).unwrap();
++    sk.add_constraint(ConstraintKind::Radius { c: circle, value: 5.0 }, None).unwrap();
++    FreePoint { sk, line, circle, p }
++}
++
++fn free_point_error(f: &FreePoint) -> f64 {
++    let CurveKind::Line { a, b } = f.sk.curves[f.line].kind else { panic!("line") };
++    let d = f.sk.points[b].pos - f.sk.points[a].pos;
++    (f.sk.points[f.p].pos - f.sk.center(f.circle).unwrap()).dot(d) / d.len()
++}
++
++#[test]
++fn a_free_point_contact_is_tangent_and_counted_the_same_from_every_start() {
++    // 9 variables (line 4, circle 3, point 2); equations: point on circle, tangent, radius, plus either
++    // the coincidence (2, S10: dof 4) or the point on the line (1, S2b: dof 5).
++    let mut rng = Lcg(2024);
++    for tied in [true, false] {
++        for amp in [0.0, 0.01, 0.05, 0.5, 1.0] {
++            let mut j = [0.0; 8];
++            for x in &mut j {
++                *x = if amp == 0.0 { 0.0 } else { rng.range(-amp, amp) };
++            }
++            let mut f = free_point_contact(j, tied);
++            let rep = solve(&mut f.sk);
++            assert!(rep.ok(), "tied {tied} amp {amp}: {rep:?}");
++            assert_eq!(rep.dof, if tied { 4 } else { 5 }, "tied {tied} amp {amp}: {rep:?}");
++            assert!(rep.redundant.is_empty(), "tied {tied} amp {amp}: {rep:?}");
++            let err = free_point_error(&f);
++            assert!(err.abs() < 1e-8, "tied {tied} amp {amp}: contact perpendicular {err}");
++        }
++    }
++}
++
++#[test]
++fn a_tangent_to_a_collapsed_round_curve_fails() {
++    // The line passes through the arc's centre while the joint is tangent: only a radius of 0 holds.
++    let mut jt = joint([0.03, -0.04, 0.02, 0.05, -0.05, 0.04, 0.04, -0.03, -0.02, 0.05]);
++    let CurveKind::Arc { c, .. } = jt.sk.curves[jt.arc].kind else { panic!("arc") };
++    jt.sk.add_constraint(ConstraintKind::PointOnCurve { p: c, c: jt.line }, None).unwrap();
++    let rep = solve(&mut jt.sk);
++    assert_eq!(rep.status, SolveStatus::Failed, "{rep:?}");
++    assert!(rep.failing.contains(&"k2".to_string()), "{rep:?}");
++}
++
++#[test]
++fn an_infeasible_tangent_joint_names_the_tangent_too() {
++    let mut jt = joint([0.03, -0.04, 0.02, 0.05, -0.05, 0.04, 0.04, -0.03, -0.02, 0.05]);
++    let CurveKind::Arc { c, .. } = jt.sk.curves[jt.arc].kind else { panic!("arc") };
++    jt.sk.add_constraint(ConstraintKind::Radius { c: jt.arc, value: 5.0 }, None).unwrap();
++    jt.sk.add_constraint(ConstraintKind::PointLineDistance { p: c, l: jt.line, value: 4.0 }, None).unwrap();
++    let rep = solve(&mut jt.sk);
++    assert_eq!(rep.status, SolveStatus::Failed, "{rep:?}");
++    // k1 is the coincident, k2 the tangent.
++    assert!(rep.failing.contains(&"k2".to_string()), "{rep:?}");
++}
++
++/// The unsolved sketch of the critic's c2_t6: the tangent is violated because the Coincident is.
++#[test]
++fn constraint_residual_still_shows_a_violated_tying_constraint() {
++    let mut sk = Sketch::new();
++    let l = sk.add_line(v(-5.0, 3.0), v(5.0, 3.0), None, None, Some("l")).unwrap();
++    let c = sk.add_circle(v(0.0, 0.0), 5.0, None, Some("c")).unwrap();
++    let q = sk.add_point(v(0.0, 5.0), None).unwrap();
++    let CurveKind::Line { b: end, .. } = sk.curves[l].kind.clone() else { panic!("line") };
++    sk.add_constraint(ConstraintKind::PointOnCurve { p: q, c }, None).unwrap();
++    sk.add_constraint(ConstraintKind::Coincident { p: end, q }, None).unwrap();
++    sk.add_constraint(ConstraintKind::Tangent { a: l, b: c }, None).unwrap();
++    let r = constraint_residual(&sk, 2).unwrap();
++    // The distance from the centre to the line is 3 against a radius of 5.
++    assert!((r - 2.0).abs() < 1e-12, "{r}");
++}
++
++#[test]
++fn a_midpoint_contact_is_tangent_and_counted_the_same_from_every_start() {
++    let mut rng = Lcg(5);
++    for amp in [0.0, 0.05, 0.5] {
++        let mut j = [0.0; 6];
++        for x in &mut j {
++            *x = if amp == 0.0 { 0.0 } else { rng.range(-amp, amp) };
++        }
++        let mut sk = Sketch::new();
++        let l = sk.add_line(v(-8.0 + j[0], 5.0 + j[1]), v(8.0 + j[2], 5.0 + j[3]), None, None, Some("l")).unwrap();
++        let c = sk.add_circle(v(j[4], j[5]), 5.0, None, Some("c")).unwrap();
++        let m = sk.add_point(v(0.0, 5.0), None).unwrap();
++        sk.add_constraint(ConstraintKind::Midpoint { p: m, l }, None).unwrap();
++        sk.add_constraint(ConstraintKind::PointOnCurve { p: m, c }, None).unwrap();
++        sk.add_constraint(ConstraintKind::Tangent { a: l, b: c }, None).unwrap();
++        let rep = solve(&mut sk);
++        assert!(rep.ok(), "amp {amp}: {rep:?}");
++        // 4 + 3 + 2 = 9 variables, midpoint 2, on circle 1, tangent 1.
++        assert_eq!(rep.dof, 5, "amp {amp}: {rep:?}");
++        assert!(rep.redundant.is_empty(), "amp {amp}: {rep:?}");
++        let CurveKind::Line { a, b } = sk.curves[l].kind else { panic!("line") };
++        let d = sk.points[b].pos - sk.points[a].pos;
++        let err = (sk.points[m].pos - sk.center(c).unwrap()).dot(d) / d.len();
++        assert!(err.abs() < 1e-8, "amp {amp}: {err}");
++    }
++}
++
++#[test]
++fn a_tangent_is_never_failing_while_the_sketch_is_solved() {
++    let mut rng = Lcg(31);
++    for trial in 0..60 {
++        let amp = [0.05, 0.4, 1.0][trial % 3];
++        let mut j = [0.0; 10];
++        for x in &mut j {
++            *x = rng.range(-amp, amp);
++        }
++        let mut jt = joint(j);
++        let rep = solve(&mut jt.sk);
++        if rep.status == SolveStatus::Solved {
++            assert!(rep.failing.is_empty(), "trial {trial}: {rep:?}");
++        }
++    }
++}
+diff --git a/crates/sketch/src/lib.rs b/crates/sketch/src/lib.rs
+index b6487d23bc22da7400f043e3572075c7b016a2be..bdf2735ec646813026a6e6765df93d07db3b8617 100644
+--- a/crates/sketch/src/lib.rs
++++ b/crates/sketch/src/lib.rs
+@@ -61,6 +61,8 @@ pub use solver::{
+ pub use text::{MAX_TEXT_CHARS, text_geometry, text_geometry_in};
+ pub use wire::{MAX_FIT_POINTS, MAX_WIRE_POINTS, Wire, WireSpace, fit_polyline};
+ 
++#[cfg(test)]
++mod coincident_tangent_tests;
+ #[cfg(test)]
+ mod construct_rounds_tests;
+ #[cfg(test)]
+diff --git a/crates/sketch/src/redundancy.rs b/crates/sketch/src/redundancy.rs
+index efe6196e21ebad29c77c0379d0d8cc4852c173f3..d90294cb7a46fb236e2e7bc3cd579bdd1db947fc 100644
+--- a/crates/sketch/src/redundancy.rs
++++ b/crates/sketch/src/redundancy.rs
+@@ -129,8 +129,15 @@ pub fn constraint_residual(sk: &Sketch, ci: usize) -> Option<f64> {
+         Some(p) => Block::TangentAt(ci, &c.kind, p),
+         None => Block::User(ci, &c.kind),
+     };
++    let state = State { sk, lay: &fixed, x: &[] };
+     let mut r = Vec::new();
+-    block_residuals(&State { sk, lay: &fixed, x: &[] }, &b, &mut r);
++    block_residuals(&state, &b, &mut r);
++    // A tangency read at its touch point holds there when the curves only touch at a point that
++    // is not on both: the touch-free form (distance from the centre equals the radius) shows a
++    // violated tying constraint as well, so the larger of the two is the constraint's distance.
++    if matches!(b, Block::TangentAt(..)) {
++        super::residuals(&state, &c.kind, &mut r);
++    }
+     Some(max_abs(&r))
+ }
+ 
+diff --git a/crates/sketch/src/solver.rs b/crates/sketch/src/solver.rs
+index 58c6e3e78b21a93c1f5ed8726de90eee7a638726..5760b4c18a927e5aa49b70af85972a4c967f5e8d 100644
+--- a/crates/sketch/src/solver.rs
++++ b/crates/sketch/src/solver.rs
+@@ -692,7 +692,72 @@ pub(crate) fn touch_point(sk: &Sketch, k: &ConstraintKind, on_curve: &[(usize, u
+         return Some(*p);
+     }
+     let on = |p: usize, c: usize| on_curve.binary_search(&(p, c)).is_ok();
+-    ea.iter().find(|p| on(**p, b)).or_else(|| eb.iter().find(|p| on(**p, a))).copied()
++    if let Some(p) = ea.iter().find(|p| on(**p, b)).or_else(|| eb.iter().find(|p| on(**p, a))) {
++        return Some(*p);
++    }
++    contact_through_coincident(sk, a, b, &ea, &eb, on_curve)
++}
++
++/// Whether curve `c` is a straight line.
++fn is_straight(sk: &Sketch, c: usize) -> bool {
++    matches!(sk.curves.get(c).map(|c| &c.kind), Some(CurveKind::Line { .. }))
++}
++
++/// A touch point the two curves reach through `Coincident` constraints, when they share no point
++/// and no end of one is a point-on-curve of the other: a point lying on `a` (an end of it, or a
++/// point-on-curve of it) tied by a chain of `Coincident` constraints to a point lying on `b`
++/// (the chain may be empty: a free point on both curves). That covers two ends tied together, a
++/// line end tied to a free point that is on the circle, and a free point on both curves.
++/// Free-form curves count only their ends. Without this the tangency falls back to the
++/// touch-free form (distance from the centre equals the radius), whose Jacobian is
++/// rank-deficient at the solution: the touch point is a double root of it, so it converges to
++/// only sqrt(residual) of tangent and drops rank (see the `coincident_tangent_*` tests). The
++/// point returned is the one lying on the round curve (for a free-form curve, its end), so the
++/// radius to it is read from the curve it belongs to.
++fn contact_through_coincident(sk: &Sketch, a: usize, b: usize, ea: &[usize], eb: &[usize], on_curve: &[(usize, usize)]) -> Option<usize> {
++    let n = sk.points.len();
++    let free = |c: usize| sk.curves.get(c).is_some_and(|c| c.kind.is_freeform());
++    // Points lying on a curve: its ends, and (unless free-form) the points constrained onto it.
++    let lying = |c: usize, ends: &[usize]| -> Vec<usize> {
++        let mut v: Vec<usize> = ends.to_vec();
++        if !free(c) {
++            v.extend(on_curve.iter().filter(|(_, cc)| *cc == c).map(|(p, _)| *p));
++            // The midpoint of a line lies on it.
++            v.extend(sk.constraints.iter().filter(|k| !k.driven).filter_map(|k| match k.kind {
++                ConstraintKind::Midpoint { p, l } if l == c => Some(p),
++                _ => None,
++            }));
++        }
++        v.retain(|p| *p < n);
++        v
++    };
++    let (on_a, on_b) = (lying(a, ea), lying(b, eb));
++    if on_a.is_empty() || on_b.is_empty() {
++        return None;
++    }
++    let mut parent: Vec<usize> = (0..n).collect();
++    for c in sk.constraints.iter().filter(|c| !c.driven) {
++        if let ConstraintKind::Coincident { p, q } = c.kind
++            && p != q
++            && p < n
++            && q < n
++        {
++            union(&mut parent, p, q);
++        }
++    }
++    for &p in &on_a {
++        let root = find(&mut parent, p);
++        if let Some(&q) = on_b.iter().find(|q| find(&mut parent, **q) == root) {
++            return Some(if free(a) {
++                p
++            } else if free(b) || is_straight(sk, a) {
++                q
++            } else {
++                p
++            });
++        }
++    }
++    None
+ }
+ 
+ /// Variables a block depends on, and whether it reads a point that is a constant of the solve.
+@@ -2007,6 +2072,11 @@ fn solve_inner(
+     let mut det = vec![false; lay.n];
+     let mut rank = 0;
+     let mut redundant: Vec<String> = Vec::new();
++    let mut degenerate = false;
++    // Tangents whose touch-free form is violated (or whose round curve collapsed): named in
++    // `failing` only when the sketch failed anyway, so a sketch inside the acceptance tolerance
++    // is never `Solved` with a constraint in `failing`.
++    let mut named: Vec<String> = Vec::new();
+     // A component too large to solve is a failure, not an allocation.
+     if comps.iter().any(|(_, vars, bis)| !bis.is_empty() && oversized(vars)) {
+         max_residual = f64::MAX;
+@@ -2033,6 +2103,26 @@ fn solve_inner(
+         }
+         let (r, _, owner) = system(sk, &lay, &sub, &mut x, false);
+         check(&r, &owner, &sub, &mut failing);
++        // A tangency read at its touch point can hold there while the curves are not tangent (the
++        // touch point is not on the line, or not on the round curve): that failure is named by the
++        // constraint that ties the point, and the tangent is named as well when the touch-free
++        // form (distance from the centre equals the radius) is violated. A tangent whose round
++        // curve has collapsed to a point holds trivially and is a degenerate answer: it fails.
++        let now = State { sk, lay: &lay, x: &x };
++        for (b, _) in &sub {
++            let (Block::User(ci, k) | Block::TangentAt(ci, k, _)) = b else { continue };
++            let ConstraintKind::Tangent { a: ta, b: tb } = **k else { continue };
++            let Some(c) = sk.constraints.get(*ci) else { continue };
++            let mut touch_free = Vec::new();
++            if matches!(b, Block::TangentAt(..)) {
++                residuals(&now, k, &mut touch_free);
++            }
++            let collapsed = [ta, tb].iter().any(|&cv| !now.is_line(cv) && !now.is_freeform(cv) && now.radius_of(cv) < ACCEPT);
++            if (collapsed || touch_free.iter().any(|v| !(v.abs() < ACCEPT))) && !named.contains(&c.id) {
++                named.push(c.id.clone());
++            }
++            degenerate |= collapsed;
++        }
+         if analysis == Analysis::StatusOnly {
+             continue;
+         }
+@@ -2084,6 +2174,9 @@ fn solve_inner(
+         let (r, _, owner) = system(sk, &lay, &consts, &mut x, false);
+         check(&r, &owner, &consts, &mut failing);
+     }
++    if degenerate {
++        max_residual = max_residual.max(1.0);
++    }
+     // Weld the whole connected closure graph, preserving every immutable node.
+     // Validate the actual prospective geometry before accepting a numerical solve.
+     let has_periodic = sk.curves.iter().any(|c| matches!(c.kind, CurveKind::Spline { periodic: true, .. }));
+@@ -2139,6 +2232,13 @@ fn solve_inner(
+         None
+     };
+     let status = if max_residual < ACCEPT { SolveStatus::Solved } else { SolveStatus::Failed };
++    if status == SolveStatus::Failed {
++        for id in named {
++            if !failing.contains(&id) {
++                failing.push(id);
++            }
++        }
++    }
+     for id in &folded {
+         if !failing.contains(id) {
+             failing.push(id.clone());
+diff --git a/crates/ui-egui/src/documents.rs b/crates/ui-egui/src/documents.rs
+index 7d9097190241cb570376654d96c32b6bf5bfc330..fe0a4e8d58c8f2060ce2e2bbd4b6798893afa743 100644
+--- a/crates/ui-egui/src/documents.rs
++++ b/crates/ui-egui/src/documents.rs
+@@ -17,6 +17,8 @@ pub const MAX_OPEN: usize = 32;
+ 
+ /// A design that is not the active one: everything that belongs to it alone.
+ pub struct DocSlot {
++    /// Stable identity of this design while the app runs (survives tab moves; never reused). Phase 6 bridge only.
++    id: u64,
+     session: Session,
+     cam: Camera,
+     pre_sketch_cam: Option<Camera>,
+@@ -33,15 +35,55 @@ struct DocView {
+     locked_bodies: Vec<String>,
+ }
+ 
++static NEXT_ID: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(1);
++fn fresh_id() -> u64 {
++    NEXT_ID.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
++}
++
++/// Identity of the active design (stable across tab switches; a closed design's id is never reused).
++pub fn active_id(app: &SolveApp) -> u64 {
++    match app.docs.active_id.get() {
++        Some(i) => i,
++        None => {
++            let i = fresh_id();
++            app.docs.active_id.set(Some(i));
++            i
++        }
++    }
++}
++
++/// The open tab (index) holding design `id`, if it is still open.
++pub fn tab_of(app: &SolveApp, id: u64) -> Option<usize> {
++    if active_id(app) == id {
++        return Some(app.docs.active);
++    }
++    app.docs.slots.iter().position(|s| s.as_ref().is_some_and(|d| d.id == id))
++}
++
++/// The session in tab `i` (the active one included), read only.
++pub fn session_at(app: &SolveApp, i: usize) -> Option<&Session> {
++    if i == app.docs.active || app.docs.slots.is_empty() {
++        return Some(&app.session);
++    }
++    app.docs.slots.get(i).and_then(Option::as_ref).map(|s| &s.session)
++}
++
++/// Name of tab `i`.
++pub fn tab_name(app: &SolveApp, i: usize) -> String {
++    session_at(app, i).map(|s| s.doc.name.clone()).unwrap_or_default()
++}
++
+ impl DocSlot {
+     fn new(session: Session) -> DocSlot {
+-        DocSlot { session, cam: Camera::default(), pre_sketch_cam: None, pre_sketch_marker: None, view: DocView::default() }
++        DocSlot { id: fresh_id(), session, cam: Camera::default(), pre_sketch_cam: None, pre_sketch_marker: None, view: DocView::default() }
+     }
+ }
+ 
+ /// The open designs: one slot per tab; the active tab's slot is empty (its design is in the app).
+ #[derive(Default)]
+ pub struct Documents {
++    /// Identity of the ACTIVE design (assigned on first use); the active tab's slot is empty, so it is kept here.
++    active_id: std::cell::Cell<Option<u64>>,
+     slots: Vec<Option<DocSlot>>,
+     pub active: usize,
+     /// A tab waiting for the answer to "save changes?".
+@@ -94,6 +136,7 @@ fn swap_in(app: &mut SolveApp, slot: DocSlot) -> DocSlot {
+     crate::sketch_attachment_ui::clear(app);
+     let out_rev = app.session.revision;
+     let out = DocSlot {
++        id: slot.id,
+         session: std::mem::replace(&mut app.session, slot.session),
+         cam: std::mem::replace(&mut app.cam, slot.cam),
+         pre_sketch_cam: std::mem::replace(&mut app.pre_sketch_cam, slot.pre_sketch_cam),
+@@ -114,7 +157,11 @@ pub fn switch(app: &mut SolveApp, i: usize) {
+         return;
+     }
+     let Some(incoming) = app.docs.slots.get_mut(i).and_then(Option::take) else { return };
+-    let out = swap_in(app, incoming);
++    let out_id = active_id(app);
++    let in_id = incoming.id;
++    let mut out = swap_in(app, incoming);
++    out.id = out_id;
++    app.docs.active_id.set(Some(in_id));
+     let a = app.docs.active;
+     if let Some(s) = app.docs.slots.get_mut(a) {
+         *s = Some(out);
+diff --git a/crates/ui-egui/src/lib.rs b/crates/ui-egui/src/lib.rs
+index 425ec980964a3cf421dd6fc76ef3c4fd05417524..f654d58a8f417aa576ccbe0730e5a494f610e10a 100644
+--- a/crates/ui-egui/src/lib.rs
++++ b/crates/ui-egui/src/lib.rs
+@@ -144,6 +144,9 @@ pub struct UiState {
+     pub tab: String,
+     pub show_browser: bool,
+     pub show_timeline: bool,
++    /// The ribbon (the SOLID / SURFACE / MESH ... tab strip and its command panels). Hiding it only gives its
++    /// space to the viewport: every command, the palette, the timeline and the keyboard shortcuts stay.
++    pub show_ribbon: bool,
+     pub show_grid: bool,
+     pub show_origin: bool,
+     pub perspective: bool,
+@@ -177,6 +180,7 @@ impl Default for UiState {
+             tab: "SOLID".into(),
+             show_browser: true,
+             show_timeline: true,
++            show_ribbon: true,
+             show_grid: true,
+             show_origin: true,
+             perspective: false,
+@@ -1078,7 +1082,9 @@ impl SolveApp {
+                 return;
+             }
+         }
+-        toolbar::toolbar(self, ui);
++        if self.ui.show_ribbon {
++            toolbar::toolbar(self, ui);
++        }
+         let left_timeline = self.ui.show_timeline && self.preferences.timeline_left;
+         if self.ui.show_timeline && !left_timeline {
+             timeline::timeline(self, ui);
+diff --git a/crates/ui-egui/src/toolbar.rs b/crates/ui-egui/src/toolbar.rs
+index e91b4cd2361b9727e992e4b9949f0f562cf311c7..c0b108ffe3f7692de858ba99dfda6040ccd99776 100644
+--- a/crates/ui-egui/src/toolbar.rs
++++ b/crates/ui-egui/src/toolbar.rs
+@@ -272,6 +272,43 @@ pub fn app_bar(app: &mut SolveApp, ui: &mut egui::Ui) {
+                 d.insert_temp(egui::Id::new("sc_help_anchor"), at);
+             });
+         }
++        // Ribbon show / hide. Always on the title bar, so a hidden ribbon is one click away; when it is hidden the
++        // button also carries a label so it is not mistaken for decoration.
++        {
++            let hidden = !app.ui.show_ribbon;
++            let label = app.tr_label("Show ribbon");
++            let lw = if hidden && !compact_actions {
++                ui.painter().layout_no_wrap(label.to_string(), FontId::proportional(12.0), t.app_bar_text).size().x + 8.0
++            } else {
++                0.0
++            };
++            let w = if compact_actions { 22.0 } else { 26.0 };
++            let br = Rect::from_min_size(pos2(x - w / 2.0, r.center().y - 13.0), vec2(w + lw, 26.0));
++            x += if compact_actions { 22.0 } else { 30.0 } + lw;
++            let resp = ui.interact(br, ui.id().with("sc_ribbon_toggle"), Sense::click());
++            crate::scenario::publish_handle("appbar:ribbon", br.center());
++            resp.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, true, if hidden { "Show ribbon" } else { "Hide ribbon" }));
++            if resp.hovered() || hidden {
++                ui.painter().rect_filled(br, 4.0, Color32::from_white_alpha(if resp.hovered() { 40 } else { 18 }));
++            }
++            // glyph: a window with its ribbon band (filled when shown, outline only when hidden)
++            let g = Rect::from_center_size(pos2(br.left() + w / 2.0, br.center().y), vec2(14.0, 11.0));
++            let c = Color32::from_rgb(225, 230, 238);
++            ui.painter().rect_stroke(g, 2.0, Stroke::new(1.3, c), egui::StrokeKind::Middle);
++            let band = Rect::from_min_max(g.left_top(), pos2(g.right(), g.top() + 4.0));
++            if hidden {
++                ui.painter().line_segment([pos2(g.left() + 1.0, g.top() + 4.0), pos2(g.right() - 1.0, g.top() + 4.0)], Stroke::new(1.0, c.gamma_multiply(0.4)));
++            } else {
++                ui.painter().rect_filled(band, 2.0, c);
++            }
++            if lw > 0.0 {
++                ui.painter().text(pos2(br.left() + w + 2.0, br.center().y), Align2::LEFT_CENTER, label, FontId::proportional(12.0), t.app_bar_text);
++            }
++            let tip = if hidden { "Show ribbon (Ctrl+.)" } else { "Hide ribbon (Ctrl+.)" };
++            if resp.on_hover_text(tip).clicked() {
++                app.ui.show_ribbon = !app.ui.show_ribbon;
++            }
++        }
+         if file {
+             app.ui.palette_open = false;
+             let ctx = ui.ctx().clone();
+@@ -1202,6 +1239,7 @@ pub fn shortcuts(app: &mut SolveApp, ctx: &egui::Context) {
+             match k {
+                 Key::N => crate::documents::new_design(app),
+                 Key::Comma => crate::prefs::open_at(app, 0),
++                Key::Period => app.ui.show_ribbon = !app.ui.show_ribbon,
+                 Key::O => {
+                     if let Some(p) = app.services.pick_open.as_ref().and_then(|f| f()) {
+                         app.open_path_async(&p);
+diff --git a/tests/robustness/goldens.json b/tests/robustness/goldens.json
+index 10427291b492682dae8c96e8cffbbb5237b03ab0..2ca5e0f1b532af183788f55c68c4dd655e90f6a2 100644
+--- a/tests/robustness/goldens.json
++++ b/tests/robustness/goldens.json
+@@ -49,12 +49,12 @@
+   "45": {"area":14416.876392,"bodies":2,"edges":62,"error":"boolean Union: implausible result volume ","faces":29,"outcome":"failed","rejected":0,"shells":3,"steps":["revolved section","join cylinder","fillet","shell","cut box","join box"],"unsupported":1,"volume":14286.791174},
+   "46": {"area":3445.160599,"bodies":1,"edges":99,"error":null,"faces":31,"outcome":"ok","rejected":0,"shells":1,"steps":["extruded profile","join cylinder","hole","cut cylinder","rectangular pattern","cut box","cut cylinder"],"unsupported":0,"volume":6232.317431},
+   "47": {"area":3098.575624,"bodies":1,"edges":42,"error":null,"faces":16,"outcome":"ok","rejected":0,"shells":1,"steps":["extruded profile","fillet","cut sphere","fillet"],"unsupported":0,"volume":8834.29745},
+-  "48": {"area":9651.031297,"bodies":1,"edges":66,"error":null,"faces":28,"outcome":"ok","rejected":0,"shells":1,"steps":["extruded profile","hole","circular pattern","join box","shell","cut box"],"unsupported":2,"volume":7044.773463},
++  "48": {"area":9786.312872,"bodies":1,"edges":77,"error":null,"faces":33,"outcome":"ok","rejected":0,"shells":1,"steps":["extruded profile","hole","circular pattern","join box","shell","cut box"],"unsupported":2,"volume":7141.547488},
+   "49": {"area":7512.5,"bodies":1,"edges":24,"error":null,"faces":11,"outcome":"ok","rejected":0,"shells":1,"steps":["box","join box"],"unsupported":0,"volume":40546.875},
+   "50": {"area":9387.513718,"bodies":2,"edges":48,"error":null,"faces":20,"outcome":"ok","rejected":0,"shells":2,"steps":["extruded profile","fillet","join cylinder","join cylinder","fillet","cut box","cut cylinder"],"unsupported":2,"volume":40128.141128},
+   "51": {"area":3316.022299,"bodies":1,"edges":51,"error":null,"faces":21,"outcome":"ok","rejected":0,"shells":1,"steps":["box","cut box","hole","rectangular pattern","chamfer","chamfer"],"unsupported":1,"volume":6812.582331},
+   "52": {"area":7851.282527,"bodies":1,"edges":32,"error":null,"faces":14,"outcome":"ok","rejected":0,"shells":1,"steps":["box","shell","cut cylinder","chamfer","fillet"],"unsupported":0,"volume":5741.788461},
+-  "53": {"area":17168.464938,"bodies":1,"edges":110,"error":null,"faces":46,"outcome":"ok","rejected":0,"shells":4,"steps":["extruded profile","cut cylinder","shell","join cylinder","circular pattern","fillet"],"unsupported":1,"volume":16607.030819},
++  "53": {"area":17483.307883,"bodies":1,"edges":110,"error":null,"faces":46,"outcome":"ok","rejected":0,"shells":4,"steps":["extruded profile","cut cylinder","shell","join cylinder","circular pattern","fillet"],"unsupported":1,"volume":16943.636427},
+   "54": {"area":7080.555724,"bodies":4,"edges":90,"error":null,"faces":38,"outcome":"ok","rejected":0,"shells":4,"steps":["extruded profile","join box","circular pattern","cut cylinder","cut box","join cylinder","cut cylinder"],"unsupported":3,"volume":15737.224446},
+   "55": {"area":6796.974648,"bodies":1,"edges":60,"error":"Body","faces":23,"outcome":"invalid","rejected":0,"shells":1,"steps":["box","fillet","cut sphere","circular pattern","rectangular pattern","cut sphere"],"unsupported":0,"volume":24741.239331},
+   "56": {"area":4468.944174,"bodies":1,"edges":33,"error":null,"faces":13,"outcome":"ok","rejected":0,"shells":1,"steps":["box","cut box","chamfer"],"unsupported":0,"volume":11835.9375},
+@@ -101,6 +101,7 @@
+  "notes": [
+   {"reason":"First record: what each seed builds on main at 1a0100cd","seeds":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95]},
+   {"reason":"seed 0 meshes differently since display tessellation plans (#805), which landed alongside these goldens (#826)","seeds":[0]},
+-  {"reason":"the kernel fixes merged together on 13 October (#838, #839, #841, #855, #856) change what these seeds build: several joins that used to fail now succeed, small volume and area shifts, and shell now refuses seeds 6, 14, 43 and 73 with an offset corner error (seed 14 built before: #897)","seeds":[2,6,14,22,36,43,50,63,71,73,94]}
++  {"reason":"the kernel fixes merged together on 13 October (#838, #839, #841, #855, #856) change what these seeds build: several joins that used to fail now succeed, small volume and area shifts, and shell now refuses seeds 6, 14, 43 and 73 with an offset corner error (seed 14 built before: #897)","seeds":[2,6,14,22,36,43,50,63,71,73,94]},
++  {"reason":"solid.shell of a body with material standing on the opened face: the open face is no longer pushed out by the internal margin, so what stands on it keeps its full length (seed 48: a boss wall, +96.8 mm3 to 7141.547, hand-worked cavity 7141.39; seed 53: the floor of a notch opened at its wall, +336.6 mm3, about the 2 x 5.5 x 31 mm lip the old margin cut off)","seeds":[48,53]}
+  ]
+ }

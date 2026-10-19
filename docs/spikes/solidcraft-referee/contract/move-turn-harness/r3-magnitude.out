@@ -1,0 +1,30 @@
+move box 30x20x10          2000     shipped PASS    dCom=0.0e+0    | guard PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0
+move box 30x20x10          3000     shipped PASS    dCom=0.0e+0    | guard PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0
+move box 30x20x10          3001     shipped PASS    dCom=0.0e+0    | guard REFUSED  Move 1 is not built: it puts the part 3001 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move box 30x20x10          5000     shipped PASS    dCom=0.0e+0    | guard REFUSED  Move 1 is not built: it puts the part 5000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move box 30x20x10          100000   shipped PASS    dCom=0.0e+0    | guard REFUSED  Move 1 is not built: it puts the part 100000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move box 30x20x10          10000000 shipped FAIL    dCom=1.2e-5    | guard REFUSED  Move 1 is not built: it puts the part 10000000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move cylinder d16 h20      2000     shipped PASS    dCom=6.6e-8    | guard PASS     dVol=1.1e-4 dBbox=1.1e-7 dCom=6.6e-8
+move cylinder d16 h20      3000     shipped PASS    dCom=2.0e-7    | guard PASS     dVol=1.1e-4 dBbox=7.2e-8 dCom=2.0e-7
+move cylinder d16 h20      3001     shipped PASS    dCom=8.4e-8    | guard REFUSED  Move 1 is not built: it puts the part 3001 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move cylinder d16 h20      5000     shipped PASS    dCom=1.2e-6    | guard REFUSED  Move 1 is not built: it puts the part 5000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move cylinder d16 h20      100000   shipped FAIL    dCom=4.7e-2    | guard REFUSED  Move 1 is not built: it puts the part 100000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move cylinder d16 h20      10000000 shipped FAIL    dCom=8.2e+4    | guard REFUSED  Move 1 is not built: it puts the part 10000000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move sphere d14            2000     shipped PASS    dCom=9.0e-9    | guard PASS     dVol=7.1e-5 dBbox=0.0e+0 dCom=9.0e-9
+move sphere d14            3000     shipped PASS    dCom=1.2e-6    | guard PASS     dVol=7.1e-5 dBbox=0.0e+0 dCom=1.2e-6
+move sphere d14            3001     shipped PASS    dCom=2.9e-6    | guard REFUSED  Move 1 is not built: it puts the part 3001 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move sphere d14            5000     shipped PASS    dCom=7.7e-6    | guard REFUSED  Move 1 is not built: it puts the part 5000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move sphere d14            100000   shipped FAIL    dCom=1.7e-1    | guard REFUSED  Move 1 is not built: it puts the part 100000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move sphere d14            10000000 shipped FAIL    dCom=1.0e+5    | guard REFUSED  Move 1 is not built: it puts the part 10000000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move,hole,turn(derived)    2000     shipped PASS    dCom=2.1e-9    | guard PASS     dVol=3.6e-6 dBbox=1.2e-16 dCom=2.1e-9
+move,hole,turn(derived)    3000     shipped PASS    dCom=1.9e-8    | guard REFUSED  Turn 1 is not built: it puts the part 3004 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+move,hole,turn(derived)    3001     shipped PASS    dCom=3.3e-8    | guard REFUSED  Turn 1 is not built because Move 1, which it uses, was refused.
+move,hole,turn(derived)    5000     shipped PASS    dCom=4.9e-7    | guard REFUSED  Turn 1 is not built because Move 1, which it uses, was refused.
+move,hole,turn(derived)    100000   shipped FAIL    dCom=3.9e-2    | guard REFUSED  Turn 1 is not built because Move 1, which it uses, was refused.
+move,hole,turn(derived)    10000000 shipped FAIL    dCom=4.7e+4    | guard REFUSED  Turn 1 is not built because Move 1, which it uses, was refused.
+box at D own turn          2000     shipped PASS    dCom=0.0e+0    | guard PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0
+box at D own turn          3000     shipped PASS    dCom=0.0e+0    | guard PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0
+box at D own turn          3001     shipped PASS    dCom=0.0e+0    | guard REFUSED  Box 1 is not built: it puts the part 3001 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+box at D own turn          5000     shipped PASS    dCom=0.0e+0    | guard REFUSED  Box 1 is not built: it puts the part 5000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+box at D own turn          100000   shipped PASS    dCom=0.0e+0    | guard REFUSED  Box 1 is not built: it puts the part 100000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.
+box at D own turn          10000000 shipped FAIL    dCom=1.2e-5    | guard REFUSED  Box 1 is not built: it puts the part 10000000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.

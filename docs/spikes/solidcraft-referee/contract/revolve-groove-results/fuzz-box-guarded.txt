@@ -1,0 +1,5 @@
+{"n":80,"kinds":{"guard built":62,"guard refused":18},"guardSentenceWithEngineWords":0}
+{
+ "the ring does not reach the part, so it would cut nothing.": 10,
+ "this ring cannot be cut out of the part reliably, so the part is shown without it.": 8
+}

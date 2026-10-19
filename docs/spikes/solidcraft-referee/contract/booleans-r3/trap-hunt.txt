@@ -1,0 +1,15 @@
+huge-box-cut                 {"name":"huge-box-cut","result":{"ok":false,"error":"invalid parameters for `solid.box`: `length` must be a number or an expression"},"ms":2,"afterOnSameInstance":"ok volume 24"}
+huge-sphere-cut-sphere       {"name":"huge-sphere-cut-sphere","result":{"ok":false,"error":"invalid parameters for `solid.sphere`: needs `radius` or `diameter`"},"ms":2,"afterOnSameInstance":"ok volume 24"}
+tiny-sphere-cut-sphere       {"name":"tiny-sphere-cut-sphere","result":{"ok":false,"error":"invalid input: radius must be positive"},"ms":4,"afterOnSameInstance":"ok volume 24"}
+nan-radius                   {"name":"nan-radius","result":{"ok":false,"error":"invalid parameters for `solid.sphere`: radius: expression: unknown parameter `NaN`"},"ms":2,"afterOnSameInstance":"ok volume 24"}
+null-center                  {"name":"null-center","result":{"ok":false,"error":"invalid parameters for `solid.sphere`: `center` must be a point [x, y, z] of numbers or length expressions"},"ms":2,"afterOnSameInstance":"ok volume 24"}
+negative-box                 {"name":"negative-box","result":{"ok":true,"bodies":[]},"ms":24,"afterOnSameInstance":"ok volume 24"}
+pattern-2e6                  {"name":"pattern-2e6","result":{"ok":false,"error":"pattern count must be 1…1000"},"ms":11,"afterOnSameInstance":"ok volume 24"}
+pattern-4e4-cut              {"name":"pattern-4e4-cut","result":{"ok":false,"error":"pattern count must be 1…1000"},"ms":25,"afterOnSameInstance":"ok volume 24"}
+combine-unknown-tool         {"name":"combine-unknown-tool","result":{"ok":false,"error":"unknown body `nope`"},"ms":11,"afterOnSameInstance":"ok volume 24"}
+combine-self                 {"name":"combine-self","result":{"ok":false,"error":"a body cannot be combined with itself"},"ms":12,"afterOnSameInstance":"ok volume 24"}
+combine-empty-tools          {"name":"combine-empty-tools","result":{"ok":false,"error":"invalid parameters for `solid.combine`: `tools` must list bodies"},"ms":14,"afterOnSameInstance":"ok volume 24"}
+sphere-cut-sphere-same       {"name":"sphere-cut-sphere-same","result":{"ok":true,"bodies":[]},"ms":399,"afterOnSameInstance":"ok volume 24"}
+sphere-join-sphere-same-r    {"name":"sphere-join-sphere-same-r","result":{"ok":true,"bodies":[["a",4188.4931]]},"ms":5930,"afterOnSameInstance":"ok volume 24"}
+cyl-cut-cyl-same             {"name":"cyl-cut-cyl-same","result":{"ok":true,"bodies":[]},"ms":122,"afterOnSameInstance":"ok volume 24"}
+cyl-keep-cyl-offset-eps      {"name":"cyl-keep-cyl-offset-eps","threw":{"type":"RuntimeError","message":"Unreachable code should not be executed (evaluating 'wasm.run(ptr0, len0)')","isRuntimeError":true},"ms":26,"afterOnSameInstance":"ok volume 24"}

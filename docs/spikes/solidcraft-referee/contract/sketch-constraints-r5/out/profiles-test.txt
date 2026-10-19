@@ -1,0 +1,31 @@
+Running as unit: run-p1954894-i1920839.scope; invocation ID: b038b9ade9a84911a23455410b6a703f
+2 discs r10@(0,3) r5@(30,-2)                   default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,0) r5@(30,0)                    default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,0.1) r5@(30,0.1)                default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,7.3) r5@(30,7.3)                default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,1) r5@(30,-1)                   default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,2) r5@(30,2)                    default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,5) r5@(30,-5)                   default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,-3) r5@(30,3)                   default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,4) r5@(30,0)                    default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,0) r5@(30,4)                    default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,6) r5@(30,1.5)                  default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,3) r5@(28,-2)                   default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,0) r5@(28,0)                    default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,0.1) r5@(28,0.1)                default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,7.3) r5@(28,7.3)                default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,1) r5@(28,-1)                   default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,2) r5@(28,2)                    default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,5) r5@(28,-5)                   default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,-3) r5@(28,3)                   default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,4) r5@(28,0)                    default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,0) r5@(28,4)                    default-all ok guarded ok want 3927.0/2
+2 discs r10@(0,6) r5@(28,1.5)                  default-all ok guarded ok want 3927.0/2
+annulus r10@(0,0) r4@(2,0)                     default-all WRONG 3141.4 guarded ok want 2638.9/1
+annulus r10@(0,3) r4@(2,3.5)                   default-all WRONG 3141.4 guarded ok want 2638.9/1
+annulus r10@(0,3) r4@(2,-2)                    default-all WRONG 3141.4 guarded ok want 2638.9/1
+annulus r10@(0,7.3) r4@(2,6)                   default-all WRONG 3141.4 guarded ok want 2638.9/1
+3 discs (r10, r4 inside, r5 apart) y=0         default-all WRONG 3926.7 guarded ok want 3424.3/2
+3 discs (r10, r4 inside, r5 apart) y=3         default-all WRONG 3926.7 guarded ok want 3424.3/2
+3 discs (r10, r4 inside, r5 apart) y=-2        default-all WRONG 3926.7 guarded ok want 3424.3/2
+seeded external-tangent circles (rough starts, 3.5% and 15%): {"n":80,"defaultAllWrong":0,"guardedWrong":0,"guardedRefused":0}

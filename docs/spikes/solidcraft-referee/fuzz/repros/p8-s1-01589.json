@@ -1,0 +1,113 @@
+{
+ "id": "s1-01589",
+ "desc": "convex bfillet s=2 24x24x8 +blind",
+ "t": 2,
+ "p7": {
+  "expectedP": 2170.751754924647
+ },
+ "p8": {
+  "cls": "WRONG",
+  "expectedP": 2170.751754924647,
+  "built": 2196.5776414295206,
+  "rel": 0.011897208626589488
+ },
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 24,
+    "width": 24,
+    "height": 8,
+    "center": [
+     0,
+     0,
+     4
+    ],
+    "body_name": "b1"
+   }
+  },
+  {
+   "command": "solid.fillet",
+   "params": {
+    "edges": [
+     [
+      0,
+      12,
+      0
+     ],
+     [
+      0,
+      -12,
+      0
+     ],
+     [
+      12,
+      0,
+      0
+     ],
+     [
+      -12,
+      0,
+      0
+     ]
+    ],
+    "radius": 2,
+    "body": "b1"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "radius": 1.5,
+    "height": 2.95,
+    "base": [
+     8.4,
+     7.05,
+     -1
+    ],
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "body_name": "f1"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "f1"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -0.98,
+      -0.98,
+      8
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  }
+ ],
+ "feats": [
+  {
+   "kind": "blind",
+   "r": 1.5,
+   "d": 1.95,
+   "face": "bot",
+   "floor": 6.05,
+   "xc": 8.4,
+   "yc": 7.05,
+   "corner": 1
+  }
+ ]
+}

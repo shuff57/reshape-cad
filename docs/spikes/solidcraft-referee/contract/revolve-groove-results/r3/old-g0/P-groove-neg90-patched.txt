@@ -1,0 +1,1 @@
+P-groove-neg90-patched                   REFUSED  occtV 37400.6605 | tr-occt dV - dBb - dCom - F o/b/t 8/8/- | brep-occt dV 1.4e-11  | ANALYTIC 37400.6605 dTruck - dOcct 1.4e-11 dBrep 1.9e-16  | TRUCK REFUSED: groove1 (groove): a groove turns the ring more than 0 and at most 360 degrees, and -90 is not in that range; use 360 for a full turn.  | ms 234 cpu 561

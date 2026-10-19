@@ -1,0 +1,32 @@
+Running as unit: run-p1906669-i1938039.scope; invocation ID: 913c542d67e54181af1a845e8890c707
+rect pocket rim round 1 (4 edges)        REFUSED: round4 is not built because round3 could not be built, so round4 is shown without it.   | OCCT:refusals {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} BREP:builds V=11591.0324
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]
+    sk1 noop 
+    pull1 built 
+    sk2 noop 
+    pull2 built 
+    pocket1 built 
+    round1 built 
+    round2 refused 
+        round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+        raw: round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked
+    round3 refused 
+        round3 is not built because round2 could not be built, so round3 is shown without it.
+        raw: round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)
+    round4 refused 
+        round4 is not built because round3 could not be built, so round4 is shown without it.
+        raw: round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked))
+triangle pocket rim round 1 (3 edges)    REFUSED: round3 is not built because round2 could not be built, so round3 is shown without it.   | OCCT:refusals {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} BREP:refusals {"round1":"brep-rs can only round a straight edge between two flat faces whose ends are plain flat f
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]
+    sk1 noop 
+    pull1 built 
+    sk2 noop 
+    pull2 built 
+    pocket1 built 
+    round1 built 
+    round2 refused 
+        round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+        raw: round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked
+    round3 refused 
+        round3 is not built because round2 could not be built, so round3 is shown without it.
+        raw: round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)

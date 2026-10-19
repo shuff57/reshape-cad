@@ -1,0 +1,1 @@
+R3-chain-sealed-then-groove              FAIL     occtV 35374.3333 | tr-occt dV 3.2e-2 dBb 8.9e-16 dCom 1.1e-3 F o/b/t 13/7/7 | brep-occt dV 3.2e-2      | ms 29931 cpu 29863

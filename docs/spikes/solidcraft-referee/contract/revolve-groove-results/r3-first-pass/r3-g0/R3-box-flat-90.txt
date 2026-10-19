@@ -1,0 +1,1 @@
+R3-box-flat-90                           PASS     occtV 69239.0938 | tr-occt dV 1.0e-6 dBb 0.0e+0 dCom 7.9e-7 F o/b/t 12/12/12 | brep-occt dV 7.8e-13      | ms 555 cpu 1034

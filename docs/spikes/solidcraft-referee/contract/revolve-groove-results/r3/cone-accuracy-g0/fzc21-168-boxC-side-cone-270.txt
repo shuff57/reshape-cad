@@ -1,0 +1,1 @@
+fzc21-168-boxC-side-cone-270             PASS     occtV 71423.5102 | tr-occt dV 2.0e-8 dBb 2.8e-4 dCom 8.9e-9 F o/b/t 11/-/11 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it. | ms 6875 cpu 7513

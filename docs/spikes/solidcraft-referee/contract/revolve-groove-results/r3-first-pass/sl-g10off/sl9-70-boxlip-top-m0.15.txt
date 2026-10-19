@@ -1,0 +1,1 @@
+sl9-70-boxlip-top-m0.15                  FAIL     occtV 71206.7187 | tr-occt dV 2.5e-4 dBb 8.9e-16 dCom 7.7e-5 F o/b/t 12/12/11 | brep-occt dV 4.1e-16      | ms 1528 cpu 1866

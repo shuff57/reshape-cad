@@ -1,0 +1,2 @@
+r2-big-ring-50000                                     dVol 1.5e-4 dBbox 6.3e-6 dCom 6.8e-7 dAn 1.5e-4 faces 1/1
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/big/r2-big-ring-50000/primitives-measure.json

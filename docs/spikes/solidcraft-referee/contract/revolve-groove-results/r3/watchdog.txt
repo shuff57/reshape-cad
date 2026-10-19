@@ -1,0 +1,4 @@
+src: const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const sk2 = sketch('top'); sk2.rect(2, 5, { at: [19, 12.5] }); groove(sk2, cyl, 180);
+8 commands (guarded translator), budget 45 s
+groove     : {"outcome":"KILLED by the watchdog","messages":[],"waitedMs":45009,"terminateMs":650} | the page's own 100 ms timer ticked 453 times meanwhile (450 expected)
+next call  : {"outcome":"finished","messages":[{"phase":"first","ok":true,"ms":16,"bodies":["b=1000.000"]}],"waitedMs":135,"terminateMs":23} (a FRESH worker after the kill / finish)

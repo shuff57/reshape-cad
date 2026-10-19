@@ -1,0 +1,1 @@
+revolution__top-frustum                  PASS     occtV 10471.9755 | tr-occt dV 1.9e-5 dBb 1.3e-5 dCom 7.0e-7 F o/b/t 4/4/4 | brep-occt dV 1.7e-16 | FC: occt 1.7e-16 brep 0.0e+0 truck 1.9e-5 dCom 3.4e-5 F 4     | ms 2177 cpu 2698

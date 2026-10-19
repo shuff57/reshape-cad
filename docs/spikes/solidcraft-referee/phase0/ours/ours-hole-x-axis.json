@@ -1,0 +1,21 @@
+{
+ "id": "hole-x-axis",
+ "outcome": "built",
+ "volume": 30869.214503551328,
+ "faces": 7,
+ "bbox": [
+  -20.000000000000014,
+  -20,
+  -10,
+  20.00000000000001,
+  20,
+  10
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "hole"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_b1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":42,\"base\":[-21,0,0],\"axis\":\"X\",\"operation\":\"cut\",\"targets\":[\"b_b1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

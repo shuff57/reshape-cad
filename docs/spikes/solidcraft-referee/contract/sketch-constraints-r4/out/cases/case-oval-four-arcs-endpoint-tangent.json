@@ -1,0 +1,107 @@
+[
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "feats": [
+   "rule:tangent",
+   "tangent:endpoint arc-arc",
+   "point-ref:a/b/c ends",
+   "rule:equal",
+   "rule:radius",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00010237668156301426,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 1099.0937329157696
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 36,
+     "REFUSED": 2,
+     "BUILT-WRONG-VOLUME": 2
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00010237646156472334,
+      "db": 1.0559946567972084e-10,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 1099.093733157593
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00010237656517698446,
+      "db": 9.80132800317993e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 1099.0937330437018
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "sk has no closed profiles"
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 1.3148708592091258,
+      "db": 1.6000000000072885,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2544.5205534365227
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 32,
+     "BUILT-WRONG-VOLUME": 7,
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00010237643872902358,
+      "db": 1.132398302112441e-10,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 1099.0937331826942
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 1.314870857755793,
+      "db": 1.6000000000326822,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2544.5205518390103
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid parameters for `sketch.constraint.equal`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 14
+  }
+ }
+]

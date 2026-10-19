@@ -1,0 +1,1 @@
+sl9-14-boxlip-top-m0                     PASS     occtV 66969.2201 | tr-occt dV 1.6e-5 dBb 1.7e-14 dCom 2.1e-6 F o/b/t 13/13/13 | brep-occt dV 1.1e-12      | ms 6181 cpu 6404

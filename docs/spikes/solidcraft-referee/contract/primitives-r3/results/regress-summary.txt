@@ -1,0 +1,326 @@
+== g1: supported representatives through the guard (3 repeats each) ==
+id                    row                 status    dVol(oracle)  faces   wall ms med/max   cpu ms med  load
+g1-box                box                 ok        0.0e+0        6/6     14.4/37           63.8      14
+g1-cuboid             box                 ok        0.0e+0        6/6     9.8/12            41        14
+g1-box-at             box.at              ok        0.0e+0        6/6     7.6/7.8           25.8      14
+g1-box-turn           box.rotate          ok        3.8e-16       6/6     11.3/18.9         36.7      14
+g1-box-corner         box.corner          ok        2.6e-5        26/26   2671.2/3120.1     3141.4    14
+g1-box-corner-nearX   box.corner          ok        1.4e-4        26/26   1641/2039.6       1651.9    14
+g1-box-corner-nearY   box.corner          ok        1.4e-4        26/26   1394.1/1406.9     1412.2    14
+g1-box-corner-nearZ   box.corner          ok        1.4e-4        26/26   1807.9/1833.7     1837.7    14
+g1-cyl                cylinder            ok        1.1e-4        3/3     419.5/460.6       418.8     14
+g1-cyl-at             cylinder.at         ok        1.1e-4        3/3     386.5/412.2       388.1     14
+g1-cyl-turn           cylinder.rotate     ok        1.2e-4        3/3     335.7/343.6       337.6     14
+g1-cyl-corner         cylinder.corner     ok        4.0e-5        5/5     15559.2/16403.4   15293.3   24
+g1-cyl-corner-nearR   cylinder.corner     ok        2.7e-5        5/5     38006.7/43320.3   37372.2   29
+g1-cyl-corner-nearH   cylinder.corner     ok        4.3e-5        5/5     8931.1/9360.6     8993.2    27
+g1-cyl-chamfer        cylinder.chamfer    ok        1.0e-4        5/5     585.2/595.6       593.6     26
+g1-cyl-chamfer-nearH  cylinder.chamfer    ok        3.2e-5        5/5     430.2/438.2       434.2     25
+g1-sph                sphere              ok        7.1e-5        1/1     3690/4268.2       3685.4    24
+g1-sph-at             sphere.at           ok        7.1e-5        1/1     3645.3/3648.7     3636      21
+g1-sph-min            sphere              ok        2.8e-4        1/1     1079.7/1081       1077.3    20
+g1-cone               cone                ok        1.8e-4        2/2     25.6/26.1         32.2      20
+g1-cone-at            cone.at             ok        1.8e-4        2/2     26.8/27.2         35.2      20
+g1-cone-turn          cone.rotate         ok        1.8e-4        2/2     44/53.4           49.4      20
+g1-cone-slender       cone                ok        1.8e-4        2/2     17.5/18.5         19.2      20
+g1-prism3             prism               ok        1.3e-16       5/5     2.3/4.7           7.7       20
+g1-prism7             prism               ok        0.0e+0        9/9     2.6/2.6           4.1       20
+g1-prism12            prism               ok        1.1e-16       14/14   4/4               7.1       20
+g1-prism-at           prism.at            ok        2.8e-16       7/7     1.8/2.2           3.7       20
+g1-prism-docrot       prism.rotate        ok        1.4e-16       7/7     3.6/4.3           15        20
+g1-prism-far-ok       prism.far           ok        1.2e-10       8/8     2.2/2.2           5.9       20
+g1-wedge              wedge               ok        2.5e-16       5/5     1.5/1.6           10        20
+g1-wedge-at           wedge.at            ok        0.0e+0        5/5     1.3/1.5           8.9       20
+g1-wedge-docrot       wedge.rotate        ok        3.8e-16       5/5     2.4/2.4           9.2       20
+g1-box-far-axis       box.far             ok        0.0e+0        6/6     1.1/1.1           3.1       20
+g1-wedge-far-axis     wedge.far           ok        0.0e+0        5/5     1.4/1.4           4.4       20
+g1-tbox-far-ok        box.far             ok        1.7e-11       6/6     2.2/2.3           10.9      20
+g1-param-box          param               ok        0.0e+0        6/6     1/1.2             3.6       20
+g1-cyl-far-ok         cylinder.far        ok        1.2e-4        3/3     312.2/315         310.6     20
+g1-sph-far-ok         sphere.far          ok        7.1e-5        1/1     6143.3/7999.7     6128.7    19
+g1-big-box            box                 ok        2.6e-16       6/6     3.6/3.8           8.8       19
+g1-big-cyl            cylinder            ok        1.1e-4        3/3     1458.5/1671.9     1452.3    19
+g1-big-sph            sphere              ok        7.1e-5        1/1     12621.5/14132.5   12497.7   20
+g1-big-cone           cone                ok        1.2e-4        2/2     90.8/92.3         91.1      26
+g1-tiny-box           box                 ok        1.4e-16       6/6     2.8/3             2.8       26
+g1-ring               ring                ok        1.5e-4        1/1     17473.4/17714.5   17032.2   37
+g1-torus              ring                ok        1.5e-4        1/1     18035.5/29030.4   17853     40
+g1-ring-at            ring.at             ok        1.5e-4        1/1     17852.6/17948     17234.6   43
+g1-ring-turn          ring.rotate         ok        1.5e-4        1/1     15326.8/23085.4   14836.1   45
+g1: 47 representatives, 0 failing
+
+== g2: refused representatives: guard sentence vs what the rig does without the guard ==
+bc-X-half [box-corner-too-big]
+    guard : box(12, 20, 30, { corner: 6 }): the corner is too big -- it has to be 5.999 or less, a little under half of the shortest side (12).
+    before: BUILT WRONG vol 4.3e-1 vol 7.9725e+3 faces 12
+bc-Y-half [box-corner-too-big]
+    guard : box(20, 12, 30, { corner: 6 }): the corner is too big -- it has to be 5.999 or less, a little under half of the shortest side (12).
+    before: BUILT WRONG vol 4.3e-1 vol 7.9725e+3 faces 12
+bc-Z-half [box-corner-too-big]
+    guard : box(20, 30, 12, { corner: 6 }): the corner is too big -- it has to be 5.999 or less, a little under half of the shortest side (12).
+    before: BUILT good??  vol 5.5725e+3 faces 10
+bc-X-1e-5 [box-corner-too-big]
+    guard : box(12, 20, 30, { corner: 6 }): the corner is too big -- it has to be 5.999 or less, a little under half of the shortest side (12).
+    before: BUILT WRONG faces 18/26 vol 5.5725e+3 faces 18
+bc-Z-1e-5 [box-corner-too-big]
+    guard : box(20, 30, 12, { corner: 6 }): the corner is too big -- it has to be 5.999 or less, a little under half of the shortest side (12).
+    before: BUILT WRONG faces 18/26 vol 5.5725e+3 faces 18
+bc-X-over [box-corner-too-big]
+    guard : box(12, 20, 30, { corner: 7 }): the corner is too big -- it has to be 5.999 or less, a little under half of the shortest side (12).
+    before: truck text: solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+bc-Z-over [box-corner-too-big]
+    guard : box(20, 30, 12, { corner: 7 }): the corner is too big -- it has to be 5.999 or less, a little under half of the shortest side (12).
+    before: truck text: solid.fillet: not supported yet: the blend is taller than the walls
+bc-capsule [box-corner-too-big]
+    guard : box(40, 6, 6, { corner: 3 }): the corner is too big -- it has to be 2.999 or less, a little under half of the shortest side (6).
+    before: BUILT WRONG vol 4.5e-1 vol 1.5542e+3 faces 5
+bc-cube-half [box-corner-too-big]
+    guard : box(20, 20, 20, { corner: 10 }): the corner is too big -- it has to be 9.999 or less, a little under half of the shortest side (20).
+    before: truck text: solid.fillet: not supported yet: the blend is larger than a corner radius
+bc-way-over [box-corner-too-big]
+    guard : box(10, 10, 10, { corner: 50 }): the corner is too big -- it has to be 4.999 or less, a little under half of the shortest side (10).
+    before: truck text: solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+bchamfer [box-chamfer]
+    guard : box(): a chamfer on every edge of a box is not available -- use corner for a rounded box, or leave the edges square.
+    before: BUILT WRONG vol 1.4e-3; faces 18/26 vol 1.3086e+4 faces 18
+bchamfer-cube [box-chamfer]
+    guard : box(): a chamfer on every edge of a box is not available -- use corner for a rounded box, or leave the edges square.
+    before: BUILT WRONG vol 6.6e-3; faces 18/26 vol 6.4640e+3 faces 18
+bchamfer-half [box-chamfer]
+    guard : box(): a chamfer on every edge of a box is not available -- use corner for a rounded box, or leave the edges square.
+    before: BUILT WRONG vol n/a vol 3.7500e+3 faces 14
+cc-R-0.998 [cyl-corner-vs-radius]
+    guard : cylinder(10, 30, { corner: 4.99 }): the corner is too big for the width -- it has to be 4.95 or less, 99% of the radius (5).
+    before: BUILT WRONG bbox 1.6e-2 vol 2.0950e+3 faces 5
+cc-R-1 [cyl-corner-vs-radius]
+    guard : cylinder(10, 30, { corner: 5 }): the corner is too big for the width -- it has to be 4.95 or less, 99% of the radius (5).
+    before: truck text: solid.fillet: not supported yet: the blend is larger than a corner radius
+cc-R-over [cyl-corner-vs-radius]
+    guard : cylinder(24, 30, { corner: 13 }): the corner is too big for the width -- it has to be 11.88 or less, 99% of the radius (12).
+    before: truck text: solid.fillet: not supported yet: the blend is larger than a corner radius
+cc-H-1e-5 [cyl-corner-vs-height]
+    guard : cylinder(48, 10, { corner: 5 }): the corner is too big for the height -- it has to be 4.999 or less, a little under half of tall (10).
+    before: BUILT WRONG faces 3/5 vol 1.6552e+4 faces 3
+cc-H-half [cyl-corner-vs-height]
+    guard : cylinder(24, 10, { corner: 5 }): the corner is too big for the height -- it has to be 4.999 or less, a little under half of tall (10).
+    before: BUILT good??  vol 3.7896e+3 faces 3
+cc-H-over [cyl-corner-vs-height]
+    guard : cylinder(24, 10, { corner: 6 }): the corner is too big for the height -- it has to be 4.999 or less, a little under half of tall (10).
+    before: truck text: solid.fillet: not supported yet: the blend is taller than the walls
+cb-R-0.995 [cyl-corner-vs-radius]
+    guard : cylinder(10, 30, { corner: 4.975 }): the bevel is too big for the width -- it has to be 4.95 or less, 99% of the radius (5).
+    before: BUILT WRONG bbox 1.6e-2 vol 1.8362e+3 faces 5
+cb-H-half [cyl-corner-vs-height]
+    guard : cylinder(48, 10, { corner: 5 }): the bevel is too big for the height -- it has to be 4.999 or less, a little under half of tall (10).
+    before: BUILT WRONG vol n/a vol 1.4587e+4 faces 4
+ring-20-10 [ring-tube-too-thick]
+    guard : ring(20, 10): the tube is too thick for a ring 20 across -- tubeAcross has to be 9.756 or less, so the hole in the middle stays open.
+    before: truck text: solid.torus: invalid input: torus needs major > minor > 0
+ring-10-6 [ring-tube-too-thick]
+    guard : ring(10, 6): the tube is too thick for a ring 10 across -- tubeAcross has to be 4.878 or less, so the hole in the middle stays open.
+    before: truck text: solid.torus: invalid input: torus needs major > minor > 0
+ring-10-10 [ring-tube-too-thick]
+    guard : ring(10, 10): the tube is too thick for a ring 10 across -- tubeAcross has to be 4.878 or less, so the hole in the middle stays open.
+    before: truck text: solid.torus: invalid input: torus needs major > minor > 0
+ring-10-12 [ring-tube-too-thick]
+    guard : ring(10, 12): the tube is too thick for a ring 10 across -- tubeAcross has to be 4.878 or less, so the hole in the middle stays open.
+    before: truck text: solid.torus: invalid input: torus needs major > minor > 0
+ring-10-5 [ring-tube-too-thick]
+    guard : ring(10, 5): the tube is too thick for a ring 10 across -- tubeAcross has to be 4.878 or less, so the hole in the middle stays open.
+    before: truck text: solid.torus: invalid input: torus needs major > minor > 0
+ring-40-38 [ring-tube-too-thick]
+    guard : ring(40, 38): the tube is too thick for a ring 40 across -- tubeAcross has to be 19.51 or less, so the hole in the middle stays open.
+    before: truck text: solid.torus: invalid input: torus needs major > minor > 0
+ring-10-9.9999 [ring-tube-too-thick]
+    guard : ring(10, 10): the tube is too thick for a ring 10 across -- tubeAcross has to be 4.878 or less, so the hole in the middle stays open.
+    before: truck text: solid.torus: invalid input: torus needs major > minor > 0
+ring-100-1 [ring-tube-too-thin]
+    guard : ring(100, 1): the tube is too thin for a ring 100 across -- tubeAcross has to be at least 2, one fiftieth of across.
+    before: BUILT WRONG vol 4.9e-4 vol 2.4415e+2 faces 1
+ring-200-1 [ring-tube-too-thin]
+    guard : ring(200, 1): the tube is too thin for a ring 200 across -- tubeAcross has to be at least 4, one fiftieth of across.
+    before: BUILT WRONG vol 1.1e-3 vol 4.9049e+2 faces 1
+ring-400-4 [ring-tube-too-thin]
+    guard : ring(400, 4): the tube is too thin for a ring 400 across -- tubeAcross has to be at least 8, one fiftieth of across.
+    before: BUILT WRONG vol 4.9e-4 vol 1.5626e+4 faces 1
+ring-1000-10 [ring-tube-too-thin]
+    guard : ring(1000, 10): the tube is too thin for a ring 1000 across -- tubeAcross has to be at least 20, one fiftieth of across.
+    before: BUILT WRONG vol 4.9e-4 vol 2.4415e+5 faces 1
+ring-10-0.2 [too-small-curved]
+    guard : ring(): tubeAcross 0.2 is too small -- it has to be at least 0.5 for a curved or rounded shape.
+    before: BUILT WRONG vol 5.2e-4 vol 9.6672e-1 faces 1
+big-sph-7e4 [too-big-curved]
+    guard : sphere(): across 70000 is too big -- the biggest curved or rounded shape that can be built accurately is 50000 in any size.
+    before: BUILT WRONG vol 1.0e+0 vol 0.0000e+0 faces 1
+big-sph-1e5 [too-big-curved]
+    guard : sphere(): across 100000 is too big -- the biggest curved or rounded shape that can be built accurately is 50000 in any size.
+    before: BUILT WRONG vol 1.0e+0; bbox 2.9e-1; faces 0/1 vol 0.0000e+0 faces 0
+big-sph-1e7 [too-big-curved]
+    guard : sphere(): across 10000000 is too big -- the biggest curved or rounded shape that can be built accurately is 50000 in any size.
+    before: BUILT WRONG vol 1.0e+0; bbox 2.9e-1; faces 0/1 vol 0.0000e+0 faces 0
+big-ring-1e5 [too-big-curved]
+    guard : ring(): across 100000 is too big -- the biggest curved or rounded shape that can be built accurately is 50000 in any size.
+    before: (not run unguarded)
+big-ring-1e6 [too-big-curved]
+    guard : ring(): across 1000000 is too big -- the biggest curved or rounded shape that can be built accurately is 50000 in any size.
+    before: (not run unguarded)
+big-cone-2e5 [too-big-curved]
+    guard : cone(): across 200000 is too big -- the biggest curved or rounded shape that can be built accurately is 50000 in any size.
+    before: BUILT WRONG vol 5.0e-1; bbox 5.8e-1; com 7.2e-2; faces 1/2 vol 1.0471e+15 faces 1
+big-cone-3e5 [too-big-curved]
+    guard : cone(): across 300000 is too big -- the biggest curved or rounded shape that can be built accurately is 50000 in any size.
+    before: BUILT WRONG vol 3.4e-1; com 3.7e-2 vol 4.6812e+15 faces 2
+big-cone-1e6 [too-big-curved]
+    guard : cone(): across 1000000 is too big -- the biggest curved or rounded shape that can be built accurately is 50000 in any size.
+    before: BUILT WRONG vol 5.0e-1; bbox 5.8e-1; com 7.2e-2; faces 1/2 vol 1.3088e+17 faces 1
+big-cyl-1e7 [too-big-curved]
+    guard : cylinder(): across 10000000 is too big -- the biggest curved or rounded shape that can be built accurately is 50000 in any size.
+    before: truck text: solid.cylinder: invalid input: height = 10000000
+big-boxr-1e5 [too-big-curved]
+    guard : box(): width 100000 is too big -- the biggest curved or rounded shape that can be built accurately is 50000 in any size.
+    before: BUILT good??  vol 9.7557e+14 faces 26
+big-box-1e7 [too-big]
+    guard : box(): width 10000000 is too big -- the biggest shape that can be built accurately is 1000000 in any size.
+    before: truck text: solid.box: invalid input: box needs a positive size in x, y and z
+big-box-1e10 [too-big]
+    guard : box(): width 10000000000 is too big -- the biggest shape that can be built accurately is 1000000 in any size.
+    before: truck text: solid.box: invalid parameters for `solid.box`: `length` must be a number or an expression
+big-box-1e308 [too-big]
+    guard : box(): width 1.00 x 10^308 is too big -- the biggest shape that can be built accurately is 1000000 in any size.
+    before: truck text: solid.box: invalid parameters for `solid.box`: `length` must be a number or an expression
+big-prism-1e7 [too-big]
+    guard : prism(): across 10000000 is too big -- the biggest shape that can be built accurately is 1000000 in any size.
+    before: truck text: solid.extrude: invalid input: end = 10000000
+big-wedge-1e7 [too-big]
+    guard : wedge(): width 10000000 is too big -- the biggest shape that can be built accurately is 1000000 in any size.
+    before: truck text: solid.extrude: invalid input: end = 10000000
+small-sph-0.3 [too-small-curved]
+    guard : sphere(): across 0.3 is too small -- it has to be at least 1 for a curved or rounded shape.
+    before: BUILT WRONG vol 1.1e-3 vol 1.4121e-2 faces 1
+small-sph-0.05 [too-small-curved]
+    guard : sphere(): across 0.05 is too small -- it has to be at least 1 for a curved or rounded shape.
+    before: BUILT WRONG vol 4.7e-3 vol 6.5143e-5 faces 1
+small-cyl-0.2 [too-small-curved]
+    guard : cylinder(): across 0.2 is too small -- it has to be at least 1 for a curved or rounded shape.
+    before: BUILT WRONG vol 5.7e-4 vol 6.2796e-3 faces 3
+small-cone-0.02 [too-small-curved]
+    guard : cone(): across 0.02 is too small -- it has to be at least 1 for a curved or rounded shape.
+    before: BUILT WRONG vol 4.6e-2; bbox 1.8e-4 vol 2.9978e-6 faces 2
+small-ring-0.04 [too-small-curved]
+    guard : ring(): across 0.04 is too small -- it has to be at least 1 for a curved or rounded shape.
+    before: BUILT WRONG vol 3.7e-2; bbox 7.4e-4; com 9.3e-4 vol 7.1299e-6 faces 1
+small-ring-1-0.25 [too-small-curved]
+    guard : ring(): tubeAcross 0.25 is too small -- it has to be at least 0.5 for a curved or rounded shape.
+    before: BUILT WRONG vol 4.2e-4 vol 1.1561e-1 faces 1
+small-boxr-0.2 [too-small-curved]
+    guard : box(): width 0.2 is too small -- it has to be at least 1 for a curved or rounded shape.
+    before: BUILT WRONG vol 5.0e-4 vol 7.2580e-3 faces 26
+small-box-1e-4 [too-small]
+    guard : box(): width 1.00 x 10^-4 is too small -- it has to be at least 0.001.
+    before: truck text: solid.box: invalid input: profile: cannot attach a plane to a wire that is not on one plane.
+small-prism-1e-5 [too-small]
+    guard : prism(): across 1.00 x 10^-5 is too small -- it has to be at least 0.001.
+    before: truck text: solid.extrude: sk_prism1_0 has no closed profiles
+small-wedge-1e-6 [too-small]
+    guard : wedge(): width 1.00 x 10^-6 is too small -- it has to be at least 0.001.
+    before: truck text: solid.extrude: sk_wedge1_0 has no closed profiles
+slender-cyl-2-100 [cyl-too-slender]
+    guard : cylinder(2, 100): too long for its width -- tall has to be at most 30 times across.
+    before: BUILT WRONG vol 4.5e-4 vol 3.1402e+2 faces 3
+slender-cyl-1-100 [cyl-too-slender]
+    guard : cylinder(1, 100): too long for its width -- tall has to be at most 30 times across.
+    before: BUILT WRONG vol 5.7e-4 vol 7.8495e+1 faces 3
+slender-cyl-50 [cyl-too-slender]
+    guard : cylinder(10, 500): too long for its width -- tall has to be at most 30 times across.
+    before: BUILT WRONG vol 4.5e-4 vol 3.9252e+4 faces 3
+slender-cone-4-400 [cone-too-slender]
+    guard : cone(4, 400): too long for its width -- tall has to be at most 40 times across.
+    before: BUILT WRONG vol 7.3e-4 vol 1.6743e+3 faces 2
+slender-cone-2-150 [cone-too-slender]
+    guard : cone(2, 150): too long for its width -- tall has to be at most 40 times across.
+    before: BUILT WRONG vol 7.3e-4 vol 1.5697e+2 faces 2
+slender-cone-1-100 [cone-too-slender]
+    guard : cone(1, 100): too long for its width -- tall has to be at most 40 times across.
+    before: BUILT WRONG vol 7.3e-4 vol 2.6161e+1 faces 2
+far-sph-1e4 [too-far-curved]
+    guard : sphere(): the at position 10000 is too far from the origin for a shape whose smallest size is 2 -- keep every at coordinate within 800 (400 times that size), or move the shape nearer.
+    before: BUILT WRONG com 4.0e-2 vol 4.1887e+0 faces 1
+far-sph-1e6 [too-far-curved]
+    guard : sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- keep every at coordinate within 800 (400 times that size), or move the shape nearer.
+    before: BUILT WRONG vol 5.7e+2; com 7.2e+4 vol 2.3808e+3 faces 1
+far-cyl-1e5 [too-far-curved]
+    guard : cylinder(): the at position 100000 is too far from the origin for a shape whose smallest size is 2 -- keep every at coordinate within 800 (400 times that size), or move the shape nearer.
+    before: BUILT WRONG vol 3.1e-2; com 1.9e+2 vol 9.1303e+0 faces 3
+far-cone-1e4 [too-far-curved]
+    guard : cone(): the at position 10000 is too far from the origin for a shape whose smallest size is 2 -- keep every at coordinate within 800 (400 times that size), or move the shape nearer.
+    before: BUILT WRONG com 3.9e-2 vol 3.1412e+0 faces 2
+far-ring-1e4 [too-far-curved]
+    guard : ring(): the at position 10000 is too far from the origin for a shape whose smallest size is 1 -- keep every at coordinate within 400 (400 times that size), or move the shape nearer.
+    before: BUILT WRONG com 1.4e-2 vol 7.4014e+0 faces 1
+far-boxr-1e4 [too-far-curved]
+    guard : box(): the at position 10000 is too far from the origin for a shape whose smallest size is 2 -- keep every at coordinate within 800 (400 times that size), or move the shape nearer.
+    before: BUILT WRONG com 1.2e-1 vol 7.5734e+0 faces 26
+far-cylturn-1e5 [too-far-curved]
+    guard : cylinder(): the at position 100000 is too far from the origin for a shape whose smallest size is 2 -- keep every at coordinate within 800 (400 times that size), or move the shape nearer.
+    before: BUILT good??  vol 9.4236e+0 faces 3
+far-prism6-1e3 [too-far-planar]
+    guard : prism(): the at position 1000 is too far from the origin for a shape whose smallest size is 2 -- keep every at coordinate within 200 (100 times that size), or move the shape nearer.
+    before: BUILT WRONG vol 6.7e-9 vol 7.7942e+0 faces 8
+far-prism3-1e4 [too-far-planar]
+    guard : prism(): the at position 10000 is too far from the origin for a shape whose smallest size is 2 -- keep every at coordinate within 200 (100 times that size), or move the shape nearer.
+    before: BUILT WRONG vol 1.2e-5; com 7.9e-3 vol 3.8972e+0 faces 5
+far-prism12-1e6 [too-far-planar]
+    guard : prism(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- keep every at coordinate within 200 (100 times that size), or move the shape nearer.
+    before: BUILT WRONG vol 3.0e+0; com 4.5e+4 vol 3.5875e+1 faces 14
+far-tbox-1e3 [too-far-planar]
+    guard : box(): the at position 1000 is too far from the origin for a shape whose smallest size is 2 -- keep every at coordinate within 200 (100 times that size), or move the shape nearer.
+    before: BUILT good??  vol 2.4000e+1 faces 6
+far-tprism-1e4 [too-far-planar]
+    guard : prism(): the at position 10000 is too far from the origin for a shape whose smallest size is 2 -- keep every at coordinate within 200 (100 times that size), or move the shape nearer.
+    before: BUILT WRONG vol 3.4e-7; com 1.6e-4 vol 7.7942e+0 faces 8
+far-twedge-1e4 [too-far-planar]
+    guard : wedge(): the at position 10000 is too far from the origin for a shape whose smallest size is 2 -- keep every at coordinate within 200 (100 times that size), or move the shape nearer.
+    before: BUILT WRONG vol 4.5e-6; com 1.4e-3 vol 1.2000e+1 faces 5
+far-needle-prism [too-far-planar]
+    guard : prism(): the at position 1500 is too far from the origin for a shape whose smallest size is 1 -- keep every at coordinate within 100 (100 times that size), or move the shape nearer.
+    before: BUILT good??  vol 2.0523e+2 faces 9
+far-box-1e7 [too-far]
+    guard : box(): the at position 10000000 is too far from the origin -- keep every at coordinate within 1000000.
+    before: truck text: solid.box: invalid input: end = 10000000.5
+lint-surplus-box [surplus-argument]
+    guard : box() takes width, depth and height, then at most one { } of options -- the extra value 99 would be ignored, so take it out.
+    before: BUILT good??  vol 6.0000e+0 faces 6
+lint-surplus-prism [surplus-argument]
+    guard : prism() takes sides, across and tall, then at most one { } of options -- the extra value 1 would be ignored, so take it out.
+    before: BUILT good??  vol 3.2476e+2 faces 8
+lint-surplus-sphere [surplus-argument]
+    guard : sphere() takes across, then at most one { } of options -- the extra value 1 would be ignored, so take it out.
+    before: BUILT good??  vol 4.1885e+0 faces 1
+lint-surplus-cyl [surplus-argument]
+    guard : cylinder() takes across and tall, then at most one { } of options -- the extra value 9 would be ignored, so take it out.
+    before: BUILT good??  vol 9.4237e+0 faces 3
+lint-surplus-ring [surplus-argument]
+    guard : ring() takes across and tubeAcross, then at most one { } of options -- the extra value 2 would be ignored, so take it out.
+    before: BUILT good??  vol 7.4011e+0 faces 1
+lint-surplus-wedge [surplus-argument]
+    guard : wedge() takes width, depth and tall, then at most one { } of options -- the extra value 4 would be ignored, so take it out.
+    before: BUILT good??  vol 3.0000e+0 faces 5
+lint-sides-5.4 [prism-sides-fraction]
+    guard : prism() needs a whole number of sides, from 3 to 12 -- 5.4 is not whole, so use a whole number such as 5 or 6.
+    before: BUILT good??  vol 6.4196e+3 faces 7
+lint-sides-5.5 [prism-sides-fraction]
+    guard : prism() needs a whole number of sides, from 3 to 12 -- 5.5 is not whole, so use a whole number such as 5 or 6.
+    before: BUILT good??  vol 7.0148e+3 faces 8
+lint-sides-var [prism-sides-fraction]
+    guard : prism() needs a whole number of sides, from 3 to 12 -- n is not whole, so use a whole number such as 7 or 8.
+    before: BUILT good??  vol 7.3883e+3 faces 9
+lint-sides-param [prism-sides-fraction]
+    guard : prism() needs a whole number of sides, from 3 to 12 -- param('n', 7.3) is not whole, so use a whole number such as 7 or 8.
+    before: BUILT good??  vol 7.3883e+3 faces 9
+lint-cone-frustum [cone-second-radius]
+    guard : cone() makes a pointed cone from across and tall only -- the third value 10 would be a second radius, and a flat-topped cone is not available.
+    before: interpreter: cone's extras go in a { } object at the end, like cone(..., { at: ... }). You gave it 10.
+lint-cone-frustum2 [cone-second-radius]
+    guard : cone() makes a pointed cone from across and tall only -- the third value 5 would be a second radius, and a flat-topped cone is not available.
+    before: interpreter: cone's extras go in a { } object at the end, like cone(..., { at: ... }). You gave it 5.
+g2: 91 cases, 0 failing

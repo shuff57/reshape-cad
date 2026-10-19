@@ -1,0 +1,194 @@
+{
+ "singleEdgeFuzz": {
+  "n": 200,
+  "built": 160,
+  "truckBuiltOracleRefused": 35,
+  "g1_flags_wrong": 35,
+  "g1_flags_match": 0,
+  "g2_flags_wrong": 35,
+  "g2_flags_match": 0,
+  "match": 125,
+  "missed": []
+ },
+ "pairs": {
+  "n": 21,
+  "rec": [
+   {
+    "id": "ov-c-pair-top-front-back-14",
+    "faces": 8,
+    "expect": 8,
+    "wrong": false,
+    "g1Flags": false
+   },
+   {
+    "id": "ov-c-pair-top-front-back-15",
+    "faces": 7,
+    "expect": 8,
+    "wrong": false,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-c-pair-top-front-back-15.01",
+    "faces": 7,
+    "expect": 8,
+    "wrong": true,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-c-pair-top-front-back-16",
+    "faces": 7,
+    "expect": 8,
+    "wrong": true,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-c-pair-top-front-back-20",
+    "faces": 5,
+    "expect": 8,
+    "wrong": true,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-f-pair-top-front-back-14",
+    "faces": 8,
+    "expect": 8,
+    "wrong": false,
+    "g1Flags": false
+   },
+   {
+    "id": "ov-f-pair-top-front-back-15",
+    "faces": 6,
+    "expect": 8,
+    "wrong": false,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-c-pair-vert-20-20",
+    "faces": 7,
+    "expect": 8,
+    "wrong": false,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-c-pair-vert-19-20",
+    "faces": 8,
+    "expect": 8,
+    "wrong": false,
+    "g1Flags": false
+   },
+   {
+    "id": "ov-c-pair-vert-20-21",
+    "faces": 7,
+    "expect": 8,
+    "wrong": true,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-f-pair-vert-20-20",
+    "faces": 6,
+    "expect": 8,
+    "wrong": false,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-c-pair-plate-front-4",
+    "faces": 8,
+    "expect": 8,
+    "wrong": false,
+    "g1Flags": false
+   },
+   {
+    "id": "ov-c-pair-plate-front-5",
+    "faces": 7,
+    "expect": 8,
+    "wrong": false,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-c-pair-plate-front-5.01",
+    "faces": 7,
+    "expect": 8,
+    "wrong": true,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-c-pair-plate-front-6",
+    "faces": 7,
+    "expect": 8,
+    "wrong": true,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-f-pair-plate-front-4",
+    "faces": 8,
+    "expect": 8,
+    "wrong": false,
+    "g1Flags": false
+   },
+   {
+    "id": "ov-f-pair-plate-front-5",
+    "faces": 6,
+    "expect": 8,
+    "wrong": false,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-c-pair-cyl-9",
+    "faces": 5,
+    "expect": 5,
+    "wrong": false,
+    "g1Flags": false
+   },
+   {
+    "id": "ov-f-pair-cyl-9",
+    "faces": 5,
+    "expect": 5,
+    "wrong": false,
+    "g1Flags": false
+   },
+   {
+    "id": "ov-c-pair-cyl-10",
+    "faces": 4,
+    "expect": 5,
+    "wrong": false,
+    "g1Flags": true
+   },
+   {
+    "id": "ov-f-pair-cyl-10",
+    "faces": 3,
+    "expect": 5,
+    "wrong": false,
+    "g1Flags": true
+   }
+  ]
+ },
+ "ratioBins": {
+  "grid b=a": {
+   "literal": 12
+  },
+  "grid b/a>=2": {
+   "literal": 18
+  },
+  "grid b<a": {
+   "literal": 10,
+   "occt-chain": 20
+  },
+  "grid 1<b/a<2": {
+   "literal": 6,
+   "NEITHER": 1,
+   "ADDED-MATERIAL": 5
+  },
+  "fuzz b<a": {
+   "tangent-chain(=OCCT)": 13,
+   "literal-mitre": 5
+  },
+  "fuzz 1<b/a<2": {
+   "NEITHER": 7,
+   "ADDED-MATERIAL": 8,
+   "literal-mitre": 3
+  },
+  "fuzz b/a>=2": {
+   "literal-mitre": 5
+  }
+ }
+}

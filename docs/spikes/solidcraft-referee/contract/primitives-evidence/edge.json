@@ -1,0 +1,1387 @@
+[
+ {
+  "id": "edge-box-far",
+  "feature": "box.at",
+  "note": "",
+  "script": "box(1, 1, 1, { at: [1000000, 1000000, 1000000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      1,
+      1,
+      1
+     ],
+     "center": [
+      1000000,
+      1000000,
+      1000000
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 1,
+  "occt": {
+   "volume": 0.9999999999999999,
+   "com": [
+    1000000,
+    1000000,
+    1000000
+   ],
+   "bbox": [
+    999999.5,
+    999999.5,
+    999999.5,
+    1000000.5,
+    1000000.5,
+    1000000.5
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 1,
+   "bbox": [
+    999999.5,
+    999999.5,
+    999999.5,
+    1000000.5,
+    1000000.5,
+    1000000.5
+   ],
+   "faces": 6,
+   "dVol": 1.1102230246251568e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 1,
+     "width": 1,
+     "height": 1,
+     "center": [
+      1000000,
+      1000000,
+      1000000
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 1,
+   "bbox": [
+    999999.5,
+    999999.5,
+    999999.5,
+    1000000.5,
+    1000000.5,
+    1000000.5
+   ],
+   "com": [
+    1000000,
+    1000000,
+    1000000
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 1.1102230246251568e-16,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 0,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 73
+ },
+ {
+  "id": "edge-sph-far",
+  "feature": "sphere.at",
+  "note": "",
+  "script": "sphere(2, { at: [1000000, -1000000, 1000000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "ball1",
+     "kind": "sphere",
+     "radius": 1,
+     "center": [
+      1000000,
+      -1000000,
+      1000000
+     ]
+    }
+   ]
+  },
+  "kind": "sphere",
+  "analytic": 4.1887902047863905,
+  "occt": {
+   "volume": 4.188790204802259,
+   "com": [
+    1000000,
+    -1000000,
+    1000000
+   ],
+   "bbox": [
+    999999,
+    -1000001,
+    999999,
+    1000001,
+    -999999,
+    1000001
+   ],
+   "faces": 1,
+   "types": {
+    "sphere": 1
+   }
+  },
+  "brep": {
+   "volume": 4.188790205148692,
+   "bbox": [
+    999999,
+    -1000001,
+    999999,
+    1000001,
+    -999999,
+    1000001
+   ],
+   "faces": 1,
+   "dVol": 8.270481152969758e-11,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 1,
+     "center": [
+      1000000,
+      -1000000,
+      1000000
+     ],
+     "body_name": "b_ball1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 2380.773762616174,
+   "bbox": [
+    999999,
+    -1000001,
+    999998.9999999999,
+    1000001,
+    -999998.9999999999,
+    1000001
+   ],
+   "com": [
+    750438.8852563855,
+    -750439.8863489189,
+    750439.1066458066
+   ],
+   "faces": 1,
+   "faceTypes": {
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 567.367869053629,
+   "dBboxOcct": 3.360620869728887e-11,
+   "dComOcct": 72042.08838824445,
+   "facesOcct": 1,
+   "typesOcct": {
+    "sphere": 1
+   },
+   "dVolAnalytic": 567.3678690557821,
+   "dVolBrep": 567.3678690066223,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 8127
+ },
+ {
+  "id": "edge-cyl-far-turn",
+  "feature": "cylinder.rotate",
+  "note": "",
+  "script": "turn(cylinder(2, 3, { at: [100000, 0, 0] }), [30, 40, 50]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 1,
+     "height": 3,
+     "center": [
+      100000,
+      0,
+      0
+     ],
+     "rotate": [
+      30,
+      40,
+      50
+     ]
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 9.42477796076938,
+  "occt": {
+   "volume": 9.424777960767935,
+   "com": [
+    100000,
+    2.5118795932144167e-14,
+    2.0661250488274163e-13
+   ],
+   "bbox": [
+    99998.21705724392,
+    -1.152028640667607,
+    -1.7433735088676479,
+    100001.78294275606,
+    1.152028640667607,
+    1.7433735088676479
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 9.424777960724336,
+   "bbox": [
+    99998.21705724394,
+    -1.152028640664014,
+    -1.7433735088705595,
+    100001.78294275608,
+    1.1520286406712,
+    1.7433735088705595
+   ],
+   "faces": 3,
+   "dVol": 4.625987206035705e-12,
+   "dBbox": 2.6487980767278748e-12
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 3,
+     "base": [
+      0,
+      0,
+      -1.5
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_cyl1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 30
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_cyl1"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 40
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_cyl1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 50
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_cyl1"
+     ],
+     "translate": [
+      100000,
+      0,
+      0
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 9.423603385454044,
+   "bbox": [
+    99998.2170794008,
+    -1.1520263843214484,
+    -1.7433330337047874,
+    100001.78292059922,
+    1.152026384321194,
+    1.7433330336970514
+   ],
+   "com": [
+    100000.00028229038,
+    -0.00025781504878029355,
+    0.00008339417815365903
+   ],
+   "faces": 3,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.0001246263114930422,
+   "dBboxOcct": 0.000007367453173597343,
+   "dComOcct": 0.000051383628624338306,
+   "facesOcct": 3,
+   "typesOcct": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "dVolAnalytic": 0.00012462631164625518,
+   "dVolBrep": 0.00012462630686763153,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 728
+ },
+ {
+  "id": "edge-box-turn-tiny",
+  "feature": "box.rotate",
+  "note": "",
+  "script": "turn(box(40, 30, 12), [0.001, 0, 0]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      12
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "rotate": [
+      0.001,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 14400,
+  "occt": {
+   "volume": 14400,
+   "com": [
+    0,
+    -1.7763568394002505e-15,
+    0
+   ],
+   "bbox": [
+    -20,
+    -15.000104717470483,
+    -6.000261798473934,
+    20,
+    15.000104717470483,
+    6.000261798473934
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 14399.999999999998,
+   "bbox": [
+    -20,
+    -15.000104717470483,
+    -6.000261798473934,
+    20,
+    15.000104717470483,
+    6.000261798473934
+   ],
+   "faces": 6,
+   "dVol": 1.2631870857957337e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 0.001
+    }
+   }
+  ],
+  "truck": {
+   "volume": 14400,
+   "bbox": [
+    -20,
+    -15.00010471747049,
+    -6.000261798473934,
+    20,
+    15.000104717470483,
+    6.000261798473936
+   ],
+   "com": [
+    -4.2106236193191124e-16,
+    -2.5263741715914673e-16,
+    3.3684988954552896e-16
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 1.3818388999639542e-16,
+   "dComOcct": 2.963276752144924e-17,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 1.263187085795734e-16,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 32
+ },
+ {
+  "id": "edge-box-turn-180",
+  "feature": "box.rotate",
+  "note": "",
+  "script": "turn(box(40, 30, 12, { at: [3, 4, 5] }), [180, 0, 0]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      12
+     ],
+     "center": [
+      3,
+      4,
+      5
+     ],
+     "rotate": [
+      180,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 14400,
+  "occt": {
+   "volume": 14400,
+   "com": [
+    3,
+    4,
+    5.000000000000001
+   ],
+   "bbox": [
+    -17,
+    -11.000000000000002,
+    -1.0000000000000018,
+    23,
+    19,
+    11.000000000000002
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 14400,
+   "bbox": [
+    -17,
+    -11,
+    -1.0000000000000018,
+    23,
+    19,
+    11.000000000000002
+   ],
+   "faces": 6,
+   "dVol": 0,
+   "dBbox": 3.4546136688380976e-17
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 180
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      3,
+      4,
+      5
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 14400,
+   "bbox": [
+    -17,
+    -11,
+    -1.0000000000000018,
+    23,
+    19,
+    11.000000000000002
+   ],
+   "com": [
+    3,
+    4,
+    5
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 3.4546136688380976e-17,
+   "dComOcct": 1.7273068344190488e-17,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 0,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 17
+ },
+ {
+  "id": "edge-box-turn-270z",
+  "feature": "box.rotate",
+  "note": "",
+  "script": "turn(box(40, 30, 12, { at: [3, 4, 5] }), [0, 0, 270]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      12
+     ],
+     "center": [
+      3,
+      4,
+      5
+     ],
+     "rotate": [
+      0,
+      0,
+      270
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 14400,
+  "occt": {
+   "volume": 14400,
+   "com": [
+    3,
+    4.0000000000000036,
+    5
+   ],
+   "bbox": [
+    -12.000000000000005,
+    -16.000000000000004,
+    -1,
+    18.000000000000004,
+    24.000000000000004,
+    11
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 14400,
+   "bbox": [
+    -12.000000000000004,
+    -16.000000000000004,
+    -1,
+    18.000000000000004,
+    24.000000000000004,
+    11
+   ],
+   "faces": 6,
+   "dVol": 0,
+   "dBbox": 3.4546136688380976e-17
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 270
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      3,
+      4,
+      5
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 14400,
+   "bbox": [
+    -12.000000000000004,
+    -16.000000000000004,
+    -1,
+    18.000000000000004,
+    24.000000000000004,
+    11
+   ],
+   "com": [
+    3,
+    4,
+    5
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 3.4546136688380976e-17,
+   "dComOcct": 6.909227337676195e-17,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 0,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 15
+ },
+ {
+  "id": "edge-box-corner-1e-3",
+  "feature": "box.corner",
+  "note": "",
+  "script": "box(40, 30, 12, { corner: 0.001 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      12
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 0.001
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 14399.999929611935,
+  "occt": {
+   "volume": 14399.999929612039,
+   "com": [
+    7.105427357601002e-15,
+    3.552713678800501e-15,
+    2.6645352591003757e-15
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20.000000000000004,
+    15,
+    6.000000000000001
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 8
+   }
+  },
+  "brep": {
+   "volume": 14399.999929611926,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ],
+   "faces": 26,
+   "dVol": 7.831759970215605e-15,
+   "dBbox": 6.909227337676195e-17
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       -6
+      ],
+      [
+       -20,
+       0,
+       6
+      ],
+      [
+       20,
+       0,
+       -6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "radius": 0.001,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 14399.999835072405,
+   "bbox": [
+    -20,
+    -15,
+    -6.000000000000001,
+    20.00000000000001,
+    15.000000000000002,
+    6
+   ],
+   "com": [
+    2.7635672043057546e-10,
+    3.875167887565597e-11,
+    2.0534683529319604e-10
+   ],
+   "faces": 26,
+   "faceTypes": {
+    "cone": 8,
+    "cylinder": 12,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 6.5652523383366845e-9,
+   "dBboxOcct": 1.381845467535239e-16,
+   "dComOcct": 5.374377130726675e-12,
+   "facesOcct": 26,
+   "typesOcct": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 8
+   },
+   "dVolAnalytic": 6.565245138170307e-9,
+   "dVolBrep": 6.5652445065767656e-9,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 592
+ },
+ {
+  "id": "edge-box-corner-1e-6",
+  "feature": "box.corner",
+  "note": "",
+  "script": "box(40, 30, 12, { corner: 0.000001 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      12
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 0.000001
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 14399.999999999929,
+  "occt": {
+   "volume": 14399.999999999933,
+   "com": [
+    -3.552713678800501e-15,
+    0,
+    -2.6645352591003757e-15
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20.000000000000004,
+    15,
+    6.000000000000001
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 8
+   }
+  },
+  "brep": {
+   "volume": 14399.999999999922,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ],
+   "faces": 26,
+   "dVol": 7.579122514774437e-16,
+   "dBbox": 6.909227337676195e-17
+  },
+  "commands": [],
+  "truck": {
+   "refused": "box1 (box): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 78
+ },
+ {
+  "id": "edge-cyl-corner-1e-3",
+  "feature": "cylinder.corner",
+  "note": "",
+  "script": "cylinder(24, 30, { corner: 0.001 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 12,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 0.001
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 13571.680231147315,
+  "occt": {
+   "volume": 13571.680231147318,
+   "com": [
+    1.3402831282240456e-16,
+    -9.728286598760482e-16,
+    -3.552713678800501e-15
+   ],
+   "bbox": [
+    -12.0000001,
+    -12.0000001,
+    -15,
+    12,
+    12.0000001,
+    15
+   ],
+   "faces": 5,
+   "types": {
+    "cylinder": 1,
+    "torus": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 13571.68023114731,
+   "bbox": [
+    -12,
+    -12,
+    -15,
+    12,
+    12,
+    15
+   ],
+   "faces": 5,
+   "dVol": 6.701415641120228e-16,
+   "dBbox": 2.2075539072795913e-9
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 12,
+     "height": 30,
+     "base": [
+      0,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       12,
+       0,
+       15
+      ],
+      [
+       12,
+       0,
+       -15
+      ]
+     ],
+     "radius": 0.001,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 13570.14878518725,
+   "bbox": [
+    -11.999814674558856,
+    -11.999677604887713,
+    -15.000000000000014,
+    11.999814674558857,
+    11.99967760488771,
+    15
+   ],
+   "com": [
+    4.204758747388106e-14,
+    2.9217738882558816e-14,
+    -4.214950543005847e-15
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "cylinder": 1,
+    "other": 2,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00011284129407601952,
+   "dBboxOcct": 0.000007119253495400608,
+   "dComOcct": 9.252644185631612e-16,
+   "facesOcct": 5,
+   "typesOcct": {
+    "cylinder": 1,
+    "torus": 2,
+    "plane": 2
+   },
+   "dVolAnalytic": 0.00011284129407575149,
+   "dVolBrep": 0.00011284129407534944,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 1316
+ },
+ {
+  "id": "edge-wedge-docrotate-180y",
+  "feature": "wedge.rotate",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "wedge",
+     "center": [
+      3,
+      4,
+      5
+     ],
+     "width": 40,
+     "depth": 30,
+     "height": 12,
+     "rotate": [
+      0,
+      180,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "wedge",
+  "analytic": 7200,
+  "occt": {
+   "volume": 7200,
+   "com": [
+    9.666666666666666,
+    -1.0000000000000018,
+    5.000000000000003
+   ],
+   "bbox": [
+    -17,
+    -11,
+    -1.0000000000000018,
+    23,
+    19,
+    11.000000000000004
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 7200,
+   "bbox": [
+    -17,
+    -11,
+    -1.0000000000000036,
+    23,
+    19,
+    11.000000000000002
+   ],
+   "faces": 5,
+   "dVol": 0,
+   "dBbox": 3.4546136688380976e-17
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_x1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -6
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -20,
+       -15
+      ],
+      [
+       20,
+       -15
+      ],
+      [
+       -20,
+       15
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_x1_0",
+     "operation": "new",
+     "body_name": "b_x1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_x1"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 180
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_x1"
+     ],
+     "translate": [
+      3,
+      4,
+      5
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7200,
+   "bbox": [
+    -17,
+    -11,
+    -1.0000000000000027,
+    23,
+    19,
+    11.000000000000004
+   ],
+   "com": [
+    9.666666666666666,
+    -1,
+    5.000000000000002
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 1.7273068344190488e-17,
+   "dComOcct": 3.4546136688380976e-17,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 0,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 33
+ }
+]

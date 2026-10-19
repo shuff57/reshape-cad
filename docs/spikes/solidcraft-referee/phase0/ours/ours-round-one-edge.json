@@ -1,0 +1,21 @@
+{
+ "id": "round-one-edge",
+ "outcome": "built",
+ "volume": 31862.564752955306,
+ "faces": 7,
+ "bbox": [
+  -20,
+  -20.00000000000001,
+  -10,
+  20,
+  20.000000000000007,
+  10.000000000000004
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "fillet"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_b1\"}},{\"command\":\"solid.fillet\",\"params\":{\"edges\":[[20,0,10]],\"radius\":4,\"body\":\"b_b1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

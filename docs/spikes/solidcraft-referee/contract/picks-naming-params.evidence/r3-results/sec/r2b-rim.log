@@ -1,0 +1,88 @@
+origin               top|front  round 1.5   PASS     SC 7132.673 CF 7132.686 d -1.8e-6 | OCCT 7132.686 | BREP 7132.686 
+origin               top|front  round 1.99  PASS     SC 7117.984 CF 7118.006 d -3.1e-6 | OCCT 7118.006 | BREP 7118.006 
+origin               top|front  round 2     REFUSED  SC undefined CF 7117.664 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+origin               top|front  round 2.01  REFUSED  SC undefined CF 7117.319 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through 
+origin               top|front  round 2.1   REFUSED  SC undefined CF 7114.147 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+origin               top|front  round 2.5   REFUSED  SC undefined CF 7098.651 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+origin               top|front  round 3     REFUSED  SC undefined CF 7076.778 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+origin               top|front  bevel 1.99  PASS     SC 7072.798 CF 7072.798 d -2.6e-16 | OCCT 7072.798 | BREP 7072.798 
+origin               top|front  bevel 2     PASS     SC 7072.000 CF 7072.000 d 0.0e+0 | OCCT 7152.000 | BREP 7072.000 
+origin               top|front  bevel 2.5   PASS     SC 7031.500 CF 7031.500 d 0.0e+0 | OCCT 7152.000 | BREP 7031.500 
+origin               top|front  bevel 3     PASS     SC 6990.000 CF 6990.000 d 0.0e+0 | OCCT 7152.000 | BREP 6990.000 
+origin               top|back   round 1.5   PASS     SC 7132.673 CF 7132.686 d -1.8e-6 | OCCT 7132.686 | BREP 7132.686 
+origin               top|back   round 1.99  PASS     SC 7117.984 CF 7118.006 d -3.1e-6 | OCCT 7118.006 | BREP 7118.006 
+origin               top|back   round 2     REFUSED  SC undefined CF 7117.664 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+origin               top|back   round 2.01  REFUSED  SC undefined CF 7117.319 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through 
+origin               top|back   round 2.1   REFUSED  SC undefined CF 7114.147 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+origin               top|back   round 2.5   REFUSED  SC undefined CF 7098.651 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+origin               top|back   round 3     REFUSED  SC undefined CF 7076.778 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+origin               top|back   bevel 1.99  PASS     SC 7072.798 CF 7072.798 d -6.4e-15 | OCCT 7072.798 | BREP 7072.798 
+origin               top|back   bevel 2     PASS     SC 7072.000 CF 7072.000 d 0.0e+0 | OCCT 7152.000 | BREP 7072.000 
+origin               top|back   bevel 2.5   PASS     SC 7031.500 CF 7031.500 d -3.9e-16 | OCCT 7152.000 | BREP 7031.500 
+origin               top|back   bevel 3     PASS     SC 6990.000 CF 6990.000 d 0.0e+0 | OCCT 7152.000 | BREP 6990.000 
+origin               top|left   round 1.5   PASS     SC 7137.505 CF 7137.514 d -1.3e-6 | OCCT 7137.514 | BREP 7137.514 
+origin               top|left   round 1.99  PASS     SC 7126.488 CF 7126.505 d -2.3e-6 | OCCT 7126.505 | BREP 7126.505 
+origin               top|left   round 2     REFUSED  SC undefined CF 7126.248 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+origin               top|left   round 2.01  REFUSED  SC undefined CF 7125.990 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through 
+origin               top|left   round 2.1   REFUSED  SC undefined CF 7123.610 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+origin               top|left   round 2.5   REFUSED  SC undefined CF 7111.980 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+origin               top|left   round 3     REFUSED  SC undefined CF 7095.527 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+origin               top|left   bevel 1.99  PASS     SC 7092.598 CF 7092.599 d -1.2e-15 | OCCT 7092.598 | BREP 7092.599 
+origin               top|left   bevel 2     PASS     SC 7092.000 CF 7092.000 d 0.0e+0 | OCCT 7152.000 | BREP 7092.000 
+origin               top|left   bevel 2.5   PASS     SC 7061.500 CF 7061.500 d 0.0e+0 | OCCT 7152.000 | BREP 7061.500 
+origin               top|left   bevel 3     PASS     SC 7030.000 CF 7030.000 d 0.0e+0 | OCCT 7152.000 | BREP 7030.000 
+origin               top|right  round 1.5   PASS     SC 7137.505 CF 7137.514 d -1.3e-6 | OCCT 7137.514 | BREP 7137.514 
+origin               top|right  round 1.99  PASS     SC 7126.488 CF 7126.505 d -2.3e-6 | OCCT 7126.505 | BREP 7126.505 
+origin               top|right  round 2     REFUSED  SC undefined CF 7126.248 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+origin               top|right  round 2.01  REFUSED  SC undefined CF 7125.990 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through 
+origin               top|right  round 2.1   REFUSED  SC undefined CF 7123.610 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+origin               top|right  round 2.5   REFUSED  SC undefined CF 7111.980 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+origin               top|right  round 3     REFUSED  SC undefined CF 7095.527 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+origin               top|right  bevel 1.99  PASS     SC 7092.598 CF 7092.599 d -3.8e-16 | OCCT 7092.598 | BREP 7092.598 
+origin               top|right  bevel 2     PASS     SC 7092.000 CF 7092.000 d 0.0e+0 | OCCT 7152.000 | BREP 7092.000 
+origin               top|right  bevel 2.5   PASS     SC 7061.500 CF 7061.500 d -3.9e-16 | OCCT 7152.000 | BREP 7061.500 
+origin               top|right  bevel 3     PASS     SC 7030.000 CF 7030.000 d 0.0e+0 | OCCT 7152.000 | BREP 7030.000 
+off-centre [7,-5,3]  top|front  round 1.5   PASS     SC 7132.673 CF 7132.686 d -1.8e-6 | OCCT 7132.686 | BREP 7132.686 
+off-centre [7,-5,3]  top|front  round 1.99  PASS     SC 7117.984 CF 7118.006 d -3.1e-6 | OCCT 7118.006 | BREP 7118.006 
+off-centre [7,-5,3]  top|front  round 2     REFUSED  SC undefined CF 7117.664 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+off-centre [7,-5,3]  top|front  round 2.01  REFUSED  SC undefined CF 7117.319 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through 
+off-centre [7,-5,3]  top|front  round 2.1   REFUSED  SC undefined CF 7114.147 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+off-centre [7,-5,3]  top|front  round 2.5   REFUSED  SC undefined CF 7098.651 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+off-centre [7,-5,3]  top|front  round 3     REFUSED  SC undefined CF 7076.778 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+off-centre [7,-5,3]  top|front  bevel 1.99  PASS     SC 7072.798 CF 7072.798 d 0.0e+0 | OCCT 7072.798 | BREP 7072.798 
+off-centre [7,-5,3]  top|front  bevel 2     PASS     SC 7072.000 CF 7072.000 d 3.9e-16 | OCCT 7152.000 | BREP 7072.000 
+off-centre [7,-5,3]  top|front  bevel 2.5   PASS     SC 7031.500 CF 7031.500 d 3.9e-16 | OCCT 7152.000 | BREP 7031.500 
+off-centre [7,-5,3]  top|front  bevel 3     PASS     SC 6990.000 CF 6990.000 d 1.3e-16 | OCCT 7152.000 | BREP 6990.000 
+off-centre [7,-5,3]  top|back   round 1.5   PASS     SC 7132.673 CF 7132.686 d -1.8e-6 | OCCT 7132.686 | BREP 7132.686 
+off-centre [7,-5,3]  top|back   round 1.99  PASS     SC 7117.984 CF 7118.006 d -3.1e-6 | OCCT 7118.006 | BREP 7118.006 
+off-centre [7,-5,3]  top|back   round 2     REFUSED  SC undefined CF 7117.664 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+off-centre [7,-5,3]  top|back   round 2.01  REFUSED  SC undefined CF 7117.319 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through 
+off-centre [7,-5,3]  top|back   round 2.1   REFUSED  SC undefined CF 7114.147 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+off-centre [7,-5,3]  top|back   round 2.5   REFUSED  SC undefined CF 7098.651 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+off-centre [7,-5,3]  top|back   round 3     REFUSED  SC undefined CF 7076.778 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+off-centre [7,-5,3]  top|back   bevel 1.99  PASS     SC 7072.798 CF 7072.798 d -1.3e-16 | OCCT 7072.798 | BREP 7072.798 
+off-centre [7,-5,3]  top|back   bevel 2     PASS     SC 7072.000 CF 7072.000 d 0.0e+0 | OCCT 7152.000 | BREP 7072.000 
+off-centre [7,-5,3]  top|back   bevel 2.5   PASS     SC 7031.500 CF 7031.500 d 0.0e+0 | OCCT 7152.000 | BREP 7031.500 
+off-centre [7,-5,3]  top|back   bevel 3     PASS     SC 6990.000 CF 6990.000 d 0.0e+0 | OCCT 7152.000 | BREP 6990.000 
+off-centre [7,-5,3]  top|left   round 1.5   PASS     SC 7137.505 CF 7137.514 d -1.3e-6 | OCCT 7137.514 | BREP 7137.514 
+off-centre [7,-5,3]  top|left   round 1.99  PASS     SC 7126.488 CF 7126.505 d -2.3e-6 | OCCT 7126.505 | BREP 7126.505 
+off-centre [7,-5,3]  top|left   round 2     REFUSED  SC undefined CF 7126.248 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+off-centre [7,-5,3]  top|left   round 2.01  REFUSED  SC undefined CF 7125.990 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through 
+off-centre [7,-5,3]  top|left   round 2.1   REFUSED  SC undefined CF 7123.610 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+off-centre [7,-5,3]  top|left   round 2.5   REFUSED  SC undefined CF 7111.980 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+off-centre [7,-5,3]  top|left   round 3     REFUSED  SC undefined CF 7095.527 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+off-centre [7,-5,3]  top|left   bevel 1.99  PASS     SC 7092.598 CF 7092.599 d -6.4e-16 | OCCT 7092.598 | BREP 7092.598 
+off-centre [7,-5,3]  top|left   bevel 2     PASS     SC 7092.000 CF 7092.000 d -3.8e-16 | OCCT 7152.000 | BREP 7092.000 
+off-centre [7,-5,3]  top|left   bevel 2.5   PASS     SC 7061.500 CF 7061.500 d -3.9e-16 | OCCT 7152.000 | BREP 7061.500 
+off-centre [7,-5,3]  top|left   bevel 3     PASS     SC 7030.000 CF 7030.000 d -3.9e-16 | OCCT 7152.000 | BREP 7030.000 
+off-centre [7,-5,3]  top|right  round 1.5   PASS     SC 7137.505 CF 7137.514 d -1.3e-6 | OCCT 7137.514 | BREP 7137.514 
+off-centre [7,-5,3]  top|right  round 1.99  PASS     SC 7126.488 CF 7126.505 d -2.3e-6 | OCCT 7126.505 | BREP 7126.505 
+off-centre [7,-5,3]  top|right  round 2     REFUSED  SC undefined CF 7126.248 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+off-centre [7,-5,3]  top|right  round 2.01  REFUSED  SC undefined CF 7125.990 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through 
+off-centre [7,-5,3]  top|right  round 2.1   REFUSED  SC undefined CF 7123.610 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+off-centre [7,-5,3]  top|right  round 2.5   REFUSED  SC undefined CF 7111.980 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through t
+off-centre [7,-5,3]  top|right  round 3     REFUSED  SC undefined CF 7095.527 d - | OCCT 7152.000 | BREP 7152.000 | SENT round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the
+off-centre [7,-5,3]  top|right  bevel 1.99  PASS     SC 7092.598 CF 7092.599 d -2.1e-14 | OCCT 7092.598 | BREP 7092.599 
+off-centre [7,-5,3]  top|right  bevel 2     PASS     SC 7092.000 CF 7092.000 d -3.8e-16 | OCCT 7152.000 | BREP 7092.000 
+off-centre [7,-5,3]  top|right  bevel 2.5   PASS     SC 7061.500 CF 7061.500 d -3.9e-16 | OCCT 7152.000 | BREP 7061.500 
+off-centre [7,-5,3]  top|right  bevel 3     PASS     SC 7030.000 CF 7030.000 d -3.9e-16 | OCCT 7152.000 | BREP 7030.000 

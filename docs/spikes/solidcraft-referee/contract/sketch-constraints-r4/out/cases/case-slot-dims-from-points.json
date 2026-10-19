@@ -1,0 +1,87 @@
+[
+ {
+  "id": "slot-dims-from-points",
+  "feats": [
+   "tangent:endpoint line-arc",
+   "slot with tangent joints",
+   "endpoint tangency curved accuracy",
+   "rule:distanceX"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it conflicts with what the other constraints already determine)"
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00003805394309144625,
+      "db": 2.5865354302823106e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 3285.273141042706
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000038052664895642254,
+      "db": 4.836291367382728e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 3285.273145242088
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 8,
+     "BUILT-RIGHT": 31,
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.2610055104670791,
+      "db": 0.00009965121637307561,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2427.8911386722934
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000038052719450129254,
+      "db": 6.061000590307231e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 3285.273145062855
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid input: profile loop is not closed"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ }
+]

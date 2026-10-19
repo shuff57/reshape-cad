@@ -1,0 +1,1 @@
+X-spin-tube-0p5deg                       REFUSED  occtV 39.2699 | tr-occt dV - dBb - dCom - F o/b/t 6/6/- | brep-occt dV 2.0e-15  | ANALYTIC 39.2699 dTruck - dOcct 0.0e+0 dBrep 2.0e-15  | TRUCK REFUSED: rev1 (revolve): a turn of 0.5 degrees is too thin to build as a curved part here; use a turn of 1 degree or more.  | ms 6 cpu 10

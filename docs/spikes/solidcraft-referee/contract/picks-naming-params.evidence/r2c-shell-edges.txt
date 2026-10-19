@@ -1,0 +1,22 @@
+Running as unit: run-p2280916-i23249786.scope; invocation ID: 34ee928177fd4a6693346d5b800558cb
+top|front     1.5   PASS          SC 7132.673 CF 7132.686 d -1.8e-6 | OCCT 7132.686 {} | BREP 7132.686 
+top|front     1.99  PASS          SC 7117.984 CF 7118.007 d -3.2e-6 | OCCT 7118.006 {} | BREP 7118.006 
+top|front     2.5   NO-REFERENCE  SC 6955.314 CF 7098.652 d -2.0e-2 | OCCT 7152.000 {"round1":"Rounding Round 1 at 2.5 would not fit its edge -- Round 1 is shown without it." | BREP 7152.000 
+top|front     3     NO-REFERENCE  SC 7014.026 CF 7076.779 d -8.9e-3 | OCCT 7152.000 {"round1":"Rounding Round 1 at 3 would not fit its edge -- Round 1 is shown without it."} | BREP 7152.000 
+top|front     5     NO-REFERENCE  SC 7205.924 CF 6971.825 d 3.4e-2 | OCCT 7152.000 {"round1":"Rounding Round 1 at 5 would not fit its edge -- Round 1 is shown without it."} | BREP 7152.000 
+bottom|front  1.5   PASS          SC 7132.673 CF 7132.686 d -1.8e-6 | OCCT 7132.686 {} | BREP 7132.686 
+bottom|front  1.99  PASS          SC 7117.984 CF 7118.007 d -3.2e-6 | OCCT 7118.006 {} | BREP 7118.006 
+bottom|front  2.5   PASS          SC 7098.314 CF 7098.350 d -5.1e-6 | OCCT 7098.350 {} | BREP 7098.350 
+bottom|front  3     PASS          SC 7074.693 CF 7074.744 d -7.3e-6 | OCCT 7074.743 {} | BREP 7074.743 
+bottom|front  5     PASS          SC 6937.257 CF 6937.401 d -2.1e-5 | OCCT 6937.398 {} | BREP 7152.000 
+front|left    1.5   REFUSED       SC undefined CF 7142.343 d undefined | OCCT 7142.343 {} | BREP 7142.343 | round1 (fillet): box1.edge[box1.face[-y] ^ box1.face[-x]] resolves to F1:-x|F1:-y on box1, but that 
+front|left    1.99  REFUSED       SC undefined CF 7135.003 d undefined | OCCT 7135.003 {} | BREP 7135.003 | round1 (fillet): box1.edge[box1.face[-y] ^ box1.face[-x]] resolves to F1:-x|F1:-y on box1, but that 
+front|left    2.5   REFUSED       SC undefined CF 7125.175 d undefined | OCCT 7125.175 {} | BREP 7125.175 | round1 (fillet): box1.edge[box1.face[-y] ^ box1.face[-x]] resolves to F1:-x|F1:-y on box1, but that 
+front|left    3     REFUSED       SC undefined CF 7113.372 d undefined | OCCT 7113.372 {} | BREP 7113.372 | round1 (fillet): box1.edge[box1.face[-y] ^ box1.face[-x]] resolves to F1:-x|F1:-y on box1, but that 
+front|left    5     REFUSED       SC undefined CF 7044.701 d undefined | OCCT 7044.699 {} | BREP 7152.000 | round1 (fillet): box1.edge[box1.face[-y] ^ box1.face[-x]] resolves to F1:-x|F1:-y on box1, but that 
+cyl rim       1     PASS          SC 4560.487 CF 4560.518 d -6.6e-6 | OCCT 4560.518 {} | BREP 4560.518
+cyl rim       1.5   PASS          SC 4535.880 CF 4535.951 d -1.6e-5 | OCCT 4535.951 {} | BREP 4535.951
+cyl rim       1.99  PASS          SC 4502.595 CF 4502.720 d -2.8e-5 | OCCT 4502.720 {} | BREP 4502.720
+cyl rim       2     NO-REFERENCE  SC 4501.824 CF 4501.949 d -2.8e-5 | OCCT 4580.442 {"round1":"Rounding Round 1 at 2 would not fit its edge -- Round 1 is shown without it."} | BREP 4580.442
+cyl rim       2.5   NO-REFERENCE  SC 4605.478 CF 4459.415 d 3.3e-2 | OCCT 4580.442 {"round1":"Rounding Round 1 at 2.5 would not fit its edge -- Round 1 is shown without it." | BREP 4580.442
+cyl rim       3     NO-REFERENCE  SC 4694.380 CF 4411.071 d 6.4e-2 | OCCT 4580.442 {"round1":"Rounding Round 1 at 3 would not fit its edge -- Round 1 is shown without it."} | BREP 4580.442

@@ -1,0 +1,1 @@
+revolution__top-45-thin                  PASS     occtV 475.1659 | tr-occt dV 1.0e-4 dBb 2.6e-14 dCom 2.9e-5 F o/b/t 6/6/6 | brep-occt dV 3.8e-14 | FC: occt 9.9e-15 brep 2.8e-14 truck 1.0e-4 dCom 1.4e-3 F 6     | ms 230 cpu 559

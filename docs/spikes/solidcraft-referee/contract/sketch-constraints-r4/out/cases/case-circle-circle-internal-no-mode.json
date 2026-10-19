@@ -1,0 +1,80 @@
+[
+ {
+  "id": "circle-circle-internal-no-mode",
+  "feats": [
+   "tangent:circle-circle internal"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ }
+]

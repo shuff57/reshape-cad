@@ -1,0 +1,1 @@
+X-groove-box-top-slot-through-top-90     PASS     occtV 143532.6881 | tr-occt dV 3.2e-7 dBb 0.0e+0 dCom 5.9e-8 F o/b/t 11/11/11 | brep-occt dV 1.3e-14      | ms 405 cpu 673

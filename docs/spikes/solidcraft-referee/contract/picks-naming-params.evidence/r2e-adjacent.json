@@ -1,0 +1,176 @@
+[
+ {
+  "label": "round top|front, then round top|right (adjacent)",
+  "src": "const b=box(40,30,20,{at:[5,-3,2]})\nround(b.edge('top','front'),2)\nround(b.edge('top','right'),2)",
+  "outcome": "REFUSED",
+  "sentence": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+  "refusals": {
+   "round2": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet."
+  },
+  "built": [
+   "box1",
+   "round1"
+  ],
+  "occt": 23924.082573145646,
+  "occtRef": {},
+  "brep": 23965.663706143594,
+  "brepRef": {
+   "round2": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it."
+  }
+ },
+ {
+  "label": "bevel top|front, then bevel top|right",
+  "src": "const b=box(40,30,20,{at:[5,-3,2]})\nbevel(b.edge('top','front'),2)\nbevel(b.edge('top','right'),2)",
+  "outcome": "REFUSED",
+  "sentence": "bevel2 is not built: bevel1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+  "refusals": {
+   "bevel2": "bevel2 is not built: bevel1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet."
+  },
+  "built": [
+   "box1",
+   "bevel1"
+  ],
+  "occt": 23862.666666666664,
+  "occtRef": {},
+  "brep": 23862.666666666668,
+  "brepRef": {}
+ },
+ {
+  "label": "round top|front, then bevel top|right",
+  "src": "const b=box(40,30,20,{at:[5,-3,2]})\nround(b.edge('top','front'),2)\nbevel(b.edge('top','right'),2)",
+  "outcome": "REFUSED",
+  "sentence": "bevel1 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+  "refusals": {
+   "bevel1": "bevel1 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet."
+  },
+  "built": [
+   "box1",
+   "round1"
+  ],
+  "occt": 23869.47491595407,
+  "occtRef": {},
+  "brep": 23965.663706143594,
+  "brepRef": {
+   "bevel1": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain box before you hollow, round or cut it -- bevel1 is shown without it."
+  }
+ },
+ {
+  "label": "round top|front, then round front|right (vertical, shares corner)",
+  "src": "const b=box(40,30,20,{at:[5,-3,2]})\nround(b.edge('top','front'),2)\nround(b.edge('front','right'),2)",
+  "outcome": "REFUSED",
+  "sentence": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+  "refusals": {
+   "round2": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet."
+  },
+  "built": [
+   "box1",
+   "round1"
+  ],
+  "occt": 23924.082573145646,
+  "occtRef": {},
+  "brep": 23965.663706143594,
+  "brepRef": {
+   "round2": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it."
+  }
+ },
+ {
+  "label": "round top|front, then round bottom|back (no shared corner)",
+  "src": "const b=box(40,30,20,{at:[5,-3,2]})\nround(b.edge('top','front'),2)\nround(b.edge('bottom','back'),2)",
+  "outcome": "PASS",
+  "refusals": {},
+  "built": [
+   "box1",
+   "round1",
+   "round2"
+  ],
+  "sc": 23931.2823694766,
+  "occt": 23931.327412331495,
+  "occtRef": {},
+  "brep": 23931.327412287184,
+  "brepRef": {}
+ },
+ {
+  "label": "round top|front, then round top|back (parallel, no shared corner)",
+  "src": "const b=box(40,30,20,{at:[5,-3,2]})\nround(b.edge('top','front'),2)\nround(b.edge('top','back'),2)",
+  "outcome": "PASS",
+  "refusals": {},
+  "built": [
+   "box1",
+   "round1",
+   "round2"
+  ],
+  "sc": 23931.2823694766,
+  "occt": 23931.327412325867,
+  "occtRef": {},
+  "brep": 23931.32741228718,
+  "brepRef": {}
+ },
+ {
+  "label": "round top|front, then round bottom|front (parallel, no shared corner)",
+  "src": "const b=box(40,30,20,{at:[5,-3,2]})\nround(b.edge('top','front'),2)\nround(b.edge('bottom','front'),2)",
+  "outcome": "PASS",
+  "refusals": {},
+  "built": [
+   "box1",
+   "round1",
+   "round2"
+  ],
+  "sc": 23931.282366475905,
+  "occt": 23931.32741232235,
+  "occtRef": {},
+  "brep": 23931.32741228718,
+  "brepRef": {}
+ },
+ {
+  "label": "round([top|front, top|right], 2) list",
+  "src": "const b=box(40,30,20,{at:[5,-3,2]})\nround([b.edge('top','front'), b.edge('top','right')], 2)",
+  "outcome": "REFUSED",
+  "sentence": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+  "refusals": {
+   "round2": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet."
+  },
+  "built": [
+   "box1",
+   "round1"
+  ],
+  "occt": 23924.082573145646,
+  "occtRef": {},
+  "brep": 23965.663706143594,
+  "brepRef": {
+   "round2": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it."
+  }
+ },
+ {
+  "label": "round of whole box round(b,2)",
+  "src": "const b=box(40,30,20,{at:[5,-3,2]})\nround(b,2)",
+  "outcome": "PASS",
+  "refusals": {},
+  "built": [
+   "box1"
+  ],
+  "sc": 23701.50183655124,
+  "occt": 23701.687229771593,
+  "occtRef": {},
+  "brep": 23701.687229558313,
+  "brepRef": {}
+ },
+ {
+  "label": "round(b.edge(top,front)) at origin box then top|right",
+  "src": "const b=box(40,30,20)\nround(b.edge('top','front'),2)\nround(b.edge('top','right'),2)",
+  "outcome": "REFUSED",
+  "sentence": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+  "refusals": {
+   "round2": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet."
+  },
+  "built": [
+   "box1",
+   "round1"
+  ],
+  "occt": 23924.082573145646,
+  "occtRef": {},
+  "brep": 23965.66370614359,
+  "brepRef": {
+   "round2": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it."
+  }
+ }
+]

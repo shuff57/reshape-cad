@@ -1,0 +1,20 @@
+fc-chamfer-edge__top-front         PASS     OCCTvol 11920.0000 brep 3.1e-16 truck dV 3.1e-16 dCom 7.0e-17 faces O/B/T 7/7/7    
+fc-chamfer-edge__bottom-back       PASS     OCCTvol 23820.0000 brep 0.0e+0 truck dV 0.0e+0 dCom 3.3e-17 faces O/B/T 7/7/7    
+fc-chamfer-edge__vertical-front-left PASS     OCCTvol 11920.0000 brep 0.0e+0 truck dV 0.0e+0 dCom 3.5e-17 faces O/B/T 7/7/7    
+fc-chamfer-edge__top-right-offcentre PASS     OCCTvol 11966.2500 brep 1.5e-16 truck dV 1.5e-16 dCom 3.5e-17 faces O/B/T 7/7/7    
+fc-chamfer-edge__large-size        PASS     OCCTvol 10380.0000 brep 1.8e-16 truck dV 0.0e+0 dCom 7.0e-17 faces O/B/T 7/7/7    
+fc-chamfer-edge__thin-sliver       PASS     OCCTvol 1797.0000 brep 2.5e-16 truck dV 2.5e-16 dCom 7.1e-17 faces O/B/T 7/7/7    
+fc-fillet-edge__top-front          PASS     OCCTvol 11922.7433 brep 1.5e-12 truck dV 4.2e-6 dCom 1.2e-6 faces O/B/T 7/7/7    
+fc-fillet-edge__top-back-small     PASS     OCCTvol 11997.8540 brep 3.3e-13 truck dV 2.6e-7 dCom 7.7e-8 faces O/B/T 7/7/7    
+fc-fillet-edge__vertical-front-left PASS     OCCTvol 11946.3495 brep 1.1e-12 truck dV 2.9e-6 dCom 1.0e-6 faces O/B/T 7/7/7    
+fc-fillet-edge__bottom-right-tall  PASS     OCCTvol 29974.2478 brep 6.0e-13 truck dV 5.6e-7 dCom 1.9e-7 faces O/B/T 7/7/7    
+fc-fillet-edge__offcentre-block    PASS     OCCTvol 14296.9911 brep 1.6e-12 truck dV 4.7e-6 dCom 1.7e-6 faces O/B/T 7/7/7    
+fc-fillet-edge__half-the-height    PASS     OCCTvol 11839.0486 brep 2.0e-12 truck dV 8.9e-6 dCom 3.2e-6 faces O/B/T 7/7/7    
+fc-chamfer-edge__disc-rim          PASS     OCCTvol 14034.6725 brep 1.3e-16 truck dV 9.3e-5 dCom 6.3e-7 faces O/B/T 4/4/4    
+fc-fillet-edge__disc-rim           PASS     OCCTvol 14058.6734 brep 3.9e-16 truck dV 2.9e-5 dCom 1.3e-7 faces O/B/T 4/4/4    
+fc-fillet-edge__radius-too-big     REFUSED  OCCTvol 12000.0000 brep 1.5e-16 truck dV - dCom - faces O/B/T 6/6/-   REFUSED: round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [20, 0, 16.366197723675814]: the nearest edge is 6.366 mm away 
+fc-fillet-edge__L-prism-top-right  PASS     OCCTvol 4491.4159 brep 8.9e-13 truck dV 1.3e-6 dCom 5.5e-7 faces O/B/T 9/9/9    
+fc-chamfer-edge__L-prism-top-front PASS     OCCTvol 4440.0000 brep 2.0e-16 truck dV 2.0e-16 dCom 8.8e-17 faces O/B/T 9/9/9    
+fcb-fillet-edge                    PASS     OCCTvol 11980.6858 brep 7.7e-13 truck dV 1.1e-6 dCom 3.9e-7 faces O/B/T 7/7/7    
+fcb-fillet-after-pocket            REFUSED  OCCTvol 11593.3702 brep 2.0e-4 truck dV - dCom - faces O/B/T 16/15/-   REFUSED: round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces) 
+EXIT 0 last: solidcraft run: [{"command":"sketch.create","params":{"name":"sk_sk1_0","plane":{"origin":[0,0,0],"x_dir":[1,0,0],"y_dir":[0,1,0]}}},{"command":"sketch.line","params":{"points":[[0,0],[40,0],[40,30],[0,30]],"closed":true}},{"command":"sketch.finish","params":{}},{"command":"solid.extrude","params":{"distance":10,"sketch":"sk_sk1_0","operation":"new","body_name":"b_pull1"}},{"command":"sketch.create","params":{"name":"sk_sk2_1","plane":{"origin":[0,0,10],"x_dir":[1,0,0],"y_dir":[0,1,0]}}},{"command":"sketch.line","params":{"points":[[15,10],[25,10],[25,20],[15,20]],"closed":true}},{"command":"sketch.finish","p

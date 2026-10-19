@@ -1,0 +1,62 @@
+whole-shape draft (4 outer side faces, one solid.draft call) of a box hollowed open:top, 40x30x20, pull z
+wall 2 neutral -10 angle 1: engine 6666.5081 (11 faces)   outer-drafted-minus-clipped-cavity 6666.5081   hollow before draft 7152.0000
+wall 2 neutral -10 angle 2: engine 6187.2260 (11 faces)   outer-drafted-minus-clipped-cavity 6187.2260   hollow before draft 7152.0000
+wall 2 neutral -10 angle 3: engine 5713.8790 (11 faces)   outer-drafted-minus-clipped-cavity 5713.8790   hollow before draft 7152.0000
+wall 2 neutral -10 angle 5: engine 4783.9629 (11 faces)   outer-drafted-minus-clipped-cavity 4783.9629   hollow before draft 7152.0000
+wall 2 neutral -10 angle 10: engine 3146.3828 (10 faces)   outer-drafted-minus-clipped-cavity 3338.9716   hollow before draft 7152.0000   <-- ENGINE DISAGREES
+wall 2 neutral -10 angle -3: engine 8648.7146 (11 faces)   outer-drafted-minus-clipped-cavity 8648.7146   hollow before draft 7152.0000
+wall 2 neutral -10 angle -10: engine 12420.7950 (11 faces)   outer-drafted-minus-clipped-cavity 12420.7950   hollow before draft 7152.0000
+wall 2 neutral 0 angle 1: engine 7152.8125 (11 faces)   outer-drafted-minus-clipped-cavity 7152.8125   hollow before draft 7152.0000
+wall 2 neutral 0 angle 2: engine 7155.2519 (11 faces)   outer-drafted-minus-clipped-cavity 7155.2519   hollow before draft 7152.0000
+wall 2 neutral 0 angle 3: engine 7159.3242 (11 faces)   outer-drafted-minus-clipped-cavity 7159.3242   hollow before draft 7152.0000
+wall 2 neutral 0 angle 5: engine 7172.4114 (11 faces)   outer-drafted-minus-clipped-cavity 7172.4114   hollow before draft 7152.0000
+wall 2 neutral 0 angle 10: engine 7234.9099 (11 faces)   outer-drafted-minus-clipped-cavity 7234.9099   hollow before draft 7152.0000
+wall 2 neutral 0 angle -3: engine 7159.3242 (11 faces)   outer-drafted-minus-clipped-cavity 7159.3242   hollow before draft 7152.0000
+wall 2 neutral 0 angle -10: engine 7234.9099 (11 faces)   outer-drafted-minus-clipped-cavity 7234.9099   hollow before draft 7152.0000
+wall 2 neutral 10 angle 1: engine 7643.9917 (11 faces)   outer-drafted-minus-clipped-cavity 7643.9917   hollow before draft 7152.0000
+wall 2 neutral 10 angle 2: engine 8142.7891 (11 faces)   outer-drafted-minus-clipped-cavity 8142.7891   hollow before draft 7152.0000
+wall 2 neutral 10 angle 3: engine 8648.7146 (11 faces)   outer-drafted-minus-clipped-cavity 8648.7146   hollow before draft 7152.0000
+wall 2 neutral 10 angle 5: engine 9683.3281 (11 faces)   outer-drafted-minus-clipped-cavity 9683.3281   hollow before draft 7152.0000
+wall 2 neutral 10 angle 10: engine 12420.7950 (11 faces)   outer-drafted-minus-clipped-cavity 12420.7950   hollow before draft 7152.0000
+wall 2 neutral 10 angle -3: engine 5713.8790 (11 faces)   outer-drafted-minus-clipped-cavity 5713.8790   hollow before draft 7152.0000
+wall 2 neutral 10 angle -10: engine 2546.4841 (11 faces)   outer-drafted-minus-clipped-cavity 3018.7863   hollow before draft 7152.0000   <-- ENGINE DISAGREES
+wall 3 neutral -10 angle 1: engine 9642.5081 (11 faces)   outer-drafted-minus-clipped-cavity 9642.5081   hollow before draft 10128.0000
+wall 3 neutral -10 angle 2: engine 9163.2260 (11 faces)   outer-drafted-minus-clipped-cavity 9163.2260   hollow before draft 10128.0000
+wall 3 neutral -10 angle 3: engine 8689.8790 (11 faces)   outer-drafted-minus-clipped-cavity 8689.8790   hollow before draft 10128.0000
+wall 3 neutral -10 angle 5: engine 7759.9629 (11 faces)   outer-drafted-minus-clipped-cavity 7759.9629   hollow before draft 10128.0000
+wall 3 neutral -10 angle 10: engine 5722.3828 (10 faces)   outer-drafted-minus-clipped-cavity 5612.5753   hollow before draft 10128.0000   <-- ENGINE DISAGREES
+wall 3 neutral -10 angle -3: engine 11624.7146 (11 faces)   outer-drafted-minus-clipped-cavity 11624.7146   hollow before draft 10128.0000
+wall 3 neutral -10 angle -10: engine 15396.7950 (11 faces)   outer-drafted-minus-clipped-cavity 15396.7950   hollow before draft 10128.0000
+wall 3 neutral 0 angle 1: engine 10128.8125 (11 faces)   outer-drafted-minus-clipped-cavity 10128.8125   hollow before draft 10128.0000
+wall 3 neutral 0 angle 2: engine 10131.2519 (11 faces)   outer-drafted-minus-clipped-cavity 10131.2519   hollow before draft 10128.0000
+wall 3 neutral 0 angle 3: engine 10135.3242 (11 faces)   outer-drafted-minus-clipped-cavity 10135.3242   hollow before draft 10128.0000
+wall 3 neutral 0 angle 5: engine 10148.4114 (11 faces)   outer-drafted-minus-clipped-cavity 10148.4114   hollow before draft 10128.0000
+wall 3 neutral 0 angle 10: engine 10210.9099 (11 faces)   outer-drafted-minus-clipped-cavity 10210.9099   hollow before draft 10128.0000
+wall 3 neutral 0 angle -3: engine 10135.3242 (11 faces)   outer-drafted-minus-clipped-cavity 10135.3242   hollow before draft 10128.0000
+wall 3 neutral 0 angle -10: engine 10210.9099 (11 faces)   outer-drafted-minus-clipped-cavity 10210.9099   hollow before draft 10128.0000
+wall 3 neutral 10 angle 1: engine 10619.9917 (11 faces)   outer-drafted-minus-clipped-cavity 10619.9917   hollow before draft 10128.0000
+wall 3 neutral 10 angle 2: engine 11118.7891 (11 faces)   outer-drafted-minus-clipped-cavity 11118.7891   hollow before draft 10128.0000
+wall 3 neutral 10 angle 3: engine 11624.7146 (11 faces)   outer-drafted-minus-clipped-cavity 11624.7146   hollow before draft 10128.0000
+wall 3 neutral 10 angle 5: engine 12659.3281 (11 faces)   outer-drafted-minus-clipped-cavity 12659.3281   hollow before draft 10128.0000
+wall 3 neutral 10 angle 10: engine 15396.7950 (11 faces)   outer-drafted-minus-clipped-cavity 15396.7950   hollow before draft 10128.0000
+wall 3 neutral 10 angle -3: engine 8689.8790 (11 faces)   outer-drafted-minus-clipped-cavity 8689.8790   hollow before draft 10128.0000
+wall 3 neutral 10 angle -10: engine 5522.4841 (11 faces)   outer-drafted-minus-clipped-cavity 5522.4841   hollow before draft 10128.0000
+whole-shape draft with the cavity walls too (4 outer + 4 inner side faces), wall 2, open:top, 40x30x20, neutral -10 / 0 / 10
+neutral -10 angle 1: engine 6234.7047 (11 faces)
+neutral -10 angle 3: engine 4440.2726 (10 faces)
+neutral -10 angle 5: engine 3214.1779 (10 faces)
+neutral -10 angle 10: engine -109.3510 (10 faces)   <-- NEGATIVE VOLUME, ok:true
+neutral -10 angle -3: engine 9906.1629 (11 faces)
+neutral -10 angle -10: engine 16418.6671 (11 faces)
+neutral 0 angle 1: engine 7113.2385 (11 faces)
+neutral 0 angle 3: engine 7036.8129 (11 faces)
+neutral 0 angle 5: engine 6961.7057 (11 faces)
+neutral 0 angle 10: engine 7450.3456 (10 faces)
+neutral 0 angle -3: engine 7270.7613 (11 faces)
+neutral 0 angle -10: engine 7565.7918 (11 faces)
+neutral 10 angle 1: engine 7992.2599 (11 faces)
+neutral 10 angle 3: engine 9680.1247 (11 faces)
+neutral 10 angle 5: engine 11381.2808 (11 faces)
+neutral 10 angle 10: engine 15721.0862 (11 faces)
+neutral 10 angle -3: engine 4639.7541 (11 faces)
+neutral 10 angle -10: engine 1237.3375 (11 faces)

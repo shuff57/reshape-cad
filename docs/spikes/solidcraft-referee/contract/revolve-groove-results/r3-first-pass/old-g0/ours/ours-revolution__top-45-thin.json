@@ -1,0 +1,21 @@
+{
+ "id": "revolution__top-45-thin",
+ "outcome": "built",
+ "volume": 475.1182225292952,
+ "faces": 6,
+ "bbox": [
+  21.213203435596398,
+  -2.5757174171303632e-14,
+  0,
+  30.5,
+  21.5667568261897,
+  40
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[30,0],[30.5,0],[30.5,40],[30,40]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-45,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

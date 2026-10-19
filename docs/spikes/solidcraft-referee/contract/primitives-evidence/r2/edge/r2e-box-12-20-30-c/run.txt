@@ -1,0 +1,2 @@
+r2e-box-12-20-30-c                                    dVol 1.4e-4 dBbox 9.3e-17 dCom 2.2e-13 dAn 1.4e-4 faces 18/26
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/edge/r2e-box-12-20-30-c/primitives-measure.json

@@ -1,0 +1,33 @@
+[
+ {
+  "id": "plate-with-hole-default-profiles",
+  "feats": [
+   "nested loops (hole) profile selection",
+   "rule:diameter"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.08523408578302993,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 10000
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 14
+  }
+ }
+]

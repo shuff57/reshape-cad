@@ -1,0 +1,1 @@
+fzc2-5-boxC-front-circle-180             NO-OCCT OCCT: OCCT built nothing | truck REFUSED groove1 (groove): a ring whose outline has a curve (a circle or a rounded corner) takes a minute or more to cut here, so it is not built; give the ring straight sides | brep REFUSED groove groove1: a circle sketch has no outline to spin  | ms 23 cpu 63

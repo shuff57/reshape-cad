@@ -1,0 +1,1 @@
+R3-boxwall-flat-thin-90                  PASS     occtV 69787.1926 | tr-occt dV 4.3e-6 dBb 6.5e-15 dCom 1.1e-6 F o/b/t 11/11/11 | brep-occt dV 2.5e-12      | ms 3196 cpu 3534

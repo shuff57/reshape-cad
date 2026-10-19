@@ -1,0 +1,54 @@
+Running as unit: run-p1891095-i1871786.scope; invocation ID: 551c97bf15b546e4a810689a11d5e31c
+--- pocket rim / wall
+rim(sk2) round 1                         REFUSED: round4 is not built because round3 could not be built, so round4 is shown without it.   | OCCT:refusals {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} BREP:builds V=11591.0324
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]
+rim(sk2) bevel 1                         REFUSED: bevel4 is not built because bevel3 could not be built, so bevel4 is shown without it.   | OCCT:refusals {"bevel2":"Bevel 2's edge could not be found -- Bevel 2 is shown without it."} BREP:builds V=11578.6667
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]
+edge(top, wall 1) round 1                PASS[OCCT] V=11597.852573 (OCCT 11597.853982, brep 11597.853982) dVol 1.2e-7 dBbox 3.6e-16 dCOM 1.3e-8 faces occt/truck/brep 12/12/12 | ctl {"refused":"solid.fillet: invalid parameters for `solid.fillet`: no edge"} 
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]
+edge(top, wall 2) round 1                PASS[OCCT] V=11597.852575 (OCCT 11597.853982, brep 11597.853982) dVol 1.2e-7 dBbox 0.0e+0 dCOM 1.3e-8 faces occt/truck/brep 12/12/12 | ctl {"refused":"solid.fillet: invalid parameters for `solid.fillet`: no edge"} 
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]
+edge(top, wall 3) round 1                PASS[OCCT] V=11597.852575 (OCCT 11597.853982, brep 11597.853982) dVol 1.2e-7 dBbox 0.0e+0 dCOM 1.3e-8 faces occt/truck/brep 12/12/12 | ctl {"refused":"solid.fillet: invalid parameters for `solid.fillet`: no edge"} 
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]
+edge(top, wall 4) round 1                PASS[OCCT] V=11597.852573 (OCCT 11597.853982, brep 11597.853982) dVol 1.2e-7 dBbox 3.6e-16 dCOM 1.3e-8 faces occt/truck/brep 12/12/12 | ctl {"refused":"solid.fillet: invalid parameters for `solid.fillet`: no edge"} 
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]
+edge(wall 1, wall 2) round 1             PASS[OCCT] V=11600.858971 (OCCT 11600.858407, brep 11600.000000) dVol 4.9e-8 dBbox 7.1e-16 dCOM 4.4e-9 faces occt/truck/brep 12/12/11 | ctl {"refused":"solid.fillet: invalid parameters for `solid.fillet`: no edge"} 
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge1]]
+edge(wall 2, wall 3) round 1             PASS[OCCT] V=11600.858971 (OCCT 11600.858407, brep 11600.000000) dVol 4.9e-8 dBbox 5.3e-16 dCOM 4.4e-9 faces occt/truck/brep 12/12/11 | ctl {"refused":"solid.fillet: invalid parameters for `solid.fillet`: no edge"} 
+    names: pocket1.edge[pull2.face[sk2.edge1] ^ pull2.face[sk2.edge2]]
+edge(wall 3, wall 4) round 1             PASS[OCCT] V=11600.858970 (OCCT 11600.858407, brep 11600.000000) dVol 4.9e-8 dBbox 7.1e-16 dCOM 4.4e-9 faces occt/truck/brep 12/12/11 | ctl {"refused":"solid.fillet: invalid parameters for `solid.fillet`: no edge"} 
+    names: pocket1.edge[pull2.face[sk2.edge2] ^ pull2.face[sk2.edge3]]
+edge(wall 4, wall 1) round 1             PASS[OCCT] V=11600.858970 (OCCT 11600.858407, brep 11600.000000) dVol 4.8e-8 dBbox 3.6e-16 dCOM 4.4e-9 faces occt/truck/brep 12/12/11 | ctl {"refused":"solid.fillet: invalid parameters for `solid.fillet`: no edge"} 
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge3]]
+edge(wall1, wall3) opposite walls        REFUSED: round1 is not built: wall 1 and wall 3 of the pocket do not touch, so there is no edge between them -- name two walls that meet.   | OCCT:refusals {"round1":"Round 1's edge could not be found -- Round 1 is shown without it."} BREP:refusals {"round1":"round1's edge could not be found -- round1 is shown without it."}
+    names: pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge2]]
+edge(wall1, wall1)                           SCRIPT ERROR: .edge() needs two DIFFERENT faces to name the edge between them.
+wall(sk2, 5) out of range                    SCRIPT ERROR: .wall() needs a side number from 1 to 4 (the sketch has 4), and you gave it 5.
+wall(sk2, 0)                                 SCRIPT ERROR: .wall() needs a side number from 1 to 4 (the sketch has 4), and you gave it 0.
+wall of non-pocket sketch                    SCRIPT ERROR: .wall() names a face a pocket cut, and no pocket(...) was cut from that sketch.
+edge(bottom, wall 1) (pocket floor edge?) REFUSED: round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.   | OCCT:refusals {"round1":"Round 1's edge could not be found -- Round 1 is shown without it."} BREP:refusals {"round1":"round1's edge could not be found -- round1 is shown without it."}
+    names: pocket1.edge[pocket1.same[pull1.face[-z]] ^ pull2.face[sk2.edge0]]
+edge(front, wall 1)                      REFUSED: round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.   | OCCT:refusals {"round1":"Round 1's edge could not be found -- Round 1 is shown without it."} BREP:refusals {"round1":"round1's edge could not be found -- round1 is shown without it."}
+    names: pocket1.edge[pocket1.same[pull1.face[-y]] ^ pull2.face[sk2.edge0]]
+rim thru pocket (deep 10)                REFUSED: round4 is not built because round3 could not be built, so round4 is shown without it.   | OCCT:refusals {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} BREP:builds V=10991.0324
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]
+rim off-centre pocket                    REFUSED: round4 is not built because round3 could not be built, so round4 is shown without it.   | OCCT:refusals {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} BREP:builds V=11736.7493
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]
+rim round too big (r 5 in 10 pocket)     REFUSED: round4 is not built because round3 could not be built, so round4 is shown without it.   | OCCT:refusals {"round1":"Rounding Round 1 at 5 would not fit its edge -- Round 1 is shown without it.","round2":"R BREP:refusals {"round1":"Rounding round1 at 5 would not fit its edge -- round1 is shown without it.","round2":"Rou
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]
+rim round 2 deep 4                       REFUSED: round4 is not built because round3 could not be built, so round4 is shown without it.   | OCCT:refusals {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} BREP:builds V=11562.5959
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]
+--- pocket shapes
+triangle pocket rim                      REFUSED: round3 is not built because round2 could not be built, so round3 is shown without it.   | OCCT:refusals {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} BREP:refusals {"round1":"brep-rs can only round a straight edge between two flat faces whose ends are plain flat f
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]]
+circle pocket rim                        REFUSED: round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can.   | OCCT:builds V=11539.2192 BREP:builds V=11539.2192
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]
+circle pocket wall1 edge(top,wall)       REFUSED: round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can.   | OCCT:builds V=11539.2192 BREP:builds V=11539.2192
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]]
+rounded-corner pocket rim                REFUSED: round4 is not built because round3 could not be built, so round4 is shown without it.   | OCCT:refusals {"round2":"Round 2's edge could not be found -- Round 2 is shown without it.","round4":"Rounding Rou BREP:no shape
+    names: pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge2]] ; pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]]
+pocket from front plane: rim                 SCRIPT ERROR: .rim() finds the opening of a pocket cut down from a top-plane sketch; for another pocket name its edges one at a time with .edge(face, part.wall(sketch, n)).
+pocket from front plane: edge(front, wall1) PASS[OCCT] V=11757.852574 (OCCT 11757.853982, brep 11757.853982) dVol 1.2e-7 dBbox 2.2e-16 dCOM 3.5e-8 faces occt/truck/brep 12/12/12 | ctl {"rej":true,"dCom":"2.6e-4"} 
+    names: pocket1.edge[pocket1.same[pull1.face[-y]] ^ pull2.face[sk2.edge0]]
+pocket depth is param: wall named            SCRIPT ERROR: A pocket whose depth is a param() cannot have its walls named yet -- give pocket() a plain number for the depth, or cut it as subtract(shape, pull(sketch, -depth)).
+through pocket rim                           SCRIPT ERROR: A pocket with a direction option (through, reversed, midplane, length2, taper, direction) cannot have its walls named yet -- name the walls of a plain one-sided pocket.

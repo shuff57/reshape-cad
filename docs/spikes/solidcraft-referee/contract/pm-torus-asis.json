@@ -1,0 +1,93 @@
+{
+ "r2-torus-repeat-disjoint": {
+  "exit": 0,
+  "secs": 101,
+  "hung": false,
+  "line": "r2-torus-repeat-disjoint           PASS      OCCT 6395.5037 brep 7.1e-16 truck dVol 1.5e-4 dBbox 9.0e-5 dCOM 2.6e-7 faces O/B/T 3/3/3     ",
+  "outcome": "PASS",
+  "truckVol": 6394.565121120231,
+  "occtVol": 6395.503651905902,
+  "truckBodies": 1,
+  "dVol": 0.00014674853408789832,
+  "dBbox": 8.985074729830499e-05
+ },
+ "r2-torus-repeat-tangent": {
+  "exit": 0,
+  "secs": 80,
+  "hung": false,
+  "line": "r2-torus-repeat-tangent            PASS      OCCT 6395.5037 brep 1.4e-16 truck dVol 1.5e-4 dBbox 9.0e-5 dCOM 3.1e-7 faces O/B/T 3/3/3     ",
+  "outcome": "PASS",
+  "truckVol": 6394.565121120245,
+  "occtVol": 6395.503651905905,
+  "truckBodies": 1,
+  "dVol": 0.00014674853408619176,
+  "dBbox": 8.985074729830499e-05
+ },
+ "r2-torus-repeat-overlap": {
+  "exit": 124,
+  "secs": 900,
+  "hung": true,
+  "line": "",
+  "outcome": null
+ },
+ "r2-torus-around-disjoint": {
+  "exit": 0,
+  "secs": 51,
+  "hung": false,
+  "line": "r2-torus-around-disjoint           PASS      OCCT 6395.5037 brep 7.1e-16 truck dVol 1.5e-4 dBbox 9.0e-5 dCOM 2.2e-7 faces O/B/T 3/3/3     ",
+  "outcome": "PASS",
+  "truckVol": 6394.565121119835,
+  "occtVol": 6395.503651905903,
+  "truckBodies": 1,
+  "dVol": 0.00014674853415004338,
+  "dBbox": 8.985074729874907e-05
+ },
+ "r2-torus-around-overlap": {
+  "exit": 0,
+  "secs": 197,
+  "hung": false,
+  "line": "",
+  "outcome": "FAIL",
+  "truckVol": 6394.565121119824,
+  "occtVol": 5447.1094823746935,
+  "truckBodies": 3,
+  "dVol": 0.1739373225030319,
+  "dBbox": 8.985074729948923e-05
+ },
+ "r2-torus-mirror-lr-disjoint": {
+  "exit": 0,
+  "secs": 47,
+  "hung": false,
+  "line": "r2-torus-mirror-lr-disjoint        FAIL      OCCT 4263.6691 brep 8.5e-16 truck dVol 5.0e-1 dBbox 1.9e+0 dCOM 2.3e-1 faces O/B/T 2/2/1     ",
+  "outcome": "FAIL",
+  "truckVol": 2131.5217070399653,
+  "occtVol": 4263.6691012706,
+  "truckBodies": 1,
+  "dVol": 0.50007337426707,
+  "dBbox": 1.858528381178093
+ },
+ "r2-torus-mirror-tie": {
+  "exit": 0,
+  "secs": 52,
+  "hung": false,
+  "line": "r2-torus-mirror-tie                FAIL      OCCT 4263.6691 brep 2.1e-16 truck dVol 5.0e-1 dBbox 6.7e-1 dCOM 6.8e-2 faces O/B/T 4/2/1     ",
+  "outcome": "FAIL",
+  "truckVol": 2131.521707040342,
+  "occtVol": 4263.669101270603,
+  "truckBodies": 1,
+  "dVol": 0.5000733742669821,
+  "dBbox": 0.6666966095090243
+ },
+ "r2-torus-mirror": {
+  "exit": 0,
+  "secs": 69,
+  "hung": false,
+  "line": "r2-torus-mirror                    FAIL      OCCT 4263.6691 brep 8.5e-16 truck dVol 5.0e-1 dBbox 6.0e+0 dCOM 6.8e-2 faces O/B/T 4/2/1     ",
+  "outcome": "FAIL",
+  "truckVol": 2131.521707043741,
+  "occtVol": 4263.6691012706,
+  "truckBodies": 1,
+  "dVol": 0.5000733742661844,
+  "dBbox": 6.000269552250878
+ }
+}

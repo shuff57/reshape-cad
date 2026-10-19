@@ -1,0 +1,139 @@
+{
+ "move extra arg": {
+  "script": "const b = box(10, 10, 10);\nmove(b, [1, 2, 3], { copy: true }, 4);",
+  "errors": [],
+  "features": [
+   "box1",
+   "move1(copy)[1,2,3]"
+  ]
+ },
+ "move extra arg (no opts)": {
+  "script": "const b = box(10, 10, 10);\nmove(b, [1, 2, 3], 4);",
+  "errors": [
+   "move's extras go in a { } object at the end, like move(..., { copy: ... }). You gave it 4."
+  ],
+  "features": [
+   "box1"
+  ]
+ },
+ "turn extra arg": {
+  "script": "const b = box(10, 10, 10);\nturn(b, [1, 2, 3], 4);",
+  "errors": [
+   "turn() takes a shape and a list of angles; the third argument (4) was ignored."
+  ],
+  "features": [
+   "box1"
+  ]
+ },
+ "move copy:'yes'": {
+  "script": "const b = box(10, 10, 10);\nmove(b, [1, 2, 3], { copy: 'yes' });",
+  "errors": [],
+  "features": [
+   "box1",
+   "move1[1,2,3]"
+  ]
+ },
+ "move copy:1": {
+  "script": "const b = box(10, 10, 10);\nmove(b, [1, 2, 3], { copy: 1 });",
+  "errors": [],
+  "features": [
+   "box1",
+   "move1[1,2,3]"
+  ]
+ },
+ "move unknown option": {
+  "script": "const b = box(10, 10, 10);\nmove(b, [1, 2, 3], { keep: true });",
+  "errors": [
+   "move has no option called \"keep\". It takes copy."
+  ],
+  "features": [
+   "box1"
+  ]
+ },
+ "turn unknown option": {
+  "script": "const b = box(10, 10, 10);\nturn(b, [1, 2, 3], { keep: true });",
+  "errors": [
+   "turn() takes a shape and a list of angles; the third argument (a { } object) was ignored."
+  ],
+  "features": [
+   "box1"
+  ]
+ },
+ "turn(sketch)": {
+  "script": "const s = sketch('top');\ns.rect(10, 10);\nturn(s, [0, 0, 45]);",
+  "errors": [
+   "turn() needs a shape: turn(shape, [rx, ry, rz])."
+  ],
+  "features": [
+   "sk1"
+  ]
+ },
+ "turn(plane)": {
+  "script": "const p = plane('top');\nturn(p, [0, 0, 45]);",
+  "errors": [
+   "turn() needs a shape: turn(shape, [rx, ry, rz])."
+  ],
+  "features": [
+   "pl1"
+  ]
+ },
+ "move(sketch)": {
+  "script": "const s = sketch('top');\ns.rect(10, 10);\nmove(s, [1, 2, 3]);",
+  "errors": [
+   "move() needs a shape: move(shape, [x, y, z])."
+  ],
+  "features": [
+   "sk1"
+  ]
+ },
+ "turn 2 angles": {
+  "script": "const b = box(10, 10, 10);\nturn(b, [1, 2]);",
+  "errors": [
+   "turn's angles needs three numbers, like [x, y, z]. You gave it a list of 2."
+  ],
+  "features": [
+   "box1"
+  ]
+ },
+ "move 2 numbers": {
+  "script": "const b = box(10, 10, 10);\nmove(b, [1, 2]);",
+  "errors": [
+   "move's offset needs three numbers, like [x, y, z]. You gave it a list of 2."
+  ],
+  "features": [
+   "box1"
+  ]
+ },
+ "turn text angle": {
+  "script": "const b = box(10, 10, 10);\nturn(b, ['a', 0, 0]);",
+  "errors": [
+   "turn's angles x has to be a number, and you gave it the text \"a\"."
+  ],
+  "features": [
+   "box1"
+  ]
+ },
+ "move NaN": {
+  "script": "const b = box(10, 10, 10);\nmove(b, [NaN, 0, 0]);",
+  "errors": [
+   "move's offset x has to be a number, and you gave it NaN."
+  ],
+  "features": [
+   "box1"
+  ]
+ },
+ "turn sphere": {
+  "script": "const b = sphere(10);\nturn(b, [10, 20, 30]);",
+  "errors": [],
+  "features": [
+   "ball1"
+  ]
+ },
+ "move no shape": {
+  "script": "move([1, 2, 3]);",
+  "errors": [
+   "move() needs a shape: move(shape, [x, y, z])."
+  ],
+  "features": []
+ }
+}

@@ -1,0 +1,1 @@
+sl9-12-boxlip-top-m0                     PASS     occtV 70010.8017 | tr-occt dV 2.7e-6 dBb 3.9e-15 dCom 4.5e-7 F o/b/t 13/13/13 | brep-occt dV 8.5e-13      | ms 2593 cpu 3142

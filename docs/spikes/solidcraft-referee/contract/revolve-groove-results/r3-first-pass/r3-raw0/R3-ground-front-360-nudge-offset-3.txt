@@ -1,0 +1,1 @@
+R3-ground-front-360-nudge-offset-3       FAIL     occtV 29009.2038 | tr-occt dV 1.1e-6 dBb 1.0e-9 dCom 2.6e-7 F o/b/t 10/10/12 | brep-occt dV 7.3e-12      | ms 2854 cpu 3647

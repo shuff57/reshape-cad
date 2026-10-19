@@ -1,0 +1,350 @@
+[
+ {
+  "id": "revolution__arc-top-four-rounds",
+  "src": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(1, 1); sk.round(2, 2); sk.round(3, 3); sk.round(4, 1.5); revolve(sk, 100);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "revolution__arc-top-four-rounds",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "occt": {
+    "volume": 7746.987675182099,
+    "com": [
+     8.755530389046385,
+     10.43443479621381,
+     14.925380144216453
+    ],
+    "bbox": [
+     -3.472963553338606,
+     0,
+     -4.440892098500626e-16,
+     20,
+     20,
+     30
+    ],
+    "faces": 10,
+    "area": 2592.5780886892107,
+    "types": {
+     "other": 4,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "components": {
+     "other": 4,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 7746.987675347984,
+    "bbox": [
+     -3.472963553338606,
+     0,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 10,
+    "dVol": 2.1412781922603056e-11,
+    "dBbox": 4.440892098500626e-16,
+    "pass": true
+   },
+   "ms": 14433,
+   "load": [
+    41.2,
+    35.8
+   ],
+   "cpuMs": 15095,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "side": 1,
+      "kernelAngle": -100,
+      "nudgeDeg": null
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.arc.three_point",
+     "params": {
+      "start": [
+       10,
+       1.0000000000000002
+      ],
+      "end": [
+       11,
+       0
+      ],
+      "through": [
+       10.292893218813452,
+       0.29289321881345265
+      ]
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        11,
+        0
+       ],
+       [
+        18,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "command": "sketch.arc.three_point",
+     "params": {
+      "start": [
+       18,
+       0
+      ],
+      "end": [
+       20,
+       2.0000000000000004
+      ],
+      "through": [
+       19.414213562373096,
+       0.5857864376269053
+      ]
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        20,
+        2.0000000000000004
+       ],
+       [
+        20,
+        27
+       ]
+      ]
+     }
+    },
+    {
+     "command": "sketch.arc.three_point",
+     "params": {
+      "start": [
+       20,
+       27
+      ],
+      "end": [
+       17,
+       30
+      ],
+      "through": [
+       19.121320343559642,
+       29.121320343559642
+      ]
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        17,
+        30
+       ],
+       [
+        11.5,
+        30
+       ]
+      ]
+     }
+    },
+    {
+     "command": "sketch.arc.three_point",
+     "params": {
+      "start": [
+       11.5,
+       30
+      ],
+      "end": [
+       10,
+       28.5
+      ],
+      "through": [
+       10.439339828220179,
+       29.560660171779823
+      ]
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        10,
+        28.5
+       ],
+       [
+        10,
+        1.0000000000000002
+       ]
+      ]
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "angle": -100,
+      "operation": "new",
+      "body_name": "b_rev1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": 0.000006510042723267367,
+    "area": 2592.56121089509,
+    "faceTypes": {
+     "cylinder": 2,
+     "other": 4,
+     "plane": 4
+    },
+    "occtTypes": {
+     "other": 4,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "occtComponents": {
+     "other": 4,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    },
+    "volume": 7746.962675632606,
+    "bbox": [
+     -3.4729635533386043,
+     -1.687538997430238e-14,
+     -8.881784196326362e-16,
+     20,
+     19.999999982479157,
+     30.000000000000004
+    ],
+    "com": [
+     8.755473023725127,
+     10.434366430649266,
+     14.925385713668339
+    ],
+    "faces": 10,
+    "kernelFaces": 18,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000003227002615913091,
+    "dBbox": 8.760421721376588e-10,
+    "dCom": 0.0000015890462554231393,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "volume": 7746.98767534798,
+   "bbox": [
+    -3.472963553338607,
+    0,
+    -3.996802888650564e-15,
+    20,
+    20.000000000000007,
+    30
+   ],
+   "faces": 10,
+   "com": [
+    8.755530538940977,
+    10.43443497485123,
+    14.92538014421601
+   ]
+  },
+  "vsFc": {
+   "occt": {
+    "dVol": 2.141231232299718e-11,
+    "dBbox": 7.105427357601002e-15,
+    "faces": 10,
+    "dCom": 1.786374195233975e-7
+   },
+   "brep": {
+    "dVol": 4.695991473780552e-16,
+    "dBbox": 7.105427357601002e-15,
+    "faces": 10
+   },
+   "truck": {
+    "dVol": 0.0000032270240281563162,
+    "dBbox": 1.7520850548180533e-8,
+    "faces": 10,
+    "dCom": 0.00006854420196411581
+   }
+  },
+  "caseMs": 14803
+ }
+]

@@ -1,0 +1,1 @@
+sl9-78-boxtan-side-m0.1                  FAIL     occtV 71116.6610 | tr-occt dV 1.3e-3 dBb 3.5e-12 dCom 2.1e-4 F o/b/t 10/10/11 | brep-occt dV 7.5e-14      | ms 4649 cpu 5007

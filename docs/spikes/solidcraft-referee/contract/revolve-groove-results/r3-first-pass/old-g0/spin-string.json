@@ -1,0 +1,9 @@
+[
+ {
+  "id": "spin-string",
+  "src": "const s = sketch('top'); s.rect(10,30,{at:[15,15]}); spin(s, '90');",
+  "translator": "g0",
+  "scriptRefusal": "spin's angle has to be a number, and you gave it the text \"90\".",
+  "scriptSentence": "spin's angle has to be a number, and you gave it the text \"90\"."
+ }
+]

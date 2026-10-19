@@ -1,0 +1,155 @@
+[
+ {
+  "id": "r2-big-cone-1000000",
+  "feature": "oversize",
+  "note": "",
+  "script": "cone(1000000, 1000000);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "radius": 500000,
+     "height": 1000000,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "cone",
+  "analytic": 261799387799149400,
+  "occt": {
+   "volume": 261799387799149400,
+   "com": [
+    -1.0013163216451636e-10,
+    -9.880549159653318e-12,
+    -250000.00000000006
+   ],
+   "bbox": [
+    -500000,
+    -500000,
+    -500000,
+    500000,
+    500000,
+    500000
+   ],
+   "faces": 2,
+   "types": {
+    "plane": 1,
+    "cone": 1
+   }
+  },
+  "brep": {
+   "volume": 261799387799149400,
+   "bbox": [
+    -500000,
+    -500000,
+    -500000,
+    500000,
+    500000,
+    500000
+   ],
+   "faces": 2,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -500000
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       500000,
+       0
+      ],
+      [
+       0,
+       1000000
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 130884246589327300,
+   "bbox": [
+    -500000,
+    -499993.7385816436,
+    -500000,
+    500000,
+    499993.7385816435,
+    -500000
+   ],
+   "com": [
+    -1.6153347112127292e-11,
+    -6.182147618362144e-11,
+    -375000.0000000001
+   ],
+   "faces": 1,
+   "faceTypes": {
+    "plane": 1
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.5000590043788004,
+   "dBboxOcct": 0.5773502691896257,
+   "dComOcct": 0.07216878364870326,
+   "facesOcct": 2,
+   "typesOcct": {
+    "plane": 1,
+    "cone": 1
+   },
+   "dVolAnalytic": 0.5000590043788004,
+   "dVolBrep": 0.5000590043788004,
+   "tol": 1e-9
+  },
+  "planar": false,
+  "ms": 1292
+ }
+]

@@ -1,0 +1,21 @@
+{
+ "id": "boolean-cylinder-intersect-cylinder",
+ "outcome": "built",
+ "volume": 3515.6576903354476,
+ "faces": 4,
+ "bbox": [
+  2.000011932209803,
+  -7.937253933193784,
+  -15.000000000000256,
+  11.999374074864061,
+  7.937253933193866,
+  15.000000000000007
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "cylinder",
+  "combine"
+ ],
+ "scriptSource": "[{\"command\":\"solid.cylinder\",\"params\":{\"radius\":12,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_c1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":8,\"height\":30,\"base\":[10,0,-15],\"axis\":\"Z\",\"body_name\":\"b_c2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_c1\",\"tools\":[\"b_c2\"],\"operation\":\"intersect\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

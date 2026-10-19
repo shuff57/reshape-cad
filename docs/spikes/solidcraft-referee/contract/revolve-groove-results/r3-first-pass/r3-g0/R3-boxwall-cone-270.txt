@@ -1,0 +1,1 @@
+R3-boxwall-cone-270                      FAIL     occtV 68674.0335 | tr-occt dV 5.3e-6 dBb 3.4e-4 dCom 1.5e-6 F o/b/t 13/-/13 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it. | ms 16826 cpu 17177

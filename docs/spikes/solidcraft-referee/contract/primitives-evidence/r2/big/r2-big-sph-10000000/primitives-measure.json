@@ -1,0 +1,94 @@
+[
+ {
+  "id": "r2-big-sph-10000000",
+  "feature": "oversize",
+  "note": "",
+  "script": "sphere(10000000);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "ball1",
+     "kind": "sphere",
+     "radius": 5000000,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "sphere",
+  "analytic": 523598775598298800000,
+  "occt": {
+   "volume": 523598775598299350000,
+   "com": [
+    -6.215512361491607e-10,
+    -3.3500744908799975e-10,
+    -3.639984783359996e-10
+   ],
+   "bbox": [
+    -5000000,
+    -5000000,
+    -5000000,
+    5000000,
+    5000000,
+    5000000
+   ],
+   "faces": 1,
+   "types": {
+    "sphere": 1
+   }
+  },
+  "brep": {
+   "refused": "sphere ball1: it has a size or position of 5.000e6, past the 1e6 brep-rs builds exactly -- ball1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 5000000,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 0,
+   "bbox": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "com": [
+    null,
+    null,
+    null
+   ],
+   "faces": 0,
+   "faceTypes": {},
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 1,
+   "dBboxOcct": 0.2886751345948129,
+   "dComOcct": null,
+   "facesOcct": 1,
+   "typesOcct": {
+    "sphere": 1
+   },
+   "dVolAnalytic": 1,
+   "tol": 1e-9
+  },
+  "planar": false,
+  "ms": 2190
+ }
+]

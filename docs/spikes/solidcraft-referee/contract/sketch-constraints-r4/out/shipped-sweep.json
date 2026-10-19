@@ -1,0 +1,3985 @@
+[
+ {
+  "id": "rect-origin-dims",
+  "feats": [
+   "rule:coincident",
+   "rule:horizontal",
+   "rule:vertical",
+   "rule:distance",
+   "point-ref:a/b/c ends",
+   "point-ref:origin -1",
+   "value:number",
+   "dimensioned rectangle"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.6370904631912707e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999902
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.2581343374525507e-14,
+      "db": 3.434843370848582e-35,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.9999999999245
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.6522487082208197e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999901
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 7.477562273076425e-13,
+      "db": 1.896532759724984e-34,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.9999999955135
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.77351466845721e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999894
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ },
+ {
+  "id": "rect-corner-dx-dy-positive",
+  "feats": [
+   "rule:distanceX",
+   "rule:distanceY",
+   "dimensioned rectangle",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.1827872842550278e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999869
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.4253192047278088e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.9999999998545
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.0766795690481862e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999875
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 21,
+     "REFUSED": 12,
+     "BUILT-OTHER-POSE": 7
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.228706191293895e-14,
+      "db": 1.1842378929335002e-15,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999806
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceX 5 (brep-rs) but the points start negative; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     },
+     {
+      "cls": "BUILT-OTHER-POSE",
+      "dv": 3.4071642100267735e-11,
+      "db": 2,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.99999979557
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "rect-corner-dx-dy-negative",
+  "feats": [
+   "rule:distanceX",
+   "rule:distanceY",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.621932218161722e-14,
+      "db": 4.440892098500626e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999903
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.7431981783981123e-14,
+      "db": 4.440892098500626e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999895
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.530982747984429e-14,
+      "db": 4.440892098500626e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999908
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.1221543041368327e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999873
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.2581343374525507e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.9999999999245
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "rect-diagonal-two-point-distance",
+  "feats": [
+   "rule:distance"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.489493221626617e-12,
+      "db": 1.0658141036401502e-15,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2399.999999989225
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.6210500436718575e-12,
+      "db": 4.457088608185484e-36,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2399.9999999937095
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.768653454647089e-12,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2399.9999999933552
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.941712141871297e-12,
+      "db": 7.882761110522552e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.00000000946
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.249169822083786e-12,
+      "db": 6.498090954210056e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.000000007798
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ },
+ {
+  "id": "circle-radius-dx-dy",
+  "feats": [
+   "rule:radius",
+   "rule:distanceX",
+   "rule:distanceY",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812272733947,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644701
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812272733947,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644701
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812272733947,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644701
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812272733947,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644701
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812272733947,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644701
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 3
+  }
+ },
+ {
+  "id": "circle-diameter-origin-c",
+  "feats": [
+   "rule:diameter",
+   "rule:coincident",
+   "point-ref:a/b/c ends",
+   "point-ref:origin -1"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00007228540952572688,
+      "db": 2.9605947323337506e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 4523.566409680702
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00007228540952572688,
+      "db": 2.9605947323337506e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 4523.566409680702
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00007228540952572688,
+      "db": 2.9605947323337506e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 4523.566409680702
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00007228540952572688,
+      "db": 2.9605947323337506e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 4523.566409680702
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00007228540952572688,
+      "db": 2.9605947323337506e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 4523.566409680702
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 2
+  }
+ },
+ {
+  "id": "rect-parallel-perpendicular-axes",
+  "feats": [
+   "rule:parallel",
+   "rule:perpendicular",
+   "axis-ref:X/Y axes (-2,-3)"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 5.828466479821751e-11,
+      "db": 2.9096796162284843e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999650292
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 6.389488286610383e-11,
+      "db": 3.5567855567491985e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999616631
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 6.464203276361029e-11,
+      "db": 3.648717452503504e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999612148
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 7.220463279130247e-11,
+      "db": 4.664713060265058e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999566772
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 8.344674521746734e-11,
+      "db": 6.428474529570678e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.9999994993195
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ },
+ {
+  "id": "right-trapezoid-par-perp-neg-dx",
+  "feats": [
+   "rule:parallel",
+   "rule:perpendicular",
+   "rule:distanceX",
+   "right trapezoid",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.722376336128666e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4159.999999999804
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.6430371593182477e-11,
+      "db": 3.552713678800501e-15,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4159.99999993165
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.1018878117633554e-13,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4159.999999999542
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 7.192878771233014e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4159.999999999701
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.639735868453639e-11,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4159.999999931787
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ },
+ {
+  "id": "square-by-equal-lines",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 7.704397267084722e-15,
+      "db": 1.5341263613002164e-14,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840.000000000037
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.8874765572134283e-11,
+      "db": 5.7749683822872946e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840.000000139754
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 5.825275982429912e-15,
+      "db": 1.162706294880164e-14,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840.000000000028
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 9.395606423274052e-15,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4839.9999999999545
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.134493867239399e-12,
+      "db": 7.745524406674136e-31,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4839.999999989669
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ },
+ {
+  "id": "two-circles-equal",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812298839518,
+      "db": 1.7763568394002505e-15,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2261.691476763529
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812298839518,
+      "db": 1.7763568394002505e-15,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2261.691476763529
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812298839518,
+      "db": 1.7763568394002505e-15,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2261.691476763529
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 34,
+     "REFUSED": 6
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812298839518,
+      "db": 1.7763568394002505e-15,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2261.691476763529
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812298839518,
+      "db": 1.7763568394002505e-15,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2261.691476763529
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceY 5 (brep-rs) but the points start negative; solidcraft's vertical dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 6
+  }
+ },
+ {
+  "id": "triangle-apex-on-diagonal-line",
+  "feats": [
+   "rule:pointOnObject",
+   "rule:lock",
+   "rule:coincident"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 4500
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 4500
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 4500
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 4500
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 4500
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 10
+  }
+ },
+ {
+  "id": "hexagon-equal-pointOn-circle",
+  "feats": [
+   "rule:pointOnObject",
+   "rule:equal",
+   "hexagon (equal + pointOnObject)",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.4002586957203693e-15,
+      "db": 3.0279226854820447e-12,
+      "bodies": 1,
+      "faces": 8,
+      "volume": 10392.304845413279
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 9.836817337435595e-14,
+      "db": 9.60168600664544e-11,
+      "bodies": 1,
+      "faces": 8,
+      "volume": 10392.304845414286
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.4002586957203693e-15,
+      "db": 1.0635327165631327e-10,
+      "bodies": 1,
+      "faces": 8,
+      "volume": 10392.30484541325
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 2,
+     "REFUSED": 21,
+     "BUILT-RIGHT": 17
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.4999999999876957,
+      "db": 0.42264973073442125,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 5196.152422834502
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "sk has no closed profiles"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 20
+  }
+ },
+ {
+  "id": "symmetric-trapezoid-about-Y-axis",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:about axis",
+   "axis-ref:X/Y axes (-2,-3)",
+   "rule:pointOnObject",
+   "symmetric trapezoid"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.8036290485825803e-12,
+      "db": 5.1490327885073106e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4499.999999991884
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.1455990564492012e-12,
+      "db": 4.96616081591128e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4500.000000009655
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.3194135994546943e-12,
+      "db": 6.622653011954842e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4499.999999989563
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.512146102161043e-11,
+      "db": 3.4997249542811915e-10,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4500.000000068047
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.015318053360615e-12,
+      "db": 1.1464542861141059e-10,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4499.999999981931
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 10
+  }
+ },
+ {
+  "id": "symmetric-about-construction-line",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:about line",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.14716650993311e-10,
+      "db": 6.105651182691342e-10,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.00000027532
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.044912470310616e-13,
+      "db": 1.629853225542075e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.000000000731
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.3968322794729223e-12,
+      "db": 7.434053372890048e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.0000000033524
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.976576105439259e-12,
+      "db": 2.1262991367620998e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.000000009544
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 5.455073430008875e-13,
+      "db": 2.9167779302952113e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.000000001309
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "symmetric-3point-midpoint",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:3-point",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 8.075976101854057e-13,
+      "db": 3.2298608232395054e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8640.000000006978
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.844322474026639e-13,
+      "db": 1.937561222575823e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8640.000000004185
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.4043123058077915e-13,
+      "db": 1.761405836001965e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8640.000000003805
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 5.772764982086503e-13,
+      "db": 1.9737298215558337e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8639.999999995012
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 7.657019051731805e-13,
+      "db": 7.894919286223335e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8639.999999993384
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "tangent-line-circle",
+  "feats": [
+   "rule:tangent",
+   "tangent:line-circle",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812299724105,
+      "db": 0,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1130.8457383817545
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812299724105,
+      "db": 0,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1130.8457383817545
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812299724105,
+      "db": 0,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1130.8457383817545
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812299724105,
+      "db": 0,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1130.8457383817545
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812299724105,
+      "db": 0,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1130.8457383817545
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ },
+ {
+  "id": "tangent-line-circle-side-matching",
+  "feats": [
+   "tangent:side option"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812299724105,
+      "db": 0,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1130.8457383817545
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ },
+ {
+  "id": "tangent-line-circle-side-opposite",
+  "feats": [
+   "tangent:side option"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "records side -1 for the line/circle tangency but the circle starts on the other side of the line; solidcraft's tangent has no side parameter, so it cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ },
+ {
+  "id": "circle-circle-external-mode",
+  "feats": [
+   "rule:tangent",
+   "tangent:circle-circle external",
+   "tangent:mode option"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ },
+ {
+  "id": "circle-circle-external-no-mode",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ },
+ {
+  "id": "circle-circle-internal-mode",
+  "feats": [
+   "tangent:circle-circle internal",
+   "tangent:mode option"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ },
+ {
+  "id": "circle-circle-internal-no-mode",
+  "feats": [
+   "tangent:circle-circle internal"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ },
+ {
+  "id": "circle-circle-mode-request-external-start-internal",
+  "feats": [
+   "tangent:mode option",
+   "rough start: tangent external/internal branch"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "asks for external tangency but the circles start internally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ },
+ {
+  "id": "circle-circle-mode-request-internal-start-external",
+  "feats": [
+   "tangent:mode option",
+   "rough start: tangent external/internal branch"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "asks for internal tangency but the circles start externally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ },
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "feats": [
+   "rule:tangent",
+   "tangent:endpoint line-arc",
+   "rule:lock",
+   "rule:equal",
+   "rule:radius",
+   "slot with tangent joints",
+   "endpoint tangency curved accuracy",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00003175760120367676,
+      "db": 0.000006201537757135611,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 11141.238823333528
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 38,
+     "BUILT-WRONG-VOLUME": 2
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00003360887364945121,
+      "db": 0.000004138846881716063,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 11141.218197210046
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000033612533074358137,
+      "db": 0.0000041347677068870325,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 11141.218156438224
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.17573269175815964,
+      "db": 0.9999856595607663,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 9183.650586101523
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 27,
+     "REFUSED": 2,
+     "BUILT-WRONG-VOLUME": 11
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000033944244020468,
+      "db": 0.000003765157446196099,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 11141.214460649984
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid input: profile: cannot attach a plane to a wire that is not on one plane."
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.21809634705119793,
+      "db": 0.00032986614822405613,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8711.651995509397
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ },
+ {
+  "id": "slot-dims-from-points",
+  "feats": [
+   "tangent:endpoint line-arc",
+   "slot with tangent joints",
+   "endpoint tangency curved accuracy",
+   "rule:distanceX"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it conflicts with what the other constraints already determine)"
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00003805394309144625,
+      "db": 2.5865354302823106e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 3285.273141042706
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000038052664895642254,
+      "db": 4.836291367382728e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 3285.273145242088
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 8,
+     "BUILT-RIGHT": 31,
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.2610055104670791,
+      "db": 0.00009965121637307561,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2427.8911386722934
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000038052719450129254,
+      "db": 6.061000590307231e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 3285.273145062855
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid input: profile loop is not closed"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "feats": [
+   "rule:tangent",
+   "tangent:endpoint arc-arc",
+   "point-ref:a/b/c ends",
+   "rule:equal",
+   "rule:radius",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00010237668156301426,
+      "db": 8.881784197001252e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 1099.0937329157696
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 36,
+     "REFUSED": 2,
+     "BUILT-WRONG-VOLUME": 2
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00010237646156472334,
+      "db": 1.0559946567972084e-10,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 1099.093733157593
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00010237656517698446,
+      "db": 9.80132800317993e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 1099.0937330437018
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "sk has no closed profiles"
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 1.3148708592091258,
+      "db": 1.6000000000072885,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2544.5205534365227
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 32,
+     "BUILT-WRONG-VOLUME": 7,
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00010237643872902358,
+      "db": 1.132398302112441e-10,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 1099.0937331826942
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 1.314870857755793,
+      "db": 1.6000000000326822,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2544.5205518390103
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid parameters for `sketch.constraint.equal`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 14
+  }
+ },
+ {
+  "id": "triangle-length-angle-120",
+  "feats": [
+   "rule:angle"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.500646739300923e-16,
+      "db": 1.3674401325394234e-16,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 5196.15242270663
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.500646739300923e-16,
+      "db": 1.3674401325394234e-16,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 5196.15242270663
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.500646739300923e-16,
+      "db": 1.3674401325394234e-16,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 5196.15242270663
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.500646739300923e-16,
+      "db": 1.3674401325394234e-16,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 5196.15242270663
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.500646739300923e-16,
+      "db": 1.3674401325394234e-16,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 5196.15242270663
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 8
+  }
+ },
+ {
+  "id": "triangle-angle-120-with-quadrant",
+  "feats": [
+   "angle:quadrant option"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.500646739300923e-16,
+      "db": 1.3674401325394234e-16,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 5196.15242270663
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 8
+  }
+ },
+ {
+  "id": "triangle-angle-wrong-orientation-start",
+  "feats": [
+   "rule:angle",
+   "rough start: angle orientation branch"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the directed angle 120 deg from line 1 to line 2; from this starting geometry solidcraft would apply the value to the opposite orientation (it would hold 60.000000 deg from 1 to 2); its angle dimension is undirected and takes its orientation from the start state"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 8
+  }
+ },
+ {
+  "id": "rect-lock-offset-corner",
+  "feats": [
+   "rule:lock",
+   "lock-hoisting order"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.1368683772161604e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999932
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 9.24652946802477e-15,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.9999999999445
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.2581343374525507e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.9999999999245
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.1259893401293083e-11,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999872441
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.682565198279917e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999899
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ },
+ {
+  "id": "rect-param-width",
+  "feats": [
+   "value:param()"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 6000
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ },
+ {
+  "id": "rect-reference-dim-correct",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.6370904631912707e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999902
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.621932218161722e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999903
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.3339255626002947e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.99999999992
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.530982747984429e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999908
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.721950901711049e-11,
+      "db": 1.1506270238708527e-32,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999836683
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": false,
+   "nRules": 12,
+   "firstDiff": 11,
+   "gotRow": {
+    "k": "distance",
+    "a": 1,
+    "aEnd": "a",
+    "b": 3,
+    "bEnd": "a",
+    "value": 36.0555127546,
+    "driving": false
+   },
+   "wantRow": {
+    "k": "distance",
+    "a": 1,
+    "aEnd": "a",
+    "b": 3,
+    "bEnd": "a",
+    "value": 36.05551275463989,
+    "driving": false
+   }
+  }
+ },
+ {
+  "id": "rect-reference-dim-wrong-value",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.6370904631912707e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999902
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "rect-reference-distanceX-zero",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is a reference distanceX of 0; solidcraft has no reference form of a point-pair level constraint"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "rect-reference-distanceX-opposite-sign",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceX -30 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "REFUSED": 40
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceX -30 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceX -30 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "REFUSED": 40
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceX -30 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceX -30 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ },
+ {
+  "id": "rect-inactive-conflicting-rule",
+  "feats": [
+   "active:false suppressed rule"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.6370904631912707e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999902
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.621932218161722e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999903
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.3794002976889412e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999917
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.621932218161722e-14,
+      "db": 3.1406521081257257e-39,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999903
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 6.063298011819522e-15,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999964
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ },
+ {
+  "id": "plate-with-hole-default-profiles",
+  "feats": [
+   "nested loops (hole) profile selection",
+   "rule:diameter"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.08523408578302993,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 10000
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 14
+  }
+ },
+ {
+  "id": "rect-underconstrained-height-free",
+  "feats": [
+   "rough start: solution branch chosen by the drawn start state"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5100
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 10
+  }
+ },
+ {
+  "id": "rect-redundant-width-dimension",
+  "feats": [
+   "rule:distance",
+   "redundant/conflicting dimensions"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k2 (Coincident), k3 (Coincident), k4 (Coincident), k6 (Vertical), k8 (Vertical), k10 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "rect-conflicting-width-dimension",
+  "feats": [
+   "rule:distance",
+   "redundant/conflicting dimensions"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "that would over-constrain the sketch (conflicts with k1, k2, k3, k4, k6, k8, k10, k12)"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "slot-arc-rows-inconsistent-with-lock-c",
+  "feats": [
+   "rule:lock",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-OTHER-POSE": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-OTHER-POSE",
+      "dv": 0.000040977502715603504,
+      "db": 0.1484661206115322,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 11141.136098946576
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ },
+ {
+  "id": "probe-coincident-circle-end-a",
+  "feats": [
+   "rule:coincident",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "geometry 5 is a circle and has no point 'a'"
+     }
+    ]
+   }
+  },
+  "script": {
+   "thrown": "undefined is not an object (evaluating 'A.findIndex')"
+  }
+ },
+ {
+  "id": "probe-equal-line-vs-circle",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "equal across a line and a circle/arc is refused by brep-rs too (a radius is not a length)"
+     }
+    ]
+   }
+  },
+  "script": {
+   "thrown": "undefined is not an object (evaluating 'A.findIndex')"
+  }
+ },
+ {
+  "id": "probe-distance-names-no-end",
+  "feats": [
+   "rule:distance"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "needs a point of geometry 1 and the row names none (brep-rs refuses the same row)"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "probe-radius-zero",
+  "feats": [
+   "rule:radius"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "has value 0; a radius or diameter must be positive"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "probe-tangent-endpoint-no-coincident-row",
+  "feats": [
+   "tangent:endpoint line-arc"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the endpoint tangent form with no coincident row joining those two ends before it; solidcraft's tangent is between curves, and it only treats it as tangent-at-the-joint when the ends are tied"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "probe-lock-as-reference",
+  "feats": [
+   "rule:lock",
+   "driving:false reference dimension"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "a lock cannot be a reference measurement"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "probe-pointOn-target-is-point",
+  "feats": [
+   "rule:pointOnObject"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "geometry 6 is a point, not a curve"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "probe-angle-line-vs-circle",
+  "feats": [
+   "rule:angle"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "geometry 5 is a circle; this rule needs line"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "probe-distanceX-start-level",
+  "feats": [
+   "rule:distanceX",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "the two points start level in x, so the side (sign) of the signed distanceX 5 is not carried by the starting geometry"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "probe-tangent-line-vs-line",
+  "feats": [
+   "rule:tangent"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "`g1` is the wrong kind of entity for this: tangent needs a circle or arc"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__corner-origin-25x60",
+  "feats": [
+   "dimensioned rectangle",
+   "rule:distanceX",
+   "rule:distanceY"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 15000
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.304053244491418e-15,
+      "db": 4.618527782440651e-15,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 15000.000000000035
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.9103830456733705e-15,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 14999.999999999956
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 9.822542779147625e-15,
+      "db": 1.9776772811989454e-14,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 15000.000000000147
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.2247861983875434e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 14999.999999999816
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__offset-corner-30x18",
+  "feats": [
+   "dimensioned rectangle",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5400
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 5.5580231775012284e-15,
+      "db": 8.650085478818612e-15,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5400.00000000003
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.6080708452069235e-11,
+      "db": 2.5169740687804573e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5400.000000086836
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.3747917212959794e-14,
+      "db": 3.722626072134438e-14,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5400.000000000128
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 8.589672183410989e-15,
+      "db": 1.359299146671496e-14,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5400.000000000046
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__square-by-equal",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.134066826240583e-15,
+      "db": 9.536231453622397e-15,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840.00000000002
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 8.42767104954836e-12,
+      "db": 1.9516739102025322e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840.00000004079
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.7663740075755218e-14,
+      "db": 4.0949699771437355e-14,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840.0000000000855
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.509891083171545e-15,
+      "db": 1.0658141036401503e-14,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840.000000000022
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__right-triangle",
+  "feats": [
+   "rule:perpendicular",
+   "rule:distance"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 3000
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 3000
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 3000
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 3000
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 3000
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 8
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__parallelogram",
+  "feats": [
+   "rule:parallel"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4500
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 5.327617853052086e-12,
+      "db": 6.110667527536861e-14,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4499.999999976026
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.9482083896744169e-10,
+      "db": 2.2331173947047017e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4499.999999123306
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 39,
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 7.844310958818015e-11,
+      "db": 8.991918321044068e-13,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4499.999999647006
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.8817243269748158e-11,
+      "db": 2.1564972030319042e-13,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4499.999999915322
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceX 10 (brep-rs) but the points start negative; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__circle-pinned",
+  "feats": [
+   "rule:lock",
+   "rule:radius"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.0001128381227344293,
+      "db": 1.9984014443252818e-15,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644592
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.0001128381227344293,
+      "db": 1.9984014443252818e-15,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644592
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.0001128381227344293,
+      "db": 1.9984014443252818e-15,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644592
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.0001128381227344293,
+      "db": 1.9984014443252818e-15,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644592
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.0001128381227344293,
+      "db": 1.9984014443252818e-15,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644592
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 2
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc",
+   "endpoint tangency curved accuracy"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000038053118549409936,
+      "db": 4.440892098500626e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.793327002382
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00003436356520086489,
+      "db": 0.000009529822809994926,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.810782180967
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00004017226467489778,
+      "db": 0.0000025426408778944024,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.783301378527
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 34,
+     "BUILT-WRONG-VOLUME": 6
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000034501086176352926,
+      "db": 0.000008413387619773024,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.810131572896
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000041827716843459725,
+      "db": 0.000010185265633566587,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.775469478426
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.2610036479591423,
+      "db": 0.00008527690204163108,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 3496.172051163525
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc",
+   "endpoint tangency curved accuracy"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00005771978586200539,
+      "db": 5.329070518200751e-15,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8843.382953534847
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 39,
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000058130729230292234,
+      "db": 0.0000072510366064075056,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8843.379319195496
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000052600649340665335,
+      "db": 0.0000071159975868854515,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8843.42822663265
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid parameters for `sketch.dimension`: that dimension conflicts with the sketch: other constraints already determine it with a different value"
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 38,
+     "REFUSED": 1,
+     "BUILT-WRONG-VOLUME": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000059861857885590984,
+      "db": 0.000003463955394996295,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8843.36400927817
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00005552878840563785,
+      "db": 0.0000037258098631790897,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8843.402330482837
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid input: profile: cannot attach a plane to a wire that is not on one plane."
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.1742604966338811,
+      "db": 23.99993687885025,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 10385.03468091938
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000038053118549409936,
+      "db": 4.440892098500626e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.793327002382
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 30,
+     "REFUSED": 1,
+     "BUILT-WRONG-VOLUME": 9
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00004171436279489794,
+      "db": 0.000009710827888180043,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.77600575341
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid input: profile: cannot attach a plane to a wire that is not on one plane."
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.26100736155259185,
+      "db": 0.00006179069208419226,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 3496.1544822518626
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 19,
+     "BUILT-WRONG-VOLUME": 16,
+     "REFUSED": 5
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000038830326870059624,
+      "db": 0.000010138871333461216,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.789650050526
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.7609697509657122,
+      "db": 11.999999999999126,
+      "bodies": 1,
+      "faces": 4,
+      "volume": 1130.8457392901048
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k6, k7, k8, k9, k10)"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-external",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 38,
+     "REFUSED": 2
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "asks for external tangency but the circles start internally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-no-mode",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-internal",
+  "feats": [
+   "tangent:circle-circle internal"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-WRONG-VOLUME": 38,
+     "REFUSED": 2
+    },
+    "samples": [
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.6408793755808422,
+      "db": 2.220446049250313e-16,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 2010.4400907831944
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "asks for internal tangency but the circles start externally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ }
+]

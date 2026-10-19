@@ -1,0 +1,21 @@
+{
+ "id": "asym-draft-face",
+ "outcome": "built",
+ "volume": 14096.431797042833,
+ "faces": 6,
+ "bbox": [
+  -5,
+  -22,
+  -3.0000000000000004,
+  35,
+  8,
+  9
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "draft"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":30,\"height\":12,\"center\":[15,-7,3],\"body_name\":\"b_b1\"}},{\"command\":\"solid.draft\",\"params\":{\"faces\":[[35,-7.0000000000000036,2.999999999999999]],\"angle\":8,\"neutral\":{\"origin\":[0,0,-3],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_b1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

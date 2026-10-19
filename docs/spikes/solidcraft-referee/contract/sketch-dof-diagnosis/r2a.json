@@ -1,0 +1,680 @@
+{
+ "cases": [
+  {
+   "id": "A",
+   "desc": "rect 40x30, length(1,20), length(2,15): asks 20x15",
+   "src": "const s=sketch('top'); s.rect(40,30); s.length(1,20); s.length(2,15); pull(s,10)",
+   "closedForm": 3000,
+   "scriptWarnings": null,
+   "scriptErrors": null,
+   "askedConstraints": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 20
+    },
+    {
+     "kind": "length",
+     "edge": 1,
+     "value": 15
+    }
+   ],
+   "keptByScript": [
+    {
+     "kind": "length",
+     "edge": 1,
+     "value": 15
+    }
+   ],
+   "droppedBySettling": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 20
+    }
+   ],
+   "solvedDocBBox": [
+    40,
+    15
+   ],
+   "appPath": {
+    "occt": 6000,
+    "brep": 6000,
+    "sc": 6000,
+    "relErrVsClosed": 1
+   },
+   "studentRules": {
+    "sc": {
+     "status": "built",
+     "volume": 3000,
+     "bboxWH": [
+      20,
+      15
+     ]
+    },
+    "brep": {
+     "outcome": "built",
+     "volume": 3000
+    },
+    "indep": {
+     "consistent": true,
+     "dof": 2,
+     "volume": 3000
+    }
+   }
+  },
+  {
+   "id": "B",
+   "desc": "rect 100x100, length(1,40), length(2,40): asks 40x40",
+   "src": "const s=sketch('top'); s.rect(100,100); s.length(1,40); s.length(2,40); pull(s,10)",
+   "closedForm": 16000,
+   "scriptWarnings": null,
+   "scriptErrors": null,
+   "askedConstraints": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 40
+    },
+    {
+     "kind": "length",
+     "edge": 1,
+     "value": 40
+    }
+   ],
+   "keptByScript": [
+    {
+     "kind": "length",
+     "edge": 1,
+     "value": 40
+    }
+   ],
+   "droppedBySettling": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 40
+    }
+   ],
+   "solvedDocBBox": [
+    100,
+    40
+   ],
+   "appPath": {
+    "occt": 40000,
+    "brep": 40000,
+    "sc": 40000,
+    "relErrVsClosed": 1.5
+   },
+   "studentRules": {
+    "sc": {
+     "status": "built",
+     "volume": 16000,
+     "bboxWH": [
+      40,
+      40
+     ]
+    },
+    "brep": {
+     "outcome": "refused",
+     "refusal": "extrude e1: the outline collapsed while solving: 10000.0000 square mm of area became 1600.0000"
+    },
+    "indep": {
+     "consistent": true,
+     "dof": 2,
+     "volume": 16000
+    }
+   }
+  },
+  {
+   "id": "C",
+   "desc": "rect 40x30, length(1,12), length(2,12), equal(1,2): asks 12x12 (equal is redundant, consistent)",
+   "src": "const s=sketch('top'); s.rect(40,30); s.length(1,12); s.length(2,12); s.equal(1,2); pull(s,10)",
+   "closedForm": 1440,
+   "scriptWarnings": null,
+   "scriptErrors": null,
+   "askedConstraints": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 12
+    },
+    {
+     "kind": "length",
+     "edge": 1,
+     "value": 12
+    },
+    {
+     "kind": "equal",
+     "edge": 0,
+     "other": 1
+    }
+   ],
+   "keptByScript": [
+    {
+     "kind": "equal",
+     "edge": 0,
+     "other": 1
+    }
+   ],
+   "droppedBySettling": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 12
+    },
+    {
+     "kind": "length",
+     "edge": 1,
+     "value": 12
+    }
+   ],
+   "solvedDocBBox": [
+    34.9999,
+    34.9999
+   ],
+   "appPath": {
+    "occt": 12249.9451,
+    "brep": 12249.9451,
+    "sc": 12249.9451,
+    "relErrVsClosed": 7.50690629
+   },
+   "studentRules": {
+    "sc": {
+     "status": "built",
+     "volume": 1440,
+     "bboxWH": [
+      12,
+      12
+     ]
+    },
+    "brep": {
+     "outcome": "refused",
+     "refusal": "extrude e1: the outline collapsed while solving: 1200.0000 square mm of area became 144.0000"
+    },
+    "indep": {
+     "consistent": true,
+     "dof": 2,
+     "volume": 1440
+    }
+   }
+  },
+  {
+   "id": "D",
+   "desc": "rect 40x30, length(1,8): asks 8x30",
+   "src": "const s=sketch('top'); s.rect(40,30); s.length(1,8); pull(s,10)",
+   "closedForm": 2400,
+   "scriptWarnings": [
+    "edge 1 = 8 cannot hold along with the rules already on this sketch -- the shape is as close as it can get to all of them. Remove one to settle it."
+   ],
+   "scriptErrors": null,
+   "askedConstraints": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 8
+    }
+   ],
+   "keptByScript": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 8
+    }
+   ],
+   "droppedBySettling": [],
+   "solvedDocBBox": [
+    40,
+    30
+   ],
+   "appPath": {
+    "occt": 12000,
+    "brep": 12000,
+    "sc": 12000,
+    "relErrVsClosed": 4
+   },
+   "studentRules": {
+    "sc": {
+     "status": "built",
+     "volume": 2400,
+     "bboxWH": [
+      8,
+      30
+     ]
+    },
+    "brep": {
+     "outcome": "refused",
+     "refusal": "extrude e1: the outline collapsed while solving: 1200.0000 square mm of area became 240.0000"
+    },
+    "indep": {
+     "consistent": true,
+     "dof": 3,
+     "volume": 2400
+    }
+   }
+  },
+  {
+   "id": "E-control-ok",
+   "desc": "control: length(1,10.1) is just above the 25% cliff",
+   "src": "const s=sketch('top'); s.rect(40,30); s.length(1,10.1); pull(s,10)",
+   "closedForm": 3030,
+   "scriptWarnings": null,
+   "scriptErrors": null,
+   "askedConstraints": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 10.1
+    }
+   ],
+   "keptByScript": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 10.1
+    }
+   ],
+   "droppedBySettling": [],
+   "solvedDocBBox": [
+    10.1,
+    30
+   ],
+   "appPath": {
+    "occt": 3030,
+    "brep": 3030,
+    "sc": 3030,
+    "relErrVsClosed": 1.16758709e-10
+   },
+   "studentRules": {
+    "sc": {
+     "status": "built",
+     "volume": 3030,
+     "bboxWH": [
+      10.1,
+      30
+     ]
+    },
+    "brep": {
+     "outcome": "built",
+     "volume": 3030
+    },
+    "indep": {
+     "consistent": true,
+     "dof": 3,
+     "volume": 3030
+    }
+   }
+  },
+  {
+   "id": "F-cliff-10",
+   "desc": "length(1,10) = exactly 25% of the drawn 40",
+   "src": "const s=sketch('top'); s.rect(40,30); s.length(1,10); pull(s,10)",
+   "closedForm": 3000,
+   "scriptWarnings": [
+    "edge 1 = 10 cannot hold along with the rules already on this sketch -- the shape is as close as it can get to all of them. Remove one to settle it."
+   ],
+   "scriptErrors": null,
+   "askedConstraints": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 10
+    }
+   ],
+   "keptByScript": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 10
+    }
+   ],
+   "droppedBySettling": [],
+   "solvedDocBBox": [
+    40,
+    30
+   ],
+   "appPath": {
+    "occt": 12000,
+    "brep": 12000,
+    "sc": 12000,
+    "relErrVsClosed": 3
+   },
+   "studentRules": {
+    "sc": {
+     "status": "built",
+     "volume": 3000,
+     "bboxWH": [
+      10,
+      30
+     ]
+    },
+    "brep": {
+     "outcome": "built",
+     "volume": 3000
+    },
+    "indep": {
+     "consistent": true,
+     "dof": 3,
+     "volume": 3000
+    }
+   }
+  },
+  {
+   "id": "G-9.9",
+   "desc": "length(1,9.9) just under 25%",
+   "src": "const s=sketch('top'); s.rect(40,30); s.length(1,9.9); pull(s,10)",
+   "closedForm": 2970,
+   "scriptWarnings": [
+    "edge 1 = 9.9 cannot hold along with the rules already on this sketch -- the shape is as close as it can get to all of them. Remove one to settle it."
+   ],
+   "scriptErrors": null,
+   "askedConstraints": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 9.9
+    }
+   ],
+   "keptByScript": [
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 9.9
+    }
+   ],
+   "droppedBySettling": [],
+   "solvedDocBBox": [
+    40,
+    30
+   ],
+   "appPath": {
+    "occt": 12000,
+    "brep": 12000,
+    "sc": 12000,
+    "relErrVsClosed": 3.04040404
+   },
+   "studentRules": {
+    "sc": {
+     "status": "built",
+     "volume": 2970,
+     "bboxWH": [
+      9.9,
+      30
+     ]
+    },
+    "brep": {
+     "outcome": "refused",
+     "refusal": "extrude e1: the outline collapsed while solving: 1200.0000 square mm of area became 297.0000"
+    },
+    "indep": {
+     "consistent": true,
+     "dof": 3,
+     "volume": 2970
+    }
+   }
+  }
+ ],
+ "conflicts": [
+  {
+   "id": "T-3-perpendicular-triangle",
+   "note": "a triangle cannot have three right angles",
+   "src": "const s=sketch('top'); s.polygon([[0,0],[30,0],[15,20]]); s.perpendicular(1,2); s.perpendicular(2,3); s.perpendicular(3,1); pull(s,10)",
+   "asked": [
+    {
+     "kind": "perpendicular",
+     "edge": 0,
+     "other": 1
+    },
+    {
+     "kind": "perpendicular",
+     "edge": 1,
+     "other": 2
+    },
+    {
+     "kind": "perpendicular",
+     "edge": 2,
+     "other": 0
+    }
+   ],
+   "keptByScript": [
+    {
+     "kind": "perpendicular",
+     "edge": 0,
+     "other": 2
+    }
+   ],
+   "warnings": null,
+   "errors": null,
+   "cornerMovedMm": [
+    13.6518,
+    3.3763,
+    6.2894
+   ],
+   "solidVolumeOcctBrepSc": [
+    2190.85352,
+    2190.85352,
+    2190.85352
+   ],
+   "scOnStudentRules": {
+    "status": "refused",
+    "sentence": "invalid parameters for `sketch.constraint.perpendicular`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+    "ruleKind": "perpendicular"
+   },
+   "brepDiagnose": {
+    "bucket": "conflicting",
+    "blame": [
+     5
+    ]
+   }
+  },
+  {
+   "id": "P-pin1-pin2-length100",
+   "note": "two pinned corners 40 apart cannot be 100 apart",
+   "src": "const s=sketch('top'); s.polygon([[0,0],[40,0],[40,30],[0,30]]); s.pin(1); s.pin(2); s.length(1,100); pull(s,10)",
+   "asked": [
+    {
+     "kind": "lock",
+     "corner": 0
+    },
+    {
+     "kind": "lock",
+     "corner": 1
+    },
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 100
+    }
+   ],
+   "keptByScript": [
+    {
+     "kind": "lock",
+     "corner": 1
+    },
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 100
+    }
+   ],
+   "warnings": null,
+   "errors": null,
+   "cornerMovedMm": [
+    60,
+    0,
+    0,
+    0
+   ],
+   "solidVolumeOcctBrepSc": [
+    21000,
+    21000,
+    21000
+   ],
+   "scOnStudentRules": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k3, k7)",
+    "ruleKind": "distance"
+   },
+   "brepDiagnose": {
+    "bucket": "conflicting",
+    "blame": [
+     6
+    ]
+   }
+  },
+  {
+   "id": "X-length-then-longer-length-same-edge",
+   "note": "two different lengths on one edge: script replaces silently (last wins)?",
+   "src": "const s=sketch('top'); s.polygon([[0,0],[40,0],[40,30],[0,30]]); s.pin(1); s.length(1,40); s.length(1,60); pull(s,10)",
+   "asked": [
+    {
+     "kind": "lock",
+     "corner": 0
+    },
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 40
+    },
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 60
+    }
+   ],
+   "keptByScript": [
+    {
+     "kind": "lock",
+     "corner": 0
+    },
+    {
+     "kind": "length",
+     "edge": 0,
+     "value": 60
+    }
+   ],
+   "warnings": null,
+   "errors": null,
+   "cornerMovedMm": [
+    0,
+    20,
+    0,
+    0
+   ],
+   "solidVolumeOcctBrepSc": [
+    15000,
+    15000,
+    15000
+   ],
+   "scOnStudentRules": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k6, k7)",
+    "ruleKind": "distance"
+   },
+   "brepDiagnose": {
+    "bucket": "conflicting",
+    "blame": [
+     6
+    ]
+   }
+  }
+ ],
+ "guard": [
+  {
+   "id": "A",
+   "tsOver": false,
+   "tsResidual": 2.57209365e-10,
+   "tsVolume": 3000,
+   "closed": 3000,
+   "relErr": 3.5874109e-11,
+   "ratioGate": true,
+   "protoGate": false
+  },
+  {
+   "id": "B",
+   "tsOver": false,
+   "tsResidual": 9.32459443e-10,
+   "tsVolume": 16000,
+   "closed": 16000,
+   "relErr": 4.36366463e-11,
+   "ratioGate": true,
+   "protoGate": false
+  },
+  {
+   "id": "C",
+   "tsOver": false,
+   "tsResidual": 8.20680413e-10,
+   "tsVolume": 1440,
+   "closed": 1440,
+   "relErr": 1.00702538e-10,
+   "ratioGate": true,
+   "protoGate": false
+  },
+  {
+   "id": "D",
+   "tsOver": false,
+   "tsResidual": 6.15267837e-10,
+   "tsVolume": 2400,
+   "closed": 2400,
+   "relErr": 2.9803194e-11,
+   "ratioGate": true,
+   "protoGate": false
+  },
+  {
+   "id": "E-control-ok",
+   "tsOver": false,
+   "tsResidual": 6.47132126e-10,
+   "tsVolume": 3030,
+   "closed": 3030,
+   "relErr": 1.16758859e-10,
+   "ratioGate": false,
+   "protoGate": false
+  },
+  {
+   "id": "F-cliff-10",
+   "tsOver": false,
+   "tsResidual": 1.43575818e-10,
+   "tsVolume": 3000,
+   "closed": 3000,
+   "relErr": 1.93000839e-11,
+   "ratioGate": true,
+   "protoGate": false
+  },
+  {
+   "id": "G-9.9",
+   "tsOver": false,
+   "tsResidual": 7.79552423e-10,
+   "tsVolume": 2970,
+   "closed": 2970,
+   "relErr": 1.20130011e-10,
+   "ratioGate": true,
+   "protoGate": false
+  }
+ ],
+ "trueCollapse": [
+  {
+   "id": "M3-up-on-horizontal-edge-of-rect",
+   "startArea": 1000,
+   "solvedArea": 1.58833586e-8,
+   "minEdge": 4.2767212e-10,
+   "ratioGate": true,
+   "protoGate": true
+  },
+  {
+   "id": "M3b-h-and-v-on-one-edge-of-skew-quad",
+   "startArea": 918,
+   "solvedArea": 459.5,
+   "minEdge": 3.68339524e-10,
+   "ratioGate": true,
+   "protoGate": true
+  },
+  {
+   "id": "M3c-h-and-v-on-one-edge-of-hexagon",
+   "startArea": 960,
+   "solvedArea": 830,
+   "minEdge": 5.58187292e-10,
+   "ratioGate": true,
+   "protoGate": true
+  }
+ ]
+}

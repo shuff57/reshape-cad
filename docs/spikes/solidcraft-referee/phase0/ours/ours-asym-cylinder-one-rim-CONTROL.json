@@ -1,0 +1,21 @@
+{
+ "id": "asym-cylinder-one-rim",
+ "outcome": "fail",
+ "volume": 13433.641165336603,
+ "faces": 4,
+ "bbox": [
+  -6.9998146745588565,
+  -8.999716590294604,
+  -13.00000000000002,
+  16.99981467455886,
+  14.9997165902946,
+  17.000000000000014
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "cylinder",
+  "fillet"
+ ],
+ "scriptSource": "[{\"command\":\"solid.cylinder\",\"params\":{\"radius\":12,\"height\":30,\"base\":[5,3,-13],\"axis\":\"Z\",\"body_name\":\"b_c1\"}},{\"command\":\"solid.fillet\",\"params\":{\"edges\":[[17,2.9999999000000006,-13]],\"radius\":3,\"body\":\"b_c1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

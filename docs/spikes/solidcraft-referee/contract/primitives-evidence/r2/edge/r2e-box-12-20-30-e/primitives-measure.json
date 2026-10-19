@@ -1,0 +1,149 @@
+[
+ {
+  "id": "r2e-box-12-20-30-e",
+  "feature": "box.corner.edge",
+  "note": "",
+  "script": "box(12, 20, 30, { corner: 6.000001 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      12,
+      20,
+      30
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 6.000001
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "refused": "Rounding box box1 (12x20x30) at radius 6.000001 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding box by 6.000001 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 12,
+     "width": 20,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       0,
+       -10,
+       -15
+      ],
+      [
+       0,
+       -10,
+       15
+      ],
+      [
+       0,
+       10,
+       -15
+      ],
+      [
+       0,
+       10,
+       15
+      ],
+      [
+       -6,
+       0,
+       -15
+      ],
+      [
+       -6,
+       0,
+       15
+      ],
+      [
+       6,
+       0,
+       -15
+      ],
+      [
+       6,
+       0,
+       15
+      ],
+      [
+       -6,
+       -10,
+       0
+      ],
+      [
+       -6,
+       10,
+       0
+      ],
+      [
+       6,
+       -10,
+       0
+      ],
+      [
+       6,
+       10,
+       0
+      ]
+     ],
+     "radius": 6.000001,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7972.519717327353,
+   "bbox": [
+    -6.0000000000000036,
+    -10.000000000000002,
+    -15,
+    6.000000000000001,
+    10.000000000000002,
+    15.000000000000002
+   ],
+   "com": [
+    4.5487038187702e-11,
+    4.867357956018159e-15,
+    2.281574041883512e-15
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 4,
+    "plane": 4,
+    "sphere": 4
+   },
+   "curved": true,
+   "bodies": 1,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 2096
+ }
+]

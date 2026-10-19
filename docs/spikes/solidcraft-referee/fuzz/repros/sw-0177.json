@@ -1,0 +1,105 @@
+{
+ "id": "sw-0177",
+ "seed": 9,
+ "desc": "S1b two vthru gap=1.5 t=1",
+ "t": 1,
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 40,
+    "width": 30,
+    "height": 10,
+    "center": [
+     0,
+     0,
+     5
+    ],
+    "body_name": "b1"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "radius": 2,
+    "height": 12,
+    "base": [
+     -2.75,
+     0,
+     -1
+    ],
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "body_name": "f1"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "f1"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "radius": 2,
+    "height": 12,
+    "base": [
+     2.75,
+     0,
+     -1
+    ],
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "body_name": "f2"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "f2"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -11.358,
+      -6.393,
+      10
+     ]
+    ],
+    "thickness": 1,
+    "body": "b1"
+   }
+  }
+ ],
+ "oracleFamily": "plate",
+ "p7": {
+  "cls": "WRONG",
+  "expectedP": 2674.3420312500007,
+  "built": 2681.8592828353326,
+  "rel": 0.0028108788993673724
+ },
+ "base": {
+  "cls": "WRONG",
+  "expectedP": 2674.3420312500007,
+  "built": 2681.8592828353326,
+  "rel": 0.0028108788993673724
+ }
+}

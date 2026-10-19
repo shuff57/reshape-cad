@@ -1,0 +1,1 @@
+fzc1-18-boxC-top-flat-180                PASS     occtV 71440.8368 | tr-occt dV 1.2e-6 dBb 3.6e-16 dCom 2.0e-7 F o/b/t 16/16/16 | brep-occt dV 2.0e-16      | ms 1587 cpu 1889

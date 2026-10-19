@@ -1,0 +1,779 @@
+{
+ "repro": [
+  {
+   "src": "const sk=sketch('top'); sk.polygon([[0,0],[58.33,0],[10.1,20.95]]); sk.perpendicular(1,3); pull(sk,10)",
+   "constraintsKept": [
+    {
+     "kind": "perpendicular",
+     "edge": 0,
+     "other": 2
+    }
+   ],
+   "warnings": null,
+   "drawn": [
+    [
+     0,
+     0
+    ],
+    [
+     58.33,
+     0
+    ],
+    [
+     10.1,
+     20.95
+    ]
+   ],
+   "afterSolveDoc": [
+    [
+     0,
+     0
+    ],
+    [
+     58.33,
+     0
+    ],
+    [
+     10.1,
+     20.95
+    ]
+   ],
+   "docUnchanged": true,
+   "ruleViolatedInDoc": {
+    "kind": "perpendicular",
+    "residual": 0.434268,
+    "unit": "1 (sin/cos of the angle)"
+   },
+   "rawSolve": {
+    "residual": 2.32913e-10,
+    "overConstrained": false,
+    "collapsedByRatio": true,
+    "area": 122.889
+   },
+   "seededSolve": {
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      58.33,
+      0
+     ],
+     [
+      -3.55271e-15,
+      23.2575
+     ]
+    ],
+    "residual": 0,
+    "overConstrained": false,
+    "collapsedByRatio": false,
+    "ruleViolated": false,
+    "area": 678.306,
+    "angleDeg": 90
+   }
+  }
+ ],
+ "population": {
+  "total": 561,
+  "honoured": 486,
+  "notHonoured": 75,
+  "notHonouredSilent": 12,
+  "notHonouredWithWarning": 63,
+  "seededHonoured": 0,
+  "seededWouldFix": 12,
+  "byKind": {
+   "vertical": {
+    "total": 76,
+    "notHonouredSilent": 0,
+    "notHonouredWithWarning": 20
+   },
+   "equal": {
+    "total": 77,
+    "notHonouredSilent": 1,
+    "notHonouredWithWarning": 0
+   },
+   "perpendicular": {
+    "total": 67,
+    "notHonouredSilent": 6,
+    "notHonouredWithWarning": 0
+   },
+   "length": {
+    "total": 86,
+    "notHonouredSilent": 0,
+    "notHonouredWithWarning": 0
+   },
+   "angle": {
+    "total": 63,
+    "notHonouredSilent": 0,
+    "notHonouredWithWarning": 22
+   },
+   "parallel": {
+    "total": 38,
+    "notHonouredSilent": 5,
+    "notHonouredWithWarning": 5
+   },
+   "pin": {
+    "total": 74,
+    "notHonouredSilent": 0,
+    "notHonouredWithWarning": 0
+   },
+   "horizontal": {
+    "total": 80,
+    "notHonouredSilent": 0,
+    "notHonouredWithWarning": 16
+   }
+  },
+  "adjacency": {
+   "parallel:adjacent": 4,
+   "equal:adjacent": 1,
+   "perpendicular:adjacent": 4,
+   "parallel:non-adjacent": 1,
+   "perpendicular:non-adjacent": 2
+  },
+  "fixCandidates": {
+   "unhonoured": 75,
+   "seedOnly25": 12,
+   "rawHonoursButGate25Rejects": 74,
+   "rawHonoursAndPassesDeg": 74,
+   "seedPlusDeg": 74,
+   "seedPlusDegHonoured": 0,
+   "stillUnhonoured": 1
+  },
+  "infeasibleOrDegenerateByOracle": 39,
+  "infeasibleWarned": 39,
+  "infeasibleSilent": 0,
+  "examples": [
+   {
+    "src": "const sk=sketch('top'); sk.polygon([[68.09,36.07],[30.43,38.86],[34.79,14.67],[42.03,13.62]]); sk.parallel(3, 2); pull(sk,10)",
+    "kind": "parallel",
+    "adjacent": true,
+    "kept": 1,
+    "violated": {
+     "kind": "parallel",
+     "residual": 0.948494,
+     "unit": "1 (sin/cos of the angle)"
+    },
+    "seededFixes": true
+   },
+   {
+    "src": "const sk=sketch('top'); sk.polygon([[42.45,46.91],[20.23,53.5],[22.6,20.06],[41.02,23.24]]); sk.equal(2, 3); pull(sk,10)",
+    "kind": "equal",
+    "adjacent": true,
+    "kept": 1,
+    "violated": {
+     "kind": "equal",
+     "residual": 14.8314,
+     "unit": "mm"
+    },
+    "seededFixes": true
+   },
+   {
+    "src": "const sk=sketch('top'); sk.polygon([[30.53,49.17],[30.23,8.15],[54.17,-3.29]]); sk.perpendicular(2, 1); pull(sk,10)",
+    "kind": "perpendicular",
+    "adjacent": true,
+    "kept": 1,
+    "violated": {
+     "kind": "perpendicular",
+     "residual": 0.424552,
+     "unit": "1 (sin/cos of the angle)"
+    },
+    "seededFixes": true
+   },
+   {
+    "src": "const sk=sketch('top'); sk.polygon([[10.84,29.76],[11.31,17.53],[17.44,4.77],[50.31,26.25]]); sk.parallel(4, 2); pull(sk,10)",
+    "kind": "parallel",
+    "adjacent": false,
+    "kept": 1,
+    "violated": {
+     "kind": "parallel",
+     "residual": 0.859479,
+     "unit": "1 (sin/cos of the angle)"
+    },
+    "seededFixes": true
+   },
+   {
+    "src": "const sk=sketch('top'); sk.polygon([[9.86,33.82],[31.15,8.09],[45.38,15.42],[51.76,15.39]]); sk.parallel(4, 1); pull(sk,10)",
+    "kind": "parallel",
+    "adjacent": true,
+    "kept": 1,
+    "violated": {
+     "kind": "parallel",
+     "residual": 0.448566,
+     "unit": "1 (sin/cos of the angle)"
+    },
+    "seededFixes": true
+   },
+   {
+    "src": "const sk=sketch('top'); sk.polygon([[29.15,49.13],[18.49,36.56],[50.91,7.82]]); sk.perpendicular(3, 2); pull(sk,10)",
+    "kind": "perpendicular",
+    "adjacent": true,
+    "kept": 1,
+    "violated": {
+     "kind": "perpendicular",
+     "residual": 0.935658,
+     "unit": "1 (sin/cos of the angle)"
+    },
+    "seededFixes": true
+   },
+   {
+    "src": "const sk=sketch('top'); sk.polygon([[35.7,38.84],[16.87,35.32],[16.59,18.67],[47.64,18.84]]); sk.perpendicular(4, 2); pull(sk,10)",
+    "kind": "perpendicular",
+    "adjacent": false,
+    "kept": 1,
+    "violated": {
+     "kind": "perpendicular",
+     "residual": 0.849887,
+     "unit": "1 (sin/cos of the angle)"
+    },
+    "seededFixes": true
+   },
+   {
+    "src": "const sk=sketch('top'); sk.polygon([[45.61,33.26],[35.22,38.36],[15.51,37.54],[6.52,5.1]]); sk.perpendicular(2, 4); pull(sk,10)",
+    "kind": "perpendicular",
+    "adjacent": false,
+    "kept": 1,
+    "violated": {
+     "kind": "perpendicular",
+     "residual": 0.83498,
+     "unit": "1 (sin/cos of the angle)"
+    },
+    "seededFixes": true
+   }
+  ]
+ },
+ "guard": [
+  {
+   "id": "slider-40",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 0,
+   "ruleHeld": true,
+   "area": 1200,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.6,
+   "ratio25": false,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "slider-30",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 9.42482e-10,
+   "ruleHeld": true,
+   "area": 900,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.6,
+   "ratio25": false,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "slider-20",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 2.50793e-10,
+   "ruleHeld": true,
+   "area": 600,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.4,
+   "ratio25": false,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "slider-12",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 9.05967e-10,
+   "ruleHeld": true,
+   "area": 360,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.24,
+   "ratio25": false,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "slider-10.5",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 8.91562e-11,
+   "ruleHeld": true,
+   "area": 315,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.21,
+   "ratio25": false,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "slider-10.1",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 6.47132e-10,
+   "ruleHeld": true,
+   "area": 303,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.202,
+   "ratio25": false,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "slider-10",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 1.43576e-10,
+   "ruleHeld": true,
+   "area": 300,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.2,
+   "ratio25": true,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "slider-9.9",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 7.79552e-10,
+   "ruleHeld": true,
+   "area": 297,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.198,
+   "ratio25": true,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "slider-8",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 6.15268e-10,
+   "ruleHeld": true,
+   "area": 240,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.16,
+   "ratio25": true,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "slider-5",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 2.92569e-10,
+   "ruleHeld": true,
+   "area": 150,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.1,
+   "ratio25": true,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "slider-2",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 8.16733e-10,
+   "ruleHeld": true,
+   "area": 60,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.04,
+   "ratio25": true,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "slider-1",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 7.85276e-10,
+   "ruleHeld": true,
+   "area": 30,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.02,
+   "ratio25": true,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "A rect40x30 len 20,15",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 2.57209e-10,
+   "ruleHeld": true,
+   "area": 300,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.3,
+   "ratio25": true,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "B rect100 len 40,40",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 9.32459e-10,
+   "ruleHeld": true,
+   "area": 1600,
+   "drawnArea": 10000,
+   "minEdgeOverDiag": 0.2828,
+   "ratio25": true,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "C rect40x30 len 12,12 equal",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 8.2068e-10,
+   "ruleHeld": true,
+   "area": 144,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.24,
+   "ratio25": true,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "tiny but asked: len 0.02 on 40x30",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 5.48757e-10,
+   "ruleHeld": true,
+   "area": 0.6,
+   "drawnArea": 1200,
+   "minEdgeOverDiag": 0.0004,
+   "ratio25": true,
+   "proto1e6": false,
+   "deg1e3": true,
+   "tsOver": false
+  },
+  {
+   "id": "S09 trapezoid + parallel (the case the 25% test was written for)",
+   "must": "pass",
+   "tsOverConstrained": false,
+   "tsResidual": 2.68184e-7,
+   "ruleHeld": true,
+   "area": 731.249,
+   "drawnArea": 725,
+   "minEdgeOverDiag": 0.4886,
+   "ratio25": false,
+   "proto1e6": false,
+   "deg1e3": false,
+   "tsOver": false
+  },
+  {
+   "id": "M3 up-on-horizontal rect",
+   "must": "refuse",
+   "tsOverConstrained": false,
+   "tsResidual": 4.27672e-10,
+   "ruleHeld": true,
+   "area": 1.58834e-8,
+   "drawnArea": 1000,
+   "minEdgeOverDiag": 9.067e-12,
+   "ratio25": true,
+   "proto1e6": true,
+   "deg1e3": true,
+   "tsOver": false
+  },
+  {
+   "id": "M3b h+v one edge skew quad",
+   "must": "refuse",
+   "tsOverConstrained": false,
+   "tsResidual": 3.67308e-10,
+   "ruleHeld": true,
+   "area": 459.5,
+   "drawnArea": 918,
+   "minEdgeOverDiag": 7.67e-12,
+   "ratio25": true,
+   "proto1e6": true,
+   "deg1e3": true,
+   "tsOver": false
+  },
+  {
+   "id": "M3c h+v one edge hexagon",
+   "must": "refuse",
+   "tsOverConstrained": false,
+   "tsResidual": 5.52012e-10,
+   "ruleHeld": true,
+   "area": 830,
+   "drawnArea": 960,
+   "minEdgeOverDiag": 1.143e-11,
+   "ratio25": true,
+   "proto1e6": true,
+   "deg1e3": true,
+   "tsOver": false
+  },
+  {
+   "id": "ROUND3 sliver: triangle, two right angles",
+   "must": "refuse",
+   "tsOverConstrained": true,
+   "tsResidual": 0.0205874,
+   "ruleHeld": false,
+   "area": 1.1169,
+   "drawnArea": 500,
+   "minEdgeOverDiag": 0.0008724,
+   "ratio25": true,
+   "proto1e6": true,
+   "deg1e3": true,
+   "tsOver": true
+  },
+  {
+   "id": "ROUND3 sliver: triangle perp(1,3)+equal(1,2)",
+   "must": "refuse",
+   "tsOverConstrained": true,
+   "tsResidual": 0.00821497,
+   "ruleHeld": false,
+   "area": 20.7193,
+   "drawnArea": 500,
+   "minEdgeOverDiag": 0.01865,
+   "ratio25": true,
+   "proto1e6": true,
+   "deg1e3": true,
+   "tsOver": true
+  },
+  {
+   "id": "ROUND3 point: rect h/v + angle 45",
+   "must": "refuse",
+   "tsOverConstrained": false,
+   "tsResidual": 0.000578808,
+   "ruleHeld": false,
+   "area": 0.0188313,
+   "drawnArea": 600,
+   "minEdgeOverDiag": 0.00001657,
+   "ratio25": true,
+   "proto1e6": false,
+   "deg1e3": true,
+   "tsOver": false
+  }
+ ],
+ "guardWrong": {
+  "ratio25": [
+   "slider-10",
+   "slider-9.9",
+   "slider-8",
+   "slider-5",
+   "slider-2",
+   "slider-1",
+   "A rect40x30 len 20,15",
+   "B rect100 len 40,40",
+   "C rect40x30 len 12,12 equal",
+   "tiny but asked: len 0.02 on 40x30"
+  ],
+  "proto1e6": [
+   "ROUND3 point: rect h/v + angle 45"
+  ],
+  "deg1e3": [
+   "tiny but asked: len 0.02 on 40x30"
+  ]
+ },
+ "scripts": {
+  "two right angles": {
+   "warnings": null,
+   "kept": [
+    {
+     "kind": "perpendicular",
+     "edge": 1,
+     "other": 2
+    }
+   ],
+   "drawn": [
+    [
+     0,
+     0
+    ],
+    [
+     40,
+     0
+    ],
+    [
+     10,
+     25
+    ]
+   ],
+   "doc": [
+    [
+     -1.37129,
+     3.56024
+    ],
+    [
+     42.8144,
+     2.42364
+    ],
+    [
+     12.5796,
+     23.5376
+    ]
+   ],
+   "docArea": 449.285,
+   "drawnArea": 500,
+   "ruleViolatedInDoc": null
+  },
+  "perp(1,3)+equal(1,2)": {
+   "warnings": null,
+   "kept": [
+    {
+     "kind": "equal",
+     "edge": 0,
+     "other": 1
+    }
+   ],
+   "drawn": [
+    [
+     0,
+     0
+    ],
+    [
+     40,
+     0
+    ],
+    [
+     10,
+     25
+    ]
+   ],
+   "doc": [
+    [
+     0.191516,
+     -0.00547242
+    ],
+    [
+     39.229,
+     -0.297317
+    ],
+    [
+     9.75147,
+     25.2973
+    ]
+   ],
+   "docArea": 495.274,
+   "drawnArea": 500,
+   "ruleViolatedInDoc": null
+  },
+  "rect + angle 45": {
+   "warnings": null,
+   "kept": [
+    {
+     "kind": "vertical",
+     "edge": 1
+    },
+    {
+     "kind": "horizontal",
+     "edge": 2
+    },
+    {
+     "kind": "vertical",
+     "edge": 3
+    },
+    {
+     "kind": "angle",
+     "edge": 0,
+     "other": 1,
+     "degrees": 45
+    }
+   ],
+   "drawn": [
+    [
+     -15,
+     -10
+    ],
+    [
+     15,
+     -10
+    ],
+    [
+     15,
+     10
+    ],
+    [
+     -15,
+     10
+    ]
+   ],
+   "doc": [
+    [
+     -9.99883,
+     -20.0016
+    ],
+    [
+     10.0045,
+     0.00177452
+    ],
+    [
+     10.0045,
+     9.99986
+    ],
+    [
+     -9.99883,
+     9.99986
+    ]
+   ],
+   "docArea": 400.062,
+   "drawnArea": 600,
+   "ruleViolatedInDoc": null
+  }
+ },
+ "accuracy": {
+  "cases": 300,
+  "hitIterationCap300": 300,
+  "residualAbove1e7": 277,
+  "medianResidual": 3.7990792622899505e-7,
+  "worstResidual": 0.0000016647765073152243,
+  "worstDimensionErrorMm": 1.054370954989281e-7
+ },
+ "labels": {
+  "requestedRound50": [
+   "R50"
+  ],
+  "builtOutlineOk": true,
+  "builtRoundRecovered": {
+   "0": 12.500000000000002
+  },
+  "builtOutlinePointCount": 5,
+  "outlineMessage": null,
+  "r3": [
+   "R3"
+  ],
+  "r3built": {
+   "0": 3.000000000000001
+  },
+  "geometry29_996_ruled30": [
+   [
+    "dimension",
+    "30"
+   ],
+   [
+    "length",
+    "20"
+   ],
+   [
+    "length",
+    "30"
+   ],
+   [
+    "length",
+    "20"
+   ]
+  ],
+  "noConsumer": "grep -rn sketchLabels packages/*/src (excluding tests): only the definition and comments in sketch-outline.ts"
+ }
+}

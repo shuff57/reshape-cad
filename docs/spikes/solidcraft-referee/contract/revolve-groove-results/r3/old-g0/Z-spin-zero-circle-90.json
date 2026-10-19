@@ -1,0 +1,41 @@
+[
+ {
+  "id": "Z-spin-zero-circle-90",
+  "src": "const s = sketch('top'); s.circle(0,{at:[20,15]}); spin(s, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "Z-spin-zero-circle-90",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "invalid": "OCCT: OCCT built nothing"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "revolve rev1: a circle sketch has no outline to spin"
+   },
+   "ms": 1,
+   "load": [
+    21.4,
+    21.4
+   ],
+   "cpuMs": 1,
+   "truck": {
+    "refused": "rev1 (revolve): the circle has no size, so there is nothing to spin; give it a diameter."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: OCCT built nothing",
+  "caseMs": 8
+ }
+]

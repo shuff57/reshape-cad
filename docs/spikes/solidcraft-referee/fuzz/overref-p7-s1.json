@@ -1,0 +1,14 @@
+{
+ "tag": "p7",
+ "seed": 1,
+ "judged": 78,
+ "refused": 760,
+ "overRefused": 1,
+ "sentences": {
+  "offset: a corner whose faces don't meet the same way after the move": {
+   "count": 1,
+   "internals": true,
+   "example": "s1-01542 plate 14.6x16x12 open=top [rboss]"
+  }
+ }
+}

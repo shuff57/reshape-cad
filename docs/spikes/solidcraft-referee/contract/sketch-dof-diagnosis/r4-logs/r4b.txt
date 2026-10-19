@@ -1,0 +1,66 @@
+Running as unit: run-p1926045-i1946604.scope; invocation ID: 0a203e1945b74fd185a7f48479e8ec5f
+A  rect40x30 length(1,20) length(2,15)                                 RAW vol 6000 holds false warn false | GUARD built-ready repaired-by-polish sc 3000 err {"occt":1.516e-16,"sc":0,"brep":0}
+B  rect100x100 length(1,40) length(2,40)                               RAW vol 40000 holds false warn false | GUARD built-ready repaired-by-polish sc 16000 err {"occt":2.274e-16,"sc":0,"brep":1.137e-16}
+C  rect40x30 length(1,12) length(2,12) equal(1,2)                      RAW vol 12250 holds false warn false | GUARD built-ready repaired-by-polish sc 1440 err {"occt":0,"sc":0,"brep":0}
+D  rect40x30 length(1,8)                                               RAW vol 12000 holds false warn true | GUARD built-ready repaired-by-polish sc 2400 err {"occt":0,"sc":0,"brep":1.895e-16}
+E  rect40x30 length(2,6)                                               RAW vol 12000 holds false warn true | GUARD built-ready repaired-by-polish sc 2400 err {"occt":0,"sc":0,"brep":0}
+F  rect40x30 length(1,3)                                               RAW vol 12000 holds false warn true | GUARD built-ready repaired-by-polish sc 900 err {"occt":0,"sc":0,"brep":0}
+G  param slider w=5 on length(1,w)                                     RAW vol 12000 holds false warn true | GUARD built-ready repaired-by-polish sc 1500 err {"occt":1.516e-16,"sc":0,"brep":0}
+H  rect40x20 length(1,40) then length(1,30) (same edge, two values)    RAW vol 6000 holds false warn false | GUARD refused refused The rule for edge 1 being 30 long cannot hold together with the rule for edge 1 being 40 long, so the part is not built; remove or change one of them.
+I  triangle three right angles (impossible)                            RAW vol 4915 holds false warn false | GUARD refused refused The rule for edges 1 and 3 meeting at a right angle cannot hold together with the other rules on this sketch, so the part is not built; remove or change one of the rules.
+J  triangle two right angles (soup-route sliver case, legacy form)     RAW vol 4493 holds false warn false | GUARD refused refused The rule for edges 2 and 3 meeting at a right angle cannot hold together with the rule for edges 1 and 2 meeting at a right angle, so the part is not built; remove or change one of them.
+K  rect40x20 equal(1,2)                                                RAW vol 8999 holds true warn false | GUARD built-ready ts-answer-polished sc 8999 err null
+L  rect40x30 length(1,35) (grow; control)                              RAW vol 10500 holds true warn false | GUARD built-ready ts-answer-polished sc 10500 err {"occt":1.732e-16,"sc":0,"brep":0}
+M  rect40x30 distX(1,3,12) (shrink 40 to 12; control)                  RAW vol 3600 holds true warn false | GUARD built-ready ts-answer-polished sc 3600 err {"occt":0,"sc":0,"brep":0}
+N  rect40x30 pin(1) length(1,100) length(2,100) (control)              RAW vol 100000 holds true warn false | GUARD built-ready ts-answer-polished sc 100000 err {"occt":2.91e-16,"sc":0,"brep":0}
+P  rect40x30 distX(3,1,12) (docs: corner 1 sits 12 to the RIGHT of corner 3) RAW vol 3600 holds false warn false | GUARD refused refused The rules, with corner 3 being -12 across from corner 1, would turn the sketch inside out, so the part is not built; remove or change one of the rules.
+Q  rect40x30 distX(3,1,-12) (docs: corner 1 sits 12 to the LEFT of corner 3 = a 12 wide rectangle) RAW vol 3600 holds false warn false | GUARD built-ready ts-answer-polished sc 3600 err {"occt":0,"sc":0,"brep":0}
+O  rect40x30 length(1,20) length(2,15) length(1,10)                    RAW vol 3000 holds false warn false | GUARD refused refused The rule for edge 1 being 10 long cannot hold together with the rule for edge 1 being 20 long, so the part is not built; remove or change one of them.
+{
+ "scripts": 500,
+ "scriptErrors": 0,
+ "rawBuiltViolatingWrittenRules": 283,
+ "rawSilent": 109,
+ "rawWarned": 174,
+ "rawWithDroppedRule": 189,
+ "rawWrongAndIndepFeasible": 119,
+ "guardBuilt": 342,
+ "guardRefused": 158,
+ "guardBuiltButRuleNotHeldByIndependentCheckers": 0,
+ "guardBuiltAndIndepSaysInfeasible": 6,
+ "guardRefusedAndIndepFeasible_falseRefusals": 0,
+ "guardRefusedAndIndepInfeasible": 158,
+ "indepUnsupported": 0,
+ "guardRoutes": {
+  "resolved-by-guard:touched-only": 40,
+  "ts-answer-polished": 233,
+  "refused": 158,
+  "repaired-by-polish": 68,
+  "resolved-by-guard:all-free": 1
+ },
+ "refusalSentencesNotPlain": 0,
+ "falseDrops": 64,
+ "necessaryDrops": 125,
+ "rawDroppedRuleAndWarned": 100,
+ "rawDroppedRuleNoWarning": 89,
+ "kernelSample": {
+  "n": 40,
+  "maxOcctRel": 1.088e-13,
+  "maxScRel": 6.665e-16,
+  "maxBrepRel": 1.786e-15,
+  "allFacesEqual": false,
+  "facesDiffer": 1,
+  "facesDifferWithFlatVertex": 1,
+  "facesDifferExamples": [
+   {
+    "src": "s.polygon([[0,0],[40,0],[40,10],[15,10],[15,30],[0,30]]); s.parallel(6, 1); s.parallel(1, 6); s.length(4, 10); s.parallel(2, 5); extrude(s,10)",
+    "faces": [
+     8,
+     8,
+     7
+    ]
+   }
+  ],
+  "planarBar": 1e-9
+ }
+}

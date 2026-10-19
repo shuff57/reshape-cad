@@ -1,0 +1,19 @@
+{
+ "tag": "p8",
+ "seed": 1,
+ "judged": 78,
+ "refused": 1048,
+ "overRefused": 2,
+ "sentences": {
+  "not supported yet: a ligament between a hole and a wall (or another hole) is only # mm thick; its two offset sides would cross (it needs at least twice the shel": {
+   "count": 1,
+   "internals": false,
+   "example": "s1-01219 plate 33.5x19x12 open=top [vthru,cbore]"
+  },
+  "offset: a corner whose faces don't meet the same way after the move": {
+   "count": 1,
+   "internals": true,
+   "example": "s1-01542 plate 14.6x16x12 open=top [rboss]"
+  }
+ }
+}

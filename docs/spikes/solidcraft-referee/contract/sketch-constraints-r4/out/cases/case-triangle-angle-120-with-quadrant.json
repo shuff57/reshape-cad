@@ -1,0 +1,32 @@
+[
+ {
+  "id": "triangle-angle-120-with-quadrant",
+  "feats": [
+   "angle:quadrant option"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.500646739300923e-16,
+      "db": 1.3674401325394234e-16,
+      "bodies": 1,
+      "faces": 5,
+      "volume": 5196.15242270663
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 8
+  }
+ }
+]

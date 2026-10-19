@@ -1,0 +1,114 @@
+[
+ {
+  "id": "r2-big-box-50000",
+  "feature": "oversize",
+  "note": "",
+  "script": "box(50000, 50000, 50000);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      50000,
+      50000,
+      50000
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 125000000000000,
+  "occt": {
+   "volume": 124999999999999.98,
+   "com": [
+    3.637978807091713e-12,
+    3.637978807091713e-12,
+    3.637978807091713e-12
+   ],
+   "bbox": [
+    -25000,
+    -25000,
+    -25000,
+    25000,
+    25000,
+    25000
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 125000000000000.02,
+   "bbox": [
+    -25000,
+    -25000,
+    -25000,
+    25000,
+    25000,
+    25000
+   ],
+   "faces": 6,
+   "dVol": 2.5e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 50000,
+     "width": 50000,
+     "height": 50000,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 125000000000000,
+   "bbox": [
+    -25000,
+    -25000,
+    -25000,
+    25000,
+    25000,
+    25000
+   ],
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 1.25e-16,
+   "dBboxOcct": 0,
+   "dComOcct": 4.200776087161109e-17,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 1.2499999999999999e-16,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 33
+ }
+]

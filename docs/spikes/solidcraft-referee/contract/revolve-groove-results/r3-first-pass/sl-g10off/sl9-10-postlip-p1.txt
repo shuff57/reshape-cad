@@ -1,0 +1,1 @@
+sl9-10-postlip-p1                        PASS     occtV 34504.6656 | tr-occt dV 1.2e-4 dBb 8.9e-16 dCom 1.4e-6 F o/b/t 7/7/7 | brep-occt dV 2.1e-16      | ms 13577 cpu 14124

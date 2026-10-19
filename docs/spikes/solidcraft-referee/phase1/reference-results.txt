@@ -1,0 +1,7 @@
+ok      b_box1    hole1  occt 11717.256661177 (faces 7)  brep 11717.256661177 (faces 7)  browser 11717.303625888 (faces 7)  dVol/occt 4.01e-6 dVol/brep 4.01e-6 dBbox 5.33e-16 tol 0.0003 PASS
+ok      b_pull1   pull1  occt 2000.000000000 (faces 6)  brep 2000.000000000 (faces 6)  browser 2000.000000000 (faces 6)  dVol/occt 2.27e-16 dVol/brep 1.14e-16 dBbox 0.00e+0 tol 1e-9 PASS
+ok      TOTAL      occt 13717.256661177  browser 13717.303625888  dVol 3.42e-6  PASS
+refuse  b_box1    box1   occt 12000.000000000 (faces 6)  brep 12000.000000000 (faces 6)  browser 12000.000000000 (faces 6)  dVol/occt 1.52e-16 dVol/brep 0.00e+0 dBbox 0.00e+0 tol 1e-9 PASS
+refuse  b_pull1   pull1  occt 2000.000000000 (faces 6)  brep 2000.000000000 (faces 6)  browser 2000.000000000 (faces 6)  dVol/occt 2.27e-16 dVol/brep 1.14e-16 dBbox 0.00e+0 tol 1e-9 PASS
+refuse  b_box2    box2   occt 1000.000000000 (faces 6)  brep 1000.000000000 (faces 6)  browser 1000.000000000 (faces 6)  dVol/occt 2.27e-16 dVol/brep 1.14e-16 dBbox 0.00e+0 tol 1e-9 PASS
+refuse  TOTAL      occt 15000.000000000  browser 15000.000000000  dVol 1.21e-16  PASS

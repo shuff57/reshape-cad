@@ -1,0 +1,198 @@
+{
+ "status": "supported",
+ "sentence": "pull1: the part is about 40 times wider than the smallest round shape in this pull, and SolidCraft would report its volume and mass up to 0.031% wrong, so it is refused instead of showing a wrong part; make the round shape larger or the part smaller",
+ "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg systemd-run --user --scope -p MemoryMax=16G -p MemorySwapMax=0 bun docs/spikes/solidcraft-referee/contract/extrude-pocket-slender.mjs (results: contract/extrude-pocket-slender-results.json). Round 1 stated a curved bar of 3e-4 (about 1e-4 observed) from squat cases only. Measured: truck's volume error depends ONLY on diag / (2 r) (same table for d1 ... d100) and runs -1.7e-4 (ratio 20-35), -3.1e-4 (45), -4.5e-4 (50), -5.7e-4 (100), -1.8e-3 (200), -2.8e-2 (500), -4.9e-2 (1000), -58% (3000 and beyond): a slender rod a student can draw gives a silently wrong volume and mass. The contract mapping computes the bound  table-error(diag/(2 r)) x curved volume / part volume  after every pull and pocket and REFUSES when it exceeds 3e-4; 0 built case(s) exceed the bar, 11 refused with the sentence below. A pocket's bound uses the volume the tool removes, so a small bore in a big plate is allowed (plate 5000 x 5000: the hole's own volume is 4.9% off but the total only 1.5e-7). Limit: only the round shapes drawn in the pull/pocket sketch itself are checked, a curved face that came from an earlier feature is not.\nbar d10 h50 (diag/d 5.2): raw truck -1.7e-4 -> contract built -1.7e-4\nbar d10 h200 (diag/d 20): raw truck -1.7e-4 -> contract built -1.7e-4\nbar d10 h350 (diag/d 35): raw truck -2.0e-4 -> contract built -2.0e-4\nbar d10 h400 (diag/d 40): raw truck -2.5e-4 -> contract REFUSED\nbar d10 h450 (diag/d 45): raw truck -3.0e-4 -> contract REFUSED\nbar d10 h500 (diag/d 50): raw truck -4.5e-4 -> contract REFUSED\nbar d10 h750 (diag/d 75): raw truck -4.7e-4 -> contract REFUSED\nbar d10 h1000 (diag/d 100): raw truck -5.7e-4 -> contract REFUSED\nbar d10 h1500 (diag/d 150): raw truck -8.9e-4 -> contract REFUSED\nbar d10 h2000 (diag/d 200): raw truck -1.8e-3 -> contract REFUSED\nbar d10 h5000 (diag/d 500): raw truck -2.8e-2 -> contract REFUSED\nbar d10 h10000 (diag/d 1000): raw truck -4.9e-2 -> contract REFUSED\nbar d10 h30000 (diag/d 3000): raw truck -5.8e-1 -> contract REFUSED\nbar d10 h100000 (diag/d 10000): raw truck -5.8e-1 -> contract REFUSED\nplate 100^2 x 10 with a d10 bore (diag/d 14): raw truck total 1.3e-6 (on the hole's own volume 1.7e-4) -> contract built 1.3e-6\nplate 300^2 x 10 with a d10 bore (diag/d 42): raw truck total 2.4e-7 (on the hole's own volume 2.7e-4) -> contract built 2.4e-7\nplate 500^2 x 10 with a d10 bore (diag/d 71): raw truck total 1.4e-7 (on the hole's own volume 4.5e-4) -> contract built 1.4e-7\nplate 1000^2 x 10 with a d10 bore (diag/d 141): raw truck total 6.3e-8 (on the hole's own volume 8.0e-4) -> contract built 6.3e-8\nplate 2000^2 x 10 with a d10 bore (diag/d 283): raw truck total 3.5e-8 (on the hole's own volume 1.8e-3) -> contract built 3.5e-8\nplate 5000^2 x 10 with a d10 bore (diag/d 707): raw truck total 1.5e-7 (on the hole's own volume 4.9e-2) -> contract built 1.5e-7",
+ "rows": [
+  {
+   "kind": "bar",
+   "ratio": 5.2,
+   "d": 10,
+   "h": 50,
+   "rawErr": -0.00016610368650151153,
+   "contract": "built",
+   "contractErr": -0.00016610368650151153
+  },
+  {
+   "kind": "bar",
+   "ratio": 20,
+   "d": 10,
+   "h": 200,
+   "rawErr": -0.00016610368650151153,
+   "contract": "built",
+   "contractErr": -0.00016610368650151153
+  },
+  {
+   "kind": "bar",
+   "ratio": 35,
+   "d": 10,
+   "h": 350,
+   "rawErr": -0.00020024998886487911,
+   "contract": "built",
+   "contractErr": -0.00020024998886487911
+  },
+  {
+   "kind": "bar",
+   "ratio": 40,
+   "d": 10,
+   "h": 400,
+   "rawErr": -0.00024622948767269497,
+   "contract": "REFUSED",
+   "contractErr": null,
+   "sentence": "pull1: the part is about 40 times wider than the smallest round shape in this pull, and SolidCraft would report its volume and mass up to 0.031% wrong, so it is refused instead of showing a wrong part; make the round shape larger or the part smaller"
+  },
+  {
+   "kind": "bar",
+   "ratio": 45,
+   "d": 10,
+   "h": 450,
+   "rawErr": -0.00030491239392104846,
+   "contract": "REFUSED",
+   "contractErr": null,
+   "sentence": "pull1: the part is about 45 times wider than the smallest round shape in this pull, and SolidCraft would report its volume and mass up to 0.050% wrong, so it is refused instead of showing a wrong part; make the round shape larger or the part smaller"
+  },
+  {
+   "kind": "bar",
+   "ratio": 50,
+   "d": 10,
+   "h": 500,
+   "rawErr": -0.00045126344877398345,
+   "contract": "REFUSED",
+   "contractErr": null,
+   "sentence": "pull1: the part is about 50 times wider than the smallest round shape in this pull, and SolidCraft would report its volume and mass up to 0.050% wrong, so it is refused instead of showing a wrong part; make the round shape larger or the part smaller"
+  },
+  {
+   "kind": "bar",
+   "ratio": 75,
+   "d": 10,
+   "h": 750,
+   "rawErr": -0.00047260001474337345,
+   "contract": "REFUSED",
+   "contractErr": null,
+   "sentence": "pull1: the part is about 75 times wider than the smallest round shape in this pull, and SolidCraft would report its volume and mass up to 0.060% wrong, so it is refused instead of showing a wrong part; make the round shape larger or the part smaller"
+  },
+  {
+   "kind": "bar",
+   "ratio": 100,
+   "d": 10,
+   "h": 1000,
+   "rawErr": -0.0005665050032794507,
+   "contract": "REFUSED",
+   "contractErr": null,
+   "sentence": "pull1: the part is about 100 times wider than the smallest round shape in this pull, and SolidCraft would report its volume and mass up to 0.090% wrong, so it is refused instead of showing a wrong part; make the round shape larger or the part smaller"
+  },
+  {
+   "kind": "bar",
+   "ratio": 150,
+   "d": 10,
+   "h": 1500,
+   "rawErr": -0.0008860909249376376,
+   "contract": "REFUSED",
+   "contractErr": null,
+   "sentence": "pull1: the part is about 150 times wider than the smallest round shape in this pull, and SolidCraft would report its volume and mass up to 0.20% wrong, so it is refused instead of showing a wrong part; make the round shape larger or the part smaller"
+  },
+  {
+   "kind": "bar",
+   "ratio": 200,
+   "d": 10,
+   "h": 2000,
+   "rawErr": -0.001803732998262021,
+   "contract": "REFUSED",
+   "contractErr": null,
+   "sentence": "pull1: the part is about 200 times wider than the smallest round shape in this pull, and SolidCraft would report its volume and mass up to 0.20% wrong, so it is refused instead of showing a wrong part; make the round shape larger or the part smaller"
+  },
+  {
+   "kind": "bar",
+   "ratio": 500,
+   "d": 10,
+   "h": 5000,
+   "rawErr": -0.028443330998967318,
+   "contract": "REFUSED",
+   "contractErr": null,
+   "sentence": "pull1: the part is about 500 times wider than the smallest round shape in this pull, and SolidCraft would report its volume and mass up to 5.0% wrong, so it is refused instead of showing a wrong part; make the round shape larger or the part smaller"
+  },
+  {
+   "kind": "bar",
+   "ratio": 1000,
+   "d": 10,
+   "h": 10000,
+   "rawErr": -0.04881516612979662,
+   "contract": "REFUSED",
+   "contractErr": null,
+   "sentence": "pull1: the part is about 1000 times wider than the smallest round shape in this pull, and SolidCraft would report its volume and mass up to 60% wrong, so it is refused instead of showing a wrong part; make the round shape larger or the part smaller"
+  },
+  {
+   "kind": "bar",
+   "ratio": 3000,
+   "d": 10,
+   "h": 30000,
+   "rawErr": -0.5755868184216122,
+   "contract": "REFUSED",
+   "contractErr": null,
+   "sentence": "pull1: the part is about 3000 times wider than the smallest round shape in this pull, and SolidCraft would report its volume and mass up to 60% wrong, so it is refused instead of showing a wrong part; make the round shape larger or the part smaller"
+  },
+  {
+   "kind": "bar",
+   "ratio": 10000,
+   "d": 10,
+   "h": 100000,
+   "rawErr": -0.5755868184216121,
+   "contract": "REFUSED",
+   "contractErr": null,
+   "sentence": "pull1: the part is about 10000 times wider than the smallest round shape in this pull, and SolidCraft would report its volume and mass up to 60% wrong, so it is refused instead of showing a wrong part; make the round shape larger or the part smaller"
+  },
+  {
+   "kind": "bore",
+   "ratio": 14,
+   "L": 100,
+   "rawErr": 0.0000013149025211434108,
+   "rawErrOnHole": 0.000166103686218032,
+   "contract": "built",
+   "contractErr": 0.0000013149025211434108
+  },
+  {
+   "kind": "bore",
+   "ratio": 42,
+   "L": 300,
+   "rawErr": 2.393282205321332e-7,
+   "rawErrOnHole": 0.0002740106108768168,
+   "contract": "built",
+   "contractErr": 2.393282205321332e-7
+  },
+  {
+   "kind": "bore",
+   "ratio": 71,
+   "L": 500,
+   "rawErr": 1.4181314357773612e-7,
+   "rawErrOnHole": 0.00045126344277236985,
+   "contract": "built",
+   "contractErr": 1.4181314357773612e-7
+  },
+  {
+   "kind": "bore",
+   "ratio": 141,
+   "L": 1000,
+   "rawErr": 6.28782263158266e-8,
+   "rawErrOnHole": 0.0008005275642548602,
+   "contract": "built",
+   "contractErr": 6.28782263158266e-8
+  },
+  {
+   "kind": "bore",
+   "ratio": 283,
+   "L": 2000,
+   "rawErr": 3.541690995000148e-8,
+   "rawErrOnHole": 0.0018037329951166954,
+   "contract": "built",
+   "contractErr": 3.541690995000148e-8
+  },
+  {
+   "kind": "bore",
+   "ratio": 707,
+   "L": 5000,
+   "rawErr": 1.533578477537311e-7,
+   "rawErrOnHole": 0.04881516570603349,
+   "contract": "built",
+   "contractErr": 1.533578477537311e-7
+  }
+ ]
+}

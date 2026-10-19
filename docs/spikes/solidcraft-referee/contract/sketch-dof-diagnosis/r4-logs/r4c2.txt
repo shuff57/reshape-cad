@@ -1,0 +1,64 @@
+Running as unit: run-p1977775-i2019758.scope; invocation ID: e2875e603e01463299f1ef06f36fd8f2
+{
+ "cases": 500,
+ "byPool": {
+  "rect": 180,
+  "tri": 78,
+  "cc": 87,
+  "slot": 155
+ },
+ "truthInfeasible": 164,
+ "truthFeasible": 336,
+ "rawBuiltOnInfeasible": 2,
+ "rawRefusedAtCommandOrMapper": 287,
+ "rawComparableUnique": 10,
+ "rawBuiltWrongVolume_dof0": 0,
+ "rawBuiltDifferentVolume_dofPositive": 75,
+ "rawBuiltSameVolume_dofPositive": 114,
+ "guardBuilt": 275,
+ "guardRefused": 225,
+ "guardRefusedStages": {
+  "preflight:infeasible": 204,
+  "preflight:collapsed": 9,
+  "outline": 11,
+  "kernel": 1
+ },
+ "guardBuiltWrongVolume": 0,
+ "guardBuiltNoClosedForm": 0,
+ "guardBuiltOnInfeasible": 0,
+ "guardRefusedOnFeasible_falseRefusals": 15,
+ "guardRefusedOnFeasible_byStageAndPool": {
+  "outline/rect": 5,
+  "preflight:collapsed/tri": 5,
+  "preflight:collapsed/rect": 2,
+  "outline/cc": 2,
+  "kernel/cc": 1
+ },
+ "guardRefusedOnFeasible_byStage": {
+  "outline": 7,
+  "preflight:collapsed": 7,
+  "kernel": 1
+ },
+ "guardWorstRelErr_planar": 1.557e-12,
+ "guardWorstRelErr_curved": 0.0001212,
+ "brepRsSecondKernel": {
+  "built": 156,
+  "refusedOrError": 4,
+  "maxRelDiffVsSolidCraftGuardBuild": 1.572e-12
+ },
+ "refusalSentencesNotPlain": 0,
+ "sentenceExamples": {
+  "preflight:infeasible": "The 6 radius of arc 2 cannot hold together with the other rules on this sketch, so the part is not built; remove or change one of the rules.",
+  "preflight:collapsed": "These rules flatten the outline made of lines 1, 2, 3, 4 until it has no area, so the part cannot be built; remove or change one of them.",
+  "outline": "Two shapes in this sketch cross or touch each other, so there is no single outline to pull; move them apart or draw one shape.",
+  "kernel": "The solver could not keep every rule on this sketch where the checker puts them, so the part is not built; remove or change one of the rules."
+ },
+ "tangentPool": {
+  "cases": 155,
+  "rawBuilt": 7,
+  "rawWrongVolume": 0,
+  "guardWrongVolume": 0,
+  "guardBuilt": 58,
+  "guardRefused": 97
+ }
+}

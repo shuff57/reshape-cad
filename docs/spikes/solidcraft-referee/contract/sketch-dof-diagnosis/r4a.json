@@ -1,0 +1,187 @@
+{
+ "constants": {
+  "TOL_occurrences": 1,
+  "MAX_ITERATIONS_occurrences": 1,
+  "note": "each is 1 = the declaration only, so neither is read; the real caps are the literals tolerance:1e-9,maxIterations:300 (pass 2) and tolerance:1e-6,maxIterations:200 (pass 1)"
+ },
+ "rect400": [
+  {
+   "label": "no pin (Ln,Ln,hv)",
+   "trials": 400,
+   "seed": 31337,
+   "atIterationCap300": 400,
+   "residualAboveStated1e7": 360,
+   "residualMedian": 2.696e-7,
+   "residualMax": 8.341e-7,
+   "reportedResidualVsIndependentMaxAbsRule": {
+    "maxAbsDifference": 0,
+    "note": "solveSketch.residual against max |signed rule residual| computed by legacy-rules.mjs from the returned points"
+   },
+   "relAreaErr": {
+    "median": 4.056e-9,
+    "p90": 9.813e-9,
+    "max": 1.81e-8
+   },
+   "shareAboveBar1e9": 0.927,
+   "maxTimesBar": 18.1,
+   "afterPolish": {
+    "relAreaErrMax": 3.411e-16,
+    "shareAboveBar1e9": 0
+   }
+  },
+  {
+   "label": "corner 1 pinned (lock)",
+   "trials": 400,
+   "seed": 31337,
+   "atIterationCap300": 400,
+   "residualAboveStated1e7": 400,
+   "residualMedian": 0.000001544,
+   "residualMax": 0.000002864,
+   "reportedResidualVsIndependentMaxAbsRule": {
+    "maxAbsDifference": 0,
+    "note": "solveSketch.residual against max |signed rule residual| computed by legacy-rules.mjs from the returned points"
+   },
+   "relAreaErr": {
+    "median": 3.162e-8,
+    "p90": 4.888e-8,
+    "max": 6.113e-8
+   },
+   "shareAboveBar1e9": 0.988,
+   "maxTimesBar": 61.1,
+   "afterPolish": {
+    "relAreaErrMax": 2.615e-15,
+    "shareAboveBar1e9": 0
+   }
+  }
+ ],
+ "shapes": {
+  "L": {
+   "solvedTrials": 150,
+   "atCap": 150,
+   "relAreaErr": {
+    "median": 4.889e-8,
+    "max": 4.412e-7
+   },
+   "shareAboveBar1e9": 0.987,
+   "afterPolishMax": 2.111e-15
+  },
+  "tri": {
+   "solvedTrials": 150,
+   "atCap": 149,
+   "relAreaErr": {
+    "median": 5.801e-11,
+    "max": 1.819e-9
+   },
+   "shareAboveBar1e9": 0.02,
+   "afterPolishMax": 1.969e-15
+  },
+  "trap": {
+   "solvedTrials": 150,
+   "atCap": 105,
+   "relAreaErr": {
+    "median": 6.768e-10,
+    "max": 1.793e-8
+   },
+   "shareAboveBar1e9": 0.447,
+   "afterPolishMax": 1.197e-16
+  }
+ },
+ "kernelBuilds": [
+  {
+   "trial": 0,
+   "exactVolume": 10000,
+   "raw": {
+    "iterations": 300,
+    "occtRel": 2.966e-8,
+    "brepRel": 2.966e-8,
+    "scRel": 2.966e-8
+   },
+   "polished": {
+    "worst": 3.553e-14,
+    "occtRel": 7.276e-16,
+    "brepRel": 1.091e-15,
+    "scRel": 9.095e-16
+   }
+  },
+  {
+   "trial": 1,
+   "exactVolume": 10000,
+   "raw": {
+    "iterations": 300,
+    "occtRel": 1.515e-8,
+    "brepRel": 1.515e-8,
+    "scRel": 1.515e-8
+   },
+   "polished": {
+    "worst": 2.132e-14,
+    "occtRel": 5.457e-16,
+    "brepRel": 7.276e-16,
+    "scRel": 7.276e-16
+   }
+  },
+  {
+   "trial": 2,
+   "exactVolume": 10000,
+   "raw": {
+    "iterations": 300,
+    "occtRel": 4.951e-8,
+    "brepRel": 4.951e-8,
+    "scRel": 4.951e-8
+   },
+   "polished": {
+    "worst": 5.684e-14,
+    "occtRel": 1.091e-15,
+    "brepRel": 1.637e-15,
+    "scRel": 1.455e-15
+   }
+  }
+ ],
+ "pinnedAndDrag": {
+  "pinnedArg": {
+   "trials": 200,
+   "pinnedCornerBitIdentical": 200,
+   "allRulesHeldTo1e5": 200
+  },
+  "solveSketchDrag": {
+   "constraints": [
+    "horizontal1",
+    "vertical2",
+    "horizontal3",
+    "vertical4",
+    "length1=40",
+    "length2=25",
+    "lock"
+   ],
+   "randomDragsOfCorner3": 100,
+   "draggedCornerExactlyWhereAsked": 100,
+   "allRulesHeldAfterDrag1e5": 0,
+   "firstViolations": [
+    {
+     "du": 3.412,
+     "dv": 2.757,
+     "worstKind": "length",
+     "worstResidual": 1.763
+    },
+    {
+     "du": 2.857,
+     "dv": 3.521,
+     "worstKind": "length",
+     "worstResidual": 1.811
+    },
+    {
+     "du": -1.154,
+     "dv": 0.687,
+     "worstKind": "length",
+     "worstResidual": -0.58
+    }
+   ],
+   "afterNextSolveDoc": {
+    "rulesHeld1e5": 100,
+    "of": 100,
+    "draggedCornerMovedBackMedianMm": 4.892,
+    "maxMm": 7.798
+   },
+   "note": "a drag of one corner of a rect that has lock + two lengths + h/v: the dragged corner is pinned at the pointer, so a pointer move that the length rules cannot follow leaves a rule violated (the pointer wins by design); the studio calls it from ReshapeStudio.tsx:246 and :697."
+  }
+ }
+}

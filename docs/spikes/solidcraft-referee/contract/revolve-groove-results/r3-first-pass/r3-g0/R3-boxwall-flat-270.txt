@@ -1,0 +1,1 @@
+R3-boxwall-flat-270                      PASS     occtV 66324.9404 | tr-occt dV 1.1e-6 dBb 1.4e-16 dCom 2.7e-6 F o/b/t 14/14/14 | brep-occt dV 5.2e-12      | ms 6419 cpu 6943

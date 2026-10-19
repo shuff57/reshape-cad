@@ -1,0 +1,21 @@
+{
+ "id": "coplanar-subtract-flush-top",
+ "outcome": "built",
+ "volume": 31000,
+ "faces": 11,
+ "bbox": [
+  -20,
+  -20,
+  -10,
+  20,
+  20,
+  10
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "combine"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_a\"}},{\"command\":\"solid.box\",\"params\":{\"length\":10,\"width\":10,\"height\":10,\"center\":[0,0,5],\"body_name\":\"b_b\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_a\",\"tools\":[\"b_b\"],\"operation\":\"cut\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

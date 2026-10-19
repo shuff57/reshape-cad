@@ -1,0 +1,1 @@
+revolution__arc-top-four-rounds          PASS     occtV 7746.9877 | tr-occt dV 3.2e-6 dBb 8.8e-10 dCom 1.6e-6 F o/b/t 10/10/10 | brep-occt dV 2.1e-11 | FC: occt 2.1e-11 brep 4.7e-16 truck 3.2e-6 dCom 6.9e-5 F 10     | ms 4885 cpu 5238

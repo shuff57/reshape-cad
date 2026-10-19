@@ -1,0 +1,1548 @@
+[
+ {
+  "id": "rect-origin-dims",
+  "feats": [
+   "rule:coincident",
+   "rule:horizontal",
+   "rule:vertical",
+   "rule:distance",
+   "point-ref:a/b/c ends",
+   "point-ref:origin -1",
+   "value:number",
+   "dimensioned rectangle"
+  ],
+  "want": {
+   "volume": 6000
+  },
+  "sc": {
+   "volume": 5999.999999999902,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "dClosed": 1.6370904631912707e-14
+  },
+  "brep": {
+   "volume": 5999.999999941251,
+   "faces": 6,
+   "dVsSc": 9.77509747230085e-12,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 5999.99999994616,
+   "dVsSc": 8.957006988040763e-12
+  }
+ },
+ {
+  "id": "rect-corner-dx-dy-positive",
+  "feats": [
+   "rule:distanceX",
+   "rule:distanceY",
+   "dimensioned rectangle",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "want": {
+   "volume": 6000
+  },
+  "sc": {
+   "volume": 5999.999999999869,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ],
+   "dClosed": 2.1827872842550278e-14
+  },
+  "brep": {
+   "volume": 5999.99999991092,
+   "faces": 6,
+   "dVsSc": 1.482476363911883e-11,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 5999.999999912054,
+   "dVsSc": 1.4635891906045082e-11
+  }
+ },
+ {
+  "id": "rect-corner-dx-dy-negative",
+  "feats": [
+   "rule:distanceX",
+   "rule:distanceY",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "want": {
+   "volume": 6000
+  },
+  "sc": {
+   "volume": 5999.999999999903,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -8,
+    -4.000000000000002,
+    0,
+    22,
+    16,
+    10
+   ],
+   "dClosed": 1.621932218161722e-14
+  },
+  "brep": {
+   "volume": 5999.9999999213505,
+   "faces": 6,
+   "dVsSc": 1.309202464974262e-11,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 5999.999999929492,
+   "dVsSc": 1.17350585546637e-11
+  }
+ },
+ {
+  "id": "rect-diagonal-two-point-distance",
+  "feats": [
+   "rule:distance"
+  ],
+  "want": {
+   "volume": 2400
+  },
+  "sc": {
+   "volume": 2399.999999989225,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    24,
+    9.99999999999999,
+    10
+   ],
+   "dClosed": 4.489493221626617e-12
+  },
+  "brep": {
+   "volume": 2399.9999999970773,
+   "faces": 6,
+   "dVsSc": 3.2717177115692243e-12,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 2399.9999999970387,
+   "dVsSc": 3.2556120762253615e-12
+  }
+ },
+ {
+  "id": "circle-radius-dx-dy",
+  "feats": [
+   "rule:radius",
+   "rule:distanceX",
+   "rule:distanceY",
+   "point-ref:a/b/c ends"
+  ],
+  "want": {
+   "volume": 1539.3804002589986
+  },
+  "sc": {
+   "volume": 1539.2066994644701,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    2.9999999999999996,
+    -2.0000000000000018,
+    0,
+    17,
+    12,
+    10.000000000000004
+   ],
+   "dClosed": 0.00011283812272733947
+  },
+  "brep": {
+   "volume": 1539.3804002568904,
+   "faces": 3,
+   "dVsSc": 0.0001128381213579763,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 1539.3804002568897,
+   "dVsSc": 0.00011283812135753324
+  }
+ },
+ {
+  "id": "circle-diameter-origin-c",
+  "feats": [
+   "rule:diameter",
+   "rule:coincident",
+   "point-ref:a/b/c ends",
+   "point-ref:origin -1"
+  ],
+  "want": {
+   "volume": 4523.893421169302
+  },
+  "sc": {
+   "volume": 4523.566409680702,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    -12.000000000000002,
+    -12.000000000000004,
+    0,
+    12,
+    12,
+    10.000000000000005
+   ],
+   "dClosed": 0.00007228540952572688
+  },
+  "brep": {
+   "refused": "extrude pull1: circle 1: a circle can only be its own outline in this version; use two arcs to join it to other edges"
+  },
+  "occt": {
+   "volume": 4523.893421163276,
+   "dVsSc": 0.00007228540819371577
+  }
+ },
+ {
+  "id": "rect-parallel-perpendicular-axes",
+  "feats": [
+   "rule:parallel",
+   "rule:perpendicular",
+   "axis-ref:X/Y axes (-2,-3)"
+  ],
+  "want": {
+   "volume": 6000
+  },
+  "sc": {
+   "volume": 5999.999999650292,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -2.9096796162284843e-12,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "dClosed": 5.828466479821751e-11
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 5 names geometry -2, which this sketch does not have"
+  }
+ },
+ {
+  "id": "right-trapezoid-par-perp-neg-dx",
+  "feats": [
+   "rule:parallel",
+   "rule:perpendicular",
+   "rule:distanceX",
+   "right trapezoid",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "want": {
+   "volume": 4160
+  },
+  "sc": {
+   "volume": 4159.999999999804,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    16,
+    10.000000000000002
+   ],
+   "dClosed": 4.722376336128666e-14
+  },
+  "brep": {
+   "volume": 4160.000000011399,
+   "faces": 6,
+   "dVsSc": 2.7872951809786758e-12,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 4160.000000010849,
+   "dVsSc": 2.6552435463950495e-12
+  }
+ },
+ {
+  "id": "square-by-equal-lines",
+  "feats": [
+   "rule:equal"
+  ],
+  "want": {
+   "volume": 4840
+  },
+  "sc": {
+   "volume": 4840.000000000037,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    22,
+    22.000000000000338,
+    10
+   ],
+   "dClosed": 7.704397267084722e-15
+  },
+  "brep": {
+   "volume": 4840.000000060462,
+   "faces": 6,
+   "dVsSc": 1.2484505990833671e-11,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 4840.000000057576,
+   "dVsSc": 1.1888072895098775e-11
+  }
+ },
+ {
+  "id": "two-circles-equal",
+  "feats": [
+   "rule:equal"
+  ],
+  "want": {
+   "volume": 2261.946710584651
+  },
+  "sc": {
+   "volume": 2261.691476763529,
+   "faces": 6,
+   "bodies": 2,
+   "bbox": [
+    4,
+    -1.0000000000000018,
+    0,
+    36,
+    11.000000000000002,
+    10.000000000000005
+   ],
+   "dClosed": 0.00011283812298839518
+  },
+  "brep": {
+   "volume": 2261.946710540204,
+   "faces": 6,
+   "dVsSc": 0.00011283810334072154,
+   "faceSame": true
+  },
+  "occt": {
+   "refused": "Sketch 1: this sketch draws 2 loops but OpenCascade kept 1 of them; they do not sit one inside another the way an outline and its holes must"
+  }
+ },
+ {
+  "id": "triangle-apex-on-diagonal-line",
+  "feats": [
+   "rule:pointOnObject",
+   "rule:lock",
+   "rule:coincident"
+  ],
+  "want": {
+   "volume": 4500
+  },
+  "sc": {
+   "volume": 4500,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    30,
+    10
+   ],
+   "dClosed": 0
+  },
+  "brep": {
+   "volume": 4499.9999999911915,
+   "faces": 5,
+   "dVsSc": 1.9574347081529005e-12,
+   "faceSame": true
+  },
+  "occt": {
+   "refused": "Sketch 1: line 4 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  }
+ },
+ {
+  "id": "hexagon-equal-pointOn-circle",
+  "feats": [
+   "rule:pointOnObject",
+   "rule:equal",
+   "hexagon (equal + pointOnObject)",
+   "point-ref:a/b/c ends"
+  ],
+  "want": {
+   "volume": 10392.304845413264
+  },
+  "sc": {
+   "volume": 10392.304845413279,
+   "faces": 8,
+   "bodies": 1,
+   "bbox": [
+    -17.32050807574122,
+    -20.00000000000634,
+    0,
+    17.320508075699493,
+    19.99999999999372,
+    10
+   ],
+   "dClosed": 1.4002586957203693e-15
+  },
+  "brep": {
+   "volume": 10392.304845406437,
+   "faces": 8,
+   "dVsSc": 6.58296619325971e-13,
+   "faceSame": true
+  },
+  "occt": {
+   "refused": "Sketch 1: circle 7 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  }
+ },
+ {
+  "id": "symmetric-trapezoid-about-Y-axis",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:about axis",
+   "axis-ref:X/Y axes (-2,-3)",
+   "rule:pointOnObject",
+   "symmetric trapezoid"
+  ],
+  "want": {
+   "volume": 4500
+  },
+  "sc": {
+   "volume": 4499.999999991884,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -20,
+    -5.1490327885073106e-11,
+    0,
+    20,
+    14.999999999933983,
+    10
+   ],
+   "dClosed": 1.8036290485825803e-12
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 5 names geometry -3, which this sketch does not have"
+  }
+ },
+ {
+  "id": "symmetric-about-construction-line",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:about line",
+   "rule:lock"
+  ],
+  "want": {
+   "volume": 2400
+  },
+  "sc": {
+   "volume": 2400.00000027532,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    4.475129278124016e-15,
+    6.105651182691342e-10,
+    0,
+    20.00000000000003,
+    12.00000000263938,
+    10
+   ],
+   "dClosed": 1.14716650993311e-10
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "occt": {
+   "refused": "Sketch 1: line 5 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  }
+ },
+ {
+  "id": "symmetric-3point-midpoint",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:3-point",
+   "point-ref:a/b/c ends"
+  ],
+  "want": {
+   "volume": 8640
+  },
+  "sc": {
+   "volume": 8640.000000006978,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -18.000000000000014,
+    -12,
+    0,
+    18,
+    12.000000000038758,
+    10
+   ],
+   "dClosed": 8.075976101854057e-13
+  },
+  "brep": {
+   "volume": 8639.999999989945,
+   "faces": 6,
+   "dVsSc": 1.9714139785675026e-12,
+   "faceSame": true
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 9 is a symmetric rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "tangent-line-circle",
+  "feats": [
+   "rule:tangent",
+   "tangent:line-circle",
+   "rule:lock"
+  ],
+  "want": {
+   "volume": 1130.9733552923256
+  },
+  "sc": {
+   "volume": 1130.8457383817545,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    2,
+    0,
+    0,
+    14,
+    12,
+    10.000000000000005
+   ],
+   "dClosed": 0.00011283812299724105
+  },
+  "brep": {
+   "volume": 1130.9733552911239,
+   "faces": 3,
+   "dVsSc": 0.00011283812193485149,
+   "faceSame": true
+  },
+  "occt": {
+   "refused": "Sketch 1: line 1 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  }
+ },
+ {
+  "id": "tangent-line-circle-side-matching",
+  "feats": [
+   "tangent:side option"
+  ],
+  "want": {
+   "volume": 1130.9733552923256
+  },
+  "sc": {
+   "volume": 1130.8457383817545,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    2,
+    0,
+    0,
+    14,
+    12,
+    10.000000000000005
+   ],
+   "dClosed": 0.00011283812299724105
+  },
+  "brep": {
+   "volume": 1130.9733552911239,
+   "faces": 3,
+   "dVsSc": 0.00011283812193485149,
+   "faceSame": true
+  },
+  "occt": {
+   "refused": "Sketch 1: line 1 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  }
+ },
+ {
+  "id": "circle-circle-external-mode",
+  "feats": [
+   "rule:tangent",
+   "tangent:circle-circle external",
+   "tangent:mode option"
+  ],
+  "want": {
+   "volume": 2796.017461694916
+  },
+  "sc": {
+   "volume": 2795.7496313258525,
+   "faces": 6,
+   "bodies": 2,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "dClosed": 0.00009578994864405292
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 names geometry -2, which this sketch does not have"
+  }
+ },
+ {
+  "id": "circle-circle-external-no-mode",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "want": {
+   "volume": 2796.017461694916
+  },
+  "sc": {
+   "volume": 2795.7496313258525,
+   "faces": 6,
+   "bodies": 2,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "dClosed": 0.00009578994864405292
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 names geometry -2, which this sketch does not have"
+  }
+ },
+ {
+  "id": "circle-circle-internal-mode",
+  "feats": [
+   "tangent:circle-circle internal",
+   "tangent:mode option"
+  ],
+  "want": {
+   "volume": 1225.2211349000193
+  },
+  "sc": {
+   "volume": 2010.4400907831944,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    7.999999999999999,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "dClosed": 0.6408793755808422
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 names geometry -2, which this sketch does not have"
+  }
+ },
+ {
+  "id": "circle-circle-internal-no-mode",
+  "feats": [
+   "tangent:circle-circle internal"
+  ],
+  "want": {
+   "volume": 1225.2211349000193
+  },
+  "sc": {
+   "volume": 2010.4400907831944,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    7.999999999999999,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "dClosed": 0.6408793755808422
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 names geometry -2, which this sketch does not have"
+  }
+ },
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "feats": [
+   "rule:tangent",
+   "tangent:endpoint line-arc",
+   "rule:lock",
+   "rule:equal",
+   "rule:radius",
+   "slot with tangent joints",
+   "endpoint tangency curved accuracy",
+   "point-ref:a/b/c ends"
+  ],
+  "want": {
+   "volume": 11141.592653589794
+  },
+  "sc": {
+   "volume": 11141.238823333528,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -9.999999999928342,
+    5.1386450650170445e-11,
+    0,
+    50.00031007688786,
+    19.999999999611823,
+    10.000000000000005
+   ],
+   "dClosed": 0.00003175760120367676
+  },
+  "brep": {
+   "volume": 11141.592653721977,
+   "faces": 6,
+   "dVsSc": 0.00003175761306716238,
+   "faceSame": true
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "slot-dims-from-points",
+  "feats": [
+   "tangent:endpoint line-arc",
+   "slot with tangent joints",
+   "endpoint tangency curved accuracy",
+   "rule:distanceX"
+  ],
+  "want": {
+   "volume": 3285.3981633974486
+  },
+  "sc": {
+   "refused": "solidcraft",
+   "sentence": "invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-constrain the sketch (it conflicts with what the other constraints already determine)"
+  },
+  "brep": {
+   "volume": 3285.3981633987314,
+   "faces": 6,
+   "dVsSc": null,
+   "faceSame": false
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "feats": [
+   "rule:tangent",
+   "tangent:endpoint arc-arc",
+   "point-ref:a/b/c ends",
+   "rule:equal",
+   "rule:radius",
+   "rule:lock"
+  ],
+  "want": {
+   "volume": 1099.2062660056365
+  },
+  "sc": {
+   "volume": 1099.0937329157696,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -7.000000000000003,
+    -5.000000000000004,
+    0,
+    7.000000000000002,
+    5.000000000000002,
+    10.000000000000004
+   ],
+   "dClosed": 0.00010237668156301426
+  },
+  "brep": {
+   "volume": 1099.2062660056363,
+   "faces": 6,
+   "dVsSc": 0.00010237668156280744,
+   "faceSame": true
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "triangle-length-angle-120",
+  "feats": [
+   "rule:angle"
+  ],
+  "want": {
+   "volume": 5196.152422706632
+  },
+  "sc": {
+   "volume": 5196.15242270663,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25.98076211353316,
+    10
+   ],
+   "dClosed": 3.500646739300923e-16
+  },
+  "brep": {
+   "volume": 5196.152422707686,
+   "faces": 5,
+   "dVsSc": 2.0321254321637738e-13,
+   "faceSame": true
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 7 is a angle rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "triangle-angle-120-with-quadrant",
+  "feats": [
+   "angle:quadrant option"
+  ],
+  "want": {
+   "volume": 5196.152422706632
+  },
+  "sc": {
+   "volume": 5196.15242270663,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25.98076211353316,
+    10
+   ],
+   "dClosed": 3.500646739300923e-16
+  },
+  "brep": {
+   "volume": 5196.152422707686,
+   "faces": 5,
+   "dVsSc": 2.0321254321637738e-13,
+   "faceSame": true
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 7 is a angle rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "rect-lock-offset-corner",
+  "feats": [
+   "rule:lock",
+   "lock-hoisting order"
+  ],
+  "want": {
+   "volume": 6000
+  },
+  "sc": {
+   "volume": 5999.999999999932,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ],
+   "dClosed": 1.1368683772161604e-14
+  },
+  "brep": {
+   "volume": 5999.999999982753,
+   "faces": 6,
+   "dVsSc": 2.863089321189408e-12,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 5999.999999983658,
+   "dVsSc": 2.7122647831445547e-12
+  }
+ },
+ {
+  "id": "rect-param-width",
+  "feats": [
+   "value:param()"
+  ],
+  "want": {
+   "volume": 6000
+  },
+  "sc": {
+   "volume": 6000,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "dClosed": 0
+  },
+  "brep": {
+   "volume": 6000,
+   "faces": 6,
+   "dVsSc": 0,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 5999.999999999999,
+   "dVsSc": 1.5158245029548806e-16
+  }
+ },
+ {
+  "id": "rect-reference-dim-correct",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "want": {
+   "volume": 6000
+  },
+  "sc": {
+   "volume": 5999.999999999902,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "dClosed": 1.6370904631912707e-14
+  },
+  "brep": {
+   "volume": 5999.999999941251,
+   "faces": 6,
+   "dVsSc": 9.77509747230085e-12,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 5999.99999994616,
+   "dVsSc": 8.957006988040763e-12
+  }
+ },
+ {
+  "id": "rect-reference-dim-wrong-value",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "want": {
+   "volume": 6000
+  },
+  "sc": {
+   "volume": 5999.999999999902,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "dClosed": 1.6370904631912707e-14
+  },
+  "brep": {
+   "volume": 5999.999999941251,
+   "faces": 6,
+   "dVsSc": 9.77509747230085e-12,
+   "faceSame": true
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 11 (distance) is off by 6.29e+1 mm: (-0.0, -0.0) mm to (30.0, 20.0) mm measures 36.055512754477355 where the rule says 99. These rows have not been solved, and this reference reads them rather than solving them"
+  }
+ },
+ {
+  "id": "rect-reference-distanceX-zero",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "want": {
+   "volume": 6000
+  },
+  "sc": {
+   "refused": "mapper",
+   "sentence": "is a reference distanceX of 0; solidcraft has no reference form of a point-pair level constraint"
+  },
+  "brep": {
+   "volume": 6000,
+   "faces": 6,
+   "dVsSc": null,
+   "faceSame": false
+  },
+  "occt": {
+   "volume": 5999.999999999999,
+   "dVsSc": null
+  }
+ },
+ {
+  "id": "rect-reference-distanceX-opposite-sign",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "want": {
+   "volume": 6000
+  },
+  "sc": {
+   "refused": "mapper",
+   "sentence": "is the SIGNED distanceX -30 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+  },
+  "brep": {
+   "volume": 5999.999999941251,
+   "faces": 6,
+   "dVsSc": null,
+   "faceSame": false
+  },
+  "occt": {
+   "volume": 5999.99999994616,
+   "dVsSc": null
+  }
+ },
+ {
+  "id": "rect-inactive-conflicting-rule",
+  "feats": [
+   "active:false suppressed rule"
+  ],
+  "want": {
+   "volume": 6000
+  },
+  "sc": {
+   "volume": 5999.999999999902,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "dClosed": 1.6370904631912707e-14
+  },
+  "brep": {
+   "volume": 5999.999999941251,
+   "faces": 6,
+   "dVsSc": 9.77509747230085e-12,
+   "faceSame": true
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 11 (distance) is off by 6.90e+1 mm: (-0.0, -0.0) mm to (30.0, -0.0) mm measures 29.999999999994056 where the rule says 99. These rows have not been solved, and this reference reads them rather than solving them"
+  }
+ },
+ {
+  "id": "plate-with-hole-default-profiles",
+  "feats": [
+   "nested loops (hole) profile selection",
+   "rule:diameter"
+  ],
+  "want": {
+   "volume": 9214.601836602553
+  },
+  "sc": {
+   "volume": 10000,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    10
+   ],
+   "dClosed": 0.08523408578302993
+  },
+  "brep": {
+   "volume": 9214.601836621781,
+   "faces": 7,
+   "dVsSc": 0.08523408578076533,
+   "faceSame": false
+  },
+  "occt": {
+   "volume": 9214.601836620192,
+   "dVsSc": 0.08523408578095257
+  }
+ },
+ {
+  "id": "rect-underconstrained-height-free",
+  "feats": [
+   "rough start: solution branch chosen by the drawn start state"
+  ],
+  "want": {
+   "volume": 5100
+  },
+  "sc": {
+   "volume": 5100,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    17,
+    10
+   ],
+   "dClosed": 0
+  },
+  "brep": {
+   "volume": 5100,
+   "faces": 6,
+   "dVsSc": 0,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 5099.999999999999,
+   "dVsSc": 1.783322944652801e-16
+  }
+ },
+ {
+  "id": "rect-redundant-width-dimension",
+  "feats": [
+   "rule:distance",
+   "redundant/conflicting dimensions"
+  ],
+  "want": {
+   "volume": 6000
+  },
+  "sc": {
+   "refused": "solidcraft",
+   "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k2 (Coincident), k3 (Coincident), k4 (Coincident), k6 (Vertical), k8 (Vertical), k10 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+  },
+  "brep": {
+   "volume": 6000,
+   "faces": 6,
+   "dVsSc": null,
+   "faceSame": false
+  },
+  "occt": {
+   "volume": 5999.999999999999,
+   "dVsSc": null
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__corner-origin-25x60",
+  "feats": [
+   "dimensioned rectangle",
+   "rule:distanceX",
+   "rule:distanceY"
+  ],
+  "want": {
+   "volume": 15000
+  },
+  "sc": {
+   "volume": 15000,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    25,
+    60,
+    10
+   ],
+   "dClosed": 0
+  },
+  "brep": {
+   "volume": 15000,
+   "faces": 6,
+   "dVsSc": 0,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 14999.999999999996,
+   "dVsSc": 2.425319204727809e-16
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__offset-corner-30x18",
+  "feats": [
+   "dimensioned rectangle",
+   "rule:lock"
+  ],
+  "want": {
+   "volume": 5400
+  },
+  "sc": {
+   "volume": 5400,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -10,
+    5,
+    0,
+    20,
+    23,
+    10
+   ],
+   "dClosed": 0
+  },
+  "brep": {
+   "volume": 5400,
+   "faces": 6,
+   "dVsSc": 0,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 5400,
+   "dVsSc": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__square-by-equal",
+  "feats": [
+   "rule:equal"
+  ],
+  "want": {
+   "volume": 4840
+  },
+  "sc": {
+   "volume": 4840,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    7,
+    -3,
+    0,
+    29,
+    19,
+    10
+   ],
+   "dClosed": 0
+  },
+  "brep": {
+   "volume": 4840.000000000001,
+   "faces": 6,
+   "dVsSc": 1.87912128465481e-16,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 4839.999999999999,
+   "dVsSc": 1.8791212846548109e-16
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__right-triangle",
+  "feats": [
+   "rule:perpendicular",
+   "rule:distance"
+  ],
+  "want": {
+   "volume": 3000
+  },
+  "sc": {
+   "volume": 3000,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "dClosed": 0
+  },
+  "brep": {
+   "volume": 3000,
+   "faces": 5,
+   "dVsSc": 0,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 3000,
+   "dVsSc": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__parallelogram",
+  "feats": [
+   "rule:parallel"
+  ],
+  "want": {
+   "volume": 4500
+  },
+  "sc": {
+   "volume": 4500,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    15,
+    10
+   ],
+   "dClosed": 0
+  },
+  "brep": {
+   "volume": 4500,
+   "faces": 6,
+   "dVsSc": 0,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 4500,
+   "dVsSc": 0
+  }
+ },
+ {
+  "id": "gauntlet:sk-rect-dof__circle-pinned",
+  "feats": [
+   "rule:lock",
+   "rule:radius"
+  ],
+  "want": {
+   "volume": 1539.3804002589986
+  },
+  "sc": {
+   "volume": 1539.2066994644592,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    -3.0000000000000004,
+    -13.000000000000005,
+    0,
+    11.000000000000004,
+    0.999999999999998,
+    10.000000000000005
+   ],
+   "dClosed": 0.0001128381227344293
+  },
+  "brep": {
+   "volume": 1539.3804002589995,
+   "faces": 3,
+   "dVsSc": 0.00011283812273502006,
+   "faceSame": true
+  },
+  "occt": {
+   "volume": 1539.3804002589986,
+   "dVsSc": 0.0001128381227344293
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc",
+   "endpoint tangency curved accuracy"
+  ],
+  "want": {
+   "volume": 4730.973355292325
+  },
+  "sc": {
+   "volume": 4730.793327002382,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -6.000000000000003,
+    0,
+    0,
+    36,
+    12.000000000000002,
+    10.000000000000005
+   ],
+   "dClosed": 0.000038053118549409936
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc",
+   "endpoint tangency curved accuracy"
+  ],
+  "want": {
+   "volume": 8843.893421169303
+  },
+  "sc": {
+   "volume": 8843.382953534847,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -12.000000000000005,
+    0,
+    0,
+    30.000000000000004,
+    24.000000000000004,
+    10.000000000000004
+   ],
+   "dClosed": 0.00005771978586200539
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc"
+  ],
+  "want": {
+   "volume": 4730.973355292325
+  },
+  "sc": {
+   "volume": 4730.793327002382,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -6.000000000000003,
+    0,
+    0,
+    36,
+    12.000000000000002,
+    10.000000000000005
+   ],
+   "dClosed": 0.000038053118549409936
+  },
+  "brep": {
+   "refused": "extrude pull1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-external",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "want": {
+   "volume": 2796.017461694916
+  },
+  "sc": {
+   "volume": 2795.7496313258525,
+   "faces": 6,
+   "bodies": 2,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "dClosed": 0.00009578994864405292
+  },
+  "brep": {
+   "refused": "extrude pull1: the shapes near (0.0, 0.0) mm and (13.0, 0.0) mm cross or touch each other; draw each shape either wholly inside another (a hole) or clear of the others"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-no-mode",
+  "feats": [
+   "tangent:circle-circle external"
+  ],
+  "want": {
+   "volume": 2796.017461694916
+  },
+  "sc": {
+   "volume": 2795.7496313258525,
+   "faces": 6,
+   "bodies": 2,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "dClosed": 0.00009578994864405292
+  },
+  "brep": {
+   "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__circle-circle-internal",
+  "feats": [
+   "tangent:circle-circle internal"
+  ],
+  "want": {
+   "volume": 1225.2211349000193
+  },
+  "sc": {
+   "volume": 2010.4400907831944,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    7.999999999999999,
+    8.000000000000002,
+    10.000000000000005
+   ],
+   "dClosed": 0.6408793755808422
+  },
+  "brep": {
+   "refused": "extrude pull1: the hole near (3.0, 0.0) mm is not fully inside the outline; move it in, or make the outline bigger"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  }
+ }
+]

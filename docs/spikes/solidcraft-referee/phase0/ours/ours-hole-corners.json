@@ -1,0 +1,21 @@
+{
+ "id": "hole-corners",
+ "outcome": "built",
+ "volume": 29738.429007102644,
+ "faces": 10,
+ "bbox": [
+  -20,
+  -20.000000000000004,
+  -10.000000000000014,
+  20.000000000000004,
+  20,
+  10.000000000000005
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "hole"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_b1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":22,\"base\":[-15,-10,-11],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_b1\"]}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":22,\"base\":[15,-10,-11],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_b1\"]}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":22,\"base\":[-15,10,-11],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_b1\"]}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":22,\"base\":[15,10,-11],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_b1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

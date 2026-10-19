@@ -1,0 +1,1 @@
+spin-360-script                          PASS     occtV 28274.3339 | tr-occt dV 1.6e-4 dBb 1.8e-16 dCom 6.3e-15 F o/b/t 4/4/4 | brep-occt dV 1.3e-16      | ms 785 cpu 1436

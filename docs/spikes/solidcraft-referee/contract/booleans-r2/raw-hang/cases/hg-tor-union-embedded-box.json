@@ -1,0 +1,1 @@
+{"id":"hg-tor-union-embedded-box","feature":"time budget: round shapes crossing at an angle and a torus meeting a box","source":"const t = ring(36,8,{at:[0,0,0]}); const b = box(6,6,6,{at:[14,0,0]}); join(t,b)","outcome":"HANG","lastStage":"solidcraft","detail":"SystemError: spawnSync /home/shuff57/.bun/bin/bun ETIMEDOUT","signal":"SIGTERM","timeoutMs":100000,"wallMs":100230}

@@ -1,0 +1,1 @@
+sl9-85-boxtan-side-m0.2                  PASS     occtV 71000.0159 | tr-occt dV 2.2e-8 dBb 2.3e-13 dCom 1.7e-7 F o/b/t 10/10/10 | brep-occt dV 9.4e-14      | ms 1551 cpu 1935

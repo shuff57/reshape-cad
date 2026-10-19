@@ -1,0 +1,877 @@
+[
+ {
+  "id": "cb-narrower-than-bore",
+  "row": "counterbore-degenerate",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); hole(plate, { across: 6, counterbore: { across: 4, deep: 3 } });",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "pull1",
+   "diameter": 6,
+   "depth": 12,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z",
+   "counterbore": {
+    "diameter": 4,
+    "depth": 3
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 11717.256661176918,
+   "com": [
+    19.999999999999993,
+    15,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 11999.999999999998,
+  "brepRefusals": {
+   "hole1": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "truckMs": 223,
+  "translateCpuMs": 582.991,
+  "loadavg": 8.11,
+  "truckFeatures": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.",
+    "guard": "G-ENGINE",
+    "raw": "solid.hole: the counterbore must be wider than the hole and shallower than it"
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 12000,
+  "truck": {
+   "refused": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.",
+   "guard": "G-ENGINE",
+   "raw": "solid.hole: the counterbore must be wider than the hole and shallower than it",
+   "firstRefusal": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped."
+  },
+  "verdict": "truck-refused",
+  "ms": 276
+ },
+ {
+  "id": "cs-narrower-than-bore",
+  "row": "countersink-degenerate",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); hole(plate, { across: 6, countersink: { across: 4, angle: 90 } });",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "pull1",
+   "diameter": 6,
+   "depth": 12,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 4,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 11717.256661176918,
+   "com": [
+    19.999999999999993,
+    15,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 11999.999999999998,
+  "brepRefusals": {
+   "hole1": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "truckMs": 160,
+  "translateCpuMs": 218.802,
+  "loadavg": 8.11,
+  "truckFeatures": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.",
+    "guard": "G-ENGINE",
+    "raw": "solid.hole: the countersink must be wider than the hole"
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 12000,
+  "truck": {
+   "refused": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.",
+   "guard": "G-ENGINE",
+   "raw": "solid.hole: the countersink must be wider than the hole",
+   "firstRefusal": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped."
+  },
+  "verdict": "truck-refused",
+  "ms": 187
+ },
+ {
+  "id": "cs-equal-to-bore",
+  "row": "countersink-degenerate",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); hole(plate, { across: 6, countersink: { across: 6, angle: 90 } });",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "pull1",
+   "diameter": 6,
+   "depth": 12,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 6,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 11717.256661176918,
+   "com": [
+    19.999999999999993,
+    15,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 11999.999999999998,
+  "brepRefusals": {
+   "hole1": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "truckMs": 142,
+  "translateCpuMs": 219.075,
+  "loadavg": 8.11,
+  "truckFeatures": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.",
+    "guard": "G-ENGINE",
+    "raw": "solid.hole: the countersink must be wider than the hole"
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 12000,
+  "truck": {
+   "refused": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.",
+   "guard": "G-ENGINE",
+   "raw": "solid.hole: the countersink must be wider than the hole",
+   "firstRefusal": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped."
+  },
+  "verdict": "truck-refused",
+  "ms": 158
+ },
+ {
+  "id": "cb-deep-beyond-thickness-21",
+  "row": "cb",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, counterbore: { across: 12, deep: 21 } });",
+  "note": "native cuts a plain 12 bore; brep-rs refuses",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 22,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z",
+   "counterbore": {
+    "diameter": 12,
+    "depth": 21
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31434.513322353832,
+   "com": [
+    -3.740946187471975e-16,
+    2.2798943142784123e-16,
+    2.1614983636072968e-17
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {
+   "hole1": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "truckMs": 651,
+  "translateCpuMs": 698.547,
+  "loadavg": 8.11,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.75,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.08835729338221293,
+     "removed": 0.08833553721706267,
+     "ratio": 0.9997537705794568,
+     "dFaces": 2,
+     "failed": null,
+     "need": null,
+     "expected": 2346.7697122315753
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "volume": 29738.42900710266,
+   "bbox": [
+    -20,
+    -20,
+    -10.000000000000005,
+    20,
+    20,
+    10.000000000000007
+   ],
+   "com": [
+    -7.677643822511511e-17,
+    -2.4944378062350676e-16,
+    -9.786606565458657e-16
+   ],
+   "faces": 7,
+   "kernelFaces": 8,
+   "shells": 1,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 531.267,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 29738.42900710266,
+    "bbox": [
+     -20,
+     -20,
+     -10.000000000000005,
+     20,
+     20,
+     10.000000000000007
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      0,
+      0,
+      10
+     ],
+     "diameter": 6,
+     "body": "b_box1",
+     "type": "counterbore",
+     "cb_diameter": 12,
+     "cb_depth": 21
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 2261.946710584651,
+   "volume": 29738.053289415348
+  },
+  "closedFromOcct": {
+   "volume": 29738.05328941534
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.053956118164076916,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 1.6671260669698978e-17,
+    "faces": "7/7",
+    "faceVerdict": {
+     "ok": true,
+     "keys": {
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 565.4866776461604,
+    "removedTruck": 2261.570992897341,
+    "dRemoved": 2.9993355852539896
+   },
+   "vsClosed": {
+    "removedClosed": 2261.946710584651,
+    "removedTruck": 2261.570992897341,
+    "dRemoved": 0.00016610368650680135,
+    "dVol": 0.000012634239492910475
+   }
+  },
+  "ms": 1172
+ },
+ {
+  "id": "cb-deep-beyond-thickness-30",
+  "row": "cb",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, counterbore: { across: 12, deep: 30 } });",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 22,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z",
+   "counterbore": {
+    "diameter": 12,
+    "depth": 30
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31434.513322353832,
+   "com": [
+    -3.740946187471975e-16,
+    2.2798943142784123e-16,
+    2.1614983636072968e-17
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {
+   "hole1": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "truckMs": 714,
+  "translateCpuMs": 732.876,
+  "loadavg": 8.11,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.75,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.08835729338221293,
+     "removed": 0.08833553721706267,
+     "ratio": 0.9997537705794568,
+     "dFaces": 2,
+     "failed": null,
+     "need": null,
+     "expected": 3110.176727053895
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "volume": 29738.42900710266,
+   "bbox": [
+    -20,
+    -20,
+    -10.000000000000005,
+    20,
+    20,
+    10.000000000000007
+   ],
+   "com": [
+    -7.677643822511511e-17,
+    -2.4944378062350676e-16,
+    -9.786606565458657e-16
+   ],
+   "faces": 7,
+   "kernelFaces": 8,
+   "shells": 1,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 473.648,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 29738.42900710266,
+    "bbox": [
+     -20,
+     -20,
+     -10.000000000000005,
+     20,
+     20,
+     10.000000000000007
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      0,
+      0,
+      10
+     ],
+     "diameter": 6,
+     "body": "b_box1",
+     "type": "counterbore",
+     "cb_diameter": 12,
+     "cb_depth": 30
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 2261.946710584651,
+   "volume": 29738.053289415348
+  },
+  "closedFromOcct": {
+   "volume": 29738.05328941534
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.053956118164076916,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 1.6671260669698978e-17,
+    "faces": "7/7",
+    "faceVerdict": {
+     "ok": true,
+     "keys": {
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 565.4866776461604,
+    "removedTruck": 2261.570992897341,
+    "dRemoved": 2.9993355852539896
+   },
+   "vsClosed": {
+    "removedClosed": 2261.946710584651,
+    "removedTruck": 2261.570992897341,
+    "dRemoved": 0.00016610368650680135,
+    "dVol": 0.000012634239492910475
+   }
+  },
+  "ms": 1185
+ },
+ {
+  "id": "cb-blind-deep-equals-hole",
+  "row": "cb",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, deep: 6, counterbore: { across: 12, deep: 6 } });",
+  "note": "recess as deep as the blind hole: no bore left",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 6,
+   "center": [
+    0,
+    0,
+    7
+   ],
+   "axis": "z",
+   "counterbore": {
+    "diameter": 12,
+    "depth": 6
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31830.353996706144,
+   "com": [
+    -9.097658542817186e-16,
+    1.9902376500013617e-16,
+    -0.03730784845119326
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {
+   "hole1": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "truckMs": 178,
+  "translateCpuMs": 200.477,
+  "loadavg": 8.11,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.",
+    "guard": "G-ENGINE",
+    "raw": "solid.hole: the counterbore must be wider than the hole and shallower than it"
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "refused": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.",
+   "guard": "G-ENGINE",
+   "raw": "solid.hole: the counterbore must be wider than the hole and shallower than it",
+   "firstRefusal": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped."
+  },
+  "verdict": "truck-refused",
+  "ms": 190
+ },
+ {
+  "id": "cb-blind-deep-beyond-hole",
+  "row": "cb",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, deep: 6, counterbore: { across: 12, deep: 9 } });",
+  "note": "recess deeper than the blind hole",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 6,
+   "center": [
+    0,
+    0,
+    7
+   ],
+   "axis": "z",
+   "counterbore": {
+    "diameter": 12,
+    "depth": 9
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31830.353996706144,
+   "com": [
+    -9.097658542817186e-16,
+    1.9902376500013617e-16,
+    -0.03730784845119326
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {
+   "hole1": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "truckMs": 158,
+  "translateCpuMs": 173.96,
+  "loadavg": 8.11,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.",
+    "guard": "G-ENGINE",
+    "raw": "solid.hole: the counterbore must be wider than the hole and shallower than it"
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "refused": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.",
+   "guard": "G-ENGINE",
+   "raw": "solid.hole: the counterbore must be wider than the hole and shallower than it",
+   "firstRefusal": "hole1 (hole): this hole could not be cut cleanly into this part, so hole1 is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped."
+  },
+  "verdict": "truck-refused",
+  "ms": 169
+ }
+]

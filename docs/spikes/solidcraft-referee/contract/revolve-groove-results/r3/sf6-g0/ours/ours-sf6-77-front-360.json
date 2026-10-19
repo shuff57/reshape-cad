@@ -1,0 +1,21 @@
+{
+ "id": "sf6-77-front-360",
+ "outcome": "built",
+ "volume": 1748.983646686144,
+ "faces": 4,
+ "bbox": [
+  -22.990000000000002,
+  15.949999999999998,
+  -22.99,
+  22.99,
+  29.099999999999998,
+  22.99
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,2.77,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-22.05,13.18],[-22.99,13.18],[-22.99,26.33],[-22.05,26.33]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

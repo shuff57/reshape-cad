@@ -1,0 +1,154 @@
+[
+ {
+  "id": "r2-big-wedge-10000",
+  "feature": "oversize",
+  "note": "",
+  "script": "wedge(10000, 10000, 10000);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "wedge1",
+     "kind": "wedge",
+     "width": 10000,
+     "depth": 10000,
+     "height": 10000,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "wedge",
+  "analytic": 500000000000,
+  "occt": {
+   "volume": 499999999999.99994,
+   "com": [
+    -1666.666666666666,
+    -1666.6666666666665,
+    9.094947017729282e-13
+   ],
+   "bbox": [
+    -5000,
+    -5000,
+    -5000,
+    5000,
+    5000,
+    5000
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 499999999999.99994,
+   "bbox": [
+    -5000,
+    -5000,
+    -5000,
+    5000,
+    5000,
+    5000
+   ],
+   "faces": 5,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_wedge1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -5000
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5000,
+       -5000
+      ],
+      [
+       5000,
+       -5000
+      ],
+      [
+       -5000,
+       5000
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10000,
+     "sketch": "sk_wedge1_0",
+     "operation": "new",
+     "body_name": "b_wedge1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 500000000000,
+   "bbox": [
+    -5000,
+    -5000,
+    -5000,
+    5000,
+    5000,
+    5000
+   ],
+   "com": [
+    -1666.6666666666667,
+    -1666.6666666666667,
+    0
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 1.2207031250000002e-16,
+   "dBboxOcct": 0,
+   "dComOcct": 5.2509701089513854e-17,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 1.2207031250000002e-16,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 182
+ }
+]

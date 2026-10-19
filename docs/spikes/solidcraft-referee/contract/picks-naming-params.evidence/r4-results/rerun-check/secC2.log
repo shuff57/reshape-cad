@@ -1,0 +1,36 @@
+--- carried
+box1:box hole1:hole
+carried +z through hole: shell open      PASS[OCCT] V=8000.160829 (OCCT 8000.230016, brep 8000.230016) dVol 8.6e-6 dBbox 7.4e-16 dCOM 6.9e-7 faces occt/truck/brep 14/14/14 | ctl {"rej":true,"dCom":"7.2e-2"} 
+    names: hole1.same[box1.face[+z]]
+carried +x through hole: draft           PASS[OCCT] V=23329.620856 (OCCT 23329.526926, brep 23434.513322) dVol 4.0e-6 dBbox 1.5e-16 dCOM 6.4e-9 faces occt/truck/brep 7/7/7 | ctl {"refused":"solid.draft: invalid input: no face at [-14.300090691792605,"} 
+    names: hole1.same[box1.face[+x]]
+round between(carried +z, carried +x)    PASS[OCCT] V=23408.812774 (OCCT 23408.761102, brep 23408.761102) dVol 2.2e-6 dBbox 5.9e-16 dCOM 2.6e-7 faces occt/truck/brep 8/8/8 | ctl {"rej":true,"dCom":"8.0e-4"} 
+    names: hole1.edge[hole1.same[box1.face[+x]] ^ hole1.same[box1.face[+z]]]
+round between(carried +z, primitive +x) mixed PASS[OCCT] V=23408.812774 (OCCT 23408.761102, brep 23408.761102) dVol 2.2e-6 dBbox 5.9e-16 dCOM 2.6e-7 faces occt/truck/brep 8/8/8 | ctl {"rej":true,"dCom":"8.0e-4"} 
+    names: hole1.edge[box1.face[+x] ^ hole1.same[box1.face[+z]]]
+carried bottom through hole: shell open  PASS[OCCT] V=8000.160829 (OCCT 8000.230016, brep 8000.230016) dVol 8.6e-6 dBbox 7.4e-16 dCOM 6.9e-7 faces occt/truck/brep 14/14/14 | ctl {"rej":true,"dCom":"7.2e-2"} 
+    names: hole1.same[box1.face[-z]]
+carried through round: shell open front  PASS[brep-rs (OCCT refused or no-opped a feature)] V=7846.230884 (OCCT 23974.247780, brep 7846.247780) dVol 2.2e-6 dBbox 1.0e-15 dCOM null faces occt/truck/brep null/12/12 | ctl {"rej":true} 
+    names: box1.edge[box1.face[+x] ^ box1.face[+z]] ; round1.same[box1.face[-y]]
+carried +x across round (now trimmed)    NO-REFERENCE no valid independent reference (OCCT: {"sh1":"Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."}; brep-rs: brep-rs cannot hollow sh1 yet -- sh1 is shown without it.) | ctl {"skipped":"no reference to score a control against"} 
+    names: box1.edge[box1.face[+x] ^ box1.face[+z]] ; round1.same[box1.face[+x]]
+round rim of shelled box: between(+z,+x) after shell REFUSED: r1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall.   | OCCT:refusals {"r1":"Rounding Round 1 at 2 would not fit its edge -- Round 1 is shown without it."} BREP:refusals {"r1":"round r1 would reach a cut made earlier, and brep-rs can only round a corner the cuts stay cl
+    names: box1.face[+z] ; box1.edge[box1.face[+x] ^ box1.face[+z]]
+--- carried through move/rotate/mirror/pattern
+edge after move (carried)                REFUSED: r1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.   | OCCT:builds V=23974.2478 BREP:builds V=23974.2478
+    names: move1.edge[move1.same[box1.face[+x]] ^ move1.same[box1.face[+z]]]
+shell open carried through move          REFUSED: sh1 is not built: the part was moved or turned before this hollow, and its faces cannot be found again yet -- put the hollow before the move() or turn() line.   | OCCT:builds V=7152.0000 BREP:builds V=7152.0000
+    names: move1.same[box1.face[+z]]
+box1:box
+rotated box primitive face shell         REFUSED: sh1 is not built: the part was moved or turned before this hollow, and its faces cannot be found again yet -- put the hollow before the move() or turn() line.   | OCCT:builds V=7152.0000 BREP:builds V=7152.0000
+    names: box1.face[+z]
+--- split / made
+box1:box sk1:sketch pocket1:pocket
+split: shell open                        REFUSED: sh1 is not built: a piece of a split face cannot be picked yet.   | OCCT:refusals {"sh1":"Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a sha BREP:brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- sh1 is shown without it.
+    names: box1.split[box1.face[+z], near(0.2,0.5), lo(0)]
+split: draft                             REFUSED: d1 is not built: a piece of a split face cannot be picked yet.   | OCCT:refusals {"d1":"Draft 1's face could not be found -- Draft 1 is shown without it."} BREP:refusals {"d1":"d1's face could not be found -- d1 is shown without it."}
+    names: box1.split[box1.face[+x], near(0.5,0.5)]
+made: shell open                         REFUSED: sh1 is not built: a face made by an earlier cut cannot be picked by name yet.   | OCCT:refusals {"sh1":"Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a sha BREP:brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- sh1 is shown without it.
+    names: pocket1.made[face, near(0.5,0.5)]
+round between(split, +x)                 REFUSED: r1 is not built: a piece of a split face cannot be picked yet.   | OCCT:refusals {"r1":"Round 1's edge could not be found -- Round 1 is shown without it."} BREP:refusals {"r1":"r1's edge could not be found -- r1 is shown without it."}
+    names: pocket1.edge[box1.face[+y] ^ box1.split[box1.face[+z], near(0.2,0.5), lo(0)]]

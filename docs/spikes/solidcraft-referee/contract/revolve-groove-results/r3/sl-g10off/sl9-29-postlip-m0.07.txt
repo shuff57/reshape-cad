@@ -1,0 +1,1 @@
+sl9-29-postlip-m0.07                     FAIL     occtV 36087.2569 | tr-occt dV 6.2e-4 dBb 8.9e-16 dCom 1.2e-4 F o/b/t 7/7/5 | brep-occt dV 4.0e-16      | ms 22290 cpu 22555

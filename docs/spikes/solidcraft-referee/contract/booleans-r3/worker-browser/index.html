@@ -1,0 +1,26 @@
+<!doctype html><meta charset="utf-8"><title>worker budget</title>
+<script type="module">
+const q = new URLSearchParams(location.search);
+const budget = Number(q.get('budget') ?? 10000);
+const HANG = [{ command: 'solid.cylinder', params: { radius: 10, height: 40, base: [0, 0, -20], axis: 'Z', body_name: 'b_c1' } }, { command: 'solid.cylinder', params: { radius: 6, height: 40, base: [0, 0, -20], axis: 'Z', body_name: 'b_c2' } }, { command: 'solid.move', params: { bodies: ['b_c2'], axis: [1, 0, 0], angle: 90 } }, { command: 'solid.combine', params: { target: 'b_c1', tools: ['b_c2'], operation: 'cut' } }];
+const BOX = [{ command: 'solid.box', params: { length: 2, width: 3, height: 4, body_name: 'z' } }];
+const spawn = () => new Promise((res) => { const w = new Worker('worker.js', { type: 'module' }); w.onmessage = (e) => { if (e.data.ready) res(w); }; });
+const call = (w, cmds) => new Promise((res) => { const t0 = performance.now(); w.onmessage = (e) => { if (!e.data.ready) res({ ...e.data, roundTripMs: performance.now() - t0 }); }; w.postMessage({ id: 1, cmds }); });
+window.__phase = 'loading';
+const R = { budgetMs: budget, ua: navigator.userAgent };
+let t = performance.now(); const w = await spawn(); R.initMs = performance.now() - t;
+const warm = await call(w, BOX); R.warmBoxMs = warm.roundTripMs;
+let ticks = 0; setInterval(() => { ticks++; }, 100);
+window.__phase = 'hang-running'; window.__t0 = Date.now();
+let done = false; const p = call(w, HANG).then((r) => { done = true; R.hangReturned = r; });
+await new Promise((r) => setTimeout(r, budget));
+R.hangReturnedBeforeBudget = done;
+R.ticksAtBudget = ticks; R.expectedTicks = Math.round(budget / 100);
+const t1 = performance.now(); w.terminate(); R.terminateCallMs = performance.now() - t1;
+window.__phase = 'terminated'; window.__tTerm = Date.now();
+await new Promise((r) => setTimeout(r, 1500));
+R.ticksAfterTerminate1500 = ticks - R.ticksAtBudget;
+const t2 = performance.now(); const w2 = await spawn(); R.freshInitMs = performance.now() - t2;
+const b2 = await call(w2, BOX); R.freshBox = b2; R.freshBoxRoundTripMs = b2.roundTripMs;
+window.__result = R; window.__phase = 'done';
+</script>

@@ -1,0 +1,1 @@
+fzc21-25-boxG-top-cone-45                PASS     occtV 71993.8006 | tr-occt dV 2.4e-7 dBb 2.0e-15 dCom 9.0e-8 F o/b/t 8/-/8 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it. | ms 691 cpu 1185

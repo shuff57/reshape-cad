@@ -1,0 +1,370 @@
+[
+ {
+  "id": "hole-counterbore__through-offset",
+  "params": {
+   "position": [
+    11,
+    21,
+    10
+   ],
+   "diameter": 6,
+   "body": "P",
+   "type": "counterbore",
+   "cb_diameter": 12,
+   "cb_depth": 3
+  },
+  "bodies": 1,
+  "volume": 11462.858816605338,
+  "faces": 9,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 7
+  },
+  "closedVolume": 11462.787656236145,
+  "dClosed": 0.000006207946210518726,
+  "dClosedRemoved": 0.00013246227496136053,
+  "fcVolume": 11462.787656236143,
+  "fcFaces": 9,
+  "dFc": 0.000006207946210677414,
+  "dFcRemoved": 0.00013246227496516925,
+  "dBbox": 6.750155989720952e-14
+ },
+ {
+  "id": "hole-counterbore__deep-recess",
+  "params": {
+   "position": [
+    20,
+    15,
+    20
+   ],
+   "diameter": 6,
+   "body": "P",
+   "type": "counterbore",
+   "cb_diameter": 14,
+   "cb_depth": 7
+  },
+  "bodies": 1,
+  "volume": 22555.05002402785,
+  "faces": 9,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 7
+  },
+  "closedVolume": 22554.867379348696,
+  "dClosed": 0.00000809779441754122,
+  "dClosedRemoved": 0.00012638610224677236,
+  "fcVolume": 22554.867379348692,
+  "fcFaces": 9,
+  "dFc": 0.000008097794417702515,
+  "dFcRemoved": 0.00012638610224866017,
+  "dBbox": 1.0658141036401503e-14
+ },
+ {
+  "id": "hole-counterbore__blind",
+  "params": {
+   "position": [
+    20,
+    15,
+    10
+   ],
+   "diameter": 6,
+   "body": "P",
+   "depth": 7,
+   "type": "counterbore",
+   "cb_diameter": 10,
+   "cb_depth": 3
+  },
+  "bodies": 1,
+  "volume": 11651.329187474767,
+  "faces": 10,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 8
+  },
+  "closedVolume": 11651.283215451533,
+  "dClosed": 0.000003945661811128028,
+  "dClosedRemoved": 0.00013183197732534254,
+  "fcVolume": 11651.283215451529,
+  "fcFaces": 10,
+  "dFc": 0.000003945661811440267,
+  "dFcRemoved": 0.00013183197733658856,
+  "dBbox": 5.329070518200751e-15
+ },
+ {
+  "id": "hole-counterbore__wide-thin",
+  "params": {
+   "position": [
+    30,
+    20,
+    6
+   ],
+   "diameter": 5,
+   "body": "P",
+   "type": "counterbore",
+   "cb_diameter": 24,
+   "cb_depth": 2
+  },
+  "bodies": 1,
+  "volume": 13416.726596803412,
+  "faces": 9,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 7
+  },
+  "closedVolume": 13416.681499426395,
+  "dClosed": 0.000003361291465298157,
+  "dClosedRemoved": 0.00004586243113555381,
+  "fcVolume": 13416.681499426397,
+  "fcFaces": 9,
+  "dFc": 0.00000336129146516258,
+  "dFcRemoved": 0.000045862431133472824,
+  "dBbox": 4.440892098500626e-15
+ },
+ {
+  "id": "hole-countersink__angle-90-offset",
+  "params": {
+   "position": [
+    26,
+    11,
+    10
+   ],
+   "diameter": 6,
+   "body": "P",
+   "type": "countersink",
+   "cs_diameter": 12,
+   "cs_angle": "90 deg"
+  },
+  "bodies": 1,
+  "volume": 11604.20445085215,
+  "faces": 8,
+  "faceTypes": {
+   "cone": 1,
+   "cylinder": 1,
+   "plane": 6
+  },
+  "closedVolume": 11604.159325647686,
+  "dClosed": 0.000003888709487495615,
+  "dClosedRemoved": 0.00011399840235765631,
+  "fcVolume": 11604.159325647686,
+  "fcFaces": 8,
+  "dFc": 0.000003888709487495615,
+  "dFcRemoved": 0.00011399840235693838,
+  "dBbox": 8.88178447115739e-15
+ },
+ {
+  "id": "hole-countersink__angle-120",
+  "params": {
+   "position": [
+    20,
+    15,
+    10
+   ],
+   "diameter": 5,
+   "body": "P",
+   "type": "countersink",
+   "cs_diameter": 14,
+   "cs_angle": "120 deg"
+  },
+  "bodies": 1,
+  "volume": 11656.76745245491,
+  "faces": 8,
+  "faceTypes": {
+   "cone": 1,
+   "cylinder": 1,
+   "plane": 6
+  },
+  "closedVolume": 11656.732710647666,
+  "dClosed": 0.0000029804069549953106,
+  "dClosedRemoved": 0.00010120919854804122,
+  "fcVolume": 11656.732710647666,
+  "fcFaces": 8,
+  "dFc": 0.0000029804069549953106,
+  "dFcRemoved": 0.00010120919854870353,
+  "dBbox": 1.0812078458650764e-14
+ },
+ {
+  "id": "hole-countersink__angle-60",
+  "params": {
+   "position": [
+    20,
+    15,
+    10
+   ],
+   "diameter": 4,
+   "body": "P",
+   "type": "countersink",
+   "cs_diameter": 10,
+   "cs_angle": "60 deg"
+  },
+  "bodies": 1,
+  "volume": 11727.441617330785,
+  "faces": 8,
+  "faceTypes": {
+   "cone": 1,
+   "cylinder": 1,
+   "plane": 6
+  },
+  "closedVolume": 11727.418545353437,
+  "dClosed": 0.0000019673534511329306,
+  "dClosedRemoved": 0.00008464250577384036,
+  "fcVolume": 11727.418545353437,
+  "fcFaces": 8,
+  "dFc": 0.0000019673534511329306,
+  "dFcRemoved": 0.00008464250577133812,
+  "dBbox": 8.918451224128337e-15
+ },
+ {
+  "id": "hole-countersink__thick-block",
+  "params": {
+   "position": [
+    20,
+    15,
+    30
+   ],
+   "diameter": 8,
+   "body": "P",
+   "type": "countersink",
+   "cs_diameter": 16,
+   "cs_angle": "90 deg"
+  },
+  "bodies": 1,
+  "volume": 34224.19943914462,
+  "faces": 8,
+  "faceTypes": {
+   "cone": 1,
+   "cylinder": 1,
+   "plane": 6
+  },
+  "closedVolume": 34223.95295317057,
+  "dClosed": 0.0000072021479923015925,
+  "dClosedRemoved": 0.00013878347113063493,
+  "fcVolume": 34223.95295317057,
+  "fcFaces": 8,
+  "dFc": 0.0000072021479923015925,
+  "dFcRemoved": 0.00013878347113063493,
+  "dBbox": 2.3764396576954137e-14
+ },
+ {
+  "id": "hole-countersink__blind",
+  "params": {
+   "position": [
+    20,
+    15,
+    10
+   ],
+   "diameter": 6,
+   "body": "P",
+   "depth": 6,
+   "type": "countersink",
+   "cs_diameter": 12,
+   "cs_angle": "90 deg"
+  },
+  "bodies": 1,
+  "volume": 11717.28298981338,
+  "faces": 9,
+  "faceTypes": {
+   "cone": 1,
+   "cylinder": 1,
+   "plane": 7
+  },
+  "closedVolume": 11717.256661176918,
+  "dClosed": 0.0000022469966497985787,
+  "dClosedRemoved": 0.00009311850306168921,
+  "fcVolume": 11717.256661176916,
+  "fcFaces": 9,
+  "dFc": 0.000002246996649953819,
+  "dFcRemoved": 0.00009311850307033325,
+  "dBbox": 1.063687076197084e-7
+ },
+ {
+  "id": "hole-countersink__cone-deeper-than-plate-roomy",
+  "params": {
+   "position": [
+    20,
+    20,
+    10
+   ],
+   "diameter": 5,
+   "body": "P",
+   "type": "countersink",
+   "cs_diameter": 30,
+   "cs_angle": "90 deg"
+  },
+  "bodies": 1,
+  "volume": 12596.780917639595,
+  "faces": 7,
+  "faceTypes": {
+   "cone": 1,
+   "plane": 6
+  },
+  "closedVolume": 12596.607958611057,
+  "dClosed": 0.00001373060343752515,
+  "dClosedRemoved": 0.00005081960186610654,
+  "fcVolume": 12596.607958611055,
+  "fcFaces": 7,
+  "dFc": 0.000013730603437669556,
+  "dFcRemoved": 0.000050819601866640974,
+  "dBbox": 3.143938183005812e-8
+ },
+ {
+  "id": "hole-countersink__cone-deeper-than-plate-angle-60",
+  "params": {
+   "position": [
+    20,
+    20,
+    6
+   ],
+   "diameter": 5,
+   "body": "P",
+   "type": "countersink",
+   "cs_diameter": 24,
+   "cs_angle": "60 deg"
+  },
+  "bodies": 1,
+  "volume": 7593.976473062954,
+  "faces": 7,
+  "faceTypes": {
+   "cone": 1,
+   "plane": 6
+  },
+  "closedVolume": 7593.827048961446,
+  "dClosed": 0.00001967704828468681,
+  "dClosedRemoved": 0.00007448216338020545,
+  "fcVolume": 7593.827048961445,
+  "fcFaces": 7,
+  "dFc": 0.00001967704828480658,
+  "dFcRemoved": 0.00007448216338054544,
+  "dBbox": 4.648495911296392e-8
+ },
+ {
+  "id": "hole-countersink__cone-deeper-than-plate",
+  "note": "tangent rim: the 30 mouth equals the 30 plate depth",
+  "params": {
+   "position": [
+    20,
+    15,
+    10
+   ],
+   "diameter": 5,
+   "body": "P",
+   "type": "countersink",
+   "cs_diameter": 30,
+   "cs_angle": "90 deg"
+  },
+  "bodies": 1,
+  "volume": 8596.780917452621,
+  "faces": 7,
+  "faceTypes": {
+   "cone": 1,
+   "plane": 6
+  },
+  "closedVolume": 8596.607958611057,
+  "dClosed": 0.000020119428778939642,
+  "dClosedRemoved": 0.00005081954692858582,
+  "fcVolume": 8596.607958611059,
+  "fcFaces": 8,
+  "dFc": 0.000020119428778728043,
+  "dFcRemoved": 0.00005081954692805138,
+  "dBbox": 3.143938423075355e-8
+ }
+]

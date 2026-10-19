@@ -1,0 +1,57 @@
+[
+ {
+  "id": "r2-big-cyl-10000000",
+  "feature": "oversize",
+  "note": "",
+  "script": "cylinder(10000000, 10000000);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 5000000,
+     "height": 10000000,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 785398163397448300000,
+  "occt": {
+   "volume": 785398163397448300000,
+   "com": [
+    8.749635527378324e-11,
+    -6.483815792820959e-10,
+    0
+   ],
+   "bbox": [
+    -5000000,
+    -5000000,
+    -5000000,
+    5000000,
+    5000000,
+    5000000
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "refused": "cylinder cyl1: it has a size or position of 1.000e7, past the 1e6 brep-rs builds exactly -- cyl1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "cyl1 (cylinder): solidcraft refused it -- solid.cylinder: invalid input: height = 10000000"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 35
+ }
+]

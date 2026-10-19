@@ -1,0 +1,250 @@
+{
+ "checkModel": {
+  "boxes": [
+   [
+    "box1",
+    [
+     40,
+     30,
+     20
+    ]
+   ],
+   [
+    "box2",
+    [
+     10,
+     10,
+     10
+    ]
+   ]
+  ],
+  "expectAnyThenWidth40": {
+   "passed": false,
+   "missing": [
+    {
+     "kind": "box",
+     "width": 40
+    }
+   ],
+   "message": "Expected a box 40 x ? x ?, found a box 10 x 10 x 10."
+  },
+  "expectWidth40ThenAny": {
+   "passed": true,
+   "missing": [],
+   "message": ""
+  },
+  "independentBipartiteMatch": true
+ },
+ "checkModel3": {
+  "orders": 6,
+  "failingOrders": 0
+ },
+ "slots": {
+  "pocket taper": {
+   "stored": {
+    "depth": 4,
+    "taper": 5
+   },
+   "slotNames": [
+    "sk1_p0u",
+    "sk1_p0v",
+    "sk1_p1u",
+    "sk1_p1v",
+    "sk1_p2u",
+    "sk1_p2v",
+    "sk1_p3u",
+    "sk1_p3v",
+    "sk1_offset",
+    "pull1_height",
+    "sk2_p0u",
+    "sk2_p0v",
+    "sk2_p1u",
+    "sk2_p1v",
+    "sk2_p2u",
+    "sk2_p2v",
+    "sk2_p3u",
+    "sk2_p3v",
+    "sk2_offset",
+    "pocket1_depth"
+   ]
+  },
+  "pocket plain (control)": {
+   "stored": {
+    "depth": 4
+   },
+   "slotNames": [
+    "sk1_p0u",
+    "sk1_p0v",
+    "sk1_p1u",
+    "sk1_p1v",
+    "sk1_p2u",
+    "sk1_p2v",
+    "sk1_p3u",
+    "sk1_p3v",
+    "sk1_offset",
+    "pull1_height",
+    "sk2_p0u",
+    "sk2_p0v",
+    "sk2_p1u",
+    "sk2_p1v",
+    "sk2_p2u",
+    "sk2_p2v",
+    "sk2_p3u",
+    "sk2_p3v",
+    "sk2_offset",
+    "pocket1_depth"
+   ]
+  },
+  "extrude taper": {
+   "stored": {
+    "height": 10,
+    "taper": 5
+   },
+   "slotNames": [
+    "sk1_p0u",
+    "sk1_p0v",
+    "sk1_p1u",
+    "sk1_p1v",
+    "sk1_p2u",
+    "sk1_p2v",
+    "sk1_p3u",
+    "sk1_p3v",
+    "sk1_offset",
+    "pull1_height"
+   ]
+  },
+  "extrude length2": {
+   "stored": {
+    "height": 10,
+    "length2": 4
+   },
+   "slotNames": [
+    "sk1_p0u",
+    "sk1_p0v",
+    "sk1_p1u",
+    "sk1_p1v",
+    "sk1_p2u",
+    "sk1_p2v",
+    "sk1_p3u",
+    "sk1_p3v",
+    "sk1_offset",
+    "pull1_height"
+   ]
+  },
+  "extrude direction": {
+   "stored": {
+    "height": 10,
+    "direction": [
+     0.2,
+     0,
+     1
+    ]
+   },
+   "slotNames": [
+    "sk1_p0u",
+    "sk1_p0v",
+    "sk1_p1u",
+    "sk1_p1v",
+    "sk1_p2u",
+    "sk1_p2v",
+    "sk1_p3u",
+    "sk1_p3v",
+    "sk1_offset",
+    "pull1_height"
+   ]
+  },
+  "extrude plain (control)": {
+   "stored": {
+    "height": 10
+   },
+   "slotNames": [
+    "sk1_p0u",
+    "sk1_p0v",
+    "sk1_p1u",
+    "sk1_p1v",
+    "sk1_p2u",
+    "sk1_p2v",
+    "sk1_p3u",
+    "sk1_p3v",
+    "sk1_offset",
+    "pull1_height"
+   ]
+  }
+ },
+ "values": [
+  {
+   "v": 40,
+   "valueKey": "box1_width",
+   "size": [
+    40,
+    30,
+    20
+   ],
+   "outcome": "PASS",
+   "sc": 24000,
+   "occt": 23999.999999999996,
+   "occtRefusals": {},
+   "brep": 24000,
+   "brepRefusals": {}
+  },
+  {
+   "v": 5,
+   "valueKey": "box1_width",
+   "size": [
+    5,
+    30,
+    20
+   ],
+   "outcome": "PASS",
+   "sc": 3000,
+   "occt": 2999.9999999999995,
+   "occtRefusals": {},
+   "brep": 3000,
+   "brepRefusals": {}
+  },
+  {
+   "v": 0,
+   "valueKey": "box1_width",
+   "size": [
+    0,
+    30,
+    20
+   ],
+   "outcome": "REFUSED",
+   "brepRefusals": {
+    "box1": "box1 builds an empty solid (nothing is left of it) -- box1 is shown without it."
+   },
+   "sentence": "box1 is not built: a box needs a size above zero in every direction."
+  },
+  {
+   "v": -5,
+   "valueKey": "box1_width",
+   "size": [
+    -5,
+    30,
+    20
+   ],
+   "outcome": "PASS",
+   "sc": 3000,
+   "occt": 2999.9999999999995,
+   "occtRefusals": {},
+   "brep": 999.9999999999999,
+   "brepRefusals": {}
+  },
+  {
+   "v": -40,
+   "valueKey": "box1_width",
+   "size": [
+    -40,
+    30,
+    20
+   ],
+   "outcome": "PASS",
+   "sc": 24000,
+   "occt": 23999.999999999996,
+   "occtRefusals": {},
+   "brep": 7999.999999999999,
+   "brepRefusals": {}
+  }
+ ]
+}

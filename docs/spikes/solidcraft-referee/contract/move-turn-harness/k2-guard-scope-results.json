@@ -1,0 +1,104 @@
+[
+ {
+  "k": "move;hole;round",
+  "script": "const a = box(30, 20, 10);\nmove(a, [0, -30, 0]);\nhole(a, { across: 4 });\nround(a.edge('top', 'front'), 2);",
+  "kinds": [
+   "box",
+   "move",
+   "hole",
+   "fillet"
+  ],
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "guardRefusal": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it.",
+  "occtRefusals": {}
+ },
+ {
+  "k": "move;hole;hollow(top)",
+  "script": "const a = box(30, 20, 10);\nmove(a, [0, 0, 10]);\nhole(a, { across: 4 });\nhollow(a, { wall: 2, open: 'top' });",
+  "kinds": [
+   "box",
+   "move",
+   "hole",
+   "shell"
+  ],
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "guardRefusal": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it.",
+  "occtRefusals": {}
+ },
+ {
+  "k": "move(b);round(a) untouched",
+  "script": "const a = box(30, 20, 10);\nconst b = box(10, 10, 10, { at: [50, 0, 0] });\nmove(b, [0, 30, 0]);\nround(a.edge('top', 'front'), 2);",
+  "kinds": [
+   "box",
+   "box",
+   "move",
+   "fillet"
+  ],
+  "shipped": "PASS",
+  "guard": "PASS",
+  "occtRefusals": {},
+  "dVol": 0.0000028268722956084475,
+  "dCom": 6.987523813263134e-7
+ },
+ {
+  "k": "turn(b);hollow(a) untouched",
+  "script": "const a = box(30, 20, 10);\nconst b = box(10, 10, 10, { at: [50, 0, 0] });\nturn(b, [0, 0, 30]);\nhollow(a, { wall: 2, open: 'top' });",
+  "kinds": [
+   "box",
+   "box",
+   "shell"
+  ],
+  "shipped": "PASS",
+  "guard": "PASS",
+  "occtRefusals": {},
+  "dVol": 5.105696304862998e-16,
+  "dCom": 2.3737566748887e-17
+ },
+ {
+  "k": "round;move;hole",
+  "script": "const a = box(30, 20, 10);\nround(a.edge('top', 'front'), 2);\nmove(a, [0, 0, 10]);\nhole(a, { across: 4 });",
+  "kinds": [
+   "box",
+   "fillet",
+   "move",
+   "hole"
+  ],
+  "shipped": "PASS",
+  "guard": "PASS",
+  "occtRefusals": {},
+  "dVol": 6.806807282257697e-7,
+  "dCom": 7.099233492540168e-7
+ },
+ {
+  "k": "move;mirror;round",
+  "script": "const a = box(10, 10, 10, { at: [20, 0, 0] });\nmove(a, [0, 0, 5]);\nconst m = mirror(a, 'left-right');\nround(m.edge('top', 'front'), 1);",
+  "kinds": [
+   "box",
+   "move",
+   "mirror",
+   "fillet"
+  ],
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "guardRefusal": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it.",
+  "occtRefusals": {}
+ },
+ {
+  "k": "move;repeat;hollow(top)",
+  "script": "const a = box(10, 10, 10);\nmove(a, [0, 0, 10]);\nconst p = repeat(a, { count: 2, step: [15, 0, 0] });\nhollow(p, { wall: 1, open: 'top' });",
+  "kinds": [
+   "box",
+   "move",
+   "pattern",
+   "shell"
+  ],
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "guardRefusal": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it.",
+  "occtRefusals": {
+   "shell1": "Hollowing Hollow 1 to 1 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+  }
+ }
+]

@@ -1,0 +1,21 @@
+{
+ "id": "asym-shell-open-side",
+ "outcome": "fail",
+ "volume": 6496,
+ "faces": 11,
+ "bbox": [
+  -5,
+  -22,
+  -3,
+  35,
+  8,
+  9
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "shell"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":30,\"height\":12,\"center\":[15,-7,3],\"body_name\":\"b_b1\"}},{\"command\":\"solid.shell\",\"params\":{\"faces\":[[-5,-6.9999999999999964,3.000000000000001]],\"thickness\":2,\"body\":\"b_b1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

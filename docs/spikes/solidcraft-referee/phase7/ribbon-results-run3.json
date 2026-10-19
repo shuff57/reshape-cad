@@ -1,0 +1,101 @@
+{
+ "url": "http://127.0.0.1:8801",
+ "generatedAt": "2026-10-17T05:02:14.741Z",
+ "retries": [],
+ "checks": [
+  {
+   "name": "build 3d-box-hole in the pane",
+   "ok": true
+  },
+  {
+   "name": "A default: ribbon shown, nothing stored",
+   "ok": true,
+   "detail": "{\"present\":true,\"accentPixels\":74,\"file\":\"ribbon-01-default-1280x720.png\"}"
+  },
+  {
+   "name": "B click hides the ribbon and stores \"off\"",
+   "ok": true,
+   "detail": "{\"present\":false,\"accentPixels\":0,\"file\":\"ribbon-02-hidden-1280x720.png\"}"
+  },
+  {
+   "name": "B canvas + pane tile the window (no overlap, no gap)",
+   "ok": true,
+   "detail": "{\"canvasW\":819,\"canvasH\":720,\"paneL\":819,\"paneW\":461,\"innerW\":1280}"
+  },
+  {
+   "name": "C setting persists across a reload (ribbon still hidden)",
+   "ok": true,
+   "detail": "{\"present\":false,\"accentPixels\":0,\"file\":\"ribbon-03-reload-hidden.png\"}"
+  },
+  {
+   "name": "D palette command runs with the ribbon hidden (one new body)",
+   "ok": true,
+   "detail": "{\"before\":[\"b_box1\"],\"after\":[\"b_box1\",\"ribbon_off_cyl\"]}"
+  },
+  {
+   "name": "E a pane Run builds with the ribbon hidden",
+   "ok": true,
+   "detail": "{\"pass\":true,\"volume\":16282.696374112165}"
+  },
+  {
+   "name": "F timeline strip still drawn with the ribbon hidden",
+   "ok": true,
+   "detail": "non-background pixels in the timeline strip: 2492"
+  },
+  {
+   "name": "G one click on \"Show ribbon\" restores it and stores \"on\"",
+   "ok": true,
+   "detail": "{\"present\":true,\"accentPixels\":74,\"file\":\"ribbon-06-restored.png\"}"
+  },
+  {
+   "name": "H restored setting persists across a reload",
+   "ok": true,
+   "detail": "{\"present\":true,\"accentPixels\":74,\"file\":\"ribbon-07-reload-shown.png\"}"
+  },
+  {
+   "name": "I ?ribbon=off starts hidden",
+   "ok": true,
+   "detail": "{\"present\":false,\"accentPixels\":0,\"file\":\"ribbon-08-url-off.png\"}"
+  },
+  {
+   "name": "I ?ribbon=off does not overwrite the stored setting",
+   "ok": true,
+   "detail": "on"
+  },
+  {
+   "name": "J a plain reload after ?ribbon=off shows the ribbon again",
+   "ok": true,
+   "detail": "{\"present\":true,\"accentPixels\":74,\"file\":\"ribbon-09-after-url-off.png\"}"
+  },
+  {
+   "name": "K Ctrl+. toggles the ribbon off",
+   "ok": true,
+   "detail": "{\"present\":false,\"accentPixels\":0,\"file\":\"ribbon-10-ctrl-period.png\"}"
+  },
+  {
+   "name": "K Ctrl+. toggles it back on",
+   "ok": true,
+   "detail": "{\"present\":true,\"accentPixels\":74,\"file\":\"ribbon-11-ctrl-period-back.png\"}"
+  },
+  {
+   "name": "L 1280x720 hidden: tiles the window, ribbon absent",
+   "ok": true,
+   "detail": "{\"canvasW\":819,\"canvasH\":720,\"paneL\":819,\"paneW\":461,\"innerW\":1280}"
+  },
+  {
+   "name": "L 1280x720 shown: ribbon present",
+   "ok": true,
+   "detail": "{\"present\":true,\"accentPixels\":74,\"file\":\"ribbon-13-on-1280x720.png\"}"
+  },
+  {
+   "name": "L 800x600 hidden: tiles the window, ribbon absent",
+   "ok": true,
+   "detail": "{\"canvasW\":500,\"canvasH\":600,\"paneL\":500,\"paneW\":300,\"innerW\":800}"
+  },
+  {
+   "name": "L 800x600 shown: ribbon present",
+   "ok": true,
+   "detail": "{\"present\":true,\"accentPixels\":74,\"file\":\"ribbon-13-on-800x600.png\"}"
+  }
+ ]
+}

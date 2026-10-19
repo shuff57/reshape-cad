@@ -1,0 +1,1363 @@
+[
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 9, { at: [-6,-17,6] })\nturn(a, [0,15,135])\nmove(a, [-11,-12,1])\nturn(a, [45,45,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 10, { at: [9,11,-14] })\nturn(a, [0,30,180])\nturn(a, [135,-30,0])\nmove(a, [22,-37,-17])\nturn(a, [15,30,180])\nturn(a, [180,135,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 15, { at: [3,-3,-7] })\nmove(a, [21,-29,-28])\nturn(a, [45,60,30])\nturn(a, [0,0,0])\nturn(a, [30,30,135])\nturn(a, [15,60,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(14, 8, { at: [-14,-17,6] })\nmove(a, [-11,24,-9])\nmove(a, [38,4,12])\nturn(a, [0,90,30])\nmove(a, [-9,32,-1])\nturn(a, [90,180,15])\nturn(a, [45,0,90])\nmove(a, [-21,2,10])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 20, { at: [16,5,2] })\nturn(a, [135,15,45])\nmove(a, [-34,-40,-26])\nmove(a, [6,34,-4])\nmove(a, [34,-7,24])\nturn(a, [45,0,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(9, 15, { at: [-14,-7,0] })\nturn(a, [60,15,45])\nmove(a, [11,14,13])\nturn(a, [135,15,0])\nturn(a, [90,60,30])\nturn(a, [0,180,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 10)\nturn(a, [180,15,45])\nmove(a, [39,-29,0])\nmove(a, [12,31,6])\nmove(a, [23,-35,-29])\nturn(a, [60,0,45])\nmove(a, [-28,4,-21])\nmove(a, [-18,-13,-22])\nturn(a, [90,45,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 21, { at: [19,9,-9] })\nmove(a, [-38,-38,9])\nturn(a, [60,60,135])\nturn(a, [90,30,90])\nturn(a, [90,0,60])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn3",
+    "v": "FAIL",
+    "dVol": 0.01179840007212076,
+    "dCom": 0.04552426001087211
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 14, { at: [-11,8,12] })\nmove(a, [14,40,26])\nturn(a, [45,15,30])\nmove(a, [13,-9,-2])\nmove(a, [20,5,-13])\nturn(a, [90,15,-30])\nmove(a, [5,25,-16])\nturn(a, [0,-30,90])\nturn(a, [0,15,45])\nturn(a, [15,30,60])\nturn(a, [60,180,0])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn6",
+    "v": "FAIL",
+    "dVol": 0.8439717895486488,
+    "dCom": 3.609117103400244
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(14, 12)\nturn(a, [60,180,135])\nmove(a, [25,8,-27])\nturn(a, [180,135,45])\nmove(a, [25,-30,26])\nturn(a, [45,90,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 16)\nturn(a, [90,180,30])\nturn(a, [0,0,0])\nmove(a, [11,28,23])\nturn(a, [45,30,30])\nturn(a, [30,15,0])\nmove(a, [-14,-7,15])\nturn(a, [180,90,-30])\nmove(a, [-15,-25,12])\nmove(a, [-40,-5,7])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(9, 14)\nturn(a, [90,135,0])\nturn(a, [180,30,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 12, { at: [-8,0,-6] })\nmove(a, [19,-5,11])\nturn(a, [30,0,135])\nmove(a, [35,4,27])\nturn(a, [90,30,135])\nturn(a, [0,60,135])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn3",
+    "v": "FAIL",
+    "dVol": 0.18098460362873284,
+    "dCom": 0.08998047313677131
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 20, { at: [19,3,-6] })\nmove(a, [7,25,17])\nturn(a, [135,135,45])\nmove(a, [-26,7,-1])\nmove(a, [-37,3,19])\nmove(a, [-19,9,9])\nturn(a, [-30,30,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 14, { at: [18,14,13] })\nmove(a, [38,-13,-8])\nturn(a, [0,15,30])\nmove(a, [18,-39,-8])\nmove(a, [29,-25,-6])\nturn(a, [45,15,45])\nturn(a, [60,30,0])\nmove(a, [6,-9,2])\nmove(a, [0,-33,-22])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 15, { at: [-18,-18,2] })\nturn(a, [180,135,30])\nturn(a, [15,-30,90])\nmove(a, [33,30,-12])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 19, { at: [10,2,8] })\nmove(a, [20,17,-3])\nturn(a, [45,45,90])\nmove(a, [-8,9,-12])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(9, 23, { at: [-2,15,9] })\nturn(a, [90,0,0])\nmove(a, [7,0,-27])\nmove(a, [-14,-23,-9])\nturn(a, [180,0,-30])\nturn(a, [-30,0,60])\nturn(a, [180,45,0])\nmove(a, [6,31,7])\nturn(a, [180,30,0])\nturn(a, [0,180,45])\nmove(a, [-19,-18,29])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move4",
+    "v": "FAIL",
+    "dVol": 0.0742961093738604,
+    "dCom": 0.004611723056725341
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 22, { at: [3,6,-4] })\nturn(a, [45,-30,0])\nturn(a, [90,-30,90])\nmove(a, [-20,18,21])\nmove(a, [-4,31,-8])\nmove(a, [36,-31,-25])\nturn(a, [60,135,-30])\nturn(a, [-30,135,135])\nmove(a, [-16,28,6])\nturn(a, [0,60,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 13, { at: [16,18,15] })\nturn(a, [30,60,90])\nturn(a, [15,135,135])\nmove(a, [31,-16,27])\nturn(a, [135,30,135])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 16, { at: [-12,-3,0] })\nmove(a, [24,-11,-14])\nmove(a, [13,28,-18])\nturn(a, [90,0,-30])\nmove(a, [24,10,15])\nmove(a, [39,-15,-1])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move4",
+    "v": "FAIL",
+    "dVol": 0.0354582339729477,
+    "dCom": 0.050353495850923385
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(4, 19, { at: [1,13,-12] })\nturn(a, [0,180,45])\nmove(a, [5,8,17])\nturn(a, [-30,60,0])\nturn(a, [180,135,180])\nturn(a, [90,15,60])\nmove(a, [26,-11,23])\nturn(a, [30,135,60])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn4",
+    "v": "FAIL",
+    "dVol": 0.464189533793316,
+    "dCom": 0.1865097904354948
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 22, { at: [-1,-17,3] })\nmove(a, [19,28,10])\nmove(a, [-29,-25,-26])\nturn(a, [135,45,180])\nmove(a, [-11,13,28])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 16, { at: [-5,-1,13] })\nturn(a, [45,180,135])\nturn(a, [135,0,135])\nturn(a, [60,135,15])\nturn(a, [30,30,30])\nturn(a, [90,0,0])\nturn(a, [60,60,0])\nmove(a, [14,29,-17])\nturn(a, [30,45,180])\nmove(a, [33,-3,7])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 12, { at: [-4,-3,1] })\nturn(a, [135,135,15])\nmove(a, [33,-3,21])\nturn(a, [60,90,60])\nturn(a, [15,45,15])\nmove(a, [-1,27,23])\nturn(a, [0,15,30])\nturn(a, [45,30,60])\nmove(a, [-6,-13,21])\nturn(a, [45,60,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 16, { at: [16,-13,7] })\nturn(a, [60,45,0])\nmove(a, [-9,17,3])\nmove(a, [29,9,23])\nturn(a, [30,0,30])\nturn(a, [135,45,180])\nturn(a, [180,60,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 23, { at: [-4,-2,0] })\nmove(a, [-40,-11,-13])\nmove(a, [-22,-28,-13])\nmove(a, [-37,-2,16])\nturn(a, [90,90,60])\nmove(a, [35,7,-3])\nmove(a, [-13,24,27])\nmove(a, [24,-27,-7])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 14)\nturn(a, [15,60,60])\nturn(a, [30,-30,30])\nturn(a, [15,15,0])\nturn(a, [90,30,-30])\nmove(a, [-15,9,0])\nturn(a, [30,60,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 8)\nturn(a, [0,45,90])\nmove(a, [-26,-37,27])\nturn(a, [30,0,30])\nmove(a, [-7,-20,15])\nturn(a, [45,15,30])\nturn(a, [0,30,45])\nmove(a, [9,-27,19])\nturn(a, [45,30,135])\nmove(a, [-13,30,12])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 22, { at: [-5,-18,-13] })\nturn(a, [180,60,-30])\nturn(a, [90,0,0])\nmove(a, [-34,-24,-24])\nmove(a, [32,0,7])\nturn(a, [60,60,15])\nturn(a, [90,30,135])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 20, { at: [17,20,-3] })\nturn(a, [15,135,180])\nmove(a, [14,8,11])\nturn(a, [60,-30,180])\nturn(a, [45,0,30])\nturn(a, [60,0,30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 19, { at: [14,3,-4] })\nmove(a, [-32,6,-23])\nmove(a, [-17,39,11])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 20, { at: [-12,0,-1] })\nmove(a, [38,2,27])\nturn(a, [30,15,60])\nmove(a, [-1,15,21])\nmove(a, [40,-30,-7])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move3",
+    "v": "FAIL",
+    "dVol": 0.05201777946892071,
+    "dCom": 0.029738353245169723
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 16, { at: [5,-19,8] })\nmove(a, [-5,30,-20])\nmove(a, [34,0,-4])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 11, { at: [-18,3,0] })\nmove(a, [37,-26,28])\nmove(a, [0,-40,-20])\nmove(a, [17,-15,23])\nmove(a, [-25,17,-17])\nturn(a, [180,30,135])\nturn(a, [15,30,45])\nturn(a, [30,0,90])\nmove(a, [18,38,-13])\nturn(a, [-30,180,-30])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn4",
+    "v": "FAIL",
+    "dVol": 0.2504878879246075,
+    "dCom": 0.07613978006745824
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 17, { at: [-7,-12,-6] })\nturn(a, [60,45,45])\nmove(a, [11,-33,-2])\nturn(a, [30,135,180])\nmove(a, [29,1,13])\nmove(a, [-28,-24,-5])\nmove(a, [-21,-36,15])\nmove(a, [34,-16,5])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 10, { at: [-18,-17,-12] })\nturn(a, [0,15,30])\nmove(a, [12,-1,20])\nmove(a, [-33,40,-22])\nmove(a, [-4,11,1])\nmove(a, [-37,-39,18])\nmove(a, [-8,30,-16])\nmove(a, [-13,8,-10])\nmove(a, [2,13,3])\nturn(a, [135,90,90])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "dVol": 0.12170775461994734,
+    "dCom": 0.15350159541014485
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 16, { at: [1,-12,13] })\nturn(a, [180,135,60])\nmove(a, [-37,-28,-19])\nmove(a, [38,36,7])\nmove(a, [-2,7,10])\nmove(a, [33,-33,-14])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 16, { at: [6,-6,-7] })\nmove(a, [27,-4,17])\nmove(a, [38,-40,24])\nmove(a, [15,34,3])\nturn(a, [-30,90,45])\nturn(a, [45,90,0])\nmove(a, [14,-1,14])\nmove(a, [0,-11,-7])\nturn(a, [60,0,-30])\nturn(a, [15,60,0])\nturn(a, [60,15,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 11, { at: [20,-13,-4] })\nturn(a, [30,30,135])\nturn(a, [15,15,180])\nmove(a, [-14,-11,-24])\nturn(a, [-30,0,30])\nturn(a, [180,45,0])\nmove(a, [18,-27,-23])\nturn(a, [45,135,60])\nmove(a, [14,6,9])\nturn(a, [0,0,-30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "summary": {
+   "n": 40,
+   "shipped": {
+    "PASS": 31,
+    "FAIL": 9
+   },
+   "guard": {
+    "PASS": 40
+   },
+   "repairedSteps": 43,
+   "repairKinds": {
+    "folded": 41,
+    "padded1": 2
+   },
+   "tessBboxArtefacts": 0,
+   "guardWrong": 0,
+   "refusals": {}
+  }
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [26,-15,-6], { copy: true })\nlet c1 = move(c0, [9,-5,0], { copy: true })\nturn(c1, [30,135,60])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-22,19,-7], { copy: true })\nlet c1 = move(c0, [-15,12,-17], { copy: true })\nlet c2 = move(c1, [-15,-26,-2], { copy: true })\nlet c3 = move(c2, [12,11,-1], { copy: true })\nturn(c3, [0,15,60])\nlet c5 = move(c3, [-10,-5,-1], { copy: true })\nlet c6 = move(c5, [2,-9,-1], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-27,13,7], { copy: true })\nmove(c0, [3,-39,30])\nlet c2 = move(c0, [3,28,11], { copy: true })\nlet c3 = move(c2, [21,-30,15], { copy: true })\nlet c4 = move(c3, [10,10,-12], { copy: true })\nlet c5 = move(c4, [-20,13,1], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [90,30,135])\nturn(a, [90,0,45])\nlet c2 = move(a, [0,-25,22], { copy: true })\nlet c3 = move(c2, [12,5,-2], { copy: true })\nturn(c3, [30,-30,15])\nlet c5 = move(c3, [8,24,-6], { copy: true })\nlet c6 = move(c5, [-3,-7,-20], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-4,9,20], { copy: true })\nlet c1 = move(c0, [17,19,-6], { copy: true })\nturn(c1, [180,135,45])\nturn(c1, [30,30,0])\nmove(c1, [-16,-24,22])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-22,-11,7], { copy: true })\nmove(c0, [-35,-6,12])\nlet c2 = move(c0, [-30,24,16], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-10,-14,3], { copy: true })\nmove(c0, [-35,-2,6])\nmove(c0, [-31,16,-16])\nlet c3 = move(c0, [1,-29,-2], { copy: true })\nlet c4 = move(c3, [20,-6,9], { copy: true })\nlet c5 = move(c4, [-5,-2,10], { copy: true })\nlet c6 = move(c5, [-26,-17,21], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [15,90,45])\nturn(a, [30,0,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-19,21,4], { copy: true })\nlet c1 = move(c0, [-23,-18,14], { copy: true })\nlet c2 = move(c1, [-25,-4,-1], { copy: true })\nmove(c2, [34,-35,-16])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-15,12,26])\nlet c1 = move(a, [23,4,9], { copy: true })\nlet c2 = move(c1, [-24,21,15], { copy: true })\nlet c3 = move(c2, [-30,19,1], { copy: true })\nlet c4 = move(c3, [-22,3,-12], { copy: true })\nmove(c4, [3,24,16])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [15,15,30])\nlet c1 = move(a, [12,-26,-12], { copy: true })\nlet c2 = move(c1, [26,28,1], { copy: true })\nturn(c2, [-30,0,45])\nturn(c2, [90,0,90])\nlet c5 = move(c2, [10,-18,-12], { copy: true })\nmove(c5, [-13,38,16])\nlet c7 = move(c5, [-3,28,-22], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-28,-15,13], { copy: true })\nmove(c0, [16,8,21])\nmove(c0, [-1,20,-25])\nlet c3 = move(c0, [-5,13,9], { copy: true })\nlet c4 = move(c3, [9,-7,17], { copy: true })\nlet c5 = move(c4, [-1,-4,-12], { copy: true })\nturn(c5, [90,180,-30])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [17,-3,19], { copy: true })\nturn(c0, [135,90,60])\nlet c2 = move(c0, [-15,28,1], { copy: true })\nlet c3 = move(c2, [-20,23,17], { copy: true })\nlet c4 = move(c3, [27,-29,-3], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-19,29,-4], { copy: true })\nlet c1 = move(c0, [0,-12,12], { copy: true })\nturn(c1, [30,135,-30])\nlet c3 = move(c1, [-22,-5,12], { copy: true })\nlet c4 = move(c3, [-13,-12,18], { copy: true })\nlet c5 = move(c4, [-27,15,-18], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [4,8,-20])\nmove(a, [-4,-7,-27])\nlet c2 = move(a, [-4,15,-20], { copy: true })\nlet c3 = move(c2, [7,-13,-20], { copy: true })\nlet c4 = move(c3, [28,-15,1], { copy: true })\nlet c5 = move(c4, [24,-26,11], { copy: true })\nlet c6 = move(c5, [-26,-2,18], { copy: true })\nturn(c6, [0,30,45])\nlet c8 = move(c6, [15,-7,19], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-7,16,22], { copy: true })\nlet c1 = move(c0, [-8,13,6], { copy: true })\nlet c2 = move(c1, [20,-30,10], { copy: true })\nlet c3 = move(c2, [28,-6,8], { copy: true })\nlet c4 = move(c3, [3,-23,-7], { copy: true })\nlet c5 = move(c4, [-11,-13,14], { copy: true })\nmove(c5, [-35,-6,3])\nlet c7 = move(c5, [0,-7,-18], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [0,0,0])\nlet c1 = move(a, [5,4,-11], { copy: true })\nturn(c1, [0,90,60])\nmove(c1, [24,30,-13])\nlet c4 = move(c1, [17,13,-3], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [15,30,45])\nturn(a, [90,60,30])\nlet c2 = move(a, [24,27,5], { copy: true })\nlet c3 = move(c2, [25,-19,-12], { copy: true })\nlet c4 = move(c3, [-1,-19,-8], { copy: true })\nlet c5 = move(c4, [-25,-17,3], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [60,60,60])\nlet c1 = move(a, [-5,15,6], { copy: true })\nlet c2 = move(c1, [3,-24,6], { copy: true })\nmove(c2, [20,38,27])\nlet c4 = move(c2, [1,13,-11], { copy: true })\nmove(c4, [0,37,-16])\nmove(c4, [-17,-31,-13])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [0,-9,2], { copy: true })\nmove(c0, [-18,-14,-30])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-9,-20,10], { copy: true })\nlet c1 = move(c0, [15,-24,-12], { copy: true })\nlet c2 = move(c1, [30,4,-8], { copy: true })\nlet c3 = move(c2, [14,27,-14], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-35,25,-19])\nlet c1 = move(a, [28,-4,2], { copy: true })\nlet c2 = move(c1, [-23,-15,0], { copy: true })\nmove(c2, [-18,4,14])\nmove(c2, [1,26,-25])\nlet c5 = move(c2, [-27,21,-21], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [28,11,7], { copy: true })\nlet c1 = move(c0, [16,18,-20], { copy: true })\nmove(c1, [-11,-24,6])\nmove(c1, [-6,18,27])\nlet c4 = move(c1, [9,13,-17], { copy: true })\nlet c5 = move(c4, [28,3,19], { copy: true })\nlet c6 = move(c5, [2,-12,-2], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [18,15,10], { copy: true })\nlet c1 = move(c0, [15,14,0], { copy: true })\nlet c2 = move(c1, [-21,1,-14], { copy: true })\nlet c3 = move(c2, [-27,29,-9], { copy: true })\nmove(c3, [-34,23,14])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [4,21,-20], { copy: true })\nlet c1 = move(c0, [29,-17,-4], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [23,-19,18], { copy: true })\nturn(c0, [135,45,15])\nlet c2 = move(c0, [23,22,-21], { copy: true })\nlet c3 = move(c2, [-6,-22,15], { copy: true })\nlet c4 = move(c3, [27,-25,9], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-18,15,-1], { copy: true })\nlet c1 = move(c0, [0,11,-10], { copy: true })\nlet c2 = move(c1, [-6,-7,1], { copy: true })\nturn(c2, [60,0,30])\nlet c4 = move(c2, [13,14,-9], { copy: true })\nturn(c4, [45,30,-30])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-7,10,3], { copy: true })\nmove(c0, [10,31,29])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [18,-1,19], { copy: true })\nlet c1 = move(c0, [6,30,22], { copy: true })\nlet c2 = move(c1, [-8,-28,3], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [23,19,-2])\nturn(a, [180,30,135])\nmove(a, [17,1,-28])\nlet c3 = move(a, [20,-12,15], { copy: true })\nlet c4 = move(c3, [20,7,6], { copy: true })\nlet c5 = move(c4, [-28,-4,10], { copy: true })\nlet c6 = move(c5, [11,-16,-10], { copy: true })\nlet c7 = move(c6, [21,14,5], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-9,-29,18], { copy: true })\nlet c1 = move(c0, [29,23,15], { copy: true })\nlet c2 = move(c1, [-17,10,11], { copy: true })\nlet c3 = move(c2, [-25,-6,19], { copy: true })\nlet c4 = move(c3, [-1,24,3], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [26,3,-1], { copy: true })\nlet c1 = move(c0, [-24,4,-8], { copy: true })\nlet c2 = move(c1, [-27,27,17], { copy: true })\nlet c3 = move(c2, [-22,7,11], { copy: true })\nlet c4 = move(c3, [-25,-16,-22], { copy: true })\nlet c5 = move(c4, [21,-28,6], { copy: true })\nturn(c5, [15,15,180])\nlet c7 = move(c5, [26,10,-12], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-36,-14,-12])\nlet c1 = move(a, [26,-14,-14], { copy: true })\nlet c2 = move(c1, [-12,16,-7], { copy: true })\nlet c3 = move(c2, [-9,-22,19], { copy: true })\nlet c4 = move(c3, [12,27,12], { copy: true })\nlet c5 = move(c4, [9,30,1], { copy: true })\nturn(c5, [180,15,15])\nlet c7 = move(c5, [-5,25,-20], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [135,90,45])\nturn(a, [135,90,0])\nlet c2 = move(a, [25,-17,-22], { copy: true })\nlet c3 = move(c2, [-14,-24,4], { copy: true })\nlet c4 = move(c3, [6,20,10], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [10,24,11], { copy: true })\nlet c1 = move(c0, [6,3,6], { copy: true })\nlet c2 = move(c1, [9,-23,9], { copy: true })\nlet c3 = move(c2, [14,-5,-2], { copy: true })\nturn(c3, [15,45,0])\nturn(c3, [15,45,0])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-5,-22,-14], { copy: true })\nmove(c0, [30,-32,14])\nmove(c0, [-1,-24,1])\nmove(c0, [5,-9,-22])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [25,-30,-18], { copy: true })\nlet c1 = move(c0, [-9,6,1], { copy: true })\nlet c2 = move(c1, [-10,-10,17], { copy: true })\nturn(c2, [135,90,180])\nlet c4 = move(c2, [-29,7,22], { copy: true })\nlet c5 = move(c4, [-28,-8,4], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [28,24,19], { copy: true })\nlet c1 = move(c0, [16,9,11], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [5,-15,4], { copy: true })\nlet c1 = move(c0, [11,13,-16], { copy: true })\nlet c2 = move(c1, [10,-4,-8], { copy: true })\nlet c3 = move(c2, [14,30,14], { copy: true })\nturn(c3, [135,180,90])\nlet c5 = move(c3, [-12,16,22], { copy: true })\nlet c6 = move(c5, [1,-8,-17], { copy: true })\nturn(c6, [0,0,45])\nturn(c6, [135,180,135])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [180,90,15])\nlet c1 = move(a, [-9,-22,20], { copy: true })\nlet c2 = move(c1, [25,17,19], { copy: true })\nmove(c2, [26,-8,-27])\nmove(c2, [-33,-9,-21])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "summary": {
+   "n": 40,
+   "shipped": {
+    "REFUSED": 39,
+    "PASS": 1
+   },
+   "guard": {
+    "PASS": 40
+   },
+   "repairedSteps": 25,
+   "repairKinds": {
+    "padded1": 16,
+    "folded": 9
+   },
+   "tessBboxArtefacts": 0,
+   "guardWrong": 0,
+   "refusals": {}
+  }
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [15,-30,15])\nmove(j, [-18,-23,10])\nturn(j, [60,180,30])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn2",
+    "v": "FAIL",
+    "dVol": 0.001218403628611659,
+    "dCom": 0.00008643972233517378
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-15,-34,0])\nturn(j, [60,0,30])\nturn(j, [45,-30,30])\nturn(j, [30,135,45])\nmove(j, [-35,-23,2])\nturn(j, [45,30,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-16,33,-22])\nturn(j, [0,-30,-30])\nturn(j, [-30,180,0])\nmove(j, [11,-40,-28])\nmove(j, [-25,-19,1])\nmove(j, [-29,0,0])\nmove(j, [-23,8,20])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [0,45,135])\nmove(j, [0,-4,-9])\nmove(j, [11,-17,19])\nmove(j, [-29,28,11])\nturn(j, [0,0,-30])\nmove(j, [-1,-10,-6])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move4",
+    "v": "FAIL",
+    "dVol": 0.0028768126010079993,
+    "dCom": 0.00015716986000587963
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [15,135,60])\nmove(j, [-30,36,24])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move1",
+    "v": "FAIL",
+    "dVol": 0.0021315612731489077,
+    "dCom": 0.0005102821015298689
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [32,-10,-2])\nmove(j, [-20,-7,16])\nturn(j, [15,135,135])\nturn(j, [90,90,90])\nmove(j, [-36,24,9])\nturn(j, [90,30,30])\nmove(j, [38,36,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [0,-12,-25])\nmove(j, [37,18,-14])\nturn(j, [0,135,60])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "dVol": 0.009954716295201576,
+    "dCom": 0.0011156005922760678
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-23,35,26])\nmove(j, [1,36,26])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [3,5,-2])\nturn(j, [180,135,-30])\nturn(j, [15,15,0])\nturn(j, [30,135,15])\nmove(j, [25,21,16])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move2",
+    "v": "FAIL",
+    "dVol": 0.0020104599269715182,
+    "dCom": 0.00015652091653045328
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [45,180,15])\nturn(j, [45,0,30])\nturn(j, [45,0,180])\nmove(j, [-19,-20,-16])\nmove(j, [24,17,-7])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [0,0,0])\nturn(j, [180,60,15])\nmove(j, [15,-7,18])\nmove(j, [-36,-7,-5])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [135,30,135])\nturn(j, [180,180,180])\nmove(j, [2,29,26])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move1",
+    "v": "FAIL",
+    "dVol": 0.00012575205553290008,
+    "dCom": 0.0001377075298439801
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [90,30,135])\nmove(j, [19,5,3])\nturn(j, [60,60,15])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn2",
+    "v": "FAIL",
+    "dVol": 0.00304558218263486,
+    "dCom": 0.00009470176965707024
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-9,-24,27])\nturn(j, [-30,45,45])\nturn(j, [-30,60,60])\nmove(j, [-32,36,-29])\nmove(j, [35,-38,23])\nturn(j, [135,60,60])\nturn(j, [0,45,-30])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn4",
+    "v": "FAIL",
+    "dVol": 0.000003880901532883618,
+    "dCom": 3.2564115951400567e-10
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [8,27,-27])\nmove(j, [-35,13,23])\nmove(j, [14,19,18])\nmove(j, [3,-15,-9])\nturn(j, [180,90,60])\nturn(j, [60,0,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [-30,30,180])\nturn(j, [30,60,0])\nmove(j, [31,28,-9])\nturn(j, [0,0,135])\nturn(j, [180,180,60])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [0,90,60])\nturn(j, [0,90,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [45,135,180])\nmove(j, [3,-11,1])\nmove(j, [10,33,16])\nmove(j, [-20,30,-21])\nmove(j, [35,6,-15])\nmove(j, [-21,15,19])\nturn(j, [30,45,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-13,12,-16])\nturn(j, [60,180,15])\nturn(j, [30,30,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [11,27,21])\nmove(j, [23,19,-14])\nturn(j, [135,60,15])\nmove(j, [29,6,5])\nturn(j, [180,30,90])\nturn(j, [15,0,30])\nmove(j, [38,14,-28])\nturn(j, [135,45,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-17,-17,-12])\nmove(j, [-5,-2,-27])\nturn(j, [60,180,180])\nturn(j, [45,180,90])\nturn(j, [135,15,15])\nturn(j, [-30,15,45])\nturn(j, [135,15,90])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn5",
+    "v": "FAIL",
+    "dVol": 0.000003880901526864377,
+    "dCom": 3.871178444010347e-10
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [0,0,0])\nmove(j, [13,18,16])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [180,30,0])\nmove(j, [2,32,29])\nturn(j, [135,-30,15])\nturn(j, [30,-30,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [60,-30,0])\nmove(j, [19,28,30])\nturn(j, [-30,30,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [-30,135,0])\nmove(j, [-32,9,-26])\nmove(j, [27,-6,-18])\nmove(j, [-30,30,-28])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [3,-35,-30])\nturn(j, [-30,30,-30])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "dVol": 0.003553957273238825,
+    "dCom": 0.0007572518319317326
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-17,4,7])\nturn(j, [90,135,-30])\nturn(j, [90,15,90])\nmove(j, [-20,-22,-8])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move2",
+    "v": "FAIL",
+    "dVol": 0.000003880901531907526,
+    "dCom": 3.2839460718334217e-10
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [25,-19,17])\nmove(j, [9,1,1])\nturn(j, [135,30,0])\nturn(j, [45,0,15])\nturn(j, [180,30,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [45,0,60])\nmove(j, [0,-30,2])\nturn(j, [135,0,45])\nmove(j, [-8,-17,-27])\nturn(j, [135,180,60])\nturn(j, [60,135,30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-3,36,3])\nmove(j, [1,-36,23])\nturn(j, [15,180,15])\nmove(j, [16,-33,10])\nmove(j, [-12,-2,4])\nmove(j, [-12,39,12])\nmove(j, [10,-14,-28])\nmove(j, [-35,39,-8])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move7",
+    "v": "FAIL",
+    "dVol": 0.000003880901531744843,
+    "dCom": 5.228808554747168e-10
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [-30,45,90])\nturn(j, [60,180,60])\nmove(j, [-18,21,1])\nmove(j, [22,-24,-14])\nturn(j, [15,30,0])\nturn(j, [90,15,180])\nturn(j, [0,90,135])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [90,0,180])\nturn(j, [180,45,30])\nmove(j, [-10,-35,5])\nturn(j, [30,0,0])\nmove(j, [-13,30,14])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [60,180,135])\nmove(j, [-16,-21,-7])\nturn(j, [30,0,90])\nmove(j, [-39,2,-23])\nturn(j, [45,-30,180])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn3",
+    "v": "FAIL",
+    "dVol": 0.0014877356770989058,
+    "dCom": 0.0004788776752877168
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [45,90,0])\nmove(j, [-7,2,-25])\nturn(j, [60,90,-30])\nturn(j, [45,45,180])\nturn(j, [45,15,15])\nturn(j, [45,90,180])\nmove(j, [-5,12,5])\nturn(j, [0,30,135])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [15,0,30])\nmove(j, [27,5,0])\nturn(j, [15,45,15])\nmove(j, [21,35,-10])\nmove(j, [34,-1,15])\nturn(j, [0,60,180])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn3",
+    "v": "FAIL",
+    "dVol": 0.0031058992893446672,
+    "dCom": 0.00121472336591026
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [45,60,180])\nturn(j, [90,135,15])\nturn(j, [-30,180,135])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-37,-17,-25])\nturn(j, [180,135,30])\nturn(j, [60,45,60])\nmove(j, [12,-34,2])\nturn(j, [135,30,90])\nturn(j, [90,90,30])\nmove(j, [25,-29,-22])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [45,135,180])\nmove(j, [-6,-31,-27])\nturn(j, [135,60,60])\nturn(j, [15,30,90])\nturn(j, [0,60,-30])\nturn(j, [-30,30,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [90,180,90])\nturn(j, [90,0,-30])\nmove(j, [25,20,7])\nturn(j, [0,0,0])\nmove(j, [-4,31,8])\nmove(j, [-29,-6,19])\nmove(j, [-4,-18,-17])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [1,-19,-7])\nmove(j, [-39,-8,21])\nmove(j, [-8,-33,22])\nturn(j, [15,0,30])\nturn(j, [45,60,30])\nturn(j, [90,0,15])\nmove(j, [38,10,-4])\nturn(j, [90,90,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "summary": {
+   "n": 40,
+   "shipped": {
+    "FAIL": 14,
+    "PASS": 26
+   },
+   "guard": {
+    "PASS": 40
+   },
+   "repairedSteps": 69,
+   "repairKinds": {
+    "folded": 35,
+    "padded1": 34
+   },
+   "tessBboxArtefacts": 0,
+   "guardWrong": 0,
+   "refusals": {}
+  }
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [37,-32,16])\nmove(a, [-18,25,-14])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [-23,-22,-24])\nmove(a, [36,-36,-17])\nmove(a, [-12,-8,27])\nmove(a, [38,-23,5])\nturn(a, [15,135,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [24,-35,-22])\nmove(a, [11,-13,30])\nmove(a, [16,39,8])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [-38,-31,22])\nturn(a, [0,0,15])\nmove(a, [37,-16,17])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [5,18,18])\nmove(a, [-21,27,16])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nturn(a, [135,30,90])\nmove(a, [10,-30,6])\nmove(a, [-5,-1,-5])\nmove(a, [-8,-20,19])\nmove(a, [-9,-25,11])\nturn(a, [15,0,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [12,-5,26])\nmove(a, [-7,39,23])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [45,0,180])\nmove(a, [-12,36,-29])\nturn(a, [135,-30,0])\nturn(a, [60,90,45])\nmove(a, [11,11,-17])\nturn(a, [15,180,45])\nmove(a, [4,40,7])\nturn(a, [15,180,30])\nturn(a, [45,180,60])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [23,25,-15])\nturn(a, [0,0,90])\nmove(a, [34,39,-11])\nturn(a, [60,30,60])\nmove(a, [37,-38,-18])\nmove(a, [-13,13,8])\nturn(a, [0,180,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-15,12,24])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [180,30,180])\nmove(a, [-26,8,-27])\nmove(a, [-11,-7,30])\nturn(a, [90,0,0])\nmove(a, [10,13,-29])\nturn(a, [30,0,30])\nmove(a, [-30,7,7])\nturn(a, [60,60,45])\nmove(a, [-18,-3,-23])\nturn(a, [0,135,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [-14,-8,30])\nturn(a, [-30,45,135])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [-32,38,18])\nmove(a, [22,16,29])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [-14,-23,-6])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [90,0,180])\nmove(a, [0,-15,14])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-2,13,-1])\nturn(a, [30,30,30])\nmove(a, [-7,36,-29])\nturn(a, [60,45,0])\nmove(a, [11,-32,18])\nturn(a, [15,-30,-30])\nturn(a, [30,30,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [-18,35,8])\nturn(a, [45,45,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [-15,21,-24])\nturn(a, [135,15,60])\nturn(a, [60,-30,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nturn(a, [0,90,90])\nmove(a, [-10,0,-9])\nmove(a, [-27,35,-16])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [-23,-25,3])\nmove(a, [19,8,-30])\nturn(a, [60,135,15])\nmove(a, [32,-11,3])\nturn(a, [90,180,-30])\nmove(a, [-2,-37,29])\nmove(a, [29,-28,3])\nturn(a, [90,60,30])\nturn(a, [45,0,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [1,12,-20])\nturn(a, [90,0,0])\nmove(a, [-24,4,-14])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [-6,-7,29])\nmove(a, [-38,11,26])\nturn(a, [-30,0,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [-3,-6,19])\nturn(a, [0,180,30])\nturn(a, [180,45,45])\nmove(a, [13,-9,5])\nturn(a, [60,45,30])\nturn(a, [0,135,-30])\nmove(a, [28,3,24])\nmove(a, [-11,-32,-7])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [12,-9,-18])\nturn(a, [0,60,30])\nmove(a, [1,38,13])\nturn(a, [180,135,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [7,-34,-20])\nmove(a, [27,-12,13])\nturn(a, [15,45,-30])\nturn(a, [135,45,30])\nturn(a, [135,180,-30])\nmove(a, [-24,-20,16])\nmove(a, [-5,-12,-20])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-20,-20,19])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nturn(a, [45,90,45])\nmove(a, [-31,19,15])\nmove(a, [-3,6,25])\nmove(a, [9,13,14])\nmove(a, [31,-38,-15])\nmove(a, [-27,-38,4])\nmove(a, [31,-20,5])\nmove(a, [15,-21,-3])\nmove(a, [-20,-30,3])\nmove(a, [23,8,-3])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [30,135,45])\nturn(a, [90,60,90])\nturn(a, [90,30,45])\nturn(a, [180,15,90])\nturn(a, [90,15,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [27,4,-4])\nmove(a, [-24,33,9])\nmove(a, [5,38,26])\nturn(a, [45,30,30])\nmove(a, [35,19,-17])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [0,60,0])\nmove(a, [-37,13,-28])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [135,-30,-30])\nturn(a, [90,0,180])\nmove(a, [-20,24,29])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [135,15,0])\nmove(a, [39,3,10])\nturn(a, [90,-30,30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-20,-30,17])\nturn(a, [135,90,60])\nmove(a, [3,32,-5])\nmove(a, [22,36,-28])\nturn(a, [60,30,45])\nmove(a, [-17,3,2])\nmove(a, [-37,-6,-17])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [2,1,7])\nturn(a, [30,0,45])\nmove(a, [6,-17,15])\nturn(a, [90,180,0])\nturn(a, [135,60,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [0,-30,0])\nturn(a, [0,45,30])\nturn(a, [0,180,45])\nmove(a, [32,-29,12])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [90,30,30])\nmove(a, [9,24,10])\nmove(a, [26,2,-12])\nturn(a, [0,0,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nturn(a, [90,180,15])\nmove(a, [-37,1,-19])\nmove(a, [15,-31,1])\nturn(a, [15,60,30])\nmove(a, [-4,17,-4])\nmove(a, [-1,-11,-13])\nmove(a, [30,17,17])\nturn(a, [30,15,45])\nmove(a, [-39,7,-21])\nturn(a, [60,30,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [135,0,135])\nturn(a, [135,-30,135])\nturn(a, [0,15,0])\nmove(a, [-29,22,28])\nmove(a, [-21,-36,-2])\nturn(a, [-30,180,60])\nturn(a, [30,30,0])\nmove(a, [-6,14,16])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nturn(a, [90,15,60])\nturn(a, [15,45,15])\nmove(a, [-14,-2,7])\nturn(a, [15,180,135])\nturn(a, [180,90,180])\nmove(a, [-31,2,15])\nmove(a, [19,-4,19])\nmove(a, [39,38,23])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nturn(a, [0,135,180])\nmove(a, [25,38,24])\nturn(a, [0,0,30])\nturn(a, [30,60,15])\nmove(a, [7,22,4])\nmove(a, [-16,3,29])\nmove(a, [31,8,5])\nturn(a, [90,180,15])\nturn(a, [45,45,-30])\nturn(a, [30,45,135])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "summary": {
+   "n": 40,
+   "shipped": {
+    "PASS": 40
+   },
+   "guard": {
+    "PASS": 40
+   },
+   "repairedSteps": 0,
+   "repairKinds": {},
+   "tessBboxArtefacts": 0,
+   "guardWrong": 0,
+   "refusals": {}
+  }
+ }
+]

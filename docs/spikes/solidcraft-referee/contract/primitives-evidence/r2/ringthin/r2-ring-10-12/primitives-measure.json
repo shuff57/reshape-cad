@@ -1,0 +1,46 @@
+[
+ {
+  "id": "r2-ring-10-12",
+  "feature": "ring.degenerate",
+  "note": "tubeAcross > across",
+  "script": "ring(10, 12);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "ring1",
+     "kind": "torus",
+     "ringRadius": -1,
+     "tubeRadius": 6,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "torus",
+  "analytic": -710.6115168784338,
+  "occt": {},
+  "brep": {
+   "volume": 710.6115168784341,
+   "bbox": [
+    -7,
+    -7,
+    -6,
+    7,
+    7,
+    6
+   ],
+   "faces": 1
+  },
+  "commands": [],
+  "truck": {
+   "refused": "ring1 (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 15
+ }
+]

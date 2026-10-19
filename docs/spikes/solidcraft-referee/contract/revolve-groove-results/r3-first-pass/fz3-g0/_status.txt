@@ -1,0 +1,15 @@
+fzc3-16-boxC-side-cone-45 exit=0 10:18:50
+fzc3-17-post-front-cone-270 exit=0 10:19:31
+fzc3-2-boxG-top-cone-45 exit=0 10:19:34
+fzc3-32-post-top-cone-360 exit=0 10:19:54
+fzc3-36-post-side-cone-45 exit=0 10:20:02
+fzc3-37-post-top-cone-45 exit=0 10:20:04
+fzc3-38-post-top-cone-45 exit=0 10:20:11
+fzc3-41-post-top-cone-360 exit=0 10:20:12
+fzc3-44-boxG-top-cone-270 exit=0 10:20:24
+fzc3-48-boxC-side-cone-360 exit=0 10:20:25
+fzc3-49-join-top-cone-45 exit=0 10:20:55
+fzc3-5-post-side-cone-360 exit=124 10:23:25
+fzc3-6-post-side-cone-180 exit=0 10:23:26
+fzc3-8-boxC-top-cone-135 exit=0 10:23:28
+ALLDONE

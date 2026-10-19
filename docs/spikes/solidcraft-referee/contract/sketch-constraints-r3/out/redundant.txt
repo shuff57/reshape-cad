@@ -1,0 +1,49 @@
+Running as unit: run-p1757940-i26881553.scope; invocation ID: 545a4fc16bd94461b5cdb3e6744104a6
+sk-conflict__width-30-vs-35 rough done 2026-10-18T12:32:58.679Z
+sk-conflict__width-30-vs-35 perm done 2026-10-18T12:32:59.249Z
+sk-conflict__width-30-vs-35                    FC solve -4 dof -1 red [] conf [10,12] | brep-rs diag dof 0 red undefined conf undefined open null build REFUSED extrude pull1: the sketch's rules conflict, so no profile ca
+    stored: REFUSED[residual] Row 12 of sk.rules() (it sets the horizontal offset from geometry 1 to geometry 1 to 35) cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean. | rough12 {"refused":12} (shipped {"refused":12}) | shuffled16 {"refused":16} (shipped {"refused":16})
+sk-conflict__redundant-width rough done 2026-10-18T12:32:59.430Z
+sk-conflict__redundant-width perm done 2026-10-18T12:32:59.601Z
+sk-conflict__redundant-width                   FC solve -2 dof 0 red [12] conf [] | brep-rs diag dof 0 red undefined conf undefined open null build built 6000.000
+    stored: BUILT built-right demoted [11] | rough12 {"built-right":12} (shipped {"refused":12}) | shuffled16 {"built-right":16} (shipped {"refused":16})
+sk-conflict__redundant-height rough done 2026-10-18T12:32:59.765Z
+sk-conflict__redundant-height perm done 2026-10-18T12:33:00.016Z
+sk-conflict__redundant-height                  FC solve -2 dof 0 red [12] conf [] | brep-rs diag dof 0 red undefined conf undefined open null build built 6000.000
+    stored: BUILT built-right demoted [11] | rough12 {"built-right":12} (shipped {"refused":12}) | shuffled16 {"built-right":16} (shipped {"refused":16})
+sk-conflict__redundant-perpendicular rough done 2026-10-18T12:33:00.168Z
+sk-conflict__redundant-perpendicular perm done 2026-10-18T12:33:00.308Z
+sk-conflict__redundant-perpendicular           FC solve -2 dof 0 red [12] conf [] | brep-rs diag dof 0 red undefined conf undefined open null build built 6000.000
+    stored: BUILT built-right demoted [] | rough12 {"built-right":12} (shipped {"built-right":12}) | shuffled16 {"built-right":16} (shipped {"built-right":16})
+sk-conflict__radius-vs-diameter rough done 2026-10-18T12:33:32.625Z
+sk-conflict__radius-vs-diameter perm done 2026-10-18T12:34:09.577Z
+sk-conflict__radius-vs-diameter                FC solve -4 dof -1 red [] conf [2,3] | brep-rs diag dof 0 red undefined conf undefined open null build REFUSED extrude pull1: the sketch's rules conflict, so no profile ca
+    stored: REFUSED[residual] Row 2 of sk.rules() (it sets the radius of geometry 1 to 5) cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean. | rough12 {"refused":12} (shipped {"refused":12}) | shuffled16 {"refused":16} (shipped {"refused":16})
+sk-conflict__equal-vs-two-radii rough done 2026-10-18T12:35:17.359Z
+sk-conflict__equal-vs-two-radii perm done 2026-10-18T12:36:38.285Z
+sk-conflict__equal-vs-two-radii                FC solve -4 dof -1 red [] conf [4,5,6] | brep-rs diag dof 0 red undefined conf undefined open null build REFUSED extrude pull1: the sketch's rules conflict, so no profile ca
+    stored: REFUSED[residual] Row 5 of sk.rules() (it sets the radius of geometry 2 to 6) cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean. | rough12 {"refused":12} (shipped {"refused":12}) | shuffled16 {"refused":16} (shipped {"refused":16})
+sk-conflict__horizontal-and-vertical rough done 2026-10-18T12:36:38.313Z
+sk-conflict__horizontal-and-vertical perm done 2026-10-18T12:36:38.342Z
+sk-conflict__horizontal-and-vertical           FC solve -1 dof 2 red [] conf [] | brep-rs diag dof 2 red undefined conf undefined open null build REFUSED extrude pull1: edge 1 has a loose end; the outline must clos
+    stored: REFUSED[collapsed] Geometry 1 was squashed to nothing by the rules (for example a line held both horizontal and vertical), so nothing was built; remove or change the rule that squashes it. | rough12 {"refused":12} (shipped {"refused":12}) | shuffled16 {"refused":16} (shipped {"refused":16})
+sk-conflict__clean-30x20 rough done 2026-10-18T12:36:38.443Z
+sk-conflict__clean-30x20 perm done 2026-10-18T12:36:38.554Z
+sk-conflict__clean-30x20                       FC solve 0 dof 0 red [] conf [] | brep-rs diag dof 0 red undefined conf undefined open null build built 6000.000
+    stored: BUILT built-right demoted [] | rough12 {"built-right":12} (shipped {"built-right":12}) | shuffled16 {"built-right":16} (shipped {"built-right":16})
+sk-circle-arc-tangent__slot-r6-L30-floating rough done 2026-10-18T12:36:46.913Z
+sk-circle-arc-tangent__slot-r6-L30-floating perm done 2026-10-18T12:36:53.599Z
+sk-circle-arc-tangent__slot-r6-L30-floating    FC solve 0 dof 2 red [] conf [] | brep-rs diag dof 2 red undefined conf undefined open null build REFUSED extrude pull1: edge 1 and arc 2 meet in a point rather than 
+    stored: BUILT built-right demoted [] | rough12 {"built-right":12} (shipped {"built-right":12}) | shuffled16 {"built-right":16} (shipped {"built-right":16})
+sk-circle-arc-tangent__slot-extra-radius rough done 2026-10-18T12:37:07.028Z
+sk-circle-arc-tangent__slot-extra-radius perm done 2026-10-18T12:37:15.810Z
+sk-circle-arc-tangent__slot-extra-radius       FC solve -2 dof 0 red [10] conf [] | brep-rs diag dof 0 red undefined conf undefined open null build REFUSED extrude pull1: edge 1 and arc 2 meet in a point rather than 
+    stored: BUILT built-right demoted [13] | rough12 {"built-right":12} (shipped {"refused":12}) | shuffled16 {"built-right":16} (shipped {"built-right":6,"refused":10})
+sk-circle-arc-tangent__line-circle-tangent rough done 2026-10-18T12:37:23.176Z
+sk-circle-arc-tangent__line-circle-tangent perm done 2026-10-18T12:37:32.498Z
+sk-circle-arc-tangent__line-circle-tangent     FC solve 0 dof 0 red [] conf [] | brep-rs diag dof 0 red undefined conf undefined open null build REFUSED extrude pull1: edge 1 has a loose end; the outline must clos
+    stored: BUILT built-right demoted [] | rough12 {"built-right":12} (shipped {"built-right":12}) | shuffled16 {"built-right":16} (shipped {"built-right":16})
+sk-circle-arc-tangent__arc-centre-radius rough done 2026-10-18T12:37:32.533Z
+sk-circle-arc-tangent__arc-centre-radius perm done 2026-10-18T12:37:32.566Z
+sk-circle-arc-tangent__arc-centre-radius       FC solve 0 dof 2 red [] conf [] | brep-rs diag dof 2 red undefined conf undefined open null build REFUSED extrude pull1: edge 1 has a loose end; the outline must clos
+    stored: REFUSED[extrude] The outline does not close into a loop, so there is nothing to extrude; check the rows that join the ends. | rough12 {"refused":12} (shipped {"refused":12}) | shuffled16 {"refused":16} (shipped {"refused":16})

@@ -1,0 +1,78 @@
+test critic_probe::critic_probe ... CRIT S0 coincident+tangent amp=0: status=Solved dof=6 redundant=[] failing=[] maxres=1.78e-15 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S1 pointoncurve+tangent amp=0: status=Solved dof=7 redundant=[] failing=[] maxres=1.78e-15 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S2 line-circle no tie amp=0: status=Solved dof=4 redundant=[] failing=[] maxres=0.00e0 tan_dist_err=0.00e0 tan_contact_perp=0.00e0
+CRIT S2b pin contact via point on both amp=0: status=Solved dof=5 redundant=[] failing=[] maxres=0.00e0 tan_dist_err=0.00e0 tan_contact_perp=0.00e0
+CRIT S3 chain amp=0: status=Solved dof=6 redundant=[] failing=[] maxres=1.78e-15 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S4 arc-arc coincident amp=0: status=Solved dof=7 redundant=[] failing=[] maxres=4.72e-11 tan_dist_err=2.35e-12 tan_contact_perp=1.33e-12
+CRIT S4b arc-arc internal coincident amp=0: status=Solved dof=7 redundant=[] failing=[] maxres=3.17e-16 tan_dist_err=0.00e0 tan_contact_perp=3.17e-16
+CRIT S6 rounded rect, all tied amp=0: status=Solved dof=12 redundant=[] failing=[] maxres=3.70e-11 tan_dist_err=4.44e-16 tan_contact_perp=3.70e-11
+CRIT S6b + H,V,R amp=0: status=Solved dof=9 redundant=[] failing=[] maxres=4.19e-10 tan_dist_err=4.92e-10 tan_contact_perp=1.45e-10
+CRIT S7 tangent + centre on line (conflict) amp=0: status=Failed dof=5 redundant=[] failing=["k2"] maxres=1.00e0 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S7b tangent R5 + centre-line dist 4 (conflict) amp=0: status=Failed dof=4 redundant=[] failing=["k1", "k3", "k4", "k2"] maxres=3.33e-1 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S7c tangent R5 + dist 5.001 (infeasible) amp=0: status=Failed dof=4 redundant=[] failing=["k1", "k3", "k4", "k2"] maxres=3.33e-4 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S8 duplicate tangent amp=0: status=Solved dof=6 redundant=["k3"] failing=[] maxres=1.78e-15 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S9 line end on circle + tangent amp=0: status=Solved dof=5 redundant=[] failing=[] maxres=0.00e0 tan_dist_err=0.00e0 tan_contact_perp=0.00e0
+CRIT S0 coincident+tangent amp=0.05: status=Solved dof=6 redundant=[] failing=[] maxres=1.38e-13 tan_dist_err=7.73e-14 tan_contact_perp=1.20e-14
+CRIT S1 pointoncurve+tangent amp=0.05: status=Solved dof=7 redundant=[] failing=[] maxres=1.01e-11 tan_dist_err=1.01e-11 tan_contact_perp=2.48e-1
+CRIT S2 line-circle no tie amp=0.05: status=Solved dof=4 redundant=[] failing=[] maxres=3.44e-10 tan_dist_err=1.43e-10 tan_contact_perp=0.00e0
+CRIT S2b pin contact via point on both amp=0.05: status=Solved dof=5 redundant=[] failing=[] maxres=7.57e-12 tan_dist_err=3.39e-13 tan_contact_perp=0.00e0
+CRIT S3 chain amp=0.05: status=Solved dof=6 redundant=[] failing=[] maxres=4.55e-11 tan_dist_err=1.14e-10 tan_contact_perp=1.36e-11
+CRIT S4 arc-arc coincident amp=0.05: status=Solved dof=7 redundant=[] failing=[] maxres=4.75e-11 tan_dist_err=1.67e-11 tan_contact_perp=1.82e-11
+CRIT S4b arc-arc internal coincident amp=0.05: status=Solved dof=7 redundant=[] failing=[] maxres=7.93e-13 tan_dist_err=1.23e-12 tan_contact_perp=6.23e-15
+CRIT S6 rounded rect, all tied amp=0.05: status=Solved dof=12 redundant=[] failing=[] maxres=1.01e-10 tan_dist_err=1.73e-10 tan_contact_perp=1.01e-10
+CRIT S6b + H,V,R amp=0.05: status=Solved dof=9 redundant=[] failing=[] maxres=1.42e-12 tan_dist_err=1.42e-12 tan_contact_perp=4.60e-13
+CRIT S7 tangent + centre on line (conflict) amp=0.05: status=Failed dof=5 redundant=[] failing=["k2"] maxres=1.00e0 tan_dist_err=8.94e-3 tan_contact_perp=3.43e-2
+CRIT S7b tangent R5 + centre-line dist 4 (conflict) amp=0.05: status=Failed dof=5 redundant=["k4"] failing=["k1", "k3", "k4", "k2"] maxres=3.33e-1 tan_dist_err=2.96e-2 tan_contact_perp=3.67e-2
+CRIT S7c tangent R5 + dist 5.001 (infeasible) amp=0.05: status=Failed dof=5 redundant=["k4"] failing=["k1", "k3", "k4", "k2"] maxres=3.33e-4 tan_dist_err=2.11e-2 tan_contact_perp=6.91e-3
+CRIT S8 duplicate tangent amp=0.05: status=Solved dof=6 redundant=["k3"] failing=[] maxres=1.95e-14 tan_dist_err=1.42e-14 tan_contact_perp=9.32e-16
+CRIT S9 line end on circle + tangent amp=0.05: status=Solved dof=5 redundant=[] failing=[] maxres=1.07e-12 tan_dist_err=1.07e-12 tan_contact_perp=0.00e0
+CRIT S0 coincident+tangent amp=0.5: status=Solved dof=6 redundant=[] failing=[] maxres=6.90e-13 tan_dist_err=7.19e-14 tan_contact_perp=5.38e-14
+CRIT S1 pointoncurve+tangent amp=0.5: status=Solved dof=7 redundant=[] failing=[] maxres=6.01e-12 tan_dist_err=6.01e-12 tan_contact_perp=8.31e-1
+CRIT S2 line-circle no tie amp=0.5: status=Solved dof=4 redundant=[] failing=[] maxres=2.45e-12 tan_dist_err=8.45e-13 tan_contact_perp=0.00e0
+CRIT S2b pin contact via point on both amp=0.5: status=Solved dof=5 redundant=[] failing=[] maxres=1.46e-13 tan_dist_err=2.14e-13 tan_contact_perp=0.00e0
+CRIT S3 chain amp=0.5: status=Solved dof=6 redundant=[] failing=[] maxres=4.33e-11 tan_dist_err=4.37e-12 tan_contact_perp=4.33e-11
+CRIT S4 arc-arc coincident amp=0.5: status=Solved dof=7 redundant=[] failing=[] maxres=5.68e-11 tan_dist_err=1.91e-11 tan_contact_perp=3.08e-11
+CRIT S4b arc-arc internal coincident amp=0.5: status=Solved dof=7 redundant=[] failing=[] maxres=6.58e-10 tan_dist_err=7.34e-10 tan_contact_perp=1.04e-11
+CRIT S6 rounded rect, all tied amp=0.5: status=Solved dof=12 redundant=[] failing=[] maxres=6.70e-10 tan_dist_err=3.21e-10 tan_contact_perp=6.70e-10
+CRIT S6b + H,V,R amp=0.5: status=Solved dof=9 redundant=[] failing=[] maxres=7.73e-10 tan_dist_err=2.69e-10 tan_contact_perp=2.30e-10
+CRIT S7 tangent + centre on line (conflict) amp=0.5: status=Failed dof=5 redundant=[] failing=["k2"] maxres=1.00e0 tan_dist_err=8.04e-2 tan_contact_perp=3.17e-1
+CRIT S7b tangent R5 + centre-line dist 4 (conflict) amp=0.5: status=Failed dof=5 redundant=["k4"] failing=["k1", "k3", "k4", "k2"] maxres=3.33e-1 tan_dist_err=2.78e-1 tan_contact_perp=3.45e-1
+CRIT S7c tangent R5 + dist 5.001 (infeasible) amp=0.5: status=Failed dof=5 redundant=["k4"] failing=["k1", "k3", "k4", "k2"] maxres=3.33e-4 tan_dist_err=2.10e-1 tan_contact_perp=6.78e-2
+CRIT S8 duplicate tangent amp=0.5: status=Solved dof=6 redundant=["k3"] failing=[] maxres=3.11e-14 tan_dist_err=3.20e-14 tan_contact_perp=1.84e-15
+CRIT S9 line end on circle + tangent amp=0.5: status=Solved dof=5 redundant=[] failing=[] maxres=7.43e-13 tan_dist_err=2.15e-13 tan_contact_perp=0.00e0
+test critic_probe::critic_probe2 ... CRIT2 S10 amp=0 seed=1: Solved dof=5 red=[] fail=[] maxres=0.0e0 contact_perp=0.00e0 R=5.000
+CRIT2 S2b amp=0 seed=1: Solved dof=6 red=[] fail=[] maxres=0.0e0 contact_perp=0.00e0
+CRIT2 S10 amp=0 seed=2: Solved dof=5 red=[] fail=[] maxres=0.0e0 contact_perp=0.00e0 R=5.000
+CRIT2 S2b amp=0 seed=2: Solved dof=6 red=[] fail=[] maxres=0.0e0 contact_perp=0.00e0
+CRIT2 S10 amp=0 seed=3: Solved dof=5 red=[] fail=[] maxres=0.0e0 contact_perp=0.00e0 R=5.000
+CRIT2 S2b amp=0 seed=3: Solved dof=6 red=[] fail=[] maxres=0.0e0 contact_perp=0.00e0
+CRIT2 S10 amp=0.01 seed=1: Solved dof=5 red=[] fail=[] maxres=1.0e-13 contact_perp=-2.64e-14 R=5.007
+CRIT2 S2b amp=0.01 seed=1: Solved dof=6 red=[] fail=[] maxres=7.8e-14 contact_perp=3.78e-15
+CRIT2 S10 amp=0.01 seed=2: Solved dof=5 red=[] fail=[] maxres=3.4e-13 contact_perp=9.00e-14 R=4.998
+CRIT2 S2b amp=0.01 seed=2: Solved dof=6 red=[] fail=[] maxres=1.2e-13 contact_perp=-5.60e-14
+CRIT2 S10 amp=0.01 seed=3: Solved dof=5 red=[] fail=[] maxres=3.4e-13 contact_perp=-1.29e-13 R=5.001
+CRIT2 S2b amp=0.01 seed=3: Solved dof=6 red=[] fail=[] maxres=9.9e-14 contact_perp=-4.41e-14
+CRIT2 S10 amp=0.05 seed=1: Solved dof=5 red=[] fail=[] maxres=5.1e-13 contact_perp=3.95e-13 R=5.034
+CRIT2 S2b amp=0.05 seed=1: Solved dof=6 red=[] fail=[] maxres=4.3e-13 contact_perp=3.77e-14
+CRIT2 S10 amp=0.05 seed=2: Solved dof=5 red=[] fail=[] maxres=2.2e-12 contact_perp=9.92e-13 R=4.988
+CRIT2 S2b amp=0.05 seed=2: Solved dof=6 red=[] fail=[] maxres=2.8e-12 contact_perp=-4.69e-13
+CRIT2 S10 amp=0.05 seed=3: Solved dof=5 red=[] fail=[] maxres=1.8e-12 contact_perp=-7.09e-13 R=5.005
+CRIT2 S2b amp=0.05 seed=3: Solved dof=6 red=[] fail=[] maxres=1.3e-12 contact_perp=-3.97e-13
+CRIT2 S10 amp=0.1 seed=1: Solved dof=5 red=[] fail=[] maxres=2.5e-11 contact_perp=2.46e-11 R=5.068
+CRIT2 S2b amp=0.1 seed=1: Solved dof=6 red=[] fail=[] maxres=1.1e-12 contact_perp=1.24e-13
+CRIT2 S10 amp=0.1 seed=2: Solved dof=5 red=[] fail=[] maxres=7.2e-12 contact_perp=2.69e-12 R=4.975
+CRIT2 S2b amp=0.1 seed=2: Solved dof=6 red=[] fail=[] maxres=1.3e-11 contact_perp=-4.98e-15
+CRIT2 S10 amp=0.1 seed=3: Solved dof=5 red=[] fail=[] maxres=4.0e-12 contact_perp=-1.65e-12 R=5.011
+CRIT2 S2b amp=0.1 seed=3: Solved dof=6 red=[] fail=[] maxres=4.4e-12 contact_perp=-3.32e-14
+CRIT2 S10 amp=0.5 seed=1: Solved dof=5 red=[] fail=[] maxres=1.7e-11 contact_perp=-1.56e-12 R=5.346
+CRIT2 S2b amp=0.5 seed=1: Solved dof=6 red=[] fail=[] maxres=2.4e-11 contact_perp=2.07e-12
+CRIT2 S10 amp=0.5 seed=2: Solved dof=5 red=[] fail=[] maxres=4.1e-10 contact_perp=-4.11e-10 R=4.876
+CRIT2 S2b amp=0.5 seed=2: Solved dof=6 red=[] fail=[] maxres=1.4e-14 contact_perp=1.51e-15
+CRIT2 S10 amp=0.5 seed=3: Solved dof=5 red=[] fail=[] maxres=5.2e-11 contact_perp=5.16e-11 R=5.052
+CRIT2 S2b amp=0.5 seed=3: Solved dof=6 red=[] fail=[] maxres=5.5e-10 contact_perp=5.52e-10
+CRIT2 S10 amp=1 seed=1: Solved dof=5 red=[] fail=[] maxres=4.4e-10 contact_perp=4.41e-10 R=5.701
+CRIT2 S2b amp=1 seed=1: Solved dof=6 red=[] fail=[] maxres=6.7e-10 contact_perp=1.46e-10
+CRIT2 S10 amp=1 seed=2: Solved dof=5 red=[] fail=[] maxres=4.4e-14 contact_perp=-4.42e-14 R=4.753
+CRIT2 S2b amp=1 seed=2: Solved dof=6 red=[] fail=[] maxres=3.6e-15 contact_perp=2.47e-16
+CRIT2 S10 amp=1 seed=3: Solved dof=5 red=[] fail=[] maxres=4.9e-14 contact_perp=4.86e-14 R=5.103
+CRIT2 S2b amp=1 seed=3: Solved dof=6 red=[] fail=[] maxres=1.6e-11 contact_perp=9.61e-12

@@ -1,0 +1,9799 @@
+[
+ {
+  "id": "a5-box-whole--2",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, -2)",
+  "pane": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "box1 (box): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": -2
+    }
+   ],
+   "ms": 892
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is negative, so box1 is shown without it -- give it a size above zero.",
+     "refusal": "box1 (box): GUARD negative",
+     "guard": {
+      "ok": false,
+      "code": "negative",
+      "args": {
+       "size": -2
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 901
+  },
+  "grouped": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": -2
+    }
+   ],
+   "ms": 527
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Rounding box box1 (40x30x20) at radius -2 failed -- the radius is too big for this shape's edges."
+   },
+   "brepSeq": {
+    "volume": 23701.6872295583,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "ms": 8901,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole--0.001",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, -0.001)",
+  "pane": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "box1 (box): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": -0.001
+    }
+   ],
+   "ms": 163
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is negative, so box1 is shown without it -- give it a size above zero.",
+     "refusal": "box1 (box): GUARD negative",
+     "guard": {
+      "ok": false,
+      "code": "negative",
+      "args": {
+       "size": -0.001
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 426
+  },
+  "grouped": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": -0.001
+    }
+   ],
+   "ms": 359
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Rounding box box1 (40x30x20) at radius -0.001 failed -- the radius is too big for this shape's edges."
+   },
+   "brepSeq": {
+    "volume": 23999.999922744693,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "ms": 6670,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-0",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 0)",
+  "pane": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [],
+   "ms": 618
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 520
+  },
+  "grouped": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [],
+   "ms": 819
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23999.999999999996,
+    "faces": 6,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 24000,
+    "faces": 6,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0,
+   "contract": 0
+  },
+  "ms": 10488,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-1e-7",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 1e-7)",
+  "pane": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "box1 (box): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 1e-7
+    }
+   ],
+   "ms": 572
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 1e-7
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 231
+  },
+  "grouped": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 1e-7
+    }
+   ],
+   "ms": 405
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 24000,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23999.999999999996,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": null,
+   "contract": 0
+  },
+  "ms": 6094,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-0.000001",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 0.000001)",
+  "pane": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "box1 (box): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.000001
+    }
+   ],
+   "ms": 89
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0.000001
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 266
+  },
+  "grouped": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.000001
+    }
+   ],
+   "ms": 631
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23999.999999999913,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20.000000000000004,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23999.999999999913,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": null,
+   "contract": 6.597223680310971e-17
+  },
+  "ms": 5489,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-0.00001",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 0.00001)",
+  "pane": {
+   "volume": 23999.999999930762,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.999999930762,
+     "faces": 18,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000002,
+      -10,
+      20.000000000000007,
+      15.000000000000002,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.00001
+    }
+   ],
+   "ms": 1474
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0.00001
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 226
+  },
+  "grouped": {
+   "volume": 23999.999999930762,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.999999930762,
+     "faces": 18,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000002,
+      -10,
+      20.000000000000007,
+      15.000000000000002,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.00001
+    }
+   ],
+   "ms": 610
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23999.999999992273,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23999.999999992284,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "faces 18 vs 26",
+   "grouped": "faces 18 vs 26",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 1.3194447360621941e-16,
+   "contract": 0
+  },
+  "ms": 7347,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-0.0001",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 0.0001)",
+  "pane": {
+   "volume": 23999.999997376144,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.999997376144,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000004,
+      -15.000000000000002,
+      -10.000000000000002,
+      20,
+      15.000000000000004,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "other": 8,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.0001
+    }
+   ],
+   "ms": 3691
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0.0001
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 560
+  },
+  "grouped": {
+   "volume": 23999.999997376144,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.999997376144,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000004,
+      -15.000000000000002,
+      -10.000000000000002,
+      20,
+      15.000000000000004,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "other": 8,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.0001
+    }
+   ],
+   "ms": 1890
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23999.99999922744,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23999.99999922742,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 6.597223680310971e-17,
+   "contract": 0
+  },
+  "ms": 13902,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-0.001",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 0.001)",
+  "pane": {
+   "volume": 23999.99981854549,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.99981854549,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000002,
+      -10.000000000000002,
+      20,
+      15.000000000000004,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.001
+    }
+   ],
+   "ms": 1599
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0.001
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 294
+  },
+  "grouped": {
+   "volume": 23999.99981854549,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.99981854549,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000002,
+      -10.000000000000002,
+      20,
+      15.000000000000004,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.001
+    }
+   ],
+   "ms": 1571
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23999.99992274481,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20.000000000000004,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23999.999922744693,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 1.3194447360621941e-16,
+   "contract": 6.597223680310971e-17
+  },
+  "ms": 8056,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-0.005",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 0.005)",
+  "pane": {
+   "volume": 23999.99549317859,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.99549317859,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15.000000000000002,
+      -10.000000000000007,
+      20.000000000000007,
+      15.000000000000002,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.005
+    }
+   ],
+   "ms": 2015
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0.005
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 634
+  },
+  "grouped": {
+   "volume": 23999.99549317859,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.99549317859,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15.000000000000002,
+      -10.000000000000007,
+      20.000000000000007,
+      15.000000000000002,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.005
+    }
+   ],
+   "ms": 5902
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23999.99806875156,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15.000000000000002,
+     10.000000000000002
+    ]
+   },
+   "brepSeq": {
+    "volume": 23999.998068750865,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 1.3194447360621941e-16,
+   "contract": 3.2986118401554854e-17
+  },
+  "ms": 17787,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-0.009",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 0.009)",
+  "pane": {
+   "volume": 23999.9854102417,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.9854102417,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20.000000000000004,
+      15,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.009
+    }
+   ],
+   "ms": 8265
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0.009
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 554
+  },
+  "grouped": {
+   "volume": 23999.9854102417,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.9854102417,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20.000000000000004,
+      15,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.009
+    }
+   ],
+   "ms": 7681
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23999.993743187977,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23999.99374318674,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 6.597223680310971e-17,
+   "contract": 0
+  },
+  "ms": 28026,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-0.01",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 0.01)",
+  "pane": {
+   "volume": 23999.981990028216,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.981990028216,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15.000000000000005,
+      -10.00000000000001,
+      20.000000000000004,
+      15.000000000000005,
+      10.00000000000001
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.01
+    }
+   ],
+   "ms": 2742
+  },
+  "contract": {
+   "volume": 23999.981990028216,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.981990028216,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15.000000000000005,
+      -10.00000000000001,
+      20.000000000000004,
+      15.000000000000005,
+      10.00000000000001
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.01
+    }
+   ],
+   "ms": 2893
+  },
+  "grouped": {
+   "volume": 23999.981990028216,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.981990028216,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15.000000000000005,
+      -10.00000000000001,
+      20.000000000000004,
+      15.000000000000005,
+      10.00000000000001
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.01
+    }
+   ],
+   "ms": 2246
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23999.992275674475,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20.000000000000004,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23999.99227567314,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 1.9791671040932912e-16,
+   "contract": 1.9791671040932912e-16
+  },
+  "ms": 12887,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-0.05",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 0.05)",
+  "pane": {
+   "volume": 23999.78893407242,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.78893407242,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15.000000000000004,
+      -10.000000000000002,
+      20,
+      15.000000000000004,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.05
+    }
+   ],
+   "ms": 927
+  },
+  "contract": {
+   "volume": 23999.78893407242,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.78893407242,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15.000000000000004,
+      -10.000000000000002,
+      20,
+      15.000000000000004,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.05
+    }
+   ],
+   "ms": 1053
+  },
+  "grouped": {
+   "volume": 23999.78893407242,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.78893407242,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15.000000000000004,
+      -10.000000000000002,
+      20,
+      15.000000000000004,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.05
+    }
+   ],
+   "ms": 590
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23999.807025758153,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20.000000000000004,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23999.807025751343,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 6.597223680310971e-17,
+   "contract": 6.597223680310971e-17
+  },
+  "ms": 7931,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-1",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 1)",
+  "pane": {
+   "volume": 23924.0340457628,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23924.0340457628,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000004,
+      -15.000000000000004,
+      -10,
+      20,
+      15.000000000000002,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 3919
+  },
+  "contract": {
+   "volume": 23924.034045762804,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23924.034045762804,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000004,
+      -15.000000000000004,
+      -10,
+      20,
+      15.000000000000002,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 3282
+  },
+  "grouped": {
+   "volume": 23924.0340457628,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23924.0340457628,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000004,
+      -15.000000000000004,
+      -10,
+      20,
+      15.000000000000002,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 3918
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23924.08257322776,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23924.082573106334,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 6.597223680310971e-17,
+   "contract": 6.597223680310971e-17
+  },
+  "ms": 16155,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-9.99",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 9.99)",
+  "pane": {
+   "volume": 17622.707841638596,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 17622.707841638596,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -10.000000000000007,
+      20.000000000000004,
+      15.000000000000005,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 3759
+  },
+  "contract": {
+   "volume": 17622.7078416386,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 17622.7078416386,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -10.000000000000007,
+      20.000000000000004,
+      15.000000000000005,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 7395
+  },
+  "grouped": {
+   "volume": 17622.7078416386,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 17622.7078416386,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -10.000000000000007,
+      20.000000000000004,
+      15.000000000000005,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 14097
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 17624.99808585962,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15.000000000000002,
+     -10.000000000000002,
+     20,
+     15.000000000000002,
+     10.000000000000002
+    ]
+   },
+   "brepSeq": {
+    "volume": 17624.99808563891,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 1.319444736062194e-16,
+   "contract": 1.319444736062194e-16
+  },
+  "ms": 33362,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-10",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 10)",
+  "pane": {
+   "volume": 17611.27429665706,
+   "faces": 10,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 17611.27429665706,
+     "faces": 10,
+     "bbox": [
+      -20,
+      -15.000000000000007,
+      -10.000000000000005,
+      20,
+      15.000000000000005,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 4,
+      "plane": 2,
+      "sphere": 4
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 5295
+  },
+  "contract": {
+   "volume": 17611.27429665706,
+   "faces": 10,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 17611.27429665706,
+     "faces": 10,
+     "bbox": [
+      -20,
+      -15.000000000000007,
+      -10.000000000000005,
+      20,
+      15.000000000000005,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 4,
+      "plane": 2,
+      "sphere": 4
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 5180
+  },
+  "grouped": {
+   "volume": 17611.27429665706,
+   "faces": 10,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 17611.27429665706,
+     "faces": 10,
+     "bbox": [
+      -20,
+      -15.000000000000007,
+      -10.000000000000005,
+      20,
+      15.000000000000005,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 4,
+      "plane": 2,
+      "sphere": 4
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 11290
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Rounding box box1 (40x30x20) at radius 10 failed -- the radius is too big for this shape's edges."
+   },
+   "brepSeq": {
+    "refused": "Rounding box by 10 would not fit its shortest side -- box1 is shown without it."
+   }
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "oracle-refused",
+   "grouped": "oracle-refused",
+   "contract": "oracle-refused"
+  },
+  "ms": 30614,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-whole-10.01",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20)\nround(s, 10.01)",
+  "pane": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 10.01
+    }
+   ],
+   "ms": 4721
+  },
+  "contract": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round box1 is too big for the walls, so box1 is shown without it -- use a smaller size.",
+     "refusal": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 10.01
+    }
+   ],
+   "ms": 2105
+  },
+  "grouped": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round box1 is too big for the walls, so box1 is shown without it -- use a smaller size.",
+     "refusal": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 10.01
+    }
+   ],
+   "ms": 2815
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 26356.937883300106,
+    "faces": 26,
+    "bbox": [
+     -20.156101452689057,
+     -15.162688873859905,
+     -10.000000100000001,
+     20.15610145259601,
+     15.154258846373894,
+     10.000000100000001
+    ]
+   },
+   "brepSeq": {
+    "refused": "Rounding box by 10.01 would not fit its shortest side -- box1 is shown without it."
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": null,
+   "contract": null
+  },
+  "ms": 26775,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-cyl-whole--2",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cylinder(30,20)\nround(s, -2)",
+  "pane": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": -2
+    }
+   ],
+   "ms": 293
+  },
+  "contract": {
+   "volume": 14135.809206739914,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.809206739914,
+     "faces": 3,
+     "bbox": [
+      -14.999768343198571,
+      -14.999597006109646,
+      -10.000000000000018,
+      14.999768343198575,
+      14.999597006109637,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round size of cyl1 is negative, so cyl1 is shown without it -- give it a size above zero.",
+     "refusal": "cyl1 (cylinder): GUARD negative",
+     "guard": {
+      "ok": false,
+      "code": "negative",
+      "args": {
+       "size": -2
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 3550
+  },
+  "grouped": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round size of cyl1 is zero, negative or smaller than 0.01, so cyl1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": -2
+    }
+   ],
+   "ms": 1845
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Rounding cylinder cyl1 (radius 15, height 20) at radius -2 failed -- the radius is too big for this shape's edges."
+   },
+   "brepSeq": {
+    "volume": 13980.1799372449,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "ms": 12602,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-cyl-whole-0",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cylinder(30,20)\nround(s, 0)",
+  "pane": {
+   "volume": 14135.809206739914,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.809206739914,
+     "faces": 3,
+     "bbox": [
+      -14.999768343198571,
+      -14.999597006109646,
+      -10.000000000000018,
+      14.999768343198575,
+      14.999597006109637,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [],
+   "ms": 1726
+  },
+  "contract": {
+   "volume": 14135.809206739914,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.809206739914,
+     "faces": 3,
+     "bbox": [
+      -14.999768343198571,
+      -14.999597006109646,
+      -10.000000000000018,
+      14.999768343198575,
+      14.999597006109637,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round size of cyl1 is zero, negative or smaller than 0.01, so cyl1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "cyl1 (cylinder): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1348
+  },
+  "grouped": {
+   "volume": 14135.809206739914,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.809206739914,
+     "faces": 3,
+     "bbox": [
+      -14.999768343198571,
+      -14.999597006109646,
+      -10.000000000000018,
+      14.999768343198575,
+      14.999597006109637,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [],
+   "ms": 935
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14137.166941154066,
+    "faces": 3,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 14137.166941154059,
+    "faces": 3,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.000008591858611235465,
+   "contract": 0.000008591858611235465
+  },
+  "ms": 14915,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-cyl-whole-0.000001",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cylinder(30,20)\nround(s, 0.000001)",
+  "pane": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 0.000001
+    }
+   ],
+   "ms": 1827
+  },
+  "contract": {
+   "volume": 14135.809206739914,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.809206739914,
+     "faces": 3,
+     "bbox": [
+      -14.999768343198571,
+      -14.999597006109646,
+      -10.000000000000018,
+      14.999768343198575,
+      14.999597006109637,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round size of cyl1 is zero, negative or smaller than 0.01, so cyl1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "cyl1 (cylinder): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0.000001
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1226
+  },
+  "grouped": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round size of cyl1 is zero, negative or smaller than 0.01, so cyl1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: invalid input: fillet size must be positive",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 0.000001
+    }
+   ],
+   "ms": 1087
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14137.166941154028,
+    "faces": 5,
+    "bbox": [
+     -15.0000001,
+     -15.0000001,
+     -10.0000001,
+     15.0000001,
+     15.0000001,
+     10.000000099999998
+    ]
+   },
+   "brepSeq": {
+    "volume": 14137.166941154022,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": null,
+   "contract": 0.000008593990555884315
+  },
+  "ms": 11574,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-cyl-whole-0.001",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cylinder(30,20)\nround(s, 0.001)",
+  "pane": {
+   "volume": 14135.80855456038,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.80855456038,
+     "faces": 5,
+     "bbox": [
+      -14.999768343198571,
+      -14.99959700610965,
+      -10.000000000000018,
+      14.999768343198578,
+      14.999597006109644,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 0.001
+    }
+   ],
+   "ms": 11714
+  },
+  "contract": {
+   "volume": 14135.809206739914,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.809206739914,
+     "faces": 3,
+     "bbox": [
+      -14.999768343198571,
+      -14.999597006109646,
+      -10.000000000000018,
+      14.999768343198575,
+      14.999597006109637,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round size of cyl1 is zero, negative or smaller than 0.01, so cyl1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "cyl1 (cylinder): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0.001
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 3772
+  },
+  "grouped": {
+   "volume": 14135.80855456038,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.80855456038,
+     "faces": 5,
+     "bbox": [
+      -14.999768343198571,
+      -14.99959700610965,
+      -10.000000000000018,
+      14.999768343198578,
+      14.999597006109644,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 0.001
+    }
+   ],
+   "ms": 2660
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14137.166900703178,
+    "faces": 5,
+    "bbox": [
+     -15.0000001,
+     -15.0000001,
+     -10,
+     15.0000001,
+     15.0000001,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 14137.166900703194,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.000008593990571358264,
+   "contract": 0.000008593990571509752
+  },
+  "ms": 29902,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-cyl-whole-0.009",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cylinder(30,20)\nround(s, 0.009)",
+  "pane": {
+   "volume": 14135.8058606172,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.8058606172,
+     "faces": 5,
+     "bbox": [
+      -14.999768343198571,
+      -14.99959700610965,
+      -10.000000000000018,
+      14.999768343198575,
+      14.999597006109644,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 0.009
+    }
+   ],
+   "ms": 5017
+  },
+  "contract": {
+   "volume": 14135.809206739914,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.809206739914,
+     "faces": 3,
+     "bbox": [
+      -14.999768343198571,
+      -14.999597006109646,
+      -10.000000000000018,
+      14.999768343198575,
+      14.999597006109637,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round size of cyl1 is zero, negative or smaller than 0.01, so cyl1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "cyl1 (cylinder): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0.009
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 6618
+  },
+  "grouped": {
+   "volume": 14135.8058606172,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.8058606172,
+     "faces": 5,
+     "bbox": [
+      -14.999768343198571,
+      -14.99959700610965,
+      -10.000000000000018,
+      14.999768343198575,
+      14.999597006109644,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 0.009
+    }
+   ],
+   "ms": 7991
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14137.163665022244,
+    "faces": 5,
+    "bbox": [
+     -15.0000001,
+     -15.0000001,
+     -10,
+     15.0000001,
+     15.0000001,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 14137.163665022237,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.000008593990571358264,
+   "contract": 0.000008593990571509752
+  },
+  "ms": 38123,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-cyl-whole-0.01",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cylinder(30,20)\nround(s, 0.01)",
+  "pane": {
+   "volume": 14135.804991615141,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.804991615141,
+     "faces": 5,
+     "bbox": [
+      -14.999768343198571,
+      -14.99959700610965,
+      -10.000000000000018,
+      14.999768343198578,
+      14.999597006109644,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 0.01
+    }
+   ],
+   "ms": 3984
+  },
+  "contract": {
+   "volume": 14135.804991615141,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.804991615141,
+     "faces": 5,
+     "bbox": [
+      -14.999768343198571,
+      -14.99959700610965,
+      -10.000000000000018,
+      14.999768343198578,
+      14.999597006109644,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 0.01
+    }
+   ],
+   "ms": 4693
+  },
+  "grouped": {
+   "volume": 14135.804991615141,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14135.804991615141,
+     "faces": 5,
+     "bbox": [
+      -14.999768343198571,
+      -14.99959700610965,
+      -10.000000000000018,
+      14.999768343198578,
+      14.999597006109644,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 0.01
+    }
+   ],
+   "ms": 1247
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14137.162896607118,
+    "faces": 5,
+    "bbox": [
+     -15.0000001,
+     -15.0000001,
+     -10,
+     15.0000001,
+     15.0000001,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 14137.16289660712,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 0.000008593990571358264,
+   "contract": 0.000008593990571358264
+  },
+  "ms": 17811,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-cyl-whole-1",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cylinder(30,20)\nround(s, 1)",
+  "pane": {
+   "volume": 14097.158422799097,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14097.158422799097,
+     "faces": 5,
+     "bbox": [
+      -14.999997262439067,
+      -14.999999634481117,
+      -10.000000000000018,
+      14.999997262439075,
+      14.999999634481116,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 26906
+  },
+  "contract": {
+   "volume": 14097.158422799097,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14097.158422799097,
+     "faces": 5,
+     "bbox": [
+      -14.999997262439067,
+      -14.999999634481117,
+      -10.000000000000018,
+      14.999997262439075,
+      14.999999634481116,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 16947
+  },
+  "grouped": {
+   "volume": 14097.158422799097,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14097.158422799097,
+     "faces": 5,
+     "bbox": [
+      -14.999997262439067,
+      -14.999999634481117,
+      -10.000000000000018,
+      14.999997262439075,
+      14.999999634481116,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 16834
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14097.317819065898,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15.0000001,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 14097.317819065893,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 6.049700208760683e-8,
+   "contract": 6.049700208760683e-8
+  },
+  "ms": 65930,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-cyl-whole-9.99",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cylinder(30,20)\nround(s, 9.99)",
+  "pane": {
+   "volume": 10699.843436063062,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 10699.843436063062,
+     "faces": 5,
+     "bbox": [
+      -14.999768343198568,
+      -14.999645737868253,
+      -10.000000000000012,
+      14.999768343198573,
+      14.999645737868253,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 11244
+  },
+  "contract": {
+   "volume": 10699.843436063062,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 10699.843436063062,
+     "faces": 5,
+     "bbox": [
+      -14.999768343198568,
+      -14.999645737868253,
+      -10.000000000000012,
+      14.999768343198573,
+      14.999645737868253,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 11623
+  },
+  "grouped": {
+   "volume": 10699.843436063062,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 10699.843436063062,
+     "faces": 5,
+     "bbox": [
+      -14.999768343198568,
+      -14.999645737868253,
+      -10.000000000000012,
+      14.999768343198573,
+      14.999645737868253,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 11104
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 10700.669678794788,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 10700.669678794786,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 0.0000075528940266160744,
+   "contract": 0.0000075528940266160744
+  },
+  "ms": 40848,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-cyl-whole-10",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cylinder(30,20)\nround(s, 10)",
+  "pane": {
+   "volume": 10693.56234752843,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 10693.56234752843,
+     "faces": 3,
+     "bbox": [
+      -14.99976834319858,
+      -14.999645737850436,
+      -10.000000000000012,
+      14.999768343198584,
+      14.999645737850434,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "other": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 6076
+  },
+  "contract": {
+   "volume": 10693.56234752843,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 10693.56234752843,
+     "faces": 3,
+     "bbox": [
+      -14.99976834319858,
+      -14.999645737850436,
+      -10.000000000000012,
+      14.999768343198584,
+      14.999645737850434,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "other": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 7849
+  },
+  "grouped": {
+   "volume": 10693.56234752843,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 10693.56234752843,
+     "faces": 3,
+     "bbox": [
+      -14.99976834319858,
+      -14.999645737850436,
+      -10.000000000000012,
+      14.999768343198584,
+      14.999645737850434,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "other": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 10018
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Rounding cylinder cyl1 (radius 15, height 20) at radius 10 failed -- the radius is too big for this shape's edges."
+   },
+   "brepSeq": {
+    "refused": "Rounding cylinder by 10 would not fit its radius or height -- cyl1 is shown without it."
+   }
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "oracle-refused",
+   "grouped": "oracle-refused",
+   "contract": "oracle-refused"
+  },
+  "ms": 29013,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-cyl-whole-10.01",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cylinder(30,20)\nround(s, 10.01)",
+  "pane": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 10.01
+    }
+   ],
+   "ms": 5846
+  },
+  "contract": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round cyl1 is too big for the walls, so cyl1 is shown without it -- use a smaller size.",
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 10.01
+    }
+   ],
+   "ms": 293
+  },
+  "grouped": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round cyl1 is too big for the walls, so cyl1 is shown without it -- use a smaller size.",
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 10.01
+    }
+   ],
+   "ms": 918
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 20112.881270154547,
+    "faces": 6,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "Rounding cylinder by 10.01 would not fit its radius or height -- cyl1 is shown without it."
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": null,
+   "contract": null
+  },
+  "ms": 12202,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-cyl-whole-15",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cylinder(30,20)\nround(s, 15)",
+  "pane": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 15
+    }
+   ],
+   "ms": 334
+  },
+  "contract": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round cyl1 is too big for the rim, so cyl1 is shown without it -- use a smaller size.",
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 15
+    }
+   ],
+   "ms": 333
+  },
+  "grouped": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round cyl1 is too big for the rim, so cyl1 is shown without it -- use a smaller size.",
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 15
+    }
+   ],
+   "ms": 190
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 21205.750411731104,
+    "faces": 6,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "Rounding cylinder by 15 would not fit its radius or height -- cyl1 is shown without it."
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": null,
+   "contract": null
+  },
+  "ms": 5629,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-corner-0.001",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20,{corner:0.001})",
+  "pane": {
+   "volume": 23999.99981854549,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.99981854549,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000002,
+      -10.000000000000002,
+      20,
+      15.000000000000004,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.001
+    }
+   ],
+   "ms": 2094
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0.001
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 590
+  },
+  "grouped": {
+   "volume": 23999.99981854549,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.99981854549,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000002,
+      -10.000000000000002,
+      20,
+      15.000000000000004,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.001
+    }
+   ],
+   "ms": 6609
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23999.99992274481,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20.000000000000004,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23999.999922744693,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 1.3194447360621941e-16,
+   "contract": 6.597223680310971e-17
+  },
+  "ms": 16748,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-corner-0.009",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20,{corner:0.009})",
+  "pane": {
+   "volume": 23999.9854102417,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.9854102417,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20.000000000000004,
+      15,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.009
+    }
+   ],
+   "ms": 6191
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "The round size of box1 is zero, negative or smaller than 0.01, so box1 is shown without it -- give it a size of at least 0.01.",
+     "refusal": "box1 (box): GUARD too-small",
+     "guard": {
+      "ok": false,
+      "code": "too-small",
+      "args": {
+       "size": 0.009
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1198
+  },
+  "grouped": {
+   "volume": 23999.9854102417,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.9854102417,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20.000000000000004,
+      15,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cone": 8,
+      "cylinder": 12,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.009
+    }
+   ],
+   "ms": 12582
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23999.993743187977,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23999.99374318674,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 6.597223680310971e-17,
+   "contract": 0
+  },
+  "ms": 30794,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-corner-0.5",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20,{corner:0.5})",
+  "pane": {
+   "volume": 23980.825397053817,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23980.825397053817,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15.000000000000002,
+      -10.000000000000004,
+      20.000000000000004,
+      15.000000000000002,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.5
+    }
+   ],
+   "ms": 9892
+  },
+  "contract": {
+   "volume": 23980.825397053817,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23980.825397053817,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15.000000000000002,
+      -10.000000000000004,
+      20.000000000000004,
+      15.000000000000002,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.5
+    }
+   ],
+   "ms": 2876
+  },
+  "grouped": {
+   "volume": 23980.825397053817,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23980.825397053817,
+     "faces": 26,
+     "bbox": [
+      -20,
+      -15.000000000000002,
+      -10.000000000000004,
+      20.000000000000004,
+      15.000000000000002,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.5
+    }
+   ],
+   "ms": 3638
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23980.853239055763,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23980.853238991167,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 6.597223680310971e-17,
+   "contract": 6.597223680310971e-17
+  },
+  "ms": 26998,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-corner-9.99",
+  "group": "a5-whole",
+  "note": null,
+  "script": "const s = cuboid(40,30,20,{corner:9.99})",
+  "pane": {
+   "volume": 17622.7078416386,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 17622.7078416386,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -10.000000000000007,
+      20.000000000000004,
+      15.000000000000005,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 4203
+  },
+  "contract": {
+   "volume": 17622.7078416386,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 17622.7078416386,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -10.000000000000007,
+      20.000000000000004,
+      15.000000000000005,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 9254
+  },
+  "grouped": {
+   "volume": 17622.7078416386,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 17622.7078416386,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -10.000000000000007,
+      20.000000000000004,
+      15.000000000000005,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 6447
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 17624.99808585962,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15.000000000000002,
+     -10.000000000000002,
+     20,
+     15.000000000000002,
+     10.000000000000002
+    ]
+   },
+   "brepSeq": {
+    "volume": 17624.99808563891,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 1.319444736062194e-16,
+   "contract": 1.319444736062194e-16
+  },
+  "ms": 29721,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "a5-box-doc-chamfer-0.001",
+  "group": "a5-whole",
+  "note": "ModelDoc only: roundStyle chamfer on a box",
+  "script": null,
+  "pane": {
+   "volume": 23999.99982000601,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.99982000601,
+     "faces": 18,
+     "bbox": [
+      -20,
+      -15.000000000000002,
+      -10.000000000000002,
+      20,
+      15.000000000000004,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "plane": 18
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.001
+    }
+   ],
+   "ms": 4308
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "Bevelling every edge of a box at once is not supported, so box1 is shown without it -- bevel the edges one at a time.",
+     "refusal": "box1 (box): GUARD whole-chamfer",
+     "guard": {
+      "ok": false,
+      "code": "whole-chamfer",
+      "args": {
+       "size": 0.001
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 241
+  },
+  "grouped": {
+   "volume": 23999.99982000601,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23999.99982000601,
+     "faces": 18,
+     "bbox": [
+      -20,
+      -15.000000000000002,
+      -10.000000000000002,
+      20,
+      15.000000000000004,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "plane": 18
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.001
+    }
+   ],
+   "ms": 1706
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23999.999820005323,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20.000000000000004,
+     15.000000000000002,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23999.999820005352,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "faces 18 vs 26",
+   "grouped": "faces 18 vs 26",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 6.597223680310971e-17,
+   "contract": 6.597223680310971e-17
+  },
+  "ms": 11161
+ },
+ {
+  "id": "a5-box-doc-chamfer-0.5",
+  "group": "a5-whole",
+  "note": "ModelDoc only: roundStyle chamfer on a box",
+  "script": null,
+  "pane": {
+   "volume": 23955.75,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23955.75,
+     "faces": 18,
+     "bbox": [
+      -20,
+      -15,
+      -10.000000000000002,
+      20,
+      15.000000000000002,
+      10
+     ],
+     "faceTypes": {
+      "plane": 18
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.5
+    }
+   ],
+   "ms": 1007
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "Bevelling every edge of a box at once is not supported, so box1 is shown without it -- bevel the edges one at a time.",
+     "refusal": "box1 (box): GUARD whole-chamfer",
+     "guard": {
+      "ok": false,
+      "code": "whole-chamfer",
+      "args": {
+       "size": 0.5
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 359
+  },
+  "grouped": {
+   "volume": 23955.75,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23955.75,
+     "faces": 18,
+     "bbox": [
+      -20,
+      -15,
+      -10.000000000000002,
+      20,
+      15.000000000000002,
+      10
+     ],
+     "faceTypes": {
+      "plane": 18
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 0.5
+    }
+   ],
+   "ms": 632
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23955.666666666657,
+    "faces": 26,
+    "bbox": [
+     -20.000000000000004,
+     -15,
+     -10.000000000000004,
+     20,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 23955.666666666668,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "volume-differs 3.5e-6",
+   "grouped": "volume-differs 3.5e-6",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 6.597223680310971e-17,
+   "contract": 6.597223680310971e-17
+  },
+  "ms": 5921
+ },
+ {
+  "id": "a5-box-doc-chamfer-2",
+  "group": "a5-whole",
+  "note": "ModelDoc only: roundStyle chamfer on a box",
+  "script": null,
+  "pane": {
+   "volume": 23328,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23328,
+     "faces": 18,
+     "bbox": [
+      -20,
+      -15.000000000000002,
+      -10,
+      20,
+      15.000000000000004,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 18
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 883
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "Bevelling every edge of a box at once is not supported, so box1 is shown without it -- bevel the edges one at a time.",
+     "refusal": "box1 (box): GUARD whole-chamfer",
+     "guard": {
+      "ok": false,
+      "code": "whole-chamfer",
+      "args": {
+       "size": 2
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 101
+  },
+  "grouped": {
+   "volume": 23328,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 23328,
+     "faces": 18,
+     "bbox": [
+      -20,
+      -15.000000000000002,
+      -10,
+      20,
+      15.000000000000004,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 18
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1094
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 23322.666666666657,
+    "faces": 26,
+    "bbox": [
+     -20.000000000000004,
+     -15.000000000000004,
+     -10.000000000000002,
+     20.000000000000004,
+     15.000000000000002,
+     10.000000000000002
+    ]
+   },
+   "brepSeq": {
+    "volume": 23322.666666666668,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "volume-differs 2.3e-4",
+   "grouped": "volume-differs 2.3e-4",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 6.59722368031097e-17,
+   "contract": 6.59722368031097e-17
+  },
+  "ms": 5927
+ },
+ {
+  "id": "a5-box-doc-chamfer-4",
+  "group": "a5-whole",
+  "note": "ModelDoc only: roundStyle chamfer on a box",
+  "script": null,
+  "pane": {
+   "volume": 21504,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 21504,
+     "faces": 18,
+     "bbox": [
+      -20,
+      -15.000000000000004,
+      -10.000000000000002,
+      20,
+      15.000000000000002,
+      10.000000000000007
+     ],
+     "faceTypes": {
+      "plane": 18
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 870
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "Bevelling every edge of a box at once is not supported, so box1 is shown without it -- bevel the edges one at a time.",
+     "refusal": "box1 (box): GUARD whole-chamfer",
+     "guard": {
+      "ok": false,
+      "code": "whole-chamfer",
+      "args": {
+       "size": 4
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 281
+  },
+  "grouped": {
+   "volume": 21504,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 21504,
+     "faces": 18,
+     "bbox": [
+      -20,
+      -15.000000000000004,
+      -10.000000000000002,
+      20,
+      15.000000000000002,
+      10.000000000000007
+     ],
+     "faceTypes": {
+      "plane": 18
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 1085
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 21461.33333333334,
+    "faces": 26,
+    "bbox": [
+     -20.000000000000004,
+     -15.000000000000002,
+     -10,
+     20.000000000000004,
+     15.000000000000002,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 21461.333333333332,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "volume-differs 2.0e-3",
+   "grouped": "volume-differs 2.0e-3",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 1.319444736062194e-16,
+   "contract": 6.59722368031097e-17
+  },
+  "ms": 5989
+ },
+ {
+  "id": "a5-box-doc-chamfer-9.99",
+  "group": "a5-whole",
+  "note": "ModelDoc only: roundStyle chamfer on a box",
+  "script": null,
+  "pane": {
+   "volume": 12017.999994000093,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 12017.999994000093,
+     "faces": 18,
+     "bbox": [
+      -20.000000000000018,
+      -15.000000000000028,
+      -10.000000000000082,
+      20.000000000000004,
+      15,
+      10.000000000000053
+     ],
+     "faceTypes": {
+      "plane": 18
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 1167
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "Bevelling every edge of a box at once is not supported, so box1 is shown without it -- bevel the edges one at a time.",
+     "refusal": "box1 (box): GUARD whole-chamfer",
+     "guard": {
+      "ok": false,
+      "code": "whole-chamfer",
+      "args": {
+       "size": 9.99
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 257
+  },
+  "grouped": {
+   "volume": 12017.999994000093,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 12017.999994000093,
+     "faces": 18,
+     "bbox": [
+      -20.000000000000018,
+      -15.000000000000028,
+      -10.000000000000082,
+      20.000000000000004,
+      15,
+      10.000000000000053
+     ],
+     "faceTypes": {
+      "plane": 18
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 870
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11353.331327999998,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10.000000000000002,
+     20,
+     15.000000000000002,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 11353.331328,
+    "faces": 26,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "volume-differs 5.9e-2",
+   "grouped": "volume-differs 5.9e-2",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 1.4843753280699683e-15,
+   "contract": 3.2986118401554854e-17
+  },
+  "ms": 6325
+ },
+ {
+  "id": "a5-box-doc-chamfer-10",
+  "group": "a5-whole",
+  "note": "ModelDoc only: roundStyle chamfer on a box",
+  "script": null,
+  "pane": {
+   "volume": 12000.000000000415,
+   "faces": 14,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 12000.000000000415,
+     "faces": 14,
+     "bbox": [
+      -20.000000000000533,
+      -15.000000000000266,
+      -10,
+      20.000000000000288,
+      15.000000000000153,
+      10
+     ],
+     "faceTypes": {
+      "plane": 14
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 875
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "Bevelling every edge of a box at once is not supported, so box1 is shown without it -- bevel the edges one at a time.",
+     "refusal": "box1 (box): GUARD whole-chamfer",
+     "guard": {
+      "ok": false,
+      "code": "whole-chamfer",
+      "args": {
+       "size": 10
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 91
+  },
+  "grouped": {
+   "volume": 12000.000000000415,
+   "faces": 14,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 12000.000000000415,
+     "faces": 14,
+     "bbox": [
+      -20.000000000000533,
+      -15.000000000000266,
+      -10,
+      20.000000000000288,
+      15.000000000000153,
+      10
+     ],
+     "faceTypes": {
+      "plane": 14
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 872
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Chamfering box box1 (40x30x20) at radius 10 failed -- the radius is too big for this shape's edges."
+   },
+   "brepSeq": {
+    "refused": "Rounding box by 10 would not fit its shortest side -- box1 is shown without it."
+   }
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "oracle-refused",
+   "grouped": "oracle-refused",
+   "contract": "some-refused"
+  },
+  "ms": 5366
+ },
+ {
+  "id": "a5-box-doc-chamfer-12",
+  "group": "a5-whole",
+  "note": "ModelDoc only: roundStyle chamfer on a box",
+  "script": null,
+  "pane": {
+   "volume": 8645.333333333612,
+   "faces": 14,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 8645.333333333612,
+     "faces": 14,
+     "bbox": [
+      -18.000000000000284,
+      -13.000000000000938,
+      -10.000000000000034,
+      18.00000000000057,
+      13.000000000000913,
+      10.000000000000139
+     ],
+     "faceTypes": {
+      "plane": 14
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 12
+    }
+   ],
+   "ms": 12895
+  },
+  "contract": {
+   "volume": 24000,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 24000,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -10,
+      20,
+      15,
+      10
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "status": "refused",
+     "sentence": "Bevelling every edge of a box at once is not supported, so box1 is shown without it -- bevel the edges one at a time.",
+     "refusal": "box1 (box): GUARD whole-chamfer",
+     "guard": {
+      "ok": false,
+      "code": "whole-chamfer",
+      "args": {
+       "size": 12
+      }
+     }
+    }
+   ],
+   "blendCommands": [],
+   "ms": 515
+  },
+  "grouped": {
+   "volume": 8645.333333333612,
+   "faces": 14,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 8645.333333333612,
+     "faces": 14,
+     "bbox": [
+      -18.000000000000284,
+      -13.000000000000938,
+      -10.000000000000034,
+      18.00000000000057,
+      13.000000000000913,
+      10.000000000000139
+     ],
+     "faceTypes": {
+      "plane": 14
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 12
+    }
+   ],
+   "ms": 11223
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Chamfering box box1 (40x30x20) at radius 12 failed -- the radius is too big for this shape's edges."
+   },
+   "brepSeq": {
+    "refused": "Rounding box by 12 would not fit its shortest side -- box1 is shown without it."
+   }
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "oracle-refused",
+   "grouped": "oracle-refused",
+   "contract": "some-refused"
+  },
+  "ms": 31599
+ },
+ {
+  "id": "a5-cyl-doc-chamfer-2",
+  "group": "a5-whole",
+  "note": null,
+  "script": null,
+  "pane": {
+   "volume": 13775.749491718852,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13775.749491718852,
+     "faces": 5,
+     "bbox": [
+      -14.99976834319857,
+      -14.99959700610965,
+      -10.000000000000018,
+      14.999768343198578,
+      14.999597006109642,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cone": 2,
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3333
+  },
+  "contract": {
+   "volume": 13775.749491718852,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13775.749491718852,
+     "faces": 5,
+     "bbox": [
+      -14.99976834319857,
+      -14.99959700610965,
+      -10.000000000000018,
+      14.999768343198578,
+      14.999597006109642,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cone": 2,
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1308
+  },
+  "grouped": {
+   "volume": 13775.749491718852,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13775.749491718852,
+     "faces": 5,
+     "bbox": [
+      -14.99976834319857,
+      -14.99959700610965,
+      -10.000000000000018,
+      14.999768343198578,
+      14.999597006109642,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cone": 2,
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1320
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13776.930983542443,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 13776.930983542448,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 0.000008591858611121849,
+   "contract": 0.000008591858611121849
+  },
+  "ms": 11822
+ },
+ {
+  "id": "a5-cyl-doc-chamfer-9.99",
+  "group": "a5-whole",
+  "note": null,
+  "script": null,
+  "pane": {
+   "volume": 6819.134670375323,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 6819.134670375323,
+     "faces": 5,
+     "bbox": [
+      -14.99976834319857,
+      -14.999645737868256,
+      -10.000000000000012,
+      14.999768343198573,
+      14.999645737868253,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cone": 2,
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 2538
+  },
+  "contract": {
+   "volume": 6819.134670375323,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 6819.134670375323,
+     "faces": 5,
+     "bbox": [
+      -14.99976834319857,
+      -14.999645737868256,
+      -10.000000000000012,
+      14.999768343198573,
+      14.999645737868253,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cone": 2,
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 2706
+  },
+  "grouped": {
+   "volume": 6819.134670375323,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 6819.134670375323,
+     "faces": 5,
+     "bbox": [
+      -14.99976834319857,
+      -14.999645737868256,
+      -10.000000000000012,
+      14.999768343198573,
+      14.999645737868253,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cone": 2,
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 9.99
+    }
+   ],
+   "ms": 2085
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 6819.347309705196,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 6819.347309705193,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 0.0000075528940266160744,
+   "contract": 0.0000075528940266160744
+  },
+  "ms": 11272
+ },
+ {
+  "id": "a5-cyl-doc-chamfer-10",
+  "group": "a5-whole",
+  "note": null,
+  "script": null,
+  "pane": {
+   "volume": 6806.572271579982,
+   "faces": 4,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 6806.572271579982,
+     "faces": 4,
+     "bbox": [
+      -14.999768343198566,
+      -14.999645737850422,
+      -10.000000000000012,
+      14.999768343198571,
+      14.99964573785042,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cone": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 2715
+  },
+  "contract": {
+   "volume": 6806.572271579982,
+   "faces": 4,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 6806.572271579982,
+     "faces": 4,
+     "bbox": [
+      -14.999768343198566,
+      -14.999645737850422,
+      -10.000000000000012,
+      14.999768343198571,
+      14.99964573785042,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cone": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 5660
+  },
+  "grouped": {
+   "volume": 6806.572271579982,
+   "faces": 4,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 6806.572271579982,
+     "faces": 4,
+     "bbox": [
+      -14.999768343198566,
+      -14.999645737850422,
+      -10.000000000000012,
+      14.999768343198571,
+      14.99964573785042,
+      10.000000000000005
+     ],
+     "faceTypes": {
+      "cone": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 5145
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Chamfering cylinder cyl1 (radius 15, height 20) at radius 10 failed -- the radius is too big for this shape's edges."
+   },
+   "brepSeq": {
+    "refused": "Rounding cylinder by 10 would not fit its radius or height -- cyl1 is shown without it."
+   }
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "oracle-refused",
+   "grouped": "oracle-refused",
+   "contract": "oracle-refused"
+  },
+  "ms": 18027
+ },
+ {
+  "id": "a5-cyl-doc-chamfer-12",
+  "group": "a5-whole",
+  "note": null,
+  "script": null,
+  "pane": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.chamfer: not supported yet: the blend is taller than the walls",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 12
+    }
+   ],
+   "ms": 1593
+  },
+  "contract": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round cyl1 is too big for the walls, so cyl1 is shown without it -- use a smaller size.",
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.chamfer: not supported yet: the blend is taller than the walls",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 12
+    }
+   ],
+   "ms": 333
+  },
+  "grouped": {
+   "volume": 0,
+   "faces": 0,
+   "ok": true,
+   "bodies": [],
+   "features": [
+    {
+     "id": "cyl1",
+     "status": "refused",
+     "sentence": "The round cyl1 is too big for the walls, so cyl1 is shown without it -- use a smaller size.",
+     "refusal": "cyl1 (cylinder): solidcraft refused it -- solid.chamfer: not supported yet: the blend is taller than the walls",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ],
+      [
+       15,
+       0,
+       -10
+      ]
+     ],
+     "size": 12
+    }
+   ],
+   "ms": 258
+  },
+  "hasBlend": false,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13609.379375350989,
+    "faces": 6,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ]
+   },
+   "brepSeq": {
+    "refused": "Rounding cylinder by 12 would not fit its radius or height -- cyl1 is shown without it."
+   }
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": null,
+   "contract": null
+  },
+  "ms": 6973
+ }
+]

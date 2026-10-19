@@ -1,0 +1,18 @@
+R3-datum-spin-top4-90 exit=0 07:50:14
+R3-starter-deliberate-90 exit=0 07:50:15
+R3-starter-remedy-moved-90 exit=1 07:50:17
+R3-starter-undrawn-90 exit=0 07:50:18
+R3-ground-front-360 exit=0 07:50:21
+R3-ground-front-270 exit=0 07:50:23
+R3-ground-front-90 exit=0 07:50:24
+R3-chain-same-handle-refused-then-groove exit=0 07:50:25
+R3-chain-into-form-refused-then-groove exit=0 07:50:26
+R3-chain-same-handle-then-extrude-combine exit=0 07:50:27
+R3-chain-sealed-then-groove exit=0 07:50:28
+R3-chain-both-built exit=0 07:50:30
+R3-sealed-post-90 exit=0 07:50:31
+R3-sealed-post-360 exit=0 07:50:34
+R3-box-cone-tri-360 exit=0 07:50:35
+R3-box-circle-d6p7-90 exit=0 07:50:36
+R3-box-cone-tri-90 exit=0 07:50:49
+ALLDONE

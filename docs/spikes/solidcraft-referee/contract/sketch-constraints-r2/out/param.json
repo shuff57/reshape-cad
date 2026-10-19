@@ -1,0 +1,1087 @@
+{
+ "rows": {
+  "angle": [
+   {
+    "stored": 20,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 20,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 20,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 20,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 20,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 110 degrees from line 1 to line 2, but the lines are drawn at about 20 degrees; the solver cannot swing a line across that far, so redraw the lines near 110 degrees first."
+   },
+   {
+    "stored": 20,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "Row 8 of sk.rules() asks for 130 degrees from line 1 to line 2, but the lines are drawn at about 20 degrees; the solver cannot swing a line across that far, so redraw the lines near 130 degrees first."
+   },
+   {
+    "stored": 20,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "Row 8 of sk.rules() asks for 150 degrees from line 1 to line 2, but the lines are drawn at about 20 degrees; the solver cannot swing a line across that far, so redraw the lines near 150 degrees first."
+   },
+   {
+    "stored": 30,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 30,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 30,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 30,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 30,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 110 degrees from line 1 to line 2, but the lines are drawn at about 30 degrees; the solver cannot swing a line across that far, so redraw the lines near 110 degrees first."
+   },
+   {
+    "stored": 30,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "Row 8 of sk.rules() asks for 130 degrees from line 1 to line 2, but the lines are drawn at about 30 degrees; the solver cannot swing a line across that far, so redraw the lines near 130 degrees first."
+   },
+   {
+    "stored": 30,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "Row 8 of sk.rules() asks for 150 degrees from line 1 to line 2, but the lines are drawn at about 30 degrees; the solver cannot swing a line across that far, so redraw the lines near 150 degrees first."
+   },
+   {
+    "stored": 40,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 40,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 40,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 40,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 40,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 110 degrees from line 1 to line 2, but the lines are drawn at about 40 degrees; the solver cannot swing a line across that far, so redraw the lines near 110 degrees first."
+   },
+   {
+    "stored": 40,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 130 degrees from line 1 to line 2, but the lines are drawn at about 40 degrees; the solver cannot swing a line across that far, so redraw the lines near 130 degrees first."
+   },
+   {
+    "stored": 40,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "Row 8 of sk.rules() asks for 150 degrees from line 1 to line 2, but the lines are drawn at about 40 degrees; the solver cannot swing a line across that far, so redraw the lines near 150 degrees first."
+   },
+   {
+    "stored": 50,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 50,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 50,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 50,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 50,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 110 degrees from line 1 to line 2, but the lines are drawn at about 50 degrees; the solver cannot swing a line across that far, so redraw the lines near 110 degrees first."
+   },
+   {
+    "stored": 50,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 130 degrees from line 1 to line 2, but the lines are drawn at about 50 degrees; the solver cannot swing a line across that far, so redraw the lines near 130 degrees first."
+   },
+   {
+    "stored": 50,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "Row 8 of sk.rules() asks for 150 degrees from line 1 to line 2, but the lines are drawn at about 50 degrees; the solver cannot swing a line across that far, so redraw the lines near 150 degrees first."
+   },
+   {
+    "stored": 60,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 60,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 60,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 60,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 60,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 110 degrees from line 1 to line 2, but the lines are drawn at about 60 degrees; the solver cannot swing a line across that far, so redraw the lines near 110 degrees first."
+   },
+   {
+    "stored": 60,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 130 degrees from line 1 to line 2, but the lines are drawn at about 60 degrees; the solver cannot swing a line across that far, so redraw the lines near 130 degrees first."
+   },
+   {
+    "stored": 60,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "Row 8 of sk.rules() asks for 150 degrees from line 1 to line 2, but the lines are drawn at about 60 degrees; the solver cannot swing a line across that far, so redraw the lines near 150 degrees first."
+   },
+   {
+    "stored": 70,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 70,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 70,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 70,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 70,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 110 degrees from line 1 to line 2, but the lines are drawn at about 70 degrees; the solver cannot swing a line across that far, so redraw the lines near 110 degrees first."
+   },
+   {
+    "stored": 70,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 130 degrees from line 1 to line 2, but the lines are drawn at about 70 degrees; the solver cannot swing a line across that far, so redraw the lines near 130 degrees first."
+   },
+   {
+    "stored": 70,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 150 degrees from line 1 to line 2, but the lines are drawn at about 70 degrees; the solver cannot swing a line across that far, so redraw the lines near 150 degrees first."
+   },
+   {
+    "stored": 80,
+    "value": 30,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 80,
+    "value": 50,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 80,
+    "value": 70,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 80,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 80,
+    "value": 110,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 110 degrees from line 1 to line 2, but the lines are drawn at about 80 degrees; the solver cannot swing a line across that far, so redraw the lines near 110 degrees first."
+   },
+   {
+    "stored": 80,
+    "value": 130,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 130 degrees from line 1 to line 2, but the lines are drawn at about 80 degrees; the solver cannot swing a line across that far, so redraw the lines near 130 degrees first."
+   },
+   {
+    "stored": 80,
+    "value": 150,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 150 degrees from line 1 to line 2, but the lines are drawn at about 80 degrees; the solver cannot swing a line across that far, so redraw the lines near 150 degrees first."
+   },
+   {
+    "stored": 95,
+    "value": 30,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 30 degrees from line 1 to line 2, but the lines are drawn at about 95 degrees; the solver cannot swing a line across that far, so redraw the lines near 30 degrees first."
+   },
+   {
+    "stored": 95,
+    "value": 50,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 50 degrees from line 1 to line 2, but the lines are drawn at about 95 degrees; the solver cannot swing a line across that far, so redraw the lines near 50 degrees first."
+   },
+   {
+    "stored": 95,
+    "value": 70,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 70 degrees from line 1 to line 2, but the lines are drawn at about 95 degrees; the solver cannot swing a line across that far, so redraw the lines near 70 degrees first."
+   },
+   {
+    "stored": 95,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 95,
+    "value": 110,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 95,
+    "value": 130,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 95,
+    "value": 150,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 105,
+    "value": 30,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 30 degrees from line 1 to line 2, but the lines are drawn at about 105 degrees; the solver cannot swing a line across that far, so redraw the lines near 30 degrees first."
+   },
+   {
+    "stored": 105,
+    "value": 50,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 50 degrees from line 1 to line 2, but the lines are drawn at about 105 degrees; the solver cannot swing a line across that far, so redraw the lines near 50 degrees first."
+   },
+   {
+    "stored": 105,
+    "value": 70,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 70 degrees from line 1 to line 2, but the lines are drawn at about 105 degrees; the solver cannot swing a line across that far, so redraw the lines near 70 degrees first."
+   },
+   {
+    "stored": 105,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 105,
+    "value": 110,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 105,
+    "value": 130,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 105,
+    "value": 150,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 115,
+    "value": 30,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 30 degrees from line 1 to line 2, but the lines are drawn at about 115 degrees; the solver cannot swing a line across that far, so redraw the lines near 30 degrees first."
+   },
+   {
+    "stored": 115,
+    "value": 50,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 50 degrees from line 1 to line 2, but the lines are drawn at about 115 degrees; the solver cannot swing a line across that far, so redraw the lines near 50 degrees first."
+   },
+   {
+    "stored": 115,
+    "value": 70,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 70 degrees from line 1 to line 2, but the lines are drawn at about 115 degrees; the solver cannot swing a line across that far, so redraw the lines near 70 degrees first."
+   },
+   {
+    "stored": 115,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 115,
+    "value": 110,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 115,
+    "value": 130,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 115,
+    "value": 150,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 125,
+    "value": 30,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "Row 8 of sk.rules() asks for 30 degrees from line 1 to line 2, but the lines are drawn at about 125 degrees; the solver cannot swing a line across that far, so redraw the lines near 30 degrees first."
+   },
+   {
+    "stored": 125,
+    "value": 50,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 50 degrees from line 1 to line 2, but the lines are drawn at about 125 degrees; the solver cannot swing a line across that far, so redraw the lines near 50 degrees first."
+   },
+   {
+    "stored": 125,
+    "value": 70,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 70 degrees from line 1 to line 2, but the lines are drawn at about 125 degrees; the solver cannot swing a line across that far, so redraw the lines near 70 degrees first."
+   },
+   {
+    "stored": 125,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 125,
+    "value": 110,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 125,
+    "value": 130,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 125,
+    "value": 150,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 135,
+    "value": 30,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "Row 8 of sk.rules() asks for 30 degrees from line 1 to line 2, but the lines are drawn at about 135 degrees; the solver cannot swing a line across that far, so redraw the lines near 30 degrees first."
+   },
+   {
+    "stored": 135,
+    "value": 50,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 50 degrees from line 1 to line 2, but the lines are drawn at about 135 degrees; the solver cannot swing a line across that far, so redraw the lines near 50 degrees first."
+   },
+   {
+    "stored": 135,
+    "value": 70,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 70 degrees from line 1 to line 2, but the lines are drawn at about 135 degrees; the solver cannot swing a line across that far, so redraw the lines near 70 degrees first."
+   },
+   {
+    "stored": 135,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 135,
+    "value": 110,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 135,
+    "value": 130,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 135,
+    "value": 150,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 150,
+    "value": 30,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "Row 8 of sk.rules() asks for 30 degrees from line 1 to line 2, but the lines are drawn at about 150 degrees; the solver cannot swing a line across that far, so redraw the lines near 30 degrees first."
+   },
+   {
+    "stored": 150,
+    "value": 50,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "WRONG",
+    "sentence": "Row 8 of sk.rules() asks for 50 degrees from line 1 to line 2, but the lines are drawn at about 150 degrees; the solver cannot swing a line across that far, so redraw the lines near 50 degrees first."
+   },
+   {
+    "stored": 150,
+    "value": 70,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 8 of sk.rules() asks for 70 degrees from line 1 to line 2, but the lines are drawn at about 150 degrees; the solver cannot swing a line across that far, so redraw the lines near 70 degrees first."
+   },
+   {
+    "stored": 150,
+    "value": 90,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 150,
+    "value": 110,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 150,
+    "value": 130,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 150,
+    "value": 150,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   }
+  ],
+  "dx": [
+   {
+    "stored": -12,
+    "value": -12,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -12,
+    "value": -8,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -12,
+    "value": -4,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -12,
+    "value": 4,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of 4 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": -12,
+    "value": 8,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of 8 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": -12,
+    "value": 12,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of 12 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": -8,
+    "value": -12,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -8,
+    "value": -8,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -8,
+    "value": -4,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -8,
+    "value": 4,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of 4 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": -8,
+    "value": 8,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of 8 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": -8,
+    "value": 12,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of 12 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": -4,
+    "value": -12,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -4,
+    "value": -8,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -4,
+    "value": -4,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": -4,
+    "value": 4,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of 4 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": -4,
+    "value": 8,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of 8 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": -4,
+    "value": 12,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of 12 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": 4,
+    "value": -12,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -12 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": 4,
+    "value": -8,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -8 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": 4,
+    "value": -4,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -4 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": 4,
+    "value": 4,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 4,
+    "value": 8,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 4,
+    "value": 12,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 8,
+    "value": -12,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -12 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": 8,
+    "value": -8,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -8 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": 8,
+    "value": -4,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -4 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": 8,
+    "value": 4,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 8,
+    "value": 8,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 8,
+    "value": 12,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 12,
+    "value": -12,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -12 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": 12,
+    "value": -8,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -8 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": 12,
+    "value": -4,
+    "sameSign": false,
+    "unguarded": "MAPPER-REFUSED",
+    "guarded": "REFUSED",
+    "brep": "MATCH",
+    "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -4 but the points are drawn on the other side; redraw them on the side you mean."
+   },
+   {
+    "stored": 12,
+    "value": 4,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 12,
+    "value": 8,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   },
+   {
+    "stored": 12,
+    "value": 12,
+    "sameSign": true,
+    "unguarded": "MATCH",
+    "guarded": "MATCH",
+    "brep": "MATCH",
+    "sentence": null
+   }
+  ]
+ },
+ "angle": {
+  "unguarded": {
+   "MATCH": 52,
+   "MAPPER-REFUSED": 39
+  },
+  "guarded": {
+   "MATCH": 52,
+   "REFUSED": 39
+  },
+  "brep": {
+   "MATCH": 80,
+   "WRONG": 11
+  }
+ },
+ "dx": {
+  "unguarded": {
+   "MATCH": 18,
+   "MAPPER-REFUSED": 18
+  },
+  "guarded": {
+   "MATCH": 18,
+   "REFUSED": 18
+  },
+  "brep": {
+   "MATCH": 36
+  }
+ }
+}

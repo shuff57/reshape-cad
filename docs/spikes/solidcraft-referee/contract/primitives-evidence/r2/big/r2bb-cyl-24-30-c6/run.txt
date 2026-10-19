@@ -1,0 +1,2 @@
+r2bb-cyl-24-30-c6                                     dVol 1.1e-4 dBbox 7.1e-6 dCom 5.5e-16 dAn 1.1e-4 faces 5/5
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/big/r2bb-cyl-24-30-c6/primitives-measure.json

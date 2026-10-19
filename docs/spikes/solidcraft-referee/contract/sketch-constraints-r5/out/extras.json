@@ -1,0 +1,1384 @@
+{
+ "construction": [
+  {
+   "id": "triangle + construction ARC below the base (outside the outline, ends on the base corners)",
+   "note": "lens outside = 1237.6 mm3 if the arc is treated as a profile edge",
+   "wantVolume": 3000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 4237.224659826165,
+    "bodies": 1,
+    "bbox": [
+     0,
+     -6.000000000000001,
+     0,
+     30,
+     20,
+     10.000000000000005
+    ],
+    "faces": 5,
+    "verdict": "WRONG"
+   },
+   "guarded": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 1,
+    "verdict": "RIGHT"
+   },
+   "controlGuardWithoutMarkingConstruction": {
+    "out": "REFUSED",
+    "stage": "mismatch",
+    "sentence": "The solid the solver produced does not match the shape these rules describe (its volume is 4237.22 where the rules give 3000), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "verdict": "REFUSED"
+   },
+   "guardedAlwaysPickProfiles": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 1,
+    "verdict": "RIGHT"
+   },
+   "controlAlwaysPickWithoutMarking": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 1,
+    "verdict": "RIGHT"
+   }
+  },
+  {
+   "id": "triangle + construction ARC inside the triangle (a chord arc splitting it in two)",
+   "note": "splits the triangle into two profiles",
+   "wantVolume": 3000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "verdict": "RIGHT"
+   },
+   "guarded": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 1,
+    "verdict": "RIGHT"
+   },
+   "controlGuardWithoutMarkingConstruction": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 1,
+    "verdict": "RIGHT"
+   },
+   "guardedAlwaysPickProfiles": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 1,
+    "verdict": "RIGHT"
+   },
+   "controlAlwaysPickWithoutMarking": {
+    "out": "REFUSED",
+    "stage": "mismatch",
+    "sentence": "The solid the solver produced does not match the shape these rules describe (its volume is 1762.78 where the rules give 3000), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "verdict": "REFUSED"
+   }
+  },
+  {
+   "id": "triangle + construction CIRCLE across the base",
+   "note": "cuts the triangle and sticks out below it",
+   "wantVolume": 3000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "verdict": "RIGHT"
+   },
+   "guarded": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   },
+   "controlGuardWithoutMarkingConstruction": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   },
+   "guardedAlwaysPickProfiles": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   },
+   "controlAlwaysPickWithoutMarking": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   }
+  },
+  {
+   "id": "triangle + construction LINE from the apex to the base",
+   "note": "splits the triangle in two",
+   "wantVolume": 3000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "verdict": "RIGHT"
+   },
+   "guarded": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   },
+   "controlGuardWithoutMarkingConstruction": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   },
+   "guardedAlwaysPickProfiles": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   },
+   "controlAlwaysPickWithoutMarking": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 5,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   }
+  }
+ ],
+ "axisTangent": [
+  {
+   "axis": -2,
+   "offFromAxisMm": 0,
+   "wantBbox": [
+    2,
+    0,
+    0,
+    14,
+    12,
+    10
+   ],
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1130.8457383817545,
+    "bodies": 1,
+    "bbox": [
+     2,
+     0,
+     0,
+     14,
+     12,
+     10.000000000000005
+    ],
+    "faces": 3,
+    "verdict": "RIGHT",
+    "gapFromAxisMm": 0
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "preflight",
+    "sentence": "The rule that makes geometry 1 tangent to geometry -2 cannot be built, because the sketch has no way to hold a curve tangent to a built-in axis; draw a construction line along the axis, pin both its ends, and make the curve tangent to that line."
+   }
+  },
+  {
+   "axis": -2,
+   "offFromAxisMm": 0.06,
+   "wantBbox": [
+    2,
+    0,
+    0,
+    14,
+    12,
+    10
+   ],
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1130.8457383817524,
+    "bodies": 1,
+    "bbox": [
+     2,
+     0.06000000000000049,
+     0,
+     14.000000000000002,
+     12.060000000000002,
+     10.000000000000005
+    ],
+    "faces": 3,
+    "verdict": "WRONG",
+    "gapFromAxisMm": 0.06000000000000049
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "preflight",
+    "sentence": "The rule that makes geometry 1 tangent to geometry -2 cannot be built, because the sketch has no way to hold a curve tangent to a built-in axis; draw a construction line along the axis, pin both its ends, and make the curve tangent to that line."
+   }
+  },
+  {
+   "axis": -2,
+   "offFromAxisMm": 0.2,
+   "wantBbox": [
+    2,
+    0,
+    0,
+    14,
+    12,
+    10
+   ],
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1130.845738381761,
+    "bodies": 1,
+    "bbox": [
+     2,
+     0.20000000000000107,
+     0,
+     14,
+     12.200000000000003,
+     10.000000000000007
+    ],
+    "faces": 3,
+    "verdict": "WRONG",
+    "gapFromAxisMm": 0.20000000000000107
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "preflight",
+    "sentence": "The rule that makes geometry 1 tangent to geometry -2 cannot be built, because the sketch has no way to hold a curve tangent to a built-in axis; draw a construction line along the axis, pin both its ends, and make the curve tangent to that line."
+   }
+  },
+  {
+   "axis": -2,
+   "offFromAxisMm": 0.4,
+   "wantBbox": [
+    2,
+    0,
+    0,
+    14,
+    12,
+    10
+   ],
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1130.845738381748,
+    "bodies": 1,
+    "bbox": [
+     2,
+     0.40000000000000124,
+     0,
+     14,
+     12.400000000000002,
+     10.000000000000005
+    ],
+    "faces": 3,
+    "verdict": "WRONG",
+    "gapFromAxisMm": 0.40000000000000124
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "preflight",
+    "sentence": "The rule that makes geometry 1 tangent to geometry -2 cannot be built, because the sketch has no way to hold a curve tangent to a built-in axis; draw a construction line along the axis, pin both its ends, and make the curve tangent to that line."
+   }
+  },
+  {
+   "axis": -2,
+   "offFromAxisMm": 0.79,
+   "wantBbox": [
+    2,
+    0,
+    0,
+    14,
+    12,
+    10
+   ],
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1130.8457383817556,
+    "bodies": 1,
+    "bbox": [
+     2,
+     0.7900000000000009,
+     0,
+     14,
+     12.790000000000003,
+     10.000000000000005
+    ],
+    "faces": 3,
+    "verdict": "WRONG",
+    "gapFromAxisMm": 0.7900000000000009
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "preflight",
+    "sentence": "The rule that makes geometry 1 tangent to geometry -2 cannot be built, because the sketch has no way to hold a curve tangent to a built-in axis; draw a construction line along the axis, pin both its ends, and make the curve tangent to that line."
+   }
+  },
+  {
+   "axis": -2,
+   "offFromAxisMm": 2,
+   "wantBbox": [
+    2,
+    0,
+    0,
+    14,
+    12,
+    10
+   ],
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1130.8457383817629,
+    "bodies": 1,
+    "bbox": [
+     2,
+     1.9999999999999998,
+     0,
+     14.000000000000002,
+     14.000000000000002,
+     10.000000000000004
+    ],
+    "faces": 3,
+    "verdict": "WRONG",
+    "gapFromAxisMm": 1.9999999999999998
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "preflight",
+    "sentence": "The rule that makes geometry 1 tangent to geometry -2 cannot be built, because the sketch has no way to hold a curve tangent to a built-in axis; draw a construction line along the axis, pin both its ends, and make the curve tangent to that line."
+   }
+  },
+  {
+   "axis": -3,
+   "offFromAxisMm": 0,
+   "wantBbox": [
+    0,
+    2,
+    0,
+    12,
+    14,
+    10
+   ],
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1130.8457383817552,
+    "bodies": 1,
+    "bbox": [
+     0,
+     1.9999999999999998,
+     0,
+     12,
+     14.000000000000002,
+     10.000000000000004
+    ],
+    "faces": 3,
+    "verdict": "RIGHT",
+    "gapFromAxisMm": 0
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "preflight",
+    "sentence": "The rule that makes geometry 1 tangent to geometry -3 cannot be built, because the sketch has no way to hold a curve tangent to a built-in axis; draw a construction line along the axis, pin both its ends, and make the curve tangent to that line."
+   }
+  },
+  {
+   "axis": -3,
+   "offFromAxisMm": 0.06,
+   "wantBbox": [
+    0,
+    2,
+    0,
+    12,
+    14,
+    10
+   ],
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1130.8457383817615,
+    "bodies": 1,
+    "bbox": [
+     0.05999999999999961,
+     1.9999999999999998,
+     0,
+     12.06,
+     14.000000000000004,
+     10.000000000000005
+    ],
+    "faces": 3,
+    "verdict": "WRONG",
+    "gapFromAxisMm": 0.05999999999999961
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "preflight",
+    "sentence": "The rule that makes geometry 1 tangent to geometry -3 cannot be built, because the sketch has no way to hold a curve tangent to a built-in axis; draw a construction line along the axis, pin both its ends, and make the curve tangent to that line."
+   }
+  },
+  {
+   "axis": -3,
+   "offFromAxisMm": 0.2,
+   "wantBbox": [
+    0,
+    2,
+    0,
+    12,
+    14,
+    10
+   ],
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1130.8457383817577,
+    "bodies": 1,
+    "bbox": [
+     0.20000000000000018,
+     1.9999999999999998,
+     0,
+     12.200000000000001,
+     14.000000000000004,
+     10.000000000000004
+    ],
+    "faces": 3,
+    "verdict": "WRONG",
+    "gapFromAxisMm": 0.20000000000000018
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "preflight",
+    "sentence": "The rule that makes geometry 1 tangent to geometry -3 cannot be built, because the sketch has no way to hold a curve tangent to a built-in axis; draw a construction line along the axis, pin both its ends, and make the curve tangent to that line."
+   }
+  },
+  {
+   "axis": -3,
+   "offFromAxisMm": 0.4,
+   "wantBbox": [
+    0,
+    2,
+    0,
+    12,
+    14,
+    10
+   ],
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1130.845738381761,
+    "bodies": 1,
+    "bbox": [
+     0.40000000000000036,
+     1.9999999999999998,
+     0,
+     12.400000000000002,
+     14.000000000000002,
+     10.000000000000004
+    ],
+    "faces": 3,
+    "verdict": "WRONG",
+    "gapFromAxisMm": 0.40000000000000036
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "preflight",
+    "sentence": "The rule that makes geometry 1 tangent to geometry -3 cannot be built, because the sketch has no way to hold a curve tangent to a built-in axis; draw a construction line along the axis, pin both its ends, and make the curve tangent to that line."
+   }
+  },
+  {
+   "axis": -3,
+   "offFromAxisMm": 0.79,
+   "wantBbox": [
+    0,
+    2,
+    0,
+    12,
+    14,
+    10
+   ],
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1130.845738381754,
+    "bodies": 1,
+    "bbox": [
+     0.79,
+     1.9999999999999998,
+     0,
+     12.79,
+     14.000000000000004,
+     10.000000000000005
+    ],
+    "faces": 3,
+    "verdict": "WRONG",
+    "gapFromAxisMm": 0.79
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "preflight",
+    "sentence": "The rule that makes geometry 1 tangent to geometry -3 cannot be built, because the sketch has no way to hold a curve tangent to a built-in axis; draw a construction line along the axis, pin both its ends, and make the curve tangent to that line."
+   }
+  },
+  {
+   "axis": -3,
+   "offFromAxisMm": 2,
+   "wantBbox": [
+    0,
+    2,
+    0,
+    12,
+    14,
+    10
+   ],
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1130.8457383817629,
+    "bodies": 1,
+    "bbox": [
+     2,
+     1.9999999999999998,
+     0,
+     14.000000000000002,
+     14.000000000000002,
+     10.000000000000004
+    ],
+    "faces": 3,
+    "verdict": "WRONG",
+    "gapFromAxisMm": 2
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "preflight",
+    "sentence": "The rule that makes geometry 1 tangent to geometry -3 cannot be built, because the sketch has no way to hold a curve tangent to a built-in axis; draw a construction line along the axis, pin both its ends, and make the curve tangent to that line."
+   }
+  }
+ ],
+ "huge": [
+  {
+   "V": 1000,
+   "wantVolume": 200000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 199999.99999999674,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     1000,
+     20,
+     10
+    ],
+    "faces": 6,
+    "verdict": "RIGHT"
+   },
+   "guarded": {
+    "out": "BUILT",
+    "volume": 200000.00000006854,
+    "bodies": 1,
+    "bbox": [
+     -1.852212588899614e-12,
+     0,
+     0,
+     1000,
+     20.000000000013674,
+     10
+    ],
+    "faces": 6,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   },
+   "brep": {
+    "volume": 200000.00000002817,
+    "faces": 6,
+    "bbox": [
+     -4.2682199745926904e-13,
+     1.391321175818856e-12,
+     0,
+     999.9999999999995,
+     20.000000000006015,
+     10
+    ]
+   }
+  },
+  {
+   "V": 100000,
+   "wantVolume": 20000000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 19999999.999999676,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     100000,
+     20,
+     10
+    ],
+    "faces": 6,
+    "verdict": "RIGHT"
+   },
+   "guarded": {
+    "out": "BUILT",
+    "volume": 20000000.000000153,
+    "bodies": 1,
+    "bbox": [
+     -3.047276557298885e-15,
+     0,
+     0,
+     100000,
+     20.000000000000306,
+     10
+    ],
+    "faces": 6,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   },
+   "brep": {
+    "volume": 20000000.002352003,
+    "faces": 6,
+    "bbox": [
+     -5.771065645129492e-11,
+     1.157594591970362e-9,
+     0,
+     99999.99999999994,
+     20.000000005005358,
+     10
+    ]
+   }
+  },
+  {
+   "V": 1000000,
+   "wantVolume": 200000000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 199999999.99999675,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     1000000,
+     20,
+     10
+    ],
+    "faces": 6,
+    "verdict": "RIGHT"
+   },
+   "guarded": {
+    "out": "BUILT",
+    "volume": 200000000.00003743,
+    "bodies": 1,
+    "bbox": [
+     -2.3283064365386963e-10,
+     0,
+     0,
+     1000000,
+     20.000000000007486,
+     10
+    ],
+    "faces": 6,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   },
+   "brep": {
+    "volume": 200000000.0000048,
+    "faces": 6,
+    "bbox": [
+     -4.7163991497572305e-15,
+     2.366386313257778e-13,
+     0,
+     1000000,
+     20.000000000001023,
+     10
+    ]
+   }
+  },
+  {
+   "V": 10000000,
+   "wantVolume": 2000000000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1999999999.9999676,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     10000000,
+     20,
+     10
+    ],
+    "faces": 6,
+    "verdict": "RIGHT"
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "branch",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "verdict": "REFUSED"
+   },
+   "brep": {
+    "refused": "extrude pull1 cannot find sketch sk1 | sketch sk1: it has a size or position of 1.000e7, past the 1e6 brep-rs builds exactly -- sk1 is shown without it."
+   }
+  },
+  {
+   "V": 100000000,
+   "wantVolume": 20000000000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 19999999999.999672,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     100000000,
+     20,
+     10
+    ],
+    "faces": 4,
+    "verdict": "RIGHT"
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "mismatch",
+    "sentence": "The solid the solver produced does not match the shape these rules describe (it has 4 faces where 6 were expected), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "verdict": "REFUSED"
+   },
+   "brep": {
+    "refused": "extrude pull1 cannot find sketch sk1 | sketch sk1: it has a size or position of 1.000e8, past the 1e6 brep-rs builds exactly -- sk1 is shown without it."
+   }
+  },
+  {
+   "V": 1000000000,
+   "wantVolume": 200000000000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 5679.999999999908,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     28.4,
+     20,
+     10
+    ],
+    "faces": 6,
+    "verdict": "WRONG"
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "collapsed",
+    "sentence": "Geometry 2 comes out smaller than a ten-millionth of the sketch (for example a line held both horizontal and vertical, or a size far out of scale with the rest), so nothing was built; remove or change the rule that squashes it, or bring the sizes closer together.",
+    "verdict": "REFUSED"
+   },
+   "brep": {
+    "refused": "extrude pull1 cannot find sketch sk1 | sketch sk1: it has a size or position of 1.000e9, past the 1e6 brep-rs builds exactly -- sk1 is shown without it."
+   }
+  },
+  {
+   "V": 10000000000,
+   "wantVolume": 2000000000000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 5679.999999999908,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     28.4,
+     20,
+     10
+    ],
+    "faces": 6,
+    "verdict": "WRONG"
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "collapsed",
+    "sentence": "Geometry 2 comes out smaller than a ten-millionth of the sketch (for example a line held both horizontal and vertical, or a size far out of scale with the rest), so nothing was built; remove or change the rule that squashes it, or bring the sizes closer together.",
+    "verdict": "REFUSED"
+   },
+   "brep": {
+    "refused": "extrude pull1 cannot find sketch sk1 | sketch sk1: it has a size or position of 1.000e10, past the 1e6 brep-rs builds exactly -- sk1 is shown without it."
+   }
+  },
+  {
+   "V": 0.01,
+   "wantVolume": 2,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 1.9999999999999674,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     0.01,
+     20,
+     10
+    ],
+    "faces": 6,
+    "verdict": "RIGHT"
+   },
+   "guarded": {
+    "out": "BUILT",
+    "volume": 1.9999999999994234,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     0.01,
+     20,
+     10
+    ],
+    "faces": 6,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   },
+   "brep": {
+    "refused": "extrude pull1: edge 1 and edge 2 nearly touch but nothing says they meet. Add a coincident rule."
+   }
+  },
+  {
+   "V": 0.001,
+   "wantVolume": 0.2,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 0.19999999999999676,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     0.001,
+     20,
+     10
+    ],
+    "faces": 6,
+    "verdict": "RIGHT"
+   },
+   "guarded": {
+    "out": "BUILT",
+    "volume": 0.19999999999803475,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     0.001,
+     20,
+     10
+    ],
+    "faces": 6,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   },
+   "brep": {
+    "refused": "extrude pull1: edge 1 and edge 2 nearly touch but nothing says they meet. Add a coincident rule."
+   }
+  },
+  {
+   "V": 0.0001,
+   "wantVolume": 0.02,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 0.019999999999999678,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     0.0001,
+     20,
+     10
+    ],
+    "faces": 6,
+    "verdict": "RIGHT"
+   },
+   "guarded": {
+    "out": "BUILT",
+    "volume": 0.019999999999049646,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     0.0001,
+     20,
+     10
+    ],
+    "faces": 6,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   },
+   "brep": {
+    "refused": "extrude pull1: edge 1 and edge 2 nearly touch but nothing says they meet. Add a coincident rule."
+   }
+  },
+  {
+   "V": 0.000001,
+   "wantVolume": 0.00019999999999999998,
+   "shipped": {
+    "out": "SC-REFUSED",
+    "sentence": "invalid input: profile loop is not closed",
+    "verdict": "SC-REFUSED"
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "collapsed",
+    "sentence": "Geometry 1 comes out smaller than a ten-millionth of the sketch (for example a line held both horizontal and vertical, or a size far out of scale with the rest), so nothing was built; remove or change the rule that squashes it, or bring the sizes closer together.",
+    "verdict": "REFUSED"
+   },
+   "brep": {
+    "refused": "extrude pull1: edge 1 and edge 2 nearly touch but nothing says they meet. Add a coincident rule."
+   }
+  },
+  {
+   "name": "circle radius 1e6",
+   "wantVolume": 31415926535897.93,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 31413992331086.047,
+    "bodies": 1,
+    "bbox": [
+     -1000000.0000000002,
+     -1000000,
+     0,
+     1000000,
+     999999.9999999998,
+     10.000000000000007
+    ],
+    "faces": 3,
+    "verdict": "RIGHT"
+   },
+   "guarded": {
+    "out": "BUILT",
+    "volume": 31413992331086.047,
+    "bodies": 1,
+    "bbox": [
+     -1000000.0000000002,
+     -1000000,
+     0,
+     1000000,
+     999999.9999999998,
+     10.000000000000007
+    ],
+    "faces": 3,
+    "rung": "JGTD*",
+    "dof": 0,
+    "verdict": "RIGHT"
+   }
+  },
+  {
+   "name": "circle radius 1e9",
+   "wantVolume": 31415926535897930000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 785.3095405426548,
+    "bodies": 1,
+    "bbox": [
+     -5,
+     -5.000000000000004,
+     0,
+     5,
+     5,
+     10.000000000000005
+    ],
+    "faces": 3,
+    "verdict": "WRONG"
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "solve",
+    "sentence": "The sketch could not be built from these rules.",
+    "verdict": "REFUSED"
+   }
+  },
+  {
+   "name": "rectangle corner distanceX 1e9",
+   "wantVolume": 6000,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 5999.999999999868,
+    "bodies": 1,
+    "bbox": [
+     4.2,
+     3,
+     0,
+     34.2,
+     23,
+     10
+    ],
+    "faces": 6,
+    "verdict": "WRONG"
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "branch",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "verdict": "REFUSED"
+   }
+  }
+ ],
+ "crossing": [
+  {
+   "id": "circle r6 crossing the right edge of a 30 x 20 rectangle",
+   "note": "union area would be 600 + 113.1 - lens",
+   "valid": false,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 6329.894366956044,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     34.00000000000001,
+     20,
+     10.000000000000005
+    ],
+    "faces": 8
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "branch",
+    "sentence": "With these values two of the shapes cross or touch each other, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another."
+   },
+   "brep": {
+    "refused": "extrude pull1: the hole near (28.0, 10.0) mm is not fully inside the outline; move it in, or make the outline bigger"
+   },
+   "wantVolume": null
+  },
+  {
+   "id": "two rectangles sharing the edge x = 30",
+   "note": "two bodies touching along a face",
+   "valid": false,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 10000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     50,
+     20,
+     10
+    ],
+    "faces": 6
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "profiles",
+    "sentence": "sketch sk has more than two edges meeting near [30, 0], so it has no single outline to pull"
+   },
+   "brep": {
+    "refused": "extrude pull1: edge 1 and edge 5 nearly touch but nothing says they meet. Add a coincident rule."
+   },
+   "wantVolume": null
+  },
+  {
+   "id": "two rectangles overlapping by 5 mm",
+   "note": "overlap",
+   "valid": false,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 9000,
+    "bodies": 1,
+    "bbox": [
+     0,
+     0,
+     0,
+     45,
+     20,
+     10
+    ],
+    "faces": 6
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "branch",
+    "sentence": "With these values two of the shapes cross or touch each other, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another."
+   },
+   "brep": {
+    "refused": "extrude pull1: the hole near (35.0, 10.0) mm is not fully inside the outline; move it in, or make the outline bigger"
+   },
+   "wantVolume": null
+  },
+  {
+   "id": "bowtie: a four-sided outline that crosses itself",
+   "note": "figure-eight outline",
+   "valid": false,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 3000,
+    "bodies": 2,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "faces": 10
+   },
+   "guarded": {
+    "out": "REFUSED",
+    "stage": "branch",
+    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 crosses itself as drawn, so the shape it means is not clear), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "brep": {
+    "refused": "extrude pull1: edge 1 crosses edge 3. An outline cannot cross itself."
+   },
+   "wantVolume": null
+  },
+  {
+   "id": "control: two rectangles 5 mm apart",
+   "note": "valid, two separate bodies",
+   "valid": true,
+   "shipped": {
+    "out": "BUILT",
+    "volume": 10000,
+    "bodies": 2,
+    "bbox": [
+     0,
+     0,
+     0,
+     55,
+     20,
+     10
+    ],
+    "faces": 12
+   },
+   "guarded": {
+    "out": "BUILT",
+    "volume": 10000,
+    "bodies": 2,
+    "bbox": [
+     0,
+     0,
+     0,
+     55,
+     20,
+     10
+    ],
+    "faces": 12,
+    "rung": "JGTD*",
+    "dof": 4
+   },
+   "brep": {
+    "volume": 10000,
+    "faces": 12,
+    "bbox": [
+     0,
+     0,
+     0,
+     55,
+     20,
+     10
+    ]
+   },
+   "wantVolume": 10000
+  }
+ ],
+ "axisTangentMapper": {
+  "ok": true,
+  "commands": [
+   "sketch.create",
+   "sketch.circle.center",
+   "sketch.dimension",
+   "sketch.dimension"
+  ],
+  "ruleMapOfTangentRow": null,
+  "notes": []
+ }
+}

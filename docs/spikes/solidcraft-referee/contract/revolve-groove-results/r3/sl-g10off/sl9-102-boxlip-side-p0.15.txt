@@ -1,0 +1,1 @@
+sl9-102-boxlip-side-p0.15                FAIL     occtV 69682.3508 | tr-occt dV 5.9e-4 dBb 1.5e-8 dCom 2.3e-4 F o/b/t 10/10/10 | brep-occt dV 7.2e-13      | ms 5143 cpu 5426

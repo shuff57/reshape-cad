@@ -1,0 +1,9 @@
+move cylinder              2000   PASS   dVol=1.5e-4 dBbox=5.4e-8 dCom=3.7e-8
+move,hole,turn(derived)    2000   PASS   dVol=3.6e-6 dBbox=2.3e-16 dCom=5.3e-9
+move sphere                2000   PASS   dVol=7.1e-5 dBbox=0.0e+0 dCom=7.1e-7
+move cylinder              3000   PASS   dVol=1.5e-4 dBbox=3.6e-8 dCom=4.2e-7
+move,hole,turn(derived)    3000   PASS   dVol=3.6e-6 dBbox=4.5e-16 dCom=5.8e-8
+move sphere                3000   PASS   dVol=7.1e-5 dBbox=0.0e+0 dCom=8.0e-7
+move cylinder              5000   PASS   dVol=1.5e-4 dBbox=2.2e-8 dCom=2.7e-6
+move,hole,turn(derived)    5000   PASS   dVol=3.5e-6 dBbox=3.6e-16 dCom=5.5e-7
+move sphere                5000   FAIL   dVol=7.2e-5 dBbox=0.0e+0 dCom=3.5e-5

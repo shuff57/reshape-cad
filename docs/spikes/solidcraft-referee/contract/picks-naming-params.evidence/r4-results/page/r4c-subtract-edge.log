@@ -1,0 +1,14 @@
+subtract notch, round bottom|front (critic) REFUSED: round1 (fillet): op1.edge[op1.face[-z] ^ op1.face[-y]] matches 3 separate edges on b_box1 (F1:-y|F1:-z~1, F1:-y|F1:-z~2, F1:-y|F1:-z~3) that do not form one closed loop; a name must pick exactly one edge, so nothing is picked   | OCCT:builds V=29965.6637 BREP:builds V=29965.6637
+    names: op1.edge[op1.face[-y] ^ op1.face[-z]]
+subtract notch, round top|front (edge split by notch) REFUSED: round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[-y]] cannot be resolved: op1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x]; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked   | OCCT:builds V=29987.1239 BREP:builds V=29987.1239
+    names: op1.edge[op1.face[+z] ^ op1.face[-y]]
+subtract notch, round bottom|left        PASS[OCCT] V=29965.641176 (OCCT 29965.663706, brep 29965.663706) dVol 7.5e-7 dBbox 7.1e-16 dCOM 2.4e-7 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"7.5e-4"} 
+    names: op1.edge[op1.face[-x] ^ op1.face[-z]]
+subtract notch, round top|left (untouched edge) REFUSED: round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[-x]] cannot be resolved: op1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x]; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked   | OCCT:builds V=29965.6637 BREP:refusals {"round1":"3 edges of the part lie between a top face and a left face, so round1 cannot tell which o
+    names: op1.edge[op1.face[+z] ^ op1.face[-x]]
+subtract notch, bevel bottom|front       REFUSED: bevel1 (fillet): op1.edge[op1.face[-z] ^ op1.face[-y]] matches 3 separate edges on b_box1 (F1:-y|F1:-z~1, F1:-y|F1:-z~2, F1:-y|F1:-z~3) that do not form one closed loop; a name must pick exactly one edge, so nothing is picked   | OCCT:builds V=29920.0000 BREP:builds V=29920.0000
+    names: op1.edge[op1.face[-y] ^ op1.face[-z]]
+subtract notch, hollow open bottom       FAIL[OCCT] V=9192.000000 (OCCT 9130.194671) dVol 6.8e-3 dBbox 0.0e+0 dCOM 1.2e-4 faces occt/truck/brep 21/19/null | ctl {"refused":"solid.shell: invalid input: select at least one face to remo"} 
+    names: op1.face[-z]
+join two boxes, round bottom|front of result PASS[OCCT] V=13974.230886 (OCCT 13974.247780, brep 13974.247780) dVol 1.2e-6 dBbox 7.1e-16 dCOM 3.4e-7 faces occt/truck/brep 15/13/13 | ctl {"refused":"solid.fillet: invalid parameters for `solid.fillet`: no edge"} 
+    names: op1.edge[op1.face[-y] ^ op1.face[-z]]

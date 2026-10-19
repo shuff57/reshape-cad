@@ -1,0 +1,2 @@
+r2-big-sph-10000                                      dVol 7.1e-5 dBbox 0.0e+0 dCom 1.3e-16 dAn 7.1e-5 faces 1/1
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/big/r2-big-sph-10000/primitives-measure.json

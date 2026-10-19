@@ -1,0 +1,1 @@
+revolution__arc-front-round-neg-135      PASS     occtV 10426.9425 | tr-occt dV 4.9e-5 dBb 1.9e-5 dCom 5.8e-6 F o/b/t 8/8/8 | brep-occt dV 7.4e-11 | FC: occt 7.4e-11 brep 1.2e-15 truck 4.9e-5 dCom 2.9e-4 F 8     | ms 2803 cpu 3412

@@ -1,0 +1,285 @@
+{
+ "rows": [
+  {
+   "id": "legacy-X1-two-lengths-one-edge",
+   "variant": "as-written",
+   "raw": "that would over-constrain the sketch (conflicts with k10, k11)",
+   "old": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "new": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "baseline": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "legacy-X1-two-lengths-one-edge",
+   "variant": "dup of the first join row inserted",
+   "raw": "that would over-constrain the sketch (conflicts with k10, k11)",
+   "old": "Edge 1 = 30 cannot be added because it contradicts edge 4 up and edge 1 = 40.",
+   "new": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "baseline": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "oldMatchesBaseline": false,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "legacy-X2-opposite-sides-different-lengths",
+   "variant": "as-written",
+   "raw": "that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k7, k9, k10, k11)",
+   "old": "Edge 3 = 30 cannot be added because it contradicts edge 2 up, edge 4 up and edge 1 = 40.",
+   "new": "Edge 3 = 30 cannot be added because it contradicts edge 2 up, edge 4 up and edge 1 = 40.",
+   "baseline": "Edge 3 = 30 cannot be added because it contradicts edge 2 up, edge 4 up and edge 1 = 40.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "legacy-X2-opposite-sides-different-lengths",
+   "variant": "dup of the first join row inserted",
+   "raw": "that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k7, k9, k10, k11)",
+   "old": "Edge 3 = 30 cannot be added because it contradicts edge 1 across, edge 3 across and edge 4 up and 1 other rule.",
+   "new": "Edge 3 = 30 cannot be added because it contradicts edge 2 up, edge 4 up and edge 1 = 40.",
+   "baseline": "Edge 3 = 30 cannot be added because it contradicts edge 2 up, edge 4 up and edge 1 = 40.",
+   "oldMatchesBaseline": false,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "legacy-X3-equal-vs-two-lengths",
+   "variant": "as-written",
+   "raw": "invalid parameters for `sketch.constraint.equal`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+   "old": "Edge 1 = edge 2 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "new": "Edge 1 = edge 2 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "baseline": "Edge 1 = edge 2 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "legacy-X3-equal-vs-two-lengths",
+   "variant": "dup of the first join row inserted",
+   "raw": "invalid parameters for `sketch.constraint.equal`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+   "old": "Edge 1 = edge 2 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "new": "Edge 1 = edge 2 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "baseline": "Edge 1 = edge 2 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "legacy-X4-lock-vs-horizontal",
+   "variant": "as-written",
+   "raw": "that would over-constrain the sketch (conflicts with k3, k7)",
+   "old": "Edge 1 across cannot be added because it contradicts the other rules already on this sketch.",
+   "new": "Edge 1 across cannot be added because it contradicts the other rules already on this sketch.",
+   "baseline": "Edge 1 across cannot be added because it contradicts the other rules already on this sketch.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "legacy-X4-lock-vs-horizontal",
+   "variant": "dup of the first join row inserted",
+   "raw": "that would over-constrain the sketch (conflicts with k3, k7)",
+   "old": "Edge 1 across cannot be added because it contradicts the other rules already on this sketch.",
+   "new": "Edge 1 across cannot be added because it contradicts the other rules already on this sketch.",
+   "baseline": "Edge 1 across cannot be added because it contradicts the other rules already on this sketch.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "legacy-X5-three-lengths-one-edge",
+   "variant": "as-written",
+   "raw": "that would over-constrain the sketch (conflicts with k5, k6)",
+   "old": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "new": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "baseline": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "legacy-X5-three-lengths-one-edge",
+   "variant": "dup of the first join row inserted",
+   "raw": "that would over-constrain the sketch (conflicts with k5, k6)",
+   "old": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "new": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "baseline": "Edge 1 = 30 cannot be added because it contradicts edge 1 = 40.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "legacy-X6-triangle-three-perpendicular",
+   "variant": "as-written",
+   "raw": "invalid parameters for `sketch.constraint.perpendicular`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+   "old": "Edge 2 ⊥ edge 3 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "new": "Edge 2 ⊥ edge 3 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "baseline": "Edge 2 ⊥ edge 3 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "legacy-X6-triangle-three-perpendicular",
+   "variant": "dup of the first join row inserted",
+   "raw": "invalid parameters for `sketch.constraint.perpendicular`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+   "old": "Edge 2 ⊥ edge 3 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "new": "Edge 2 ⊥ edge 3 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "baseline": "Edge 2 ⊥ edge 3 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "script-T-3-perpendicular-triangle",
+   "variant": "as-written",
+   "raw": "invalid parameters for `sketch.constraint.perpendicular`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+   "old": "Edge 3 ⊥ edge 1 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "new": "Edge 3 ⊥ edge 1 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "baseline": "Edge 3 ⊥ edge 1 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "script-T-3-perpendicular-triangle",
+   "variant": "dup of the first join row inserted",
+   "raw": "invalid parameters for `sketch.constraint.perpendicular`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+   "old": "Edge 3 ⊥ edge 1 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "new": "Edge 3 ⊥ edge 1 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "baseline": "Edge 3 ⊥ edge 1 cannot be added because the edges it ties together are already held in place by the other rules.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "script-P-pin1-pin2-length100",
+   "variant": "as-written",
+   "raw": "that would over-constrain the sketch (conflicts with k3, k7)",
+   "old": "Edge 1 = 100 cannot be added because it contradicts the other rules already on this sketch.",
+   "new": "Edge 1 = 100 cannot be added because it contradicts the other rules already on this sketch.",
+   "baseline": "Edge 1 = 100 cannot be added because it contradicts the other rules already on this sketch.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "script-P-pin1-pin2-length100",
+   "variant": "dup of the first join row inserted",
+   "raw": "that would over-constrain the sketch (conflicts with k3, k7)",
+   "old": "Edge 1 = 100 cannot be added because it contradicts the other rules already on this sketch.",
+   "new": "Edge 1 = 100 cannot be added because it contradicts the other rules already on this sketch.",
+   "baseline": "Edge 1 = 100 cannot be added because it contradicts the other rules already on this sketch.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "script-X-length40-then-60",
+   "variant": "as-written",
+   "raw": "that would over-constrain the sketch (conflicts with k6, k7)",
+   "old": "Edge 1 = 60 cannot be added because it contradicts edge 1 = 40.",
+   "new": "Edge 1 = 60 cannot be added because it contradicts edge 1 = 40.",
+   "baseline": "Edge 1 = 60 cannot be added because it contradicts edge 1 = 40.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "script-X-length40-then-60",
+   "variant": "dup of the first join row inserted",
+   "raw": "that would over-constrain the sketch (conflicts with k6, k7)",
+   "old": "Edge 1 = 60 cannot be added because it contradicts edge 1 = 40.",
+   "new": "Edge 1 = 60 cannot be added because it contradicts edge 1 = 40.",
+   "baseline": "Edge 1 = 60 cannot be added because it contradicts edge 1 = 40.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "sk-conflict__width-30-vs-35",
+   "variant": "as-written",
+   "raw": "that would over-constrain the sketch (conflicts with k10, k12)",
+   "old": "The 35 across size of line 1 cannot be added because it contradicts the 30 across size of line 1.",
+   "new": "The 35 across size of line 1 cannot be added because it contradicts the 30 across size of line 1.",
+   "baseline": "The 35 across size of line 1 cannot be added because it contradicts the 30 across size of line 1.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "sk-conflict__width-30-vs-35",
+   "variant": "dup of the first join row inserted",
+   "raw": "that would over-constrain the sketch (conflicts with k10, k12)",
+   "old": "The 35 across size of line 1 cannot be added because it contradicts line 4 staying upright and the 20 up size of line 2.",
+   "new": "The 35 across size of line 1 cannot be added because it contradicts the 30 across size of line 1.",
+   "baseline": "The 35 across size of line 1 cannot be added because it contradicts the 30 across size of line 1.",
+   "oldMatchesBaseline": false,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "sk-conflict__radius-vs-diameter",
+   "variant": "as-written",
+   "raw": "that would over-constrain the sketch (conflicts with k2, k3)",
+   "old": "The 12 diameter of circle 1 cannot be added because it contradicts the 5 radius of circle 1.",
+   "new": "The 12 diameter of circle 1 cannot be added because it contradicts the 5 radius of circle 1.",
+   "baseline": "The 12 diameter of circle 1 cannot be added because it contradicts the 5 radius of circle 1.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "sk-conflict__radius-vs-diameter",
+   "variant": "dup of the first join row inserted",
+   "raw": "that would over-constrain the sketch (conflicts with k2, k3)",
+   "old": "The 12 diameter of circle 1 cannot be added because it contradicts circle 1's pinned point and the 5 radius of circle 1.",
+   "new": "The 12 diameter of circle 1 cannot be added because it contradicts the 5 radius of circle 1.",
+   "baseline": "The 12 diameter of circle 1 cannot be added because it contradicts the 5 radius of circle 1.",
+   "oldMatchesBaseline": false,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "sk-conflict__equal-vs-two-radii",
+   "variant": "as-written",
+   "raw": "that would over-constrain the sketch (conflicts with k3, k4, k5)",
+   "old": "The 6 radius of circle 2 cannot be added because it contradicts circle 1 and circle 2 being equal and the 5 radius of circle 1.",
+   "new": "The 6 radius of circle 2 cannot be added because it contradicts circle 1 and circle 2 being equal and the 5 radius of circle 1.",
+   "baseline": "The 6 radius of circle 2 cannot be added because it contradicts circle 1 and circle 2 being equal and the 5 radius of circle 1.",
+   "oldMatchesBaseline": true,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "sk-conflict__equal-vs-two-radii",
+   "variant": "dup of the first join row inserted",
+   "raw": "that would over-constrain the sketch (conflicts with k3, k4, k5)",
+   "old": "The 6 radius of circle 2 cannot be added because it contradicts circle 2's pinned point, circle 1 and circle 2 being equal and the 5 radius of circle 1.",
+   "new": "The 6 radius of circle 2 cannot be added because it contradicts circle 1 and circle 2 being equal and the 5 radius of circle 1.",
+   "baseline": "The 6 radius of circle 2 cannot be added because it contradicts circle 1 and circle 2 being equal and the 5 radius of circle 1.",
+   "oldMatchesBaseline": false,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  },
+  {
+   "id": "critic: dup origin, len1=30, len2=20, len1=35",
+   "variant": "as-written",
+   "raw": "that would over-constrain the sketch (conflicts with k10, k12)",
+   "old": "The 35 length of line 1 cannot be added because it contradicts the join between line 1 and the origin and the 20 length of line 2.",
+   "new": "The 35 length of line 1 cannot be added because it contradicts the 30 length of line 1.",
+   "baseline": "The 35 length of line 1 cannot be added because it contradicts the 30 length of line 1.",
+   "oldMatchesBaseline": false,
+   "newMatchesBaseline": true,
+   "newProblems": []
+  }
+ ],
+ "summary": {
+  "refusalsTested": 25,
+  "oldDiffersFromBaseline": 6,
+  "newDiffersFromBaseline": 0,
+  "newPlainSentences": 25
+ }
+}

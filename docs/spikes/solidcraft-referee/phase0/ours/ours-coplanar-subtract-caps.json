@@ -1,0 +1,22 @@
+{
+ "id": "coplanar-subtract-caps",
+ "outcome": "built",
+ "volume": 27979.429345959823,
+ "faces": 7,
+ "bbox": [
+  -20,
+  -20.000000000000004,
+  -10.000000000000012,
+  20,
+  20,
+  10.000000000000007
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "cylinder",
+  "combine"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_a\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":8,\"height\":20,\"base\":[0,0,-10],\"axis\":\"Z\",\"body_name\":\"b_c\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_a\",\"tools\":[\"b_c\"],\"operation\":\"cut\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

@@ -1,0 +1,1 @@
+fzc3-17-post-front-cone-270              FAIL     occtV 37221.2282 | tr-occt dV 1.1e-4 dBb 1.0e-7 dCom 2.2e-7 F o/b/t 9/-/15 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it. | ms 40197 cpu 40382

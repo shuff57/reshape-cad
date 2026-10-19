@@ -1,0 +1,40 @@
+--- hollow open = each face word (asymmetric box off-centre)
+hollow open top                              PASS[OCCT] V=7152.000000 (OCCT 7152.000000, brep 7152.000000) dVol 1.3e-16 dBbox 0.0e+0 dCOM 9.9e-17 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"8.7e-2"}
+hollow open bottom                           PASS[OCCT] V=7152.000000 (OCCT 7152.000000, brep 7152.000000) dVol 3.8e-16 dBbox 0.0e+0 dCOM 8.2e-17 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"8.7e-2"}
+hollow open front                            PASS[OCCT] V=7872.000000 (OCCT 7872.000000, brep 7872.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 3.3e-17 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"7.6e-2"}
+hollow open back                             PASS[OCCT] V=7872.000000 (OCCT 7872.000000, brep 7872.000000) dVol 1.2e-16 dBbox 0.0e+0 dCOM 3.3e-17 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"7.6e-2"}
+hollow open left                             PASS[OCCT] V=8192.000000 (OCCT 8192.000000, brep 8192.000000) dVol 3.3e-16 dBbox 0.0e+0 dCOM 3.3e-17 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"7.2e-2"}
+hollow open right                            PASS[OCCT] V=8192.000000 (OCCT 8192.000000, brep 8192.000000) dVol 2.2e-16 dBbox 0.0e+0 dCOM 4.9e-17 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"7.2e-2"}
+--- draft face(word)
+draft face(top) 5deg                         REFUSED: draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead. 
+draft face(bottom) 5deg                      REFUSED: draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead. 
+draft face(front) 5deg                       PASS[OCCT] V=23860.018138 (OCCT 23860.018138, brep 23860.018138) dVol 0.0e+0 dBbox 1.9e-16 dCOM 3.7e-17 faces occt/truck/brep 6/6/6 | ctl {"refused":"solid.draft: invalid input: no faces to draft"}
+draft face(back) 5deg                        PASS[OCCT] V=23860.018138 (OCCT 23860.018138, brep 23860.018138) dVol 3.0e-16 dBbox 2.0e-16 dCOM 6.5e-17 faces occt/truck/brep 6/6/6 | ctl {"refused":"solid.draft: invalid input: no faces to draft"}
+draft face(left) 5deg                        PASS[OCCT] V=23895.013604 (OCCT 23895.013604, brep 23895.013604) dVol 3.0e-16 dBbox 7.9e-16 dCOM 9.8e-17 faces occt/truck/brep 6/6/6 | ctl {"refused":"solid.draft: invalid input: no faces to draft"}
+draft face(right) 5deg                       PASS[OCCT] V=23895.013604 (OCCT 23895.013604, brep 23895.013604) dVol 4.6e-16 dBbox 8.9e-16 dCOM 4.9e-17 faces occt/truck/brep 6/6/6 | ctl {"refused":"solid.draft: invalid input: no faces to draft"}
+--- 12 edges between face words, round 2
+round edge(top,front)                        PASS[OCCT] V=23965.641185 (OCCT 23965.663706, brep 23965.663706) dVol 9.4e-7 dBbox 4.7e-16 dCOM 2.5e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"7.7e-4"}
+round edge(top,back)                         PASS[OCCT] V=23965.641185 (OCCT 23965.663706, brep 23965.663706) dVol 9.4e-7 dBbox 4.7e-16 dCOM 2.5e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"7.7e-4"}
+round edge(top,left)                         PASS[OCCT] V=23974.230889 (OCCT 23974.247780, brep 23974.247780) dVol 7.0e-7 dBbox 5.9e-16 dCOM 2.5e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"7.8e-4"}
+round edge(top,right)                        PASS[OCCT] V=23974.230889 (OCCT 23974.247780, brep 23974.247780) dVol 7.0e-7 dBbox 5.9e-16 dCOM 2.5e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"7.8e-4"}
+round edge(bottom,front)                     PASS[OCCT] V=23965.641182 (OCCT 23965.663706, brep 23965.663706) dVol 9.4e-7 dBbox 5.9e-16 dCOM 2.5e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"7.7e-4"}
+round edge(bottom,back)                      PASS[OCCT] V=23965.641185 (OCCT 23965.663706, brep 23965.663706) dVol 9.4e-7 dBbox 4.3e-16 dCOM 2.5e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"7.7e-4"}
+round edge(bottom,left)                      PASS[OCCT] V=23974.230887 (OCCT 23974.247780, brep 23974.247780) dVol 7.0e-7 dBbox 7.4e-16 dCOM 2.5e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"7.8e-4"}
+round edge(bottom,right)                     PASS[OCCT] V=23974.230884 (OCCT 23974.247780, brep 23974.247780) dVol 7.0e-7 dBbox 5.9e-16 dCOM 2.5e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"7.8e-4"}
+round edge(front,left)                       PASS[OCCT] V=23982.820592 (OCCT 23982.831853, brep 23982.831853) dVol 4.7e-7 dBbox 6.7e-16 dCOM 1.7e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"5.2e-4"}
+round edge(front,right)                      PASS[OCCT] V=23982.820585 (OCCT 23982.831853, brep 23982.831853) dVol 4.7e-7 dBbox 4.4e-16 dCOM 1.7e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"5.2e-4"}
+round edge(back,left)                        PASS[OCCT] V=23982.820589 (OCCT 23982.831853, brep 23982.831853) dVol 4.7e-7 dBbox 5.9e-16 dCOM 1.7e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"5.2e-4"}
+round edge(back,right)                       PASS[OCCT] V=23982.820586 (OCCT 23982.831853, brep 23982.831853) dVol 4.7e-7 dBbox 5.9e-16 dCOM 1.7e-7 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"5.2e-4"}
+--- bevel 12 edges
+bevel edge(top,front)                        PASS[OCCT] V=23920.000000 (OCCT 23920.000000, brep 23920.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 2.5e-17 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.8e-3"}
+bevel edge(top,back)                         PASS[OCCT] V=23920.000000 (OCCT 23920.000000, brep 23920.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 1.6e-17 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.8e-3"}
+bevel edge(top,left)                         PASS[OCCT] V=23940.000000 (OCCT 23940.000000, brep 23940.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 1.6e-17 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.8e-3"}
+bevel edge(top,right)                        PASS[OCCT] V=23940.000000 (OCCT 23940.000000, brep 23940.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 3.3e-17 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.8e-3"}
+bevel edge(bottom,front)                     PASS[OCCT] V=23920.000000 (OCCT 23920.000000, brep 23920.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 1.6e-17 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.8e-3"}
+bevel edge(bottom,back)                      PASS[OCCT] V=23920.000000 (OCCT 23920.000000, brep 23920.000000) dVol 0.0e+0 dBbox 2.2e-16 dCOM 1.6e-17 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.8e-3"}
+bevel edge(bottom,left)                      PASS[OCCT] V=23940.000000 (OCCT 23940.000000, brep 23940.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 1.6e-17 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.8e-3"}
+bevel edge(bottom,right)                     PASS[OCCT] V=23940.000000 (OCCT 23940.000000, brep 23940.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 3.3e-17 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.8e-3"}
+bevel edge(front,left)                       PASS[OCCT] V=23960.000000 (OCCT 23960.000000, brep 23960.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 8.2e-18 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.2e-3"}
+bevel edge(front,right)                      PASS[OCCT] V=23960.000000 (OCCT 23960.000000, brep 23960.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 1.6e-17 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.2e-3"}
+bevel edge(back,left)                        PASS[OCCT] V=23960.000000 (OCCT 23960.000000, brep 23960.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 8.2e-18 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.2e-3"}
+bevel edge(back,right)                       PASS[OCCT] V=23960.000000 (OCCT 23960.000000, brep 23960.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 1.6e-17 faces occt/truck/brep 7/7/7 | ctl {"rej":true,"dCom":"1.2e-3"}

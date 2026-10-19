@@ -1,0 +1,50 @@
+{
+ "cases": [
+  {
+   "label": "subtract then round edge of the first box",
+   "src": "const a=box(40,30,20)\nconst c=cylinder(10,30)\nsubtract(a,c)\nround(a.edge('top','front'),2)",
+   "statuses": [
+    "box1:built",
+    "cyl1:built",
+    "op1:built",
+    "round1:refused"
+   ],
+   "refused": [
+    {
+     "id": "round1",
+     "raw": "round1 (fillet): its target box1 was already changed in place by op1, and a solidcraft command list has no second copy of it",
+     "plain": "round1 is not built: box1 was already cut by op1, so its edges can no longer be picked -- pick the edge on the result of op1 instead."
+    }
+   ],
+   "plain": [
+    "round1 is not built: box1 was already cut by op1, so its edges can no longer be picked -- pick the edge on the result of op1 instead."
+   ],
+   "unmapped": []
+  },
+  {
+   "label": "union then round edge of the first box",
+   "src": "const a=box(40,30,20)\nconst b=box(10,10,10,{at:[30,0,0]})\njoin(a,b)\nround(a.edge('top','front'),2)",
+   "statuses": [
+    "box1:built",
+    "box2:built",
+    "op1:built",
+    "round1:refused"
+   ],
+   "refused": [
+    {
+     "id": "round1",
+     "raw": "round1 (fillet): its target box1 was already changed in place by op1, and a solidcraft command list has no second copy of it",
+     "plain": "round1 is not built: box1 was already joined by op1, so its edges can no longer be picked -- pick the edge on the result of op1 instead."
+    }
+   ],
+   "plain": [
+    "round1 is not built: box1 was already joined by op1, so its edges can no longer be picked -- pick the edge on the result of op1 instead."
+   ],
+   "unmapped": []
+  }
+ ],
+ "cut": {
+  "verb": "cut",
+  "plain": "round1 is not built: box1 was already cut by op1, so its edges can no longer be picked -- pick the edge on the result of op1 instead."
+ }
+}

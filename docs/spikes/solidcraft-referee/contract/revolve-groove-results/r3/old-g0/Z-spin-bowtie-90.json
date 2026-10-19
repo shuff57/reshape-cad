@@ -1,0 +1,84 @@
+[
+ {
+  "id": "Z-spin-bowtie-90",
+  "src": "const s = sketch('top'); s.polygon([[10,0],[20,30],[20,0],[10,30]]); spin(s, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "Z-spin-bowtie-90",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "occt": {
+    "volume": -785.3981633974495,
+    "com": [
+     17.904931032772655,
+     17.90493103277265,
+     15
+    ],
+    "bbox": [
+     6.123233995736766e-16,
+     0,
+     0,
+     20,
+     20,
+     30.000000000000004
+    ],
+    "faces": 6,
+    "area": 2903.9049339848225,
+    "types": {
+     "cone": 2,
+     "cylinder": 2,
+     "plane": 2
+    },
+    "components": {
+     "cone": 2,
+     "cylinder": 2,
+     "plane": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "revolve rev1: this sketch's outline cannot be spun: two of its edges cross each other, so it does not enclose one area -- move a corner so no edge crosses another -- rev1 is shown without it."
+   },
+   "ms": 2,
+   "load": [
+    22.3,
+    22.3
+   ],
+   "cpuMs": 8,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "refused",
+     "refusal": "rev1 (revolve): the sketch crosses itself, so it is not one closed shape; reorder its corners so that no two sides cross."
+    }
+   ],
+   "commands": [],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "rev1 (revolve): the sketch crosses itself, so it is not one closed shape; reorder its corners so that no two sides cross.",
+    "firstRefusal": "rev1 (revolve): the sketch crosses itself, so it is not one closed shape; reorder its corners so that no two sides cross."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 28
+ }
+]

@@ -1,0 +1,1488 @@
+[
+ {
+  "id": "join-box-cyl-through",
+  "feature": "join(a,b): box + cylinder",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,40,{at:[0,0,0]}); join(a,b)",
+  "wallS": 8,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 36021.239 area 7405.3096 faces 10 solids 1 | SolidCraft vol 36020.571 area 7405.2679 faces 10 bodies 1 shells 1 | dVol 1.9e-5 dBbox 2.3e-15 dCom 1.3e-16 dArea 5.6e-6 | brep-rs dVol 2.0e-16 | closed form 36021.239 (SolidCraft off by 1.9e-5, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "join-box-cyl-through: supported; vol OCCT 36021.239 SC 36020.571 (d 2e-5), area d 6e-6, bbox d 2e-15, faces O/SC 10/10, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "join-box-cyl-sideways-overlap",
+  "feature": "join(a,b): box + cylinder",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,30,{at:[20,0,0]}); join(a,b)",
+  "wallS": 5.1,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 36021.239 area 7286.3716 faces 10 solids 1 | SolidCraft vol 36020.499 area 7286.2884 faces 10 bodies 1 shells 1 | dVol 2.1e-5 dBbox 3.8e-6 dCom 6.0e-6 dArea 1.1e-5 | brep-rs dVol 1.1e-11",
+  "flags": [],
+  "short": "join-box-cyl-sideways-overlap: supported; vol OCCT 36021.239 SC 36020.499 (d 2e-5), area d 1e-5, bbox d 4e-6, faces O/SC 10/10, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "join-three",
+  "feature": "join(a,b,c): three operands (targets[2+])",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,40,{at:[0,0,0]}); const c = box(20,20,20,{at:[25,0,0]}); join(a,b,c)",
+  "wallS": 10.3,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 42021.239 area 8605.3096 faces 18 solids 1 | SolidCraft vol 42020.571 area 8605.2679 faces 14 bodies 1 shells 1 | dVol 1.6e-5 dBbox 2.3e-15 dCom 7.9e-7 dArea 4.9e-6 | brep-rs dVol 0.0e+0 | closed form 42021.239 (SolidCraft off by 1.6e-5, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "join-three: supported; vol OCCT 42021.239 SC 42020.571 (d 2e-5), area d 5e-6, bbox d 2e-15, faces O/SC 18/14, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "join-four",
+  "feature": "join(a,b,c): three operands (targets[2+])",
+  "source": "const a = box(20,20,20,{at:[0,0,0]}); const b = box(20,20,20,{at:[15,0,0]}); const c = box(20,20,20,{at:[30,0,0]}); const d = box(20,20,20,{at:[45,0,0]}); join(a,b,c,d)",
+  "wallS": 2.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 26000 area 6000 faces 30 solids 1 | SolidCraft vol 26000 area 6000 faces 6 bodies 1 shells 1 | dVol 2.8e-16 dBbox 0.0e+0 dCom 1.0e-16 dArea 0.0e+0 | brep-rs dVol 2.8e-16 | closed form 26000 (SolidCraft off by 0.0e+0, OCCT off by 2.8e-16)",
+  "flags": [],
+  "short": "join-four: supported; vol OCCT 26000 SC 26000 (d 3e-16), area d 0e+0, bbox d 0e+0, faces O/SC 30/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "join-pull-boss",
+  "feature": "join with a pull() operand",
+  "source": "const plate = box(40,40,10,{at:[0,0,0]}); const s = sketch('top', 5); s.polygon([[0,0],[10,0],[10,8],[0,8]]); join(plate, pull(s,8))",
+  "wallS": 2.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 16640 area 5088 faces 11 solids 1 | SolidCraft vol 16640 area 5088 faces 11 bodies 1 shells 1 | dVol 0.0e+0 dBbox 0.0e+0 dCom 1.2e-17 dArea 1.8e-16 | brep-rs dVol 2.2e-16 | closed form 16640 (SolidCraft off by 0.0e+0, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "join-pull-boss: supported; vol OCCT 16640 SC 16640 (d 0e+0), area d 2e-16, bbox d 0e+0, faces O/SC 11/11, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "join-pull-sunk",
+  "feature": "join with a pull() operand",
+  "source": "const plate = box(40,40,10,{at:[0,0,0]}); const s = sketch('top', 0); s.polygon([[0,0],[10,0],[10,8],[0,8]]); join(plate, pull(s,10))",
+  "wallS": 1.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 16400 area 4980 faces 11 solids 1 | SolidCraft vol 16400 area 4980 faces 11 bodies 1 shells 1 | dVol 0.0e+0 dBbox 0.0e+0 dCom 2.0e-17 dArea 1.8e-16 | brep-rs dVol 2.2e-16 | closed form 16400 (SolidCraft off by 0.0e+0, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "join-pull-sunk: supported; vol OCCT 16400 SC 16400 (d 0e+0), area d 2e-16, bbox d 0e+0, faces O/SC 11/11, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "join-pull-circle",
+  "feature": "join with a pull() operand",
+  "source": "const plate = box(40,40,10,{at:[0,0,0]}); const s = sketch('top', 5); s.circle(12, {at:[5,5]}); join(plate, pull(s,12))",
+  "wallS": 4.2,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 17357.168 area 5252.3893 faces 8 solids 1 | SolidCraft vol 17356.943 area 5252.3706 faces 8 bodies 1 shells 1 | dVol 1.3e-5 dBbox 4.2e-16 dCom 2.2e-6 dArea 3.6e-6 | brep-rs dVol 2.1e-16 | closed form 17357.168 (SolidCraft off by 1.3e-5, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "join-pull-circle: supported; vol OCCT 17357.168 SC 17356.943 (d 1e-5), area d 4e-6, bbox d 4e-16, faces O/SC 8/8, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "join-spin",
+  "feature": "join with a spin() operand",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[0,0],[6,0],[6,30],[0,30]]); join(a, spin(s,360))",
+  "wallS": 2.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 33130.973 area 6776.9911 faces 8 solids 1 | SolidCraft vol 33130.767 area 6776.9739 faces 8 bodies 1 shells 1 | dVol 6.2e-6 dBbox 1.2e-16 dCom 2.2e-6 dArea 2.5e-6 | brep-rs dVol 2.2e-16 | closed form 33130.973 (SolidCraft off by 6.2e-6, OCCT off by 4.4e-16)",
+  "flags": [],
+  "short": "join-spin: supported; vol OCCT 33130.973 SC 33130.767 (d 6e-6), area d 3e-6, bbox d 1e-16, faces O/SC 8/8, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "join-hole-boss",
+  "feature": "join with a hole() result operand",
+  "source": "const plate = box(40,40,10,{at:[0,0,0]}); const h = hole(plate,{across:6}); const s = sketch('top', 5); s.polygon([[10,5],[20,5],[20,15],[10,15]]); join(h, pull(s,5))",
+  "wallS": 2.9,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 16217.257 area 5131.9469 faces 12 solids 1 | SolidCraft vol 16217.304 area 5131.9485 faces 11 bodies 1 shells 1 | dVol 2.9e-6 dBbox 5.3e-16 dCom 2.3e-8 dArea 3.0e-7 | brep-rs dVol 0.0e+0 | closed form 16217.257 (SolidCraft off by 2.9e-6, OCCT off by 1.1e-16)",
+  "flags": [],
+  "short": "join-hole-boss: supported; vol OCCT 16217.257 SC 16217.304 (d 3e-6), area d 3e-7, bbox d 5e-16, faces O/SC 12/11, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "join-hole-cover",
+  "feature": "join with a hole() result operand",
+  "source": "const plate = box(40,40,10,{at:[0,0,0]}); const h = hole(plate,{across:6}); const s = sketch('top', 5); s.polygon([[-5,-5],[5,-5],[5,5],[-5,5]]); join(h, pull(s,5))",
+  "wallS": 2.4,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 16217.257 area 5188.4956 faces 13 solids 1 | SolidCraft vol 16217.304 area 5188.4877 faces 13 bodies 1 shells 1 | dVol 2.9e-6 dBbox 5.3e-16 dCom 1.1e-8 dArea 1.5e-6 | brep-rs dVol 0.0e+0 | closed form 16217.257 (SolidCraft off by 2.9e-6, OCCT off by 1.1e-16)",
+  "flags": [],
+  "short": "join-hole-cover: supported; vol OCCT 16217.257 SC 16217.304 (d 3e-6), area d 2e-6, bbox d 5e-16, faces O/SC 13/13, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "join-chain",
+  "feature": "join/cut of earlier combine results",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,40,{at:[0,0,0]}); const c = box(10,10,10,{at:[18,0,0]}); const u = join(a,b); join(u,c)",
+  "wallS": 3.1,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 36321.239 area 7525.3096 faces 15 solids 1 | SolidCraft vol 36320.571 area 7525.2679 faces 15 bodies 1 shells 1 | dVol 1.8e-5 dBbox 2.3e-15 dCom 4.6e-8 dArea 5.5e-6 | brep-rs dVol 2.0e-16 | closed form 36321.239 (SolidCraft off by 1.8e-5, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "join-chain: supported; vol OCCT 36321.239 SC 36320.571 (d 2e-5), area d 6e-6, bbox d 2e-15, faces O/SC 15/15, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cut-of-join",
+  "feature": "join/cut of earlier combine results",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,40,{at:[0,0,0]}); const c = cylinder(6,50,{at:[12,12,0]}); const u = join(a,b); cut(u,c)",
+  "wallS": 5.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 35455.752 area 7725.7521 faces 11 solids 1 | SolidCraft vol 35455.531 area 7725.7262 faces 11 bodies 1 shells 1 | dVol 6.2e-6 dBbox 2.3e-15 dCom 4.4e-7 dArea 3.4e-6 | brep-rs dVol 0.0e+0 | closed form 35455.752 (SolidCraft off by 6.2e-6, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "cut-of-join: supported; vol OCCT 35455.752 SC 35455.531 (d 6e-6), area d 3e-6, bbox d 2e-15, faces O/SC 11/11, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "keep-of-cut",
+  "feature": "join/cut of earlier combine results",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,40,{at:[0,0,0]}); const c = box(30,30,30,{at:[0,0,0]}); const u = cut(a,b); keep(u,c)",
+  "wallS": 2.1,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 13978.761 area 4803.1858 faces 7 solids 1 | SolidCraft vol 13979.429 area 4803.2108 faces 7 bodies 1 shells 1 | dVol 4.8e-5 dBbox 2.5e-15 dCom 1.8e-16 dArea 5.2e-6 | brep-rs dVol 0.0e+0 | closed form 13978.761 (SolidCraft off by 4.8e-5, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "keep-of-cut: supported; vol OCCT 13978.761 SC 13979.429 (d 5e-5), area d 5e-6, bbox d 2e-15, faces O/SC 7/7, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cut-box-cyl-through",
+  "feature": "cut(a,b): box - cylinder",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,40,{at:[0,0,0]}); cut(a,b)",
+  "wallS": 1.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 27978.761 area 7003.1858 faces 7 solids 1 | SolidCraft vol 27979.429 area 7003.2108 faces 7 bodies 1 shells 1 | dVol 2.4e-5 dBbox 1.2e-15 dCom 4.6e-17 dArea 3.6e-6 | brep-rs dVol 1.3e-16 | closed form 27978.761 (SolidCraft off by 2.4e-5, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "cut-box-cyl-through: supported; vol OCCT 27978.761 SC 27979.429 (d 2e-5), area d 4e-6, bbox d 1e-15, faces O/SC 7/7, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cut-box-cyl-blind",
+  "feature": "cut(a,b): box - cylinder",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,10,{at:[0,0,5]}); cut(a,b)",
+  "wallS": 1.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 29989.381 area 6902.6548 faces 8 solids 1 | SolidCraft vol 29989.715 area 6902.634 faces 8 bodies 1 shells 1 | dVol 1.1e-5 dBbox 3.6e-16 dCom 9.9e-7 dArea 3.0e-6 | brep-rs dVol 0.0e+0 | closed form 29989.381 (SolidCraft off by 1.1e-5, OCCT off by 1.2e-16)",
+  "flags": [],
+  "short": "cut-box-cyl-blind: supported; vol OCCT 29989.381 SC 29989.715 (d 1e-5), area d 3e-6, bbox d 4e-16, faces O/SC 8/8, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cut-box-cyl-inside",
+  "feature": "cut(a,b): box - cylinder",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(10,10,{at:[0,0,0]}); cut(a,b)",
+  "wallS": 1.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 31214.602 area 6871.2389 faces 9 solids 1 | SolidCraft vol 31214.732 area 6871.1998 faces 9 bodies 1 shells 2 | dVol 4.2e-6 dBbox 0.0e+0 dCom 8.1e-18 dArea 5.7e-6 | brep-rs dVol 0.0e+0 | closed form 31214.602 (SolidCraft off by 4.2e-6, OCCT off by 1.2e-16)",
+  "flags": [],
+  "short": "cut-box-cyl-inside: supported; vol OCCT 31214.602 SC 31214.732 (d 4e-6), area d 6e-6, bbox d 0e+0, faces O/SC 9/9, shells O/SC 2/2",
+  "brepSays": null
+ },
+ {
+  "id": "cut-three",
+  "feature": "cut(a,b,c): three operands (target + 2 tools)",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,40,{at:[0,0,0]}); const c = cylinder(10,40,{at:[14,14,0]}); cut(a,b,c)",
+  "wallS": 2.8,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 26407.965 area 7474.4247 faces 8 solids 1 | SolidCraft vol 26408.701 area 7474.4425 faces 8 bodies 1 shells 1 | dVol 2.8e-5 dBbox 1.8e-15 dCom 2.7e-6 dArea 2.4e-6 | brep-rs dVol 0.0e+0 | closed form 26407.965 (SolidCraft off by 2.8e-5, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "cut-three: supported; vol OCCT 26407.965 SC 26408.701 (d 3e-5), area d 2e-6, bbox d 2e-15, faces O/SC 8/8, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cut-four",
+  "feature": "cut(a,b,c): three operands (target + 2 tools)",
+  "source": "const a = box(60,40,20,{at:[0,0,0]}); const b = cylinder(12,40,{at:[-20,0,0]}); const c = cylinder(12,40,{at:[0,0,0]}); const d = cylinder(12,40,{at:[20,0,0]}); cut(a,b,c,d)",
+  "wallS": 4.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 41214.16 area 10383.363 faces 9 solids 1 | SolidCraft vol 41215.287 area 10383.381 faces 9 bodies 1 shells 1 | dVol 2.7e-5 dBbox 1.1e-15 dCom 6.6e-17 dArea 1.8e-6 | brep-rs dVol 1.8e-16 | closed form 41214.16 (SolidCraft off by 2.7e-5, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "cut-four: supported; vol OCCT 41214.16 SC 41215.287 (d 3e-5), area d 2e-6, bbox d 1e-15, faces O/SC 9/9, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cut-pull-slot",
+  "feature": "cut with a pull() operand",
+  "source": "const plate = box(40,40,20,{at:[0,0,0]}); const s = sketch('top', 2); s.polygon([[-5,-5],[5,-5],[5,5],[-5,5]]); cut(plate, pull(s,20))",
+  "wallS": 0.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 31200 area 6720 faces 11 solids 1 | SolidCraft vol 31200 area 6720 faces 11 bodies 1 shells 1 | dVol 0.0e+0 dBbox 0.0e+0 dCom 1.2e-17 dArea 1.4e-16 | brep-rs dVol 1.2e-16 | closed form 31200 (SolidCraft off by 0.0e+0, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "cut-pull-slot: supported; vol OCCT 31200 SC 31200 (d 0e+0), area d 1e-16, bbox d 0e+0, faces O/SC 11/11, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cut-spin-bore",
+  "feature": "cut with a spin() operand",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[0,0],[6,0],[6,30],[0,30]]); cut(a, spin(s,360))",
+  "wallS": 1.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 29738.053 area 7153.9822 faces 8 solids 1 | SolidCraft vol 29738.466 area 7153.9479 faces 8 bodies 1 shells 1 | dVol 1.4e-5 dBbox 5.3e-16 dCom 2.5e-6 dArea 4.8e-6 | brep-rs dVol 1.2e-16 | closed form 29738.053 (SolidCraft off by 1.4e-5, OCCT off by 1.2e-16)",
+  "flags": [],
+  "short": "cut-spin-bore: supported; vol OCCT 29738.053 SC 29738.466 (d 1e-5), area d 5e-6, bbox d 5e-16, faces O/SC 8/8, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cut-spin-cone-groove",
+  "feature": "cut with a spin() operand",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[0,-10],[8,-10],[0,10]]); cut(a, spin(s,360))",
+  "wallS": 0.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 30659.587 area 7142.4377 faces 8 solids 1 | SolidCraft vol 30659.832 area 7142.3662 faces 8 bodies 1 shells 2 | dVol 8.0e-6 dBbox 0.0e+0 dCom 6.9e-7 dArea 1.0e-5 | brep-rs refused | closed form 30659.587 (SolidCraft off by 8.0e-6, OCCT off by 1.2e-16)",
+  "flags": [],
+  "short": "cut-spin-cone-groove: supported; vol OCCT 30659.587 SC 30659.832 (d 8e-6), area d 1e-5, bbox d 0e+0, faces O/SC 8/8, shells O/SC 2/2",
+  "brepSays": "combine op1 cannot find rev1"
+ },
+ {
+  "id": "cut-hole-target",
+  "feature": "cut with a hole() result operand",
+  "source": "const plate = box(40,40,10,{at:[0,0,0]}); const h = hole(plate,{across:6}); const c = cylinder(8,20,{at:[12,0,0]}); cut(h,c)",
+  "wallS": 3.1,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 15214.602 area 5082.7433 faces 8 solids 1 | SolidCraft vol 15214.715 area 5082.7499 faces 8 bodies 1 shells 1 | dVol 7.5e-6 dBbox 8.9e-16 dCom 9.6e-7 dArea 1.3e-6 | brep-rs dVol 1.2e-16 | closed form 15214.602 (SolidCraft off by 7.5e-6, OCCT off by 1.2e-16)",
+  "flags": [],
+  "short": "cut-hole-target: supported; vol OCCT 15214.602 SC 15214.715 (d 7e-6), area d 1e-6, bbox d 9e-16, faces O/SC 8/8, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cut-hole-as-tool",
+  "feature": "cut with a hole() result operand",
+  "source": "const big = box(60,60,20,{at:[0,0,0]}); const plate = box(40,40,10,{at:[0,0,0]}); const h = hole(plate,{across:6}); cut(big,h)",
+  "wallS": 1.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 56282.743 area 16931.947 faces 13 solids 1 | SolidCraft vol 56282.696 area 16931.948 faces 13 bodies 1 shells 2 | dVol 8.3e-7 dBbox 0.0e+0 dCom 1.5e-17 dArea 9.2e-8 | brep-rs dVol 1.3e-16 | closed form 56282.743 (SolidCraft off by 8.3e-7, OCCT off by 1.3e-16)",
+  "flags": [],
+  "short": "cut-hole-as-tool: supported; vol OCCT 56282.743 SC 56282.696 (d 8e-7), area d 9e-8, bbox d 0e+0, faces O/SC 13/13, shells O/SC 2/2",
+  "brepSays": null
+ },
+ {
+  "id": "cut-of-cut",
+  "feature": "join/cut of earlier combine results",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,40,{at:[0,0,0]}); const c = cylinder(6,50,{at:[12,12,0]}); const u = cut(a,b); cut(u,c)",
+  "wallS": 4,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 27413.275 area 7323.6282 faces 8 solids 1 | SolidCraft vol 27413.683 area 7323.6338 faces 8 bodies 1 shells 1 | dVol 1.5e-5 dBbox 2.5e-15 dCom 7.5e-7 dArea 7.6e-7 | brep-rs dVol 0.0e+0 | closed form 27413.275 (SolidCraft off by 1.5e-5, OCCT off by 1.3e-16)",
+  "flags": [],
+  "short": "cut-of-cut: supported; vol OCCT 27413.275 SC 27413.683 (d 1e-5), area d 8e-7, bbox d 2e-15, faces O/SC 8/8, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "keep-box-cyl",
+  "feature": "keep(a,b): box + cylinder",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(30,40,{at:[0,0,0]}); keep(a,b)",
+  "wallS": 1.4,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 14137.167 area 3298.6723 faces 3 solids 1 | SolidCraft vol 14135.809 area 3298.4913 faces 3 bodies 1 shells 1 | dVol 9.6e-5 dBbox 2.7e-5 dCom 1.6e-16 dArea 5.5e-5 | brep-rs dVol 5.1e-16 | closed form 14137.167 (SolidCraft off by 9.6e-5, OCCT off by 1.3e-16)",
+  "flags": [],
+  "short": "keep-box-cyl: supported; vol OCCT 14137.167 SC 14135.809 (d 1e-4), area d 5e-5, bbox d 3e-5, faces O/SC 3/3, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "keep-box-cyl-clip",
+  "feature": "keep(a,b): box + cylinder",
+  "source": "const a = box(20,20,20,{at:[0,0,0]}); const b = cylinder(28,40,{at:[0,0,0]}); keep(a,b)",
+  "wallS": 1.3,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 7998.3783 area 2390.37 faces 10 solids 1 | SolidCraft vol 7998.3672 area 2390.3685 faces 10 bodies 1 shells 1 | dVol 1.4e-6 dBbox 1.8e-12 dCom 1.3e-13 dArea 6.3e-7 | brep-rs dVol 4.5e-16",
+  "flags": [],
+  "short": "keep-box-cyl-clip: supported; vol OCCT 7998.3783 SC 7998.3672 (d 1e-6), area d 6e-7, bbox d 2e-12, faces O/SC 10/10, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "keep-three",
+  "feature": "keep(a,b,c): three operands",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(30,40,{at:[0,0,0]}); const c = box(20,60,60,{at:[0,0,0]}); keep(a,b,c)",
+  "wallS": 3.6,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 11039.685 area 2874.0689 faces 6 solids 1 | SolidCraft vol 19096.778 area 4424.5095 faces 10 bodies 1 shells 1 | dVol 7.3e-1 dBbox 5.0e-1 dCom 1.1e-11 dArea 5.4e-1 | brep-rs dVol 3.3e-16 | disagreement: face-type counts unexplained; vol/bbox beyond 0.0003; area",
+  "flags": [
+   "silent wrong solid"
+  ],
+  "short": "keep-three: wrong; vol OCCT 11039.685 SC 19096.778 (d 7e-1), area d 5e-1, bbox d 5e-1, faces O/SC 6/10, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "keep-three-sph",
+  "feature": "keep(a,b,c): three operands",
+  "source": "const a = box(40,40,40,{at:[0,0,0]}); const b = sphere(36,{at:[0,0,0]}); const c = cylinder(20,50,{at:[0,0,0]}); keep(a,b,c)",
+  "wallS": 52.3,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 10386.001 area 2566.8944 faces 3 solids 1 | SolidCraft vol 26606.655 area 4645.9747 faces 5 bodies 1 shells 1 | dVol 1.6e+0 dBbox 8.0e-1 dCom 2.8e-9 dArea 8.1e-1 | brep-rs dVol 1.3e-14 | disagreement: face-type counts unexplained; vol/bbox beyond 0.0003; area",
+  "flags": [
+   "silent wrong solid"
+  ],
+  "short": "keep-three-sph: wrong; vol OCCT 10386.001 SC 26606.655 (d 2e+0), area d 8e-1, bbox d 8e-1, faces O/SC 3/5, shells O/SC 1/1, harness wall 52s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": null
+ },
+ {
+  "id": "keep-pull",
+  "feature": "keep with a pull() operand",
+  "source": "const plate = box(40,40,20,{at:[0,0,0]}); const s = sketch('top', 2); s.polygon([[-5,-5],[5,-5],[5,5],[-5,5]]); keep(plate, pull(s,20))",
+  "wallS": 2.1,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 800 area 520 faces 6 solids 1 | SolidCraft vol 800 area 520 faces 6 bodies 1 shells 1 | dVol 2.8e-16 dBbox 0.0e+0 dCom 5.5e-17 dArea 2.2e-16 | brep-rs dVol 2.8e-16 | closed form 800 (SolidCraft off by 0.0e+0, OCCT off by 2.8e-16)",
+  "flags": [],
+  "short": "keep-pull: supported; vol OCCT 800 SC 800 (d 3e-16), area d 2e-16, bbox d 0e+0, faces O/SC 6/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "keep-spin",
+  "feature": "keep with a spin() operand",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[0,0],[6,0],[6,30],[0,30]]); keep(a, spin(s,360))",
+  "wallS": 7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 2261.9467 area 980.17691 faces 3 solids 1 | SolidCraft vol 2261.5473 area 980.10201 faces 3 bodies 1 shells 1 | dVol 1.8e-4 dBbox 3.0e-16 dCom 6.2e-15 dArea 7.6e-5 | brep-rs dVol 1.0e-15 | closed form 2261.9467 (SolidCraft off by 1.8e-4, OCCT off by 2.0e-16)",
+  "flags": [],
+  "short": "keep-spin: supported; vol OCCT 2261.9467 SC 2261.5473 (d 2e-4), area d 8e-5, bbox d 3e-16, faces O/SC 3/3, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "keep-hole-target",
+  "feature": "keep with a hole() result operand",
+  "source": "const plate = box(40,40,10,{at:[0,0,0]}); const h = hole(plate,{across:6}); const c = cylinder(30,20,{at:[0,0,0]}); keep(h,c)",
+  "wallS": 10.8,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 6785.8401 area 2488.1414 faces 4 solids 1 | SolidCraft vol 6785.6453 area 2488.0865 faces 4 bodies 1 shells 1 | dVol 2.9e-5 dBbox 2.4e-5 dCom 6.9e-17 dArea 2.2e-5 | brep-rs dVol 4.0e-16 | closed form 6785.8401 (SolidCraft off by 2.9e-5, OCCT off by 1.3e-16)",
+  "flags": [],
+  "short": "keep-hole-target: supported; vol OCCT 6785.8401 SC 6785.6453 (d 3e-5), area d 2e-5, bbox d 2e-5, faces O/SC 4/4, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "keep-chain",
+  "feature": "join/cut of earlier combine results",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(30,40,{at:[0,0,0]}); const c = cylinder(16,40,{at:[10,0,0]}); const u = keep(a,b); keep(u,c)",
+  "wallS": 8.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 3352.3067 area 1272.4093 faces 5 solids 1 | SolidCraft vol 3351.9995 area 1272.3623 faces 4 bodies 1 shells 1 | dVol 9.2e-5 dBbox 8.4e-6 dCom 5.6e-7 dArea 3.7e-5 | brep-rs dVol 7.7e-11",
+  "flags": [],
+  "short": "keep-chain: supported; vol OCCT 3352.3067 SC 3351.9995 (d 9e-5), area d 4e-5, bbox d 8e-6, faces O/SC 5/4, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "arity-join-one",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); join(a)",
+  "wallS": 1.6,
+  "status": "refused",
+  "sentence": "join() needs two or more shapes: join(a, b).",
+  "line": "runScript -> error \"join() needs two or more shapes: join(a, b).\"; no ModelDoc built",
+  "short": "arity-join-one: refused \"join() needs two or more shapes: join(a, b).\"",
+  "brepSays": null
+ },
+ {
+  "id": "arity-cut-one",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); cut(a)",
+  "wallS": 1.2,
+  "status": "refused",
+  "sentence": "cut() needs two or more shapes: cut(a, b).",
+  "line": "runScript -> error \"cut() needs two or more shapes: cut(a, b).\"; no ModelDoc built",
+  "short": "arity-cut-one: refused \"cut() needs two or more shapes: cut(a, b).\"",
+  "brepSays": null
+ },
+ {
+  "id": "arity-keep-one",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); keep(a)",
+  "wallS": 0.8,
+  "status": "refused",
+  "sentence": "keep() needs two or more shapes: keep(a, b).",
+  "line": "runScript -> error \"keep() needs two or more shapes: keep(a, b).\"; no ModelDoc built",
+  "short": "arity-keep-one: refused \"keep() needs two or more shapes: keep(a, b).\"",
+  "brepSays": null
+ },
+ {
+  "id": "arity-join-zero",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "source": "join()",
+  "wallS": 0.6,
+  "status": "refused",
+  "sentence": "join() needs two or more shapes: join(a, b).",
+  "line": "runScript -> error \"join() needs two or more shapes: join(a, b).\"; no ModelDoc built",
+  "short": "arity-join-zero: refused \"join() needs two or more shapes: join(a, b).\"",
+  "brepSays": null
+ },
+ {
+  "id": "arity-cut-number",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); cut(a, 3)",
+  "wallS": 0.8,
+  "status": "refused",
+  "sentence": "cut() needs two or more shapes: cut(a, b).",
+  "line": "runScript -> error \"cut() needs two or more shapes: cut(a, b).\"; no ModelDoc built",
+  "short": "arity-cut-number: refused \"cut() needs two or more shapes: cut(a, b).\"",
+  "brepSays": null
+ },
+ {
+  "id": "arity-keep-sketch",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const s = sketch('top', 10); s.circle(4); keep(a, s)",
+  "wallS": 1,
+  "status": "refused",
+  "sentence": "keep() needs two or more shapes: keep(a, b).",
+  "line": "runScript -> error \"keep() needs two or more shapes: keep(a, b).\"; no ModelDoc built",
+  "short": "arity-keep-sketch: refused \"keep() needs two or more shapes: keep(a, b).\"",
+  "brepSays": null
+ },
+ {
+  "id": "arity-join-same-twice",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); join(a, a)",
+  "wallS": 0.8,
+  "status": "refused",
+  "sentence": "op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself",
+  "line": "SolidCraft/translator refused: \"op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself\"; oracle: OCCT vol 32000 faces 6 solids 1; brep-rs vol 32000",
+  "short": "arity-join-same-twice: refused \"op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself\"",
+  "brepSays": null
+ },
+ {
+  "id": "arity-cut-same-twice",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); cut(a, a)",
+  "wallS": 0.7,
+  "status": "refused",
+  "sentence": "op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself",
+  "line": "SolidCraft/translator refused: \"op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself\"; oracle: OCCT OCCT threw: undefined; brep-rs refused \"combine op1: the two solids are the same shape in the same place, so cutting one from the other leaves nothing (an empty solid) -- op1 is shown without it.\"",
+  "short": "arity-cut-same-twice: refused \"op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself\"",
+  "brepSays": "combine op1: the two solids are the same shape in the same place, so cutting one from the other leaves nothing (an empty solid) -- op1 is shown without it."
+ },
+ {
+  "id": "arity-modeldoc-one-target",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"a\"]}]",
+  "wallS": 0.9,
+  "status": "refused",
+  "sentence": "op1 (combine): needs two or more targets",
+  "line": "SolidCraft/translator refused: \"op1 (combine): needs two or more targets\"; oracle: OCCT OCCT built nothing: no shape; brep-rs vol 32000",
+  "short": "arity-modeldoc-one-target: refused \"op1 (combine): needs two or more targets\"",
+  "brepSays": null
+ },
+ {
+  "id": "reuse-tool-twice",
+  "feature": "operand consumed by one combine used again",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(30,30,20,{at:[60,0,0]}); const c = cylinder(16,40,{at:[0,0,0]}); const x = cut(a,c); const y = cut(b,c); join(x,y)",
+  "wallS": 2.1,
+  "status": "refused",
+  "sentence": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)",
+  "line": "SolidCraft/translator refused: \"op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)\"; oracle: OCCT vol 45978.761 faces 13 solids 2; brep-rs vol 45978.761",
+  "short": "reuse-tool-twice: refused \"op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)\"",
+  "brepSays": null
+ },
+ {
+  "id": "reuse-target-after-union",
+  "feature": "operand consumed by one combine used again",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,40,{at:[0,0,0]}); const c = cylinder(8,40,{at:[10,10,0]}); const u = join(a,b); cut(a,c)",
+  "wallS": 4.5,
+  "status": "refused",
+  "sentence": "op2 (combine): its target box1 was already changed in place by op1, and a solidcraft command list has no second copy of it",
+  "line": "SolidCraft/translator refused: \"op2 (combine): its target box1 was already changed in place by op1, and a solidcraft command list has no second copy of it\"; oracle: OCCT vol 30994.69 faces 7 solids 1; brep-rs vol 30994.69",
+  "short": "reuse-target-after-union: refused \"op2 (combine): its target box1 was already changed in place by op1, and a solidcraft command list has no second copy of it\"",
+  "brepSays": null
+ },
+ {
+  "id": "x-cut-x-axis-cylinder",
+  "feature": "curved: cylinder in box (rotated axis)",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"c\",\"kind\":\"cylinder\",\"radius\":5,\"height\":60,\"center\":[0,0,0],\"rotate\":[0,90,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"subtract\",\"targets\":[\"a\",\"c\"]}]",
+  "wallS": 2.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 28858.407 area 7499.5574 faces 7 solids 1 | SolidCraft vol 28858.929 area 7499.5313 faces 7 bodies 1 shells 1 | dVol 1.8e-5 dBbox 1.1e-15 dCom 6.2e-17 dArea 3.5e-6 | brep-rs dVol 1.3e-16 | closed form 28858.407 (SolidCraft off by 1.8e-5, OCCT off by 1.3e-16)",
+  "flags": [],
+  "short": "x-cut-x-axis-cylinder: supported; vol OCCT 28858.407 SC 28858.929 (d 2e-5), area d 3e-6, bbox d 1e-15, faces O/SC 7/7, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "x-join-x-axis-cylinder",
+  "feature": "curved: cylinder in box (rotated axis)",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"c\",\"kind\":\"cylinder\",\"radius\":5,\"height\":60,\"center\":[0,0,0],\"rotate\":[0,90,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"a\",\"c\"]}]",
+  "wallS": 3.8,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 33570.796 area 7028.3185 faces 10 solids 1 | SolidCraft vol 33570.535 area 7028.2924 faces 10 bodies 1 shells 1 | dVol 7.8e-6 dBbox 2.5e-15 dCom 1.4e-16 dArea 3.7e-6 | brep-rs dVol 0.0e+0 | closed form 33570.796 (SolidCraft off by 7.8e-6, OCCT off by 2.2e-16)",
+  "flags": [],
+  "short": "x-join-x-axis-cylinder: supported; vol OCCT 33570.796 SC 33570.535 (d 8e-6), area d 4e-6, bbox d 2e-15, faces O/SC 10/10, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "x-keep-x-axis-cylinder",
+  "feature": "curved: cylinder in box (rotated axis)",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"c\",\"kind\":\"cylinder\",\"radius\":5,\"height\":60,\"center\":[0,0,0],\"rotate\":[0,90,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"intersect\",\"targets\":[\"a\",\"c\"]}]",
+  "wallS": 2.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 3141.5927 area 1413.7167 faces 3 solids 1 | SolidCraft vol 3141.0708 area 1413.6384 faces 3 bodies 1 shells 1 | dVol 1.7e-4 dBbox 2.7e-5 dCom 2.8e-16 dArea 5.5e-5 | brep-rs dVol 7.2e-16 | closed form 3141.5927 (SolidCraft off by 1.7e-4, OCCT off by 1.4e-16)",
+  "flags": [],
+  "short": "x-keep-x-axis-cylinder: supported; vol OCCT 3141.5927 SC 3141.0708 (d 2e-4), area d 6e-5, bbox d 3e-5, faces O/SC 3/3, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "x-cyl-cross-cyl-union",
+  "feature": "curved: cylinder crossing cylinder",
+  "source": "ModelDoc [{\"id\":\"c1\",\"kind\":\"cylinder\",\"radius\":10,\"height\":40,\"center\":[0,0,0]},{\"id\":\"c2\",\"kind\":\"cylinder\",\"radius\":6,\"height\":40,\"center\":[0,0,0],\"rotate\":[90,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"c1\",\"c2\"]}]",
+  "wallS": 268.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 14935.301 area 3957.0283 faces 7 solids 1 | SolidCraft vol 14933.713 area 3956.8277 faces 7 bodies 1 shells 1 | dVol 1.1e-4 dBbox 1.5e-5 dCom 2.4e-9 dArea 5.1e-5 | brep-rs dVol 1.1e-11 | harness wall 268.7s",
+  "flags": [
+   "slow"
+  ],
+  "short": "x-cyl-cross-cyl-union: supported; vol OCCT 14935.301 SC 14933.713 (d 1e-4), area d 5e-5, bbox d 2e-5, faces O/SC 7/7, shells O/SC 1/1, harness wall 269s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": null
+ },
+ {
+  "id": "x-cyl-cross-cyl-cut",
+  "feature": "curved: cylinder crossing cylinder",
+  "source": "ModelDoc [{\"id\":\"c1\",\"kind\":\"cylinder\",\"radius\":10,\"height\":40,\"center\":[0,0,0]},{\"id\":\"c2\",\"kind\":\"cylinder\",\"radius\":6,\"height\":40,\"center\":[0,0,0],\"rotate\":[90,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"subtract\",\"targets\":[\"c1\",\"c2\"]}]",
+  "wallS": 233.4,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 10411.408 area 3584.2152 faces 4 solids 1 | SolidCraft vol 10410.432 area 3584.0621 faces 4 bodies 1 shells 1 | dVol 9.4e-5 dBbox 1.5e-5 dCom 6.1e-9 dArea 4.3e-5 | brep-rs dVol 1.5e-11 | harness wall 233.4s",
+  "flags": [
+   "slow"
+  ],
+  "short": "x-cyl-cross-cyl-cut: supported; vol OCCT 10411.408 SC 10410.432 (d 9e-5), area d 4e-5, bbox d 2e-5, faces O/SC 4/4, shells O/SC 1/1, harness wall 233s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": null
+ },
+ {
+  "id": "x-cyl-cross-cyl-keep",
+  "feature": "curved: cylinder crossing cylinder",
+  "source": "ModelDoc [{\"id\":\"c1\",\"kind\":\"cylinder\",\"radius\":10,\"height\":40,\"center\":[0,0,0]},{\"id\":\"c2\",\"kind\":\"cylinder\",\"radius\":6,\"height\":40,\"center\":[0,0,0],\"rotate\":[90,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"intersect\",\"targets\":[\"c1\",\"c2\"]}]",
+  "wallS": 311.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 2154.9626 area 918.75625 faces 3 solids 1 | SolidCraft vol 2154.652 area 918.71731 faces 3 bodies 1 shells 1 | dVol 1.4e-4 dBbox 1.5e-5 dCom 2.2e-8 dArea 4.2e-5 | brep-rs dVol 1.3e-10 | harness wall 311.5s",
+  "flags": [
+   "slow"
+  ],
+  "short": "x-cyl-cross-cyl-keep: supported; vol OCCT 2154.9626 SC 2154.652 (d 1e-4), area d 4e-5, bbox d 2e-5, faces O/SC 3/3, shells O/SC 1/1, harness wall 312s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": null
+ },
+ {
+  "id": "x-cyl-cross-cyl-equal-keep",
+  "feature": "curved: cylinder crossing cylinder",
+  "source": "ModelDoc [{\"id\":\"c1\",\"kind\":\"cylinder\",\"radius\":8,\"height\":40,\"center\":[0,0,0]},{\"id\":\"c2\",\"kind\":\"cylinder\",\"radius\":8,\"height\":40,\"center\":[0,0,0],\"rotate\":[90,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"intersect\",\"targets\":[\"c1\",\"c2\"]}]",
+  "wallS": 745.4,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 2730.6667 area 1024 faces 4 solids 1 | SolidCraft vol 2730.6369 area 1023.9948 faces 3 bodies 1 shells 1 | dVol 1.1e-5 dBbox 6.1e-11 dCom 4.9e-9 dArea 5.1e-6 | brep-rs refused | closed form 2730.6667 (SolidCraft off by 1.1e-5, OCCT off by 3.6e-11) | face census disagrees (OCCT {\"cylinder\":4} vs SolidCraft {\"cylinder\":3}) while volume, area, bbox, COM and shell count agree; not explained by the known truck conventions",
+  "flags": [
+   "topology-only: geometry agrees"
+  ],
+  "short": "x-cyl-cross-cyl-equal-keep: wrong; vol OCCT 2730.6667 SC 2730.6369 (d 1e-5), area d 5e-6, bbox d 6e-11, faces O/SC 4/3, shells O/SC 1/1, harness wall 745s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "x-cyl-minus-cyl-parallel",
+  "feature": "curved: cylinder crossing cylinder",
+  "source": "ModelDoc [{\"id\":\"c1\",\"kind\":\"cylinder\",\"radius\":12,\"height\":30,\"center\":[0,0,0]},{\"id\":\"c2\",\"kind\":\"cylinder\",\"radius\":8,\"height\":30,\"center\":[10,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"subtract\",\"targets\":[\"c1\",\"c2\"]}]",
+  "wallS": 4.9,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 10055.345 area 3105.7593 faces 4 solids 1 | SolidCraft vol 10054.582 area 3105.631 faces 4 bodies 1 shells 1 | dVol 7.6e-5 dBbox 7.3e-5 dCom 9.1e-6 dArea 4.1e-5 | brep-rs dVol 1.5e-10",
+  "flags": [],
+  "short": "x-cyl-minus-cyl-parallel: supported; vol OCCT 10055.345 SC 10054.582 (d 8e-5), area d 4e-5, bbox d 7e-5, faces O/SC 4/4, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "x-sph-minus-box",
+  "feature": "curved: sphere with box",
+  "source": "ModelDoc [{\"id\":\"s\",\"kind\":\"sphere\",\"radius\":15,\"center\":[0,0,0]},{\"id\":\"b\",\"kind\":\"box\",\"size\":[10,10,40],\"center\":[0,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"subtract\",\"targets\":[\"s\",\"b\"]}]",
+  "wallS": 39,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 11251.352 area 3726.7206 faces 5 solids 1 | SolidCraft vol 11250.225 area 3726.5428 faces 5 bodies 1 shells 1 | dVol 1.0e-4 dBbox 1.8e-8 dCom 8.0e-12 dArea 4.8e-5 | brep-rs dVol 4.0e-12 | harness wall 39s",
+  "flags": [
+   "slow"
+  ],
+  "short": "x-sph-minus-box: supported; vol OCCT 11251.352 SC 11250.225 (d 1e-4), area d 5e-5, bbox d 2e-8, faces O/SC 5/5, shells O/SC 1/1, harness wall 39s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": null
+ },
+ {
+  "id": "x-box-minus-sph-hemi",
+  "feature": "curved: sphere with box",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const s = sphere(20,{at:[0,0,10]}); cut(a,s)",
+  "wallS": 24.2,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 29905.605 area 6714.1593 faces 7 solids 1 | SolidCraft vol 29906.087 area 6714.1454 faces 7 bodies 1 shells 1 | dVol 1.6e-5 dBbox 7.1e-16 dCom 1.4e-6 dArea 2.1e-6 | brep-rs dVol 2.4e-16 | closed form 29905.605 (SolidCraft off by 1.6e-5, OCCT off by 3.6e-16)",
+  "flags": [],
+  "short": "x-box-minus-sph-hemi: supported; vol OCCT 29905.605 SC 29906.087 (d 2e-5), area d 2e-6, bbox d 7e-16, faces O/SC 7/7, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "x-box-minus-sph-void",
+  "feature": "curved: sphere with box",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const s = sphere(16,{at:[0,0,0]}); cut(a,s)",
+  "wallS": 23.8,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 29855.339 area 7204.2477 faces 7 solids 1 | SolidCraft vol 29855.951 area 7204.1358 faces 7 bodies 1 shells 2 | dVol 2.0e-5 dBbox 0.0e+0 dCom 5.5e-16 dArea 1.6e-5 | brep-rs dVol 0.0e+0 | closed form 29855.339 (SolidCraft off by 2.0e-5, OCCT off by 2.4e-16)",
+  "flags": [],
+  "short": "x-box-minus-sph-void: supported; vol OCCT 29855.339 SC 29855.951 (d 2e-5), area d 2e-5, bbox d 0e+0, faces O/SC 7/7, shells O/SC 2/2",
+  "brepSays": null
+ },
+ {
+  "id": "x-box-minus-box-void",
+  "feature": "curved: sphere with box",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const s = box(10,10,10,{at:[0,0,0]}); cut(a,s)",
+  "wallS": 1.4,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 31000 area 7000 faces 12 solids 1 | SolidCraft vol 31000 area 7000 faces 12 bodies 1 shells 2 | dVol 4.7e-16 dBbox 0.0e+0 dCom 5.0e-18 dArea 1.3e-16 | brep-rs dVol 3.5e-16 | closed form 31000 (SolidCraft off by 0.0e+0, OCCT off by 4.7e-16)",
+  "flags": [],
+  "short": "x-box-minus-box-void: supported; vol OCCT 31000 SC 31000 (d 5e-16), area d 1e-16, bbox d 0e+0, faces O/SC 12/12, shells O/SC 2/2",
+  "brepSays": null
+ },
+ {
+  "id": "x-sph-union-box",
+  "feature": "curved: sphere with box",
+  "source": "const s = sphere(30,{at:[0,0,0]}); const b = box(10,10,40,{at:[0,0,0]}); join(s,b)",
+  "wallS": 37.1,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 15251.352 area 3312.0453 faces 11 solids 1 | SolidCraft vol 15249.233 area 3311.8664 faces 11 bodies 1 shells 1 | dVol 1.4e-4 dBbox 1.2e-16 dCom 3.1e-12 dArea 5.4e-5 | brep-rs dVol 3.0e-12 | harness wall 37.1s",
+  "flags": [
+   "slow"
+  ],
+  "short": "x-sph-union-box: supported; vol OCCT 15251.352 SC 15249.233 (d 1e-4), area d 5e-5, bbox d 1e-16, faces O/SC 11/11, shells O/SC 1/1, harness wall 37s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": null
+ },
+ {
+  "id": "x-sph-keep-box",
+  "feature": "curved: sphere with box",
+  "source": "const s = sphere(30,{at:[0,0,0]}); const b = box(20,20,20,{at:[0,0,0]}); keep(s,b)",
+  "wallS": 54.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 7900.7216 area 2301.8949 faces 14 solids 1 | SolidCraft vol 7900.6322 area 2301.8648 faces 14 bodies 1 shells 1 | dVol 1.1e-5 dBbox 8.8e-10 dCom 4.3e-13 dArea 1.3e-5 | brep-rs dVol 1.1e-11 | harness wall 54.7s",
+  "flags": [
+   "slow"
+  ],
+  "short": "x-sph-keep-box: supported; vol OCCT 7900.7216 SC 7900.6322 (d 1e-5), area d 1e-5, bbox d 9e-10, faces O/SC 14/14, shells O/SC 1/1, harness wall 55s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": null
+ },
+ {
+  "id": "x-sph-keep-sph",
+  "feature": "curved: sphere with box",
+  "source": "const s = sphere(30,{at:[0,0,0]}); const t = sphere(24,{at:[10,0,0]}); keep(s,t)",
+  "wallS": 62.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 4637.9594 area 1393.9247 faces 3 solids 1 | SolidCraft vol 4637.485 area 1393.8467 faces 2 bodies 1 shells 1 | dVol 1.0e-4 dBbox 3.4e-10 dCom 1.3e-6 dArea 5.6e-5 | brep-rs dVol 1.6e-11 | harness wall 62.5s",
+  "flags": [
+   "slow"
+  ],
+  "short": "x-sph-keep-sph: supported; vol OCCT 4637.9594 SC 4637.485 (d 1e-4), area d 6e-5, bbox d 3e-10, faces O/SC 3/2, shells O/SC 1/1, harness wall 62s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": null
+ },
+ {
+  "id": "x-sph-union-sph",
+  "feature": "curved: sphere with box",
+  "source": "const s = sphere(30,{at:[0,0,0]}); const t = sphere(24,{at:[10,0,0]}); join(s,t)",
+  "wallS": 50,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 16737.437 area 3243.0661 faces 2 solids 1 | SolidCraft vol 16736.08 area 3242.9547 faces 5 bodies 1 shells 1 | dVol 8.1e-5 dBbox 6.0e-6 dCom 8.0e-7 dArea 3.4e-5 | brep-rs dVol 3.7e-11 | face census disagrees (OCCT {\"sphere\":2} vs SolidCraft {\"cone\":3,\"sphere\":2}) while volume, area, bbox, COM and shell count agree; not explained by the known truck conventions",
+  "flags": [
+   "topology-only: geometry agrees"
+  ],
+  "short": "x-sph-union-sph: wrong; vol OCCT 16737.437 SC 16736.08 (d 8e-5), area d 3e-5, bbox d 6e-6, faces O/SC 2/5, shells O/SC 1/1, harness wall 50s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": null
+ },
+ {
+  "id": "x-sph-cut-sph",
+  "feature": "curved: sphere with box",
+  "source": "const s = sphere(30,{at:[0,0,0]}); const t = sphere(24,{at:[10,0,0]}); cut(s,t)",
+  "wallS": 64.6,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 9499.2075 area 3099.8095 faces 2 solids 1 | SolidCraft vol 9498.7526 area 3099.7062 faces 5 bodies 1 shells 1 | dVol 4.8e-5 dBbox 6.0e-6 dCom 4.9e-6 dArea 3.3e-5 | brep-rs dVol 8.3e-11 | face census disagrees (OCCT {\"sphere\":2} vs SolidCraft {\"cone\":3,\"sphere\":2}) while volume, area, bbox, COM and shell count agree; not explained by the known truck conventions",
+  "flags": [
+   "topology-only: geometry agrees"
+  ],
+  "short": "x-sph-cut-sph: wrong; vol OCCT 9499.2075 SC 9498.7526 (d 5e-5), area d 3e-5, bbox d 6e-6, faces O/SC 2/5, shells O/SC 1/1, harness wall 65s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": null
+ },
+ {
+  "id": "x-sph-cut-cyl",
+  "feature": "curved: sphere with box",
+  "source": "const s = sphere(30,{at:[0,0,0]}); const c = cylinder(10,50,{at:[0,0,0]}); cut(s,c)",
+  "wallS": 49.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 11847.688 area 3554.3064 faces 2 solids 1 | SolidCraft vol 11847.117 area 3554.202 faces 2 bodies 1 shells 1 | dVol 4.8e-5 dBbox 3.1e-10 dCom 1.3e-13 dArea 2.9e-5 | brep-rs dVol 4.6e-15 | harness wall 49.6s",
+  "flags": [
+   "slow"
+  ],
+  "short": "x-sph-cut-cyl: supported; vol OCCT 11847.688 SC 11847.117 (d 5e-5), area d 3e-5, bbox d 3e-10, faces O/SC 2/2, shells O/SC 1/1, harness wall 50s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": null
+ },
+ {
+  "id": "x-tor-union-box",
+  "feature": "curved: torus",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const b = box(10,10,40,{at:[14,0,0]}); join(t,b)",
+  "wallS": 400.9,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 7907.0416 area 3646.3904 faces 7 solids 1 | SolidCraft vol 7906.7642 area 3646.363 faces 7 bodies 1 shells 1 | dVol 3.5e-5 dBbox 2.8e-6 dCom 4.6e-6 dArea 7.5e-6 | brep-rs refused | harness wall 400.9s",
+  "flags": [
+   "slow"
+  ],
+  "short": "x-tor-union-box: supported; vol OCCT 7907.0416 SC 7906.7642 (d 4e-5), area d 8e-6, bbox d 3e-6, faces O/SC 7/7, shells O/SC 1/1, harness wall 401s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "x-tor-minus-box",
+  "feature": "curved: torus",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const b = box(10,10,40,{at:[14,0,0]}); cut(t,b)",
+  "wallS": 415.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 3907.0416 area 2065.2658 faces 5 solids 1 | SolidCraft vol 3906.8082 area 2065.2331 faces 5 bodies 1 shells 1 | dVol 6.0e-5 dBbox 7.4e-6 dCom 3.7e-7 dArea 1.6e-5 | brep-rs refused | harness wall 415.7s",
+  "flags": [
+   "slow"
+  ],
+  "short": "x-tor-minus-box: supported; vol OCCT 3907.0416 SC 3906.8082 (d 6e-5), area d 2e-5, bbox d 7e-6, faces O/SC 5/5, shells O/SC 1/1, harness wall 416s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "x-tor-half",
+  "feature": "curved: torus",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const b = box(60,30,20,{at:[0,15,0]}); keep(t,b)",
+  "wallS": 122.9,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 2210.7914 area 1205.9267 faces 3 solids 1 | SolidCraft vol 2210.4718 area 1205.8706 faces 4 bodies 1 shells 1 | dVol 1.4e-4 dBbox 9.0e-5 dCom 1.1e-6 dArea 4.6e-5 | brep-rs refused | closed form 2210.7914 (SolidCraft off by 1.4e-4, OCCT off by 2.1e-16) | face census disagrees (OCCT {\"other\":1,\"plane\":2} vs SolidCraft {\"cylinder\":1,\"other\":1,\"plane\":2}) while volume, area, bbox, COM and shell count agree; not explained by the known truck conventions",
+  "flags": [
+   "topology-only: geometry agrees"
+  ],
+  "short": "x-tor-half: wrong; vol OCCT 2210.7914 SC 2210.4718 (d 1e-4), area d 5e-5, bbox d 9e-5, faces O/SC 3/4, shells O/SC 1/1, harness wall 123s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "x-box-minus-tor-void",
+  "feature": "curved: torus",
+  "source": "const a = box(50,50,20,{at:[0,0,0]}); const t = ring(36,8,{at:[0,0,0]}); cut(a,t)",
+  "wallS": 37.9,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 45578.417 area 11210.791 faces 7 solids 1 | SolidCraft vol 45579.067 area 11210.708 faces 7 bodies 1 shells 2 | dVol 1.4e-5 dBbox 0.0e+0 dCom 5.0e-8 dArea 7.5e-6 | brep-rs refused | closed form 45578.417 (SolidCraft off by 1.4e-5, OCCT off by 4.8e-16) | harness wall 37.9s",
+  "flags": [
+   "slow"
+  ],
+  "short": "x-box-minus-tor-void: supported; vol OCCT 45578.417 SC 45579.067 (d 1e-5), area d 7e-6, bbox d 0e+0, faces O/SC 7/7, shells O/SC 2/2, harness wall 38s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "x-box-minus-tor-cross",
+  "feature": "curved: torus",
+  "source": "const a = box(50,50,20,{at:[0,0,0]}); const t = ring(36,8,{at:[0,0,8]}); cut(a,t)",
+  "wallS": 48.9,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 46442.842 area 9864.4243 faces 9 solids 1 | SolidCraft vol 46443.242 area 9864.4102 faces 8 bodies 1 shells 1 | dVol 8.6e-6 dBbox 1.4e-9 dCom 8.2e-7 dArea 1.4e-6 | brep-rs refused | harness wall 48.9s",
+  "flags": [
+   "slow"
+  ],
+  "short": "x-box-minus-tor-cross: supported; vol OCCT 46442.842 SC 46443.242 (d 9e-6), area d 1e-6, bbox d 1e-9, faces O/SC 9/8, shells O/SC 1/1, harness wall 49s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "x-tor-keep-box",
+  "feature": "curved: torus",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const b = box(30,30,4,{at:[0,0,0]}); keep(t,b)",
+  "wallS": 379,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 2101.1913 area 1684.8935 faces 15 solids 1 | SolidCraft vol 2101.1644 area 1684.9009 faces 15 bodies 1 shells 1 | dVol 1.3e-5 dBbox 4.2e-6 dCom 7.0e-8 dArea 4.4e-6 | brep-rs refused | KERNEL TOTAL (all bodies in the session) vol 2101.1644 faces 15 bodies 1 matches OCCT; the translator reports only the target's name and so DROPS the other piece(s): the student would see 2101.1644 instead of 2101.1913",
+  "flags": [
+   "silent wrong solid",
+   "translator drops split-off bodies"
+  ],
+  "short": "x-tor-keep-box: wrong; vol OCCT 2101.1913 SC 2101.1644 (d 1e-5), area d 4e-6, bbox d 4e-6, faces O/SC 15/15, shells O/SC 1/1, harness wall 379s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "x-tor-union-cyl-axis",
+  "feature": "curved: torus",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const c = cylinder(12,12,{at:[0,0,0]}); join(t,c)",
+  "wallS": 75.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 5778.7508 area 2889.3754 faces 4 solids 2 | SolidCraft vol 5777.9369 area 2889.2505 faces 4 bodies 1 shells 2 | dVol 1.4e-4 dBbox 2.7e-6 dCom 5.6e-7 dArea 4.3e-5 | brep-rs refused | OCCT lists 2 solids, SolidCraft keeps them as 1 body with 2 shells (same shells, same volume)",
+  "flags": [
+   "one body, several shells"
+  ],
+  "short": "x-tor-union-cyl-axis: supported; vol OCCT 5778.7508 SC 5777.9369 (d 1e-4), area d 4e-5, bbox d 3e-6, faces O/SC 4/4, shells O/SC 2/2, harness wall 75s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "x-tor-union-cyl-touch",
+  "feature": "curved: torus",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const c = cylinder(20,12,{at:[0,0,0]}); join(t,c)",
+  "wallS": 60.1,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 8191.494 area 3593.0922 faces 6 solids 2 | SolidCraft vol 8190.4825 area 3592.9299 faces 4 bodies 1 shells 2 | dVol 1.2e-4 dBbox 2.7e-6 dCom 3.9e-7 dArea 4.5e-5 | brep-rs refused | OCCT lists 2 solids, SolidCraft keeps them as 1 body with 2 shells (same shells, same volume)",
+  "flags": [
+   "one body, several shells"
+  ],
+  "short": "x-tor-union-cyl-touch: supported; vol OCCT 8191.494 SC 8190.4825 (d 1e-4), area d 5e-5, bbox d 3e-6, faces O/SC 6/4, shells O/SC 2/2, harness wall 60s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "cop-union-shared-face",
+  "feature": "coplanar faces",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,0]},{\"id\":\"b\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[20,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"a\",\"b\"]}]",
+  "wallS": 0.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 16000 area 4000 faces 10 solids 1 | SolidCraft vol 16000 area 4000 faces 6 bodies 1 shells 1 | dVol 3.4e-16 dBbox 0.0e+0 dCom 3.6e-17 dArea 1.1e-16 | brep-rs dVol 2.3e-16 | closed form 16000 (SolidCraft off by 0.0e+0, OCCT off by 3.4e-16)",
+  "flags": [],
+  "short": "cop-union-shared-face: supported; vol OCCT 16000 SC 16000 (d 3e-16), area d 1e-16, bbox d 0e+0, faces O/SC 10/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cop-union-partial-overlap",
+  "feature": "coplanar faces",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(40,40,20,{at:[20,0,0]}); join(a,b)",
+  "wallS": 0.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 48000 area 8800 faces 14 solids 1 | SolidCraft vol 48000 area 8800 faces 6 bodies 1 shells 1 | dVol 4.5e-16 dBbox 0.0e+0 dCom 4.7e-17 dArea 2.1e-16 | brep-rs dVol 4.5e-16 | closed form 48000 (SolidCraft off by 0.0e+0, OCCT off by 4.5e-16)",
+  "flags": [],
+  "short": "cop-union-partial-overlap: supported; vol OCCT 48000 SC 48000 (d 5e-16), area d 2e-16, bbox d 0e+0, faces O/SC 14/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cop-union-inside-flush",
+  "feature": "coplanar faces",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(20,20,20,{at:[10,10,0]}); join(a,b)",
+  "wallS": 0.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 32000 area 6400 faces 10 solids 1 | SolidCraft vol 32000 area 6400 faces 6 bodies 1 shells 1 | dVol 3.4e-16 dBbox 0.0e+0 dCom 2.7e-17 dArea 1.4e-16 | brep-rs dVol 2.3e-16 | closed form 32000 (SolidCraft off by 0.0e+0, OCCT off by 3.4e-16)",
+  "flags": [],
+  "short": "cop-union-inside-flush: supported; vol OCCT 32000 SC 32000 (d 3e-16), area d 1e-16, bbox d 0e+0, faces O/SC 10/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cop-union-identical",
+  "feature": "coplanar faces",
+  "source": "const a = box(20,20,20,{at:[0,0,0]}); const b = box(20,20,20,{at:[0,0,0]}); join(a,b)",
+  "wallS": 0.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 8000 area 2400 faces 6 solids 1 | SolidCraft vol 8000 area 2400 faces 6 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 8.5e-18 dArea 1.9e-16 | brep-rs dVol 1.1e-16 | closed form 8000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "cop-union-identical: supported; vol OCCT 8000 SC 8000 (d 2e-16), area d 2e-16, bbox d 0e+0, faces O/SC 6/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cop-union-step",
+  "feature": "coplanar faces",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(20,20,10,{at:[0,0,15]}); join(a,b)",
+  "wallS": 0.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 36000 area 7200 faces 11 solids 1 | SolidCraft vol 36000 area 7200 faces 11 bodies 1 shells 1 | dVol 4.0e-16 dBbox 0.0e+0 dCom 1.7e-17 dArea 1.3e-16 | brep-rs dVol 2.0e-16 | closed form 36000 (SolidCraft off by 0.0e+0, OCCT off by 4.0e-16)",
+  "flags": [],
+  "short": "cop-union-step: supported; vol OCCT 36000 SC 36000 (d 4e-16), area d 1e-16, bbox d 0e+0, faces O/SC 11/11, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cop-union-l-shape",
+  "feature": "coplanar faces",
+  "source": "const a = box(40,20,20,{at:[0,0,0]}); const b = box(20,40,20,{at:[-10,10,0]}); join(a,b)",
+  "wallS": 0.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 24000 area 5600 faces 14 solids 1 | SolidCraft vol 24000 area 5600 faces 8 bodies 1 shells 1 | dVol 3.0e-16 dBbox 0.0e+0 dCom 1.5e-17 dArea 1.6e-16 | brep-rs dVol 1.5e-16 | closed form 24000 (SolidCraft off by 0.0e+0, OCCT off by 3.0e-16)",
+  "flags": [],
+  "short": "cop-union-l-shape: supported; vol OCCT 24000 SC 24000 (d 3e-16), area d 2e-16, bbox d 0e+0, faces O/SC 14/8, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cop-cut-flush-top",
+  "feature": "coplanar faces",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"b\",\"kind\":\"box\",\"size\":[10,10,10],\"center\":[0,0,5]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"subtract\",\"targets\":[\"a\",\"b\"]}]",
+  "wallS": 0.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 31000 area 6800 faces 11 solids 1 | SolidCraft vol 31000 area 6800 faces 11 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 3.7e-18 dArea 1.3e-16 | brep-rs dVol 1.2e-16 | closed form 31000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "cop-cut-flush-top: supported; vol OCCT 31000 SC 31000 (d 2e-16), area d 1e-16, bbox d 0e+0, faces O/SC 11/11, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cop-cut-caps",
+  "feature": "coplanar faces",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"c\",\"kind\":\"cylinder\",\"radius\":8,\"height\":20,\"center\":[0,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"subtract\",\"targets\":[\"a\",\"c\"]}]",
+  "wallS": 2.2,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 27978.761 area 7003.1858 faces 7 solids 1 | SolidCraft vol 27979.429 area 7003.2108 faces 7 bodies 1 shells 1 | dVol 2.4e-5 dBbox 1.2e-15 dCom 4.6e-17 dArea 3.6e-6 | brep-rs dVol 1.3e-16 | closed form 27978.761 (SolidCraft off by 2.4e-5, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "cop-cut-caps: supported; vol OCCT 27978.761 SC 27979.429 (d 2e-5), area d 4e-6, bbox d 1e-15, faces O/SC 7/7, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cop-cut-same-box",
+  "feature": "coplanar faces",
+  "source": "const a = box(20,20,20,{at:[0,0,0]}); const b = box(20,20,20,{at:[10,0,0]}); cut(a,b)",
+  "wallS": 1,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 4000 area 1600 faces 6 solids 1 | SolidCraft vol 4000 area 1600 faces 6 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 3.0e-17 dArea 1.4e-16 | brep-rs dVol 1.1e-16 | closed form 4000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "cop-cut-same-box: supported; vol OCCT 4000 SC 4000 (d 2e-16), area d 1e-16, bbox d 0e+0, faces O/SC 6/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cop-keep-offset",
+  "feature": "coplanar faces",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,0]},{\"id\":\"b\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,10]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"intersect\",\"targets\":[\"a\",\"b\"]}]",
+  "wallS": 1.4,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 4000 area 1600 faces 6 solids 1 | SolidCraft vol 4000 area 1600 faces 6 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 3.0e-17 dArea 1.4e-16 | brep-rs dVol 1.1e-16 | closed form 4000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "cop-keep-offset: supported; vol OCCT 4000 SC 4000 (d 2e-16), area d 1e-16, bbox d 0e+0, faces O/SC 6/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "cop-keep-partial",
+  "feature": "coplanar faces",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(40,40,20,{at:[20,0,0]}); keep(a,b)",
+  "wallS": 0.9,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 16000 area 4000 faces 6 solids 1 | SolidCraft vol 16000 area 4000 faces 6 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 3.6e-17 dArea 1.1e-16 | brep-rs dVol 1.1e-16 | closed form 16000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "cop-keep-partial: supported; vol OCCT 16000 SC 16000 (d 2e-16), area d 1e-16, bbox d 0e+0, faces O/SC 6/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "tan-union-cyl-overlap1",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"c\",\"kind\":\"cylinder\",\"radius\":10,\"height\":20,\"center\":[29,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"a\",\"c\"]}]",
+  "wallS": 1.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 38165.733 area 7918.4437 faces 13 solids 1 | SolidCraft vol 38164.795 area 7918.3029 faces 9 bodies 1 shells 1 | dVol 2.5e-5 dBbox 4.0e-6 dCom 8.5e-6 dArea 1.8e-5 | brep-rs dVol 3.7e-11",
+  "flags": [],
+  "short": "tan-union-cyl-overlap1: supported; vol OCCT 38165.733 SC 38164.795 (d 2e-5), area d 2e-5, bbox d 4e-6, faces O/SC 13/9, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "tan-union-cyl-exact",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"c\",\"kind\":\"cylinder\",\"radius\":10,\"height\":20,\"center\":[30,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"a\",\"c\"]}]",
+  "wallS": 2,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 38283.185 area 8284.9556 faces 11 solids 2 | SolidCraft vol 38281.824 area 8284.7514 faces 9 bodies 1 shells 2 | dVol 3.6e-5 dBbox 3.9e-6 dCom 1.1e-5 dArea 2.5e-5 | brep-rs refused | OCCT lists 2 solids, SolidCraft keeps them as 1 body with 2 shells (same shells, same volume)",
+  "flags": [
+   "one body, several shells"
+  ],
+  "short": "tan-union-cyl-exact: supported; vol OCCT 38283.185 SC 38281.824 (d 4e-5), area d 2e-5, bbox d 4e-6, faces O/SC 11/9, shells O/SC 2/2",
+  "brepSays": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+ },
+ {
+  "id": "tan-subtract-touching",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"c\",\"kind\":\"cylinder\",\"radius\":10,\"height\":40,\"center\":[30,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"subtract\",\"targets\":[\"a\",\"c\"]}]",
+  "wallS": 1.9,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 32000 area 6400 faces 7 solids 1 | SolidCraft vol 32000 area 6400 faces 6 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 3.8e-18 dArea 1.4e-16 | brep-rs dVol 1.1e-16 | closed form 32000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "tan-subtract-touching: supported; vol OCCT 32000 SC 32000 (d 2e-16), area d 1e-16, bbox d 0e+0, faces O/SC 7/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "tan-keep-cyl-exact",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"c\",\"kind\":\"cylinder\",\"radius\":10,\"height\":20,\"center\":[30,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"intersect\",\"targets\":[\"a\",\"c\"]}]",
+  "wallS": 1.8,
+  "status": "refused",
+  "sentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_a came back",
+  "line": "SolidCraft/translator refused: \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_a came back\"; oracle: OCCT OCCT threw: undefined; brep-rs refused \"combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it.\"",
+  "short": "tan-keep-cyl-exact: refused \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_a came back\"",
+  "brepSays": "combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it."
+ },
+ {
+  "id": "tan-union-sph-point",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"s\",\"kind\":\"sphere\",\"radius\":10,\"center\":[30,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"a\",\"s\"]}]",
+  "wallS": 15.4,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 36188.79 area 7656.6371 faces 7 solids 2 | SolidCraft vol 36187.597 area 7656.4623 faces 7 bodies 1 shells 2 | dVol 3.3e-5 dBbox 0.0e+0 dCom 1.2e-5 dArea 2.3e-5 | brep-rs refused | OCCT lists 2 solids, SolidCraft keeps them as 1 body with 2 shells (same shells, same volume)",
+  "flags": [
+   "one body, several shells"
+  ],
+  "short": "tan-union-sph-point: supported; vol OCCT 36188.79 SC 36187.597 (d 3e-5), area d 2e-5, bbox d 0e+0, faces O/SC 7/7, shells O/SC 2/2",
+  "brepSays": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+ },
+ {
+  "id": "tan-cut-sph-point",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"s\",\"kind\":\"sphere\",\"radius\":10,\"center\":[30,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"subtract\",\"targets\":[\"a\",\"s\"]}]",
+  "wallS": 9.9,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 32000 area 6400 faces 6 solids 1 | SolidCraft vol 32000 area 6400 faces 6 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 7.7e-18 dArea 1.4e-16 | brep-rs refused | closed form 32000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "tan-cut-sph-point: supported; vol OCCT 32000 SC 32000 (d 2e-16), area d 1e-16, bbox d 0e+0, faces O/SC 6/6, shells O/SC 1/1",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "tan-cut-sph-inscribed",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,0]},{\"id\":\"s\",\"kind\":\"sphere\",\"radius\":10,\"center\":[0,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"subtract\",\"targets\":[\"a\",\"s\"]}]",
+  "wallS": 30,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 3811.2098 area 3656.6371 faces 7 solids 1 | SolidCraft vol 3812.3838 area 3656.447 faces 7 bodies 1 shells 1 | dVol 3.1e-4 dBbox 0.0e+0 dCom 1.6e-6 dArea 5.2e-5 | brep-rs refused | closed form 3811.2098 (SolidCraft off by 3.1e-4, OCCT off by 4.8e-16) | disagreement: vol/bbox beyond 0.0003; shells 1 vs OCCT 2",
+  "flags": [
+   "silent wrong solid"
+  ],
+  "short": "tan-cut-sph-inscribed: wrong; vol OCCT 3811.2098 SC 3812.3838 (d 3e-4), area d 5e-5, bbox d 0e+0, faces O/SC 7/7, shells O/SC 2/1, harness wall 30s (includes 2-3 repeated boolean runs and OCCT/brep-rs start-up)",
+  "brepSays": "combine op1: the cut touches the part's surface along a line or at a point, which leaves a solid no CAD kernel can hold as one body; move it a little or make it go all the way through -- op1 is shown without it."
+ },
+ {
+  "id": "tan-keep-sph-inscribed",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,0]},{\"id\":\"s\",\"kind\":\"sphere\",\"radius\":10,\"center\":[0,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"intersect\",\"targets\":[\"a\",\"s\"]}]",
+  "wallS": 18.3,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 4188.7902 area 1256.6371 faces 1 solids 1 | SolidCraft vol 4188.4931 area 1256.5933 faces 1 bodies 1 shells 1 | dVol 7.1e-5 dBbox 0.0e+0 dCom 1.1e-13 dArea 3.5e-5 | brep-rs dVol 2.2e-16 | closed form 4188.7902 (SolidCraft off by 7.1e-5, OCCT off by 2.2e-16)",
+  "flags": [],
+  "short": "tan-keep-sph-inscribed: supported; vol OCCT 4188.7902 SC 4188.4931 (d 7e-5), area d 3e-5, bbox d 0e+0, faces O/SC 1/1, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "tan-union-sph-inscribed",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,0]},{\"id\":\"s\",\"kind\":\"sphere\",\"radius\":10,\"center\":[0,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"a\",\"s\"]}]",
+  "wallS": 8.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 8000 area 2400 faces 6 solids 1 | SolidCraft vol 8000 area 2400 faces 6 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 8.3e-18 dArea 1.9e-16 | brep-rs dVol 1.1e-16 | closed form 8000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "tan-union-sph-inscribed: supported; vol OCCT 8000 SC 8000 (d 2e-16), area d 2e-16, bbox d 0e+0, faces O/SC 6/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "tan-union-cyl-inscribed",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,0]},{\"id\":\"c\",\"kind\":\"cylinder\",\"radius\":10,\"height\":20,\"center\":[0,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"a\",\"c\"]}]",
+  "wallS": 1.9,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 8000 area 2400 faces 18 solids 1 | SolidCraft vol 8000 area 2400 faces 6 bodies 1 shells 1 | dVol 3.4e-16 dBbox 0.0e+0 dCom 1.1e-17 dArea 1.9e-16 | brep-rs dVol 2.3e-16 | closed form 8000 (SolidCraft off by 0.0e+0, OCCT off by 3.4e-16)",
+  "flags": [],
+  "short": "tan-union-cyl-inscribed: supported; vol OCCT 8000 SC 8000 (d 3e-16), area d 2e-16, bbox d 0e+0, faces O/SC 18/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "tan-cut-cyl-inscribed",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,0]},{\"id\":\"c\",\"kind\":\"cylinder\",\"radius\":10,\"height\":20,\"center\":[0,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"subtract\",\"targets\":[\"a\",\"c\"]}]",
+  "wallS": 3.3,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 1716.8147 area 3028.3185 faces 20 solids 4 | SolidCraft vol 1717.4934 area 3028.3525 faces 13 bodies 1 shells 4 | dVol 4.0e-4 dBbox 2.1e-13 dCom 6.6e-12 dArea 1.1e-5 | brep-rs refused | closed form 1716.8147 (SolidCraft off by 4.0e-4, OCCT off by 5.4e-14) | volume delta just over the 3e-4 bar: tessellation error of the curved operand amplified by cancellation (area, bbox, COM, face and shell counts all agree)",
+  "flags": [
+   "marginal-volume"
+  ],
+  "short": "tan-cut-cyl-inscribed: supported; vol OCCT 1716.8147 SC 1717.4934 (d 4e-4), area d 1e-5, bbox d 2e-13, faces O/SC 20/13, shells O/SC 4/4",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "tan-cyl-in-cyl-internal",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"c1\",\"kind\":\"cylinder\",\"radius\":12,\"height\":30,\"center\":[0,0,0]},{\"id\":\"c2\",\"kind\":\"cylinder\",\"radius\":6,\"height\":30,\"center\":[6,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"subtract\",\"targets\":[\"c1\",\"c2\"]}]",
+  "wallS": 4.2,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 10178.76 area 4071.5041 faces 4 solids 1 | SolidCraft vol 10178.224 area 4071.3536 faces 4 bodies 1 shells 1 | dVol 5.3e-5 dBbox 6.2e-5 dCom 1.2e-5 dArea 3.7e-5 | brep-rs refused | closed form 10178.76 (SolidCraft off by 5.3e-5, OCCT off by 1.8e-16)",
+  "flags": [],
+  "short": "tan-cyl-in-cyl-internal: supported; vol OCCT 10178.76 SC 10178.224 (d 5e-5), area d 4e-5, bbox d 6e-5, faces O/SC 4/4, shells O/SC 1/1",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "tan-union-edge-touch",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,0]},{\"id\":\"b\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[20,20,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"a\",\"b\"]}]",
+  "wallS": 0.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 16000 area 4800 faces 12 solids 2 | SolidCraft vol 16000 area 4800 faces 12 bodies 1 shells 2 | dVol 1.1e-16 dBbox 0.0e+0 dCom 3.0e-17 dArea 1.9e-16 | brep-rs refused | OCCT lists 2 solids, SolidCraft keeps them as 1 body with 2 shells (same shells, same volume)",
+  "flags": [
+   "one body, several shells"
+  ],
+  "short": "tan-union-edge-touch: supported; vol OCCT 16000 SC 16000 (d 1e-16), area d 2e-16, bbox d 0e+0, faces O/SC 12/12, shells O/SC 2/2",
+  "brepSays": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+ },
+ {
+  "id": "tan-union-vertex-touch",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,0]},{\"id\":\"b\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[20,20,20]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"a\",\"b\"]}]",
+  "wallS": 0.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 16000 area 4800 faces 12 solids 2 | SolidCraft vol 16000 area 4800 faces 12 bodies 1 shells 2 | dVol 2.3e-16 dBbox 0.0e+0 dCom 0.0e+0 dArea 1.9e-16 | brep-rs refused | OCCT lists 2 solids, SolidCraft keeps them as 1 body with 2 shells (same shells, same volume)",
+  "flags": [
+   "one body, several shells"
+  ],
+  "short": "tan-union-vertex-touch: supported; vol OCCT 16000 SC 16000 (d 2e-16), area d 2e-16, bbox d 0e+0, faces O/SC 12/12, shells O/SC 2/2",
+  "brepSays": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+ },
+ {
+  "id": "tan-cut-edge-touch",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,0]},{\"id\":\"b\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[20,20,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"subtract\",\"targets\":[\"a\",\"b\"]}]",
+  "wallS": 0.6,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 8000 area 2400 faces 6 solids 1 | SolidCraft vol 8000 area 2400 faces 6 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 9.4e-18 dArea 1.9e-16 | brep-rs dVol 1.1e-16 | closed form 8000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "tan-cut-edge-touch: supported; vol OCCT 8000 SC 8000 (d 2e-16), area d 2e-16, bbox d 0e+0, faces O/SC 6/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "tan-union-cyl-on-face",
+  "feature": "tangent and touching contact",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[40,40,20],\"center\":[0,0,0]},{\"id\":\"c\",\"kind\":\"cylinder\",\"radius\":8,\"height\":10,\"center\":[0,0,15]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"a\",\"c\"]}]",
+  "wallS": 1.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 34010.619 area 6902.6548 faces 8 solids 1 | SolidCraft vol 34010.285 area 6902.634 faces 8 bodies 1 shells 1 | dVol 9.8e-6 dBbox 3.6e-16 dCom 2.2e-6 dArea 3.0e-6 | brep-rs dVol 0.0e+0 | closed form 34010.619 (SolidCraft off by 9.8e-6, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "tan-union-cyl-on-face: supported; vol OCCT 34010.619 SC 34010.285 (d 1e-5), area d 3e-6, bbox d 4e-16, faces O/SC 8/8, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "dis-union",
+  "feature": "disjoint operands",
+  "source": "const a = box(10,10,10,{at:[0,0,0]}); const b = box(10,10,10,{at:[30,0,0]}); join(a,b)",
+  "wallS": 0.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 2000 area 1200 faces 12 solids 2 | SolidCraft vol 2000 area 1200 faces 12 bodies 1 shells 2 | dVol 4.5e-16 dBbox 0.0e+0 dCom 1.3e-16 dArea 1.9e-16 | brep-rs dVol 4.5e-16 | closed form 2000 (SolidCraft off by 0.0e+0, OCCT off by 4.5e-16) | OCCT lists 2 solids, SolidCraft keeps them as 1 body with 2 shells (same shells, same volume)",
+  "flags": [
+   "one body, several shells"
+  ],
+  "short": "dis-union: supported; vol OCCT 2000 SC 2000 (d 5e-16), area d 2e-16, bbox d 0e+0, faces O/SC 12/12, shells O/SC 2/2",
+  "brepSays": null
+ },
+ {
+  "id": "dis-union-curved",
+  "feature": "disjoint operands",
+  "source": "const a = sphere(16,{at:[0,0,0]}); const b = cylinder(10,20,{at:[30,0,0]}); join(a,b)",
+  "wallS": 14.9,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 3715.4569 area 1589.6459 faces 4 solids 2 | SolidCraft vol 3714.5926 area 1589.4812 faces 4 bodies 1 shells 2 | dVol 2.3e-4 dBbox 2.2e-6 dCom 1.7e-5 dArea 1.0e-4 | brep-rs dVol 4.9e-16 | closed form 3715.4569 (SolidCraft off by 2.3e-4, OCCT off by 1.2e-16) | OCCT lists 2 solids, SolidCraft keeps them as 1 body with 2 shells (same shells, same volume)",
+  "flags": [
+   "one body, several shells"
+  ],
+  "short": "dis-union-curved: supported; vol OCCT 3715.4569 SC 3714.5926 (d 2e-4), area d 1e-4, bbox d 2e-6, faces O/SC 4/4, shells O/SC 2/2",
+  "brepSays": null
+ },
+ {
+  "id": "dis-cut",
+  "feature": "disjoint operands",
+  "source": "const a = box(10,10,10,{at:[0,0,0]}); const b = box(10,10,10,{at:[30,0,0]}); cut(a,b)",
+  "wallS": 0.3,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 1000 area 600 faces 6 solids 1 | SolidCraft vol 1000 area 600 faces 6 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 9.4e-18 dArea 1.9e-16 | brep-rs dVol 1.1e-16 | closed form 1000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "dis-cut: supported; vol OCCT 1000 SC 1000 (d 2e-16), area d 2e-16, bbox d 0e+0, faces O/SC 6/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "dis-cut-curved",
+  "feature": "disjoint operands",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = sphere(10,{at:[60,0,0]}); cut(a,b)",
+  "wallS": 4.2,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 32000 area 6400 faces 6 solids 1 | SolidCraft vol 32000 area 6400 faces 6 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 1.1e-17 dArea 1.4e-16 | brep-rs dVol 1.1e-16 | closed form 32000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "dis-cut-curved: supported; vol OCCT 32000 SC 32000 (d 2e-16), area d 1e-16, bbox d 0e+0, faces O/SC 6/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "dis-keep",
+  "feature": "empty intersection",
+  "source": "const a = box(10,10,10,{at:[0,0,0]}); const b = box(10,10,10,{at:[30,0,0]}); keep(a,b)",
+  "wallS": 0.4,
+  "status": "refused",
+  "sentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back",
+  "line": "SolidCraft/translator refused: \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back\"; oracle: OCCT OCCT threw: undefined; brep-rs refused \"combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it.\"",
+  "short": "dis-keep: refused \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back\"",
+  "brepSays": "combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it."
+ },
+ {
+  "id": "dis-keep-face-touch",
+  "feature": "empty intersection",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,0]},{\"id\":\"b\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[20,0,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"intersect\",\"targets\":[\"a\",\"b\"]}]",
+  "wallS": 0.4,
+  "status": "refused",
+  "sentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_a came back",
+  "line": "SolidCraft/translator refused: \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_a came back\"; oracle: OCCT OCCT threw: undefined; brep-rs refused \"combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it.\"",
+  "short": "dis-keep-face-touch: refused \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_a came back\"",
+  "brepSays": "combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it."
+ },
+ {
+  "id": "dis-keep-edge-touch",
+  "feature": "empty intersection",
+  "source": "ModelDoc [{\"id\":\"a\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[0,0,0]},{\"id\":\"b\",\"kind\":\"box\",\"size\":[20,20,20],\"center\":[20,20,0]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"intersect\",\"targets\":[\"a\",\"b\"]}]",
+  "wallS": 0.4,
+  "status": "refused",
+  "sentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_a came back",
+  "line": "SolidCraft/translator refused: \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_a came back\"; oracle: OCCT OCCT threw: undefined; brep-rs refused \"combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it.\"",
+  "short": "dis-keep-edge-touch: refused \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_a came back\"",
+  "brepSays": "combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it."
+ },
+ {
+  "id": "dis-keep-curved",
+  "feature": "empty intersection",
+  "source": "const a = sphere(16,{at:[0,0,0]}); const b = cylinder(10,20,{at:[30,0,0]}); keep(a,b)",
+  "wallS": 10.5,
+  "status": "refused",
+  "sentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_ball1 came back",
+  "line": "SolidCraft/translator refused: \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_ball1 came back\"; oracle: OCCT OCCT threw: undefined; brep-rs refused \"combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it.\"",
+  "short": "dis-keep-curved: refused \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_ball1 came back\"",
+  "brepSays": "combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it."
+ },
+ {
+  "id": "dis-keep-three-pairwise-overlap",
+  "feature": "empty intersection",
+  "source": "const a = box(20,20,20,{at:[0,0,0]}); const b = box(20,20,20,{at:[15,0,0]}); const c = box(20,20,20,{at:[30,0,0]}); keep(a,b,c)",
+  "wallS": 0.4,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT oracle: OCCT threw: undefined; but SolidCraft built a solid of volume 2000; SolidCraft vol 2000 faces 6; brep-rs refused \"combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it.\"",
+  "flags": [
+   "silent wrong solid"
+  ],
+  "short": "dis-keep-three-pairwise-overlap: wrong OCCT oracle: OCCT threw: undefined; but SolidCraft built a solid of volume 2000",
+  "brepSays": "combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it."
+ },
+ {
+  "id": "emp-cut-total",
+  "feature": "empty intersection",
+  "source": "const a = box(10,10,10,{at:[0,0,0]}); const b = box(40,40,40,{at:[0,0,0]}); cut(a,b)",
+  "wallS": 0.4,
+  "status": "refused",
+  "sentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back",
+  "line": "SolidCraft/translator refused: \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back\"; oracle: OCCT OCCT threw: undefined; brep-rs refused \"combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it.\"",
+  "short": "emp-cut-total: refused \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back\"",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "emp-cut-identical",
+  "feature": "empty intersection",
+  "source": "const a = box(20,20,20,{at:[0,0,0]}); const b = box(20,20,20,{at:[0,0,0]}); cut(a,b)",
+  "wallS": 0.4,
+  "status": "refused",
+  "sentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back",
+  "line": "SolidCraft/translator refused: \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back\"; oracle: OCCT OCCT threw: undefined; brep-rs refused \"combine op1: the two solids are the same shape in the same place, so cutting one from the other leaves nothing (an empty solid) -- op1 is shown without it.\"",
+  "short": "emp-cut-identical: refused \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back\"",
+  "brepSays": "combine op1: the two solids are the same shape in the same place, so cutting one from the other leaves nothing (an empty solid) -- op1 is shown without it."
+ },
+ {
+  "id": "emp-cut-cyl-total",
+  "feature": "empty intersection",
+  "source": "const a = cylinder(10,10,{at:[0,0,0]}); const b = cylinder(16,20,{at:[0,0,0]}); cut(a,b)",
+  "wallS": 1.5,
+  "status": "refused",
+  "sentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cyl1 came back",
+  "line": "SolidCraft/translator refused: \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cyl1 came back\"; oracle: OCCT OCCT threw: undefined; brep-rs refused \"combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it.\"",
+  "short": "emp-cut-cyl-total: refused \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cyl1 came back\"",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "emp-cut-three-total",
+  "feature": "empty intersection",
+  "source": "const a = box(20,20,20,{at:[0,0,0]}); const b = box(20,20,10,{at:[0,0,5]}); const c = box(20,20,10,{at:[0,0,-5]}); cut(a,b,c)",
+  "wallS": 0.5,
+  "status": "refused",
+  "sentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back",
+  "line": "SolidCraft/translator refused: \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back\"; oracle: OCCT OCCT threw: undefined; brep-rs refused \"combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it.\"",
+  "short": "emp-cut-three-total: refused \"op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back\"",
+  "brepSays": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+ },
+ {
+  "id": "emp-keep-identical",
+  "feature": "empty intersection",
+  "source": "const a = box(20,20,20,{at:[0,0,0]}); const b = box(20,20,20,{at:[0,0,0]}); keep(a,b)",
+  "wallS": 0.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 8000 area 2400 faces 6 solids 1 | SolidCraft vol 8000 area 2400 faces 6 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 9.4e-18 dArea 1.9e-16 | brep-rs dVol 1.1e-16 | closed form 8000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "emp-keep-identical: supported; vol OCCT 8000 SC 8000 (d 2e-16), area d 2e-16, bbox d 0e+0, faces O/SC 6/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "emp-keep-contained",
+  "feature": "empty intersection",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(10,10,10,{at:[0,0,0]}); keep(a,b)",
+  "wallS": 0.4,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 1000 area 600 faces 6 solids 1 | SolidCraft vol 1000 area 600 faces 6 bodies 1 shells 1 | dVol 2.3e-16 dBbox 0.0e+0 dCom 9.4e-18 dArea 1.9e-16 | brep-rs dVol 1.1e-16 | closed form 1000 (SolidCraft off by 0.0e+0, OCCT off by 2.3e-16)",
+  "flags": [],
+  "short": "emp-keep-contained: supported; vol OCCT 1000 SC 1000 (d 2e-16), area d 2e-16, bbox d 0e+0, faces O/SC 6/6, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "emp-keep-contained-sph",
+  "feature": "empty intersection",
+  "source": "const a = box(40,40,40,{at:[0,0,0]}); const b = sphere(20,{at:[0,0,0]}); keep(a,b)",
+  "wallS": 11.5,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 4188.7902 area 1256.6371 faces 1 solids 1 | SolidCraft vol 4188.4931 area 1256.5933 faces 1 bodies 1 shells 1 | dVol 7.1e-5 dBbox 0.0e+0 dCom 1.1e-13 dArea 3.5e-5 | brep-rs dVol 4.3e-16 | closed form 4188.7902 (SolidCraft off by 7.1e-5, OCCT off by 0.0e+0)",
+  "flags": [],
+  "short": "emp-keep-contained-sph: supported; vol OCCT 4188.7902 SC 4188.4931 (d 7e-5), area d 3e-5, bbox d 0e+0, faces O/SC 1/1, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "split-cut-slot-two-pieces",
+  "feature": "result with more than one solid",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(10,60,30,{at:[0,0,0]}); cut(a,b)",
+  "wallS": 0.4,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 24000 area 6800 faces 12 solids 2 | SolidCraft vol 12000 area 3400 faces 6 bodies 1 shells 1 | dVol 5.0e-1 dBbox 1.3e+0 dCom 2.1e-1 dArea 5.0e-1 | brep-rs dVol 0.0e+0 | closed form 24000 (SolidCraft off by 5.0e-1, OCCT off by 0.0e+0) | KERNEL TOTAL (all bodies in the session) vol 24000 faces 12 bodies 2 matches OCCT; the translator reports only the target's name and so DROPS the other piece(s): the student would see 12000 instead of 24000",
+  "flags": [
+   "silent wrong solid",
+   "translator drops split-off bodies"
+  ],
+  "short": "split-cut-slot-two-pieces: wrong; vol OCCT 24000 SC 12000 (d 5e-1), area d 5e-1, bbox d 1e+0, faces O/SC 12/6, shells O/SC 2/1",
+  "brepSays": null
+ },
+ {
+  "id": "split-cut-ring-pieces",
+  "feature": "result with more than one solid",
+  "source": "const a = cylinder(30,10,{at:[0,0,0]}); const b = box(40,4,20,{at:[0,0,0]}); cut(a,b)",
+  "wallS": 1.7,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 5872.1486 area 2631.3113 faces 8 solids 2 | SolidCraft vol 2935.891 area 1315.6129 faces 4 bodies 1 shells 1 | dVol 5.0e-1 dBbox 1.1e+0 dCom 1.7e-1 dArea 5.0e-1 | brep-rs dVol 6.2e-16 | KERNEL TOTAL (all bodies in the session) vol 5871.782 faces 8 bodies 2 matches OCCT; the translator reports only the target's name and so DROPS the other piece(s): the student would see 2935.891 instead of 5872.1486",
+  "flags": [
+   "silent wrong solid",
+   "translator drops split-off bodies"
+  ],
+  "short": "split-cut-ring-pieces: wrong; vol OCCT 5872.1486 SC 2935.891 (d 5e-1), area d 5e-1, bbox d 1e+0, faces O/SC 8/4, shells O/SC 2/1",
+  "brepSays": null
+ },
+ {
+  "id": "split-keep-two-pieces",
+  "feature": "result with more than one solid",
+  "source": "const a = box(60,20,20,{at:[0,0,0]}); const b = cylinder(16,30,{at:[-20,0,0]}); const c = cylinder(16,30,{at:[20,0,0]}); const d = join(b,c); keep(a,d)",
+  "wallS": 4.5,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 8042.4772 area 2814.867 faces 6 solids 2 | SolidCraft vol 4020.7848 area 1407.3598 faces 3 bodies 1 shells 1 | dVol 5.0e-1 dBbox 1.4e+0 dCom 3.2e-1 dArea 5.0e-1 | brep-rs dVol 3.4e-16 | closed form 8042.4772 (SolidCraft off by 5.0e-1, OCCT off by 0.0e+0) | KERNEL TOTAL (all bodies in the session) vol 8041.5697 faces 6 bodies 2 matches OCCT; the translator reports only the target's name and so DROPS the other piece(s): the student would see 4020.7848 instead of 8042.4772",
+  "flags": [
+   "silent wrong solid",
+   "translator drops split-off bodies"
+  ],
+  "short": "split-keep-two-pieces: wrong; vol OCCT 8042.4772 SC 4020.7848 (d 5e-1), area d 5e-1, bbox d 1e+0, faces O/SC 6/3, shells O/SC 2/1",
+  "brepSays": null
+ },
+ {
+  "id": "join-bridge",
+  "feature": "join(a,b,c): three operands (targets[2+])",
+  "source": "const a = box(10,10,10,{at:[0,0,0]}); const c = box(10,10,10,{at:[40,0,0]}); const b = box(50,6,6,{at:[20,0,0]}); join(a,c,b)",
+  "wallS": 0.7,
+  "status": "supported",
+  "sentence": null,
+  "line": "OCCT vol 3080 area 1848 faces 18 solids 1 | SolidCraft vol 3080 area 1848 faces 16 bodies 1 shells 1 | dVol 3.0e-16 dBbox 0.0e+0 dCom 6.8e-17 dArea 0.0e+0 | brep-rs dVol 1.5e-16 | closed form 3080 (SolidCraft off by 0.0e+0, OCCT off by 3.0e-16)",
+  "flags": [],
+  "short": "join-bridge: supported; vol OCCT 3080 SC 3080 (d 3e-16), area d 0e+0, bbox d 0e+0, faces O/SC 18/16, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "keep-four",
+  "feature": "keep(a,b,c): three operands",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(30,40,{at:[0,0,0]}); const c = box(20,60,60,{at:[0,0,0]}); const d = box(60,20,60,{at:[0,0,0]}); keep(a,b,c,d)",
+  "wallS": 3,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 8000 area 2400 faces 6 solids 1 | SolidCraft vol 24057.668 area 5550.5173 faces 18 bodies 1 shells 1 | dVol 2.0e+0 dBbox 1.0e+0 dCom 2.4e-14 dArea 1.3e+0 | brep-rs dVol 0.0e+0 | disagreement: face-type counts unexplained; vol/bbox beyond 0.0003; area",
+  "flags": [
+   "silent wrong solid"
+  ],
+  "short": "keep-four: wrong; vol OCCT 8000 SC 24057.668 (d 2e+0), area d 1e+0, bbox d 1e+0, faces O/SC 6/18, shells O/SC 1/1",
+  "brepSays": null
+ },
+ {
+  "id": "split-then-cut-other-piece",
+  "feature": "result with more than one solid",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const slot = box(10,60,30,{at:[0,0,0]}); const c = cylinder(8,40,{at:[12,0,0]}); const u = cut(a,slot); cut(u,c)",
+  "wallS": 1.7,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 22994.69 area 7202.1239 faces 13 solids 2 | SolidCraft vol 10994.857 area 3802.1197 faces 7 bodies 1 shells 1 | dVol 5.2e-1 dBbox 1.3e+0 dCom 2.2e-1 dArea 4.7e-1 | brep-rs dVol 0.0e+0 | closed form 22994.69 (SolidCraft off by 5.2e-1, OCCT off by 1.6e-16) | KERNEL TOTAL (all bodies in the session) vol 22994.857 faces 13 bodies 2 matches OCCT; the translator reports only the target's name and so DROPS the other piece(s): the student would see 10994.857 instead of 22994.69",
+  "flags": [
+   "silent wrong solid",
+   "translator drops split-off bodies"
+  ],
+  "short": "split-then-cut-other-piece: wrong; vol OCCT 22994.69 SC 10994.857 (d 5e-1), area d 5e-1, bbox d 1e+0, faces O/SC 13/7, shells O/SC 2/1",
+  "brepSays": null
+ },
+ {
+  "id": "split-then-join-other-piece",
+  "feature": "result with more than one solid",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const slot = box(10,60,30,{at:[0,0,0]}); const d = box(10,10,10,{at:[20,0,15]}); const u = cut(a,slot); join(u,d)",
+  "wallS": 0.7,
+  "status": "wrong",
+  "sentence": null,
+  "line": "OCCT vol 25000 area 7300 faces 18 solids 2 | SolidCraft vol 13000 area 3900 faces 12 bodies 1 shells 1 | dVol 4.8e-1 dBbox 1.3e+0 dCom 1.8e-1 dArea 4.7e-1 | brep-rs dVol 0.0e+0 | closed form 25000 (SolidCraft off by 4.8e-1, OCCT off by 0.0e+0) | KERNEL TOTAL (all bodies in the session) vol 25000 faces 18 bodies 2 matches OCCT; the translator reports only the target's name and so DROPS the other piece(s): the student would see 13000 instead of 25000",
+  "flags": [
+   "silent wrong solid",
+   "translator drops split-off bodies"
+  ],
+  "short": "split-then-join-other-piece: wrong; vol OCCT 25000 SC 13000 (d 5e-1), area d 5e-1, bbox d 1e+0, faces O/SC 18/12, shells O/SC 2/1",
+  "brepSays": null
+ }
+]

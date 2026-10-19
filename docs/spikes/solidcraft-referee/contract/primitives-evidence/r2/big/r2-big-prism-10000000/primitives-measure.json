@@ -1,0 +1,57 @@
+[
+ {
+  "id": "r2-big-prism-10000000",
+  "feature": "oversize",
+  "note": "",
+  "script": "prism(6, 10000000, 10000000);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 5000000,
+     "height": 10000000,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 649519052838329000000,
+  "occt": {
+   "volume": 649519052838329000000,
+   "com": [
+    -8.105179202101772e-11,
+    -2.3202696438797266e-12,
+    0
+   ],
+   "bbox": [
+    -5000000,
+    -4330127.018922193,
+    -5000000,
+    5000000,
+    4330127.018922194,
+    5000000
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "refused": "prism prism1: it has a size or position of 1.000e7, past the 1e6 brep-rs builds exactly -- prism1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "prism1 (prism): solidcraft refused it -- solid.extrude: invalid input: end = 10000000"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 74
+ }
+]

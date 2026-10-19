@@ -1,0 +1,22 @@
+{
+ "id": "r3f-h-27",
+ "outcome": "built",
+ "volume": 22707.866316495227,
+ "faces": 8,
+ "bbox": [
+  -20,
+  -15,
+  -10.000000000000005,
+  20,
+  15,
+  10.000000000000007
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "hole",
+  "fillet"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":30,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":4.5,\"height\":22,\"base\":[1.7,2,-11],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}},{\"command\":\"solid.chamfer\",\"params\":{\"edges\":[[0,-15,10]],\"distance\":1,\"body\":\"b_box1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

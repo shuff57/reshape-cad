@@ -1,0 +1,1 @@
+fzc1-11-boxC-top-cone-180                REFUSED  occtV 72000.0000 | tr-occt dV - dBb - dCom - F o/b/t 6/-/- | brep-occt dV -    | TRUCK REFUSED: groove1 (groove): the ring does not reach the part, so it would cut nothing. | BREP REFUSED: groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it. | ms 17 cpu 70

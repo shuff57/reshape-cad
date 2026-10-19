@@ -1,0 +1,21 @@
+{
+ "id": "sf6-8-side-49.5",
+ "outcome": "built",
+ "volume": 20.692764244374697,
+ "faces": 6,
+ "bbox": [
+  5.029999999999999,
+  8.085628201710788,
+  -1.1546319456101628e-14,
+  7.360000000000001,
+  13.250000000000002,
+  10.07537904420041
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[-4.1,0,0],\"x_dir\":[0,1,0],\"y_dir\":[1,0,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[12.45,9.13],[13.25,9.13],[13.25,11.46],[12.45,11.46]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-49.5,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

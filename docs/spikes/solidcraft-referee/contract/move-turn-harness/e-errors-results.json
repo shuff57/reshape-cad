@@ -1,0 +1,451 @@
+{
+ "turn/sketch": {
+  "errors": [
+   {
+    "message": "turn() needs a shape: turn(shape, [rx, ry, rz]).",
+    "line": 3
+   }
+  ],
+  "kinds": [
+   "sketch"
+  ]
+ },
+ "turn/plane-value": {
+  "errors": [
+   {
+    "message": "turn() needs a shape: turn(shape, [rx, ry, rz]).",
+    "line": 2
+   }
+  ],
+  "kinds": [
+   "datum"
+  ]
+ },
+ "turn/sphere": {
+  "errors": [],
+  "kinds": [
+   "sphere"
+  ]
+ },
+ "turn/sphere-bad-angles": {
+  "errors": [
+   {
+    "message": "turn's angles needs three numbers, like [x, y, z]. You gave it a list of 2.",
+    "line": 2
+   }
+  ],
+  "kinds": [
+   "sphere"
+  ]
+ },
+ "turn/box-two-angles": {
+  "errors": [
+   {
+    "message": "turn's angles needs three numbers, like [x, y, z]. You gave it a list of 2.",
+    "line": 2
+   }
+  ],
+  "kinds": [
+   "box"
+  ]
+ },
+ "turn/box-string-angle": {
+  "errors": [
+   {
+    "message": "turn's angles y has to be a number, and you gave it the text \"20\".",
+    "line": 2
+   }
+  ],
+  "kinds": [
+   "box"
+  ]
+ },
+ "turn/box-nan": {
+  "errors": [
+   {
+    "message": "turn's angles y has to be a number, and you gave it NaN.",
+    "line": 2
+   }
+  ],
+  "kinds": [
+   "box"
+  ]
+ },
+ "turn/box-infinity": {
+  "errors": [
+   {
+    "message": "turn's angles x has to be a number, and you gave it Infinity.",
+    "line": 2
+   }
+  ],
+  "kinds": [
+   "box"
+  ]
+ },
+ "turn/extra-arg": {
+  "errors": [
+   {
+    "message": "turn() takes a shape and a list of angles; the third argument (5) was ignored.",
+    "line": 2
+   }
+  ],
+  "kinds": [
+   "box"
+  ]
+ },
+ "turn/not-a-shape": {
+  "errors": [
+   {
+    "message": "turn() needs a shape: turn(shape, [rx, ry, rz]).",
+    "line": 1
+   }
+  ],
+  "kinds": []
+ },
+ "turn/twice-primitive": {
+  "errors": [],
+  "kinds": [
+   "box[0,20,0]"
+  ]
+ },
+ "turn/prism": {
+  "errors": [],
+  "kinds": [
+   "prism",
+   "rotate[0,30,0]"
+  ]
+ },
+ "turn/wedge": {
+  "errors": [],
+  "kinds": [
+   "wedge",
+   "rotate[0,30,0]"
+  ]
+ },
+ "move/sketch": {
+  "errors": [
+   {
+    "message": "move() needs a shape: move(shape, [x, y, z]).",
+    "line": 3
+   }
+  ],
+  "kinds": [
+   "sketch"
+  ]
+ },
+ "move/two-numbers": {
+  "errors": [
+   {
+    "message": "move's offset needs three numbers, like [x, y, z]. You gave it a list of 2.",
+    "line": 2
+   }
+  ],
+  "kinds": [
+   "box"
+  ]
+ },
+ "move/number-not-list": {
+  "errors": [
+   {
+    "message": "move's offset needs three numbers, like [x, y, z]. You gave it 5.",
+    "line": 2
+   }
+  ],
+  "kinds": [
+   "box"
+  ]
+ },
+ "move/unknown-option": {
+  "errors": [
+   {
+    "message": "move has no option called \"copies\". It takes copy.",
+    "line": 2
+   }
+  ],
+  "kinds": [
+   "box"
+  ]
+ },
+ "move/copy-string": {
+  "errors": [],
+  "kinds": [
+   "box",
+   "move"
+  ]
+ },
+ "move/nan": {
+  "errors": [
+   {
+    "message": "move's offset y has to be a number, and you gave it NaN.",
+    "line": 2
+   }
+  ],
+  "kinds": [
+   "box"
+  ]
+ },
+ "move/not-a-shape": {
+  "errors": [
+   {
+    "message": "move() needs a shape: move(shape, [x, y, z]).",
+    "line": 1
+   }
+  ],
+  "kinds": []
+ },
+ "param/move": {
+  "errors": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "offset": [
+     12,
+     -3,
+     0
+    ]
+   }
+  ],
+  "params": [
+   "box1_width=10",
+   "box1_depth=10",
+   "box1_height=10",
+   "box1_x=0",
+   "box1_y=0",
+   "box1_z=0",
+   "move1_x=12",
+   "move1_y=-3",
+   "move1_z=0"
+  ],
+  "named": [
+   "dx=12",
+   "dy=-3"
+  ]
+ },
+ "param/move+values": {
+  "errors": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "offset": [
+     40,
+     9,
+     0
+    ]
+   }
+  ],
+  "params": [
+   "box1_width=10",
+   "box1_depth=10",
+   "box1_height=10",
+   "box1_x=0",
+   "box1_y=0",
+   "box1_z=0",
+   "move1_x=40",
+   "move1_y=9",
+   "move1_z=0"
+  ],
+  "named": [
+   "dx=12",
+   "dy=-3"
+  ]
+ },
+ "param/turn-primitive": {
+  "errors": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "rotate": [
+     30,
+     40,
+     50
+    ]
+   }
+  ],
+  "params": [
+   "box1_width=10",
+   "box1_depth=10",
+   "box1_height=10",
+   "box1_x=0",
+   "box1_y=0",
+   "box1_z=0",
+   "box1_rx=30",
+   "box1_ry=40",
+   "box1_rz=50"
+  ],
+  "named": [
+   "rx=30",
+   "ry=40",
+   "rz=50"
+  ]
+ },
+ "param/turn-primitive+values": {
+  "errors": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "rotate": [
+     75,
+     -20,
+     10
+    ]
+   }
+  ],
+  "params": [
+   "box1_width=10",
+   "box1_depth=10",
+   "box1_height=10",
+   "box1_x=0",
+   "box1_y=0",
+   "box1_z=0",
+   "box1_rx=75",
+   "box1_ry=-20",
+   "box1_rz=10"
+  ],
+  "named": [
+   "rx=30",
+   "ry=40",
+   "rz=50"
+  ]
+ },
+ "param/turn-derived": {
+  "errors": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole"
+   },
+   {
+    "id": "turn1",
+    "kind": "rotate",
+    "angles": [
+     30,
+     40,
+     50
+    ]
+   }
+  ],
+  "params": [
+   "box1_width=30",
+   "box1_depth=20",
+   "box1_height=10",
+   "box1_x=0",
+   "box1_y=0",
+   "box1_z=0",
+   "hole1_diameter=4",
+   "hole1_depth=12",
+   "hole1_x=0",
+   "hole1_y=0",
+   "turn1_rx=30",
+   "turn1_ry=40",
+   "turn1_rz=50"
+  ],
+  "named": [
+   "rx=30",
+   "ry=40",
+   "rz=50"
+  ]
+ },
+ "param/turn-derived+values": {
+  "errors": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole"
+   },
+   {
+    "id": "turn1",
+    "kind": "rotate",
+    "angles": [
+     75,
+     -20,
+     10
+    ]
+   }
+  ],
+  "params": [
+   "box1_width=30",
+   "box1_depth=20",
+   "box1_height=10",
+   "box1_x=0",
+   "box1_y=0",
+   "box1_z=0",
+   "hole1_diameter=4",
+   "hole1_depth=12",
+   "hole1_x=0",
+   "hole1_y=0",
+   "turn1_rx=75",
+   "turn1_ry=-20",
+   "turn1_rz=10"
+  ],
+  "named": [
+   "rx=30",
+   "ry=40",
+   "rz=50"
+  ]
+ },
+ "param/turn-sphere": {
+  "errors": [],
+  "features": [
+   {
+    "id": "ball1",
+    "kind": "sphere"
+   }
+  ],
+  "params": [
+   "ball1_radius=10",
+   "ball1_x=0",
+   "ball1_y=0",
+   "ball1_z=0",
+   "rx=30"
+  ],
+  "named": [
+   "rx=30"
+  ]
+ },
+ "param/turn-literal-equal": {
+  "errors": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "rotate": [
+     30,
+     40,
+     50
+    ]
+   }
+  ],
+  "params": [
+   "box1_width=10",
+   "box1_depth=10",
+   "box1_height=10",
+   "box1_x=0",
+   "box1_y=0",
+   "box1_z=0",
+   "box1_rx=30",
+   "box1_ry=40",
+   "box1_rz=50"
+  ],
+  "named": []
+ }
+}

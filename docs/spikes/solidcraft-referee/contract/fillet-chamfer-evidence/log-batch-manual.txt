@@ -1,0 +1,6 @@
+bm-circle-r1                   n=1 batch 27529.5881 f9 | occtSim 27529.5779 f9 | occtSeq 27529.5779 f9 | scSeq REFUSED@-2 | d(batch,sim) 3.7e-7 d(batch,fc) - 
+bm-circle-r2                   n=1 batch 27487.0151 f9 | occtSim 27487.0181 f9 | occtSeq 27487.0181 f9 | scSeq REFUSED@-2 | d(batch,sim) 1.1e-7 d(batch,fc) - 
+bm-circle-d1                   n=1 batch 27511.0876 f9 | occtSim 27510.8998 f9 | occtSeq 27510.8998 f9 | scSeq REFUSED@-2 | d(batch,sim) 6.8e-6 d(batch,fc) - 
+bm-circle-d2                   n=1 batch 27409.4773 f9 | occtSim 27409.3217 f9 | occtSeq 27409.3217 f9 | scSeq REFUSED@-2 | d(batch,sim) 5.7e-6 d(batch,fc) - 
+bm-L-r1                        n=6 batch 28210.7209 f19 | occtSim 28210.7404 f19 | occtSeq 28213.9366 f19 | scSeq REFUSED@-2 | d(batch,sim) 6.9e-7 d(batch,fc) - 
+bm-L-d1                        n=6 batch 28192.6667 f19 | occtSim 28192.6667 f19 | occtSeq 28200.3333 f19 | scSeq REFUSED@-2 | d(batch,sim) 1.3e-16 d(batch,fc) - 

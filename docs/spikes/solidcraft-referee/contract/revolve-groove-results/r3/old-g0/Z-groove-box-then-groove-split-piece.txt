@@ -1,0 +1,1 @@
+Z-groove-box-then-groove-split-piece     REFUSED  occtV 10765.3085 | tr-occt dV - dBb - dCom - F o/b/t 30/26/- | brep-occt dV 9.3e-15    | TRUCK REFUSED: groove2 (groove): groove1 was left in 3 separate pieces, and a groove cuts one piece, so cut before the part is split.  | ms 6627 cpu 6759

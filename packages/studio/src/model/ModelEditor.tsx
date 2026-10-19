@@ -21,17 +21,13 @@
 // row at the end for fixing mistakes" is one easy-to-teach unit, and there is
 // no reach-distance problem here worth optimizing away from that.
 
+import { SolidIcon } from '../icons/SolidIcon.js';
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { ReactNode } from 'react';
 import {
-  Box as BoxIcon,
   Circle,
-  Cylinder as CylIcon,
-  Cone as ConeIcon,
-  Torus as TorusIcon,
   Combine,
-  Scissors,
   SquareDashedBottom,
   PenLine,
   MoveDown,
@@ -46,22 +42,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Search,
-  Disc3,
-  Layers,
-  FlipHorizontal2,
-  FlipHorizontal,
-  FlipVertical2,
-  MoveHorizontal,
-  RefreshCw,
-  CircleDot,
   Grid2x2,
   PackageOpen,
   Move as MoveIcon,
   Copy as CopyIcon,
-  SquareRoundCorner,
-  Octagon,
-  Save,
-  FolderOpen,
   Download,
   Eraser,
   ArrowLeft,
@@ -254,11 +238,11 @@ export interface ContextActions {
 }
 
 function shapeIcon(kind: ShapeKind) {
-  if (kind === 'box') return <BoxIcon size={14} />;
-  if (kind === 'cylinder') return <CylIcon size={14} />;
-  if (kind === 'cone') return <ConeIcon size={14} />;
-  if (kind === 'torus') return <TorusIcon size={14} />;
-  return <Circle size={14} />;
+  if (kind === 'box') return <SolidIcon id="3d-box" size={16} />;
+  if (kind === 'cylinder') return <SolidIcon id="3d-cylinder" size={16} />;
+  if (kind === 'cone') return <SolidIcon id="3d-cone" size={16} />;
+  if (kind === 'torus') return <SolidIcon id="3d-torus" size={16} />;
+  return <SolidIcon id="3d-sphere" size={16} />;
 }
 function shapeLabel(kind: ShapeKind) {
   return kind === 'box' ? 'Box'
@@ -270,8 +254,8 @@ function shapeLabel(kind: ShapeKind) {
 const SHAPE_KINDS: ShapeKind[] = ['box', 'cylinder', 'sphere', 'cone', 'torus'];
 
 function boolIcon(op: BoolOp) {
-  if (op === 'union') return <Combine size={14} />;
-  if (op === 'subtract') return <Scissors size={14} />;
+  if (op === 'union') return <SolidIcon id="3d-combine" size={16} />;
+  if (op === 'subtract') return <SolidIcon id="3d-cut" size={16} />;
   return <SquareDashedBottom size={14} />;
 }
 /** Item P: the same inset-from-the-side conversion generatedParams()/
@@ -307,7 +291,7 @@ function roundLabel(style: RoundStyle) {
   return style === 'fillet' ? 'Round' : 'Bevel';
 }
 function roundIcon(style: RoundStyle) {
-  return style === 'fillet' ? <SquareRoundCorner size={14} /> : <Octagon size={14} />;
+  return <SolidIcon id={style === 'fillet' ? '3d-fillet-3d' : '3d-chamfer'} size={16} />;
 }
 // `edgePicked` is `pickedEdgeUsable` at the call site: round() tries the
 // single-edge Fillet path FIRST whenever that is true (see round()'s own
@@ -325,7 +309,7 @@ function roundDescription(style: RoundStyle, edgePicked: boolean) {
 const ROUND_STYLES: RoundStyle[] = ['fillet', 'chamfer'];
 
 function patternIcon(mode: PatternMode) {
-  return mode === 'linear' ? <MoveHorizontal size={14} /> : <RefreshCw size={14} />;
+  return <SolidIcon id={mode === 'linear' ? '3d-pattern' : '3d-pattern-circ'} size={16} />;
 }
 function patternLabel(mode: PatternMode) {
   return mode === 'linear' ? 'Repeat' : 'Repeat Around';
@@ -333,7 +317,7 @@ function patternLabel(mode: PatternMode) {
 const PATTERN_MODES: PatternMode[] = ['linear', 'circular'];
 
 function moveIcon(copy: boolean) {
-  return copy ? <CopyIcon size={14} /> : <MoveIcon size={14} />;
+  return copy ? <CopyIcon size={14} /> : <SolidIcon id="3d-transform" size={16} />;
 }
 function moveLabel(copy: boolean) {
   return copy ? 'Copy' : 'Move';
@@ -347,9 +331,8 @@ function mirrorPlaneLabel(plane: SketchPlane) {
   return plane === 'yz' ? 'Left-Right' : plane === 'xz' ? 'Front-Back' : 'Top-Bottom';
 }
 function mirrorPlaneIcon(plane: SketchPlane) {
-  return plane === 'yz' ? <FlipHorizontal2 size={14} />
-    : plane === 'xz' ? <FlipHorizontal size={14} />
-    : <FlipVertical2 size={14} />;
+  void plane;
+  return <SolidIcon id="3d-mirror" size={16} />;
 }
 function mirrorPlaneTitle(plane: SketchPlane) {
   return plane === 'yz' ? 'Mirror left to right (the real name: the yz plane)'
@@ -1720,7 +1703,7 @@ export default function ModelEditor({
                     disabled={chosen.length !== 1 || chosen[0]?.kind !== 'sketch'}
                     title="Spin the selected sketch around to make a solid"
                   >
-                    <Disc3 size={14} /> Spin
+                    <SolidIcon id="3d-revolve" size={16} /> Spin
                   </button>
                 )}
                 {matches('Blend') && (
@@ -1729,7 +1712,7 @@ export default function ModelEditor({
                     disabled={chosen.length !== 2 || chosen.some((c) => c.kind !== 'sketch')}
                     title="Skin two sketches together into one tapered solid"
                   >
-                    <Layers size={14} /> Blend
+                    <SolidIcon id="3d-loft" size={16} /> Blend
                   </button>
                 )}
               </div>
@@ -1774,7 +1757,7 @@ export default function ModelEditor({
                 )}
                 <FlyoutButton
                   label="Hole"
-                  icon={<CircleDot size={14} />}
+                  icon={<SolidIcon id="3d-hole" size={16} />}
                   onMain={drillHole}
                   disabled={!canSolidOp}
                   title={solidOpBlockedBy ?? 'Drill a round hole through the selected solid'}
@@ -1797,7 +1780,7 @@ export default function ModelEditor({
                 />
                 <FlyoutButton
                   label="Hollow"
-                  icon={<PackageOpen size={14} />}
+                  icon={<SolidIcon id="3d-shell" size={16} />}
                   onMain={hollow}
                   disabled={!canSolidOp}
                   title={solidOpBlockedBy ?? 'Hollow the selected solid out, leaving a wall'}
@@ -1847,7 +1830,7 @@ export default function ModelEditor({
                   />
                   <FlyoutButton
                     label="Mirror"
-                    icon={lastMirrorPlane ? mirrorPlaneIcon(lastMirrorPlane) : <FlipHorizontal2 size={14} />}
+                    icon={lastMirrorPlane ? mirrorPlaneIcon(lastMirrorPlane) : <SolidIcon id="3d-mirror" size={16} />}
                     // No remembered plane yet -- the main click opens the picker
                     // instead of guessing, the same way the caret would. Once a
                     // student has chosen once, repeating THEIR choice on click is

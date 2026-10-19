@@ -1,0 +1,15 @@
+box (control)      features box                                handles 6 size:width | size:depth | size:height | move:move x | move:move y | move:move z
+prism              features prism                              handles 0 
+wedge              features wedge                              handles 0 
+hole               features box,hole                           handles 6 size:width | size:depth | size:height | move:move x | move:move y | move:move z
+hollow             features box,shell                          handles 6 size:width | size:depth | size:height | move:move x | move:move y | move:move z
+join               features box,box,combine                    handles 12 size:width | size:depth | size:height | move:move x | move:move y | move:move z | size:width | size:depth | size:height | move:move x | move:move y | move:move z
+subtract           features box,cylinder,combine               handles 11 size:width | size:depth | size:height | move:move x | move:move y | move:move z | size:across | size:height | move:move x | move:move y | move:move z
+repeat             features box,pattern                        handles 6 size:width | size:depth | size:height | move:move x | move:move y | move:move z
+repeatAround       features box,pattern                        handles 6 size:width | size:depth | size:height | move:move x | move:move y | move:move z
+mirror             features box,mirror                         handles 6 size:width | size:depth | size:height | move:move x | move:move y | move:move z
+groove             features box,sketch,groove                  handles 10 size:width | size:depth | size:height | move:move x | move:move y | move:move z | point:corner 1 | point:corner 2 | point:corner 3 | point:corner 4
+revolve            features sketch,revolve                     handles 4 point:corner 1 | point:corner 2 | point:corner 3 | point:corner 4
+round (fillet)     features box,fillet                         handles 7 size:width | size:depth | size:height | move:move x | move:move y | move:move z | radius:round edge
+bevel              features box,fillet                         handles 7 size:width | size:depth | size:height | move:move x | move:move y | move:move z | radius:round edge
+draft              features box,draft                          handles 7 size:width | size:depth | size:height | move:move x | move:move y | move:move z | size:draft angle

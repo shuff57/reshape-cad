@@ -1,0 +1,4 @@
+expected plate volume after a r6 bore: 14869.027
+cut with keep_tools:true           {"ms":477,"bodies":[["p1",14869.215,7,1],["p2",16000,6,1],["t",3392.402,3,1]]}
+keep_tools, move tool, 2nd cut     {"ms":410,"bodies":[["p1",14869.215,7,1],["p2",14869.215,7,1]]}
+WITHOUT keep_tools, 2nd cut        {"ok":false,"ms":51,"failed":{"command":"solid.move","error":"unknown body `t`","index":4},"wallS":0.121}

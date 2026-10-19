@@ -1,0 +1,1 @@
+revolution__arc-top-round-neg-250        PASS     occtV 19472.0534 | tr-occt dV 1.9e-6 dBb 1.3e-5 dCom 1.4e-6 F o/b/t 7/7/7 | brep-occt dV 5.9e-11 | FC: occt 5.9e-11 brep 3.7e-16 truck 1.9e-6 dCom 8.8e-5 F 7     | ms 3151 cpu 3561

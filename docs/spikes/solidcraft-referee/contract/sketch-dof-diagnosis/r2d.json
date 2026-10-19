@@ -1,0 +1,297 @@
+{
+ "d1": {
+  "starts": 200,
+  "atCap300": 200,
+  "medianIterations": 300,
+  "residualMedian": 2.376e-7,
+  "residualWorst": 0.00000103,
+  "shareAbove1e7": 0.85,
+  "dimErrorMedianMm": 3.283e-9,
+  "dimErrorWorstMm": 5.15e-8,
+  "solidVolErrWorstRel_planar": 1.717e-9,
+  "tolerancePlanarBar": 1e-9
+ },
+ "d1scaled": {
+  "scale": 100000,
+  "iterations": 300,
+  "residual": 0.01019,
+  "overConstrained": true,
+  "thresholdAbs": 0.001
+ },
+ "d1scaleSweep": [
+  {
+   "scale": 1,
+   "starts": 40,
+   "falseOverConstrained": 0,
+   "worstResidual": 8.141e-7
+  },
+  {
+   "scale": 100,
+   "starts": 40,
+   "falseOverConstrained": 0,
+   "worstResidual": 0.00005466
+  },
+  {
+   "scale": 1000,
+   "starts": 40,
+   "falseOverConstrained": 0,
+   "worstResidual": 0.0007302
+  },
+  {
+   "scale": 10000,
+   "starts": 40,
+   "falseOverConstrained": 2,
+   "worstResidual": 0.001561
+  },
+  {
+   "scale": 100000,
+   "starts": 40,
+   "falseOverConstrained": 30,
+   "worstResidual": 0.02366
+  }
+ ],
+ "d3": [
+  {
+   "conflictingSecondLength": 60.0005,
+   "gapMm": 0.0005,
+   "overConstrained": false,
+   "residual": 0.00025,
+   "solvedLength": 60.00025,
+   "losingEdges": []
+  },
+  {
+   "conflictingSecondLength": 60.001,
+   "gapMm": 0.001,
+   "overConstrained": false,
+   "residual": 0.0005,
+   "solvedLength": 60.0005,
+   "losingEdges": []
+  },
+  {
+   "conflictingSecondLength": 60.002,
+   "gapMm": 0.002,
+   "overConstrained": true,
+   "residual": 0.001,
+   "solvedLength": 60.001,
+   "losingEdges": [
+    0
+   ]
+  },
+  {
+   "conflictingSecondLength": 60.01,
+   "gapMm": 0.01,
+   "overConstrained": true,
+   "residual": 0.005,
+   "solvedLength": 60.005,
+   "losingEdges": [
+    0
+   ]
+  },
+  {
+   "conflictingSecondLength": 61,
+   "gapMm": 1,
+   "overConstrained": true,
+   "residual": 0.5,
+   "solvedLength": 60.5,
+   "losingEdges": [
+    0
+   ]
+  }
+ ],
+ "d3nan": {
+  "residual": "NaN",
+  "overConstrained": false,
+  "pointsFinite": true
+ },
+ "d3inf": {
+  "residual": "Infinity",
+  "overConstrained": true,
+  "pointsFinite": true
+ },
+ "d3range": [
+  {
+   "requestedEdge": 7,
+   "result": [
+    [
+     0,
+     3.745
+    ],
+    [
+     60,
+     3.745
+    ],
+    [
+     60,
+     30
+    ],
+    [
+     0,
+     23.745
+    ]
+   ],
+   "iterations": 40,
+   "over": false
+  },
+  {
+   "requestedEdge": -1,
+   "result": [
+    [
+     0,
+     3.745
+    ],
+    [
+     60,
+     3.745
+    ],
+    [
+     60,
+     30
+    ],
+    [
+     0,
+     23.745
+    ]
+   ],
+   "iterations": 40,
+   "over": false
+  },
+  {
+   "requestedEdge": 1.5,
+   "threw": "undefined is not an object (evaluating 'pts[b][0]')"
+  }
+ ],
+ "d3script": {
+  "length(9,5)": ".length()'s edge has to be a whole number from 1 to 4 -- you gave it 9.",
+  "length(1,NaN)": ".length()'s value has to be a number, and you gave it NaN.",
+  "length(0,5)": ".length()'s edge has to be a whole number from 1 to 4 -- you gave it 0.",
+  "length(1,-5)": ".length()(): a size has to be a positive number -- got -5 for value."
+ },
+ "d5corner": {
+  "overConstrained": true,
+  "residual": 10,
+  "losingEdges": []
+ },
+ "d5X2": {
+  "added": {
+   "kind": "length",
+   "edge": 2,
+   "value": 30
+  },
+  "brepBlameRuleIdx": [
+   10
+  ],
+  "brepBlameKinds": [
+   "distance"
+  ],
+  "losingEdges": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "edgesCarryingTheConflict": "edge 1 (index 0) length 40 vs opposite edge 3 (index 2) length 30 with h/v: 2 edges"
+ },
+ "d6keys": [
+  "points",
+  "residual",
+  "iterations",
+  "overConstrained"
+ ],
+ "d6": [
+  {
+   "id": "D1-rect-lengths-lock",
+   "indepDof": 0,
+   "brepDof": 0,
+   "scDof": {
+    "dof": 0,
+    "status": "solved"
+   }
+  },
+  {
+   "id": "D2-square-by-equal",
+   "indepDof": 0,
+   "brepDof": 0,
+   "scDof": {
+    "dof": 0,
+    "status": "solved"
+   }
+  },
+  {
+   "id": "D3-right-trapezoid-parallel-perpendicular-distX",
+   "indepDof": 0,
+   "brepDof": 0,
+   "scDof": {
+    "dof": 0,
+    "status": "solved"
+   }
+  },
+  {
+   "id": "D4-rect-diagonal-distX-distY",
+   "indepDof": 0,
+   "brepDof": 0,
+   "scDof": {
+    "dof": 0,
+    "status": "solved"
+   }
+  },
+  {
+   "id": "D5-pentagon-symmetric-centre",
+   "indepDof": 0,
+   "brepDof": 0,
+   "scDof": {
+    "dof": 0,
+    "status": "solved"
+   }
+  },
+  {
+   "id": "D6-triangle-angle-120",
+   "indepDof": 0,
+   "brepDof": 0,
+   "scDof": {
+    "dof": 0,
+    "status": "solved"
+   }
+  },
+  {
+   "id": "D7-parallelogram",
+   "indepDof": 0,
+   "brepDof": 0,
+   "scDof": {
+    "dof": 0,
+    "status": "solved"
+   }
+  },
+  {
+   "id": "U1-rect-hv-lock",
+   "indepDof": 2,
+   "brepDof": 2,
+   "scDof": {
+    "dof": 2,
+    "status": "solved"
+   }
+  },
+  {
+   "id": "U2-rect-hv-only",
+   "indepDof": 4,
+   "brepDof": 4,
+   "scDof": {
+    "dof": 4,
+    "status": "solved"
+   }
+  }
+ ],
+ "d7": {
+  "singleEdgeAdded": "Edge 1 no longer has to stay 40 long so edge 1 can stay 30 long. Undo puts it back.",
+  "pairSameEdge": "Edge 1 no longer has to stay 40 long and edge 1 no longer has to stay 30 long so they can stay 20 long. Undo puts them back.",
+  "pairDifferentEdges": "Edge 3 no longer has to stay level and edge 4 no longer has to stay upright so they can meet at a right angle. Undo puts them back.",
+  "pairCornerRuleAdded": "Edge 1 no longer has to stay 40 long and edge 2 no longer has to stay 20 long so they can stay centred between corners 1 and 3. Undo puts them back.",
+  "singleCornerRuleAdded": "Edge 1 no longer has to stay 40 long so corner 5 can stay centred between corners 1 and 3. Undo puts it back.",
+  "singleLockRemoved": "Corner 1 no longer has to stay pinned in place so corner 3 can stay 30 across from corner 1. Undo puts it back.",
+  "pairLockAndLength": "Corner 1 no longer has to stay pinned in place and edge 1 no longer has to stay 40 long so they can stay 30 across from corner 1. Undo puts them back."
+ },
+ "d7callers": [
+  "/home/shuff57/Documents/GitHub/reshape-cad/packages/sketch/src/sketch-solve.ts"
+ ],
+ "d7callersScript": "NONE",
+ "d7callersStudio": ""
+}

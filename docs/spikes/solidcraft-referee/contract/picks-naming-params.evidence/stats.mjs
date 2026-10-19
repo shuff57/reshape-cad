@@ -1,0 +1,24 @@
+import { readFileSync } from 'node:fs';
+const ld = (f) => JSON.parse(readFileSync(f, 'utf8'));
+const grp = (file, pred, name) => {
+  const rows = ld(file).filter(pred);
+  const pass = rows.filter(r => r.outcome === 'PASS'), ref = rows.filter(r => r.outcome === 'REFUSED'), fail = rows.filter(r => r.outcome === 'FAIL'), se = rows.filter(r => r.scriptError), nr = rows.filter(r => r.outcome === 'NO-REFERENCE');
+  const mx = (k) => Math.max(0, ...pass.map(r => r.score?.[k] ?? 0));
+  const ctl = pass.filter(r => r.control && (r.control.rejected !== undefined || r.control.refused));
+  const rej = ctl.filter(r => r.control.rejected || r.control.refused);
+  console.log(name.padEnd(40), `n=${rows.length} PASS=${pass.length} REFUSED=${ref.length} FAIL=${fail.length} NOREF=${nr.length} scriptErr=${se.length}`, `maxDVol=${mx('dVol').toExponential(1)} maxDBbox=${mx('dBbox').toExponential(1)} maxDCom=${mx('dCom').toExponential(1)}`, `controls ${rej.length}/${ctl.length} rejected`, `faceVerdicts=${[...new Set(pass.map(r=>r.score?.faces?.verdict))]}`);
+};
+grp('resA.json', r => r.label.startsWith('hollow open'), 'A hollow open word');
+grp('resA.json', r => r.label.startsWith('draft face'), 'A draft face word');
+grp('resA.json', r => r.label.startsWith('round edge'), 'A round 12 edges');
+grp('resA.json', r => r.label.startsWith('bevel edge'), 'A bevel 12 edges');
+grp('resC1.json', r => r.label.startsWith('swept edge') && r.label.endsWith('shell open'), 'C swept shell open');
+grp('resC1.json', r => r.label.startsWith('swept edge') && r.label.endsWith('draft face'), 'C swept draft');
+grp('resC1.json', r => r.label.startsWith('round between'), 'C round between cap/swept');
+grp('resD.json', r => r.label.startsWith('edge(top, wall'), 'D edge(top,wall n)');
+grp('resD.json', r => /^edge\(wall \d, wall \d\)/.test(r.label), 'D edge(wall,wall)');
+grp('resE.json', r => !!r.label, 'E rebuild sweeps');
+const e = ld('resE.json'); console.log('E nameStable all', e.filter(r=>r.names!==undefined).every(r=>r.sameNameText), 'n', e.length, 'refused', e.filter(r=>r.outcome==='REFUSED').map(r=>r.values+':'+r.sentence?.slice(0,90)));
+const g = ld('resG.json').filter(r=>r.cls); const by = {}; for (const r of g) by[r.cls] = (by[r.cls]??0)+1; console.log('G', g.length, JSON.stringify(by));
+const ge = g.filter(r=>r.cls==='PASS'); console.log('G pass max dVol', Math.max(...ge.map(r=>r.score.dVol)).toExponential(1), 'max dCom', Math.max(...ge.filter(r=>r.score.dCom!==null).map(r=>r.score.dCom)).toExponential(1));
+const labels = [...new Set(g.map(r=>r.label))]; console.log('G labels', labels.length);

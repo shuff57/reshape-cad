@@ -1,0 +1,1 @@
+R3-sealed-bigring-90                     PASS     occtV 143057.5222 | tr-occt dV 6.4e-7 dBb 0.0e+0 dCom 1.3e-7 F o/b/t 11/11/11 | brep-occt dV 2.7e-14  | ANALYTIC 142115.0444 dTruck 6.6e-3 dOcct 6.6e-3 dBrep 6.6e-3    | ms 506 cpu 819

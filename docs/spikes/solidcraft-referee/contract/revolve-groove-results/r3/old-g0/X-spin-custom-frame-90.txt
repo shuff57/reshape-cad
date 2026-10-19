@@ -1,0 +1,1 @@
+X-spin-custom-frame-90                   PASS     occtV 7068.5835 | tr-occt dV 1.0e-4 dBb 4.4e-16 dCom 1.2e-5 F o/b/t 6/6/6 | brep-occt dV 8.4e-12  | ANALYTIC 7068.5835 dTruck 1.0e-4 dOcct 8.4e-12 dBrep 6.4e-16    | ms 289 cpu 686

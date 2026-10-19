@@ -1,0 +1,386 @@
+{
+ "generatedAt": "2026-10-17T04:44:11.300Z",
+ "url": "http://127.0.0.1:8801",
+ "probes": {
+  "A distance-pinned contact": [
+   {
+    "amp": 0,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 7.588694117544037e-10,
+    "paneWorstResidual": 7.59e-10,
+    "contactErrMm": 0.00010197219844673961,
+    "perpMinusR": -7.588694117544037e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.05,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 3.3714009362029174e-10,
+    "paneWorstResidual": 3.37e-10,
+    "contactErrMm": 0.00006742865372007713,
+    "perpMinusR": -3.3714009362029174e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.1,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 4.671774078701674e-10,
+    "paneWorstResidual": 4.67e-10,
+    "contactErrMm": 0.00007762099639469961,
+    "perpMinusR": -4.671774078701674e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.25,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 3.711013718543654e-10,
+    "paneWorstResidual": 3.71e-10,
+    "contactErrMm": 0.00006662455414698885,
+    "perpMinusR": -3.711013718543654e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.5,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 9.90087123398098e-10,
+    "paneWorstResidual": 9.9e-10,
+    "contactErrMm": 0.00010767468379922998,
+    "perpMinusR": -9.90087123398098e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.05,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 5.344542586271928e-10,
+    "paneWorstResidual": 5.34e-10,
+    "contactErrMm": 0.00008461370598683727,
+    "perpMinusR": -5.344542586271928e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.1,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 4.2574388459115653e-10,
+    "paneWorstResidual": 4.26e-10,
+    "contactErrMm": 0.00008903821359163576,
+    "perpMinusR": -3.6703617922739795e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.25,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 3.3020963741137166e-10,
+    "paneWorstResidual": 3.3e-10,
+    "contactErrMm": 0.00006774744008539556,
+    "perpMinusR": -1.2876189003918626e-10,
+    "R": 5
+   }
+  ],
+  "B Symmetric-tied contact": [
+   {
+    "amp": 0,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 7.451275152448034e-10,
+    "paneWorstResidual": 7.45e-10,
+    "contactErrMm": 0.0001159626290569456,
+    "perpMinusR": -7.451275152448034e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.05,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 6.706413202550721e-10,
+    "paneWorstResidual": 6.71e-10,
+    "contactErrMm": 0.00010910730946766773,
+    "perpMinusR": -6.706413202550721e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.1,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 6.623581683129487e-10,
+    "paneWorstResidual": 6.62e-10,
+    "contactErrMm": 0.00011125649432168198,
+    "perpMinusR": -6.623581683129487e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.25,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 4.213163151689514e-10,
+    "paneWorstResidual": 4.21e-10,
+    "contactErrMm": 0.00008164123716600464,
+    "perpMinusR": -4.213163151689514e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.5,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 4.889022520160324e-10,
+    "paneWorstResidual": 4.89e-10,
+    "contactErrMm": 0.00007569611248504172,
+    "perpMinusR": -4.889022520160324e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.05,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 7.181988337379153e-10,
+    "paneWorstResidual": 7.18e-10,
+    "contactErrMm": 0.00011401634058829934,
+    "perpMinusR": -7.181988337379153e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.1,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 5.723830298620669e-10,
+    "paneWorstResidual": 5.72e-10,
+    "contactErrMm": 0.00009967922776695686,
+    "perpMinusR": -5.723830298620669e-10,
+    "R": 5
+   },
+   {
+    "amp": 0.25,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 5.320970331013086e-10,
+    "paneWorstResidual": 5.32e-10,
+    "contactErrMm": 0.00009543589255236634,
+    "perpMinusR": -5.320970331013086e-10,
+    "R": 5
+   }
+  ],
+  "D distance-pinned contact, ARC": [
+   {
+    "amp": 0,
+    "sentence": "solid.extrude: sk_sk1_0 has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 7.667679824407969e-10,
+    "paneWorstResidual": null,
+    "contactErrMm": 0.00010626841820499192,
+    "perpMinusR": null
+   },
+   {
+    "amp": 0.05,
+    "sentence": "solid.extrude: sk_sk1_0 has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 2.645377250587444e-10,
+    "paneWorstResidual": null,
+    "contactErrMm": 0.00006288800689827648,
+    "perpMinusR": null
+   },
+   {
+    "amp": 0.1,
+    "sentence": "solid.extrude: sk_sk1_0 has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 9.436122994088691e-10,
+    "paneWorstResidual": null,
+    "contactErrMm": 0.00011400565323183072,
+    "perpMinusR": null
+   },
+   {
+    "amp": 0.25,
+    "sentence": "solid.extrude: sk_sk1_0 has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 8.718616939518142e-10,
+    "paneWorstResidual": null,
+    "contactErrMm": 0.00010157931298154588,
+    "perpMinusR": null
+   },
+   {
+    "amp": 0.5,
+    "sentence": "solid.extrude: sk_sk1_0 has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 9.628067232370086e-10,
+    "paneWorstResidual": null,
+    "contactErrMm": 0.00010568163769641624,
+    "perpMinusR": null
+   },
+   {
+    "amp": 0.05,
+    "sentence": "solid.extrude: sk_sk1_0 has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 6.595284318677841e-10,
+    "paneWorstResidual": null,
+    "contactErrMm": 0.00009418364457281556,
+    "perpMinusR": null
+   },
+   {
+    "amp": 0.1,
+    "sentence": "solid.extrude: sk_sk1_0 has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 3.175939511379511e-10,
+    "paneWorstResidual": null,
+    "contactErrMm": 0.00007655020019193537,
+    "perpMinusR": null
+   },
+   {
+    "amp": 0.25,
+    "sentence": "solid.extrude: sk_sk1_0 has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 3.0831159847366507e-10,
+    "paneWorstResidual": null,
+    "contactErrMm": 0.00006663693932666906,
+    "perpMinusR": null
+   }
+  ],
+  "A0 exact-tangent start": {
+   "refused": true,
+   "sentence": "sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (RadialDimension), k3 (Tangent); add it as a driven (reference) dimension with driven: true",
+   "text": "sketch\tstate\tsolver status\tdof\tfailing\tredundant\tmax residual\tprofiles\nsk1\tat refusal (sketch.dimension)\tsolved\t3\t[]\t[]\t0.0e+0\t1\n\tindependent rule check (phase 2 rule-check.mjs, no solver code): worst residual 0.00e+0 (none) over 4 rules\nthis is the sketch as solidcraft held it when it refused the r || id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\npull1\textrude\trefused\tpull1 (extrude): solidcraft refused it -- sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (RadialDimension), k3 (Tangent); add it as a driven (reference) dimension with driven: true"
+  },
+  "B0 exact-tangent start": {
+   "sentence": null,
+   "status": "solved",
+   "dof": 2,
+   "redundant": [],
+   "failing": [],
+   "solverMaxResidual": 8.078400171029898e-10,
+   "paneWorstResidual": 8.08e-10,
+   "contactErrMm": 5.68670359212548e-7,
+   "perpMinusR": 8.078400171029898e-10,
+   "R": 5
+  },
+  "D0 exact-tangent start, ARC": {
+   "sentence": "solid.extrude: sk_sk1_0 has no closed profiles",
+   "status": "solved",
+   "dof": 4,
+   "redundant": [],
+   "failing": [],
+   "solverMaxResidual": 1.0862422072932532e-10,
+   "paneWorstResidual": null,
+   "contactErrMm": 0.000021800713531265534,
+   "perpMinusR": null
+  },
+  "F circle-to-circle distance pin": [
+   {
+    "amp": 0,
+    "refused": true,
+    "sentence": "sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (RadialDimension), k3 (RadialDimension), k4 (Tangent); add it as a driven (reference) dimension with driven: true",
+    "text": "sketch\tstate\tsolver status\tdof\tfailing\tredundant\tmax residual\tprofiles\nsk1\tat refusal (sketch.dimension)\tsolved\t1\t[]\t[]\t5.5e-13\t2\n\tindependent rule check (phase 2 rule-check.mjs, no solver code): worst residual 5.52e-13 (tangent mm) over 5 rules\nthis is the sketch as solidcraft held it when it refus"
+   },
+   {
+    "amp": 0.05,
+    "refused": true,
+    "sentence": "sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (RadialDimension), k3 (RadialDimension), k4 (Tangent); add it as a driven (reference) dimension with driven: true",
+    "text": "sketch\tstate\tsolver status\tdof\tfailing\tredundant\tmax residual\tprofiles\nsk1\tat refusal (sketch.dimension)\tsolved\t1\t[]\t[]\t4.0e-11\t2\n\tindependent rule check (phase 2 rule-check.mjs, no solver code): worst residual 3.95e-11 (tangent mm) over 5 rules\nthis is the sketch as solidcraft held it when it refus"
+   },
+   {
+    "amp": 0.1,
+    "refused": true,
+    "sentence": "sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (RadialDimension), k3 (RadialDimension), k4 (Tangent); add it as a driven (reference) dimension with driven: true",
+    "text": "sketch\tstate\tsolver status\tdof\tfailing\tredundant\tmax residual\tprofiles\nsk1\tat refusal (sketch.dimension)\tsolved\t1\t[]\t[]\t3.4e-10\t2\n\tindependent rule check (phase 2 rule-check.mjs, no solver code): worst residual 3.40e-10 (tangent mm) over 5 rules\nthis is the sketch as solidcraft held it when it refus"
+   },
+   {
+    "amp": 0.25,
+    "refused": true,
+    "sentence": "sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (RadialDimension), k3 (RadialDimension), k4 (Tangent); add it as a driven (reference) dimension with driven: true",
+    "text": "sketch\tstate\tsolver status\tdof\tfailing\tredundant\tmax residual\tprofiles\nsk1\tat refusal (sketch.dimension)\tsolved\t1\t[]\t[]\t2.3e-11\t2\n\tindependent rule check (phase 2 rule-check.mjs, no solver code): worst residual 2.33e-11 (tangent mm) over 5 rules\nthis is the sketch as solidcraft held it when it refus"
+   },
+   {
+    "amp": 0.5,
+    "refused": true,
+    "sentence": "sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (RadialDimension), k3 (RadialDimension), k4 (Tangent); add it as a driven (reference) dimension with driven: true",
+    "text": "sketch\tstate\tsolver status\tdof\tfailing\tredundant\tmax residual\tprofiles\nsk1\tat refusal (sketch.dimension)\tsolved\t1\t[]\t[]\t1.3e-11\t2\n\tindependent rule check (phase 2 rule-check.mjs, no solver code): worst residual 1.29e-11 (tangent mm) over 5 rules\nthis is the sketch as solidcraft held it when it refus"
+   }
+  ],
+  "F0 exact-tangent start": {
+   "refused": true,
+   "sentence": "sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (RadialDimension), k3 (RadialDimension), k4 (Tangent); add it as a driven (reference) dimension with driven: true",
+   "text": "sketch\tstate\tsolver status\tdof\tfailing\tredundant\tmax residual\tprofiles\nsk1\tat refusal (sketch.dimension)\tsolved\t1\t[]\t[]\t0.0e+0\t2\n\tindependent rule check (phase 2 rule-check.mjs, no solver code): worst residual 0.00e+0 (none) over 5 rules\nthis is the sketch as solidcraft held it when it refused the r"
+  },
+  "C Symmetric pin, partner fully locked": {
+   "refused": true,
+   "sentence": "sketch.constraint.symmetry: invalid parameters for `sketch.constraint.symmetry`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+   "text": "sketch\tstate\tsolver status\tdof\tfailing\tredundant\tmax residual\tprofiles\nsk1\tat refusal (sketch.constraint.symmetry)\tsolved\nMISMATCH: solidcraft says solved; independent rule check residual 1.54e-1 mm (the refused rule is not in solidcraft's sketch)\t4\t[]\t[]\t0.0e+0\t4\n\tindependent rule check (phase 2 ru || id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\npull1\textrude\trefused\tpull1 (extrude): solidcraft refused it -- sketch.constraint.symmetry: invalid parameters for `sketch.constraint.symmetry`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)"
+  }
+ }
+}

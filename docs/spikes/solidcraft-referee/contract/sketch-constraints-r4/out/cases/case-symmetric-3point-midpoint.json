@@ -1,0 +1,82 @@
+[
+ {
+  "id": "symmetric-3point-midpoint",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:3-point",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 8.075976101854057e-13,
+      "db": 3.2298608232395054e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8640.000000006978
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.844322474026639e-13,
+      "db": 1.937561222575823e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8640.000000004185
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.4043123058077915e-13,
+      "db": 1.761405836001965e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8640.000000003805
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 5.772764982086503e-13,
+      "db": 1.9737298215558337e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8639.999999995012
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 7.657019051731805e-13,
+      "db": 7.894919286223335e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8639.999999993384
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ }
+]

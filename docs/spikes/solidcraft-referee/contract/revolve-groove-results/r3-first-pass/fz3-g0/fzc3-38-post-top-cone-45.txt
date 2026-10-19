@@ -1,0 +1,1 @@
+fzc3-38-post-top-cone-45                 PASS     occtV 37565.1204 | tr-occt dV 7.4e-5 dBb 8.9e-16 dCom 1.6e-8 F o/b/t 8/-/9 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it. | ms 6089 cpu 7005

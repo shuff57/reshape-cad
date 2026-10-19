@@ -1,0 +1,191 @@
+[
+ {
+  "label": "rect 10x10 depth4 r1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 1)",
+  "edges": 4,
+  "built": 1,
+  "refused": 3,
+  "sentences": [
+   "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4 is not built because round3 could not be built, so round4 is shown without it."
+  ],
+  "scVolShown": 11597.852573171076,
+  "occt": 11593.370204219173,
+  "occtRef": {
+   "round2": "Round 2's edge could not be found -- Round 2 is shown without it."
+  },
+  "brep": 11591.03244517641,
+  "brepRef": {},
+  "feats": "sk1:noop,pull1:built,sk2:noop,pull2:built,pocket1:built,round1:built,round2:refused,round3:refused,round4:refused"
+ },
+ {
+  "label": "rect 10x10 depth4 r0.2",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 0.2)",
+  "edges": 4,
+  "built": 1,
+  "refused": 3,
+  "sentences": [
+   "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4 is not built because round3 could not be built, so round4 is shown without it."
+  ],
+  "scVolShown": 11599.913860079598,
+  "occt": 11599.740943889958,
+  "occtRef": {
+   "round2": "Round 2's edge could not be found -- Round 2 is shown without it."
+  },
+  "brep": 11599.653569210559,
+  "brepRef": {},
+  "feats": "sk1:noop,pull1:built,sk2:noop,pull2:built,pocket1:built,round1:built,round2:refused,round3:refused,round4:refused"
+ },
+ {
+  "label": "rect 10x10 depth4 bevel 1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nbevel(part.rim(sk2), 1)",
+  "edges": 4,
+  "built": 1,
+  "refused": 3,
+  "sentences": [
+   "bevel2 is not built: bevel1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "bevel3 is not built because bevel2 could not be built, so bevel3 is shown without it.",
+   "bevel4 is not built because bevel3 could not be built, so bevel4 is shown without it."
+  ],
+  "scVolShown": 11595,
+  "occt": 11584.333333332957,
+  "occtRef": {
+   "bevel2": "Bevel 2's edge could not be found -- Bevel 2 is shown without it."
+  },
+  "brep": 11578.666666666666,
+  "brepRef": {},
+  "feats": "sk1:noop,pull1:built,sk2:noop,pull2:built,pocket1:built,bevel1:built,bevel2:refused,bevel3:refused,bevel4:refused"
+ },
+ {
+  "label": "rect 10x10 depth 8 (deep) r1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 8);\nround(part.rim(sk2), 1)",
+  "edges": 4,
+  "built": 1,
+  "refused": 3,
+  "sentences": [
+   "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4 is not built because round3 could not be built, so round4 is shown without it."
+  ],
+  "scVolShown": 11197.852573171076,
+  "occt": 11193.370204219837,
+  "occtRef": {
+   "round2": "Round 2's edge could not be found -- Round 2 is shown without it."
+  },
+  "brep": 11191.03244517641,
+  "brepRef": {},
+  "feats": "sk1:noop,pull1:built,sk2:noop,pull2:built,pocket1:built,round1:built,round2:refused,round3:refused,round4:refused"
+ },
+ {
+  "label": "triangle depth4 r1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.polygon([[12,8],[28,8],[20,22]]);\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 1)",
+  "edges": 3,
+  "built": 1,
+  "refused": 2,
+  "sentences": [
+   "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "round3 is not built because round2 could not be built, so round3 is shown without it."
+  ],
+  "scVolShown": 11548.509911714087,
+  "occt": 11544.88518028608,
+  "occtRef": {
+   "round2": "Round 2's edge could not be found -- Round 2 is shown without it."
+  },
+  "brep": 11552,
+  "brepRef": {
+   "round1": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+   "round2": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it.",
+   "round3": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round3 is shown without it."
+  },
+  "feats": "sk1:noop,pull1:built,sk2:noop,pull2:built,pocket1:built,round1:built,round2:refused,round3:refused"
+ },
+ {
+  "label": "circle pocket r1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.circle(12, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 1)",
+  "edges": 1,
+  "built": 0,
+  "refused": 1,
+  "sentences": [
+   "round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can."
+  ],
+  "scVolShown": 11547.685801419597,
+  "occt": 11539.219173687821,
+  "occtRef": {},
+  "brep": 11539.219173687823,
+  "brepRef": {},
+  "feats": "sk1:noop,pull1:built,sk2:noop,pull2:built,pocket1:built,round1:refused"
+ },
+ {
+  "label": "rounded-corner rect pocket r0.5",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(12, 12, { at: [20, 15] }); sk2.round(1, 2);\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 0.5)",
+  "edges": 4,
+  "built": 0,
+  "refused": 4,
+  "sentences": [
+   "round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can.",
+   "round2 is not built because round1 could not be built, so round2 is shown without it.",
+   "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4 is not built because round3 could not be built, so round4 is shown without it."
+  ],
+  "scVolShown": 11427.435879775798,
+  "occt": 11425.526870961436,
+  "occtRef": {
+   "round2": "Round 2's edge could not be found -- Round 2 is shown without it.",
+   "round4": "Rounding Round 4 at 0.5 would not fit its edge -- Round 4 is shown without it."
+  },
+  "brep": "no shape",
+  "brepRef": {
+   "pocket1": "combine pocket1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- pocket1 is shown without it."
+  },
+  "feats": "sk1:noop,pull1:built,sk2:noop,pull2:built,pocket1:built,round1:refused,round2:refused,round3:refused,round4:refused"
+ },
+ {
+  "label": "wall flush with plate edge (pocket x 0..10) r1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [5, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 1)",
+  "edges": 4,
+  "built": 1,
+  "refused": 3,
+  "sentences": [
+   "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4 is not built because round3 could not be built, so round4 is shown without it."
+  ],
+  "scVolShown": 11597.852573171076,
+  "occt": 11595.707963266843,
+  "occtRef": {
+   "round2": "Round 2's edge could not be found -- Round 2 is shown without it.",
+   "round4": "Round 4's edge could not be found -- Round 4 is shown without it."
+  },
+  "brep": 11600,
+  "brepRef": {
+   "round1": "round1's edge could not be found -- round1 is shown without it.",
+   "round2": "round2's edge could not be found -- round2 is shown without it.",
+   "round3": "round3's edge could not be found -- round3 is shown without it.",
+   "round4": "round4's edge could not be found -- round4 is shown without it."
+  },
+  "feats": "sk1:noop,pull1:built,sk2:noop,pull2:built,pocket1:built,round1:built,round2:refused,round3:refused,round4:refused"
+ },
+ {
+  "label": "through pocket (depth 10) r1",
+  "src": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 10);\nround(part.rim(sk2), 1)",
+  "edges": 4,
+  "built": 1,
+  "refused": 3,
+  "sentences": [
+   "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4 is not built because round3 could not be built, so round4 is shown without it."
+  ],
+  "scVolShown": 10997.852573796234,
+  "occt": 10993.370204220166,
+  "occtRef": {
+   "round2": "Round 2's edge could not be found -- Round 2 is shown without it."
+  },
+  "brep": 10991.03244517641,
+  "brepRef": {},
+  "feats": "sk1:noop,pull1:built,sk2:noop,pull2:built,pocket1:built,round1:built,round2:refused,round3:refused,round4:refused"
+ }
+]

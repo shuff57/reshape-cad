@@ -1,0 +1,23 @@
+Running as unit: run-p1903811-i1937915.scope; invocation ID: 3abce2cf69ab4132a7ff787ec2174a4e
+stale pocket uncaptured + round top|front REFUSED: round1 is not built: pull1 was already cut by pocket1, so this round would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.   | OCCT:builds V=11991.4159 BREP:builds V=11991.4159
+    names: pull1.edge[pull1.face[+z] ^ pull1.face[-y]]
+captured pocket + round top|front (control) PASS[OCCT] V=11591.410295 (OCCT 11591.415927, brep 11591.415927) dVol 4.9e-7 dBbox 8.2e-15 dCOM 1.4e-7 faces occt/truck/brep 12/12/12  
+    names: pocket1.edge[pocket1.face[+z] ^ pocket1.face[-y]]
+stale pocket uncaptured + hollow bottom  REFUSED: shell1 is not built: pull1 was already cut by pocket1, so this hollow would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.   | OCCT:builds V=2424.0000 BREP:builds V=2424.0000
+    names: pull1.face[-z]
+captured pocket + hollow bottom (control) REFUSED: Hollowing pocket1 is not supported yet because the part has inside corners (a pocket or groove) where the new wall would come out thicker than 1, so shell1 is shown without it -- hollow the plain shape first, or leave the hollow out.   | OCCT:builds V=2586.9351 BREP:brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.
+    names: pocket1.face[-z]
+stale pocket uncaptured + draft right 5  REFUSED: draft1 is not built: pull1 was already cut by pocket1, so this draft would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.   | OCCT:builds V=11868.7670 BREP:builds V=11868.7670
+    names: pull1.face[+x]
+captured pocket + draft right 5 (control) PASS[OCCT] V=11468.767005 (OCCT 11468.767005, brep 11600.000000) dVol 3.2e-16 dBbox 0.0e+0 dCOM 1.4e-16 faces occt/truck/brep 11/11/11  
+    names: pocket1.face[+x]
+stale hole uncaptured + round top|front  PASS[OCCT] V=11956.069027 (OCCT 11956.073009, brep 11956.073009) dVol 3.3e-7 dBbox 8.2e-15 dCOM 1.7e-7 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[+z] ^ pull1.face[-y]]
+captured hole + round top|front (control) PASS[OCCT] V=11956.069027 (OCCT 11956.073009, brep 11956.073009) dVol 3.3e-7 dBbox 8.2e-15 dCOM 1.7e-7 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[+z] ^ pull1.face[-y]]
+stale groove uncaptured + round top|front REFUSED: round1 is not built: box1 was already cut by groove1, so this round would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.   | OCCT:builds V=31991.4159 BREP:builds V=31991.4159
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]]
+captured groove + round top|front (control) PASS[OCCT] V=31488.769646 (OCCT 31488.761102, brep 31488.761102) dVol 2.7e-7 dBbox 5.3e-16 dCOM 1.9e-7 faces occt/truck/brep 11/10/10  
+    names: groove1.edge[groove1.face[+z] ^ groove1.face[-y]]
+stale join uncaptured + round (already guarded) REFUSED: round1 is not built: box1 was already joined by op1, so its edges can no longer be picked -- pick the edge on the result of op1 instead.   | OCCT:builds V=3995.7080 BREP:builds V=3995.7080
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]]

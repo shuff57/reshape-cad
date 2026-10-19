@@ -1,0 +1,623 @@
+{
+ "totals": {
+  "cases": 1200,
+  "mapperRefused": 150,
+  "scRefusedAtACommand": 386,
+  "scAcceptedEverything": 664,
+  "infeasibleByOracle": 239,
+  "infeasibleMapperRefused": 39,
+  "infeasibleRefusedAtCommand": 196,
+  "infeasibleAcceptedNoRefusal": 4,
+  "infeasibleAcceptedGuardFires": 3,
+  "infeasibleAcceptedGuardPasses": 1,
+  "guardFires": 34,
+  "guardFiresRuleNotHeld": 4,
+  "guardFiresCollapsed": 30,
+  "guardPasses": 630,
+  "guardFiresButOracleAlsoTiny": 24,
+  "minVsDiagDecades_ruleHeld_notGuarded": {
+   "-1": 510,
+   "-2": 120
+  },
+  "minVsDiagDecades_collapsed": {
+   "-15": 4,
+   "-4": 1,
+   "-14": 5,
+   "-11": 2,
+   "-5": 12,
+   "-6": 4,
+   "-7": 1,
+   "-12": 1
+  },
+  "smallestEdgeRatioKeptByGuard": 0.013502808089358952,
+  "largestCollapsedRatio": 0.00017675500863067325
+ },
+ "classes": {
+  "A_ruleHeld_notCollapsed": 630,
+  "B_collapsed_properPartExists": 2,
+  "B_collapsed_onlyDegenerateOrInfeasible": 28,
+  "C_ruleNotHeld": 4
+ },
+ "dof": {
+  "guardPasses": {
+   "n": 629,
+   "equal": 629
+  },
+  "guardFires": {
+   "n": 25,
+   "equal": 17
+  },
+  "guardFiresStillStatusSolved": 34,
+  "guardFiresDofPositive": 31
+ },
+ "examples": {
+  "infeasibleAcceptedGuardPasses": [
+   {
+    "seed": 2,
+    "n": 317,
+    "rules": [
+     {
+      "k": "distance",
+      "a": 3,
+      "aEnd": "a",
+      "b": 3,
+      "bEnd": "b",
+      "value": 30.066592756745816
+     },
+     {
+      "k": "horizontal",
+      "a": 3
+     },
+     {
+      "k": "pointOnObject",
+      "a": 1,
+      "aEnd": "c",
+      "b": 3
+     },
+     {
+      "k": "distanceY",
+      "a": 1,
+      "aEnd": "c",
+      "b": 2,
+      "bEnd": "c",
+      "value": 1
+     },
+     {
+      "k": "pointOnObject",
+      "a": 3,
+      "aEnd": "b",
+      "b": 2
+     }
+    ],
+    "allRulesHeld": true,
+    "minVsDiag": 0.09578262852211514,
+    "note": "every driving rule is held by the SolidCraft geometry (independent rule-check), so the oracle label \"infeasible\" was a local-solver miss: this is a real solution, not a silent accept"
+   }
+  ],
+  "ruleNotHeld": [
+   {
+    "seed": 2,
+    "n": 94,
+    "name": "rect",
+    "kind": "angle",
+    "residual": 90,
+    "status": "solved",
+    "dof": 4,
+    "failing": [],
+    "volume": [
+     9074.53694133019
+    ],
+    "rules": [
+     {
+      "k": "equal",
+      "a": 1,
+      "b": 2
+     },
+     {
+      "k": "distance",
+      "a": 1,
+      "aEnd": "a",
+      "b": 3,
+      "bEnd": "a",
+      "value": 36.05551275463989
+     },
+     {
+      "k": "distance",
+      "a": 3,
+      "aEnd": "a",
+      "b": 3,
+      "bEnd": "b",
+      "value": 30
+     },
+     {
+      "k": "angle",
+      "a": 1,
+      "b": 2,
+      "value": 45
+     }
+    ]
+   },
+   {
+    "seed": 2,
+    "n": 227,
+    "name": "cc",
+    "kind": "distanceY",
+    "residual": 4.2,
+    "status": "solved",
+    "dof": 5,
+    "failing": [],
+    "volume": [
+     502.5981059471628,
+     162.5066207040652
+    ],
+    "rules": [
+     {
+      "k": "pointOnObject",
+      "a": 3,
+      "aEnd": "b",
+      "b": 2
+     },
+     {
+      "k": "pointOnObject",
+      "a": 1,
+      "aEnd": "c",
+      "b": 3
+     },
+     {
+      "k": "distance",
+      "a": 3,
+      "aEnd": "a",
+      "b": 3,
+      "bEnd": "b",
+      "value": 30.066592756745816
+     },
+     {
+      "k": "distanceY",
+      "a": 1,
+      "aEnd": "c",
+      "b": 2,
+      "bEnd": "c",
+      "value": 2.1
+     },
+     {
+      "k": "distanceX",
+      "a": 1,
+      "aEnd": "c",
+      "b": 2,
+      "bEnd": "c",
+      "value": 15
+     }
+    ]
+   },
+   {
+    "seed": 2,
+    "n": 267,
+    "name": "cc",
+    "kind": "distanceY",
+    "residual": 4.2,
+    "status": "solved",
+    "dof": 4,
+    "failing": [],
+    "volume": [
+     502.5981059471615,
+     3236.425677764124
+    ],
+    "rules": [
+     {
+      "k": "distance",
+      "a": 1,
+      "aEnd": "c",
+      "b": 2,
+      "bEnd": "c",
+      "value": 15.033296378372908
+     },
+     {
+      "k": "pointOnObject",
+      "a": 3,
+      "aEnd": "b",
+      "b": 2
+     },
+     {
+      "k": "lock",
+      "a": 1,
+      "aEnd": "c"
+     },
+     {
+      "k": "distance",
+      "a": 3,
+      "aEnd": "a",
+      "b": 3,
+      "bEnd": "b",
+      "value": 30.066592756745816
+     },
+     {
+      "k": "distanceY",
+      "a": 1,
+      "aEnd": "c",
+      "b": 2,
+      "bEnd": "c",
+      "value": 2.1
+     }
+    ]
+   },
+   {
+    "seed": 3,
+    "n": 26,
+    "name": "cc",
+    "kind": "distanceY",
+    "residual": 2,
+    "status": "solved",
+    "dof": 4,
+    "failing": [],
+    "volume": [
+     502.5981059471656,
+     502.6133938943894
+    ],
+    "rules": [
+     {
+      "k": "distance",
+      "a": 3,
+      "aEnd": "a",
+      "b": 3,
+      "bEnd": "b",
+      "value": 30.066592756745816
+     },
+     {
+      "k": "distance",
+      "a": 1,
+      "aEnd": "c",
+      "b": 2,
+      "bEnd": "c",
+      "value": 15.033296378372908
+     },
+     {
+      "k": "pointOnObject",
+      "a": 3,
+      "aEnd": "b",
+      "b": 2
+     },
+     {
+      "k": "distanceY",
+      "a": 1,
+      "aEnd": "c",
+      "b": 2,
+      "bEnd": "c",
+      "value": 1
+     },
+     {
+      "k": "equal",
+      "a": 1,
+      "b": 2
+     },
+     {
+      "k": "diameter",
+      "a": 1,
+      "value": 8
+     }
+    ]
+   }
+  ],
+  "collapsedProperPartExists": [
+   {
+    "seed": 1,
+    "n": 5,
+    "name": "rect",
+    "minVsDiag": 8.079832996527043e-15,
+    "oracleMin": 0.564257743162454,
+    "volume": [
+     1581.1388289024105
+    ],
+    "rules": [
+     {
+      "k": "horizontal",
+      "a": 2
+     },
+     {
+      "k": "perpendicular",
+      "a": 2,
+      "b": 3
+     }
+    ]
+   },
+   {
+    "seed": 2,
+    "n": 82,
+    "name": "rect",
+    "minVsDiag": 0.00017675500863067325,
+    "oracleMin": 0.003063892711356708,
+    "volume": [
+     2670.6712223354875
+    ],
+    "rules": [
+     {
+      "k": "angle",
+      "a": 1,
+      "b": 4,
+      "value": 90
+     },
+     {
+      "k": "horizontal",
+      "a": 2
+     }
+    ]
+   }
+  ],
+  "collapsedOnlyDegenerate": [
+   {
+    "seed": 1,
+    "n": 58,
+    "name": "rect",
+    "minVsDiag": 1.2119749494790565e-14,
+    "brep": "consistent",
+    "indepConsistent": true,
+    "status": "solved",
+    "dof": 7,
+    "failing": [],
+    "profiles": [
+     300.0000000000096
+    ],
+    "extrudeError": null,
+    "volume": [
+     3000
+    ],
+    "rules": [
+     {
+      "k": "vertical",
+      "a": 1
+     }
+    ]
+   },
+   {
+    "seed": 1,
+    "n": 84,
+    "name": "rect",
+    "minVsDiag": 6.858438144190391e-11,
+    "brep": "consistent",
+    "indepConsistent": true,
+    "status": "solved",
+    "dof": 6,
+    "failing": [],
+    "profiles": [
+     299.9999999851333
+    ],
+    "extrudeError": null,
+    "volume": [
+     2999.9999998763815
+    ],
+    "rules": [
+     {
+      "k": "horizontal",
+      "a": 2
+     },
+     {
+      "k": "equal",
+      "a": 1,
+      "b": 3
+     }
+    ]
+   },
+   {
+    "seed": 1,
+    "n": 106,
+    "name": "tri",
+    "minVsDiag": 0.000027400047586458074,
+    "brep": "globallyInfeasible",
+    "indepConsistent": true,
+    "status": "solved",
+    "dof": 1,
+    "failing": [],
+    "profiles": [
+     0.028644771120605664
+    ],
+    "extrudeError": null,
+    "volume": [
+     0.286447711165668
+    ],
+    "rules": [
+     {
+      "k": "coincident",
+      "a": 1,
+      "aEnd": "a",
+      "b": -1,
+      "bEnd": "a"
+     },
+     {
+      "k": "perpendicular",
+      "a": 1,
+      "b": 2
+     },
+     {
+      "k": "distanceY",
+      "a": 1,
+      "aEnd": "a",
+      "b": 3,
+      "bEnd": "a",
+      "value": 25
+     },
+     {
+      "k": "equal",
+      "a": 2,
+      "b": 3
+     }
+    ]
+   },
+   {
+    "seed": 1,
+    "n": 112,
+    "name": "tri",
+    "minVsDiag": 0.000022003589596194057,
+    "brep": "globallyInfeasible",
+    "indepConsistent": true,
+    "status": "solved",
+    "dof": 3,
+    "failing": [],
+    "profiles": [
+     0.020265707129432542
+    ],
+    "extrudeError": null,
+    "volume": [
+     0.2026578681294874
+    ],
+    "rules": [
+     {
+      "k": "equal",
+      "a": 1,
+      "b": 2
+     },
+     {
+      "k": "distance",
+      "a": 2,
+      "aEnd": "a",
+      "b": 2,
+      "bEnd": "b",
+      "value": 39.05124837953327
+     },
+     {
+      "k": "perpendicular",
+      "a": 1,
+      "b": 3
+     }
+    ]
+   },
+   {
+    "seed": 1,
+    "n": 156,
+    "name": "tri",
+    "minVsDiag": 0.000010857274355030232,
+    "brep": "redundant",
+    "indepConsistent": true,
+    "status": "solved",
+    "dof": 1,
+    "failing": [],
+    "profiles": [
+     0.011352515738334889
+    ],
+    "extrudeError": null,
+    "volume": [
+     0.11352515738134343
+    ],
+    "rules": [
+     {
+      "k": "equal",
+      "a": 1,
+      "b": 2
+     },
+     {
+      "k": "lock",
+      "a": 1,
+      "aEnd": "a"
+     },
+     {
+      "k": "vertical",
+      "a": 3
+     },
+     {
+      "k": "perpendicular",
+      "a": 2,
+      "b": 3
+     }
+    ]
+   },
+   {
+    "seed": 1,
+    "n": 159,
+    "name": "tri",
+    "minVsDiag": 0.00001048292814713317,
+    "brep": "redundant",
+    "indepConsistent": true,
+    "status": "solved",
+    "dof": 2,
+    "failing": [],
+    "profiles": [
+     0.007046299744871476
+    ],
+    "extrudeError": null,
+    "volume": [
+     0.0704632192723547
+    ],
+    "rules": [
+     {
+      "k": "perpendicular",
+      "a": 1,
+      "b": 3
+     },
+     {
+      "k": "horizontal",
+      "a": 1
+     },
+     {
+      "k": "distanceY",
+      "a": 1,
+      "aEnd": "a",
+      "b": 3,
+      "bEnd": "a",
+      "value": 28.500000000000004
+     },
+     {
+      "k": "equal",
+      "a": 2,
+      "b": 3
+     }
+    ]
+   },
+   {
+    "seed": 1,
+    "n": 280,
+    "name": "tri",
+    "minVsDiag": 0.000011470878674949751,
+    "brep": "redundant",
+    "indepConsistent": true,
+    "status": "solved",
+    "dof": 3,
+    "failing": [],
+    "profiles": [
+     0.010635435093604428
+    ],
+    "extrudeError": null,
+    "volume": [
+     0.10635406221833811
+    ],
+    "rules": [
+     {
+      "k": "perpendicular",
+      "a": 1,
+      "b": 3
+     },
+     {
+      "k": "equal",
+      "a": 2,
+      "b": 3
+     },
+     {
+      "k": "vertical",
+      "a": 3
+     }
+    ]
+   },
+   {
+    "seed": 1,
+    "n": 320,
+    "name": "rect",
+    "minVsDiag": 8.079832996527043e-15,
+    "brep": "consistent",
+    "indepConsistent": true,
+    "status": "solved",
+    "dof": 7,
+    "failing": [],
+    "profiles": [
+     299.9999999999991
+    ],
+    "extrudeError": null,
+    "volume": [
+     2999.9999999999986
+    ],
+    "rules": [
+     {
+      "k": "horizontal",
+      "a": 2
+     }
+    ]
+   }
+  ]
+ }
+}
