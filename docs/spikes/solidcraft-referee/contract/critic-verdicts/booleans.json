@@ -1,0 +1,152 @@
+{
+ "group": "booleans",
+ "verdict": "not-accepted",
+ "summary": "booleans.json is the round-3 build (byte-identical to booleans-r3/booleans.round3.json) but the shipped guard is the round-4 one; the round-4 results dirs (booleans-r4/guarded, r3raw, phase0) are not in the tree, so bool-build-rows-r4.mjs cannot run (453 assertion failures when pointed at the repo) and 83 r4 cases plus fuzz-cases-23 have no stored evidence. Live replay shows rows no longer match the contract guard (row 63 supported-but-now-refused, row 40 refused-but-now-built, three stale refusal sentences). The r3 evidence itself is internally consistent (all 286 cited case ids exist in booleans-r3/guarded with matching numbers, and OCCT/brep-rs/closed form agree) and no silent wrong solid was found.",
+ "rowsTotal": 87,
+ "rowsEvidenceChecked": 87,
+ "rowsReplayed": 13,
+ "replays": [
+  {
+   "feature": "join-box-cyl-through",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=join-box-cyl-through",
+   "stored": "PASS vol SC 36020.5707 (OCCT 36021.2386)",
+   "live": "PASS vol SC 36020.5707",
+   "match": true
+  },
+  {
+   "feature": "cut-four",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=cut-four",
+   "stored": "PASS SC 41215.2870",
+   "live": "PASS SC 41215.2870",
+   "match": true
+  },
+  {
+   "feature": "x-cut-x-axis-cylinder",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=x-cut-x-axis-cylinder",
+   "stored": "PASS SC 28858.9292",
+   "live": "PASS SC 28858.9292",
+   "match": true
+  },
+  {
+   "feature": "sl-keep-5e-3",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=sl-keep-5e-3",
+   "stored": "PASS vol 0.5",
+   "live": "PASS vol 0.5",
+   "match": true
+  },
+  {
+   "feature": "r3-sl-cut-4.5e-3",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=r3-sl-cut-4.5e-3",
+   "stored": "PASS vol 31999.55",
+   "live": "PASS vol 31999.55",
+   "match": true
+  },
+  {
+   "feature": "r3-tan-sph-big",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=r3-tan-sph-big",
+   "stored": "PASS SC 8963.3883",
+   "live": "PASS SC 8963.3883",
+   "match": true
+  },
+  {
+   "feature": "r3-tan-cyl-through-3",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=r3-tan-cyl-through-3",
+   "stored": "harness FAIL (dCom 4.5e-5), row 65 counts it supported; SC 22870.7231 vs closed form 22867.2588",
+   "live": "same",
+   "match": true
+  },
+  {
+   "feature": "r3-split-cone-slab",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=r3-split-cone-slab",
+   "stored": "REFUSED with 'could not be calculated here, so nothing was changed; try other sizes...' (row 21 text)",
+   "live": "REFUSED with 'because faces of the two shapes lie exactly on top of each other' (different sentence)",
+   "match": false
+  },
+  {
+   "feature": "r3-rot-cyl-cut-skew",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=r3-rot-cyl-cut-skew",
+   "stored": "PASS (row 63 counts it supported), SC 30764.8358",
+   "live": "REFUSED by round-4 G16 'meets a flat face at a slant ... takes minutes'",
+   "match": false
+  },
+  {
+   "feature": "hg-cyl-inside-perp",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=hg-cyl-inside-perp",
+   "stored": "REFUSED by G2 (row 40, 'false refusal kept on purpose')",
+   "live": "PASS, SC 12440.2979 vs OCCT 12440.7069 (W3 now builds it; row 40 sentence no longer fires)",
+   "match": false
+  },
+  {
+   "feature": "r4-inner-perp-keep / r4-inner-perp-cut / r4-coax-keep-partial / r4-ring-base0-cut / r4-touch-edge-join-hollow / r4-fast-pair-x45-keep / r4-slow-nested-join / r4-op-hollow-cut",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=r4-inner-perp-keep / r4-inner-perp-cut / r4-coax-keep-partial / r4-ring-base0-cut / r4-touch-edge-join-hollow / r4-fast-pair-x45-keep / r4-slow-nested-join / r4-op-hollow-cut",
+   "stored": "no stored result anywhere (booleans-r4 results dirs absent)",
+   "live": "8 cases: 4 PASS (dVol <=1.7e-4 on the r4 scaled bar), 4 REFUSED with plain sentences; no wrong solid seen",
+   "match": "not replayed against stored (nothing stored)"
+  },
+  {
+   "feature": "crit-sph-keep-3 (own case: box 100x100x20, ball r40 3 mm into top, keep)",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=crit-sph-keep-3 (own case: box 100x100x20, ball r40 3 mm into top, keep)",
+   "stored": "closed form 1102.699",
+   "live": "SC 1101.9753, true error 6.6e-4 reported as dVol 3.7e-5 PASS by the r4 scaled bar",
+   "match": true
+  },
+  {
+   "feature": "crit-side-keep-3 / crit-side-keep-2p5 (own cases, side cylinder r40)",
+   "command": "BOOL_TR=guarded bun docs/spikes/solidcraft-referee/contract/run-booleans.mjs --case=crit-side-keep-3 / crit-side-keep-2p5 (own cases, side cylinder r40)",
+   "stored": "raw kernel keep at 2 mm gave no body",
+   "live": "guard refused both, plain sentence",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "blocking",
+   "feature": "whole group (rows 1-87)",
+   "problem": "booleans.json is byte-identical to booleans-r3/booleans.round3.json; the current guard (booleans.guard.mjs round 4: G16 slant, G17 shared wall, G18 rounded-box band, W3 nested cylinder, new sentences) and harness tolerance were never re-run into rows. bool-build-rows-r4.mjs reads booleans-r4/{guarded,r3raw,phase0}/cases which do not exist, so it exits 1 (453 ASSERT lines, 'no guarded result for ...'). 83 r4 case ids (boolean-cases-r4.mjs) and booleans-r4/fuzz-cases-23.json have no stored result.",
+   "evidenceFile": "booleans.json; bool-build-rows-r4.mjs; booleans-r4/ (no guarded/ r3raw/ phase0/)"
+  },
+  {
+   "severity": "blocking",
+   "feature": "row 40 curved: small cylinder perpendicular inside a bigger one",
+   "problem": "row says refused with the G2 'cross at an angle' sentence; the contract guard now builds hg-cyl-inside-perp (live PASS), so the refusal does not fire and the row's status is not what the guard does.",
+   "evidenceFile": "booleans-r3/guarded/cases/hg-cyl-inside-perp.json"
+  },
+  {
+   "severity": "blocking",
+   "feature": "row 63 operands turned by a generic angle",
+   "problem": "row says supported 5 of 5; case r3-rot-cyl-cut-skew is refused by the current guard (G16), so the row status misstates the contract. (Over-refusal, not a wrong solid.)",
+   "evidenceFile": "booleans-r3/guarded/cases/r3-rot-cyl-cut-skew.json"
+  },
+  {
+   "severity": "major",
+   "feature": "rows 21, 34, 83",
+   "problem": "refusalSentence is not what the current guard emits (row 21 K9 text now K9b 'faces lie exactly on top of each other'; rows 34 and 83 use the old 'skipped ... because a shape it uses could not be built: <inner>' glue, which round 4 replaced).",
+   "evidenceFile": "booleans.json vs booleans.guard.mjs SENTENCES"
+  },
+  {
+   "severity": "major",
+   "feature": "curved tolerance (rows 5, 41-46, 65, 78 and all curved supported rows)",
+   "problem": "round 4 divides the volume error by max(V, A*Rc/3) and the bbox error by Rc, calibrated on the kernel's own error (tol-stats.mjs). A thin curved keep with a true volume error of 6.6e-4 (ball r40, 3 mm deep) now reads dVol 3.7e-5 and PASS; the stated 3e-4 bar is about 18x looser on thin results, and no closed-form or second-oracle check backs the relaxation. Not applied to the committed rows (they still use the old bar), but it governs any rebuild.",
+   "evidenceFile": "run-booleans.mjs lines 282-292; booleans-r4/tol-stats.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 65 / r3-tan-cyl-through-3",
+   "problem": "harness outcome is FAIL (dCom 4.5e-5 over the 3e-5 COM bar, three OCCT solids returned as one body with three shells); the row classifier counts it supported under the 'one body, several shells' exception. The exception is written down but the case is a harness FAIL.",
+   "evidenceFile": "booleans-r3/guarded/cases/r3-tan-cyl-through-3.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 20/22 neighbour: join then hollow",
+   "problem": "live sentence for r4-touch-edge-join-hollow is 'shell1 (shell): its target op1 was refused (...)', leaking internal ids (shell1, op1) to the student.",
+   "evidenceFile": "live replay r4-touch-edge-join-hollow"
+  }
+ ],
+ "notMeasured": [
+  "round-4 guarded results for the 83 r4 cases and fuzz seed 23 (not stored; only 8 replayed live)",
+  "row 86 fuzz survivors under the current guard (hundreds of cases, not replayed)",
+  "side-cylinder keep at 2-3 mm with other radii/scales: raw kernel failed or was 4e-3 off, guard refused, but the threshold rule was only measured with r10 tools",
+  "systemd cap: no replay died on it"
+ ],
+ "criticAt": "2026-10-19"
+}
