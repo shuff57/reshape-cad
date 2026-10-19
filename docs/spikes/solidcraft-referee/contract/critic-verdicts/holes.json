@@ -1,0 +1,127 @@
+{
+ "group": "holes",
+ "verdict": "accepted",
+ "summary": "holes3-rows.mjs rebuilt holes.json byte-identically from the committed raw results (all 91 status assertions pass), all 303 cited case ids exist in holes3-results/final.json, no refusal sentence has engine words or more than one sentence, and 44 live replays plus new probes (scale 0.4 to 4000 mm, near-tangent walls to 5e-6, edge/face-touching repeats, countersink band on 6 host kinds) found no silent wrong solid. Only minor defects: wide curved-host tolerance, three supported recess cases with a closed form as the only independent measure, one OCCT-only supported case.",
+ "rowsTotal": 91,
+ "rowsEvidenceChecked": 91,
+ "rowsReplayed": 10,
+ "replays": [
+  {
+   "feature": "core-centred-through (row 0)",
+   "command": "holes3-drive.mjs --only=core-centred-through,...",
+   "stored": "V=11717.3036",
+   "live": "V=11717.303625887835",
+   "match": true
+  },
+  {
+   "feature": "g:hole-simple__tiny-deep",
+   "command": "holes3-drive.mjs",
+   "stored": "V=11976.44417522144",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "g:hole-simple__big-and-thick",
+   "command": "holes3-drive.mjs",
+   "stored": "V=42147.32294132784",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "through-thick-60",
+   "command": "holes3-drive.mjs",
+   "stored": "V=52822.09844119926",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "moved-box",
+   "command": "holes3-drive.mjs",
+   "stored": "V=11717.303625887755",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "g:hole-simple__in-cylinder",
+   "command": "holes3-drive.mjs",
+   "stored": "V=13571.29059556473",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "g:hole-simple__hexagon-prism",
+   "command": "holes3-drive.mjs",
+   "stored": "V=11867.680216614033",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "g:hole-simple__breaks-out-of-the-side",
+   "command": "holes3-drive.mjs",
+   "stored": "V=11326.527801281962",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "wider-than-plate-30-exact (refused row 3)",
+   "command": "holes3-drive.mjs",
+   "stored": "refused, tangent sentence",
+   "live": "same sentence",
+   "match": true
+  },
+  {
+   "feature": "wide-box41 (refused row 2)",
+   "command": "holes3-drive.mjs",
+   "stored": "refused, 4 pieces",
+   "live": "same sentence",
+   "match": true
+  },
+  {
+   "feature": "new probes: scale 0.4..4000 mm, tiny bore 0.05/0.5 across, 0.05 mm plate, wall 5e-6..5e-3, rotated-slab tangent, repeat edge/face touch, 32 countersink-band cases over box/cylinder/pad/hex/join/x-axis/moved/hollow",
+   "command": "bun critic-holes/myrun.mjs (copy of holes3-run.mjs, own cases) vs live OCCT, brep-rs, closed form",
+   "stored": "no stored value (new inputs)",
+   "live": "all built cases within 2e-4 of OCCT/closed form (tiny bores: removed volume 4.9% low from mesh volume only, host volume 8e-8); every band case below the cone-tool depth refused with a plain sentence",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "minor",
+   "feature": "curved-host recess rows (37, 44)",
+   "problem": "okBuilt accepts removed-volume error up to 3e-4 of the host volume on curved hosts, about 5% of a 339 mm3 countersink on a 60x20 cylinder. Observed errors are 0.3 to 1.2% (cs-in-cylinder-blind dRemoved 7.2e-3, cb-in-cylinder-blind 3.0e-3, cyl-3.4 replay 1.2e-2) and agree with brep-rs to 2.4e-5 of host, so the data is tighter than the bar.",
+   "evidenceFile": "holes3-evidence.mjs okBuilt; holes3-results/final.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "rows 38, 46, 59 (cb-wider-than-plate, cs-wide-mouth-wider-than-plate, holes-cb-overlap)",
+   "problem": "Only independent measure is the closed form: brep-rs refuses and OCCT ignores the recess. Removed volume matches to 3.4e-4, 7e-5 and 7e-5; no topology oracle.",
+   "evidenceFile": "holes3-results/final.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 67 (tilt-x30-through)",
+   "problem": "Supported with OCCT as the only oracle (brep-rs refuses, no closed form stored) and timing is borderline against the 30 s CPU policy (runs 22.0 to 27.7 s; the 45-degree case ran 47.3 s once, median 30.9 s). The row discloses both.",
+   "evidenceFile": "holes.json row 67"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 64 / G-TANGENT",
+   "problem": "Tangency is guarded only against bbox sides and other bores (absolute 1e-6 tolerance, not scale-relative); tangency to interior pocket and notch walls is built unguarded. Volumes agree with OCCT, brep-rs and closed form to 6e-6 here, and the row states the gap, but untested at other scales or on turned hosts.",
+   "evidenceFile": "holes3-translate.mjs lines 233-262"
+  },
+  {
+   "severity": "minor",
+   "feature": "repo hygiene",
+   "problem": "holes4-* scripts exist in contract/ with no holes4-results and no link to holes.json (holes.json is built by holes3-rows.mjs). RIG.md holes section still documents round 1 (holes-drive/holes-rows, 78 rows) and its command does not reproduce the committed 91-row file; the right command is in the round-3 paragraph at RIG.md line 160.",
+   "evidenceFile": "RIG.md lines 71-76, 160"
+  }
+ ],
+ "notMeasured": [
+  "full rebuild of holes3-results from scratch (only 10 original case ids re-driven, plus new inputs)",
+  "timing under no load (rows with CPU near the 30 s policy: 67, 75-class slow cases)",
+  "near-tangent bores at extreme scales against the absolute 1e-6 tangent tolerance",
+  "second hole after a countersink that breaks out of a side (row 47 notes bbox 0.0165 mm outside the plate)",
+  "holes4 round (no results exist)"
+ ],
+ "criticAt": "2026-10-19T16:39:51.926406+00:00"
+}
