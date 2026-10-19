@@ -1,0 +1,21 @@
+{
+ "id": "X-spin-two-sketches-two-spins",
+ "outcome": "built",
+ "volume": 6283.188218081574,
+ "faces": 6,
+ "bbox": [
+  -9.999999999999996,
+  -20,
+  40,
+  20,
+  0,
+  60
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,0],[20,0],[20,30],[10,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-90,\"operation\":\"new\",\"body_name\":\"b_rev1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,40],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,0],[20,0],[20,20],[10,20]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk2_1\",\"angle\":120,\"operation\":\"new\",\"body_name\":\"b_rev2\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

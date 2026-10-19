@@ -1,0 +1,1 @@
+Y-groove-box-0p3deg-negside              REFUSED  occtV 143992.8003 | tr-occt dV - dBb - dCom - F o/b/t 11/11/- | brep-occt dV 0.0e+0    | TRUCK REFUSED: groove1 (groove): a turn of 0.3 degrees is too thin to build as a curved part here; use a turn of 1 degree or more.  | ms 14 cpu 60

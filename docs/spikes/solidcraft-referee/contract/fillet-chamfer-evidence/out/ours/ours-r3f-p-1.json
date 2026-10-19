@@ -1,0 +1,23 @@
+{
+ "id": "r3f-p-1",
+ "outcome": "built",
+ "volume": 11600.293166040801,
+ "faces": 12,
+ "bbox": [
+  -7.544101650571839e-15,
+  0,
+  0,
+  40.00000000000003,
+  30,
+  10
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "extrude",
+  "pocket",
+  "fillet"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[40,0],[40,30],[0,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[12.3,1.7000000000000002],[27.7,1.7000000000000002],[27.7,5.5],[12.3,5.5]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":6.5,\"direction\":\"negative\",\"sketch\":\"sk_sk2_1\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"]}},{\"command\":\"solid.fillet\",\"params\":{\"edges\":[[20,0,10]],\"radius\":1.5,\"body\":\"b_pull1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

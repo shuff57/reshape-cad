@@ -1,0 +1,3 @@
+raw texts: 118; unmapped: 0; failing the lint: 0; by class: {"ambiguous":2,"arg":14,"circle-pocket":2,"combined":2,"dependent":31,"edge-touched":22,"no-edge":5,"no-such-face":4,"other-group":3,"rotated":3,"rounded-all-over":2,"size":3,"too-big":12,"unsupported-shape":2,"whole-chamfer":1,"whole-other":10}
+
+guard sentences linted: 40, failing: 0

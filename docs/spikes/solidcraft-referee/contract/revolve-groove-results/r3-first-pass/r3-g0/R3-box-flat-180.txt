@@ -1,0 +1,1 @@
+R3-box-flat-180                          FAIL     occtV 67557.3538 | tr-occt dV 5.4e-6 dBb 1.8e-16 dCom 3.3e-6 F o/b/t 12/-/13 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- groove1 is shown without it. | ms 22466 cpu 22746

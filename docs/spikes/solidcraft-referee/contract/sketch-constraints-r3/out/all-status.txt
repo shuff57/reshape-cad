@@ -1,0 +1,16 @@
+sweeps exit 0
+perm-test exit 0
+profiles-test exit 0
+stored-run exit 0
+param-grid exit 0
+legacy-run exit 0
+accuracy exit 0
+probes exit 0
+placement exit 0
+redundant exit 0
+references exit 0
+axes exit 0
+arcs-fuzz exit 0
+param-drags exit 0
+exp-arcs exit 0
+audit exit 0

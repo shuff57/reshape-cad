@@ -1,0 +1,13 @@
+import { pathToFileURL } from 'node:url';
+const R='/home/shuff57/Documents/GitHub/reshape-cad/';
+const load=(p)=>import(pathToFileURL(R+p).href);
+const { runScript } = await load('packages/script/dist/reshape-script.js');
+const { toScript } = await load('packages/script/dist/reshape-script-gen.js');
+const show=(name,src)=>{ const r=runScript(src); console.log('---',name); console.log(JSON.stringify({errors:r.errors,warnings:r.warnings,features:(r.doc?.features??[]).map(f=>f.kind==='sketch'?{id:f.id,plane:f.plane,offset:f.offset,shape:f.shape}:f)})); if(r.doc) console.log('toScript:',toScript(r.doc).split('\n').filter(l=>/loft|blend/.test(l)).join(' | ')); };
+show('basic gap30','const a = sketch("top",5).rect(40,40)\nconst b = sketch("top").rect(10,10)\nblend(a,b,30)');
+show('neg gap','const a = sketch("top",40).rect(40,40)\nconst b = sketch("top").rect(10,10)\nblend(a,b,-30)');
+show('loft spelling','const a = sketch("top").rect(40,40)\nconst b = sketch("top").rect(10,10)\nloft(a,b,30)');
+show('three sketches','const a = sketch("top").rect(40,40)\nconst b = sketch("top").rect(10,10)\nconst c = sketch("top").rect(5,5)\nblend(a,b,c,30)');
+show('extra num','const a = sketch("top").rect(40,40)\nconst b = sketch("top").rect(10,10)\nblend(a,b,30,5)');
+show('loft extra','const a = sketch("top").rect(40,40)\nconst b = sketch("top").rect(10,10)\nloft(a,b,30,5)');
+show('one sketch','const a = sketch("top").rect(40,40)\nblend(a,30)');

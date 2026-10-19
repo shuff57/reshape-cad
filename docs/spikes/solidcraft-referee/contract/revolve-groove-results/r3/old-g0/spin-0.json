@@ -1,0 +1,10 @@
+[
+ {
+  "id": "spin-0",
+  "src": "const s = sketch('top'); s.rect(10,30,{at:[15,15]}); spin(s, 0);",
+  "translator": "g0",
+  "amp": null,
+  "scriptRefusal": "spin(): the angle is how far the sketch turns, and 0 degrees turns it nowhere -- got 0. Use a turn from 1 to 360 degrees (a negative one turns the other way).",
+  "scriptSentence": "spin(): a spin turns the sketch by an angle other than 0 degrees, so use 1 to 360 degrees, or a negative angle to turn the other way."
+ }
+]

@@ -1,0 +1,1 @@
+X-groove-box-side-ring-225               PASS     occtV 139286.8213 | tr-occt dV 5.1e-6 dBb 3.1e-13 dCom 3.9e-7 F o/b/t 17/17/17 | brep-occt dV 2.4e-13      | ms 1654 cpu 1976

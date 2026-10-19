@@ -1,0 +1,29 @@
+[
+ {
+  "id": "tangent-line-circle-side-opposite",
+  "feats": [
+   "tangent:side option"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "records side -1 for the line/circle tangency but the circle starts on the other side of the line; solidcraft's tangent has no side parameter, so it cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ }
+]

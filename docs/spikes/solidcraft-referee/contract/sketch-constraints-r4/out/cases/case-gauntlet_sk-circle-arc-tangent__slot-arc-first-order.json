@@ -1,0 +1,95 @@
+[
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000038053118549409936,
+      "db": 4.440892098500626e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.793327002382
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 30,
+     "REFUSED": 1,
+     "BUILT-WRONG-VOLUME": 9
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00004171436279489794,
+      "db": 0.000009710827888180043,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.77600575341
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid input: profile: cannot attach a plane to a wire that is not on one plane."
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.26100736155259185,
+      "db": 0.00006179069208419226,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 3496.1544822518626
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 19,
+     "BUILT-WRONG-VOLUME": 16,
+     "REFUSED": 5
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000038830326870059624,
+      "db": 0.000010138871333461216,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.789650050526
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.7609697509657122,
+      "db": 11.999999999999126,
+      "bodies": 1,
+      "faces": 4,
+      "volume": 1130.8457392901048
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k6, k7, k8, k9, k10)"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ }
+]

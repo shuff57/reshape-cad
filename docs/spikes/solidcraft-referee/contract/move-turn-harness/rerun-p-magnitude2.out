@@ -1,0 +1,21 @@
+box@[D,D,D] turn           100      PASS     dVol=7.4e-15 dBbox=1.6e-16 dCom=3.4e-15 | brep dVol=1.5e-15
+hole box move              100      PASS     dVol=3.6e-6 dBbox=5.4e-16 dCom=1.8e-14 | brep dVol=1.5e-16
+join two far parts         100      PASS     dVol=0.0e+0 dBbox=0.0e+0 dCom=6.9e-16 | brep dVol=0.0e+0
+box@[D,D,D] turn           1000     PASS     dVol=2.9e-12 dBbox=0.0e+0 dCom=1.4e-11 | brep dVol=3.9e-14
+hole box move              1000     PASS     dVol=3.6e-6 dBbox=5.7e-16 dCom=6.4e-10 | brep dVol=3.1e-16
+join two far parts         1000     PASS     dVol=0.0e+0 dBbox=0.0e+0 dCom=2.8e-15 | brep dVol=6.5e-16
+box@[D,D,D] turn           3000     PASS     dVol=3.7e-11 dBbox=1.5e-16 dCom=5.2e-10 | brep dVol=6.0e-13
+hole box move              3000     PASS     dVol=3.6e-6 dBbox=6.1e-16 dCom=1.7e-8 | brep dVol=4.5e-15
+join two far parts         3000     PASS     dVol=0.0e+0 dBbox=0.0e+0 dCom=3.3e-14 | brep dVol=2.7e-15
+box@[D,D,D] turn           10000    FAIL     dVol=1.6e-8 dBbox=1.8e-16 dCom=7.6e-7 | brep dVol=1.0e-11
+hole box move              10000    PASS     dVol=3.5e-6 dBbox=5.5e-16 dCom=4.4e-6 | brep dVol=4.1e-14
+join two far parts         10000    PASS     dVol=0.0e+0 dBbox=0.0e+0 dCom=8.8e-14 | brep dVol=5.6e-15
+box@[D,D,D] turn           30000    FAIL     dVol=9.3e-8 dBbox=1.2e-16 dCom=1.3e-5 | brep dVol=7.1e-11
+hole box move              30000    FAIL     dVol=1.3e-6 dBbox=6.1e-16 dCom=4.5e-4 | brep dVol=5.9e-14
+join two far parts         30000    PASS     dVol=0.0e+0 dBbox=0.0e+0 dCom=8.8e-14 | brep dVol=2.2e-14
+box@[D,D,D] turn           100000   FAIL     dVol=6.8e-6 dBbox=1.5e-16 dCom=3.1e-3 | brep dVol=4.4e-11
+hole box move              100000   FAIL     dVol=2.3e-5 dBbox=5.8e-16 dCom=1.3e-2 | brep dVol=2.3e-13
+join two far parts         100000   PASS     dVol=0.0e+0 dBbox=0.0e+0 dCom=7.1e-13 | brep dVol=8.9e-14
+box@[D,D,D] turn           1000000  FAIL     dVol=2.8e-3 dBbox=1.2e-16 dCom=1.3e+1 | brep dVol=1.9e-7
+hole box move              1000000  FAIL     dVol=6.8e-2 dBbox=5.8e-16 dCom=4.9e+2 | brep dVol=4.4e-12
+join two far parts         1000000  PASS     dVol=0.0e+0 dBbox=0.0e+0 dCom=2.8e-12 | brep dVol=7.1e-13

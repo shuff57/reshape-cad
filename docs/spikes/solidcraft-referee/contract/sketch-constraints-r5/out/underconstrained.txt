@@ -1,0 +1,25 @@
+Running as unit: run-p2040535-i2077522.scope; invocation ID: a7a2c35a32e34b07b1f6100750f150ae
+hv-only-30x15            dof ind/fc/brep {"independent":4,"freecad":4,"brepRs":4} | stored shipped {"volume":4500,"right":true} guarded {"volume":4500,"right":true} brep {"volume":4500,"right":true}
+    rough 0.035 shipped {"different-solid":20} [4239.13,4330.7,4379.83,4410.11,4444.99,4452.49,4493.26,4531.09] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [4236.26,4269.11,4272.7,4334.45,4338.47,4432.64,4474.31,4512.59]
+    rough 0.15 shipped {"different-solid":20} [2435.6,2442.52,2502.32,3431.47,3489.64,4095.01,4121.79,4156.1] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [3189.65,3328.64,3368.54,3646.91,3719.16,3764.47,3784.33,3907.81]
+width-only               dof ind/fc/brep {"independent":3,"freecad":3,"brepRs":3} | stored shipped {"volume":4500,"right":true} guarded {"volume":4500,"right":true} brep {"volume":4500,"right":true}
+    rough 0.035 shipped {"different-solid":20} [4114.79,4156.82,4160.98,4165.54,4401.94,4420.17,4450.43,4455.46] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [4162.4,4260.09,4312.28,4352.46,4376.1,4379.94,4383.55,4405.57]
+    rough 0.15 shipped {"different-solid":20} [3039.73,3322.99,3647.83,3688.17,3749.67,4242.73,4263.82,4553.35] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [3460.4,3749.9,3764.05,3811.82,4147.91,4198.28,4204.04,4276.76]
+width-and-height         dof ind/fc/brep {"independent":2,"freecad":2,"brepRs":2} | stored shipped {"volume":4500,"right":true} guarded {"volume":4500,"right":true} brep {"volume":4500,"right":true}
+    rough 0.035 shipped {"different-solid":20} [4500] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [4500]
+    rough 0.15 shipped {"different-solid":20} [4500] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [4500]
+pinned-corner-only       dof ind/fc/brep {"independent":2,"freecad":2,"brepRs":2} | stored shipped {"volume":4500,"right":true} guarded {"volume":4500,"right":true} brep {"volume":4500,"right":true}
+    rough 0.035 shipped {"different-solid":20} [4079.74,4156.9,4264.21,4339.9,4401.7,4401.72,4447.37,4457.59] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [4271.78,4283.73,4362.34,4364.72,4371.99,4404.15,4417.51,4426.95]
+    rough 0.15 shipped {"different-solid":20} [3604.69,3828.01,3894.97,4019.85,4041.33,4127.1,4357.75,4422.11] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [3471.85,3816,4088.35,4196.95,4203.84,4236.68,4282.41,4284.75]
+free-line                dof ind/fc/brep {"independent":4,"freecad":4,"brepRs":4} | stored shipped {"refused":"sk has no closed profiles"} guarded {"refused":"The outline does not close into a loop (a loose end near [20, 5]), so there is brep {"refused":"extrude pull1: edge 1 has a loose end; the outline must cl
+    rough 0.035 shipped {"REFUSED":20} undefined | guarded {"REFUSED":20} | brep-rs {"REFUSED":20} undefined
+    rough 0.15 shipped {"REFUSED":20} undefined | guarded {"REFUSED":20} | brep-rs {"REFUSED":20} undefined
+free-circle              dof ind/fc/brep {"independent":3,"freecad":3,"brepRs":3} | stored shipped {"volume":502.5981059471615,"right":true} guarded {"volume":502.5981059471615,"right":true} brep {"volume":502.65482457436656,"right":true}
+    rough 0.035 shipped {"different-solid":20} [417.49,423.75,425.72,439.8,447.9,450.94,455.87,481.66] | guarded {"different-solid":20} | brep-rs {"different-solid":20} [417.54,423.8,425.77,439.85,447.95,450.99,455.92,481.71]
+    rough 0.15 shipped {"different-solid":20} [265.47,273.33,301.21,304.33,325.16,366.44,412.84,453.37] | guarded {"different-solid":20} | brep-rs {"different-solid":20} [265.5,273.36,301.24,304.36,325.2,366.48,412.88,453.42]
+triangle-joined          dof ind/fc/brep {"independent":6,"freecad":6,"brepRs":6} | stored shipped {"volume":3000,"right":true} guarded {"volume":3000,"right":true} brep {"volume":3000.0000000000005,"right":true}
+    rough 0.035 shipped {"different-solid":20} [2778.97,2785.19,2835.84,2864.1,2869.74,2881.68,2925.38,2940.52] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [2837.22,2856.62,2858.68,2867.04,2948.71,2961.79,2979.29,2989.14]
+    rough 0.15 shipped {"different-solid":20} [1987.16,2259.73,2412.18,2498.96,2526.04,2614.06,2750.23,2763.12] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [2427.41,2474.08,2564.19,2820.51,2870.1,3072.49,3110.06,3123.21]
+circle-radius-only       dof ind/fc/brep {"independent":2,"freecad":2,"brepRs":2} | stored shipped {"volume":502.5981059471615,"right":true} guarded {"volume":502.5981059471615,"right":true} brep {"volume":502.65482457436656,"right":true}
+    rough 0.035 shipped {"different-solid":20} [502.6] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [502.65]
+    rough 0.15 shipped {"different-solid":20} [502.6] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [502.65]

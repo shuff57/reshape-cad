@@ -1,0 +1,21 @@
+{
+ "id": "X-spin-L-neg-200-axis-edge",
+ "outcome": "built",
+ "volume": 1291.3990386875541,
+ "faces": 7,
+ "bbox": [
+  -9.999990914798591,
+  -9.999731123232035,
+  0,
+  10,
+  3.4202014332566875,
+  20
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[10,0],[10,5],[4,5],[4,20],[0,20]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":200,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

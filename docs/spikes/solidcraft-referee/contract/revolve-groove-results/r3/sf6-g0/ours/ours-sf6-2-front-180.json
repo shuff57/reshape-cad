@@ -1,0 +1,21 @@
+{
+ "id": "sf6-2-front-180",
+ "outcome": "built",
+ "volume": 90.79822623594315,
+ "faces": 7,
+ "bbox": [
+  -6.12,
+  4.389999999999998,
+  -6.120000000000001,
+  6.12,
+  9.21,
+  0
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[4.95,4.39],[6.12,4.39],[6.12,9.21],[5.42,9.21],[4.95,7.28]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-180,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

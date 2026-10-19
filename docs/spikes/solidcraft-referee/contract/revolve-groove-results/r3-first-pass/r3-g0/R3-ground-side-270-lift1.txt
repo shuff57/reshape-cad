@@ -1,0 +1,1 @@
+R3-ground-side-270-lift1                 PASS     occtV 29233.8320 | tr-occt dV 4.7e-6 dBb 6.1e-8 dCom 5.1e-7 F o/b/t 10/10/10 | brep-occt dV 7.6e-12      | ms 933 cpu 1369

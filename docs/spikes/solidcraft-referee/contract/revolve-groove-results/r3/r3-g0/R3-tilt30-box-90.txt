@@ -1,0 +1,1 @@
+R3-tilt30-box-90                         PASS     occtV 71646.5708 | tr-occt dV 4.8e-7 dBb 0.0e+0 dCom 4.5e-8 F o/b/t 12/-/12 | brep-occt dV -     | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 201 cpu 423

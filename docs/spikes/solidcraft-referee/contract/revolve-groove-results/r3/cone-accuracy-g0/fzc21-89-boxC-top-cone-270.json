@@ -1,0 +1,130 @@
+[
+ {
+  "id": "fzc21-89-boxC-top-cone-270",
+  "src": "const t = box(60, 40, 30); const sk = sketch('top'); sk.polygon([[10.5,4],[13.1,4],[12.1,8],[10.5,8]]); groove(sk, t, 270);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc21-89-boxC-top-cone-270",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 71542.01862294521,
+    "com": [
+     0.01576511244879274,
+     -0.015765111224965662,
+     -0.0373028351563711
+    ],
+    "bbox": [
+     -30,
+     -20,
+     -15,
+     30,
+     20,
+     15
+    ],
+    "faces": 12,
+    "area": 11489.310360550262,
+    "types": {
+     "plane": 10,
+     "cylinder": 1,
+     "cone": 1
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it."
+   },
+   "ms": 28,
+   "load": [
+    35.4,
+    35.4
+   ],
+   "cpuMs": 132,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part.",
+     "guard": {
+      "cost": {
+       "tool": "cone",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cone",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": false,
+       "rOuter": 13.1,
+       "nearest": 20,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 60,
+      "width": 40,
+      "height": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_box1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part.",
+    "firstRefusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 97
+ }
+]

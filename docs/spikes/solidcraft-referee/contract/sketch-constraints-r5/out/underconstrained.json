@@ -1,0 +1,1080 @@
+[
+ {
+  "id": "underconstrained:sk-rect-underconstrained__hv-only-30x15",
+  "dof": {
+   "independent": 4,
+   "freecad": 4,
+   "brepRs": 4
+  },
+  "closedVolume": 4500,
+  "fcBbox": [
+   0,
+   0,
+   0,
+   30,
+   15,
+   0
+  ],
+  "stored": {
+   "shipped": {
+    "volume": 4500,
+    "right": true
+   },
+   "guarded": {
+    "volume": 4500,
+    "right": true
+   },
+   "brep": {
+    "volume": 4500,
+    "right": true
+   }
+  },
+  "rough": {
+   "0.035": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 4239.126201305469,
+      "max": 5067.001364680812,
+      "values": [
+       4239.13,
+       4330.7,
+       4379.83,
+       4410.11,
+       4444.99,
+       4452.49,
+       4493.26,
+       4531.09
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "underconstrained": {
+       "n": 20,
+       "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 4236.255788668127,
+      "max": 4919.59802982984,
+      "values": [
+       4236.26,
+       4269.11,
+       4272.7,
+       4334.45,
+       4338.47,
+       4432.64,
+       4474.31,
+       4512.59
+      ]
+     }
+    }
+   },
+   "0.15": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 2435.602380051453,
+      "max": 6011.465205568096,
+      "values": [
+       2435.6,
+       2442.52,
+       2502.32,
+       3431.47,
+       3489.64,
+       4095.01,
+       4121.79,
+       4156.1
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "underconstrained": {
+       "n": 20,
+       "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 3189.648840218811,
+      "max": 6578.324547547051,
+      "values": [
+       3189.65,
+       3328.64,
+       3368.54,
+       3646.91,
+       3719.16,
+       3764.47,
+       3784.33,
+       3907.81
+      ]
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "underconstrained:sk-rect-underconstrained__width-only",
+  "dof": {
+   "independent": 3,
+   "freecad": 3,
+   "brepRs": 3
+  },
+  "closedVolume": 4500,
+  "fcBbox": [
+   0,
+   0,
+   0,
+   30,
+   15,
+   0
+  ],
+  "stored": {
+   "shipped": {
+    "volume": 4500,
+    "right": true
+   },
+   "guarded": {
+    "volume": 4500,
+    "right": true
+   },
+   "brep": {
+    "volume": 4500,
+    "right": true
+   }
+  },
+  "rough": {
+   "0.035": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 4114.785626876946,
+      "max": 4882.553287096753,
+      "values": [
+       4114.79,
+       4156.82,
+       4160.98,
+       4165.54,
+       4401.94,
+       4420.17,
+       4450.43,
+       4455.46
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "underconstrained": {
+       "n": 20,
+       "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 4162.400988611516,
+      "max": 4877.00303761952,
+      "values": [
+       4162.4,
+       4260.09,
+       4312.28,
+       4352.46,
+       4376.1,
+       4379.94,
+       4383.55,
+       4405.57
+      ]
+     }
+    }
+   },
+   "0.15": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 3039.734996304622,
+      "max": 5473.4546424269865,
+      "values": [
+       3039.73,
+       3322.99,
+       3647.83,
+       3688.17,
+       3749.67,
+       4242.73,
+       4263.82,
+       4553.35
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "underconstrained": {
+       "n": 20,
+       "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 3460.395985476754,
+      "max": 5600.465641353129,
+      "values": [
+       3460.4,
+       3749.9,
+       3764.05,
+       3811.82,
+       4147.91,
+       4198.28,
+       4204.04,
+       4276.76
+      ]
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "underconstrained:sk-rect-underconstrained__width-and-height",
+  "dof": {
+   "independent": 2,
+   "freecad": 2,
+   "brepRs": 2
+  },
+  "closedVolume": 4500,
+  "fcBbox": [
+   0,
+   0,
+   0,
+   30,
+   15,
+   0
+  ],
+  "stored": {
+   "shipped": {
+    "volume": 4500,
+    "right": true
+   },
+   "guarded": {
+    "volume": 4500,
+    "right": true
+   },
+   "brep": {
+    "volume": 4500,
+    "right": true
+   }
+  },
+  "rough": {
+   "0.035": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 1,
+      "min": 4499.999999667433,
+      "max": 4500.000000801825,
+      "values": [
+       4500
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "underconstrained": {
+       "n": 20,
+       "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 1,
+      "min": 4499.999999244205,
+      "max": 4500.000001824425,
+      "values": [
+       4500
+      ]
+     }
+    }
+   },
+   "0.15": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 1,
+      "min": 4499.999999992114,
+      "max": 4500.000000384435,
+      "values": [
+       4500
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "underconstrained": {
+       "n": 20,
+       "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 1,
+      "min": 4499.999999999373,
+      "max": 4500.000000855537,
+      "values": [
+       4500
+      ]
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "underconstrained:sk-rect-underconstrained__pinned-corner-only",
+  "dof": {
+   "independent": 2,
+   "freecad": 2,
+   "brepRs": 2
+  },
+  "closedVolume": 4500,
+  "fcBbox": [
+   2,
+   3,
+   0,
+   32,
+   18,
+   0
+  ],
+  "stored": {
+   "shipped": {
+    "volume": 4500,
+    "right": true
+   },
+   "guarded": {
+    "volume": 4500,
+    "right": true
+   },
+   "brep": {
+    "volume": 4500,
+    "right": true
+   }
+  },
+  "rough": {
+   "0.035": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 4079.7355849032174,
+      "max": 4701.805647281529,
+      "values": [
+       4079.74,
+       4156.9,
+       4264.21,
+       4339.9,
+       4401.7,
+       4401.72,
+       4447.37,
+       4457.59
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "underconstrained": {
+       "n": 20,
+       "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 4271.784268418832,
+      "max": 4764.832171174116,
+      "values": [
+       4271.78,
+       4283.73,
+       4362.34,
+       4364.72,
+       4371.99,
+       4404.15,
+       4417.51,
+       4426.95
+      ]
+     }
+    }
+   },
+   "0.15": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 3604.6885907145115,
+      "max": 5794.409479623399,
+      "values": [
+       3604.69,
+       3828.01,
+       3894.97,
+       4019.85,
+       4041.33,
+       4127.1,
+       4357.75,
+       4422.11
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "underconstrained": {
+       "n": 20,
+       "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 3471.8487929400458,
+      "max": 5488.846810170541,
+      "values": [
+       3471.85,
+       3816,
+       4088.35,
+       4196.95,
+       4203.84,
+       4236.68,
+       4282.41,
+       4284.75
+      ]
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "underconstrained:sk-rect-underconstrained__free-line",
+  "dof": {
+   "independent": 4,
+   "freecad": 4,
+   "brepRs": 4
+  },
+  "closedVolume": null,
+  "fcBbox": [
+   0,
+   0,
+   0,
+   20,
+   5,
+   0
+  ],
+  "stored": {
+   "shipped": {
+    "refused": "sk has no closed profiles"
+   },
+   "guarded": {
+    "refused": "The outline does not close into a loop (a loose end near [20, 5]), so there is nothing to extrude; check the rules that join the ends.",
+    "stage": "profiles"
+   },
+   "brep": {
+    "refused": "extrude pull1: edge 1 has a loose end; the outline must close"
+   }
+  },
+  "rough": {
+   "0.035": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "profiles": {
+       "n": 20,
+       "sentence": "The outline does not close into a loop (a loose end near [20.006, 4.426]), so there is nothing to extrude; check the rules that join the ends."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null
+    }
+   },
+   "0.15": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "profiles": {
+       "n": 20,
+       "sentence": "The outline does not close into a loop (a loose end near [22.216, 4.765]), so there is nothing to extrude; check the rules that join the ends."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null
+    }
+   }
+  }
+ },
+ {
+  "id": "underconstrained:sk-rect-underconstrained__free-circle",
+  "dof": {
+   "independent": 3,
+   "freecad": 3,
+   "brepRs": 3
+  },
+  "closedVolume": 502.6548245743669,
+  "fcBbox": [
+   1,
+   1,
+   0,
+   9,
+   9,
+   0
+  ],
+  "stored": {
+   "shipped": {
+    "volume": 502.5981059471615,
+    "right": true
+   },
+   "guarded": {
+    "volume": 502.5981059471615,
+    "right": true
+   },
+   "brep": {
+    "volume": 502.65482457436656,
+    "right": true
+   }
+  },
+  "rough": {
+   "0.035": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 417.49186287003795,
+      "max": 577.0540510923366,
+      "values": [
+       417.49,
+       423.75,
+       425.72,
+       439.8,
+       447.9,
+       450.94,
+       455.87,
+       481.66
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 417.49186287003795,
+      "max": 577.0540510923366,
+      "values": [
+       417.49,
+       423.75,
+       425.72,
+       439.8,
+       447.9,
+       450.94,
+       455.87,
+       481.66
+      ]
+     },
+     "sentences": {}
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 417.53897718382547,
+      "max": 577.1191721357277,
+      "values": [
+       417.54,
+       423.8,
+       425.77,
+       439.85,
+       447.95,
+       450.99,
+       455.92,
+       481.71
+      ]
+     }
+    }
+   },
+   "0.15": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 265.47010442555285,
+      "max": 831.1778813684456,
+      "values": [
+       265.47,
+       273.33,
+       301.21,
+       304.33,
+       325.16,
+       366.44,
+       412.84,
+       453.37
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 265.47010442555285,
+      "max": 831.1778813684456,
+      "values": [
+       265.47,
+       273.33,
+       301.21,
+       304.33,
+       325.16,
+       366.44,
+       412.84,
+       453.37
+      ]
+     },
+     "sentences": {}
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 265.5022954265616,
+      "max": 831.271680504131,
+      "values": [
+       265.5,
+       273.36,
+       301.24,
+       304.36,
+       325.2,
+       366.48,
+       412.88,
+       453.42
+      ]
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "underconstrained:sk-rect-underconstrained__triangle-joined",
+  "dof": {
+   "independent": 6,
+   "freecad": 6,
+   "brepRs": 6
+  },
+  "closedVolume": 3000,
+  "fcBbox": [
+   -1.7763568394002505e-15,
+   -3.552713678800501e-15,
+   0,
+   30,
+   20.000000000000004,
+   0
+  ],
+  "stored": {
+   "shipped": {
+    "volume": 3000,
+    "right": true
+   },
+   "guarded": {
+    "volume": 3000,
+    "right": true
+   },
+   "brep": {
+    "volume": 3000.0000000000005,
+    "right": true
+   }
+  },
+  "rough": {
+   "0.035": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 2778.9733546180337,
+      "max": 3220.209305208255,
+      "values": [
+       2778.97,
+       2785.19,
+       2835.84,
+       2864.1,
+       2869.74,
+       2881.68,
+       2925.38,
+       2940.52
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "underconstrained": {
+       "n": 20,
+       "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 2837.2207712255426,
+      "max": 3165.358562684219,
+      "values": [
+       2837.22,
+       2856.62,
+       2858.68,
+       2867.04,
+       2948.71,
+       2961.79,
+       2979.29,
+       2989.14
+      ]
+     }
+    }
+   },
+   "0.15": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 1987.1620449023187,
+      "max": 4778.255517398522,
+      "values": [
+       1987.16,
+       2259.73,
+       2412.18,
+       2498.96,
+       2526.04,
+       2614.06,
+       2750.23,
+       2763.12
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "underconstrained": {
+       "n": 20,
+       "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 20,
+      "min": 2427.4132805890904,
+      "max": 3798.9606017123056,
+      "values": [
+       2427.41,
+       2474.08,
+       2564.19,
+       2820.51,
+       2870.1,
+       3072.49,
+       3110.06,
+       3123.21
+      ]
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "underconstrained:sk-rect-underconstrained__circle-radius-only",
+  "dof": {
+   "independent": 2,
+   "freecad": 2,
+   "brepRs": 2
+  },
+  "closedVolume": 502.6548245743669,
+  "fcBbox": [
+   1,
+   1,
+   0,
+   9,
+   9,
+   0
+  ],
+  "stored": {
+   "shipped": {
+    "volume": 502.5981059471615,
+    "right": true
+   },
+   "guarded": {
+    "volume": 502.5981059471615,
+    "right": true
+   },
+   "brep": {
+    "volume": 502.65482457436656,
+    "right": true
+   }
+  },
+  "rough": {
+   "0.035": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 1,
+      "min": 502.5981059471581,
+      "max": 502.59810594717004,
+      "values": [
+       502.6
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "underconstrained": {
+       "n": 20,
+       "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 1,
+      "min": 502.65482457362083,
+      "max": 502.6548245750048,
+      "values": [
+       502.65
+      ]
+     }
+    }
+   },
+   "0.15": {
+    "N": 20,
+    "shipped": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 1,
+      "min": 502.5981059471607,
+      "max": 502.598105947171,
+      "values": [
+       502.6
+      ]
+     }
+    },
+    "guarded": {
+     "tally": {
+      "REFUSED": 20
+     },
+     "volumes": null,
+     "sentences": {
+      "underconstrained": {
+       "n": 20,
+       "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+      }
+     }
+    },
+    "brep": {
+     "tally": {
+      "different-solid": 20
+     },
+     "volumes": {
+      "n": 20,
+      "distinct": 1,
+      "min": 502.6548245719582,
+      "max": 502.6548245764957,
+      "values": [
+       502.65
+      ]
+     }
+    }
+   }
+  }
+ }
+]

@@ -1,0 +1,1109 @@
+[
+ {
+  "id": "fc-chamfer-edge__top-front",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nchamfer(pad.edge('top', 'front'), 2);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "distance": 2,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 11920,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    30,
+    10.000000000000004
+   ],
+   "min": [
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__bottom-back",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 20)\nchamfer(pad.edge('bottom', 'back'), 3);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       30,
+       0
+      ]
+     ],
+     "distance": 3,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 23820,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    30,
+    20
+   ],
+   "min": [
+    0,
+    0,
+    -8.881784197001252e-16
+   ]
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__vertical-front-left",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nchamfer(pad.edge('front', 'left'), 4);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       0,
+       5
+      ]
+     ],
+     "distance": 4,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 11920,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    30,
+    10.000000000000002
+   ],
+   "min": [
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__top-right-offcentre",
+  "script": "const sk = sketch('top', 5)\nsk.rect(40, 30, { at: [0, 25] })\nconst pad = extrude(sk, 10)\nchamfer(pad.edge('top', 'right'), 1.5);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       25,
+       15
+      ]
+     ],
+     "distance": 1.5,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 11966.25,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    40,
+    15
+   ],
+   "min": [
+    -20,
+    10,
+    5
+   ]
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__large-size",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nchamfer(pad.edge('top', 'back'), 9);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       30,
+       10
+      ]
+     ],
+     "distance": 9,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 10380,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    30,
+    10
+   ],
+   "min": [
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__thin-sliver",
+  "script": "const sk = sketch('top')\nsk.rect(100, 6, { at: [50, 3] })\nconst pad = extrude(sk, 3)\nchamfer(pad.edge('top', 'left'), 1);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       3,
+       3
+      ]
+     ],
+     "distance": 1,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 1797,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    100,
+    6,
+    3
+   ],
+   "min": [
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fc-fillet-edge__top-front",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nfillet(pad.edge('top', 'front'), 3);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 3,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 11922.69267166096,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.000000000000014,
+    30,
+    10
+   ],
+   "min": [
+    -2.6096948363226262e-15,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fc-fillet-edge__top-back-small",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nfillet(pad.edge('top', 'back'), 0.5);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       30,
+       10
+      ]
+     ],
+     "radius": 0.5,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 11997.850805969067,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.00000000000002,
+    30,
+    10.000000000000002
+   ],
+   "min": [
+    -2.756612760263446e-16,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fc-fillet-edge__vertical-front-left",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nfillet(pad.edge('front', 'left'), 5);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       0,
+       5
+      ]
+     ],
+     "radius": 5,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 11946.314360529366,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    30,
+    10.000000000000004
+   ],
+   "min": [
+    0,
+    0,
+    -2.900308709386795e-15
+   ]
+  }
+ },
+ {
+  "id": "fc-fillet-edge__bottom-right-tall",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 25)\nfillet(pad.edge('bottom', 'right'), 2);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       40,
+       15,
+       0
+      ]
+     ],
+     "radius": 2,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 29974.230878051796,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.00000000000002,
+    30.00000000000001,
+    25
+   ],
+   "min": [
+    0,
+    -7.105427357601003e-15,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fc-fillet-edge__offcentre-block",
+  "script": "const sk = sketch('top', 2)\nsk.rect(40, 30, { at: [-10, 5] })\nconst pad = extrude(sk, 12)\nfillet(pad.edge('top', 'left'), 4);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       -30,
+       5,
+       14
+      ]
+     ],
+     "radius": 4,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 14296.92356171653,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    10,
+    20.000000000000014,
+    14
+   ],
+   "min": [
+    -30,
+    -10.000000000000005,
+    2
+   ]
+  }
+ },
+ {
+  "id": "fc-fillet-edge__half-the-height",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nfillet(pad.edge('top', 'right'), 5);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       40,
+       15,
+       10
+      ]
+     ],
+     "radius": 5,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 11838.94307221126,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    30.000000000000014,
+    10
+   ],
+   "min": [
+    0,
+    -4.2484267246421144e-15,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__disc-rim",
+  "script": "const c = cylinder(30, 20, { at: [0, 0, 10] })\nchamfer(c.edge('top', 'side'), 1.5);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       -8.631084183902603,
+       12.268022897369658,
+       20
+      ]
+     ],
+     "distance": 1.5,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "volume": 14033.36938435807,
+  "faces": 4,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    14.999768343198578,
+    14.99959700610964,
+    20
+   ],
+   "min": [
+    -14.999768343198571,
+    -14.999597006109646,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fc-fillet-edge__disc-rim",
+  "script": "const c = cylinder(30, 20, { at: [0, 0, 10] })\nfillet(c.edge('top', 'side'), 2);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       -8.631084183902603,
+       12.268022897369658,
+       20
+      ]
+     ],
+     "radius": 2,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "volume": 14058.269413846894,
+  "faces": 4,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    14.999768343198578,
+    14.999645737868253,
+    20
+   ],
+   "min": [
+    -14.999768343198571,
+    -14.999645737868256,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fc-fillet-edge__radius-too-big",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nfillet(pad.edge('top', 'front'), 12);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 1, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces",
+    "pick": null
+   }
+  ],
+  "volume": 12000,
+  "faces": 6,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    30,
+    10
+   ],
+   "min": [
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fc-fillet-edge__L-prism-top-right",
+  "script": "const sk = sketch('top')\nsk.polygon([[0,0],[30,0],[30,10],[10,10],[10,25],[0,25]])\nconst pad = extrude(sk, 10)\nfillet(pad.edge('top', 'right'), 2);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       30,
+       5,
+       10
+      ]
+     ],
+     "radius": 2,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 4491.410296434488,
+  "faces": 9,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    30,
+    25,
+    10.000000000000005
+   ],
+   "min": [
+    0,
+    -1.1102230246251561e-15,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__L-prism-top-front",
+  "script": "const sk = sketch('top')\nsk.polygon([[0,0],[30,0],[30,10],[10,10],[10,25],[0,25]])\nconst pad = extrude(sk, 10)\nchamfer(pad.edge('top', 'front'), 2);",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ]
+     ],
+     "distance": 2,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 4439.999999999999,
+  "faces": 9,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    30,
+    25,
+    10.000000000000002
+   ],
+   "min": [
+    -4.108650548026103e-34,
+    -1.1102230246251565e-16,
+    0
+   ]
+  }
+ },
+ {
+  "id": "fcb-fillet-edge",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nfillet(pad.edge('front', 'right'), 3)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       40,
+       0,
+       5
+      ]
+     ],
+     "radius": 3,
+     "body": "b_pull1"
+    }
+   }
+  ],
+  "volume": 11980.673162290244,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40.00000000000001,
+    30,
+    10.000000000000007
+   ],
+   "min": [
+    0,
+    0,
+    -1.6607148876989409e-15
+   ]
+  }
+ },
+ {
+  "id": "fcb-fillet-after-pocket",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 4, refused 3.",
+  "noNewBuild": null,
+  "refusals": [
+   "round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked",
+   "round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)",
+   "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked))"
+  ],
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "radius": 1,
+     "body": "b_pull1"
+    }
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked",
+    "pick": null
+   },
+   {
+    "id": "round3",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)",
+    "pick": null
+   },
+   {
+    "id": "round4",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked))",
+    "pick": null
+   }
+  ],
+  "volume": 11597.852573171076,
+  "faces": 12,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    40,
+    30,
+    10.000000000000004
+   ],
+   "min": [
+    0,
+    0,
+    0
+   ]
+  }
+ }
+]

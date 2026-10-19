@@ -1,0 +1,1 @@
+Z-spin-negside-torus-neg90               NO-OCCT OCCT: OCCT built nothing | truck V 2467.0330 F 3 bbox -24.9999,0,10.0004,0,24.9999,19.9996 types {"other":1,"plane":2} bodies 1 | brep REFUSED revolve rev1: a circle sketch has no outline to spin | ANALYTIC 2467.4011 dTruck 1.5e-4 dBrep - | ms 2767 cpu 3057

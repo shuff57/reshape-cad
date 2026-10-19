@@ -1,0 +1,185 @@
+[
+ {
+  "label": "null doc",
+  "passed": false,
+  "missing": [
+   {
+    "kind": "box"
+   }
+  ],
+  "message": "Build or run the model first"
+ },
+ {
+  "label": "box width/depth/height derived",
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ {
+  "label": "box size tuple",
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ {
+  "label": "box wrong width",
+  "passed": false,
+  "missing": [
+   {
+    "kind": "box",
+    "width": 41
+   }
+  ],
+  "message": "Expected a box 41 x ? x ?, found a box 40 x 30 x 20."
+ },
+ {
+  "label": "tolerance default .01: 40.005 pass",
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ {
+  "label": "tolerance default .01: 40.02 fail",
+  "passed": false,
+  "missing": [
+   {
+    "kind": "box",
+    "width": 40.02
+   }
+  ],
+  "message": "Expected a box 40.02 x ? x ?, found a box 40 x 30 x 20."
+ },
+ {
+  "label": "tolerance custom .05: 40.02 pass",
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ {
+  "label": "hole across",
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ {
+  "label": "hole across wrong",
+  "passed": false,
+  "missing": [
+   {
+    "kind": "hole",
+    "across": 8
+   }
+  ],
+  "message": "Expected a hole across 8, found a hole across 6."
+ },
+ {
+  "label": "fillet round radius 2 + edge text",
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ {
+  "label": "fillet wrong edge text",
+  "passed": false,
+  "missing": [
+   {
+    "kind": "fillet",
+    "edge": "box1.edge[box1.face[+x] ^ box1.face[+y]]"
+   }
+  ],
+  "message": "Expected a round, found a round 2."
+ },
+ {
+  "label": "fillet style chamfer missing",
+  "passed": false,
+  "missing": [
+   {
+    "kind": "fillet",
+    "style": "chamfer"
+   }
+  ],
+  "message": "Expected a bevel, found a round 2."
+ },
+ {
+  "label": "shell open:true",
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ {
+  "label": "shell open text bottom",
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ {
+  "label": "shell open text top (wrong)",
+  "passed": false,
+  "missing": [
+   {
+    "kind": "shell",
+    "open": "box1.face[+z]"
+   }
+  ],
+  "message": "Expected a hollow, found a hollow with a 2 wall."
+ },
+ {
+  "label": "shell thickness",
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ {
+  "label": "two holes needed, one present (greedy distinct)",
+  "passed": false,
+  "missing": [
+   {
+    "kind": "hole"
+   }
+  ],
+  "message": "Expected a hole, found a hole across 6."
+ },
+ {
+  "label": "sketch width/depth + circle across",
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ {
+  "label": "SC refusal map",
+  "round1": "round1 (fillet): wedge1.edge[wedge1.face[-z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[-z]: faces of a wedge are not resolved in the browser demo"
+ },
+ {
+  "label": "lesson wants a round; no refusals passed (fail-open)",
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ {
+  "label": "lesson wants a round; SC refusals passed",
+  "passed": false,
+  "missing": [
+   {
+    "kind": "fillet",
+    "size": 2
+   }
+  ],
+  "message": "Expected a round 2; the round could not be built: round1 (fillet): wedge1.edge[wedge1.face[-z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[-z]: faces of a wedge are not resolved in the browser demo"
+ },
+ {
+  "label": "lesson wants a round; OCCT refusals passed (what the product feeds today)",
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ {
+  "0": "round",
+  "1": "bevel",
+  "2": "hollow",
+  "3": "pull",
+  "4": "spin",
+  "5": "join",
+  "6": "plane",
+  "label": "studentWord map"
+ }
+]

@@ -1,0 +1,244 @@
+{
+ "group": "primitives",
+ "rows": [
+  {
+   "feature": "box(w,d,h) / cuboid",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=box-plain,box-cube,box-tiny,box-huge,box-thin,fc-box-thin-plate,fc-box-slender-post,param-box (rig per contract/RIG.md; results in contract/primitives-evidence/{main,edge,far}.json; per-group maxima via primitives-evidence/aggregate.mjs). 8 scripts incl. box(40,30,12), box(0.01,0.02,0.03), box(1000,2000,3000), box(100,100,0.01). Truck vs live OCCT: max dVol 2.8e-16, dBbox 4.6e-17, dCOM 6.1e-17 x diag; vs analytic w*d*h 1.4e-16; vs brep-rs 2.0e-16; faces 6/6 plane on every case. FreeCAD refs: ref-pad-basic__thin-plate (box(200,120,1.5,{at:[0,0,0.75]})) dVol 0, bbox 0, faces 6=6; ref-pad-basic__slender-post (box(4,4,120,{at:[5,-6,60]})) dVol 1.2e-16, faces 6=6. Alias check (round 2): ran --only=r2-alias-cuboid,r2-alias-cuboid-opts,r2-alias-box; cuboid(40,30,12) runScript stores {kind:box,size:[40,30,12],center:[0,0,0]}, identical to box(40,30,12) (dVol 0, faces 6/6); cuboid(40,30,12,{at:[15,-7,3],corner:3}) stores center [15,-7,3] and round 3 (dVol 2.6e-5, faces 26/26). Box up to 1e6 mm and as thin as 0.01 mm is exact; sizes of 1e7 and beyond are in the oversize rows."
+  },
+  {
+   "feature": "box option at:[x,y,z]",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=box-at,box-at-neg,edge-box-far,param-at. box(40,30,12,{at:[15,-7,3]}), at [-100,200,-300], at [1e6,1e6,1e6] (1 mm cube), at via param(). Max dVol vs OCCT 1.1e-16, dBbox 0, dCOM 0, faces 6/6. A far placement is exact for a planar box; it is NOT for curved primitives, see the row 'curved primitives placed far from the origin'."
+  },
+  {
+   "feature": "box doc-level rotate (script turn(box,[rx,ry,rz]))",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=box-turn-x30,box-turn-y45,box-turn-z20,box-turn-xyz,box-turn-neg,box-turn-360,box-turn-90s,edge-box-turn-tiny,edge-box-turn-180,edge-box-turn-270z. Multi-axis [20,35,50] with at:[10,20,30], negative [-25,70,-110], [90,90,90], 0.001 deg, 180, 270 about z. Translator builds at the origin, rotates x then y then z about the origin, then translates (same order as occt-build). Max dVol vs OCCT 3.8e-16, dBbox 1.4e-16, dCOM 1.1e-16, faces 6/6. The rotated COM is the asymmetric check (at != 0), so a wrong order or handedness would show; it did not."
+  },
+  {
+   "feature": "box option corner:r (whole-shape fillet, roundStyle fillet), r clearly below half the shortest side",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=box-corner-fillet,box-corner-fillet-small,box-corner-fillet-at,box-corner-fillet-turn,box-corner-cube-5,box-corner-just-under-half,box-corner-thin-plate,box-corner-huge,edge-box-corner-1e-3,box-round-script,param-box-corner,r2-box-10-20-30-c4.9,r2-box-10-20-30-c4.99 and --prefix=r2-corner-under. SCOPE: r no larger than 0.998 x (half the shortest side), checked with the shortest side on X, on Y and on Z (r2-corner-under-r2a/r2b/r2c-X/Y/Z: boxes 12x20x30, 10x20x30, 5x20x30 and their axis permutations, r = 0.998 x half). r from 0.001 to 100 (1000x2000x3000). Every case: truck vs live OCCT dVol 5.8e-5 to 1.4e-4 (curved, tessellation, bar 3e-4), dBbox <= 4.3e-6, dCOM <= 2.7e-10 x diag, faces 26/26 (6 plane + 12 cylinder + 8 sphere); vs the closed-form Minkowski volume (independent of every kernel) the same 1.4e-4, so OCCT is exact and truck reads low. box(10,20,30,{corner:4.99}) truck 4883.364 vs closed form 4883.936 (1.2e-4), 26 faces; corner:4.9 4920.381 vs 4920.938. Same also at r = 5.9999 and 5.99995 on 12x20x30 and 20x30x12 (26 faces, 1.4e-4). The band from 1e-5 below half up to half is NOT in this row, see the next rows. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "box option corner equal to half the shortest side, shortest side on X or Y (box(12,20,30,{corner:6}), box(10,20,30,{corner:5}), box(40,6,6,{corner:3}))",
+   "status": "wrong",
+   "evidence": "WRONG SOLID, NO SENTENCE. Ran contract/measure-primitives.mjs --prefix=r2-corner-half and --only=r2-box-12-20-30-c6,r2-box-10-20-30-c5,r2-box-5-20-30-c2.5,r2-capsule-40-6-6,r2-capsule-6-40-6. The script only checks corner is a positive number, so truck is reached and builds a 12-face solid (the status is built, nothing is shown). Truck volume vs closed form (Minkowski stadium, independent of every kernel): box(12,20,30,{corner:6}) 7972.520 vs 5573.309 (43% too big, and larger than the unrounded 12x20x30 box, 7200); box(20,12,30,{corner:6}) 7972.520 (same); box(10,20,30,{corner:5}) 6879.219 vs 4879.793; box(20,10,30,{corner:5}) 6879.219; box(5,20,30,{corner:2.5}) 3725.688 vs 2725.848; box(20,5,30,{corner:2.5}) 3725.688; capsule box(40,6,6,{corner:3}) 1554.220 vs 1074.425, box(6,40,6,{corner:3}) 1554.220. Live OCCT throws on each (\"Rounding box box1 (12x20x30) at radius 6 failed -- the radius is too big for this shape's edges.\") and brep-rs refuses each (\"Rounding box by 6 would not fit its shortest side -- box1 is shown without it.\"), so the two independent kernels agree the shape cannot be built and truck alone returns a solid. Only the case where the shortest side is uniquely Z is correct (next row); box(6,6,40,{corner:3}) (X and Y tie, Z longest) and box(20,20,20,{corner:10}) are refused by truck. PRE-FLIGHT NEEDED: refuse corner >= half the shortest side (see the near-limit row for the margin); until it exists this is wrong, not supported. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "box option corner equal to half the shortest side, shortest side uniquely on Z (box(20,30,12,{corner:6}), box(20,30,10,{corner:5}), box(20,30,5,{corner:2.5}))",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=r2-corner-half-r2a-Z,r2-corner-half-r2b-Z,r2-corner-half-r2c-Z,r2-box-20-30-12-c6. Truck builds a 10-face solid (2 plane + 4 cylinder + 4 sphere); volume 5572.520 vs closed form 5573.309 (1.4e-4), 4879.219 vs 4879.793 (1.2e-4), 2725.688 vs 2725.848 (5.9e-5); bbox exactly the box. Matches the closed form only: live OCCT throws and brep-rs refuses for the same input, so no kernel confirms it. Supported on the analytic oracle for Z only; the X and Y orientations of the same shape are WRONG (previous row), so a single pre-flight rule (refuse corner >= half the shortest side on every axis) is the safe contract; this row must not be read as a promise for other orientations. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "box option corner within 1e-5 (relative) of half the shortest side, either side (box(12,20,30,{corner:5.99999}) ... {corner:6.000001})",
+   "status": "wrong",
+   "evidence": "WRONG, NO SENTENCE. Ran contract/measure-primitives.mjs --prefix=r2e-box-12-20-30 and --prefix=r2z-box-20-30-12 (shortest side on X resp. Z), r2e-box-12-20-30-a2/b2. Shortest on X, box(12,20,30,{corner:c}): c=5.99, 5.999, 5.9999, 5.99995 build 26 faces, dVol 1.4e-4 (fine); c=5.99999 builds 18 faces (OCCT 26), volume 5572.525 vs closed form 5573.314 (1.4e-4, so the volume is still inside the bar but the face count is off); c=5.9999999 (1.7e-8 below half) builds 12 faces, volume 7972.520 vs 5573.309 (43% off, wrong solid); c=6.000001 (above half; OCCT throws) builds the same 12-face 7972.520; c=6.01 is refused. Shortest on Z, box(20,30,12,{corner:c}): c=5.9999 and 5.99995 26 faces; c=5.999999 and 5.99999 18 faces; c=5.9999999 10 faces; c=6.000001 builds the 10 face half-round solid 5572.520 where OCCT throws (volume right for the half, but the asked-for corner is silently clamped). Faces collapse because truck drops sub-tolerance bands; on Z the volume stays within 1.4e-4 of the closed form so only the face count disagrees, on X/Y the volume is wrong. Pre-flight margin: 5.99995 (8e-6 below half) is the last good point measured, so refuse corner > half x (1 - 1e-5), which also covers the exact-half and above-half rows. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "box option corner too large (r about 1.1 x half the shortest side or more; also 6x6x40 and cube at exactly half)",
+   "status": "unsupported",
+   "evidence": "NOT A PLAIN SENTENCE (marked unsupported, not refused: the student does see text, but it carries an internal id such as box1 and a kernel command name such as solid.fillet, and it does not say what to change). Ran contract/measure-primitives.mjs --prefix=r2-corner-over, --only=r2-box-10-20-30-c5.1,r2-box-10-20-30-c7,r2-box-12-30-20-c7,r2-box-20-30-12-c7,r2-box-30-12-20-c7,r2-box-30-20-12-c7,r2-capsule-6-6-40,r2-cube-half,box-corner-way-over,edge-box-corner-1e-6. Truck refuses every one of these (no wrong solid), but the text depends on which side is shortest, so there is no single sentence: shortest on Z (20x30x12, 30x20x12, c=7): \"box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls\"; shortest on X or Y (12x30x20, 10x20x30, 30x12x20, c=7, 5.1, 6.01): \"box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces\"; box(6,6,40,{corner:3}) and box(20,20,20,{corner:10}) at exactly half: \"box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius\"; box(40,30,12,{corner:0.000001}): \"...solid.fillet: invalid input: fillet size must be positive\" (misleading, the size is positive). Live OCCT builds (c=7 on 20x30x12 gives 7727.668, 26 faces, no valid closed form) and brep-rs refuses with a plain sentence (\"Rounding box by 7 would not fit its shortest side -- box1 is shown without it.\"), which is the wording the guard layer should show. Sentence needed: \"Rounding box1 by 7 would not fit its shortest side (12 high, so the round must be under 6).\" Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "box corner with chamfer style (ModelDoc roundStyle: chamfer; script bevel(box,d) is refused)",
+   "status": "wrong",
+   "evidence": "WRONG, ModelDoc path only (not reachable from reSHape Script: bevel(box(40,30,12),3) is refused by the interpreter, the doc form comes from Build mode / toScript of a stored doc). Ran contract/measure-primitives.mjs --only=box-chamfer,box-chamfer-cube,box-bevel-script,box-bevel-script-small and --prefix=r2-box-chamfer, plus primitives-evidence/chamfer-polytope.mjs (exact volume of the intersection of half-spaces, no kernel). Truck always builds an 18-face solid; live OCCT and brep-rs (two independent kernels, they agree) build 26 faces. 40x30x12 d=3: truck 13086 vs OCCT 13068 (dVol 1.4e-3); cube 20 d=4: 6464 vs 6421.333 (6.6e-3); 40x30x12 d=1: 14242 vs 14241.333 (4.7e-5); d=2: 5568 vs 5562.667 (9.6e-4); d=4.9: truck 3824.694 vs OCCT 3746.261 (2.1e-2); 20x30x12 d=5.9: 4115.834 vs 3978.915 (3.4e-2). Cause confirmed independently: truck equals the 18-half-space polytope (6 box planes + 12 edge chamfer planes) exactly, 13086, 6464, 3824.694, 4115.834 to 1e-12, while OCCT equals that polytope minus 8 corner pieces of d^3/12 each (13086 - 18 = 13068; 3824.694 - 78.43 = 3746.261). At d at or above half the shortest side OCCT throws (\"Chamfering box x1 (10x20x30) at radius 5 failed\") and brep-rs refuses, but truck still builds: 10x20x30 d=5 -> 14 faces, volume 3750; d=5.5 -> 14 faces, 3382.583; 20x30x12 d=6 -> 14 faces, 4032 (equal to the polytope, no oracle builds them). No sentence anywhere. PRE-FLIGHT NEEDED: refuse a whole-body chamfer of a box. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "cylinder(across,tall)",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=cyl-plain,cyl-huge,cyl-disc,fc-cyl-offcentre,fc-cyl-rod,param-cyl. cylinder(24,30), 2000x3000, 100x0.2 disc. Truck vs live OCCT max dVol 1.2e-4 (curved tessellation, bar 3e-4), dBbox 8.4e-6, dCOM 2.0e-10; vs analytic pi r^2 h 1.2e-4; faces 3/3 (1 cylinder + 2 plane). FreeCAD refs: ref-pad-basic__circle-offcentre (cylinder(18,25,{at:[10,-20,12.5]})) dVol 1.1e-4, dBbox 6.8e-6, faces 3=3; ref-revolution__top-solid-rod (cylinder(24,30,{at:[0,0,15]})) dVol 1.1e-4, faces 3=3. Needle cylinder(0.5,100) is 1.8e-3, see the small-size row."
+  },
+  {
+   "feature": "cylinder option at",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=cyl-at. cylinder(24,30,{at:[5,3,2]}): dVol vs OCCT 1.1e-4, dBbox 7.1e-6, dCOM 8.2e-11, faces 3/3. Curved volume degrades far from the origin, see the 'placed far' row."
+  },
+  {
+   "feature": "cylinder doc-level rotate (script turn)",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=cyl-turn-x90,cyl-turn-y90,cyl-turn-y30,cyl-turn-xyz. x90, y90 with at:[5,3,2], y30, [20,35,50] with at:[10,20,30]. Max dVol vs OCCT 1.2e-4, dBbox 1.2e-5, dCOM 4.4e-11, faces 3/3."
+  },
+  {
+   "feature": "cylinder option corner:r (both rims filleted), r clearly below the radius and half the height",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=cyl-corner,cyl-corner-small,cyl-corner-at,cyl-corner-turn,cyl-corner-under-height-half,edge-cyl-corner-1e-3,r2-cyl-h2-under,r2-cyl-R-under,r2bb-cyl-10-30-c1..c4.9,r2bb-cyl-24-30-c6..c11.9,r2bb-cyl-10-10-c2..c4.9. r 0.001 to 11.9 on cylinder(24,30), 4.9 on cylinder(24,10), up to 4.9 on cylinder(10,30) (98% of the radius), at, turned [20,35,50]. Max dVol vs OCCT 1.6e-4, dBbox 9.1e-6, dCOM 6.7e-11, equals the Pappus closed form to 1.6e-4; faces 5/5 (1 cylinder + 2 plane + 2 rim fillets; truck labels the rim fillets other where OCCT says torus, label only). Excluded: r within 0.2% of the radius (next row) and r at or above half the height (rows below). Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "cylinder option corner within 0.2% of the radius (cylinder(10,30,{corner:4.99}))",
+   "status": "wrong",
+   "evidence": "WRONG BBOX, volume fine, no sentence. Ran contract/measure-primitives.mjs --prefix=r2bb-cyl and --only=r2-cyl-R-under. cylinder(10,30,{corner:4.99}): truck bbox x/y +-5.048 / +-5.528 (z +-15) vs OCCT +-5 / +-5: the box is 0.53 mm (10%) too wide in y, dBbox 1.6e-2 x diag, while the volume is right (2094.961 vs 2095.291, 1.6e-4) and 5 faces. At corner 4.9 (2% below the radius) the bbox is exact again (2.3e-6), and every other r tested (cylinder(10,30) 1..4.5, cylinder(24,30) 6..11.9, cylinder(10,10) 2..4.9) is exact. A bbox that is wrong by 10% would break anything that sizes the view or checks fit from it. Pre-flight: refuse corner > 0.99 x the radius, or take the bbox from OCCT-style exact surface bounds. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "cylinder option corner equal to half the height (cylinder(24,10,{corner:5}), cylinder(48,10,{corner:5})) and within 1e-5 either side",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=r2-cyl-h2-flat,r2-cyl-h2-tall,r2z-cyl-48-10-a,r2z-cyl-48-10-b,r2z-cyl-48-10-c. Radius larger than half the height, so the rims meet at mid-height. cylinder(24,10,{corner:5}) truck 3789.556 vs closed form 3790.160 (1.6e-4), 3 faces; cylinder(48,10,{corner:5}) 16552.105 vs 16552.810 (4.3e-5), 3 faces; corner 4.99999 and 4.9999999: 3 faces (OCCT 5, the zero-width cylinder band and a rim are dropped; the volume is within 4.3e-5 so only the face count differs and the solid is the same shape). corner 5.000001 (above half): truck builds the same 3-face half-round solid 16552.105 where OCCT returns 28616.5 (not a valid closed form) and brep-rs refuses (\"Rounding cylinder by 5.000001 would not fit its radius or height -- cyl1 is shown without it.\"): the asked-for corner is silently clamped by 1e-6, immaterial. OCCT throws and brep-rs refuses at exactly half, so this rests on the closed form only. Unlike the box, no wrong solid was found for a cylinder at its limit. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "cylinder option corner too large (r above half the height, or r at or above the radius)",
+   "status": "unsupported",
+   "evidence": "NOT A PLAIN SENTENCE (marked unsupported, not refused: the student does see text, but it carries an internal id such as box1 and a kernel command name such as solid.fillet, and it does not say what to change). Ran contract/measure-primitives.mjs --only=cyl-corner-over-height-half,cyl-corner-radius,cyl-corner-over-radius,cyl-corner-way-over,r2-cyl-R-eq-h2,r2-cyl-R-eq-h2b,r2-cyl-R-over,r2-cyl-h2-over. Truck refuses all of them (no wrong solid): cylinder(24,10,{corner:6}) and (48,10,{corner:5.5}) \"cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls\"; cylinder(24,30,{corner:12}), (10,30,{corner:5}) (r = radius, a valid hemisphere-ended solid, OCCT 2094.395 = closed form), (10,10,{corner:5}), (10,30,{corner:5.5}): \"...the blend is larger than a corner radius\" (conservative). OCCT builds 6504.93 (24,10,6) and 28301.66 (48,10,5.5) with no valid closed form; brep-rs refuses with \"Rounding cylinder by 5 would not fit its radius or height -- cyl1 is shown without it.\", the wording the guard layer should use. Script passes corner through unchecked. The sentence names cyl1 and solid.fillet, and does not say whether radius or height is the limit. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "cylinder corner with chamfer style (ModelDoc roundStyle: chamfer), d below the radius and below half the height",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=cyl-chamfer,cyl-bevel-script,r2-cyl-chamfer-3,r2-cyl-chamfer-9,r2-cyl-chamfer-R-0.1 (doc {kind:cylinder,radius:12,height:30,round:d,roundStyle:chamfer}). d=3: truck 12948.311 vs OCCT 12949.645 (1.0e-4), brep-rs 12949.645 = closed form 13571.680 - 2*2*pi*(12-d/3)*d^2/2; d=9: 8990.940 vs 8991.238 (3.3e-5); d=11.9 (0.1 under the radius): 6423.880 vs 6423.927 (7.3e-6); faces 5/5 (cone 2, cylinder 1, plane 2, types equal). Script cannot reach it: bevel(cylinder(24,30),3) is refused by the interpreter (bevel() needs one edge: a whole shape is not supported yet -- chamfer one edge with bevel(shape.edge(faceA, faceB), size), or round the whole box or cylinder with fillet(shape, size).). d exactly half the height (radius 12, height 10, d=5): truck builds 4 faces, 2900.606 vs Pappus closed form 2900.737 (4.5e-5) while OCCT throws and brep-rs refuses (closed form only). Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "cylinder chamfer at or above the radius, or above half the height (ModelDoc roundStyle: chamfer, round >= radius)",
+   "status": "unsupported",
+   "evidence": "NOT A PLAIN SENTENCE (marked unsupported, not refused: the student does see text, but it carries an internal id such as box1 and a kernel command name such as solid.fillet, and it does not say what to change). Ran contract/measure-primitives.mjs --only=r2-cyl-chamfer-R,r2-cyl-chamfer-R+1,r2-cyl-chamfer-h2+. radius 12 height 30 d=12 and d=13: \"x1 (cylinder): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than a corner radius\"; radius 12 height 10 d=6: \"...the blend is taller than the walls\". Truck refuses (no wrong solid), but OCCT builds d=12 (6333.45, 3 faces), d=13 (9891.83 with no valid closed form) and d=6 on h=10 (5277.88), whereas brep-rs refuses all (\"Rounding cylinder by 12 would not fit its radius or height -- x1 is shown without it.\"). Not reachable from the script (bevel of a whole cylinder is refused by the interpreter), only via the doc form. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "sphere(across)",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=sph-plain,sph-huge. sphere(20), sphere(5000). Truck vs OCCT dVol 7.1e-5 (equals the analytic 4/3 pi r^3 delta), dBbox 0, dCOM 1.1e-13, faces 1/1 sphere. Below about 1 mm across the volume measure degrades, see the small-size row. Oversize: exact-to-tessellation up to across 5e4, volume 0 from 7e4, see the oversize row."
+  },
+  {
+   "feature": "sphere option at",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=sph-at,sph-turn. sphere(20,{at:[5,-3,7]}): dVol 7.1e-5, dBbox 0, dCOM 2.7e-12, faces 1/1. turn(sphere,[30,40,50]) is accepted as a no-op by the interpreter (a ball looks the same turned): same volume, same position."
+  },
+  {
+   "feature": "sphere options corner / rotate (not offered)",
+   "status": "refused",
+   "refusalSentence": "sphere has no option called \"corner\". It takes at.",
+   "evidence": "Ran contract/measure-primitives.mjs --only=v-sph-corner,v-sph-rotate-opt (interpreter only, kernel not reached). sphere(10,{corner:2}) and sphere(10,{rotate:[1,2,3]}) are refused before any build."
+  },
+  {
+   "feature": "cone(across,tall) pointed cone",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=cone-plain,cone-flat,cone-spire,cone-huge. cone(20,30), cone(100,2), cone(2,100), cone(2000,3000). Truck builds by sketch+revolve (no solid.cone). Max dVol vs OCCT 2.7e-4 (spire, inside 3e-4 but close), others 1.8e-4; dBbox 4.4e-6; dCOM 5.5e-17; faces 2/2 (cone + base plane). Label note: for the flat cone(100,2) truck types the lateral face 'sphere' where OCCT says cone (geometry agrees: dVol 5.6e-5), so any later feature that picks by surface type must not trust that label."
+  },
+  {
+   "feature": "cone option at",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=cone-at. cone(20,30,{at:[5,-3,7]}): dVol 1.8e-4, dBbox 3.0e-6, dCOM 6.5e-17, faces 2/2."
+  },
+  {
+   "feature": "cone doc-level rotate (script turn)",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=cone-turn-x90,cone-turn-xyz,cone-turn-y180. x90, [20,35,50] with at:[10,20,30], y180 (apex flipped). Max dVol 1.8e-4, dBbox 1.0e-5, dCOM 1.7e-15, faces 2/2."
+  },
+  {
+   "feature": "cone frustum / second radius (cone with three arguments)",
+   "status": "unsupported",
+   "evidence": "MISLEADING TEXT, marked unsupported (the sentence is real but does not explain). Ran contract/measure-primitives.mjs --only=v-cone-three-arg (interpreter only). cone(10,5,10) is refused with \"cone's extras go in a { } object at the end, like cone(..., { at: ... }). You gave it 10.\" ConeFeature has one radius and no frustum form exists, but the sentence tells the student to wrap the third number in an options object, and there is no option that would accept it. Needed sentence: \"cone() makes a pointed cone from across and tall only; a flat-topped cone is not supported yet.\" Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "ring(across,tubeAcross) / torus (also spelled torus(...)), across/tubeAcross at most about 50",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=ring-plain,ring-fat,ring-huge,ring-near-horn,param-ring,r2-alias-torus,r2-alias-torus-at,r2-alias-ring,r2-ring-100-2,r2-ring-40-10,r2-ring-40-4,r2-ring-40-2,r2-ring-40-1,r2-ring-20-1,r2-ring-20-0.5,r2-ring-10-0.5. ring(40,10), ring(40,18), ring(4000,800), ring(20.02,10) (ringRadius just above tubeRadius), ring(100,2) (ratio 50). ringRadius=(across-tube)/2, tubeRadius=tube/2. Alias check: torus(40,10) and ring(40,10) both store {kind:torus,ringRadius:15,tubeRadius:5} and measure identically (dVol 1.5e-4, dBbox 7.8e-6, dCOM 8.0e-7 x diag, faces 1/1); cuboid(40,30,12) and box(40,30,12) both store {kind:box,size:[40,30,12]} (dVol 0, faces 6/6), cuboid(40,30,12,{at:[15,-7,3],corner:3}) stores round:3 and matches (2.6e-5, 26/26). Ratios 2 to 40 (across/tube): dVol 1.4e-4 to 2.2e-4 vs live OCCT, equal to the analytic 2 pi^2 R r^2 deviation; ratio 50 (ring(100,2)) 2.7e-4, just inside the 3e-4 bar; faces 1/1 (truck labels the torus other, OCCT torus; label only). Thinner tubes are NOT covered here, see the thin-tube row. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "ring with a thin tube (across/tubeAcross of 100 or more, or 50 or more when tubeAcross is under 1): ring(100,1), ring(200,1), ring(400,4), ring(1000,10)",
+   "status": "wrong",
+   "evidence": "WRONG VOLUME MEASURE (bar 3e-4, curved), no sentence; shape topology and bbox fine. Ran contract/measure-primitives.mjs --prefix=r2-ring (r2-ring-100-1 etc.) and primitives-evidence/r2/ringthin/. Truck vs live OCCT (brep-rs and the analytic 2 pi^2 R r^2 agree with OCCT): ring(100,2) 2.7e-4 (inside); ring(100,1) 4.9e-4; ring(200,1) 1.1e-3; ring(100,0.5) 1.1e-3; ring(100,0.25) 1.9e-3; ring(400,4) 4.9e-4; ring(400,2) 1.1e-3; ring(1000,10) 4.9e-4; ring(1000,4) 1.2e-3; ring(10,0.2) 5.2e-4; and for contrast ring(40,1) 2.2e-4, ring(40,2) 1.4e-4, ring(20,1) 1.4e-4, ring(20,0.5) 2.2e-4, ring(10,0.5) 2.0e-4. All faces 1/1, dBbox <= 2.7e-6. So the error follows the slenderness of the tube, not the absolute size: it passes 3e-4 from across/tube = 100 up (and from 50 when the tube is under 1 mm), reaching 2e-3. The earlier small-size row (curved shapes under 1 mm) did not cover these: ring(1000,10) is far above 1 mm. Truck also fails to finish on very large rings, see the oversize row. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "ring with tube not thinner than the ring radius (across <= 2*tubeAcross): ring(20,10), ring(10,6), ring(10,10), ring(10,12), ring(10,5)",
+   "status": "unsupported",
+   "evidence": "NOT A PLAIN SENTENCE (marked unsupported, not refused: the student does see text, but it carries an internal id such as box1 and a kernel command name such as solid.fillet, and it does not say what to change). Ran contract/measure-primitives.mjs --only=r2-ring-10-5,ring-horn,ring-spindle,ring-spindle-mild,r2-ring-10-10,r2-ring-10-12,ring-zero-major,ring-negative-major. Truck refuses all of them with \"ring1 (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0\" (no wrong solid). A student who typed ring(across, tubeAcross) never typed major or minor, and the sentence does not say that the tube must be under half of across. Kernels disagree on these inputs, so none is a reference: ring(20,10) OCCT 2467.401 and brep-rs the same (horn torus, R = r); ring(10,5) OCCT 308.425 = brep-rs; ring(10,6) 355.306 (spindle, self-intersecting surface); ring(10,10) (R = 0) OCCT 6.5e-14 and brep-rs \"builds an empty solid\"; ring(10,12) (R = -1) OCCT builds nothing and brep-rs reports 710.612. Needed sentence: \"ring(): the tube has to be thinner than half of across -- tubeAcross 12 is not under 5.\" Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "ring(across,tubeAcross) with tubeAcross >= across/2 is not checked by the interpreter",
+   "status": "unsupported",
+   "evidence": "MISSING INTERPRETER CHECK. Ran contract/measure-primitives.mjs --only=r2-ring-10-12,r2-ring-10-10,r2-ring-10-5 (runScript errors: none for all three). ring(10,12) stores {kind:torus,ringRadius:-1,tubeRadius:6}, ring(10,10) stores ringRadius 0, ring(10,5) stores ringRadius 2.5 = tubeRadius 2.5, and all three pass runScript with no error or warning; only the positive-number check applies (every size is positive here, while the stored ringRadius is not). The bad radius travels into the document and is caught only by the kernel (previous row), where truck refuses; the other kernels either build a negative-radius torus (brep-rs 710.612 for ring(10,12)) or nothing (OCCT), so anything that did not go through truck would show a wrong or empty part. The interpreter should refuse with the sentence in the previous row. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "ring option at",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=ring-at. ring(40,10,{at:[5,-3,7]}): dVol 1.5e-4, dBbox 7.8e-6, dCOM 8.0e-7, faces 1/1."
+  },
+  {
+   "feature": "ring doc-level rotate (script turn)",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=ring-turn-x90,ring-turn-xyz. x90 and [20,35,50] with at:[10,20,30]: dVol 1.5e-4, dBbox 7.8e-6, dCOM 8.0e-7 (axis direction correct: bbox matches), faces 1/1."
+  },
+  {
+   "feature": "prism(sides,across,tall) sides 3..12",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=prism-3,...,prism-12,prism-tiny,prism-huge,prism-thin,fc-prism-hexagon,param-prism (15 cases, every n from 3 to 12 plus 0.03x0.01, 3000x5000, 100x0.01). Regular n-gon, circumradius across/2, first vertex at angle 0. Truck vs live OCCT max dVol 5.7e-16, dBbox 2.2e-16, dCOM 5.8e-17; vs analytic n/2 R^2 sin(2pi/n) h 3.4e-16; vs brep-rs 6.9e-16; faces n+2 equal on all. FreeCAD ref-pad-basic__hexagon (prism(6,20,7,{at:[0,0,3.5]})): dVol 1.8e-11, dBbox 5.7e-12, faces 8=8."
+  },
+  {
+   "feature": "prism option at",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=prism-at. prism(5,30,12,{at:[5,-3,7]}): dVol 2.8e-16, dBbox 1.7e-16, dCOM 8.6e-17, faces 7/7."
+  },
+  {
+   "feature": "prism doc-level rotate (ModelDoc rotate field; script turn(prism) makes a separate rotate feature)",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=prism-docrotate-x90,prism-docrotate-xyz-at,prism-turn-script. Doc rotate [90,0,0] and [20,35,50] with center [5,-3,7] on a pentagon; script turn(prism(5,30,12,{at:[5,-3,7]}),[20,35,50]) (canRotate excludes prism, so the interpreter emits a 'rotate' step about the bbox centre). All three: dVol <= 4.3e-16, dBbox 2.2e-16, dCOM 6.7e-17, faces 7/7. Both routes agree with OCCT."
+  },
+  {
+   "feature": "prism sides not a whole number (5.4, 5.5)",
+   "status": "wrong",
+   "evidence": "WRONG at the script layer, not the kernel. Ran contract/measure-primitives.mjs --only=prism-frac-5.4,prism-frac-5.5. prism(5.4,30,12) builds a 5-sided prism and prism(5.5,30,12) a 6-sided one: no error, no warning (Math.round in prism()), doc.sides stores 5 and 6. The kernels agree with the doc (faces 7 and 8, dVol ~1e-16) so the solid matches what was STORED, not what the student typed. Other size words refuse bad values; this one silently changes the part. Needs a whole-number check in the interpreter or the guard layer."
+  },
+  {
+   "feature": "prism sides outside 3..12",
+   "status": "refused",
+   "refusalSentence": "prism() needs 3 to 12 sides.",
+   "evidence": "Ran contract/measure-primitives.mjs --only=prism-2,prism-13,v-prism-zero-sides,v-prism-neg-sides. prism(2,...) and prism(13,...) refused by the interpreter before any build; prism(0,...) / prism(-3,...) are refused by positiveNumber."
+  },
+  {
+   "feature": "wedge(width,depth,tall)",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=wedge-plain,wedge-tiny,wedge-huge,wedge-thin. Right-triangle footprint (0,0)-(w,0)-(0,d) extruded along Z, centred on the bbox. wedge(40,30,12), 0.03x0.02x0.01, 3000x2000x5000, 100x1x0.01. Truck vs OCCT max dVol 2.5e-16, dBbox 3.7e-17, dCOM 4.6e-17 (asymmetric solid, so the triangle orientation is checked); vs analytic w d h / 2 1.4e-16; faces 5/5."
+  },
+  {
+   "feature": "wedge option at",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=wedge-at. wedge(40,30,12,{at:[5,-3,7]}): dVol 0, dBbox 0, dCOM 3.5e-17, faces 5/5."
+  },
+  {
+   "feature": "wedge doc-level rotate (ModelDoc rotate field; script turn(wedge) makes a rotate feature)",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=wedge-docrotate-x90,wedge-docrotate-xyz-at,wedge-turn-script,edge-wedge-docrotate-180y. [90,0,0], [20,35,50] with center [5,-3,7], y180 with center [3,4,5], and script turn(...). Max dVol 3.8e-16, dBbox 1.4e-16, dCOM 4.0e-17, faces 5/5. The asymmetric COM would expose a wrong handedness; it did not."
+  },
+  {
+   "feature": "validation: every size must be a positive number",
+   "status": "supported",
+   "refusalSentence": "box(): a size has to be a positive number -- got -10 for width.",
+   "evidence": "Ran contract/measure-primitives.mjs --only=v-box-neg,v-box-zero,v-box-nan,v-box-inf,v-box-str,v-box-missing,v-box-null,v-cyl-neg,v-cyl-zero-tall,v-sph-neg,v-cone-zero,v-ring-zero-tube,v-ring-neg,v-prism-neg,v-wedge-neg,v-wedge-missing,v-box-corner-zero,v-box-corner-neg,v-box-corner-str (interpreter only). 19 of 19 bad sizes refused before any build, none reached the kernel. Sentences: 'box(): a size has to be a positive number -- got -10 for width.' (zero, negatives, every kind, corner too); NaN/Infinity/text/null: \"box's width has to be a number, and you gave it NaN.\"; missing: 'box needs a number for height.'."
+  },
+  {
+   "feature": "validation: unknown option names refused with \"has no option called\"",
+   "status": "supported",
+   "refusalSentence": "box has no option called \"colour\". It takes at, corner.",
+   "evidence": "Ran contract/measure-primitives.mjs --only=v-box-unknown-opt,v-box-rotate-opt,v-box-center-opt,v-cyl-unknown,v-sph-corner,v-sph-rotate-opt,v-cone-corner,v-ring-corner,v-prism-corner,v-wedge-corner,v-box-opts-array,v-box-extra,v-box-at-short,v-box-at-str (interpreter only). 14 of 14 refused (10 unknown option names, 4 malformed option forms). Options are only at (all) and corner (box, cylinder); rotate/center cannot be passed, rotation is turn()."
+  },
+  {
+   "feature": "param() accepted as a size, a corner and an at coordinate",
+   "status": "supported",
+   "evidence": "Ran contract/measure-primitives.mjs --only=param-box,param-cyl,param-ring,param-prism,param-box-corner,param-at,v-param-zero,v-param-neg,v-param-str. param('w',40) as width, d=24 across, ring(a,t) from two params, prism sides from param, corner via param, at x via param: all build and match live OCCT at the same bars as the plain scripts (max curved dVol 1.5e-4, planar 1.3e-16; faces equal). param('w',0) and param('w',-5) are refused as sizes ('box(): a size has to be a positive number -- got 0 for width.'); param('w','5') is refused by param itself ('param's value has to be a number, and you gave it the text \"5\".')."
+  },
+  {
+   "feature": "curved primitives placed far from the origin (|coordinate| >= 1e4 mm, option at)",
+   "status": "wrong",
+   "evidence": "WRONG volume/centre of mass, kernel measure. Ran contract/measure-primitives.mjs --only=far-sph-100,...,far-boxr-1000000 (sphere(2), cylinder(2,3), cone(2,3), ring(4,1), box(2,2,2,{corner:0.3}) at [e,-e,e] for e = 1e2..1e6) and edge-sph-far. Worst over the five shapes: e=1e3 dVol 1.8e-4, dCOM 2.2e-5 (fine); e=1e4 dVol 1.2e-4 but dCOM 0.12 x diag (about 0.4 mm off); e=1e5 dVol 0.50 (50% off), dCOM 2.4e3 x diag; e=1e6 dVol 570 (truck says 2380.77 for a sphere whose volume is 4.189, COM at (750439, -750439, 750439) not 1e6). Bbox stays exact (7.8e-6). Truck computes volume and COM from a tessellation and loses precision with coordinate magnitude. Builds without any sentence, so a post-build volume check would either false-alarm or be fooled; needs a pre-flight refusal (curved primitive with a coordinate beyond about 1000 mm) or a measure taken in a local frame. Planar primitives are NOT immune either, see the next row. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "planar primitives placed far from the origin: prism and turned box/prism (|coordinate| above about 1e3 mm for a part a few mm across)",
+   "status": "wrong",
+   "evidence": "WRONG volume/centre of mass against the 1e-9 planar bar, no sentence. Ran contract/measure-primitives.mjs --prefix=r2-farp (prism(n,2,3), wedge(2,3,4), box(2,3,4), turn(box(2,3,4),[20,35,50]), turn(prism(6,2,3),[20,35,50]) at [e,-e,e], e = 1e2..1e6, plus prism(6,200,300) at e = 1e2..1e4). Axis-aligned box and wedge are exact at every e (dVol 0.0 at 1e6; box at 1e6 1.1e-16 earlier). Everything with an irrational vertex coordinate or a turn is not: prism(6,2,3) dVol 8.7e-12 at e=1e2, 6.7e-9 at 1e3 (already above the 1e-9 bar), 1.2e-6 at 1e4, 1.4e-2 at 1e5, 7.0 at 1e6 (700%), identical to the analytic deviation (dAn 7.0), so the solid is built wrong with no sentence; prism(3,2,3) 7.7e-9, 1.2e-5, 3.1e-2, 8.1 and prism(12,2,3) 7.6e-9, 2.9e-6, 5.1e-3, 3.0 at the same e; turned box 6.7e-10 at 1e3, 1.0e-6 at 1e4, 1.2e-3 at 1e5, 7.7e-2 at 1e6; COM error 5.5e4 x diag at 1e6. Bbox stays exact (<= 4.3e-11). Size matters: prism(6,200,300) is 7.3e-15 at 1e3 and 4.5e-12 at 1e4 (offset 50 x the part), so the 1e-9 bar breaks somewhere between an offset of 50 x and 500 x the part size. Same pre-flight as the curved far row: refuse (or recentre) an at: coordinate far larger than the part. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "curved primitive larger than about 5e4 mm: sphere(7e4) and up, ring(1e5) and up, cone(1e6)",
+   "status": "wrong",
+   "evidence": "WRONG, EMPTY OR HUNG, NO SENTENCE. Ran contract/measure-primitives.mjs one id at a time (sphere/cylinder/cone/ring/box/prism/wedge at across = 1e4, 2e4, 5e4, 1e5, 1e6, 1e7; plus sphere 3e4 and 7e4, ring(1e6,2e5), cone(1e6,1e6)); raw runs in primitives-evidence/r2/big/. The script accepts all of these. Good (truck vs OCCT): box/prism/wedge exact to 1e6 (volume 1e18, dVol 2.6e-16); cylinder 1.1e-4 to 1e6; cone 1.2e-4 to 1e5 (2 faces); sphere 7.1e-5 up to 5e4 (3e4 also); ring 1.5e-4 up to 5e4. Wrong and built with status built: sphere(7e4) volume 0, 1 face (OCCT 1.79594e14); sphere(1e5), sphere(1e6), sphere(1e7) volume 0, 0 faces, an empty solid; ring(1e6,2e5) (= ring(1e6) shape ratio 5) and ring(1e7,2e6) volume 0, 0 faces (OCCT 7.89568e16 / 7.89568e19); cone(1e6,1e6) 1.30884e17 with 1 face against 2.61799e17 and 2 faces (50% off), and cone(1e7,1e7) 1.30884e20 against 2.61799e20 (1 face). ring(1e5) does not return at all: the truck call alone (solid.torus major 40000 minor 10000) was still running after 60 s and was killed, which would freeze the page. brep-rs refuses past 1e6 with a plain sentence, so a size cap rule is missing (suggest refusing any size above 5e4 for curved and above 1e6 for planar shapes). Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "any primitive 1e7 mm or larger (box, cylinder, prism, wedge), box(1e10) and box(1e308)",
+   "status": "unsupported",
+   "evidence": "NOT A PLAIN SENTENCE (marked unsupported, not refused: the student does see text, but it carries an internal id such as box1 and a kernel command name such as solid.fillet, and it does not say what to change). Ran contract/measure-primitives.mjs --only=r2-big-box-10000000,r2-big-cyl-10000000,r2-big-prism-10000000,r2-big-wedge-10000000,r2-big-box-1e10,r2-big-box-1e308. The interpreter accepts all of these (positive finite numbers). Truck refuses without a wrong solid, but with kernel text: box(1e7): \"box1 (box): solidcraft refused it -- solid.box: invalid input: box needs a positive size in x, y and z\"; cylinder(1e7,1e7): \"cyl1 (cylinder): solidcraft refused it -- solid.cylinder: invalid input: height = 10000000\"; prism(6,1e7,1e7): \"prism1 (prism): solidcraft refused it -- solid.extrude: invalid input: end = 10000000\"; wedge likewise; box(1e10,1e10,1e10) and box(1e308,...): \"solid.box: invalid parameters for `solid.box`: `length` must be a number or an expression\". The reason (too big) is nowhere in these. Live OCCT builds all of them (volume 1e21 for box(1e7)) and brep-rs refuses with a plain sentence: \"box box1: it has a size or position of 1.000e7, past the 1e6 brep-rs builds exactly\" (wording the guard layer could reuse). Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  },
+  {
+   "feature": "curved primitives smaller than about 1 mm across, and slender cylinders and cones (volume measure)",
+   "status": "wrong",
+   "evidence": "WRONG volume measure; B-rep not inspected. Ran contract/measure-primitives.mjs --only=sweep-sph-*,sweep-cyl-*,sweep-cone-*,sweep-ring-*,sweep-boxr-*,sph-tiny,cyl-tiny,cone-tiny,ring-tiny (d = 0.02..10) and --only=r2-cyl-needle-1-100,r2-cyl-needle-2-100,r2-cyl-needle-0.5-100,r2-cone-spire-2-100,r2-cone-spire-1-100,r2-cone-spire-4-400,r2-cone-flat-100-2,r2-cyl-disc-100-0.2. Truck dVol vs live OCCT (OCCT, brep-rs and the closed form agree): sphere(0.05) 4.7e-3, sphere(0.02) 8.4e-2, cylinder(0.02,0.05) 7.2e-3, cone(0.02,0.03) 4.6e-2, ring(0.04,0.01) 3.7e-2; at d=0.5 ring 8.0e-4 and sphere 2.9e-4; at d>=2 all <= 2.1e-4. Slender shapes are over the 3e-4 bar well above 1 mm across: cylinder(2,100) 4.5e-4, cylinder(1,100) 5.7e-4, cylinder(0.5,100) 1.8e-3, cone(1,100) 7.3e-4 and cone(4,400) 7.3e-4 (same ratio 100, so scale-free), cone(2,100) 2.7e-4 (inside), while flat shapes are fine (cylinder(100,0.2) 6.2e-5, cone(100,2) 5.6e-5). Rule of thumb: a curved primitive under about 1 mm across, or a cylinder taller than about 40 times its across, or a cone taller than about 60 times its across. Faces and bbox still match (bbox up to 9.5e-4 at 0.02). Nothing refuses them. The thin-tube ring case is its own row. Rig: REFEREE_REPO_ROOT=<shadow> SOLIDCRAFT_REFEREE_PKG=<pkg> bun contract/measure-primitives.mjs --only=<ids> (RIG.md); raw output under contract/primitives-evidence/r2/."
+  }
+ ]
+}

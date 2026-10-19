@@ -1,0 +1,2354 @@
+[
+ {
+  "id": "circle-across-0.5",
+  "feature": ".circle",
+  "what": "circle across 0.5 (h 10)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.25,
+       0
+      ],
+      [
+       0.25,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 1.9634954084936211,
+   "bbox": [
+    -0.25,
+    -0.25,
+    0,
+    0.25,
+    0.25,
+    10
+   ],
+   "com": [
+    2.4737647522494015e-17,
+    -2.44063397431749e-17,
+    5
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 1.9634954084936223,
+   "bbox": [
+    -0.25,
+    -0.25,
+    0,
+    0.25,
+    0.25,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 1.9634954084936207
+  },
+  "curved": true,
+  "truck": {
+   "volume": 1.9630118868662596,
+   "bbox": [
+    -0.25,
+    -0.25,
+    0,
+    0.24999999999999997,
+    0.2500000000000001,
+    10.000000000000005
+   ],
+   "com": [
+    -5.251025909939182e-18,
+    -1.6807098060875753e-17,
+    5.000000032558796
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.00024625554267656397,
+   "dBboxOcct": 5.329070518200751e-16,
+   "dComOcct": 3.2477702642825897e-9,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.0002462555426771293,
+   "dBboxBrep": 5.329070518200751e-16,
+   "dVolExact": 0.00024625554267633786,
+   "occtVolExact": 2.2617277734851674e-16,
+   "brepVolExact": 7.916047207198086e-16
+  },
+  "translatorReported": {
+   "volume": 1.9630118868662596,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.5
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "circle-across-0.5-h1",
+  "feature": ".circle",
+  "what": "circle across 0.5 (h 0.5)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.25,
+       0
+      ],
+      [
+       0.25,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.5
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.09817477042468106,
+   "bbox": [
+    -0.25,
+    -0.25,
+    0,
+    0.25,
+    0.25,
+    0.5
+   ],
+   "com": [
+    2.2087185287941084e-17,
+    -2.484808344893372e-17,
+    0.24999999999999992
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.09817477042468108,
+   "bbox": [
+    -0.25,
+    -0.25,
+    0,
+    0.25,
+    0.25,
+    0.5
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.09817477042468103
+  },
+  "curved": true,
+  "truck": {
+   "volume": 0.09815059434481548,
+   "bbox": [
+    -0.25,
+    -0.25,
+    0,
+    0.24999999999999997,
+    0.25000000000000006,
+    0.5
+   ],
+   "com": [
+    -7.005491069507579e-17,
+    8.862331886720503e-17,
+    0.25000000162793684
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.00002417607986558712,
+   "dBboxOcct": 5.551115123125783e-17,
+   "dComOcct": 1.627936924153417e-9,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.000024176079865600997,
+   "dBboxBrep": 5.551115123125783e-17,
+   "dVolExact": 0.000024176079865559363,
+   "occtVolExact": 2.7755575615628914e-17,
+   "brepVolExact": 4.163336342344337e-17
+  },
+  "translatorReported": {
+   "volume": 0.09815059434481548,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.5
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.5,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "circle-across-0.1",
+  "feature": ".circle",
+  "what": "circle across 0.1 (h 10)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.05,
+       0
+      ],
+      [
+       0.05,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.07853981633974483,
+   "bbox": [
+    -0.05,
+    -0.05,
+    0,
+    0.05,
+    0.05,
+    10
+   ],
+   "com": [
+    -1.6565388965955818e-17,
+    -4.0982082077234454e-18,
+    5
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.07853981633974479,
+   "bbox": [
+    -0.05,
+    -0.05,
+    0,
+    0.05,
+    0.05,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.07853981633974483
+  },
+  "curved": true,
+  "truck": {
+   "volume": 0.07839815147408385,
+   "bbox": [
+    -0.05,
+    -0.05000000000000004,
+    0,
+    0.05000000000000002,
+    0.05,
+    10.000000000000004
+   ],
+   "com": [
+    1.6048807700309725e-19,
+    -9.924066103839666e-18,
+    4.999999996179993
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.00014166486566097314,
+   "dBboxOcct": 3.552713678800501e-16,
+   "dComOcct": 3.819625478043988e-10,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.0001416648656609315,
+   "dBboxBrep": 3.552713678800501e-16,
+   "dVolExact": 0.00014166486566097314,
+   "occtVolExact": 0,
+   "brepVolExact": 4.163336342344337e-17
+  },
+  "translatorReported": {
+   "volume": 0.07839815147408385,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.1
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "circle-across-0.1-h1",
+  "feature": ".circle",
+  "what": "circle across 0.1 (h 0.1)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.05,
+       0
+      ],
+      [
+       0.05,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.1
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.0007853981633974483,
+   "bbox": [
+    -0.05,
+    -0.05,
+    0,
+    0.05,
+    0.05,
+    0.1
+   ],
+   "com": [
+    -2.965808571378808e-18,
+    -4.7452937142060936e-18,
+    0.05
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.0007853981633974484,
+   "bbox": [
+    -0.05,
+    -0.05,
+    0,
+    0.05,
+    0.05,
+    0.1
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.0007853981633974484
+  },
+  "curved": true,
+  "truck": {
+   "volume": 0.0007839815172515736,
+   "bbox": [
+    -0.05,
+    -0.05000000000000004,
+    0,
+    0.05000000000000002,
+    0.05,
+    0.10000000000000006
+   ],
+   "com": [
+    8.876047138837543e-19,
+    -1.816020450598475e-17,
+    0.049999999979075845
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.0000014166461458747217,
+   "dBboxOcct": 5.551115123125783e-17,
+   "dComOcct": 2.0924158239399304e-11,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.0000014166461458748301,
+   "dBboxBrep": 5.551115123125783e-17,
+   "dVolExact": 0.0000014166461458748301,
+   "occtVolExact": 1.0842021724855044e-19,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 0.0007839815172515736,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.1
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.1,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "circle-across-0.05",
+  "feature": ".circle",
+  "what": "circle across 0.05 (h 10)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.025,
+       0
+      ],
+      [
+       0.025,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.019634954084936207,
+   "bbox": [
+    -0.025,
+    -0.025,
+    0,
+    0.025,
+    0.025,
+    10
+   ],
+   "com": [
+    -8.282694482977909e-18,
+    -2.0491041038617227e-18,
+    5
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.019634954084936197,
+   "bbox": [
+    -0.025,
+    -0.025,
+    0,
+    0.025,
+    0.025,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.019634954084936207
+  },
+  "curved": true,
+  "truck": {
+   "volume": 0.019590527698388416,
+   "bbox": [
+    -0.025,
+    -0.02500000000000002,
+    0,
+    0.02500000000000001,
+    0.025,
+    10.000000000000004
+   ],
+   "com": [
+    -2.0267279173807845e-19,
+    -4.54572552669428e-18,
+    5.000000002531033
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.00004442638654779049,
+   "dBboxOcct": 3.552713678800501e-16,
+   "dComOcct": 2.5309698873789735e-10,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.000044426386547780083,
+   "dBboxBrep": 3.552713678800501e-16,
+   "dVolExact": 0.00004442638654779049,
+   "occtVolExact": 0,
+   "brepVolExact": 1.0408340855860843e-17
+  },
+  "translatorReported": {
+   "volume": 0.019590527698388416,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.05
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "circle-across-0.05-h1",
+  "feature": ".circle",
+  "what": "circle across 0.05 (h 0.05)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.025,
+       0
+      ],
+      [
+       0.025,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.05
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.00009817477042468104,
+   "bbox": [
+    -0.025,
+    -0.025,
+    0,
+    0.025,
+    0.025,
+    0.05
+   ],
+   "com": [
+    -1.482904285689404e-18,
+    -2.3726468571030468e-18,
+    0.025
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.00009817477042468105,
+   "bbox": [
+    -0.025,
+    -0.025,
+    0,
+    0.025,
+    0.025,
+    0.05
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.00009817477042468105
+  },
+  "curved": true,
+  "truck": {
+   "volume": 0.00009795263853338352,
+   "bbox": [
+    -0.025,
+    -0.025000000000000015,
+    0,
+    0.02500000000000001,
+    0.024999999999999998,
+    0.05000000000000003
+   ],
+   "com": [
+    9.373616613920373e-19,
+    -8.26753689072748e-18,
+    0.024999999993779127
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 2.2213189129752426e-7,
+   "dBboxOcct": 2.7755575615628914e-17,
+   "dComOcct": 6.220874509965668e-12,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 2.2213189129753781e-7,
+   "dBboxBrep": 2.7755575615628914e-17,
+   "dVolExact": 2.2213189129753781e-7,
+   "occtVolExact": 1.3552527156068805e-20,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 0.00009795263853338352,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.05
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.05,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "circle-across-0.02",
+  "feature": ".circle",
+  "what": "circle across 0.02 (h 10)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.01,
+       0
+      ],
+      [
+       0.01,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.0031415926535897924,
+   "bbox": [
+    -0.01,
+    -0.01,
+    0,
+    0.01,
+    0.01,
+    10
+   ],
+   "com": [
+    -4.583522337585432e-18,
+    -9.478791598866933e-19,
+    4.999999999999999
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.0031415926535897937,
+   "bbox": [
+    -0.01,
+    -0.01,
+    0,
+    0.01,
+    0.01,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.0031415926535897937
+  },
+  "curved": true,
+  "truck": {
+   "volume": 0.0030522351344082492,
+   "bbox": [
+    -0.01,
+    -0.010000000000000002,
+    0,
+    0.01,
+    0.010000000000000002,
+    10.000000000000004
+   ],
+   "com": [
+    -4.4083993221373895e-20,
+    -2.42823306924289e-19,
+    5.000000058950395
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.00008935751918154322,
+   "dBboxOcct": 3.552713678800501e-16,
+   "dComOcct": 5.895015987588163e-9,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.00008935751918154452,
+   "dBboxBrep": 3.552713678800501e-16,
+   "dVolExact": 0.00008935751918154452,
+   "occtVolExact": 1.3010426069826053e-18,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 0.0030522351344082492,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.02
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "circle-across-0.02-h1",
+  "feature": ".circle",
+  "what": "circle across 0.02 (h 0.02)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.01,
+       0
+      ],
+      [
+       0.01,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.02
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.000006283185307179586,
+   "bbox": [
+    -0.01,
+    -0.01,
+    0,
+    0.01,
+    0.01,
+    0.02
+   ],
+   "com": [
+    -2.8962974329871176e-18,
+    -8.899532112269505e-19,
+    0.01
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.0000062831853071795875,
+   "bbox": [
+    -0.01,
+    -0.01,
+    0,
+    0.01,
+    0.01,
+    0.02
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.0000062831853071795875
+  },
+  "curved": true,
+  "truck": {
+   "volume": 0.000006237984871472788,
+   "bbox": [
+    -0.01,
+    -0.009999999999999998,
+    0,
+    0.010000000000000002,
+    0.01,
+    0.02000000000000001
+   ],
+   "com": [
+    -5.083146368769514e-19,
+    -4.528903846903e-19,
+    0.010000000000765376
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 4.520043570679817e-8,
+   "dBboxOcct": 1.0408340855860843e-17,
+   "dComOcct": 7.653756101122511e-13,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 4.5200435706799864e-8,
+   "dBboxBrep": 1.0408340855860843e-17,
+   "dVolExact": 4.5200435706799864e-8,
+   "occtVolExact": 1.6940658945086007e-21,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 0.000006237984871472788,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.02
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.02,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "circle-across-0.01",
+  "feature": ".circle",
+  "what": "circle across 0.01 (h 10)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.005,
+       0
+      ],
+      [
+       0.005,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.0007853981633974481,
+   "bbox": [
+    -0.005,
+    -0.005,
+    0,
+    0.005,
+    0.005,
+    10
+   ],
+   "com": [
+    -2.291761168792716e-18,
+    -4.739395799433466e-19,
+    4.999999999999999
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.0007853981633974484,
+   "bbox": [
+    -0.005,
+    -0.005,
+    0,
+    0.005,
+    0.005,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.0007853981633974484
+  },
+  "curved": true,
+  "truck": {
+   "volume": 0.0007470588238578389,
+   "bbox": [
+    -0.005,
+    -0.005000000000000001,
+    0,
+    0.005000000000000001,
+    0.005000000000000001,
+    10.000000000000002
+   ],
+   "com": [
+    2.369514226098388e-19,
+    1.1810662809213149e-20,
+    5.000000010737096
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.000038339339539609184,
+   "dBboxOcct": 1.7763568394002506e-16,
+   "dComOcct": 1.0737085808118725e-9,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.00003833933953960951,
+   "dBboxBrep": 1.7763568394002506e-16,
+   "dVolExact": 0.00003833933953960951,
+   "occtVolExact": 3.2526065174565133e-19,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 0.0007470588238578389,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.01
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "circle-across-0.01-h1",
+  "feature": ".circle",
+  "what": "circle across 0.01 (h 0.01)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.005,
+       0
+      ],
+      [
+       0.005,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.01
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 7.853981633974482e-7,
+   "bbox": [
+    -0.005,
+    -0.005,
+    0,
+    0.005,
+    0.005,
+    0.01
+   ],
+   "com": [
+    -1.4481487164935588e-18,
+    -4.449766056134753e-19,
+    0.005
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 7.853981633974484e-7,
+   "bbox": [
+    -0.005,
+    -0.005,
+    0,
+    0.005,
+    0.005,
+    0.01
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 7.853981633974484e-7
+  },
+  "curved": true,
+  "truck": {
+   "volume": 7.754557372323329e-7,
+   "bbox": [
+    -0.005,
+    -0.005,
+    0,
+    0.005,
+    0.005,
+    0.010000000000000005
+   ],
+   "com": [
+    -3.889019714647319e-20,
+    6.35785276564218e-19,
+    0.005000000060538572
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 9.942426165115369e-9,
+   "dBboxOcct": 5.204170427930421e-18,
+   "dComOcct": 6.053857155158271e-11,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 9.942426165115581e-9,
+   "dBboxBrep": 5.204170427930421e-18,
+   "dVolExact": 9.942426165115581e-9,
+   "occtVolExact": 2.117582368135751e-22,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 7.754557372323329e-7,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.01
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.01,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "circle-across-0.005",
+  "feature": ".circle",
+  "what": "circle across 0.005 (h 10)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.0025,
+       0
+      ],
+      [
+       0.0025,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.00019634954084936203,
+   "bbox": [
+    -0.0025,
+    -0.0025,
+    0,
+    0.0025,
+    0.0025,
+    10
+   ],
+   "com": [
+    -1.145880584396358e-18,
+    -2.369697899716733e-19,
+    4.999999999999999
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.0001963495408493621,
+   "bbox": [
+    -0.0025,
+    -0.0025,
+    0,
+    0.0025,
+    0.0025,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.0001963495408493621
+  },
+  "curved": true,
+  "truck": {
+   "volume": 0.00008333333333333336,
+   "bbox": [
+    -0.0025,
+    -0.0025000000000000005,
+    0,
+    0.0025,
+    0.0025000000000000005,
+    10.000000000000002
+   ],
+   "com": [
+    5.293955920339376e-20,
+    -5.2939559203393645e-20,
+    7.500000000000001
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.00011301620751602867,
+   "dBboxOcct": 1.7763568394002506e-16,
+   "dComOcct": 0.2499999375000236,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.00011301620751602875,
+   "dBboxBrep": 1.7763568394002506e-16,
+   "dVolExact": 0.00011301620751602875,
+   "occtVolExact": 8.131516293641283e-20,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 0.00008333333333333336,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.005
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": false,
+  "exactOk": true,
+  "outcome": "FAIL"
+ },
+ {
+  "id": "circle-across-0.005-h1",
+  "feature": ".circle",
+  "what": "circle across 0.005 (h 0.005)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.0025,
+       0
+      ],
+      [
+       0.0025,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.005
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 9.817477042468103e-8,
+   "bbox": [
+    -0.0025,
+    -0.0025,
+    0,
+    0.0025,
+    0.0025,
+    0.005
+   ],
+   "com": [
+    -7.240743582467794e-19,
+    -2.2248830280673763e-19,
+    0.0025
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 9.817477042468105e-8,
+   "bbox": [
+    -0.0025,
+    -0.0025,
+    0,
+    0.0025,
+    0.0025,
+    0.005
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 9.817477042468105e-8
+  },
+  "curved": true,
+  "truck": {
+   "volume": 9.53823486234262e-8,
+   "bbox": [
+    -0.0025,
+    -0.0024999999999999996,
+    0,
+    0.0025,
+    0.0024999999999999996,
+    0.005000000000000003
+   ],
+   "com": [
+    -8.751304945041479e-20,
+    2.2584012761397366e-19,
+    0.002500000029475198
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 2.7924218012548346e-9,
+   "dBboxOcct": 2.6020852139652106e-18,
+   "dComOcct": 2.9475197890066474e-11,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 2.792421801254861e-9,
+   "dBboxBrep": 2.6020852139652106e-18,
+   "dVolExact": 2.792421801254861e-9,
+   "occtVolExact": 2.6469779601696886e-23,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 9.53823486234262e-8,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.005
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.005,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "circle-across-0.002",
+  "feature": ".circle",
+  "what": "circle across 0.002 (h 10)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.001,
+       0
+      ],
+      [
+       0.001,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.00003141592653589794,
+   "bbox": [
+    -0.001,
+    -0.001,
+    0,
+    0.001,
+    0.001,
+    10
+   ],
+   "com": [
+    3.291247082939905e-19,
+    -1.1560505378826416e-19,
+    5
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.00003141592653589795,
+   "bbox": [
+    -0.001,
+    -0.001,
+    0,
+    0.001,
+    0.001,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.000031415926535897935
+  },
+  "curved": true,
+  "truck": {
+   "volume": -0.000013333333333333343,
+   "bbox": [
+    -0.0010000000000000005,
+    -0.001000000000000001,
+    0,
+    0.001,
+    0.0010000000000000002,
+    10.000000000000002
+   ],
+   "com": [
+    -3.6794996974404674e-20,
+    -2.0679515313825673e-19,
+    7.499999999999999
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.000044749259869231285,
+   "dBboxOcct": 1.7763568394002506e-16,
+   "dComOcct": 0.24999999000000056,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.00004474925986923129,
+   "dBboxBrep": 1.7763568394002506e-16,
+   "dVolExact": 0.00004474925986923128,
+   "occtVolExact": 6.776263578034403e-21,
+   "brepVolExact": 1.3552527156068805e-20
+  },
+  "translatorReported": {
+   "volume": -0.000013333333333333343,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.002
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": false,
+  "exactOk": true,
+  "outcome": "FAIL"
+ },
+ {
+  "id": "circle-across-0.002-h1",
+  "feature": ".circle",
+  "what": "circle across 0.002 (h 0.002)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.001,
+       0
+      ],
+      [
+       0.001,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.002
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 6.283185307179588e-9,
+   "bbox": [
+    -0.001,
+    -0.001,
+    0,
+    0.001,
+    0.001,
+    0.002
+   ],
+   "com": [
+    4.0176355992918765e-19,
+    -1.1782921685603216e-19,
+    0.001
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 6.283185307179586e-9,
+   "bbox": [
+    -0.001,
+    -0.001,
+    0,
+    0.001,
+    0.001,
+    0.002
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 6.283185307179587e-9
+  },
+  "curved": true,
+  "truck": {
+   "volume": 5.3176480346004145e-9,
+   "bbox": [
+    -0.0010000000000000005,
+    -0.001000000000000001,
+    0,
+    0.001,
+    0.0009999999999999998,
+    0.0020000000000000005
+   ],
+   "com": [
+    9.281385862099307e-11,
+    0.00008214447346826792,
+    0.0010309734468507419
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 9.655372725791735e-10,
+   "dBboxOcct": 1.0842021724855044e-18,
+   "dComOcct": 0.00008214447346826804,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 9.655372725791719e-10,
+   "dBboxBrep": 1.0842021724855044e-18,
+   "dVolExact": 9.655372725791727e-10,
+   "occtVolExact": 8.271806125530277e-25,
+   "brepVolExact": 8.271806125530277e-25
+  },
+  "translatorReported": {
+   "volume": 5.3176480346004145e-9,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 0.002
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.002,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": false,
+  "exactOk": true,
+  "outcome": "FAIL"
+ }
+]

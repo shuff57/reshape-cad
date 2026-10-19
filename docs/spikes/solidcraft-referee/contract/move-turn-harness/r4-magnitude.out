@@ -1,0 +1,80 @@
+move box 30x20x10                        planar         3000      shipped PASS    dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 
+move box 30x20x10                        planar         5000      shipped PASS    dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 
+move box 30x20x10                        planar         10000     shipped PASS    dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 
+move box 30x20x10                        planar         20000     shipped PASS    dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 
+move box 30x20x10                        planar         50000     shipped PASS    dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 
+move box 30x20x10                        planar         100000    shipped PASS    dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 
+move box 30x20x10                        planar         1000000   shipped PASS    dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 
+move box 30x20x10                        planar         10000000  shipped FAIL    dVol=1.5e-16 dBbox=0.0e+0 dCom=1.2e-5 
+move prism(6) h12                        planar         3000      shipped PASS    dVol=7.5e-10 dBbox=0.0e+0 dCom=2.0e-8 
+move prism(6) h12                        planar         5000      shipped FAIL    dVol=3.2e-9 dBbox=0.0e+0 dCom=1.4e-7 
+move prism(6) h12                        planar         10000     shipped FAIL    dVol=3.5e-9 dBbox=0.0e+0 dCom=3.0e-7 
+move prism(6) h12                        planar         20000     shipped FAIL    dVol=4.1e-8 dBbox=0.0e+0 dCom=7.1e-6 
+move prism(6) h12                        planar         50000     shipped FAIL    dVol=1.5e-6 dBbox=0.0e+0 dCom=6.6e-4 
+move prism(6) h12                        planar         100000    shipped FAIL    dVol=5.2e-7 dBbox=0.0e+0 dCom=4.5e-4 
+move prism(6) h12                        planar         1000000   shipped FAIL    dVol=3.4e-3 dBbox=0.0e+0 dCom=2.9e+1 
+move prism(6) h12                        planar         10000000  shipped FAIL    dVol=2.2e+1 dBbox=0.0e+0 dCom=9.0e+4 
+move wedge                               planar         3000      shipped PASS    dVol=0.0e+0 dBbox=0.0e+0 dCom=1.9e-14 
+move wedge                               planar         5000      shipped PASS    dVol=0.0e+0 dBbox=0.0e+0 dCom=0.0e+0 
+move wedge                               planar         10000     shipped PASS    dVol=0.0e+0 dBbox=0.0e+0 dCom=0.0e+0 
+move wedge                               planar         20000     shipped PASS    dVol=1.4e-16 dBbox=0.0e+0 dCom=0.0e+0 
+move wedge                               planar         50000     shipped PASS    dVol=0.0e+0 dBbox=0.0e+0 dCom=3.1e-13 
+move wedge                               planar         100000    shipped PASS    dVol=1.4e-16 dBbox=0.0e+0 dCom=6.1e-13 
+move wedge                               planar         1000000   shipped PASS    dVol=0.0e+0 dBbox=0.0e+0 dCom=4.9e-12 
+move wedge                               planar         10000000  shipped FAIL    dVol=2.8e-16 dBbox=0.0e+0 dCom=3.5e-5 
+box at D, turn [5000,3000,100] (critic)  planar         3000      shipped PASS    dVol=8.9e-11 dBbox=1.5e-16 dCom=1.2e-9 
+box at D, turn [5000,3000,100] (critic)  planar         5000      shipped PASS    dVol=7.5e-10 dBbox=1.8e-16 dCom=1.7e-8 
+box at D, turn [5000,3000,100] (critic)  planar         10000     shipped FAIL    dVol=5.4e-9 dBbox=1.8e-16 dCom=2.5e-7 
+box at D, turn [5000,3000,100] (critic)  planar         20000     shipped FAIL    dVol=1.3e-8 dBbox=1.8e-16 dCom=1.2e-6 
+box at D, turn [5000,3000,100] (critic)  planar         50000     shipped FAIL    dVol=5.2e-7 dBbox=1.5e-16 dCom=1.2e-4 
+box at D, turn [5000,3000,100] (critic)  planar         100000    shipped FAIL    dVol=1.7e-6 dBbox=1.5e-16 dCom=7.8e-4 
+box at D, turn [5000,3000,100] (critic)  planar         1000000   shipped FAIL    dVol=4.1e-3 dBbox=1.2e-16 dCom=1.9e+1 
+box at D, turn [5000,3000,100] (critic)  planar         10000000  shipped FAIL    dVol=3.1e-5 dBbox=0.0e+0 dCom=1.6e+0 
+move,hole,turn(derived box)              planar         3000      shipped PASS    dVol=3.6e-6 dBbox=3.1e-16 dCom=2.2e-8 
+move,hole,turn(derived box)              planar         5000      shipped PASS    dVol=3.6e-6 dBbox=3.7e-16 dCom=4.4e-9 
+move,hole,turn(derived box)              planar         10000     shipped PASS    dVol=3.3e-6 dBbox=3.7e-16 dCom=1.1e-5 
+move,hole,turn(derived box)              planar         20000     shipped FAIL    dVol=4.2e-6 dBbox=1.8e-16 dCom=6.2e-5 
+move,hole,turn(derived box)              planar         50000     shipped FAIL    dVol=1.3e-5 dBbox=1.5e-16 dCom=3.8e-3 
+move,hole,turn(derived box)              planar         100000    shipped FAIL    dVol=1.3e-4 dBbox=2.9e-16 dCom=6.2e-2 
+move,hole,turn(derived box)              planar         1000000   shipped FAIL    dVol=1.6e-2 dBbox=2.3e-16 dCom=7.5e+1 
+move,hole,turn(derived box)              planar         10000000  shipped FAIL    dVol=6.5e+1 dBbox=3.7e-16 dCom=4.7e+4 
+move,fillet box                          planar+curved  3000      shipped PASS    dVol=3.0e-6 dBbox=6.1e-16 dCom=4.4e-6 
+move,fillet box                          planar+curved  5000      shipped PASS    dVol=3.1e-6 dBbox=5.5e-16 dCom=1.1e-5 
+move,fillet box                          planar+curved  10000     shipped FAIL    dVol=3.5e-6 dBbox=7.3e-16 dCom=4.4e-5 
+move,fillet box                          planar+curved  20000     shipped FAIL    dVol=4.6e-6 dBbox=5.5e-16 dCom=2.3e-4 
+move,fillet box                          planar+curved  50000     shipped FAIL    dVol=1.2e-5 dBbox=4.4e-16 dCom=3.0e-3 
+move,fillet box                          planar+curved  100000    shipped FAIL    dVol=2.6e-5 dBbox=4.4e-16 dCom=1.9e-2 
+move,fillet box                          planar+curved  1000000   shipped FAIL    dVol=2.8e-2 dBbox=4.7e-16 dCom=1.8e+2 
+move,fillet box                          planar+curved  10000000  shipped FAIL    dVol=1.3e+2 dBbox=7.5e-16 dCom=6.6e+4 
+move cylinder d16 h20                    curved         3000      shipped PASS    dVol=1.1e-4 dBbox=7.2e-8 dCom=2.0e-7 
+move cylinder d16 h20                    curved         5000      shipped PASS    dVol=1.1e-4 dBbox=4.3e-8 dCom=1.2e-6 
+move cylinder d16 h20                    curved         10000     shipped PASS    dVol=1.1e-4 dBbox=2.2e-8 dCom=5.3e-6 
+move cylinder d16 h20                    curved         20000     shipped PASS    dVol=1.1e-4 dBbox=1.1e-8 dCom=2.6e-5 
+move cylinder d16 h20                    curved         50000     shipped FAIL    dVol=1.3e-4 dBbox=4.3e-9 dCom=6.2e-3 
+move cylinder d16 h20                    curved         100000    shipped FAIL    dVol=5.7e-5 dBbox=2.1e-9 dCom=4.7e-2 
+move cylinder d16 h20                    curved         1000000   shipped FAIL    dVol=1.1e-1 dBbox=2.1e-10 dCom=8.3e+2 
+move cylinder d16 h20                    curved         10000000  shipped FAIL    dVol=8.3e+1 dBbox=2.1e-11 dCom=8.2e+4 
+move sphere d14                          curved         3000      shipped PASS    dVol=7.1e-5 dBbox=0.0e+0 dCom=1.2e-6 
+move sphere d14                          curved         5000      shipped PASS    dVol=7.1e-5 dBbox=0.0e+0 dCom=7.7e-6 
+move sphere d14                          curved         10000     shipped FAIL    dVol=7.4e-5 dBbox=0.0e+0 dCom=2.7e-4 
+move sphere d14                          curved         20000     shipped FAIL    dVol=4.6e-5 dBbox=0.0e+0 dCom=5.1e-3 
+move sphere d14                          curved         50000     shipped FAIL    dVol=1.8e-4 dBbox=0.0e+0 dCom=5.8e-2 
+move sphere d14                          curved         100000    shipped FAIL    dVol=8.9e-5 dBbox=0.0e+0 dCom=1.7e-1 
+move sphere d14                          curved         1000000   shipped FAIL    dVol=3.5e+0 dBbox=0.0e+0 dCom=1.5e+4 
+move sphere d14                          curved         10000000  shipped FAIL    dVol=5.2e+3 dBbox=0.0e+0 dCom=1.0e+5 
+move cone d14 h18                        curved         3000      shipped PASS    dVol=1.8e-4 dBbox=2.9e-8 dCom=2.2e-7 
+move cone d14 h18                        curved         5000      shipped PASS    dVol=1.8e-4 dBbox=1.8e-8 dCom=3.6e-7 
+move cone d14 h18                        curved         10000     shipped PASS    dVol=1.8e-4 dBbox=8.8e-9 dCom=9.0e-6 
+move cone d14 h18                        curved         20000     shipped PASS    dVol=1.8e-4 dBbox=4.4e-9 dCom=2.6e-5 
+move cone d14 h18                        curved         50000     shipped FAIL    dVol=1.4e-4 dBbox=1.8e-9 dCom=1.8e-2 
+move cone d14 h18                        curved         100000    shipped FAIL    dVol=1.6e-4 dBbox=8.8e-10 dCom=2.1e-2 
+move cone d14 h18                        curved         1000000   shipped FAIL    dVol=2.5e-1 dBbox=8.8e-11 dCom=3.1e+3 
+move cone d14 h18                        curved         10000000  shipped FAIL    dVol=1.4e+2 dBbox=8.8e-12 dCom=9.3e+4 
+turn cylinder at D                       curved         3000      shipped PASS    dVol=1.2e-4 dBbox=1.1e-7 dCom=5.7e-8 
+turn cylinder at D                       curved         5000      shipped PASS    dVol=1.2e-4 dBbox=6.5e-8 dCom=7.7e-7 
+turn cylinder at D                       curved         10000     shipped PASS    dVol=1.2e-4 dBbox=3.2e-8 dCom=7.3e-6 
+turn cylinder at D                       curved         20000     shipped FAIL    dVol=1.2e-4 dBbox=1.6e-8 dCom=6.2e-5 
+turn cylinder at D                       curved         50000     shipped FAIL    dVol=9.2e-5 dBbox=6.5e-9 dCom=8.1e-3 
+turn cylinder at D                       curved         100000    shipped FAIL    dVol=6.9e-5 dBbox=3.2e-9 dCom=1.2e-1 
+turn cylinder at D                       curved         1000000   shipped FAIL    dVol=1.2e-1 dBbox=3.2e-10 dCom=6.9e+2 
+turn cylinder at D                       curved         10000000  shipped FAIL    dVol=3.0e+1 dBbox=3.2e-11 dCom=6.4e+4 

@@ -1,0 +1,348 @@
+[
+ {
+  "env": {
+   "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+   "cores": 24,
+   "names": [
+    "box",
+    "cylinder",
+    "sphere",
+    "cone",
+    "prism",
+    "wedge",
+    "box-corner",
+    "cylinder-corner",
+    "ring",
+    "ring-thin",
+    "sphere-big"
+   ]
+  },
+  "load": 6.74
+ },
+ {
+  "name": "box",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": true,
+  "wallMs": 78,
+  "initMs": 47,
+  "callMs": 30,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 6,
+   "longTasksMs": []
+  },
+  "load": 6.84
+ },
+ {
+  "name": "cylinder",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": false,
+  "wallMs": 418,
+  "initMs": 47,
+  "callMs": 418,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 13,
+   "longTasksMs": []
+  },
+  "load": 6.84
+ },
+ {
+  "name": "sphere",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": false,
+  "wallMs": 4097,
+  "initMs": 47,
+  "callMs": 4097,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 86,
+   "longTasksMs": []
+  },
+  "load": 6.78
+ },
+ {
+  "name": "cone",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": false,
+  "wallMs": 36,
+  "initMs": 47,
+  "callMs": 36,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 5,
+   "longTasksMs": []
+  },
+  "load": 6.78
+ },
+ {
+  "name": "prism",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": false,
+  "wallMs": 8,
+  "initMs": 47,
+  "callMs": 7,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 4,
+   "longTasksMs": []
+  },
+  "load": 6.78
+ },
+ {
+  "name": "wedge",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": false,
+  "wallMs": 2,
+  "initMs": 47,
+  "callMs": 2,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 4,
+   "longTasksMs": []
+  },
+  "load": 6.88
+ },
+ {
+  "name": "box-corner",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": false,
+  "wallMs": 1783,
+  "initMs": 47,
+  "callMs": 1783,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 40,
+   "longTasksMs": []
+  },
+  "load": 6.88
+ },
+ {
+  "name": "cylinder-corner",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": false,
+  "wallMs": 10717,
+  "initMs": 47,
+  "callMs": 10716,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 219,
+   "longTasksMs": []
+  },
+  "load": 6.74
+ },
+ {
+  "name": "ring",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": false,
+  "wallMs": 9236,
+  "initMs": 47,
+  "callMs": 9236,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 53,
+   "ticks": 189,
+   "longTasksMs": []
+  },
+  "load": 6.7
+ },
+ {
+  "name": "ring-thin",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": false,
+  "wallMs": 21534,
+  "initMs": 47,
+  "callMs": 21533,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 51,
+   "ticks": 435,
+   "longTasksMs": []
+  },
+  "load": 7.04
+ },
+ {
+  "name": "sphere-big",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": false,
+  "wallMs": 10908,
+  "initMs": 47,
+  "callMs": 10907,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 51,
+   "ticks": 222,
+   "longTasksMs": []
+  },
+  "load": 7.7
+ },
+ {
+  "name": "ring",
+  "mode": "worker",
+  "budgetMs": 2000,
+  "fresh": false,
+  "wallMs": 2000,
+  "timedOut": true,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 44,
+   "longTasksMs": []
+  },
+  "load": 7.7
+ },
+ {
+  "name": "box",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": true,
+  "wallMs": 76,
+  "initMs": 71,
+  "callMs": 5,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 6,
+   "longTasksMs": []
+  },
+  "load": 7.7
+ },
+ {
+  "name": "cylinder-corner",
+  "mode": "worker",
+  "budgetMs": 2000,
+  "fresh": false,
+  "wallMs": 2000,
+  "timedOut": true,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 44,
+   "longTasksMs": []
+  },
+  "load": 8.04
+ },
+ {
+  "name": "box",
+  "mode": "worker",
+  "budgetMs": 0,
+  "fresh": true,
+  "wallMs": 80,
+  "initMs": 75,
+  "callMs": 4,
+  "ok": true,
+  "err": null,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 6,
+   "longTasksMs": []
+  },
+  "load": 8.04
+ },
+ {
+  "sentence": "ring(40, 10): building this took more than 2 seconds, so it was stopped and is not shown -- try a bigger corner, a thicker tube, or fewer rounded edges.",
+  "load": 7.96
+ },
+ {
+  "name": "box",
+  "mode": "main",
+  "initMs": 62,
+  "callMs": 3,
+  "ok": true,
+  "hb": {
+   "maxGapMs": 50,
+   "ticks": 4,
+   "longTasksMs": []
+  },
+  "load": 7.96
+ },
+ {
+  "name": "cylinder",
+  "mode": "main",
+  "initMs": 62,
+  "callMs": 475,
+  "ok": true,
+  "hb": {
+   "maxGapMs": 500,
+   "ticks": 5,
+   "longTasksMs": [
+    475
+   ]
+  },
+  "load": 7.96
+ },
+ {
+  "name": "sphere",
+  "mode": "main",
+  "initMs": 62,
+  "callMs": 5525,
+  "ok": true,
+  "hb": {
+   "maxGapMs": 5546,
+   "ticks": 6,
+   "longTasksMs": [
+    5525
+   ]
+  },
+  "load": 7.9
+ },
+ {
+  "name": "cylinder-corner",
+  "mode": "main",
+  "initMs": 62,
+  "callMs": 11667,
+  "ok": true,
+  "hb": {
+   "maxGapMs": 11687,
+   "ticks": 6,
+   "longTasksMs": [
+    11666
+   ]
+  },
+  "load": 7.92
+ },
+ {
+  "name": "ring",
+  "mode": "main",
+  "initMs": 62,
+  "callMs": 7427,
+  "ok": true,
+  "hb": {
+   "maxGapMs": 7447,
+   "ticks": 6,
+   "longTasksMs": [
+    7427
+   ]
+  },
+  "load": 7.86
+ }
+]

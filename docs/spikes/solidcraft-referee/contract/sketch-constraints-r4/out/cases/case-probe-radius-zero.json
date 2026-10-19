@@ -1,0 +1,29 @@
+[
+ {
+  "id": "probe-radius-zero",
+  "feats": [
+   "rule:radius"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "has value 0; a radius or diameter must be positive"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ }
+]

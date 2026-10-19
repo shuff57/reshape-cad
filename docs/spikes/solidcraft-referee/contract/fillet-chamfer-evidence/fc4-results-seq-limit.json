@@ -1,0 +1,1826 @@
+[
+ {
+  "set": "plate-top4",
+  "what": "the 4 top edges of the 40x30x10 plate, in loop order",
+  "style": "fillet",
+  "size": 0.5,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11997.850805969007,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11996.250955002966,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: degenerate rolling-ball spine"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 11992.525866470654,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11992.536870898966,
+   "faces": 10,
+   "bbox": [
+    -1.1102230246251565e-16,
+    -1.1102230246251565e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4",
+  "what": "the 4 top edges of the 40x30x10 plate, in loop order",
+  "style": "fillet",
+  "size": 1,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11991.410295184303,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11985.068265953474,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: degenerate rolling-ball spine"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 11970.328338770056,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11970.339224237878,
+   "faces": 10,
+   "bbox": [
+    -2.220446049250313e-16,
+    -2.220446049250313e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4",
+  "what": "the 4 top edges of the 40x30x10 plate, in loop order",
+  "style": "fillet",
+  "size": 2,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11965.641185737959,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11940.656755736898,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: degenerate rolling-ball spine"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 11882.848190876868,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11882.890822259356,
+   "faces": 10,
+   "bbox": [
+    -4.440892098500626e-16,
+    -4.440892098500626e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4",
+  "what": "the 4 top edges of the 40x30x10 plate, in loop order",
+  "style": "fillet",
+  "size": 3,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11922.69267166096,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11867.341041532907,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: degenerate rolling-ball spine"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 11739.861807338197,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11739.955682165893,
+   "faces": 10,
+   "bbox": [
+    -4.440892098500626e-16,
+    -4.440892098500626e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4",
+  "what": "the 4 top edges of the 40x30x10 plate, in loop order",
+  "style": "chamfer",
+  "size": 1,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11980,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11965.333333333336,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11945.666666666535,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "volume": 11931.333333333334,
+    "faces": 10
+   }
+  ],
+  "oneCall": {
+   "volume": 11931.333333333334,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11931.333333333332,
+   "faces": 10,
+   "bbox": [
+    -2.6645352591003757e-15,
+    -1.7763568394002505e-15,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 10
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4",
+  "what": "the 4 top edges of the 40x30x10 plate, in loop order",
+  "style": "chamfer",
+  "size": 2,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11920,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11862.666666666672,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11785.333333333221,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "volume": 11730.66666666662,
+    "faces": 10
+   }
+  ],
+  "oneCall": {
+   "volume": 11730.666666666664,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11730.666666666666,
+   "faces": 10,
+   "bbox": [
+    -2.6645352591003757e-15,
+    -4.440892098500626e-15,
+    0,
+    40,
+    30.000000000000004,
+    10
+   ],
+   "types": {
+    "plane": 10
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4",
+  "what": "the 4 top edges of the 40x30x10 plate, in loop order",
+  "style": "chamfer",
+  "size": 3,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11820,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11694,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11523.000000000067,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "volume": 11405.99999999998,
+    "faces": 10
+   }
+  ],
+  "oneCall": {
+   "volume": 11406,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11405.999999999998,
+   "faces": 10,
+   "bbox": [
+    -1.7763568394002505e-15,
+    -8.881784197001252e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 10
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4",
+  "what": "the 4 top edges of the 40x30x10 plate, in loop order",
+  "style": "chamfer",
+  "size": 4,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11680,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11461.333333333334,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11162.666666666737,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "volume": 10965.333333333314,
+    "faces": 10
+   }
+  ],
+  "oneCall": {
+   "volume": 10965.333333333334,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 10965.333333333332,
+   "faces": 10,
+   "bbox": [
+    -5.329070518200751e-15,
+    -5.329070518200751e-15,
+    0,
+    40,
+    30.000000000000004,
+    10.000000000000004
+   ],
+   "types": {
+    "plane": 10
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-reversed",
+  "what": "the same 4 edges in the opposite order",
+  "style": "fillet",
+  "size": 0.5,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11998.3881044768,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11996.250956232141,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: degenerate rolling-ball spine"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 11992.525866470654,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11992.536870898966,
+   "faces": 10,
+   "bbox": [
+    -1.1102230246251565e-16,
+    -1.1102230246251565e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-reversed",
+  "what": "the same 4 edges in the opposite order",
+  "style": "fillet",
+  "size": 1,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11993.557721388412,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11985.06826999297,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: degenerate rolling-ball spine"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 11970.328338770056,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11970.339224237876,
+   "faces": 10,
+   "bbox": [
+    -2.220446049250313e-16,
+    -2.220446049250313e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-reversed",
+  "what": "the same 4 edges in the opposite order",
+  "style": "fillet",
+  "size": 2,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11974.230889304214,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11940.656772019773,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: degenerate rolling-ball spine"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 11882.848190876868,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11882.890822173287,
+   "faces": 10,
+   "bbox": [
+    -4.440892098500626e-16,
+    -4.440892098500626e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-reversed",
+  "what": "the same 4 edges in the opposite order",
+  "style": "fillet",
+  "size": 3,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11942.019503747399,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11867.341078169366,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: degenerate rolling-ball spine"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 11739.861807338197,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11739.955681921347,
+   "faces": 10,
+   "bbox": [
+    -4.440892098500626e-16,
+    -4.440892098500626e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-reversed",
+  "what": "the same 4 edges in the opposite order",
+  "style": "chamfer",
+  "size": 1,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11985,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11965.33333333327,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11950.666666666526,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "volume": 11931.333333333183,
+    "faces": 10
+   }
+  ],
+  "oneCall": {
+   "volume": 11931.333333333334,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11931.333333333332,
+   "faces": 10,
+   "bbox": [
+    -2.6645352591003757e-15,
+    -1.7763568394002505e-15,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 10
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-reversed",
+  "what": "the same 4 edges in the opposite order",
+  "style": "chamfer",
+  "size": 2,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11940,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11862.66666666671,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11805.333333333312,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "volume": 11730.6666666667,
+    "faces": 10
+   }
+  ],
+  "oneCall": {
+   "volume": 11730.666666666666,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11730.666666666666,
+   "faces": 10,
+   "bbox": [
+    -2.6645352591003757e-15,
+    -4.440892098500626e-15,
+    0,
+    40,
+    30.000000000000004,
+    10
+   ],
+   "types": {
+    "plane": 10
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-reversed",
+  "what": "the same 4 edges in the opposite order",
+  "style": "chamfer",
+  "size": 3,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11865,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11693.999999999962,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11567.999999999998,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "volume": 11405.99999999999,
+    "faces": 10
+   }
+  ],
+  "oneCall": {
+   "volume": 11406,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11405.999999999998,
+   "faces": 10,
+   "bbox": [
+    -1.7763568394002505e-15,
+    -8.881784197001252e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 10
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-reversed",
+  "what": "the same 4 edges in the opposite order",
+  "style": "chamfer",
+  "size": 4,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11760,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11461.33333333335,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11242.66666666671,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "volume": 10965.333333333323,
+    "faces": 10
+   }
+  ],
+  "oneCall": {
+   "volume": 10965.33333333333,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 10965.333333333332,
+   "faces": 10,
+   "bbox": [
+    -5.329070518200751e-15,
+    -5.329070518200751e-15,
+    0,
+    40,
+    30.000000000000004,
+    10.000000000000004
+   ],
+   "types": {
+    "plane": 10
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-skip",
+  "what": "front, back, right, left (two opposite edges first)",
+  "style": "fillet",
+  "size": 0.5,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11997.850805969007,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11995.701611938077,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11994.113801494677,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "refused": "solid.fillet: not supported yet: degenerate rolling-ball spine"
+   }
+  ],
+  "firstRefusedStep": 4,
+  "oneCall": {
+   "volume": 11992.525866470654,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11992.536870898966,
+   "faces": 10,
+   "bbox": [
+    -1.1102230246251565e-16,
+    -1.1102230246251565e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-skip",
+  "what": "front, back, right, left (two opposite edges first)",
+  "style": "fillet",
+  "size": 1,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11991.410295184303,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11982.820590368856,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11976.576956020348,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "refused": "solid.fillet: not supported yet: degenerate rolling-ball spine"
+   }
+  ],
+  "firstRefusedStep": 4,
+  "oneCall": {
+   "volume": 11970.328338770056,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11970.339224237878,
+   "faces": 10,
+   "bbox": [
+    -2.220446049250313e-16,
+    -2.220446049250313e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-skip",
+  "what": "front, back, right, left (two opposite edges first)",
+  "style": "fillet",
+  "size": 2,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11965.641185737959,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11931.28237147691,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11907.075207403592,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "refused": "solid.fillet: not supported yet: degenerate rolling-ball spine"
+   }
+  ],
+  "firstRefusedStep": 4,
+  "oneCall": {
+   "volume": 11882.848190876868,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11882.890822302039,
+   "faces": 10,
+   "bbox": [
+    -4.440892098500626e-16,
+    -4.440892098500626e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-skip",
+  "what": "front, back, right, left (two opposite edges first)",
+  "style": "fillet",
+  "size": 3,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11922.69267166096,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11845.385343324155,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11792.645898796292,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "refused": "solid.fillet: not supported yet: degenerate rolling-ball spine"
+   }
+  ],
+  "firstRefusedStep": 4,
+  "oneCall": {
+   "volume": 11739.861807338197,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11739.955682287933,
+   "faces": 10,
+   "bbox": [
+    -4.440892098500626e-16,
+    -4.440892098500626e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-skip",
+  "what": "front, back, right, left (two opposite edges first)",
+  "style": "chamfer",
+  "size": 1,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11980,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11960,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11945.666666666648,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "volume": 11931.333333332957,
+    "faces": 10
+   }
+  ],
+  "oneCall": {
+   "volume": 11931.333333333334,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11931.333333333332,
+   "faces": 10,
+   "bbox": [
+    -2.6645352591003757e-15,
+    -1.7763568394002505e-15,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 10
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-skip",
+  "what": "front, back, right, left (two opposite edges first)",
+  "style": "chamfer",
+  "size": 2,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11920,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11840,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11785.333333333205,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "volume": 11730.666666666535,
+    "faces": 10
+   }
+  ],
+  "oneCall": {
+   "volume": 11730.666666666666,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11730.666666666666,
+   "faces": 10,
+   "bbox": [
+    -2.6645352591003757e-15,
+    -4.440892098500626e-15,
+    0,
+    40,
+    30.000000000000004,
+    10
+   ],
+   "types": {
+    "plane": 10
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-skip",
+  "what": "front, back, right, left (two opposite edges first)",
+  "style": "chamfer",
+  "size": 3,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11820,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11640,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11522.999999999965,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "volume": 11405.999999999987,
+    "faces": 10
+   }
+  ],
+  "oneCall": {
+   "volume": 11406,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 11405.999999999998,
+   "faces": 10,
+   "bbox": [
+    -1.7763568394002505e-15,
+    -8.881784197001252e-16,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 10
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "plate-top4-skip",
+  "what": "front, back, right, left (two opposite edges first)",
+  "style": "chamfer",
+  "size": 4,
+  "V0": 12000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11680,
+    "faces": 7
+   },
+   {
+    "k": 2,
+    "volume": 11360,
+    "faces": 8
+   },
+   {
+    "k": 3,
+    "volume": 11162.66666666655,
+    "faces": 9
+   },
+   {
+    "k": 4,
+    "volume": 10965.333333333198,
+    "faces": 10
+   }
+  ],
+  "oneCall": {
+   "volume": 10965.333333333334,
+   "faces": 10
+  },
+  "occtSim": {
+   "volume": 10965.333333333332,
+   "faces": 10,
+   "bbox": [
+    -5.329070518200751e-15,
+    -5.329070518200751e-15,
+    0,
+    40,
+    30.000000000000004,
+    10.000000000000004
+   ],
+   "types": {
+    "plane": 10
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket10-rim",
+  "what": "the rim of the 10x10x4 pocket (FreeCAD fillet-after-pocket geometry)",
+  "style": "fillet",
+  "size": 0.5,
+  "V0": 11600,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11599.462701179727,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "volume": 11598.91339719112,
+    "faces": 13
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 11597.802759139791,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 11597.806046462449,
+   "faces": 15,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 11,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket10-rim",
+  "what": "the rim of the 10x10x4 pocket (FreeCAD fillet-after-pocket geometry)",
+  "style": "fillet",
+  "size": 1,
+  "V0": 11600,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11597.852573171076,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "volume": 11595.610452868881,
+    "faces": 13
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 11591.029061208932,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 11591.032445171828,
+   "faces": 15,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 11,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket10-rim",
+  "what": "the rim of the 10x10x4 pocket (FreeCAD fillet-after-pocket geometry)",
+  "style": "fillet",
+  "size": 2,
+  "V0": 11600,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11591.410295184674,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "volume": 11582.058100363525,
+    "faces": 13
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 11562.5813392225,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 11562.59585519379,
+   "faces": 15,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 11,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket10-rim",
+  "what": "the rim of the 10x10x4 pocket (FreeCAD fillet-after-pocket geometry)",
+  "style": "fillet",
+  "size": 3,
+  "V0": 11600,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11580.673166040799,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "volume": 11558.76740997473,
+    "faces": 13
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 11512.354636612416,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 11512.389341890932,
+   "faces": 15,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 11,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket10-rim",
+  "what": "the rim of the 10x10x4 pocket (FreeCAD fillet-after-pocket geometry)",
+  "style": "chamfer",
+  "size": 1,
+  "V0": 11600,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11595,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "refused": "solid.chamfer: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 2,
+  "oneCall": {
+   "volume": 11578.666666666666,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 11578.666666666666,
+   "faces": 15,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10.000000000000002
+   ],
+   "types": {
+    "plane": 15
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket10-rim",
+  "what": "the rim of the 10x10x4 pocket (FreeCAD fillet-after-pocket geometry)",
+  "style": "chamfer",
+  "size": 2,
+  "V0": 11600,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11580,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "refused": "solid.chamfer: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 2,
+  "oneCall": {
+   "volume": 11509.333333333334,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 11509.33333333333,
+   "faces": 15,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 15
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket10-rim",
+  "what": "the rim of the 10x10x4 pocket (FreeCAD fillet-after-pocket geometry)",
+  "style": "chamfer",
+  "size": 3,
+  "V0": 11600,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 11555,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "refused": "solid.chamfer: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 2,
+  "oneCall": {
+   "volume": 11384,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 11384,
+   "faces": 15,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "types": {
+    "plane": 15
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket10-rim",
+  "what": "the rim of the 10x10x4 pocket (FreeCAD fillet-after-pocket geometry)",
+  "style": "chamfer",
+  "size": 4,
+  "V0": 11600,
+  "steps": [
+   {
+    "k": 1,
+    "refused": "solid.chamfer: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 1,
+  "oneCall": {
+   "volume": 11194.666666666666,
+   "faces": 11
+  },
+  "occtSim": {
+   "refused": "OCCT maker not done",
+   "edgeDist": 0
+  }
+ },
+ {
+  "set": "pocket20x10-rim",
+  "what": "the rim of a 20x10x4 pocket in a 60x40x12 plate",
+  "style": "fillet",
+  "size": 0.5,
+  "V0": 28000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 27998.925403547135,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "volume": 27998.3761027188,
+    "faces": 13
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 27996.728163357406,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 27996.733037277747,
+   "faces": 15,
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "types": {
+    "plane": 11,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket20x10-rim",
+  "what": "the rim of a 20x10x4 pocket in a 60x40x12 plate",
+  "style": "fillet",
+  "size": 1,
+  "V0": 28000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 27995.701614313555,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "volume": 27993.456400840598,
+    "faces": 13
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 27986.720742528287,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 27986.740408434678,
+   "faces": 15,
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "types": {
+    "plane": 11,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket20x10-rim",
+  "what": "the rim of a 20x10x4 pocket in a 60x40x12 plate",
+  "style": "fillet",
+  "size": 2,
+  "V0": 28000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 27982.820595120054,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "volume": 27973.470872900765,
+    "faces": 13
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 27945.40684287933,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 27945.42770822896,
+   "faces": 15,
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "types": {
+    "plane": 11,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket20x10-rim",
+  "what": "the rim of a 20x10x4 pocket in a 60x40x12 plate",
+  "style": "fillet",
+  "size": 3,
+  "V0": 28000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 27961.346339207656,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "volume": 27939.446132431007,
+    "faces": 13
+   },
+   {
+    "k": 3,
+    "refused": "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 3,
+  "oneCall": {
+   "volume": 27873.71201972874,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 27873.761011139064,
+   "faces": 15,
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "types": {
+    "plane": 11,
+    "cylinder": 4
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket20x10-rim",
+  "what": "the rim of a 20x10x4 pocket in a 60x40x12 plate",
+  "style": "chamfer",
+  "size": 1,
+  "V0": 28000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 27990,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "refused": "solid.chamfer: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 2,
+  "oneCall": {
+   "volume": 27968.666666666668,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 27968.666666666664,
+   "faces": 15,
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "types": {
+    "plane": 15
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket20x10-rim",
+  "what": "the rim of a 20x10x4 pocket in a 60x40x12 plate",
+  "style": "chamfer",
+  "size": 2,
+  "V0": 28000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 27960,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "refused": "solid.chamfer: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 2,
+  "oneCall": {
+   "volume": 27869.333333333332,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 27869.333333333325,
+   "faces": 15,
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6.000000000000002
+   ],
+   "types": {
+    "plane": 15
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket20x10-rim",
+  "what": "the rim of a 20x10x4 pocket in a 60x40x12 plate",
+  "style": "chamfer",
+  "size": 3,
+  "V0": 28000,
+  "steps": [
+   {
+    "k": 1,
+    "volume": 27910,
+    "faces": 12
+   },
+   {
+    "k": 2,
+    "refused": "solid.chamfer: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 2,
+  "oneCall": {
+   "volume": 27694,
+   "faces": 15
+  },
+  "occtSim": {
+   "volume": 27694.000000000004,
+   "faces": 15,
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6.000000000000002
+   ],
+   "types": {
+    "plane": 15
+   },
+   "edgeDist": 0,
+   "distinctEdges": 4
+  }
+ },
+ {
+  "set": "pocket20x10-rim",
+  "what": "the rim of a 20x10x4 pocket in a 60x40x12 plate",
+  "style": "chamfer",
+  "size": 4,
+  "V0": 28000,
+  "steps": [
+   {
+    "k": 1,
+    "refused": "solid.chamfer: not supported yet: the blend is larger than the neighbouring faces"
+   }
+  ],
+  "firstRefusedStep": 1,
+  "oneCall": {
+   "volume": 27434.666666666668,
+   "faces": 11
+  },
+  "occtSim": {
+   "refused": "OCCT maker not done",
+   "edgeDist": 0
+  }
+ }
+]

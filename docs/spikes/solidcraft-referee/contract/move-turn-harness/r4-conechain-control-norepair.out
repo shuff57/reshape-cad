@@ -1,0 +1,39 @@
+cone     n 40 SHIPPED {"PASS":31,"FAIL":9} GUARD {"PASS":18,"REFUSED":22} repaired steps 0 {} bbox-only artefact (counted PASS, both translators) 0 guard WRONG 0
+   refusal x13: Turn # is not built: turning Move # would change its volume (# mm# instead of # mm#), which a turn must never do, so it is shown without it -- try fewer separate turns, or build the part where you want it.
+   refusal x20: Turn # is not built because Turn #, which it uses, was refused.
+   refusal x21: Move # is not built because Turn #, which it uses, was refused.
+   refusal x18: Turn # is not built because Move #, which it uses, was refused.
+   refusal x5: Move # is not built: moving Move # would change its volume (# mm# instead of # mm#), which a move must never do, so it is shown without it -- try fewer separate moves, or build the part where you want it.
+   refusal x19: Move # is not built because Move #, which it uses, was refused.
+   refusal x2: Move # is not built: moving Turn # would change its volume (# mm# instead of # mm#), which a move must never do, so it is shown without it -- try fewer separate moves, or build the part where you want it.
+   refusal x1: Turn # is not built: turning Move # would change its surface area (# mm# instead of # mm#), which a turn must never do, so it is shown without it -- try fewer separate turns, or build the part where you want it.
+   refusal x1: Turn # is not built: turning Turn # would change its volume (# mm# instead of # mm#), which a turn must never do, so it is shown without it -- try fewer separate turns, or build the part where you want it.
+   shipped example: "let a = cone(11, 21, { at: [19,9,-9] })\nmove(a, [-38,-38,9])\nturn(a, [60,60,135])\nturn(a, [90,30,90])\nturn(a, [90,0,60])" [{"id":"turn3","v":"FAIL","dVol":0.01179840007212076,"dCom":0.04552426001087211}]
+join     n 40 SHIPPED {"FAIL":11,"PASS":29} GUARD {"REFUSED":33,"PASS":7} repaired steps 0 {} bbox-only artefact (counted PASS, both translators) 0 guard WRONG 0
+   refusal x6: Move # is not built: moving Turn # would change its volume (# mm# instead of # mm#), which a move must never do, so it is shown without it -- try fewer separate moves, or build the part where you want it.
+   refusal x2: Move # is not built: moving Move # would change its volume (# mm# instead of # mm#), which a move must never do, so it is shown without it -- try fewer separate moves, or build the part where you want it.
+   refusal x30: Move # is not built because Move #, which it uses, was refused.
+   refusal x19: Move # is not built: moving Join # would change its volume (# mm# instead of # mm#), which a move must never do, so it is shown without it -- try fewer separate moves, or build the part where you want it.
+   refusal x29: Turn # is not built because Move #, which it uses, was refused.
+   refusal x29: Turn # is not built because Turn #, which it uses, was refused.
+   refusal x1: Turn # is not built: turning Join # would change its faces (# of unknown kind faces instead of #), which a turn must never do, so it is shown without it -- try fewer separate turns, or build the part where you want it.
+   refusal x16: Move # is not built because Turn #, which it uses, was refused.
+   refusal x3: Turn # is not built: turning Join # would change its faces (# of unknown kind face instead of #), which a turn must never do, so it is shown without it -- try fewer separate turns, or build the part where you want it.
+   refusal x1: Move # is not built: moving Join # would change its surface area (# mm# instead of # mm#), which a move must never do, so it is shown without it -- try fewer separate moves, or build the part where you want it.
+   refusal x1: Turn # is not built: turning Turn # would change its faces (# of unknown kind faces instead of #), which a turn must never do, so it is shown without it -- try fewer separate turns, or build the part where you want it.
+   shipped example: "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [180,15,30])\nmove(j, [13,-6,-1])" [{"id":"move1","v":"FAIL","dVol":0.0007828669250690627,"dCom":0.00008132014787003333}]
+copies   n 40 SHIPPED {"REFUSED":39,"PASS":1} GUARD {"PASS":20,"REFUSED":20} repaired steps 0 {} bbox-only artefact (counted PASS, both translators) 0 guard WRONG 0
+   refusal x4: Copy # is not built: moving Turn # would change its volume (# mm# instead of # mm#), which a move must never do, so it is shown without it -- try fewer separate moves, or build the part where you want it.
+   refusal x16: Copy # is not built because Copy #, which it uses, was refused.
+   refusal x7: Copy # is not built: moving Copy # would change its volume (# mm# instead of # mm#), which a move must never do, so it is shown without it -- try fewer separate moves, or build the part where you want it.
+   refusal x4: Turn # is not built: turning Copy # would change its volume (# mm# instead of # mm#), which a turn must never do, so it is shown without it -- try fewer separate turns, or build the part where you want it.
+   refusal x2: Move # is not built because Turn #, which it uses, was refused.
+   refusal x3: Turn # is not built because Move #, which it uses, was refused.
+   refusal x4: Copy # is not built because Turn #, which it uses, was refused.
+   refusal x3: Move # is not built: moving Copy # would change its volume (# mm# instead of # mm#), which a move must never do, so it is shown without it -- try fewer separate moves, or build the part where you want it.
+   refusal x4: Turn # is not built because Copy #, which it uses, was refused.
+   refusal x2: Move # is not built because Copy #, which it uses, was refused.
+   refusal x1: Move # is not built: moving Move # would change its volume (# mm# instead of # mm#), which a move must never do, so it is shown without it -- try fewer separate moves, or build the part where you want it.
+   refusal x3: Copy # is not built because Move #, which it uses, was refused.
+   refusal x1: Copy # is not built: moving Move # would change its volume (# mm# instead of # mm#), which a move must never do, so it is shown without it -- try fewer separate moves, or build the part where you want it.
+   refusal x2: Turn # is not built because Turn #, which it uses, was refused.

@@ -1,0 +1,306 @@
+[
+ {
+  "n": 3,
+  "normals": 3,
+  "res": {
+   "front": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 1,
+    "occt": 5840.151314479381,
+    "brep": 5845.671475544961,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "back": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 1,
+    "occt": 5840.151314479381,
+    "brep": 5845.671475544961,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "left": {
+    "flatFacesExactlyThatDirection": 1,
+    "tiedNearestFaces": 1,
+    "occt": 5840.151314479381,
+    "brep": 5845.671475544961,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "right": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 5840.151314479381,
+    "brep": 5845.671475544961,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   }
+  }
+ },
+ {
+  "n": 4,
+  "normals": 4,
+  "res": {
+   "front": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 8995.447607586662,
+    "brep": 8995.447607582499,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "back": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 8995.447607586662,
+    "brep": 8995.447607582499,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "left": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 8995.44760758666,
+    "brep": 8995.447607582499,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "right": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 8995.447607586662,
+    "brep": 8995.447607582499,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   }
+  }
+ },
+ {
+  "n": 5,
+  "normals": 5,
+  "res": {
+   "front": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 1,
+    "occt": 10695.57045876024,
+    "brep": 10699.385808320478,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "back": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 1,
+    "occt": 10695.570458760241,
+    "brep": 10699.385808320478,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "left": {
+    "flatFacesExactlyThatDirection": 1,
+    "tiedNearestFaces": 1,
+    "occt": 10695.57045876024,
+    "brep": 10699.385808320478,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "right": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 10695.57045876024,
+    "brep": 10699.385808320478,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   }
+  }
+ },
+ {
+  "n": 6,
+  "normals": 6,
+  "res": {
+   "front": {
+    "flatFacesExactlyThatDirection": 1,
+    "tiedNearestFaces": 1,
+    "occt": 11688.068561592172,
+    "brep": 11691.342951089924,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "back": {
+    "flatFacesExactlyThatDirection": 1,
+    "tiedNearestFaces": 1,
+    "occt": 11688.068561592176,
+    "brep": 11691.342951089924,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "left": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 11688.068561592174,
+    "brep": 11691.342951089924,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "right": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 11688.068561592172,
+    "brep": 11691.342951089924,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   }
+  }
+ },
+ {
+  "n": 7,
+  "normals": 7,
+  "res": {
+   "front": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 1,
+    "occt": 12310.976010354894,
+    "brep": 12313.845848871468,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "back": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 1,
+    "occt": 12310.976010354892,
+    "brep": 12313.845848871468,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "left": {
+    "flatFacesExactlyThatDirection": 1,
+    "tiedNearestFaces": 1,
+    "occt": 12310.97601035489,
+    "brep": 12313.845848871468,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "right": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 12310.976010354892,
+    "brep": 12313.845848871468,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   }
+  }
+ },
+ {
+  "n": 8,
+  "normals": 8,
+  "res": {
+   "front": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 12725.362430902916,
+    "brep": 12727.922061357858,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "back": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 12725.362430902913,
+    "brep": 12727.922061357858,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "left": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 12725.362430902915,
+    "brep": 12727.922061357858,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "right": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 12725.362430902915,
+    "brep": 12727.922061357858,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   }
+  }
+ },
+ {
+  "n": 10,
+  "normals": 10,
+  "res": {
+   "front": {
+    "flatFacesExactlyThatDirection": 1,
+    "tiedNearestFaces": 1,
+    "occt": 13223.046718614114,
+    "brep": 13225.168176580648,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "back": {
+    "flatFacesExactlyThatDirection": 1,
+    "tiedNearestFaces": 1,
+    "occt": 13223.046718614114,
+    "brep": 13225.168176580648,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "left": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 13223.046718614112,
+    "brep": 13225.168176580648,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "right": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 13223.046718614112,
+    "brep": 13225.168176580648,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   }
+  }
+ },
+ {
+  "n": 12,
+  "normals": 12,
+  "res": {
+   "front": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 13498.167608989526,
+    "brep": 13500,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "back": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 13498.167608989526,
+    "brep": 13500,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "left": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 13498.167608989525,
+    "brep": 13500,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   },
+   "right": {
+    "flatFacesExactlyThatDirection": 0,
+    "tiedNearestFaces": 2,
+    "occt": 13498.167608989526,
+    "brep": 13500,
+    "page": "REFUSED",
+    "sentence": "round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked."
+   }
+  }
+ }
+]

@@ -1,0 +1,238 @@
+[
+ {
+  "id": "cs-cone-deeper-than-blind-deep1",
+  "what": "countersink 12/90 over a 6 bore, blind 1 (cone alone is 3 deep)",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); hole(plate, { across: 6, deep: 1, countersink: { across: 12, angle: 90 } });",
+  "native": {
+   "v0": 12000,
+   "volume": 11794.429427431096,
+   "faces": 8,
+   "bodies": 1,
+   "removed": 205.57057256890403
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "closedRemoved": 95.29497715889039,
+  "dClosedRemoved": 1.1572026007849843
+ },
+ {
+  "id": "cs-cone-deeper-than-blind-deep2",
+  "what": "countersink 12/90 over a 6 bore, blind 2 (cone alone is 3 deep)",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); hole(plate, { across: 6, deep: 2, countersink: { across: 12, angle: 90 } });",
+  "native": {
+   "v0": 12000,
+   "volume": 11794.429427431096,
+   "faces": 8,
+   "bodies": 1,
+   "removed": 205.57057256890403
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "closedRemoved": 159.17402778188284,
+  "dClosedRemoved": 0.29148313599627357
+ },
+ {
+  "id": "cs-cone-deeper-than-blind-deep2.5",
+  "what": "countersink 12/90 over a 6 bore, blind 2.5 (cone alone is 3 deep)",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); hole(plate, { across: 6, deep: 2.5, countersink: { across: 12, angle: 90 } });",
+  "native": {
+   "v0": 12000,
+   "volume": 11794.429427431096,
+   "faces": 8,
+   "bodies": 1,
+   "removed": 205.57057256890403
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "closedRemoved": 181.29607605091098,
+  "dClosedRemoved": 0.1338942190407715
+ },
+ {
+  "id": "cs-cone-deeper-than-blind-deep3",
+  "what": "countersink 12/90 over a 6 bore, blind 3 (cone alone is 3 deep)",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); hole(plate, { across: 6, deep: 3, countersink: { across: 12, angle: 90 } });",
+  "native": {
+   "v0": 12000,
+   "volume": 11794.429427431096,
+   "faces": 8,
+   "bodies": 1,
+   "removed": 205.57057256890403
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "closedRemoved": 197.92033717615698,
+  "dClosedRemoved": 0.038653104081659055
+ },
+ {
+  "id": "cs-cone-deeper-than-blind-deep4",
+  "what": "countersink 12/90 over a 6 bore, blind 4 (cone alone is 3 deep)",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); hole(plate, { across: 6, deep: 4, countersink: { across: 12, angle: 90 } });",
+  "native": {
+   "v0": 12000,
+   "volume": 11773.822266611895,
+   "faces": 9,
+   "bodies": 1,
+   "removed": 226.17773338810548
+  },
+  "brep": {
+   "volume": 11773.805328941533,
+   "faces": 9
+  },
+  "closedRemoved": 226.19467105846513,
+  "dClosedRemoved": 0.0000748809433944389,
+  "brepRemoved": 226.19467105846707,
+  "dBrep": 0.0000014385892995827232
+ },
+ {
+  "id": "cb-in-pocket-9x7",
+  "what": "counterbore 9 x 7 deep, bore 4 through, centred in a 4-deep pocket (floor at 6, top at 10): the recess reaches 3 below the floor",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.rect(16, 12, { at: [22, 15] }); const p = pocket(s2, plate, 4); hole(p, { across: 4, at: [2, 0], counterbore: { across: 9, deep: 7 } });",
+  "native": {
+   "v0": 11232,
+   "volume": 10850.35989494831,
+   "faces": 12,
+   "bodies": 1,
+   "removed": 381.6401050516906
+  },
+  "brep": {
+   "volume": 11003.449134451339,
+   "faces": 14
+  },
+  "closedRemoved": 228.55086554865747,
+  "dClosedRemoved": 0.6698256825041038,
+  "brepRemoved": 228.55086554866102,
+  "dBrep": 0.013912841113039146
+ },
+ {
+  "id": "cb-in-pocket-9x3",
+  "what": "counterbore 9 x 3 deep, bore 4, centred in the 4-deep pocket: the recess is entirely in air; only the bore (6 of floor) is cut",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.rect(16, 12, { at: [22, 15] }); const p = pocket(s2, plate, 4); hole(p, { across: 4, at: [2, 0], counterbore: { across: 9, deep: 3 } });",
+  "native": {
+   "v0": 11232,
+   "volume": 11003.476931765903,
+   "faces": 14,
+   "bodies": 1,
+   "removed": 228.52306823409708
+  },
+  "brep": {
+   "volume": 11156.601776313844,
+   "faces": 12
+  },
+  "closedRemoved": 75.39822368615503,
+  "dClosedRemoved": 2.030881326665253,
+  "brepRemoved": 75.39822368615569,
+  "dBrep": 0.013725043487079992
+ },
+ {
+  "id": "cs-in-pocket-8x90",
+  "what": "countersink 8/90 over a 4 bore (cone 2 deep, all of it in the 4 mm of air above the floor): only the bore through the floor is cut",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.rect(16, 12, { at: [22, 15] }); const p = pocket(s2, plate, 4); hole(p, { across: 4, at: [2, 0], countersink: { across: 8, angle: 90 } });",
+  "native": {
+   "v0": 11232,
+   "volume": 11123.10343709274,
+   "faces": 13,
+   "bodies": 1,
+   "removed": 108.89656290726089
+  },
+  "brep": {
+   "volume": 11156.601776313844,
+   "faces": 12
+  },
+  "closedRemoved": 75.39822368615503,
+  "dClosedRemoved": 0.4442855227006756,
+  "brepRemoved": 75.39822368615569,
+  "dBrep": 0.003002557579156786
+ },
+ {
+  "id": "cb-deeper-than-part-20",
+  "what": "counterbore 12 x 20 in a 20 thick box (bore 6 through)",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, counterbore: { across: 12, deep: 20 } });",
+  "native": {
+   "v0": 32000,
+   "volume": 29738.42900710266,
+   "faces": 7,
+   "bodies": 1,
+   "removed": 2261.570992897341
+  },
+  "brep": {
+   "volume": 29738.053289415348,
+   "faces": 7
+  },
+  "closedRemoved": 2261.946710584651,
+  "dClosedRemoved": 0.00016610368650680135,
+  "brepRemoved": 2261.9467105846525,
+  "dBrep": 0.000012634239492910475
+ },
+ {
+  "id": "cb-deeper-than-part-21",
+  "what": "counterbore 12 x 21 in a 20 thick box (bore 6 through)",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, counterbore: { across: 12, deep: 21 } });",
+  "native": {
+   "v0": 32000,
+   "volume": 29738.42900710266,
+   "faces": 7,
+   "bodies": 1,
+   "removed": 2261.570992897341
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "closedRemoved": 2261.946710584651,
+  "dClosedRemoved": 0.00016610368650680135
+ },
+ {
+  "id": "cb-deeper-than-part-30",
+  "what": "counterbore 12 x 30 in a 20 thick box (bore 6 through)",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, counterbore: { across: 12, deep: 30 } });",
+  "native": {
+   "v0": 32000,
+   "volume": 29738.42900710266,
+   "faces": 7,
+   "bodies": 1,
+   "removed": 2261.570992897341
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "closedRemoved": 2261.946710584651,
+  "dClosedRemoved": 0.00016610368650680135
+ },
+ {
+  "id": "holes-cb-overlap",
+  "what": "holes() 4 bores d4, apart [10,14], counterbore d12 x 3: the recesses of the two bores 10 apart overlap (lens)",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); holes(plate, { across: 4, apart: [10, 14], counterbore: { across: 12, deep: 3 } });",
+  "native": {
+   "v0": 12000,
+   "volume": 10345.112549984733,
+   "faces": 16,
+   "bodies": 1,
+   "removed": 1654.887450015267
+  },
+  "brep": {
+   "refused": "hole hole1: its bores overlap in a way brep-rs cannot fuse into one tool yet -- hole1 is shown without it."
+  },
+  "closedRemoved": 1655.007736200682,
+  "dClosedRemoved": 0.00007268013483203413
+ },
+ {
+  "id": "holes-cs-overlap",
+  "what": "holes() 4 bores d4, apart [10,14], countersink d14/90 (cone 5 deep): neighbouring cones overlap",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); holes(plate, { across: 4, apart: [10, 14], countersink: { across: 14, angle: 90 } });",
+  "native": {
+   "v0": 12000,
+   "volume": 10387.315238022777,
+   "faces": 14,
+   "bodies": 1,
+   "removed": 1612.6847619772234
+  },
+  "brep": {
+   "refused": "hole hole1: its bores overlap in a way brep-rs cannot fuse into one tool yet -- hole1 is shown without it."
+  },
+  "closedRemoved": 1612.7419367794898,
+  "dClosedRemoved": 0.00003545192256897491
+ }
+]

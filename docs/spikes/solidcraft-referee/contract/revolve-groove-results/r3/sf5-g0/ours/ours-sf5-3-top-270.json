@@ -1,0 +1,21 @@
+{
+ "id": "sf5-3-top-270",
+ "outcome": "built",
+ "volume": 687.499739330413,
+ "faces": 6,
+ "bbox": [
+  -12.220000000000002,
+  -12.220000000000002,
+  -1.4600000000000009,
+  12.220000000000002,
+  12.220000000000002,
+  16.1
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[11.52,-1.46],[12.22,-1.46],[12.22,16.1],[11.52,16.1]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-270,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

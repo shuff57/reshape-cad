@@ -1,0 +1,2 @@
+Running as unit: run-p2043195-i2077708.scope; invocation ID: 67c3e9f26ebf4d6da6e84b2c56a243eb
+AUDIT: 304 distinct contract sentences (+4 shipped script-layer, 0 of them not one sentence); 0 are not exactly one sentence; 0 name solver internals; by stage {"branch":48,"map":3,"collapsed":3,"underconstrained":1,"residual":16,"preflight":172,"profiles":45,"mismatch":5,"internal":1,"placement":9,"solve":1,"script (shipped)":4}

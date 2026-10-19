@@ -1,0 +1,1 @@
+R3-chain-same-handle-then-extrude-combine PASS     occtV 33000.0000 | tr-occt dV 2.2e-16 dBb 0.0e+0 dCom 2.3e-17 F o/b/t 12/12/12 | brep-occt dV 0.0e+0      | ms 220 cpu 681

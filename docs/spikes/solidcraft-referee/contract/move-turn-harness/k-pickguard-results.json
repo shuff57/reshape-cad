@@ -1,0 +1,2706 @@
+{
+ "tally": {
+  "move+round": {
+   "shipped": {
+    "WRONG": 3,
+    "REFUSED": 6,
+    "PASS": 1
+   },
+   "guard": {
+    "REFUSED": 10
+   }
+  },
+  "move+bevel": {
+   "shipped": {
+    "WRONG": 2,
+    "REFUSED": 2
+   },
+   "guard": {
+    "REFUSED": 4
+   }
+  },
+  "move+hollow(top)": {
+   "shipped": {
+    "REFUSED": 5,
+    "PASS": 3,
+    "WRONG": 1
+   },
+   "guard": {
+    "REFUSED": 9
+   }
+  },
+  "move+hollow(bottom)": {
+   "shipped": {
+    "WRONG": 1,
+    "PASS": 3,
+    "REFUSED": 5
+   },
+   "guard": {
+    "REFUSED": 9
+   }
+  },
+  "move+hollow(right)": {
+   "shipped": {
+    "PASS": 5,
+    "REFUSED": 2,
+    "WRONG": 2
+   },
+   "guard": {
+    "REFUSED": 9
+   }
+  },
+  "move+hollow(left)": {
+   "shipped": {
+    "PASS": 5,
+    "WRONG": 2,
+    "REFUSED": 2
+   },
+   "guard": {
+    "REFUSED": 9
+   }
+  },
+  "move+hollow(front)": {
+   "shipped": {
+    "PASS": 6,
+    "REFUSED": 2,
+    "WRONG": 1
+   },
+   "guard": {
+    "REFUSED": 9
+   }
+  },
+  "move+hollow(back)": {
+   "shipped": {
+    "PASS": 6,
+    "REFUSED": 2,
+    "WRONG": 1
+   },
+   "guard": {
+    "REFUSED": 9
+   }
+  },
+  "turnD(pull)+hollow(top)": {
+   "shipped": {
+    "PASS": 4,
+    "WRONG": 2,
+    "REFUSED": 3
+   },
+   "guard": {
+    "REFUSED": 9
+   }
+  },
+  "turnD(pull)+hollow(bottom)": {
+   "shipped": {
+    "PASS": 4,
+    "WRONG": 2,
+    "REFUSED": 3
+   },
+   "guard": {
+    "REFUSED": 9
+   }
+  },
+  "turnD(hole)+round": {
+   "shipped": {
+    "WRONG": 3,
+    "REFUSED": 2,
+    "PASS": 3
+   },
+   "guard": {
+    "REFUSED": 8
+   }
+  },
+  "turnD(join)+round": {
+   "shipped": {
+    "REFUSED": 8
+   },
+   "guard": {
+    "REFUSED": 8
+   }
+  },
+  "move+draft(face)": {
+   "shipped": {
+    "PASS": 2,
+    "REFUSED": 1,
+    "WRONG": 1
+   },
+   "guard": {
+    "REFUSED": 4
+   }
+  },
+  "turnD+draft(face)": {
+   "shipped": {
+    "WRONG": 1,
+    "PASS": 1,
+    "REFUSED": 1
+   },
+   "guard": {
+    "REFUSED": 3
+   }
+  },
+  "CTRL round->move": {
+   "shipped": {
+    "PASS": 2
+   },
+   "guard": {
+    "PASS": 2
+   }
+  },
+  "CTRL round->turn": {
+   "shipped": {
+    "PASS": 2
+   },
+   "guard": {
+    "PASS": 2
+   }
+  },
+  "CTRL hollow->move": {
+   "shipped": {
+    "PASS": 3
+   },
+   "guard": {
+    "PASS": 3
+   }
+  },
+  "CTRL hollow->turn": {
+   "shipped": {
+    "PASS": 3
+   },
+   "guard": {
+    "PASS": 3
+   }
+  },
+  "CTRL turnPrim+round": {
+   "shipped": {
+    "PASS": 4
+   },
+   "guard": {
+    "PASS": 4
+   }
+  },
+  "CTRL turnPrim+hollow(top)": {
+   "shipped": {
+    "PASS": 3
+   },
+   "guard": {
+    "PASS": 3
+   }
+  },
+  "CTRL turnPrim+draft": {
+   "shipped": {
+    "PASS": 1,
+    "REFUSED": 1
+   },
+   "guard": {
+    "PASS": 1,
+    "REFUSED": 1
+   }
+  },
+  "copy+pick-original": {
+   "shipped": {
+    "PASS": 1
+   },
+   "guard": {
+    "PASS": 1
+   }
+  },
+  "copy+pick-copy": {
+   "shipped": {
+    "REFUSED": 1
+   },
+   "guard": {
+    "REFUSED": 1
+   }
+  }
+ },
+ "rows": [
+  {
+   "group": "move+round",
+   "name": "[0,-30,0]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [0,-30,0]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1283746847884586e-12,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 0.0000018818779154203062,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 0.0019167684156442416,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+round",
+   "name": "[0,30,0]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [0,30,0]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1283746847884586e-12,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -15, 9.774648292756861]: the nearest edge is 30.378 mm away"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+round",
+   "name": "[30,0,0]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [30,0,0]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1285773746905223e-12,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -15, 9.774648292756861]: the nearest edge is 15.742 mm away"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+round",
+   "name": "[0,0,10]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [0,0,10]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1283746847884586e-12,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 0.0000018822958394997825,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 0.0005996870496336599,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+round",
+   "name": "[0,0,-10]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [0,0,-10]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1285773746905223e-12,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -15, 9.774648292756861]: the nearest edge is 14.775 mm away"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+round",
+   "name": "[5,5,5]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [5,5,5]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1283746847884586e-12,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -15, 9.774648292756861]: the nearest edge is 5.005 mm away"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+round",
+   "name": "[0,-15,0]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [0,-15,0]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1285773746905223e-12,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -15, 9.774648292756861]: the nearest edge is 15.742 mm away"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+round",
+   "name": "[0,-30,5]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [0,-30,5]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1283746847884586e-12,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 0.0000018820868773586995,
+    "dBbox": 5.921189464667501e-16,
+    "dCom": 0.0019167684985398818,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+round",
+   "name": "[-30,-30,0]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [-30,-30,0]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1283746847884586e-12,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -15, 9.774648292756861]: the nearest edge is 15.742 mm away"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+round",
+   "name": "[0,0,0]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [0,0,0]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1285773746905223e-12,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0.0000018818779152176163,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 6.151820594223466e-7,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+bevel",
+   "name": "[0,-30,0]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [0,-30,0]);\nbevel(a.edge('top', 'front'), 2);",
+   "id": "bevel1",
+   "occtRefused": {},
+   "brepDVol": 2.0346637623555445e-16,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 2.0346637623555445e-16,
+    "dBbox": 0,
+    "dCom": 0.004413815014064525,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Bevel 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- bevel the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+bevel",
+   "name": "[0,30,0]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [0,30,0]);\nbevel(a.edge('top', 'front'), 2);",
+   "id": "bevel1",
+   "occtRefused": {},
+   "brepDVol": 2.0346637623555445e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -15, 9.774648292756861]: the nearest edge is 30.378 mm away"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Bevel 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- bevel the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+bevel",
+   "name": "[30,0,0]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [30,0,0]);\nbevel(a.edge('top', 'front'), 2);",
+   "id": "bevel1",
+   "occtRefused": {},
+   "brepDVol": 2.0346637623555445e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "bevel1 (fillet): solidcraft refused it -- solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, -15, 9.774648292756861]: the nearest edge is 15.742 mm away"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Bevel 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- bevel the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+bevel",
+   "name": "[0,0,10]",
+   "script": "const a = box(30, 30, 10);\nmove(a, [0,0,10]);\nbevel(a.edge('top', 'front'), 2);",
+   "id": "bevel1",
+   "occtRefused": {},
+   "brepDVol": 4.069327524711089e-16,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 2.0346637623555445e-16,
+    "dBbox": 0,
+    "dCom": 0.0013344091902985488,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Bevel 1 is not built: it picks the edge by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- bevel the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(top)",
+   "name": "[0,0,-10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,-10]);\nhollow(a, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 6.807595073150664e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(top)",
+   "name": "[0,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,0]);\nhollow(a, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 3.403797536575332e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(top)",
+   "name": "[0,0,4]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,4]);\nhollow(a, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 3.403797536575332e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(top)",
+   "name": "[0,-30,4]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,-30,4]);\nhollow(a, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 3.403797536575332e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(top)",
+   "name": "[-30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [-30,0,0]);\nhollow(a, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 5.105696304862998e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 3.79801067982192e-16,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(top)",
+   "name": "[30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [30,0,0]);\nhollow(a, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 3.79801067982192e-16,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(top)",
+   "name": "[5,5,5]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [5,5,5]);\nhollow(a, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 5.105696304862998e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(top)",
+   "name": "[0,0,10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,10]);\nhollow(a, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 0.06657525547040029,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(top)",
+   "name": "[100,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [100,0,0]);\nhollow(a, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 3.403797536575332e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(bottom)",
+   "name": "[0,0,-10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,-10]);\nhollow(a, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 0.06657525547040029,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(bottom)",
+   "name": "[0,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,0]);\nhollow(a, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 3.403797536575332e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(bottom)",
+   "name": "[0,0,4]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,4]);\nhollow(a, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 5.105696304862998e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(bottom)",
+   "name": "[0,-30,4]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,-30,4]);\nhollow(a, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 6.807595073150664e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(bottom)",
+   "name": "[-30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [-30,0,0]);\nhollow(a, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 5.105696304862998e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 3.79801067982192e-16,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(bottom)",
+   "name": "[30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [30,0,0]);\nhollow(a, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 3.79801067982192e-16,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(bottom)",
+   "name": "[5,5,5]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [5,5,5]);\nhollow(a, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 5.105696304862998e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(bottom)",
+   "name": "[0,0,10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,10]);\nhollow(a, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 6.807595073150664e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(bottom)",
+   "name": "[100,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [100,0,0]);\nhollow(a, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 3.403797536575332e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(right)",
+   "name": "[0,0,-10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,-10]);\nhollow(a, { wall: 2, open: 'right' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 1.3730294410823191e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 9.4950266995548e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(right)",
+   "name": "[0,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,0]);\nhollow(a, { wall: 2, open: 'right' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 4.1190883232469576e-16,
+    "dBbox": 0,
+    "dCom": 1.2165502958804586e-16,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(right)",
+   "name": "[0,0,4]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,4]);\nhollow(a, { wall: 2, open: 'right' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.18687833744435e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(right)",
+   "name": "[0,-30,4]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,-30,4]);\nhollow(a, { wall: 2, open: 'right' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 5.93439168722175e-18,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(right)",
+   "name": "[-30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [-30,0,0]);\nhollow(a, { wall: 2, open: 'right' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(right)",
+   "name": "[30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [30,0,0]);\nhollow(a, { wall: 2, open: 'right' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 4.1190883232469576e-16,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0.04338153491911817,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(right)",
+   "name": "[5,5,5]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [5,5,5]);\nhollow(a, { wall: 2, open: 'right' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 4.1190883232469576e-16,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 0.1932367149758454,
+    "dBbox": 0,
+    "dCom": 0.03328762773520017,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(right)",
+   "name": "[0,0,10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,10]);\nhollow(a, { wall: 2, open: 'right' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 9.4950266995548e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(right)",
+   "name": "[100,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [100,0,0]);\nhollow(a, { wall: 2, open: 'right' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 5.492117764329277e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(left)",
+   "name": "[0,0,-10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,-10]);\nhollow(a, { wall: 2, open: 'left' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 1.3730294410823191e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 5.93439168722175e-18,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(left)",
+   "name": "[0,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,0]);\nhollow(a, { wall: 2, open: 'left' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 5.93439168722175e-18,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(left)",
+   "name": "[0,0,4]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,4]);\nhollow(a, { wall: 2, open: 'left' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 5.93439168722175e-18,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(left)",
+   "name": "[0,-30,4]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,-30,4]);\nhollow(a, { wall: 2, open: 'left' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 5.93439168722175e-18,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(left)",
+   "name": "[-30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [-30,0,0]);\nhollow(a, { wall: 2, open: 'left' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 4.1190883232469576e-16,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0.04338153491911817,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(left)",
+   "name": "[30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [30,0,0]);\nhollow(a, { wall: 2, open: 'left' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(left)",
+   "name": "[5,5,5]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [5,5,5]);\nhollow(a, { wall: 2, open: 'left' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 0.1932367149758454,
+    "dBbox": 0,
+    "dCom": 0.03328762773520017,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(left)",
+   "name": "[0,0,10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,10]);\nhollow(a, { wall: 2, open: 'left' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 5.93439168722175e-18,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(left)",
+   "name": "[100,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [100,0,0]);\nhollow(a, { wall: 2, open: 'left' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 1.3730294410823191e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(front)",
+   "name": "[0,0,-10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,-10]);\nhollow(a, { wall: 2, open: 'front' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 1.4246470892433086e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 4.7475133497774e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(front)",
+   "name": "[0,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,0]);\nhollow(a, { wall: 2, open: 'front' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 2.967195843610875e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(front)",
+   "name": "[0,0,4]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,4]);\nhollow(a, { wall: 2, open: 'front' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 3.56063501233305e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(front)",
+   "name": "[0,-30,4]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,-30,4]);\nhollow(a, { wall: 2, open: 'front' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(front)",
+   "name": "[-30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [-30,0,0]);\nhollow(a, { wall: 2, open: 'front' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 2.967195843610875e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(front)",
+   "name": "[30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [30,0,0]);\nhollow(a, { wall: 2, open: 'front' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 2.967195843610875e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(front)",
+   "name": "[5,5,5]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [5,5,5]);\nhollow(a, { wall: 2, open: 'front' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 0.16290726817042606,
+    "dBbox": 0,
+    "dCom": 0.03328762773520017,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(front)",
+   "name": "[0,0,10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,10]);\nhollow(a, { wall: 2, open: 'front' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 4.7475133497774e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(front)",
+   "name": "[100,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [100,0,0]);\nhollow(a, { wall: 2, open: 'front' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 1.4246470892433086e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(back)",
+   "name": "[0,0,-10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,-10]);\nhollow(a, { wall: 2, open: 'back' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 1.4246470892433086e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 4.7475133497774e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(back)",
+   "name": "[0,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,0]);\nhollow(a, { wall: 2, open: 'back' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 6.8416545767468795e-18,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(back)",
+   "name": "[0,0,4]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,4]);\nhollow(a, { wall: 2, open: 'back' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 3.56063501233305e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(back)",
+   "name": "[0,-30,4]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,-30,4]);\nhollow(a, { wall: 2, open: 'back' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(back)",
+   "name": "[-30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [-30,0,0]);\nhollow(a, { wall: 2, open: 'back' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 3.751755145618261e-18,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(back)",
+   "name": "[30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [30,0,0]);\nhollow(a, { wall: 2, open: 'back' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 3.751755145618261e-18,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(back)",
+   "name": "[5,5,5]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [5,5,5]);\nhollow(a, { wall: 2, open: 'back' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 0.16290726817042606,
+    "dBbox": 0,
+    "dCom": 0.03328762773520017,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(back)",
+   "name": "[0,0,10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,10]);\nhollow(a, { wall: 2, open: 'back' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 4.7475133497774e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+hollow(back)",
+   "name": "[100,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [100,0,0]);\nhollow(a, { wall: 2, open: 'back' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 1.4246470892433086e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(top)",
+   "name": "[0,0,0]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,0,0]);\nhollow(v, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 3.403797536575332e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 3.56063501233305e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(top)",
+   "name": "[180,0,0]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [180,0,0]);\nhollow(v, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 3.403797536575332e-16,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 3.403797536575332e-16,
+    "dBbox": 2.6645352591003757e-15,
+    "dCom": 0.06657525547040036,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(top)",
+   "name": "[90,0,0]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [90,0,0]);\nhollow(v, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 5.105696304862998e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(top)",
+   "name": "[0,0,90]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,0,90]);\nhollow(v, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 1.7018987682876655e-16,
+    "dBbox": 1.1842378929335e-16,
+    "dCom": 1.0294866617079048e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(top)",
+   "name": "[0,0,180]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,0,180]);\nhollow(v, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 3.403797536575331e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 2.5413211007997936e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(top)",
+   "name": "[0,180,0]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,180,0]);\nhollow(v, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 1.7018987682876657e-16,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 3.4037975365753314e-16,
+    "dBbox": 6.061335932077972e-17,
+    "dCom": 0.06657525547040036,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(top)",
+   "name": "[0,90,0]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,90,0]);\nhollow(v, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 1.7018987682876657e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(top)",
+   "name": "[10,20,30]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [10,20,30]);\nhollow(v, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 1.7018987682876657e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(top)",
+   "name": "[0,0,45]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,0,45]);\nhollow(v, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 1.701898768287666e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 6.807595073150664e-16,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 7.295999414959146e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(bottom)",
+   "name": "[0,0,0]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,0,0]);\nhollow(v, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 5.105696304862998e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 4.7475133497774e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(bottom)",
+   "name": "[180,0,0]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [180,0,0]);\nhollow(v, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 3.403797536575331e-16,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 0,
+    "dBbox": 2.6645352591003757e-15,
+    "dCom": 0.06657525547040041,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(bottom)",
+   "name": "[90,0,0]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [90,0,0]);\nhollow(v, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 5.105696304862998e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(bottom)",
+   "name": "[0,0,90]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,0,90]);\nhollow(v, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 1.7018987682876655e-16,
+    "dBbox": 1.1842378929335e-16,
+    "dCom": 2.373756674888699e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(bottom)",
+   "name": "[0,0,180]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,0,180]);\nhollow(v, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 3.403797536575331e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 4.747513349777398e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(bottom)",
+   "name": "[0,180,0]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,180,0]);\nhollow(v, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 8.509493841438332e-16,
+    "dBbox": 6.061335932077972e-17,
+    "dCom": 0.06657525547040034,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(bottom)",
+   "name": "[0,90,0]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,90,0]);\nhollow(v, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 5.105696304862999e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(bottom)",
+   "name": "[10,20,30]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [10,20,30]);\nhollow(v, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 5.105696304862999e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid input: select at least one face to remove"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(pull)+hollow(bottom)",
+   "name": "[0,0,45]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,0,45]);\nhollow(v, { wall: 2, open: 'bottom' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 3.403797536575332e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 5.225583569541854e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Hollow 1 is not built: it picks the face to open by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- hollow the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(hole)+round",
+   "name": "[180,0,0]",
+   "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nturn(a, [180,0,0]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.2401668772342778e-12,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 6.810013661796883e-7,
+    "dBbox": 5.329070518200749e-16,
+    "dCom": 0.0022491519652110947,
+    "faces": 8,
+    "occtFaces": 8
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(hole)+round",
+   "name": "[90,0,0]",
+   "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nturn(a, [90,0,0]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 0.004403154688647258,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -10, 9.774648292756861]: the nearest edge is 5.005 mm away"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(hole)+round",
+   "name": "[0,0,90]",
+   "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nturn(a, [0,0,90]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 0.004403154688647258,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -10, 9.774648292756861]: the nearest edge is 6.914 mm away"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(hole)+round",
+   "name": "[0,0,180]",
+   "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nturn(a, [0,0,180]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.2403223840527398e-12,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 6.813220039781e-7,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 0.002249151887733296,
+    "faces": 8,
+    "occtFaces": 8
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(hole)+round",
+   "name": "[0,180,0]",
+   "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nturn(a, [0,180,0]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.240166877234278e-12,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 6.81001366490702e-7,
+    "dBbox": 5.329070518200749e-16,
+    "dCom": 0.0010719738395920523,
+    "faces": 8,
+    "occtFaces": 8
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(hole)+round",
+   "name": "[0,90,0]",
+   "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nturn(a, [0,90,0]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 0.004403154688647258,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 6.813220041336069e-7,
+    "dBbox": 5.921189464667501e-16,
+    "dCom": 7.09819794959904e-7,
+    "faces": 8,
+    "occtFaces": 8
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(hole)+round",
+   "name": "[10,20,30]",
+   "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nturn(a, [10,20,30]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 0.0044031546886472575,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 6.813219097409679e-7,
+    "dBbox": 7.949471480588961e-8,
+    "dCom": 4.331814402840921e-7,
+    "faces": 8,
+    "occtFaces": 8
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(hole)+round",
+   "name": "[0,0,45]",
+   "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nturn(a, [0,0,45]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 0.0044031546886474145,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 6.81322004911141e-7,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 3.6832407553010976e-7,
+    "faces": 8,
+    "occtFaces": 8
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(join)+round",
+   "name": "[180,0,0]",
+   "script": "const a = box(30, 20, 10);\nconst c = box(10, 10, 10, { at: [0, 0, 10] });\nconst v = join(a, c);\nturn(v, [180,0,0]);\nround(v.edge('top', 'front'), 1);",
+   "id": "round1",
+   "occtRefused": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepDVol": 2.5985562907797947e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(join)+round",
+   "name": "[90,0,0]",
+   "script": "const a = box(30, 20, 10);\nconst c = box(10, 10, 10, { at: [0, 0, 10] });\nconst v = join(a, c);\nturn(v, [90,0,0]);\nround(v.edge('top', 'front'), 1);",
+   "id": "round1",
+   "occtRefused": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepDVol": 1.2992781453898973e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(join)+round",
+   "name": "[0,0,90]",
+   "script": "const a = box(30, 20, 10);\nconst c = box(10, 10, 10, { at: [0, 0, 10] });\nconst v = join(a, c);\nturn(v, [0,0,90]);\nround(v.edge('top', 'front'), 1);",
+   "id": "round1",
+   "occtRefused": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepDVol": 0,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(join)+round",
+   "name": "[0,0,180]",
+   "script": "const a = box(30, 20, 10);\nconst c = box(10, 10, 10, { at: [0, 0, 10] });\nconst v = join(a, c);\nturn(v, [0,0,180]);\nround(v.edge('top', 'front'), 1);",
+   "id": "round1",
+   "occtRefused": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepDVol": 0,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(join)+round",
+   "name": "[0,180,0]",
+   "script": "const a = box(30, 20, 10);\nconst c = box(10, 10, 10, { at: [0, 0, 10] });\nconst v = join(a, c);\nturn(v, [0,180,0]);\nround(v.edge('top', 'front'), 1);",
+   "id": "round1",
+   "occtRefused": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepDVol": 1.2992781453898973e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(join)+round",
+   "name": "[0,90,0]",
+   "script": "const a = box(30, 20, 10);\nconst c = box(10, 10, 10, { at: [0, 0, 10] });\nconst v = join(a, c);\nturn(v, [0,90,0]);\nround(v.edge('top', 'front'), 1);",
+   "id": "round1",
+   "occtRefused": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepDVol": 0,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(join)+round",
+   "name": "[10,20,30]",
+   "script": "const a = box(30, 20, 10);\nconst c = box(10, 10, 10, { at: [0, 0, 10] });\nconst v = join(a, c);\nturn(v, [10,20,30]);\nround(v.edge('top', 'front'), 1);",
+   "id": "round1",
+   "occtRefused": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepDVol": 2.5985562907797947e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD(join)+round",
+   "name": "[0,0,45]",
+   "script": "const a = box(30, 20, 10);\nconst c = box(10, 10, 10, { at: [0, 0, 10] });\nconst v = join(a, c);\nturn(v, [0,0,45]);\nround(v.edge('top', 'front'), 1);",
+   "id": "round1",
+   "occtRefused": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepDVol": 0,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+draft(face)",
+   "name": "[0,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,0]);\ndraft(a.face('right'), 5);",
+   "id": "draft1",
+   "occtRefused": {},
+   "brepDVol": 1.5158245029548806e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 5.221181319697797e-17,
+    "faces": 6,
+    "occtFaces": 6
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Draft 1 is not built: it picks the face by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- draft the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+draft(face)",
+   "name": "[10,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [10,0,0]);\ndraft(a.face('right'), 5);",
+   "id": "draft1",
+   "occtRefused": {},
+   "brepDVol": 1.5158245029548806e-16,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "draft1 (draft): solidcraft refused it -- solid.draft: invalid input: no faces to draft"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Draft 1 is not built: it picks the face by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- draft the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+draft(face)",
+   "name": "[0,0,-10]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [0,0,-10]);\ndraft(a.face('right'), 5);",
+   "id": "draft1",
+   "occtRefused": {},
+   "brepDVol": 2.9457426435836104e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 4.4186139653754157e-16,
+    "dBbox": 3.552713678800502e-16,
+    "dCom": 2.539184560241344e-16,
+    "faces": 6,
+    "occtFaces": 6
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Draft 1 is not built: it picks the face by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- draft the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "move+draft(face)",
+   "name": "[30,0,0]",
+   "script": "const a = box(30, 20, 10);\nmove(a, [30,0,0]);\ndraft(a.face('right'), 5);",
+   "id": "draft1",
+   "occtRefused": {},
+   "brepDVol": 3.0316490059097617e-16,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 1.5158245029548808e-16,
+    "dBbox": 0.02916288784197481,
+    "dCom": 0.00005629562183755803,
+    "faces": 6,
+    "occtFaces": 6
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Draft 1 is not built: it picks the face by name on a shape that Move 1 moved, and a name cannot be followed through a move or a turn yet -- draft the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD+draft(face)",
+   "name": "[0,0,180]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [0,0,180]);\ndraft(v.face('right'), 5);",
+   "id": "draft1",
+   "occtRefused": {},
+   "brepDVol": 3.076508948616428e-16,
+   "shipped": {
+    "v": "WRONG",
+    "dVol": 1.538254474308214e-16,
+    "dBbox": 4.660650485523934e-16,
+    "dCom": 0.011633498900677388,
+    "faces": 6,
+    "occtFaces": 6
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Draft 1 is not built: it picks the face by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- draft the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD+draft(face)",
+   "name": "[90,0,0]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [90,0,0]);\ndraft(v.face('right'), 5);",
+   "id": "draft1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 4.61476342292464e-16,
+    "dBbox": 3.5527136788004996e-16,
+    "dCom": 6.981478430561381e-17,
+    "faces": 6,
+    "occtFaces": 6
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Draft 1 is not built: it picks the face by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- draft the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "turnD+draft(face)",
+   "name": "[10,20,30]",
+   "script": "const s = sketch('top');\ns.rect(30, 20);\nconst v = pull(s, 10);\nturn(v, [10,20,30]);\ndraft(v.face('right'), 5);",
+   "id": "draft1",
+   "occtRefused": {},
+   "brepDVol": 0.002150710772256179,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "draft1 (draft): solidcraft refused it -- solid.draft: invalid input: no faces to draft"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Draft 1 is not built: it picks the face by name on a shape that Turn 1 turned, and a name cannot be followed through a move or a turn yet -- draft the shape first, then move or turn it."
+   }
+  },
+  {
+   "group": "CTRL round->move",
+   "name": "[10,5,3]",
+   "script": "const a = box(30, 20, 10);\nround(a.edge('top', 'front'), 2);\nmove(a, [10,5,3]);",
+   "id": "move1",
+   "occtRefused": {},
+   "brepDVol": 1.1653654483210658e-12,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0.0000028270606737742753,
+    "dBbox": 8.881784197001252e-16,
+    "dCom": 6.987995775662122e-7,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 0.0000028270606737742753,
+    "dBbox": 8.881784197001252e-16,
+    "dCom": 6.987995775662122e-7,
+    "faces": 7
+   }
+  },
+  {
+   "group": "CTRL round->move",
+   "name": "[0,-30,0]",
+   "script": "const a = box(30, 20, 10);\nround(a.edge('top', 'front'), 2);\nmove(a, [0,-30,0]);",
+   "id": "move1",
+   "occtRefused": {},
+   "brepDVol": 1.1655176841732304e-12,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0.0000028268722956084475,
+    "dBbox": 5.921189464667501e-16,
+    "dCom": 6.986894535344238e-7,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 0.0000028268722956084475,
+    "dBbox": 5.921189464667501e-16,
+    "dCom": 6.986894535344238e-7,
+    "faces": 7
+   }
+  },
+  {
+   "group": "CTRL round->turn",
+   "name": "[10,20,30]",
+   "script": "const a = box(30, 20, 10);\nround(a.edge('top', 'front'), 2);\nturn(a, [10,20,30]);",
+   "id": "turn1",
+   "occtRefused": {},
+   "brepDVol": 1.165213212468901e-12,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0.000002826872294999504,
+    "dBbox": 7.949471421484065e-8,
+    "dCom": 4.264264492171033e-7,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 0.000002826872294999504,
+    "dBbox": 7.949471421484065e-8,
+    "dCom": 4.264264492171033e-7,
+    "faces": 7
+   }
+  },
+  {
+   "group": "CTRL round->turn",
+   "name": "[0,0,180]",
+   "script": "const a = box(30, 20, 10);\nround(a.edge('top', 'front'), 2);\nturn(a, [0,0,180]);",
+   "id": "turn1",
+   "occtRefused": {},
+   "brepDVol": 1.1655176841732304e-12,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0.000002826872295456212,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 6.987523813118481e-7,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 0.000002826872295456212,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 6.987523813118481e-7,
+    "faces": 7
+   }
+  },
+  {
+   "group": "CTRL hollow->move",
+   "name": "[0,0,-10]",
+   "script": "const a = box(30, 20, 10);\nhollow(a, { wall: 2, open: 'top' });\nmove(a, [0,0,-10]);",
+   "id": "move1",
+   "occtRefused": {},
+   "brepDVol": 6.807595073150664e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 4.7475133497774e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 4.7475133497774e-17,
+    "faces": 11
+   }
+  },
+  {
+   "group": "CTRL hollow->move",
+   "name": "[30,0,0]",
+   "script": "const a = box(30, 20, 10);\nhollow(a, { wall: 2, open: 'top' });\nmove(a, [30,0,0]);",
+   "id": "move1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 11
+   }
+  },
+  {
+   "group": "CTRL hollow->move",
+   "name": "[5,5,5]",
+   "script": "const a = box(30, 20, 10);\nhollow(a, { wall: 2, open: 'top' });\nmove(a, [5,5,5]);",
+   "id": "move1",
+   "occtRefused": {},
+   "brepDVol": 5.105696304862998e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 11
+   }
+  },
+  {
+   "group": "CTRL hollow->turn",
+   "name": "[180,0,0]",
+   "script": "const a = box(30, 20, 10);\nhollow(a, { wall: 2, open: 'top' });\nturn(a, [180,0,0]);",
+   "id": "turn1",
+   "occtRefused": {},
+   "brepDVol": 6.807595073150664e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 1.77635683940025e-16,
+    "dCom": 1.780317506166525e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 1.77635683940025e-16,
+    "dCom": 1.780317506166525e-17,
+    "faces": 11
+   }
+  },
+  {
+   "group": "CTRL hollow->turn",
+   "name": "[90,0,0]",
+   "script": "const a = box(30, 20, 10);\nhollow(a, { wall: 2, open: 'top' });\nturn(a, [90,0,0]);",
+   "id": "turn1",
+   "occtRefused": {},
+   "brepDVol": 5.105696304862998e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 1.77635683940025e-16,
+    "dCom": 1.780317506166525e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 5.105696304862998e-16,
+    "dBbox": 1.77635683940025e-16,
+    "dCom": 1.780317506166525e-17,
+    "faces": 11
+   }
+  },
+  {
+   "group": "CTRL hollow->turn",
+   "name": "[10,20,30]",
+   "script": "const a = box(30, 20, 10);\nhollow(a, { wall: 2, open: 'top' });\nturn(a, [10,20,30]);",
+   "id": "turn1",
+   "occtRefused": {},
+   "brepDVol": 6.807595073150662e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 1.7018987682876655e-16,
+    "dBbox": 3.338289260610527e-16,
+    "dCom": 7.546050871977125e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 1.7018987682876655e-16,
+    "dBbox": 3.338289260610527e-16,
+    "dCom": 7.546050871977125e-17,
+    "faces": 11
+   }
+  },
+  {
+   "group": "CTRL turnPrim+round",
+   "name": "[0,0,180]",
+   "script": "const a = box(30, 20, 10);\nturn(a, [0,0,180]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1649087407645717e-12,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0.000002826872295760684,
+    "dBbox": 5.921189464667501e-16,
+    "dCom": 6.98752381334102e-7,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 0.000002826872295760684,
+    "dBbox": 5.921189464667501e-16,
+    "dCom": 6.98752381334102e-7,
+    "faces": 7
+   }
+  },
+  {
+   "group": "CTRL turnPrim+round",
+   "name": "[10,20,30]",
+   "script": "const a = box(30, 20, 10);\nturn(a, [10,20,30]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 7.388087837335099e-13,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 9.39799686519594e-7,
+    "dBbox": 0.000009439396008549455,
+    "dCom": 2.603044419081463e-7,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 9.39799686519594e-7,
+    "dBbox": 0.000009439396008549455,
+    "dCom": 2.603044419081463e-7,
+    "faces": 7
+   }
+  },
+  {
+   "group": "CTRL turnPrim+round",
+   "name": "[180,0,0]",
+   "script": "const a = box(30, 20, 10);\nturn(a, [180,0,0]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.165213212468901e-12,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0.0000028271861893419036,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 6.988282223025885e-7,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 0.0000028271861893419036,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 6.988282223025885e-7,
+    "faces": 7
+   }
+  },
+  {
+   "group": "CTRL turnPrim+round",
+   "name": "[90,0,0]",
+   "script": "const a = box(30, 20, 10);\nturn(a, [90,0,0]);\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1655176841732304e-12,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0.0000028268722956084475,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 6.987523813164846e-7,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 0.0000028268722956084475,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 6.987523813164846e-7,
+    "faces": 7
+   }
+  },
+  {
+   "group": "CTRL turnPrim+hollow(top)",
+   "name": "[180,0,0]",
+   "script": "const a = box(30, 20, 10);\nturn(a, [180,0,0]);\nhollow(a, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 1.7018987682876657e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 3.4037975365753314e-16,
+    "dBbox": 1.77635683940025e-16,
+    "dCom": 3.4492911363652165e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 3.4037975365753314e-16,
+    "dBbox": 1.77635683940025e-16,
+    "dCom": 3.4492911363652165e-17,
+    "faces": 11
+   }
+  },
+  {
+   "group": "CTRL turnPrim+hollow(top)",
+   "name": "[90,0,0]",
+   "script": "const a = box(30, 20, 10);\nturn(a, [90,0,0]);\nhollow(a, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 1.77635683940025e-16,
+    "dCom": 4.900211147577258e-17,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 1.77635683940025e-16,
+    "dCom": 4.900211147577258e-17,
+    "faces": 11
+   }
+  },
+  {
+   "group": "CTRL turnPrim+hollow(top)",
+   "name": "[10,20,30]",
+   "script": "const a = box(30, 20, 10);\nturn(a, [10,20,30]);\nhollow(a, { wall: 2, open: 'top' });",
+   "id": "shell1",
+   "occtRefused": {},
+   "brepDVol": 0,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 5.492117764329277e-15,
+    "dBbox": 5.2299865082898255e-15,
+    "dCom": 1.2948585844088284e-15,
+    "faces": 11,
+    "occtFaces": 11
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 5.492117764329277e-15,
+    "dBbox": 5.2299865082898255e-15,
+    "dCom": 1.2948585844088284e-15,
+    "faces": 11
+   }
+  },
+  {
+   "group": "CTRL turnPrim+draft",
+   "name": "[0,0,90]",
+   "script": "const a = box(30, 20, 10);\nturn(a, [0,0,90]);\ndraft(a.face('right'), 5);",
+   "id": "draft1",
+   "occtRefused": {},
+   "brepDVol": 3.031649005909761e-16,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 5.228052603859476e-17,
+    "faces": 6,
+    "occtFaces": 6
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 0,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 5.228052603859476e-17,
+    "faces": 6
+   }
+  },
+  {
+   "group": "CTRL turnPrim+draft",
+   "name": "[10,20,30]",
+   "script": "const a = box(30, 20, 10);\nturn(a, [10,20,30]);\ndraft(a.face('right'), 5);",
+   "id": "draft1",
+   "occtRefused": {},
+   "brepDVol": 0.07822297011491179,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Draft 1 could not be built by this engine, so it is shown without it."
+   }
+  },
+  {
+   "group": "copy+pick-original",
+   "name": "[30,0,0]",
+   "script": "const a = box(30, 20, 10);\nconst b = move(a, [60, 0, 0], { copy: true });\nround(a.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1655176841732304e-12,
+   "shipped": {
+    "v": "PASS",
+    "dVol": 0.0000028268722956084475,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 6.987523813263134e-7,
+    "faces": 7,
+    "occtFaces": 7
+   },
+   "guard": {
+    "v": "PASS",
+    "dVol": 0.0000028268722956084475,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 6.987523813263134e-7,
+    "faces": 7
+   }
+  },
+  {
+   "group": "copy+pick-copy",
+   "name": "[60,0,0]",
+   "script": "const a = box(30, 20, 10);\nconst b = move(a, [60, 0, 0], { copy: true });\nround(b.edge('top', 'front'), 2);",
+   "id": "round1",
+   "occtRefused": {},
+   "brepDVol": 1.1655176841732304e-12,
+   "shipped": {
+    "v": "REFUSED",
+    "refused": "round1 (fillet): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   },
+   "guard": {
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Copy 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it."
+   }
+  }
+ ]
+}

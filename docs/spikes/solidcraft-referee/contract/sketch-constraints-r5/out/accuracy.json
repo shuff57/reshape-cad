@@ -1,0 +1,604 @@
+{
+ "accuracy": [
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "built": 31,
+   "refused": 0,
+   "refusals": {},
+   "bboxAbsErrMm": {
+    "n": 31,
+    "max": 2.4868995751603507e-13,
+    "median": 7.105427357601002e-14
+   },
+   "volumeRelErr": {
+    "n": 31,
+    "max": 0.000037323503032891297,
+    "median": 0.0000373235030279926
+   },
+   "comAbsErrMm": {
+    "n": 31,
+    "max": 2.1316282072803006e-13,
+    "median": 1.5987211554602254e-13
+   },
+   "faceCounts": [
+    6
+   ]
+  },
+  {
+   "id": "slot-dims-from-points",
+   "built": 31,
+   "refused": 0,
+   "refusals": {},
+   "bboxAbsErrMm": {
+    "n": 31,
+    "max": 4.68070027181966e-13,
+    "median": 8.260059303211165e-14
+   },
+   "volumeRelErr": {
+    "n": 31,
+    "max": 0.00003805311860389292,
+    "median": 0.0000380531185838212
+   },
+   "comAbsErrMm": {
+    "n": 31,
+    "max": 5.861977570020827e-13,
+    "median": 3.552713678800501e-13
+   },
+   "faceCounts": [
+    6
+   ]
+  },
+  {
+   "id": "oval-four-arcs-endpoint-tangent",
+   "built": 31,
+   "refused": 0,
+   "refusals": {},
+   "bboxAbsErrMm": {
+    "n": 31,
+    "max": 6.945555242054979e-13,
+    "median": 2.540190280342358e-13
+   },
+   "volumeRelErr": {
+    "n": 31,
+    "max": 0.00010237668169414529,
+    "median": 0.00010237668157666513
+   },
+   "comAbsErrMm": {
+    "n": 31,
+    "max": 1.3660965691997262e-9,
+    "median": 1.3660841347018504e-9
+   },
+   "faceCounts": [
+    6
+   ]
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+   "built": 31,
+   "refused": 0,
+   "refusals": {},
+   "bboxAbsErrMm": {
+    "n": 31,
+    "max": 2.2026824808563106e-13,
+    "median": 1.0658141036401503e-13
+   },
+   "volumeRelErr": {
+    "n": 31,
+    "max": 0.0000380531185513332,
+    "median": 0.00003805311854440896
+   },
+   "comAbsErrMm": {
+    "n": 31,
+    "max": 4.227729277772596e-13,
+    "median": 2.3803181647963356e-13
+   },
+   "faceCounts": [
+    6
+   ]
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+   "built": 31,
+   "refused": 0,
+   "refusals": {},
+   "bboxAbsErrMm": {
+    "n": 31,
+    "max": 5.329070518200751e-13,
+    "median": 2.078337502098293e-13
+   },
+   "volumeRelErr": {
+    "n": 31,
+    "max": 0.00005771978589079676,
+    "median": 0.00005771978586261961
+   },
+   "comAbsErrMm": {
+    "n": 31,
+    "max": 4.92798335471889e-9,
+    "median": 4.92789453687692e-9
+   },
+   "faceCounts": [
+    6
+   ]
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+   "built": 31,
+   "refused": 0,
+   "refusals": {},
+   "bboxAbsErrMm": {
+    "n": 31,
+    "max": 2.7711166694643907e-13,
+    "median": 6.394884621840902e-14
+   },
+   "volumeRelErr": {
+    "n": 31,
+    "max": 0.000038053118554025954,
+    "median": 0.00003805311854537101
+   },
+   "comAbsErrMm": {
+    "n": 31,
+    "max": 4.3165471197426086e-13,
+    "median": 2.824407374646398e-13
+   },
+   "faceCounts": [
+    6
+   ]
+  }
+ ],
+ "dof": [
+  {
+   "id": "rect-origin-dims",
+   "indep": {
+    "dof": 0,
+    "rank": 16,
+    "residualAfter": 5.638790325818358e-14,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "hexagon-equal-pointOn-circle",
+   "indep": {
+    "dof": 0,
+    "rank": 27,
+    "residualAfter": 4.263256414560601e-14,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "tangent-line-circle",
+   "indep": {
+    "dof": 0,
+    "rank": 7,
+    "residualAfter": 9.769962616701378e-15,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "indep": {
+    "dof": 0,
+    "rank": 22,
+    "residualAfter": 7.105427357601002e-15,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "slot-dims-from-points",
+   "indep": {
+    "dof": 0,
+    "rank": 22,
+    "residualAfter": 1.1546319456101628e-14,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "oval-four-arcs-endpoint-tangent",
+   "indep": {
+    "dof": 0,
+    "rank": 28,
+    "residualAfter": 2.7328566760003855e-16,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "triangle-length-angle-120",
+   "indep": {
+    "dof": 0,
+    "rank": 12,
+    "residualAfter": 9.921048172113441e-15,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "slot-line-pinned-R10-L40",
+   "indep": {
+    "dof": 0,
+    "rank": 22,
+    "residualAfter": 4.796163466380676e-14,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "underconstrained:sk-rect-underconstrained__hv-only-30x15",
+   "indep": {
+    "dof": 4,
+    "rank": 12,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 4,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 4,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "underconstrained:sk-rect-underconstrained__width-only",
+   "indep": {
+    "dof": 3,
+    "rank": 13,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 3,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 3,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "underconstrained:sk-rect-underconstrained__width-and-height",
+   "indep": {
+    "dof": 2,
+    "rank": 14,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 2,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 2,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "underconstrained:sk-rect-underconstrained__pinned-corner-only",
+   "indep": {
+    "dof": 2,
+    "rank": 14,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 2,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 2,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "underconstrained:sk-rect-underconstrained__free-circle",
+   "indep": {
+    "dof": 3,
+    "rank": 0,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 3,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 3,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "underconstrained:sk-rect-underconstrained__triangle-joined",
+   "indep": {
+    "dof": 6,
+    "rank": 6,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 6,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 6,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "underconstrained:sk-rect-underconstrained__circle-radius-only",
+   "indep": {
+    "dof": 2,
+    "rank": 1,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 2,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 2,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-rect-dof__corner-origin-25x60",
+   "indep": {
+    "dof": 0,
+    "rank": 16,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-rect-dof__offset-corner-30x18",
+   "indep": {
+    "dof": 0,
+    "rank": 16,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-rect-dof__square-by-equal",
+   "indep": {
+    "dof": 0,
+    "rank": 16,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-rect-dof__right-triangle",
+   "indep": {
+    "dof": 0,
+    "rank": 12,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-rect-dof__parallelogram",
+   "indep": {
+    "dof": 0,
+    "rank": 16,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-rect-dof__circle-pinned",
+   "indep": {
+    "dof": 0,
+    "rank": 3,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+   "indep": {
+    "dof": 0,
+    "rank": 22,
+    "residualAfter": 1.102182119232618e-15,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+   "indep": {
+    "dof": 0,
+    "rank": 22,
+    "residualAfter": 2.204364238465236e-15,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+   "indep": {
+    "dof": 0,
+    "rank": 22,
+    "residualAfter": 1.1021821192326181e-15,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__circle-circle-external",
+   "indep": {
+    "dof": 0,
+    "rank": 6,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__circle-circle-no-mode",
+   "indep": {
+    "dof": 0,
+    "rank": 6,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": null,
+    "bucket": null
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__circle-circle-internal",
+   "indep": {
+    "dof": 0,
+    "rank": 6,
+    "residualAfter": 0,
+    "source": "independent solve (SolidCraft SolveReport is not readable on the supplied pkg)"
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  }
+ ]
+}

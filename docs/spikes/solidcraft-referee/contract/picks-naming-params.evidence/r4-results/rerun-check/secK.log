@@ -1,0 +1,45 @@
+--- names after other operations (script surface)
+turn box then round edge(top,right)      REFUSED: round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.   | OCCT:builds V=23974.2478 BREP:builds V=23974.2478
+    names: box1.edge[box1.face[+x] ^ box1.face[+z]]
+whole-round box then round edge          REFUSED: round1 is not built: box1 was rounded as a whole, which changed its faces and edges, so they cannot be found again yet -- pick the edge before the whole-shape round.   | OCCT:refusals {"round1":"Round 1's edge could not be found -- Round 1 is shown without it."} BREP:refusals {"round1":"round1's edge could not be found -- round1 is shown without it."}
+    names: box1.edge[box1.face[+x] ^ box1.face[+z]]
+move box then round edge(top,right)      REFUSED: round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.   | OCCT:builds V=23974.2478 BREP:builds V=23974.2478
+    names: box1.edge[box1.face[+x] ^ box1.face[+z]]
+move(copy) then round edge               REFUSED: round1 is not built because move1 could not be built, so round1 is shown without it.   | OCCT:builds V=23974.2478 BREP:builds V=23974.2478
+    names: box1.edge[box1.face[+x] ^ box1.face[+z]]
+union two boxes then round edge of first REFUSED: round1 is not built: box1 was already joined by op1, so its edges can no longer be picked -- pick the edge on the result of op1 instead.   | OCCT:builds V=8974.2478 BREP:builds V=8974.2478
+    names: box1.edge[box1.face[-x] ^ box1.face[-z]]
+hole then hollow open bottom             PASS[OCCT] V=8000.160829 (OCCT 8000.230016, brep 8000.230016) dVol 8.6e-6 dBbox 5.3e-16 dCOM 6.9e-7 faces occt/truck/brep 14/14/14 | ctl {"rej":true,"dCom":"7.2e-2"} 
+    names: box1.face[-z]
+hollow then round rim edge(top,right)    PASS[OCCT] V=10121.557718 (OCCT 10121.561945, brep 10121.561945) dVol 4.2e-7 dBbox 4.7e-16 dCOM 1.5e-7 faces occt/truck/brep 12/12/12 | ctl {"rej":true,"dCom":"4.7e-4"} 
+    names: box1.face[+z] ; box1.edge[box1.face[+x] ^ box1.face[+z]]
+round then hollow open top               PASS[brep-rs (OCCT refused or no-opped a feature)] V=7126.230892 (OCCT 23974.247780, brep 7126.247780) dVol 2.4e-6 dBbox 8.9e-16 dCOM null faces occt/truck/brep null/12/12 | ctl {"rej":true} 
+    names: box1.edge[box1.face[-x] ^ box1.face[-z]] ; box1.face[+z]
+round edge then bevel other edge         PASS[OCCT] V=23914.230879 (OCCT 23914.247780, brep 23914.247780) dVol 7.1e-7 dBbox 5.9e-16 dCOM 2.5e-7 faces occt/truck/brep 8/8/8 | ctl {"rej":true,"dCom":"1.8e-3"} 
+    names: box1.edge[box1.face[+x] ^ box1.face[+z]] ; box1.edge[box1.face[+z] ^ box1.face[-x]]
+round same edge twice                    REFUSED: round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.   | OCCT:refusals {"round2":"Round 2's edge could not be found -- Round 2 is shown without it."} BREP:refusals {"round2":"brep-rs can only round a straight edge between two flat faces yet, and this edge is not o
+    names: box1.edge[box1.face[+x] ^ box1.face[+z]] ; box1.edge[box1.face[+x] ^ box1.face[+z]]
+repeat then round edge                   PASS[OCCT] V=2997.852574 (OCCT 2997.853982, brep 3000.000000) dVol 4.7e-7 dBbox 5.3e-16 dCOM 1.2e-7 faces occt/truck/brep 19/19/18 | ctl {"rej":true,"dCom":"3.5e-4"} 
+    names: box1.edge[box1.face[+x] ^ box1.face[+z]]
+repeatAround then round edge             PASS[OCCT] V=3997.850807 (OCCT 3997.853982, brep 4000.000000) dVol 7.9e-7 dBbox 4.3e-16 dCOM 2.2e-7 faces occt/truck/brep 25/25/24 | ctl {"rej":true,"dCom":"3.0e-4"} 
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]]
+mirror then round edge                   REFUSED: round1 is not built: box1 was already mirrored by mir1, so its edges can no longer be picked -- pick the edge on the result of mir1 instead.   | OCCT:builds V=1995.7080 BREP:builds V=1995.7080
+    names: box1.edge[box1.face[+y] ^ box1.face[+z]]
+hollow with no open face                 REFUSED: shell1 is not built: a hollow with no open side is not supported yet -- add open:'top' (or bottom, front, back, left, right) to leave one side open.   | OCCT:builds V=9024.0000 BREP:builds V=9024.0000
+draft whole                              REFUSED: draft1 is not built: drafting a whole shape is not supported yet -- draft its side faces one at a time, for example draft(shape.face('right'), 5).   | OCCT:builds V=24000.0000 BREP:builds V=24020.4114
+draft from bottom neutral                PASS[OCCT] V=23475.068019 (OCCT 23475.068019, brep 23475.068019) dVol 1.5e-16 dBbox 8.9e-16 dCOM 3.3e-17 faces occt/truck/brep 6/6/6 | ctl {"rej":true,"dCom":"1.6e-2"} 
+    names: box1.face[+x]
+draft face front pull y via from front   REFUSED: draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.   | OCCT:refusals {"draft1":"Tilting Draft 1 at 5 degrees would not fit -- Draft 1 is shown without it."} BREP:refusals {"draft1":"brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without i
+    names: box1.face[+x]
+draft neutral 4                          PASS[OCCT] V=24104.986396 (OCCT 24104.986396, brep 24104.986396) dVol 0.0e+0 dBbox 8.9e-16 dCOM 4.9e-17 faces occt/truck/brep 6/6/6 | ctl {"refused":"solid.draft: invalid input: no faces to draft"} 
+    names: box1.face[+x]
+draft negative angle                     PASS[OCCT] V=24104.986396 (OCCT 24104.986396, brep 24104.986396) dVol 1.5e-16 dBbox 8.9e-16 dCOM 1.5e-16 faces occt/truck/brep 6/6/6 | ctl {"refused":"solid.draft: invalid input: no faces to draft"} 
+    names: box1.face[+x]
+--- revolve / spin swept
+revolve swept edge1 shell open           REFUSED: sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can.   | OCCT:builds V=3015.9289 BREP:brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- sh1 is shown without it.
+    names: r1.face[sk1.edge0]
+--- extrude of friendly options with cap/swept
+hollow open cap top on circle extrude    PASS[OCCT] V=2098.347096 (OCCT 2098.583893, brep 2098.583893) dVol 1.1e-4 dBbox 7.1e-16 dCOM 3.4e-11 faces occt/truck/brep 5/5/5 | ctl {"rej":true,"dCom":"7.8e-2"} 
+    names: e1.cap[top]
+round between(cap top, swept) on polygon (non-rect) PASS[OCCT] V=9573.727497 (OCCT 9573.744749, brep 9600.000000) dVol 1.8e-6 dBbox 1.2e-8 dCOM 4.0e-7 faces occt/truck/brep 7/7/6 | ctl {"refused":"solid.fillet: invalid parameters for `solid.fillet`: no edge"} 
+    names: e1.edge[e1.cap[top] ^ e1.face[sk1.edge2]]

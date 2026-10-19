@@ -1,0 +1,4012 @@
+[
+ {
+  "id": "bt-fcbaseline-rect10-r1",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)",
+  "fc": {
+   "volume": 11591.03244517401,
+   "faces": 15,
+   "src": "baseline/ref-fillet-after-pocket.json"
+  },
+  "n": 4,
+  "style": "fillet",
+  "size": 1,
+  "base": {
+   "volume": 11600.000000000002,
+   "com": [
+    19.999999999999993,
+    14.999999999999993,
+    4.896551724137928
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11593.370204219173,
+   "faces": 16
+  },
+  "picks": [
+   [
+    20,
+    10,
+    10
+   ],
+   [
+    25,
+    15,
+    10
+   ],
+   [
+    20,
+    20,
+    10
+   ],
+   [
+    15,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 294,
+   "volume": 11591.029061208932,
+   "faces": 15,
+   "pick": [
+    [
+     20,
+     10,
+     10
+    ],
+    [
+     25,
+     15,
+     10
+    ],
+    [
+     20,
+     20,
+     10
+    ],
+    [
+     15,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11591.032445171828,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)",
+   "firstRefusedAt": -4
+  },
+  "dBatchVsOcctSim": 2.9194663304608286e-7,
+  "dBatchVsOcctSeq": 0.00020193808780371265,
+  "dBatchVsFc": 2.919468213629267e-7
+ },
+ {
+  "id": "bt-rect10-r0.5",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 0.5)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 0.5,
+  "base": {
+   "volume": 11600.000000000002,
+   "com": [
+    19.999999999999993,
+    14.999999999999993,
+    4.896551724137928
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11598.36651863943,
+   "faces": 16
+  },
+  "picks": [
+   [
+    20,
+    10,
+    10
+   ],
+   [
+    25,
+    15,
+    10
+   ],
+   [
+    20,
+    20,
+    10
+   ],
+   [
+    15,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 163,
+   "volume": 11597.802759139791,
+   "faces": 15,
+   "pick": [
+    [
+     20,
+     10,
+     10
+    ],
+    [
+     25,
+     15,
+     10
+    ],
+    [
+     20,
+     20,
+     10
+    ],
+    [
+     15,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11597.806046462449,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)",
+   "firstRefusedAt": -4
+  },
+  "dBatchVsOcctSim": 2.8344349303423466e-7,
+  "dBatchVsOcctSeq": 0.000048606801546817846,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect10-r2",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 2)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 2,
+  "base": {
+   "volume": 11600.000000000002,
+   "com": [
+    19.999999999999993,
+    14.999999999999993,
+    4.896551724137928
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11572.713854150526,
+   "faces": 16
+  },
+  "picks": [
+   [
+    20,
+    10,
+    10
+   ],
+   [
+    25,
+    15,
+    10
+   ],
+   [
+    20,
+    20,
+    10
+   ],
+   [
+    15,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 239,
+   "volume": 11562.5813392225,
+   "faces": 15,
+   "pick": [
+    [
+     20,
+     10,
+     10
+    ],
+    [
+     25,
+     15,
+     10
+    ],
+    [
+     20,
+     20,
+     10
+    ],
+    [
+     15,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11562.59585519379,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)",
+   "firstRefusedAt": -4
+  },
+  "dBatchVsOcctSim": 0.0000012554249469704077,
+  "dBatchVsOcctSeq": 0.0008755521873023374,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect10-r3.9",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 3.9)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 3.9,
+  "base": {
+   "volume": 11600.000000000002,
+   "com": [
+    19.999999999999993,
+    14.999999999999993,
+    4.896551724137928
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11490.703316560179,
+   "faces": 16
+  },
+  "picks": [
+   [
+    20,
+    10,
+    10
+   ],
+   [
+    25,
+    15,
+    10
+   ],
+   [
+    20,
+    20,
+    10
+   ],
+   [
+    15,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 210,
+   "volume": 11446.626750090943,
+   "faces": 15,
+   "pick": [
+    [
+     20,
+     10,
+     10
+    ],
+    [
+     25,
+     15,
+     10
+    ],
+    [
+     20,
+     20,
+     10
+    ],
+    [
+     15,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11446.688511824541,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)",
+   "firstRefusedAt": -4
+  },
+  "dBatchVsOcctSim": 0.000005395598345639405,
+  "dBatchVsOcctSeq": 0.0038358458359735942,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect10-d1",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 4,
+  "style": "chamfer",
+  "size": 1,
+  "base": {
+   "volume": 11600.000000000002,
+   "com": [
+    19.999999999999993,
+    14.999999999999993,
+    4.896551724137928
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11584.333333332957,
+   "faces": 16
+  },
+  "picks": [
+   [
+    20,
+    10,
+    10
+   ],
+   [
+    25,
+    15,
+    10
+   ],
+   [
+    20,
+    20,
+    10
+   ],
+   [
+    15,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 11,
+   "volume": 11578.666666666666,
+   "faces": 15,
+   "pick": [
+    [
+     20,
+     10,
+     10
+    ],
+    [
+     25,
+     15,
+     10
+    ],
+    [
+     20,
+     20,
+     10
+    ],
+    [
+     15,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11578.666666666666,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces))",
+   "firstRefusedAt": -4
+  },
+  "dBatchVsOcctSim": 0,
+  "dBatchVsOcctSeq": 0.0004891664028680861,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect10-d2",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 2)",
+  "fc": null,
+  "n": 4,
+  "style": "chamfer",
+  "size": 2,
+  "base": {
+   "volume": 11600.000000000002,
+   "com": [
+    19.999999999999993,
+    14.999999999999993,
+    4.896551724137928
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11534.666666665753,
+   "faces": 16
+  },
+  "picks": [
+   [
+    20,
+    10,
+    10
+   ],
+   [
+    25,
+    15,
+    10
+   ],
+   [
+    20,
+    20,
+    10
+   ],
+   [
+    15,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 15,
+   "volume": 11509.333333333334,
+   "faces": 15,
+   "pick": [
+    [
+     20,
+     10,
+     10
+    ],
+    [
+     25,
+     15,
+     10
+    ],
+    [
+     20,
+     20,
+     10
+    ],
+    [
+     15,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11509.33333333333,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces))",
+   "firstRefusedAt": -4
+  },
+  "dBatchVsOcctSim": 3.1608944686269527e-16,
+  "dBatchVsOcctSeq": 0.0021962778868703904,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect10-d3.9",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 3.9)",
+  "fc": null,
+  "n": 4,
+  "style": "chamfer",
+  "size": 3.9,
+  "base": {
+   "volume": 11600.000000000002,
+   "com": [
+    19.999999999999993,
+    14.999999999999993,
+    4.896551724137928
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11332.303999997619,
+   "faces": 16
+  },
+  "picks": [
+   [
+    20,
+    10,
+    10
+   ],
+   [
+    25,
+    15,
+    10
+   ],
+   [
+    20,
+    20,
+    10
+   ],
+   [
+    15,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 14,
+   "volume": 11216.707999999999,
+   "faces": 15,
+   "pick": [
+    [
+     20,
+     10,
+     10
+    ],
+    [
+     25,
+     15,
+     10
+    ],
+    [
+     20,
+     20,
+     10
+    ],
+    [
+     15,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11216.708,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces))",
+   "firstRefusedAt": -4
+  },
+  "dBatchVsOcctSim": 1.6216784849403731e-16,
+  "dBatchVsOcctSeq": 0.010200573510703966,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect10-r4-ge-depth",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 4)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 4,
+  "base": {
+   "volume": 11600.000000000002,
+   "com": [
+    19.999999999999993,
+    14.999999999999993,
+    4.896551724137928
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11600.000000000002,
+   "faces": 11
+  },
+  "picks": [
+   [
+    20,
+    10,
+    10
+   ],
+   [
+    25,
+    15,
+    10
+   ],
+   [
+    20,
+    20,
+    10
+   ],
+   [
+    15,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 269,
+   "volume": 11438.046684497765,
+   "faces": 11,
+   "pick": [
+    [
+     20,
+     10,
+     10
+    ],
+    [
+     25,
+     15,
+     10
+    ],
+    [
+     20,
+     20,
+     10
+    ],
+    [
+     15,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "refused": "BRepFilletAPI did not complete",
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend uses up a neighbouring face at one end only))",
+   "firstRefusedAt": -4
+  },
+  "dBatchVsOcctSim": null,
+  "dBatchVsOcctSeq": 0.013961492715710028,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect10-r4.5-ge-depth",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 4.5)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 4.5,
+  "base": {
+   "volume": 11600.000000000002,
+   "com": [
+    19.999999999999993,
+    14.999999999999993,
+    4.896551724137928
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11600.000000000002,
+   "faces": 11
+  },
+  "picks": [
+   [
+    20,
+    10,
+    10
+   ],
+   [
+    25,
+    15,
+    10
+   ],
+   [
+    20,
+    20,
+    10
+   ],
+   [
+    15,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 17,
+   "error": "solid.fillet: not supported yet: the blend is taller than the walls"
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "refused": "BRepFilletAPI did not complete",
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)))",
+   "firstRefusedAt": -4
+  }
+ },
+ {
+  "id": "bt-rect20x10-r0.5",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 0.5)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 0.5,
+  "base": {
+   "volume": 28000.000000000007,
+   "com": [
+    0,
+    2.303554172807967e-16,
+    -0.11428571428571421
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27997.29350945541,
+   "faces": 16
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 141,
+   "volume": 27996.728163357406,
+   "faces": 15,
+   "pick": [
+    [
+     0,
+     -5,
+     6
+    ],
+    [
+     10,
+     0,
+     6
+    ],
+    [
+     0,
+     5,
+     6
+    ],
+    [
+     -10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 27996.733037277747,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 1.7408889582606992e-7,
+  "dBatchVsOcctSeq": 0.000020192883923297352,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect20x10-r1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 1,
+  "base": {
+   "volume": 28000.000000000007,
+   "com": [
+    0,
+    2.303554172807967e-16,
+    -0.11428571428571421
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27989.078167484204,
+   "faces": 16
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 243,
+   "volume": 27986.720742528287,
+   "faces": 15,
+   "pick": [
+    [
+     0,
+     -5,
+     6
+    ],
+    [
+     10,
+     0,
+     6
+    ],
+    [
+     0,
+     5,
+     6
+    ],
+    [
+     -10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 27986.740408434678,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 7.026865617184679e-7,
+  "dBatchVsOcctSeq": 0.00008422660231288486,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect20x10-r2.5",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 2.5)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 2.5,
+  "base": {
+   "volume": 28000.000000000007,
+   "com": [
+    0,
+    2.303554172807967e-16,
+    -0.11428571428571421
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27929.940977876668,
+   "faces": 16
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 301,
+   "volume": 27913.499102834245,
+   "faces": 15,
+   "pick": [
+    [
+     0,
+     -5,
+     6
+    ],
+    [
+     10,
+     0,
+     6
+    ],
+    [
+     0,
+     5,
+     6
+    ],
+    [
+     -10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 27913.53241479874,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 0.0000011933983847516491,
+  "dBatchVsOcctSeq": 0.0005886827707744363,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect20x10-r3.9",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 3.9)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 3.9,
+  "base": {
+   "volume": 28000.000000000007,
+   "com": [
+    0,
+    2.303554172807967e-16,
+    -0.11428571428571421
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27825.42143490261,
+   "faces": 16
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 320,
+   "volume": 27781.320727470546,
+   "faces": 15,
+   "pick": [
+    [
+     0,
+     -5,
+     6
+    ],
+    [
+     10,
+     0,
+     6
+    ],
+    [
+     0,
+     5,
+     6
+    ],
+    [
+     -10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 27781.40663311525,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 0.000003092199248180863,
+  "dBatchVsOcctSeq": 0.0015849070798528348,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect20x10-r4",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 4)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 4,
+  "base": {
+   "volume": 28000.000000000007,
+   "com": [
+    0,
+    2.303554172807967e-16,
+    -0.11428571428571421
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 28000.000000000007,
+   "faces": 11
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 350,
+   "volume": 27769.348698827653,
+   "faces": 11,
+   "pick": [
+    [
+     0,
+     -5,
+     6
+    ],
+    [
+     10,
+     0,
+     6
+    ],
+    [
+     0,
+     5,
+     6
+    ],
+    [
+     -10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "refused": "BRepFilletAPI did not complete",
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend uses up a neighbouring face at one end only))",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": null,
+  "dBatchVsOcctSeq": 0.008237546470441233,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect20x10-r5",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 5)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 5,
+  "base": {
+   "volume": 28000.000000000007,
+   "com": [
+    0,
+    2.303554172807967e-16,
+    -0.11428571428571421
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 28000.000000000007,
+   "faces": 11
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 17,
+   "error": "solid.fillet: not supported yet: the blend is taller than the walls"
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "refused": "BRepFilletAPI did not complete",
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)))",
+   "firstRefusedAt": -2
+  }
+ },
+ {
+  "id": "bt-rect20x10-r6",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 6)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 6,
+  "base": {
+   "volume": 28000.000000000007,
+   "com": [
+    0,
+    2.303554172807967e-16,
+    -0.11428571428571421
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 28000.000000000007,
+   "faces": 11
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 17,
+   "error": "solid.fillet: not supported yet: the blend is taller than the walls"
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "refused": "BRepFilletAPI did not complete",
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)))",
+   "firstRefusedAt": -2
+  }
+ },
+ {
+  "id": "bt-rect20x10-d1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 4,
+  "style": "chamfer",
+  "size": 1,
+  "base": {
+   "volume": 28000.000000000007,
+   "com": [
+    0,
+    2.303554172807967e-16,
+    -0.11428571428571421
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27974.333333332983,
+   "faces": 16
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 13,
+   "volume": 27968.666666666668,
+   "faces": 15,
+   "pick": [
+    [
+     0,
+     -5,
+     6
+    ],
+    [
+     10,
+     0,
+     6
+    ],
+    [
+     0,
+     5,
+     6
+    ],
+    [
+     -10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 27968.666666666664,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces))",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 1.300733728371647e-16,
+  "dBatchVsOcctSeq": 0.0002025666384536444,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect20x10-d3",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 3)",
+  "fc": null,
+  "n": 4,
+  "style": "chamfer",
+  "size": 3,
+  "base": {
+   "volume": 28000.000000000007,
+   "com": [
+    0,
+    2.303554172807967e-16,
+    -0.11428571428571421
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27756.999999998487,
+   "faces": 16
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 14,
+   "volume": 27694,
+   "faces": 15,
+   "pick": [
+    [
+     0,
+     -5,
+     6
+    ],
+    [
+     10,
+     0,
+     6
+    ],
+    [
+     0,
+     5,
+     6
+    ],
+    [
+     -10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 27694.000000000004,
+   "faces": 15,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces))",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 1.313634291576411e-16,
+  "dBatchVsOcctSeq": 0.0022696977338505617,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect20x10-d4",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 4)",
+  "fc": null,
+  "n": 4,
+  "style": "chamfer",
+  "size": 4,
+  "base": {
+   "volume": 28000.000000000007,
+   "com": [
+    0,
+    2.303554172807967e-16,
+    -0.11428571428571421
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 28000.000000000007,
+   "faces": 11
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 17,
+   "volume": 27434.666666666668,
+   "faces": 11,
+   "pick": [
+    [
+     0,
+     -5,
+     6
+    ],
+    [
+     10,
+     0,
+     6
+    ],
+    [
+     0,
+     5,
+     6
+    ],
+    [
+     -10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "refused": "BRepFilletAPI did not complete",
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces)))",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": null,
+  "dBatchVsOcctSeq": 0.0201904761904764,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-rect20x10-d5",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 5)",
+  "fc": null,
+  "n": 4,
+  "style": "chamfer",
+  "size": 5,
+  "base": {
+   "volume": 28000.000000000007,
+   "com": [
+    0,
+    2.303554172807967e-16,
+    -0.11428571428571421
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 28000.000000000007,
+   "faces": 11
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 14,
+   "error": "solid.chamfer: not supported yet: the blend is taller than the walls"
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "refused": "BRepFilletAPI did not complete",
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces)))",
+   "firstRefusedAt": -2
+  }
+ },
+ {
+  "id": "bt-rect20x10-d6",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 6)",
+  "fc": null,
+  "n": 4,
+  "style": "chamfer",
+  "size": 6,
+  "base": {
+   "volume": 28000.000000000007,
+   "com": [
+    0,
+    2.303554172807967e-16,
+    -0.11428571428571421
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 11,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 28000.000000000007,
+   "faces": 11
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 16,
+   "error": "solid.chamfer: not supported yet: the blend is taller than the walls"
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "refused": "BRepFilletAPI did not complete",
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces)))",
+   "firstRefusedAt": -2
+  }
+ },
+ {
+  "id": "bt-hex-r1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.polygon([[10,0],[5,8.66],[-5,8.66],[-10,0],[-5,-8.66],[5,-8.66]])\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 6,
+  "style": "fillet",
+  "size": 1,
+  "base": {
+   "volume": 27760.8,
+   "com": [
+    -1.2797591131381303e-19,
+    2.7832781349992683e-16,
+    -0.14973631883807417
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 13,
+   "types": {
+    "plane": 13
+   },
+   "components": {
+    "plane": 13
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27749.90404495313,
+   "faces": 22
+  },
+  "picks": [
+   [
+    7.5,
+    4.33,
+    6
+   ],
+   [
+    0,
+    8.66,
+    6
+   ],
+   [
+    -7.5,
+    4.33,
+    6
+   ],
+   [
+    -7.5,
+    -4.33,
+    6
+   ],
+   [
+    0,
+    -8.66,
+    6
+   ],
+   [
+    7.5,
+    -4.33,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 386,
+   "volume": 27747.572292333014,
+   "faces": 19,
+   "pick": [
+    [
+     7.5,
+     4.33,
+     6
+    ],
+    [
+     0,
+     8.66,
+     6
+    ],
+    [
+     -7.5,
+     4.33,
+     6
+    ],
+    [
+     -7.5,
+     -4.33,
+     6
+    ],
+    [
+     0,
+     -8.66,
+     6
+    ],
+    [
+     7.5,
+     -4.33,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 27747.5919740436,
+   "faces": 19,
+   "edges": 6
+  },
+  "scSeq": {
+   "refused": "round6 (fillet): its target round5 was refused (round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)))",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 7.093123830192806e-7,
+  "dBatchVsOcctSeq": 0.0000840274119989709,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-hex-d1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.polygon([[10,0],[5,8.66],[-5,8.66],[-10,0],[-5,-8.66],[5,-8.66]])\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 6,
+  "style": "chamfer",
+  "size": 1,
+  "base": {
+   "volume": 27760.8,
+   "com": [
+    -1.2797591131381303e-19,
+    2.7832781349992683e-16,
+    -0.14973631883807417
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 13,
+   "types": {
+    "plane": 13
+   },
+   "components": {
+    "plane": 13
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27735.223089735584,
+   "faces": 22
+  },
+  "picks": [
+   [
+    7.5,
+    4.33,
+    6
+   ],
+   [
+    0,
+    8.66,
+    6
+   ],
+   [
+    -7.5,
+    4.33,
+    6
+   ],
+   [
+    -7.5,
+    -4.33,
+    6
+   ],
+   [
+    0,
+    -8.66,
+    6
+   ],
+   [
+    7.5,
+    -4.33,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 21,
+   "volume": 27729.64573946634,
+   "faces": 19,
+   "pick": [
+    [
+     7.5,
+     4.33,
+     6
+    ],
+    [
+     0,
+     8.66,
+     6
+    ],
+    [
+     -7.5,
+     4.33,
+     6
+    ],
+    [
+     -7.5,
+     -4.33,
+     6
+    ],
+    [
+     0,
+     -8.66,
+     6
+    ],
+    [
+     7.5,
+     -4.33,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 27729.64573946634,
+   "faces": 19,
+   "edges": 6
+  },
+  "scSeq": {
+   "refused": "bevel6 (fillet): its target bevel5 was refused (bevel5 (fillet): its target bevel4 was refused (bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces))))",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 0,
+  "dBatchVsOcctSeq": 0.00020109267739428573,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-tri-r1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.polygon([[-10,-8],[10,-8],[0,10]])\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 3,
+  "style": "fillet",
+  "size": 1,
+  "base": {
+   "volume": 28080.000000000004,
+   "com": [
+    1.032159479759775e-15,
+    0.05128205128205157,
+    -0.10256410256410263
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 10,
+   "types": {
+    "plane": 10
+   },
+   "components": {
+    "plane": 10
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 1
+  },
+  "occtSeq": {
+   "volume": 28071.06965270903,
+   "faces": 13
+  },
+  "picks": [
+   [
+    0,
+    -8,
+    6
+   ],
+   [
+    5,
+    1,
+    6
+   ],
+   [
+    -5,
+    1,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 229,
+   "volume": 28066.351447047924,
+   "faces": 13,
+   "pick": [
+    [
+     5.329070518200751e-15,
+     -8,
+     6
+    ],
+    [
+     5.0000000000000036,
+     1,
+     6
+    ],
+    [
+     -4.999999999999998,
+     1,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 5.329070518200751e-15,
+  "occtSim": {
+   "volume": 28066.371686036535,
+   "faces": 13,
+   "edges": 3
+  },
+  "scSeq": {
+   "volume": 28066.35145156317,
+   "faces": 13
+  },
+  "dBatchVsOcctSim": 7.211116861560215e-7,
+  "dBatchVsOcctSeq": 0.0001680807222339004,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-tri-d1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.polygon([[-10,-8],[10,-8],[0,10]])\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 3,
+  "style": "chamfer",
+  "size": 1,
+  "base": {
+   "volume": 28080.000000000004,
+   "com": [
+    1.032159479759775e-15,
+    0.05128205128205157,
+    -0.10256410256410263
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 10,
+   "types": {
+    "plane": 10
+   },
+   "components": {
+    "plane": 10
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 1
+  },
+  "occtSeq": {
+   "volume": 28058.941568742677,
+   "faces": 13
+  },
+  "picks": [
+   [
+    0,
+    -8,
+    6
+   ],
+   [
+    5,
+    1,
+    6
+   ],
+   [
+    -5,
+    1,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 10,
+   "volume": 28047.675730077954,
+   "faces": 13,
+   "pick": [
+    [
+     5.329070518200751e-15,
+     -8,
+     6
+    ],
+    [
+     5.0000000000000036,
+     1,
+     6
+    ],
+    [
+     -4.999999999999998,
+     1,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 5.329070518200751e-15,
+  "occtSim": {
+   "volume": 28047.67573007795,
+   "faces": 13,
+   "edges": 3
+  },
+  "scSeq": {
+   "refused": "bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces)",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 1.2970696189240357e-16,
+  "dBatchVsOcctSeq": 0.0004015061878625375,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-L-r1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.polygon([[0,0],[16,0],[16,6],[6,6],[6,14],[0,14]])\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 6,
+  "style": "fillet",
+  "size": 1,
+  "base": {
+   "volume": 28224,
+   "com": [
+    -0.12925170068027073,
+    -0.10884353741496516,
+    -0.0816326530612244
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 13,
+   "types": {
+    "plane": 13
+   },
+   "components": {
+    "plane": 13
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 28213.936574831925,
+   "faces": 19
+  },
+  "error": "Error: pick 0: null\n    at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence/batch.mjs:87:48"
+ },
+ {
+  "id": "bt-L-d1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.polygon([[0,0],[16,0],[16,6],[6,6],[6,14],[0,14]])\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 6,
+  "style": "chamfer",
+  "size": 1,
+  "base": {
+   "volume": 28224,
+   "com": [
+    -0.12925170068027073,
+    -0.10884353741496516,
+    -0.0816326530612244
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 13,
+   "types": {
+    "plane": 13
+   },
+   "components": {
+    "plane": 13
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 28200.333333332943,
+   "faces": 19
+  },
+  "error": "Error: pick 0: null\n    at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence/batch.mjs:87:48"
+ },
+ {
+  "id": "bt-through-rect-r1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20,10,{at:[0,0]})\nconst part = pocket(sk2, plate, 12)\nround(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 1,
+  "base": {
+   "volume": 26400,
+   "com": [
+    -5.512089101654111e-16,
+    1.408301085176032e-16,
+    -3.794944156900535e-17
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 10,
+   "types": {
+    "plane": 10
+   },
+   "components": {
+    "plane": 10
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 26389.078167485855,
+   "faces": 15
+  },
+  "picks": [
+   [
+    0,
+    -5,
+    6
+   ],
+   [
+    10,
+    0,
+    6
+   ],
+   [
+    0,
+    5,
+    6
+   ],
+   [
+    -10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 245,
+   "volume": 26386.720742528287,
+   "faces": 14,
+   "pick": [
+    [
+     0,
+     -5,
+     6
+    ],
+    [
+     10,
+     0,
+     6
+    ],
+    [
+     0,
+     5,
+     6
+    ],
+    [
+     -10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 26386.7404084379,
+   "faces": 14,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 7.452951486296795e-7,
+  "dBatchVsOcctSeq": 0.00008933335763403741,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-circle-r1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.circle(20,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 1,
+  "style": "fillet",
+  "size": 1,
+  "base": {
+   "volume": 27543.36293856408,
+   "com": [
+    -8.858772111606894e-16,
+    1.1453974425024639e-16,
+    -0.18249580695558007
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27529.57792194229,
+   "faces": 9
+  },
+  "error": "Error: pick 0: null\n    at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence/batch.mjs:87:48"
+ },
+ {
+  "id": "bt-circle-r2",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.circle(20,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 2)",
+  "fc": null,
+  "n": 1,
+  "style": "fillet",
+  "size": 2,
+  "base": {
+   "volume": 27543.36293856408,
+   "com": [
+    -8.858772111606894e-16,
+    1.1453974425024639e-16,
+    -0.18249580695558007
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27487.01812985518,
+   "faces": 9
+  },
+  "error": "Error: pick 0: null\n    at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence/batch.mjs:87:48"
+ },
+ {
+  "id": "bt-circle-d1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.circle(20,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 1,
+  "style": "chamfer",
+  "size": 1,
+  "base": {
+   "volume": 27543.36293856408,
+   "com": [
+    -8.858772111606894e-16,
+    1.1453974425024639e-16,
+    -0.18249580695558007
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27510.899814476987,
+   "faces": 9
+  },
+  "error": "Error: pick 0: null\n    at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence/batch.mjs:87:48"
+ },
+ {
+  "id": "bt-circle-d2",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.circle(20,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 2)",
+  "fc": null,
+  "n": 1,
+  "style": "chamfer",
+  "size": 2,
+  "base": {
+   "volume": 27543.36293856408,
+   "com": [
+    -8.858772111606894e-16,
+    1.1453974425024639e-16,
+    -0.18249580695558007
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27409.321652010916,
+   "faces": 9
+  },
+  "error": "Error: pick 0: null\n    at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence/batch.mjs:87:48"
+ },
+ {
+  "id": "bt-ring4-top-r3",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 3)\nround(plate.edge('top','right'), 3)\nround(plate.edge('top','back'), 3)\nround(plate.edge('top','left'), 3)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 3,
+  "base": {
+   "volume": 11999.999999999998,
+   "com": [
+    20,
+    15,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11670.424687637189,
+   "faces": 18
+  },
+  "picks": [
+   [
+    20,
+    0,
+    10
+   ],
+   [
+    40,
+    15,
+    10
+   ],
+   [
+    20,
+    30,
+    10
+   ],
+   [
+    0,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 283,
+   "volume": 11739.861807338197,
+   "faces": 10,
+   "pick": [
+    [
+     20,
+     0,
+     10
+    ],
+    [
+     40,
+     15,
+     10
+    ],
+    [
+     20,
+     30,
+     10
+    ],
+    [
+     0,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11739.955682165893,
+   "faces": 10,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [20, 30, 16.366197723675814]: the nearest edge is 6.366 mm away)",
+   "firstRefusedAt": -1
+  },
+  "dBatchVsOcctSim": 0.000007996182459130893,
+  "dBatchVsOcctSeq": 0.005949836579174746,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-ring4-top-d3",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nbevel(plate.edge('top','front'), 3)\nbevel(plate.edge('top','right'), 3)\nbevel(plate.edge('top','back'), 3)\nbevel(plate.edge('top','left'), 3)",
+  "fc": null,
+  "n": 4,
+  "style": "chamfer",
+  "size": 3,
+  "base": {
+   "volume": 11999.999999999998,
+   "com": [
+    20,
+    15,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11406,
+   "faces": 10
+  },
+  "picks": [
+   [
+    20,
+    0,
+    10
+   ],
+   [
+    40,
+    15,
+    10
+   ],
+   [
+    20,
+    30,
+    10
+   ],
+   [
+    0,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 87,
+   "volume": 11406,
+   "faces": 10,
+   "pick": [
+    [
+     20,
+     0,
+     10
+    ],
+    [
+     40,
+     15,
+     10
+    ],
+    [
+     20,
+     30,
+     10
+    ],
+    [
+     0,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11405.999999999998,
+   "faces": 10,
+   "edges": 4
+  },
+  "scSeq": {
+   "volume": 11405.99999999998,
+   "faces": 10
+  },
+  "dBatchVsOcctSim": 1.5947653897473758e-16,
+  "dBatchVsOcctSeq": 0,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-ring4-top-r1",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 1)\nround(plate.edge('top','right'), 1)\nround(plate.edge('top','back'), 1)\nround(plate.edge('top','left'), 1)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 1,
+  "base": {
+   "volume": 11999.999999999998,
+   "com": [
+    20,
+    15,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11962.041286602218,
+   "faces": 18
+  },
+  "picks": [
+   [
+    20,
+    0,
+    10
+   ],
+   [
+    40,
+    15,
+    10
+   ],
+   [
+    20,
+    30,
+    10
+   ],
+   [
+    0,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 711,
+   "volume": 11970.328338770056,
+   "faces": 10,
+   "pick": [
+    [
+     20,
+     0,
+     10
+    ],
+    [
+     40,
+     15,
+     10
+    ],
+    [
+     20,
+     30,
+     10
+    ],
+    [
+     0,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11970.339224237878,
+   "faces": 10,
+   "edges": 4
+  },
+  "scSeq": {
+   "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [20, 30, 16.366197723675814]: the nearest edge is 6.366 mm away)",
+   "firstRefusedAt": -1
+  },
+  "dBatchVsOcctSim": 9.093700368904075e-7,
+  "dBatchVsOcctSeq": 0.0006927790975875942,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-all12-r2",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 2)\nround(plate.edge('top','back'), 2)\nround(plate.edge('top','left'), 2)\nround(plate.edge('top','right'), 2)\nround(plate.edge('bottom','front'), 2)\nround(plate.edge('bottom','back'), 2)\nround(plate.edge('bottom','left'), 2)\nround(plate.edge('bottom','right'), 2)\nround(plate.edge('front','left'), 2)\nround(plate.edge('front','right'), 2)\nround(plate.edge('back','left'), 2)\nround(plate.edge('back','right'), 2)",
+  "fc": null,
+  "n": 12,
+  "style": "fillet",
+  "size": 2,
+  "base": {
+   "volume": 11999.999999999998,
+   "com": [
+    20,
+    15,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11736.023523560518,
+   "faces": 26
+  },
+  "picks": [
+   [
+    20,
+    0,
+    10
+   ],
+   [
+    20,
+    30,
+    10
+   ],
+   [
+    0,
+    15,
+    10
+   ],
+   [
+    40,
+    15,
+    10
+   ],
+   [
+    20,
+    0,
+    0
+   ],
+   [
+    20,
+    30,
+    0
+   ],
+   [
+    0,
+    15,
+    0
+   ],
+   [
+    40,
+    15,
+    0
+   ],
+   [
+    0,
+    0,
+    5
+   ],
+   [
+    40,
+    0,
+    5
+   ],
+   [
+    0,
+    30,
+    5
+   ],
+   [
+    40,
+    30,
+    5
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 4373,
+   "volume": 11735.860662384473,
+   "faces": 26,
+   "pick": [
+    [
+     20,
+     0,
+     10
+    ],
+    [
+     20,
+     30,
+     10
+    ],
+    [
+     0,
+     15,
+     10
+    ],
+    [
+     40,
+     15,
+     10
+    ],
+    [
+     20,
+     0,
+     0
+    ],
+    [
+     20,
+     30,
+     0
+    ],
+    [
+     0,
+     15,
+     0
+    ],
+    [
+     40,
+     15,
+     0
+    ],
+    [
+     0,
+     0,
+     5
+    ],
+    [
+     40,
+     0,
+     5
+    ],
+    [
+     0,
+     30,
+     5
+    ],
+    [
+     40,
+     30,
+     5
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11736.023523558015,
+   "faces": 26,
+   "edges": 12
+  },
+  "scSeq": {
+   "refused": "round12 (fillet): its target round11 was refused (round11 (fillet): its target round10 was refused (round10 (fillet): its target round9 was refused (round9 (fillet): its target round8 was refused (round8 (fillet): its target round7 was refused (round7 (fillet): its target round6 was refused (round6 (fillet): its target round5 was refused (round5 (fillet): its target round4 was refused (round4 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [40, 15, 14.774648292756861]: the nearest edge is 4.775 mm away))))))))",
+   "firstRefusedAt": -1
+  },
+  "dBatchVsOcctSim": 0.000013877031961845649,
+  "dBatchVsOcctSeq": 0.00001387703217511164,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-all12-d2",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nbevel(plate.edge('top','front'), 2)\nbevel(plate.edge('top','back'), 2)\nbevel(plate.edge('top','left'), 2)\nbevel(plate.edge('top','right'), 2)\nbevel(plate.edge('bottom','front'), 2)\nbevel(plate.edge('bottom','back'), 2)\nbevel(plate.edge('bottom','left'), 2)\nbevel(plate.edge('bottom','right'), 2)\nbevel(plate.edge('front','left'), 2)\nbevel(plate.edge('front','right'), 2)\nbevel(plate.edge('back','left'), 2)\nbevel(plate.edge('back','right'), 2)",
+  "fc": null,
+  "n": 12,
+  "style": "chamfer",
+  "size": 2,
+  "base": {
+   "volume": 11999.999999999998,
+   "com": [
+    20,
+    15,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11407.999999999996,
+   "faces": 18
+  },
+  "picks": [
+   [
+    20,
+    0,
+    10
+   ],
+   [
+    20,
+    30,
+    10
+   ],
+   [
+    0,
+    15,
+    10
+   ],
+   [
+    40,
+    15,
+    10
+   ],
+   [
+    20,
+    0,
+    0
+   ],
+   [
+    20,
+    30,
+    0
+   ],
+   [
+    0,
+    15,
+    0
+   ],
+   [
+    40,
+    15,
+    0
+   ],
+   [
+    0,
+    0,
+    5
+   ],
+   [
+    40,
+    0,
+    5
+   ],
+   [
+    0,
+    30,
+    5
+   ],
+   [
+    40,
+    30,
+    5
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 791,
+   "volume": 11408,
+   "faces": 18,
+   "pick": [
+    [
+     20,
+     0,
+     10
+    ],
+    [
+     20,
+     30,
+     10
+    ],
+    [
+     0,
+     15,
+     10
+    ],
+    [
+     40,
+     15,
+     10
+    ],
+    [
+     20,
+     0,
+     0
+    ],
+    [
+     20,
+     30,
+     0
+    ],
+    [
+     0,
+     15,
+     0
+    ],
+    [
+     40,
+     15,
+     0
+    ],
+    [
+     0,
+     0,
+     5
+    ],
+    [
+     40,
+     0,
+     5
+    ],
+    [
+     0,
+     30,
+     5
+    ],
+    [
+     40,
+     30,
+     5
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11402.666666666666,
+   "faces": 26,
+   "edges": 12
+  },
+  "scSeq": {
+   "volume": 11407.999999999929,
+   "faces": 18
+  },
+  "dBatchVsOcctSim": 0.0004677268475211009,
+  "dBatchVsOcctSeq": 3.1889716050944197e-16,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-all12-r4",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 4)\nround(plate.edge('top','back'), 4)\nround(plate.edge('top','left'), 4)\nround(plate.edge('top','right'), 4)\nround(plate.edge('bottom','front'), 4)\nround(plate.edge('bottom','back'), 4)\nround(plate.edge('bottom','left'), 4)\nround(plate.edge('bottom','right'), 4)\nround(plate.edge('front','left'), 4)\nround(plate.edge('front','right'), 4)\nround(plate.edge('back','left'), 4)\nround(plate.edge('back','right'), 4)",
+  "fc": null,
+  "n": 12,
+  "style": "fillet",
+  "size": 4,
+  "base": {
+   "volume": 11999.999999999998,
+   "com": [
+    20,
+    15,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 10986.949590920085,
+   "faces": 26
+  },
+  "picks": [
+   [
+    20,
+    0,
+    10
+   ],
+   [
+    20,
+    30,
+    10
+   ],
+   [
+    0,
+    15,
+    10
+   ],
+   [
+    40,
+    15,
+    10
+   ],
+   [
+    20,
+    0,
+    0
+   ],
+   [
+    20,
+    30,
+    0
+   ],
+   [
+    0,
+    15,
+    0
+   ],
+   [
+    40,
+    15,
+    0
+   ],
+   [
+    0,
+    0,
+    5
+   ],
+   [
+    40,
+    0,
+    5
+   ],
+   [
+    0,
+    30,
+    5
+   ],
+   [
+    40,
+    30,
+    5
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 4884,
+   "volume": 10986.367451594275,
+   "faces": 26,
+   "pick": [
+    [
+     20,
+     0,
+     10
+    ],
+    [
+     20,
+     30,
+     10
+    ],
+    [
+     0,
+     15,
+     10
+    ],
+    [
+     40,
+     15,
+     10
+    ],
+    [
+     20,
+     0,
+     0
+    ],
+    [
+     20,
+     30,
+     0
+    ],
+    [
+     0,
+     15,
+     0
+    ],
+    [
+     40,
+     15,
+     0
+    ],
+    [
+     0,
+     0,
+     5
+    ],
+    [
+     40,
+     0,
+     5
+    ],
+    [
+     0,
+     30,
+     5
+    ],
+    [
+     40,
+     30,
+     5
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 10986.949590910044,
+   "faces": 26,
+   "edges": 12
+  },
+  "scSeq": {
+   "refused": "round12 (fillet): its target round11 was refused (round11 (fillet): its target round10 was refused (round10 (fillet): its target round9 was refused (round9 (fillet): its target round8 was refused (round8 (fillet): its target round7 was refused (round7 (fillet): its target round6 was refused (round6 (fillet): its target round5 was refused (round5 (fillet): its target round4 was refused (round4 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [40, 15, 14.774648292756861]: the nearest edge is 4.775 mm away))))))))",
+   "firstRefusedAt": -1
+  },
+  "dBatchVsOcctSim": 0.000052984616972395116,
+  "dBatchVsOcctSeq": 0.00005298461788623289,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-adj2-r3",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 3)\nround(plate.edge('top','right'), 3)",
+  "fc": null,
+  "n": 2,
+  "style": "fillet",
+  "size": 3,
+  "base": {
+   "volume": 11999.999999999998,
+   "com": [
+    20,
+    15,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11850.006593387812,
+   "faces": 10
+  },
+  "picks": [
+   [
+    20,
+    0,
+    10
+   ],
+   [
+    40,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 293,
+   "volume": 11867.340871301536,
+   "faces": 8,
+   "pick": [
+    [
+     20,
+     0,
+     10
+    ],
+    [
+     40,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11867.389342068023,
+   "faces": 8,
+   "edges": 2
+  },
+  "scSeq": {
+   "volume": 11867.341041532907,
+   "faces": 8
+  },
+  "dBatchVsOcctSim": 0.000004084366417092032,
+  "dBatchVsOcctSeq": 0.001462807448849534,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-corner3-r2",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 2)\nround(plate.edge('top','right'), 2)\nround(plate.edge('front','right'), 2)",
+  "fc": null,
+  "n": 3,
+  "style": "fillet",
+  "size": 2,
+  "base": {
+   "volume": 11999.999999999998,
+   "com": [
+    20,
+    15,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11932.666646597792,
+   "faces": 10
+  },
+  "picks": [
+   [
+    20,
+    0,
+    10
+   ],
+   [
+    40,
+    15,
+    10
+   ],
+   [
+    40,
+    0,
+    5
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 593,
+   "volume": 11932.623770177917,
+   "faces": 10,
+   "pick": [
+    [
+     20,
+     0,
+     10
+    ],
+    [
+     40,
+     15,
+     10
+    ],
+    [
+     40,
+     0,
+     5
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11932.666646597792,
+   "faces": 10,
+   "edges": 3
+  },
+  "scSeq": {
+   "volume": 11932.623766177543,
+   "faces": 10
+  },
+  "dBatchVsOcctSim": 0.0000035931968222085097,
+  "dBatchVsOcctSeq": 0.0000035931968222085097,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-vert4-r3",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('front','left'), 3)\nround(plate.edge('front','right'), 3)\nround(plate.edge('back','left'), 3)\nround(plate.edge('back','right'), 3)",
+  "fc": null,
+  "n": 4,
+  "style": "fillet",
+  "size": 3,
+  "base": {
+   "volume": 11999.999999999998,
+   "com": [
+    20,
+    15,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11922.743338868975,
+   "faces": 10
+  },
+  "picks": [
+   [
+    0,
+    0,
+    5
+   ],
+   [
+    40,
+    0,
+    5
+   ],
+   [
+    0,
+    30,
+    5
+   ],
+   [
+    40,
+    30,
+    5
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 431,
+   "volume": 11922.692652910688,
+   "faces": 10,
+   "pick": [
+    [
+     0,
+     0,
+     5
+    ],
+    [
+     40,
+     0,
+     5
+    ],
+    [
+     0,
+     30,
+     5
+    ],
+    [
+     40,
+     30,
+     5
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 11922.743338868975,
+   "faces": 10,
+   "edges": 4
+  },
+  "scSeq": {
+   "volume": 11922.692652910688,
+   "faces": 10
+  },
+  "dBatchVsOcctSim": 0.0000042511993126776044,
+  "dBatchVsOcctSeq": 0.0000042511993126776044,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-ring4-top-d16-oversize",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nbevel(plate.edge('top','front'), 16)\nbevel(plate.edge('top','right'), 16)\nbevel(plate.edge('top','back'), 16)\nbevel(plate.edge('top','left'), 16)",
+  "fc": null,
+  "n": 4,
+  "style": "chamfer",
+  "size": 16,
+  "base": {
+   "volume": 11999.999999999998,
+   "com": [
+    20,
+    15,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11999.999999999998,
+   "faces": 6
+  },
+  "picks": [
+   [
+    20,
+    0,
+    10
+   ],
+   [
+    40,
+    15,
+    10
+   ],
+   [
+    20,
+    30,
+    10
+   ],
+   [
+    0,
+    15,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 91,
+   "volume": 1781.9999999999989,
+   "faces": 5,
+   "pick": [
+    [
+     20,
+     0,
+     10
+    ],
+    [
+     40,
+     15,
+     10
+    ],
+    [
+     20,
+     30,
+     10
+    ],
+    [
+     0,
+     15,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "refused": "BRepFilletAPI did not complete",
+   "edges": 4
+  },
+  "scSeq": {
+   "volume": 1335.307791313322,
+   "faces": 5
+  },
+  "dBatchVsOcctSim": null,
+  "dBatchVsOcctSeq": 0.8515000000000001,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bt-pair-d16-oversize",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nbevel(plate.edge('top','front'), 16)\nbevel(plate.edge('top','back'), 16)",
+  "fc": null,
+  "n": 2,
+  "style": "chamfer",
+  "size": 16,
+  "base": {
+   "volume": 11999.999999999998,
+   "com": [
+    20,
+    15,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 11999.999999999998,
+   "faces": 6
+  },
+  "picks": [
+   [
+    20,
+    0,
+    10
+   ],
+   [
+    20,
+    30,
+    10
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 21,
+   "volume": 3239.9999999999986,
+   "faces": 5,
+   "pick": [
+    [
+     20,
+     0,
+     10
+    ],
+    [
+     20,
+     30,
+     10
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "refused": "BRepFilletAPI did not complete",
+   "edges": 2
+  },
+  "scSeq": {
+   "volume": 3239.999999999997,
+   "faces": 5
+  },
+  "dBatchVsOcctSim": null,
+  "dBatchVsOcctSeq": 0.7300000000000001,
+  "dBatchVsFc": null
+ }
+]

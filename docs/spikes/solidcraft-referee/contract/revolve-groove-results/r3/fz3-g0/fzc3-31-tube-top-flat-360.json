@@ -1,0 +1,197 @@
+[
+ {
+  "id": "fzc3-31-tube-top-flat-360",
+  "src": "const k = sketch('top'); k.rect(10, 30, { at: [15, 15] }); const t = spin(k, 360); const sk = sketch('top'); sk.rect(7.9, 13.1, { at: [18.1, 29.9] }); groove(sk, t, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc3-31-tube-top-flat-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "groove"
+   ],
+   "occt": {
+    "volume": 24100.66403206379,
+    "com": [
+     1.056645228353955e-15,
+     7.638886445370533e-17,
+     12.978163778525971
+    ],
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 6,
+    "area": 7295.390752202949,
+    "types": {
+     "plane": 3,
+     "cylinder": 3
+    },
+    "components": {
+     "plane": 3,
+     "cylinder": 3
+    },
+    "bigCylinderComponents": 3,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 24100.664032063785,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 6,
+    "dVol": 1.5094931833627928e-16,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 397,
+   "load": [
+    20.1,
+    19.2
+   ],
+   "cpuMs": 615,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "side": 1,
+      "kernelAngle": null,
+      "nudgeDeg": null
+     }
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a full-turn ring cut into a round part takes a minute or more here unless its axis is the part's own axis, so it is not built; centre the ring on the axis of the round part.",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": null,
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": false,
+       "curved": 2,
+       "headTypes": {
+        "cylinder": 2,
+        "plane": 2
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 22.05,
+       "nearest": 20,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        10,
+        0
+       ],
+       [
+        20,
+        0
+       ],
+       [
+        20,
+        30
+       ],
+       [
+        10,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_rev1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a full-turn ring cut into a round part takes a minute or more here unless its axis is the part's own axis, so it is not built; centre the ring on the axis of the round part.",
+    "firstRefusal": "groove1 (groove): a full-turn ring cut into a round part takes a minute or more here unless its axis is the part's own axis, so it is not built; centre the ring on the axis of the round part."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 539
+ }
+]

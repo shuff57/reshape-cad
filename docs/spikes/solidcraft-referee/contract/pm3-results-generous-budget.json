@@ -1,0 +1,1083 @@
+[
+ {
+  "id": "r3-cone3-step6",
+  "row": "rep-overlap-curved",
+  "src": "const c = cone(10, 20, { at: [0,0,0] }); repeat(c, { count: 3, step: [6,0,0] });",
+  "note": "critic repro 2",
+  "mapAngle": false,
+  "featureKinds": [
+   "cone",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "cone1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     6,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-cone3-step6",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "cone",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 1434.3993451147937,
+    "com": [
+     5.999999931656583,
+     -9.500408537108982e-8,
+     -4.735779677578195
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -10.000000000000004,
+     17,
+     5,
+     10
+    ],
+    "faces": 8,
+    "types": {
+     "plane": 5,
+     "cone": 3
+    },
+    "components": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 2
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 109287,
+   "truckFeatures": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "status": "built",
+     "pick": null,
+     "wallMs": 142
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "refused",
+     "refusal": "pat1 (pattern): copies overlap or touch (curved faces): copies 1 and 2 have bbox gap -4.0e+0 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone)); leaving them as 3 separate bodies would add their volumes",
+     "student": "repeat(): these copies overlap or touch, and the kernel cannot fuse their curved faces into one solid yet -- space the copies so they clear each other, or build the shape from flat faces."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "pat1 (pattern): copies overlap or touch (curved faces): copies 1 and 2 have bbox gap -4.0e+0 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone)); leaving them as 3 separate bodies would add their volumes",
+    "student": "repeat(): these copies overlap or touch, and the kernel cannot fuse their curved faces into one solid yet -- space the copies so they clear each other, or build the shape from flat faces.",
+    "firstRefusal": "pat1 (pattern): copies overlap or touch (curved faces): copies 1 and 2 have bbox gap -4.0e+0 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone)); leaving them as 3 separate bodies would add their volumes",
+    "firstStudent": "repeat(): these copies overlap or touch, and the kernel cannot fuse their curved faces into one solid yet -- space the copies so they clear each other, or build the shape from flat faces."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "refused",
+    "refusal": "pat1 (pattern): copies overlap or touch (curved faces): copies 1 and 2 have bbox gap -4.0e+0 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone)); leaving them as 3 separate bodies would add their volumes",
+    "student": "repeat(): these copies overlap or touch, and the kernel cannot fuse their curved faces into one solid yet -- space the copies so they clear each other, or build the shape from flat faces."
+   }
+  ],
+  "outcome": "REFUSED"
+ },
+ {
+  "id": "r3-cone-ra-overlap",
+  "row": "rep-overlap-curved",
+  "src": "const c = cone(10, 20, { at: [4,0,0] }); repeatAround(c, { count: 3 });",
+  "note": "critic repro 3",
+  "mapAngle": false,
+  "featureKinds": [
+   "cone",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "cone1",
+    "mode": "circular",
+    "count": 3,
+    "axis": "z",
+    "totalAngle": 360
+   }
+  ],
+  "fx": {
+   "id": "r3-cone-ra-overlap",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "cone",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 1468.094722664441,
+    "com": [
+     4.911212960856924e-13,
+     2.2180764316113265e-13,
+     -4.773430692737518
+    ],
+    "bbox": [
+     -7.000000000000002,
+     -8.464101615137753,
+     -10,
+     9,
+     8.464101615137755,
+     10
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 7,
+     "cone": 3
+    },
+    "components": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 4
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 117702,
+   "truckFeatures": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "status": "built",
+     "pick": null,
+     "wallMs": 138
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "refused",
+     "refusal": "pat1 (pattern): copies overlap or touch (curved faces): copies 1 and 2 have bbox gap -4.0e+0 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone)); leaving them as 3 separate bodies would add their volumes",
+     "student": "repeatAround(): these copies overlap or touch, and the kernel cannot fuse their curved faces into one solid yet -- space the copies so they clear each other, or build the shape from flat faces."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "pat1 (pattern): copies overlap or touch (curved faces): copies 1 and 2 have bbox gap -4.0e+0 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone)); leaving them as 3 separate bodies would add their volumes",
+    "student": "repeatAround(): these copies overlap or touch, and the kernel cannot fuse their curved faces into one solid yet -- space the copies so they clear each other, or build the shape from flat faces.",
+    "firstRefusal": "pat1 (pattern): copies overlap or touch (curved faces): copies 1 and 2 have bbox gap -4.0e+0 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone)); leaving them as 3 separate bodies would add their volumes",
+    "firstStudent": "repeatAround(): these copies overlap or touch, and the kernel cannot fuse their curved faces into one solid yet -- space the copies so they clear each other, or build the shape from flat faces."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "refused",
+    "refusal": "pat1 (pattern): copies overlap or touch (curved faces): copies 1 and 2 have bbox gap -4.0e+0 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cone) and the tool has 3 curved faces (cone)); leaving them as 3 separate bodies would add their volumes",
+    "student": "repeatAround(): these copies overlap or touch, and the kernel cannot fuse their curved faces into one solid yet -- space the copies so they clear each other, or build the shape from flat faces."
+   }
+  ],
+  "outcome": "REFUSED"
+ },
+ {
+  "id": "r3-cone2-step8",
+  "row": "rep-overlap-curved",
+  "src": "const c = cone(10, 20, { at: [0,0,0] }); repeat(c, { count: 2, step: [8,0,0] });",
+  "note": "join succeeds",
+  "mapAngle": false,
+  "featureKinds": [
+   "cone",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "cone1",
+    "mode": "linear",
+    "count": 2,
+    "step": [
+     8,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-cone2-step8",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "cone",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 1034.4000627804805,
+    "com": [
+     3.999999970895364,
+     -5.148883029613626e-8,
+     -4.952104394039702
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -10,
+     13,
+     5,
+     10
+    ],
+    "faces": 5,
+    "types": {
+     "plane": 3,
+     "cone": 2
+    },
+    "components": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 1
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 33496,
+   "truckFeatures": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "status": "built",
+     "pick": null,
+     "wallMs": 137
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 33192
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cone": 2,
+     "plane": 2
+    },
+    "occtTypes": {
+     "plane": 3,
+     "cone": 2
+    },
+    "occtComponents": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cone": "equal",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 1034.3851332337426,
+    "bbox": [
+     -5,
+     -4.99998529811657,
+     -10.00000000000004,
+     13.000019827476429,
+     4.999970922710019,
+     10.000032729360012
+    ],
+    "com": [
+     4.000012725000792,
+     -0.000006128824924502376,
+     -4.952093172286665
+    ],
+    "faces": 4,
+    "kernelFaces": 8,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000014433048947979134,
+    "dBbox": 0.000005815457996227735,
+    "dCom": 4.443103159645582e-7,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-cone2-step6",
+  "row": "rep-overlap-curved",
+  "src": "const c = cone(10, 20, { at: [0,0,0] }); repeat(c, { count: 2, step: [6,0,0] });",
+  "note": "join succeeds",
+  "mapAngle": false,
+  "featureKinds": [
+   "cone",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "cone1",
+    "mode": "linear",
+    "count": 2,
+    "step": [
+     6,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-cone2-step6",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "cone",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 978.9990603614921,
+    "com": [
+     2.9999999488332567,
+     -7.375772953616478e-8,
+     -4.806436250689573
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -10.000000000000004,
+     11,
+     5,
+     10
+    ],
+    "faces": 5,
+    "types": {
+     "plane": 3,
+     "cone": 2
+    },
+    "components": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 1
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 51421,
+   "truckFeatures": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "status": "built",
+     "pick": null,
+     "wallMs": 147
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 51115
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cone": 2,
+     "plane": 2
+    },
+    "occtTypes": {
+     "plane": 3,
+     "cone": 2
+    },
+    "occtComponents": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cone": "equal",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 978.9594222480283,
+    "bbox": [
+     -5,
+     -4.999951720028832,
+     -10.000000000000004,
+     11.000019827476429,
+     4.999937385816437,
+     10.000032729360012
+    ],
+    "com": [
+     3.0000164550841655,
+     -0.000011488923243125299,
+     -4.8064247252441
+    ],
+    "faces": 4,
+    "kernelFaces": 8,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.00004048840807785453,
+    "dBbox": 0.000012522836712669517,
+    "dCom": 6.003265415027881e-7,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-cone2-y6",
+  "row": "rep-overlap-curved",
+  "src": "const c = cone(10, 20, { at: [0,0,0] }); repeat(c, { count: 2, step: [0,6,0] });",
+  "mapAngle": false,
+  "featureKinds": [
+   "cone",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "cone1",
+    "mode": "linear",
+    "count": 2,
+    "step": [
+     0,
+     6,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-cone2-y6",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "cone",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 978.9990603516821,
+    "com": [
+     5.2909265667694515e-8,
+     3.0000000934097253,
+     -4.806436250625751
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -10,
+     5,
+     11,
+     10
+    ],
+    "faces": 5,
+    "types": {
+     "plane": 3,
+     "cone": 2
+    },
+    "components": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 2
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 66759,
+   "truckFeatures": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "status": "built",
+     "pick": null,
+     "wallMs": 143
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 66490
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cone": 2,
+     "plane": 2
+    },
+    "occtTypes": {
+     "plane": 3,
+     "cone": 2
+    },
+    "occtComponents": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cone": "equal",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 978.9586736096726,
+    "bbox": [
+     -5,
+     -4.9999373858164375,
+     -10.000000000000004,
+     5.000019827476427,
+     10.999923051597797,
+     10.000032729360012
+    ],
+    "com": [
+     0.00000937246602294014,
+     3.000001695392985,
+     -4.806419850037157
+    ],
+    "faces": 4,
+    "kernelFaces": 8,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.00004125309578443457,
+    "dBbox": 0.00001252283671249188,
+    "dCom": 5.964836402637201e-7,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-vase2-x10",
+  "row": "rep-overlap-curved",
+  "src": "const s = sketch('front'); s.polygon([[0,0],[20,0],[15,30],[0,30]]); const r = spin(s, 360); repeat(r, { count: 2, step: [10,0,0] });",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "revolve",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "rev1",
+    "mode": "linear",
+    "count": 2,
+    "step": [
+     10,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-vase2-x10",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 39414.00899824027,
+    "com": [
+     4.999999596758367,
+     13.760825629465655,
+     -3.4895251477243957e-9
+    ],
+    "bbox": [
+     -20,
+     -2.842170943040401e-14,
+     -20,
+     30,
+     30,
+     20
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 6,
+     "cone": 3
+    },
+    "components": {
+     "plane": 2,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 2
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 50193,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "wallMs": 376
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "refused",
+     "refusal": "pat1 (pattern): copies overlap or touch (curved faces): copies 1 and 2 have bbox gap -3.0e+1 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 3 curved faces (cone); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 3 curved faces (cone)); leaving them as 2 separate bodies would add their volumes",
+     "student": "repeat(): these copies overlap or touch, and the kernel cannot fuse their curved faces into one solid yet -- space the copies so they clear each other, or build the shape from flat faces."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "pat1 (pattern): copies overlap or touch (curved faces): copies 1 and 2 have bbox gap -3.0e+1 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 3 curved faces (cone); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 3 curved faces (cone)); leaving them as 2 separate bodies would add their volumes",
+    "student": "repeat(): these copies overlap or touch, and the kernel cannot fuse their curved faces into one solid yet -- space the copies so they clear each other, or build the shape from flat faces.",
+    "firstRefusal": "pat1 (pattern): copies overlap or touch (curved faces): copies 1 and 2 have bbox gap -3.0e+1 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 3 curved faces (cone); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 3 curved faces (cone)); leaving them as 2 separate bodies would add their volumes",
+    "firstStudent": "repeat(): these copies overlap or touch, and the kernel cannot fuse their curved faces into one solid yet -- space the copies so they clear each other, or build the shape from flat faces."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "refused",
+    "refusal": "pat1 (pattern): copies overlap or touch (curved faces): copies 1 and 2 have bbox gap -3.0e+1 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 3 curved faces (cone); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 3 curved faces (cone)); leaving them as 2 separate bodies would add their volumes",
+    "student": "repeat(): these copies overlap or touch, and the kernel cannot fuse their curved faces into one solid yet -- space the copies so they clear each other, or build the shape from flat faces."
+   }
+  ],
+  "outcome": "REFUSED"
+ },
+ {
+  "id": "r3-spin-ra-overlap",
+  "row": "rep-overlap-curved",
+  "src": "const s = sketch('front'); s.polygon([[10,0],[20,0],[20,10],[10,10]]); const r = spin(s, 360); move(r, [18,0,0]); repeatAround(r, { count: 3 });",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "revolve",
+   "move",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "move1",
+    "mode": "circular",
+    "count": 3,
+    "axis": "z",
+    "totalAngle": 360
+   }
+  ],
+  "fx": {
+   "id": "r3-spin-ra-overlap",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "move",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 28176.25530977465,
+    "com": [
+     -5.681062502883588e-15,
+     -7.359558242371922e-15,
+     -2.8119359501140943e-9
+    ],
+    "bbox": [
+     -27.660254037844382,
+     -37.90896534380867,
+     -20,
+     38,
+     32.908965343808674,
+     20
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 6,
+     "cylinder": 6
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 6
+    },
+    "bigCylinderComponents": 6,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 149609,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "wallMs": 618
+    },
+    {
+     "id": "move1",
+     "kind": "move",
+     "status": "built",
+     "pick": null,
+     "wallMs": 689
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 146473
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 6,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 6
+    },
+    "occtComponents": {
+     "plane": 6,
+     "cylinder": 6
+    },
+    "bigCylinderComponents": 6,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 28176.303259555916,
+    "bbox": [
+     -27.660175904576427,
+     -37.90896534380867,
+     -20,
+     38,
+     32.90893230404963,
+     20.000078427227628
+    ],
+    "com": [
+     0.000021371416129632213,
+     -0.000012762717767398203,
+     0.00002464580289509295
+    ],
+    "faces": 12,
+    "kernelFaces": 24,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0000017017797695074824,
+    "dBbox": 0.000003921361381387101,
+    "dCom": 2.358050010129967e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r3-sph2-step7",
+  "row": "time",
+  "src": "const a = sphere(10, { at: [0,0,0] }); repeat(a, { count: 2, step: [7,0,0] });",
+  "note": "the cliff: 174 s in one bare session",
+  "mapAngle": false,
+  "featureKinds": [
+   "sphere",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "ball1",
+    "mode": "linear",
+    "count": 2,
+    "step": [
+     7,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-sph2-step7",
+   "kind": "time",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "sphere",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 983.5802999942825,
+    "com": [
+     3.4999999475775994,
+     -6.613983638902928e-8,
+     1.4231485443343e-15
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     12,
+     5,
+     5
+    ],
+    "faces": 2,
+    "types": {
+     "sphere": 2
+    },
+    "components": {
+     "sphere": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 155285,
+   "truckFeatures": [
+    {
+     "id": "ball1",
+     "kind": "sphere",
+     "status": "built",
+     "pick": null,
+     "wallMs": 3881
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 144527
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "sphere": 2
+    },
+    "occtTypes": {
+     "sphere": 2
+    },
+    "occtComponents": {
+     "sphere": 2
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "sphere": "equal"
+    },
+    "volume": 983.3341465596797,
+    "bbox": [
+     -5,
+     -5.0000073999968775,
+     -4.999914622271701,
+     12.000012199990728,
+     5.000000000000001,
+     4.999928798216724
+    ],
+    "com": [
+     3.5000061126907944,
+     -0.000003677883896345257,
+     0.000007092073406890059
+    ],
+    "faces": 2,
+    "kernelFaces": 18,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0002502626726097699,
+    "dBbox": 0.000017075545659750445,
+    "dCom": 3.207146454733972e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ }
+]

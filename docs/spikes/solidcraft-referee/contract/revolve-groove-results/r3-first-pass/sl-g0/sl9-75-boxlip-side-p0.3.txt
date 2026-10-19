@@ -1,0 +1,1 @@
+sl9-75-boxlip-side-p0.3                  PASS     occtV 69951.2134 | tr-occt dV 5.9e-7 dBb 5.6e-8 dCom 4.6e-7 F o/b/t 10/10/10 | brep-occt dV 2.8e-12      | ms 2514 cpu 2883

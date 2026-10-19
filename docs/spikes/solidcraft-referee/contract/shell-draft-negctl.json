@@ -1,0 +1,74 @@
+{
+ "cases": 159,
+ "noFit": 61,
+ "fit": 98,
+ "noFitCaught": {
+  "both": 60,
+  "sweepOnly": 60,
+  "reachOnly": 61,
+  "either": 61,
+  "neither": []
+ },
+ "fitRefusedBy": {
+  "sweepOnly": [
+   "dnc-L-seq-two-20",
+   "dnc-L-seq-two-30",
+   "dnc-L-seq-three-30",
+   "dnc-L-seq-fbopp-30",
+   "dnc-L-seq-mixed-in-out",
+   "dnc-L-seq-four-10",
+   "dnc-L-seq-four-22",
+   "dnc-L-seq-four-30",
+   "dnc-L-seq-four-36",
+   "dnc-T-seq-four-10",
+   "dnc-T-seq-four-22",
+   "dnc-T-seq-four-26",
+   "dnc-T-seq-lr-22",
+   "dnc-join-seq-four-30",
+   "dnc-join-seq-four-60",
+   "dnc-slot-seq-lr-30"
+  ],
+  "reachOnly": [
+   "dnc-boss-right-in45",
+   "dnc-L-seq-two-20",
+   "dnc-L-seq-two-30",
+   "dnc-L-seq-three-30",
+   "dnc-L-seq-fbopp-30",
+   "dnc-L-seq-mixed-in-out",
+   "dnc-L-seq-four-10",
+   "dnc-L-seq-four-22",
+   "dnc-L-seq-four-30",
+   "dnc-L-seq-four-36",
+   "dnc-T-seq-four-10",
+   "dnc-T-seq-four-22",
+   "dnc-T-seq-four-26",
+   "dnc-T-seq-lr-22",
+   "dnc-join-seq-four-30",
+   "dnc-join-seq-four-60",
+   "dnc-slot-seq-lr-30"
+  ],
+  "both": [
+   "dnc-L-seq-two-20",
+   "dnc-L-seq-two-30",
+   "dnc-L-seq-three-30",
+   "dnc-L-seq-fbopp-30",
+   "dnc-L-seq-mixed-in-out",
+   "dnc-L-seq-four-10",
+   "dnc-L-seq-four-22",
+   "dnc-L-seq-four-30",
+   "dnc-L-seq-four-36",
+   "dnc-T-seq-four-10",
+   "dnc-T-seq-four-22",
+   "dnc-T-seq-four-26",
+   "dnc-T-seq-lr-22",
+   "dnc-join-seq-four-30",
+   "dnc-join-seq-four-60",
+   "dnc-slot-seq-lr-30"
+  ]
+ },
+ "builtWrongWithBothOn": [],
+ "sweepAloneMisses": [
+  "dnc-join-back-in70"
+ ],
+ "reachAloneMisses": []
+}

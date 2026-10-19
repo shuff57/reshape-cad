@@ -1,0 +1,1 @@
+sl9-30-boxtan-top-m0.01                  FAIL     occtV 68587.6782 | tr-occt dV 2.7e-3 dBb 0.0e+0 dCom 3.4e-4 F o/b/t 16/14/16 | brep-occt dV 1.8e-12      | ms 4143 cpu 4696

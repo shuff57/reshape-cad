@@ -1,0 +1,178 @@
+[
+ {
+  "id": "fzc1-61-post-top-flat-135",
+  "src": "const k = sketch('top'); k.circle(40); const t = extrude(k, 30); const sk = sketch('top'); sk.rect(6.9, 7.3, { at: [14.6, 13.1] }); groove(sk, t, 135);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc1-61-post-top-flat-135",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 35966.36170274274,
+    "com": [
+     -0.21501822301673362,
+     -0.5190998762777981,
+     15.091536233046291
+    ],
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 9,
+    "area": 7360.89779059294,
+    "types": {
+     "cylinder": 3,
+     "plane": 6
+    },
+    "components": {
+     "cylinder": 3,
+     "plane": 6
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 35966.36170260109,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 9,
+    "dVol": 3.938356178576747e-12,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 263,
+   "load": [
+    17.4,
+    17.4
+   ],
+   "cpuMs": 668,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part.",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": "cylinder",
+       "coaxial": true,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 1,
+       "headTypes": {
+        "cylinder": 1,
+        "plane": 2
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": false,
+       "rOuter": 18.05,
+       "nearest": 20,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.circle.center",
+     "params": {
+      "center": [
+       0,
+       0
+      ],
+      "diameter": 40
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part.",
+    "firstRefusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 408
+ }
+]

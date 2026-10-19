@@ -1,0 +1,21 @@
+{
+ "id": "sf5-44-side-360",
+ "outcome": "built",
+ "volume": 1344.806663410994,
+ "faces": 4,
+ "bbox": [
+  -3.61,
+  -18.09,
+  -18.089999999999996,
+  12.5,
+  18.09,
+  18.089999999999996
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[0,1,0],\"y_dir\":[1,0,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[17.34,-3.61],[18.09,-3.61],[18.09,12.5],[17.34,12.5]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

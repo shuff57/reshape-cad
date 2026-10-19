@@ -1,0 +1,973 @@
+{
+ "n": 1410,
+ "files": 119,
+ "good_accept": 671,
+ "good_refuse": [
+  {
+   "id": "box-corner-half",
+   "script": "box(20, 30, 12, { corner: 6 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "cyl-corner-height-half",
+   "script": "cylinder(24, 10, { corner: 5 });",
+   "code": "cyl-corner-vs-height"
+  },
+  {
+   "id": "cone-spire",
+   "script": "cone(2, 100);",
+   "code": "cone-too-slender"
+  },
+  {
+   "id": "ring-near-horn",
+   "script": "ring(20.02, 10);",
+   "code": "ring-tube-too-thick"
+  },
+  {
+   "id": "sweep-sph-0.5",
+   "script": "sphere(0.5);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "sweep-cyl-0.5",
+   "script": "cylinder(0.5, 0.5);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "sweep-cone-0.5",
+   "script": "cone(0.5, 0.5);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "sweep-boxr-0.5",
+   "script": "box(0.5, 0.5, 0.5, { corner: 0.1 });",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "edge-cyl-far-turn",
+   "script": "turn(cylinder(2, 3, { at: [100000, 0, 0] }), [30, 40, 50]);",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "far-sph-1000",
+   "script": "sphere(2, { at: [1000, -1000, 1000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "far-cyl-1000",
+   "script": "cylinder(2, 3, { at: [1000, -1000, 1000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "far-cone-1000",
+   "script": "cone(2, 3, { at: [1000, -1000, 1000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "far-ring-1000",
+   "script": "ring(4, 1, { at: [1000, -1000, 1000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "far-boxr-1000",
+   "script": "box(2, 2, 2, { corner: 0.3, at: [1000, -1000, 1000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "r2-corner-half-r2b-Z",
+   "script": "box(20, 30, 10, { corner: 5 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "r2-corner-half-r2c-Z",
+   "script": "box(20, 30, 5, { corner: 2.5 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "r2-cyl-h2-flat",
+   "script": "cylinder(48, 10, { corner: 5 });",
+   "code": "cyl-corner-vs-height"
+  },
+  {
+   "id": "r2-cyl-chamfer-R-0.1",
+   "code": "cyl-corner-vs-radius"
+  },
+  {
+   "id": "r2-farp-boxturn-1000",
+   "script": "turn(box(2, 3, 4, { at: [1000, -1000, 1000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "r2-big-cyl-100000",
+   "script": "cylinder(100000, 100000);",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "r2-big-cone-100000",
+   "script": "cone(100000, 100000);",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "r2-big-cyl-1000000",
+   "script": "cylinder(1000000, 1000000);",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "r2bb-cyl-24-30-c11.9",
+   "script": "cylinder(24, 30, { corner: 11.9 });",
+   "code": "cyl-corner-vs-radius"
+  },
+  {
+   "id": "r2e-box-12-20-30-a2",
+   "script": "box(12, 20, 30, { corner: 5.9999 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "r2e-box-12-20-30-b2",
+   "script": "box(12, 20, 30, { corner: 5.99995 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "r2z-box-20-30-12-a",
+   "script": "box(20, 30, 12, { corner: 5.9999 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "r2z-box-20-30-12-b",
+   "script": "box(20, 30, 12, { corner: 5.99995 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s0.1-X-g0.00003",
+   "script": "box(1.2, 2, 3, { corner: 0.599982 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s0.1-X-g0.00001",
+   "script": "box(1.2, 2, 3, { corner: 0.599994 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s0.1-Y-g0.00003",
+   "script": "box(2, 1.2, 3, { corner: 0.599982 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s0.1-Y-g0.00001",
+   "script": "box(2, 1.2, 3, { corner: 0.599994 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s0.1-Z-g0.00003",
+   "script": "box(2, 3, 1.2, { corner: 0.599982 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s0.1-Z-g0.00001",
+   "script": "box(2, 3, 1.2, { corner: 0.599994 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s0.1-Z-g0",
+   "script": "box(2, 3, 1.2, { corner: 0.6 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s1-X-g0.00003",
+   "script": "box(12, 20, 30, { corner: 5.99982 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s1-X-g0.00001",
+   "script": "box(12, 20, 30, { corner: 5.99994 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s1-Y-g0.00003",
+   "script": "box(20, 12, 30, { corner: 5.99982 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s1-Y-g0.00001",
+   "script": "box(20, 12, 30, { corner: 5.99994 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s1-Z-g0.00003",
+   "script": "box(20, 30, 12, { corner: 5.99982 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s1-Z-g0.00001",
+   "script": "box(20, 30, 12, { corner: 5.99994 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s10-X-g0.00003",
+   "script": "box(120, 200, 300, { corner: 59.9982 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s10-X-g0.00001",
+   "script": "box(120, 200, 300, { corner: 59.9994 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s10-Y-g0.00003",
+   "script": "box(200, 120, 300, { corner: 59.9982 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s10-Y-g0.00001",
+   "script": "box(200, 120, 300, { corner: 59.9994 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s10-Z-g0.00003",
+   "script": "box(200, 300, 120, { corner: 59.9982 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s10-Z-g0.00001",
+   "script": "box(200, 300, 120, { corner: 59.9994 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e1-s10-Z-g0",
+   "script": "box(200, 300, 120, { corner: 60 });",
+   "code": "box-corner-too-big"
+  },
+  {
+   "id": "e2-fillet-H-s10-k1",
+   "script": "cylinder(480, 100, { corner: 50 });",
+   "code": "cyl-corner-vs-height"
+  },
+  {
+   "id": "e4-ring-A4-k10",
+   "script": "ring(4, 0.4);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e4-ring-A40-k60",
+   "script": "ring(40, 0.6666666667);",
+   "code": "ring-tube-too-thin"
+  },
+  {
+   "id": "e4-ring-A400-k60",
+   "script": "ring(400, 6.666666667);",
+   "code": "ring-tube-too-thin"
+  },
+  {
+   "id": "e5-cyl-a0.5-asp0.02",
+   "script": "cylinder(0.5, 0.01);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cone-a0.5-asp0.02",
+   "script": "cone(0.5, 0.01);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cyl-a0.5-asp0.1",
+   "script": "cylinder(0.5, 0.05);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cone-a0.5-asp0.1",
+   "script": "cone(0.5, 0.05);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cyl-a0.5-asp5",
+   "script": "cylinder(0.5, 2.5);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cone-a0.5-asp5",
+   "script": "cone(0.5, 2.5);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cyl-a0.5-asp10",
+   "script": "cylinder(0.5, 5);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cone-a0.5-asp10",
+   "script": "cone(0.5, 5);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cyl-a0.5-asp20",
+   "script": "cylinder(0.5, 10);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cone-a0.5-asp20",
+   "script": "cone(0.5, 10);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cyl-a0.5-asp30",
+   "script": "cylinder(0.5, 15);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cone-a0.5-asp30",
+   "script": "cone(0.5, 15);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cyl-a0.5-asp40",
+   "script": "cylinder(0.5, 20);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cone-a0.5-asp40",
+   "script": "cone(0.5, 20);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cone-a0.5-asp50",
+   "script": "cone(0.5, 25);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5-cyl-a1-asp40",
+   "script": "cylinder(1, 40);",
+   "code": "cyl-too-slender"
+  },
+  {
+   "id": "e5-cone-a1-asp50",
+   "script": "cone(1, 50);",
+   "code": "cone-too-slender"
+  },
+  {
+   "id": "e5-cyl-a2-asp40",
+   "script": "cylinder(2, 80);",
+   "code": "cyl-too-slender"
+  },
+  {
+   "id": "e5-cyl-a5-asp40",
+   "script": "cylinder(5, 200);",
+   "code": "cyl-too-slender"
+  },
+  {
+   "id": "e5-cone-a5-asp50",
+   "script": "cone(5, 250);",
+   "code": "cone-too-slender"
+  },
+  {
+   "id": "e5-cyl-a20-asp40",
+   "script": "cylinder(20, 800);",
+   "code": "cyl-too-slender"
+  },
+  {
+   "id": "e5-cone-a20-asp50",
+   "script": "cone(20, 1000);",
+   "code": "cone-too-slender"
+  },
+  {
+   "id": "e5-cyl-a200-asp40",
+   "script": "cylinder(200, 8000);",
+   "code": "cyl-too-slender"
+  },
+  {
+   "id": "e5-cone-a200-asp50",
+   "script": "cone(200, 10000);",
+   "code": "cone-too-slender"
+  },
+  {
+   "id": "e5-cyl-a2000-asp30",
+   "script": "cylinder(2000, 60000);",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "e5-cone-a2000-asp30",
+   "script": "cone(2000, 60000);",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "e5-cyl-a2000-asp40",
+   "script": "cylinder(2000, 80000);",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "e5-cone-a2000-asp40",
+   "script": "cone(2000, 80000);",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "e5-cone-a2000-asp50",
+   "script": "cone(2000, 100000);",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "e5b-sph-0.7",
+   "script": "sphere(0.7);",
+   "code": "too-small-curved"
+  },
+  {
+   "id": "e5b-sph-60000",
+   "script": "sphere(60000);",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "e6-prism3-s0.5-q100",
+   "script": "prism(3, 0.5, 0.75, { at: [100, -100, 100] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism3-s2-q100",
+   "script": "prism(3, 2, 3, { at: [400, -400, 400] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism3-s200-q100",
+   "script": "prism(3, 200, 300, { at: [40000, -40000, 40000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism3-s200-q150",
+   "script": "prism(3, 200, 300, { at: [60000, -60000, 60000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism3-s200-q200",
+   "script": "prism(3, 200, 300, { at: [80000, -80000, 80000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism6-s0.5-q100",
+   "script": "prism(6, 0.5, 0.75, { at: [100, -100, 100] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism6-s0.5-q150",
+   "script": "prism(6, 0.5, 0.75, { at: [150, -150, 150] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism6-s2-q100",
+   "script": "prism(6, 2, 3, { at: [400, -400, 400] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism6-s2-q150",
+   "script": "prism(6, 2, 3, { at: [600, -600, 600] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism6-s20-q100",
+   "script": "prism(6, 20, 30, { at: [4000, -4000, 4000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism6-s200-q100",
+   "script": "prism(6, 200, 300, { at: [40000, -40000, 40000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism6-s200-q150",
+   "script": "prism(6, 200, 300, { at: [60000, -60000, 60000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism6-s200-q200",
+   "script": "prism(6, 200, 300, { at: [80000, -80000, 80000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism6-s200-q300",
+   "script": "prism(6, 200, 300, { at: [120000, -120000, 120000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism5-s0.5-q100",
+   "script": "prism(5, 0.5, 0.75, { at: [100, -100, 100] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism5-s2-q100",
+   "script": "prism(5, 2, 3, { at: [400, -400, 400] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism5-s20-q100",
+   "script": "prism(5, 20, 30, { at: [4000, -4000, 4000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism5-s200-q100",
+   "script": "prism(5, 200, 300, { at: [40000, -40000, 40000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism5-s200-q150",
+   "script": "prism(5, 200, 300, { at: [60000, -60000, 60000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism12-s0.5-q100",
+   "script": "prism(12, 0.5, 0.75, { at: [100, -100, 100] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism12-s0.5-q150",
+   "script": "prism(12, 0.5, 0.75, { at: [150, -150, 150] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism12-s2-q100",
+   "script": "prism(12, 2, 3, { at: [400, -400, 400] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism12-s2-q150",
+   "script": "prism(12, 2, 3, { at: [600, -600, 600] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism12-s20-q100",
+   "script": "prism(12, 20, 30, { at: [4000, -4000, 4000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism12-s20-q150",
+   "script": "prism(12, 20, 30, { at: [6000, -6000, 6000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism12-s200-q100",
+   "script": "prism(12, 200, 300, { at: [40000, -40000, 40000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism12-s200-q150",
+   "script": "prism(12, 200, 300, { at: [60000, -60000, 60000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism12-s200-q200",
+   "script": "prism(12, 200, 300, { at: [80000, -80000, 80000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-prism12-s200-q300",
+   "script": "prism(12, 200, 300, { at: [120000, -120000, 120000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-box-s200-q3000",
+   "script": "box(200, 300, 400, { at: [1200000, -1200000, 1200000] });",
+   "code": "too-far"
+  },
+  {
+   "id": "e6-wedge-s200-q3000",
+   "script": "wedge(200, 300, 400, { at: [1200000, -1200000, 1200000] });",
+   "code": "too-far"
+  },
+  {
+   "id": "e6-tbox-s0.5-q100",
+   "script": "turn(box(0.5, 0.75, 1, { at: [100, -100, 100] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tbox-s0.5-q150",
+   "script": "turn(box(0.5, 0.75, 1, { at: [150, -150, 150] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tbox-s0.5-q200",
+   "script": "turn(box(0.5, 0.75, 1, { at: [200, -200, 200] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tbox-s2-q100",
+   "script": "turn(box(2, 3, 4, { at: [400, -400, 400] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tbox-s2-q150",
+   "script": "turn(box(2, 3, 4, { at: [600, -600, 600] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tbox-s2-q200",
+   "script": "turn(box(2, 3, 4, { at: [800, -800, 800] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tbox-s20-q100",
+   "script": "turn(box(20, 30, 40, { at: [4000, -4000, 4000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tbox-s20-q150",
+   "script": "turn(box(20, 30, 40, { at: [6000, -6000, 6000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tbox-s20-q200",
+   "script": "turn(box(20, 30, 40, { at: [8000, -8000, 8000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tbox-s20-q300",
+   "script": "turn(box(20, 30, 40, { at: [12000, -12000, 12000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tbox-s200-q100",
+   "script": "turn(box(200, 300, 400, { at: [40000, -40000, 40000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tbox-s200-q150",
+   "script": "turn(box(200, 300, 400, { at: [60000, -60000, 60000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tprism6-s0.5-q100",
+   "script": "turn(prism(6, 0.5, 0.75, { at: [100, -100, 100] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tprism6-s0.5-q150",
+   "script": "turn(prism(6, 0.5, 0.75, { at: [150, -150, 150] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tprism6-s0.5-q200",
+   "script": "turn(prism(6, 0.5, 0.75, { at: [200, -200, 200] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tprism6-s2-q100",
+   "script": "turn(prism(6, 2, 3, { at: [400, -400, 400] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tprism6-s2-q150",
+   "script": "turn(prism(6, 2, 3, { at: [600, -600, 600] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tprism6-s2-q200",
+   "script": "turn(prism(6, 2, 3, { at: [800, -800, 800] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tprism6-s20-q100",
+   "script": "turn(prism(6, 20, 30, { at: [4000, -4000, 4000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tprism6-s20-q150",
+   "script": "turn(prism(6, 20, 30, { at: [6000, -6000, 6000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tprism6-s200-q100",
+   "script": "turn(prism(6, 200, 300, { at: [40000, -40000, 40000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tprism6-s200-q150",
+   "script": "turn(prism(6, 200, 300, { at: [60000, -60000, 60000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-tprism6-s200-q200",
+   "script": "turn(prism(6, 200, 300, { at: [80000, -80000, 80000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-twedge-s0.5-q100",
+   "script": "turn(wedge(0.5, 0.75, 1, { at: [100, -100, 100] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-twedge-s0.5-q150",
+   "script": "turn(wedge(0.5, 0.75, 1, { at: [150, -150, 150] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-twedge-s2-q100",
+   "script": "turn(wedge(2, 3, 4, { at: [400, -400, 400] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-twedge-s2-q150",
+   "script": "turn(wedge(2, 3, 4, { at: [600, -600, 600] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-twedge-s20-q100",
+   "script": "turn(wedge(20, 30, 40, { at: [4000, -4000, 4000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-twedge-s20-q150",
+   "script": "turn(wedge(20, 30, 40, { at: [6000, -6000, 6000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-twedge-s20-q200",
+   "script": "turn(wedge(20, 30, 40, { at: [8000, -8000, 8000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-twedge-s200-q100",
+   "script": "turn(wedge(200, 300, 400, { at: [40000, -40000, 40000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6-twedge-s200-q150",
+   "script": "turn(wedge(200, 300, 400, { at: [60000, -60000, 60000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-prism6-needle-q5",
+   "script": "prism(6, 2, 200, { at: [1000, -1000, 1000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-prism6-needle-q10",
+   "script": "prism(6, 2, 200, { at: [2000, -2000, 2000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-prism6-plate-q5",
+   "script": "prism(6, 200, 2, { at: [1000, -1000, 1000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-prism6-plate-q10",
+   "script": "prism(6, 200, 2, { at: [2000, -2000, 2000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-prism6-plate-q20",
+   "script": "prism(6, 200, 2, { at: [4000, -4000, 4000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-prism6-plate-q40",
+   "script": "prism(6, 200, 2, { at: [8000, -8000, 8000] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-prism7-needle-q5",
+   "script": "prism(7, 1, 300, { at: [1500, -1500, 1500] });",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-tbox-needle-q5",
+   "script": "turn(box(2, 3, 300, { at: [1500, -1500, 1500] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-tbox-plate-q5",
+   "script": "turn(box(300, 200, 1, { at: [1500, -1500, 1500] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-tbox-plate-q10",
+   "script": "turn(box(300, 200, 1, { at: [3000, -3000, 3000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-tbox-plate-q20",
+   "script": "turn(box(300, 200, 1, { at: [6000, -6000, 6000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-tbox-plate-q40",
+   "script": "turn(box(300, 200, 1, { at: [12000, -12000, 12000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-tprism6-plate-q5",
+   "script": "turn(prism(6, 300, 1, { at: [1500, -1500, 1500] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-tprism6-plate-q10",
+   "script": "turn(prism(6, 300, 1, { at: [3000, -3000, 3000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-tprism6-plate-q20",
+   "script": "turn(prism(6, 300, 1, { at: [6000, -6000, 6000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-twedge-needle-q5",
+   "script": "turn(wedge(2, 3, 300, { at: [1500, -1500, 1500] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-twedge-plate-q5",
+   "script": "turn(wedge(300, 200, 1, { at: [1500, -1500, 1500] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-twedge-plate-q10",
+   "script": "turn(wedge(300, 200, 1, { at: [3000, -3000, 3000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e6b-twedge-plate-q20",
+   "script": "turn(wedge(300, 200, 1, { at: [6000, -6000, 6000] }), [20, 35, 50]);",
+   "code": "too-far-planar"
+  },
+  {
+   "id": "e7-cyl-s2-e2000",
+   "script": "cylinder(2, 3, { at: [2000, -2000, 2000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "e7-cone-s2-e2000",
+   "script": "cone(2, 3, { at: [2000, -2000, 2000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "e7-cone-s2-e3000",
+   "script": "cone(2, 3, { at: [3000, -3000, 3000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "e7-cyl-s20-e10000",
+   "script": "cylinder(20, 30, { at: [10000, -10000, 10000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "e7-cone-s20-e10000",
+   "script": "cone(20, 30, { at: [10000, -10000, 10000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "e7-boxr-s20-e10000",
+   "script": "box(20, 20, 20, { corner: 3, at: [10000, -10000, 10000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "e7-cone-s20-e30000",
+   "script": "cone(20, 30, { at: [30000, -30000, 30000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "e7-cyl-s200-e100000",
+   "script": "cylinder(200, 300, { at: [100000, -100000, 100000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "e7-cone-s200-e100000",
+   "script": "cone(200, 300, { at: [100000, -100000, 100000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "e7-boxr-s200-e100000",
+   "script": "box(200, 200, 200, { corner: 30, at: [100000, -100000, 100000] });",
+   "code": "too-far-curved"
+  },
+  {
+   "id": "e8-cyl-wide-100000",
+   "script": "cylinder(100000, 25000);",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "e8-cyl-wide-1000000",
+   "script": "cylinder(1000000, 250000);",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "e8-boxr-1e5",
+   "script": "box(100000, 100000, 100000, { corner: 10000 });",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "e8-ring-6e4",
+   "script": "ring(60000, 15000);",
+   "code": "too-big-curved"
+  },
+  {
+   "id": "e9-plate-box-0.0001",
+   "script": "box(100, 100, 0.0001);",
+   "code": "too-small"
+  },
+  {
+   "id": "e9-plate-prism-0.0001",
+   "script": "prism(7, 100, 0.0001);",
+   "code": "too-small"
+  },
+  {
+   "id": "e9-plate-wedge-0.0001",
+   "script": "wedge(100, 100, 0.0001);",
+   "code": "too-small"
+  },
+  {
+   "id": "e9-sliver-box-0.0001",
+   "script": "box(0.0001, 100, 100);",
+   "code": "too-small"
+  },
+  {
+   "id": "e9-plate-box-0.00001",
+   "script": "box(100, 100, 0.00001);",
+   "code": "too-small"
+  },
+  {
+   "id": "e9-plate-prism-0.00001",
+   "script": "prism(7, 100, 0.00001);",
+   "code": "too-small"
+  },
+  {
+   "id": "e9-plate-wedge-0.00001",
+   "script": "wedge(100, 100, 0.00001);",
+   "code": "too-small"
+  },
+  {
+   "id": "e9-sliver-box-0.00001",
+   "script": "box(0.00001, 100, 100);",
+   "code": "too-small"
+  },
+  {
+   "id": "e11-SILENT-box-surplus",
+   "script": "box(1, 2, 3, { at: [0, 0, 0] }, 99);",
+   "code": "surplus-argument"
+  },
+  {
+   "id": "e11-SILENT-prism-surplus",
+   "script": "prism(6, 10, 5, { at: [0, 0, 0] }, 1);",
+   "code": "surplus-argument"
+  },
+  {
+   "id": "g2-lint-surplus-sphere",
+   "script": "sphere(2, { at: [0, 0, 0] }, 1);",
+   "code": "surplus-argument"
+  },
+  {
+   "id": "g2-lint-surplus-cyl",
+   "script": "cylinder(2, 3, { at: [0, 0, 0] }, 9);",
+   "code": "surplus-argument"
+  },
+  {
+   "id": "g2-lint-surplus-ring",
+   "script": "ring(4, 1, { at: [0, 0, 0] }, 2);",
+   "code": "surplus-argument"
+  },
+  {
+   "id": "g2-lint-surplus-wedge",
+   "script": "wedge(1, 2, 3, { at: [0, 0, 0] }, 4);",
+   "code": "surplus-argument"
+  }
+ ],
+ "wrong_accept": [],
+ "unverified_accept": [],
+ "wrong_refuse": 432,
+ "unverified_refuse": 11,
+ "na_refuse": 103,
+ "na_accept": 1,
+ "lintBad": []
+}

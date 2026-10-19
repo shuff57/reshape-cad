@@ -1,0 +1,289 @@
+{
+ "gate": "blend-loft guard, LIVE (runs truck + OCCT)",
+ "quick": false,
+ "wired": false,
+ "wiredCallers": [],
+ "battery": {
+  "total": 1420,
+  "pass": 765,
+  "passExact": 765,
+  "refused": 655,
+  "n7Pairs": 600,
+  "n7Passed": 575,
+  "n8Scripts": 50,
+  "n8Passed": 20
+ },
+ "fuzz": [
+  {
+   "seed": 11,
+   "n": 80,
+   "summary": {
+    "par": {
+     "cases": 80,
+     "guardPassed": 78,
+     "passBut": 0,
+     "refused": 2,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 8.36436359484429e-14,
+     "maxPassCurvedD": 0,
+     "start": 2,
+     "adviceTried": 2,
+     "adviceWorked": 2,
+     "startRawWrong": 2
+    },
+    "idx": {
+     "cases": 80,
+     "guardPassed": 77,
+     "passBut": 0,
+     "refused": 3,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 7.33116660451399e-14,
+     "maxPassCurvedD": 0,
+     "start": 1,
+     "adviceTried": 1,
+     "adviceWorked": 1,
+     "startRawWrong": 1
+    },
+    "rectrect": {
+     "cases": 80,
+     "guardPassed": 80,
+     "passBut": 0,
+     "refused": 0,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 4.7762127812123185e-12,
+     "maxPassCurvedD": 0
+    },
+    "regcirc": {
+     "cases": 80,
+     "guardPassed": 13,
+     "passBut": 0,
+     "refused": 67,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 0.00010424330675916894,
+     "maxPassCurvedD": 0.00010424330675916894
+    },
+    "rectcirc": {
+     "cases": 80,
+     "guardPassed": 3,
+     "passBut": 0,
+     "refused": 77,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 0.0000986034418495134,
+     "maxPassCurvedD": 0.0000986034418495134
+    },
+    "cc": {
+     "cases": 80,
+     "guardPassed": 46,
+     "passBut": 0,
+     "refused": 34,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 0.00019507631286905003,
+     "maxPassCurvedD": 0.00019507631286905003
+    },
+    "rrcirc": {
+     "cases": 80,
+     "guardPassed": 12,
+     "passBut": 0,
+     "refused": 68,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 0.00007450860985665941,
+     "maxPassCurvedD": 0.00007450860985665941
+    }
+   },
+   "violations": 0
+  },
+  {
+   "seed": 12,
+   "n": 80,
+   "summary": {
+    "par": {
+     "cases": 80,
+     "guardPassed": 76,
+     "passBut": 0,
+     "refused": 4,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 4.096130380247162e-14,
+     "maxPassCurvedD": 0
+    },
+    "idx": {
+     "cases": 80,
+     "guardPassed": 78,
+     "passBut": 0,
+     "refused": 2,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 8.10484059389124e-14,
+     "maxPassCurvedD": 0
+    },
+    "rectrect": {
+     "cases": 80,
+     "guardPassed": 80,
+     "passBut": 0,
+     "refused": 0,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 1.8250814393570857e-12,
+     "maxPassCurvedD": 0
+    },
+    "regcirc": {
+     "cases": 80,
+     "guardPassed": 12,
+     "passBut": 0,
+     "refused": 68,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 0.00015400509897507,
+     "maxPassCurvedD": 0.00015400509897507
+    },
+    "rectcirc": {
+     "cases": 80,
+     "guardPassed": 5,
+     "passBut": 0,
+     "refused": 75,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 0.00011839683204779362,
+     "maxPassCurvedD": 0.00011839683204779362
+    },
+    "cc": {
+     "cases": 80,
+     "guardPassed": 38,
+     "passBut": 0,
+     "refused": 42,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 0.00019505520237277684,
+     "maxPassCurvedD": 0.00019505520237277684
+    },
+    "rrcirc": {
+     "cases": 80,
+     "guardPassed": 19,
+     "passBut": 0,
+     "refused": 61,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 0.00008976147862434876,
+     "maxPassCurvedD": 0.00008976147862434876
+    }
+   },
+   "violations": 0
+  },
+  {
+   "seed": 13,
+   "n": 80,
+   "summary": {
+    "par": {
+     "cases": 80,
+     "guardPassed": 79,
+     "passBut": 0,
+     "refused": 1,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 1.0484362548743931e-13,
+     "maxPassCurvedD": 0
+    },
+    "idx": {
+     "cases": 80,
+     "guardPassed": 77,
+     "passBut": 0,
+     "refused": 3,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 2.0011217060929064e-13,
+     "maxPassCurvedD": 0,
+     "start": 1,
+     "adviceTried": 1,
+     "adviceWorked": 1,
+     "startRawWrong": 1
+    },
+    "rectrect": {
+     "cases": 80,
+     "guardPassed": 80,
+     "passBut": 0,
+     "refused": 0,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 3.779253723022613e-12,
+     "maxPassCurvedD": 0
+    },
+    "regcirc": {
+     "cases": 80,
+     "guardPassed": 19,
+     "passBut": 0,
+     "refused": 61,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 0.00014426736299366367,
+     "maxPassCurvedD": 0.00014426736299366367
+    },
+    "rectcirc": {
+     "cases": 80,
+     "guardPassed": 6,
+     "passBut": 0,
+     "refused": 74,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 0.0001474983394227898,
+     "maxPassCurvedD": 0.0001474983394227898
+    },
+    "cc": {
+     "cases": 80,
+     "guardPassed": 44,
+     "passBut": 0,
+     "refused": 36,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 0.00019505830887538294,
+     "maxPassCurvedD": 0.00019505830887538294
+    },
+    "rrcirc": {
+     "cases": 80,
+     "guardPassed": 7,
+     "passBut": 0,
+     "refused": 73,
+     "refusedWouldBeWrong": 0,
+     "refusedExact": 0,
+     "refusedNoSolid": 0,
+     "maxPassD": 0.00006580470142206554,
+     "maxPassCurvedD": 0.00006580470142206554
+    }
+   },
+   "violations": 0
+  }
+ ],
+ "studioPathUnguarded": true,
+ "options": {
+  "alias": "refused",
+  "argumentOrder": "by what the student wrote",
+  "studioPathAllowsPairsGuardRefuses": true
+ },
+ "violations": 0
+}

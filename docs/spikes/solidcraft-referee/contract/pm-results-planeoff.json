@@ -1,0 +1,1975 @@
+[
+ {
+  "id": "r2-tie-cyl-tb",
+  "row": "mirror-curved-tie",
+  "src": "const c = cylinder(10, 10); mirror(c, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "cylinder",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "cyl1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-cyl-tb",
+   "kind": "mirror-curved-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "cylinder",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 1570.7963267948967,
+    "com": [
+     5.066270212606775e-16,
+     -6.275506669472697e-16,
+     -5
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -15,
+     5,
+     5,
+     5
+    ],
+    "faces": 4,
+    "types": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 1570.796326794898,
+    "bbox": [
+     -5,
+     -5,
+     -15,
+     5,
+     5,
+     5
+    ],
+    "faces": 6,
+    "dVol": 8.685034650183042e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     -2.6531989232139007e-16,
+     -2.2393452450202795e-16,
+     -5.000000000000023
+    ]
+   },
+   "ms": 1421,
+   "truckFeatures": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 2,
+      "at": 5.000000000000002,
+      "how": "measured"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "occtComponents": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "faceKeys": {
+     "cylinder": "truck-merges-edge-connected-same-surface-faces",
+     "plane": "equal"
+    },
+    "volume": 1570.5884051590529,
+    "bbox": [
+     -4.9999227810661955,
+     -4.999865668703216,
+     -5.000000000000009,
+     4.999922781066191,
+     4.999865668703214,
+     15.000000000000023
+    ],
+    "com": [
+     -3.0478931380024197e-15,
+     -1.3141435470087125e-15,
+     5.000000000000372
+    ],
+    "faces": 3,
+    "kernelFaces": 6,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.00013236702448119522,
+    "dBbox": 2.0000000000000044,
+    "dCom": 0.4082482904638782,
+    "tol": 0.0003,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": false
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 2,
+     "at": 5.000000000000002,
+     "how": "measured"
+    }
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r2-tie-cyl-lr",
+  "row": "mirror-curved-tie",
+  "src": "const c = cylinder(10, 10); mirror(c, 'left-right');",
+  "mapAngle": false,
+  "featureKinds": [
+   "cylinder",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "cyl1",
+    "plane": "yz"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-cyl-lr",
+   "kind": "mirror-curved-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "cylinder",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 1570.7963270133287,
+    "com": [
+     -5.000000000000001,
+     -4.59917384165865e-16,
+     -1.0856293311219147e-16
+    ],
+    "bbox": [
+     -15,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "faces": 8,
+    "types": {
+     "cylinder": 4,
+     "plane": 4
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 1570.7963267948974,
+    "bbox": [
+     -15,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "faces": 6,
+    "dVol": 1.3905768202109613e-10,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     -4.999999999999998,
+     -3.497913965006344e-16,
+     -4.603413516345464e-16
+    ]
+   },
+   "ms": 909,
+   "truckFeatures": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 0,
+      "at": 4.999922781066191,
+      "how": "measured"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 4,
+     "plane": 4
+    },
+    "occtComponents": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "truck-merges-edge-connected-same-surface-faces",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 1570.5720613291905,
+    "bbox": [
+     -4.999922781066195,
+     -4.999785682843481,
+     -5.000000000000127,
+     14.999768343198573,
+     4.999865668703213,
+     5.000000000000001
+    ],
+    "com": [
+     4.999922774143213,
+     -0.000028000786711638623,
+     4.782123876316353e-9
+    ],
+    "faces": 4,
+    "kernelFaces": 8,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.00014277196876601476,
+    "dBbox": 1.9999536686397146,
+    "dCom": 0.4082451377314618,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 0,
+     "at": 4.999922781066191,
+     "how": "measured"
+    }
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r2-tie-cyl-fb",
+  "row": "mirror-curved-tie",
+  "src": "const c = cylinder(10, 10); mirror(c, 'front-back');",
+  "mapAngle": false,
+  "featureKinds": [
+   "cylinder",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "cyl1",
+    "plane": "xz"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-cyl-fb",
+   "kind": "mirror-curved-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "cylinder",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 1570.796327028991,
+    "com": [
+     1.4263276950796639e-7,
+     -5.000000000000001,
+     2.17125866222218e-16
+    ],
+    "bbox": [
+     -5,
+     -15,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "faces": 8,
+    "types": {
+     "cylinder": 4,
+     "plane": 4
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 1570.7963267948974,
+    "bbox": [
+     -5,
+     -15,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "faces": 6,
+    "dVol": 1.4902868079894376e-10,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     -1.2699071769228875e-16,
+     -5.000000000000004,
+     -5.714582296152994e-16
+    ]
+   },
+   "ms": 1039,
+   "truckFeatures": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 1,
+      "at": -4.999865668703214,
+      "how": "measured"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 4,
+     "plane": 4
+    },
+    "occtComponents": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "truck-merges-edge-connected-same-surface-faces",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 1570.5558287121758,
+    "bbox": [
+     -4.999922781066194,
+     -14.999597006109642,
+     -5.000000000000042,
+     4.9998816154548775,
+     4.999865668703213,
+     5.0000000000000036
+    ],
+    "com": [
+     -0.00008472590926289226,
+     -4.999865667515611,
+     -1.7393820624925575e-9
+    ],
+    "faces": 4,
+    "kernelFaces": 8,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.00015310598368293784,
+    "dBbox": 0.0000268662593574831,
+    "dCom": 0.000005484100710611188,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 1,
+     "at": -4.999865668703214,
+     "how": "measured"
+    }
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r2-tie-cyl-tb-big",
+  "row": "mirror-curved-tie",
+  "src": "const c = cylinder(100, 20); mirror(c, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "cylinder",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "cyl1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-cyl-tb-big",
+   "kind": "mirror-curved-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "cylinder",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 314159.26535897935,
+    "com": [
+     9.634598438603055e-15,
+     -4.325716390506598e-15,
+     -10
+    ],
+    "bbox": [
+     -50,
+     -50,
+     -30,
+     50,
+     50,
+     10
+    ],
+    "faces": 4,
+    "types": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 314159.2653589793,
+    "bbox": [
+     -50,
+     -50,
+     -30,
+     50,
+     50,
+     10
+    ],
+    "faces": 6,
+    "dVol": 1.852807392039049e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     -5.444056485131132e-16,
+     2.7290866934605164e-15,
+     -9.999999999999947
+    ]
+   },
+   "ms": 884,
+   "truckFeatures": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 2,
+      "at": 10.000000000000005,
+      "how": "measured"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "occtComponents": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "faceKeys": {
+     "cylinder": "truck-merges-edge-connected-same-surface-faces",
+     "plane": "equal"
+    },
+    "volume": 314137.15637544607,
+    "bbox": [
+     -49.99922781066197,
+     -49.99865668703217,
+     -10.00000000000002,
+     49.999227810661914,
+     49.99865668703214,
+     30.000000000000053
+    ],
+    "com": [
+     -1.9614118592984762e-14,
+     -9.652165277885116e-15,
+     10.000000000000139
+    ],
+    "faces": 3,
+    "kernelFaces": 6,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0000703750803211839,
+    "dBbox": 2.0000000000000053,
+    "dCom": 0.13608276348795528,
+    "tol": 0.0003,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": false
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 2,
+     "at": 10.000000000000005,
+     "how": "measured"
+    }
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r2-tie-cone-tb",
+  "row": "mirror-curved-tie",
+  "src": "const c = cone(20, 20); mirror(c, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "cone",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "cone1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-cone-tb",
+   "kind": "mirror-curved-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "cone",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 4188.790204786391,
+    "com": [
+     -1.7763568394002505e-15,
+     -9.482581965210152e-16,
+     -10
+    ],
+    "bbox": [
+     -10,
+     -10,
+     -30.000000000000004,
+     10,
+     10,
+     10
+    ],
+    "faces": 2,
+    "types": {
+     "cone": 2
+    },
+    "components": {
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 4188.790204786393,
+    "bbox": [
+     -10,
+     -10,
+     -30,
+     10,
+     10,
+     10
+    ],
+    "faces": 4,
+    "dVol": 4.3425173250915216e-16,
+    "dBbox": 1.1842378929335e-16,
+    "pass": true,
+    "com": [
+     -1.6305714577020356e-16,
+     5.749462900334782e-16,
+     -10.000000000000012
+    ]
+   },
+   "ms": 143,
+   "truckFeatures": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 2,
+      "at": -10,
+      "how": "measured"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cone": 2
+    },
+    "occtTypes": {
+     "cone": 2
+    },
+    "occtComponents": {
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cone": "equal"
+    },
+    "volume": 4188.026514908134,
+    "bbox": [
+     -10,
+     -9.999874771632872,
+     -30,
+     10,
+     9.999874771632872,
+     10
+    ],
+    "com": [
+     2.8955394576591035e-16,
+     2.8955394576591035e-16,
+     -10.000000000000002
+    ],
+    "faces": 2,
+    "kernelFaces": 6,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0001823175286706851,
+    "dBbox": 0.000012522836712847151,
+    "dCom": 4.217022731474711e-17,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 2,
+     "at": -10,
+     "how": "measured"
+    }
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r2-tie-sphere-tb",
+  "row": "mirror-curved-tie",
+  "src": "const c = sphere(10); mirror(c, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "sphere",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "ball1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-sphere-tb",
+   "kind": "mirror-curved-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "sphere",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 1047.1975511965977,
+    "com": [
+     -4.345791022430661e-16,
+     -2.7178259642823846e-16,
+     -5
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -15,
+     5,
+     5,
+     5
+    ],
+    "faces": 2,
+    "types": {
+     "sphere": 2
+    },
+    "components": {
+     "sphere": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 1047.1975511965982,
+    "bbox": [
+     -5,
+     -5,
+     -15,
+     5,
+     5,
+     5
+    ],
+    "faces": 2,
+    "dVol": 4.3425173250915216e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     3.983502687454513e-16,
+     9.615886516411915e-16,
+     -5.00000000000012
+    ]
+   },
+   "ms": 4606,
+   "truckFeatures": [
+    {
+     "id": "ball1",
+     "kind": "sphere",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "refused",
+     "refusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous",
+     "student": "mirror(): the copy would meet the original only at a point or along an edge, which cannot be fused into one solid -- move the shape so the copy overlaps it along a face, or leaves a clear gap."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous",
+    "student": "mirror(): the copy would meet the original only at a point or along an edge, which cannot be fused into one solid -- move the shape so the copy overlaps it along a face, or leaves a clear gap.",
+    "firstRefusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous",
+    "firstStudent": "mirror(): the copy would meet the original only at a point or along an edge, which cannot be fused into one solid -- move the shape so the copy overlaps it along a face, or leaves a clear gap."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "refused",
+    "refusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous",
+    "student": "mirror(): the copy would meet the original only at a point or along an edge, which cannot be fused into one solid -- move the shape so the copy overlaps it along a face, or leaves a clear gap."
+   }
+  ],
+  "outcome": "REFUSED"
+ },
+ {
+  "id": "r2-tie-hexprism-tb",
+  "row": "mirror-curved-tie",
+  "src": "const c = prism(6, 12, 8); mirror(c, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "prism",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "prism1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-hexprism-tb",
+   "kind": "mirror-curved-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "prism",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 1496.49189773951,
+    "com": [
+     3.418600331348558e-16,
+     1.8992224063047545e-17,
+     -4.000000000000001
+    ],
+    "bbox": [
+     -6,
+     -5.196152422706632,
+     -12,
+     6,
+     5.196152422706632,
+     4
+    ],
+    "faces": 14,
+    "types": {
+     "plane": 14
+    },
+    "components": {
+     "plane": 8
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 1496.49189773951,
+    "bbox": [
+     -6,
+     -5.196152422706632,
+     -12,
+     6,
+     5.196152422706632,
+     4
+    ],
+    "faces": 16,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     1.2344945640980903e-16,
+     -1.6143390453590414e-16,
+     -4.000000000000001
+    ]
+   },
+   "ms": 16,
+   "truckFeatures": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 2,
+      "at": -4,
+      "how": "measured"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 8
+    },
+    "occtTypes": {
+     "plane": 14
+    },
+    "occtComponents": {
+     "plane": 8
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "volume": 1496.4918977395103,
+    "bbox": [
+     -6,
+     -5.196152422706632,
+     -12.000000000000007,
+     6,
+     5.196152422706632,
+     4
+    ],
+    "com": [
+     1.0762260302393606e-16,
+     2.4056817146526887e-16,
+     -4.000000000000001
+    ],
+    "faces": 8,
+    "kernelFaces": 8,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 1.5193779250438036e-16,
+    "dBbox": 5.921189464667501e-16,
+    "dCom": 1.0392605417891333e-17,
+    "tol": 1e-9,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "prism1",
+    "kind": "prism",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 2,
+     "at": -4,
+     "how": "measured"
+    }
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r2-tie-extruded-disc-tb",
+  "row": "mirror-curved-tie",
+  "src": "const s = sketch('top', -5); s.circle(10); const c = extrude(s, 10); mirror(c, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "pull1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-extruded-disc-tb",
+   "kind": "mirror-curved-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 1570.796326794897,
+    "com": [
+     5.066270212606774e-16,
+     -5.054961573739348e-16,
+     -5
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -15,
+     5,
+     5,
+     5
+    ],
+    "faces": 4,
+    "types": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 1570.796326794898,
+    "bbox": [
+     -5,
+     -5,
+     -15,
+     5,
+     5,
+     5
+    ],
+    "faces": 6,
+    "dVol": 7.237528875152535e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     -2.6531989232139007e-16,
+     -2.2393452450202795e-16,
+     -5.000000000000023
+    ]
+   },
+   "ms": 834,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 2,
+      "at": 5.000000000000003,
+      "how": "measured"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "occtComponents": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "faceKeys": {
+     "cylinder": "truck-merges-edge-connected-same-surface-faces",
+     "plane": "equal"
+    },
+    "volume": 1570.588405158471,
+    "bbox": [
+     -5,
+     -5.000000000000002,
+     -5.000000000000005,
+     5,
+     5.000000000000002,
+     15.000000000000014
+    ],
+    "com": [
+     5.283166261600082e-16,
+     4.758889732344969e-16,
+     5.0000000000004166
+    ],
+    "faces": 3,
+    "kernelFaces": 4,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.00013236702485175668,
+    "dBbox": 2.0000000000000027,
+    "dCom": 0.40824829046388,
+    "tol": 0.0003,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": false
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 2,
+     "at": 5.000000000000003,
+     "how": "measured"
+    }
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r2-tie-drilled-cyl-tb",
+  "row": "mirror-curved-tie",
+  "src": "const c = cylinder(30, 10); const h = hole(c, { across: 6 }); mirror(h, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "cylinder",
+   "hole",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "hole1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-drilled-cyl-tb",
+   "kind": "mirror-curved-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "cylinder",
+    "hole",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 13571.680263507906,
+    "com": [
+     -5.675261357541485e-16,
+     -1.5895388044389103e-15,
+     -5
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -15,
+     15,
+     15,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "cylinder": 4,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 13571.680263507898,
+    "bbox": [
+     -15,
+     -15,
+     -15,
+     15,
+     15,
+     5
+    ],
+    "faces": 8,
+    "dVol": 5.36113250011299e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     7.310761532103577e-16,
+     1.5794794522127386e-16,
+     -5.000000000000058
+    ]
+   },
+   "ms": 3279,
+   "truckFeatures": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 2,
+      "at": 5.000000000000002,
+      "how": "measured"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 4,
+     "plane": 2
+    },
+    "occtComponents": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "truck-merges-edge-connected-same-surface-faces",
+     "plane": "equal"
+    },
+    "volume": 13571.290595569211,
+    "bbox": [
+     -14.999768343198584,
+     -14.999645737868263,
+     -5.0000000000000275,
+     14.99976834319857,
+     14.999645737868251,
+     15.000000000000052
+    ],
+    "com": [
+     -6.138952198905682e-15,
+     -6.611904224691286e-15,
+     5.000000002090636
+    ],
+    "faces": 4,
+    "kernelFaces": 10,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000028711841947983168,
+    "dBbox": 2.00000000000001,
+    "dCom": 0.21320071640018295,
+    "tol": 0.0003,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": false
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 2,
+     "at": 5.000000000000002,
+     "how": "measured"
+    }
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r2-tie-box-tb",
+  "row": "mirror-planar-tie",
+  "src": "const c = box(10,10,10, { at: [0,0,0] }); mirror(c, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "box",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "box1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-box-tb",
+   "kind": "mirror-planar-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 1999.9999999999995,
+    "com": [
+     1.7053025658242407e-16,
+     3.885780586188049e-17,
+     -5.000000000000001
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -15,
+     5,
+     5,
+     5
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 1999.9999999999998,
+    "bbox": [
+     -5,
+     -5,
+     -15,
+     5,
+     5,
+     5
+    ],
+    "faces": 12,
+    "dVol": 1.1368683772161606e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     0,
+     0,
+     -5.000000000000001
+    ]
+   },
+   "ms": 11,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 2,
+      "at": -5,
+      "how": "measured"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 10
+    },
+    "occtComponents": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "volume": 2000,
+    "bbox": [
+     -5,
+     -5,
+     -15,
+     5,
+     5,
+     5
+    ],
+    "com": [
+     0,
+     0,
+     -5
+    ],
+    "faces": 6,
+    "kernelFaces": 6,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 3.625973214694716e-17,
+    "tol": 1e-9,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 2,
+     "at": -5,
+     "how": "measured"
+    }
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r2-tie-box-fb",
+  "row": "mirror-planar-tie",
+  "src": "const c = box(10,10,10, { at: [0,0,0] }); mirror(c, 'front-back');",
+  "mapAngle": false,
+  "featureKinds": [
+   "box",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "box1",
+    "plane": "xz"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-box-fb",
+   "kind": "mirror-planar-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 1999.9999999999995,
+    "com": [
+     0,
+     -5.000000000000001,
+     2.038369473211788e-16
+    ],
+    "bbox": [
+     -5,
+     -15,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 1999.9999999999998,
+    "bbox": [
+     -5,
+     -15,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "faces": 12,
+    "dVol": 1.1368683772161606e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     0,
+     -5.000000000000002,
+     0
+    ]
+   },
+   "ms": 12,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 1,
+      "at": -5,
+      "how": "measured"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 10
+    },
+    "occtComponents": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "volume": 2000,
+    "bbox": [
+     -5,
+     -15,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "com": [
+     0,
+     -5,
+     0
+    ],
+    "faces": 6,
+    "kernelFaces": 6,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 3.625973214694716e-17,
+    "tol": 1e-9,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 1,
+     "at": -5,
+     "how": "measured"
+    }
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r2-tie-turned-box-lr",
+  "row": "mirror-planar-tie",
+  "src": "const c = box(10,10,10, { at: [0,0,0] }); turn(c, [0, 0, 30]); mirror(c, 'left-right');",
+  "mapAngle": false,
+  "featureKinds": [
+   "box",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "box1",
+    "plane": "yz"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-turned-box-lr",
+   "kind": "mirror-planar-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 1999.9999999831412,
+    "com": [
+     -6.8301,
+     -1.542639438425156e-11,
+     1.0747919429320561e-16
+    ],
+    "bbox": [
+     -20.490327018922194,
+     -6.830127018922193,
+     -5,
+     6.830127018922193,
+     6.8301270189221945,
+     5
+    ],
+    "faces": 14,
+    "types": {
+     "plane": 14
+    },
+    "components": {
+     "plane": 10
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 1999.9999999999998,
+    "bbox": [
+     -20.49038105676658,
+     -6.830127018922193,
+     -5,
+     6.830127018922193,
+     6.830127018922193,
+     5
+    ],
+    "faces": 12,
+    "dVol": 8.429310582940275e-12,
+    "dBbox": 0.000002637236796462228,
+    "pass": true,
+    "com": [
+     -6.830127018922193,
+     -1.1368683772161603e-16,
+     0
+    ]
+   },
+   "ms": 14,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "refused",
+     "refusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous",
+     "student": "mirror(): the copy would meet the original only at a point or along an edge, which cannot be fused into one solid -- move the shape so the copy overlaps it along a face, or leaves a clear gap."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous",
+    "student": "mirror(): the copy would meet the original only at a point or along an edge, which cannot be fused into one solid -- move the shape so the copy overlaps it along a face, or leaves a clear gap.",
+    "firstRefusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous",
+    "firstStudent": "mirror(): the copy would meet the original only at a point or along an edge, which cannot be fused into one solid -- move the shape so the copy overlaps it along a face, or leaves a clear gap."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "refused",
+    "refusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous",
+    "student": "mirror(): the copy would meet the original only at a point or along an edge, which cannot be fused into one solid -- move the shape so the copy overlaps it along a face, or leaves a clear gap."
+   }
+  ],
+  "outcome": "REFUSED"
+ },
+ {
+  "id": "r2-tie-turned-box-tb",
+  "row": "mirror-planar-tie",
+  "src": "const c = box(10,10,10, { at: [0,0,0] }); turn(c, [30, 0, 0]); mirror(c, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "box",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "box1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r2-tie-turned-box-tb",
+   "kind": "mirror-planar-tie",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 1999.999999983141,
+    "com": [
+     -5.1170225394177596e-17,
+     1.5426805878690528e-11,
+     -6.830100000000001
+    ],
+    "bbox": [
+     -5,
+     -6.8301270189221945,
+     -20.490327018922194,
+     5,
+     6.8301270189221945,
+     6.830127018922194
+    ],
+    "faces": 14,
+    "types": {
+     "plane": 14
+    },
+    "components": {
+     "plane": 10
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 1999.9999999999998,
+    "bbox": [
+     -5,
+     -6.830127018922193,
+     -20.49038105676658,
+     5,
+     6.830127018922193,
+     6.830127018922193
+    ],
+    "faces": 12,
+    "dVol": 8.429424269777999e-12,
+    "dBbox": 0.000002637236796462228,
+    "pass": true,
+    "com": [
+     -3.552713678800502e-18,
+     3.5527136788005016e-17,
+     -6.8301270189221945
+    ]
+   },
+   "ms": 15,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "refused",
+     "refusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous",
+     "student": "mirror(): the copy would meet the original only at a point or along an edge, which cannot be fused into one solid -- move the shape so the copy overlaps it along a face, or leaves a clear gap."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous",
+    "student": "mirror(): the copy would meet the original only at a point or along an edge, which cannot be fused into one solid -- move the shape so the copy overlaps it along a face, or leaves a clear gap.",
+    "firstRefusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous",
+    "firstStudent": "mirror(): the copy would meet the original only at a point or along an edge, which cannot be fused into one solid -- move the shape so the copy overlaps it along a face, or leaves a clear gap."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "refused",
+    "refusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous",
+    "student": "mirror(): the copy would meet the original only at a point or along an edge, which cannot be fused into one solid -- move the shape so the copy overlaps it along a face, or leaves a clear gap."
+   }
+  ],
+  "outcome": "REFUSED"
+ }
+]

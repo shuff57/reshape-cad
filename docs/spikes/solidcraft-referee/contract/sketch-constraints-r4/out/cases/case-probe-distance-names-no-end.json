@@ -1,0 +1,29 @@
+[
+ {
+  "id": "probe-distance-names-no-end",
+  "feats": [
+   "rule:distance"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "needs a point of geometry 1 and the row names none (brep-rs refuses the same row)"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ }
+]

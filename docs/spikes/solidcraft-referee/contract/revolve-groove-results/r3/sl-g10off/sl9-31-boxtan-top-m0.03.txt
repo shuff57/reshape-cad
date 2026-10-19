@@ -1,0 +1,1 @@
+sl9-31-boxtan-top-m0.03                  PASS     occtV 71079.0401 | tr-occt dV 4.2e-7 dBb 0.0e+0 dCom 3.6e-7 F o/b/t 12/12/12 | brep-occt dV 2.0e-16      | ms 760 cpu 1373

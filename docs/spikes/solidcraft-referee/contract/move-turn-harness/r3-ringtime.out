@@ -1,0 +1,7 @@
+ring alone                 calls 17.9s wall/17.7s cpu | last call is the full build ok
+ring turned [30,40,50]     calls 15.1s wall/14.7s cpu | last call is the full build ok
+ring copy-moved            calls 19.1s wall/19.0s cpu, 35.0s wall/34.9s cpu | last call is the full build ok
+box alone                  calls 0.2s wall/0.1s cpu | last call is the full build ok
+cylinder alone             calls 0.9s wall/1.1s cpu | last call is the full build ok
+sphere alone               calls 7.5s wall/7.9s cpu | last call is the full build ok
+cone alone                 calls 0.2s wall/0.3s cpu | last call is the full build ok

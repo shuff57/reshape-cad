@@ -1,0 +1,1972 @@
+[
+ {
+  "id": "ctl-noprofiles-plate-hole",
+  "feature": "several shapes",
+  "what": "plate with hole, profiles:all",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ],
+     "geoms": [
+      {
+       "k": "line",
+       "id": 1,
+       "a": [
+        -15,
+        -10
+       ],
+       "b": [
+        15,
+        -10
+       ]
+      },
+      {
+       "k": "line",
+       "id": 2,
+       "a": [
+        15,
+        -10
+       ],
+       "b": [
+        15,
+        10
+       ]
+      },
+      {
+       "k": "line",
+       "id": 3,
+       "a": [
+        15,
+        10
+       ],
+       "b": [
+        -15,
+        10
+       ]
+      },
+      {
+       "k": "line",
+       "id": 4,
+       "a": [
+        -15,
+        10
+       ],
+       "b": [
+        -15,
+        -10
+       ]
+      },
+      {
+       "k": "circle",
+       "id": 5,
+       "c": [
+        0,
+        0
+       ],
+       "r": 3
+      }
+     ],
+     "geom": [
+      {
+       "k": "line",
+       "id": 1,
+       "a": [
+        -15,
+        -10
+       ],
+       "b": [
+        15,
+        -10
+       ]
+      },
+      {
+       "k": "line",
+       "id": 2,
+       "a": [
+        15,
+        -10
+       ],
+       "b": [
+        15,
+        10
+       ]
+      },
+      {
+       "k": "line",
+       "id": 3,
+       "a": [
+        15,
+        10
+       ],
+       "b": [
+        -15,
+        10
+       ]
+      },
+      {
+       "k": "line",
+       "id": 4,
+       "a": [
+        -15,
+        10
+       ],
+       "b": [
+        -15,
+        -10
+       ]
+      },
+      {
+       "k": "circle",
+       "id": 5,
+       "c": [
+        0,
+        0
+       ],
+       "r": 3
+      }
+     ],
+     "rules": [
+      {
+       "k": "coincident",
+       "a": 1,
+       "aEnd": "b",
+       "b": 2,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 2,
+       "aEnd": "b",
+       "b": 3,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 3,
+       "aEnd": "b",
+       "b": 4,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 4,
+       "aEnd": "b",
+       "b": 1,
+       "bEnd": "a"
+      },
+      {
+       "k": "horizontal",
+       "a": 1
+      },
+      {
+       "k": "vertical",
+       "a": 2
+      },
+      {
+       "k": "horizontal",
+       "a": 3
+      },
+      {
+       "k": "vertical",
+       "a": 4
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 5717.256661176917,
+   "bbox": [
+    -15,
+    -10,
+    0,
+    15,
+    10,
+    10
+   ],
+   "com": [
+    6.661427480658428e-16,
+    8.202503987377915e-17,
+    5
+   ],
+   "faces": 7,
+   "types": {
+    "cylinder": 1,
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 5717.256661176919,
+   "bbox": [
+    -15,
+    -10,
+    0,
+    15,
+    10,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 5717.256661176918
+  },
+  "curved": true,
+  "truck": {
+   "volume": 6000,
+   "bbox": [
+    -15,
+    -10,
+    0,
+    15,
+    10,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    5
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.04945437218920993,
+   "dBboxOcct": 0,
+   "dComOcct": 1.7803413813903242e-17,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "plane": "equal",
+    "cylinder": "UNEXPLAINED"
+   },
+   "faceOk": false,
+   "dVolBrep": 0.04945437218920959,
+   "dBboxBrep": 0,
+   "dVolExact": 0.049454372189209755,
+   "occtVolExact": 1.590788652097535e-16,
+   "brepVolExact": 1.590788652097535e-16
+  },
+  "translatorReported": {
+   "volume": 6000,
+   "bodies": 1,
+   "faces": 6
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -15,
+       -10
+      ],
+      [
+       15,
+       -10
+      ]
+     ],
+     "ids": [
+      "g1"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       -10
+      ],
+      [
+       15,
+       10
+      ]
+     ],
+     "ids": [
+      "g2"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       15,
+       10
+      ],
+      [
+       -15,
+       10
+      ]
+     ],
+     "ids": [
+      "g3"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -15,
+       10
+      ],
+      [
+       -15,
+       -10
+      ]
+     ],
+     "ids": [
+      "g4"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "radius": 3,
+     "id": "g5",
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g1.end",
+     "b": "g2.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g2.end",
+     "b": "g3.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g3.end",
+     "b": "g4.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g4.end",
+     "b": "g1.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g1",
+     "mode": "horizontal"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g2",
+     "mode": "vertical"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g3",
+     "mode": "horizontal"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g4",
+     "mode": "vertical"
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": false,
+  "exactOk": false,
+  "outcome": "FAIL"
+ },
+ {
+  "id": "ctl-noprofiles-ring",
+  "feature": "several shapes",
+  "what": "ring (two concentric circles), profiles:all",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ],
+     "geoms": [
+      {
+       "k": "circle",
+       "id": 1,
+       "c": [
+        0,
+        0
+       ],
+       "r": 10
+      },
+      {
+       "k": "circle",
+       "id": 2,
+       "c": [
+        0,
+        0
+       ],
+       "r": 4
+      }
+     ],
+     "geom": [
+      {
+       "k": "circle",
+       "id": 1,
+       "c": [
+        0,
+        0
+       ],
+       "r": 10
+      },
+      {
+       "k": "circle",
+       "id": 2,
+       "c": [
+        0,
+        0
+       ],
+       "r": 4
+      }
+     ],
+     "rules": []
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 2638.937829015427,
+   "bbox": [
+    -10,
+    -10,
+    0,
+    10,
+    10,
+    10
+   ],
+   "com": [
+    1.7232211607506035e-16,
+    -1.0985534899785093e-15,
+    4.999999999999999
+   ],
+   "faces": 4,
+   "types": {
+    "cylinder": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 2638.937829015429,
+   "bbox": [
+    -10,
+    -10,
+    0,
+    10,
+    10,
+    10
+   ],
+   "faces": 4
+  },
+  "exact": {
+   "volume": 2638.9378290154264
+  },
+  "curved": true,
+  "truck": {
+   "volume": 3141.35312821641,
+   "bbox": [
+    -10,
+    -10.000000000000009,
+    0,
+    10,
+    10.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    7.025107214318413e-16,
+    -2.045391630303299e-15,
+    5.000000002006273
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.1903854246495953,
+   "dBboxOcct": 8.881784197001252e-16,
+   "dComOcct": 6.687580859458345e-11,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "UNEXPLAINED",
+    "plane": "equal"
+   },
+   "faceOk": false,
+   "dVolBrep": 0.19038542464959426,
+   "dBboxBrep": 8.881784197001252e-16,
+   "dVolExact": 0.19038542464959549,
+   "occtVolExact": 1.7232211607506038e-16,
+   "brepVolExact": 1.0339326964503623e-15
+  },
+  "translatorReported": {
+   "volume": 3141.35312821641,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "radius": 10,
+     "id": "g1",
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "radius": 4,
+     "id": "g2",
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": false,
+  "exactOk": false,
+  "outcome": "FAIL"
+ },
+ {
+  "id": "ctl-noprofiles-island",
+  "feature": "several shapes",
+  "what": "island in a hole in a plate, profiles:all",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ],
+     "geoms": [
+      {
+       "k": "line",
+       "id": 1,
+       "a": [
+        -20,
+        -15
+       ],
+       "b": [
+        20,
+        -15
+       ]
+      },
+      {
+       "k": "line",
+       "id": 2,
+       "a": [
+        20,
+        -15
+       ],
+       "b": [
+        20,
+        15
+       ]
+      },
+      {
+       "k": "line",
+       "id": 3,
+       "a": [
+        20,
+        15
+       ],
+       "b": [
+        -20,
+        15
+       ]
+      },
+      {
+       "k": "line",
+       "id": 4,
+       "a": [
+        -20,
+        15
+       ],
+       "b": [
+        -20,
+        -15
+       ]
+      },
+      {
+       "k": "circle",
+       "id": 5,
+       "c": [
+        0,
+        0
+       ],
+       "r": 10
+      },
+      {
+       "k": "circle",
+       "id": 6,
+       "c": [
+        0,
+        0
+       ],
+       "r": 4
+      }
+     ],
+     "geom": [
+      {
+       "k": "line",
+       "id": 1,
+       "a": [
+        -20,
+        -15
+       ],
+       "b": [
+        20,
+        -15
+       ]
+      },
+      {
+       "k": "line",
+       "id": 2,
+       "a": [
+        20,
+        -15
+       ],
+       "b": [
+        20,
+        15
+       ]
+      },
+      {
+       "k": "line",
+       "id": 3,
+       "a": [
+        20,
+        15
+       ],
+       "b": [
+        -20,
+        15
+       ]
+      },
+      {
+       "k": "line",
+       "id": 4,
+       "a": [
+        -20,
+        15
+       ],
+       "b": [
+        -20,
+        -15
+       ]
+      },
+      {
+       "k": "circle",
+       "id": 5,
+       "c": [
+        0,
+        0
+       ],
+       "r": 10
+      },
+      {
+       "k": "circle",
+       "id": 6,
+       "c": [
+        0,
+        0
+       ],
+       "r": 4
+      }
+     ],
+     "rules": [
+      {
+       "k": "coincident",
+       "a": 1,
+       "aEnd": "b",
+       "b": 2,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 2,
+       "aEnd": "b",
+       "b": 3,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 3,
+       "aEnd": "b",
+       "b": 4,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 4,
+       "aEnd": "b",
+       "b": 1,
+       "bEnd": "a"
+      },
+      {
+       "k": "horizontal",
+       "a": 1
+      },
+      {
+       "k": "vertical",
+       "a": 2
+      },
+      {
+       "k": "horizontal",
+       "a": 3
+      },
+      {
+       "k": "vertical",
+       "a": 4
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "sk1: Sketch 1: these loops do not make one flat face OpenCascade will accept"
+  },
+  "brep": {
+   "volume": 9361.062170984571,
+   "bbox": [
+    -20,
+    -15,
+    0,
+    20,
+    15,
+    10
+   ],
+   "faces": 10
+  },
+  "exact": {
+   "volume": 9361.062170984573
+  },
+  "curved": true,
+  "truck": {
+   "volume": 12000,
+   "bbox": [
+    -20,
+    -15,
+    0,
+    20,
+    15,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    5
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolBrep": 0.2819058116284119,
+   "dBboxBrep": 0,
+   "dVolExact": 0.28190581162841166,
+   "brepVolExact": 1.9431442397466097e-16
+  },
+  "translatorReported": {
+   "volume": 12000,
+   "bodies": 1,
+   "faces": 6
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -20,
+       -15
+      ],
+      [
+       20,
+       -15
+      ]
+     ],
+     "ids": [
+      "g1"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       20,
+       -15
+      ],
+      [
+       20,
+       15
+      ]
+     ],
+     "ids": [
+      "g2"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       20,
+       15
+      ],
+      [
+       -20,
+       15
+      ]
+     ],
+     "ids": [
+      "g3"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -20,
+       15
+      ],
+      [
+       -20,
+       -15
+      ]
+     ],
+     "ids": [
+      "g4"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "radius": 10,
+     "id": "g5",
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "radius": 4,
+     "id": "g6",
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g1.end",
+     "b": "g2.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g2.end",
+     "b": "g3.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g3.end",
+     "b": "g4.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g4.end",
+     "b": "g1.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g1",
+     "mode": "horizontal"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g2",
+     "mode": "vertical"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g3",
+     "mode": "horizontal"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g4",
+     "mode": "vertical"
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "brep-rs+closed form",
+  "geomOk": false,
+  "exactOk": false,
+  "outcome": "FAIL"
+ },
+ {
+  "id": "ctl-noprofiles-slot-hole",
+  "feature": "several shapes",
+  "what": "slot cut as a hole in a plate, profiles:all",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ],
+     "geoms": [
+      {
+       "k": "line",
+       "id": 1,
+       "a": [
+        -20,
+        -10
+       ],
+       "b": [
+        20,
+        -10
+       ]
+      },
+      {
+       "k": "line",
+       "id": 2,
+       "a": [
+        20,
+        -10
+       ],
+       "b": [
+        20,
+        10
+       ]
+      },
+      {
+       "k": "line",
+       "id": 3,
+       "a": [
+        20,
+        10
+       ],
+       "b": [
+        -20,
+        10
+       ]
+      },
+      {
+       "k": "line",
+       "id": 4,
+       "a": [
+        -20,
+        10
+       ],
+       "b": [
+        -20,
+        -10
+       ]
+      },
+      {
+       "k": "arc",
+       "id": 5,
+       "c": [
+        -10,
+        0
+       ],
+       "r": 4,
+       "a": [
+        -10,
+        -4
+       ],
+       "b": [
+        -10,
+        4
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "arc",
+       "id": 6,
+       "c": [
+        10,
+        0
+       ],
+       "r": 4,
+       "a": [
+        10,
+        4
+       ],
+       "b": [
+        10,
+        -4
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "line",
+       "id": 7,
+       "a": [
+        -10,
+        4
+       ],
+       "b": [
+        10,
+        4
+       ]
+      },
+      {
+       "k": "line",
+       "id": 8,
+       "a": [
+        10,
+        -4
+       ],
+       "b": [
+        -10,
+        -4
+       ]
+      }
+     ],
+     "geom": [
+      {
+       "k": "line",
+       "id": 1,
+       "a": [
+        -20,
+        -10
+       ],
+       "b": [
+        20,
+        -10
+       ]
+      },
+      {
+       "k": "line",
+       "id": 2,
+       "a": [
+        20,
+        -10
+       ],
+       "b": [
+        20,
+        10
+       ]
+      },
+      {
+       "k": "line",
+       "id": 3,
+       "a": [
+        20,
+        10
+       ],
+       "b": [
+        -20,
+        10
+       ]
+      },
+      {
+       "k": "line",
+       "id": 4,
+       "a": [
+        -20,
+        10
+       ],
+       "b": [
+        -20,
+        -10
+       ]
+      },
+      {
+       "k": "arc",
+       "id": 5,
+       "c": [
+        -10,
+        0
+       ],
+       "r": 4,
+       "a": [
+        -10,
+        -4
+       ],
+       "b": [
+        -10,
+        4
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "arc",
+       "id": 6,
+       "c": [
+        10,
+        0
+       ],
+       "r": 4,
+       "a": [
+        10,
+        4
+       ],
+       "b": [
+        10,
+        -4
+       ],
+       "sense": "cw"
+      },
+      {
+       "k": "line",
+       "id": 7,
+       "a": [
+        -10,
+        4
+       ],
+       "b": [
+        10,
+        4
+       ]
+      },
+      {
+       "k": "line",
+       "id": 8,
+       "a": [
+        10,
+        -4
+       ],
+       "b": [
+        -10,
+        -4
+       ]
+      }
+     ],
+     "rules": [
+      {
+       "k": "coincident",
+       "a": 1,
+       "aEnd": "b",
+       "b": 2,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 2,
+       "aEnd": "b",
+       "b": 3,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 3,
+       "aEnd": "b",
+       "b": 4,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 4,
+       "aEnd": "b",
+       "b": 1,
+       "bEnd": "a"
+      },
+      {
+       "k": "horizontal",
+       "a": 1
+      },
+      {
+       "k": "vertical",
+       "a": 2
+      },
+      {
+       "k": "horizontal",
+       "a": 3
+      },
+      {
+       "k": "vertical",
+       "a": 4
+      },
+      {
+       "k": "coincident",
+       "a": 7,
+       "aEnd": "a",
+       "b": 5,
+       "bEnd": "b"
+      },
+      {
+       "k": "tangent",
+       "a": 7,
+       "aEnd": "a",
+       "b": 5,
+       "bEnd": "b"
+      },
+      {
+       "k": "coincident",
+       "a": 7,
+       "aEnd": "b",
+       "b": 6,
+       "bEnd": "a"
+      },
+      {
+       "k": "tangent",
+       "a": 7,
+       "aEnd": "b",
+       "b": 6,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 8,
+       "aEnd": "a",
+       "b": 6,
+       "bEnd": "b"
+      },
+      {
+       "k": "tangent",
+       "a": 8,
+       "aEnd": "a",
+       "b": 6,
+       "bEnd": "b"
+      },
+      {
+       "k": "coincident",
+       "a": 8,
+       "aEnd": "b",
+       "b": 5,
+       "bEnd": "a"
+      },
+      {
+       "k": "tangent",
+       "a": 8,
+       "aEnd": "b",
+       "b": 5,
+       "bEnd": "a"
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "sk1: Sketch 1: rule 10 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "brep": {
+   "volume": 5897.345175425631,
+   "bbox": [
+    -20,
+    -10,
+    0,
+    20,
+    10,
+    10
+   ],
+   "faces": 10
+  },
+  "exact": {
+   "volume": 5897.345175425633
+  },
+  "curved": true,
+  "truck": {
+   "volume": 8000,
+   "bbox": [
+    -20,
+    -10,
+    0,
+    20,
+    10,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    5
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolBrep": 0.356542607228788,
+   "dBboxBrep": 0,
+   "dVolExact": 0.3565426072287876,
+   "brepVolExact": 3.0844207850095416e-16
+  },
+  "translatorReported": {
+   "volume": 8000,
+   "bodies": 1,
+   "faces": 6
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -20,
+       -10
+      ],
+      [
+       20,
+       -10
+      ]
+     ],
+     "ids": [
+      "g1"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       20,
+       -10
+      ],
+      [
+       20,
+       10
+      ]
+     ],
+     "ids": [
+      "g2"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       20,
+       10
+      ],
+      [
+       -20,
+       10
+      ]
+     ],
+     "ids": [
+      "g3"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -20,
+       10
+      ],
+      [
+       -20,
+       -10
+      ]
+     ],
+     "ids": [
+      "g4"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      -10,
+      -4
+     ],
+     "end": [
+      -10,
+      4
+     ],
+     "through": [
+      -14,
+      -4.898587196589413e-16
+     ],
+     "id": "g5",
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      10,
+      4
+     ],
+     "end": [
+      10,
+      -4
+     ],
+     "through": [
+      14,
+      0
+     ],
+     "id": "g6",
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -10,
+       4
+      ],
+      [
+       10,
+       4
+      ]
+     ],
+     "ids": [
+      "g7"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       10,
+       -4
+      ],
+      [
+       -10,
+       -4
+      ]
+     ],
+     "ids": [
+      "g8"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g1.end",
+     "b": "g2.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g2.end",
+     "b": "g3.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g3.end",
+     "b": "g4.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g4.end",
+     "b": "g1.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g1",
+     "mode": "horizontal"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g2",
+     "mode": "vertical"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g3",
+     "mode": "horizontal"
+    }
+   },
+   {
+    "command": "sketch.constraint.horizontal_vertical",
+    "params": {
+     "line": "g4",
+     "mode": "vertical"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g7.start",
+     "b": "g5.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.tangent",
+    "params": {
+     "a": "g7",
+     "b": "g5"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g7.end",
+     "b": "g6.end"
+    }
+   },
+   {
+    "command": "sketch.constraint.tangent",
+    "params": {
+     "a": "g7",
+     "b": "g6"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g8.start",
+     "b": "g6.start"
+    }
+   },
+   {
+    "command": "sketch.constraint.tangent",
+    "params": {
+     "a": "g8",
+     "b": "g6"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g8.end",
+     "b": "g5.end"
+    }
+   },
+   {
+    "command": "sketch.constraint.tangent",
+    "params": {
+     "a": "g8",
+     "b": "g5"
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "brep-rs+closed form",
+  "geomOk": false,
+  "exactOk": false,
+  "outcome": "FAIL"
+ }
+]

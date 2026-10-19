@@ -1,0 +1,186 @@
+[
+ {
+  "label": "topoRefs(round1)",
+  "name": "pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]]",
+  "topoRefs": [
+   "pocket1",
+   "pull1",
+   "pull2"
+  ],
+  "dependsOn": [
+   "pocket1",
+   "pull1",
+   "pull2"
+  ],
+  "rootFeature": "pull1",
+  "featureChain": [
+   "pocket1",
+   "pull1",
+   "pull2"
+  ]
+ },
+ {
+  "label": "topoRefs(shell1)",
+  "name": "pocket1.face[-z]",
+  "topoRefs": [
+   "pocket1"
+  ],
+  "dependsOn": [
+   "round1",
+   "pocket1"
+  ],
+  "rootFeature": "pocket1",
+  "featureChain": [
+   "pocket1"
+  ]
+ },
+ {
+  "0": "pull1",
+  "1": "pocket1",
+  "2": "round1",
+  "3": "shell1",
+  "label": "orphanedBy(pull1) cascade"
+ },
+ {
+  "0": "sk2",
+  "1": "pull2",
+  "2": "pocket1",
+  "3": "round1",
+  "4": "shell1",
+  "label": "orphanedBy(sk2) cascade"
+ },
+ {
+  "0": "sk1",
+  "1": "pull1",
+  "2": "sk2",
+  "label": "withoutFeatures(pull2) -> features left"
+ },
+ {
+  "label": "danglingRefs on intact doc"
+ },
+ {
+  "0": {
+   "feature": "pocket1",
+   "missing": "pull2"
+  },
+  "1": {
+   "feature": "round1",
+   "missing": "pull2"
+  },
+  "label": "danglingRefs after raw removal of pull2"
+ },
+ {
+  "label": "firstOrderViolation moved fillet to front",
+  "feature": "round1",
+  "missing": [
+   "pocket1",
+   "pull1",
+   "pull2"
+  ]
+ },
+ {
+  "0": "p",
+  "1": "o",
+  "2": "c",
+  "3": "k",
+  "4": "e",
+  "5": "t",
+  "6": "1",
+  "7": ",",
+  "8": " ",
+  "9": "r",
+  "10": "o",
+  "11": "u",
+  "12": "n",
+  "13": "d",
+  "14": "1",
+  "15": " ",
+  "16": "a",
+  "17": "n",
+  "18": "d",
+  "19": " ",
+  "20": "s",
+  "21": "h",
+  "22": "e",
+  "23": "l",
+  "24": "l",
+  "25": "1",
+  "26": " ",
+  "27": "a",
+  "28": "r",
+  "29": "e",
+  "30": " ",
+  "31": "b",
+  "32": "u",
+  "33": "i",
+  "34": "l",
+  "35": "t",
+  "36": " ",
+  "37": "f",
+  "38": "r",
+  "39": "o",
+  "40": "m",
+  "41": " ",
+  "42": "p",
+  "43": "u",
+  "44": "l",
+  "45": "l",
+  "46": "2",
+  "47": ",",
+  "48": " ",
+  "49": "s",
+  "50": "o",
+  "51": " ",
+  "52": "t",
+  "53": "h",
+  "54": "e",
+  "55": "y",
+  "56": " ",
+  "57": "g",
+  "58": "o",
+  "59": " ",
+  "60": "t",
+  "61": "o",
+  "62": "o",
+  "63": ".",
+  "label": "whyDeletingCosts(pull2)"
+ },
+ {
+  "label": "nameIsStructurallyValid intact",
+  "v": true,
+  "why": null
+ },
+ {
+  "label": "after deleting pull2",
+  "v": false,
+  "why": "That face was made by pull2, which is no longer in the model."
+ },
+ {
+  "label": "swept edge 3 after sketch lost a corner",
+  "v": false,
+  "why": "That face was pulled from edge 4 of sk2, which now has only 3 edges."
+ },
+ {
+  "label": "SC translator, swept edge 3 on a triangle (name lost)",
+  "fillet": "refused",
+  "sentence": "round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]] cannot be resolved: pull2.face[sk2.edge3]: sk2 has no edge 3",
+  "occtRefusals": {
+   "round1": "That face was pulled from edge 4 of Sketch 2, which now has only 3 edges."
+  },
+  "brepRefusals": {
+   "round1": "round1's edge could not be found -- round1 is shown without it.",
+   "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+  }
+ },
+ {
+  "0": {
+   "id": "pull1",
+   "refusal": "pull1 (extrude): the midplane option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)"
+  },
+  "1": {
+   "id": "shell1",
+   "refusal": "shell1 (shell): its target pull1 was refused (pull1 (extrude): the midplane option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))"
+  },
+  "label": "SC cascade: refused upstream -> dependents"
+ }
+]

@@ -1,0 +1,53 @@
+[
+ {
+  "id": "Z-groove-dup-vertex-90",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch('top'); g.polygon([[18,10],[18,10],[20,10],[20,15],[18,15]]); groove(g, cyl, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "Z-groove-dup-vertex-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "invalid": "OCCT: OCCT built nothing"
+  },
+  "noOcct": {
+   "brep": {
+    "volume": 37400.6605409865,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 8
+   },
+   "ms": 821,
+   "load": [
+    54.5,
+    54.5
+   ],
+   "cpuMs": 1441,
+   "truck": {
+    "refused": "groove1 (groove): two corners of the sketch are in the same place, so delete one of them."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: OCCT built nothing",
+  "caseMs": 1126
+ }
+]

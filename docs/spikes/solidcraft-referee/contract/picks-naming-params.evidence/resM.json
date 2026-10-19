@@ -1,0 +1,2285 @@
+[
+ {
+  "label": "channel splits top: hollow open top",
+  "src": "const b = box(40,30,10)\nconst sk = sketch('top', 5); sk.rect(10, 40, {at:[0,0]})\nconst p = pocket(sk, b, 3)\nhollow(p,{wall:1, open:'top'})",
+  "id": "shell1",
+  "ms": 200,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 (shell): pocket1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F3:side:l4], F1:+z#[F1:+x,F3:side:l2]; planar face with outward normal +z at the extreme along it on pocket1's own shape); a name must pick exactly one, so nothing is picked"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -20
+      ],
+      [
+       5,
+       -20
+      ],
+      [
+       5,
+       20
+      ],
+      [
+       -5,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "direction": "negative",
+     "sketch": "sk_sk1_0",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 3219.9822971502945,
+    "com": [
+     1.413051246901344,
+     1.428471825790082e-15,
+     -0.7089175845488896
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 21,
+    "types": {
+     "plane": 19,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 19,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "refusals": {
+   "shell1": "shell1 (shell): pocket1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F3:side:l4], F1:+z#[F1:+x,F3:side:l2]; planar face with outward normal +z at the extreme along it on pocket1's own shape); a name must pick exactly one, so nothing is picked"
+  },
+  "outcome": "REFUSED",
+  "sentence": "shell1 (shell): pocket1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F3:side:l4], F1:+z#[F1:+x,F3:side:l2]; planar face with outward normal +z at the extreme along it on pocket1's own shape); a name must pick exactly one, so nothing is picked",
+  "names": [
+   "pocket1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": -20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": -20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pocket1_depth",
+    "caption": "Pocket 1 deep",
+    "value": 3,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 1,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "channel splits top: draft face(left)",
+  "src": "const b = box(40,30,10)\nconst sk = sketch('top', 5); sk.rect(10, 40, {at:[0,0]})\nconst p = pocket(sk, b, 3)\ndraft(p.face('left'), 5)",
+  "id": "draft1",
+  "ms": 266,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -20,
+       -9.473903143468003e-17,
+       -9.473903143468003e-17
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "pocket1.face[-x]",
+     "rule": "planar face with outward normal -x at the extreme along it on pocket1's own shape",
+     "engineFace": "F1:-x",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-x",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "agree": null,
+       "note": "pocket1 is a pocket: no doc-derived plane for a built shape; the rule is geometry on solidcraft's own shape only"
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -20
+      ],
+      [
+       5,
+       -20
+      ],
+      [
+       5,
+       20
+      ],
+      [
+       -5,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "direction": "negative",
+     "sketch": "sk_sk1_0",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       -20,
+       -9.473903143468003e-17,
+       -9.473903143468003e-17
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11100,
+    "com": [
+     -0.0008619669195462057,
+     -2.2947609778355817e-16,
+     -0.30348843773106376
+    ],
+    "bbox": [
+     -20.437443317629622,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 10
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11100,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 10
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 11100,
+   "bbox": [
+    -20.43744331762962,
+    -15,
+    -5,
+    20,
+    15,
+    5
+   ],
+   "com": [
+    -0.0008619669195445363,
+    -1.365607660319712e-16,
+    -0.3034884377310639
+   ],
+   "faces": 10,
+   "faceTypes": {
+    "plane": 10
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 1.7383356731983598e-16,
+   "dCom": 3.252137381807905e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 10,
+    "truck": 10,
+    "brep": 10,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.draft: invalid input: no face at [19.562556682370378, 9.473903143468003e-17, 9.473903143468003e-17]"
+  },
+  "names": [
+   "pocket1.face[-x]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": -20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": -20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pocket1_depth",
+    "caption": "Pocket 1 deep",
+    "value": 3,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 5,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "channel splits top: round edge(top,left)",
+  "src": "const b = box(40,30,10)\nconst sk = sketch('top', 5); sk.rect(10, 40, {at:[0,0]})\nconst p = pocket(sk, b, 3)\nround(p.edge('top','left'), 1)",
+  "id": "round1",
+  "ms": 86,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): pocket1.edge[pocket1.face[+z] ^ pocket1.face[-x]] cannot be resolved: pocket1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F3:side:l4], F1:+z#[F1:+x,F3:side:l2]; planar face with outward normal +z at the extreme along it on pocket1's own shape); a name must pick exactly one, so nothing is picked"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -20
+      ],
+      [
+       5,
+       -20
+      ],
+      [
+       5,
+       20
+      ],
+      [
+       -5,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "direction": "negative",
+     "sketch": "sk_sk1_0",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11093.561944909396,
+    "com": [
+     0.011477201549098983,
+     1.1468954629169115e-16,
+     -0.286720553116224
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11093.561944901927,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "refusals": {
+   "round1": "round1 (fillet): pocket1.edge[pocket1.face[+z] ^ pocket1.face[-x]] cannot be resolved: pocket1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F3:side:l4], F1:+z#[F1:+x,F3:side:l2]; planar face with outward normal +z at the extreme along it on pocket1's own shape); a name must pick exactly one, so nothing is picked"
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 (fillet): pocket1.edge[pocket1.face[+z] ^ pocket1.face[-x]] cannot be resolved: pocket1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F3:side:l4], F1:+z#[F1:+x,F3:side:l2]; planar face with outward normal +z at the extreme along it on pocket1's own shape); a name must pick exactly one, so nothing is picked",
+  "names": [
+   "pocket1.edge[pocket1.face[+z] ^ pocket1.face[-x]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": -20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": -20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pocket1_depth",
+    "caption": "Pocket 1 deep",
+    "value": 3,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "channel splits top: round edge(top,front)",
+  "src": "const b = box(40,30,10)\nconst sk = sketch('top', 5); sk.rect(10, 40, {at:[0,0]})\nconst p = pocket(sk, b, 3)\nround(p.edge('top','front'), 1)",
+  "id": "round1",
+  "ms": 82,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): pocket1.edge[pocket1.face[+z] ^ pocket1.face[-y]] cannot be resolved: pocket1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F3:side:l4], F1:+z#[F1:+x,F3:side:l2]; planar face with outward normal +z at the extreme along it on pocket1's own shape); a name must pick exactly one, so nothing is picked"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -20
+      ],
+      [
+       5,
+       -20
+      ],
+      [
+       5,
+       20
+      ],
+      [
+       -5,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "direction": "negative",
+     "sketch": "sk_sk1_0",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11096.78097245382,
+    "com": [
+     0.003626082594140683,
+     0.0042865030468353495,
+     -0.28525174253298746
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11096.780972450963,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "refusals": {
+   "round1": "round1 (fillet): pocket1.edge[pocket1.face[+z] ^ pocket1.face[-y]] cannot be resolved: pocket1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F3:side:l4], F1:+z#[F1:+x,F3:side:l2]; planar face with outward normal +z at the extreme along it on pocket1's own shape); a name must pick exactly one, so nothing is picked"
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 (fillet): pocket1.edge[pocket1.face[+z] ^ pocket1.face[-y]] cannot be resolved: pocket1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F3:side:l4], F1:+z#[F1:+x,F3:side:l2]; planar face with outward normal +z at the extreme along it on pocket1's own shape); a name must pick exactly one, so nothing is picked",
+  "names": [
+   "pocket1.edge[pocket1.face[+z] ^ pocket1.face[-y]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": -20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": -20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pocket1_depth",
+    "caption": "Pocket 1 deep",
+    "value": 3,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "channel: hollow open bottom",
+  "src": "const b = box(40,30,10)\nconst sk = sketch('top', 5); sk.rect(10, 40, {at:[0,0]})\nconst p = pocket(sk, b, 3)\nhollow(p,{wall:1, open:'bottom'})",
+  "id": "shell1",
+  "ms": 269,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       0,
+       0,
+       -5
+      ]
+     ],
+     "thickness": 1,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "pocket1.face[-z]",
+     "rule": "planar face with outward normal -z at the extreme along it on pocket1's own shape",
+     "engineFace": "F1:-z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "agree": null,
+       "note": "pocket1 is a pocket: no doc-derived plane for a built shape; the rule is geometry on solidcraft's own shape only"
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -20
+      ],
+      [
+       5,
+       -20
+      ],
+      [
+       5,
+       20
+      ],
+      [
+       -5,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "direction": "negative",
+     "sketch": "sk_sk1_0",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       0,
+       0,
+       -5
+      ]
+     ],
+     "thickness": 1,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 2519.982297150292,
+    "com": [
+     -4.572024990679311e-12,
+     7.483484434636168e-16,
+     1.644177394539418
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 21,
+    "types": {
+     "plane": 19,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 19,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 2531.9999999999977,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    5
+   ],
+   "com": [
+    -1.9157339689793135e-15,
+    1.466733819999787e-15,
+    1.6421800947867313
+   ],
+   "faces": 19,
+   "faceTypes": {
+    "plane": 19
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 0.0047689632039461865,
+   "dBbox": 0,
+   "dCom": 0.00003917027082093661,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 21,
+    "truck": 19,
+    "brep": null,
+    "verdict": "UNEXPLAINED",
+    "keys": {
+     "plane": "equal",
+     "cylinder": "UNEXPLAINED"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "FAIL",
+  "control": {
+   "refused": "solid.shell: invalid input: select at least one face to remove"
+  },
+  "names": [
+   "pocket1.face[-z]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0u",
+    "caption": "Sketch 1 corner 1 across",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p0v",
+    "caption": "Sketch 1 corner 1 up",
+    "value": -20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1u",
+    "caption": "Sketch 1 corner 2 across",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p1v",
+    "caption": "Sketch 1 corner 2 up",
+    "value": -20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2u",
+    "caption": "Sketch 1 corner 3 across",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p2v",
+    "caption": "Sketch 1 corner 3 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3u",
+    "caption": "Sketch 1 corner 4 across",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_p3v",
+    "caption": "Sketch 1 corner 4 up",
+    "value": 20,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "sk1_offset",
+    "caption": "Sketch 1 offset",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "pocket1_depth",
+    "caption": "Pocket 1 deep",
+    "value": 3,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 1,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "two coplanar bosses: edge(top,right)",
+  "src": "const a = box(40,30,10)\nconst c1 = box(10,10,6,{at:[-12,0,8]})\nconst c2 = box(10,10,6,{at:[12,0,8]})\nconst u = join(a, c1, c2)\nround(u.edge('top','right'), 1)",
+  "id": "round1",
+  "ms": 183,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box3",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[+x]] cannot be resolved: op1.face[+z] matches 2 faces on b_box1 (F2:+z, F3:+z; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 6,
+     "center": [
+      -12,
+      0,
+      8
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 6,
+     "center": [
+      12,
+      0,
+      8
+     ],
+     "body_name": "b_box3"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2",
+      "b_box3"
+     ],
+     "operation": "join"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 13199.999999999996,
+    "com": [
+     5.684341886080803e-16,
+     2.488918162477852e-16,
+     0.7272727272727273
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     11
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 13200,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     11
+    ],
+    "faces": 16
+   },
+   "occtRefusals": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepRefusals": {
+    "round1": "5 edges of the part lie between a top face and a right face, so round1 cannot tell which one you mean -- round or chamfer the edge on the plain box before you join or cut it -- round1 is shown without it."
+   }
+  },
+  "refusals": {
+   "round1": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[+x]] cannot be resolved: op1.face[+z] matches 2 faces on b_box1 (F2:+z, F3:+z; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked"
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[+x]] cannot be resolved: op1.face[+z] matches 2 faces on b_box1 (F2:+z, F3:+z; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked",
+  "names": [
+   "op1.edge[op1.face[+x] ^ op1.face[+z]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 6,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": -12,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 8,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box3_width",
+    "caption": "Box 3 width",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box3_depth",
+    "caption": "Box 3 depth",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box3_height",
+    "caption": "Box 3 height",
+    "value": 6,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box3_x",
+    "caption": "Box 3 x",
+    "value": 12,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box3_y",
+    "caption": "Box 3 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box3_z",
+    "caption": "Box 3 z",
+    "value": 8,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "two coplanar bosses: hollow open top",
+  "src": "const a = box(40,30,10)\nconst c1 = box(10,10,6,{at:[-12,0,8]})\nconst c2 = box(10,10,6,{at:[12,0,8]})\nconst u = join(a, c1, c2)\nhollow(u,{wall:1, open:'top'})",
+  "id": "shell1",
+  "ms": 275,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box3",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 (shell): op1.face[+z] matches 2 faces on b_box1 (F2:+z, F3:+z; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 6,
+     "center": [
+      -12,
+      0,
+      8
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 6,
+     "center": [
+      12,
+      0,
+      8
+     ],
+     "body_name": "b_box3"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2",
+      "b_box3"
+     ],
+     "operation": "join"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 3841.4985197314872,
+    "com": [
+     0.19992198254281723,
+     9.47020749430355e-16,
+     0.9087146367695098
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     11
+    ],
+    "faces": 39,
+    "types": {
+     "plane": 31,
+     "cylinder": 8
+    },
+    "components": {
+     "plane": 31,
+     "cylinder": 8
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "refusals": {
+   "shell1": "shell1 (shell): op1.face[+z] matches 2 faces on b_box1 (F2:+z, F3:+z; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked"
+  },
+  "outcome": "REFUSED",
+  "sentence": "shell1 (shell): op1.face[+z] matches 2 faces on b_box1 (F2:+z, F3:+z; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked",
+  "names": [
+   "op1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 6,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": -12,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 8,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box3_width",
+    "caption": "Box 3 width",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box3_depth",
+    "caption": "Box 3 depth",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box3_height",
+    "caption": "Box 3 height",
+    "value": 6,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box3_x",
+    "caption": "Box 3 x",
+    "value": 12,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box3_y",
+    "caption": "Box 3 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box3_z",
+    "caption": "Box 3 z",
+    "value": 8,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 1,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ }
+]

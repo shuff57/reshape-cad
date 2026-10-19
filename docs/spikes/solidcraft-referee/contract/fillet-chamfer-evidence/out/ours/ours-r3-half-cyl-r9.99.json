@@ -1,0 +1,20 @@
+{
+ "id": "r3-half-cyl-r9.99",
+ "outcome": "built",
+ "volume": 10699.843436063062,
+ "faces": 5,
+ "bbox": [
+  -14.999768343198568,
+  -14.999645737868253,
+  -10.000000000000012,
+  14.999768343198573,
+  14.999645737868253,
+  10.000000000000005
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "cylinder"
+ ],
+ "scriptSource": "[{\"command\":\"solid.cylinder\",\"params\":{\"radius\":15,\"height\":20,\"base\":[0,0,-10],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}},{\"command\":\"solid.fillet\",\"params\":{\"edges\":[[15,0,10],[15,0,-10]],\"radius\":9.99,\"body\":\"b_cyl1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

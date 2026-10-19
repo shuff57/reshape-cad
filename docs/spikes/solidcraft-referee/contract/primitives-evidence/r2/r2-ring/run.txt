@@ -1,0 +1,9 @@
+r2-ring-100-2                                         dVol 2.7e-4 dBbox 9.6e-7 dCom 1.2e-8 dAn 2.7e-4 faces 1/1
+r2-ring-100-1                                         dVol 4.9e-4 dBbox 2.7e-6 dCom 2.4e-9 dAn 4.9e-4 faces 1/1
+r2-ring-200-1                                         dVol 1.1e-3 dBbox 1.7e-6 dCom 2.3e-8 dAn 1.1e-3 faces 1/1
+r2-ring-100-0.5                                       dVol 1.1e-3 dBbox 1.7e-6 dCom 2.3e-8 dAn 1.1e-3 faces 1/1
+r2-ring-100-0.25                                      dVol 1.9e-3 dBbox 8.4e-7 dCom 4.4e-8 dAn 1.9e-3 faces 1/1
+r2-ring-40-10                                         dVol 1.5e-4 dBbox 7.8e-6 dCom 8.0e-7 dAn 1.5e-4 faces 1/1
+r2-ring-40-4                                          dVol 1.5e-4 dBbox 3.2e-6 dCom 3.5e-7 dAn 1.5e-4 faces 1/1
+r2-ring-40-2                                          dVol 1.4e-4 dBbox 1.6e-6 dCom 1.7e-7 dAn 1.4e-4 faces 1/1
+r2-ring-40-1                                          dVol 2.2e-4 dBbox 8.0e-7 dCom 2.3e-7 dAn 2.2e-4 faces 1/1

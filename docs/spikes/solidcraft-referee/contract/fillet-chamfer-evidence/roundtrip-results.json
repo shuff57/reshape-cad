@@ -1,0 +1,286 @@
+[
+ {
+  "label": "box roundStyle chamfer",
+  "emitted": "const b1 = cuboid(40, 40, 20)\nround(b1, 4)\n",
+  "errors": [],
+  "sameDoc": false,
+  "diff": {
+   "before": [
+    {
+     "k": "box",
+     "round": 4,
+     "roundStyle": "chamfer",
+     "size": [
+      40,
+      40,
+      20
+     ]
+    }
+   ],
+   "after": [
+    {
+     "k": "box",
+     "round": 4,
+     "roundStyle": "fillet",
+     "size": [
+      40,
+      40,
+      20
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "label": "cylinder roundStyle chamfer",
+  "emitted": "const c1 = cylinder(24, 30)\nround(c1, 3)\n",
+  "errors": [],
+  "sameDoc": false,
+  "diff": {
+   "before": [
+    {
+     "k": "cylinder",
+     "round": 3,
+     "roundStyle": "chamfer"
+    }
+   ],
+   "after": [
+    {
+     "k": "cylinder",
+     "round": 3,
+     "roundStyle": "fillet"
+    }
+   ]
+  }
+ },
+ {
+  "label": "box roundStyle fillet",
+  "emitted": "const b1 = cuboid(40, 40, 20)\nround(b1, 4)\n",
+  "errors": [],
+  "sameDoc": true
+ },
+ {
+  "label": "box corner:3",
+  "emitted": "const box1 = cuboid(40, 30, 20)\nround(box1, 3)\n",
+  "errors": [],
+  "sameDoc": false,
+  "diff": {
+   "before": [
+    {
+     "k": "box",
+     "round": 3,
+     "size": [
+      40,
+      30,
+      20
+     ]
+    }
+   ],
+   "after": [
+    {
+     "k": "box",
+     "round": 3,
+     "roundStyle": "fillet",
+     "size": [
+      40,
+      30,
+      20
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "label": "cylinder corner:3",
+  "emitted": "const cyl1 = cylinder(30, 20)\nround(cyl1, 3)\n",
+  "errors": [],
+  "sameDoc": false,
+  "diff": {
+   "before": [
+    {
+     "k": "cylinder",
+     "round": 3
+    }
+   ],
+   "after": [
+    {
+     "k": "cylinder",
+     "round": 3,
+     "roundStyle": "fillet"
+    }
+   ]
+  }
+ },
+ {
+  "label": "round(box,4)",
+  "emitted": "const box1 = cuboid(40, 40, 20)\nround(box1, 4)\n",
+  "errors": [],
+  "sameDoc": true
+ },
+ {
+  "label": "edge round + bevel",
+  "emitted": "const box1 = cuboid(40, 30, 20)\nconst round1 = fillet(box1.edge('top', 'front'), 3)\nconst bevel1 = chamfer(box1.edge('top', 'right'), 2)\n",
+  "errors": [],
+  "sameDoc": true
+ },
+ {
+  "label": "edge round on plate",
+  "emitted": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst pull1 = extrude(sk1, 10)\nconst round1 = fillet(pull1.edge('top', 'front'), 3)\n",
+  "errors": [],
+  "sameDoc": true
+ },
+ {
+  "label": "hand-built list",
+  "emitted": "const box1 = cuboid(40, 30, 12)\nconst round1 = fillet(box1.edge('top', 'front'), 2)\nconst round2 = fillet(box1.edge('top', 'right'), 2)\n",
+  "errors": [],
+  "sameDoc": true
+ },
+ {
+  "label": "pocket rim",
+  "emitted": "const box1 = cuboid(60, 40, 12)\nconst sk1 = sketch('top', 6)\nsk1.rect(20, 10)\nconst pull1 = extrude(sk1, -4)\nconst pocket1 = subtract(box1, pull1)\nconst round1 = fillet(pocket1.edge('top', pocket1.wall(sk1, 1)), 1)\nconst round2 = fillet(pocket1.edge('top', pocket1.wall(sk1, 2)), 1)\nconst round3 = fillet(pocket1.edge('top', pocket1.wall(sk1, 3)), 1)\nconst round4 = fillet(pocket1.edge('top', pocket1.wall(sk1, 4)), 1)\n",
+  "errors": [],
+  "sameDoc": false,
+  "diff": {
+   "before": [
+    {
+     "k": "box",
+     "size": [
+      60,
+      40,
+      12
+     ]
+    },
+    {
+     "k": "sketch"
+    },
+    {
+     "k": "extrude"
+    },
+    {
+     "k": "combine"
+    },
+    {
+     "k": "fillet",
+     "style": "fillet",
+     "size": 1
+    },
+    {
+     "k": "fillet",
+     "style": "fillet",
+     "size": 1
+    },
+    {
+     "k": "fillet",
+     "style": "fillet",
+     "size": 1
+    },
+    {
+     "k": "fillet",
+     "style": "fillet",
+     "size": 1
+    }
+   ],
+   "after": [
+    {
+     "k": "box",
+     "size": [
+      60,
+      40,
+      12
+     ]
+    },
+    {
+     "k": "sketch"
+    },
+    {
+     "k": "extrude"
+    },
+    {
+     "k": "combine"
+    },
+    {
+     "k": "fillet",
+     "style": "fillet",
+     "size": 1
+    },
+    {
+     "k": "fillet",
+     "style": "fillet",
+     "size": 1
+    },
+    {
+     "k": "fillet",
+     "style": "fillet",
+     "size": 1
+    },
+    {
+     "k": "fillet",
+     "style": "fillet",
+     "size": 1
+    }
+   ]
+  }
+ },
+ {
+  "label": "pocket wall edge",
+  "emitted": "const box1 = cuboid(60, 40, 12)\nconst sk1 = sketch('top', 6)\nsk1.rect(20, 10)\nconst pull1 = extrude(sk1, -4)\nconst pocket1 = subtract(box1, pull1)\nconst round1 = fillet(pocket1.edge('top', pocket1.wall(sk1, 1)), 1)\n",
+  "errors": [],
+  "sameDoc": false,
+  "diff": {
+   "before": [
+    {
+     "k": "box",
+     "size": [
+      60,
+      40,
+      12
+     ]
+    },
+    {
+     "k": "sketch"
+    },
+    {
+     "k": "extrude"
+    },
+    {
+     "k": "combine"
+    },
+    {
+     "k": "fillet",
+     "style": "fillet",
+     "size": 1
+    }
+   ],
+   "after": [
+    {
+     "k": "box",
+     "size": [
+      60,
+      40,
+      12
+     ]
+    },
+    {
+     "k": "sketch"
+    },
+    {
+     "k": "extrude"
+    },
+    {
+     "k": "combine"
+    },
+    {
+     "k": "fillet",
+     "style": "fillet",
+     "size": 1
+    }
+   ]
+  }
+ },
+ {
+  "label": "alias fillet/chamfer",
+  "emitted": "const box1 = cuboid(40, 30, 12)\nconst round1 = fillet(box1.edge('top', 'front'), 2)\nconst bevel1 = chamfer(box1.edge('top', 'left'), 2)\n",
+  "errors": [],
+  "sameDoc": true
+ }
+]

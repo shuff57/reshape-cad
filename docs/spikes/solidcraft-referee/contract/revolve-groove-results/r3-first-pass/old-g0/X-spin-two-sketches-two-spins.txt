@@ -1,0 +1,1 @@
+X-spin-two-sketches-two-spins            PASS     occtV 6283.1853 | tr-occt dV 4.6e-7 dBb 0.0e+0 dCom 1.0e-5 F o/b/t 6/6/6 | brep-occt dV 1.0e-10      | ms 580 cpu 924

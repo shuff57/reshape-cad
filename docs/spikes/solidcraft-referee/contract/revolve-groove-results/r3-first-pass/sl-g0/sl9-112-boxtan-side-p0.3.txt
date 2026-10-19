@@ -1,0 +1,1 @@
+sl9-112-boxtan-side-p0.3                 PASS     occtV 71044.2459 | tr-occt dV 3.5e-7 dBb 3.4e-13 dCom 1.5e-7 F o/b/t 11/11/11 | brep-occt dV 1.5e-13      | ms 4159 cpu 4494

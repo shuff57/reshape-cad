@@ -1,0 +1,9 @@
+cases 264; truck pairing rule says shift != 0 in 6
+  SHIFTED E1 random | fuzz n=6 k=28: shift 5; truck 12161.692 index-pairing 12921.055 shifted-pairing 12146.142; |truck-shifted| 1.3e-3 |truck-index| 5.9e-2; OCCT 12921.055 (|OCCT-index| 1.4e-16)
+  SHIFTED E2 planar-sided | planar-sided n=6 k=6: shift 1; truck 6252.200 index-pairing 7873.933 shifted-pairing 6288.214; |truck-shifted| 5.7e-3 |truck-index| 2.1e-1; OCCT 7873.933 (|OCCT-index| 3.5e-16)
+  SHIFTED E2 planar-sided | planar-sided n=6 k=9: shift 1; truck 10250.170 index-pairing 12841.283 shifted-pairing 10270.430; |truck-shifted| 2.0e-3 |truck-index| 2.0e-1; OCCT 12841.283 (|OCCT-index| 1.4e-16)
+  SHIFTED E3 named | rhombus 40x20 -> rect 20x10: shift 3; truck 5364.583 index-pairing 5333.333 shifted-pairing 5333.333; |truck-shifted| 5.9e-3 |truck-index| 5.9e-3; OCCT 5333.333 (|OCCT-index| 1.7e-16)
+  SHIFTED E3 named | rect 20x20 -> same rect rotated 60 deg: shift 1; truck 7642.734 index-pairing 6666.667 shifted-pairing 7642.734; |truck-shifted| 1.2e-16 |truck-index| 1.5e-1; OCCT 7642.734 (|OCCT-index| 1.5e-1)
+  SHIFTED E3 named | rect 20x20 -> same rect rotated 90 deg: shift 1; truck 8000.000 index-pairing 5333.333 shifted-pairing 8000.000; |truck-shifted| 1.0e-14 |truck-index| 5.0e-1; OCCT 8000.000 (|OCCT-index| 5.0e-1)
+shift==0: 258 cases; of those truck-vs-index > 3e-4: 82; truck-vs-index > 1e-9 AND planar sides: 0; planar sides & shift==0: 122, all exact(<1e-9)=true
+OCCT follows index pairing (|OCCT-index|<1e-9) in 262 of 264; where it does not: rect 20x20 -> same rect rotated 60 deg; rect 20x20 -> same rect rotated 90 deg

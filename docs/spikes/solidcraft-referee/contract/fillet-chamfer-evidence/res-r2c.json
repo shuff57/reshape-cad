@@ -1,0 +1,2232 @@
+[
+ {
+  "id": "ov2-d-box-chamfer-1",
+  "row": "oversizeWhole",
+  "expect": null,
+  "doc": "box:b1",
+  "docJson": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     40,
+     30,
+     20
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ],
+    "round": 1,
+    "roundStyle": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "ov2-d-box-chamfer-1",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "b1",
+   "control": false,
+   "featureKinds": [
+    "box"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 23825.333333333336,
+    "com": [
+     7.105427357601002e-15,
+     -1.7763568394002505e-15,
+     -3.552713678800501e-15
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 26,
+    "types": {
+     "plane": 26
+    },
+    "components": {
+     "plane": 26
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 8
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23825.333333333332,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 26,
+    "dVol": 1.526937212669307e-16,
+    "dBbox": 0,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 554,
+   "truckFeatures": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        0,
+        -15,
+        -10
+       ],
+       [
+        0,
+        -15,
+        10
+       ],
+       [
+        0,
+        15,
+        -10
+       ],
+       [
+        0,
+        15,
+        10
+       ],
+       [
+        -20,
+        0,
+        -10
+       ],
+       [
+        -20,
+        0,
+        10
+       ],
+       [
+        20,
+        0,
+        -10
+       ],
+       [
+        20,
+        0,
+        10
+       ],
+       [
+        -20,
+        -15,
+        0
+       ],
+       [
+        -20,
+        15,
+        0
+       ],
+       [
+        20,
+        -15,
+        0
+       ],
+       [
+        20,
+        15,
+        0
+       ]
+      ],
+      "distance": 1,
+      "body": "b_b1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 40,
+      "width": 30,
+      "height": 20,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_b1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        0,
+        -15,
+        -10
+       ],
+       [
+        0,
+        -15,
+        10
+       ],
+       [
+        0,
+        15,
+        -10
+       ],
+       [
+        0,
+        15,
+        10
+       ],
+       [
+        -20,
+        0,
+        -10
+       ],
+       [
+        -20,
+        0,
+        10
+       ],
+       [
+        20,
+        0,
+        -10
+       ],
+       [
+        20,
+        0,
+        10
+       ],
+       [
+        -20,
+        -15,
+        0
+       ],
+       [
+        -20,
+        15,
+        0
+       ],
+       [
+        20,
+        -15,
+        0
+       ],
+       [
+        20,
+        15,
+        0
+       ]
+      ],
+      "distance": 1,
+      "body": "b_b1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 18
+    },
+    "occtTypes": {
+     "plane": 26
+    },
+    "occtComponents": {
+     "plane": 26
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 23826,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "com": [
+     1.0179296586618856e-16,
+     -3.1810301833183926e-16,
+     -7.316369421632302e-17
+    ],
+    "faces": 18,
+    "kernelFaces": 18,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.000027981420336794504,
+    "dBbox": 0,
+    "dCom": 1.300542256841627e-16,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "distance": 1,
+     "body": "b_b1"
+    },
+    "comTol": 0.000001,
+    "geomOk": false
+   },
+   "outcome": "FAIL",
+   "evidence": {
+    "wedgeUnionVolume": 23825.9999999991,
+    "wedgeUnionFaces": 18,
+    "truckVsWedgeUnion": 3.771429385342429e-14,
+    "occtTriangles": 8,
+    "occtFaces": 26,
+    "truckFaces": 18
+   },
+   "explain": "DIAGNOSIS, outcome stays FAIL (volume delta 2.80e-5 vs live OCCT, bar 1e-9): truck is the exact union of 12 wedge prisms (matches an independent 12-cut build to 3.8e-14); OCCT and brep-rs add 8 corner triangles (live: 8 triangular planar faces = 26 - 18)"
+  }
+ },
+ {
+  "id": "ov2-d-box-chamfer-2",
+  "row": "oversizeWhole",
+  "expect": null,
+  "doc": "box:b1",
+  "docJson": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     40,
+     30,
+     20
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ],
+    "round": 2,
+    "roundStyle": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "ov2-d-box-chamfer-2",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "b1",
+   "control": false,
+   "featureKinds": [
+    "box"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 23322.666666666657,
+    "com": [
+     1.0658141036401503e-14,
+     7.105427357601002e-15,
+     3.552713678800501e-15
+    ],
+    "bbox": [
+     -20.000000000000004,
+     -15.000000000000004,
+     -10.000000000000002,
+     20.000000000000004,
+     15.000000000000002,
+     10.000000000000002
+    ],
+    "faces": 26,
+    "types": {
+     "plane": 26
+    },
+    "components": {
+     "plane": 26
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 8
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23322.666666666668,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 26,
+    "dVol": 4.67954054193709e-16,
+    "dBbox": 2.368475785867e-16,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 443,
+   "truckFeatures": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        0,
+        -15,
+        -10
+       ],
+       [
+        0,
+        -15,
+        10
+       ],
+       [
+        0,
+        15,
+        -10
+       ],
+       [
+        0,
+        15,
+        10
+       ],
+       [
+        -20,
+        0,
+        -10
+       ],
+       [
+        -20,
+        0,
+        10
+       ],
+       [
+        20,
+        0,
+        -10
+       ],
+       [
+        20,
+        0,
+        10
+       ],
+       [
+        -20,
+        -15,
+        0
+       ],
+       [
+        -20,
+        15,
+        0
+       ],
+       [
+        20,
+        -15,
+        0
+       ],
+       [
+        20,
+        15,
+        0
+       ]
+      ],
+      "distance": 2,
+      "body": "b_b1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 40,
+      "width": 30,
+      "height": 20,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_b1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        0,
+        -15,
+        -10
+       ],
+       [
+        0,
+        -15,
+        10
+       ],
+       [
+        0,
+        15,
+        -10
+       ],
+       [
+        0,
+        15,
+        10
+       ],
+       [
+        -20,
+        0,
+        -10
+       ],
+       [
+        -20,
+        0,
+        10
+       ],
+       [
+        20,
+        0,
+        -10
+       ],
+       [
+        20,
+        0,
+        10
+       ],
+       [
+        -20,
+        -15,
+        0
+       ],
+       [
+        -20,
+        15,
+        0
+       ],
+       [
+        20,
+        -15,
+        0
+       ],
+       [
+        20,
+        15,
+        0
+       ]
+      ],
+      "distance": 2,
+      "body": "b_b1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 18
+    },
+    "occtTypes": {
+     "plane": 26
+    },
+    "occtComponents": {
+     "plane": 26
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 23328,
+    "bbox": [
+     -20,
+     -15.000000000000002,
+     -10,
+     20,
+     15.000000000000004,
+     10.000000000000002
+    ],
+    "com": [
+     7.797451146887244e-17,
+     6.49787595573937e-16,
+     -1.6082242990454943e-16
+    ],
+    "faces": 18,
+    "kernelFaces": 18,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.00022867596615637307,
+    "dBbox": 1.77635683940025e-16,
+    "dCom": 1.964687600816888e-16,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "distance": 2,
+     "body": "b_b1"
+    },
+    "comTol": 0.000001,
+    "geomOk": false
+   },
+   "outcome": "FAIL",
+   "evidence": {
+    "wedgeUnionVolume": 23327.999999999563,
+    "wedgeUnionFaces": 18,
+    "truckVsWedgeUnion": 1.8713882752529738e-14,
+    "occtTriangles": 8,
+    "occtFaces": 26,
+    "truckFaces": 18
+   },
+   "explain": "DIAGNOSIS, outcome stays FAIL (volume delta 2.29e-4 vs live OCCT, bar 1e-9): truck is the exact union of 12 wedge prisms (matches an independent 12-cut build to 1.9e-14); OCCT and brep-rs add 8 corner triangles (live: 8 triangular planar faces = 26 - 18)"
+  }
+ },
+ {
+  "id": "ov2-d-box-chamfer-5",
+  "row": "oversizeWhole",
+  "expect": null,
+  "doc": "box:b1",
+  "docJson": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     40,
+     30,
+     20
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ],
+    "round": 5,
+    "roundStyle": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "ov2-d-box-chamfer-5",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "b1",
+   "control": false,
+   "featureKinds": [
+    "box"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 20166.66666666666,
+    "com": [
+     3.552713678800501e-15,
+     -1.7763568394002505e-15,
+     -3.552713678800501e-15
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 26,
+    "types": {
+     "plane": 26
+    },
+    "components": {
+     "plane": 26
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 8
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 20166.666666666668,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 26,
+    "dVol": 3.607912866537237e-16,
+    "dBbox": 0,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 458,
+   "truckFeatures": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        0,
+        -15,
+        -10
+       ],
+       [
+        0,
+        -15,
+        10
+       ],
+       [
+        0,
+        15,
+        -10
+       ],
+       [
+        0,
+        15,
+        10
+       ],
+       [
+        -20,
+        0,
+        -10
+       ],
+       [
+        -20,
+        0,
+        10
+       ],
+       [
+        20,
+        0,
+        -10
+       ],
+       [
+        20,
+        0,
+        10
+       ],
+       [
+        -20,
+        -15,
+        0
+       ],
+       [
+        -20,
+        15,
+        0
+       ],
+       [
+        20,
+        -15,
+        0
+       ],
+       [
+        20,
+        15,
+        0
+       ]
+      ],
+      "distance": 5,
+      "body": "b_b1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 40,
+      "width": 30,
+      "height": 20,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_b1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        0,
+        -15,
+        -10
+       ],
+       [
+        0,
+        -15,
+        10
+       ],
+       [
+        0,
+        15,
+        -10
+       ],
+       [
+        0,
+        15,
+        10
+       ],
+       [
+        -20,
+        0,
+        -10
+       ],
+       [
+        -20,
+        0,
+        10
+       ],
+       [
+        20,
+        0,
+        -10
+       ],
+       [
+        20,
+        0,
+        10
+       ],
+       [
+        -20,
+        -15,
+        0
+       ],
+       [
+        -20,
+        15,
+        0
+       ],
+       [
+        20,
+        -15,
+        0
+       ],
+       [
+        20,
+        15,
+        0
+       ]
+      ],
+      "distance": 5,
+      "body": "b_b1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 18
+    },
+    "occtTypes": {
+     "plane": 26
+    },
+    "occtComponents": {
+     "plane": 26
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 20250,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15.000000000000002,
+     10
+    ],
+    "com": [
+     1.197688496161881e-16,
+     7.186130976971284e-16,
+     8.421247238638224e-17
+    ],
+    "faces": 18,
+    "kernelFaces": 18,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.00413223140495898,
+    "dBbox": 1.1842378929335003e-16,
+    "dCom": 6.75360231569612e-17,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "distance": 5,
+     "body": "b_b1"
+    },
+    "comTol": 0.000001,
+    "geomOk": false
+   },
+   "outcome": "FAIL",
+   "evidence": {
+    "wedgeUnionVolume": 20249.99999999974,
+    "wedgeUnionFaces": 18,
+    "truckVsWedgeUnion": 1.2755382484124194e-14,
+    "occtTriangles": 8,
+    "occtFaces": 26,
+    "truckFaces": 18
+   },
+   "explain": "DIAGNOSIS, outcome stays FAIL (volume delta 4.13e-3 vs live OCCT, bar 1e-9): truck is the exact union of 12 wedge prisms (matches an independent 12-cut build to 1.3e-14); OCCT and brep-rs add 8 corner triangles (live: 8 triangular planar faces = 26 - 18)"
+  }
+ },
+ {
+  "id": "ov2-d-box-chamfer-8",
+  "row": "oversizeWhole",
+  "expect": null,
+  "doc": "box:b1",
+  "docJson": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     40,
+     30,
+     20
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ],
+    "round": 8,
+    "roundStyle": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "ov2-d-box-chamfer-8",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "b1",
+   "control": false,
+   "featureKinds": [
+    "box"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 15210.666666666672,
+    "com": [
+     -3.552713678800501e-15,
+     1.7763568394002505e-15,
+     0
+    ],
+    "bbox": [
+     -20.00000000000001,
+     -15.000000000000004,
+     -10.000000000000005,
+     20.000000000000004,
+     15.000000000000004,
+     10.000000000000004
+    ],
+    "faces": 26,
+    "types": {
+     "plane": 26
+    },
+    "components": {
+     "plane": 26
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 8
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 15210.666666666666,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 26,
+    "dVol": 3.58759305573122e-16,
+    "dBbox": 5.329070518200748e-16,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 601,
+   "truckFeatures": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        0,
+        -15,
+        -10
+       ],
+       [
+        0,
+        -15,
+        10
+       ],
+       [
+        0,
+        15,
+        -10
+       ],
+       [
+        0,
+        15,
+        10
+       ],
+       [
+        -20,
+        0,
+        -10
+       ],
+       [
+        -20,
+        0,
+        10
+       ],
+       [
+        20,
+        0,
+        -10
+       ],
+       [
+        20,
+        0,
+        10
+       ],
+       [
+        -20,
+        -15,
+        0
+       ],
+       [
+        -20,
+        15,
+        0
+       ],
+       [
+        20,
+        -15,
+        0
+       ],
+       [
+        20,
+        15,
+        0
+       ]
+      ],
+      "distance": 8,
+      "body": "b_b1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 40,
+      "width": 30,
+      "height": 20,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_b1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        0,
+        -15,
+        -10
+       ],
+       [
+        0,
+        -15,
+        10
+       ],
+       [
+        0,
+        15,
+        -10
+       ],
+       [
+        0,
+        15,
+        10
+       ],
+       [
+        -20,
+        0,
+        -10
+       ],
+       [
+        -20,
+        0,
+        10
+       ],
+       [
+        20,
+        0,
+        -10
+       ],
+       [
+        20,
+        0,
+        10
+       ],
+       [
+        -20,
+        -15,
+        0
+       ],
+       [
+        -20,
+        15,
+        0
+       ],
+       [
+        20,
+        -15,
+        0
+       ],
+       [
+        20,
+        15,
+        0
+       ]
+      ],
+      "distance": 8,
+      "body": "b_b1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 18
+    },
+    "occtTypes": {
+     "plane": 26
+    },
+    "occtComponents": {
+     "plane": 26
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 15552.000000000722,
+    "bbox": [
+     -20.000000000000085,
+     -15.000000000000021,
+     -10.000000000000007,
+     20.000000000000078,
+     15.000000000000185,
+     10.000000000000059
+    ],
+    "com": [
+     -6.471884451916112e-15,
+     8.343272727168964e-14,
+     2.819704536923301e-13
+    ],
+    "faces": 18,
+    "kernelFaces": 18,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.02244039270691952,
+    "dBbox": 1.20792265079217e-14,
+    "dCom": 5.236059875433396e-15,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       -10
+      ],
+      [
+       0,
+       -15,
+       10
+      ],
+      [
+       0,
+       15,
+       -10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       -20,
+       0,
+       -10
+      ],
+      [
+       -20,
+       0,
+       10
+      ],
+      [
+       20,
+       0,
+       -10
+      ],
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "distance": 8,
+     "body": "b_b1"
+    },
+    "comTol": 0.000001,
+    "geomOk": false
+   },
+   "outcome": "FAIL",
+   "evidence": {
+    "wedgeUnionVolume": 15551.999999999784,
+    "wedgeUnionFaces": 18,
+    "truckVsWedgeUnion": 6.035227187690811e-14,
+    "occtTriangles": 8,
+    "occtFaces": 26,
+    "truckFaces": 18
+   },
+   "explain": "DIAGNOSIS, outcome stays FAIL (volume delta 2.24e-2 vs live OCCT, bar 1e-9): truck is the exact union of 12 wedge prisms (matches an independent 12-cut build to 6.0e-14); OCCT and brep-rs add 8 corner triangles (live: 8 triangular planar faces = 26 - 18)"
+  }
+ },
+ {
+  "id": "ov2-d-box-chamfer-11",
+  "row": "oversizeWhole",
+  "expect": null,
+  "doc": "box:b1",
+  "docJson": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     40,
+     30,
+     20
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ],
+    "round": 11,
+    "roundStyle": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "ov2-d-box-chamfer-11",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "b1",
+   "control": false,
+   "featureKinds": [
+    "box"
+   ],
+   "invalid": "OCCT: Chamfering box b1 (40x30x20) at radius 11 failed -- the radius is too big for this shape's edges."
+  },
+  "brepOnly": {
+   "refused": "Rounding box by 11 would not fit its shortest side -- b1 is shown without it."
+  },
+  "scOnly": {
+   "volume": 10260.666666669471,
+   "faces": 14,
+   "faceTypes": {
+    "plane": 14
+   },
+   "bbox": [
+    -19.000000000001666,
+    -14.000000000000426,
+    -10.000000000000046,
+    19.000000000002288,
+    14.000000000007603,
+    10.000000000001137
+   ]
+  }
+ },
+ {
+  "id": "ov2-d-box-chamfer-13",
+  "row": "oversizeWhole",
+  "expect": null,
+  "doc": "box:b1",
+  "docJson": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     40,
+     30,
+     20
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ],
+    "round": 13,
+    "roundStyle": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "ov2-d-box-chamfer-13",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "b1",
+   "control": false,
+   "featureKinds": [
+    "box"
+   ],
+   "invalid": "OCCT: Chamfering box b1 (40x30x20) at radius 13 failed -- the radius is too big for this shape's edges."
+  },
+  "brepOnly": {
+   "refused": "Rounding box by 13 would not fit its shortest side -- b1 is shown without it."
+  },
+  "scOnly": {
+   "volume": 7158.000000000532,
+   "faces": 14,
+   "faceTypes": {
+    "plane": 14
+   },
+   "bbox": [
+    -17.000000000000362,
+    -12.000000000000961,
+    -10.000000000000002,
+    17.00000000000091,
+    12.000000000000657,
+    10.000000000000204
+   ]
+  }
+ },
+ {
+  "id": "ov2-d-cube-chamfer-2",
+  "row": "oversizeWhole",
+  "expect": null,
+  "doc": "box:b1",
+  "docJson": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     20,
+     20,
+     20
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ],
+    "round": 2,
+    "roundStyle": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "ov2-d-cube-chamfer-2",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "b1",
+   "control": false,
+   "featureKinds": [
+    "box"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 7562.666666666664,
+    "com": [
+     1.7763568394002505e-15,
+     1.7763568394002505e-15,
+     3.552713678800501e-15
+    ],
+    "bbox": [
+     -10,
+     -10,
+     -10,
+     10,
+     10,
+     10
+    ],
+    "faces": 26,
+    "types": {
+     "plane": 26
+    },
+    "components": {
+     "plane": 26
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 8
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 7562.666666666667,
+    "bbox": [
+     -10,
+     -10,
+     -10,
+     10,
+     10,
+     10
+    ],
+    "faces": 26,
+    "dVol": 3.607833355058338e-16,
+    "dBbox": 0,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 455,
+   "truckFeatures": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        0,
+        -10,
+        -10
+       ],
+       [
+        0,
+        -10,
+        10
+       ],
+       [
+        0,
+        10,
+        -10
+       ],
+       [
+        0,
+        10,
+        10
+       ],
+       [
+        -10,
+        0,
+        -10
+       ],
+       [
+        -10,
+        0,
+        10
+       ],
+       [
+        10,
+        0,
+        -10
+       ],
+       [
+        10,
+        0,
+        10
+       ],
+       [
+        -10,
+        -10,
+        0
+       ],
+       [
+        -10,
+        10,
+        0
+       ],
+       [
+        10,
+        -10,
+        0
+       ],
+       [
+        10,
+        10,
+        0
+       ]
+      ],
+      "distance": 2,
+      "body": "b_b1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 20,
+      "width": 20,
+      "height": 20,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_b1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        0,
+        -10,
+        -10
+       ],
+       [
+        0,
+        -10,
+        10
+       ],
+       [
+        0,
+        10,
+        -10
+       ],
+       [
+        0,
+        10,
+        10
+       ],
+       [
+        -10,
+        0,
+        -10
+       ],
+       [
+        -10,
+        0,
+        10
+       ],
+       [
+        10,
+        0,
+        -10
+       ],
+       [
+        10,
+        0,
+        10
+       ],
+       [
+        -10,
+        -10,
+        0
+       ],
+       [
+        -10,
+        10,
+        0
+       ],
+       [
+        10,
+        -10,
+        0
+       ],
+       [
+        10,
+        10,
+        0
+       ]
+      ],
+      "distance": 2,
+      "body": "b_b1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 18
+    },
+    "occtTypes": {
+     "plane": 26
+    },
+    "occtComponents": {
+     "plane": 26
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 7568,
+    "bbox": [
+     -10.000000000000002,
+     -10,
+     -10,
+     10.000000000000004,
+     10,
+     10
+    ],
+    "com": [
+     8.011757415194928e-17,
+     -2.8041150953182247e-16,
+     -7.511022576745245e-18
+    ],
+    "faces": 18,
+    "kernelFaces": 18,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.0007052186177718301,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 1.0277483448578542e-16,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -10,
+       -10
+      ],
+      [
+       0,
+       -10,
+       10
+      ],
+      [
+       0,
+       10,
+       -10
+      ],
+      [
+       0,
+       10,
+       10
+      ],
+      [
+       -10,
+       0,
+       -10
+      ],
+      [
+       -10,
+       0,
+       10
+      ],
+      [
+       10,
+       0,
+       -10
+      ],
+      [
+       10,
+       0,
+       10
+      ],
+      [
+       -10,
+       -10,
+       0
+      ],
+      [
+       -10,
+       10,
+       0
+      ],
+      [
+       10,
+       -10,
+       0
+      ],
+      [
+       10,
+       10,
+       0
+      ]
+     ],
+     "distance": 2,
+     "body": "b_b1"
+    },
+    "comTol": 0.000001,
+    "geomOk": false
+   },
+   "outcome": "FAIL",
+   "evidence": {
+    "wedgeUnionVolume": 7567.99999999985,
+    "wedgeUnionFaces": 18,
+    "truckVsWedgeUnion": 1.982909960260784e-14,
+    "occtTriangles": 8,
+    "occtFaces": 26,
+    "truckFaces": 18
+   },
+   "explain": "DIAGNOSIS, outcome stays FAIL (volume delta 7.05e-4 vs live OCCT, bar 1e-9): truck is the exact union of 12 wedge prisms (matches an independent 12-cut build to 2.0e-14); OCCT and brep-rs add 8 corner triangles (live: 8 triangular planar faces = 26 - 18)"
+  }
+ },
+ {
+  "id": "ov2-d-cube-chamfer-5",
+  "row": "oversizeWhole",
+  "expect": null,
+  "doc": "box:b1",
+  "docJson": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     20,
+     20,
+     20
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ],
+    "round": 5,
+    "roundStyle": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "ov2-d-cube-chamfer-5",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "b1",
+   "control": false,
+   "featureKinds": [
+    "box"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 5666.666666666667,
+    "com": [
+     -1.7763568394002505e-15,
+     0,
+     -1.7763568394002505e-15
+    ],
+    "bbox": [
+     -10,
+     -10,
+     -10,
+     10,
+     10,
+     10
+    ],
+    "faces": 26,
+    "types": {
+     "plane": 26
+    },
+    "components": {
+     "plane": 26
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 8
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 5666.666666666667,
+    "bbox": [
+     -10,
+     -10,
+     -10,
+     10,
+     10,
+     10
+    ],
+    "faces": 26,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 444,
+   "truckFeatures": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        0,
+        -10,
+        -10
+       ],
+       [
+        0,
+        -10,
+        10
+       ],
+       [
+        0,
+        10,
+        -10
+       ],
+       [
+        0,
+        10,
+        10
+       ],
+       [
+        -10,
+        0,
+        -10
+       ],
+       [
+        -10,
+        0,
+        10
+       ],
+       [
+        10,
+        0,
+        -10
+       ],
+       [
+        10,
+        0,
+        10
+       ],
+       [
+        -10,
+        -10,
+        0
+       ],
+       [
+        -10,
+        10,
+        0
+       ],
+       [
+        10,
+        -10,
+        0
+       ],
+       [
+        10,
+        10,
+        0
+       ]
+      ],
+      "distance": 5,
+      "body": "b_b1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 20,
+      "width": 20,
+      "height": 20,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_b1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        0,
+        -10,
+        -10
+       ],
+       [
+        0,
+        -10,
+        10
+       ],
+       [
+        0,
+        10,
+        -10
+       ],
+       [
+        0,
+        10,
+        10
+       ],
+       [
+        -10,
+        0,
+        -10
+       ],
+       [
+        -10,
+        0,
+        10
+       ],
+       [
+        10,
+        0,
+        -10
+       ],
+       [
+        10,
+        0,
+        10
+       ],
+       [
+        -10,
+        -10,
+        0
+       ],
+       [
+        -10,
+        10,
+        0
+       ],
+       [
+        10,
+        -10,
+        0
+       ],
+       [
+        10,
+        10,
+        0
+       ]
+      ],
+      "distance": 5,
+      "body": "b_b1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 18
+    },
+    "occtTypes": {
+     "plane": 26
+    },
+    "occtComponents": {
+     "plane": 26
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 5750,
+    "bbox": [
+     -10.000000000000004,
+     -10.000000000000002,
+     -10,
+     10.000000000000002,
+     10,
+     10.000000000000004
+    ],
+    "com": [
+     5.799676359131716e-16,
+     -3.690703137629274e-16,
+     2.3066894610182963e-17
+    ],
+    "faces": 18,
+    "kernelFaces": 18,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.014705882352941122,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 6.80212285060154e-17,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -10,
+       -10
+      ],
+      [
+       0,
+       -10,
+       10
+      ],
+      [
+       0,
+       10,
+       -10
+      ],
+      [
+       0,
+       10,
+       10
+      ],
+      [
+       -10,
+       0,
+       -10
+      ],
+      [
+       -10,
+       0,
+       10
+      ],
+      [
+       10,
+       0,
+       -10
+      ],
+      [
+       10,
+       0,
+       10
+      ],
+      [
+       -10,
+       -10,
+       0
+      ],
+      [
+       -10,
+       10,
+       0
+      ],
+      [
+       10,
+       -10,
+       0
+      ],
+      [
+       10,
+       10,
+       0
+      ]
+     ],
+     "distance": 5,
+     "body": "b_b1"
+    },
+    "comTol": 0.000001,
+    "geomOk": false
+   },
+   "outcome": "FAIL",
+   "evidence": {
+    "wedgeUnionVolume": 5749.999999999931,
+    "wedgeUnionFaces": 18,
+    "truckVsWedgeUnion": 1.2021147362564065e-14,
+    "occtTriangles": 8,
+    "occtFaces": 26,
+    "truckFaces": 18
+   },
+   "explain": "DIAGNOSIS, outcome stays FAIL (volume delta 1.47e-2 vs live OCCT, bar 1e-9): truck is the exact union of 12 wedge prisms (matches an independent 12-cut build to 1.2e-14); OCCT and brep-rs add 8 corner triangles (live: 8 triangular planar faces = 26 - 18)"
+  }
+ }
+]

@@ -1,0 +1,528 @@
+{
+ "accuracy": [
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "built": 31,
+   "refused": 0,
+   "tangentPerpendicularityMm": {
+    "n": 124,
+    "max": 0.00019502254171838298,
+    "median": 0.00009100782304487424
+   },
+   "tangentRadiusDirectionDot": {
+    "n": 124,
+    "max": 0.00001950225417183827,
+    "median": 0.000009100782304187041
+   },
+   "jointGapMm": {
+    "n": 124,
+    "max": 9.508376309806472e-10,
+    "median": 1.0477896294313038e-10
+   },
+   "arcEndRadiusMismatchMm": {
+    "n": 62,
+    "max": 9.184599747413813e-10,
+    "median": 7.405631663459644e-11
+   },
+   "volumeRel": {
+    "n": 31,
+    "max": 0.000041706771361054955,
+    "median": 0.00003907953206884483
+   },
+   "scMaxResidual": {
+    "n": 31,
+    "max": 9.508518417078449e-10,
+    "median": 6.340403757576496e-10
+   }
+  },
+  {
+   "id": "slot-dims-from-points",
+   "built": 31,
+   "refused": 0,
+   "tangentPerpendicularityMm": {
+    "n": 124,
+    "max": 0.00014292451398656252,
+    "median": 0.00006733577505909929
+   },
+   "tangentRadiusDirectionDot": {
+    "n": 124,
+    "max": 0.00002858490279343281,
+    "median": 0.000013467155011153268
+   },
+   "jointGapMm": {
+    "n": 124,
+    "max": 9.46449141341403e-10,
+    "median": 1.869384647115035e-10
+   },
+   "arcEndRadiusMismatchMm": {
+    "n": 62,
+    "max": 6.812053143789853e-10,
+    "median": 2.1257395843576887e-10
+   },
+   "volumeRel": {
+    "n": 31,
+    "max": 0.00003805459010037035,
+    "median": 0.000038053376625888764
+   },
+   "scMaxResidual": {
+    "n": 31,
+    "max": 9.568204006882297e-10,
+    "median": 5.644817946404146e-10
+   }
+  },
+  {
+   "id": "oval-four-arcs-endpoint-tangent",
+   "built": 31,
+   "refused": 0,
+   "tangentPerpendicularityMm": {
+    "n": 124,
+    "max": 0.0001054873135874601,
+    "median": 0.00009998687176988596
+   },
+   "tangentRadiusDirectionDot": {
+    "n": 0
+   },
+   "jointGapMm": {
+    "n": 124,
+    "max": 2.4938434914210014e-10,
+    "median": 2.336068257023255e-10
+   },
+   "arcEndRadiusMismatchMm": {
+    "n": 124,
+    "max": 1.6038725902944861e-10,
+    "median": 1.2540013472062128e-10
+   },
+   "volumeRel": {
+    "n": 31,
+    "max": 0.00010237672657703623,
+    "median": 0.00010237634875145168
+   },
+   "scMaxResidual": {
+    "n": 31,
+    "max": 7.086855546845072e-10,
+    "median": 6.89849066759507e-10
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+   "built": 31,
+   "refused": 0,
+   "tangentPerpendicularityMm": {
+    "n": 124,
+    "max": 0.00015797895227281485,
+    "median": 0.00008531934300100595
+   },
+   "tangentRadiusDirectionDot": {
+    "n": 124,
+    "max": 0.000026329825375449094,
+    "median": 0.000014219890499432994
+   },
+   "jointGapMm": {
+    "n": 124,
+    "max": 6.85677292758991e-10,
+    "median": 0
+   },
+   "arcEndRadiusMismatchMm": {
+    "n": 62,
+    "max": 6.804397045812038e-10,
+    "median": 2.0466828232201806e-10
+   },
+   "volumeRel": {
+    "n": 31,
+    "max": 0.000042254986225977267,
+    "median": 0.00003795591218365758
+   },
+   "scMaxResidual": {
+    "n": 31,
+    "max": 9.738476691723008e-10,
+    "median": 7.91173349057317e-10
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+   "built": 31,
+   "refused": 0,
+   "tangentPerpendicularityMm": {
+    "n": 124,
+    "max": 0.00021243598955984452,
+    "median": 0.00008603076677617954
+   },
+   "tangentRadiusDirectionDot": {
+    "n": 124,
+    "max": 0.000017702999129053432,
+    "median": 0.000007169230564549219
+   },
+   "jointGapMm": {
+    "n": 124,
+    "max": 6.237712568791941e-10,
+    "median": 0
+   },
+   "arcEndRadiusMismatchMm": {
+    "n": 62,
+    "max": 6.38182839907131e-10,
+    "median": 9.407941092831607e-11
+   },
+   "volumeRel": {
+    "n": 31,
+    "max": 0.0000638250307311108,
+    "median": 0.00005786278280788574
+   },
+   "scMaxResidual": {
+    "n": 31,
+    "max": 9.822578306284413e-10,
+    "median": 5.394049651386013e-10
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+   "built": 31,
+   "refused": 0,
+   "tangentPerpendicularityMm": {
+    "n": 124,
+    "max": 0.00016896425993911954,
+    "median": 0.00008335617903616447
+   },
+   "tangentRadiusDirectionDot": {
+    "n": 124,
+    "max": 0.000028160709985603832,
+    "median": 0.000013892696504809027
+   },
+   "jointGapMm": {
+    "n": 124,
+    "max": 7.3684169880168e-10,
+    "median": 0
+   },
+   "arcEndRadiusMismatchMm": {
+    "n": 62,
+    "max": 7.97926169582297e-10,
+    "median": 2.4581048307936726e-10
+   },
+   "volumeRel": {
+    "n": 31,
+    "max": 0.0000427038460789051,
+    "median": 0.000037934563445458706
+   },
+   "scMaxResidual": {
+    "n": 31,
+    "max": 9.969509662255405e-10,
+    "median": 7.287628278618286e-10
+   }
+  }
+ ],
+ "dof": [
+  {
+   "id": "rect-origin-dims",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "hexagon-equal-pointOn-circle",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "tangent-line-circle",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "slot-dims-from-points",
+   "sc": {
+    "status": "solved",
+    "dof": 1,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "oval-four-arcs-endpoint-tangent",
+   "sc": {
+    "status": "solved",
+    "dof": 4,
+    "redundant": 4,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "triangle-length-angle-120",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": null
+  },
+  {
+   "id": "gauntlet:sk-rect-dof__corner-origin-25x60",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-rect-dof__offset-corner-30x18",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-rect-dof__square-by-equal",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-rect-dof__right-triangle",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-rect-dof__parallelogram",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-rect-dof__circle-pinned",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+   "sc": {
+    "status": "solved",
+    "dof": 4,
+    "redundant": 4,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+   "sc": {
+    "status": "solved",
+    "dof": 4,
+    "redundant": 4,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+   "sc": {
+    "status": "solved",
+    "dof": 4,
+    "redundant": 4,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__circle-circle-external",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__circle-circle-no-mode",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": null,
+    "bucket": null
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  },
+  {
+   "id": "gauntlet:sk-circle-arc-tangent__circle-circle-internal",
+   "sc": {
+    "status": "solved",
+    "dof": 0,
+    "redundant": 0,
+    "failing": 0
+   },
+   "brep": {
+    "dof": 0,
+    "bucket": "consistent"
+   },
+   "freecad": {
+    "dof": 0,
+    "conflicting": 0,
+    "redundant": 0
+   }
+  }
+ ]
+}

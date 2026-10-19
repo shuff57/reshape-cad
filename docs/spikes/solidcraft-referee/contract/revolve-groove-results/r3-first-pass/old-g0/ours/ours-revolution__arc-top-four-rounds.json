@@ -1,0 +1,21 @@
+{
+ "id": "revolution__arc-top-four-rounds",
+ "outcome": "built",
+ "volume": 7746.962675632606,
+ "faces": 10,
+ "bbox": [
+  -3.4729635533386043,
+  -1.687538997430238e-14,
+  -8.881784196326362e-16,
+  20,
+  19.999999982479157,
+  30.000000000000004
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.arc.three_point\",\"params\":{\"start\":[10,1.0000000000000002],\"end\":[11,0],\"through\":[10.292893218813452,0.29289321881345265]}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[11,0],[18,0]]}},{\"command\":\"sketch.arc.three_point\",\"params\":{\"start\":[18,0],\"end\":[20,2.0000000000000004],\"through\":[19.414213562373096,0.5857864376269053]}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[20,2.0000000000000004],[20,27]]}},{\"command\":\"sketch.arc.three_point\",\"params\":{\"start\":[20,27],\"end\":[17,30],\"through\":[19.121320343559642,29.121320343559642]}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[17,30],[11.5,30]]}},{\"command\":\"sketch.arc.three_point\",\"params\":{\"start\":[11.5,30],\"end\":[10,28.5],\"through\":[10.439339828220179,29.560660171779823]}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,28.5],[10,1.0000000000000002]]}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-100,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

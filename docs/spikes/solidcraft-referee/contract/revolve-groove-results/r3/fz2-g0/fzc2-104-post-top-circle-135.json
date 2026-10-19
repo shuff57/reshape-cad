@@ -1,0 +1,44 @@
+[
+ {
+  "id": "fzc2-104-post-top-circle-135",
+  "src": "const k = sketch('top'); k.circle(40); const t = extrude(k, 30); const sk = sketch('top'); sk.circle(2, { at: [5, 5.9] }); groove(sk, t, 135);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc2-104-post-top-circle-135",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "invalid": "OCCT: OCCT built nothing"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "groove groove1: a circle sketch has no outline to spin"
+   },
+   "ms": 489,
+   "load": [
+    23.4,
+    23.4
+   ],
+   "cpuMs": 847,
+   "truck": {
+    "refused": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: OCCT built nothing",
+  "caseMs": 526
+ }
+]

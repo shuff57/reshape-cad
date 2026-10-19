@@ -1,0 +1,9 @@
+[40,30,12] d 3 12 edge planes only 13085.999999999993 | plus 8 corner planes 13085.999999999993
+[20,20,20] d 4 12 edge planes only 6463.999999999996 | plus 8 corner planes 6463.999999999996
+[10,20,30] d 1 12 edge planes only 5885.999999999964 | plus 8 corner planes 5885.999999999964
+[10,20,30] d 2 12 edge planes only 5567.99999999997 | plus 8 corner planes 5567.99999999997
+[10,20,30] d 4.9 12 edge planes only 3824.693999999985 | plus 8 corner planes 3824.693999999985
+[10,20,30] d 5 12 edge planes only 3749.999999999984 | plus 8 corner planes 3749.999999999984
+[10,20,30] d 5.5 12 edge planes only 3382.5833333333253 | plus 8 corner planes 3382.5833333333253
+[20,30,12] d 5.9 12 edge planes only 4115.834000000006 | plus 8 corner planes 4115.834000000006
+[20,30,12] d 6 12 edge planes only 4032.000000000004 | plus 8 corner planes 4032.000000000004

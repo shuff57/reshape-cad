@@ -1,0 +1,3 @@
+bow-tie 360 [{"name":"b","volume":5498.1561,"faces":3,"types":{"cone":2,"cylinder":1}},{"name":"b (2)","volume":8635.5446,"faces":3,"types":{"cone":2,"cylinder":1}}]
+bow-tie 90 [{"name":"b","volume":1374.5025,"faces":5,"types":{"cone":2,"cylinder":1,"plane":2}},{"name":"b (2)","volume":2159.2515,"faces":5,"types":{"cone":2,"cylinder":1,"plane":2}}]
+closed form 360: left triangle 5497.7871 right triangle 8639.3798

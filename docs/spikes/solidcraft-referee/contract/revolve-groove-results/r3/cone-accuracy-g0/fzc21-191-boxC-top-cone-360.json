@@ -1,0 +1,130 @@
+[
+ {
+  "id": "fzc21-191-boxC-top-cone-360",
+  "src": "const t = box(60, 40, 30); const sk = sketch('top', 4.5); sk.polygon([[17.7,1.4],[20.8,1.4],[17.7,6.3]]); groove(sk, t, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc21-191-boxC-top-cone-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 71112.19524522788,
+    "com": [
+     2.259572740735244e-10,
+     -6.756213601097411e-10,
+     -0.09387757342136986
+    ],
+    "bbox": [
+     -30,
+     -20.000000000000004,
+     -15,
+     30,
+     20,
+     15
+    ],
+    "faces": 9,
+    "area": 12366.888117742381,
+    "types": {
+     "plane": 7,
+     "cone": 1,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 7,
+     "cone": 1,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by box1, or its surface pair is unsupported) -- groove1 is shown without it."
+   },
+   "ms": 22,
+   "load": [
+    36.8,
+    36.8
+   ],
+   "cpuMs": 90,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a full-turn ring with a slanted side cut into a part with flat sides took from 14 to 29 seconds here and is not reliable, so it is not built; turn the ring less than 360 degrees, or give it straight sides",
+     "guard": {
+      "cost": {
+       "tool": "cone",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cone",
+        "cylinder"
+       ],
+       "partial": false,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 20.8,
+       "nearest": 20,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 60,
+      "width": 40,
+      "height": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_box1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a full-turn ring with a slanted side cut into a part with flat sides took from 14 to 29 seconds here and is not reliable, so it is not built; turn the ring less than 360 degrees, or give it straight sides",
+    "firstRefusal": "groove1 (groove): a full-turn ring with a slanted side cut into a part with flat sides took from 14 to 29 seconds here and is not reliable, so it is not built; turn the ring less than 360 degrees, or give it straight sides"
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 192
+ }
+]

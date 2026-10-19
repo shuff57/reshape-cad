@@ -1,0 +1,6446 @@
+[
+ {
+  "label": "hollow open top",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nhollow(b, { wall: 2, open: 'top' })",
+  "id": "shell1",
+  "ms": 96,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       5,
+       -3,
+       12
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on box1's own shape",
+     "engineFace": "F1:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 12,
+       "got": 12,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+z",
+       "got": "F1:+z",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       5,
+       -3,
+       12
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 7151.999999999996,
+    "com": [
+     5.0000000000000036,
+     -3.0000000000000004,
+     -0.3557046979865776
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 7152,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 7151.999999999997,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    5.000000000000002,
+    -2.999999999999995,
+    -0.35570469798657833
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.2716648514722158e-16,
+   "dBbox": 0,
+   "dCom": 9.895835520466456e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 5.086659405888863e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 3.814994554416647e-16,
+   "dCom": 0.08748867610757748,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.face[+z]"
+  ]
+ },
+ {
+  "label": "hollow open bottom",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nhollow(b, { wall: 2, open: 'bottom' })",
+  "id": "shell1",
+  "ms": 51,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       5,
+       -3,
+       -8
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[-z]",
+     "rule": "planar face with outward normal -z at the extreme along it on box1's own shape",
+     "engineFace": "F1:-z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 8,
+       "got": 8,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-z",
+       "got": "F1:-z",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       5,
+       -3,
+       -8
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 7151.999999999996,
+    "com": [
+     5.0000000000000036,
+     -3.0000000000000004,
+     4.355704697986577
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 7152,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 7151.999999999999,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    5.000000000000001,
+    -2.999999999999996,
+    4.355704697986578
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 3.814994554416647e-16,
+   "dBbox": 0,
+   "dCom": 8.246529600388713e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 5.086659405888863e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.2716648514722158e-16,
+   "dCom": 0.08748867610757748,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.face[-z]"
+  ]
+ },
+ {
+  "label": "hollow open front",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nhollow(b, { wall: 2, open: 'front' })",
+  "id": "shell1",
+  "ms": 41,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       5,
+       -18.000000000000004,
+       2
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[-y]",
+     "rule": "planar face with outward normal -y at the extreme along it on box1's own shape",
+     "engineFace": "F1:-y",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-y",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 18,
+       "got": 18.000000000000004,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-y",
+       "got": "F1:-y",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       5,
+       -18.000000000000004,
+       2
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 7872,
+    "com": [
+     5,
+     -0.9512195121951201,
+     2.0000000000000013
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 7872,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 7872,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    5,
+    -0.9512195121951219,
+    2
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 3.2986118401554854e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.155354041886342e-16,
+   "dCom": 0.07608979710669439,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.face[-y]"
+  ]
+ },
+ {
+  "label": "hollow open back",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nhollow(b, { wall: 2, open: 'back' })",
+  "id": "shell1",
+  "ms": 35,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       5,
+       12,
+       2
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+y]",
+     "rule": "planar face with outward normal +y at the extreme along it on box1's own shape",
+     "engineFace": "F1:+y",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+y",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 12,
+       "got": 12,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+y",
+       "got": "F1:+y",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       5,
+       12,
+       2
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 7872,
+    "com": [
+     5,
+     -5.048780487804876,
+     2.0000000000000013
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 7872,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 7871.999999999999,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    5.000000000000001,
+    -5.0487804878048745,
+    2.0000000000000004
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.155354041886342e-16,
+   "dBbox": 0,
+   "dCom": 3.2986118401554854e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0,
+   "dCom": 0.07608979710669439,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.face[+y]"
+  ]
+ },
+ {
+  "label": "hollow open left",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nhollow(b, { wall: 2, open: 'left' })",
+  "id": "shell1",
+  "ms": 41,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -15,
+       -3,
+       2
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[-x]",
+     "rule": "planar face with outward normal -x at the extreme along it on box1's own shape",
+     "engineFace": "F1:-x",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-x",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 15,
+       "got": 15,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-x",
+       "got": "F1:-x",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       -15,
+       -3,
+       2
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 8191.999999999997,
+    "com": [
+     6.929687500000002,
+     -2.9999999999999973,
+     2.000000000000001
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 8192,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 8192,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    6.9296875,
+    -2.999999999999998,
+    2
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 3.3306690738754706e-16,
+   "dBbox": 0,
+   "dCom": 3.2986118401554854e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.3306690738754706e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 2.220446049250314e-16,
+   "dCom": 0.07166679457770599,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.face[-x]"
+  ]
+ },
+ {
+  "label": "hollow open right",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nhollow(b, { wall: 2, open: 'right' })",
+  "id": "shell1",
+  "ms": 36,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       25,
+       -3,
+       2
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+x]",
+     "rule": "planar face with outward normal +x at the extreme along it on box1's own shape",
+     "engineFace": "F1:+x",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+x",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 25,
+       "got": 25,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+x",
+       "got": "F1:+x",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       25,
+       -3,
+       2
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 8191.999999999997,
+    "com": [
+     3.070312499999998,
+     -2.9999999999999973,
+     2.000000000000001
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 8192,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 8191.999999999999,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    3.0703125000000004,
+    -2.999999999999997,
+    2.0000000000000027
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 2.220446049250314e-16,
+   "dBbox": 0,
+   "dCom": 4.947917760233228e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.3306690738754706e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 3.3306690738754706e-16,
+   "dCom": 0.071666794577706,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.face[+x]"
+  ]
+ },
+ {
+  "label": "draft face(top) 5deg",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\ndraft(b.face('top'), 5)",
+  "id": "draft1",
+  "ms": 29,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.",
+    "raw": "draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23999.999999999996,
+    "com": [
+     4.9999999999999964,
+     -3,
+     1.9999999999999982
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 24000,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {
+    "draft1": "Tilting Draft 1 at 5 degrees would not fit -- Draft 1 is shown without it."
+   },
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "draft1": "draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead."
+  },
+  "outcome": "REFUSED",
+  "sentence": "draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.",
+  "namesText": [
+   "box1.face[+z]"
+  ]
+ },
+ {
+  "label": "draft face(bottom) 5deg",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\ndraft(b.face('bottom'), 5)",
+  "id": "draft1",
+  "ms": 31,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.",
+    "raw": "draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23999.999999999996,
+    "com": [
+     4.9999999999999964,
+     -3,
+     1.9999999999999982
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 24000,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {
+    "draft1": "Tilting Draft 1 at 5 degrees would not fit -- Draft 1 is shown without it."
+   },
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "draft1": "draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead."
+  },
+  "outcome": "REFUSED",
+  "sentence": "draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.",
+  "namesText": [
+   "box1.face[-z]"
+  ]
+ },
+ {
+  "label": "draft face(front) 5deg",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\ndraft(b.face('front'), 5)",
+  "id": "draft1",
+  "ms": 38,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       5,
+       -18.000000000000004,
+       2
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[-y]",
+     "rule": "planar face with outward normal -y at the extreme along it on box1's own shape",
+     "engineFace": "F1:-y",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-y",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 18,
+       "got": 18.000000000000004,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-y",
+       "got": "F1:-y",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       5,
+       -18.000000000000004,
+       2
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23860.01813835852,
+    "com": [
+     5,
+     -2.9167886543990758,
+     1.9022200648034158
+    ],
+    "bbox": [
+     -15,
+     -18.699909308207392,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23860.01813835852,
+    "bbox": [
+     -15,
+     -18.699909308207392,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23860.01813835852,
+   "bbox": [
+    -15,
+    -18.699909308207395,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    4.999999999999999,
+    -2.916788654399074,
+    1.9022200648034178
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 1.8998561010353213e-16,
+   "dCom": 3.684051121799359e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.draft: invalid input: no faces to draft"
+  },
+  "namesText": [
+   "box1.face[-y]"
+  ]
+ },
+ {
+  "label": "draft face(back) 5deg",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\ndraft(b.face('back'), 5)",
+  "id": "draft1",
+  "ms": 30,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       5,
+       12,
+       2
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+y]",
+     "rule": "planar face with outward normal +y at the extreme along it on box1's own shape",
+     "engineFace": "F1:+y",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+y",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 12,
+       "got": 12,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+y",
+       "got": "F1:+y",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       5,
+       12,
+       2
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23860.01813835852,
+    "com": [
+     5.0000000000000036,
+     -3.0832113456009242,
+     1.9022200648034158
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12.699909308207394,
+     12
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23860.01813835852,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12.699909308207392,
+     12
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23860.018138358526,
+   "bbox": [
+    -15,
+    -18.000000000000004,
+    -8,
+    25,
+    12.699909308207392,
+    12
+   ],
+   "com": [
+    5,
+    -3.083211345600927,
+    1.9022200648034173
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 3.0494350725099595e-16,
+   "dBbox": 1.9737298215558337e-16,
+   "dCom": 6.549424216532193e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.draft: invalid input: no faces to draft"
+  },
+  "namesText": [
+   "box1.face[+y]"
+  ]
+ },
+ {
+  "label": "draft face(left) 5deg",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\ndraft(b.face('left'), 5)",
+  "id": "draft1",
+  "ms": 26,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -15,
+       -3,
+       2
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[-x]",
+     "rule": "planar face with outward normal -x at the extreme along it on box1's own shape",
+     "engineFace": "F1:-x",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-x",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 15,
+       "got": 15,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-x",
+       "got": "F1:-x",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       -15,
+       -3,
+       2
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23895.013603768886,
+    "com": [
+     5.084285373344773,
+     -2.9999999999999982,
+     1.9267724513769497
+    ],
+    "bbox": [
+     -15.699909308207392,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23895.013603768894,
+    "bbox": [
+     -15.699909308207392,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23895.013603768894,
+   "bbox": [
+    -15.699909308207395,
+    -18.000000000000014,
+    -8,
+    25.000000000000004,
+    12.000000000000004,
+    12
+   ],
+   "com": [
+    5.084285373344768,
+    -3.0000000000000036,
+    1.9267724513769473
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 3.0449690194090586e-16,
+   "dBbox": 7.894919286223335e-16,
+   "dCom": 9.80085134834727e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.0449690194090586e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.draft: invalid input: no faces to draft"
+  },
+  "namesText": [
+   "box1.face[-x]"
+  ]
+ },
+ {
+  "label": "draft face(right) 5deg",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\ndraft(b.face('right'), 5)",
+  "id": "draft1",
+  "ms": 25,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       25,
+       -3,
+       2
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+x]",
+     "rule": "planar face with outward normal +x at the extreme along it on box1's own shape",
+     "engineFace": "F1:+x",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+x",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 25,
+       "got": 25,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+x",
+       "got": "F1:+x",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       25,
+       -3,
+       2
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23895.013603768886,
+    "com": [
+     4.915714626655234,
+     -2.9999999999999982,
+     1.9267724513769497
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25.699909308207395,
+     12,
+     12.000000000000005
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23895.01360376889,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25.699909308207392,
+     12,
+     12
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23895.013603768897,
+   "bbox": [
+    -15.000000000000004,
+    -18.000000000000007,
+    -8,
+    25.699909308207395,
+    12.00000000000001,
+    12.000000000000002
+   ],
+   "com": [
+    4.915714626655232,
+    -3,
+    1.926772451376947
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 4.567453529113587e-16,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 4.900425674173635e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5224845097045293e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.draft: invalid input: no faces to draft"
+  },
+  "namesText": [
+   "box1.face[+x]"
+  ]
+ },
+ {
+  "label": "round edge(top,front)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('top','front'), 2)",
+  "id": "round1",
+  "ms": 107,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       5,
+       -18,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+z] ^ box1.face[-y]]",
+     "engineEdges": [
+      "F1:+z|F1:-y"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+z|F1:-y"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       5,
+       -18,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23965.66370616132,
+    "com": [
+     5,
+     -2.9791491213284242,
+     1.9863127649365262
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23965.663706143594,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23965.641184738168,
+   "bbox": [
+    -15.000000000000007,
+    -18,
+    -8,
+    25.000000000000007,
+    12,
+    12
+   ],
+   "com": [
+    4.99999999906119,
+    -2.9791357511905385,
+    1.9863040992845196
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 9.397370933096715e-7,
+   "dBbox": 4.736951571734001e-16,
+   "dCom": 2.482772276161733e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 7.395677818676106e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 9.397370823800983e-7,
+   "dCom": 0.0007746304844148501,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+z] ^ box1.face[-y]]"
+  ]
+ },
+ {
+  "label": "round edge(top,back)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('top','back'), 2)",
+  "id": "round1",
+  "ms": 96,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       5,
+       12,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+z] ^ box1.face[+y]]",
+     "engineEdges": [
+      "F1:+y|F1:+z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+y|F1:+z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       5,
+       12,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23965.663706161315,
+    "com": [
+     5.000000000000001,
+     -3.0208508786715753,
+     1.9863127649365264
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23965.663706143594,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23965.64118473843,
+   "bbox": [
+    -15.000000000000007,
+    -18,
+    -8,
+    25.00000000000001,
+    12,
+    12
+   ],
+   "com": [
+    5.000000001564723,
+    -3.0208642491849784,
+    1.9863040992845948
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 9.397370822282988e-7,
+   "dBbox": 4.736951571734001e-16,
+   "dCom": 2.4828420079913814e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 7.394159822407906e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 9.398622902036911e-7,
+   "dCom": 0.0007746305019016409,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+y] ^ box1.face[+z]]"
+  ]
+ },
+ {
+  "label": "round edge(top,left)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('top','left'), 2)",
+  "id": "round1",
+  "ms": 112,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -15,
+       -3,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+z] ^ box1.face[-x]]",
+     "engineEdges": [
+      "F1:+z|F1:-x"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+z|F1:-x"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       -15,
+       -3,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23974.24777962415,
+    "com": [
+     5.021003368537654,
+     -2.9999999999999987,
+     1.989738249417398
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23974.247779607696,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23974.23088855366,
+   "bbox": [
+    -15,
+    -18.000000000000007,
+    -8,
+    25,
+    12.000000000000007,
+    12.000000000000002
+   ],
+   "com": [
+    5.0210169155526625,
+    -2.999999999436914,
+    1.9897317547815832
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 7.045505931066555e-7,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 2.5156175332821554e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.863438759676397e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 7.047539603024205e-7,
+   "dCom": 0.0007802971349621467,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+z] ^ box1.face[-x]]"
+  ]
+ },
+ {
+  "label": "round edge(top,right)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('top','right'), 2)",
+  "id": "round1",
+  "ms": 97,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       -3,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+z] ^ box1.face[+x]]",
+     "engineEdges": [
+      "F1:+x|F1:+z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:+z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       25,
+       -3,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23974.24777962415,
+    "com": [
+     4.978996631462344,
+     -2.9999999999999987,
+     1.989738249417398
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23974.247779607696,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23974.230888553808,
+   "bbox": [
+    -15,
+    -18.00000000000001,
+    -8,
+    25,
+    12.000000000000005,
+    12.000000000000005
+   ],
+   "com": [
+    4.978983084916772,
+    -3.0000000008446444,
+    1.98973175478163
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 7.045505868850991e-7,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 2.515530361196917e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.863438759676397e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 7.045975254920931e-7,
+   "dCom": 0.0007802971058530518,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+x] ^ box1.face[+z]]"
+  ]
+ },
+ {
+  "label": "round edge(bottom,front)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('bottom','front'), 2)",
+  "id": "round1",
+  "ms": 81,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       5,
+       -18,
+       -8
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[-z] ^ box1.face[-y]]",
+     "engineEdges": [
+      "F1:-y|F1:-z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:-y|F1:-z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       5,
+       -18,
+       -8
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23965.66370616132,
+    "com": [
+     5,
+     -2.9791491213284242,
+     2.0136872350634736
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23965.66370614359,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23965.641181737737,
+   "bbox": [
+    -15.000000000000009,
+    -18.000000000000004,
+    -8,
+    25.00000000000001,
+    12,
+    12
+   ],
+   "com": [
+    4.9999999985917025,
+    -2.9791357494978388,
+    2.0136959014058844
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 9.398622903554906e-7,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 2.483086602615753e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 7.397195814944307e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 9.397370823800983e-7,
+   "dCom": 0.0007746304774421868,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[-y] ^ box1.face[-z]]"
+  ]
+ },
+ {
+  "label": "round edge(bottom,back)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('bottom','back'), 2)",
+  "id": "round1",
+  "ms": 97,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       5,
+       12,
+       -8
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[-z] ^ box1.face[+y]]",
+     "engineEdges": [
+      "F1:+y|F1:-z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+y|F1:-z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       5,
+       12,
+       -8
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23965.66370616132,
+    "com": [
+     5,
+     -3.0208508786715744,
+     2.0136872350634736
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23965.663706143594,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23965.64118473843,
+   "bbox": [
+    -15.000000000000005,
+    -18,
+    -8,
+    25.00000000000001,
+    12,
+    12
+   ],
+   "com": [
+    5.00000000156472,
+    -3.0208642495604683,
+    2.0136959005903186
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 9.397370823800983e-7,
+   "dBbox": 4.263256414560601e-16,
+   "dCom": 2.4829117348731116e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 7.395677818676106e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 9.397370933096715e-7,
+   "dCom": 0.0007746304704689791,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+y] ^ box1.face[-z]]"
+  ]
+ },
+ {
+  "label": "round edge(bottom,left)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('bottom','left'), 2)",
+  "id": "round1",
+  "ms": 86,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -15,
+       -3,
+       -8
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[-z] ^ box1.face[-x]]",
+     "engineEdges": [
+      "F1:-x|F1:-z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:-x|F1:-z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       -15,
+       -3,
+       -8
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23974.24777962415,
+    "com": [
+     5.021003368537654,
+     -2.9999999999999987,
+     2.010261750582602
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23974.247779607696,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23974.23088742849,
+   "bbox": [
+    -15.000000000000002,
+    -18.00000000000001,
+    -8,
+    25,
+    12.000000000000009,
+    12
+   ],
+   "com": [
+    5.021016916597832,
+    -2.999999999296116,
+    2.0102682454301712
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 7.045975254920931e-7,
+   "dBbox": 7.401486830834377e-16,
+   "dCom": 2.515811616345884e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.863438759676397e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 7.045505868850991e-7,
+   "dCom": 0.0007802970777275369,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[-x] ^ box1.face[-z]]"
+  ]
+ },
+ {
+  "label": "round edge(bottom,right)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('bottom','right'), 2)",
+  "id": "round1",
+  "ms": 96,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       -3,
+       -8
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[-z] ^ box1.face[+x]]",
+     "engineEdges": [
+      "F1:+x|F1:-z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:-z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       25,
+       -3,
+       -8
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23974.24777962415,
+    "com": [
+     4.978996631462344,
+     -2.9999999999999987,
+     2.010261750582602
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23974.247779607696,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23974.230883678083,
+   "bbox": [
+    -15,
+    -18.00000000000001,
+    -8,
+    25,
+    12.000000000000005,
+    12
+   ],
+   "com": [
+    4.978983081834594,
+    -3.000000001759826,
+    2.010268246448606
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 7.047539603024205e-7,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 2.5161027072956365e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.863438759676397e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 7.045505931066555e-7,
+   "dCom": 0.0007802970864447455,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+x] ^ box1.face[-z]]"
+  ]
+ },
+ {
+  "label": "round edge(front,left)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('front','left'), 2)",
+  "id": "round1",
+  "ms": 88,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -15,
+       -18,
+       2
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[-y] ^ box1.face[-x]]",
+     "engineEdges": [
+      "F1:-x|F1:-y"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:-x|F1:-y"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       -15,
+       -18,
+       2
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23982.831853084877,
+    "com": [
+     5.013997233834019,
+     -2.989582023916702,
+     2.0000000000000004
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23982.831853071795,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23982.820591618987,
+   "bbox": [
+    -15.000000000000004,
+    -18,
+    -8.000000000000005,
+    25,
+    12,
+    12.000000000000005
+   ],
+   "com": [
+    5.014006259442628,
+    -2.989575348067418,
+    1.9999999996872755
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 4.695636428223043e-7,
+   "dBbox": 6.661338147750939e-16,
+   "dCom": 1.6760134428902416e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 5.454806951256283e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 4.697929846893571e-7,
+   "dCom": 0.0005200118632843957,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[-x] ^ box1.face[-y]]"
+  ]
+ },
+ {
+  "label": "round edge(front,right)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('front','right'), 2)",
+  "id": "round1",
+  "ms": 84,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       -18,
+       2
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[-y] ^ box1.face[+x]]",
+     "engineEdges": [
+      "F1:+x|F1:-y"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:-y"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       25,
+       -18,
+       2
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23982.831853084877,
+    "com": [
+     4.986002766165981,
+     -2.989582023916702,
+     2.0000000000000004
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23982.8318530718,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23982.8205846185,
+   "bbox": [
+    -15,
+    -18,
+    -8.000000000000004,
+    25,
+    12,
+    12.000000000000005
+   ],
+   "com": [
+    4.985993737212346,
+    -2.989575345155983,
+    2.000000000406583
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 4.698555385527091e-7,
+   "dBbox": 4.440892098500626e-16,
+   "dCom": 1.6766345987132906e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 5.453290041648036e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 4.696887277953642e-7,
+   "dCom": 0.0005200118497059899,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+x] ^ box1.face[-y]]"
+  ]
+ },
+ {
+  "label": "round edge(back,left)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('back','left'), 2)",
+  "id": "round1",
+  "ms": 82,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -15,
+       12,
+       2
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+y] ^ box1.face[-x]]",
+     "engineEdges": [
+      "F1:+y|F1:-x"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+y|F1:-x"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       -15,
+       12,
+       2
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23982.831853084877,
+    "com": [
+     5.013997233834019,
+     -3.0104179760832976,
+     2.0000000000000004
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23982.831853071795,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23982.820588619095,
+   "bbox": [
+    -15.000000000000004,
+    -18,
+    -8.000000000000004,
+    25,
+    12,
+    12.000000000000007
+   ],
+   "com": [
+    5.0140062612892775,
+    -3.0104246536694172,
+    2.0000000002189204
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 4.696887277953642e-7,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 1.6763563571761005e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 5.454806951256283e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 4.698555385527091e-7,
+   "dCom": 0.0005200118775301436,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+y] ^ box1.face[-x]]"
+  ]
+ },
+ {
+  "label": "round edge(back,right)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nround(b.edge('back','right'), 2)",
+  "id": "round1",
+  "ms": 77,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       12,
+       2
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+y] ^ box1.face[+x]]",
+     "engineEdges": [
+      "F1:+x|F1:+y"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:+y"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       25,
+       12,
+       2
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23982.831853084877,
+    "com": [
+     4.986002766165981,
+     -3.010417976083298,
+     2.0000000000000004
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23982.831853071795,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23982.82058611872,
+   "bbox": [
+    -15,
+    -18,
+    -8.000000000000004,
+    25,
+    12.000000000000004,
+    12.000000000000007
+   ],
+   "com": [
+    4.985993737979503,
+    -3.010424654765193,
+    1.9999999998540223
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 4.697929846893571e-7,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 1.6764921412338885e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 5.454806951256283e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 4.695636428223043e-7,
+   "dCom": 0.0005200118154145614,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+x] ^ box1.face[+y]]"
+  ]
+ },
+ {
+  "label": "bevel edge(top,front)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nbevel(b.edge('top','front'), 2)",
+  "id": "bevel1",
+  "ms": 25,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       5,
+       -18,
+       12
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+z] ^ box1.face[-y]]",
+     "engineEdges": [
+      "F1:+z|F1:-y"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+z|F1:-y"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       5,
+       -18,
+       12
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23920.000000000004,
+    "com": [
+     4.999999999999999,
+     -2.9520624303232985,
+     1.9687848383500564
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23920,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23920,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    5,
+    -2.9520624303233,
+    1.9687848383500555
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.5208941501219533e-16,
+   "dBbox": 0,
+   "dCom": 2.473958880116614e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5208941501219533e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.5208941501219533e-16,
+   "dCom": 0.0017803566425001892,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+z] ^ box1.face[-y]]"
+  ]
+ },
+ {
+  "label": "bevel edge(top,back)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nbevel(b.edge('top','back'), 2)",
+  "id": "bevel1",
+  "ms": 26,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       5,
+       12,
+       12
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+z] ^ box1.face[+y]]",
+     "engineEdges": [
+      "F1:+y|F1:+z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+y|F1:+z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       5,
+       12,
+       12
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23920.000000000004,
+    "com": [
+     4.999999999999999,
+     -3.0479375696767006,
+     1.9687848383500564
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23920,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23920,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    5,
+    -3.0479375696767,
+    1.9687848383500555
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.5208941501219533e-16,
+   "dBbox": 0,
+   "dCom": 1.6493059200777427e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5208941501219533e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.5208941501219533e-16,
+   "dCom": 0.0017803566425001727,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+y] ^ box1.face[+z]]"
+  ]
+ },
+ {
+  "label": "bevel edge(top,left)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nbevel(b.edge('top','left'), 2)",
+  "id": "bevel1",
+  "ms": 28,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -15,
+       -3,
+       12
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+z] ^ box1.face[-x]]",
+     "engineEdges": [
+      "F1:+z|F1:-x"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+z|F1:-x"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       -15,
+       -3,
+       12
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23939.999999999996,
+    "com": [
+     5.048454469507102,
+     -3,
+     1.9766081871345036
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23940,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23940,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    5.048454469507101,
+    -3,
+    1.976608187134503
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.5196235618595295e-16,
+   "dBbox": 0,
+   "dCom": 1.6493059200777427e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5196235618595295e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.5196235618595295e-16,
+   "dCom": 0.0017995538202621774,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+z] ^ box1.face[-x]]"
+  ]
+ },
+ {
+  "label": "bevel edge(top,right)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nbevel(b.edge('top','right'), 2)",
+  "id": "bevel1",
+  "ms": 33,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       -3,
+       12
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+z] ^ box1.face[+x]]",
+     "engineEdges": [
+      "F1:+x|F1:+z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:+z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       25,
+       -3,
+       12
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23939.999999999996,
+    "com": [
+     4.951545530492897,
+     -3,
+     1.9766081871345036
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23940,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23940,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    4.951545530492899,
+    -3,
+    1.976608187134503
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.5196235618595295e-16,
+   "dBbox": 0,
+   "dCom": 3.2986118401554854e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5196235618595295e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.5196235618595295e-16,
+   "dCom": 0.0017995538202621938,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+x] ^ box1.face[+z]]"
+  ]
+ },
+ {
+  "label": "bevel edge(bottom,front)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nbevel(b.edge('bottom','front'), 2)",
+  "id": "bevel1",
+  "ms": 30,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       5,
+       -18,
+       -8
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[-z] ^ box1.face[-y]]",
+     "engineEdges": [
+      "F1:-y|F1:-z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:-y|F1:-z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       5,
+       -18,
+       -8
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23920,
+    "com": [
+     4.999999999999999,
+     -2.952062430323299,
+     2.0312151616499436
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23920,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23920,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    5,
+    -2.9520624303233,
+    2.031215161649944
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 1.6493059200777427e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0,
+   "dCom": 0.001780356642500181,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[-y] ^ box1.face[-z]]"
+  ]
+ },
+ {
+  "label": "bevel edge(bottom,back)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nbevel(b.edge('bottom','back'), 2)",
+  "id": "bevel1",
+  "ms": 27,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       5,
+       12,
+       -8
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[-z] ^ box1.face[+y]]",
+     "engineEdges": [
+      "F1:+y|F1:-z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+y|F1:-z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       5,
+       12,
+       -8
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23920,
+    "com": [
+     4.999999999999999,
+     -3.0479375696766997,
+     2.0312151616499436
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23920,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23920,
+   "bbox": [
+    -15,
+    -18,
+    -8.000000000000002,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    5,
+    -3.0479375696767,
+    2.0312151616499436
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 2.220446049250313e-16,
+   "dCom": 1.6493059200777427e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0,
+   "dCom": 0.0017803566425001562,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+y] ^ box1.face[-z]]"
+  ]
+ },
+ {
+  "label": "bevel edge(bottom,left)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nbevel(b.edge('bottom','left'), 2)",
+  "id": "bevel1",
+  "ms": 26,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -15,
+       -3,
+       -8
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[-z] ^ box1.face[-x]]",
+     "engineEdges": [
+      "F1:-x|F1:-z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:-x|F1:-z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       -15,
+       -3,
+       -8
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23939.999999999996,
+    "com": [
+     5.048454469507102,
+     -3,
+     2.0233918128654977
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23940,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23940,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    5.048454469507101,
+    -3,
+    2.0233918128654973
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.5196235618595295e-16,
+   "dBbox": 0,
+   "dCom": 1.6493059200777427e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5196235618595295e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.5196235618595295e-16,
+   "dCom": 0.0017995538202621774,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[-x] ^ box1.face[-z]]"
+  ]
+ },
+ {
+  "label": "bevel edge(bottom,right)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nbevel(b.edge('bottom','right'), 2)",
+  "id": "bevel1",
+  "ms": 22,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       -3,
+       -8
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[-z] ^ box1.face[+x]]",
+     "engineEdges": [
+      "F1:+x|F1:-z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:-z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       25,
+       -3,
+       -8
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23939.999999999996,
+    "com": [
+     4.951545530492897,
+     -3,
+     2.0233918128654973
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23940,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23940,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    4.951545530492899,
+    -3,
+    2.0233918128654973
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.5196235618595295e-16,
+   "dBbox": 0,
+   "dCom": 3.2986118401554854e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5196235618595295e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.5196235618595295e-16,
+   "dCom": 0.0017995538202621938,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+x] ^ box1.face[-z]]"
+  ]
+ },
+ {
+  "label": "bevel edge(front,left)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nbevel(b.edge('front','left'), 2)",
+  "id": "bevel1",
+  "ms": 24,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -15,
+       -18,
+       2
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[-y] ^ box1.face[-x]]",
+     "engineEdges": [
+      "F1:-x|F1:-y"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:-x|F1:-y"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       -15,
+       -18,
+       2
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23959.999999999996,
+    "com": [
+     5.032276015581525,
+     -2.9760712298274896,
+     2.0000000000000004
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23960,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23960,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    5.032276015581525,
+    -2.97607122982749,
+    2
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.5183550947795132e-16,
+   "dBbox": 0,
+   "dCom": 8.246529600388713e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5183550947795132e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.5183550947795132e-16,
+   "dCom": 0.0011987011256838136,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[-x] ^ box1.face[-y]]"
+  ]
+ },
+ {
+  "label": "bevel edge(front,right)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nbevel(b.edge('front','right'), 2)",
+  "id": "bevel1",
+  "ms": 25,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       -18,
+       2
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[-y] ^ box1.face[+x]]",
+     "engineEdges": [
+      "F1:+x|F1:-y"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:-y"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       25,
+       -18,
+       2
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23959.999999999996,
+    "com": [
+     4.967723984418476,
+     -2.9760712298274896,
+     2.0000000000000004
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23960,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23960,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    4.967723984418475,
+    -2.97607122982749,
+    2
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.5183550947795132e-16,
+   "dBbox": 0,
+   "dCom": 1.6493059200777427e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5183550947795132e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.5183550947795132e-16,
+   "dCom": 0.001198701125683797,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+x] ^ box1.face[-y]]"
+  ]
+ },
+ {
+  "label": "bevel edge(back,left)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nbevel(b.edge('back','left'), 2)",
+  "id": "bevel1",
+  "ms": 27,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -15,
+       12,
+       2
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+y] ^ box1.face[-x]]",
+     "engineEdges": [
+      "F1:+y|F1:-x"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+y|F1:-x"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       -15,
+       12,
+       2
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23959.999999999996,
+    "com": [
+     5.032276015581525,
+     -3.0239287701725104,
+     2.0000000000000004
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23960,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23960,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    5.032276015581525,
+    -3.02392877017251,
+    2
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.5183550947795132e-16,
+   "dBbox": 0,
+   "dCom": 8.246529600388713e-18,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5183550947795132e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.5183550947795132e-16,
+   "dCom": 0.0011987011256838136,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+y] ^ box1.face[-x]]"
+  ]
+ },
+ {
+  "label": "bevel edge(back,right)",
+  "src": "const b = box(40, 30, 20, { at: [5, -3, 2] })\nbevel(b.edge('back','right'), 2)",
+  "id": "bevel1",
+  "ms": 27,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       12,
+       2
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+y] ^ box1.face[+x]]",
+     "engineEdges": [
+      "F1:+x|F1:+y"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:+y"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       25,
+       12,
+       2
+      ]
+     ],
+     "distance": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23959.999999999996,
+    "com": [
+     4.967723984418476,
+     -3.0239287701725104,
+     2.0000000000000004
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23960,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23960,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    4.967723984418475,
+    -3.02392877017251,
+    2
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.5183550947795132e-16,
+   "dBbox": 0,
+   "dCom": 1.6493059200777427e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5183550947795132e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.5183550947795132e-16,
+   "dCom": 0.001198701125683797,
+   "rejected": true,
+   "byCom": true
+  },
+  "namesText": [
+   "box1.edge[box1.face[+x] ^ box1.face[+y]]"
+  ]
+ }
+]

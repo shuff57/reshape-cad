@@ -1,0 +1,21 @@
+{
+ "id": "sf6-29-top-360",
+ "outcome": "built",
+ "volume": 1117.1745904036902,
+ "faces": 5,
+ "bbox": [
+  -21.89,
+  -21.89,
+  7.759999999999999,
+  21.89,
+  21.889999999999997,
+  12.140000000000002
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[19.78,7.76],[21.89,7.76],[21.89,12.14],[20.62,12.14],[19.78,10.39]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

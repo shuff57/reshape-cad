@@ -1,0 +1,1 @@
+R3-chain-same-handle-refused-then-groove REFUSED  occtV 31095.2213 | tr-occt dV - dBb - dCom - F o/b/t 11/10/- | brep-occt dV 1.5e-12    | TRUCK REFUSED: groove2 (groove): groove1 was not built, so this groove has no finished part to cut; fix groove1 first.  | ms 25 cpu 107

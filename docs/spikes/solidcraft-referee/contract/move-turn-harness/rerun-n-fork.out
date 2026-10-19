@@ -1,0 +1,246 @@
+### join(a,b);move(b) | top-level: op1,move1 | OCCT shapes: {
+  op1: {
+    vol: 1800,
+    bbox: [ -10, -5, -3, 35, 5, 3 ],
+  },
+  move1: {
+    vol: 600,
+    bbox: [ 25, 35, -3, 35, 45, 3 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   box2     guard PASS     
+            shipped PASS     
+   op1      guard PASS     
+            shipped PASS     
+   move1    guard REFUSED  Move 1 is not built: Box 2 was already used up by Join 1, and this build keeps only one copy of a part, so make the moved or turned copy before Join 1: move(part, [x, y, z], { copy: true }).
+            shipped REFUSED  move1 (move): its target box2 was already changed in place by op1, and a solidcraft command list has no second copy of it
+### join(a,b);move(a) | top-level: op1,move1 | OCCT shapes: {
+  op1: {
+    vol: 1800,
+    bbox: [ -10, -5, -3, 35, 5, 3 ],
+  },
+  move1: {
+    vol: 1200,
+    bbox: [ -10, 35, -3, 10, 45, 3 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   box2     guard PASS     
+            shipped PASS     
+   op1      guard PASS     
+            shipped PASS     
+   move1    guard REFUSED  Move 1 is not built: Box 1 was already used up by Join 1, and this build keeps only one copy of a part, so make the moved or turned copy before Join 1: move(part, [x, y, z], { copy: true }).
+            shipped REFUSED  move1 (move): its target box1 was already changed in place by op1, and a solidcraft command list has no second copy of it
+### join(a,b);turn(b) | top-level: op1 | OCCT shapes: {
+  op1: {
+    vol: 1800,
+    bbox: [ -10, -7.07, -3, 37.07, 7.07, 3 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   box2     guard PASS     
+            shipped PASS     
+   op1      guard PASS     
+            shipped PASS     
+### join(a,b);turn(a) | top-level: op1 | OCCT shapes: {
+  op1: {
+    vol: 1800,
+    bbox: [ -10.61, -10.61, -3, 35, 10.61, 3 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   box2     guard PASS     
+            shipped PASS     
+   op1      guard PASS     
+            shipped PASS     
+### cut(a,c);move(c) | top-level: op1,move1 | OCCT shapes: {
+  op1: {
+    vol: 8803.65,
+    bbox: [ -15, -15, -5, 15, 15, 5 ],
+  },
+  move1: {
+    vol: 392.699,
+    bbox: [ 0.5, 50.5, -10, 5.5, 55.5, 10 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   cyl1     guard PASS     
+            shipped PASS     
+   op1      guard PASS     
+            shipped PASS     
+   move1    guard REFUSED  Move 1 is not built: Cylinder 1 was already used up by Cut 1, and this build keeps only one copy of a part, so make the moved or turned copy before Cut 1: move(part, [x, y, z], { copy: true }).
+            shipped REFUSED  move1 (move): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it
+### mirror(v);move(v) | top-level: box1,move1 | OCCT shapes: {
+  box1: {
+    vol: 1000,
+    bbox: [ 15, -5, -5, 25, 5, 5 ],
+  },
+  move1: {
+    vol: 2000,
+    bbox: [ 5, 35, -5, 25, 45, 5 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   mir1     guard PASS     
+            shipped PASS     
+   move1    guard PASS     
+            shipped PASS     
+### mirror(v);move(a) | top-level: mir1,move1 | OCCT shapes: {
+  mir1: {
+    vol: 2000,
+    bbox: [ 5, -5, -5, 25, 5, 5 ],
+  },
+  move1: {
+    vol: 1000,
+    bbox: [ 15, 35, -5, 25, 45, 5 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   mir1     guard PASS     
+            shipped PASS     
+   move1    guard REFUSED  Move 1 is not built: Box 1 was already used up by Mirror 1, and this build keeps only one copy of a part, so make the moved or turned copy before Mirror 1: move(part, [x, y, z], { copy: true }).
+            shipped REFUSED  move1 (move): its target box1 was already changed in place by mir1, and a solidcraft command list has no second copy of it
+### repeat(a);move(a) | top-level: move1 | OCCT shapes: {
+  move1: {
+    vol: 3000,
+    bbox: [ -5, 35, -5, 35, 45, 5 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   pat1     guard PASS     
+            shipped PASS     
+   move1    guard PASS     
+            shipped PASS     
+### repeat(a);turn(a) | top-level: turn1 | OCCT shapes: {
+  turn1: {
+    vol: 3000,
+    bbox: [ -2.68, -17.68, -5, 32.68, 17.68, 5 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   pat1     guard PASS     
+            shipped PASS     
+   turn1    guard PASS     
+            shipped PASS     
+### join(a,b derived);turn(b) | top-level: op1,turn1 | OCCT shapes: {
+  op1: {
+    vol: 1800,
+    bbox: [ -10, -5, -3, 35, 5, 6 ],
+  },
+  turn1: {
+    vol: 600,
+    bbox: [ 22.93, -7.07, 0, 37.07, 7.07, 6 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   pull1    guard PASS     
+            shipped PASS     
+   move1    guard PASS     
+            shipped PASS     
+   op1      guard PASS     
+            shipped PASS     
+   turn1    guard REFUSED  Turn 1 is not built: Move 1 was already used up by Join 1, and this build keeps only one copy of a part, so make the moved or turned copy before Join 1: move(part, [x, y, z], { copy: true }).
+            shipped REFUSED  turn1 (rotate): its target move1 was already changed in place by op1, and a solidcraft command list has no second copy of it
+### FIX join(a,b);move(b) | top-level: move1,op1 | OCCT shapes: {
+  move1: {
+    vol: 600,
+    bbox: [ 25, 35, -3, 35, 45, 3 ],
+  },
+  op1: {
+    vol: 1800,
+    bbox: [ -10, -5, -3, 35, 5, 3 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   box2     guard PASS     
+            shipped PASS     
+   move1    guard PASS     
+            shipped REFUSED  move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)
+   op1      guard PASS     
+            shipped PASS     
+### FIX cut(a,c);move(c) | top-level: move1,op1 | OCCT shapes: {
+  move1: {
+    vol: 392.699,
+    bbox: [ 0.5, 50.5, -10, 5.5, 55.5, 10 ],
+  },
+  op1: {
+    vol: 8803.65,
+    bbox: [ -15, -15, -5, 15, 15, 5 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   cyl1     guard PASS     
+            shipped PASS     
+   move1    guard PASS     
+            shipped REFUSED  move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)
+   op1      guard PASS     
+            shipped PASS     
+### FIX mirror(v);move(a) | top-level: box1,move1,mir1 | OCCT shapes: {
+  box1: {
+    vol: 1000,
+    bbox: [ 15, -5, -5, 25, 5, 5 ],
+  },
+  move1: {
+    vol: 1000,
+    bbox: [ 15, 35, -5, 25, 45, 5 ],
+  },
+  mir1: {
+    vol: 2000,
+    bbox: [ 5, -5, -5, 25, 5, 5 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   move1    guard PASS     
+            shipped REFUSED  move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)
+   mir1     guard PASS     
+            shipped PASS     
+### move(a);move(a) CONTROL | top-level: move2 | OCCT shapes: {
+  move2: {
+    vol: 1000,
+    bbox: [ 15, 15, -5, 25, 25, 5 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   move1    guard PASS     
+            shipped PASS     
+   move2    guard PASS     
+            shipped PASS     
+### hole(a);move(a) CONTROL | top-level: move1 | OCCT shapes: {
+  move1: {
+    vol: 5874.336,
+    bbox: [ -15, 30, -5, 15, 50, 5 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   hole1    guard PASS     
+            shipped PASS     
+   move1    guard PASS     
+            shipped PASS     
+### move(copy);join CONTROL | top-level: op1 | OCCT shapes: {
+  op1: {
+    vol: 1800,
+    bbox: [ -10, -5, -3, 20, 5, 3 ],
+  },
+} | OCCT refusals: {}
+   box1     guard PASS     
+            shipped PASS     
+   move1    guard PASS     
+            shipped REFUSED  move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)
+   op1      guard PASS     
+            shipped REFUSED  op1 (combine): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))

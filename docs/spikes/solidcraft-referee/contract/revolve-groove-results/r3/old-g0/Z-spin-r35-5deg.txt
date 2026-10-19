@@ -1,0 +1,1 @@
+Z-spin-r35-5deg                          PASS     occtV 916.2979 | tr-occt dV 2.0e-5 dBb 2.5e-13 dCom 1.1e-5 F o/b/t 6/6/7 | brep-occt dV 1.2e-16  | ANALYTIC 916.2979 dTruck 2.0e-5 dOcct 2.5e-16 dBrep 1.2e-16    | ms 70 cpu 329

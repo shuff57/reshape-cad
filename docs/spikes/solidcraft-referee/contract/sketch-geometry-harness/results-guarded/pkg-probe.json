@@ -1,0 +1,10 @@
+{
+ "exports": [
+  "run"
+ ],
+ "reply": {
+  "command": "@sketch",
+  "error": "unknown command `@sketch`",
+  "index": 1
+ }
+}

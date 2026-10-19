@@ -1,0 +1,1 @@
+Z-spin-over360-neg360p5                  FAIL     occtV 39.2699 | tr-occt dV 7.2e+2 dBb 2.0e+1 dCom 4.9e-1 F o/b/t 6/4/4 | brep-occt dV 7.2e+2 | FC: occt 1.0e+0 brep 1.3e-16 truck 1.6e-4 dCom 4.1e-13 F 4 | ANALYTIC 28274.3339 dTruck 1.6e-4 dOcct 1.0e+0 dBrep 1.3e-16    | ms 658 cpu 1107

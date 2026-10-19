@@ -1,0 +1,23 @@
+turn-derived+round     [0,0,90]           REFUSED  round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fill
+turn-derived+round     [0,0,180]          FAIL     dVol=6.8e-7 dCom=2.2e-3 brepDVol=1.2e-12
+turn-derived+round     [0,0,270]          REFUSED  round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fill
+turn-derived+round     [180,0,0]          FAIL     dVol=6.8e-7 dCom=2.2e-3 brepDVol=1.2e-12
+turn-derived+round     [0,180,0]          FAIL     dVol=6.8e-7 dCom=1.1e-3 brepDVol=1.2e-12
+turn-derived+round     [0,0,45]           PASS     dVol=6.8e-7 dCom=3.7e-7 brepDVol=4.4e-3
+turn-derived+round     [90,0,0]           REFUSED  round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fill
+turn-derived+round     [0,90,0]           PASS     dVol=6.8e-7 dCom=7.1e-7 brepDVol=4.4e-3
+turn-derived+round     [180,180,0]        FAIL     dVol=6.8e-7 dCom=2.2e-3 brepDVol=1.2e-12
+turn-derived+round     [10,20,30]         PASS     dVol=6.8e-7 dCom=4.3e-7 brepDVol=4.4e-3
+turn-prim+round        [0,0,180]          PASS     dVol=2.8e-6 dCom=7.0e-7 brepDVol=1.2e-12
+turn-prim+round        [10,20,30]         PASS     dVol=9.4e-7 dCom=2.6e-7 brepDVol=7.4e-13
+move+round             [0,-30,0]          FAIL     dVol=1.9e-6 dCom=1.9e-3 brepDVol=1.1e-12
+move+round             [0,30,0]           REFUSED  round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fill
+move+round             [30,0,0]           REFUSED  round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fill
+move+round             [0,0,10]           FAIL     dVol=1.9e-6 dCom=6.0e-4 brepDVol=1.1e-12
+move+round             [0,0,-10]          REFUSED  round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fill
+move+round             [5,5,5]            REFUSED  round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fill
+move+round             [0,-15,0]          REFUSED  round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fill
+move+round             [0,-30,5]          FAIL     dVol=1.9e-6 dCom=1.9e-3 brepDVol=1.1e-12
+move+round             [-30,-30,0]        REFUSED  round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fill
+move+round             [0,0,0]            PASS     dVol=1.9e-6 dCom=6.2e-7 brepDVol=1.1e-12
+{"turn-derived+round":{"REFUSED":3,"FAIL":4,"PASS":3},"turn-prim+round":{"PASS":2},"move+round":{"FAIL":3,"REFUSED":6,"PASS":1}}

@@ -1,0 +1,36 @@
+move box               100      PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 faces=6/6 | brep dVol=1.5e-16
+move box then back     100      PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=2.4e-17 faces=6/6 | brep dVol=1.5e-16
+box at D + own turn    100      PASS     dVol=3.0e-15 dBbox=1.6e-16 dCom=1.3e-15 faces=6/6 | brep dVol=2.4e-15
+move,hole,turn(derived) 100      PASS     dVol=3.6e-6 dBbox=2.4e-16 dCom=1.2e-12 faces=7/7 | brep dVol=1.9e-15
+move cylinder          100      PASS     dVol=1.5e-4 dBbox=1.1e-6 dCom=1.5e-12 faces=3/3 | brep dVol=1.7e-15
+move then hole         100      PASS     dVol=3.6e-6 dBbox=5.3e-16 dCom=5.3e-15 faces=7/7 | brep dVol=3.1e-16
+move box               1000     PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 faces=6/6 | brep dVol=1.5e-16
+move box then back     1000     PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=2.4e-17 faces=6/6 | brep dVol=1.5e-16
+box at D + own turn    1000     PASS     dVol=3.1e-14 dBbox=3.1e-16 dCom=2.0e-13 faces=6/6 | brep dVol=9.1e-15
+move,hole,turn(derived) 1000     PASS     dVol=3.6e-6 dBbox=2.3e-16 dCom=1.3e-11 faces=7/7 | brep dVol=4.3e-14
+move cylinder          1000     PASS     dVol=1.5e-4 dBbox=1.1e-7 dCom=6.0e-9 faces=3/3 | brep dVol=3.3e-14
+move then hole         1000     PASS     dVol=3.6e-6 dBbox=5.3e-16 dCom=5.1e-13 faces=7/7 | brep dVol=4.6e-16
+move box               10000    PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 faces=6/6 | brep dVol=1.5e-16
+move box then back     10000    PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=2.4e-17 faces=6/6 | brep dVol=1.5e-16
+box at D + own turn    10000    PASS     dVol=3.6e-12 dBbox=2.3e-14 dCom=1.7e-10 faces=6/6 | brep dVol=2.8e-14
+move,hole,turn(derived) 10000    PASS     dVol=3.5e-6 dBbox=3.6e-16 dCom=1.1e-6 faces=7/7 | brep dVol=1.0e-11
+move cylinder          10000    FAIL     dVol=1.5e-4 dBbox=1.1e-8 dCom=4.6e-5 faces=3/3 | brep dVol=1.0e-13
+move then hole         10000    PASS     dVol=3.6e-6 dBbox=7.1e-16 dCom=1.1e-11 faces=7/7 | brep dVol=1.5e-14
+move box               100000   PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 faces=6/6 | brep dVol=1.5e-16
+move box then back     100000   PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=2.4e-17 faces=6/6 | brep dVol=1.5e-16
+box at D + own turn    100000   PASS     dVol=6.6e-10 dBbox=1.6e-16 dCom=3.0e-7 faces=6/6 | brep dVol=1.7e-10
+move,hole,turn(derived) 100000   FAIL     dVol=2.0e-5 dBbox=2.9e-16 dCom=7.6e-3 faces=7/7 | brep dVol=4.6e-11
+move cylinder          100000   FAIL     dVol=7.8e-4 dBbox=1.1e-9 dCom=6.8e-1 faces=3/3 | brep dVol=8.1e-12
+move then hole         100000   PASS     dVol=3.6e-6 dBbox=7.1e-16 dCom=4.9e-7 faces=7/7 | brep dVol=2.0e-14
+move box               1000000  PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 faces=6/6 | brep dVol=1.5e-16
+move box then back     1000000  PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=2.4e-17 faces=6/6 | brep dVol=1.5e-16
+box at D + own turn    1000000  FAIL     dVol=4.1e-8 dBbox=1.2e-16 dCom=1.9e-4 faces=6/6 | brep dVol=2.1e-7
+move,hole,turn(derived) 1000000  FAIL     dVol=4.4e-2 dBbox=1.2e-16 dCom=2.0e+2 faces=7/7 | brep dVol=1.9e-7
+move cylinder          1000000  FAIL     dVol=6.0e-1 dBbox=1.1e-10 dCom=1.6e+4 faces=3/3 | brep dVol=5.5e-11
+move then hole         1000000  FAIL     dVol=3.5e-6 dBbox=5.3e-16 dCom=2.6e-4 faces=7/7 | brep dVol=1.1e-12
+move box               10000000 PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=0.0e+0 faces=6/6 | brep dVol=undefined
+move box then back     10000000 PASS     dVol=1.5e-16 dBbox=0.0e+0 dCom=2.4e-17 faces=6/6 | brep dVol=undefined
+box at D + own turn    10000000 FAIL     dVol=1.8e-5 dBbox=1.6e-16 dCom=8.3e-1 faces=6/6 | brep dVol=undefined
+move,hole,turn(derived) 10000000 FAIL     dVol=1.2e+2 dBbox=1.9e-16 dCom=4.6e+4 faces=7/7 | brep dVol=undefined
+move cylinder          10000000 FAIL     dVol=3.4e+2 dBbox=1.1e-11 dCom=1.1e+5 faces=3/3 | brep dVol=undefined
+move then hole         10000000 FAIL     dVol=2.8e-6 dBbox=7.1e-16 dCom=4.3e-1 faces=7/7 | brep dVol=undefined

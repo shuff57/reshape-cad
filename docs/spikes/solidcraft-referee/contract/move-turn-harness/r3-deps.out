@@ -1,0 +1,67 @@
+### hollow(no open) then turn
+   box1    guard built 
+           shipped built 
+   shell1  guard refused Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' }).
+           shipped refused shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points
+   turn1   guard refused Turn 1 is not built because Hollow 1, which it uses, was refused.
+           shipped refused turn1 (rotate): its target shell1 was refused (shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points)
+### hollow(no open) then move
+   box1    guard built 
+           shipped built 
+   shell1  guard refused Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' }).
+           shipped refused shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points
+   move1   guard refused Move 1 is not built because Hollow 1, which it uses, was refused.
+           shipped refused move1 (move): its target shell1 was refused (shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points)
+### hollow(no open) then copy
+   box1    guard built 
+           shipped built 
+   shell1  guard refused Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' }).
+           shipped refused shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points
+   move1   guard refused Copy 1 is not built because Hollow 1, which it uses, was refused.
+           shipped refused move1 (move): its target shell1 was refused (shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points)
+### hollow(no open), turn, then join with box
+   box1    guard built 
+           shipped built 
+   shell1  guard refused Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' }).
+           shipped refused shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points
+   turn1   guard refused Turn 1 is not built because Hollow 1, which it uses, was refused.
+           shipped refused turn1 (rotate): its target shell1 was refused (shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points)
+   box2    guard built 
+           shipped built 
+   op1     guard refused Join 1 is not built because Turn 1, which it uses, was refused.
+           shipped refused op1 (combine): its target turn1 was refused (turn1 (rotate): its target shell1 was refused (shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points))
+### ring, hole (engine refuses), then turn
+   ring1   guard built 
+           shipped built 
+   hole1   guard refused Hole 1 could not be built by this engine, so it is shown without it.
+           shipped refused hole1 (hole): solidcraft refused it -- solid.cylinder: the cut could not be computed reliably: it came out empty. The result was refused rather than kept wrong; where the bodies only touch (faces flush with each other), overlapping them slightly usually helps (refined tolerance 1.693712e-2 mm)
+   turn1   guard refused Turn 1 is not built because Hole 1, which it uses, was refused.
+           shipped refused turn1 (rotate): its target hole1 was refused (hole1 (hole): solidcraft refused it -- solid.cylinder: the cut could not be computed reliably: it came out empty. The result was refused rather than kept wrong; where the bodies only touch (faces flush with each other), overlapping them slightly usually helps (refined tolerance 1.693712e-2 mm))
+### ring, hole through the tube (time limit), then turn
+   ring1   guard built 
+           shipped built 
+   hole1   guard refused Hole 1 is not built: it took longer than 120 seconds to compute, so it is shown without it -- try a simpler shape.
+           shipped refused hole1 (hole): solidcraft refused it -- (time limit): TIME_LIMIT after 120000 ms
+   turn1   guard refused Turn 1 is not built because Hole 1, which it uses, was refused.
+           shipped refused turn1 (rotate): its target hole1 was refused (hole1 (hole): solidcraft refused it -- (time limit): TIME_LIMIT after 120000 ms)
+### ring, hole (engine refuses), then copy
+   ring1   guard built 
+           shipped built 
+   hole1   guard refused Hole 1 could not be built by this engine, so it is shown without it.
+           shipped refused hole1 (hole): solidcraft refused it -- solid.cylinder: the cut could not be computed reliably: it came out empty. The result was refused rather than kept wrong; where the bodies only touch (faces flush with each other), overlapping them slightly usually helps (refined tolerance 1.693712e-2 mm)
+   move1   guard refused Copy 1 is not built because Hole 1, which it uses, was refused.
+           shipped refused move1 (move): its target hole1 was refused (hole1 (hole): solidcraft refused it -- solid.cylinder: the cut could not be computed reliably: it came out empty. The result was refused rather than kept wrong; where the bodies only touch (faces flush with each other), overlapping them slightly usually helps (refined tolerance 1.693712e-2 mm))
+### turned box, draft (engine refuses), then move
+   box1    guard built 
+           shipped built 
+   draft1  guard refused Draft 1 could not be built by this engine, so it is shown without it.
+           shipped refused draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction
+   move1   guard refused Move 1 is not built because Draft 1, which it uses, was refused.
+           shipped refused move1 (move): its target draft1 was refused (draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction)
+### turned box, draft (engine refuses), then turn
+   box1    guard built 
+           shipped built 
+   draft1  guard refused Draft 1 could not be built by this engine, so it is shown without it.
+           shipped refused draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction
+   turn1   guard refused Turn 1 is not built because Draft 1, which it uses, was refused.
+           shipped refused turn1 (rotate): its target draft1 was refused (draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction)

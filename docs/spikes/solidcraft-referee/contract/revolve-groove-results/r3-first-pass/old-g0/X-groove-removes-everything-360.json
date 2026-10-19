@@ -1,0 +1,48 @@
+[
+ {
+  "id": "X-groove-removes-everything-360",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const sk2 = sketch('top'); sk2.polygon([[0,-5],[25,-5],[25,35],[0,35]]); groove(sk2, cyl, 360);",
+  "translator": "g0",
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "X-groove-removes-everything-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "invalid": "OCCT: undefined"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- groove1 is shown without it."
+   },
+   "ms": 2144,
+   "load": [
+    5.2,
+    5.2
+   ],
+   "cpuMs": 2471,
+   "truck": {
+    "refused": "groove1 (groove): the ring covers the whole part, so nothing would be left; make the ring smaller than the part."
+   }
+  },
+  "analytic": {
+   "volume": 0,
+   "dTruck": null,
+   "dBrep": null
+  },
+  "fcNote": "fixture invalid: OCCT: undefined",
+  "caseMs": 2337
+ }
+]

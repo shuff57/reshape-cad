@@ -1,0 +1,130 @@
+[
+ {
+  "id": "fzc2-48-boxC-side-cone-180",
+  "src": "const t = box(60, 40, 30); const sk = sketch('side', 3); sk.polygon([[-20.3,18.6],[-26.7,18.6],[-24.1,29.7],[-20.3,29.7]]); groove(sk, t, 180);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc2-48-boxC-side-cone-180",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 71549.9425105153,
+    "com": [
+     -0.16228189273967322,
+     -4.207091863350802e-12,
+     0.07405478211916974
+    ],
+    "bbox": [
+     -30,
+     -20,
+     -15.000000000000009,
+     30.00000000000003,
+     20,
+     15
+    ],
+    "faces": 18,
+    "area": 10726.766272947572,
+    "types": {
+     "plane": 14,
+     "cylinder": 2,
+     "cone": 2
+    },
+    "components": {
+     "plane": 14,
+     "cylinder": 2,
+     "cone": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 8
+   },
+   "brep": {
+    "refused": "groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it."
+   },
+   "ms": 40,
+   "load": [
+    18.3,
+    18.3
+   ],
+   "cpuMs": 112,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a ring with a slanted or curved side (a triangle, a circle, a rounded corner) is not built, because in the measurements the engine cut such rings wrongly or took minutes and the two cannot be told apart in advance; give the ring straight sides that are parallel and square to its axis.",
+     "guard": {
+      "cost": {
+       "tool": "cone",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cone",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 26.7,
+       "nearest": 15,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 60,
+      "width": 40,
+      "height": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_box1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a ring with a slanted or curved side (a triangle, a circle, a rounded corner) is not built, because in the measurements the engine cut such rings wrongly or took minutes and the two cannot be told apart in advance; give the ring straight sides that are parallel and square to its axis.",
+    "firstRefusal": "groove1 (groove): a ring with a slanted or curved side (a triangle, a circle, a rounded corner) is not built, because in the measurements the engine cut such rings wrongly or took minutes and the two cannot be told apart in advance; give the ring straight sides that are parallel and square to its axis."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 455
+ }
+]

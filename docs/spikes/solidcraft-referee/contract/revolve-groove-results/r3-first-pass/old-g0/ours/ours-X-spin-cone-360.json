@@ -1,0 +1,21 @@
+{
+ "id": "X-spin-cone-360",
+ "outcome": "built",
+ "volume": 12565.280609792831,
+ "faces": 2,
+ "bbox": [
+  -20,
+  -19.999749543265743,
+  -3.1086244689504375e-15,
+  20,
+  19.999749543265743,
+  30
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[20,0],[0,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

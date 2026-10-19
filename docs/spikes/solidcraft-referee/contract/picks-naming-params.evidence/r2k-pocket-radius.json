@@ -1,0 +1,96 @@
+[
+ {
+  "fn": "round",
+  "wall": 1,
+  "r": 3.9,
+  "outcome": "PASS",
+  "sc": 11647.337652559241,
+  "cf": 11647.359060652752,
+  "d": -0.0000018380212544016105,
+  "occt": 11647.359060648305,
+  "occtRef": {},
+  "brep": 11647.35906065275
+ },
+ {
+  "fn": "round",
+  "wall": 1,
+  "r": 4,
+  "outcome": "NO-REFERENCE",
+  "sc": 11645.641186239523,
+  "cf": 11645.663706143592,
+  "d": -0.000001933758748063303,
+  "occt": 11680,
+  "occtRef": {
+   "round1": "Rounding Round 1 at 4 would not fit its edge -- Round 1 is shown without it."
+  },
+  "brep": 11680
+ },
+ {
+  "fn": "round",
+  "wall": 1,
+  "r": 4.5,
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: a round of 4.5 is too large for the 4 mm tall pocket wall it sits on -- use a smaller size.",
+  "cf": 11636.543128087984,
+  "d": null,
+  "occt": 11680,
+  "occtRef": {
+   "round1": "Rounding Round 1 at 4.5 would not fit its edge -- Round 1 is shown without it."
+  },
+  "brep": 11680
+ },
+ {
+  "fn": "round",
+  "wall": 1,
+  "r": 6,
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: a round of 6 is too large for the 4 mm tall pocket wall it sits on -- use a smaller size.",
+  "cf": 11602.743338823082,
+  "d": null,
+  "occt": 11680,
+  "occtRef": {
+   "round1": "Rounding Round 1 at 6 would not fit its edge -- Round 1 is shown without it."
+  },
+  "brep": 11680
+ },
+ {
+  "fn": "bevel",
+  "wall": 2,
+  "r": 3.9,
+  "outcome": "PASS",
+  "sc": 11619.160000000005,
+  "cf": 11619.16,
+  "d": 4.696525575547259e-16,
+  "occt": 11619.16,
+  "occtRef": {},
+  "brep": 11619.159999999998
+ },
+ {
+  "fn": "bevel",
+  "wall": 2,
+  "r": 4,
+  "outcome": "REFUSED",
+  "sentence": "bevel1 is not built: a bevel of 4 is too large for the 4 mm tall pocket wall it sits on -- use a smaller size.",
+  "cf": 11616,
+  "d": null,
+  "occt": 11680,
+  "occtRef": {
+   "bevel1": "Chamfering Bevel 1 at 4 would not fit its edge -- Bevel 1 is shown without it."
+  },
+  "brep": 11680
+ },
+ {
+  "fn": "bevel",
+  "wall": 2,
+  "r": 4.5,
+  "outcome": "REFUSED",
+  "sentence": "bevel1 is not built: a bevel of 4.5 is too large for the 4 mm tall pocket wall it sits on -- use a smaller size.",
+  "cf": 11599,
+  "d": null,
+  "occt": 11680,
+  "occtRef": {
+   "bevel1": "Chamfering Bevel 1 at 4.5 would not fit its edge -- Bevel 1 is shown without it."
+  },
+  "brep": 11680
+ }
+]

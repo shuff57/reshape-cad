@@ -1,0 +1,504 @@
+[
+ {
+  "T": 10,
+  "depth": 2,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 11800.25,
+  "closed": 11800.25,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 2,
+  "size": 1,
+  "outcome": "PASS",
+  "sc": 11801,
+  "closed": 11801,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 2,
+  "size": 2,
+  "outcome": "PASS",
+  "sc": 11804,
+  "closed": 11804,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 4,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 11600.5,
+  "closed": 11600.5,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 4,
+  "size": 1,
+  "outcome": "PASS",
+  "sc": 11602,
+  "closed": 11602,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 4,
+  "size": 2,
+  "outcome": "PASS",
+  "sc": 11608,
+  "closed": 11608,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 6,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 11400.75,
+  "closed": 11400.75,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 6,
+  "size": 1,
+  "outcome": "PASS",
+  "sc": 11403,
+  "closed": 11403,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 6,
+  "size": 2,
+  "outcome": "PASS",
+  "sc": 11412,
+  "closed": 11412,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 8,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 11201,
+  "closed": 11201,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 8,
+  "size": 1,
+  "outcome": "PASS",
+  "sc": 11204,
+  "closed": 11204,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 8,
+  "size": 2,
+  "outcome": "PASS",
+  "sc": 11216,
+  "closed": 11216,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 9,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 11101.125,
+  "closed": 11101.125,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 9,
+  "size": 1,
+  "outcome": "PASS",
+  "sc": 11104.5,
+  "closed": 11104.5,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 9,
+  "size": 2,
+  "outcome": "REFUSED",
+  "closed": 11118,
+  "rel": null
+ },
+ {
+  "T": 10,
+  "depth": 9.5,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 11051.1875,
+  "closed": 11051.1875,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 10,
+  "depth": 9.5,
+  "size": 1,
+  "outcome": "REFUSED",
+  "closed": 11054.75,
+  "rel": null
+ },
+ {
+  "T": 10,
+  "depth": 9.5,
+  "size": 2,
+  "outcome": "REFUSED",
+  "closed": 11069,
+  "rel": null
+ },
+ {
+  "T": 10,
+  "depth": 10,
+  "size": 0.5,
+  "outcome": "REFUSED",
+  "closed": 11001.25,
+  "rel": null
+ },
+ {
+  "T": 10,
+  "depth": 10,
+  "size": 1,
+  "outcome": "REFUSED",
+  "closed": 11005,
+  "rel": null
+ },
+ {
+  "T": 10,
+  "depth": 10,
+  "size": 2,
+  "outcome": "REFUSED",
+  "closed": 11020,
+  "rel": null
+ },
+ {
+  "T": 20,
+  "depth": 4,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 23600.5,
+  "closed": 23600.5,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 20,
+  "depth": 4,
+  "size": 1,
+  "outcome": "PASS",
+  "sc": 23602,
+  "closed": 23602,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 20,
+  "depth": 4,
+  "size": 2,
+  "outcome": "PASS",
+  "sc": 23608,
+  "closed": 23608,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 20,
+  "depth": 10,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 23001.25,
+  "closed": 23001.25,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 20,
+  "depth": 10,
+  "size": 1,
+  "outcome": "PASS",
+  "sc": 23005,
+  "closed": 23005,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 20,
+  "depth": 10,
+  "size": 2,
+  "outcome": "PASS",
+  "sc": 23020,
+  "closed": 23020,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 20,
+  "depth": 15,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 22501.875,
+  "closed": 22501.875,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 20,
+  "depth": 15,
+  "size": 1,
+  "outcome": "PASS",
+  "sc": 22507.5,
+  "closed": 22507.5,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 20,
+  "depth": 15,
+  "size": 2,
+  "outcome": "PASS",
+  "sc": 22530,
+  "closed": 22530,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 20,
+  "depth": 19,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 22102.375,
+  "closed": 22102.375,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 20,
+  "depth": 19,
+  "size": 1,
+  "outcome": "PASS",
+  "sc": 22109.5,
+  "closed": 22109.5,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 20,
+  "depth": 19,
+  "size": 2,
+  "outcome": "REFUSED",
+  "closed": 22138,
+  "rel": null
+ },
+ {
+  "T": 20,
+  "depth": 19.5,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 22052.4375,
+  "closed": 22052.4375,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 20,
+  "depth": 19.5,
+  "size": 1,
+  "outcome": "REFUSED",
+  "closed": 22059.75,
+  "rel": null
+ },
+ {
+  "T": 20,
+  "depth": 19.5,
+  "size": 2,
+  "outcome": "REFUSED",
+  "closed": 22089,
+  "rel": null
+ },
+ {
+  "T": 20,
+  "depth": 20,
+  "size": 0.5,
+  "outcome": "REFUSED",
+  "closed": 22002.5,
+  "rel": null
+ },
+ {
+  "T": 20,
+  "depth": 20,
+  "size": 1,
+  "outcome": "REFUSED",
+  "closed": 22010,
+  "rel": null
+ },
+ {
+  "T": 20,
+  "depth": 20,
+  "size": 2,
+  "outcome": "REFUSED",
+  "closed": 22040,
+  "rel": null
+ },
+ {
+  "T": 6,
+  "depth": 3,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 6900.375,
+  "closed": 6900.375,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 6,
+  "depth": 3,
+  "size": 1,
+  "outcome": "PASS",
+  "sc": 6901.5,
+  "closed": 6901.5,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 6,
+  "depth": 3,
+  "size": 2,
+  "outcome": "PASS",
+  "sc": 6906,
+  "closed": 6906,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 6,
+  "depth": 5,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 6700.625,
+  "closed": 6700.625,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 6,
+  "depth": 5,
+  "size": 1,
+  "outcome": "PASS",
+  "sc": 6702.5,
+  "closed": 6702.5,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 6,
+  "depth": 5,
+  "size": 2,
+  "outcome": "REFUSED",
+  "closed": 6710,
+  "rel": null
+ },
+ {
+  "T": 6,
+  "depth": 6,
+  "size": 0.5,
+  "outcome": "REFUSED",
+  "closed": 6600.75,
+  "rel": null
+ },
+ {
+  "T": 6,
+  "depth": 6,
+  "size": 1,
+  "outcome": "REFUSED",
+  "closed": 6603,
+  "rel": null
+ },
+ {
+  "T": 6,
+  "depth": 6,
+  "size": 2,
+  "outcome": "REFUSED",
+  "closed": 6612,
+  "rel": null
+ },
+ {
+  "T": 30,
+  "depth": 25,
+  "size": 0.5,
+  "outcome": "PASS",
+  "sc": 33503.125,
+  "closed": 33503.125,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 30,
+  "depth": 25,
+  "size": 1,
+  "outcome": "PASS",
+  "sc": 33512.5,
+  "closed": 33512.5,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 30,
+  "depth": 25,
+  "size": 2,
+  "outcome": "PASS",
+  "sc": 33550,
+  "closed": 33550,
+  "rel": 0,
+  "faces": 12
+ },
+ {
+  "T": 30,
+  "depth": 30,
+  "size": 0.5,
+  "outcome": "REFUSED",
+  "closed": 33003.75,
+  "rel": null
+ },
+ {
+  "T": 30,
+  "depth": 30,
+  "size": 1,
+  "outcome": "REFUSED",
+  "closed": 33015,
+  "rel": null
+ },
+ {
+  "T": 30,
+  "depth": 30,
+  "size": 2,
+  "outcome": "REFUSED",
+  "closed": 33060,
+  "rel": null
+ }
+]

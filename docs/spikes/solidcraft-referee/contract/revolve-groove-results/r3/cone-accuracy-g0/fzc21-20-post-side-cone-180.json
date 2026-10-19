@@ -1,0 +1,169 @@
+[
+ {
+  "id": "fzc21-20-post-side-cone-180",
+  "src": "const k = sketch('top'); k.circle(40); const t = extrude(k, 30); const sk = sketch('side', 4.5); sk.polygon([[15.3,14.3],[18.4,14.3],[15.3,24.9]]); groove(sk, t, 180);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc21-20-post-side-cone-180",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 37666.02056145348,
+    "com": [
+     -0.01692878957615983,
+     -7.172054969997691e-8,
+     14.99869562576821
+    ],
+    "bbox": [
+     -20.0000001,
+     -20.0000001,
+     -1e-7,
+     20.0000001,
+     20.0000001,
+     30.0000001
+    ],
+    "faces": 6,
+    "area": 6308.405189381767,
+    "types": {
+     "cylinder": 2,
+     "plane": 3,
+     "cone": 1
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 3,
+     "cone": 1
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it."
+   },
+   "ms": 341,
+   "load": [
+    11,
+    11
+   ],
+   "cpuMs": 1189,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall",
+     "guard": {
+      "cost": {
+       "tool": "cone",
+       "shape": "cylinder",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cone",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 1,
+       "headTypes": {
+        "cylinder": 1,
+        "plane": 2
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 18.4,
+       "nearest": 0,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.circle.center",
+     "params": {
+      "center": [
+       0,
+       0
+      ],
+      "diameter": 40
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall",
+    "firstRefusal": "groove1 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall"
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 548
+ }
+]

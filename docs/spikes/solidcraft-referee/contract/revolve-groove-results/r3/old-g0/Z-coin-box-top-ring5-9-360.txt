@@ -1,0 +1,1 @@
+Z-coin-box-top-ring5-9-360               PASS     occtV 31296.2832 | tr-occt dV 3.9e-6 dBb 4.3e-15 dCom 8.7e-7 F o/b/t 10/10/10 | brep-occt dV 3.9e-12      | ms 1760 cpu 2122

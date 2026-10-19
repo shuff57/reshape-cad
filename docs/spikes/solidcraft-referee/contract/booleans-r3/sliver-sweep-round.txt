@@ -1,0 +1,164 @@
+cylinder-vertical-r5   cut        2       expected 31842.920    SC 31842.946    exact 8.2e-7
+cylinder-vertical-r5   cut        1       expected 31921.460    SC 31921.473    exact 4.1e-7
+cylinder-vertical-r5   cut        0.7     expected 31945.022    SC 31945.031    exact 2.9e-7
+cylinder-vertical-r5   cut        0.5     expected 31960.730    SC 31960.737    exact 2.0e-7
+cylinder-vertical-r5   cut        0.35    expected 31972.511    SC 31972.516    exact 1.4e-7
+cylinder-vertical-r5   cut        0.25    expected 31980.365    SC 31980.368    exact 1.0e-7
+cylinder-vertical-r5   cut        0.2     expected 31984.292    SC 31984.295    exact 8.2e-8
+cylinder-vertical-r5   cut        0.15    expected 31988.219    SC 31988.221    exact 6.1e-8
+cylinder-vertical-r5   cut        0.1     expected 31992.146    SC 31992.147    exact 4.1e-8
+cylinder-vertical-r5   cut        0.05    expected 31996.073    SC 31996.074    exact 2.0e-8
+cylinder-vertical-r5   cut        0.02    expected 31998.429    SC 31998.429    exact 8.2e-9
+cylinder-vertical-r5   cut        0.01    expected 31999.215    SC 31999.215    exact 4.1e-9
+cylinder-vertical-r5   cut        0.005   expected 31999.607    SC 31999.607    exact 2.0e-9
+cylinder-vertical-r5   cut        0.002   expected 31999.843    SC 31999.843    exact 8.2e-10
+cylinder-vertical-r5   cut        0.001   expected 31999.921    SC 32000.000    SILENT NO-OP 2.5e-6
+cylinder-vertical-r5   intersect  2       expected 157.07963    SC 157.06970    exact 6.3e-5
+cylinder-vertical-r5   intersect  1       expected 78.539816    SC 78.535003    exact 6.1e-5
+cylinder-vertical-r5   intersect  0.7     expected 54.977871    SC 54.974508    exact 6.1e-5
+cylinder-vertical-r5   intersect  0.5     expected 39.269908    SC 39.267507    exact 6.1e-5
+cylinder-vertical-r5   intersect  0.35    expected 27.488936    SC 27.487254    exact 6.1e-5
+cylinder-vertical-r5   intersect  0.25    expected 19.634954    SC 19.633752    exact 6.1e-5
+cylinder-vertical-r5   intersect  0.2     expected 15.707963    SC 15.707001    exact 6.1e-5
+cylinder-vertical-r5   intersect  0.15    expected 11.780972    SC 11.780250    exact 6.1e-5
+cylinder-vertical-r5   intersect  0.1     expected 7.8539816    SC 7.8534994    exact 6.1e-5
+cylinder-vertical-r5   intersect  0.05    expected 3.9269908    SC 3.9267494    exact 6.1e-5
+cylinder-vertical-r5   intersect  0.02    expected 1.5707963    SC 1.5706997    exact 6.2e-5
+cylinder-vertical-r5   intersect  0.01    expected 0.78539816   SC 0.78534982   exact 4.8e-5
+cylinder-vertical-r5   intersect  0.005   expected 0.39269908   SC 0.39267491   exact 2.4e-5
+cylinder-vertical-r5   intersect  0.002   expected 0.15707963   SC 0.15706996   exact 9.7e-6
+cylinder-vertical-r5   intersect  0.001   expected 0.078539816  SC -            NO-BODY 
+cylinder-on-side-r10   cut        2       expected 31672.998    SC 31673.346    exact 1.1e-5
+cylinder-on-side-r10   cut        1       expected 31882.548    SC 31882.668    exact 3.7e-6
+cylinder-on-side-r10   cut        0.7     expected 31930.894    SC 31931.172    exact 8.7e-6
+cylinder-on-side-r10   cut        0.5     expected 31958.154    SC 31958.321    exact 5.2e-6
+cylinder-on-side-r10   cut        0.35    expected 31975.436    SC 31975.534    exact 3.0e-6
+cylinder-on-side-r10   cut        0.25    expected 31985.149    SC 31985.208    exact 1.8e-6
+cylinder-on-side-r10   cut        0.2     expected 31989.365    SC 31989.407    exact 1.3e-6
+cylinder-on-side-r10   cut        0.15    expected 31993.087    SC 31993.196    exact 3.4e-6
+cylinder-on-side-r10   cut        0.1     expected 31996.234    SC 31996.293    exact 1.8e-6
+cylinder-on-side-r10   cut        0.05    expected 31998.668    SC 32000.000    SILENT NO-OP 4.2e-5
+cylinder-on-side-r10   cut        0.02    expected 31999.663    SC 32000.000    SILENT NO-OP 1.1e-5
+cylinder-on-side-r10   cut        0.01    expected 31999.881    SC 32000.000    SILENT NO-OP 3.7e-6
+cylinder-on-side-r10   cut        0.005   expected 31999.958    SC 32000.000    SILENT NO-OP 1.3e-6
+cylinder-on-side-r10   cut        0.002   expected 31999.989    SC 32000.000    SILENT NO-OP 3.3e-7
+cylinder-on-side-r10   cut        0.001   expected 31999.996    SC 32000.000    SILENT NO-OP 1.2e-7
+cylinder-on-side-r10   intersect  2       expected 327.00222    SC 326.91144    exact 2.8e-4
+cylinder-on-side-r10   intersect  1       expected 117.45181    SC 117.38247    WRONG-VOLUME 5.9e-4
+cylinder-on-side-r10   intersect  0.7     expected 69.106259    SC 69.035815    WRONG-VOLUME 1.0e-3
+cylinder-on-side-r10   intersect  0.5     expected 41.846049    SC -            REFUSED 
+cylinder-on-side-r10   intersect  0.35    expected 24.563629    SC 24.539127    WRONG-VOLUME 1.0e-3
+cylinder-on-side-r10   intersect  0.25    expected 14.851093    SC 14.819372    WRONG-VOLUME 2.1e-3
+cylinder-on-side-r10   intersect  0.2     expected 10.634609    SC 10.592566    WRONG-VOLUME 4.0e-3
+cylinder-on-side-r10   intersect  0.15    expected 6.9125938    SC -            NO-BODY 
+cylinder-on-side-r10   intersect  0.1     expected 3.7655743    SC -            NO-BODY 
+cylinder-on-side-r10   intersect  0.05    expected 1.3323329    SC -            NO-BODY 
+cylinder-on-side-r10   intersect  0.02    expected 0.33720841   SC -            NO-BODY 
+cylinder-on-side-r10   intersect  0.01    expected 0.11923907   SC -            NO-BODY 
+cylinder-on-side-r10   intersect  0.005   expected 0.042160540  SC -            NO-BODY 
+cylinder-on-side-r10   intersect  0.002   expected 0.010666347  SC -            NO-BODY 
+cylinder-on-side-r10   intersect  0.001   expected 0.0037711796 SC -            NO-BODY 
+sphere-r10             cut        2       expected 31882.714    SC 31882.795    exact 2.5e-6
+sphere-r10             cut        1       expected 31969.631    SC 31969.652    exact 6.3e-7
+sphere-r10             cut        0.7     expected 31984.965    SC 31984.975    exact 3.1e-7
+sphere-r10             cut        0.5     expected 31992.277    SC 31992.282    exact 1.7e-7
+sphere-r10             cut        0.35    expected 31996.196    SC 31996.206    exact 3.0e-7
+sphere-r10             cut        0.25    expected 31998.053    SC 31998.058    exact 1.6e-7
+sphere-r10             cut        0.2     expected 31998.752    SC 31998.755    exact 1.0e-7
+sphere-r10             cut        0.15    expected 31999.297    SC 31999.298    exact 5.6e-8
+sphere-r10             cut        0.1     expected 31999.687    SC 32000.000    SILENT NO-OP 9.8e-6
+sphere-r10             cut        0.05    expected 31999.922    SC 32000.000    SILENT NO-OP 2.5e-6
+sphere-r10             cut        0.02    expected 31999.987    SC 32000.000    SILENT NO-OP 3.9e-7
+sphere-r10             cut        0.01    expected 31999.997    SC 32000.000    SILENT NO-OP 9.8e-8
+sphere-r10             cut        0.005   expected 31999.999    SC 32000.000    SILENT NO-OP 2.5e-8
+sphere-r10             cut        0.002   expected 32000.000    SC 32000.000    SILENT NO-OP 3.9e-9
+sphere-r10             cut        0.001   expected 32000.000    SC 32000.000    SILENT NO-OP 9.8e-10
+sphere-r10             intersect  2       expected 117.28613    SC 117.26572    exact 1.7e-4
+sphere-r10             intersect  1       expected 30.368729    SC 30.363651    exact 1.7e-4
+sphere-r10             intersect  0.7     expected 15.034615    SC 15.024781    WRONG-VOLUME 6.5e-4
+sphere-r10             intersect  0.5     expected 7.7230819    SC 7.7180444    WRONG-VOLUME 6.5e-4
+sphere-r10             intersect  0.35    expected 3.8035524    SC 3.8010805    WRONG-VOLUME 6.5e-4
+sphere-r10             intersect  0.25    expected 1.9471329    SC 1.9458716    WRONG-VOLUME 6.5e-4
+sphere-r10             intersect  0.2     expected 1.2482595    SC 1.2474525    WRONG-VOLUME 6.5e-4
+sphere-r10             intersect  0.15    expected 0.70332406   SC 0.70287395   WRONG-VOLUME 4.5e-4
+sphere-r10             intersect  0.1     expected 0.31311207   SC -            NO-BODY 
+sphere-r10             intersect  0.05    expected 0.078408917  SC -            NO-BODY 
+sphere-r10             intersect  0.02    expected 0.012557993  SC -            NO-BODY 
+sphere-r10             intersect  0.01    expected 0.0031405455 SC -            NO-BODY 
+sphere-r10             intersect  0.005   expected 0.00078526726 SC -            NO-BODY 
+sphere-r10             intersect  0.002   expected 0.00012565533 SC -            NO-BODY 
+sphere-r10             intersect  0.001   expected 0.000031414879 SC -            NO-BODY 
+{
+ "cylinder-vertical-r5/cut": {
+  "thinnestExactMm": 0.002,
+  "notExact": [
+   "0.001:SILENT NO-OP"
+  ]
+ },
+ "cylinder-vertical-r5/intersect": {
+  "thinnestExactMm": 0.002,
+  "notExact": [
+   "0.001:NO-BODY"
+  ]
+ },
+ "cylinder-on-side-r10/cut": {
+  "thinnestExactMm": 0.1,
+  "notExact": [
+   "0.05:SILENT NO-OP",
+   "0.02:SILENT NO-OP",
+   "0.01:SILENT NO-OP",
+   "0.005:SILENT NO-OP",
+   "0.002:SILENT NO-OP",
+   "0.001:SILENT NO-OP"
+  ]
+ },
+ "cylinder-on-side-r10/intersect": {
+  "thinnestExactMm": 2,
+  "notExact": [
+   "1:WRONG-VOLUME",
+   "0.7:WRONG-VOLUME",
+   "0.5:REFUSED",
+   "0.35:WRONG-VOLUME",
+   "0.25:WRONG-VOLUME",
+   "0.2:WRONG-VOLUME",
+   "0.15:NO-BODY",
+   "0.1:NO-BODY",
+   "0.05:NO-BODY",
+   "0.02:NO-BODY",
+   "0.01:NO-BODY",
+   "0.005:NO-BODY",
+   "0.002:NO-BODY",
+   "0.001:NO-BODY"
+  ]
+ },
+ "sphere-r10/cut": {
+  "thinnestExactMm": 0.15,
+  "notExact": [
+   "0.1:SILENT NO-OP",
+   "0.05:SILENT NO-OP",
+   "0.02:SILENT NO-OP",
+   "0.01:SILENT NO-OP",
+   "0.005:SILENT NO-OP",
+   "0.002:SILENT NO-OP",
+   "0.001:SILENT NO-OP"
+  ]
+ },
+ "sphere-r10/intersect": {
+  "thinnestExactMm": 1,
+  "notExact": [
+   "0.7:WRONG-VOLUME",
+   "0.5:WRONG-VOLUME",
+   "0.35:WRONG-VOLUME",
+   "0.25:WRONG-VOLUME",
+   "0.2:WRONG-VOLUME",
+   "0.15:WRONG-VOLUME",
+   "0.1:NO-BODY",
+   "0.05:NO-BODY",
+   "0.02:NO-BODY",
+   "0.01:NO-BODY",
+   "0.005:NO-BODY",
+   "0.002:NO-BODY",
+   "0.001:NO-BODY"
+  ]
+ }
+}

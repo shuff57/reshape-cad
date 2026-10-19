@@ -1,0 +1,103 @@
+[
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc",
+   "endpoint tangency curved accuracy"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00005771978586200539,
+      "db": 5.329070518200751e-15,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8843.382953534847
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 39,
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000058130729230292234,
+      "db": 0.0000072510366064075056,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8843.379319195496
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000052600649340665335,
+      "db": 0.0000071159975868854515,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8843.42822663265
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid parameters for `sketch.dimension`: that dimension conflicts with the sketch: other constraints already determine it with a different value"
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 38,
+     "REFUSED": 1,
+     "BUILT-WRONG-VOLUME": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000059861857885590984,
+      "db": 0.000003463955394996295,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8843.36400927817
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00005552878840563785,
+      "db": 0.0000037258098631790897,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8843.402330482837
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid input: profile: cannot attach a plane to a wire that is not on one plane."
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.1742604966338811,
+      "db": 23.99993687885025,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 10385.03468091938
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ }
+]

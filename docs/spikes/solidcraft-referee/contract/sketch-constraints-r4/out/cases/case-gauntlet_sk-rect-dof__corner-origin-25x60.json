@@ -1,0 +1,82 @@
+[
+ {
+  "id": "gauntlet:sk-rect-dof__corner-origin-25x60",
+  "feats": [
+   "dimensioned rectangle",
+   "rule:distanceX",
+   "rule:distanceY"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 15000
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.304053244491418e-15,
+      "db": 4.618527782440651e-15,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 15000.000000000035
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.9103830456733705e-15,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 14999.999999999956
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 9.822542779147625e-15,
+      "db": 1.9776772811989454e-14,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 15000.000000000147
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.2247861983875434e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 14999.999999999816
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ }
+]

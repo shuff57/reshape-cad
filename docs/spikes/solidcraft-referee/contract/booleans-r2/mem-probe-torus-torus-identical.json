@@ -1,0 +1,141 @@
+{
+ "case": "torus-torus-identical",
+ "limitS": 480,
+ "samples": [
+  [
+   5,
+   234
+  ],
+  [
+   10,
+   240
+  ],
+  [
+   15,
+   238
+  ],
+  [
+   20,
+   237
+  ],
+  [
+   25,
+   233
+  ],
+  [
+   30,
+   233
+  ],
+  [
+   35,
+   233
+  ],
+  [
+   40,
+   233
+  ],
+  [
+   45,
+   233
+  ],
+  [
+   50,
+   233
+  ],
+  [
+   55,
+   232
+  ],
+  [
+   60,
+   232
+  ],
+  [
+   65,
+   232
+  ],
+  [
+   70,
+   232
+  ],
+  [
+   75,
+   232
+  ],
+  [
+   80,
+   232
+  ],
+  [
+   85,
+   232
+  ],
+  [
+   90,
+   232
+  ],
+  [
+   95,
+   232
+  ],
+  [
+   100,
+   232
+  ],
+  [
+   105,
+   232
+  ],
+  [
+   110,
+   232
+  ],
+  [
+   115,
+   233
+  ],
+  [
+   120,
+   232
+  ],
+  [
+   125,
+   232
+  ],
+  [
+   130,
+   232
+  ],
+  [
+   135,
+   239
+  ],
+  [
+   140,
+   239
+  ],
+  [
+   145,
+   239
+  ],
+  [
+   150,
+   239
+  ]
+ ],
+ "exited": {
+  "code": 0,
+  "sig": null,
+  "s": 152.202
+ },
+ "result": {
+  "ok": false,
+  "ms": 152055,
+  "failed": {
+   "command": "solid.combine",
+   "error": "boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus) and the tool has 6 curved faces (torus); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus) and the tool has 6 curved faces (freeform)",
+   "index": 2
+  }
+ },
+ "tail": "an Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus) and the tool has 6 curved faces (freeform)\",\"index\":2}}\n"
+}

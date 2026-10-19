@@ -1,0 +1,20 @@
+r2-cyl-h2-flat                                        Rounding cylinder cyl1 (radius 24, height 10) at radius 5 failed -- the radius is too big for this shape's edges.
+r2-cyl-h2-tall                                        Rounding cylinder cyl1 (radius 12, height 10) at radius 5 failed -- the radius is too big for this shape's edges.
+r2-cyl-R-eq-h2                 refused-by-solidcraft  cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius
+r2-cyl-R-eq-h2b                refused-by-solidcraft  cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius
+r2-cyl-R-under                                        dVol 1.6e-4 dBbox 1.6e-2 dCom 3.7e-16 dAn 1.6e-4 faces 5/5
+r2-cyl-h2-under                                       dVol 4.3e-5 dBbox 8.3e-6 dCom 2.5e-16 dAn 4.3e-5 faces 5/5
+r2-cyl-R-over                  refused-by-solidcraft  cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius
+r2-cyl-h2-over                 refused-by-solidcraft  cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls
+r2-cyl-chamfer-R-0.1                                  dVol 7.3e-6 dBbox 4.8e-8 dCom 1.0e-15 dAn - faces 5/5
+r2-cyl-chamfer-R               refused-by-solidcraft  x1 (cylinder): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than a corner radius
+r2-cyl-chamfer-R+1             refused-by-solidcraft  x1 (cylinder): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than a corner radius
+r2-cyl-chamfer-h2                                     Chamfering cylinder x1 (radius 12, height 10) at radius 5 failed -- the radius is too big for this shape's edges.
+r2-cyl-chamfer-h2+             refused-by-solidcraft  x1 (cylinder): solidcraft refused it -- solid.chamfer: not supported yet: the blend is taller than the walls
+r2-cyl-chamfer-3                                      dVol 1.0e-4 dBbox 7.1e-6 dCom 3.1e-16 dAn - faces 5/5
+r2-cyl-chamfer-9                                      dVol 3.3e-5 dBbox 6.3e-6 dCom 4.7e-12 dAn - faces 5/5
+r2-cyl-needle-1-100                                   dVol 5.7e-4 dBbox 9.0e-7 dCom 1.9e-16 dAn 5.7e-4 faces 3/3
+r2-cyl-needle-2-100                                   dVol 4.5e-4 dBbox 1.8e-6 dCom 2.7e-16 dAn 4.5e-4 faces 3/3
+r2-cyl-needle-0.5-100                                 dVol 1.8e-3 dBbox 1.2e-6 dCom 2.4e-16 dAn 1.8e-3 faces 3/3
+r2-cyl-disc-100-0.2                                   dVol 6.2e-5 dBbox 8.4e-6 dCom 5.9e-17 dAn 6.2e-5 faces 3/3
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/r2-cyl/primitives-measure.json

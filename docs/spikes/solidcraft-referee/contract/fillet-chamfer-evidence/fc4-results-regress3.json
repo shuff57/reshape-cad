@@ -1,0 +1,1191 @@
+[
+ {
+  "id": "rg-o-shell-then-edge",
+  "group": "regress",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nhollow(b,{wall:2,open:'top'})\nround(b.edge('bottom','right'), 2)",
+  "pane": {
+   "volume": 5014.230883303696,
+   "faces": 12,
+   "recorded": true,
+   "refused": []
+  },
+  "contract": {
+   "volume": 5014.230883303696,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5014.230883303696,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6.0000000000000036,
+      20.000000000000004,
+      15.000000000000007,
+      6
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       -6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1173
+  },
+  "grouped": {
+   "sameAsContract": true
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 5014.247779623521,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 5014.247779607694,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "occtSim": {
+    "volume": 5014.247779623521,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ],
+    "types": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "edgeDist": 0,
+    "distinctEdges": 1
+   }
+  },
+  "base": {
+   "volume": 5040,
+   "faces": 11,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": null,
+   "grouped": 1.727306834419049e-16,
+   "contract": 1.727306834419049e-16
+  },
+  "ms": 2972
+ },
+ {
+  "id": "rg-o-shell-open-rim-edge",
+  "group": "regress",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nhollow(b,{wall:2,open:'top'})\nround(b.edge('top','right'), 0.5)",
+  "pane": {
+   "volume": 5038.388102976604,
+   "faces": 12,
+   "recorded": true,
+   "refused": []
+  },
+  "contract": {
+   "volume": 5038.388102976604,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5038.388102976604,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6,
+      20,
+      15.000000000000007,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 0.5
+    }
+   ],
+   "ms": 1039
+  },
+  "grouped": {
+   "sameAsContract": true
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 5038.390486229787,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 5038.39048622548,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "occtSim": {
+    "volume": 5038.390486229787,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ],
+    "types": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "edgeDist": 0,
+    "distinctEdges": 1
+   }
+  },
+  "base": {
+   "volume": 5040,
+   "faces": 11,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": null,
+   "grouped": 1.727306834419049e-16,
+   "contract": 1.727306834419049e-16
+  },
+  "ms": 2873
+ },
+ {
+  "id": "rg-n-hollow-closed-then-edge",
+  "group": "regress",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nhollow(b,{wall:2})\nround(b.edge('top','front'), 1)",
+  "pane": {
+   "volume": 14400,
+   "faces": 6,
+   "recorded": true,
+   "refused": [
+    "shell1",
+    "round1"
+   ]
+  },
+  "contract": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -6,
+      20,
+      15,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "shell1",
+     "status": "refused",
+     "sentence": "The hollow before shell1 has no open side, so shell1 is shown without it -- hollow with an open side such as open:'top'.",
+     "refusal": "shell1 (shell): this spike's shell needs a face to remove; a closed hollow box is not mapped",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "round1 builds on shell1, which is shown without its round, so round1 is shown without it too -- fix shell1 first.",
+     "refusal": "round1 (fillet): its target shell1 was refused (shell1 (shell): this spike's shell needs a face to remove; a closed hollow box is not mapped)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 326
+  },
+  "grouped": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -6,
+      20,
+      15,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "shell1",
+     "status": "refused",
+     "sentence": "The hollow before shell1 has no open side, so shell1 is shown without it -- hollow with an open side such as open:'top'.",
+     "refusal": "shell1 (shell): this spike's shell needs a face to remove; a closed hollow box is not mapped",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "round1 builds on shell1, which is shown without its round, so round1 is shown without it too -- fix shell1 first.",
+     "refusal": "round1 (fillet): its target shell1 was refused (shell1 (shell): this spike's shell needs a face to remove; a closed hollow box is not mapped)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 247
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 6903.415926544807,
+    "faces": 13,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 6903.4159265359,
+    "faces": 13,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   }
+  },
+  "base": {
+   "volume": 6912,
+   "faces": 12,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": null,
+   "grouped": 0,
+   "contract": 0
+  },
+  "ms": 3947
+ },
+ {
+  "id": "rg-n-edge-then-hollow-r1-wall2",
+  "group": "regress",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','right'), 1)\nhollow(b,{wall:2,open:'top'})",
+  "pane": {
+   "volume": 5033.55772293822,
+   "faces": 12,
+   "recorded": true,
+   "refused": []
+  },
+  "contract": {
+   "volume": 5033.55772293822,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5033.55772293822,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000007,
+      -6,
+      20.000000000000007,
+      15.000000000000009,
+      6
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 1313
+  },
+  "grouped": {
+   "sameAsContract": true
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14393.56194490952,
+     "faces": 7
+    }
+   },
+   "brepSeq": {
+    "volume": 5033.561944901924,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": false,
+  "truthSource": null,
+  "verdicts": {
+   "pane": "no-oracle",
+   "grouped": "no-oracle",
+   "contract": "no-oracle"
+  },
+  "ms": 2783
+ },
+ {
+  "id": "rg-n-edge-then-hollow-vertical-r1",
+  "group": "regress",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('front','left'), 1)\nhollow(b,{wall:2,open:'top'})",
+  "pane": {
+   "volume": 5037.423087867686,
+   "faces": 12,
+   "recorded": true,
+   "refused": []
+  },
+  "contract": {
+   "volume": 5037.423087867686,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5037.423087867686,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000004,
+      -6.0000000000000036,
+      20,
+      15,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       -20,
+       -15,
+       0
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 1129
+  },
+  "grouped": {
+   "sameAsContract": true
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14397.424777964949,
+     "faces": 7
+    }
+   },
+   "brepSeq": {
+    "volume": 5037.424777960771,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": false,
+  "truthSource": null,
+  "verdicts": {
+   "pane": "no-oracle",
+   "grouped": "no-oracle",
+   "contract": "no-oracle"
+  },
+  "ms": 2596
+ },
+ {
+  "id": "rg-r3-k-round1-wall2",
+  "group": "regress",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','right'), 1)\nhollow(b,{wall:2,open:'top'})",
+  "pane": {
+   "volume": 5033.55772293822,
+   "faces": 12,
+   "recorded": true,
+   "refused": []
+  },
+  "contract": {
+   "volume": 5033.55772293822,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5033.55772293822,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000007,
+      -6,
+      20.000000000000007,
+      15.000000000000009,
+      6
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 911
+  },
+  "grouped": {
+   "sameAsContract": true
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14393.56194490952,
+     "faces": 7
+    }
+   },
+   "brepSeq": {
+    "volume": 5033.561944901924,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": false,
+  "truthSource": null,
+  "verdicts": {
+   "pane": "no-oracle",
+   "grouped": "no-oracle",
+   "contract": "no-oracle"
+  },
+  "ms": 2389
+ },
+ {
+  "id": "rg-o-edge-then-shell",
+  "group": "regress",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','right'), 2)\nhollow(b,{wall:2,open:'top'})",
+  "pane": {
+   "volume": 5014.230892402965,
+   "faces": 12,
+   "recorded": true,
+   "refused": []
+  },
+  "contract": {
+   "volume": 14374.230890804065,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14374.230890804065,
+     "faces": 7,
+     "bbox": [
+      -20,
+      -15.000000000000007,
+      -6,
+      20,
+      15.000000000000007,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "shell1",
+     "status": "refused",
+     "sentence": "The hollow's open edge is rounded with a radius of 2, which is at least as large as the wall (2), so the rim would have no thickness and shell1 is shown without it -- make the round smaller than the wall.",
+     "refusal": "shell1 (shell): GUARD knife-rim",
+     "guard": {
+      "ok": false,
+      "code": "knife-rim",
+      "args": {
+       "size": 2,
+       "wall": 2
+      }
+     },
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 568
+  },
+  "grouped": {
+   "volume": 5014.230892402965,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5014.230892402965,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6,
+      20.000000000000007,
+      15.00000000000001,
+      6.000000000000012
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 468
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14374.247779621619,
+     "faces": 7
+    }
+   },
+   "brepSeq": {
+    "refused": "brep-rs cannot hollow shell1 yet -- shell1 is shown without it."
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": false,
+  "truthSource": null,
+  "verdicts": {
+   "pane": "no-oracle",
+   "grouped": "no-oracle",
+   "contract": "some-refused"
+  },
+  "ms": 3130
+ },
+ {
+  "id": "rg-r3-k-round2-wall2",
+  "group": "regress",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','right'), 2)\nhollow(b,{wall:2,open:'top'})",
+  "pane": {
+   "volume": 5014.230892402965,
+   "faces": 12,
+   "recorded": true,
+   "refused": []
+  },
+  "contract": {
+   "volume": 14374.230890804065,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14374.230890804065,
+     "faces": 7,
+     "bbox": [
+      -20,
+      -15.000000000000007,
+      -6,
+      20,
+      15.000000000000007,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "shell1",
+     "status": "refused",
+     "sentence": "The hollow's open edge is rounded with a radius of 2, which is at least as large as the wall (2), so the rim would have no thickness and shell1 is shown without it -- make the round smaller than the wall.",
+     "refusal": "shell1 (shell): GUARD knife-rim",
+     "guard": {
+      "ok": false,
+      "code": "knife-rim",
+      "args": {
+       "size": 2,
+       "wall": 2
+      }
+     },
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 348
+  },
+  "grouped": {
+   "volume": 5014.230892402965,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5014.230892402965,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6,
+      20.000000000000007,
+      15.00000000000001,
+      6.000000000000012
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 484
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14374.247779621619,
+     "faces": 7
+    }
+   },
+   "brepSeq": {
+    "refused": "brep-rs cannot hollow shell1 yet -- shell1 is shown without it."
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": false,
+  "truthSource": null,
+  "verdicts": {
+   "pane": "no-oracle",
+   "grouped": "no-oracle",
+   "contract": "some-refused"
+  },
+  "ms": 2774
+ },
+ {
+  "id": "rg-r3-k-round3-wall2",
+  "group": "regress",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','right'), 3)\nhollow(b,{wall:2,open:'top'})",
+  "pane": {
+   "volume": 5039.619384423001,
+   "faces": 14,
+   "recorded": true,
+   "refused": []
+  },
+  "contract": {
+   "volume": 14342.019505996897,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14342.019505996897,
+     "faces": 7,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6,
+      20,
+      15.000000000000005,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "shell1",
+     "status": "refused",
+     "sentence": "The hollow's open edge is rounded with a radius of 3, which is at least as large as the wall (2), so the rim would have no thickness and shell1 is shown without it -- make the round smaller than the wall.",
+     "refusal": "shell1 (shell): GUARD knife-rim",
+     "guard": {
+      "ok": false,
+      "code": "knife-rim",
+      "args": {
+       "size": 3,
+       "wall": 2
+      }
+     },
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 358
+  },
+  "grouped": {
+   "volume": 5039.619384423001,
+   "faces": 14,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5039.619384423001,
+     "faces": 14,
+     "bbox": [
+      -20.000000000000004,
+      -15.000000000000009,
+      -6,
+      20.000000000000004,
+      15.00000000000001,
+      6.000000000000013
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 12
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 528
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14342.0575041363,
+     "faces": 7
+    }
+   },
+   "brepSeq": {
+    "refused": "brep-rs cannot hollow shell1 yet -- shell1 is shown without it."
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": false,
+  "truthSource": null,
+  "verdicts": {
+   "pane": "no-oracle",
+   "grouped": "no-oracle",
+   "contract": "some-refused"
+  },
+  "ms": 2938
+ }
+]

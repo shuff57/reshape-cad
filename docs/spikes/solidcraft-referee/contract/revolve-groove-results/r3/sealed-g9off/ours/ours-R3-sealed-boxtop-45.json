@@ -1,0 +1,22 @@
+{
+ "id": "R3-sealed-boxtop-45",
+ "outcome": "built",
+ "volume": 31811.522388204856,
+ "faces": 12,
+ "bbox": [
+  -20,
+  -20,
+  -10,
+  20,
+  20,
+  10
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "sketch",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[8,-3],[12,-3],[12,3],[8,3]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-45,\"operation\":\"cut\",\"targets\":[\"b_box1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

@@ -1,0 +1,22 @@
+{
+ "id": "fzc21-46-boxC-top-cone-180",
+ "outcome": "built",
+ "volume": 71483.2028330773,
+ "faces": 14,
+ "bbox": [
+  -30,
+  -20,
+  -15,
+  30,
+  20.00000034542179,
+  15
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "sketch",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":60,\"width\":40,\"height\":30,\"center\":[0,0,0],\"body_name\":\"b_box1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,-0.9],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[27,8.7],[33.1,8.7],[27,12.9]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-180,\"operation\":\"cut\",\"targets\":[\"b_box1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

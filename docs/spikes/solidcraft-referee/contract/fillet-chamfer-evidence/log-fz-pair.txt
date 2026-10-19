@@ -1,0 +1,17 @@
+13 NEITHER const b = cuboid(20.8,26.7,39) ; round(b.edge('left','bottom'), 5.3) ; round(b.edge('left','front'), 7.1) truck 21168.745 closed 21098.034 occt 20897.104 V0 21659.0
+25 ADDED-MATERIAL const b = cuboid(34.4,49,32.1) ; round(b.edge('right','top'), 9.3) ; round(b.edge('right','back'), 10.8) truck 53823.447 closed 52490.955 occt 51687.661 V0 54107.8
+36 ADDED-MATERIAL const b = cuboid(13.6,12.3,22.9) ; round(b.edge('right','front'), 4.1) ; round(b.edge('right','bottom'), 5.1) truck 3818.505 closed 3688.547 occt 3618.973 V0 3830.7
+43 ADDED-MATERIAL const b = cuboid(10.4,47.4,44.6) ; round(b.edge('back','bottom'), 1.5) ; round(b.edge('right','back'), 2.5) truck 21932.887 closed 21921.845 occt 21859.380 V0 21986.0
+59 NEITHER const b = cuboid(37.5,49.8,39.9) ; round(b.edge('left','top'), 10.6) ; round(b.edge('left','front'), 11.4) truck 72662.980 closed 72326.891 occt 71379.250 V0 74513.3
+65 ADDED-MATERIAL const b = cuboid(42.2,19,26.4) ; round(b.edge('left','top'), 3.6) ; round(b.edge('left','back'), 5.1) truck 21072.249 closed 20974.725 occt 20748.201 V0 21167.5
+66 ADDED-MATERIAL const b = cuboid(36.3,13.8,45.6) ; round(b.edge('left','top'), 4.2) ; round(b.edge('left','front'), 5.3) truck 22605.946 closed 22525.726 occt 22316.830 V0 22842.9
+84 NEITHER const b = cuboid(45.7,19.1,44.7) ; round(b.edge('right','front'), 6.6) ; round(b.edge('right','top'), 7.4) truck 38497.236 closed 38407.634 occt 37888.815 V0 39017.3
+89 NEITHER const b = cuboid(28.9,35.8,23.6) ; round(b.edge('front','top'), 9.9) ; round(b.edge('left','top'), 10.5) truck 23328.655 closed 23063.705 occt 22582.197 V0 24417.0
+94 ADDED-MATERIAL const b = cuboid(48.2,38,44.6) ; round(b.edge('front','top'), 9.9) ; round(b.edge('left','front'), 11.7) truck 80990.835 closed 79484.369 occt 78474.055 V0 81689.4
+97 NEITHER const b = cuboid(24.3,48.3,28.9) ; round(b.edge('right','back'), 9) ; round(b.edge('right','bottom'), 9.9) truck 32698.991 closed 32481.900 occt 32035.011 V0 33919.6
+124 NEITHER const b = cuboid(18.5,17.5,19.6) ; round(b.edge('right','bottom'), 4.8) ; round(b.edge('back','bottom'), 5.2) truck 6195.327 closed 6163.564 occt 6059.158 V0 6345.5
+126 ADDED-MATERIAL const b = cuboid(48.5,38.6,36.2) ; round(b.edge('left','front'), 10.6) ; round(b.edge('front','bottom'), 12.9) truck 66668.087 closed 65317.526 occt 64081.434 V0 67770.0
+133 NEITHER const b = cuboid(48.6,25.7,31.7) ; round(b.edge('right','bottom'), 9.8) ; round(b.edge('right','back'), 10) truck 37514.832 closed 38476.963 occt 37477.357 V0 39593.9
+149 ADDED-MATERIAL const b = cuboid(11.7,37.1,42.1) ; round(b.edge('right','back'), 2.4) ; round(b.edge('right','bottom'), 4.5) truck 18174.272 closed 18064.299 occt 18020.119 V0 18274.3
+{"refused":20,"literal-mitre":93,"tangent-chain(=OCCT)":22,"NEITHER":7,"ADDED-MATERIAL":8}
+EXIT 0

@@ -1,0 +1,2 @@
+r2z-box-20-30-12-f                                    Rounding box box1 (20x30x12) at radius 6.000001 failed -- the radius is too big for this shape's edges.
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/edge2/r2z-box-20-30-12-f/primitives-measure.json

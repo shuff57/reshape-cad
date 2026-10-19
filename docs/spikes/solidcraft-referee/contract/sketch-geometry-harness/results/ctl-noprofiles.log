@@ -1,0 +1,5 @@
+ctl-noprofiles-plate-hole          FAIL               vol 6000.000000 occt 5717.256661 brep 5717.256661 exact 5717.256661176918 dOcct 4.9e-2 dBbox 0.0e+0 dCom 1.8e-17 dExact 4.9e-2 dBbxEx - faces o/b/t 7/7/6 FACEDIFF {"plane":"equal","cylinder":"UNEXPLAINED"} bodies 1
+ctl-noprofiles-ring                FAIL               vol 3141.353128 occt 2638.937829 brep 2638.937829 exact 2638.9378290154264 dOcct 1.9e-1 dBbox 8.9e-16 dCom 6.7e-11 dExact 1.9e-1 dBbxEx - faces o/b/t 4/4/3 FACEDIFF {"cylinder":"UNEXPLAINED","plane":"equal"} bodies 1
+ctl-noprofiles-island              FAIL               vol 12000.000000 occt undefined brep 9361.062171 exact 9361.062170984573 dOcct - dBbox - dCom - dExact 2.8e-1 dBbxEx - faces o/b/t undefined/10/6  bodies 1
+ctl-noprofiles-slot-hole           FAIL               vol 8000.000000 occt undefined brep 5897.345175 exact 5897.345175425633 dOcct - dBbox - dCom - dExact 3.6e-1 dBbxEx - faces o/b/t undefined/10/6  bodies 1
+wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/u4/control-noprofiles.json 4

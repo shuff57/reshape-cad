@@ -1,0 +1,244 @@
+[
+ {
+  "id": "fzc2-126-join-top-cone-180",
+  "src": "const k = sketch('top'); k.circle(40); const a = extrude(k, 30); const k2 = sketch('top', 30); k2.circle(20); const b = extrude(k2, 20); const t = union(a, b); const sk = sketch('top'); sk.polygon([[-17.1,40.9],[-24.6,40.9],[-21.6,49.3],[-17.1,49.3]]); groove(sk, t, 180);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "extrude",
+   "combine",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc2-126-join-top-cone-180",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "combine",
+    "groove"
+   ],
+   "occt": {
+    "volume": 43982.2971502571,
+    "com": [
+     -2.1505800086167536e-15,
+     -1.6914492705992645e-15,
+     18.571428571428573
+    ],
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     50
+    ],
+    "faces": 5,
+    "area": 7539.822368615504,
+    "types": {
+     "cylinder": 2,
+     "plane": 3
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 3
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it."
+   },
+   "ms": 1524,
+   "load": [
+    22.5,
+    21.8
+   ],
+   "cpuMs": 2266,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull2",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a ring with a slanted or curved side (a triangle, a circle, a rounded corner) is not built, because in the measurements the engine cut such rings wrongly or took minutes and the two cannot be told apart in advance; give the ring straight sides that are parallel and square to its axis.",
+     "guard": {
+      "cost": {
+       "tool": "cone",
+       "shape": null,
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cone",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 2,
+       "headTypes": {
+        "cylinder": 2,
+        "plane": 3
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 24.6,
+       "nearest": 20,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.circle.center",
+     "params": {
+      "center": [
+       0,
+       0
+      ],
+      "diameter": 40
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk2_1",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        30
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.circle.center",
+     "params": {
+      "center": [
+       0,
+       0
+      ],
+      "diameter": 20
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 20,
+      "sketch": "sk_sk2_1",
+      "operation": "new",
+      "body_name": "b_pull2"
+     }
+    },
+    {
+     "command": "solid.combine",
+     "params": {
+      "target": "b_pull1",
+      "tools": [
+       "b_pull2"
+      ],
+      "operation": "join"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a ring with a slanted or curved side (a triangle, a circle, a rounded corner) is not built, because in the measurements the engine cut such rings wrongly or took minutes and the two cannot be told apart in advance; give the ring straight sides that are parallel and square to its axis.",
+    "firstRefusal": "groove1 (groove): a ring with a slanted or curved side (a triangle, a circle, a rounded corner) is not built, because in the measurements the engine cut such rings wrongly or took minutes and the two cannot be told apart in advance; give the ring straight sides that are parallel and square to its axis."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 1604
+ }
+]

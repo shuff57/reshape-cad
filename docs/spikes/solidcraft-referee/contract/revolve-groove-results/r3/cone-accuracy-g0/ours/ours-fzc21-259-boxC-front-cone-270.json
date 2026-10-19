@@ -1,0 +1,22 @@
+{
+ "id": "fzc21-259-boxC-front-cone-270",
+ "outcome": "built",
+ "volume": 70787.01255281638,
+ "faces": 15,
+ "bbox": [
+  -30.000000413012746,
+  -20,
+  -15.000043138909263,
+  30.000000109551497,
+  20,
+  15.000000000013603
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "sketch",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":60,\"width\":40,\"height\":30,\"center\":[0,0,0],\"body_name\":\"b_box1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[24.9,10.8],[32.3,10.8],[29.3,15.4],[24.9,15.4]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-270,\"operation\":\"cut\",\"targets\":[\"b_box1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

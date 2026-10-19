@@ -1,0 +1,22 @@
+{
+ "id": "r3-k-round3-wall2",
+ "outcome": "fail",
+ "volume": 5039.619384423001,
+ "faces": 14,
+ "bbox": [
+  -20.000000000000004,
+  -15.000000000000009,
+  -6,
+  20.000000000000004,
+  15.00000000000001,
+  6.000000000000013
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "fillet",
+  "shell"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":30,\"height\":12,\"center\":[0,0,0],\"body_name\":\"b_box1\"}},{\"command\":\"solid.fillet\",\"params\":{\"edges\":[[20,0,6]],\"radius\":3,\"body\":\"b_box1\"}},{\"command\":\"solid.shell\",\"params\":{\"faces\":[[3.552713678800501e-15,1.7763568394002505e-15,6]],\"thickness\":2,\"body\":\"b_box1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

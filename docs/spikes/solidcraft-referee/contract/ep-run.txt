@@ -1,0 +1,474 @@
+def-top                  10000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.8e-16 brep 0.0e+0 
+def-front                10000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.8e-16 brep 0.0e+0 
+def-side                 10000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.8e-16 brep 0.0e+0 
+def-extrude-alias        10000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.8e-16 brep 0.0e+0 
+pp-top-offset             7200.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.5e-16 brep 0.0e+0 
+pp-front-offset          12000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 fc 0.0e+0
+pp-side-L                 5400.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 0.0e+0 brep 0.0e+0 fc 8.4e-16
+pp-neg-top                4200.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.2e-16 brep 2.2e-16 
+pp-neg-front              8400.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.2e-16 brep 2.2e-16 
+pp-neg-side               2700.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 0.0e+0 brep 0.0e+0 
+pp-circle                 6361.7251 | shipped PASS    | contract PASS    1.1e-4 4.3e-16 2.3e-10 | occt 1.4e-16 brep 2.9e-16 fc 0.0e+0
+pp-circle-front-neg       6361.7251 | shipped PASS    | contract PASS    1.1e-4 1.8e-15 2.3e-10 | occt 1.4e-16 brep 2.9e-16 
+pp-arc-outline            9946.3495 | shipped PASS    | contract PASS    3.5e-6 5.3e-16 1.3e-6 | occt 1.2e-12 brep 1.8e-16 
+pp-frame                  1600.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.8e-16 brep 1.4e-16 
+pp-thin-plate            36000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.0e-16 brep 2.0e-16 fc 0.0e+0
+pp-slender-post           1920.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 0.0e+0 brep 0.0e+0 fc 1.2e-16
+pp-zero-height                  NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+pm-top                    6000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+pm-front-offset           3200.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.8e-16 brep 1.4e-16 
+pm-side-L                 1344.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 0.0e+0 brep 0.0e+0 fc 6.8e-16
+pm-circle                 1357.1680 | shipped REFUSED | contract PASS    6.2e-5 1.5e-15 2.1e-17 | occt 0.0e+0 brep 5.0e-16 fc 0.0e+0
+pm-offset-plane           4800.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.9e-16 brep 1.9e-16 fc 0.0e+0
+pm-neg-height             6000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+pm-long-slab              6000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 fc 0.0e+0
+pl-top                    8400.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.2e-16 brep 2.2e-16 
+pl-front                 19200.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.9e-16 brep 1.9e-16 
+pl-side-L                 7650.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 0.0e+0 brep 0.0e+0 
+pl-reversed               8400.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.2e-16 brep 2.2e-16 
+pl-neg-height             8400.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.2e-16 brep 2.2e-16 
+pl-circle                 3053.6281 | shipped REFUSED | contract PASS    9.6e-5 1.0e-15 2.9e-10 | occt 1.5e-16 brep 1.5e-16 
+pl-both-midplane                   SCRIPT ERROR: pull() takes midplane (the same length either side) or length2 (a second length the other way), not both.
+pl-zero-length2                    SCRIPT ERROR: pull's length2 is the second length, a positive number. You gave it 0.
+pr-top                   12000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+pr-front                 12000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+pr-side                   5400.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 0.0e+0 brep 0.0e+0 
+pr-neg-double             6000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+pr-offset                 1884.9556 | shipped REFUSED | contract PASS    6.7e-5 3.8e-16 1.1e-10 | occt 1.2e-16 brep 1.2e-16 
+pr-false                  6000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+pt-rect-pos               3005.7013 | shipped REFUSED | contract PASS    1.5e-16 2.6e-15 3.0e-17 | occt 1.5e-16 brep 0.0e+0 
+pt-rect-neg               1877.2086 | shipped REFUSED | contract PASS    3.6e-16 0.0e+0 2.1e-16 | occt 1.2e-16 brep 0.0e+0 
+pt-rect-5                16313.9659 | shipped REFUSED | contract PASS    1.1e-16 2.4e-16 3.4e-17 | occt 0.0e+0 brep 3.3e-16 
+pt-triangle               4477.7010 | shipped REFUSED | contract PASS    4.1e-16 6.5e-16 1.6e-16 | occt 2.0e-16 brep 2.0e-16 
+pt-L-concave              2911.2879 | shipped REFUSED | contract PASS    0.0e+0 8.9e-16 1.3e-16 | occt 0.0e+0 brep 0.0e+0 
+pt-front                  3140.4214 | shipped REFUSED | contract PASS    0.0e+0 2.1e-16 2.9e-17 | occt 0.0e+0 brep 1.4e-16 
+pt-side                    715.4601 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 6.5e-17 | occt 1.6e-16 brep 0.0e+0 
+pt-neg-height             3005.7013 | shipped REFUSED | contract PASS    1.5e-16 2.6e-15 3.0e-17 | occt 1.5e-16 brep 0.0e+0 
+pt-reversed               3005.7013 | shipped REFUSED | contract PASS    1.5e-16 2.6e-15 3.0e-17 | occt 1.5e-16 brep 0.0e+0 
+pt-80deg                   464.3656 | shipped REFUSED | contract PASS    2.4e-16 1.1e-15 6.8e-17 | occt 2.4e-16 brep 3.7e-16 
+pt-circle-pos             3728.0988 | shipped REFUSED | contract PASS    6.1e-5 2.2e-8 9.3e-8 | occt 3.7e-16 brep 1.2e-16 
+pt-circle-neg             2620.2037 | shipped REFUSED | contract PASS    6.7e-5 1.8e-9 3.0e-7 | occt 0.0e+0 brep 1.7e-16 
+pt-fold                    533.3333 | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+pt-arc-outline           10515.2964 | shipped REFUSED | contract PASS    2.4e-6 3.6e-8 8.7e-7 | occt 1.2e-12 brep REF 
+pt-ring                  10249.3392 | shipped REFUSED | contract PASS    4.3e-5 2.2e-8 1.7e-7 | occt REF brep REF 
+pt-midplane               3005.7013 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+pt-length2                4579.6752 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+pt-90                              SCRIPT ERROR: pull's taper is an angle in degrees between -90 and 90, like pull(..., { taper: 5 }). You gave it 90.
+pt-zero                   2400.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 0.0e+0 brep 0.0e+0 
+pd-45-normal              2000.0000 | shipped REFUSED | contract PASS    6.0e-15 3.6e-14 1.1e-15 | occt 0.0e+0 brep 0.0e+0 
+pd-45-along               1414.2136 | shipped REFUSED | contract PASS    1.4e-13 3.6e-14 5.3e-14 | occt 1.6e-16 brep 0.0e+0 
+pd-30deg-y                1600.0000 | shipped REFUSED | contract PASS    7.1e-16 3.6e-14 1.4e-16 | occt 0.0e+0 brep 0.0e+0 
+pd-triangle               3600.0000 | shipped REFUSED | contract PASS    6.3e-16 7.5e-14 1.3e-15 | occt 0.0e+0 brep 1.3e-16 
+pd-L-concave              2700.0000 | shipped REFUSED | contract PASS    3.5e-15 4.4e-13 7.6e-16 | occt 0.0e+0 brep 1.7e-16 
+pd-front                  2000.0000 | shipped REFUSED | contract PASS    2.8e-15 1.1e-15 5.8e-16 | occt 2.3e-16 brep 0.0e+0 
+pd-side                   1200.0000 | shipped REFUSED | contract PASS    6.8e-15 3.6e-14 1.2e-15 | occt 0.0e+0 brep 0.0e+0 
+pd-neg-height             2000.0000 | shipped REFUSED | contract PASS    2.4e-15 1.8e-14 5.4e-16 | occt 0.0e+0 brep 0.0e+0 
+pd-reversed               2000.0000 | shipped REFUSED | contract PASS    2.4e-15 1.8e-14 5.4e-16 | occt 0.0e+0 brep 0.0e+0 
+pd-midplane               2000.0000 | shipped REFUSED | contract PASS    2.2e-15 1.8e-14 8.0e-16 | occt 0.0e+0 brep 0.0e+0 
+pd-length2                2800.0000 | shipped REFUSED | contract PASS    3.4e-15 2.4e-14 1.2e-15 | occt 0.0e+0 brep 0.0e+0 
+pd-parallel-down          2000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.3e-16 brep 1.1e-16 
+pd-parallel-up            2000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.3e-16 brep 1.1e-16 
+pd-in-plane                     NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+pd-circle                  785.3982 | shipped REFUSED | contract PASS    1.0e-4 4.6e-6 8.1e-11 | occt 2.1e-5 brep REF 
+pd-arc-outline            9946.3495 | shipped REFUSED | contract PASS    2.0e-6 1.2e-8 6.4e-7 | occt 0.0e+0 brep REF 
+pd-alongnormal-alone               SCRIPT ERROR: pull's alongNormal only matters with a direction: add direction: [x, y, z], or drop alongNormal.
+pd-zero-vector                     SCRIPT ERROR: pull's direction [0, 0, 0] points nowhere. Give it at least one non-zero number.
+pd-with-taper             2272.6717 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kp-top-rect              11808.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 fc 0.0e+0
+kp-top-circle            11522.4779 | shipped PASS    | contract PASS    6.9e-6 5.3e-16 1.1e-6 | occt 1.6e-16 brep 0.0e+0 fc 1.6e-16
+kp-front-face            11597.8761 | shipped PASS    | contract PASS    5.8e-6 0.0e+0 1.3e-6 | occt 1.6e-16 brep 1.6e-16 
+kp-side-face             11568.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 0.0e+0 brep 0.0e+0 fc 0.0e+0
+kp-bottom-face           12000.0000 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kp-bottom-frame          11547.6107 | shipped PASS    | contract PASS    6.5e-6 0.0e+0 1.3e-6 | occt 1.6e-16 brep 1.6e-16 fc 1.6e-16
+kp-eq-thickness          11520.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.6e-16 brep 0.0e+0 
+kp-deeper-than-part      11214.6018 | shipped PASS    | contract PASS    1.2e-5 5.3e-16 2.7e-15 | occt 0.0e+0 brep 1.6e-16 fc 0.0e+0
+kp-runs-off-side         11880.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+kp-in-air                12000.0000 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kp-two-sequential        11657.2036 | shipped PASS    | contract PASS    2.1e-6 7.1e-16 4.2e-7 | occt 0.0e+0 brep 1.6e-16 
+kp-on-cylinder           13995.7953 | shipped PASS    | contract PASS    3.3e-5 2.4e-5 2.2e-7 | occt 1.3e-16 brep 5.2e-16 
+kp-on-holed-plate        11022.6018 | shipped WRONG   | contract PASS    1.2e-5 5.3e-16 4.9e-8 | occt 0.0e+0 brep 1.7e-16 
+kt-top-circle            10869.0266 | shipped PASS    | contract PASS    1.7e-5 7.1e-16 3.7e-6 | occt 1.7e-16 brep 0.0e+0 fc 1.7e-16
+kt-slot                  10560.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.7e-16 brep 0.0e+0 fc 0.0e+0
+kt-front                 11151.7700 | shipped PASS    | contract PASS    1.3e-5 4.7e-16 5.1e-15 | occt 1.6e-16 brep 1.6e-16 fc 0.0e+0
+kt-side                  10869.0266 | shipped PASS    | contract PASS    1.7e-5 7.1e-16 8.8e-15 | occt 0.0e+0 brep 0.0e+0 fc 1.7e-16
+kt-depth-small           11520.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.6e-16 brep 0.0e+0 
+kt-mid-sketch            11760.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+kt-triangle-thick        23750.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 3.2e-17 | occt 1.5e-16 brep 0.0e+0 fc 1.5e-16
+kt-crossing-hole         10995.7804 | shipped WRONG   | contract PASS    1.4e-5 5.3e-16 1.1e-6 | occt 0.0e+0 brep 7.3e-12 
+kt-through-reversed      11760.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+kt-through-midplane      11520.0000 | shipped WRONG   | contract PASS    1.6e-16 0.0e+0 7.0e-17 | occt 0.0e+0 brep 1.6e-16 
+kr-mid                   11856.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kr-top-air               12000.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kr-bottom                11685.8407 | shipped WRONG   | contract PASS    4.5e-6 0.0e+0 2.7e-7 | occt 0.0e+0 brep 1.6e-16 
+kr-front-mid             11858.6283 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kr-false                 11856.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+km-mid                   11808.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+km-top                   11904.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+km-front                 11717.2567 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+km-through-the-body      11520.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.6e-16 brep 0.0e+0 
+kl-top                   11808.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+kl-mid                   11664.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kl-reversed              11802.0797 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kl-front                 11616.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kk-pos                   11693.1037 | shipped WRONG   | contract PASS    1.6e-16 0.0e+0 3.5e-17 | occt 0.0e+0 brep 1.6e-16 
+kk-neg                   11816.5326 | shipped WRONG   | contract PASS    0.0e+0 1.8e-16 7.0e-17 | occt 1.5e-16 brep 0.0e+0 
+kk-deep                  11387.3102 | shipped WRONG   | contract PASS    1.6e-16 0.0e+0 1.7e-17 | occt 0.0e+0 brep 1.6e-16 
+kk-through               11231.6873 | shipped WRONG   | contract PASS    1.6e-16 8.9e-16 1.0e-16 | occt 3.2e-16 brep 1.6e-16 
+kk-fold                         NaN | shipped WRONG   | contract REFUSED - - - | occt REF brep REF 
+kk-midplane              11829.1800 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kk-circle                11630.3602 | shipped WRONG   | contract PASS    4.3e-6 6.9e-10 1.6e-7 | occt 0.0e+0 brep 0.0e+0 
+kd-slant                 11760.0000 | shipped WRONG   | contract PASS    0.0e+0 2.5e-15 3.5e-17 | occt 0.0e+0 brep 0.0e+0 
+kd-slant-y               11712.0000 | shipped WRONG   | contract PASS    4.7e-16 1.1e-15 7.0e-17 | occt 0.0e+0 brep 0.0e+0 
+kd-up-slant              12000.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kd-along-false           11830.2944 | shipped WRONG   | contract PASS    6.2e-16 3.7e-15 2.1e-16 | occt 1.5e-16 brep 0.0e+0 
+kd-along-false-steep     11627.4653 | shipped WRONG   | contract PASS    3.1e-16 7.1e-16 1.0e-16 | occt 0.0e+0 brep 1.6e-16 
+kd-parallel-down         11760.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+kd-parallel-up           12000.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kd-reversed              12000.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kd-midplane              11808.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kd-in-plane                     NaN | shipped WRONG   | contract REFUSED - - - | occt REF brep REF 
+kd-circle                11858.6283 | shipped WRONG   | contract PASS    1.4e-6 1.4e-6 1.2e-7 | occt 1.1e-7 brep REF 
+jp-on-top                12600.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.4e-16 brep 0.0e+0 
+jp-overlap-inside        12000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+jp-half-embedded         12500.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+jp-side-face             12800.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.4e-16 brep 0.0e+0 
+jp-disjoint              12600.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.4e-16 brep 0.0e+0 
+jp-circle-boss           12904.7787 | shipped PASS    | contract PASS    1.2e-5 5.9e-16 1.8e-6 | occt 1.4e-16 brep 0.0e+0 
+jp-pad-midplane          12400.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.9e-16 brep 0.0e+0 
+jp-pad-tapered           13046.9235 | shipped REFUSED | contract PASS    1.4e-16 0.0e+0 6.7e-17 | occt 1.4e-16 brep 2.8e-16 
+jp-pad-reversed-into     12000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+jp-two-pulls             12768.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.4e-16 brep 0.0e+0 
+sp-circle-in-rect        16821.9028 | shipped WRONG   | contract PASS    1.2e-5 4.7e-16 2.1e-15 | occt 0.0e+0 brep 2.2e-16 fc 2.2e-16
+sp-rect-in-circle        17349.5559 | shipped WRONG   | contract PASS    8.1e-5 4.7e-16 5.6e-11 | occt 2.1e-16 brep 2.1e-16 fc 2.1e-16
+sp-two-holes             32607.0799 | shipped WRONG   | contract PASS    1.7e-5 3.6e-16 2.3e-15 | occt 2.2e-16 brep 1.1e-16 fc 0.0e+0
+sp-rect-rect-frame       16500.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.2e-16 brep 0.0e+0 fc 0.0e+0
+sp-polygon-with-hole     11760.0000 | shipped WRONG   | contract PASS    0.0e+0 2.4e-16 7.6e-17 | occt 0.0e+0 brep 1.5e-16 fc 1.5e-16
+sp-disjoint-rects        12000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt REF brep 0.0e+0 fc 0.0e+0
+sp-disjoint-circles       6031.8579 | shipped PASS    | contract PASS    1.1e-4 - - | occt REF brep 3.0e-16 fc 0.0e+0
+sp-rect-circle-apart      6010.6193 | shipped PASS    | contract PASS    3.0e-5 - - | occt REF brep 0.0e+0 fc 0.0e+0
+sp-three-deep-rects      36000.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt REF brep 2.0e-16 fc 0.0e+0
+sp-four-circles          31415.9265 | shipped WRONG   | contract PASS    1.0e-5 - - | occt REF brep 2.8e-15 fc 1.2e-16
+sp-island-far-disc       29452.4311 | shipped WRONG   | contract PASS    4.4e-5 - - | occt REF brep 2.5e-16 fc 0.0e+0
+sp-holed-plate-far-rect   18321.9028 | shipped WRONG   | contract PASS    1.1e-5 - - | occt REF brep 2.0e-16 fc 2.0e-16
+sp-ring-geom-rows        14137.1669 | shipped WRONG   | contract PASS    4.9e-5 4.7e-16 6.9e-11 | occt 0.0e+0 brep 2.6e-16 fc 2.6e-16
+sp-crossing-rects               NaN | shipped WRONG   | contract REFUSED - - - | occt REF brep REF fc 0.0e+0
+sp-crossing-circles             NaN | shipped WRONG   | contract REFUSED - - - | occt REF brep REF fc 0.0e+0
+sp-tangent-inside               NaN | shipped WRONG   | contract REFUSED - - - | occt REF brep REF fc 0.0e+0
+sp-tangent-outside        9424.7780 | shipped PASS    | contract REFUSED - - - | occt REF brep REF fc 0.0e+0
+sp-shared-edge                  NaN | shipped WRONG   | contract REFUSED - - - | occt REF brep REF fc REF
+sp-soup-midplane         16821.9028 | shipped REFUSED | contract PASS    1.2e-5 5.9e-16 1.1e-17 | occt 0.0e+0 brep 2.2e-16 
+sp-soup-taper            11966.6395 | shipped REFUSED | contract PASS    7.7e-6 4.5e-10 5.4e-8 | occt REF brep REF 
+sp-soup-reversed-length2   15400.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.4e-16 brep 1.2e-16 
+spk-two-holes            11597.8761 | shipped PASS    | contract PASS    5.8e-6 - - | occt REF brep 1.6e-16 fc 3.1e-16
+spk-rect-circle          11657.2036 | shipped PASS    | contract PASS    2.1e-6 - - | occt REF brep 1.6e-16 fc 1.6e-16
+spk-ring                 10944.4249 | shipped WRONG   | contract PASS    8.0e-6 7.1e-16 5.1e-7 | occt 1.7e-16 brep 1.7e-16 fc 1.7e-16
+spk-three-deep           10793.6284 | shipped WRONG   | contract PASS    5.0e-6 - - | occt REF brep 0.0e+0 fc 1.7e-16
+spk-through-two-holes    10994.6904 | shipped PASS    | contract PASS    1.5e-5 - - | occt REF brep 1.7e-16 fc 0.0e+0
+spk-through-ring-far-rect   14846.7259 | shipped WRONG   | contract PASS    3.6e-5 - - | occt REF brep 1.2e-16 fc 0.0e+0
+spk-blind-ring-far-rect   16738.6904 | shipped WRONG   | contract PASS    5.1e-6 - - | occt REF brep 2.2e-16 fc 2.2e-16
+spk-soup-midplane        11698.4071 | shipped WRONG   | contract PASS    4.3e-6 - - | occt REF brep 1.6e-16 
+spk-soup-taper           11561.6689 | shipped WRONG   | contract PASS    5.6e-6 4.4e-10 3.3e-7 | occt REF brep REF 
+pt-near-collapse-ok        996.9236 | shipped REFUSED | contract PASS    3.4e-16 0.0e+0 1.4e-16 | occt 3.4e-16 brep 1.1e-16 
+pt-just-folded             939.7372 | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+pl-frame                  2200.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.1e-16 brep 2.1e-16 
+pr-frame                  1600.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.8e-16 brep 4.3e-16 
+kt-in-air                11520.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.6e-16 brep 0.0e+0 
+kt-below                 12000.0000 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep REF 
+kt-cylinder              13571.6803 | shipped WRONG   | contract PASS    2.9e-5 2.4e-5 4.9e-7 | occt 1.3e-16 brep 8.0e-16 
+sp-slot-hole              2659.7345 | shipped WRONG   | contract PASS    2.1e-5 3.6e-16 1.8e-11 | occt 1.4e-10 brep 3.4e-16 
+sp-slot-hole-pocket      10936.1062 | shipped WRONG   | contract PASS    2.0e-6 5.3e-16 1.3e-7 | occt 1.4e-11 brep REF 
+sp-dimensioned            6997.3452 | shipped WRONG   | contract PASS    1.2e-5 - - | occt REF brep 7.2e-13 
+kp-into-pad              12562.3009 | shipped PASS    | contract PASS    5.0e-7 0.0e+0 8.7e-8 | occt 0.0e+0 brep 1.4e-16 
+kp-into-box              11808.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+pp-tilted-frame            420.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 2.4e-17 | occt 0.0e+0 brep 1.4e-16 
+pl-tilted-frame            540.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 2.5e-17 | occt 2.1e-16 brep 4.2e-16 
+pm-tilted-frame            420.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 2.7e-17 | occt 0.0e+0 brep 4.1e-16 
+pt-tilted-frame            539.2171 | shipped REFUSED | contract PASS    4.2e-16 1.8e-16 7.2e-17 | occt 2.1e-16 brep 0.0e+0 
+pp-cw-polygon             2700.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 0.0e+0 brep 1.7e-16 
+kp-arc-outline           11419.3142 | shipped PASS    | contract PASS    1.1e-6 7.1e-16 9.1e-8 | occt 1.7e-13 brep REF 
+fc-pad-reversed          12000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 fc 0.0e+0
+fc-pad-offset-neg-reversed    1385.4424 | shipped PASS    | contract PASS    9.1e-5 1.0e-15 1.8e-10 | occt 0.0e+0 brep 1.6e-16 fc 3.3e-16
+fc-pad-side-offset-neg    4500.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 0.0e+0 brep 2.0e-16 fc 6.1e-16
+fc-pad-sym-front          3200.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.8e-16 brep 1.4e-16 fc 0.0e+0
+fc-pad-sym-rect-offcentre   12000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 fc 0.0e+0
+fc-pocket-front-12       11167.2462 | shipped PASS    | contract PASS    8.0e-6 1.5e-14 1.9e-6 | occt 0.0e+0 brep 1.6e-16 fc 1.3e-15
+fc-pocket-runs-off       11700.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 0.0e+0 brep 0.0e+0 fc 0.0e+0
+fc-pocket-two-seq        11694.9027 | shipped PASS    | contract PASS    1.6e-6 5.3e-16 3.1e-7 | occt 3.1e-16 brep 3.1e-16 fc 3.1e-16
+fc-pocket-through-two-seq   11397.2567 | shipped PASS    | contract PASS    4.1e-6 5.3e-16 8.1e-7 | occt 1.6e-16 brep 1.6e-16 fc 1.6e-16
+fc-pocket-depth-negative           SCRIPT ERROR: pocket(): the depth is how far the cut goes into the material, so it has to be a positive number -- got -3.
+fc-pocket-depth-zero               SCRIPT ERROR: pocket(): the depth is how far the cut goes into the material, so it has to be a positive number -- got 0.
+tf-rect-35                      NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-rect-45                      NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-rect-55                      NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-rect-60                      NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-rect-65                      NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-rect-70                      NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-rect-75                      NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-rect-80                      NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-rect-85                      NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-rect-89                      NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-rect40-70                    NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-triangle-50                  NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-uslot-20                     NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-uslot-11.4                   NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-cshape-30              7162.0533 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+tf-notch-30               9222.3408 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+tf-roundrect-60                 NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-circle-60                    NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-L-inward                     NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tf-pocket-slot-25               NaN | shipped WRONG   | contract REFUSED - - - | occt REF brep REF 
+tf-pocket-neg-45                NaN | shipped WRONG   | contract REFUSED - - - | occt REF brep REF 
+tfc-rect-30                996.9236 | shipped REFUSED | contract PASS    0.0e+0 1.0e-7 1.4e-16 | occt 0.0e+0 brep 2.3e-16 
+tfc-uslot-11              6775.5362 | shipped REFUSED | contract PASS    0.0e+0 1.0e-7 1.2e-16 | occt 0.0e+0 brep 1.3e-16 
+tfc-uslot-10              6654.6822 | shipped REFUSED | contract PASS    5.5e-16 1.0e-7 6.3e-17 | occt 0.0e+0 brep 4.1e-16 
+tfc-triangle-30           1288.2296 | shipped REFUSED | contract PASS    3.5e-16 1.0e-7 9.3e-17 | occt 0.0e+0 brep 0.0e+0 
+tfc-cshape-20             7124.4241 | shipped REFUSED | contract PASS    2.6e-16 1.0e-7 1.1e-16 | occt 0.0e+0 brep 0.0e+0 
+tfc-circle-40             1242.8028 | shipped REFUSED | contract PASS    1.8e-5 1.0e-7 1.7e-7 | occt 0.0e+0 brep 1.8e-16 
+tfc-roundrect-25          7239.7542 | shipped REFUSED | contract PASS    1.3e-7 1.0e-7 4.8e-8 | occt 0.0e+0 brep REF 
+tf-roundrect-45           4656.8446 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+tfc-L-outward            10740.6141 | shipped REFUSED | contract PASS    0.0e+0 1.0e-7 0.0e+0 | occt 0.0e+0 brep 1.7e-16 
+tfc-pocket-uslot-10       6863.1096 | shipped WRONG   | contract PASS    1.3e-16 1.0e-8 1.7e-16 | occt 0.0e+0 brep 1.3e-16 
+bt-pull                      0.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+bt-pocket                12000.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+bt-pull-taper                   NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+bt-pull-pentagram          760.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+bt-vertex-touch           1000.0000 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep REF 
+bt-control-star            642.5000 | shipped PASS    | contract PASS    0.0e+0 2.0e-16 7.4e-18 | occt 0.0e+0 brep 0.0e+0 
+td-slant                 11520.0000 | shipped WRONG   | contract PASS    0.0e+0 1.8e-15 3.5e-17 | occt 0.0e+0 brep 1.6e-16 
+td-slant-y               11520.0000 | shipped WRONG   | contract PASS    9.5e-16 8.9e-15 2.1e-16 | occt 0.0e+0 brep 1.6e-16 
+td-slant-alongfalse      11520.0000 | shipped WRONG   | contract PASS    0.0e+0 1.8e-15 3.5e-17 | occt 0.0e+0 brep 1.6e-16 
+td-slant-mid-sketch      11760.0000 | shipped WRONG   | contract PASS    1.5e-16 7.8e-14 7.0e-17 | occt 0.0e+0 brep 0.0e+0 
+td-slant-above           11520.0000 | shipped WRONG   | contract PASS    1.3e-15 1.4e-14 2.1e-16 | occt 0.0e+0 brep 0.0e+0 
+td-slant-circle          11717.2540 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+td-slant-up              12000.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+td-slant-reversed        12000.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+td-slant-below           12000.0000 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep REF 
+td-slant-mid             11520.0000 | shipped WRONG   | contract PASS    6.3e-16 1.4e-14 5.2e-17 | occt 0.0e+0 brep 1.6e-16 
+td-critic                11000.0000 | shipped WRONG   | contract PASS    6.6e-16 1.9e-13 1.4e-16 | occt 0.0e+0 brep 1.7e-16 
+tm-mid-10                11520.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 1.6e-16 brep 0.0e+0 
+tm-mid-5                 11520.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 1.6e-16 brep 0.0e+0 
+tm-mid-15                11520.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 1.6e-16 brep 0.0e+0 
+tm-mid--3                11520.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 1.6e-16 brep 0.0e+0 
+tm-mid-0                 11520.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 1.6e-16 brep 0.0e+0 
+tm-mid-12                11520.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 1.6e-16 brep 0.0e+0 
+tm-mid-circle            11214.6018 | shipped WRONG   | contract PASS    1.2e-5 5.3e-16 2.8e-15 | occt 0.0e+0 brep 1.6e-16 
+tm-mid-reversed          11520.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 1.7e-17 | occt 1.6e-16 brep 0.0e+0 
+tm-mid-front             10560.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 1.7e-17 | occt 1.7e-16 brep 1.8e-2 
+tm-len2                  11520.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 1.6e-16 
+tm-len2-mid-sketch       11760.0000 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep 1.5e-16 
+mp-pull-two              12000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt REF brep 0.0e+0 
+mp-pocket-right          11820.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 - | occt REF brep 0.0e+0 
+mp-pocket-left           11820.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 - | occt REF brep 0.0e+0 
+mp-pocket-both           11640.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 - | occt REF brep 0.0e+0 
+mp-pocket-through-right   11460.0000 | shipped WRONG   | contract PASS    0.0e+0 - - | occt REF brep 0.0e+0 
+mp-join-inside-right     12000.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 - | occt REF brep 0.0e+0 
+mp-join-on-top-right     12500.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 - | occt REF brep 0.0e+0 
+mp-join-overlap-right    12500.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 - | occt REF brep 0.0e+0 
+mp-join-bridge           12480.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 9.3e-20 | occt REF brep 0.0e+0 
+mp-split-slot            10200.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 0.0e+0 brep 0.0e+0 
+mp-split-then-pocket-left   10152.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 1.8e-16 brep 0.0e+0 
+mp-split-then-pocket-right   10152.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 2.8e-16 | occt 0.0e+0 brep 0.0e+0 
+mp-split-then-join       10700.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 1.4e-16 | occt 0.0e+0 brep 1.7e-1 
+mp-ring-island            9361.0622 | shipped WRONG   | contract PASS    4.1e-5 5.3e-16 1.7e-11 | occt 1.9e-16 brep REF 
+dg-h-1e-9                    0.0000 | shipped REFUSED | contract REFUSED - - - | occt 2.6e-16 brep 1.3e-16 
+dg-h-1e-8                    0.0000 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep 2.1e-16 
+dg-h-1e-7                    0.0000 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep 1.7e-16 
+dg-h-0.000001                0.0001 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep 1.4e-16 
+dg-h-0.00001                 0.0010 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep 2.2e-16 
+dg-h-0.0001                  0.0100 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep 0.0e+0 
+dg-h-0.001                   0.1000 | shipped PASS    | contract PASS    1.4e-16 0.0e+0 6.3e-17 | occt 2.8e-16 brep 1.4e-16 
+dg-h-0.01                    1.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 1.3e-16 | occt 2.2e-16 brep 2.2e-16 
+dg-s-0.000001                0.0000 | shipped REFUSED | contract REFUSED - - - | occt 2.0e-16 brep REF 
+dg-s-0.00001                 0.0000 | shipped REFUSED | contract REFUSED - - - | occt 2.6e-16 brep REF 
+dg-s-0.0001                  0.0000 | shipped REFUSED | contract REFUSED - - - | occt 1.7e-16 brep 1.7e-16 
+dg-s-0.001                   0.0000 | shipped PASS    | contract PASS    0.0e+0 2.2e-19 3.3e-20 | occt 0.0e+0 brep 0.0e+0 
+dg-s-0.01                    0.0001 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 5.6e-17 | occt 1.4e-16 brep 2.7e-16 
+dg-c-0.0001                  0.0000 | shipped REFUSED | contract REFUSED - - - | occt 1.3e-16 brep REF 
+dg-c-0.001                   0.0000 | shipped WRONG   | contract REFUSED - - - | occt 1.3e-16 brep 1.3e-16 
+dg-c-0.003                   0.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 4.7e-16 
+dg-c-0.01                    0.0000 | shipped WRONG   | contract REFUSED - - - | occt 2.7e-16 brep 0.0e+0 
+dg-c-0.1                     0.0016 | shipped WRONG   | contract REFUSED - - - | occt 1.4e-16 brep 0.0e+0 
+dg-c-0.5                     0.1963 | shipped PASS    | contract PASS    2.5e-4 1.1e-16 2.7e-9 | occt 2.8e-16 brep 4.2e-16 
+dg-c-1                       1.5708 | shipped PASS    | contract PASS    1.3e-4 2.2e-16 2.7e-9 | occt 2.8e-16 brep 4.2e-16 
+dg-pk-1e-8               12000.0000 | shipped WRONG   | contract REFUSED - - - | occt 6.2e-3 brep REF 
+dg-pk-0.000001           12000.0000 | shipped WRONG   | contract REFUSED - - - | occt 4.5e-16 brep REF 
+dg-pk-0.00001            11999.9995 | shipped WRONG   | contract REFUSED - - - | occt 1.5e-16 brep 1.5e-16 
+dg-pk-0.0001             11999.9952 | shipped PASS    | contract REFUSED - - - | occt 1.5e-16 brep 1.5e-16 
+dg-pk-0.001              11999.9520 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 1.5e-16 brep 1.5e-16 
+dg-pk-0.01               11999.5200 | shipped PASS    | contract PASS    1.5e-16 0.0e+0 3.5e-17 | occt 1.5e-16 brep 3.0e-16 
+dg-wall-0.000001         10000.0001 | shipped WRONG   | contract REFUSED - - - | occt 1.8e-16 brep REF 
+dg-wall-thru-0.000001     8000.0002 | shipped WRONG   | contract REFUSED - - - | occt 2.3e-16 brep REF 
+dg-wall-0.00001          10000.0010 | shipped WRONG   | contract REFUSED - - - | occt 1.8e-16 brep REF 
+dg-wall-thru-0.00001      8000.0020 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+dg-wall-0.0005           10000.0500 | shipped WRONG   | contract REFUSED - - - | occt 1.8e-16 brep 0.0e+0 
+dg-wall-thru-0.0005       8000.1000 | shipped WRONG   | contract REFUSED - - - | occt 1.1e-16 brep 2.3e-16 
+dg-wall-0.001            10000.1000 | shipped WRONG   | contract REFUSED - - - | occt 1.8e-16 brep 1.8e-16 
+dg-wall-thru-0.001        8000.2000 | shipped WRONG   | contract REFUSED - - - | occt 3.4e-16 brep 3.4e-16 
+dg-wall-0.01             10001.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 0.0e+0 
+dg-wall-thru-0.01         8002.0000 | shipped WRONG   | contract REFUSED - - - | occt 2.3e-16 brep 0.0e+0 
+dg-wall-0.1              10010.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 0.0e+0 
+dg-wall-thru-0.1          8020.0000 | shipped WRONG   | contract REFUSED - - - | occt 1.1e-16 brep 0.0e+0 
+dg-wall-0.3              10030.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 1.8e-16 brep 0.0e+0 
+dg-wall-thru-0.3          8060.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 1.1e-16 brep 0.0e+0 
+dg-wall-1                10100.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 0.0e+0 brep 0.0e+0 
+dg-wall-thru-1            8200.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 2.2e-16 brep 0.0e+0 
+pd-soup-hole             11214.5986 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sc-slant-circle-inside   11858.6270 | shipped WRONG   | contract PASS    1.5e-6 1.4e-6 1.5e-6 | occt 0.0e+0 brep REF 
+sc-slant-circle-exits-bottom   11717.2540 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sc-slant-circle-exits-side   11831.6213 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sc-slant-circle-join-hang   12056.5492 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sc-slant-circle-join-away   12141.3808 | shipped REFUSED | contract PASS    1.9e-6 5.3e-10 8.9e-6 | occt 0.0e+0 brep REF 
+sc-slant-poly-through    11520.0000 | shipped WRONG   | contract PASS    0.0e+0 3.6e-14 1.4e-16 | occt 0.0e+0 brep 1.6e-16 
+nf-wall-0.00001          10000.0010 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+nf-wall-0.00005          10000.0050 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+nf-wall-0.0001           10000.0100 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 1.8e-16 
+nf-wall-0.0002           10000.0200 | shipped WRONG   | contract REFUSED - - - | occt 1.8e-16 brep 1.8e-16 
+nf-join-step-1e-5        12000.0010 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 1.5e-16 
+nf-join-step-0.01        12001.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 3.0e-16 
+nf-join-step-0.5         12050.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 1.0e-16 | occt 3.0e-16 brep 0.0e+0 
+kl-side                  11568.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 0.0e+0 brep 0.0e+0 
+kl-circle-top            11748.6726 | shipped PASS    | contract PASS    3.6e-6 5.3e-16 5.7e-7 | occt 1.5e-16 brep 3.1e-16 
+kl-bottom-reversed       11856.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+km-side                  11712.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 0.0e+0 brep 0.0e+0 
+km-top-circle            11528.7611 | shipped WRONG   | contract PASS    6.8e-6 5.3e-16 2.8e-7 | occt 0.0e+0 brep 0.0e+0 
+km-bottom                11856.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+kr-front-back            11760.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+kr-side                  11820.0000 | shipped WRONG   | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+jc-x-edge-top            76000.0000 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+jc-y-edge-top            76000.0000 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+jc-z-edge                74000.0000 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep REF 
+jc-corner-point          73000.0000 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep REF 
+jc-x-edge-below          76000.0000 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+jc-corner-point-below    73000.0000 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep REF 
+jc-edge-tilted           76923.0898 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+jc-pull-pull-corner       8000.0000 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep REF 
+jc-tangent-cylinder      39141.5927 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep REF 
+jcc-face-side            80000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 3.6e-16 brep 0.0e+0 
+jcc-face-top             73000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 0.0e+0 brep 0.0e+0 
+jcc-face-top-flush-edge   73000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.0e-16 brep 0.0e+0 
+jcc-face-overhang        76000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 1.8e-17 | occt 1.9e-16 brep 0.0e+0 
+jcc-overlap-corner       75000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 1.2e-16 | occt 3.9e-16 brep 0.0e+0 
+jcc-gap-line             76000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 3.8e-16 brep 0.0e+0 
+jcc-gap-corner           73000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.0e-16 brep 0.0e+0 
+jcc-pull-pull-face        8000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 2.3e-16 brep 1.1e-16 
+jcc-cyl-sunk             38978.0915 | shipped PASS    | contract PASS    1.0e-5 3.7e-16 1.1e-6 | occt 0.0e+0 brep 1.2e-11 
+jcc-gap-edge-1e-3        76000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 1.8e-17 | occt 1.9e-16 brep 0.0e+0 
+jc-gap-edge-1e-7         76000.0000 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep REF 
+jcc-pin-in-bore          35717.2567 | shipped PASS    | contract PASS    6.7e-7 5.3e-16 1.7e-16 | occt 4.1e-16 brep 0.0e+0 
+jc-tangent-rods           6283.1853 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep REF 
+jcc-rods-boxes-touch-apart    6283.1853 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep 1.4e-16 
+jc-L-edge-touch          42000.0000 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+jcc-L-face-pad           41000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 7.9e-17 | occt 0.0e+0 brep 1.8e-16 
+od-rect-zero-w                  NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+od-rect-zero-h                  NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+od-polygon-collinear         0.0000 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+od-polygon-collinear-4       0.0000 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+od-polygon-dup-mid        1000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt REF brep 1.1e-16 
+od-polygon-dup-last       1000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt REF brep 1.1e-16 
+od-polygon-closed-explicit    1000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt REF brep 1.1e-16 
+od-polygon-dup-triple     1000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt REF brep 1.1e-16 
+od-polygon-dup-L          4500.0000 | shipped REFUSED | contract PASS    0.0e+0 - - | occt REF brep 2.0e-16 
+od-polygon-dup-two-places    1000.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt REF brep 1.1e-16 
+od-pocket-dup            11600.0000 | shipped REFUSED | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt REF brep REF 
+od-polygon-dup-round      9946.3495 | shipped REFUSED | contract PASS    3.5e-6 - - | occt REF brep 1.8e-16 
+od-circle-zero                  NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+ro-no-rules-exact         6000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt REF brep REF 
+ro-no-rules-gap-1e-4            NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+ro-no-rules-gap-1e-6            NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+ro-with-rules             6000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt 1.5e-16 brep 0.0e+0 
+ro-no-rules-pocket       21600.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 0.0e+0 | occt REF brep REF 
+sx-hole-cross            32742.0891 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sx-pocket-cross          33373.7885 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sx-hole-clear            32745.2961 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sx-hole-cross-a          32723.2022 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sx-hole-cross-b          32592.1608 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sx-hole-cross-c          32689.8691 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sx-hole-cross-d          32778.0479 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sx-hole-cross-e          32603.9102 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sx-pocket-cross-a        33373.7849 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sx-pocket-cross-b        33465.4599 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sx-pocket-cross-c        33459.8794 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sx-plain-block           35858.6283 | shipped WRONG   | contract PASS    5.0e-7 1.4e-6 7.5e-8 | occt 2.1e-7 brep REF 
+sx-pad-then-slant        43058.6445 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+sx-straight-cross        32830.1027 | shipped PASS    | contract PASS    6.4e-6 5.3e-16 1.2e-8 | occt 0.0e+0 brep 9.6e-13 
+sx-straight-after-slant   35679.1510 | shipped WRONG   | contract PASS    1.1e-6 1.4e-6 3.7e-7 | occt 0.0e+0 brep REF 
+lf-slant-circle-pull       785.3982 | shipped REFUSED | contract PASS    1.0e-4 9.1e-7 7.1e-12 | occt 2.1e-5 brep REF 
+lf-straight-circle-pull     785.3982 | shipped PASS    | contract PASS    1.1e-4 8.9e-16 1.2e-10 | occt 1.4e-16 brep 8.7e-16 
+lf-slant-hole             1935.2557 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+lf-slant-hole2            1890.7067 | shipped REFUSED | contract PASS    1.6e-5 9.1e-7 8.5e-7 | occt 3.0e-3 brep REF 
+tm3-front-circle         68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 2.1e-16 
+tm3-front-circle-rev     68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 2.1e-16 
+tm3-front-circle-off10   68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 6.7e-3 
+tm3-side-circle          68984.0711 | shipped WRONG   | contract PASS    7.3e-6 4.7e-16 3.4e-15 | occt 0.0e+0 brep 2.1e-16 
+tm3-side-circle-rev      68984.0711 | shipped WRONG   | contract PASS    7.3e-6 4.7e-16 3.4e-15 | occt 0.0e+0 brep 2.1e-16 
+tm3-front-off0           68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 1.2e-2 
+tm3-front-rev-off0       68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 1.2e-2 
+tm3-front-off5           68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 9.2e-3 
+tm3-front-rev-off5       68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 9.2e-3 
+tm3-front-off20          68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 1.5e-3 
+tm3-front-rev-off20      68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 1.5e-3 
+tm3-front-off45          68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 4.1e-3 
+tm3-front-rev-off45      68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 4.1e-3 
+tm3-front-off60          68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 1.2e-2 
+tm3-front-rev-off60      68984.0711 | shipped WRONG   | contract PASS    7.3e-6 5.9e-16 3.3e-15 | occt 0.0e+0 brep 1.2e-2 
+tm3-side-off0            68984.0711 | shipped WRONG   | contract PASS    7.3e-6 4.7e-16 3.4e-15 | occt 0.0e+0 brep 1.2e-2 
+tm3-side-off10           68984.0711 | shipped WRONG   | contract PASS    7.3e-6 4.7e-16 3.4e-15 | occt 0.0e+0 brep 6.7e-3 
+tm3-side-off45           68984.0711 | shipped WRONG   | contract PASS    7.3e-6 4.7e-16 3.4e-15 | occt 0.0e+0 brep 4.1e-3 
+tm3-side-off60           68984.0711 | shipped WRONG   | contract PASS    7.3e-6 4.7e-16 3.4e-15 | occt 0.0e+0 brep 1.2e-2 
+tm3-top-circle           70994.6904 | shipped WRONG   | contract PASS    2.4e-6 7.1e-16 4.9e-16 | occt 2.0e-16 brep 0.0e+0 
+ts-ring-neg               8600.2167 | shipped REFUSED | contract PASS    4.0e-5 1.0e-7 1.6e-7 | occt REF brep REF 
+ts-rect-hole-neg         10015.7066 | shipped REFUSED | contract PASS    1.4e-5 8.7e-9 1.6e-7 | occt REF brep REF 
+ts-two-rects              2788.2178 | shipped REFUSED | contract PASS    0.0e+0 1.3e-16 3.6e-18 | occt REF brep REF 
+ts-two-circles-neg        3200.0398 | shipped REFUSED | contract PASS    7.5e-5 1.3e-9 8.0e-8 | occt REF brep REF 
+ts-nested-three          25261.4488 | shipped REFUSED | contract PASS    4.3e-16 0.0e+0 3.1e-17 | occt REF brep REF 
+ts-poly-hole              6598.4826 | shipped REFUSED | contract PASS    0.0e+0 2.2e-16 1.5e-17 | occt REF brep REF 
+ts-front-ring            10249.3392 | shipped REFUSED | contract PASS    4.3e-5 1.6e-8 1.7e-7 | occt REF brep REF 
+ts-ring-negheight        10249.3392 | shipped REFUSED | contract PASS    4.3e-5 2.2e-8 1.7e-7 | occt REF brep REF 
+ts-ring-reversed         10249.3392 | shipped REFUSED | contract PASS    4.3e-5 2.2e-8 1.7e-7 | occt REF brep REF 
+ts-gap-ok                 2788.2178 | shipped REFUSED | contract PASS    1.6e-16 1.3e-16 4.1e-17 | occt REF brep REF 
+tsk-ring                 10907.5446 | shipped WRONG   | contract PASS    6.0e-6 6.2e-9 3.9e-7 | occt REF brep REF 
+tsk-two-holes-neg        11632.0314 | shipped WRONG   | contract PASS    4.7e-6 3.6e-16 2.9e-7 | occt REF brep REF 
+tsk-rect-hole-rects      11442.7447 | shipped WRONG   | contract PASS    4.8e-16 1.8e-16 1.7e-16 | occt REF brep REF 
+tx-two-overlap                  NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tx-gap-just-collide             NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tx-hole-closes                  NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tx-ring-neg-cross               NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tx-island-grows-into-wall          NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tx-fold-outer                   NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+tc-soup-taper-midplane          NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+ct-holes-2               99899.4690 | shipped PASS    | contract PASS    2.0e-7 - - | occt REF brep 0.0e+0 
+ct-holes-4               99798.9381 | shipped PASS    | contract PASS    4.0e-7 - - | occt REF brep 0.0e+0 
+ct-holes-8               99597.8761 | shipped PASS    | contract PASS    8.1e-7 - - | occt REF brep 2.9e-16 
+ct-holes-12              99396.8142 | shipped PASS    | contract PASS    1.2e-6 - - | occt REF brep 4.4e-16 
+ct-holes-24              98793.6284 | shipped REFUSED | contract PASS    2.4e-6 - - | occt REF brep 8.8e-16 
+ct-holes-25                     NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep 0.0e+0 
+ct-holes-48                     NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep 0.0e+0 
+ct-pull-24-discs          1507.9645 | shipped REFUSED | contract PASS    1.1e-4 - - | occt REF brep 7.5e-16 
+pf-collinear-3           12000.0000 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+pf-collinear-4           12000.0000 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+pf-zero-height-rect             NaN | shipped REFUSED | contract REFUSED - - - | occt REF brep REF 
+pf-circle-zero           12000.0000 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+pf-collinear-taper       12000.0000 | shipped REFUSED | contract REFUSED - - - | occt 0.0e+0 brep REF 
+fl-floor-0.000001        10000.0002 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+fl-floor-0.00001         10000.0020 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+fl-floor-0.00003         10000.0060 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+fl-floor-0.0001          10000.0200 | shipped PASS    | contract REFUSED - - - | occt 0.0e+0 brep 3.6e-16 
+fl-floor-0.0002          10000.0400 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 1.4e-16 | occt 0.0e+0 brep 1.8e-16 
+fl-floor-0.0005          10000.1000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 2.1e-16 | occt 0.0e+0 brep 0.0e+0 
+fl-floor-0.001           10000.2000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 1.4e-16 | occt 0.0e+0 brep 1.8e-16 
+fl-floor-0.01            10002.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 1.8e-16 brep 0.0e+0 
+fl-floor-0.1             10020.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 7.0e-17 | occt 1.8e-16 brep 0.0e+0 
+fl-step-0.000001         12000.0001 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep REF 
+fl-step-0.00001          12000.0010 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 1.5e-16 
+fl-step-0.0001           12000.0100 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 4.5e-16 
+fl-step-0.0002           12000.0200 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 4.5e-16 
+fl-step-0.0005           12000.0500 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 4.5e-16 
+fl-step-0.001            12000.1000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 3.0e-16 
+fl-step-0.002            12000.2000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 1.5e-16 
+fl-step-0.01             12001.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 3.0e-16 
+fl-step-0.1              12010.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 3.5e-17 | occt 3.0e-16 brep 0.0e+0 
+fl-step10-0.001        12000010.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 3.1e-16 
+fl-step10-0.01         12000100.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 3.1e-16 
+fl-step10-0.1          12001000.0000 | shipped WRONG   | contract REFUSED - - - | occt 0.0e+0 brep 3.1e-16 
+fl-step10-1            12010000.0000 | shipped PASS    | contract PASS    0.0e+0 0.0e+0 5.6e-17 | occt 1.6e-16 brep 0.0e+0 
+wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/final/ep-results.json (473 cases)

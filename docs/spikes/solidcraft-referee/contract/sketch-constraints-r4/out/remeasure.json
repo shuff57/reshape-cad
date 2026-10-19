@@ -1,0 +1,3472 @@
+[
+ {
+  "id": "own-rect-rough-dims",
+  "mode": "stored",
+  "ms": 45,
+  "closedVol": 6000,
+  "sc": {
+   "volume": 5999.999999999869,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 2.1827872842550278e-14,
+  "dBboxClosed": 0,
+  "brep": {
+   "volume": 5999.99999991092,
+   "faces": 6,
+   "d": 1.482476363911883e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 5999.999999900323,
+   "d": 1.659100235001738e-11,
+   "dBbox": 9.204933112882789e-11
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-rect-rough-dims",
+  "mode": "rough3.5",
+  "ms": 16,
+  "closedVol": 6000,
+  "sc": {
+   "volume": 5999.999999999876,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 2.0615213240186375e-14,
+  "dBboxClosed": 0,
+  "brep": {
+   "volume": 5999.9999999214015,
+   "faces": 6,
+   "d": 1.3079140141467223e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 5999.999999912952,
+   "d": 1.4487341104751156e-11,
+   "dBbox": 8.298399005683521e-11
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-rect-rough-dims",
+  "mode": "rough15",
+  "ms": 12,
+  "closedVol": 6000,
+  "sc": {
+   "volume": 5999.999999999898,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 1.6977234433094662e-14,
+  "dBboxClosed": 0,
+  "brep": {
+   "volume": 5999.999999999321,
+   "faces": 6,
+   "d": 9.62548559376458e-14,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 5999.999999987995,
+   "d": 1.983911109471317e-12,
+   "dBbox": 5.11424976468417e-11
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-symmetric-trapezoid",
+  "mode": "stored",
+  "ms": 13,
+  "closedVol": 4500,
+  "sc": {
+   "volume": 4499.999999991884,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -20,
+    -5.1490327885073106e-11,
+    0,
+    20,
+    14.999999999933983,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 1.8036290485825803e-12,
+  "dBboxClosed": 5.1490327885073106e-11,
+  "brep": {
+   "refused": "solve: line -3 has zero length; a mirror line has no direction"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 5 names geometry -3, which this sketch does not have"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-symmetric-trapezoid",
+  "mode": "rough3.5",
+  "ms": 10,
+  "closedVol": 4500,
+  "sc": {
+   "volume": 4499.999999965998,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -20,
+    -2.1575274899987562e-10,
+    0,
+    20,
+    14.999999999723382,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 7.556081982329488e-12,
+  "dBboxClosed": 2.1575274899987562e-10,
+  "brep": {
+   "refused": "solve: line -3 has zero length; a mirror line has no direction"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 1 (coincident) is off by 1.64e+0 mm: (20.2, 0.8) mm and (21.9, 0.7) mm are not the same point. These rows have not been solved, and this reference reads them rather than solving them"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-symmetric-trapezoid",
+  "mode": "rough15",
+  "ms": 9,
+  "closedVol": 4500,
+  "sc": {
+   "volume": 4499.999999880947,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -20.00000000000001,
+    -7.554692484643994e-10,
+    0,
+    20.00000000000002,
+    14.999999999031411,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 2.6456190324905846e-11,
+  "dBboxClosed": 7.554692484643994e-10,
+  "brep": {
+   "refused": "solve: line -3 has zero length; a mirror line has no direction"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 1 (coincident) is off by 7.02e+0 mm: (17.7, 2.5) mm and (24.7, 2.1) mm are not the same point. These rows have not been solved, and this reference reads them rather than solving them"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-symmetric-3pt-rect",
+  "mode": "stored",
+  "ms": 9,
+  "closedVol": 8640,
+  "sc": {
+   "volume": 8640.000000006978,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -18.000000000000014,
+    -12,
+    0,
+    18,
+    12.000000000038758,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 8.075976101854057e-13,
+  "dBboxClosed": 3.2298608232395054e-12,
+  "brep": {
+   "volume": 8639.999999989945,
+   "faces": 6,
+   "d": 1.9714139785675026e-12,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 9 is a symmetric rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-symmetric-3pt-rect",
+  "mode": "rough3.5",
+  "ms": 10,
+  "closedVol": 8640,
+  "sc": {
+   "volume": 8640.000000008167,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -18.000000000000014,
+    -12,
+    0,
+    18,
+    12.000000000045368,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 9.452850025371407e-13,
+  "dBboxClosed": 3.7806794731902e-12,
+  "brep": {
+   "volume": 8639.99999999276,
+   "faces": 6,
+   "d": 1.7831991027831382e-12,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 9 is a symmetric rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-symmetric-3pt-rect",
+  "mode": "rough15",
+  "ms": 11,
+  "closedVol": 8640,
+  "sc": {
+   "volume": 8640.000000012078,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -18.000000000000032,
+    -12,
+    0,
+    18,
+    12.00000000006709,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 1.3979270416139452e-12,
+  "dBboxClosed": 5.590787092539055e-12,
+  "brep": {
+   "volume": 8640.000000068147,
+   "faces": 6,
+   "d": 6.489413122043432e-12,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 9 is a symmetric rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-triangle-length-angle",
+  "mode": "stored",
+  "ms": 6,
+  "closedVol": 5196.152422706632,
+  "sc": {
+   "volume": 5196.15242270663,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25.98076211353316,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 3.500646739300923e-16,
+  "dBboxClosed": 1.3674401325394234e-16,
+  "brep": {
+   "volume": 5196.152422707686,
+   "faces": 5,
+   "d": 2.0321254321637738e-13,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 7 is a angle rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-triangle-length-angle",
+  "mode": "rough3.5",
+  "ms": 5,
+  "closedVol": 5196.152422706632,
+  "sc": {
+   "volume": 5196.15242270663,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25.98076211353316,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 3.500646739300923e-16,
+  "dBboxClosed": 1.3674401325394234e-16,
+  "brep": {
+   "volume": 5196.152422705599,
+   "faces": 5,
+   "d": 1.9848667011840181e-13,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 7 is a angle rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-triangle-length-angle",
+  "mode": "rough15",
+  "ms": 5,
+  "closedVol": 5196.152422706632,
+  "sc": {
+   "volume": 5196.15242270663,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25.98076211353316,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 3.500646739300923e-16,
+  "dBboxClosed": 1.3674401325394234e-16,
+  "brep": {
+   "volume": 5196.15242270679,
+   "faces": 5,
+   "d": 3.080569130584719e-14,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 7 is a angle rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-hexagon-equal-oncircle",
+  "mode": "stored",
+  "ms": 20,
+  "closedVol": 10392.304845413264,
+  "sc": {
+   "volume": 10392.304845413279,
+   "faces": 8,
+   "bodies": 1,
+   "bbox": [
+    -17.32050807574122,
+    -20.00000000000634,
+    0,
+    17.320508075699493,
+    19.99999999999372,
+    10
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 1.4002586957203693e-15,
+  "dBboxClosed": 3.0279226854820447e-12,
+  "brep": {
+   "volume": 10392.304845406436,
+   "faces": 8,
+   "d": 6.584716516629363e-13,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "refused": "Sketch 1: circle 7 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-hexagon-equal-oncircle",
+  "mode": "rough3.5",
+  "ms": 22,
+  "closedVol": 10392.304845413264,
+  "sc": {
+   "volume": 10392.304845413346,
+   "faces": 8,
+   "bodies": 1,
+   "bbox": [
+    -17.32050807589655,
+    -20.00000000002512,
+    0,
+    17.320508075731258,
+    19.999999999975127,
+    10
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 7.876455163427078e-15,
+  "dBboxClosed": 1.1996005306715343e-11,
+  "brep": {
+   "volume": 10392.304845557583,
+   "faces": 8,
+   "d": 1.3879189159450595e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "refused": "Sketch 1: circle 7 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-hexagon-equal-oncircle",
+  "mode": "rough15",
+  "ms": 17,
+  "closedVol": 10392.304845413264,
+  "sc": {
+   "volume": 10392.304845413573,
+   "faces": 8,
+   "bodies": 1,
+   "bbox": [
+    -17.32050807637209,
+    -20.000000000082593,
+    0,
+    17.320508075828524,
+    19.999999999918273,
+    10
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 2.975549728405785e-14,
+  "dBboxClosed": 3.945119479981537e-11,
+  "brep": {
+   "volume": 10392.304845787514,
+   "faces": 8,
+   "d": 3.598244770263053e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "refused": "Sketch 1: circle 7 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-circle-diameter",
+  "mode": "stored",
+  "ms": 261,
+  "closedVol": 1539.3804002589986,
+  "sc": {
+   "volume": 1539.2066994644701,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    2.9999999999999996,
+    -2.0000000000000018,
+    0,
+    17,
+    12,
+    10.000000000000004
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00011283812272733947,
+  "dBboxClosed": 8.881784197001252e-16,
+  "brep": {
+   "volume": 1539.3804002554843,
+   "faces": 3,
+   "d": 0.00011283812044467369,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 1539.3804002554843,
+   "d": 0.00011283812044467369,
+   "dBbox": 7.990941242105875e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-circle-diameter",
+  "mode": "rough3.5",
+  "ms": 237,
+  "closedVol": 1539.3804002589986,
+  "sc": {
+   "volume": 1539.2066994644701,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    2.9999999999999996,
+    -2.0000000000000018,
+    0,
+    17,
+    12,
+    10.000000000000004
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00011283812272733947,
+  "dBboxClosed": 8.881784197001252e-16,
+  "brep": {
+   "volume": 1539.3804002546815,
+   "faces": 3,
+   "d": 0.00011283811992318734,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 1539.3804002546813,
+   "d": 0.00011283811992303966,
+   "dBbox": 7.396305790107492e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-circle-diameter",
+  "mode": "rough15",
+  "ms": 243,
+  "closedVol": 1539.3804002589986,
+  "sc": {
+   "volume": 1539.2066994644701,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    2.9999999999999996,
+    -2.0000000000000018,
+    0,
+    17,
+    12,
+    10.000000000000004
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00011283812272733947,
+  "dBboxClosed": 8.881784197001252e-16,
+  "brep": {
+   "volume": 1539.380400254681,
+   "faces": 3,
+   "d": 0.00011283811992289196,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 1539.3804002546813,
+   "d": 0.00011283811992303966,
+   "dBbox": 3.0149216456811652e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-washer-dims",
+  "mode": "stored",
+  "ms": 8,
+  "closedVol": 9214.601836602553,
+  "sc": {
+   "volume": 10000,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    10
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.08523408578302993,
+  "dBboxClosed": 0,
+  "brep": {
+   "volume": 9214.601836621781,
+   "faces": 7,
+   "d": 0.08523408578076533,
+   "faceSame": false,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 9214.601836622402,
+   "d": 0.08523408578069228,
+   "dBbox": 2.7162895586566087e-11
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "own-washer-dims",
+  "mode": "rough3.5",
+  "ms": 8,
+  "closedVol": 9214.601836602553,
+  "sc": {
+   "volume": 10000,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    10
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.08523408578302993,
+  "dBboxClosed": 0,
+  "brep": {
+   "volume": 9214.60183662968,
+   "faces": 7,
+   "d": 0.08523408577983516,
+   "faceSame": false,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 9214.601836630494,
+   "d": 0.08523408577973918,
+   "dBbox": 3.805143293107588e-11
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "own-washer-dims",
+  "mode": "rough15",
+  "ms": 7,
+  "closedVol": 9214.601836602553,
+  "sc": {
+   "volume": 10000,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -3.364388424438009e-48,
+    0,
+    0,
+    40,
+    25,
+    10
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.08523408578302993,
+  "dBboxClosed": 3.364388424438009e-48,
+  "brep": {
+   "volume": 9214.601836731228,
+   "faces": 7,
+   "d": 0.08523408576787542,
+   "faceSame": false,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 9214.601836736787,
+   "d": 0.08523408576722075,
+   "dBbox": 1.7195728505764838e-10
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "own-l-shape-dims",
+  "mode": "stored",
+  "ms": 9,
+  "closedVol": 7500,
+  "sc": {
+   "volume": 7500.000000026535,
+   "faces": 8,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30.000000000353808,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 3.5380556558569273e-12,
+  "dBboxClosed": 1.1793588328146143e-11,
+  "brep": {
+   "volume": 7500.000000155326,
+   "faces": 8,
+   "d": 1.7172108830838902e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 7500.000000157646,
+   "d": 1.748145829539012e-11,
+   "dBbox": 7.949539368282762e-11
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-l-shape-dims",
+  "mode": "rough3.5",
+  "ms": 8,
+  "closedVol": 7500,
+  "sc": {
+   "volume": 7500.000000040193,
+   "faces": 8,
+   "bodies": 1,
+   "bbox": [
+    -3.723826116396089e-57,
+    0,
+    0,
+    40,
+    30.00000000053592,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 5.359106580726803e-12,
+  "dBboxClosed": 1.7863991767323265e-11,
+  "brep": {
+   "volume": 7500.000001683537,
+   "faces": 8,
+   "d": 2.1911255311890365e-10,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 7500.000001897864,
+   "d": 2.476894829649173e-10,
+   "dBbox": 1.1050964587866474e-9
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-l-shape-dims",
+  "mode": "rough15",
+  "ms": 9,
+  "closedVol": 7500,
+  "sc": {
+   "volume": 7500.000000085071,
+   "faces": 8,
+   "bodies": 1,
+   "bbox": [
+    -2.991081643955908e-60,
+    0,
+    0,
+    40,
+    30.000000001134293,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 1.1342854122631252e-11,
+  "dBboxClosed": 3.780975532663433e-11,
+  "brep": {
+   "volume": 7500.000000005221,
+   "faces": 8,
+   "d": 1.0646666244906722e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 7500.000000005213,
+   "d": 1.064775763854886e-11,
+   "dBbox": 3.696077518115893e-11
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-xz-plane-rect",
+  "mode": "stored",
+  "ms": 6,
+  "closedVol": 2000,
+  "sc": {
+   "volume": 1999.9999999469285,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    -10,
+    0,
+    20,
+    0,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 2.653575847944012e-11,
+  "dBboxClosed": 0,
+  "brep": {
+   "volume": 1999.9999999982467,
+   "faces": 6,
+   "d": 2.5659119273791232e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 1999.9999999978504,
+   "d": 2.5460963115647325e-11,
+   "dBbox": 9.794978392714533e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-xz-plane-rect",
+  "mode": "rough3.5",
+  "ms": 6,
+  "closedVol": 2000,
+  "sc": {
+   "volume": 1999.999999908205,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -4.079067341753839e-32,
+    -10,
+    0,
+    20,
+    0,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 4.58975364381331e-11,
+  "dBboxClosed": 4.079067341753839e-32,
+  "brep": {
+   "volume": 2000.000000005499,
+   "faces": 6,
+   "d": 4.864705260829663e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 2000.0000000056093,
+   "d": 4.8702190724588776e-11,
+   "dBbox": 1.979917236928071e-11
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-xz-plane-rect",
+  "mode": "rough15",
+  "ms": 6,
+  "closedVol": 2000,
+  "sc": {
+   "volume": 1999.999999999972,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -5.040039035095132e-35,
+    -10,
+    0,
+    20,
+    0,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 1.3983481039758771e-14,
+  "dBboxClosed": 5.040039035095132e-35,
+  "brep": {
+   "volume": 2000.0000001929836,
+   "faces": 6,
+   "d": 9.650580067478706e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 2000.0000002132313,
+   "d": 1.0662961357184061e-10,
+   "dBbox": 4.011776315409478e-10
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-right-trapezoid-par-perp",
+  "mode": "stored",
+  "ms": 5,
+  "closedVol": 4160,
+  "sc": {
+   "volume": 4159.999999999804,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    16,
+    10.000000000000002
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 4.722376336128666e-14,
+  "dBboxClosed": 1.7763568394002506e-16,
+  "brep": {
+   "volume": 4160.000000011399,
+   "faces": 6,
+   "d": 2.7872951809786758e-12,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 4160.000000011863,
+   "d": 2.8990143618929414e-12,
+   "dBbox": 2.1272628549147747e-11
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-right-trapezoid-par-perp",
+  "mode": "rough3.5",
+  "ms": 5,
+  "closedVol": 4160,
+  "sc": {
+   "volume": 4160.000000025205,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    16.00000000001126,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 6.058852564959895e-12,
+  "dBboxClosed": 7.036593530074242e-13,
+  "brep": {
+   "volume": 4159.99999995218,
+   "faces": 6,
+   "d": 1.7554122258555626e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 4159.999999952498,
+   "d": 1.7477602271625397e-11,
+   "dBbox": 1.2469256302222156e-10
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-right-trapezoid-par-perp",
+  "mode": "rough15",
+  "ms": 5,
+  "closedVol": 4160,
+  "sc": {
+   "volume": 4160.000000000098,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    16.000000000000107,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 2.361188168064333e-14,
+  "dBboxClosed": 6.661338147750939e-15,
+  "brep": {
+   "volume": 4160.000000000868,
+   "faces": 6,
+   "d": 1.849597398316675e-13,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 4160.000000000884,
+   "d": 1.8889505344510648e-13,
+   "dBbox": 1.6200374375330284e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-slot-dims-from-points",
+  "mode": "stored",
+  "ms": 242,
+  "closedVol": 3285.3981633974486,
+  "sc": {
+   "volume": 3285.273147981523,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -5.0000000000363185,
+    -4.999999999826459,
+    0,
+    30.00000000061561,
+    4.999999999652728,
+    10.000000000000007
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00003805183107437006,
+  "dBboxClosed": 6.945448660644616e-11,
+  "brep": {
+   "volume": 3285.3981633997923,
+   "faces": 6,
+   "d": 0.000038051831787732196,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-slot-dims-from-points",
+  "mode": "rough3.5",
+  "ms": 225,
+  "closedVol": 3285.3981633974486,
+  "sc": {
+   "volume": 3285.273142613339,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -5.000000000038443,
+    -4.999999999824645,
+    0,
+    30.000000000555893,
+    4.999999999648307,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00003805346502664178,
+  "dBboxClosed": 7.033857940541566e-11,
+  "brep": {
+   "volume": 3285.3981634043425,
+   "faces": 6,
+   "d": 0.00003805346712492855,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "own-slot-dims-from-points",
+  "mode": "rough15",
+  "ms": 208,
+  "closedVol": 3285.3981633974486,
+  "sc": {
+   "volume": 3285.273144379876,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -5.000000000036907,
+    -4.9999999999258025,
+    0,
+    30.00000000027131,
+    4.999999999866531,
+    10.000000000000007
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.000038052927333206393,
+  "dBboxClosed": 2.6693847132719383e-11,
+  "brep": {
+   "volume": 3285.3981635718665,
+   "faces": 6,
+   "d": 0.0000380529804200001,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__corner-origin-25x60",
+  "mode": "stored",
+  "ms": 5,
+  "closedVol": 15000,
+  "sc": {
+   "volume": 15000,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    25,
+    60,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 0,
+  "brep": {
+   "volume": 15000,
+   "faces": 6,
+   "d": 0,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 14999.999999999996,
+   "d": 2.425319204727809e-16,
+   "dBbox": 0
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__corner-origin-25x60",
+  "mode": "rough3.5",
+  "ms": 5,
+  "closedVol": 15000,
+  "sc": {
+   "volume": 15000.000000000035,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -5.48488517298502e-35,
+    0,
+    0,
+    25,
+    60.000000000000284,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 2.304053244491418e-15,
+  "brep": {
+   "volume": 15000.000000006743,
+   "faces": 6,
+   "d": 4.472288613516069e-13,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 15000.000000006512,
+   "d": 4.3182808440159887e-13,
+   "dBbox": 5.660657128218901e-13
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__corner-origin-25x60",
+  "mode": "rough15",
+  "ms": 5,
+  "closedVol": 15000,
+  "sc": {
+   "volume": 15000.000000000151,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -2.9720946296254646e-38,
+    -1.4210854715202004e-14,
+    0,
+    25,
+    60.00000000000121,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 1.0065074699620406e-14,
+  "brep": {
+   "volume": 15000.000000028895,
+   "faces": 6,
+   "d": 1.91624470365175e-12,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 15000.000000027929,
+   "d": 1.8518524787664702e-12,
+   "dBbox": 2.426148171246927e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__offset-corner-30x18",
+  "mode": "stored",
+  "ms": 5,
+  "closedVol": 5400,
+  "sc": {
+   "volume": 5400,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -10,
+    5,
+    0,
+    20,
+    23,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 0,
+  "brep": {
+   "volume": 5400,
+   "faces": 6,
+   "d": 0,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 5400,
+   "d": 0,
+   "dBbox": 0
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__offset-corner-30x18",
+  "mode": "rough3.5",
+  "ms": 5,
+  "closedVol": 5400,
+  "sc": {
+   "volume": 5399.999999999965,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -10,
+    5,
+    0,
+    20,
+    23,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 6.4001479013650505e-15,
+  "brep": {
+   "volume": 5399.999999996348,
+   "faces": 6,
+   "d": 6.698260053617374e-13,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 5399.999999996527,
+   "d": 6.368147161862321e-13,
+   "dBbox": 9.659828492667893e-13
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__offset-corner-30x18",
+  "mode": "rough15",
+  "ms": 5,
+  "closedVol": 5400,
+  "sc": {
+   "volume": 5399.999999999851,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -10,
+    5,
+    0,
+    20,
+    23,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 2.7621690942733376e-14,
+  "brep": {
+   "volume": 5399.999999984349,
+   "faces": 6,
+   "d": 2.8706347587153177e-12,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 5399.999999985113,
+   "d": 2.7291578051053995e-12,
+   "dBbox": 4.13962197855548e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__square-by-equal",
+  "mode": "stored",
+  "ms": 5,
+  "closedVol": 4840,
+  "sc": {
+   "volume": 4840,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    7,
+    -3,
+    0,
+    29,
+    19,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 0,
+  "brep": {
+   "volume": 4840.000000000001,
+   "faces": 6,
+   "d": 1.87912128465481e-16,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 4839.999999999999,
+   "d": 1.8791212846548109e-16,
+   "dBbox": 0
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__square-by-equal",
+  "mode": "rough3.5",
+  "ms": 4,
+  "closedVol": 4840,
+  "sc": {
+   "volume": 4840.000000056414,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    7,
+    -3,
+    0,
+    29,
+    19.000000000512852,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 1.1655813504456857e-11,
+  "brep": {
+   "volume": 4839.999999995758,
+   "faces": 6,
+   "d": 1.2532235671630845e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 4839.999999995654,
+   "d": 1.2553657654276197e-11,
+   "dBbox": 2.78521533322371e-11
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__square-by-equal",
+  "mode": "rough15",
+  "ms": 5,
+  "closedVol": 4840,
+  "sc": {
+   "volume": 4840.000000000031,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    7,
+    -3,
+    0,
+    29,
+    19.000000000000277,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 6.389012367826356e-15,
+  "brep": {
+   "volume": 4839.999999977207,
+   "faces": 6,
+   "d": 4.715654863863454e-12,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 4839.999999976686,
+   "d": 4.823328513475201e-12,
+   "dBbox": 7.615685859660726e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__right-triangle",
+  "mode": "stored",
+  "ms": 3,
+  "closedVol": 3000,
+  "sc": {
+   "volume": 3000,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 0,
+  "brep": {
+   "volume": 3000,
+   "faces": 5,
+   "d": 0,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 3000,
+   "d": 0,
+   "dBbox": 0
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__right-triangle",
+  "mode": "rough3.5",
+  "ms": 3,
+  "closedVol": 3000,
+  "sc": {
+   "volume": 3000,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 0,
+  "brep": {
+   "volume": 3000.000000000197,
+   "faces": 5,
+   "d": 6.563520097794201e-14,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 3000.0000000001983,
+   "d": 6.608994832882842e-14,
+   "dBbox": 6.501466032204494e-14
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__right-triangle",
+  "mode": "rough15",
+  "ms": 3,
+  "closedVol": 3000,
+  "sc": {
+   "volume": 3000,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 0,
+  "brep": {
+   "volume": 3000.00000000319,
+   "faces": 5,
+   "d": 1.063350888821718e-12,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 3000.000000003213,
+   "d": 1.0709300113364761e-12,
+   "dBbox": 1.0537348771311181e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__parallelogram",
+  "mode": "stored",
+  "ms": 4,
+  "closedVol": 4500,
+  "sc": {
+   "volume": 4500,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    15,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 0,
+  "brep": {
+   "volume": 4500,
+   "faces": 6,
+   "d": 0,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 4500,
+   "d": 0,
+   "dBbox": 0
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__parallelogram",
+  "mode": "rough3.5",
+  "ms": 5,
+  "closedVol": 4500,
+  "sc": {
+   "volume": 4499.999999984894,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    15.000000000000577,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 3.3568438892770145e-12,
+  "brep": {
+   "volume": 4500.000000015894,
+   "faces": 6,
+   "d": 6.888917091071281e-12,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 4500.000000013375,
+   "d": 6.329072574652133e-12,
+   "dBbox": 4.300559908169512e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__parallelogram",
+  "mode": "rough15",
+  "ms": 5,
+  "closedVol": 4500,
+  "sc": {
+   "volume": 4499.999999645974,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    15.000000000013527,
+    10.000000000000002
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 7.867250436296066e-11,
+  "brep": {
+   "volume": 4499.999999811737,
+   "faces": 6,
+   "d": 3.683635441274823e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 4499.999999530924,
+   "d": 2.5566704509236974e-11,
+   "dBbox": 9.35237153288493e-10
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__circle-pinned",
+  "mode": "stored",
+  "ms": 225,
+  "closedVol": 1539.3804002589986,
+  "sc": {
+   "volume": 1539.2066994644592,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    -3.0000000000000004,
+    -13.000000000000005,
+    0,
+    11.000000000000004,
+    0.999999999999998,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.0001128381227344293,
+  "brep": {
+   "volume": 1539.3804002589995,
+   "faces": 3,
+   "d": 0.00011283812273502006,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 1539.3804002589986,
+   "d": 0.0001128381227344293,
+   "dBbox": 1.9984014443252818e-15
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__circle-pinned",
+  "mode": "rough3.5",
+  "ms": 230,
+  "closedVol": 1539.3804002589986,
+  "sc": {
+   "volume": 1539.2066994644592,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    -3.0000000000000004,
+    -13.000000000000005,
+    0,
+    11.000000000000004,
+    0.999999999999998,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.0001128381227344293,
+  "brep": {
+   "volume": 1539.3804002601119,
+   "faces": 3,
+   "d": 0.00011283812345750977,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 1539.3804002601119,
+   "d": 0.00011283812345750977,
+   "dBbox": 2.5333068975832695e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-dof__circle-pinned",
+  "mode": "rough15",
+  "ms": 235,
+  "closedVol": 1539.3804002589986,
+  "sc": {
+   "volume": 1539.2066994644592,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    -3.0000000000000004,
+    -13.000000000000005,
+    0,
+    11.000000000000004,
+    0.999999999999998,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.0001128381227344293,
+  "brep": {
+   "volume": 1539.3804002601119,
+   "faces": 3,
+   "d": 0.00011283812345750977,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 1539.3804002601119,
+   "d": 0.00011283812345750977,
+   "dBbox": 2.5333068975832695e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__hv-only-30x15",
+  "mode": "stored",
+  "ms": 5,
+  "closedVol": null,
+  "sc": {
+   "volume": 4500,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    15,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 4500,
+   "faces": 6,
+   "d": 0,
+   "faceSame": true,
+   "dof": 4
+  },
+  "occt": {
+   "volume": 4499.999999999999,
+   "d": 2.0210993372731742e-16,
+   "dBbox": 0
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__hv-only-30x15",
+  "mode": "rough3.5",
+  "ms": 4,
+  "closedVol": null,
+  "sc": {
+   "volume": 4687.890877861785,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0.3202890580559412,
+    -0.3723739348582021,
+    0,
+    30.807164999350356,
+    15.004376660697694,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 4785.412418199073,
+   "faces": 6,
+   "d": 0.020378920731348085,
+   "faceSame": true,
+   "dof": 4
+  },
+  "occt": {
+   "volume": 4785.412418200217,
+   "d": 0.020378920731582303,
+   "dBbox": 0.06323061593841656
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__hv-only-30x15",
+  "mode": "rough15",
+  "ms": 4,
+  "closedVol": null,
+  "sc": {
+   "volume": 5331.076671147883,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    1.3726673921892,
+    -1.5958882930225844,
+    0,
+    33.459278568819734,
+    15.018757117290448,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 5745.992348575065,
+   "faces": 6,
+   "d": 0.0722095770855101,
+   "faceSame": true,
+   "dof": 4
+  },
+  "occt": {
+   "volume": 5745.9923485841455,
+   "d": 0.07220957708697628,
+   "dBbox": 0.145156003633065
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__width-only",
+  "mode": "stored",
+  "ms": 4,
+  "closedVol": null,
+  "sc": {
+   "volume": 4500,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    15,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 4500,
+   "faces": 6,
+   "d": 0,
+   "faceSame": true,
+   "dof": 3
+  },
+  "occt": {
+   "volume": 4499.999999999999,
+   "d": 2.0210993372731742e-16,
+   "dBbox": 0
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__width-only",
+  "mode": "rough3.5",
+  "ms": 5,
+  "closedVol": null,
+  "sc": {
+   "volume": 4255.644693774914,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -0.3120796127059009,
+    -0.11184626291947275,
+    0,
+    29.687920387296565,
+    14.073636049662737,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 4404.223583102827,
+   "faces": 6,
+   "d": 0.03373554646452295,
+   "faceSame": true,
+   "dof": 3
+  },
+  "occt": {
+   "volume": 4404.223583220071,
+   "d": 0.03373554649024567,
+   "dBbox": 0.30361196517993355
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__width-only",
+  "mode": "rough15",
+  "ms": 4,
+  "closedVol": null,
+  "sc": {
+   "volume": 3452.7629734815205,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -1.3374840549957163,
+    -0.47934112678745744,
+    0,
+    28.662515945014828,
+    11.029868784814692,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 4089.5296436814315,
+   "faces": 6,
+   "d": 0.15570657891764,
+   "faceSame": true,
+   "dof": 3
+  },
+  "occt": {
+   "volume": 4089.529643681479,
+   "d": 0.15570657891764977,
+   "dBbox": 1.301194135030873
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__width-and-height",
+  "mode": "stored",
+  "ms": 4,
+  "closedVol": 4500,
+  "sc": {
+   "volume": 4500,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    15,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 0,
+  "brep": {
+   "volume": 4500,
+   "faces": 6,
+   "d": 0,
+   "faceSame": true,
+   "dof": 2
+  },
+  "occt": {
+   "volume": 4499.999999999999,
+   "d": 2.0210993372731742e-16,
+   "dBbox": 0
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__width-and-height",
+  "mode": "rough3.5",
+  "ms": 5,
+  "closedVol": 4500,
+  "sc": {
+   "volume": 4500.000000000389,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -0.06875745159382529,
+    -0.15155100424286516,
+    0,
+    29.931242548406175,
+    14.848448995758936,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 8.650305163529184e-14,
+  "brep": {
+   "volume": 4499.999999996425,
+   "faces": 6,
+   "d": 8.809972011180764e-13,
+   "faceSame": true,
+   "dof": 2
+  },
+  "occt": {
+   "volume": 4499.999999796636,
+   "d": 4.527848634504341e-11,
+   "dBbox": 0.23985442721320638
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__width-and-height",
+  "mode": "rough15",
+  "ms": 4,
+  "closedVol": 4500,
+  "sc": {
+   "volume": 4500.000000001671,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -0.294674792573538,
+    -0.6495043039039867,
+    0,
+    29.705325207426462,
+    14.35049569610372,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 3.7127594825708203e-13,
+  "brep": {
+   "volume": 4500,
+   "faces": 6,
+   "d": 3.7127594825708203e-13,
+   "faceSame": true,
+   "dof": 2
+  },
+  "occt": {
+   "volume": 4499.999999999967,
+   "d": 3.7855190587126824e-13,
+   "dBbox": 1.0279475412294572
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__pinned-corner-only",
+  "mode": "stored",
+  "ms": 4,
+  "closedVol": null,
+  "sc": {
+   "volume": 4500,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    2,
+    3,
+    0,
+    32,
+    18,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 4500,
+   "faces": 6,
+   "d": 0,
+   "faceSame": true,
+   "dof": 2
+  },
+  "occt": {
+   "volume": 4499.999999999999,
+   "d": 2.0210993372731742e-16,
+   "dBbox": 0
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__pinned-corner-only",
+  "mode": "rough3.5",
+  "ms": 4,
+  "closedVol": null,
+  "sc": {
+   "volume": 4416.241278760396,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    1.9999999995028075,
+    3,
+    0,
+    31.19375138859664,
+    18.12735112366483,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 4482.2638658584465,
+   "faces": 6,
+   "d": 0.014729741281174125,
+   "faceSame": true,
+   "dof": 2
+  },
+  "occt": {
+   "volume": 4482.2638659277745,
+   "d": 0.014729741296413494,
+   "dBbox": 0.00806542336307781
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__pinned-corner-only",
+  "mode": "rough15",
+  "ms": 4,
+  "closedVol": null,
+  "sc": {
+   "volume": 4126.5755014422,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    1.99999999999973,
+    3,
+    0,
+    28.54464880845276,
+    18.545790532847928,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 4398.619155215645,
+   "faces": 6,
+   "d": 0.061847512633793324,
+   "faceSame": true,
+   "dof": 2
+  },
+  "occt": {
+   "volume": 4398.6191552156715,
+   "d": 0.06184751263379895,
+   "dBbox": 0.032938985933328224
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__free-line",
+  "mode": "stored",
+  "ms": 0,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 3 solid.extrude: sk has no closed profiles"
+ },
+ {
+  "id": "sk-rect-underconstrained__free-line",
+  "mode": "rough3.5",
+  "ms": 0,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 3 solid.extrude: sk has no closed profiles"
+ },
+ {
+  "id": "sk-rect-underconstrained__free-line",
+  "mode": "rough15",
+  "ms": 0,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 3 solid.extrude: sk has no closed profiles"
+ },
+ {
+  "id": "sk-rect-underconstrained__free-circle",
+  "mode": "stored",
+  "ms": 318,
+  "closedVol": null,
+  "sc": {
+   "volume": 502.5981059471615,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    1,
+    1,
+    0,
+    9,
+    9.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "brep": {
+   "volume": 502.65482457436656,
+   "faces": 3,
+   "d": 0.00011283812356336415,
+   "faceSame": true,
+   "dof": 3
+  },
+  "occt": {
+   "volume": 502.654824574367,
+   "d": 0.00011283812356426874,
+   "dBbox": 5.329070518200751e-16
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__free-circle",
+  "mode": "rough3.5",
+  "ms": 321,
+  "closedVol": null,
+  "sc": {
+   "volume": 465.199989571852,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    0.994692352228288,
+    1.4062735241938051,
+    0,
+    8.691301123239523,
+    9.102882295205038,
+    10.000000000000004
+   ]
+  },
+  "tol": 0.0003,
+  "brep": {
+   "volume": 465.2524877895515,
+   "faces": 3,
+   "d": 0.00011283812355078636,
+   "faceSame": true,
+   "dof": 3
+  },
+  "occt": {
+   "volume": 465.25248778955165,
+   "d": 0.00011283812355115285,
+   "dBbox": 7.894787219731176e-16
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__free-circle",
+  "mode": "rough15",
+  "ms": 317,
+  "closedVol": null,
+  "sc": {
+   "volume": 465.19998957184697,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    0.4788244904968355,
+    2.2427437989204737,
+    0,
+    8.17543326150807,
+    9.939352569931708,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "brep": {
+   "volume": 465.2524877895514,
+   "faces": 3,
+   "d": 0.00011283812356141583,
+   "faceSame": true,
+   "dof": 3
+  },
+  "occt": {
+   "volume": 465.25248778955154,
+   "d": 0.00011283812356166015,
+   "dBbox": 5.329070518200751e-16
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__triangle-joined",
+  "mode": "stored",
+  "ms": 2,
+  "closedVol": null,
+  "sc": {
+   "volume": 3000,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 3000.0000000000005,
+   "faces": 5,
+   "d": 1.51582450295488e-16,
+   "faceSame": true,
+   "dof": 6
+  },
+  "occt": {
+   "volume": 3000,
+   "d": 0,
+   "dBbox": 0
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__triangle-joined",
+  "mode": "rough3.5",
+  "ms": 2,
+  "closedVol": null,
+  "sc": {
+   "volume": 2922.627373957626,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    0.6331751214960839,
+    0.2435587788849349,
+    0,
+    29.979501464997586,
+    20.329972126308522,
+    10.000000000000002
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 2920.3234988416693,
+   "faces": 5,
+   "d": 0.0007889109260910181,
+   "faceSame": true,
+   "dof": 6
+  },
+  "occt": {
+   "volume": 2920.3234988415393,
+   "d": 0.0007889109261355887,
+   "dBbox": 0.3121449200937198
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__triangle-joined",
+  "mode": "rough15",
+  "ms": 3,
+  "closedVol": null,
+  "sc": {
+   "volume": 2644.8309983973886,
+   "faces": 5,
+   "bodies": 1,
+   "bbox": [
+    2.713607663554651,
+    1.0438233380782904,
+    0,
+    29.912149135703938,
+    21.414166255607945,
+    10.000000000000002
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 2659.788459820769,
+   "faces": 5,
+   "d": 0.005623553019095408,
+   "faceSame": true,
+   "dof": 6
+  },
+  "occt": {
+   "volume": 2659.7884598201977,
+   "d": 0.005623553018881876,
+   "dBbox": 1.3377639432588375
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__circle-radius-only",
+  "mode": "stored",
+  "ms": 382,
+  "closedVol": 502.6548245743669,
+  "sc": {
+   "volume": 502.5981059471615,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    1,
+    1,
+    0,
+    9,
+    9.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00011283812356404259,
+  "brep": {
+   "volume": 502.65482457436656,
+   "faces": 3,
+   "d": 0.00011283812356336415,
+   "faceSame": true,
+   "dof": 2
+  },
+  "occt": {
+   "volume": 502.654824574367,
+   "d": 0.00011283812356426874,
+   "dBbox": 5.329070518200751e-16
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__circle-radius-only",
+  "mode": "rough3.5",
+  "ms": 350,
+  "closedVol": 502.6548245743669,
+  "sc": {
+   "volume": 502.5981059471615,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    1.0707252117744765,
+    0.8270779352969674,
+    0,
+    9.070725211774478,
+    8.827077935296971,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00011283812356404259,
+  "brep": {
+   "volume": 502.65482457481784,
+   "faces": 3,
+   "d": 0.00011283812446105568,
+   "faceSame": true,
+   "dof": 2
+  },
+  "occt": {
+   "volume": 502.65482457481767,
+   "d": 0.00011283812446071647,
+   "dBbox": 0.0008796247228796128
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-rect-underconstrained__circle-radius-only",
+  "mode": "rough15",
+  "ms": 374,
+  "closedVol": 502.6548245743669,
+  "sc": {
+   "volume": 502.5981059471647,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    1.3031080504620458,
+    0.2589054369870052,
+    0,
+    9.303108050462047,
+    8.258905436987005,
+    10.000000000000007
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00011283812355770975,
+  "brep": {
+   "volume": 502.6548245748177,
+   "faces": 3,
+   "d": 0.0001128381244544967,
+   "faceSame": true,
+   "dof": 2
+  },
+  "occt": {
+   "volume": 502.65482457481767,
+   "d": 0.00011283812445438363,
+   "dBbox": 0.0008796247228781695
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-conflict__width-30-vs-35",
+  "mode": "stored",
+  "ms": 5,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 16 sketch.dimension: that would over-constrain the sketch (conflicts with k10, k12)"
+ },
+ {
+  "id": "sk-conflict__width-30-vs-35",
+  "mode": "rough3.5",
+  "ms": 4,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 16 sketch.dimension: that would over-constrain the sketch (conflicts with k10, k12)"
+ },
+ {
+  "id": "sk-conflict__width-30-vs-35",
+  "mode": "rough15",
+  "ms": 5,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 16 sketch.dimension: that would over-constrain the sketch (conflicts with k10, k12)"
+ },
+ {
+  "id": "sk-conflict__redundant-width",
+  "mode": "stored",
+  "ms": 4,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+ },
+ {
+  "id": "sk-conflict__redundant-width",
+  "mode": "rough3.5",
+  "ms": 4,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+ },
+ {
+  "id": "sk-conflict__redundant-width",
+  "mode": "rough15",
+  "ms": 4,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+ },
+ {
+  "id": "sk-conflict__redundant-height",
+  "mode": "stored",
+  "ms": 5,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+ },
+ {
+  "id": "sk-conflict__redundant-height",
+  "mode": "rough3.5",
+  "ms": 5,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+ },
+ {
+  "id": "sk-conflict__redundant-height",
+  "mode": "rough15",
+  "ms": 4,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+ },
+ {
+  "id": "sk-conflict__redundant-perpendicular",
+  "mode": "stored",
+  "ms": 6,
+  "closedVol": null,
+  "sc": {
+   "volume": 6000,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 6000,
+   "faces": 6,
+   "d": 0,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 5999.999999999999,
+   "d": 1.5158245029548806e-16,
+   "dBbox": 0
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-conflict__redundant-perpendicular",
+  "mode": "rough3.5",
+  "ms": 6,
+  "closedVol": null,
+  "sc": {
+   "volume": 5999.999999974195,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -1.8643358729939634e-27,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 5999.999999995428,
+   "faces": 6,
+   "d": 3.53884388460116e-12,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 5999.999999996221,
+   "d": 3.671023781258441e-12,
+   "dBbox": 3.042307146947088e-13
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-conflict__redundant-perpendicular",
+  "mode": "rough15",
+  "ms": 7,
+  "closedVol": null,
+  "sc": {
+   "volume": 5999.999999889402,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -1.2772956335678597e-34,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "brep": {
+   "volume": 6000.000000033256,
+   "faces": 6,
+   "d": 2.397564458065416e-11,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 6000.000000033148,
+   "d": 2.395775785151982e-11,
+   "dBbox": 7.956657554978293e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-conflict__radius-vs-diameter",
+  "mode": "stored",
+  "ms": 1,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 4 sketch.dimension: that would over-constrain the sketch (conflicts with k2, k3)"
+ },
+ {
+  "id": "sk-conflict__radius-vs-diameter",
+  "mode": "rough3.5",
+  "ms": 1,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 4 sketch.dimension: that would over-constrain the sketch (conflicts with k2, k3)"
+ },
+ {
+  "id": "sk-conflict__radius-vs-diameter",
+  "mode": "rough15",
+  "ms": 0,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 4 sketch.dimension: that would over-constrain the sketch (conflicts with k2, k3)"
+ },
+ {
+  "id": "sk-conflict__equal-vs-two-radii",
+  "mode": "stored",
+  "ms": 1,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 7 sketch.dimension: that would over-constrain the sketch (conflicts with k3, k4, k5)"
+ },
+ {
+  "id": "sk-conflict__equal-vs-two-radii",
+  "mode": "rough3.5",
+  "ms": 1,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 7 sketch.dimension: that would over-constrain the sketch (conflicts with k3, k4, k5)"
+ },
+ {
+  "id": "sk-conflict__equal-vs-two-radii",
+  "mode": "rough15",
+  "ms": 1,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 7 sketch.dimension: that would over-constrain the sketch (conflicts with k3, k4, k5)"
+ },
+ {
+  "id": "sk-conflict__horizontal-and-vertical",
+  "mode": "stored",
+  "ms": 1,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 5 solid.extrude: sk has no closed profiles"
+ },
+ {
+  "id": "sk-conflict__horizontal-and-vertical",
+  "mode": "rough3.5",
+  "ms": 0,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 5 solid.extrude: sk has no closed profiles"
+ },
+ {
+  "id": "sk-conflict__horizontal-and-vertical",
+  "mode": "rough15",
+  "ms": 0,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 5 solid.extrude: sk has no closed profiles"
+ },
+ {
+  "id": "sk-conflict__clean-30x20",
+  "mode": "stored",
+  "ms": 5,
+  "closedVol": 6000,
+  "sc": {
+   "volume": 6000,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 0,
+  "brep": {
+   "volume": 6000,
+   "faces": 6,
+   "d": 0,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 5999.999999999999,
+   "d": 1.5158245029548806e-16,
+   "dBbox": 0
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-conflict__clean-30x20",
+  "mode": "rough3.5",
+  "ms": 6,
+  "closedVol": 6000,
+  "sc": {
+   "volume": 6000.00000000003,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20.000000000000203,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 5.002220859751105e-15,
+  "brep": {
+   "volume": 6000.000000002857,
+   "faces": 6,
+   "d": 4.711182555181525e-13,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 6000.000000002921,
+   "d": 4.818806094891219e-13,
+   "dBbox": 7.631228982057575e-13
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-conflict__clean-30x20",
+  "mode": "rough15",
+  "ms": 6,
+  "closedVol": 6000,
+  "sc": {
+   "volume": 6000.00000000013,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20.000000000000867,
+    10
+   ]
+  },
+  "tol": 1e-9,
+  "dClosed": 2.167629039225479e-14,
+  "brep": {
+   "volume": 6000.0000000122445,
+   "faces": 6,
+   "d": 2.0190782379317803e-12,
+   "faceSame": true,
+   "dof": 0
+  },
+  "occt": {
+   "volume": 6000.000000012519,
+   "d": 2.0648561379208297e-12,
+   "dBbox": 3.2704505770089636e-12
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "mode": "stored",
+  "ms": 235,
+  "closedVol": 4730.973355292325,
+  "sc": {
+   "volume": 4730.793327002382,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -6.000000000000003,
+    0,
+    0,
+    36,
+    12.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.000038053118549409936,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "mode": "rough3.5",
+  "ms": 264,
+  "closedVol": 4730.973355292325,
+  "sc": {
+   "volume": 4730.796481759332,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -5.999937985986773,
+    -5.821613462148453e-14,
+    0,
+    36.0000882987313,
+    11.999999999572125,
+    10.000000000000007
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00003738628812937199,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "mode": "rough15",
+  "ms": 261,
+  "closedVol": 4730.973355292325,
+  "sc": {
+   "volume": 4730.808607855604,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -6.000030463258207,
+    -6.484251301698941e-14,
+    0,
+    36.00009687135746,
+    11.999999999878916,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.000034823158861522016,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-r6-L30-floating",
+  "mode": "stored",
+  "ms": 212,
+  "closedVol": 4730.973355292325,
+  "sc": {
+   "volume": 4730.793327002382,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -6.000000000000003,
+    0,
+    0,
+    36,
+    12.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.000038053118549409936,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-r6-L30-floating",
+  "mode": "rough3.5",
+  "ms": 234,
+  "closedVol": 4730.973355292325,
+  "sc": {
+   "volume": 3634.801744926359,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -3.2587273882458816,
+    -11.481374415340653,
+    0,
+    38.74107202315385,
+    12.517926386112887,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.23170107460861705,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-r6-L30-floating",
+  "mode": "rough15",
+  "ms": 7,
+  "closedVol": 4730.973355292325,
+  "refused": "solidcraft",
+  "sentence": "command 13 sketch.constraint.horizontal_vertical: that would over-constrain the sketch (conflicts with k1, k2, k3, k4, k5, k6, k7, k8, k9)"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "mode": "stored",
+  "ms": 151,
+  "closedVol": 8843.893421169303,
+  "sc": {
+   "volume": 8843.382953534847,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -12.000000000000005,
+    0,
+    0,
+    30.000000000000004,
+    24.000000000000004,
+    10.000000000000004
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00005771978586200539,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "mode": "rough3.5",
+  "ms": 179,
+  "closedVol": 8843.893421169303,
+  "sc": {
+   "volume": 8843.375771590889,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -12.000071114128705,
+    -5.395562855660013e-13,
+    0,
+    29.999898964628542,
+    23.999999999714554,
+    10.000000000000007
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00005853186529536211,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "mode": "rough15",
+  "ms": 164,
+  "closedVol": 8843.893421169303,
+  "sc": {
+   "volume": 8843.379253672743,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -12.000086595686277,
+    -6.531532451935313e-13,
+    0,
+    29.99989799167098,
+    23.99999999963622,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00005813813804326016,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-arc-first-order",
+  "mode": "stored",
+  "ms": 224,
+  "closedVol": 4730.973355292325,
+  "sc": {
+   "volume": 4730.793327002382,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -6.000000000000003,
+    0,
+    0,
+    36,
+    12.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.000038053118549409936,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-arc-first-order",
+  "mode": "rough3.5",
+  "ms": 211,
+  "closedVol": 4730.973355292325,
+  "sc": {
+   "volume": 4730.801772209794,
+   "faces": 6,
+   "bodies": 1,
+   "bbox": [
+    -5.999984546846301,
+    -5.744859126257526e-14,
+    0,
+    36.00008582502217,
+    11.999999999970315,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.000036268029778592494,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-arc-first-order",
+  "mode": "rough15",
+  "ms": 30,
+  "closedVol": 4730.973355292325,
+  "refused": "solidcraft",
+  "sentence": "command 19 solid.extrude: invalid input: profile: cannot attach a plane to a wire that is not on one plane."
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-extra-radius",
+  "mode": "stored",
+  "ms": 6,
+  "closedVol": 4730.973355292325,
+  "refused": "solidcraft",
+  "sentence": "command 18 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (RadialDimension), k12 (Equal); add it as a driven (reference) dimension with driven: true"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-extra-radius",
+  "mode": "rough3.5",
+  "ms": 53,
+  "closedVol": 4730.973355292325,
+  "refused": "solidcraft",
+  "sentence": "command 18 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k6 (Coincident), k7 (Tangent), k8 (Coincident), k9 (Tangent), k11 (RadialDimension), k12 (Equal); add it as a driven (reference) dimension with driven: true"
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-extra-radius",
+  "mode": "rough15",
+  "ms": 20,
+  "closedVol": 4730.973355292325,
+  "refused": "solidcraft",
+  "sentence": "command 18 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k6 (Coincident), k7 (Tangent), k8 (Coincident), k9 (Tangent), k11 (RadialDimension), k12 (Equal); add it as a driven (reference) dimension with driven: true"
+ },
+ {
+  "id": "sk-circle-arc-tangent__line-circle-tangent",
+  "mode": "stored",
+  "ms": 329,
+  "closedVol": null,
+  "sc": {
+   "volume": 785.309540542669,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    14.999999999999998,
+    0,
+    0,
+    25,
+    10,
+    10.000000000000004
+   ]
+  },
+  "tol": 0.0003,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 5 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "NO-REFERENCE"
+ },
+ {
+  "id": "sk-circle-arc-tangent__line-circle-tangent",
+  "mode": "rough3.5",
+  "ms": 357,
+  "closedVol": null,
+  "sc": {
+   "volume": 785.309540542669,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    14.999999999999998,
+    0,
+    0,
+    25,
+    10,
+    10.000000000000004
+   ]
+  },
+  "tol": 0.0003,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 5 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "NO-REFERENCE"
+ },
+ {
+  "id": "sk-circle-arc-tangent__line-circle-tangent",
+  "mode": "rough15",
+  "ms": 349,
+  "closedVol": null,
+  "sc": {
+   "volume": 785.309540542669,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    14.999999999999998,
+    0,
+    0,
+    25,
+    10,
+    10.000000000000004
+   ]
+  },
+  "tol": 0.0003,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 5 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "NO-REFERENCE"
+ },
+ {
+  "id": "sk-circle-arc-tangent__circle-circle-external",
+  "mode": "stored",
+  "ms": 760,
+  "closedVol": 2796.017461694916,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "faces": 6,
+   "bodies": 2,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00009578994864405292,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__circle-circle-external",
+  "mode": "rough3.5",
+  "ms": 563,
+  "closedVol": 2796.017461694916,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "faces": 6,
+   "bodies": 2,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00009578994864405292,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__circle-circle-external",
+  "mode": "rough15",
+  "ms": 545,
+  "closedVol": 2796.017461694916,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "faces": 6,
+   "bodies": 2,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00009578994864405292,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__circle-circle-no-mode",
+  "mode": "stored",
+  "ms": 554,
+  "closedVol": 2796.017461694916,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "faces": 6,
+   "bodies": 2,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00009578994864405292,
+  "brep": {
+   "refused": "solve: a circle-circle tangency must record external or internal"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__circle-circle-no-mode",
+  "mode": "rough3.5",
+  "ms": 537,
+  "closedVol": 2796.017461694916,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "faces": 6,
+   "bodies": 2,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00009578994864405292,
+  "brep": {
+   "refused": "solve: a circle-circle tangency must record external or internal"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 (radius) is off by 6.54e-1 mm: geometry 1 measures 8.654143007844686 where the rule says 8. These rows have not been solved, and this reference reads them rather than solving them"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__circle-circle-no-mode",
+  "mode": "rough15",
+  "ms": 565,
+  "closedVol": 2796.017461694916,
+  "sc": {
+   "volume": 2795.7496313258525,
+   "faces": 6,
+   "bodies": 2,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    18,
+    8.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.00009578994864405292,
+  "brep": {
+   "refused": "solve: a circle-circle tangency must record external or internal"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 2 (radius) is off by 6.54e-1 mm: geometry 1 measures 8.654143007844686 where the rule says 8. These rows have not been solved, and this reference reads them rather than solving them"
+  },
+  "verdict": "MATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__circle-circle-internal",
+  "mode": "stored",
+  "ms": 326,
+  "closedVol": 1225.2211349000193,
+  "sc": {
+   "volume": 2010.4400907831944,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    7.999999999999999,
+    8.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.6408793755808422,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__circle-circle-internal",
+  "mode": "rough3.5",
+  "ms": 389,
+  "closedVol": 1225.2211349000193,
+  "sc": {
+   "volume": 2010.4400907831944,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    7.999999999999999,
+    8.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.6408793755808422,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__circle-circle-internal",
+  "mode": "rough15",
+  "ms": 380,
+  "closedVol": 1225.2211349000193,
+  "sc": {
+   "volume": 2010.4400907831944,
+   "faces": 3,
+   "bodies": 1,
+   "bbox": [
+    -8,
+    -7.999999999999999,
+    0,
+    7.999999999999999,
+    8.000000000000002,
+    10.000000000000005
+   ]
+  },
+  "tol": 0.0003,
+  "dClosed": 0.6408793755808422,
+  "brep": {
+   "refused": "brep-rs no shape"
+  },
+  "occt": {
+   "refused": "Sketch 1: rule 4 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+  },
+  "verdict": "MISMATCH"
+ },
+ {
+  "id": "sk-circle-arc-tangent__arc-centre-radius",
+  "mode": "stored",
+  "ms": 1,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 5 solid.extrude: sk has no closed profiles"
+ },
+ {
+  "id": "sk-circle-arc-tangent__arc-centre-radius",
+  "mode": "rough3.5",
+  "ms": 1,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 5 solid.extrude: sk has no closed profiles"
+ },
+ {
+  "id": "sk-circle-arc-tangent__arc-centre-radius",
+  "mode": "rough15",
+  "ms": 1,
+  "closedVol": null,
+  "refused": "solidcraft",
+  "sentence": "command 5 solid.extrude: sk has no closed profiles"
+ }
+]

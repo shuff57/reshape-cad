@@ -1,0 +1,2084 @@
+{
+ "d1b": {
+  "withFreecadBucket": 64,
+  "guardAgrees": 62,
+  "brepAgrees": 62,
+  "guardDisagrees": [
+   [
+    "sk-conflict__horizontal-and-vertical",
+    "stored",
+    "consistent",
+    "collapsed"
+   ],
+   [
+    "sk-conflict__horizontal-and-vertical",
+    "jitter0.2mm",
+    "consistent",
+    "collapsed"
+   ]
+  ],
+  "redundantCountMatchesFreecad": [
+   [
+    "sk-conflict__redundant-width",
+    "stored",
+    1,
+    1
+   ],
+   [
+    "sk-conflict__redundant-width",
+    "jitter0.2mm",
+    1,
+    1
+   ],
+   [
+    "sk-conflict__redundant-height",
+    "stored",
+    1,
+    1
+   ],
+   [
+    "sk-conflict__redundant-height",
+    "jitter0.2mm",
+    1,
+    1
+   ],
+   [
+    "sk-conflict__redundant-perpendicular",
+    "stored",
+    1,
+    1
+   ],
+   [
+    "sk-conflict__redundant-perpendicular",
+    "jitter0.2mm",
+    1,
+    1
+   ],
+   [
+    "sk-circle-arc-tangent__slot-extra-radius",
+    "stored",
+    1,
+    1
+   ],
+   [
+    "sk-circle-arc-tangent__slot-extra-radius",
+    "jitter0.2mm",
+    1,
+    1
+   ]
+  ]
+ },
+ "d1": {
+  "rows": [
+   {
+    "id": "own-rect-rough-dims",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-rect-rough-dims",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-symmetric-trapezoid",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": null,
+    "scProbeDof": 0,
+    "brepDof": null,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-symmetric-trapezoid",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": null,
+    "scProbeDof": 0,
+    "brepDof": null,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-symmetric-3pt-rect",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-symmetric-3pt-rect",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-triangle-length-angle",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-triangle-length-angle",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-hexagon-equal-oncircle",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-hexagon-equal-oncircle",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-circle-diameter",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-circle-diameter",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-washer-dims",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-washer-dims",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-l-shape-dims",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-l-shape-dims",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-xz-plane-rect",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-xz-plane-rect",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-right-trapezoid-par-perp",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-right-trapezoid-par-perp",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-slot-dims-from-points",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "own-slot-dims-from-points",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": null,
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": null,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-dof__corner-origin-25x60",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-dof__corner-origin-25x60",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-dof__offset-corner-30x18",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-dof__offset-corner-30x18",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-dof__square-by-equal",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-dof__square-by-equal",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-dof__right-triangle",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-dof__right-triangle",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-dof__parallelogram",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-dof__parallelogram",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-dof__circle-pinned",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-dof__circle-pinned",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__hv-only-30x15",
+    "mode": "stored",
+    "truth": 4,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 4,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 4,
+    "brepDof": 4,
+    "indepDof": 4,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__hv-only-30x15",
+    "mode": "jitter0.2mm",
+    "truth": 4,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 4,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 4,
+    "brepDof": 4,
+    "indepDof": 4,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__width-only",
+    "mode": "stored",
+    "truth": 3,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 3,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 3,
+    "brepDof": 3,
+    "indepDof": 3,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__width-only",
+    "mode": "jitter0.2mm",
+    "truth": 3,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 3,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 3,
+    "brepDof": 3,
+    "indepDof": 3,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__width-and-height",
+    "mode": "stored",
+    "truth": 2,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 2,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 2,
+    "brepDof": 2,
+    "indepDof": 2,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__width-and-height",
+    "mode": "jitter0.2mm",
+    "truth": 2,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 2,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 2,
+    "brepDof": 2,
+    "indepDof": 2,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__pinned-corner-only",
+    "mode": "stored",
+    "truth": 2,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 2,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 2,
+    "brepDof": 2,
+    "indepDof": 2,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__pinned-corner-only",
+    "mode": "jitter0.2mm",
+    "truth": 2,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 2,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 2,
+    "brepDof": 2,
+    "indepDof": 2,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__free-line",
+    "mode": "stored",
+    "truth": 4,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 4,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 4,
+    "brepDof": 4,
+    "indepDof": 4,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__free-line",
+    "mode": "jitter0.2mm",
+    "truth": 4,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 4,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 4,
+    "brepDof": 4,
+    "indepDof": 4,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__free-circle",
+    "mode": "stored",
+    "truth": 3,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 3,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 3,
+    "brepDof": 3,
+    "indepDof": 3,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__free-circle",
+    "mode": "jitter0.2mm",
+    "truth": 3,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 3,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 3,
+    "brepDof": 3,
+    "indepDof": 3,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__triangle-joined",
+    "mode": "stored",
+    "truth": 6,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 6,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 6,
+    "brepDof": 6,
+    "indepDof": 6,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__triangle-joined",
+    "mode": "jitter0.2mm",
+    "truth": 6,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 6,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 6,
+    "brepDof": 6,
+    "indepDof": 6,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__circle-radius-only",
+    "mode": "stored",
+    "truth": 2,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 2,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 2,
+    "brepDof": 2,
+    "indepDof": 2,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-rect-underconstrained__circle-radius-only",
+    "mode": "jitter0.2mm",
+    "truth": 2,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 2,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 2,
+    "brepDof": 2,
+    "indepDof": 2,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-conflict__width-30-vs-35",
+    "mode": "stored",
+    "truth": -1,
+    "truthBucket": "conflicting",
+    "guardBucket": "conflicting",
+    "guardDof": null,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "conflicting",
+    "scProbeDof": "base-refused",
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": false
+   },
+   {
+    "id": "sk-conflict__width-30-vs-35",
+    "mode": "jitter0.2mm",
+    "truth": -1,
+    "truthBucket": "conflicting",
+    "guardBucket": "conflicting",
+    "guardDof": null,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "conflicting",
+    "scProbeDof": "base-refused",
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": false
+   },
+   {
+    "id": "sk-conflict__redundant-width",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "redundant",
+    "guardBucket": "redundant",
+    "guardDof": 0,
+    "guardRedundant": 1,
+    "fcRedundant": 1,
+    "brepBucket": "redundant",
+    "scProbeDof": "base-refused",
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-conflict__redundant-width",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "redundant",
+    "guardBucket": "redundant",
+    "guardDof": 0,
+    "guardRedundant": 1,
+    "fcRedundant": 1,
+    "brepBucket": "redundant",
+    "scProbeDof": "base-refused",
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-conflict__redundant-height",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "redundant",
+    "guardBucket": "redundant",
+    "guardDof": 0,
+    "guardRedundant": 1,
+    "fcRedundant": 1,
+    "brepBucket": "redundant",
+    "scProbeDof": "base-refused",
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-conflict__redundant-height",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "redundant",
+    "guardBucket": "redundant",
+    "guardDof": 0,
+    "guardRedundant": 1,
+    "fcRedundant": 1,
+    "brepBucket": "redundant",
+    "scProbeDof": "base-refused",
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-conflict__redundant-perpendicular",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "redundant",
+    "guardBucket": "redundant",
+    "guardDof": 0,
+    "guardRedundant": 1,
+    "fcRedundant": 1,
+    "brepBucket": "redundant",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-conflict__redundant-perpendicular",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "redundant",
+    "guardBucket": "redundant",
+    "guardDof": 0,
+    "guardRedundant": 1,
+    "fcRedundant": 1,
+    "brepBucket": "redundant",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-conflict__radius-vs-diameter",
+    "mode": "stored",
+    "truth": -1,
+    "truthBucket": "conflicting",
+    "guardBucket": "conflicting",
+    "guardDof": null,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "conflicting",
+    "scProbeDof": "base-refused",
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": false
+   },
+   {
+    "id": "sk-conflict__radius-vs-diameter",
+    "mode": "jitter0.2mm",
+    "truth": -1,
+    "truthBucket": "conflicting",
+    "guardBucket": "conflicting",
+    "guardDof": null,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "conflicting",
+    "scProbeDof": "base-refused",
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": false
+   },
+   {
+    "id": "sk-conflict__equal-vs-two-radii",
+    "mode": "stored",
+    "truth": -1,
+    "truthBucket": "conflicting",
+    "guardBucket": "conflicting",
+    "guardDof": null,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "conflicting",
+    "scProbeDof": "base-refused",
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": false
+   },
+   {
+    "id": "sk-conflict__equal-vs-two-radii",
+    "mode": "jitter0.2mm",
+    "truth": -1,
+    "truthBucket": "conflicting",
+    "guardBucket": "conflicting",
+    "guardDof": null,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "conflicting",
+    "scProbeDof": "base-refused",
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": false
+   },
+   {
+    "id": "sk-conflict__horizontal-and-vertical",
+    "mode": "stored",
+    "truth": 2,
+    "truthBucket": "consistent",
+    "guardBucket": "collapsed",
+    "guardDof": null,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 2,
+    "brepDof": 2,
+    "indepDof": 2,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-conflict__horizontal-and-vertical",
+    "mode": "jitter0.2mm",
+    "truth": 2,
+    "truthBucket": "consistent",
+    "guardBucket": "collapsed",
+    "guardDof": null,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 2,
+    "brepDof": 2,
+    "indepDof": 2,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-conflict__clean-30x20",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-conflict__clean-30x20",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__slot-r6-L30-anchored",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 4,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__slot-r6-L30-anchored",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__slot-r6-L30-floating",
+    "mode": "stored",
+    "truth": 2,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 2,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 6,
+    "brepDof": 2,
+    "indepDof": 2,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__slot-r6-L30-floating",
+    "mode": "jitter0.2mm",
+    "truth": 2,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 2,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 2,
+    "brepDof": 2,
+    "indepDof": 2,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__slot-r12-L18-anchored",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 4,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__slot-r12-L18-anchored",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__slot-arc-first-order",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 4,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__slot-arc-first-order",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__slot-extra-radius",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "redundant",
+    "guardBucket": "redundant",
+    "guardDof": 0,
+    "guardRedundant": 1,
+    "fcRedundant": 1,
+    "brepBucket": "redundant",
+    "scProbeDof": "base-refused",
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__slot-extra-radius",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "redundant",
+    "guardBucket": "redundant",
+    "guardDof": 0,
+    "guardRedundant": 1,
+    "fcRedundant": 1,
+    "brepBucket": "redundant",
+    "scProbeDof": "base-refused",
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__line-circle-tangent",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__line-circle-tangent",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__circle-circle-external",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__circle-circle-external",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__circle-circle-no-mode",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": null,
+    "scProbeDof": 0,
+    "brepDof": null,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__circle-circle-no-mode",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": null,
+    "scProbeDof": 0,
+    "brepDof": null,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__circle-circle-internal",
+    "mode": "stored",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__circle-circle-internal",
+    "mode": "jitter0.2mm",
+    "truth": 0,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 0,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 0,
+    "brepDof": 0,
+    "indepDof": 0,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__arc-centre-radius",
+    "mode": "stored",
+    "truth": 2,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 2,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 2,
+    "brepDof": 2,
+    "indepDof": 2,
+    "indepConsistent": true
+   },
+   {
+    "id": "sk-circle-arc-tangent__arc-centre-radius",
+    "mode": "jitter0.2mm",
+    "truth": 2,
+    "truthBucket": "consistent",
+    "guardBucket": "consistent",
+    "guardDof": 2,
+    "guardRedundant": 0,
+    "fcRedundant": 0,
+    "brepBucket": "consistent",
+    "scProbeDof": 2,
+    "brepDof": 2,
+    "indepDof": 2,
+    "indepConsistent": false
+   }
+  ],
+  "withTruth": 86,
+  "agree": {
+   "sc": 70,
+   "brep": 76,
+   "indep": 80
+  },
+  "byMode": {
+   "stored": {
+    "n": 43,
+    "sc": 33,
+    "brep": 38,
+    "indep": 40
+   },
+   "jitter0.2mm": {
+    "n": 43,
+    "sc": 37,
+    "brep": 38,
+    "indep": 40
+   }
+  },
+  "scWrong": [
+   [
+    "sk-conflict__width-30-vs-35",
+    "stored",
+    -1,
+    "base-refused"
+   ],
+   [
+    "sk-conflict__width-30-vs-35",
+    "jitter0.2mm",
+    -1,
+    "base-refused"
+   ],
+   [
+    "sk-conflict__redundant-width",
+    "stored",
+    0,
+    "base-refused"
+   ],
+   [
+    "sk-conflict__redundant-width",
+    "jitter0.2mm",
+    0,
+    "base-refused"
+   ],
+   [
+    "sk-conflict__redundant-height",
+    "stored",
+    0,
+    "base-refused"
+   ],
+   [
+    "sk-conflict__redundant-height",
+    "jitter0.2mm",
+    0,
+    "base-refused"
+   ],
+   [
+    "sk-conflict__radius-vs-diameter",
+    "stored",
+    -1,
+    "base-refused"
+   ],
+   [
+    "sk-conflict__radius-vs-diameter",
+    "jitter0.2mm",
+    -1,
+    "base-refused"
+   ],
+   [
+    "sk-conflict__equal-vs-two-radii",
+    "stored",
+    -1,
+    "base-refused"
+   ],
+   [
+    "sk-conflict__equal-vs-two-radii",
+    "jitter0.2mm",
+    -1,
+    "base-refused"
+   ],
+   [
+    "sk-circle-arc-tangent__slot-r6-L30-anchored",
+    "stored",
+    0,
+    4
+   ],
+   [
+    "sk-circle-arc-tangent__slot-r6-L30-floating",
+    "stored",
+    2,
+    6
+   ],
+   [
+    "sk-circle-arc-tangent__slot-r12-L18-anchored",
+    "stored",
+    0,
+    4
+   ],
+   [
+    "sk-circle-arc-tangent__slot-arc-first-order",
+    "stored",
+    0,
+    4
+   ],
+   [
+    "sk-circle-arc-tangent__slot-extra-radius",
+    "stored",
+    0,
+    "base-refused"
+   ],
+   [
+    "sk-circle-arc-tangent__slot-extra-radius",
+    "jitter0.2mm",
+    0,
+    "base-refused"
+   ]
+  ]
+ },
+ "d2": {
+  "fixture": "sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "trialsPerCell": 25,
+  "cells": [
+   {
+    "extra": "centres=30 (implied by the tangent chain)",
+    "jitterMm": 0,
+    "trials": 1,
+    "raw": {
+     "noflag:built": 1,
+     "flag:built": 1
+    },
+    "guard": {
+     "built-correct": 1
+    }
+   },
+   {
+    "extra": "centres=30 (implied by the tangent chain)",
+    "jitterMm": 0.02,
+    "trials": 25,
+    "raw": {
+     "noflag:refused:DIFFERENT-VALUE": 25,
+     "flag:refused:DIFFERENT-VALUE": 25
+    },
+    "guard": {
+     "built-correct": 25
+    }
+   },
+   {
+    "extra": "centres=30 (implied by the tangent chain)",
+    "jitterMm": 0.2,
+    "trials": 25,
+    "raw": {
+     "noflag:refused:DIFFERENT-VALUE": 23,
+     "flag:refused:DIFFERENT-VALUE": 23,
+     "noflag:refused:other": 2,
+     "flag:refused:other": 2
+    },
+    "guard": {
+     "built-correct": 25
+    }
+   },
+   {
+    "extra": "centres=30 (implied by the tangent chain)",
+    "jitterMm": 1,
+    "trials": 25,
+    "raw": {
+     "noflag:refused:DIFFERENT-VALUE": 25,
+     "flag:refused:DIFFERENT-VALUE": 25
+    },
+    "guard": {
+     "built-correct": 25
+    }
+   },
+   {
+    "extra": "top line length=30 (implied)",
+    "jitterMm": 0,
+    "trials": 1,
+    "raw": {
+     "noflag:built": 1,
+     "flag:built": 1
+    },
+    "guard": {
+     "built-correct": 1
+    }
+   },
+   {
+    "extra": "top line length=30 (implied)",
+    "jitterMm": 0.02,
+    "trials": 25,
+    "raw": {
+     "noflag:refused:DIFFERENT-VALUE": 25,
+     "flag:refused:DIFFERENT-VALUE": 25
+    },
+    "guard": {
+     "built-correct": 25
+    }
+   },
+   {
+    "extra": "top line length=30 (implied)",
+    "jitterMm": 0.2,
+    "trials": 25,
+    "raw": {
+     "noflag:refused:DIFFERENT-VALUE": 23,
+     "flag:refused:DIFFERENT-VALUE": 23,
+     "noflag:refused:other": 2,
+     "flag:refused:other": 2
+    },
+    "guard": {
+     "built-correct": 25
+    }
+   },
+   {
+    "extra": "top line length=30 (implied)",
+    "jitterMm": 1,
+    "trials": 25,
+    "raw": {
+     "noflag:refused:DIFFERENT-VALUE": 25,
+     "flag:refused:DIFFERENT-VALUE": 25
+    },
+    "guard": {
+     "built-correct": 25
+    }
+   }
+  ]
+ },
+ "d3": [
+  {
+   "start": "stored",
+   "base": "built",
+   "plusCentres30": "built",
+   "lengthTo40_withoutExtra": "built",
+   "lengthTo40_withCentres30Kept": "refused:other",
+   "lengthTo40_withCentres30Kept_flag": "refused:other",
+   "guard_lengthTo40_withCentres30": {
+    "outcome": "refused",
+    "stage": "preflight:infeasible",
+    "sentence": "The 30 distance between arc 2 and arc 4 cannot hold together with the 40 length of line 1, so the part is not built; remove or change one of them.",
+    "problems": []
+   },
+   "guard_lengthTo40_alone": {
+    "outcome": "built",
+    "volume": 5931,
+    "closed": 5931,
+    "rel": 0.00003167
+   }
+  },
+  {
+   "start": "jitter0.2mm",
+   "base": "built",
+   "plusCentres30": "refused:DIFFERENT-VALUE",
+   "lengthTo40_withoutExtra": "built",
+   "lengthTo40_withCentres30Kept": "refused:other",
+   "lengthTo40_withCentres30Kept_flag": "refused:other",
+   "guard_lengthTo40_withCentres30": {
+    "outcome": "refused",
+    "stage": "preflight:infeasible",
+    "sentence": "The 30 distance between arc 2 and arc 4 cannot hold together with the 40 length of line 1, so the part is not built; remove or change one of them.",
+    "problems": []
+   },
+   "guard_lengthTo40_alone": {
+    "outcome": "built",
+    "volume": 5931,
+    "closed": 5931,
+    "rel": 0.00003167
+   }
+  }
+ ],
+ "d4": {
+  "rows": [
+   {
+    "case": "horizontal written twice",
+    "trulyRedundant": true,
+    "scAsWritten": "accepted+built",
+    "scRefuseFlag": "refused: invalid parameters for `sketch.constraint.horizontal_vertical`: that would over-",
+    "scDrivenFlag": "built",
+    "guardWitness": "feasible",
+    "guardRedundantListIncludesNewRule": true,
+    "guardRedundantCount": 1
+   },
+   {
+    "case": "perpendicular(1,2) implied by h/v",
+    "trulyRedundant": true,
+    "scAsWritten": "accepted+built",
+    "scRefuseFlag": "refused: invalid parameters for `sketch.constraint.perpendicular`: that would over-constr",
+    "scDrivenFlag": "built",
+    "guardWitness": "feasible",
+    "guardRedundantListIncludesNewRule": true,
+    "guardRedundantCount": 1
+   },
+   {
+    "case": "parallel(1,3) implied",
+    "trulyRedundant": true,
+    "scAsWritten": "accepted+built",
+    "scRefuseFlag": "refused: invalid parameters for `sketch.constraint.parallel`: that would over-constrain t",
+    "scDrivenFlag": "built",
+    "guardWitness": "feasible",
+    "guardRedundantListIncludesNewRule": true,
+    "guardRedundantCount": 1
+   },
+   {
+    "case": "duplicate join coincident(1b,2a)",
+    "trulyRedundant": true,
+    "scAsWritten": "accepted+built",
+    "scRefuseFlag": "accepted (not detected as redundant)",
+    "scDrivenFlag": "built",
+    "guardWitness": "feasible",
+    "guardRedundantListIncludesNewRule": true,
+    "guardRedundantCount": 1
+   },
+   {
+    "case": "origin coincident on a locked corner",
+    "trulyRedundant": true,
+    "scAsWritten": "accepted+built",
+    "scRefuseFlag": "refused: invalid parameters for `sketch.constraint.coincident`: that would over-constrain",
+    "scDrivenFlag": "built",
+    "guardWitness": "feasible",
+    "guardRedundantListIncludesNewRule": true,
+    "guardRedundantCount": 1
+   },
+   {
+    "case": "lock written twice",
+    "trulyRedundant": true,
+    "scAsWritten": "accepted+built",
+    "scRefuseFlag": "accepted (not detected as redundant)",
+    "scDrivenFlag": "built",
+    "guardWitness": "feasible",
+    "guardRedundantListIncludesNewRule": true,
+    "guardRedundantCount": 1
+   },
+   {
+    "case": "equal(1,3) implied (30=30 through h/v + lengths)",
+    "trulyRedundant": true,
+    "scAsWritten": "accepted+built",
+    "scRefuseFlag": "refused: invalid parameters for `sketch.constraint.equal`: that would over-constrain the ",
+    "scDrivenFlag": "built",
+    "guardWitness": "feasible",
+    "guardRedundantListIncludesNewRule": true,
+    "guardRedundantCount": 1
+   },
+   {
+    "case": "length(3)=30 implied dimension",
+    "trulyRedundant": true,
+    "scAsWritten": "REFUSED: invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (Coincident), k3 (Coinci",
+    "scRefuseFlag": "refused: invalid parameters for `sketch.dimension`: that dimension is already determined ",
+    "scDrivenFlag": "built",
+    "guardWitness": "feasible",
+    "guardRedundantListIncludesNewRule": true,
+    "guardRedundantCount": 1
+   },
+   {
+    "case": "distanceX(1a,1b)=30 implied dimension",
+    "trulyRedundant": true,
+    "scAsWritten": "REFUSED: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add ",
+    "scRefuseFlag": "refused: invalid parameters for `sketch.dimension`: that dimension is already determined ",
+    "scDrivenFlag": "built",
+    "guardWitness": "feasible",
+    "guardRedundantListIncludesNewRule": true,
+    "guardRedundantCount": 1
+   },
+   {
+    "case": "control: length(3)=31 (a conflict, not a redundancy)",
+    "trulyRedundant": false,
+    "scAsWritten": "REFUSED: that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k7, k9, k10, k12)",
+    "scRefuseFlag": "refused: that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k7, k9, k10",
+    "scDrivenFlag": "refused: that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k7, k9, k10",
+    "guardWitness": "infeasible",
+    "guardRedundantListIncludesNewRule": null,
+    "guardRedundantCount": null
+   },
+   {
+    "case": "control: perpendicular(1,3) is NOT implied (parallel edges)",
+    "trulyRedundant": false,
+    "scAsWritten": "REFUSED: invalid parameters for `sketch.constraint.perpendicular`: that conflicts with the sketch: neither entity can m",
+    "scRefuseFlag": "refused: invalid parameters for `sketch.constraint.perpendicular`: that conflicts with th",
+    "scDrivenFlag": "refused: invalid parameters for `sketch.constraint.perpendicular`: that conflicts with th",
+    "guardWitness": "infeasible",
+    "guardRedundantListIncludesNewRule": null,
+    "guardRedundantCount": null
+   }
+  ],
+  "summary": {
+   "truthRedundant": 9,
+   "guardFlagsRedundant": 9,
+   "guardFalseFlags": 0,
+   "scRefuseDetects": 7,
+   "scAcceptsSilently": 2
+  }
+ },
+ "d5": {
+  "rows": [
+   {
+    "id": "N1 triangle, two right angles",
+    "note": "round 3 sliver",
+    "brepBucket": "globallyInfeasible",
+    "raw": {
+     "status": "built",
+     "volume": 0.02294,
+     "bodies": 1
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "Line 2 and line 3 meeting at a right angle cannot hold together with line 1 and line 2 meeting at a right angle, so the part is not built; remove or change one of them.",
+     "problems": []
+    }
+   },
+   {
+    "id": "N2 triangle, perpendicular(1,3)+equal(1,2)",
+    "note": "feasible, under-determined",
+    "brepBucket": "globallyInfeasible",
+    "raw": {
+     "status": "built",
+     "volume": 0.2241,
+     "bodies": 1
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "Line 1 and line 2 being equal cannot hold together with line 1 and line 3 meeting at a right angle, so the part is not built; remove or change one of them.",
+     "problems": []
+    }
+   },
+   {
+    "id": "N3 rectangle h/v + angle 45",
+    "note": "impossible",
+    "brepBucket": "globallyInfeasible",
+    "raw": {
+     "status": "refused-at-command",
+     "command": "solid.extrude",
+     "error": "sk_p has no closed profiles"
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "Line 1 staying level cannot hold together with line 2 staying upright and the 45 degree angle between line 1 and line 2, so the part is not built; remove or change one of them.",
+     "problems": []
+    }
+   },
+   {
+    "id": "N4 triangle, three perpendiculars",
+    "note": "control",
+    "brepBucket": "conflicting",
+    "raw": {
+     "status": "refused-at-command",
+     "command": "sketch.constraint.perpendicular",
+     "error": "invalid parameters for `sketch.constraint.perpendicular`: that conflicts with the sketch: neither entity can move to satisfy it (they are fi"
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "Line 1 and line 3 meeting at a right angle cannot hold together with the other rules on this sketch, so the part is not built; remove or change one of the rules.",
+     "problems": []
+    }
+   },
+   {
+    "id": "SIGN-1 distanceY +2.1, start dy=+1",
+    "note": "signed flip",
+    "brepBucket": "consistent",
+    "raw": {
+     "status": "built",
+     "volume": 785.3,
+     "bodies": 2
+    },
+    "guard": {
+     "outcome": "built",
+     "stage": "built",
+     "sentence": null,
+     "problems": null,
+     "volume": 785.3,
+     "dof": 2
+    }
+   },
+   {
+    "id": "SIGN-2 distanceY +1, start dy=+1",
+    "note": "smaller value",
+    "brepBucket": "consistent",
+    "raw": {
+     "status": "built",
+     "volume": 785.3,
+     "bodies": 2
+    },
+    "guard": {
+     "outcome": "built",
+     "stage": "built",
+     "sentence": null,
+     "problems": null,
+     "volume": 785.3,
+     "dof": 2
+    }
+   },
+   {
+    "id": "SIGN-3 distanceY +2.1, start dy=+0.5",
+    "note": "closer start",
+    "brepBucket": "consistent",
+    "raw": {
+     "status": "built",
+     "volume": 785.3,
+     "bodies": 2
+    },
+    "guard": {
+     "outcome": "built",
+     "stage": "built",
+     "sentence": null,
+     "problems": null,
+     "volume": 785.3,
+     "dof": 2
+    }
+   },
+   {
+    "id": "M3 rect + up on a horizontal edge",
+    "note": "horizontal AND vertical on one edge",
+    "brepBucket": "consistent",
+    "raw": {
+     "status": "refused-at-command",
+     "command": "solid.extrude",
+     "error": "sk_p has no closed profiles"
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:collapsed",
+     "sentence": "These rules squeeze line 1 down to almost nothing, so the shape cannot be built; remove or change one of them.",
+     "problems": []
+    }
+   },
+   {
+    "id": "M3b skew quad, across+up on one edge",
+    "note": "horizontal AND vertical on one edge",
+    "brepBucket": "consistent",
+    "raw": {
+     "status": "built",
+     "volume": 4595,
+     "bodies": 1
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:collapsed",
+     "sentence": "These rules squeeze line 1 down to almost nothing, so the shape cannot be built; remove or change one of them.",
+     "problems": []
+    }
+   },
+   {
+    "id": "M3c hexagon, across+up on one edge",
+    "note": "horizontal AND vertical on one edge",
+    "brepBucket": "consistent",
+    "raw": {
+     "status": "built",
+     "volume": 8300,
+     "bodies": 1
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:collapsed",
+     "sentence": "These rules squeeze line 1 down to almost nothing, so the shape cannot be built; remove or change one of them.",
+     "problems": []
+    }
+   },
+   {
+    "id": "ANGLE-FLIP rect: equal(1,2), diagonal, length(3)=30, angle(1,2)=45 (fuzz seed 2 case 94)",
+    "note": "undirected angle",
+    "brepBucket": "consistent",
+    "raw": {
+     "status": "built",
+     "volume": 9075,
+     "bodies": 1
+    },
+    "guard": {
+     "outcome": "built",
+     "stage": "built",
+     "sentence": null,
+     "problems": null,
+     "volume": 4827,
+     "dof": 4
+    }
+   },
+   {
+    "id": "legacy X1-two-lengths-one-edge",
+    "note": "two rules that fight",
+    "brepBucket": "conflicting",
+    "raw": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k10, k11)"
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "The 30 length of line 1 cannot hold together with the 40 length of line 1, so the part is not built; remove or change one of them.",
+     "problems": []
+    }
+   },
+   {
+    "id": "legacy X2-opposite-sides-different-lengths",
+    "note": "two rules that fight",
+    "brepBucket": "conflicting",
+    "raw": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k7, k9, k10, k11)"
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "The 30 length of line 3 cannot hold together with line 1 staying level, line 2 staying upright, line 4 staying upright and 1 more, so the part is not built; remove or change one of them.",
+     "problems": []
+    }
+   },
+   {
+    "id": "legacy X3-equal-vs-two-lengths",
+    "note": "two rules that fight",
+    "brepBucket": "conflicting",
+    "raw": {
+     "status": "refused-at-command",
+     "command": "sketch.constraint.equal",
+     "error": "invalid parameters for `sketch.constraint.equal`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or f"
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "Line 1 and line 2 being equal cannot hold together with the 40 length of line 1 and the 20 length of line 2, so the part is not built; remove or change one of them.",
+     "problems": []
+    }
+   },
+   {
+    "id": "legacy X4-lock-vs-horizontal",
+    "note": "two rules that fight",
+    "brepBucket": "conflicting",
+    "raw": {
+     "status": "refused-at-command",
+     "command": "sketch.constraint.horizontal_vertical",
+     "error": "that would over-constrain the sketch (conflicts with k3, k7)"
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "Line 1 staying level cannot hold together with line 1's pinned point and line 2's pinned point, so the part is not built; remove or change one of them.",
+     "problems": []
+    }
+   },
+   {
+    "id": "legacy X5-three-lengths-one-edge",
+    "note": "two rules that fight",
+    "brepBucket": "conflicting",
+    "raw": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k5, k6)"
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "The 20 length of line 1 cannot hold together with the other rules on this sketch, so the part is not built; remove or change one of the rules.",
+     "problems": []
+    }
+   },
+   {
+    "id": "legacy X6-triangle-three-perpendicular",
+    "note": "two rules that fight",
+    "brepBucket": "conflicting",
+    "raw": {
+     "status": "refused-at-command",
+     "command": "sketch.constraint.perpendicular",
+     "error": "invalid parameters for `sketch.constraint.perpendicular`: that conflicts with the sketch: neither entity can move to satisfy it (they are fi"
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "Line 3 and line 1 meeting at a right angle cannot hold together with the other rules on this sketch, so the part is not built; remove or change one of the rules.",
+     "problems": []
+    }
+   },
+   {
+    "id": "sk-conflict__width-30-vs-35",
+    "note": "gauntlet conflict",
+    "brepBucket": "conflicting",
+    "raw": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k10, k12)"
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "The 35 across size of line 1 cannot hold together with the 30 across size of line 1, so the part is not built; remove or change one of them.",
+     "problems": []
+    }
+   },
+   {
+    "id": "sk-conflict__radius-vs-diameter",
+    "note": "gauntlet conflict",
+    "brepBucket": "conflicting",
+    "raw": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k2, k3)"
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "The 12 diameter of circle 1 cannot hold together with the 5 radius of circle 1, so the part is not built; remove or change one of them.",
+     "problems": []
+    }
+   },
+   {
+    "id": "sk-conflict__equal-vs-two-radii",
+    "note": "gauntlet conflict",
+    "brepBucket": "conflicting",
+    "raw": {
+     "status": "refused-at-command",
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k3, k4, k5)"
+    },
+    "guard": {
+     "outcome": "refused",
+     "stage": "preflight:infeasible",
+     "sentence": "The 6 radius of circle 2 cannot hold together with circle 1 and circle 2 being equal and the 5 radius of circle 1, so the part is not built; remove or change one of them.",
+     "problems": []
+    }
+   }
+  ]
+ }
+}

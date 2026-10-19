@@ -1,0 +1,22 @@
+{
+ "id": "fzc1-112-boxC-front-flat-360",
+ "outcome": "built",
+ "volume": 70875.21194663845,
+ "faces": 16,
+ "bbox": [
+  -30,
+  -20,
+  -15.000000000000014,
+  30,
+  20,
+  15.000000000000007
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "sketch",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":60,\"width\":40,\"height\":30,\"center\":[0,0,0],\"body_name\":\"b_box1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,-4.4,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[26.700000000000003,6.6],[32.5,6.6],[32.5,10.6],[26.700000000000003,10.6]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

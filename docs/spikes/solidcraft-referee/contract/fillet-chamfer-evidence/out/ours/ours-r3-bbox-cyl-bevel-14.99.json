@@ -1,0 +1,21 @@
+{
+ "id": "r3-bbox-cyl-bevel-14.99",
+ "outcome": "fail",
+ "volume": 7075.144476269471,
+ "faces": 4,
+ "bbox": [
+  -15.145050958670529,
+  -16.583564989320966,
+  -10.000000000000018,
+  15.145050958670533,
+  16.58356498932096,
+  10.000000000000009
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "cylinder",
+  "fillet"
+ ],
+ "scriptSource": "[{\"command\":\"solid.cylinder\",\"params\":{\"radius\":15,\"height\":20,\"base\":[0,0,-10],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}},{\"command\":\"solid.chamfer\",\"params\":{\"edges\":[[14.999999999999998,0,10]],\"distance\":14.99,\"body\":\"b_cyl1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

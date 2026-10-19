@@ -1,0 +1,3 @@
+N7 seed 4242 (fitting set): 230 non-crossing pairs with one parallel matching; simulation agrees with truck on 230; truck really wrong on 5; simulation predicts wrong on 5
+N7h seed 99991 (holdout): 200 non-crossing pairs with one parallel matching; simulation agrees with truck on 200; truck really wrong on 4; simulation predicts wrong on 4
+N7p2 seed 31337 (front and side planes): 160 non-crossing pairs with one parallel matching; simulation agrees with truck on 160; truck really wrong on 6; simulation predicts wrong on 6

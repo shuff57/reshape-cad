@@ -1,0 +1,1 @@
+R3-datum-groove-box-front-360            PASS     occtV 29834.8213 | tr-occt dV 7.6e-6 dBb 3.6e-16 dCom 4.1e-7 F o/b/t 16/14/16 | brep-occt dV 2.6e-12      | ms 2226 cpu 2603

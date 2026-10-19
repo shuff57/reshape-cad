@@ -1,0 +1,82 @@
+[
+ {
+  "id": "symmetric-about-construction-line",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:about line",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.14716650993311e-10,
+      "db": 6.105651182691342e-10,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.00000027532
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.044912470310616e-13,
+      "db": 1.629853225542075e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.000000000731
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.3968322794729223e-12,
+      "db": 7.434053372890048e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.0000000033524
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 3.976576105439259e-12,
+      "db": 2.1262991367620998e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.000000009544
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 5.455073430008875e-13,
+      "db": 2.9167779302952113e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 2400.000000001309
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ }
+]

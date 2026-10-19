@@ -1,0 +1,30 @@
+[
+ {
+  "id": "rect-conflicting-width-dimension",
+  "feats": [
+   "rule:distance",
+   "redundant/conflicting dimensions"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "that would over-constrain the sketch (conflicts with k1, k2, k3, k4, k6, k8, k10, k12)"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ }
+]

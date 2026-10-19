@@ -1,0 +1,23 @@
+param no opts                                          {"errors":[],"namedParams":[{"name":"w","caption":"w","value":40,"min":0,"max":160,"step":1,"slots":["box1_width"]}],"box":[40,30,20]}
+param all opts                                         {"errors":[],"namedParams":[{"name":"w","caption":"Width","value":40,"min":20,"max":80,"step":5,"slots":["box1_width"]}],"params":[{"name":"box1_width","caption":"Width","value":40,"min":20,"max":80,"step":5}]}
+duplicate name                                         {"errors":[{"message":"param() already used the name \"w\" earlier in this script. Give each one its own name.","line":2}]}
+one param read into several slots                      {"errors":[],"slots":[["a",["box1_width"]],["s",["box1_depth","box1_height"]]]}
+values override (applyParam path)                      {"errors":[],"size":[55,30,20],"namedParam":{"name":"w","caption":"w","value":40,"min":0,"max":160,"step":1,"slots":["box1_width"]}}
+values beyond declared max (500 > 80)                  {"errors":[],"size":[500,30,20]}
+values negative / below min                            {"errors":[],"size":[-5,30,20]}
+values with an unknown key (ignored?)                  {"errors":[],"size":[40,30,20]}
+values NaN                                             {"errors":[],"size":[10,30,20]}
+control flow: branch pinned to the literal default     {"kinds_default":["box","fillet"],"kinds_w50":["box","fillet"],"width_w50":50}
+param in an expression (w*2)                           {"errors":[],"slots":[["w",[]]],"sizeDefault":[40,30,20],"sizeWithValues60":[60,30,20],"generated":[{"name":"box1_width","caption":"Box 1 width","value":40,"min":1,"max":160,"step":1}]}
+param in an expression (w+5)                           {"errors":[],"slots":[["w",[]]],"size":[25,30,20]}
+param as pattern count                                 {"errors":[],"named":[{"name":"n","caption":"n","value":3,"min":1,"max":8,"step":1,"slots":["pat1_count"]}],"pat":{"id":"pat1","kind":"pattern","target":"box1","mode":"linear","count":3,"step":[15,0,0]}}
+param count non-integer                                {"errors":[{"message":"repeat(): count has to be a whole number of at least 1 -- got 3.5.","line":3}]}
+param non-numeric value                                {"errors":[{"message":"param's value has to be a number, and you gave it the text \"abc\".","line":1}]}
+param non-string name                                  {"errors":[{"message":"param() needs a name first: param(\"wall\", 2). You gave it 5.","line":1}]}
+param unknown option                                   {"errors":[{"message":"param has no option called \"color\". It takes min, max, step, caption.","line":1}]}
+param min > max                                        {"errors":[],"namedParams":[{"name":"w","caption":"w","value":40,"min":50,"max":10,"step":1,"slots":["box1_width"]}]}
+param default outside [min,max]                        {"errors":[],"namedParams":[{"name":"w","caption":"w","value":100,"min":20,"max":80,"step":1,"slots":["box1_width"]}]}
+toScript(doc, namedParams) round trip                  {"text":"const w = param('w', 40, { min: 20, max: 80, caption: 'Width' })\nconst wall = param('wall', 2)\nconst box1 = cuboid(w, 30, 20)\nshell(box1, { wall, open: 'top' })\n","backErrors":[],"sameDoc":true,"sameNamed":true}
+pocket depth param + wall()                            {"errors":[{"message":"A pocket whose depth is a param() cannot have its walls named yet -- give pocket() a plain number for the depth, or cut it as subtract(shape, pull(sketch, -depth)).","line":6}]}
+param bound to a sketch rule value                     {"errors":[],"named":[["L1",["sk1_rule9-value"]]]}
+sketch-rule param value 45 -> SC vs OCCT               {"outcome":"PASS","score":{"dVol":1.5158245029548806e-16,"dBbox":0,"dCom":1.220006886170646e-17,"tol":1e-9,"comTol":0.000001,"faces":{"occt":6,"truck":6,"brep":6,"verdict":"explained","keys":{"plane":"equal"}},"reference":"OCCT","brepVsOcct":1.5158245029548806e-16},"truckV":3000,"occtV":2999.9999999999995,"expected":4500}

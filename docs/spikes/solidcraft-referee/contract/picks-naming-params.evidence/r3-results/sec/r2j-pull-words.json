@@ -1,0 +1,495 @@
+[
+ {
+  "label": "rect pull: hollow open top",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nhollow(p,{wall:2,open:'top'})",
+  "outcome": "PASS",
+  "sc": 7152,
+  "dVol": 5.086659405888863e-16,
+  "dCom": 1.3194447360621941e-16,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 11,
+   "truck": 11,
+   "brep": 11,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 7151.999999999996,
+  "brep": 7152.000000000001
+ },
+ {
+  "label": "rect pull: hollow open bottom",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nhollow(p,{wall:2,open:'bottom'})",
+  "outcome": "PASS",
+  "sc": 7152,
+  "dVol": 5.086659405888863e-16,
+  "dCom": 1.6493059200777426e-16,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 11,
+   "truck": 11,
+   "brep": 11,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 7151.999999999996,
+  "brep": 7152.000000000001
+ },
+ {
+  "label": "rect pull: hollow open front",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nhollow(p,{wall:2,open:'front'})",
+  "outcome": "PASS",
+  "sc": 7872,
+  "dVol": 0,
+  "dCom": 1.9791671040932912e-16,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 11,
+   "truck": 11,
+   "brep": 11,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 7872,
+  "brep": 7871.999999999999
+ },
+ {
+  "label": "rect pull: hollow open back",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nhollow(p,{wall:2,open:'back'})",
+  "outcome": "PASS",
+  "sc": 7872,
+  "dVol": 0,
+  "dCom": 6.597223680310971e-17,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 11,
+   "truck": 11,
+   "brep": 11,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 7872,
+  "brep": 7871.999999999999
+ },
+ {
+  "label": "rect pull: hollow open left",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nhollow(p,{wall:2,open:'left'})",
+  "outcome": "PASS",
+  "sc": 8192,
+  "dVol": 3.3306690738754706e-16,
+  "dCom": 3.2986118401554854e-17,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 11,
+   "truck": 11,
+   "brep": 11,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 8191.999999999997,
+  "brep": 8192.000000000002
+ },
+ {
+  "label": "rect pull: hollow open right",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nhollow(p,{wall:2,open:'right'})",
+  "outcome": "PASS",
+  "sc": 8192,
+  "dVol": 3.3306690738754706e-16,
+  "dCom": 1.9791671040932912e-16,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 11,
+   "truck": 11,
+   "brep": 11,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 8191.999999999997,
+  "brep": 8191.999999999999
+ },
+ {
+  "label": "rect pull: draft front 5",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\ndraft(p.face('front'),5)",
+  "outcome": "PASS",
+  "sc": 23300.090691792608,
+  "dVol": 0,
+  "dCom": 6.597223680310971e-17,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 6,
+   "truck": 6,
+   "brep": 6,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 23300.090691792608,
+  "brep": 23300.090691792604
+ },
+ {
+  "label": "rect pull: draft back 5",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\ndraft(p.face('back'),5)",
+  "outcome": "PASS",
+  "sc": 23300.090691792604,
+  "dVol": 1.5613582175339692e-16,
+  "dCom": 9.895835520466456e-17,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 6,
+   "truck": 6,
+   "brep": 6,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 23300.090691792608,
+  "brep": 23300.090691792604
+ },
+ {
+  "label": "rect pull: draft left 5",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\ndraft(p.face('left'),5)",
+  "outcome": "PASS",
+  "sc": 23475.068018844453,
+  "dVol": 0,
+  "dCom": 6.597223680310971e-17,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 6,
+   "truck": 6,
+   "brep": 6,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 23475.068018844453,
+  "brep": 23475.068018844453
+ },
+ {
+  "label": "rect pull: draft right 5",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\ndraft(p.face('right'),5)",
+  "outcome": "PASS",
+  "sc": 23475.068018844435,
+  "dVol": 7.748601205694804e-16,
+  "dCom": 5.937501312279873e-16,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 6,
+   "truck": 6,
+   "brep": 6,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 23475.068018844453,
+  "brep": 23475.068018844453
+ },
+ {
+  "label": "rect pull: round edge(top,right) 2",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nround(p.edge('top','right'),2)",
+  "outcome": "PASS",
+  "sc": 23974.23088555291,
+  "dVol": 7.0467575852702e-7,
+  "dCom": 2.515597688833325e-7,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 7,
+   "truck": 7,
+   "brep": 7,
+   "verdict": "explained",
+   "keys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   }
+  },
+  "occt": 23974.24777962415,
+  "brep": 23974.247779607696
+ },
+ {
+  "label": "rect pull: round edge(top,front) 2",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nround(p.edge('top','front'),2)",
+  "outcome": "PASS",
+  "sc": 23965.641180737217,
+  "dVol": 9.399040382888588e-7,
+  "dCom": 2.483400691734651e-7,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 7,
+   "truck": 7,
+   "brep": 7,
+   "verdict": "explained",
+   "keys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   }
+  },
+  "occt": 23965.663706161315,
+  "brep": 23965.66370614359
+ },
+ {
+  "label": "rect pull: round edge(bottom,left) 2",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nround(p.edge('bottom','left'),2)",
+  "outcome": "PASS",
+  "sc": 23974.23089305477,
+  "dVol": 7.043628453554717e-7,
+  "dCom": 2.515102537508611e-7,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 7,
+   "truck": 7,
+   "brep": 7,
+   "verdict": "explained",
+   "keys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   }
+  },
+  "occt": 23974.24777962415,
+  "brep": 23974.247779607696
+ },
+ {
+  "label": "rect pull: round edge(front,right) 2",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nround(p.edge('front','right'),2)",
+  "outcome": "PASS",
+  "sc": 23982.82058536861,
+  "dVol": 4.698242616968786e-7,
+  "dCom": 1.676316514068336e-7,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 7,
+   "truck": 7,
+   "brep": 7,
+   "verdict": "explained",
+   "keys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   }
+  },
+  "occt": 23982.831853084877,
+  "brep": 23982.831853071795
+ },
+ {
+  "label": "rect pull: bevel edge(top,back) 2",
+  "src": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nbevel(p.edge('top','back'),2)",
+  "outcome": "PASS",
+  "sc": 23920,
+  "dVol": 0,
+  "dCom": 6.597223680310971e-17,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 7,
+   "truck": 7,
+   "brep": 7,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 23920,
+  "brep": 23920
+ },
+ {
+  "label": "circle pull: hollow open top",
+  "src": "const sk = sketch('top'); sk.circle(20, { at: [20, 15] })\nconst p = pull(sk, 20)\nhollow(p,{wall:2,open:'top'})",
+  "outcome": "PASS",
+  "sc": 2663.77917155805,
+  "dVol": 0.00010938099363794376,
+  "dCom": 2.3537268202494487e-7,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 5,
+   "truck": 5,
+   "brep": 5,
+   "verdict": "explained",
+   "keys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   }
+  },
+  "occt": 2664.070570244145,
+  "brep": 2664.070570244145
+ },
+ {
+  "label": "circle pull: hollow open bottom",
+  "src": "const sk = sketch('top'); sk.circle(20, { at: [20, 15] })\nconst p = pull(sk, 20)\nhollow(p,{wall:2,open:'bottom'})",
+  "outcome": "PASS",
+  "sc": 2663.779171558062,
+  "dVol": 0.00010938099363350566,
+  "dCom": 2.3509964870646706e-7,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 5,
+   "truck": 5,
+   "brep": 5,
+   "verdict": "explained",
+   "keys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   }
+  },
+  "occt": 2664.070570244145,
+  "brep": 2664.070570244146
+ },
+ {
+  "label": "circle pull: round edge(top,side)",
+  "src": "const sk = sketch('top'); sk.circle(20, { at: [20, 15] })\nconst p = pull(sk, 20)\nround(p.edge('top','side'),2)",
+  "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here."
+ },
+ {
+  "label": "circle pull: draft face(side)",
+  "src": "const sk = sketch('top'); sk.circle(20, { at: [20, 15] })\nconst p = pull(sk, 20)\ndraft(p.face('side'),5)",
+  "scriptError": ".face(): \"side\" is the curved wall of a cylinder, not a flat face here."
+ },
+ {
+  "label": "triangle pull: hollow open top",
+  "src": "const sk = sketch('top'); sk.polygon([[0,0],[40,0],[20,30]])\nconst p = pull(sk, 20)\nhollow(p,{wall:2,open:'top'})",
+  "outcome": "PASS",
+  "sc": 4858.930457111798,
+  "dVol": 1.8718002033590367e-16,
+  "dCom": 1.9791671040932912e-16,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 9,
+   "truck": 9,
+   "brep": 9,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 4858.930457111799,
+  "brep": 4858.930457111802
+ },
+ {
+  "label": "triangle pull: hollow open bottom",
+  "src": "const sk = sketch('top'); sk.polygon([[0,0],[40,0],[20,30]])\nconst p = pull(sk, 20)\nhollow(p,{wall:2,open:'bottom'})",
+  "outcome": "PASS",
+  "sc": 4858.930457111796,
+  "dVol": 5.61540061007711e-16,
+  "dCom": 1.6493059200777426e-16,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 9,
+   "truck": 9,
+   "brep": 9,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 4858.930457111799,
+  "brep": 4858.930457111802
+ },
+ {
+  "label": "triangle pull: draft face(left)",
+  "src": "const sk = sketch('top'); sk.polygon([[0,0],[40,0],[20,30]])\nconst p = pull(sk, 20)\ndraft(p.face('left'),5)",
+  "outcome": "REFUSED",
+  "sentence": "draft1 is not built: no flat face of this part points exactly to the left, so there is nothing to draft -- draft a face that does.",
+  "occt": 11380.166437625616,
+  "brep": 12000.000000000002
+ },
+ {
+  "label": "triangle pull: draft face(right)",
+  "src": "const sk = sketch('top'); sk.polygon([[0,0],[40,0],[20,30]])\nconst p = pull(sk, 20)\ndraft(p.face('right'),5)",
+  "outcome": "REFUSED",
+  "sentence": "draft1 is not built: no flat face of this part points exactly to the right, so there is nothing to draft -- draft a face that does.",
+  "occt": 11380.16643762562,
+  "brep": 12000.000000000002
+ },
+ {
+  "label": "triangle pull: draft face(front)",
+  "src": "const sk = sketch('top'); sk.polygon([[0,0],[40,0],[20,30]])\nconst p = pull(sk, 20)\ndraft(p.face('front'),5)",
+  "outcome": "PASS",
+  "sc": 11313.698276229145,
+  "dVol": 3.2155522608688927e-16,
+  "dCom": 0,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 5,
+   "truck": 5,
+   "brep": 5,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 11313.698276229148,
+  "brep": 12000.000000000002
+ },
+ {
+  "label": "front-plane rect pull: hollow open front",
+  "src": "const sk = sketch('front'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nhollow(p,{wall:2,open:'front'})",
+  "outcome": "PASS",
+  "sc": 7152,
+  "dVol": 5.086659405888863e-16,
+  "dCom": 1.3194447360621941e-16,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 11,
+   "truck": 11,
+   "brep": 11,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 7151.999999999996,
+  "brep": 7151.999999999999
+ },
+ {
+  "label": "front-plane rect pull: hollow open back",
+  "src": "const sk = sketch('front'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nhollow(p,{wall:2,open:'back'})",
+  "outcome": "PASS",
+  "sc": 7152,
+  "dVol": 5.086659405888863e-16,
+  "dCom": 1.9791671040932912e-16,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 11,
+   "truck": 11,
+   "brep": 11,
+   "verdict": "explained",
+   "keys": {
+    "plane": "equal"
+   }
+  },
+  "occt": 7151.999999999996,
+  "brep": 7151.999999999999
+ },
+ {
+  "label": "front-plane rect pull: round edge(front,top)",
+  "src": "const sk = sketch('front'); sk.rect(40, 30, { at: [20, 15] })\nconst p = pull(sk, 20)\nround(p.edge('front','top'),2)",
+  "outcome": "PASS",
+  "sc": 23965.641180738206,
+  "dVol": 9.399039968475608e-7,
+  "dCom": 2.48281938000895e-7,
+  "ref": "OCCT",
+  "faces": {
+   "occt": 7,
+   "truck": 7,
+   "brep": 7,
+   "verdict": "explained",
+   "keys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   }
+  },
+  "occt": 23965.66370616131,
+  "brep": 23965.663706143594
+ }
+]

@@ -1,0 +1,25 @@
+Running as unit: run-p2004919-i2033300.scope; invocation ID: f3919e5d880c4e0abb1d39c0cffd2b47
+slot-hand-rows-R10-L40                       eps 0.001  lockC Y guarded {"REFUSED":30} | shipped route {"POSE":14,"MATCH-OTHER-SIDE":6,"MATCH":10} | brep-rs {"MATCH-OTHER-SIDE":30}
+slot-hand-rows-R10-L40                       eps 0.05   lockC Y guarded {"REFUSED":30} | shipped route {"POSE":29,"MATCH":1} | brep-rs {"MATCH-OTHER-SIDE":30}
+slot-hand-rows-R10-L40                       eps 0.3    lockC Y guarded {"REFUSED":30} | shipped route {"POSE":30} | brep-rs {"MATCH-OTHER-SIDE":30}
+slot-hand-rows-R10-L40                       eps 1      lockC Y guarded {"REFUSED":30} | shipped route {"POSE":29,"VOLUME":1} | brep-rs {"MATCH-OTHER-SIDE":30}
+slot-dims-from-points                        eps 0.001  lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"MATCH":30}
+slot-dims-from-points                        eps 0.05   lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"MATCH":30}
+slot-dims-from-points                        eps 0.3    lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"MATCH":30}
+slot-dims-from-points                        eps 1      lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"MATCH":30}
+oval-four-arcs-endpoint-tangent              eps 0.001  lockC Y guarded {"REFUSED":30} | shipped route {"MATCH":23,"REFUSED":2,"VOLUME":5} | brep-rs {"MATCH":30}
+oval-four-arcs-endpoint-tangent              eps 0.05   lockC Y guarded {"REFUSED":30} | shipped route {"VOLUME":30} | brep-rs {"MATCH":30}
+oval-four-arcs-endpoint-tangent              eps 0.3    lockC Y guarded {"REFUSED":30} | shipped route {"VOLUME":29,"REFUSED":1} | brep-rs {"MATCH":30}
+oval-four-arcs-endpoint-tangent              eps 1      lockC Y guarded {"REFUSED":30} | shipped route {"VOLUME":23,"REFUSED":7} | brep-rs {"MATCH":30}
+FC:slot-r6-L30-anchored                      eps 0.001  lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"REFUSED":30}
+FC:slot-r6-L30-anchored                      eps 0.05   lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":29,"VOLUME":1} | brep-rs {"REFUSED":30}
+FC:slot-r6-L30-anchored                      eps 0.3    lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"REFUSED":30}
+FC:slot-r6-L30-anchored                      eps 1      lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"REFUSED":30}
+FC:slot-r12-L18-anchored                     eps 0.001  lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"REFUSED":30}
+FC:slot-r12-L18-anchored                     eps 0.05   lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"REFUSED":30}
+FC:slot-r12-L18-anchored                     eps 0.3    lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"REFUSED":30}
+FC:slot-r12-L18-anchored                     eps 1      lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":29,"REFUSED":1} | brep-rs {"REFUSED":30}
+FC:slot-arc-first-order                      eps 0.001  lockC n guarded {"BUILT-MATCH":30} | shipped route {"VOLUME":15,"MATCH":15} | brep-rs {"REFUSED":30}
+FC:slot-arc-first-order                      eps 0.05   lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":18,"REFUSED":2,"VOLUME":10} | brep-rs {"REFUSED":30}
+FC:slot-arc-first-order                      eps 0.3    lockC n guarded {"BUILT-MATCH":30} | shipped route {"VOLUME":12,"MATCH":18} | brep-rs {"REFUSED":30}
+FC:slot-arc-first-order                      eps 1      lockC n guarded {"BUILT-MATCH":30} | shipped route {"VOLUME":13,"MATCH":16,"REFUSED":1} | brep-rs {"REFUSED":30}

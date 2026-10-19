@@ -1,0 +1,108 @@
+[
+ {
+  "id": "r2-big-sph-7e4",
+  "feature": "oversize",
+  "note": "",
+  "script": "sphere(70000);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "ball1",
+     "kind": "sphere",
+     "radius": 35000,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "sphere",
+  "analytic": 179594380030216.5,
+  "occt": {
+   "volume": 179594380030216.5,
+   "com": [
+    -4.364156731229741e-12,
+    -1.889212827988339e-12,
+    -3.8483965014577256e-13
+   ],
+   "bbox": [
+    -35000,
+    -35000,
+    -35000,
+    35000,
+    35000,
+    35000
+   ],
+   "faces": 1,
+   "types": {
+    "sphere": 1
+   }
+  },
+  "brep": {
+   "volume": 179594380030216.4,
+   "bbox": [
+    -35000,
+    -35000,
+    -35000,
+    35000,
+    35000,
+    35000
+   ],
+   "faces": 1,
+   "dVol": 5.22009652998199e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 35000,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 0,
+   "bbox": [
+    -35000,
+    -35000,
+    -35000,
+    35000,
+    35000,
+    35000
+   ],
+   "com": [
+    null,
+    null,
+    null
+   ],
+   "faces": 1,
+   "faceTypes": {
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 1,
+   "dBboxOcct": 0,
+   "dComOcct": null,
+   "facesOcct": 1,
+   "typesOcct": {
+    "sphere": 1
+   },
+   "dVolAnalytic": 1,
+   "dVolBrep": 1,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 420
+ }
+]

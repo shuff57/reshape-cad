@@ -1,0 +1,618 @@
+[
+ {
+  "id": "r2-cone-spire-2-100",
+  "feature": "cone.thin",
+  "note": "",
+  "script": "cone(2, 100);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "radius": 1,
+     "height": 100,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "cone",
+  "analytic": 104.71975511965978,
+  "occt": {
+   "volume": 104.7197551196598,
+   "com": [
+    4.240739575284688e-17,
+    -1.2666113066492228e-17,
+    -24.999999999999996
+   ],
+   "bbox": [
+    -1,
+    -1,
+    -50,
+    1,
+    1,
+    50
+   ],
+   "faces": 2,
+   "types": {
+    "plane": 1,
+    "cone": 1
+   }
+  },
+  "brep": {
+   "volume": 104.71975511965974,
+   "bbox": [
+    -1,
+    -1,
+    -50,
+    1,
+    1,
+    50
+   ],
+   "faces": 2,
+   "dVol": 5.4281466563644e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -50
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       0,
+       100
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 104.69113968423765,
+   "bbox": [
+    -1,
+    -0.9999874771632874,
+    -50.00000000000001,
+    1.0000000000000002,
+    0.9999874771632874,
+    50
+   ],
+   "com": [
+    1.284499951603534e-16,
+    5.806547621029854e-18,
+    -24.999999999999996
+   ],
+   "faces": 2,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00027325727976962517,
+   "dBboxOcct": 1.251783058139642e-7,
+   "dComOcct": 8.600820300421021e-19,
+   "facesOcct": 2,
+   "typesOcct": {
+    "plane": 1,
+    "cone": 1
+   },
+   "dVolAnalytic": 0.0002732572797694895,
+   "dVolBrep": 0.00027325727976908247,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 226
+ },
+ {
+  "id": "r2-cone-spire-1-100",
+  "feature": "cone.thin",
+  "note": "",
+  "script": "cone(1, 100);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "radius": 0.5,
+     "height": 100,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "cone",
+  "analytic": 26.179938779914945,
+  "occt": {
+   "volume": 26.17993877991495,
+   "com": [
+    2.120369787642344e-17,
+    -1.005896456813403e-17,
+    -24.999999999999996
+   ],
+   "bbox": [
+    -0.5,
+    -0.5,
+    -50,
+    0.5,
+    0.5,
+    50
+   ],
+   "faces": 2,
+   "types": {
+    "plane": 1,
+    "cone": 1
+   }
+  },
+  "brep": {
+   "volume": 26.179938779914934,
+   "bbox": [
+    -0.5,
+    -0.5,
+    -50,
+    0.5,
+    0.5,
+    50
+   ],
+   "faces": 2,
+   "dVol": 5.4281466563644e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -50
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       0.5,
+       0
+      ],
+      [
+       0,
+       100
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 26.160850934623287,
+   "bbox": [
+    -0.5,
+    -0.49979311858551145,
+    -50.00000000000001,
+    0.5,
+    0.4997931185855114,
+    50
+   ],
+   "com": [
+    -1.531758748796268e-17,
+    2.8824949172846435e-18,
+    -24.999999999999993
+   ],
+   "faces": 2,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.0007291019834739056,
+   "dBboxOcct": 0.0000020686072944985746,
+   "dComOcct": 3.552358460714446e-17,
+   "facesOcct": 2,
+   "typesOcct": {
+    "plane": 1,
+    "cone": 1
+   },
+   "dVolAnalytic": 0.00072910198347377,
+   "dVolBrep": 0.0007291019834733632,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 77
+ },
+ {
+  "id": "r2-cone-spire-4-400",
+  "feature": "cone.thin",
+  "note": "",
+  "script": "cone(4, 400);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "radius": 2,
+     "height": 400,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "cone",
+  "analytic": 1675.5160819145565,
+  "occt": {
+   "volume": 1675.5160819145567,
+   "com": [
+    8.481479150569376e-17,
+    -4.023585827253612e-17,
+    -99.99999999999999
+   ],
+   "bbox": [
+    -2,
+    -2,
+    -200,
+    2,
+    2,
+    200
+   ],
+   "faces": 2,
+   "types": {
+    "plane": 1,
+    "cone": 1
+   }
+  },
+  "brep": {
+   "volume": 1675.5160819145558,
+   "bbox": [
+    -2,
+    -2,
+    -200,
+    2,
+    2,
+    200
+   ],
+   "faces": 2,
+   "dVol": 5.4281466563644e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -200
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       0,
+       400
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 1674.2944598158904,
+   "bbox": [
+    -2,
+    -1.9991724743420458,
+    -200.00000000000003,
+    2,
+    1.9991724743420456,
+    200
+   ],
+   "com": [
+    -6.127034995185072e-17,
+    1.1529979669138574e-17,
+    -99.99999999999997
+   ],
+   "faces": 2,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.0007291019834739056,
+   "dBboxOcct": 0.0000020686072944985746,
+   "dComOcct": 3.552358460714446e-17,
+   "facesOcct": 2,
+   "typesOcct": {
+    "plane": 1,
+    "cone": 1
+   },
+   "dVolAnalytic": 0.00072910198347377,
+   "dVolBrep": 0.0007291019834733632,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 101
+ },
+ {
+  "id": "r2-cone-flat-100-2",
+  "feature": "cone.thin",
+  "note": "",
+  "script": "cone(100, 2);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "radius": 50,
+     "height": 2,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "cone",
+  "analytic": 5235.987755982988,
+  "occt": {
+   "volume": 5235.987755982977,
+   "com": [
+    3.4740138600732246e-16,
+    -1.096076439903833e-15,
+    -0.5000000000000011
+   ],
+   "bbox": [
+    -50,
+    -50,
+    -1,
+    50,
+    50,
+    1
+   ],
+   "faces": 2,
+   "types": {
+    "plane": 1,
+    "cone": 1
+   }
+  },
+  "brep": {
+   "volume": 5235.987755982977,
+   "bbox": [
+    -50,
+    -50,
+    -1,
+    50,
+    50,
+    1
+   ],
+   "faces": 2,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -1
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       50,
+       0
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 5235.694709469313,
+   "bbox": [
+    -50,
+    -49.99937385816436,
+    -1,
+    50.00000000000001,
+    49.99937385816436,
+    1
+   ],
+   "com": [
+    -2.220801707696613e-15,
+    1.0056500489018292e-15,
+    -0.5
+   ],
+   "faces": 2,
+   "faceTypes": {
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00005596776144660391,
+   "dBboxOcct": 0.000004427048696911256,
+   "dComOcct": 1.8158122508753892e-17,
+   "facesOcct": 2,
+   "typesOcct": {
+    "plane": 1,
+    "cone": 1
+   },
+   "dVolAnalytic": 0.0000559677614486882,
+   "dVolBrep": 0.00005596776144660391,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 247
+ }
+]

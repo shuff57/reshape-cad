@@ -1,0 +1,1 @@
+fzc1-38-boxC-side-flat-135               FAIL     occtV 70818.4963 | tr-occt dV 2.7e-6 dBb 4.8e-8 dCom 4.2e-7 F o/b/t 13/13/13 | brep-occt dV 3.1e-12      | ms 2210 cpu 2694

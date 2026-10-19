@@ -1,0 +1,190 @@
+[
+ {
+  "id": "R3-ground-side-90",
+  "src": "const s0 = sketch('top', 0); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('side'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 90);",
+  "translator": "g0",
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R3-ground-side-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 30504.601896904922,
+    "com": [
+     -0.2941322967893277,
+     -0.2802637211580774,
+     10.209956771339677
+    ],
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     20
+    ],
+    "faces": 11,
+    "area": 7014.181363776804,
+    "types": {
+     "plane": 9,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 9,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 30504.60189689125,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     20
+    ],
+    "faces": 11,
+    "dVol": 4.4817907813567654e-13,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 18,
+   "load": [
+    11.1,
+    11.1
+   ],
+   "cpuMs": 86,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 12,
+       "nearest": 0,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        -20,
+        -20
+       ],
+       [
+        20,
+        -20
+       ],
+       [
+        20,
+        20
+       ],
+       [
+        -20,
+        20
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 20,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.",
+    "firstRefusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 90
+ }
+]

@@ -1,0 +1,1 @@
+sl9-74-boxtan-side-p0.1                  FAIL     occtV 69866.4100 | tr-occt dV 1.2e-3 dBb 2.6e-13 dCom 1.9e-4 F o/b/t 11/11/11 | brep-occt dV 6.6e-13      | ms 1720 cpu 2152

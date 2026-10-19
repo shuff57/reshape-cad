@@ -1,0 +1,131 @@
+move+round                 [0,-30,0]                          shipped WRONG    dCom=1.9e-3 dVol=1.9e-6 | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Move 1 
+move+round                 [0,30,0]                           shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Move 1 
+move+round                 [30,0,0]                           shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Move 1 
+move+round                 [0,0,10]                           shipped WRONG    dCom=6.0e-4 dVol=1.9e-6 | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Move 1 
+move+round                 [0,0,-10]                          shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Move 1 
+move+round                 [5,5,5]                            shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Move 1 
+move+round                 [0,-15,0]                          shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Move 1 
+move+round                 [0,-30,5]                          shipped WRONG    dCom=1.9e-3 dVol=1.9e-6 | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Move 1 
+move+round                 [-30,-30,0]                        shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Move 1 
+move+round                 [0,0,0]                            shipped PASS     dCom=6.2e-7 | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Move 1 
+move+bevel                 [0,-30,0]                          shipped WRONG    dCom=4.4e-3 dVol=2.0e-16 | guard REFUSED  Bevel 1 is not built: it picks the edge by name on a shape that Move 1 
+move+bevel                 [0,30,0]                           shipped REFUSED   | guard REFUSED  Bevel 1 is not built: it picks the edge by name on a shape that Move 1 
+move+bevel                 [30,0,0]                           shipped REFUSED   | guard REFUSED  Bevel 1 is not built: it picks the edge by name on a shape that Move 1 
+move+bevel                 [0,0,10]                           shipped WRONG    dCom=1.3e-3 dVol=2.0e-16 | guard REFUSED  Bevel 1 is not built: it picks the edge by name on a shape that Move 1 
+move+hollow(top)           [0,0,-10]                          shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(top)           [0,0,0]                            shipped PASS     dCom=2.4e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(top)           [0,0,4]                            shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(top)           [0,-30,4]                          shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(top)           [-30,0,0]                          shipped PASS     dCom=3.8e-16 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(top)           [30,0,0]                           shipped PASS     dCom=3.8e-16 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(top)           [5,5,5]                            shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(top)           [0,0,10]                           shipped WRONG    dCom=6.7e-2 dVol=5.1e-16 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(top)           [100,0,0]                          shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(bottom)        [0,0,-10]                          shipped WRONG    dCom=6.7e-2 dVol=5.1e-16 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(bottom)        [0,0,0]                            shipped PASS     dCom=2.4e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(bottom)        [0,0,4]                            shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(bottom)        [0,-30,4]                          shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(bottom)        [-30,0,0]                          shipped PASS     dCom=3.8e-16 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(bottom)        [30,0,0]                           shipped PASS     dCom=3.8e-16 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(bottom)        [5,5,5]                            shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(bottom)        [0,0,10]                           shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(bottom)        [100,0,0]                          shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(right)         [0,0,-10]                          shipped PASS     dCom=9.5e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(right)         [0,0,0]                            shipped PASS     dCom=1.2e-16 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(right)         [0,0,4]                            shipped PASS     dCom=1.2e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(right)         [0,-30,4]                          shipped PASS     dCom=5.9e-18 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(right)         [-30,0,0]                          shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(right)         [30,0,0]                           shipped WRONG    dCom=4.3e-2 dVol=0.0e+0 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(right)         [5,5,5]                            shipped WRONG    dCom=3.3e-2 dVol=1.9e-1 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(right)         [0,0,10]                           shipped PASS     dCom=9.5e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(right)         [100,0,0]                          shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(left)          [0,0,-10]                          shipped PASS     dCom=5.9e-18 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(left)          [0,0,0]                            shipped PASS     dCom=5.9e-18 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(left)          [0,0,4]                            shipped PASS     dCom=5.9e-18 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(left)          [0,-30,4]                          shipped PASS     dCom=5.9e-18 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(left)          [-30,0,0]                          shipped WRONG    dCom=4.3e-2 dVol=0.0e+0 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(left)          [30,0,0]                           shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(left)          [5,5,5]                            shipped WRONG    dCom=3.3e-2 dVol=1.9e-1 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(left)          [0,0,10]                           shipped PASS     dCom=5.9e-18 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(left)          [100,0,0]                          shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(front)         [0,0,-10]                          shipped PASS     dCom=4.7e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(front)         [0,0,0]                            shipped PASS     dCom=3.0e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(front)         [0,0,4]                            shipped PASS     dCom=3.6e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(front)         [0,-30,4]                          shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(front)         [-30,0,0]                          shipped PASS     dCom=3.0e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(front)         [30,0,0]                           shipped PASS     dCom=3.0e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(front)         [5,5,5]                            shipped WRONG    dCom=3.3e-2 dVol=1.6e-1 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(front)         [0,0,10]                           shipped PASS     dCom=4.7e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(front)         [100,0,0]                          shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(back)          [0,0,-10]                          shipped PASS     dCom=4.7e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(back)          [0,0,0]                            shipped PASS     dCom=6.8e-18 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(back)          [0,0,4]                            shipped PASS     dCom=3.6e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(back)          [0,-30,4]                          shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(back)          [-30,0,0]                          shipped PASS     dCom=3.8e-18 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(back)          [30,0,0]                           shipped PASS     dCom=3.8e-18 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(back)          [5,5,5]                            shipped WRONG    dCom=3.3e-2 dVol=1.6e-1 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(back)          [0,0,10]                           shipped PASS     dCom=4.7e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+move+hollow(back)          [100,0,0]                          shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(top)    [0,0,0]                            shipped PASS     dCom=3.6e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(top)    [180,0,0]                          shipped WRONG    dCom=6.7e-2 dVol=3.4e-16 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(top)    [90,0,0]                           shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(top)    [0,0,90]                           shipped PASS     dCom=1.0e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(top)    [0,0,180]                          shipped PASS     dCom=2.5e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(top)    [0,180,0]                          shipped WRONG    dCom=6.7e-2 dVol=3.4e-16 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(top)    [0,90,0]                           shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(top)    [10,20,30]                         shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(top)    [0,0,45]                           shipped PASS     dCom=7.3e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(bottom) [0,0,0]                            shipped PASS     dCom=4.7e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(bottom) [180,0,0]                          shipped WRONG    dCom=6.7e-2 dVol=0.0e+0 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(bottom) [90,0,0]                           shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(bottom) [0,0,90]                           shipped PASS     dCom=2.4e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(bottom) [0,0,180]                          shipped PASS     dCom=4.7e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(bottom) [0,180,0]                          shipped WRONG    dCom=6.7e-2 dVol=8.5e-16 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(bottom) [0,90,0]                           shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(bottom) [10,20,30]                         shipped REFUSED   | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(pull)+hollow(bottom) [0,0,45]                           shipped PASS     dCom=5.2e-17 | guard REFUSED  Hollow 1 is not built: it picks the face to open by name on a shape th 
+turnD(hole)+round          [180,0,0]                          shipped WRONG    dCom=2.2e-3 dVol=6.8e-7 | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 
+turnD(hole)+round          [90,0,0]                           shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 
+turnD(hole)+round          [0,0,90]                           shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 
+turnD(hole)+round          [0,0,180]                          shipped WRONG    dCom=2.2e-3 dVol=6.8e-7 | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 
+turnD(hole)+round          [0,180,0]                          shipped WRONG    dCom=1.1e-3 dVol=6.8e-7 | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 
+turnD(hole)+round          [0,90,0]                           shipped PASS     dCom=7.1e-7 | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 
+turnD(hole)+round          [10,20,30]                         shipped PASS     dCom=4.3e-7 | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 
+turnD(hole)+round          [0,0,45]                           shipped PASS     dCom=3.7e-7 | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 
+turnD(join)+round          [180,0,0]                          shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 | OCCT-REFUSES
+turnD(join)+round          [90,0,0]                           shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 | OCCT-REFUSES
+turnD(join)+round          [0,0,90]                           shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 | OCCT-REFUSES
+turnD(join)+round          [0,0,180]                          shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 | OCCT-REFUSES
+turnD(join)+round          [0,180,0]                          shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 | OCCT-REFUSES
+turnD(join)+round          [0,90,0]                           shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 | OCCT-REFUSES
+turnD(join)+round          [10,20,30]                         shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 | OCCT-REFUSES
+turnD(join)+round          [0,0,45]                           shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Turn 1 | OCCT-REFUSES
+move+draft(face)           [0,0,0]                            shipped PASS     dCom=5.2e-17 | guard REFUSED  Draft 1 is not built: it picks the face by name on a shape that Move 1 
+move+draft(face)           [10,0,0]                           shipped REFUSED   | guard REFUSED  Draft 1 is not built: it picks the face by name on a shape that Move 1 
+move+draft(face)           [0,0,-10]                          shipped PASS     dCom=2.5e-16 | guard REFUSED  Draft 1 is not built: it picks the face by name on a shape that Move 1 
+move+draft(face)           [30,0,0]                           shipped WRONG    dCom=5.6e-5 dVol=1.5e-16 | guard REFUSED  Draft 1 is not built: it picks the face by name on a shape that Move 1 
+turnD+draft(face)          [0,0,180]                          shipped WRONG    dCom=1.2e-2 dVol=1.5e-16 | guard REFUSED  Draft 1 is not built: it picks the face by name on a shape that Turn 1 
+turnD+draft(face)          [90,0,0]                           shipped PASS     dCom=7.0e-17 | guard REFUSED  Draft 1 is not built: it picks the face by name on a shape that Turn 1 
+turnD+draft(face)          [10,20,30]                         shipped REFUSED   | guard REFUSED  Draft 1 is not built: it picks the face by name on a shape that Turn 1 
+CTRL round->move           [10,5,3]                           shipped PASS     dCom=7.0e-7 | guard PASS     dVol=2.8e-6 
+CTRL round->move           [0,-30,0]                          shipped PASS     dCom=7.0e-7 | guard PASS     dVol=2.8e-6 
+CTRL round->turn           [10,20,30]                         shipped PASS     dCom=4.3e-7 | guard PASS     dVol=2.8e-6 
+CTRL round->turn           [0,0,180]                          shipped PASS     dCom=7.0e-7 | guard PASS     dVol=2.8e-6 
+CTRL hollow->move          [0,0,-10]                          shipped PASS     dCom=4.7e-17 | guard PASS     dVol=5.1e-16 
+CTRL hollow->move          [30,0,0]                           shipped PASS     dCom=2.4e-17 | guard PASS     dVol=5.1e-16 
+CTRL hollow->move          [5,5,5]                            shipped PASS     dCom=2.4e-17 | guard PASS     dVol=5.1e-16 
+CTRL hollow->turn          [180,0,0]                          shipped PASS     dCom=1.8e-17 | guard PASS     dVol=5.1e-16 
+CTRL hollow->turn          [90,0,0]                           shipped PASS     dCom=1.8e-17 | guard PASS     dVol=5.1e-16 
+CTRL hollow->turn          [10,20,30]                         shipped PASS     dCom=7.5e-17 | guard PASS     dVol=1.7e-16 
+CTRL turnPrim+round        [0,0,180]                          shipped PASS     dCom=7.0e-7 | guard PASS     dVol=2.8e-6 
+CTRL turnPrim+round        [10,20,30]                         shipped PASS     dCom=2.6e-7 | guard PASS     dVol=9.4e-7 
+CTRL turnPrim+round        [180,0,0]                          shipped PASS     dCom=7.0e-7 | guard PASS     dVol=2.8e-6 
+CTRL turnPrim+round        [90,0,0]                           shipped PASS     dCom=7.0e-7 | guard PASS     dVol=2.8e-6 
+CTRL turnPrim+hollow(top)  [180,0,0]                          shipped PASS     dCom=3.4e-17 | guard PASS     dVol=3.4e-16 
+CTRL turnPrim+hollow(top)  [90,0,0]                           shipped PASS     dCom=4.9e-17 | guard PASS     dVol=0.0e+0 
+CTRL turnPrim+hollow(top)  [10,20,30]                         shipped PASS     dCom=1.3e-15 | guard PASS     dVol=5.5e-15 
+CTRL turnPrim+draft        [0,0,90]                           shipped PASS     dCom=5.2e-17 | guard PASS     dVol=0.0e+0 
+CTRL turnPrim+draft        [10,20,30]                         shipped REFUSED   | guard REFUSED  Draft 1 could not be built by this engine, so it is shown without it. 
+copy+pick-original         [30,0,0]                           shipped PASS     dCom=7.0e-7 | guard PASS     dVol=2.8e-6 
+copy+pick-copy             [60,0,0]                           shipped REFUSED   | guard REFUSED  Round 1 is not built: it picks the edge by name on a shape that Copy 1 
+{"move+round":{"shipped":{"WRONG":3,"REFUSED":6,"PASS":1},"guard":{"REFUSED":10}},"move+bevel":{"shipped":{"WRONG":2,"REFUSED":2},"guard":{"REFUSED":4}},"move+hollow(top)":{"shipped":{"REFUSED":5,"PASS":3,"WRONG":1},"guard":{"REFUSED":9}},"move+hollow(bottom)":{"shipped":{"WRONG":1,"PASS":3,"REFUSED":5},"guard":{"REFUSED":9}},"move+hollow(right)":{"shipped":{"PASS":5,"REFUSED":2,"WRONG":2},"guard":{"REFUSED":9}},"move+hollow(left)":{"shipped":{"PASS":5,"WRONG":2,"REFUSED":2},"guard":{"REFUSED":9}},"move+hollow(front)":{"shipped":{"PASS":6,"REFUSED":2,"WRONG":1},"guard":{"REFUSED":9}},"move+hollow(back)":{"shipped":{"PASS":6,"REFUSED":2,"WRONG":1},"guard":{"REFUSED":9}},"turnD(pull)+hollow(top)":{"shipped":{"PASS":4,"WRONG":2,"REFUSED":3},"guard":{"REFUSED":9}},"turnD(pull)+hollow(bottom)":{"shipped":{"PASS":4,"WRONG":2,"REFUSED":3},"guard":{"REFUSED":9}},"turnD(hole)+round":{"shipped":{"WRONG":3,"REFUSED":2,"PASS":3},"guard":{"REFUSED":8}},"turnD(join)+round":{"shipped":{"REFUSED":8},"guard":{"REFUSED":8}},"move+draft(face)":{"shipped":{"PASS":2,"REFUSED":1,"WRONG":1},"guard":{"REFUSED":4}},"turnD+draft(face)":{"shipped":{"WRONG":1,"PASS":1,"REFUSED":1},"guard":{"REFUSED":3}},"CTRL round->move":{"shipped":{"PASS":2},"guard":{"PASS":2}},"CTRL round->turn":{"shipped":{"PASS":2},"guard":{"PASS":2}},"CTRL hollow->move":{"shipped":{"PASS":3},"guard":{"PASS":3}},"CTRL hollow->turn":{"shipped":{"PASS":3},"guard":{"PASS":3}},"CTRL turnPrim+round":{"shipped":{"PASS":4},"guard":{"PASS":4}},"CTRL turnPrim+hollow(top)":{"shipped":{"PASS":3},"guard":{"PASS":3}},"CTRL turnPrim+draft":{"shipped":{"PASS":1,"REFUSED":1},"guard":{"PASS":1,"REFUSED":1}},"copy+pick-original":{"shipped":{"PASS":1},"guard":{"PASS":1}},"copy+pick-copy":{"shipped":{"REFUSED":1},"guard":{"REFUSED":1}}}

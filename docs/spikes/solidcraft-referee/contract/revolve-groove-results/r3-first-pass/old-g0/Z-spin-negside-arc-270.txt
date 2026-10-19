@@ -1,0 +1,1 @@
+Z-spin-negside-arc-270                   PASS     occtV 21029.8177 | tr-occt dV 1.5e-6 dBb 5.0e-9 dCom 1.1e-6 F o/b/t 7/7/7 | brep-occt dV 6.5e-11      | ms 3304 cpu 3707

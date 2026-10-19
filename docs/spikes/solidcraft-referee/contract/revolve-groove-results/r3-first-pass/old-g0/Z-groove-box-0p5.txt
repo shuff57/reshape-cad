@@ -1,0 +1,1 @@
+Z-groove-box-0p5                         REFUSED  occtV 143987.9999 | tr-occt dV - dBb - dCom - F o/b/t 11/11/- | brep-occt dV 4.0e-16    | TRUCK REFUSED: groove1 (groove): a turn of 0.5 degrees is too thin to build as a curved part here; use a turn of 1 degree or more.  | ms 13 cpu 58

@@ -1,0 +1,16 @@
+move extra arg               no error; features box1, move1(copy)[1,2,3]
+move extra arg (no opts)     ERROR: move's extras go in a { } object at the end, like move(..., { copy: ... }). You gave it 4.
+turn extra arg               ERROR: turn() takes a shape and a list of angles; the third argument (4) was ignored.
+move copy:'yes'              no error; features box1, move1[1,2,3]
+move copy:1                  no error; features box1, move1[1,2,3]
+move unknown option          ERROR: move has no option called "keep". It takes copy.
+turn unknown option          ERROR: turn() takes a shape and a list of angles; the third argument (a { } object) was ignored.
+turn(sketch)                 ERROR: turn() needs a shape: turn(shape, [rx, ry, rz]).
+turn(plane)                  ERROR: turn() needs a shape: turn(shape, [rx, ry, rz]).
+move(sketch)                 ERROR: move() needs a shape: move(shape, [x, y, z]).
+turn 2 angles                ERROR: turn's angles needs three numbers, like [x, y, z]. You gave it a list of 2.
+move 2 numbers               ERROR: move's offset needs three numbers, like [x, y, z]. You gave it a list of 2.
+turn text angle              ERROR: turn's angles x has to be a number, and you gave it the text "a".
+move NaN                     ERROR: move's offset x has to be a number, and you gave it NaN.
+turn sphere                  no error; features ball1
+move no shape                ERROR: move() needs a shape: move(shape, [x, y, z]).

@@ -1,0 +1,245 @@
+[
+ {
+  "edge": "top|front",
+  "r": 1.5,
+  "outcome": "PASS",
+  "sc": 7132.673157414515,
+  "cf": 7132.6861,
+  "d": -0.0000018158600870632333,
+  "occt": 7132.685834720889,
+  "occtRef": {},
+  "brep": 7132.685834705771
+ },
+ {
+  "edge": "top|front",
+  "r": 1.99,
+  "outcome": "PASS",
+  "sc": 7117.983903442614,
+  "cf": 7118.0067,
+  "d": -0.000003201832010318951,
+  "occt": 7118.006210693958,
+  "occtRef": {},
+  "brep": 7118.006210674804
+ },
+ {
+  "edge": "top|front",
+  "r": 2.5,
+  "outcome": "REFUSED",
+  "cf": 7098.6519,
+  "d": null,
+  "occt": 7151.999999999996,
+  "occtRef": {
+   "round1": "Rounding Round 1 at 2.5 would not fit its edge -- Round 1 is shown without it."
+  },
+  "brep": 7152,
+  "sentence": "round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."
+ },
+ {
+  "edge": "top|front",
+  "r": 3,
+  "outcome": "REFUSED",
+  "cf": 7076.7789,
+  "d": null,
+  "occt": 7151.999999999996,
+  "occtRef": {
+   "round1": "Rounding Round 1 at 3 would not fit its edge -- Round 1 is shown without it."
+  },
+  "brep": 7152,
+  "sentence": "round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."
+ },
+ {
+  "edge": "top|front",
+  "r": 5,
+  "outcome": "REFUSED",
+  "cf": 6971.8248,
+  "d": null,
+  "occt": 7151.999999999996,
+  "occtRef": {
+   "round1": "Rounding Round 1 at 5 would not fit its edge -- Round 1 is shown without it."
+  },
+  "brep": 7152,
+  "sentence": "round1 is not built: a round of 5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."
+ },
+ {
+  "edge": "bottom|front",
+  "r": 1.5,
+  "outcome": "PASS",
+  "sc": 7132.673159664853,
+  "cf": 7132.6861,
+  "d": -0.0000018155445904677386,
+  "occt": 7132.685834721593,
+  "occtRef": {},
+  "brep": 7132.685834705771
+ },
+ {
+  "edge": "bottom|front",
+  "r": 1.99,
+  "outcome": "PASS",
+  "sc": 7117.983906428063,
+  "cf": 7118.0067,
+  "d": -0.000003201412588249167,
+  "occt": 7118.006210694891,
+  "occtRef": {},
+  "brep": 7118.006210674811
+ },
+ {
+  "edge": "bottom|front",
+  "r": 2.5,
+  "outcome": "PASS",
+  "sc": 7098.314343654039,
+  "cf": 7098.3503,
+  "d": -0.000005065989072073907,
+  "occt": 7098.349540873392,
+  "occtRef": {},
+  "brep": 7098.349540849363
+ },
+ {
+  "edge": "bottom|front",
+  "r": 3,
+  "outcome": "PASS",
+  "sc": 7074.692658912411,
+  "cf": 7074.7444,
+  "d": -0.000007318792386617284,
+  "occt": 7074.743338850512,
+  "occtRef": {},
+  "brep": 7074.743338823079
+ },
+ {
+  "edge": "bottom|front",
+  "r": 5,
+  "outcome": "PASS",
+  "sc": 6937.257408371177,
+  "cf": 6937.4012,
+  "d": -0.000020729218447733942,
+  "occt": 6937.398163433789,
+  "occtRef": {},
+  "brep": 7152
+ },
+ {
+  "edge": "front|left",
+  "r": 1.5,
+  "outcome": "REFUSED",
+  "cf": 7142.3431,
+  "d": null,
+  "occt": 7142.342917364137,
+  "occtRef": {},
+  "brep": 7142.342917352886,
+  "sentence": "round1 is not built: the hollow changed the edges of box1, so this edge cannot be found again yet -- round it before the hollow() line."
+ },
+ {
+  "edge": "front|left",
+  "r": 1.99,
+  "outcome": "REFUSED",
+  "cf": 7135.0033,
+  "d": null,
+  "occt": 7135.003105351882,
+  "occtRef": {},
+  "brep": 7135.003105337404,
+  "sentence": "round1 is not built: the hollow changed the edges of box1, so this edge cannot be found again yet -- round it before the hollow() line."
+ },
+ {
+  "edge": "front|left",
+  "r": 2.5,
+  "outcome": "REFUSED",
+  "cf": 7125.1752,
+  "d": null,
+  "occt": 7125.174770442264,
+  "occtRef": {},
+  "brep": 7125.174770424681,
+  "sentence": "round1 is not built: the hollow changed the edges of box1, so this edge cannot be found again yet -- round it before the hollow() line."
+ },
+ {
+  "edge": "front|left",
+  "r": 3,
+  "outcome": "REFUSED",
+  "cf": 7113.3722,
+  "d": null,
+  "occt": 7113.371669431936,
+  "occtRef": {},
+  "brep": 7113.37166941154,
+  "sentence": "round1 is not built: the hollow changed the edges of box1, so this edge cannot be found again yet -- round it before the hollow() line."
+ },
+ {
+  "edge": "front|left",
+  "r": 5,
+  "outcome": "REFUSED",
+  "cf": 7044.7006,
+  "d": null,
+  "occt": 7044.699081728032,
+  "occtRef": {},
+  "brep": 7152,
+  "sentence": "round1 is not built: the hollow changed the edges of box1, so this edge cannot be found again yet -- round it before the hollow() line."
+ },
+ {
+  "edge": "cylinder rim",
+  "r": 1,
+  "outcome": "PASS",
+  "sc": 4560.487476995948,
+  "cf": 4560.517527980573,
+  "d": -0.0000065893803587745685,
+  "occt": 4560.517527889833,
+  "occtRef": {},
+  "brep": 4560.517527889838
+ },
+ {
+  "edge": "cylinder rim",
+  "r": 1.5,
+  "outcome": "PASS",
+  "sc": 4535.880135077629,
+  "cf": 4535.950660538769,
+  "d": -0.000015548110289848608,
+  "occt": 4535.950660334591,
+  "occtRef": {},
+  "brep": 4535.950660334598
+ },
+ {
+  "edge": "cylinder rim",
+  "r": 1.99,
+  "outcome": "PASS",
+  "sc": 4502.594758065509,
+  "cf": 4502.719632771514,
+  "d": -0.00002773317376804673,
+  "occt": 4502.719632412143,
+  "occtRef": {},
+  "brep": 4502.719632412148
+ },
+ {
+  "edge": "cylinder rim",
+  "r": 2,
+  "outcome": "REFUSED",
+  "cf": 4501.948587342321,
+  "d": null,
+  "occt": 4580.442088933918,
+  "occtRef": {
+   "round1": "Rounding Round 1 at 2 would not fit its edge -- Round 1 is shown without it."
+  },
+  "brep": 4580.442088933921,
+  "sentence": "round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."
+ },
+ {
+  "edge": "cylinder rim",
+  "r": 2.5,
+  "outcome": "REFUSED",
+  "cf": 4459.415447930531,
+  "d": null,
+  "occt": 4580.442088933918,
+  "occtRef": {
+   "round1": "Rounding Round 1 at 2.5 would not fit its edge -- Round 1 is shown without it."
+  },
+  "brep": 4580.442088933921,
+  "sentence": "round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."
+ },
+ {
+  "edge": "cylinder rim",
+  "r": 3,
+  "outcome": "REFUSED",
+  "cf": 4411.070775137422,
+  "d": null,
+  "occt": 4580.442088933918,
+  "occtRef": {
+   "round1": "Rounding Round 1 at 3 would not fit its edge -- Round 1 is shown without it."
+  },
+  "brep": 4580.442088933921,
+  "sentence": "round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."
+ }
+]

@@ -1,0 +1,1024 @@
+{
+ "rows": [
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 2,
+   "expected": 31842.920367320512,
+   "scVolume": 31842.94645882603,
+   "relErr": 8.193816778653241e-7,
+   "removedRatio": 0.9998338963169489,
+   "verdict": "exact",
+   "ms": 123
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 1,
+   "expected": 31921.460183660256,
+   "scVolume": 31921.47322941269,
+   "relErr": 4.086828221677387e-7,
+   "removedRatio": 0.9998338963210713,
+   "verdict": "exact",
+   "ms": 116
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.7,
+   "expected": 31945.022128562177,
+   "scVolume": 31945.031260588887,
+   "relErr": 2.858669708386884e-7,
+   "removedRatio": 0.9998338963210252,
+   "verdict": "exact",
+   "ms": 125
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.5,
+   "expected": 31960.730091830126,
+   "scVolume": 31960.73661470663,
+   "relErr": 2.0409034732452517e-7,
+   "removedRatio": 0.999833896313799,
+   "verdict": "exact",
+   "ms": 95
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.35,
+   "expected": 31972.51106428109,
+   "scVolume": 31972.51563029464,
+   "relErr": 1.4281060195441965e-7,
+   "removedRatio": 0.9998338963138124,
+   "verdict": "exact",
+   "ms": 98
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.25,
+   "expected": 31980.365045915063,
+   "scVolume": 31980.368307353318,
+   "relErr": 1.0198252114164309e-7,
+   "removedRatio": 0.9998338963137064,
+   "verdict": "exact",
+   "ms": 112
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.2,
+   "expected": 31984.29203673205,
+   "scVolume": 31984.294645882652,
+   "relErr": 8.157599979462294e-8,
+   "removedRatio": 0.9998338963138453,
+   "verdict": "exact",
+   "ms": 95
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.15,
+   "expected": 31988.21902754904,
+   "scVolume": 31988.220984411993,
+   "relErr": 6.117448903352172e-8,
+   "removedRatio": 0.9998338963134594,
+   "verdict": "exact",
+   "ms": 117
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.1,
+   "expected": 31992.146018366024,
+   "scVolume": 31992.147322941328,
+   "relErr": 4.0777986672068086e-8,
+   "removedRatio": 0.9998338963136137,
+   "verdict": "exact",
+   "ms": 89
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.05,
+   "expected": 31996.073009183012,
+   "scVolume": 31996.073661470666,
+   "relErr": 2.0386490979867214e-8,
+   "removedRatio": 0.9998338963131506,
+   "verdict": "exact",
+   "ms": 110
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.02,
+   "expected": 31998.429203673204,
+   "scVolume": 31998.429464588262,
+   "relErr": 8.153995817057884e-9,
+   "removedRatio": 0.9998338963159299,
+   "verdict": "exact",
+   "ms": 406
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.01,
+   "expected": 31999.214601836604,
+   "scVolume": 31999.214732294135,
+   "relErr": 4.0768978983343176e-9,
+   "removedRatio": 0.9998338963112978,
+   "verdict": "exact",
+   "ms": 427
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.005,
+   "expected": 31999.607300918302,
+   "scVolume": 31999.607366147062,
+   "relErr": 2.0384237627956185e-9,
+   "removedRatio": 0.9998338963251939,
+   "verdict": "exact",
+   "ms": 395
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.002,
+   "expected": 31999.842920367322,
+   "scVolume": 31999.842946458826,
+   "relErr": 8.153635014352285e-10,
+   "removedRatio": 0.9998338963159299,
+   "verdict": "exact",
+   "ms": 406
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "cut",
+   "depthMm": 0.001,
+   "expected": 31999.92146018366,
+   "scVolume": 32000,
+   "relErr": 0.0000024543752845335358,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 337
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 2,
+   "expected": 157.07963267948966,
+   "scVolume": 157.06970046969676,
+   "relErr": 0.00006323041137467861,
+   "verdict": "exact",
+   "ms": 526
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 1,
+   "expected": 78.53981633974483,
+   "scVolume": 78.53500253786994,
+   "relErr": 0.0000612912290762852,
+   "verdict": "exact",
+   "ms": 656
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.7,
+   "expected": 54.97787143782138,
+   "scVolume": 54.974508364452845,
+   "relErr": 0.00006117140006659521,
+   "verdict": "exact",
+   "ms": 589
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.5,
+   "expected": 39.269908169872416,
+   "scVolume": 39.26750703625854,
+   "relErr": 0.00006114436538751222,
+   "verdict": "exact",
+   "ms": 783
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.35,
+   "expected": 27.48893571891069,
+   "scVolume": 27.487253982760503,
+   "relErr": 0.00006117865629220456,
+   "verdict": "exact",
+   "ms": 716
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.25,
+   "expected": 19.634954084936208,
+   "scVolume": 19.633751683904077,
+   "relErr": 0.00006123778170959306,
+   "verdict": "exact",
+   "ms": 852
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.2,
+   "expected": 15.707963267948967,
+   "scVolume": 15.707000652737863,
+   "relErr": 0.00006128198765710032,
+   "verdict": "exact",
+   "ms": 922
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.15,
+   "expected": 11.780972450961725,
+   "scVolume": 11.780249861179021,
+   "relErr": 0.00006133532573069821,
+   "verdict": "exact",
+   "ms": 994
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.1,
+   "expected": 7.853981633974484,
+   "scVolume": 7.853499393101274,
+   "relErr": 0.00006140081498576324,
+   "verdict": "exact",
+   "ms": 926
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.05,
+   "expected": 3.926990816987242,
+   "scVolume": 3.9267493921946754,
+   "relErr": 0.00006147831859500267,
+   "verdict": "exact",
+   "ms": 838
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.02,
+   "expected": 1.5707963267948966,
+   "scVolume": 1.5706996751827162,
+   "relErr": 0.00006153032734518845,
+   "verdict": "exact",
+   "ms": 915
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.01,
+   "expected": 0.7853981633974483,
+   "scVolume": 0.7853498225509057,
+   "relErr": 0.00004834084654259385,
+   "verdict": "exact",
+   "ms": 1012
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.005,
+   "expected": 0.39269908169872414,
+   "scVolume": 0.39267490733223903,
+   "relErr": 0.000024174366485107956,
+   "verdict": "exact",
+   "ms": 850
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.002,
+   "expected": 0.15707963267948966,
+   "scVolume": 0.1570699621208527,
+   "relErr": 0.000009670558636959425,
+   "verdict": "exact",
+   "ms": 938
+  },
+  {
+   "tool": "cylinder-vertical-r5",
+   "operation": "intersect",
+   "depthMm": 0.001,
+   "expected": 0.07853981633974483,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 408
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 2,
+   "expected": 31672.997782413433,
+   "scVolume": 31673.34572855858,
+   "relErr": 0.00001098557665859224,
+   "removedRatio": 0.9989359517262125,
+   "verdict": "exact",
+   "ms": 77
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 1,
+   "expected": 31882.548186244796,
+   "scVolume": 31882.667730442383,
+   "relErr": 0.0000037495182909665454,
+   "removedRatio": 0.9989821851722486,
+   "verdict": "exact",
+   "ms": 90
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.7,
+   "expected": 31930.89374068554,
+   "scVolume": 31931.171508563126,
+   "relErr": 0.000008699032349089869,
+   "removedRatio": 0.9959805684703125,
+   "verdict": "exact",
+   "ms": 71
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.5,
+   "expected": 31958.153951264805,
+   "scVolume": 31958.32075819989,
+   "relErr": 0.000005219542259534401,
+   "removedRatio": 0.9960137948473665,
+   "verdict": "exact",
+   "ms": 58
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.35,
+   "expected": 31975.436370823714,
+   "scVolume": 31975.53368605756,
+   "relErr": 0.0000030434372408911654,
+   "removedRatio": 0.9960382387656764,
+   "verdict": "exact",
+   "ms": 63
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.25,
+   "expected": 31985.148907240495,
+   "scVolume": 31985.207504991733,
+   "relErr": 0.0000018320299651630553,
+   "removedRatio": 0.9960543138349675,
+   "verdict": "exact",
+   "ms": 62
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.2,
+   "expected": 31989.365390699557,
+   "scVolume": 31989.40726674709,
+   "relErr": 0.0000013090615278453086,
+   "removedRatio": 0.9960622862250798,
+   "verdict": "exact",
+   "ms": 69
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.15,
+   "expected": 31993.087406165516,
+   "scVolume": 31993.19605820894,
+   "relErr": 0.000003396109979826376,
+   "removedRatio": 0.9842820154018296,
+   "verdict": "exact",
+   "ms": 55
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.1,
+   "expected": 31996.23442574853,
+   "scVolume": 31996.293495683538,
+   "relErr": 0.0000018461527134990137,
+   "removedRatio": 0.9843131668470199,
+   "verdict": "exact",
+   "ms": 87
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.05,
+   "expected": 31998.66766711353,
+   "scVolume": 32000,
+   "relErr": 0.00004163713628117719,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 69
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.02,
+   "expected": 31999.662791593877,
+   "scVolume": 32000,
+   "relErr": 0.000010537873736955035,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 81
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.01,
+   "expected": 31999.88076093134,
+   "scVolume": 32000,
+   "relErr": 0.0000037262347803747184,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 71
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.005,
+   "expected": 31999.95783946028,
+   "scVolume": 32000,
+   "relErr": 0.0000013175186021185577,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 77
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.002,
+   "expected": 31999.98933365333,
+   "scVolume": 32000,
+   "relErr": 3.3332344449779107e-7,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 72
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "cut",
+   "depthMm": 0.001,
+   "expected": 31999.996228820404,
+   "scVolume": 32000,
+   "relErr": 1.1784937625683459e-7,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 66
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 2,
+   "expected": 327.0022175865685,
+   "scVolume": 326.91143573804703,
+   "relErr": 0.0002776184491698577,
+   "verdict": "exact",
+   "ms": 359
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 1,
+   "expected": 117.45181375520346,
+   "scVolume": 117.38246714407131,
+   "relErr": 0.0005904260557157617,
+   "verdict": "WRONG-VOLUME",
+   "ms": 332
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.7,
+   "expected": 69.10625931446148,
+   "scVolume": 69.03581515300881,
+   "relErr": 0.001019360071742859,
+   "verdict": "WRONG-VOLUME",
+   "ms": 340
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.5,
+   "expected": 41.84604873519518,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "REFUSED",
+   "ms": 4875,
+   "error": "boolean Intersect: implausible result volume 40.7841; the operation failed: not supported yet: the exact fallback for wh"
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.35,
+   "expected": 24.563629176285957,
+   "scVolume": 24.5391269077851,
+   "relErr": 0.0009975019702915858,
+   "verdict": "WRONG-VOLUME",
+   "ms": 223
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.25,
+   "expected": 14.851092759503786,
+   "scVolume": 14.819371518604036,
+   "relErr": 0.0021359533209736035,
+   "verdict": "WRONG-VOLUME",
+   "ms": 235
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.2,
+   "expected": 10.634609300443216,
+   "scVolume": 10.592565755773775,
+   "relErr": 0.003953463966719432,
+   "verdict": "WRONG-VOLUME",
+   "ms": 247
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.15,
+   "expected": 6.912593834482408,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 4484
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.1,
+   "expected": 3.7655742514700563,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 4231
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.05,
+   "expected": 1.3323328864724715,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 49
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.02,
+   "expected": 0.3372084061223468,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 37
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.01,
+   "expected": 0.11923906865868972,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 47
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.005,
+   "expected": 0.042160539720272894,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 40
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.002,
+   "expected": 0.01066634666984978,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 44
+  },
+  {
+   "tool": "cylinder-on-side-r10",
+   "operation": "intersect",
+   "depthMm": 0.001,
+   "expected": 0.0037711795957218186,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 45
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 2,
+   "expected": 31882.71387426598,
+   "scVolume": 31882.79509631674,
+   "relErr": 0.0000025475262575857995,
+   "removedRatio": 0.9993074879893146,
+   "verdict": "exact",
+   "ms": 1549
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 1,
+   "expected": 31969.6312710153,
+   "scVolume": 31969.651560314403,
+   "relErr": 6.346428875501758e-7,
+   "removedRatio": 0.999331901604607,
+   "verdict": "exact",
+   "ms": 1661
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.7,
+   "expected": 31984.96538475747,
+   "scVolume": 31984.975297279812,
+   "relErr": 3.0991192965526597e-7,
+   "removedRatio": 0.9993406866632756,
+   "verdict": "exact",
+   "ms": 860
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.5,
+   "expected": 31992.276918059924,
+   "scVolume": 31992.282287789345,
+   "relErr": 1.6784455305850986e-7,
+   "removedRatio": 0.9993047167618362,
+   "verdict": "exact",
+   "ms": 916
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.35,
+   "expected": 31996.19644759436,
+   "scVolume": 31996.206175099036,
+   "relErr": 3.040206573137813e-7,
+   "removedRatio": 0.997442521191094,
+   "verdict": "exact",
+   "ms": 774
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.25,
+   "expected": 31998.052867053244,
+   "scVolume": 31998.057834908806,
+   "relErr": 1.5525493326320473e-7,
+   "removedRatio": 0.997448630525795,
+   "verdict": "exact",
+   "ms": 817
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.2,
+   "expected": 31998.751740518972,
+   "scVolume": 31998.75493011356,
+   "relErr": 9.967871911360194e-8,
+   "removedRatio": 0.9974447663859285,
+   "verdict": "exact",
+   "ms": 607
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.15,
+   "expected": 31999.29667594468,
+   "scVolume": 31999.29847672816,
+   "relErr": 5.627572064511982e-8,
+   "removedRatio": 0.9974396105630505,
+   "verdict": "exact",
+   "ms": 532
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.1,
+   "expected": 31999.686887932192,
+   "scVolume": 32000,
+   "relErr": 0.00000978484786131416,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 79
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.05,
+   "expected": 31999.921591083355,
+   "scVolume": 32000,
+   "relErr": 0.0000024502846490222843,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 80
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.02,
+   "expected": 31999.987442006965,
+   "scVolume": 32000,
+   "relErr": 3.92437436364686e-7,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 106
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.01,
+   "expected": 31999.996859454543,
+   "scVolume": 32000,
+   "relErr": 9.814205517645343e-8,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 96
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.005,
+   "expected": 31999.999214732736,
+   "scVolume": 32000,
+   "relErr": 2.4539602611291408e-8,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 93
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.002,
+   "expected": 31999.99987434467,
+   "scVolume": 32000,
+   "relErr": 3.926729065782266e-9,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 84
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "cut",
+   "depthMm": 0.001,
+   "expected": 31999.99996858512,
+   "scVolume": 32000,
+   "relErr": 9.817149485203753e-10,
+   "removedRatio": 0,
+   "verdict": "SILENT NO-OP",
+   "ms": 84
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 2,
+   "expected": 117.28612573401894,
+   "scVolume": 117.2657187161797,
+   "relErr": 0.00017399345158277104,
+   "verdict": "exact",
+   "ms": 2060
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 1,
+   "expected": 30.368728984701335,
+   "scVolume": 30.36365061234174,
+   "relErr": 0.0001672237373567116,
+   "verdict": "exact",
+   "ms": 1891
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.7,
+   "expected": 15.034615242529554,
+   "scVolume": 15.024781472669417,
+   "relErr": 0.0006540752590940555,
+   "verdict": "WRONG-VOLUME",
+   "ms": 1056
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.5,
+   "expected": 7.723081940074908,
+   "scVolume": 7.718044401415814,
+   "relErr": 0.0006522705181922612,
+   "verdict": "WRONG-VOLUME",
+   "ms": 988
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.35,
+   "expected": 3.8035524056399423,
+   "scVolume": 3.8010804941980987,
+   "relErr": 0.0006498954604065119,
+   "verdict": "WRONG-VOLUME",
+   "ms": 912
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.25,
+   "expected": 1.9471329467561738,
+   "scVolume": 1.9458715913970177,
+   "relErr": 0.0006478013539123833,
+   "verdict": "WRONG-VOLUME",
+   "ms": 845
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.2,
+   "expected": 1.2482594810263445,
+   "scVolume": 1.2474525477844292,
+   "relErr": 0.0006464467157516875,
+   "verdict": "WRONG-VOLUME",
+   "ms": 820
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.15,
+   "expected": 0.7033240553224149,
+   "scVolume": 0.7028739470238653,
+   "relErr": 0.0004501082985496341,
+   "verdict": "WRONG-VOLUME",
+   "ms": 740
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.1,
+   "expected": 0.3131120678077827,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 92
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.05,
+   "expected": 0.07840891664584526,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 81
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.02,
+   "expected": 0.012557993033949602,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 78
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.01,
+   "expected": 0.003140545456038597,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 97
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.005,
+   "expected": 0.0007852672637035488,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 80
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.002,
+   "expected": 0.00012565532856318216,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 85
+  },
+  {
+   "tool": "sphere-r10",
+   "operation": "intersect",
+   "depthMm": 0.001,
+   "expected": 0.000031414879338346734,
+   "scVolume": null,
+   "relErr": null,
+   "verdict": "NO-BODY",
+   "ms": 75
+  }
+ ],
+ "summary": {
+  "cylinder-vertical-r5/cut": {
+   "thinnestExactMm": 0.002,
+   "notExact": [
+    "0.001:SILENT NO-OP"
+   ]
+  },
+  "cylinder-vertical-r5/intersect": {
+   "thinnestExactMm": 0.002,
+   "notExact": [
+    "0.001:NO-BODY"
+   ]
+  },
+  "cylinder-on-side-r10/cut": {
+   "thinnestExactMm": 0.1,
+   "notExact": [
+    "0.05:SILENT NO-OP",
+    "0.02:SILENT NO-OP",
+    "0.01:SILENT NO-OP",
+    "0.005:SILENT NO-OP",
+    "0.002:SILENT NO-OP",
+    "0.001:SILENT NO-OP"
+   ]
+  },
+  "cylinder-on-side-r10/intersect": {
+   "thinnestExactMm": 2,
+   "notExact": [
+    "1:WRONG-VOLUME",
+    "0.7:WRONG-VOLUME",
+    "0.5:REFUSED",
+    "0.35:WRONG-VOLUME",
+    "0.25:WRONG-VOLUME",
+    "0.2:WRONG-VOLUME",
+    "0.15:NO-BODY",
+    "0.1:NO-BODY",
+    "0.05:NO-BODY",
+    "0.02:NO-BODY",
+    "0.01:NO-BODY",
+    "0.005:NO-BODY",
+    "0.002:NO-BODY",
+    "0.001:NO-BODY"
+   ]
+  },
+  "sphere-r10/cut": {
+   "thinnestExactMm": 0.15,
+   "notExact": [
+    "0.1:SILENT NO-OP",
+    "0.05:SILENT NO-OP",
+    "0.02:SILENT NO-OP",
+    "0.01:SILENT NO-OP",
+    "0.005:SILENT NO-OP",
+    "0.002:SILENT NO-OP",
+    "0.001:SILENT NO-OP"
+   ]
+  },
+  "sphere-r10/intersect": {
+   "thinnestExactMm": 1,
+   "notExact": [
+    "0.7:WRONG-VOLUME",
+    "0.5:WRONG-VOLUME",
+    "0.35:WRONG-VOLUME",
+    "0.25:WRONG-VOLUME",
+    "0.2:WRONG-VOLUME",
+    "0.15:WRONG-VOLUME",
+    "0.1:NO-BODY",
+    "0.05:NO-BODY",
+    "0.02:NO-BODY",
+    "0.01:NO-BODY",
+    "0.005:NO-BODY",
+    "0.002:NO-BODY",
+    "0.001:NO-BODY"
+   ]
+  }
+ }
+}

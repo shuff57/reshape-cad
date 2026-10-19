@@ -1,0 +1,1 @@
+sl9-71-boxtan-side-m0.003                REFUSED  occtV 72000.0000 | tr-occt dV - dBb - dCom - F o/b/t 6/-/- | brep-occt dV -    | TRUCK REFUSED: groove1 (groove): the ring does not cut the part (it misses it, or turns away from it), so there is nothing to remove. | BREP REFUSED: groove1 does not touch the part, so it cuts nothing -- groove1 is shown without it. | ms 209 cpu 427

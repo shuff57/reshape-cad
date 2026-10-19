@@ -1,0 +1,1535 @@
+[
+ {
+  "id": "hg-cyl-perp-offset-cut",
+  "feature": "time budget: round shapes crossing at an angle and a torus meeting a box",
+  "note": "the same script as x-cyl-cross-cyl-equal-keep but cut",
+  "source": "const a = cylinder(20,40,{at:[0,0,0]}); const b = cylinder(10,40,{at:[0,0,0],rotate:[90,0,0]}); cut(a,b)",
+  "frontEndErrors": [
+   "cylinder has no option called \"rotate\". It takes at, corner."
+  ],
+  "refusalSentence": "cylinder has no option called \"rotate\". It takes at, corner.",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: cylinder has no option called \"rotate\". It takes at, corner.",
+  "wallMs": 267
+ },
+ {
+  "id": "hg-cyl-tilt45-union",
+  "feature": "time budget: round shapes crossing at an angle and a torus meeting a box",
+  "source": null,
+  "features": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "radius": 10,
+    "height": 40,
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "c2",
+    "kind": "cylinder",
+    "radius": 5,
+    "height": 40,
+    "center": [
+     0,
+     0,
+     0
+    ],
+    "rotate": [
+     45,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "op": "union",
+    "targets": [
+     "c1",
+     "c2"
+    ]
+   }
+  ],
+  "outcome": "HANG",
+  "lastStage": "solidcraft",
+  "detail": "SystemError: spawnSync /home/shuff57/.bun/bin/bun ETIMEDOUT",
+  "signal": "SIGTERM",
+  "timeoutMs": 100000,
+  "wallMs": 100209
+ },
+ {
+  "id": "hg-cyl-inside-perp",
+  "feature": "time budget: round shapes crossing at an angle and a torus meeting a box",
+  "note": "small cylinder with a perpendicular axis wholly inside the big one: no surface meets (the guard still refuses on bounding boxes)",
+  "source": null,
+  "featureKinds": [
+   "c1:cylinder",
+   "c2:cylinder",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 12440.706908215583,
+   "area": 3292.389100962103,
+   "com": [
+    -1.860785122730978e-15,
+    -5.103497811808949e-16,
+    -4.140789484284712e-18
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -20,
+    10,
+    10,
+    20
+   ],
+   "faces": 6,
+   "solids": 1,
+   "shells": 2,
+   "valid": true,
+   "types": {
+    "cylinder": 2,
+    "plane": 4
+   },
+   "components": {
+    "cylinder": 2,
+    "plane": 4
+   },
+   "bigCylinderComponents": 2
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 12440.706908215594,
+   "bbox": [
+    -10,
+    -10,
+    -20,
+    10,
+    10,
+    20
+   ],
+   "faces": 6,
+   "dVol": 8.772762272912163e-16,
+   "dBbox": 0
+  },
+  "translateMs": 3362,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "c2",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 10,
+     "height": 40,
+     "base": [
+      0,
+      0,
+      -20
+     ],
+     "axis": "Z",
+     "body_name": "b_c1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 10,
+     "base": [
+      0,
+      0,
+      -5
+     ],
+     "axis": "Z",
+     "body_name": "b_c2"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_c2"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 90
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_c1",
+     "tools": [
+      "b_c2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 3292.3367171482637,
+    "edges": 4,
+    "faces": 6,
+    "mass_g": 16.047984313053604,
+    "vertices": 4,
+    "volume_mm3": 12440.297917095815
+   },
+   "bodies": [
+    {
+     "name": "b_c1",
+     "volume": 12440.297917095815,
+     "area": 3292.3367171482637,
+     "faces": 6,
+     "kernel": {
+      "edges": 12,
+      "faces": 8,
+      "shells": 2,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_c1"
+  ],
+  "truck": {
+   "volume": 12440.297917095815,
+   "area": 3292.3367171482637,
+   "bbox": [
+    -9.999845562132384,
+    -9.999763825245505,
+    -20.000000000000025,
+    9.999845562132382,
+    9.999763825245505,
+    20.000000000000007
+   ],
+   "com": [
+    9.823989052769237e-17,
+    -4.795166580019889e-16,
+    -6.236575339599898e-15
+   ],
+   "faces": 6,
+   "kernelFaces": 8,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 4
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_c1"
+   ],
+   "euler": [
+    4
+   ],
+   "shells": [
+    2
+   ],
+   "tol": 0.0003,
+   "dVol": 0.000032875231510990106,
+   "dBbox": 0.000023617475449455584,
+   "dCom": 1.272190375256307e-16,
+   "dArea": 0.00001591057807351338,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 6,
+   "solidsOcct": 1,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=12440.7069 T=12440.2979 dVol 3.3e-5 dBbox 2.4e-5 dCom 1.3e-16 dArea 1.6e-5 faces O/B/T 6/6/6 solids O/T 1/1",
+  "wallMs": 6239
+ },
+ {
+  "id": "hg-tor-half-d0",
+  "feature": "time budget: round shapes crossing at an angle and a torus meeting a box",
+  "note": "cutting plane x=0 contains the torus axis",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const b = box(80,80,80,{at:[40,0,0]}); cut(t,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "ring1:torus",
+   "box1:box",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 2210.7913858440174,
+   "area": 1205.9266578368815,
+   "com": [
+    -9.094568182644505,
+    -1.453967854383321e-15,
+    2.9376655814111995e-16
+   ],
+   "bbox": [
+    -18,
+    -18,
+    -4.0000001,
+    1.102182119232618e-15,
+    18,
+    4.0000001
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "other": 1,
+    "plane": 2
+   },
+   "components": {
+    "other": 1,
+    "plane": 2
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  "translateMs": 31465,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "built"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 14,
+     "minor": 4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ring1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 80,
+     "width": 80,
+     "height": 80,
+     "center": [
+      40,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_ring1",
+     "tools": [
+      "b_box1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 1205.868014229033,
+    "edges": 2,
+    "faces": 3,
+    "mass_g": 2.8515017334271153,
+    "vertices": 2,
+    "volume_mm3": 2210.4664600210194
+   },
+   "bodies": [
+    {
+     "name": "b_ring1",
+     "volume": 2210.4664600210194,
+     "area": 1205.868014229033,
+     "faces": 3,
+     "kernel": {
+      "edges": 14,
+      "faces": 8,
+      "shells": 1,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_ring1"
+  ],
+  "truck": {
+   "volume": 2210.4664600210194,
+   "area": 1205.868014229033,
+   "bbox": [
+    -17.999951658506347,
+    -17.99995165850637,
+    -3.999640730332158,
+    1.509903313490213e-14,
+    17.99995165850623,
+    3.999640730332159
+   ],
+   "com": [
+    -9.094544473490977,
+    1.5086745715423085e-11,
+    -0.000037993184233360976
+   ],
+   "faces": 3,
+   "kernelFaces": 8,
+   "faceTypes": {
+    "other": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_ring1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00014697262938446088,
+   "dBbox": 0.00008984241471446792,
+   "dCom": 9.258372488315183e-7,
+   "dArea": 0.000048629497878230605,
+   "faceKeys": {
+    "other": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=2210.7914 T=2210.4665 dVol 1.5e-4 dBbox 9.0e-5 dCom 9.3e-7 dArea 4.9e-5 faces O/B/T 3/-/3 solids O/T 1/1",
+  "wallMs": 43357
+ },
+ {
+  "id": "hg-tor-half-d2",
+  "feature": "time budget: round shapes crossing at an angle and a torus meeting a box",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const b = box(80,80,80,{at:[42,0,0]}); cut(t,b)",
+  "outcome": "HANG",
+  "lastStage": "solidcraft",
+  "detail": "SystemError: spawnSync /home/shuff57/.bun/bin/bun ETIMEDOUT",
+  "signal": "SIGTERM",
+  "timeoutMs": 100000,
+  "wallMs": 100192
+ },
+ {
+  "id": "hg-tor-half-d14",
+  "feature": "time budget: round shapes crossing at an angle and a torus meeting a box",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const b = box(80,80,80,{at:[54,0,0]}); cut(t,b)",
+  "outcome": "HANG",
+  "lastStage": "solidcraft",
+  "detail": "SystemError: spawnSync /home/shuff57/.bun/bin/bun ETIMEDOUT",
+  "signal": "SIGTERM",
+  "timeoutMs": 100000,
+  "wallMs": 100175
+ },
+ {
+  "id": "hg-tor-equator-z0",
+  "feature": "time budget: round shapes crossing at an angle and a torus meeting a box",
+  "note": "cutting plane z=0 is perpendicular to the axis (equatorial)",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const b = box(80,80,80,{at:[0,0,40]}); cut(t,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "ring1:torus",
+   "box1:box",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 2210.7913858440165,
+   "area": 1809.1124473261216,
+   "com": [
+    1.0749098379160287e-14,
+    -2.404165640252122e-15,
+    -1.6976527263135517
+   ],
+   "bbox": [
+    -18,
+    -18.0000001,
+    -4.0000001,
+    18,
+    18.0000001,
+    4.898587196589413e-16
+   ],
+   "faces": 2,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "other": 1,
+    "plane": 1
+   },
+   "components": {
+    "other": 1,
+    "plane": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  "translateMs": 53547,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "built"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 14,
+     "minor": 4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ring1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 80,
+     "width": 80,
+     "height": 80,
+     "center": [
+      0,
+      0,
+      40
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_ring1",
+     "tools": [
+      "b_box1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 1809.0337615423855,
+    "edges": 2,
+    "faces": 2,
+    "mass_g": 2.8514541604936903,
+    "vertices": 2,
+    "volume_mm3": 2210.4295817780544
+   },
+   "bodies": [
+    {
+     "name": "b_ring1",
+     "volume": 2210.4295817780544,
+     "area": 1809.0337615423855,
+     "faces": 2,
+     "kernel": {
+      "edges": 15,
+      "faces": 7,
+      "shells": 1,
+      "vertices": 9
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_ring1"
+  ],
+  "truck": {
+   "volume": 2210.4295817780544,
+   "area": 1809.0337615423855,
+   "bbox": [
+    -18.000000003144763,
+    -17.999774591225446,
+    -3.9999627511487392,
+    17.999999999999993,
+    17.99977459122546,
+    7.231961006565281e-9
+   ],
+   "com": [
+    -3.4857187996560644e-12,
+    -1.590963528467848e-14,
+    -1.697609819913035
+   ],
+   "faces": 2,
+   "kernelFaces": 7,
+   "faceTypes": {
+    "other": 1,
+    "plane": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_ring1"
+   ],
+   "euler": [
+    1
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00016365364379416854,
+   "dBbox": 0.000012528265183470424,
+   "dCom": 8.401721619542801e-7,
+   "dArea": 0.00004349413650455464,
+   "faceKeys": {
+    "other": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 2,
+   "solidsOcct": 1,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=2210.7914 T=2210.4296 dVol 1.6e-4 dBbox 1.3e-5 dCom 8.4e-7 dArea 4.3e-5 faces O/B/T 2/-/2 solids O/T 1/1",
+  "wallMs": 81031
+ },
+ {
+  "id": "hg-tor-equator-z2",
+  "feature": "time budget: round shapes crossing at an angle and a torus meeting a box",
+  "note": null,
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const b = box(80,80,80,{at:[0,0,42]}); cut(t,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "ring1:torus",
+   "box1:box",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 3557.1584341747202,
+   "area": 2083.2975102787077,
+   "com": [
+    4.3465620708926645e-15,
+    -3.1419296589560576e-15,
+    -0.6853072166003646
+   ],
+   "bbox": [
+    -18.0000001,
+    -18.0000001,
+    -4.0000001,
+    18,
+    18,
+    2.0000000000000013
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "other": 2,
+    "plane": 1
+   },
+   "components": {
+    "other": 2,
+    "plane": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  "translateMs": 61217,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "built"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 14,
+     "minor": 4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ring1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 80,
+     "width": 80,
+     "height": 80,
+     "center": [
+      0,
+      0,
+      42
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_ring1",
+     "tools": [
+      "b_box1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 2083.2331530283886,
+    "edges": 2,
+    "faces": 2,
+    "mass_g": 4.588217519510904,
+    "vertices": 2,
+    "volume_mm3": 3556.757767062716
+   },
+   "bodies": [
+    {
+     "name": "b_ring1",
+     "volume": 3556.757767062716,
+     "area": 2083.2331530283886,
+     "faces": 2,
+     "kernel": {
+      "edges": 21,
+      "faces": 10,
+      "shells": 1,
+      "vertices": 12
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_ring1"
+  ],
+  "truck": {
+   "volume": 3556.757767062716,
+   "area": 2083.2331530283886,
+   "bbox": [
+    -17.9996030081925,
+    -17.99960300821178,
+    -3.999640730332158,
+    17.999603008280662,
+    17.999603008211782,
+    2.0000000513493212
+   ],
+   "com": [
+    8.822659964195846e-9,
+    3.0184981843899435e-10,
+    -0.6852030342442353
+   ],
+   "faces": 2,
+   "kernelFaces": 10,
+   "faceTypes": {
+    "other": 1,
+    "plane": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_ring1"
+   ],
+   "euler": [
+    1
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00011263684747770148,
+   "dBbox": 0.00008984241471446792,
+   "dCom": 0.0000020322704071296815,
+   "dArea": 0.00003089201134333077,
+   "faceKeys": {
+    "other": "occt-other-surface-is-truck-plane",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=3557.1584 T=3556.7578 dVol 1.1e-4 dBbox 9.0e-5 dCom 2.0e-6 dArea 3.1e-5 faces O/B/T 3/-/2 solids O/T 1/1",
+  "wallMs": 76823
+ },
+ {
+  "id": "hg-tor-miss",
+  "feature": "time budget: round shapes crossing at an angle and a torus meeting a box",
+  "note": "box nowhere near the ring: two pieces",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const b = box(10,10,10,{at:[40,0,0]}); join(t,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "ring1:torus",
+   "box1:box",
+   "op1:combine/union"
+  ],
+  "occt": {
+   "volume": 5421.582771688034,
+   "area": 2810.7913858440165,
+   "com": [
+    7.377919269052438,
+    -4.498587408966661e-15,
+    -6.290792329979634e-17
+   ],
+   "bbox": [
+    -18.0000001,
+    -18.0000001,
+    -5,
+    45,
+    18.0000001,
+    5
+   ],
+   "faces": 7,
+   "solids": 2,
+   "shells": 2,
+   "valid": true,
+   "types": {
+    "other": 1,
+    "plane": 6
+   },
+   "components": {
+    "other": 1,
+    "plane": 6
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  "translateMs": 37459,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "built"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 14,
+     "minor": 4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ring1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      40,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_ring1",
+     "tools": [
+      "b_box1"
+     ],
+     "operation": "join"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 2810.7076044312025,
+    "edges": 12,
+    "faces": 7,
+    "mass_g": 6.993004063027294,
+    "vertices": 8,
+    "volume_mm3": 5420.9333821917
+   },
+   "bodies": [
+    {
+     "name": "b_ring1",
+     "volume": 5420.9333821917,
+     "area": 2810.7076044312025,
+     "faces": 7,
+     "kernel": {
+      "edges": 24,
+      "faces": 12,
+      "shells": 2,
+      "vertices": 14
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_ring1"
+  ],
+  "truck": {
+   "volume": 5420.9333821917,
+   "area": 2810.7076044312025,
+   "bbox": [
+    -17.999951658506347,
+    -17.999951658506347,
+    -5,
+    45,
+    17.99995165850635,
+    5
+   ],
+   "com": [
+    7.378803091623262,
+    -2.8633524553630216e-14,
+    -0.00003104801800996134
+   ],
+   "faces": 7,
+   "kernelFaces": 12,
+   "faceTypes": {
+    "other": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_ring1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    2
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00011977858195310028,
+   "dBbox": 0.0000026911940769202364,
+   "dCom": 0.000012066469626164848,
+   "dArea": 0.000029807054780355983,
+   "faceKeys": {
+    "other": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 7,
+   "solidsOcct": 2,
+   "geomOk": true,
+   "bodiesOk": false
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=5421.5828 T=5420.9334 dVol 1.2e-4 dBbox 2.7e-6 dCom 1.2e-5 dArea 3.0e-5 faces O/B/T 7/-/7 solids O/T 2/1",
+  "wallMs": 51476
+ },
+ {
+  "id": "hg-tor-union-embedded-box",
+  "feature": "time budget: round shapes crossing at an angle and a torus meeting a box",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const b = box(6,6,6,{at:[14,0,0]}); join(t,b)",
+  "outcome": "HANG",
+  "lastStage": "solidcraft",
+  "detail": "SystemError: spawnSync /home/shuff57/.bun/bin/bun ETIMEDOUT",
+  "signal": "SIGTERM",
+  "timeoutMs": 100000,
+  "wallMs": 100230
+ },
+ {
+  "id": "hg-tor-void-in-box",
+  "feature": "time budget: round shapes crossing at an angle and a torus meeting a box",
+  "note": "torus strictly inside a box (the measured-safe case, size changed)",
+  "source": "const a = box(60,60,30,{at:[0,0,0]}); const t = ring(36,8,{at:[0,0,0]}); cut(a,t)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "ring1:torus",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 103578.41722831196,
+   "area": 16610.791385844015,
+   "com": [
+    5.998818766967483e-16,
+    1.4320140280290544e-16,
+    -7.875680746333826e-17
+   ],
+   "bbox": [
+    -30,
+    -30,
+    -15,
+    30,
+    30,
+    15
+   ],
+   "faces": 7,
+   "solids": 1,
+   "shells": 2,
+   "valid": true,
+   "types": {
+    "plane": 6,
+    "other": 1
+   },
+   "components": {
+    "plane": 6,
+    "other": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  "translateMs": 34051,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 60,
+     "width": 60,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 14,
+     "minor": 4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ring1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_ring1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 16610.7076044312,
+    "edges": 12,
+    "faces": 7,
+    "mass_g": 133.6169959369727,
+    "vertices": 8,
+    "volume_mm3": 103579.06661780829
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 103579.06661780829,
+     "area": 16610.7076044312,
+     "faces": 7,
+     "kernel": {
+      "edges": 24,
+      "faces": 12,
+      "shells": 2,
+      "vertices": 14
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 103579.06661780829,
+   "area": 16610.7076044312,
+   "bbox": [
+    -30,
+    -30,
+    -15,
+    30,
+    30,
+    15
+   ],
+   "com": [
+    1.2761255818744746e-15,
+    1.4985694906415848e-15,
+    0.0000016249348712647436
+   ],
+   "faces": 7,
+   "kernelFaces": 12,
+   "faceTypes": {
+    "other": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    2
+   ],
+   "tol": 0.0003,
+   "dVol": 0.000006269544502728298,
+   "dBbox": 0,
+   "dCom": 1.8054831903816674e-8,
+   "dArea": 0.0000050437941737652805,
+   "faceKeys": {
+    "other": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 7,
+   "solidsOcct": 1,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=103578.4172 T=103579.0666 dVol 6.3e-6 dBbox 0.0e+0 dCom 1.8e-8 dArea 5.0e-6 faces O/B/T 7/-/7 solids O/T 1/1",
+  "wallMs": 47210
+ },
+ {
+  "id": "trap-tor-union-box-tangent",
+  "feature": "wasm trap: torus meeting a tangent box, a shifted torus, a spindle torus",
+  "note": "box face x=18 tangent to the tube outer equator",
+  "source": null,
+  "featureKinds": [
+   "t:torus",
+   "b:box",
+   "op1:combine/union"
+  ],
+  "occt": {
+   "volume": 8421.582771688034,
+   "area": 4010.791385844016,
+   "com": [
+    10.92431226933836,
+    -2.0420233632832606e-15,
+    -4.365940416404248e-17
+   ],
+   "bbox": [
+    -18.0000001,
+    -18.0000001,
+    -20,
+    28,
+    18.0000001,
+    20
+   ],
+   "faces": 7,
+   "solids": 2,
+   "shells": 2,
+   "valid": true,
+   "types": {
+    "plane": 6,
+    "other": 1
+   },
+   "components": {
+    "plane": 6,
+    "other": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: the two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little -- op1 is shown without it."
+  },
+  "translateMs": 38223,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "t",
+    "kind": "torus",
+    "status": "built"
+   },
+   {
+    "id": "b",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 14,
+     "minor": 4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_t"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 40,
+     "center": [
+      23,
+      0,
+      0
+     ],
+     "body_name": "b_b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_t",
+     "tools": [
+      "b_b"
+     ],
+     "operation": "join"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 4010.7076044312025,
+    "edges": 12,
+    "faces": 7,
+    "mass_g": 10.863004063027294,
+    "vertices": 8,
+    "volume_mm3": 8420.9333821917
+   },
+   "bodies": [
+    {
+     "name": "b_t",
+     "volume": 8420.9333821917,
+     "area": 4010.7076044312025,
+     "faces": 7,
+     "kernel": {
+      "edges": 24,
+      "faces": 12,
+      "shells": 2,
+      "vertices": 14
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_t"
+  ],
+  "truck": {
+   "volume": 8420.9333821917,
+   "area": 4010.7076044312025,
+   "bbox": [
+    -17.999951658506347,
+    -17.999951658506347,
+    -20,
+    28,
+    17.99995165850635,
+    20
+   ],
+   "com": [
+    10.925154709638043,
+    -1.8432686978718365e-14,
+    -0.00001998700496047498
+   ],
+   "faces": 7,
+   "kernelFaces": 12,
+   "faceTypes": {
+    "other": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_t"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    2
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00007711014828665963,
+   "dBbox": 0.0000026911940769202364,
+   "dCom": 0.000011899633941710035,
+   "dArea": 0.00002088899789434446,
+   "faceKeys": {
+    "other": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 7,
+   "solidsOcct": 2,
+   "geomOk": true,
+   "bodiesOk": false
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=8421.5828 T=8420.9334 dVol 7.7e-5 dBbox 2.7e-6 dCom 1.2e-5 dArea 2.1e-5 faces O/B/T 7/-/7 solids O/T 2/1",
+  "wallMs": 65406
+ },
+ {
+  "id": "trap-tor-union-tor-shift10",
+  "feature": "wasm trap: torus meeting a tangent box, a shifted torus, a spindle torus",
+  "source": null,
+  "features": [
+   {
+    "id": "t1",
+    "kind": "torus",
+    "ringRadius": 14,
+    "tubeRadius": 4,
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "t2",
+    "kind": "torus",
+    "ringRadius": 14,
+    "tubeRadius": 4,
+    "center": [
+     10,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "op": "union",
+    "targets": [
+     "t1",
+     "t2"
+    ]
+   }
+  ],
+  "outcome": "HANG",
+  "lastStage": "solidcraft",
+  "detail": "SystemError: spawnSync /home/shuff57/.bun/bin/bun ETIMEDOUT",
+  "signal": "SIGTERM",
+  "timeoutMs": 100000,
+  "wallMs": 100186
+ },
+ {
+  "id": "trap-box-cut-spindle",
+  "feature": "wasm trap: torus meeting a tangent box, a shifted torus, a spindle torus",
+  "note": "spindle torus: tube radius 8 > ring radius 5",
+  "source": null,
+  "featureKinds": [
+   "a:box",
+   "t:torus",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 209683.45318330274,
+   "area": 23534.191788269927,
+   "com": [
+    -1.0769465330411285e-15,
+    8.895487736693676e-17,
+    -1.7729907460260798e-16
+   ],
+   "bbox": [
+    -30,
+    -30,
+    -30,
+    30,
+    30,
+    30
+   ],
+   "faces": 7,
+   "solids": 1,
+   "shells": 2,
+   "valid": true,
+   "types": {
+    "plane": 6,
+    "other": 1
+   },
+   "components": {
+    "plane": 6,
+    "other": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  "translateMs": 35,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "a",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "t",
+    "kind": "torus",
+    "status": "refused",
+    "refusal": "t (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): its target t was refused (t (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 60,
+     "width": 60,
+     "height": 60,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_a"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op1 (combine): its target t was refused (t (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0)"
+  },
+  "refusalSentence": "op1 (combine): its target t was refused (t (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0)",
+  "outcome": "REFUSED",
+  "summary": "op1 (combine): its target t was refused (t (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0)",
+  "wallMs": 897
+ }
+]

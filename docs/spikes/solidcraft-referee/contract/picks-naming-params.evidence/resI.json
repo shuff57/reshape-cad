@@ -1,0 +1,2214 @@
+[
+ {
+  "script": "box",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "width",
+  "param": "box1_width",
+  "placement": {
+   "originAlongAxis": 25,
+   "solidExtremeAlongAxis": 28.200802202319178,
+   "delta": -3.200802202319178,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_width",
+   "from": 40,
+   "to": 46,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 2.565019229274358e-17,
+   "extremeMoved": 2.897777478867205,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "box",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "depth",
+  "param": "box1_depth",
+  "placement": {
+   "originAlongAxis": 12,
+   "solidExtremeAlongAxis": 16.66526829638644,
+   "delta": -4.66526829638644,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_depth",
+   "from": 30,
+   "to": 36,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 3.8718241527508675e-17,
+   "extremeMoved": 2.897777478867205,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "box",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "height",
+  "param": "box1_height",
+  "placement": {
+   "originAlongAxis": 12,
+   "solidExtremeAlongAxis": 12,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_height",
+   "from": 20,
+   "to": 26,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 5.370584467429222e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "box",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move x",
+  "param": "box1_x",
+  "placement": {
+   "originAlongAxis": 35,
+   "solidExtremeAlongAxis": 28.200802202319178,
+   "delta": 6.799197797680822,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_x",
+   "from": 5,
+   "to": 8,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 5.548406601313831e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "box",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move y",
+  "param": "box1_y",
+  "placement": {
+   "originAlongAxis": 27,
+   "solidExtremeAlongAxis": 16.66526829638644,
+   "delta": 10.33473170361356,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_y",
+   "from": -3,
+   "to": 0,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 2.7742033006569156e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "box",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move z",
+  "param": "box1_z",
+  "placement": {
+   "originAlongAxis": 32,
+   "solidExtremeAlongAxis": 12,
+   "delta": 20,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_z",
+   "from": 2,
+   "to": 5,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 4.161304950985374e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "box",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "turn",
+  "label": "turn x",
+  "param": "box1_rx",
+  "placement": {
+   "originAlongAxis": 2,
+   "solidExtremeAlongAxis": 12,
+   "delta": -10,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_rx",
+   "from": 0,
+   "to": 3.0557749073643907,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548803e-16,
+   "dCom": 4.7579575893724177e-17,
+   "extremeMoved": 0.7854019433277522,
+   "extremeExpected": 2
+  }
+ },
+ {
+  "script": "box",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "turn",
+  "label": "turn y",
+  "param": "box1_ry",
+  "placement": {
+   "originAlongAxis": 5,
+   "solidExtremeAlongAxis": 28.200802202319178,
+   "delta": -23.200802202319178,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_ry",
+   "from": 0,
+   "to": 3.0557749073643907,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 1.3543614743392075e-17,
+   "extremeMoved": 0.48744753973511834,
+   "extremeExpected": 2
+  }
+ },
+ {
+  "script": "box",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "turn",
+  "label": "turn z",
+  "param": "box1_rz",
+  "placement": {
+   "originAlongAxis": -3,
+   "solidExtremeAlongAxis": 16.66526829638644,
+   "delta": -19.66526829638644,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_rz",
+   "from": 15,
+   "to": 18.05577490736439,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548803e-16,
+   "dCom": 4.056562211659056e-17,
+   "extremeMoved": 0.7949136592351458,
+   "extremeExpected": 2.0000000000000004
+  }
+ },
+ {
+  "script": "box-unturned",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "width",
+  "param": "box1_width",
+  "placement": {
+   "originAlongAxis": 25,
+   "solidExtremeAlongAxis": 25,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_width",
+   "from": 40,
+   "to": 46,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 0,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "box-unturned",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "depth",
+  "param": "box1_depth",
+  "placement": {
+   "originAlongAxis": 12,
+   "solidExtremeAlongAxis": 12,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_depth",
+   "from": 30,
+   "to": 36,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 0,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "box-unturned",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "height",
+  "param": "box1_height",
+  "placement": {
+   "originAlongAxis": 12,
+   "solidExtremeAlongAxis": 12,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_height",
+   "from": 20,
+   "to": 26,
+   "outcome": "PASS",
+   "dVol": 1.1660188484268313e-16,
+   "dCom": 6.304054531615542e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "box-unturned",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move x",
+  "param": "box1_x",
+  "placement": {
+   "originAlongAxis": 35,
+   "solidExtremeAlongAxis": 25,
+   "delta": 10,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_x",
+   "from": 5,
+   "to": 8,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "box-unturned",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move y",
+  "param": "box1_y",
+  "placement": {
+   "originAlongAxis": 27,
+   "solidExtremeAlongAxis": 12,
+   "delta": 15,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_y",
+   "from": -3,
+   "to": 0,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "box-unturned",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move z",
+  "param": "box1_z",
+  "placement": {
+   "originAlongAxis": 32,
+   "solidExtremeAlongAxis": 12,
+   "delta": 20,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_z",
+   "from": 2,
+   "to": 5,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cylinder",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "size",
+  "label": "across",
+  "param": "cyl1_radius",
+  "placement": {
+   "originAlongAxis": 14,
+   "solidExtremeAlongAxis": 13.999350427854639,
+   "delta": 0.0006495721453614323,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_radius",
+   "from": 20,
+   "to": 26,
+   "outcome": "PASS",
+   "dVol": 0.00011283812350395491,
+   "dCom": 4.2194202101770235e-11,
+   "extremeMoved": 2.9998051283563942,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cylinder",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "size",
+  "label": "height",
+  "param": "cyl1_height",
+  "placement": {
+   "originAlongAxis": 16,
+   "solidExtremeAlongAxis": 16.000000000000007,
+   "delta": -7.105427357601002e-15,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_height",
+   "from": 30,
+   "to": 36,
+   "outcome": "PASS",
+   "dVol": 0.00012461481717963713,
+   "dCom": 8.536055971638684e-16,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cylinder",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "move",
+  "label": "move x",
+  "param": "cyl1_x",
+  "placement": {
+   "originAlongAxis": 26.5,
+   "solidExtremeAlongAxis": 13.999350427854639,
+   "delta": 12.500649572145361,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_x",
+   "from": 4,
+   "to": 7,
+   "outcome": "PASS",
+   "dVol": 0.00011538156124353434,
+   "dCom": 5.040708851078605e-15,
+   "extremeMoved": 3.0000000000000018,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cylinder",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "move",
+  "label": "move y",
+  "param": "cyl1_y",
+  "placement": {
+   "originAlongAxis": 20.5,
+   "solidExtremeAlongAxis": 7.999415875543101,
+   "delta": 12.5005841244569,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_y",
+   "from": -2,
+   "to": 1,
+   "outcome": "PASS",
+   "dVol": 0.00011538156124623636,
+   "dCom": 2.2403150449238242e-15,
+   "extremeMoved": 2.999999999999999,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cylinder",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "move",
+  "label": "move z",
+  "param": "cyl1_z",
+  "placement": {
+   "originAlongAxis": 23.5,
+   "solidExtremeAlongAxis": 16.000000000000007,
+   "delta": 7.499999999999993,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_z",
+   "from": 1,
+   "to": 4,
+   "outcome": "PASS",
+   "dVol": 0.00011538156122558528,
+   "dCom": 6.7317158801797605e-15,
+   "extremeMoved": 3.0000000000000036,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cylinder",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "turn",
+  "label": "turn x",
+  "param": "cyl1_rx",
+  "placement": {
+   "originAlongAxis": 1,
+   "solidExtremeAlongAxis": 16.000000000000007,
+   "delta": -15.000000000000007,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_rx",
+   "from": 0,
+   "to": 4.074366543152521,
+   "outcome": "PASS",
+   "dVol": 0.0001181765776332544,
+   "dCom": 1.3506679228099564e-15,
+   "extremeMoved": 0.6725829038879034,
+   "extremeExpected": 2
+  }
+ },
+ {
+  "script": "cylinder",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "turn",
+  "label": "turn y",
+  "param": "cyl1_ry",
+  "placement": {
+   "originAlongAxis": 4,
+   "solidExtremeAlongAxis": 13.999350427854639,
+   "delta": -9.999350427854639,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_ry",
+   "from": 0,
+   "to": 4.074366543152521,
+   "outcome": "PASS",
+   "dVol": 0.00011817657764097443,
+   "dCom": 2.189719208191899e-15,
+   "extremeMoved": 1.025116138530695,
+   "extremeExpected": 2
+  }
+ },
+ {
+  "script": "cylinder",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "turn",
+  "label": "turn z",
+  "param": "cyl1_rz",
+  "placement": {
+   "originAlongAxis": -2,
+   "solidExtremeAlongAxis": 7.999415875543101,
+   "delta": -9.9994158755431,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_rz",
+   "from": 10,
+   "to": 14.074366543152522,
+   "outcome": "PASS",
+   "dVol": 0.00011538156124063932,
+   "dCom": 2.2618565357403995e-15,
+   "extremeMoved": 0.00027642461441423904,
+   "extremeExpected": 2.0000000000000004
+  }
+ },
+ {
+  "script": "cylinder-unturned",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "size",
+  "label": "across",
+  "param": "cyl1_radius",
+  "placement": {
+   "originAlongAxis": 14,
+   "solidExtremeAlongAxis": 13.999845562132384,
+   "delta": 0.00015443786761615286,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_radius",
+   "from": 20,
+   "to": 26,
+   "outcome": "PASS",
+   "dVol": 0.0001128381234997295,
+   "dCom": 4.7897156256047016e-11,
+   "extremeMoved": 2.999953668639714,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cylinder-unturned",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "size",
+  "label": "height",
+  "param": "cyl1_height",
+  "placement": {
+   "originAlongAxis": 16,
+   "solidExtremeAlongAxis": 16,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_height",
+   "from": 30,
+   "to": 36,
+   "outcome": "PASS",
+   "dVol": 0.00012461481716998708,
+   "dCom": 1.2125079505168585e-15,
+   "extremeMoved": 3.000000000000007,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cylinder-unturned",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "move",
+  "label": "move x",
+  "param": "cyl1_x",
+  "placement": {
+   "originAlongAxis": 26.5,
+   "solidExtremeAlongAxis": 13.999845562132384,
+   "delta": 12.500154437867616,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_x",
+   "from": 4,
+   "to": 7,
+   "outcome": "PASS",
+   "dVol": 0.00011538156125067536,
+   "dCom": 6.46244724497257e-15,
+   "extremeMoved": 3.0000000000000018,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cylinder-unturned",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "move",
+  "label": "move y",
+  "param": "cyl1_y",
+  "placement": {
+   "originAlongAxis": 20.5,
+   "solidExtremeAlongAxis": 7.9997313374064305,
+   "delta": 12.50026866259357,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_y",
+   "from": -2,
+   "to": 1,
+   "outcome": "PASS",
+   "dVol": 0.00011538156124874533,
+   "dCom": 2.4557299530895767e-15,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cylinder-unturned",
+  "feature": "cyl1",
+  "kind": "cylinder",
+  "handle": "move",
+  "label": "move z",
+  "param": "cyl1_z",
+  "placement": {
+   "originAlongAxis": 23.5,
+   "solidExtremeAlongAxis": 16,
+   "delta": 7.5,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cyl1_z",
+   "from": 1,
+   "to": 4,
+   "outcome": "PASS",
+   "dVol": 0.00011538156123176127,
+   "dCom": 5.7192658118007244e-15,
+   "extremeMoved": 3.0000000000000107,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cone",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "size",
+  "label": "across",
+  "param": "cone1_radius",
+  "placement": {
+   "originAlongAxis": 14,
+   "solidExtremeAlongAxis": 13.999895230296628,
+   "delta": 0.00010476970337158775,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cone1_radius",
+   "from": 20,
+   "to": 26,
+   "outcome": "PASS",
+   "dVol": 0.0001823175286715818,
+   "dCom": 1.1229677240394308e-16,
+   "extremeMoved": 2.999968569088983,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cone",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "size",
+  "label": "height",
+  "param": "cone1_height",
+  "placement": {
+   "originAlongAxis": 16,
+   "solidExtremeAlongAxis": 16,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": true,
+  "drag": {
+   "param": "cone1_height",
+   "from": 30,
+   "to": 36,
+   "outcome": "PASS",
+   "dVol": 0.00018231752867063685,
+   "dCom": 9.700063604134866e-18,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cone",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "move",
+  "label": "move x",
+  "param": "cone1_x",
+  "placement": {
+   "originAlongAxis": 26.5,
+   "solidExtremeAlongAxis": 13.999895230296628,
+   "delta": 12.500104769703372,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cone1_x",
+   "from": 4,
+   "to": 7,
+   "outcome": "PASS",
+   "dVol": 0.00018231752867054035,
+   "dCom": 8.616596326630094e-17,
+   "extremeMoved": 3.0000000000000018,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cone",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "move",
+  "label": "move y",
+  "param": "cone1_y",
+  "placement": {
+   "originAlongAxis": 20.5,
+   "solidExtremeAlongAxis": 7.999684990116744,
+   "delta": 12.500315009883256,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cone1_y",
+   "from": -2,
+   "to": 1,
+   "outcome": "PASS",
+   "dVol": 0.0001823175286706851,
+   "dCom": 5.3853727041438086e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cone",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "move",
+  "label": "move z",
+  "param": "cone1_z",
+  "placement": {
+   "originAlongAxis": 23.5,
+   "solidExtremeAlongAxis": 16,
+   "delta": 7.5,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cone1_z",
+   "from": 1,
+   "to": 4,
+   "outcome": "PASS",
+   "dVol": 0.00018231752867039558,
+   "dCom": 5.3853727041438086e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cone",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "turn",
+  "label": "turn x",
+  "param": "cone1_rx",
+  "placement": {
+   "originAlongAxis": 1,
+   "solidExtremeAlongAxis": 16,
+   "delta": -15,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cone1_rx",
+   "from": 0,
+   "to": 4.074366543152521,
+   "outcome": "PASS",
+   "dVol": 0.0001823175286706851,
+   "dCom": 3.197116433325432e-17,
+   "extremeMoved": -0.03790994666562497,
+   "extremeExpected": 2
+  }
+ },
+ {
+  "script": "cone",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "turn",
+  "label": "turn y",
+  "param": "cone1_ry",
+  "placement": {
+   "originAlongAxis": 4,
+   "solidExtremeAlongAxis": 13.999895230296628,
+   "delta": -9.999895230296628,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cone1_ry",
+   "from": 0,
+   "to": 4.074366543152521,
+   "outcome": "PASS",
+   "dVol": 0.00018231752867082983,
+   "dCom": 2.131410955550288e-17,
+   "extremeMoved": -1.0741072415745236,
+   "extremeExpected": 2
+  }
+ },
+ {
+  "script": "cone",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "turn",
+  "label": "turn z",
+  "param": "cone1_rz",
+  "placement": {
+   "originAlongAxis": -2,
+   "solidExtremeAlongAxis": 7.999684990116744,
+   "delta": -9.999684990116744,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cone1_rz",
+   "from": 10,
+   "to": 14.074366543152522,
+   "outcome": "PASS",
+   "dVol": 0.00018231752867039558,
+   "dCom": 6.46244724497257e-17,
+   "extremeMoved": -0.00006696051672960834,
+   "extremeExpected": 2.0000000000000004
+  }
+ },
+ {
+  "script": "cone-unturned",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "size",
+  "label": "across",
+  "param": "cone1_radius",
+  "placement": {
+   "originAlongAxis": 14,
+   "solidExtremeAlongAxis": 14.000000000000002,
+   "delta": -1.7763568394002505e-15,
+   "onExtreme": true
+  },
+  "onVertex": true,
+  "drag": {
+   "param": "cone1_radius",
+   "from": 20,
+   "to": 26,
+   "outcome": "PASS",
+   "dVol": 0.00017671140241154714,
+   "dCom": 2.807419310098577e-17,
+   "extremeMoved": 2.9999999999999982,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cone-unturned",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "size",
+  "label": "height",
+  "param": "cone1_height",
+  "placement": {
+   "originAlongAxis": 16,
+   "solidExtremeAlongAxis": 16,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": true,
+  "drag": {
+   "param": "cone1_height",
+   "from": 30,
+   "to": 36,
+   "outcome": "PASS",
+   "dVol": 0.00018231752867136055,
+   "dCom": 3.8800254416539474e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cone-unturned",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "move",
+  "label": "move x",
+  "param": "cone1_x",
+  "placement": {
+   "originAlongAxis": 26.5,
+   "solidExtremeAlongAxis": 14.000000000000002,
+   "delta": 12.499999999999998,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cone1_x",
+   "from": 4,
+   "to": 7,
+   "outcome": "PASS",
+   "dVol": 0.00018231752867039558,
+   "dCom": 6.46244724497257e-17,
+   "extremeMoved": 2.9999999999999982,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cone-unturned",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "move",
+  "label": "move y",
+  "param": "cone1_y",
+  "placement": {
+   "originAlongAxis": 20.5,
+   "solidExtremeAlongAxis": 7.999874771632875,
+   "delta": 12.500125228367125,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cone1_y",
+   "from": -2,
+   "to": 1,
+   "outcome": "PASS",
+   "dVol": 0.00018231752867082983,
+   "dCom": 6.46244724497257e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "cone-unturned",
+  "feature": "cone1",
+  "kind": "cone",
+  "handle": "move",
+  "label": "move z",
+  "param": "cone1_z",
+  "placement": {
+   "originAlongAxis": 23.5,
+   "solidExtremeAlongAxis": 16,
+   "delta": 7.5,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "cone1_z",
+   "from": 1,
+   "to": 4,
+   "outcome": "PASS",
+   "dVol": 0.00018231752867082983,
+   "dCom": 3.231223622486285e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "ring",
+  "feature": "ring1",
+  "kind": "torus",
+  "handle": "size",
+  "label": "across",
+  "param": "ring1_ring",
+  "placement": {
+   "originAlongAxis": 18,
+   "solidExtremeAlongAxis": 22.999939573132973,
+   "delta": -4.999939573132973,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "ring1_ring",
+   "from": 40,
+   "to": 46,
+   "outcome": "PASS",
+   "dVol": 0.00014707349800350435,
+   "dCom": 7.229692077899681e-7,
+   "extremeMoved": 2.999999999999993,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "ring",
+  "feature": "ring1",
+  "kind": "torus",
+  "handle": "size",
+  "label": "tube across",
+  "param": "ring1_tube",
+  "placement": {
+   "originAlongAxis": 6,
+   "solidExtremeAlongAxis": 5.999550912915201,
+   "delta": 0.00044908708479862725,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "ring1_tube",
+   "from": 10,
+   "to": 16,
+   "outcome": "PASS",
+   "dVol": 0.0001088787736268459,
+   "dCom": 9.115635411848637e-8,
+   "extremeMoved": 2.9997305477480944,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "ring",
+  "feature": "ring1",
+  "kind": "torus",
+  "handle": "move",
+  "label": "move x",
+  "param": "ring1_x",
+  "placement": {
+   "originAlongAxis": 31,
+   "solidExtremeAlongAxis": 22.999939573132973,
+   "delta": 8.000060426867027,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "ring1_x",
+   "from": 3,
+   "to": 6,
+   "outcome": "PASS",
+   "dVol": 0.0001467468853644997,
+   "dCom": 8.000235993799833e-7,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "ring",
+  "feature": "ring1",
+  "kind": "torus",
+  "handle": "move",
+  "label": "move y",
+  "param": "ring1_y",
+  "placement": {
+   "originAlongAxis": 30,
+   "solidExtremeAlongAxis": 21.99993957313295,
+   "delta": 8.000060426867051,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "ring1_y",
+   "from": 2,
+   "to": 5,
+   "outcome": "PASS",
+   "dVol": 0.000146746885366097,
+   "dCom": 8.00023599735591e-7,
+   "extremeMoved": 2.999999999999993,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "ring",
+  "feature": "ring1",
+  "kind": "torus",
+  "handle": "move",
+  "label": "move z",
+  "param": "ring1_z",
+  "placement": {
+   "originAlongAxis": 29,
+   "solidExtremeAlongAxis": 5.999550912915201,
+   "delta": 23.0004490870848,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "ring1_z",
+   "from": 1,
+   "to": 4,
+   "outcome": "FAIL",
+   "dVol": 0.0001467468849697245,
+   "dCom": 8.00023513659216e-7,
+   "extremeMoved": 2.999999999999999,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "sphere",
+  "feature": "ball1",
+  "kind": "sphere",
+  "handle": "size",
+  "label": "across",
+  "param": "ball1_radius",
+  "placement": {
+   "originAlongAxis": 18,
+   "solidExtremeAlongAxis": 18,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "ball1_radius",
+   "from": 30,
+   "to": 36,
+   "outcome": "PASS",
+   "dVol": 0.00007093796176100658,
+   "dCom": 4.339058470564158e-13,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "sphere",
+  "feature": "ball1",
+  "kind": "sphere",
+  "handle": "move",
+  "label": "move x",
+  "param": "ball1_x",
+  "placement": {
+   "originAlongAxis": 25.5,
+   "solidExtremeAlongAxis": 18,
+   "delta": 7.5,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "ball1_x",
+   "from": 3,
+   "to": 6,
+   "outcome": "PASS",
+   "dVol": 0.00007093796187583365,
+   "dCom": 5.223535841292314e-13,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "sphere",
+  "feature": "ball1",
+  "kind": "sphere",
+  "handle": "move",
+  "label": "move y",
+  "param": "ball1_y",
+  "placement": {
+   "originAlongAxis": 24.5,
+   "solidExtremeAlongAxis": 17.000000000000004,
+   "delta": 7.4999999999999964,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "ball1_y",
+   "from": 2,
+   "to": 5,
+   "outcome": "PASS",
+   "dVol": 0.00007093796177675993,
+   "dCom": 1.309392298913125e-12,
+   "extremeMoved": 2.9999999999999964,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "sphere",
+  "feature": "ball1",
+  "kind": "sphere",
+  "handle": "move",
+  "label": "move z",
+  "param": "ball1_z",
+  "placement": {
+   "originAlongAxis": 23.5,
+   "solidExtremeAlongAxis": 16.000000000000004,
+   "delta": 7.4999999999999964,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "ball1_z",
+   "from": 1,
+   "to": 4,
+   "outcome": "PASS",
+   "dVol": 0.00007093796176633789,
+   "dCom": 1.0477326295517062e-12,
+   "extremeMoved": 2.9999999999999964,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "extrude",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 1",
+  "param": "sk1_p0u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "extrude",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 2",
+  "param": "sk1_p1u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "extrude",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 3",
+  "param": "sk1_p2u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "extrude",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 4",
+  "param": "sk1_p3u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "extrude",
+  "feature": "pull1",
+  "kind": "extrude",
+  "handle": "size",
+  "label": "height",
+  "param": "pull1_height",
+  "placement": {
+   "originAlongAxis": 10,
+   "solidExtremeAlongAxis": 10,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "pull1_height",
+   "from": 10,
+   "to": 13,
+   "outcome": "PASS",
+   "dVol": 2.3320376968536626e-16,
+   "dCom": 0,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 1",
+  "param": "sk1_p0u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "pocket",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 2",
+  "param": "sk1_p1u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "pocket",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 3",
+  "param": "sk1_p2u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "pocket",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 4",
+  "param": "sk1_p3u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "pocket",
+  "feature": "pull1",
+  "kind": "extrude",
+  "handle": "size",
+  "label": "height",
+  "param": "pull1_height",
+  "placement": {
+   "originAlongAxis": 10,
+   "solidExtremeAlongAxis": 10,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "pull1_height",
+   "from": 10,
+   "to": 13,
+   "outcome": "PASS",
+   "dVol": 2.3320376968536626e-16,
+   "dCom": 0,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk2",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 1",
+  "param": "sk2_p0u",
+  "placement": {
+   "originAlongAxis": 15,
+   "solidExtremeAlongAxis": 40,
+   "delta": -25,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "sk2_p0u",
+   "from": 15,
+   "to": 18,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 1.741861189847285e-17,
+   "extremeMoved": 0,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk2",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 2",
+  "param": "sk2_p1u",
+  "placement": {
+   "originAlongAxis": 25,
+   "solidExtremeAlongAxis": 40,
+   "delta": -15,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "sk2_p1u",
+   "from": 25,
+   "to": 28,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 1.741861189847285e-17,
+   "extremeMoved": 0,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk2",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 3",
+  "param": "sk2_p2u",
+  "placement": {
+   "originAlongAxis": 25,
+   "solidExtremeAlongAxis": 40,
+   "delta": -15,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "sk2_p2u",
+   "from": 25,
+   "to": 28,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 1.741861189847285e-17,
+   "extremeMoved": 0,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "sk2",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 4",
+  "param": "sk2_p3u",
+  "placement": {
+   "originAlongAxis": 15,
+   "solidExtremeAlongAxis": 40,
+   "delta": -25,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "sk2_p3u",
+   "from": 15,
+   "to": 18,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 1.741861189847285e-17,
+   "extremeMoved": 0,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "pocket",
+  "feature": "pocket1",
+  "kind": "pocket",
+  "handle": "size",
+  "label": "deep",
+  "param": "pocket1_depth",
+  "placement": {
+   "originAlongAxis": 6,
+   "solidExtremeAlongAxis": 0,
+   "delta": 6,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "pocket1_depth",
+   "from": 4,
+   "to": 7,
+   "outcome": "PASS",
+   "dVol": 1.6097251358812887e-16,
+   "dCom": 2.786977903755656e-16,
+   "extremeMoved": 0,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "sketch corners+round",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 1",
+  "param": "sk1_p0u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "sketch corners+round",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 2",
+  "param": "sk1_p1u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "sketch corners+round",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 3",
+  "param": "sk1_p2u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "sketch corners+round",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 4",
+  "param": "sk1_p3u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "sketch corners+round",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "radius",
+  "label": "round corner 1",
+  "param": "sk1_r0",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "sketch corners+round",
+  "feature": "pull1",
+  "kind": "extrude",
+  "handle": "size",
+  "label": "height",
+  "param": "pull1_height",
+  "placement": {
+   "originAlongAxis": 10,
+   "solidExtremeAlongAxis": 10.000000000000005,
+   "delta": -5.329070518200751e-15,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "pull1_height",
+   "from": 10,
+   "to": 13,
+   "outcome": "PASS",
+   "dVol": 0.000002944860342422847,
+   "dCom": 0.0000010319994315986316,
+   "extremeMoved": 3.0000000000000018,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "width",
+  "param": "box1_width",
+  "placement": {
+   "originAlongAxis": 25,
+   "solidExtremeAlongAxis": 25,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_width",
+   "from": 40,
+   "to": 46,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 0,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "depth",
+  "param": "box1_depth",
+  "placement": {
+   "originAlongAxis": 12,
+   "solidExtremeAlongAxis": 12,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_depth",
+   "from": 30,
+   "to": 36,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 0,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "height",
+  "param": "box1_height",
+  "placement": {
+   "originAlongAxis": 12,
+   "solidExtremeAlongAxis": 12,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_height",
+   "from": 20,
+   "to": 26,
+   "outcome": "PASS",
+   "dVol": 1.1660188484268313e-16,
+   "dCom": 6.304054531615542e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move x",
+  "param": "box1_x",
+  "placement": {
+   "originAlongAxis": 35,
+   "solidExtremeAlongAxis": 25,
+   "delta": 10,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_x",
+   "from": 5,
+   "to": 8,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move y",
+  "param": "box1_y",
+  "placement": {
+   "originAlongAxis": 27,
+   "solidExtremeAlongAxis": 12,
+   "delta": 15,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_y",
+   "from": -3,
+   "to": 0,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move z",
+  "param": "box1_z",
+  "placement": {
+   "originAlongAxis": 32,
+   "solidExtremeAlongAxis": 12,
+   "delta": 20,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_z",
+   "from": 2,
+   "to": 5,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "fillet edge",
+  "feature": "round1",
+  "kind": "fillet",
+  "handle": "radius",
+  "label": "round edge",
+  "param": "round1_size",
+  "placement": {
+   "originAlongAxis": 9,
+   "solidExtremeAlongAxis": -8,
+   "delta": 17,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "round1_size",
+   "from": 3,
+   "to": 6,
+   "outcome": "PASS",
+   "dVol": 0.000006394208590366524,
+   "dCom": 0.0000021141747490909288,
+   "extremeMoved": 0,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "move",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "width",
+  "param": "box1_width",
+  "placement": {
+   "originAlongAxis": 20,
+   "solidExtremeAlongAxis": 20,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_width",
+   "from": 40,
+   "to": 46,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 0,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "move",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "depth",
+  "param": "box1_depth",
+  "placement": {
+   "originAlongAxis": 15,
+   "solidExtremeAlongAxis": 15,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_depth",
+   "from": 30,
+   "to": 36,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 0,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "move",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "height",
+  "param": "box1_height",
+  "placement": {
+   "originAlongAxis": 10,
+   "solidExtremeAlongAxis": 10,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_height",
+   "from": 20,
+   "to": 26,
+   "outcome": "PASS",
+   "dVol": 1.1660188484268313e-16,
+   "dCom": 6.304054531615542e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "move",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move x",
+  "param": "box1_x",
+  "placement": {
+   "originAlongAxis": 30,
+   "solidExtremeAlongAxis": 20,
+   "delta": 10,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_x",
+   "from": 0,
+   "to": 3,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "move",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move y",
+  "param": "box1_y",
+  "placement": {
+   "originAlongAxis": 30,
+   "solidExtremeAlongAxis": 15,
+   "delta": 15,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_y",
+   "from": 0,
+   "to": 3,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "move",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move z",
+  "param": "box1_z",
+  "placement": {
+   "originAlongAxis": 30,
+   "solidExtremeAlongAxis": 10,
+   "delta": 20,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_z",
+   "from": 0,
+   "to": 3,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "move",
+  "feature": "move1",
+  "kind": "move",
+  "handle": "move",
+  "label": "move x",
+  "param": "move1_x",
+  "placement": {
+   "originAlongAxis": 31.575836902790225,
+   "solidExtremeAlongAxis": 30,
+   "delta": 1.5758369027902255,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "move1_x",
+   "from": 10,
+   "to": 13,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "move",
+  "feature": "move1",
+  "kind": "move",
+  "handle": "move",
+  "label": "move y",
+  "param": "move1_y",
+  "placement": {
+   "originAlongAxis": 26.575836902790225,
+   "solidExtremeAlongAxis": 20,
+   "delta": 6.5758369027902255,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "move1_y",
+   "from": 5,
+   "to": 8,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "move",
+  "feature": "move1",
+  "kind": "move",
+  "handle": "move",
+  "label": "move z",
+  "param": "move1_z",
+  "placement": {
+   "originAlongAxis": 24.575836902790225,
+   "solidExtremeAlongAxis": 13,
+   "delta": 11.575836902790225,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "move1_z",
+   "from": 3,
+   "to": 6,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "width",
+  "param": "box1_width",
+  "placement": {
+   "originAlongAxis": 25,
+   "solidExtremeAlongAxis": 25,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_width",
+   "from": 40,
+   "to": 46,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 0,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "depth",
+  "param": "box1_depth",
+  "placement": {
+   "originAlongAxis": 12,
+   "solidExtremeAlongAxis": 12,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_depth",
+   "from": 30,
+   "to": 36,
+   "outcome": "PASS",
+   "dVol": 0,
+   "dCom": 0,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "size",
+  "label": "height",
+  "param": "box1_height",
+  "placement": {
+   "originAlongAxis": 12,
+   "solidExtremeAlongAxis": 12,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_height",
+   "from": 20,
+   "to": 26,
+   "outcome": "PASS",
+   "dVol": 1.1660188484268313e-16,
+   "dCom": 6.304054531615542e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move x",
+  "param": "box1_x",
+  "placement": {
+   "originAlongAxis": 35,
+   "solidExtremeAlongAxis": 25,
+   "delta": 10,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_x",
+   "from": 5,
+   "to": 8,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move y",
+  "param": "box1_y",
+  "placement": {
+   "originAlongAxis": 27,
+   "solidExtremeAlongAxis": 12,
+   "delta": 15,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_y",
+   "from": -3,
+   "to": 0,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "box1",
+  "kind": "box",
+  "handle": "move",
+  "label": "move z",
+  "param": "box1_z",
+  "placement": {
+   "originAlongAxis": 32,
+   "solidExtremeAlongAxis": 12,
+   "delta": 20,
+   "onExtreme": false
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "box1_z",
+   "from": 2,
+   "to": 5,
+   "outcome": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dCom": 6.597223680310971e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "draft",
+  "feature": "draft1",
+  "kind": "draft",
+  "handle": "size",
+  "label": "draft angle",
+  "param": "draft1_angle",
+  "placement": {
+   "originAlongAxis": 12,
+   "solidExtremeAlongAxis": 12.000000000000002,
+   "delta": -1.7763568394002505e-15,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "draft1_angle",
+   "from": 5,
+   "to": 8,
+   "outcome": "PASS",
+   "dVol": 1.5265516450756426e-16,
+   "dCom": 4.871895919905034e-17,
+   "extremeMoved": -1.7763568394002505e-15,
+   "extremeExpected": 3
+  }
+ },
+ {
+  "script": "datum",
+  "feature": "pl1",
+  "kind": "datum",
+  "handle": "size",
+  "label": "offset",
+  "param": "pl1_offset",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "datum",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 1",
+  "param": "sk1_p0u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "datum",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 2",
+  "param": "sk1_p1u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "datum",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 3",
+  "param": "sk1_p2u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "datum",
+  "feature": "sk1",
+  "kind": "sketch",
+  "handle": "point",
+  "label": "corner 4",
+  "param": "sk1_p3u",
+  "baseRefused": "not built"
+ },
+ {
+  "script": "datum",
+  "feature": "pull1",
+  "kind": "extrude",
+  "handle": "size",
+  "label": "height",
+  "param": "pull1_height",
+  "placement": {
+   "originAlongAxis": 13,
+   "solidExtremeAlongAxis": 13,
+   "delta": 0,
+   "onExtreme": true
+  },
+  "onVertex": false,
+  "drag": {
+   "param": "pull1_height",
+   "from": 6,
+   "to": 9,
+   "outcome": "PASS",
+   "dVol": 1.263187085795734e-16,
+   "dCom": 7.369569964455122e-17,
+   "extremeMoved": 3,
+   "extremeExpected": 3
+  }
+ }
+]

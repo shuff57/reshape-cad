@@ -1,0 +1,1216 @@
+[
+ {
+  "id": "circle-across-0.5",
+  "feature": ".circle",
+  "what": "circle across 0.5 (h 10)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.25,
+       0
+      ],
+      [
+       0.25,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 1.9634954084936211,
+   "bbox": [
+    -0.25,
+    -0.25,
+    0,
+    0.25,
+    0.25,
+    10
+   ],
+   "com": [
+    2.4737647522494015e-17,
+    -2.44063397431749e-17,
+    5
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 1.9634954084936223,
+   "bbox": [
+    -0.25,
+    -0.25,
+    0,
+    0.25,
+    0.25,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 1.9634954084936207
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [],
+  "pieceNote": null,
+  "guardCode": "curves-too-small",
+  "truck": {
+   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 0.25 mm on a part about 20 mm across, so the 3D build could be off by about 0.039% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller.",
+   "guard": "curves-too-small"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.5-h1",
+  "feature": ".circle",
+  "what": "circle across 0.5 (h 0.5)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.25,
+       0
+      ],
+      [
+       0.25,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.5
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.09817477042468106,
+   "bbox": [
+    -0.25,
+    -0.25,
+    0,
+    0.25,
+    0.25,
+    0.5
+   ],
+   "com": [
+    2.2087185287941084e-17,
+    -2.484808344893372e-17,
+    0.24999999999999992
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.09817477042468108,
+   "bbox": [
+    -0.25,
+    -0.25,
+    0,
+    0.25,
+    0.25,
+    0.5
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.09817477042468103
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [],
+  "pieceNote": null,
+  "guardCode": "curves-too-small",
+  "truck": {
+   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 0.25 mm on a part about 20 mm across, so the 3D build could be off by about 0.039% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller.",
+   "guard": "curves-too-small"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.1",
+  "feature": ".circle",
+  "what": "circle across 0.1 (h 10)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.05,
+       0
+      ],
+      [
+       0.05,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.07853981633974483,
+   "bbox": [
+    -0.05,
+    -0.05,
+    0,
+    0.05,
+    0.05,
+    10
+   ],
+   "com": [
+    -1.6565388965955818e-17,
+    -4.0982082077234454e-18,
+    5
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.07853981633974479,
+   "bbox": [
+    -0.05,
+    -0.05,
+    0,
+    0.05,
+    0.05,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.07853981633974483
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [],
+  "pieceNote": null,
+  "guardCode": "curves-too-small",
+  "truck": {
+   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 0.05 mm on a part about 20 mm across, so the 3D build could be off by about 0.27% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller.",
+   "guard": "curves-too-small"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.1-h1",
+  "feature": ".circle",
+  "what": "circle across 0.1 (h 0.1)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.05,
+       0
+      ],
+      [
+       0.05,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.1
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.0007853981633974483,
+   "bbox": [
+    -0.05,
+    -0.05,
+    0,
+    0.05,
+    0.05,
+    0.1
+   ],
+   "com": [
+    -2.965808571378808e-18,
+    -4.7452937142060936e-18,
+    0.05
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.0007853981633974484,
+   "bbox": [
+    -0.05,
+    -0.05,
+    0,
+    0.05,
+    0.05,
+    0.1
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.0007853981633974484
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [],
+  "pieceNote": null,
+  "guardCode": "curves-too-small",
+  "truck": {
+   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 0.05 mm on a part about 20 mm across, so the 3D build could be off by about 0.27% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller.",
+   "guard": "curves-too-small"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.05",
+  "feature": ".circle",
+  "what": "circle across 0.05 (h 10)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.025,
+       0
+      ],
+      [
+       0.025,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.019634954084936207,
+   "bbox": [
+    -0.025,
+    -0.025,
+    0,
+    0.025,
+    0.025,
+    10
+   ],
+   "com": [
+    -8.282694482977909e-18,
+    -2.0491041038617227e-18,
+    5
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.019634954084936197,
+   "bbox": [
+    -0.025,
+    -0.025,
+    0,
+    0.025,
+    0.025,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.019634954084936207
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [],
+  "pieceNote": null,
+  "guardCode": "curves-too-small",
+  "truck": {
+   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 0.025 mm on a part about 20 mm across, so the 3D build could be off by about 4.4% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller.",
+   "guard": "curves-too-small"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.05-h1",
+  "feature": ".circle",
+  "what": "circle across 0.05 (h 0.05)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.025,
+       0
+      ],
+      [
+       0.025,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.05
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.00009817477042468104,
+   "bbox": [
+    -0.025,
+    -0.025,
+    0,
+    0.025,
+    0.025,
+    0.05
+   ],
+   "com": [
+    -1.482904285689404e-18,
+    -2.3726468571030468e-18,
+    0.025
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.00009817477042468105,
+   "bbox": [
+    -0.025,
+    -0.025,
+    0,
+    0.025,
+    0.025,
+    0.05
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.00009817477042468105
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [],
+  "pieceNote": null,
+  "guardCode": "curves-too-small",
+  "truck": {
+   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 0.025 mm on a part about 20 mm across, so the 3D build could be off by about 4.4% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller.",
+   "guard": "curves-too-small"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.02",
+  "feature": ".circle",
+  "what": "circle across 0.02 (h 10)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.01,
+       0
+      ],
+      [
+       0.01,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.0031415926535897924,
+   "bbox": [
+    -0.01,
+    -0.01,
+    0,
+    0.01,
+    0.01,
+    10
+   ],
+   "com": [
+    -4.583522337585432e-18,
+    -9.478791598866933e-19,
+    4.999999999999999
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.0031415926535897937,
+   "bbox": [
+    -0.01,
+    -0.01,
+    0,
+    0.01,
+    0.01,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.0031415926535897937
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [],
+  "pieceNote": null,
+  "guardCode": "curves-too-small",
+  "truck": {
+   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 0.01 mm on a part about 20 mm across, so the 3D build could be off by about 7.3% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller.",
+   "guard": "curves-too-small"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.02-h1",
+  "feature": ".circle",
+  "what": "circle across 0.02 (h 0.02)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.01,
+       0
+      ],
+      [
+       0.01,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.02
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.000006283185307179586,
+   "bbox": [
+    -0.01,
+    -0.01,
+    0,
+    0.01,
+    0.01,
+    0.02
+   ],
+   "com": [
+    -2.8962974329871176e-18,
+    -8.899532112269505e-19,
+    0.01
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.0000062831853071795875,
+   "bbox": [
+    -0.01,
+    -0.01,
+    0,
+    0.01,
+    0.01,
+    0.02
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.0000062831853071795875
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [],
+  "pieceNote": null,
+  "guardCode": "curves-too-small",
+  "truck": {
+   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 0.01 mm on a part about 20 mm across, so the 3D build could be off by about 7.3% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller.",
+   "guard": "curves-too-small"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.01",
+  "feature": ".circle",
+  "what": "circle across 0.01 (h 10)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.005,
+       0
+      ],
+      [
+       0.005,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.0007853981633974481,
+   "bbox": [
+    -0.005,
+    -0.005,
+    0,
+    0.005,
+    0.005,
+    10
+   ],
+   "com": [
+    -2.291761168792716e-18,
+    -4.739395799433466e-19,
+    4.999999999999999
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.0007853981633974484,
+   "bbox": [
+    -0.005,
+    -0.005,
+    0,
+    0.005,
+    0.005,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.0007853981633974484
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [],
+  "pieceNote": null,
+  "guardCode": "curves-too-small",
+  "truck": {
+   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 0.005 mm on a part about 20 mm across, so the 3D build could be off by roughly 90% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller.",
+   "guard": "curves-too-small"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.01-h1",
+  "feature": ".circle",
+  "what": "circle across 0.01 (h 0.01)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.005,
+       0
+      ],
+      [
+       0.005,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.01
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 7.853981633974482e-7,
+   "bbox": [
+    -0.005,
+    -0.005,
+    0,
+    0.005,
+    0.005,
+    0.01
+   ],
+   "com": [
+    -1.4481487164935588e-18,
+    -4.449766056134753e-19,
+    0.005
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 7.853981633974484e-7,
+   "bbox": [
+    -0.005,
+    -0.005,
+    0,
+    0.005,
+    0.005,
+    0.01
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 7.853981633974484e-7
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [],
+  "pieceNote": null,
+  "guardCode": "curves-too-small",
+  "truck": {
+   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 0.005 mm on a part about 20 mm across, so the 3D build could be off by roughly 90% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller.",
+   "guard": "curves-too-small"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.005",
+  "feature": ".circle",
+  "what": "circle across 0.005 (h 10)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.0025,
+       0
+      ],
+      [
+       0.0025,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.00019634954084936203,
+   "bbox": [
+    -0.0025,
+    -0.0025,
+    0,
+    0.0025,
+    0.0025,
+    10
+   ],
+   "com": [
+    -1.145880584396358e-18,
+    -2.369697899716733e-19,
+    4.999999999999999
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.0001963495408493621,
+   "bbox": [
+    -0.0025,
+    -0.0025,
+    0,
+    0.0025,
+    0.0025,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.0001963495408493621
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "too-small-curved",
+    "sentence": "This circle is 0.005 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "too-small-curved",
+  "truck": {
+   "refused": "This circle is 0.005 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger.",
+   "guard": "too-small-curved"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.005-h1",
+  "feature": ".circle",
+  "what": "circle across 0.005 (h 0.005)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.0025,
+       0
+      ],
+      [
+       0.0025,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.005
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 9.817477042468103e-8,
+   "bbox": [
+    -0.0025,
+    -0.0025,
+    0,
+    0.0025,
+    0.0025,
+    0.005
+   ],
+   "com": [
+    -7.240743582467794e-19,
+    -2.2248830280673763e-19,
+    0.0025
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 9.817477042468105e-8,
+   "bbox": [
+    -0.0025,
+    -0.0025,
+    0,
+    0.0025,
+    0.0025,
+    0.005
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 9.817477042468105e-8
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "too-small-curved",
+    "sentence": "This circle is 0.005 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "too-small-curved",
+  "truck": {
+   "refused": "This circle is 0.005 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger.",
+   "guard": "too-small-curved"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.002",
+  "feature": ".circle",
+  "what": "circle across 0.002 (h 10)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.001,
+       0
+      ],
+      [
+       0.001,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 0.00003141592653589794,
+   "bbox": [
+    -0.001,
+    -0.001,
+    0,
+    0.001,
+    0.001,
+    10
+   ],
+   "com": [
+    3.291247082939905e-19,
+    -1.1560505378826416e-19,
+    5
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 0.00003141592653589795,
+   "bbox": [
+    -0.001,
+    -0.001,
+    0,
+    0.001,
+    0.001,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 0.000031415926535897935
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "too-small-curved",
+    "sentence": "This circle is 0.002 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "too-small-curved",
+  "truck": {
+   "refused": "This circle is 0.002 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger.",
+   "guard": "too-small-curved"
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "circle-across-0.002-h1",
+  "feature": ".circle",
+  "what": "circle across 0.002 (h 0.002)",
+  "probe": null,
+  "scriptErrorsPlain": [],
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -0.001,
+       0
+      ],
+      [
+       0.001,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.002
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 6.283185307179588e-9,
+   "bbox": [
+    -0.001,
+    -0.001,
+    0,
+    0.001,
+    0.001,
+    0.002
+   ],
+   "com": [
+    4.0176355992918765e-19,
+    -1.1782921685603216e-19,
+    0.001
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 6.283185307179586e-9,
+   "bbox": [
+    -0.001,
+    -0.001,
+    0,
+    0.001,
+    0.001,
+    0.002
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 6.283185307179587e-9
+  },
+  "curved": true,
+  "guarded": true,
+  "notices": [],
+  "guardVerdicts": [
+   {
+    "sketch": "sk1",
+    "code": "too-small-curved",
+    "sentence": "This circle is 0.002 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger."
+   }
+  ],
+  "pieceNote": null,
+  "guardCode": "too-small-curved",
+  "truck": {
+   "refused": "This circle is 0.002 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger.",
+   "guard": "too-small-curved"
+  },
+  "outcome": "TRUCK-REFUSED"
+ }
+]

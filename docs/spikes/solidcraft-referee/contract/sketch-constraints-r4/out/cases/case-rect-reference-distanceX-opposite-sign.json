@@ -1,0 +1,65 @@
+[
+ {
+  "id": "rect-reference-distanceX-opposite-sign",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceX -30 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "REFUSED": 40
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceX -30 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceX -30 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "REFUSED": 40
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceX -30 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceX -30 (brep-rs) but the points start positive; solidcraft's horizontal dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ }
+]

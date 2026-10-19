@@ -1,0 +1,3415 @@
+[
+ {
+  "name": "copy/box",
+  "script": "const a = box(20, 10, 6, { at: [5, 2, -1] });\nmove(a, [30, -4, 6], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -5,
+     -3,
+     -4,
+     15,
+     7,
+     2
+    ],
+    "occtBbox": [
+     -5,
+     -3,
+     -4,
+     15,
+     7,
+     2
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     25,
+     -7,
+     2,
+     45,
+     3,
+     8
+    ],
+    "occtBbox": [
+     25,
+     -7,
+     2,
+     45,
+     3,
+     8
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 10,
+     "height": 6,
+     "center": [
+      5,
+      2,
+      -1
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      30,
+      -4,
+      6
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/cylinder",
+  "script": "const a = cylinder(12, 20, { at: [5, 2, -1] });\nmove(a, [30, -4, 6], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "cyl1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0.00012124566221810091,
+    "dBbox": 0.00009266272057217861,
+    "dCom": 7.449526656249767e-16,
+    "faces": 3,
+    "occtFaces": 3,
+    "bbox": [
+     -0.9999073372794278,
+     -3.999838802443856,
+     -11.000000000000023,
+     10.999907337279431,
+     7.999838802443857,
+     9.000000000000004
+    ],
+    "occtBbox": [
+     -1,
+     -4,
+     -11,
+     11,
+     8,
+     9
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 0.00012124566222031238,
+    "dBbox": 0.00004029938903626906,
+    "dCom": 3.0475336321021776e-15,
+    "faces": 3,
+    "occtFaces": 3,
+    "bbox": [
+     29.000092662720565,
+     -7.999838802443857,
+     -5.000000000000023,
+     40.99990733727944,
+     3.999838802443855,
+     15.000000000000005
+    ],
+    "occtBbox": [
+     29,
+     -8,
+     -5,
+     41,
+     4,
+     15
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 6,
+     "height": 20,
+     "base": [
+      5,
+      2,
+      -11
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_cyl1"
+     ],
+     "translate": [
+      30,
+      -4,
+      6
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/sphere",
+  "script": "const a = sphere(14, { at: [5, 2, -1] });\nmove(a, [40, 0, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "ball1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0.000070937962038458,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 1.1387052471549605e-12,
+    "faces": 1,
+    "occtFaces": 1,
+    "bbox": [
+     -2,
+     -5.000000000000001,
+     -8,
+     12,
+     9,
+     6
+    ],
+    "occtBbox": [
+     -2,
+     -5,
+     -8,
+     12,
+     9,
+     6
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 0.00007093796495968714,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 1.4413795739917335e-12,
+    "faces": 1,
+    "occtFaces": 1,
+    "bbox": [
+     38,
+     -5.000000000000001,
+     -8,
+     52,
+     9,
+     6
+    ],
+    "occtBbox": [
+     38,
+     -5,
+     -8,
+     52,
+     9,
+     6
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 7,
+     "center": [
+      5,
+      2,
+      -1
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_ball1"
+     ],
+     "translate": [
+      40,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/cone",
+  "script": "const a = cone(14, 18, { at: [5, 2, -1] });\nmove(a, [40, 0, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "cone1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0.00018231752867084358,
+    "dBbox": 0.000017531971398199175,
+    "dCom": 3.319278597544155e-17,
+    "faces": 2,
+    "occtFaces": 2,
+    "bbox": [
+     -2,
+     -4.999912340143009,
+     -10.000000000000002,
+     12,
+     8.99991234014301,
+     8
+    ],
+    "occtBbox": [
+     -2,
+     -5,
+     -10,
+     12,
+     9,
+     8
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 0.00018231752867022816,
+    "dBbox": 0.000017531971398199175,
+    "dCom": 1.5932537268211942e-15,
+    "faces": 2,
+    "occtFaces": 2,
+    "bbox": [
+     38,
+     -4.999912340143009,
+     -10.000000000000002,
+     52,
+     8.99991234014301,
+     8
+    ],
+    "occtBbox": [
+     38,
+     -5,
+     -10,
+     52,
+     9,
+     8
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       5,
+       2,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       7,
+       0
+      ],
+      [
+       0,
+       18
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_cone1"
+     ],
+     "translate": [
+      40,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/ring",
+  "script": "const a = ring(30, 6);\nmove(a, [0, 0, 20], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "ring1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0.00014674853396346596,
+    "dBbox": 0.00008985074729845302,
+    "dCom": 6.847428547253175e-7,
+    "faces": 1,
+    "occtFaces": 1,
+    "bbox": [
+     -14.99996374387977,
+     -14.999963743879764,
+     -2.9997305477491207,
+     14.999963743879782,
+     14.999963743879768,
+     2.9997305477491194
+    ],
+    "occtBbox": [
+     -15.0000001,
+     -15.0000001,
+     -3.0000001,
+     15.0000001,
+     15.0000001,
+     3.0000001
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 0.0001467485307558831,
+    "dBbox": 0.000015856014850969374,
+    "dCom": 6.847424139561746e-7,
+    "faces": 1,
+    "occtFaces": 1,
+    "bbox": [
+     -14.99996374387977,
+     -14.999963743879766,
+     17.00026945225088,
+     14.999963743879782,
+     14.999963743879766,
+     22.99973054774912
+    ],
+    "occtBbox": [
+     -15.0000001,
+     -15.0000001,
+     16.9999999,
+     15.0000001,
+     15.0000001,
+     23.0000001
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 12,
+     "minor": 3,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ring1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_ring1"
+     ],
+     "translate": [
+      0,
+      0,
+      20
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/prism",
+  "script": "const a = prism(6, 20, 12);\nmove(a, [50, 0, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "prism1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 1.4586028080420515e-16,
+    "dBbox": 0,
+    "dCom": 3.057236201182764e-17,
+    "faces": 8,
+    "occtFaces": 8,
+    "bbox": [
+     -10,
+     -8.660254037844386,
+     -6,
+     10,
+     8.660254037844387,
+     6
+    ],
+    "occtBbox": [
+     -10,
+     -8.660254037844386,
+     -6,
+     10,
+     8.660254037844387,
+     6
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 2.917205616084103e-16,
+    "dBbox": 0,
+    "dCom": 2.7225216731867197e-17,
+    "faces": 8,
+    "occtFaces": 8,
+    "bbox": [
+     40,
+     -8.660254037844386,
+     -6,
+     60,
+     8.660254037844387,
+     6
+    ],
+    "occtBbox": [
+     40,
+     -8.660254037844386,
+     -6,
+     60,
+     8.660254037844387,
+     6
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -6
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       10,
+       0
+      ],
+      [
+       5.000000000000001,
+       8.660254037844386
+      ],
+      [
+       -4.999999999999998,
+       8.660254037844387
+      ],
+      [
+       -10,
+       1.2246467991473533e-15
+      ],
+      [
+       -5.000000000000004,
+       -8.660254037844384
+      ],
+      [
+       5.000000000000001,
+       -8.660254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "translate": [
+      50,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/wedge",
+  "script": "const a = wedge(20, 10, 8);\nmove(a, [30, -4, 6], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "wedge1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 3.7399058120014274e-17,
+    "faces": 5,
+    "occtFaces": 5,
+    "bbox": [
+     -10,
+     -5,
+     -4,
+     10,
+     5,
+     4
+    ],
+    "occtBbox": [
+     -10,
+     -5,
+     -4,
+     10,
+     5,
+     4
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 1.4210854715202004e-16,
+    "dBbox": 0,
+    "dCom": 1.495962324800571e-16,
+    "faces": 5,
+    "occtFaces": 5,
+    "bbox": [
+     20,
+     -9,
+     2,
+     40,
+     1,
+     10
+    ],
+    "occtBbox": [
+     20,
+     -9,
+     2,
+     40,
+     1,
+     10
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_wedge1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -4
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -10,
+       -5
+      ],
+      [
+       10,
+       -5
+      ],
+      [
+       -10,
+       5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 8,
+     "sketch": "sk_wedge1_0",
+     "operation": "new",
+     "body_name": "b_wedge1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_wedge1"
+     ],
+     "translate": [
+      30,
+      -4,
+      6
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/hole",
+  "script": "const s = box(40, 30, 20);\nhole(s, { across: 8, at: [5, 3] });\nmove(s, [60, 0, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "hole1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0.000007261921610801663,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 7.037251697452224e-7,
+    "faces": 7,
+    "occtFaces": 7,
+    "bbox": [
+     -20,
+     -15,
+     -10.000000000000007,
+     20,
+     15,
+     10.000000000000005
+    ],
+    "occtBbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 0.000007261921610485243,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 7.037251733675105e-7,
+    "faces": 7,
+    "occtFaces": 7,
+    "bbox": [
+     40,
+     -15,
+     -10.000000000000005,
+     80,
+     15,
+     10.000000000000004
+    ],
+    "occtBbox": [
+     40,
+     -15,
+     -10,
+     80,
+     15,
+     10
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 4,
+     "height": 22,
+     "base": [
+      5,
+      3,
+      -11
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      60,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/hollow",
+  "script": "const s = box(40, 30, 20);\nhollow(s, { wall: 2, open: 'top' });\nmove(s, [60, 0, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "shell1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 5.086659405888863e-16,
+    "dBbox": 0,
+    "dCom": 2.20460914372808e-17,
+    "faces": 11,
+    "occtFaces": 11,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "occtBbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 5.086659405888863e-16,
+    "dBbox": 0,
+    "dCom": 2.081003442782656e-17,
+    "faces": 11,
+    "occtFaces": 11,
+    "bbox": [
+     40,
+     -15,
+     -10,
+     80,
+     15,
+     10
+    ],
+    "occtBbox": [
+     40,
+     -15,
+     -10,
+     80,
+     15,
+     10
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       3.552713678800501e-15,
+       1.7763568394002505e-15,
+       10
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      60,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/pull",
+  "script": "const k = sketch('top');\nk.rect(30, 20);\nconst v = pull(k, 10);\nmove(v, [0, 40, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "pull1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -15,
+     -10,
+     0,
+     15,
+     10,
+     10
+    ],
+    "occtBbox": [
+     -15,
+     -10,
+     0,
+     15,
+     10,
+     10
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -15,
+     30,
+     0,
+     15,
+     50,
+     10
+    ],
+    "occtBbox": [
+     -15,
+     30,
+     0,
+     15,
+     50,
+     10
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -15,
+       -10
+      ],
+      [
+       15,
+       -10
+      ],
+      [
+       15,
+       10
+      ],
+      [
+       -15,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_pull1"
+     ],
+     "translate": [
+      0,
+      40,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/join",
+  "script": "const a = box(20, 10, 6);\nconst c = box(8, 8, 8, { at: [0, 0, 7] });\nconst v = join(a, c);\nmove(v, [0, 30, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.656234526205983e-16,
+    "dBbox": 0,
+    "dCom": 3.366631611618336e-17,
+    "faces": 11,
+    "occtFaces": 11,
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     10,
+     5,
+     11
+    ],
+    "occtBbox": [
+     -10,
+     -5,
+     -3,
+     10,
+     5,
+     11
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 2.656234526205983e-16,
+    "dBbox": 0,
+    "dCom": 3.366631611618336e-17,
+    "faces": 11,
+    "occtFaces": 11,
+    "bbox": [
+     -10,
+     25,
+     -3,
+     10,
+     35,
+     11
+    ],
+    "occtBbox": [
+     -10,
+     25,
+     -3,
+     10,
+     35,
+     11
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 10,
+     "height": 6,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 8,
+     "width": 8,
+     "height": 8,
+     "center": [
+      0,
+      0,
+      7
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      30,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/mirror-result",
+  "script": "const a = box(20, 10, 6, { at: [30, 0, 0] });\nconst m = mirror(a, 'left-right');\nmove(m, [0, 40, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     20,
+     -5,
+     -3,
+     40,
+     5,
+     3
+    ],
+    "occtBbox": [
+     20,
+     -5,
+     -3,
+     40,
+     5,
+     3
+    ]
+   },
+   {
+    "id": "mir1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.5365978379987957e-18,
+    "faces": 6,
+    "occtFaces": 10,
+    "bbox": [
+     0,
+     -5,
+     -3,
+     40,
+     5,
+     3
+    ],
+    "occtBbox": [
+     0,
+     -5,
+     -3,
+     40,
+     5,
+     3
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.5365978379987957e-18,
+    "faces": 6,
+    "occtFaces": 10,
+    "bbox": [
+     0,
+     35,
+     -3,
+     40,
+     45,
+     3
+    ],
+    "occtBbox": [
+     0,
+     35,
+     -3,
+     40,
+     45,
+     3
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 10,
+     "height": 6,
+     "center": [
+      30,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.mirror",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "plane": {
+      "origin": [
+       20,
+       0,
+       0
+      ],
+      "normal": [
+       1,
+       0,
+       0
+      ]
+     },
+     "combine": true
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      40,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/turned-orig",
+  "script": "const a = box(20, 10, 6);\nturn(a, [0, 0, 30]);\nmove(a, [40, 0, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 1.5916813661916925e-16,
+    "dCom": 5.3420568007612287e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -11.160254037844387,
+     -9.330127018922193,
+     -3,
+     11.160254037844387,
+     9.330127018922193,
+     3
+    ],
+    "occtBbox": [
+     -11.160254037844386,
+     -9.330127018922193,
+     -3,
+     11.160254037844387,
+     9.330127018922193,
+     3
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 1.8947806286936006e-16,
+    "dBbox": 1.3888569342022733e-16,
+    "dCom": 3.448417263177958e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     28.83974596215561,
+     -9.330127018922193,
+     -3,
+     51.16025403784439,
+     9.330127018922193,
+     3
+    ],
+    "occtBbox": [
+     28.83974596215561,
+     -9.330127018922193,
+     -3,
+     51.16025403784438,
+     9.330127018922193,
+     3
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 10,
+     "height": 6,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 30
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      40,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/chain3",
+  "script": "const a = box(10, 10, 10);\nconst b = move(a, [20, 0, 0], { copy: true });\nmove(b, [20, 0, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     15,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "occtBbox": [
+     15,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   },
+   {
+    "id": "move2",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     35,
+     -5,
+     -5,
+     45,
+     5,
+     5
+    ],
+    "occtBbox": [
+     35,
+     -5,
+     -5,
+     45,
+     5,
+     5
+    ],
+    "shippedRefusal": "move2 (move): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      20,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1 (2)"
+     ],
+     "translate": [
+      20,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/copy-then-move-orig",
+  "script": "const a = box(10, 10, 10);\nconst b = move(a, [20, 0, 0], { copy: true });\nmove(a, [0, 20, 0]);",
+  "allPass": true,
+  "per": [
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     15,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "occtBbox": [
+     15,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   },
+   {
+    "id": "move2",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -5,
+     15,
+     -5,
+     5,
+     25,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     15,
+     -5,
+     5,
+     25,
+     5
+    ]
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      20,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      20,
+      0
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/copy-then-move-copy",
+  "script": "const a = box(10, 10, 10);\nconst b = move(a, [20, 0, 0], { copy: true });\nmove(b, [0, 20, 0]);",
+  "allPass": true,
+  "per": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ]
+   },
+   {
+    "id": "move2",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     15,
+     15,
+     -5,
+     25,
+     25,
+     5
+    ],
+    "occtBbox": [
+     15,
+     15,
+     -5,
+     25,
+     25,
+     5
+    ],
+    "shippedRefusal": "move2 (move): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      20,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1 (2)"
+     ],
+     "translate": [
+      0,
+      20,
+      0
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/copy-then-turn-copy",
+  "script": "const a = box(30, 10, 10);\nconst b = move(a, [0, 30, 0], { copy: true });\nturn(b, [0, 0, 90]);",
+  "allPass": true,
+  "per": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.6779586954873798e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -15,
+     -5,
+     -5,
+     15,
+     5,
+     5
+    ],
+    "occtBbox": [
+     -15,
+     -5,
+     -5,
+     15,
+     5,
+     5
+    ]
+   },
+   {
+    "id": "turn1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 1.7763568394002498e-16,
+    "dCom": 2.6779586954873798e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -5.000000000000001,
+     15,
+     -5,
+     5.000000000000001,
+     45,
+     5
+    ],
+    "occtBbox": [
+     -5.000000000000002,
+     15,
+     -5,
+     5.000000000000002,
+     45,
+     5
+    ],
+    "shippedRefusal": "turn1 (rotate): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 30,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      30,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1 (2)"
+     ],
+     "translate": [
+      0,
+      -30,
+      0
+     ]
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1 (2)"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 90
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1 (2)"
+     ],
+     "translate": [
+      0,
+      30,
+      0
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/join-overlap",
+  "script": "const a = box(20, 10, 6);\nconst b = move(a, [10, 0, 0], { copy: true });\njoin(a, b);",
+  "allPass": true,
+  "per": [
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.9584331096748016e-18,
+    "faces": 6,
+    "occtFaces": 14,
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     20,
+     5,
+     3
+    ],
+    "occtBbox": [
+     -10,
+     -5,
+     -3,
+     20,
+     5,
+     3
+    ],
+    "shippedRefusal": "op1 (combine): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 10,
+     "height": 6,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      10,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box1 (2)"
+     ],
+     "operation": "join"
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/join-touch",
+  "script": "const a = box(20, 10, 6);\nconst b = move(a, [20, 0, 0], { copy: true });\njoin(a, b);",
+  "allPass": true,
+  "per": [
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.5365978379987957e-18,
+    "faces": 6,
+    "occtFaces": 10,
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     30,
+     5,
+     3
+    ],
+    "occtBbox": [
+     -10,
+     -5,
+     -3,
+     30,
+     5,
+     3
+    ],
+    "shippedRefusal": "op1 (combine): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 10,
+     "height": 6,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      20,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box1 (2)"
+     ],
+     "operation": "join"
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/cut-by-copy",
+  "script": "const a = box(30, 30, 10);\nconst c = cylinder(8, 30);\nconst d = move(c, [6, 4, 0], { copy: true });\ncut(a, d);",
+  "allPass": true,
+  "per": [
+   {
+    "id": "cyl1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0.00016610368651258129,
+    "dBbox": 0.00002686625935732767,
+    "dCom": 1.0526579047972985e-13,
+    "faces": 3,
+    "occtFaces": 3,
+    "bbox": [
+     31.000061775147035,
+     -3.9998925349625707,
+     -15.000000000000009,
+     38.99993822485296,
+     3.9998925349625707,
+     15.000000000000009
+    ],
+    "occtBbox": [
+     31,
+     -4,
+     -15,
+     39,
+     4,
+     15
+    ]
+   },
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 2.0210993372731742e-16,
+    "dBbox": 0,
+    "dCom": 2.7168280528466674e-18,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -15,
+     -15,
+     -5,
+     15,
+     15,
+     5
+    ],
+    "occtBbox": [
+     -15,
+     -15,
+     -5,
+     15,
+     15,
+     5
+    ],
+    "shippedRefusal": "op1 (combine): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 30,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 4,
+     "height": 30,
+     "base": [
+      35,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_cyl1"
+     ],
+     "translate": [
+      6,
+      4,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1 (2)"
+     ],
+     "operation": "cut"
+    }
+   }
+  ]
+ },
+ {
+  "name": "collide/copy-then-repeat",
+  "script": "const a = box(10, 10, 10);\nmove(a, [0, 50, 0], { copy: true });\nrepeat(a, { count: 3, step: [15, 0, 0] });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "naive": "PASS",
+    "naiveBbox": [
+     -5,
+     45,
+     -5,
+     5,
+     55,
+     5
+    ],
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -5,
+     45,
+     -5,
+     5,
+     55,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     45,
+     -5,
+     5,
+     55,
+     5
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   },
+   {
+    "id": "pat1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "naive": "FAIL",
+    "naiveBbox": [
+     -5,
+     -5,
+     -5,
+     20,
+     55,
+     5
+    ],
+    "dVol": 3.0316490059097617e-16,
+    "dBbox": 0,
+    "dCom": 4.186913223156734e-17,
+    "faces": 18,
+    "occtFaces": 18,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     35,
+     5,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     -5,
+     -5,
+     35,
+     5,
+     5
+    ]
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      50,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.pattern.rectangular",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "dir1": [
+      1,
+      0,
+      0
+     ],
+     "count1": 3,
+     "spacing1": 15
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box1 (3)",
+      "b_box1 (4)"
+     ],
+     "operation": "join"
+    }
+   }
+  ]
+ },
+ {
+  "name": "collide/repeat-then-copy",
+  "script": "const a = box(10, 10, 10);\nconst p = repeat(a, { count: 3, step: [15, 0, 0] });\nmove(p, [0, 50, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "pat1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "naive": "PASS",
+    "naiveBbox": [
+     -5,
+     -5,
+     -5,
+     35,
+     5,
+     5
+    ],
+    "dVol": 3.0316490059097617e-16,
+    "dBbox": 0,
+    "dCom": 4.186913223156734e-17,
+    "faces": 18,
+    "occtFaces": 18,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     35,
+     5,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     -5,
+     -5,
+     35,
+     5,
+     5
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "naive": "PASS",
+    "naiveBbox": [
+     -5,
+     45,
+     -5,
+     35,
+     55,
+     5
+    ],
+    "dVol": 3.0316490059097617e-16,
+    "dBbox": 0,
+    "dCom": 4.186913223156734e-17,
+    "faces": 18,
+    "occtFaces": 18,
+    "bbox": [
+     -5,
+     45,
+     -5,
+     35,
+     55,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     45,
+     -5,
+     35,
+     55,
+     5
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.pattern.rectangular",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "dir1": [
+      1,
+      0,
+      0
+     ],
+     "count1": 3,
+     "spacing1": 15
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box1 (2)",
+      "b_box1 (3)"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      50,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "collide/copy-then-repeat-copy",
+  "script": "const a = box(10, 10, 10);\nconst b = move(a, [0, 50, 0], { copy: true });\nrepeat(b, { count: 2, step: [15, 0, 0] });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "naive": "PASS",
+    "naiveBbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ]
+   },
+   {
+    "id": "pat1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "naive": "PASS",
+    "naiveBbox": [
+     -5,
+     45,
+     -5,
+     20,
+     55,
+     5
+    ],
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 6.184480694873352e-17,
+    "faces": 12,
+    "occtFaces": 12,
+    "bbox": [
+     -5,
+     45,
+     -5,
+     20,
+     55,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     45,
+     -5,
+     20,
+     55,
+     5
+    ],
+    "shippedRefusal": "pat1 (pattern): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      50,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.pattern.rectangular",
+    "params": {
+     "bodies": [
+      "b_box1 (2)"
+     ],
+     "dir1": [
+      1,
+      0,
+      0
+     ],
+     "count1": 2,
+     "spacing1": 15
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1 (2)",
+     "tools": [
+      "b_box1 (2) (2)"
+     ],
+     "operation": "join"
+    }
+   }
+  ]
+ },
+ {
+  "name": "collide/copy-then-repeatAround",
+  "script": "const a = box(6, 6, 6, { at: [20, 0, 0] });\nmove(a, [0, 0, 30], { copy: true });\nrepeatAround(a, { count: 4 });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "naive": "PASS",
+    "naiveBbox": [
+     17,
+     -3,
+     27,
+     23,
+     3,
+     33
+    ],
+    "dVol": 1.3158198810372225e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     17,
+     -3,
+     27,
+     23,
+     3,
+     33
+    ],
+    "occtBbox": [
+     17,
+     -3,
+     27,
+     23,
+     3,
+     33
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   },
+   {
+    "id": "pat1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "naive": "FAIL",
+    "naiveBbox": [
+     -23,
+     -3,
+     -3,
+     23,
+     23,
+     33
+    ],
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 2.0141148828513633e-17,
+    "faces": 24,
+    "occtFaces": 24,
+    "bbox": [
+     -23,
+     -23,
+     -3,
+     23,
+     23,
+     3
+    ],
+    "occtBbox": [
+     -23,
+     -23,
+     -3,
+     23,
+     23,
+     3
+    ]
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 6,
+     "width": 6,
+     "height": 6,
+     "center": [
+      20,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      0,
+      30
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.pattern.circular",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": "Z",
+     "count": 4
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box1 (3)",
+      "b_box1 (4)",
+      "b_box1 (5)"
+     ],
+     "operation": "join"
+    }
+   }
+  ]
+ },
+ {
+  "name": "collide/copy-then-mirror",
+  "script": "const a = box(10, 10, 10, { at: [20, 0, 0] });\nmove(a, [0, 40, 0], { copy: true });\nmirror(a, 'left-right');",
+  "allPass": true,
+  "per": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "naive": "PASS",
+    "naiveBbox": [
+     15,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     15,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "occtBbox": [
+     15,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "naive": "PASS",
+    "naiveBbox": [
+     15,
+     35,
+     -5,
+     25,
+     45,
+     5
+    ],
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     15,
+     35,
+     -5,
+     25,
+     45,
+     5
+    ],
+    "occtBbox": [
+     15,
+     35,
+     -5,
+     25,
+     45,
+     5
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   },
+   {
+    "id": "mir1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "naive": "PASS",
+    "naiveBbox": [
+     5,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "dVol": 3.410605131648482e-16,
+    "dBbox": 0,
+    "dCom": 1.4503892858778863e-16,
+    "faces": 6,
+    "occtFaces": 10,
+    "bbox": [
+     5,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "occtBbox": [
+     5,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ]
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      20,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      40,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.mirror",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "plane": {
+      "origin": [
+       15,
+       0,
+       0
+      ],
+      "normal": [
+       1,
+       0,
+       0
+      ]
+     },
+     "combine": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "collide/two-copies-then-repeat",
+  "script": "const a = box(10, 10, 10);\nmove(a, [0, 50, 0], { copy: true });\nmove(a, [0, 80, 0], { copy: true });\nrepeat(a, { count: 3, step: [15, 0, 0] });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "naive": "PASS",
+    "naiveBbox": [
+     -5,
+     45,
+     -5,
+     5,
+     55,
+     5
+    ],
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -5,
+     45,
+     -5,
+     5,
+     55,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     45,
+     -5,
+     5,
+     55,
+     5
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   },
+   {
+    "id": "move2",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "naive": "PASS",
+    "naiveBbox": [
+     -5,
+     75,
+     -5,
+     5,
+     85,
+     5
+    ],
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -5,
+     75,
+     -5,
+     5,
+     85,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     75,
+     -5,
+     5,
+     85,
+     5
+    ],
+    "shippedRefusal": "move2 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   },
+   {
+    "id": "pat1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "naive": "FAIL",
+    "naiveBbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     85,
+     5
+    ],
+    "dVol": 3.0316490059097617e-16,
+    "dBbox": 0,
+    "dCom": 4.186913223156734e-17,
+    "faces": 18,
+    "occtFaces": 18,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     35,
+     5,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     -5,
+     -5,
+     35,
+     5,
+     5
+    ]
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      50,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      80,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.pattern.rectangular",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "dir1": [
+      1,
+      0,
+      0
+     ],
+     "count1": 3,
+     "spacing1": 15
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box1 (4)",
+      "b_box1 (5)"
+     ],
+     "operation": "join"
+    }
+   }
+  ]
+ },
+ {
+  "name": "collide/repeat-twice-with-copy",
+  "script": "const a = box(10, 10, 10);\nmove(a, [0, 50, 0], { copy: true });\nconst p = repeat(a, { count: 2, step: [15, 0, 0] });\nrepeat(p, { count: 2, step: [0, 0, 15] });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "naive": "PASS",
+    "naiveBbox": [
+     -5,
+     45,
+     -5,
+     5,
+     55,
+     5
+    ],
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -5,
+     45,
+     -5,
+     5,
+     55,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     45,
+     -5,
+     5,
+     55,
+     5
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   },
+   {
+    "id": "pat2",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "naive": "FAIL",
+    "naiveBbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     55,
+     20
+    ],
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 4.834630952926287e-17,
+    "faces": 24,
+    "occtFaces": 24,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     20,
+     5,
+     20
+    ],
+    "occtBbox": [
+     -5,
+     -5,
+     -5,
+     20,
+     5,
+     20
+    ]
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      0,
+      50,
+      0
+     ],
+     "copy": true
+    }
+   },
+   {
+    "command": "solid.pattern.rectangular",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "dir1": [
+      1,
+      0,
+      0
+     ],
+     "count1": 2,
+     "spacing1": 15
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box1 (3)"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.pattern.rectangular",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "dir1": [
+      0,
+      0,
+      1
+     ],
+     "count1": 2,
+     "spacing1": 15
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box1 (3)"
+     ],
+     "operation": "join"
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/param",
+  "script": "const a = box(10, 10, 10);\nmove(a, [param('dx', 25), 0, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     20,
+     -5,
+     -5,
+     30,
+     5,
+     5
+    ],
+    "occtBbox": [
+     20,
+     -5,
+     -5,
+     30,
+     5,
+     5
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      25,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ },
+ {
+  "name": "copy/param@dx=40",
+  "script": "const a = box(10, 10, 10);\nmove(a, [param('dx', 25), 0, 0], { copy: true });",
+  "allPass": true,
+  "per": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ]
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bbox": [
+     35,
+     -5,
+     -5,
+     45,
+     5,
+     5
+    ],
+    "occtBbox": [
+     35,
+     -5,
+     -5,
+     45,
+     5,
+     5
+    ],
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ],
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      40,
+      0,
+      0
+     ],
+     "copy": true
+    }
+   }
+  ]
+ }
+]

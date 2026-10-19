@@ -1,0 +1,48 @@
+rect-origin-dims                                     SC dClosed 1.6e-14 faces 6 | brep d 9.8e-12 faces 6 | occt d 9.0e-12
+rect-corner-dx-dy-positive                           SC dClosed 2.2e-14 faces 6 | brep d 1.5e-11 faces 6 | occt d 1.5e-11
+rect-corner-dx-dy-negative                           SC dClosed 1.6e-14 faces 6 | brep d 1.3e-11 faces 6 | occt d 1.2e-11
+rect-diagonal-two-point-distance                     SC dClosed 4.5e-12 faces 6 | brep d 3.3e-12 faces 6 | occt d 3.3e-12
+circle-radius-dx-dy                                  SC dClosed 1.1e-4 faces 3 | brep d 1.1e-4 faces 3 | occt d 1.1e-4
+circle-diameter-origin-c                             SC dClosed 7.2e-5 faces 3 | brep extrude pull1: circle 1: a circle can only be its  | occt d 7.2e-5
+rect-parallel-perpendicular-axes                     SC dClosed 5.8e-11 faces 6 | brep extrude pull1: the sketch's rules cannot be solved | occt Sketch 1: rule 5 names geometry -2, which this ske
+right-trapezoid-par-perp-neg-dx                      SC dClosed 4.7e-14 faces 6 | brep d 2.8e-12 faces 6 | occt d 2.7e-12
+square-by-equal-lines                                SC dClosed 7.7e-15 faces 6 | brep d 1.2e-11 faces 6 | occt d 1.2e-11
+two-circles-equal                                    SC dClosed 1.1e-4 faces 6 | brep d 1.1e-4 faces 6 | occt Sketch 1: this sketch draws 2 loops but OpenCascad
+triangle-apex-on-diagonal-line                       SC dClosed 0.0e+0 faces 5 | brep d 2.0e-12 faces 5 | occt Sketch 1: line 4 is construction geometry, and thi
+hexagon-equal-pointOn-circle                         SC dClosed 1.4e-15 faces 8 | brep d 6.6e-13 faces 8 | occt Sketch 1: circle 7 is construction geometry, and t
+symmetric-trapezoid-about-Y-axis                     SC dClosed 1.8e-12 faces 6 | brep extrude pull1: the sketch's rules cannot be solved | occt Sketch 1: rule 5 names geometry -3, which this ske
+symmetric-about-construction-line                    SC dClosed 1.1e-10 faces 6 | brep extrude pull1: the sketch's rules cannot be solved | occt Sketch 1: line 5 is construction geometry, and thi
+symmetric-3point-midpoint                            SC dClosed 8.1e-13 faces 6 | brep d 2.0e-12 faces 6 | occt Sketch 1: rule 9 is a symmetric rule, and this ref
+tangent-line-circle                                  SC dClosed 1.1e-4 faces 3 | brep d 1.1e-4 faces 3 | occt Sketch 1: line 1 is construction geometry, and thi
+tangent-line-circle-side-matching                    SC dClosed 1.1e-4 faces 3 | brep d 1.1e-4 faces 3 | occt Sketch 1: line 1 is construction geometry, and thi
+circle-circle-external-mode                          SC dClosed 9.6e-5 faces 6 | brep extrude pull1: the sketch's rules cannot be solved | occt Sketch 1: rule 4 names geometry -2, which this ske
+circle-circle-external-no-mode                       SC dClosed 9.6e-5 faces 6 | brep extrude pull1: the sketch's rules cannot be solved | occt Sketch 1: rule 4 names geometry -2, which this ske
+circle-circle-internal-mode                          SC dClosed 6.4e-1 faces 3 | brep extrude pull1: the sketch's rules cannot be solved | occt Sketch 1: rule 4 names geometry -2, which this ske
+circle-circle-internal-no-mode                       SC dClosed 6.4e-1 faces 3 | brep extrude pull1: the sketch's rules cannot be solved | occt Sketch 1: rule 4 names geometry -2, which this ske
+slot-hand-rows-R10-L40                               SC dClosed 3.2e-5 faces 6 | brep d 3.2e-5 faces 6 | occt Sketch 1: rule 2 is a tangent rule, and this refer
+slot-dims-from-points                                SC REFUSED invalid parameters for `sketch.constraint.horizontal_vertica | brep d null faces 6 | occt Sketch 1: rule 2 is a tangent rule, and this refer
+oval-four-arcs-endpoint-tangent                      SC dClosed 1.0e-4 faces 6 | brep d 1.0e-4 faces 6 | occt Sketch 1: rule 2 is a tangent rule, and this refer
+triangle-length-angle-120                            SC dClosed 3.5e-16 faces 5 | brep d 2.0e-13 faces 5 | occt Sketch 1: rule 7 is a angle rule, and this referen
+triangle-angle-120-with-quadrant                     SC dClosed 3.5e-16 faces 5 | brep d 2.0e-13 faces 5 | occt Sketch 1: rule 7 is a angle rule, and this referen
+rect-lock-offset-corner                              SC dClosed 1.1e-14 faces 6 | brep d 2.9e-12 faces 6 | occt d 2.7e-12
+rect-param-width                                     SC dClosed 0.0e+0 faces 6 | brep d 0.0e+0 faces 6 | occt d 1.5e-16
+rect-reference-dim-correct                           SC dClosed 1.6e-14 faces 6 | brep d 9.8e-12 faces 6 | occt d 9.0e-12
+rect-reference-dim-wrong-value                       SC dClosed 1.6e-14 faces 6 | brep d 9.8e-12 faces 6 | occt Sketch 1: rule 11 (distance) is off by 6.29e+1 mm:
+rect-reference-distanceX-zero                        SC REFUSED is a reference distanceX of 0; solidcraft has no reference f | brep d null faces 6 | occt d null
+rect-reference-distanceX-opposite-sign               SC REFUSED is the SIGNED distanceX -30 (brep-rs) but the points start p | brep d null faces 6 | occt d null
+rect-inactive-conflicting-rule                       SC dClosed 1.6e-14 faces 6 | brep d 9.8e-12 faces 6 | occt Sketch 1: rule 11 (distance) is off by 6.90e+1 mm:
+plate-with-hole-default-profiles                     SC dClosed 8.5e-2 faces 6 | brep d 8.5e-2 faces 7 | occt d 8.5e-2
+rect-underconstrained-height-free                    SC dClosed 0.0e+0 faces 6 | brep d 0.0e+0 faces 6 | occt d 1.8e-16
+rect-redundant-width-dimension                       SC REFUSED invalid parameters for `sketch.dimension`: that dimension is | brep d null faces 6 | occt d null
+gauntlet:sk-rect-dof__corner-origin-25x60            SC dClosed 0.0e+0 faces 6 | brep d 0.0e+0 faces 6 | occt d 2.4e-16
+gauntlet:sk-rect-dof__offset-corner-30x18            SC dClosed 0.0e+0 faces 6 | brep d 0.0e+0 faces 6 | occt d 0.0e+0
+gauntlet:sk-rect-dof__square-by-equal                SC dClosed 0.0e+0 faces 6 | brep d 1.9e-16 faces 6 | occt d 1.9e-16
+gauntlet:sk-rect-dof__right-triangle                 SC dClosed 0.0e+0 faces 5 | brep d 0.0e+0 faces 5 | occt d 0.0e+0
+gauntlet:sk-rect-dof__parallelogram                  SC dClosed 0.0e+0 faces 6 | brep d 0.0e+0 faces 6 | occt d 0.0e+0
+gauntlet:sk-rect-dof__circle-pinned                  SC dClosed 1.1e-4 faces 3 | brep d 1.1e-4 faces 3 | occt d 1.1e-4
+gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored SC dClosed 3.8e-5 faces 6 | brep extrude pull1: edge 1 and arc 2 meet in a point ra | occt Sketch 1: rule 2 is a tangent rule, and this refer
+gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored SC dClosed 5.8e-5 faces 6 | brep extrude pull1: edge 1 and arc 2 meet in a point ra | occt Sketch 1: rule 2 is a tangent rule, and this refer
+gauntlet:sk-circle-arc-tangent__slot-arc-first-order SC dClosed 3.8e-5 faces 6 | brep extrude pull1: edge 1 and arc 2 meet in a point ra | occt Sketch 1: rule 2 is a tangent rule, and this refer
+gauntlet:sk-circle-arc-tangent__circle-circle-external SC dClosed 9.6e-5 faces 6 | brep extrude pull1: the shapes near (0.0, 0.0) mm and ( | occt Sketch 1: rule 4 is a tangent rule, and this refer
+gauntlet:sk-circle-arc-tangent__circle-circle-no-mode SC dClosed 9.6e-5 faces 6 | brep extrude pull1: the sketch's rules cannot be solved | occt Sketch 1: rule 4 is a tangent rule, and this refer
+gauntlet:sk-circle-arc-tangent__circle-circle-internal SC dClosed 6.4e-1 faces 3 | brep extrude pull1: the hole near (3.0, 0.0) mm is not  | occt Sketch 1: rule 4 is a tangent rule, and this refer

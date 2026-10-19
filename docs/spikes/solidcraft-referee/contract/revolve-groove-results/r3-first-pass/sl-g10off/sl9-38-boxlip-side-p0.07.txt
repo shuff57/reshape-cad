@@ -1,0 +1,1 @@
+sl9-38-boxlip-side-p0.07                 FAIL     occtV 71253.7826 | tr-occt dV 1.3e-4 dBb 2.1e-13 dCom 4.9e-5 F o/b/t 10/10/10 | brep-occt dV 6.1e-14      | ms 1647 cpu 1995

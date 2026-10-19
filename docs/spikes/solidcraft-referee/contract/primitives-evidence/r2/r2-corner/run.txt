@@ -1,0 +1,28 @@
+r2-corner-half-r2a-X                                  Rounding box box1 (12x20x30) at radius 6 failed -- the radius is too big for this shape's edges.
+r2-corner-under-r2a-X                                 dVol 1.4e-4 dBbox 1.9e-16 dCom 3.3e-13 dAn 1.4e-4 faces 26/26
+r2-corner-over-r2a-X           refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+r2-corner-half-r2a-Y                                  Rounding box box1 (20x12x30) at radius 6 failed -- the radius is too big for this shape's edges.
+r2-corner-under-r2a-Y                                 dVol 1.4e-4 dBbox 9.3e-17 dCom 3.8e-11 dAn 1.4e-4 faces 26/26
+r2-corner-over-r2a-Y           refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+r2-corner-half-r2a-Z                                  Rounding box box1 (20x30x12) at radius 6 failed -- the radius is too big for this shape's edges.
+r2-corner-under-r2a-Z                                 dVol 1.4e-4 dBbox 9.3e-17 dCom 3.8e-11 dAn 1.4e-4 faces 26/26
+r2-corner-over-r2a-Z           refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls
+r2-corner-half-r2b-X                                  Rounding box box1 (10x20x30) at radius 5 failed -- the radius is too big for this shape's edges.
+r2-corner-under-r2b-X                                 dVol 1.2e-4 dBbox 9.5e-17 dCom 2.6e-10 dAn 1.2e-4 faces 26/26
+r2-corner-over-r2b-X           refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+r2-corner-half-r2b-Y                                  Rounding box box1 (20x10x30) at radius 5 failed -- the radius is too big for this shape's edges.
+r2-corner-under-r2b-Y                                 dVol 1.2e-4 dBbox 1.9e-16 dCom 2.2e-10 dAn 1.2e-4 faces 26/26
+r2-corner-over-r2b-Y           refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+r2-corner-half-r2b-Z                                  Rounding box box1 (20x30x10) at radius 5 failed -- the radius is too big for this shape's edges.
+r2-corner-under-r2b-Z                                 dVol 1.2e-4 dBbox 9.5e-17 dCom 2.9e-10 dAn 1.2e-4 faces 26/26
+r2-corner-over-r2b-Z           refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls
+r2-corner-half-r2c-X                                  Rounding box box1 (5x20x30) at radius 2.5 failed -- the radius is too big for this shape's edges.
+r2-corner-under-r2c-X                                 dVol 5.8e-5 dBbox 2.0e-16 dCom 3.1e-10 dAn 5.8e-5 faces 26/26
+r2-corner-over-r2c-X           refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+r2-corner-half-r2c-Y                                  Rounding box box1 (20x5x30) at radius 2.5 failed -- the radius is too big for this shape's edges.
+r2-corner-under-r2c-Y                                 dVol 5.8e-5 dBbox 2.0e-16 dCom 3.0e-10 dAn 5.8e-5 faces 26/26
+r2-corner-over-r2c-Y           refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+r2-corner-half-r2c-Z                                  Rounding box box1 (20x30x5) at radius 2.5 failed -- the radius is too big for this shape's edges.
+r2-corner-under-r2c-Z                                 dVol 5.8e-5 dBbox 2.0e-16 dCom 3.2e-10 dAn 5.8e-5 faces 26/26
+r2-corner-over-r2c-Z           refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/r2-corner/primitives-measure.json

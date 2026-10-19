@@ -1,0 +1,80 @@
+[
+ {
+  "id": "gauntlet:sk-rect-dof__square-by-equal",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.134066826240583e-15,
+      "db": 9.536231453622397e-15,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840.00000000002
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 8.42767104954836e-12,
+      "db": 1.9516739102025322e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840.00000004079
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.7663740075755218e-14,
+      "db": 4.0949699771437355e-14,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840.0000000000855
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.509891083171545e-15,
+      "db": 1.0658141036401503e-14,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4840.000000000022
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ }
+]

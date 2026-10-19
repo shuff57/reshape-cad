@@ -1,0 +1,25 @@
+Running as unit: run-p1904684-i1937954.scope; invocation ID: 35c2480b9e1a4de58d76623c54b753b1
+round r=0.5 top|front THEN hollow wall 2 open top PASS[brep-rs (OCCT refused or no-opped a feature)] V=7149.850807 (OCCT 23997.853982, brep 7149.853982) dVol 4.4e-7 dBbox 5.3e-16 dCOM null faces occt/truck/brep null/12/12  
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]] ; box1.face[+z]
+    closed form 7149.8540 SC 7149.8508 rel 4.44e-7 faces SC/OCCT/brep 12 7 12
+round r=1 top|front THEN hollow wall 2 open top PASS[brep-rs (OCCT refused or no-opped a feature)] V=7143.410297 (OCCT 23991.415927, brep 7143.415927) dVol 7.9e-7 dBbox 5.3e-16 dCOM null faces occt/truck/brep null/12/12  
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]] ; box1.face[+z]
+    closed form 7143.4159 SC 7143.4103 rel 7.88e-7 faces SC/OCCT/brep 12 7 12
+round r=1.5 top|front THEN hollow wall 2 open top PASS[brep-rs (OCCT refused or no-opped a feature)] V=7132.673169 (OCCT 23980.685835, brep 7132.685835) dVol 1.8e-6 dBbox 5.3e-16 dCOM null faces occt/truck/brep null/12/12  
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]] ; box1.face[+z]
+    closed form 7132.6858 SC 7132.6732 rel 1.78e-6 faces SC/OCCT/brep 12 7 12
+round r=1.9 top|front THEN hollow wall 2 open top PASS[brep-rs (OCCT refused or no-opped a feature)] V=7120.991174 (OCCT 23969.011495, brep 7121.011495) dVol 2.9e-6 dBbox 7.1e-16 dCOM null faces occt/truck/brep null/12/12  
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]] ; box1.face[+z]
+    closed form 7121.0115 SC 7120.9912 rel 2.85e-6 faces SC/OCCT/brep 12 7 12
+round r=2 top|front THEN hollow wall 2 open top REFUSED: shell1 is not built: the open edge of the part was rounded with a radius of 2, which is as large as or larger than the 2 mm wall, so the rim would have no thickness -- make the round smaller than the wall.   | OCCT:refusals {"shell1":"Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a  BREP:brep-rs cannot hollow shell1 yet -- shell1 is shown without it.
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]] ; box1.face[+z]
+round r=2.5 top|front THEN hollow wall 2 open top REFUSED: shell1 is not built: the open edge of the part was rounded with a radius of 2.5, which is as large as or larger than the 2 mm wall, so the rim would have no thickness -- make the round smaller than the wall.   | OCCT:refusals {"shell1":"Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a  BREP:brep-rs cannot hollow shell1 yet -- shell1 is shown without it.
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]] ; box1.face[+z]
+round r=3 top|front THEN hollow wall 2 open top REFUSED: shell1 is not built: the open edge of the part was rounded with a radius of 3, which is as large as or larger than the 2 mm wall, so the rim would have no thickness -- make the round smaller than the wall.   | OCCT:refusals {"shell1":"Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a  BREP:brep-rs cannot hollow shell1 yet -- shell1 is shown without it.
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]] ; box1.face[+z]
+bevel d=1 top|front THEN hollow wall 2 open top PASS[OCCT] V=7192.176624 (OCCT 7192.176624, brep 7192.176624) dVol 3.8e-16 dBbox 7.1e-16 dCOM 1.2e-16 faces occt/truck/brep 13/13/13  
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]] ; box1.face[+z]
+bevel d=2 top|front THEN hollow wall 2 open top PASS[OCCT] V=7216.000000 (OCCT 7216.000000, brep 7216.000000) dVol 1.3e-16 dBbox 0.0e+0 dCOM 3.3e-17 faces occt/truck/brep 13/13/13  
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]] ; box1.face[+z]
+bevel d=3 top|front THEN hollow wall 2 open top PASS[OCCT] V=7235.823376 (OCCT 7235.823376, brep 7235.823376) dVol 2.1e-15 dBbox 1.4e-15 dCOM 6.8e-16 faces occt/truck/brep 13/13/13  
+    names: box1.edge[box1.face[+z] ^ box1.face[-y]] ; box1.face[+z]

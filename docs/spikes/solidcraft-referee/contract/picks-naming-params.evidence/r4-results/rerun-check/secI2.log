@@ -1,0 +1,58 @@
+sketch corners (rect extrude)  sk1:corner 1               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 1.9e-13 after: v=false m=false
+sketch corners (rect extrude)  sk1:corner 2               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 1.5e-16 after: v=false m=false
+sketch corners (rect extrude)  sk1:corner 3               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 3.0e-13 after: v=false m=false
+sketch corners (rect extrude)  sk1:corner 4               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 3.0e-16 after: v=false m=false
+sketch corners (rect extrude)  pull1:height               size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 2.5e-16 after: v=false m=false
+sketch corners+round           sk1:corner 1               point   onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 3.1e-6 after: v=false m=false
+sketch corners+round           sk1:corner 2               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 3.0e-6 after: v=false m=false
+sketch corners+round           sk1:corner 3               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 2.8e-6 after: v=false m=false
+sketch corners+round           sk1:corner 4               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 2.9e-6 after: v=false m=false
+sketch corners+round           sk1:round corner 1         radius  onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 5.8e-6 after: v=true m=false
+sketch corners+round           pull1:height               size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 2.9e-6 after: v=false m=false
+polygon sketch                 sk1:corner 1               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 1.2e-16 after: v=true m=false
+polygon sketch                 sk1:corner 2               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 0.0e+0 after: v=true m=false
+polygon sketch                 sk1:corner 3               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 0.0e+0 after: v=true m=false
+polygon sketch                 sk1:corner 4               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 3.4e-16 after: v=true m=false
+polygon sketch                 pull1:height               size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 1.9e-16 after: v=false m=false
+front-plane sketch             sk1:corner 1               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 0.0e+0 after: v=false m=false
+front-plane sketch             sk1:corner 2               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 1.5e-16 after: v=false m=false
+front-plane sketch             sk1:corner 3               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 1.1e-13 after: v=false m=false
+front-plane sketch             sk1:corner 4               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 3.0e-16 after: v=false m=false
+front-plane sketch             pull1:height               size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 2.5e-16 after: v=false m=false
+pocket                         sk1:corner 1               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 2.0e-13 after: v=false m=false
+pocket                         sk1:corner 2               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 1.6e-16 after: v=false m=false
+pocket                         sk1:corner 3               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 3.1e-13 after: v=false m=false
+pocket                         sk1:corner 4               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 3.1e-16 after: v=false m=false
+pocket                         pull1:height               size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 1.3e-16 after: v=false m=false
+pocket                         sk2:corner 1               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 8.9e-15 after: v=false m=false
+pocket                         sk2:corner 2               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 7.4e-14 after: v=false m=false
+pocket                         sk2:corner 3               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 1.6e-16 after: v=false m=false
+pocket                         sk2:corner 4               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 9.4e-16 after: v=false m=false
+pocket                         pocket1:deep               size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 1.6e-16 after: v=false m=false
+fillet edge                    box1:width                 size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 1.4e-6 after: v=false m=false
+fillet edge                    box1:depth                 size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 1.6e-6 after: v=false m=false
+fillet edge                    box1:height                size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 1.3e-6 after: v=false m=false
+fillet edge                    box1:move x                move    onVertex=false onEdgeMid=false onPlane=false | drag PASS dVol 1.6e-6 after: v=false m=false
+fillet edge                    box1:move y                move    onVertex=false onEdgeMid=false onPlane=false | drag PASS dVol 1.6e-6 after: v=false m=false
+fillet edge                    box1:move z                move    onVertex=false onEdgeMid=false onPlane=false | drag PASS dVol 1.6e-6 after: v=false m=false
+fillet edge                    round1:round edge          radius  onVertex=false onEdgeMid=true onPlane=true | drag PASS dVol 4.4e-6 after: v=false m=true
+bevel edge                     box1:width                 size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 0.0e+0 after: v=false m=false
+bevel edge                     box1:depth                 size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 0.0e+0 after: v=false m=false
+bevel edge                     box1:height                size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 0.0e+0 after: v=false m=false
+bevel edge                     box1:move x                move    onVertex=false onEdgeMid=false onPlane=false | drag PASS dVol 0.0e+0 after: v=false m=false
+bevel edge                     box1:move y                move    onVertex=false onEdgeMid=false onPlane=false | drag PASS dVol 3.0e-16 after: v=false m=false
+bevel edge                     box1:move z                move    onVertex=false onEdgeMid=false onPlane=false | drag PASS dVol 0.0e+0 after: v=false m=false
+bevel edge                     bevel1:round edge          radius  onVertex=false onEdgeMid=true onPlane=true | drag PASS dVol 1.5e-16 after: v=false m=true
+draft                          box1:width                 size    onVertex=false onEdgeMid=false onPlane=false | drag PASS dVol 1.4e-16 after: v=false m=false
+draft                          box1:depth                 size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 2.7e-16 after: v=false m=false
+draft                          box1:height                size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 2.5e-16 after: v=false m=false
+draft                          box1:move x                move    onVertex=false onEdgeMid=false onPlane=false | drag PASS dVol 4.6e-16 after: v=false m=false
+draft                          box1:move y                move    onVertex=false onEdgeMid=false onPlane=false | drag PASS dVol 1.5e-16 after: v=false m=false
+draft                          box1:move z                move    onVertex=false onEdgeMid=false onPlane=false | drag PASS dVol 4.6e-16 after: v=false m=false
+draft                          draft1:draft angle         size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 1.5e-16 after: v=false m=false
+datum                          pl1:offset                 size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 0.0e+0 after: v=false m=false
+datum                          sk1:corner 1               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 2.2e-16 after: v=false m=false
+datum                          sk1:corner 2               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 4.0e-16 after: v=false m=false
+datum                          sk1:corner 3               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 1.6e-16 after: v=false m=false
+datum                          sk1:corner 4               point   onVertex=true onEdgeMid=false onPlane=true | drag PASS dVol 1.8e-16 after: v=false m=false
+datum                          pull1:height               size    onVertex=false onEdgeMid=false onPlane=true | drag PASS dVol 2.8e-16 after: v=false m=false

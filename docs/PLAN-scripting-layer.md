@@ -72,6 +72,7 @@ Never a silently wrong solid. A feature the layer cannot build correctly is refu
 - List every script feature, 2D and 3D, as supported, refused (with its sentence) or unsupported on SolidCraft.
 - Start from `docs/spikes/solidcraft-referee/phase0/COVERAGE.md` and the phase 2 constraint mapping.
 - Compare against what brep-rs supported (chamfer on convex edges, counterbore, countersink, groove, cone and sphere bores) to see the capability drop before any student is promised a feature.
+- Keep it re-runnable: the rig recipe (pinned SolidCraft commit, wasm build, oracle paths) and one evidence command per row are part of the deliverable, so the same contract can be measured again later against a newer SolidCraft or SolidCore (see phase 5).
 - Exit: a table checked against live results.
 
 ### 2. Guard layer
@@ -99,7 +100,12 @@ Never a silently wrong solid. A feature the layer cannot build correctly is refu
 ### 5. Kernel watch
 - Re-check the SolidCore progress site periodically.
 - Re-evaluate the swap when boolean, primitive and blend are all above 80% and a first end-to-end release exists. These thresholds are a proposal.
-- Exit: thresholds written down, and a swap touches the adapter only.
+- Double back on phase 1 whenever SolidCraft or SolidCore moves (a new pinned commit, or a SolidCore milestone): re-run the layer contract on the new kernel and diff it against the last one.
+  - A row that was refused and now builds and matches the oracle: promote it to supported and remove its guard, but only after the guard-layer fuzz and the saved FreeCAD results agree.
+  - A row that was supported and now disagrees: mark it wrong, loudly, and add or restore a guard before anything ships.
+  - New features in the kernel: add rows, and add script words only if the layer contract supports them.
+  - Keep the previous contract in git history so each change in coverage can be traced to a kernel version.
+- Exit: thresholds written down, a swap touches the adapter only, and the contract re-runs with one command.
 
 ## Parked, not continued
 

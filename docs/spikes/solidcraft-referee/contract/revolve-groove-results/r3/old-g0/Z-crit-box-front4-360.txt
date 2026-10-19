@@ -1,0 +1,1 @@
+Z-crit-box-front4-360                    PASS     occtV 29009.2038 | tr-occt dV 8.7e-6 dBb 1.5e-15 dCom 1.6e-6 F o/b/t 10/10/10 | brep-occt dV 7.3e-12      | ms 1077 cpu 1439

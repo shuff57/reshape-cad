@@ -1,0 +1,11 @@
+round-hex-all6-r6                  PASS               vol 2481.770874 occt 2481.972985 brep 2481.972985 exact 2481.9729851960496 dOcct 8.1e-5 dBbox 7.8e-16 dCom 5.0e-11 dExact 8.1e-5 dBbxEx - faces o/b/t 14/14/14  bodies 1
+round-hex-all6-limit               PASS               vol 2355.787642 occt 2356.208681 brep 2356.208681 exact 2356.2086805866525 dOcct 1.8e-4 dBbox 6.2e-16 dCom 7.7e-11 dExact 1.8e-4 dBbxEx - faces o/b/t 14/14/14  bodies 1
+chamfer-hex-all6-d3                PASS               vol 2364.249352 occt 2364.249352 brep 2364.249352 exact 2364.2493523315175 dOcct 0.0e+0 dBbox 1.8e-16 dCom 3.4e-17 dExact 1.9e-16 dBbxEx - faces o/b/t 14/14/14  bodies 1
+round-tri-all3-r2                  PASS               vol 851.473413 occt 851.499628 brep 851.499627 exact 851.4996274936044 dOcct 3.1e-5 dBbox 1.1e-5 dCom 2.4e-6 dExact 3.1e-5 dBbxEx - faces o/b/t 8/8/8  bodies 1
+round-L-all6-r2                    PASS               vol 4465.641172 occt 4465.663706 brep 4465.663706 exact 4465.663706143592 dOcct 5.0e-6 dBbox 1.3e-15 dCom 3.7e-7 dExact 5.0e-6 dBbxEx - faces o/b/t 14/14/14  bodies 1
+chamfer-reflex                     PASS               vol 4580.000000 occt 4580.000000 brep 4580.000000 exact 4580 dOcct 2.0e-16 dBbox 0.0e+0 dCom 4.4e-17 dExact 0.0e+0 dBbxEx - faces o/b/t 9/9/9  bodies 1
+round-concave-q                    PASS               vol 2502.387336 occt 2502.383220 brep 2502.383220 exact - dOcct 1.6e-6 dBbox 3.6e-16 dCom 4.3e-8 dExact - dBbxEx - faces o/b/t 7/7/7  bodies 1
+round-cw-polygon                   PASS               vol 11946.314351 occt 11946.349541 brep 11946.349541 exact 11946.349540849362 dOcct 2.9e-6 dBbox 3.6e-15 dCom 1.0e-6 dExact 2.9e-6 dBbxEx - faces o/b/t 7/7/7  bodies 1
+chamfer-cw-polygon                 PASS               vol 11820.000000 occt 11820.000000 brep 11820.000000 exact 11820 dOcct 0.0e+0 dBbox 0.0e+0 dCom 7.0e-17 dExact 0.0e+0 dBbxEx - faces o/b/t 7/7/7  bodies 1
+round-all-cw-L                     PASS               vol 4465.641172 occt 4465.663706 brep 4465.663706 exact 4465.663706143592 dOcct 5.0e-6 dBbox 7.1e-16 dCom 3.7e-7 dExact 5.0e-6 dBbxEx - faces o/b/t 14/14/14  bodies 1
+wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/u4/round2.json 10

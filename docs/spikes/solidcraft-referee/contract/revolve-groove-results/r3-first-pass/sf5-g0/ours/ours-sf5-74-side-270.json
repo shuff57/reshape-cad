@@ -1,0 +1,21 @@
+{
+ "id": "sf5-74-side-270",
+ "outcome": "built",
+ "volume": 6069.049192522255,
+ "faces": 5,
+ "bbox": [
+  9.319999999999999,
+  -20.77,
+  -20.770000000000003,
+  26.26,
+  20.770000000000003,
+  20.770000000000003
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[0,1,0],\"y_dir\":[1,0,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-9.01,9.32],[-20.77,9.32],[-9.01,26.26]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":270,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

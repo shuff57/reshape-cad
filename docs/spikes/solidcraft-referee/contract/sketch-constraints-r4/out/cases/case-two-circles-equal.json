@@ -1,0 +1,86 @@
+[
+ {
+  "id": "two-circles-equal",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812298839518,
+      "db": 1.7763568394002505e-15,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2261.691476763529
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812298839518,
+      "db": 1.7763568394002505e-15,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2261.691476763529
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812298839518,
+      "db": 1.7763568394002505e-15,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2261.691476763529
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 34,
+     "REFUSED": 6
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812298839518,
+      "db": 1.7763568394002505e-15,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2261.691476763529
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812298839518,
+      "db": 1.7763568394002505e-15,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2261.691476763529
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the SIGNED distanceY 5 (brep-rs) but the points start negative; solidcraft's vertical dimension is |d| and keeps the starting side, so the sign cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 6
+  }
+ }
+]

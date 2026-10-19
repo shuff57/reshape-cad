@@ -1,0 +1,21 @@
+{
+ "id": "sf6-96-front--90",
+ "outcome": "built",
+ "volume": 664.5470332929696,
+ "faces": 5,
+ "bbox": [
+  5.329070518200751e-15,
+  15.37,
+  -1.7763568394002505e-15,
+  27.530000000000005,
+  28.7,
+  27.529999999999998
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,-2,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[25.08,17.37],[27.53,17.37],[25.08,30.7]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":90,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

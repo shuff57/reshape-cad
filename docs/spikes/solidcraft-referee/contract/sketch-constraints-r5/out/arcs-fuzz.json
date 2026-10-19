@@ -1,0 +1,466 @@
+[
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "eps": 0.001,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "POSE": 14,
+   "MATCH-OTHER-SIDE": 6,
+   "MATCH": 10
+  },
+  "brep": {
+   "MATCH-OTHER-SIDE": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.00078) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "eps": 0.05,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "POSE": 29,
+   "MATCH": 1
+  },
+  "brep": {
+   "MATCH-OTHER-SIDE": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.037) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "eps": 0.3,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "POSE": 30
+  },
+  "brep": {
+   "MATCH-OTHER-SIDE": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.054) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "eps": 1,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "POSE": 29,
+   "VOLUME": 1
+  },
+  "brep": {
+   "MATCH-OTHER-SIDE": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.15) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "slot-dims-from-points",
+  "eps": 0.001,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00003805311864652321
+ },
+ {
+  "id": "slot-dims-from-points",
+  "eps": 0.05,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00003805311864776894
+ },
+ {
+  "id": "slot-dims-from-points",
+  "eps": 0.3,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00003805311864610797
+ },
+ {
+  "id": "slot-dims-from-points",
+  "eps": 1,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00003805311865828846
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "eps": 0.001,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "MATCH": 23,
+   "REFUSED": 2,
+   "VOLUME": 5
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.00099) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "eps": 0.05,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "VOLUME": 30
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.014) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "eps": 0.3,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "VOLUME": 29,
+   "REFUSED": 1
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.18) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "eps": 1,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "VOLUME": 23,
+   "REFUSED": 7
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.58) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "eps": 0.001,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00003805311857171008
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "eps": 0.05,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 29,
+   "VOLUME": 1
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00003805311857190232
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "eps": 0.3,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.000038053118569979894
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "eps": 1,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00003805311857171008
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "eps": 0.001,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00005771978594468772
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "eps": 0.05,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.000057719785943042304
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "eps": 0.3,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00005771978594736153
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "eps": 1,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 29,
+   "REFUSED": 1
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.000057719785963404366
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "eps": 0.001,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "VOLUME": 15,
+   "MATCH": 15
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.000038053118656104585
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "eps": 0.05,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 18,
+   "REFUSED": 2,
+   "VOLUME": 10
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00003805311865418216
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "eps": 0.3,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "VOLUME": 12,
+   "MATCH": 18
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.000038053118658603745
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "eps": 1,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "VOLUME": 13,
+   "MATCH": 16,
+   "REFUSED": 1
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00003805311865879599
+ }
+]

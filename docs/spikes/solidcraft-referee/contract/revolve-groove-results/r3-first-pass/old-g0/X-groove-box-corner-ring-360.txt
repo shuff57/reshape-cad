@@ -1,0 +1,1 @@
+X-groove-box-corner-ring-360             PASS     occtV 130031.0132 | tr-occt dV 1.3e-5 dBb 3.6e-16 dCom 2.7e-7 F o/b/t 13/13/13 | brep-occt dV 1.1e-16      | ms 2295 cpu 2551

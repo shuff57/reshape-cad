@@ -1,0 +1,4 @@
+Running as unit: run-p1714279-i26843226.scope; invocation ID: 961c4c4073054689916181f79ca13435
+angle grid 13 x 7 = 91 {"unguarded":{"MATCH":52,"MAPPER-REFUSED":39},"guarded":{"MATCH":52,"REFUSED":39},"brep":{"MATCH":80,"WRONG":11}}
+signed distanceX grid 6 x 6 {"unguarded":{"MATCH":18,"MAPPER-REFUSED":18},"guarded":{"MATCH":18,"REFUSED":18},"brep":{"MATCH":36}}
+brep-rs on the same combinations: angle {"MATCH":80,"WRONG":11} dx {"MATCH":36}

@@ -1,0 +1,352 @@
+[
+ {
+  "id": "slot-R10-L40 ends off by 0.00001 mm, lock on c",
+  "lock": true,
+  "offBy": 0.000009999999999621423,
+  "brep": {
+   "volume": 11141.592653721973,
+   "volRel": 1.1863535861318315e-11,
+   "bboxMax": 9.74836211753427e-10
+  },
+  "strict1e-6": {
+   "volume": 11141.215392419186,
+   "volRel": 0.00003386061421717435,
+   "bboxMax": 0.00019291684763089734,
+   "built": "RIGHT"
+  },
+  "off": {
+   "volume": 11141.215392419186,
+   "volRel": 0.00003386061421717435,
+   "bboxMax": 0.00019291684763089734,
+   "built": "RIGHT"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 0.00001 mm, lock on a line end (not on c)",
+  "lock": false,
+  "offBy": 0.000009999999999621423,
+  "brep": {
+   "volume": 11141.592653508109,
+   "volRel": 7.33156916472933e-12,
+   "bboxMax": 1.4297540928964736e-10
+  },
+  "strict1e-6": {
+   "volume": 11141.22201714736,
+   "volRel": 0.000033266019855324975,
+   "bboxMax": 0.0001155012893079288,
+   "built": "RIGHT"
+  },
+  "off": {
+   "volume": 11141.22201714736,
+   "volRel": 0.000033266019855324975,
+   "bboxMax": 0.0001155012893079288,
+   "built": "RIGHT"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 0.0001 mm, lock on c",
+  "lock": true,
+  "offBy": 0.00009999999999976694,
+  "brep": {
+   "volume": 11141.592653721966,
+   "volRel": 1.1862882816655813e-11,
+   "bboxMax": 9.746798923515598e-10
+  },
+  "strict1e-6": {
+   "refused": "Arc 1 has an end that is not on its circle (off by 0.00010) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead.",
+   "stage": "preflight"
+  },
+  "off": {
+   "volume": 11141.215383502122,
+   "volRel": 0.00003386141455736657,
+   "bboxMax": 0.00019287175928184297,
+   "built": "RIGHT"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 0.0001 mm, lock on a line end (not on c)",
+  "lock": false,
+  "offBy": 0.00009999999999976694,
+  "brep": {
+   "volume": 11141.592653508204,
+   "volRel": 7.323079584116823e-12,
+   "bboxMax": 1.4285106431088934e-10
+  },
+  "strict1e-6": {
+   "volume": 11141.222025266601,
+   "volRel": 0.00003326529112278609,
+   "bboxMax": 0.00011549846961145249,
+   "built": "RIGHT"
+  },
+  "off": {
+   "volume": 11141.222025266601,
+   "volRel": 0.00003326529112278609,
+   "bboxMax": 0.00011549846961145249,
+   "built": "RIGHT"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 0.001 mm, lock on c",
+  "lock": true,
+  "offBy": 0.0009999999999994458,
+  "brep": {
+   "volume": 11141.592653721862,
+   "volRel": 1.1853576930215179e-11,
+   "bboxMax": 9.73180647179106e-10
+  },
+  "strict1e-6": {
+   "refused": "Arc 1 has an end that is not on its circle (off by 0.0010) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead.",
+   "stage": "preflight"
+  },
+  "off": {
+   "volume": 11141.215339869841,
+   "volRel": 0.00003386533071927254,
+   "bboxMax": 0.0010000002791272777,
+   "built": "RIGHT"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 0.001 mm, lock on a line end (not on c)",
+  "lock": false,
+  "offBy": 0.0009999999999994458,
+  "brep": {
+   "volume": 11141.592653509068,
+   "volRel": 7.245530530444868e-12,
+   "bboxMax": 1.4161116723698797e-10
+  },
+  "strict1e-6": {
+   "volume": 11141.222031196461,
+   "volRel": 0.00003326475889546768,
+   "bboxMax": 0.00011548281202777844,
+   "built": "RIGHT"
+  },
+  "off": {
+   "volume": 11141.222031196461,
+   "volRel": 0.00003326475889546768,
+   "bboxMax": 0.00011548281202777844,
+   "built": "RIGHT"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 0.01 mm, lock on c",
+  "lock": true,
+  "offBy": 0.009999999999999787,
+  "brep": {
+   "volume": 11141.59265372086,
+   "volRel": 1.1763620027955713e-11,
+   "bboxMax": 9.58095824898919e-10
+  },
+  "strict1e-6": {
+   "refused": "Arc 1 has an end that is not on its circle (off by 0.010) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead.",
+   "stage": "preflight"
+  },
+  "off": {
+   "refused": "Row 13 of sk.rules() (it pins geometry 1) is not met by the solved sketch, so nothing was built; the rules probably conflict.",
+   "stage": "residual"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 0.01 mm, lock on a line end (not on c)",
+  "lock": false,
+  "offBy": 0.009999999999999787,
+  "brep": {
+   "volume": 11141.59265351775,
+   "volRel": 6.466284986915951e-12,
+   "bboxMax": 1.291695639338286e-10
+  },
+  "strict1e-6": {
+   "volume": 11141.181478474755,
+   "volRel": 0.000036904518754503334,
+   "bboxMax": 0.00011626072303272394,
+   "built": "RIGHT"
+  },
+  "off": {
+   "volume": 11141.181478474755,
+   "volRel": 0.000036904518754503334,
+   "bboxMax": 0.00011626072303272394,
+   "built": "RIGHT"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 0.05 mm, lock on c",
+  "lock": true,
+  "offBy": 0.05000000000000071,
+  "brep": {
+   "volume": 11141.592653716376,
+   "volRel": 1.1361181254689678e-11,
+   "bboxMax": 8.907221626941464e-10
+  },
+  "strict1e-6": {
+   "refused": "Arc 1 has an end that is not on its circle (off by 0.050) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead.",
+   "stage": "preflight"
+  },
+  "off": {
+   "refused": "Row 13 of sk.rules() (it pins geometry 1) is not met by the solved sketch, so nothing was built; the rules probably conflict.",
+   "stage": "residual"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 0.05 mm, lock on a line end (not on c)",
+  "lock": false,
+  "offBy": 0.05000000000000071,
+  "brep": {
+   "volume": 11141.59265355637,
+   "volRel": 2.999923918362426e-12,
+   "bboxMax": 9.28750409912027e-11
+  },
+  "strict1e-6": {
+   "volume": 11141.18085579692,
+   "volRel": 0.00003696040644079863,
+   "bboxMax": 0.00011572582673124998,
+   "built": "RIGHT"
+  },
+  "off": {
+   "volume": 11141.18085579692,
+   "volRel": 0.00003696040644079863,
+   "bboxMax": 0.00011572582673124998,
+   "built": "RIGHT"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 0.29 mm, lock on c",
+  "lock": true,
+  "offBy": 0.28999999999999915,
+  "brep": {
+   "volume": 11141.592653688092,
+   "volRel": 8.822633390383972e-12,
+   "bboxMax": 4.746141257783165e-10
+  },
+  "strict1e-6": {
+   "refused": "Arc 1 has an end that is not on its circle (off by 0.29) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead.",
+   "stage": "preflight"
+  },
+  "off": {
+   "refused": "Row 13 of sk.rules() (it pins geometry 1) is not met by the solved sketch, so nothing was built; the rules probably conflict.",
+   "stage": "residual"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 0.29 mm, lock on a line end (not on c)",
+  "lock": false,
+  "offBy": 0.28999999999999915,
+  "brep": {
+   "volume": 11141.592653789228,
+   "volRel": 1.7899954199143203e-11,
+   "bboxMax": 8.424997806155706e-10
+  },
+  "strict1e-6": {
+   "volume": 11141.190016219902,
+   "volRel": 0.000036138223897713275,
+   "bboxMax": 0.00004819062285754683,
+   "built": "RIGHT"
+  },
+  "off": {
+   "volume": 11141.190016219902,
+   "volRel": 0.000036138223897713275,
+   "bboxMax": 0.00004819062285754683,
+   "built": "RIGHT"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 1 mm, lock on c",
+  "lock": true,
+  "offBy": 1,
+  "brep": {
+   "volume": 11141.59265359035,
+   "volRel": 4.9957916681300805e-14,
+   "bboxMax": 2.793631349644272e-9
+  },
+  "strict1e-6": {
+   "refused": "Arc 1 has an end that is not on its circle (off by 1.0) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead.",
+   "stage": "preflight"
+  },
+  "off": {
+   "refused": "Row 13 of sk.rules() (it pins geometry 1) is not met by the solved sketch, so nothing was built; the rules probably conflict.",
+   "stage": "residual"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 1 mm, lock on a line end (not on c)",
+  "lock": false,
+  "offBy": 1,
+  "brep": {
+   "volume": 11141.592654489215,
+   "volRel": 8.072644247735084e-11,
+   "bboxMax": 4.054426972182649e-9
+  },
+  "strict1e-6": {
+   "volume": 11141.15094169591,
+   "volRel": 0.00003964530993163734,
+   "bboxMax": 0.0001191186363964647,
+   "built": "RIGHT"
+  },
+  "off": {
+   "volume": 11141.15094169591,
+   "volRel": 0.00003964530993163734,
+   "bboxMax": 0.0001191186363964647,
+   "built": "RIGHT"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 2 mm, lock on c",
+  "lock": true,
+  "offBy": 2,
+  "brep": {
+   "volume": 11141.592653414744,
+   "volRel": 1.5711438273937852e-11,
+   "bboxMax": 6.445840745330448e-9
+  },
+  "strict1e-6": {
+   "refused": "Arc 1 has an end that is not on its circle (off by 2.0) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead.",
+   "stage": "preflight"
+  },
+  "off": {
+   "refused": "Row 13 of sk.rules() (it pins geometry 1) is not met by the solved sketch, so nothing was built; the rules probably conflict.",
+   "stage": "residual"
+  }
+ },
+ {
+  "id": "slot-R10-L40 ends off by 2 mm, lock on a line end (not on c)",
+  "lock": false,
+  "offBy": 2,
+  "brep": {
+   "volume": 11141.592655503448,
+   "volRel": 1.717576032066309e-10,
+   "bboxMax": 8.715626213861582e-9
+  },
+  "strict1e-6": {
+   "volume": 11141.223469791687,
+   "volRel": 0.00003313563954331247,
+   "bboxMax": 0.0001365132153452464,
+   "built": "RIGHT"
+  },
+  "off": {
+   "volume": 11141.223469791687,
+   "volRel": 0.00003313563954331247,
+   "bboxMax": 0.0001365132153452464,
+   "built": "RIGHT"
+  }
+ },
+ {
+  "id": "phase2 own-slot-dims-from-points (hand-typed, ends off the circle by up to 0.29 mm)",
+  "lock": false,
+  "offBy": 0.290435264273353,
+  "brep": {
+   "volume": 3285.3981633997923,
+   "volRel": 7.133892849215976e-13,
+   "bboxMax": 2.33946195749013e-11
+  },
+  "strict1e-6": {
+   "volume": 3285.273145067473,
+   "volRel": 0.00003805271804452813,
+   "bboxMax": 3.46181749932839e-10,
+   "built": "RIGHT"
+  },
+  "off": {
+   "volume": 3285.273145067473,
+   "volRel": 0.00003805271804452813,
+   "bboxMax": 3.46181749932839e-10,
+   "built": "RIGHT"
+  }
+ }
+]

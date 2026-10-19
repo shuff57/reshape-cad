@@ -1,0 +1,100 @@
+box                  box1:width                         size    place d=-3.2e+0 OFF-EXTREME vertex=false | drag PASS dVol 0.0e+0 moved 2.8978 exp 3.0000
+box                  box1:depth                         size    place d=-4.7e+0 OFF-EXTREME vertex=false | drag PASS dVol 0.0e+0 moved 2.8978 exp 3.0000
+box                  box1:height                        size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 0.0e+0 moved 3.0000 exp 3.0000
+box                  box1:move x                        move    place d=6.8e+0 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+box                  box1:move y                        move    place d=1.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 0.0e+0 moved 3.0000 exp 3.0000
+box                  box1:move z                        move    place d=2.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 0.0e+0 moved 3.0000 exp 3.0000
+box                  box1:turn x                        turn    place d=-1.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 0.7854 exp 2.0000
+box                  box1:turn y                        turn    place d=-2.3e+1 OFF-EXTREME vertex=false | drag PASS dVol 0.0e+0 moved 0.4874 exp 2.0000
+box                  box1:turn z                        turn    place d=-2.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 0.7949 exp 2.0000
+box-unturned         box1:width                         size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 0.0e+0 moved 3.0000 exp 3.0000
+box-unturned         box1:depth                         size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 0.0e+0 moved 3.0000 exp 3.0000
+box-unturned         box1:height                        size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 1.2e-16 moved 3.0000 exp 3.0000
+box-unturned         box1:move x                        move    place d=1.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+box-unturned         box1:move y                        move    place d=1.5e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+box-unturned         box1:move z                        move    place d=2.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+cylinder             cyl1:across                        size    place d=6.5e-4 on-extreme vertex=false | drag PASS dVol 1.1e-4 moved 2.9998 exp 3.0000
+cylinder             cyl1:height                        size    place d=-7.1e-15 on-extreme vertex=false | drag PASS dVol 1.2e-4 moved 3.0000 exp 3.0000
+cylinder             cyl1:move x                        move    place d=1.3e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.2e-4 moved 3.0000 exp 3.0000
+cylinder             cyl1:move y                        move    place d=1.3e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.2e-4 moved 3.0000 exp 3.0000
+cylinder             cyl1:move z                        move    place d=7.5e+0 OFF-EXTREME vertex=false | drag PASS dVol 1.2e-4 moved 3.0000 exp 3.0000
+cylinder             cyl1:turn x                        turn    place d=-1.5e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.2e-4 moved 0.6726 exp 2.0000
+cylinder             cyl1:turn y                        turn    place d=-1.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.2e-4 moved 1.0251 exp 2.0000
+cylinder             cyl1:turn z                        turn    place d=-1.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.2e-4 moved 0.0003 exp 2.0000
+cylinder-unturned    cyl1:across                        size    place d=1.5e-4 on-extreme vertex=false | drag PASS dVol 1.1e-4 moved 3.0000 exp 3.0000
+cylinder-unturned    cyl1:height                        size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 1.2e-4 moved 3.0000 exp 3.0000
+cylinder-unturned    cyl1:move x                        move    place d=1.3e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.2e-4 moved 3.0000 exp 3.0000
+cylinder-unturned    cyl1:move y                        move    place d=1.3e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.2e-4 moved 3.0000 exp 3.0000
+cylinder-unturned    cyl1:move z                        move    place d=7.5e+0 OFF-EXTREME vertex=false | drag PASS dVol 1.2e-4 moved 3.0000 exp 3.0000
+cone                 cone1:across                       size    place d=1.0e-4 on-extreme vertex=false | drag PASS dVol 1.8e-4 moved 3.0000 exp 3.0000
+cone                 cone1:height                       size    place d=0.0e+0 on-extreme vertex=true | drag PASS dVol 1.8e-4 moved 3.0000 exp 3.0000
+cone                 cone1:move x                       move    place d=1.3e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.8e-4 moved 3.0000 exp 3.0000
+cone                 cone1:move y                       move    place d=1.3e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.8e-4 moved 3.0000 exp 3.0000
+cone                 cone1:move z                       move    place d=7.5e+0 OFF-EXTREME vertex=false | drag PASS dVol 1.8e-4 moved 3.0000 exp 3.0000
+cone                 cone1:turn x                       turn    place d=-1.5e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.8e-4 moved -0.0379 exp 2.0000
+cone                 cone1:turn y                       turn    place d=-1.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.8e-4 moved -1.0741 exp 2.0000
+cone                 cone1:turn z                       turn    place d=-1.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.8e-4 moved -0.0001 exp 2.0000
+cone-unturned        cone1:across                       size    place d=-1.8e-15 on-extreme vertex=true | drag PASS dVol 1.8e-4 moved 3.0000 exp 3.0000
+cone-unturned        cone1:height                       size    place d=0.0e+0 on-extreme vertex=true | drag PASS dVol 1.8e-4 moved 3.0000 exp 3.0000
+cone-unturned        cone1:move x                       move    place d=1.2e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.8e-4 moved 3.0000 exp 3.0000
+cone-unturned        cone1:move y                       move    place d=1.3e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.8e-4 moved 3.0000 exp 3.0000
+cone-unturned        cone1:move z                       move    place d=7.5e+0 OFF-EXTREME vertex=false | drag PASS dVol 1.8e-4 moved 3.0000 exp 3.0000
+ring                 ring1:across                       size    place d=-5.0e+0 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-4 moved 3.0000 exp 3.0000
+ring                 ring1:tube across                  size    place d=4.5e-4 on-extreme vertex=false | drag PASS dVol 1.1e-4 moved 2.9997 exp 3.0000
+ring                 ring1:move x                       move    place d=8.0e+0 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-4 moved 3.0000 exp 3.0000
+ring                 ring1:move y                       move    place d=8.0e+0 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-4 moved 3.0000 exp 3.0000
+ring                 ring1:move z                       move    place d=2.3e+1 OFF-EXTREME vertex=false | drag FAIL dVol 1.5e-4 moved 3.0000 exp 3.0000
+sphere               ball1:across                       size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 7.1e-5 moved 3.0000 exp 3.0000
+sphere               ball1:move x                       move    place d=7.5e+0 OFF-EXTREME vertex=false | drag PASS dVol 7.1e-5 moved 3.0000 exp 3.0000
+sphere               ball1:move y                       move    place d=7.5e+0 OFF-EXTREME vertex=false | drag PASS dVol 7.1e-5 moved 3.0000 exp 3.0000
+sphere               ball1:move z                       move    place d=7.5e+0 OFF-EXTREME vertex=false | drag PASS dVol 7.1e-5 moved 3.0000 exp 3.0000
+extrude              sk1:corner 1                       base refused not built
+extrude              sk1:corner 2                       base refused not built
+extrude              sk1:corner 3                       base refused not built
+extrude              sk1:corner 4                       base refused not built
+extrude              pull1:height                       size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 2.3e-16 moved 3.0000 exp 3.0000
+pocket               sk1:corner 1                       base refused not built
+pocket               sk1:corner 2                       base refused not built
+pocket               sk1:corner 3                       base refused not built
+pocket               sk1:corner 4                       base refused not built
+pocket               pull1:height                       size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 2.3e-16 moved 3.0000 exp 3.0000
+pocket               sk2:corner 1                       point   place d=-2.5e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 0.0000 exp 3.0000
+pocket               sk2:corner 2                       point   place d=-1.5e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 0.0000 exp 3.0000
+pocket               sk2:corner 3                       point   place d=-1.5e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 0.0000 exp 3.0000
+pocket               sk2:corner 4                       point   place d=-2.5e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 0.0000 exp 3.0000
+pocket               pocket1:deep                       size    place d=6.0e+0 OFF-EXTREME vertex=false | drag PASS dVol 1.6e-16 moved 0.0000 exp 3.0000
+sketch corners+round sk1:corner 1                       base refused not built
+sketch corners+round sk1:corner 2                       base refused not built
+sketch corners+round sk1:corner 3                       base refused not built
+sketch corners+round sk1:corner 4                       base refused not built
+sketch corners+round sk1:round corner 1                 base refused not built
+sketch corners+round pull1:height                       size    place d=-5.3e-15 on-extreme vertex=false | drag PASS dVol 2.9e-6 moved 3.0000 exp 3.0000
+fillet edge          box1:width                         size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 0.0e+0 moved 3.0000 exp 3.0000
+fillet edge          box1:depth                         size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 0.0e+0 moved 3.0000 exp 3.0000
+fillet edge          box1:height                        size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 1.2e-16 moved 3.0000 exp 3.0000
+fillet edge          box1:move x                        move    place d=1.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+fillet edge          box1:move y                        move    place d=1.5e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+fillet edge          box1:move z                        move    place d=2.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+fillet edge          round1:round edge                  radius  place d=1.7e+1 OFF-EXTREME vertex=false | drag PASS dVol 6.4e-6 moved 0.0000 exp 3.0000
+move                 box1:width                         size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 0.0e+0 moved 3.0000 exp 3.0000
+move                 box1:depth                         size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 0.0e+0 moved 3.0000 exp 3.0000
+move                 box1:height                        size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 1.2e-16 moved 3.0000 exp 3.0000
+move                 box1:move x                        move    place d=1.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+move                 box1:move y                        move    place d=1.5e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+move                 box1:move z                        move    place d=2.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+move                 move1:move x                       move    place d=1.6e+0 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+move                 move1:move y                       move    place d=6.6e+0 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+move                 move1:move z                       move    place d=1.2e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+draft                box1:width                         size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 0.0e+0 moved 3.0000 exp 3.0000
+draft                box1:depth                         size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 0.0e+0 moved 3.0000 exp 3.0000
+draft                box1:height                        size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 1.2e-16 moved 3.0000 exp 3.0000
+draft                box1:move x                        move    place d=1.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+draft                box1:move y                        move    place d=1.5e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+draft                box1:move z                        move    place d=2.0e+1 OFF-EXTREME vertex=false | drag PASS dVol 1.5e-16 moved 3.0000 exp 3.0000
+draft                draft1:draft angle                 size    place d=-1.8e-15 on-extreme vertex=false | drag PASS dVol 1.5e-16 moved -0.0000 exp 3.0000
+datum                pl1:offset                         base refused not built
+datum                sk1:corner 1                       base refused not built
+datum                sk1:corner 2                       base refused not built
+datum                sk1:corner 3                       base refused not built
+datum                sk1:corner 4                       base refused not built
+datum                pull1:height                       size    place d=0.0e+0 on-extreme vertex=false | drag PASS dVol 1.3e-16 moved 3.0000 exp 3.0000

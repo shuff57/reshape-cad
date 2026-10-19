@@ -1,0 +1,56 @@
+{
+ "totals": {
+  "cases": 1200,
+  "mapperRefused": 150,
+  "scRefusedAtACommand": 386,
+  "scAcceptedEverything": 664,
+  "infeasibleByOracle": 239,
+  "infeasibleMapperRefused": 39,
+  "infeasibleRefusedAtCommand": 196,
+  "infeasibleAcceptedNoRefusal": 4,
+  "infeasibleAcceptedGuardFires": 3,
+  "infeasibleAcceptedGuardPasses": 1,
+  "guardFires": 34,
+  "guardFiresRuleNotHeld": 4,
+  "guardFiresCollapsed": 30,
+  "guardPasses": 630,
+  "guardFiresButOracleAlsoTiny": 24,
+  "minVsDiagDecades_ruleHeld_notGuarded": {
+   "-1": 510,
+   "-2": 120
+  },
+  "minVsDiagDecades_collapsed": {
+   "-15": 4,
+   "-4": 1,
+   "-14": 5,
+   "-11": 2,
+   "-5": 12,
+   "-6": 4,
+   "-7": 1,
+   "-12": 1
+  },
+  "smallestEdgeRatioKeptByGuard": 0.013502808089358952,
+  "largestCollapsedRatio": 0.00017675500863067325
+ },
+ "classes": {
+  "A_ruleHeld_notCollapsed": 630,
+  "B_collapsed_properPartExists": 2,
+  "B_collapsed_onlyDegenerateOrInfeasible": 28,
+  "C_ruleNotHeld": 4
+ },
+ "dof": {
+  "guardPasses": {
+   "n": 629,
+   "equal": 629
+  },
+  "guardFires": {
+   "n": 25,
+   "equal": 17
+  },
+  "guardFiresStillStatusSolved": 34,
+  "guardFiresDofPositive": 31
+ }
+}
+ruleNotHeld [["rect","angle",90,"solved",4,[9074.53694133019]],["cc","distanceY",4.2,"solved",5,[502.5981059471628,162.5066207040652]],["cc","distanceY",4.2,"solved",4,[502.5981059471615,3236.425677764124]],["cc","distanceY",2,"solved",4,[502.5981059471656,502.6133938943894]]]
+collapsed, proper part exists [["rect",8.079832996527043e-15,0.564257743162454,[1581.1388289024105],"[{\"k\":\"horizontal\",\"a\":2},{\"k\":\"perpendicular\",\"a\":2,\"b\":3}]"],["rect",0.00017675500863067325,0.003063892711356708,[2670.6712223354875],"[{\"k\":\"angle\",\"a\":1,\"b\":4,\"value\":90},{\"k\":\"horizontal\",\"a\":2}]"]]
+collapsed only degenerate [["rect",1.2119749494790565e-14,"consistent","solved",7,[300.0000000000096],null,[3000]],["rect",6.858438144190391e-11,"consistent","solved",6,[299.9999999851333],null,[2999.9999998763815]],["tri",0.000027400047586458074,"globallyInfeasible","solved",1,[0.028644771120605664],null,[0.286447711165668]],["tri",0.000022003589596194057,"globallyInfeasible","solved",3,[0.020265707129432542],null,[0.2026578681294874]],["tri",0.000010857274355030232,"redundant","solved",1,[0.011352515738334889],null,[0.11352515738134343]],["tri",0.00001048292814713317,"redundant","solved",2,[0.007046299744871476],null,[0.0704632192723547]],["tri",0.000011470878674949751,"redundant","solved",3,[0.010635435093604428],null,[0.10635406221833811]],["rect",8.079832996527043e-15,"consistent","solved",7,[299.9999999999991],null,[2999.9999999999986]]]

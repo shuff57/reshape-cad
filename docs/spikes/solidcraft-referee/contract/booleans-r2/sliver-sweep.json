@@ -1,0 +1,782 @@
+{
+ "rows": [
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 1,
+   "expected": 31900,
+   "scVolume": 31900,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.5,
+   "expected": 31950,
+   "scVolume": 31950,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.2,
+   "expected": 31980,
+   "scVolume": 31980,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.1,
+   "expected": 31990,
+   "scVolume": 31990,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.05,
+   "expected": 31995,
+   "scVolume": 31995,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.02,
+   "expected": 31998,
+   "scVolume": 31998,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.01,
+   "expected": 31999,
+   "scVolume": 31999.000000000004,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.007,
+   "expected": 31999.3,
+   "scVolume": 31999.300000000003,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.005,
+   "expected": 31999.5,
+   "scVolume": 31999.5,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.003,
+   "expected": 31999.7,
+   "scVolume": 31999.699999999997,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.002,
+   "expected": 31999.8,
+   "scVolume": 31999.800000000003,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.0015,
+   "expected": 31999.85,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.001,
+   "expected": 31999.9,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.0005,
+   "expected": 31999.95,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "cut",
+   "depthMm": 0.0001,
+   "expected": 31999.99,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 1,
+   "expected": 100,
+   "scVolume": 100,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.5,
+   "expected": 50,
+   "scVolume": 50,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.2,
+   "expected": 20,
+   "scVolume": 19.999999999999943,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.1,
+   "expected": 10,
+   "scVolume": 9.999999999999963,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.05,
+   "expected": 5,
+   "scVolume": 5.000000000000038,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.02,
+   "expected": 2,
+   "scVolume": 1.9999999999999716,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.01,
+   "expected": 1,
+   "scVolume": 0.9999999999999906,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.007,
+   "expected": 0.7000000000000001,
+   "scVolume": 0.6999999999999128,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.005,
+   "expected": 0.5,
+   "scVolume": 0.5000000000000379,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.003,
+   "expected": 0.3,
+   "scVolume": 0.29999999999995924,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.002,
+   "expected": 0.2,
+   "scVolume": 0.2000000000000076,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.0015,
+   "expected": 0.15,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.001,
+   "expected": 0.1,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.0005,
+   "expected": 0.05,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "intersect",
+   "depthMm": 0.0001,
+   "expected": 0.01,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 1,
+   "expected": 32900,
+   "scVolume": 32900,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.5,
+   "expected": 32950,
+   "scVolume": 32950,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.2,
+   "expected": 32980,
+   "scVolume": 32980.00000000001,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.1,
+   "expected": 32990,
+   "scVolume": 32989.99999999999,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.05,
+   "expected": 32995,
+   "scVolume": 32994.99999999999,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.02,
+   "expected": 32998,
+   "scVolume": 32997.99999999999,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.01,
+   "expected": 32999,
+   "scVolume": 32998.99999999999,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.007,
+   "expected": 32999.3,
+   "scVolume": 32999.3,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.005,
+   "expected": 32999.5,
+   "scVolume": 32999.5,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.003,
+   "expected": 32999.7,
+   "scVolume": 32999.7,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.002,
+   "expected": 32999.8,
+   "scVolume": 32999.8,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.0015,
+   "expected": 32999.85,
+   "scVolume": 32999.850000000006,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.001,
+   "expected": 32999.9,
+   "scVolume": 32999.899999999994,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.0005,
+   "expected": 32999.95,
+   "scVolume": 32999.95,
+   "verdict": "exact"
+  },
+  {
+   "setup": "axis-aligned",
+   "operation": "join",
+   "depthMm": 0.0001,
+   "expected": 32999.99,
+   "scVolume": 32999.99000000001,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 1,
+   "expected": 31900,
+   "scVolume": 31900,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.5,
+   "expected": 31950,
+   "scVolume": 31950,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.2,
+   "expected": 31980,
+   "scVolume": 31979.99999999999,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.1,
+   "expected": 31990,
+   "scVolume": 31990.000000000004,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.05,
+   "expected": 31995,
+   "scVolume": 31995,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.02,
+   "expected": 31998,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.01,
+   "expected": 31999,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.007,
+   "expected": 31999.3,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.005,
+   "expected": 31999.5,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.003,
+   "expected": 31999.7,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.002,
+   "expected": 31999.8,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.0015,
+   "expected": 31999.85,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.001,
+   "expected": 31999.9,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.0005,
+   "expected": 31999.95,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "cut",
+   "depthMm": 0.0001,
+   "expected": 31999.99,
+   "scVolume": 32000,
+   "verdict": "SILENT NO-OP"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 1,
+   "expected": 100,
+   "scVolume": 100,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.5,
+   "expected": 50,
+   "scVolume": 50.00000000000014,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.2,
+   "expected": 20,
+   "scVolume": 20.00000000000003,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.1,
+   "expected": 10,
+   "scVolume": 10.000000000000277,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.05,
+   "expected": 5,
+   "scVolume": 5.000000000000166,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.02,
+   "expected": 2,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.01,
+   "expected": 1,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.007,
+   "expected": 0.7000000000000001,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.005,
+   "expected": 0.5,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.003,
+   "expected": 0.3,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.002,
+   "expected": 0.2,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.0015,
+   "expected": 0.15,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.001,
+   "expected": 0.1,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.0005,
+   "expected": 0.05,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "intersect",
+   "depthMm": 0.0001,
+   "expected": 0.01,
+   "scVolume": null,
+   "verdict": "NO-BODY"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 1,
+   "expected": 32900,
+   "scVolume": 32900.00000000001,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.5,
+   "expected": 32950,
+   "scVolume": 32950.00000000001,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.2,
+   "expected": 32980,
+   "scVolume": 32980,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.1,
+   "expected": 32990,
+   "scVolume": 32990,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.05,
+   "expected": 32995,
+   "scVolume": 32994.99999999999,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.02,
+   "expected": 32998,
+   "scVolume": 32998.00000000001,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.01,
+   "expected": 32999,
+   "scVolume": 32999.00000000001,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.007,
+   "expected": 32999.3,
+   "scVolume": 32999.30000000001,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.005,
+   "expected": 32999.5,
+   "scVolume": 32999.5,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.003,
+   "expected": 32999.7,
+   "scVolume": 32999.700000000004,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.002,
+   "expected": 32999.8,
+   "scVolume": 32999.80000000001,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.0015,
+   "expected": 32999.85,
+   "scVolume": 32999.850000000006,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.001,
+   "expected": 32999.9,
+   "scVolume": 32999.9,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.0005,
+   "expected": 32999.95,
+   "scVolume": 32999.950000000004,
+   "verdict": "exact"
+  },
+  {
+   "setup": "rotated-30deg",
+   "operation": "join",
+   "depthMm": 0.0001,
+   "expected": 32999.99,
+   "scVolume": 32999.99000000001,
+   "verdict": "exact"
+  }
+ ],
+ "summary": {
+  "axis-aligned/cut": {
+   "thinnestExactMm": 0.002,
+   "silentBelow": [
+    "0.0015:SILENT NO-OP",
+    "0.001:SILENT NO-OP",
+    "0.0005:SILENT NO-OP",
+    "0.0001:SILENT NO-OP"
+   ]
+  },
+  "axis-aligned/intersect": {
+   "thinnestExactMm": 0.002,
+   "silentBelow": [
+    "0.0015:NO-BODY",
+    "0.001:NO-BODY",
+    "0.0005:NO-BODY",
+    "0.0001:NO-BODY"
+   ]
+  },
+  "axis-aligned/join": {
+   "thinnestExactMm": 0.0001,
+   "silentBelow": []
+  },
+  "rotated-30deg/cut": {
+   "thinnestExactMm": 0.05,
+   "silentBelow": [
+    "0.02:SILENT NO-OP",
+    "0.01:SILENT NO-OP",
+    "0.007:SILENT NO-OP",
+    "0.005:SILENT NO-OP",
+    "0.003:SILENT NO-OP",
+    "0.002:SILENT NO-OP",
+    "0.0015:SILENT NO-OP",
+    "0.001:SILENT NO-OP",
+    "0.0005:SILENT NO-OP",
+    "0.0001:SILENT NO-OP"
+   ]
+  },
+  "rotated-30deg/intersect": {
+   "thinnestExactMm": 0.05,
+   "silentBelow": [
+    "0.02:NO-BODY",
+    "0.01:NO-BODY",
+    "0.007:NO-BODY",
+    "0.005:NO-BODY",
+    "0.003:NO-BODY",
+    "0.002:NO-BODY",
+    "0.0015:NO-BODY",
+    "0.001:NO-BODY",
+    "0.0005:NO-BODY",
+    "0.0001:NO-BODY"
+   ]
+  },
+  "rotated-30deg/join": {
+   "thinnestExactMm": 0.0001,
+   "silentBelow": []
+  }
+ }
+}

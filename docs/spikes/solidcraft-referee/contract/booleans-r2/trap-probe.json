@@ -1,0 +1,110 @@
+[
+ {
+  "probe": "box-bottom-face-tangent-to-tube-top (join)",
+  "ok": true,
+  "trap": false,
+  "hang": false,
+  "ms": 10913,
+  "wallS": 11.003,
+  "volume": "a=5420.933 shells=2"
+ },
+ {
+  "probe": "box-top-face-tangent-to-tube-bottom (join)",
+  "ok": true,
+  "trap": false,
+  "hang": false,
+  "ms": 11871,
+  "wallS": 11.959,
+  "volume": "a=5420.933 shells=2"
+ },
+ {
+  "probe": "box-side-face-tangent-inner-equator (join)",
+  "ok": false,
+  "trap": false,
+  "hang": true,
+  "ms": null,
+  "wallS": 60.038,
+  "error": "no result within 60 s (child SIGTERM)"
+ },
+ {
+  "probe": "torus-torus-shift10 (join)",
+  "ok": false,
+  "trap": false,
+  "hang": true,
+  "ms": null,
+  "wallS": 60.082,
+  "error": "no result within 60 s (child SIGTERM)"
+ },
+ {
+  "probe": "torus-torus-identical (join)",
+  "ok": false,
+  "trap": false,
+  "hang": true,
+  "ms": null,
+  "wallS": 60.114,
+  "error": "no result within 60 s (child SIGTERM)"
+ },
+ {
+  "probe": "torus-torus-coaxial-stacked-tangent (join)",
+  "ok": true,
+  "trap": false,
+  "hang": false,
+  "ms": 28630,
+  "wallS": 28.81,
+  "volume": "a=8841.867 shells=2"
+ },
+ {
+  "probe": "torus-sphere-r4-on-centreline (join)",
+  "ok": false,
+  "trap": false,
+  "hang": false,
+  "ms": 28900,
+  "wallS": 29.001,
+  "error": "boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus) and the tool has 6 curved faces (sphere); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus) and the tool has 6 curved faces (sphere)"
+ },
+ {
+  "probe": "torus-cylinder-tangent-outer (join)",
+  "ok": false,
+  "trap": false,
+  "hang": true,
+  "ms": null,
+  "wallS": 60.107,
+  "error": "no result within 60 s (child SIGTERM)"
+ },
+ {
+  "probe": "box-minus-near-horn-torus R5.2 r5 (cut)",
+  "ok": true,
+  "trap": false,
+  "hang": false,
+  "ms": 33405,
+  "wallS": 33.804,
+  "volume": "a=61434.006 shells=2"
+ },
+ {
+  "probe": "box-keep-near-horn-torus R5.2 r5 (intersect)",
+  "ok": true,
+  "trap": false,
+  "hang": false,
+  "ms": 30920,
+  "wallS": 31.063,
+  "volume": "a=2565.996 shells=1"
+ },
+ {
+  "probe": "box-minus-torus-R14r4-tangent-to-box-face (cut)",
+  "ok": false,
+  "trap": false,
+  "hang": false,
+  "ms": 22007,
+  "wallS": 22.09,
+  "error": "boolean Cut: implausible result volume 4418.0328; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (torus); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (freeform)"
+ },
+ {
+  "probe": "torus-minus-box-face-tangent-top (cut)",
+  "ok": true,
+  "trap": false,
+  "hang": false,
+  "ms": 10275,
+  "wallS": 10.368,
+  "volume": "a=4420.933 shells=1"
+ }
+]

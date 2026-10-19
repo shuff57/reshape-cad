@@ -1,0 +1,20 @@
+r2b-rim IDENTICAL
+r2c-shell-edges IDENTICAL
+r2d-hole-hollow DIFFERS (16 lines)
+r2e-adjacent IDENTICAL
+r2f-rim IDENTICAL
+r2g-prism IDENTICAL
+r2h-move-turn IDENTICAL
+r2j-pull-words IDENTICAL
+r2k-pocket-radius IDENTICAL
+secA IDENTICAL
+secB IDENTICAL
+secC IDENTICAL
+secC2 DIFFERS (2 lines)
+secD IDENTICAL
+secJ IDENTICAL
+secK IDENTICAL
+secL DIFFERS (8 lines)
+secM DIFFERS (2 lines)
+secN IDENTICAL
+DONE

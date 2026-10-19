@@ -1,0 +1,1 @@
+fzc3-45-boxG-top-flat-180                REFUSED  occtV 70916.3087 | tr-occt dV - dBb - dCom - F o/b/t 13/13/- | brep-occt dV 4.4e-12    | TRUCK REFUSED: groove1 (groove): the round wall of the ring touches or passes within 0.2 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.  | ms 20 cpu 80

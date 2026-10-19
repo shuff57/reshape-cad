@@ -1,0 +1,6 @@
+fillet d2 on R15 H20: volume 14058.2694; 17866 ms; load average 28.3/26.0/31.1
+fillet d14 on R15 H20: volume 10999.2138; 27603 ms; load average 29.5/26.6/31.1
+fillet d14.9 on R15 H20: volume 10643.0232; 34686 ms; load average 27.7/26.4/30.8
+chamfer d2 on R15 H20: volume 13955.7793; 849 ms; load average 27.7/26.4/30.8
+chamfer d14 on R15 H20: volume 7774.3199; 3998 ms; load average 29.1/26.7/30.9
+chamfer d14.9 on R15 H20: volume 7139.2268; 4204 ms; load average 29.1/26.7/30.9

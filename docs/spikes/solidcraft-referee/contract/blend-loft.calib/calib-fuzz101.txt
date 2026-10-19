@@ -1,0 +1,40 @@
+Running as unit: run-p394796-i446558.scope; invocation ID: a602331ec97742c5a5218f357e0d43b6
+GUARD-PASS-BUT-WRONG [cc] cc r0.38->r1.28 lat81.3 h0.04: occt 0.10150346940225115/3f truck 0.10104142630696562/4f d=4.55e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r0.06->r0.08 lat35.3 h2.64: occt 0.04102387209198606/3f truck 0.04096054279425476/4f d=1.54e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r0.55->r0.87 lat0.0 h78.21: occt 126.00084420706129/3f truck 125.95153643455183/3f d=3.91e-4 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r0.09->r0.09 lat0.0 h0.50: occt 0.012129190340047972/3f truck 0.01212431766302916/3f d=4.02e-4 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r3.18->r0.05 lat78.9 h0.04: occt 0.45651070718401676/3f truck 0.4496053324711264/4f d=1.51e-2 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r6.86->r8.45 lat169.0 h0.03: occt 6.360470410658164/3f truck 6.330359836433928/4f d=4.73e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r0.17->r0.11 lat0.0 h0.94: occt 0.05917359991760105/3f truck 0.05915037674682149/3f d=3.92e-4 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r9.82->r0.95 lat141.4 h0.08: occt 9.357845466690716/3f truck 9.289004010243742/4f d=7.36e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r14.72->r0.11 lat162.2 h0.32: occt 73.44990584405865/3f truck 72.87587134429738/4f d=7.82e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r21.17->r0.37 lat150.6 h0.16: occt 76.08096469367851/3f truck 75.53143890624993/4f d=7.22e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r0.25->r0.24 lat7.0 h-0.03: occt 0.006086480032445623/3f truck 0.00601995022025729/3f d=1.09e-2 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r2.77->r0.10 lat198.0 h-0.49: occt 4.0959449853513865/3f truck 4.0637185324536/4f d=7.87e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r0.22->r1.21 lat60.8 h0.14: occt 0.26129089890279433/3f truck 0.26054273606593586/4f d=2.86e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r0.07->r1.06 lat36.5 h0.08: occt 0.10645609459469542/3f truck 0.10633610926128882/4f d=1.13e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r0.12->r0.11 lat7.5 h0.70: occt 0.02790272998915238/3f truck 0.027891520742815073/3f d=4.02e-4 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r0.35->r0.07 lat78.8 h0.13: occt 0.021387192063525903/3f truck -0.02074804660337835/4f d=1.97e+0 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r0.92->r0.26 lat147.3 h7.55: occt 9.202025806999334/3f truck -9.197558028460195/3f d=2.00e+0 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r0.07->r0.40 lat62.2 h0.12: occt 0.02408156100441399/3f truck 0.023950810247110627/4f d=5.43e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [cc] cc r47.96->r35.30 lat19.9 h0.02: occt 86.91324313663885/3f truck 85.89330909730103/4f d=1.17e-2 bar 0.0003
+[cc] seed 101: {"cases":70,"guardPassed":70,"passBut":19,"refused":0,"refusedWouldBeWrong":0,"refusedExact":0,"refusedNoSolid":0,"maxPassD":1.9995144788079449,"maxPassCurvedD":1.9995144788079449}
+GUARD-PASS-BUT-WRONG [regcirc] reg3 p->c rp45.5 rc59.1 h5.4 yz: occt 34804.727585103865/6f truck 30692.925781243826/5f d=1.18e-1 bar 0.0003
+GUARD-PASS-BUT-WRONG [regcirc] reg3 c->p rp50.3 rc34.6 h5.4 xz: occt 19328.168133836265/6f truck 19365.735891882894/5f d=1.94e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [regcirc] reg3 c->p rp0.4 rc0.7 h31.8 yz: occt 26.407799313869344/6f truck 26.443947360409158/5f d=1.37e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [regcirc] reg3 p->c rp1.8 rc0.9 h-72.3 xz: occt 240.82170666297932/6f truck 241.26560366032626/5f d=1.84e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [regcirc] reg3 p->c rp12.3 rc0.7 h-1.2 yz rev: occt 85.21280819611367/6f truck 85.25446774609544/5f d=4.89e-4 bar 0.0003
+[regcirc] seed 101: {"cases":70,"guardPassed":70,"passBut":5,"refused":0,"refusedWouldBeWrong":0,"refusedExact":0,"refusedNoSolid":0,"maxPassD":0.11813917502459798,"maxPassCurvedD":0.11813917502459798}
+GUARD-PASS-BUT-WRONG [rectcirc] rect3.0x2.6 c->p rc0.3 h6.3: occt 20.5745924342482/7f truck 20.438065245889195/6f d=6.64e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [rectcirc] rect2.4x1.8 c->p rc0.4 h1.9: occt 3.9347640933852395/7f truck 3.9512609416186826/6f d=4.19e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [rectcirc] rect1.3x0.7 p->c rc4.7 h2.6: occt 72.78601715409533/7f truck 72.8297394499201/6f d=6.01e-4 bar 0.0003
+GUARD-PASS-BUT-WRONG [rectcirc] rect24.6x20.6 p->c rc0.3 h1.8: occt 314.7337089373915/7f truck 315.26257362915356/6f d=1.68e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [rectcirc] rect9.5x5.4 c->p rc2.5 h2.3: occt 78.19322190877944/7f truck 77.84652594041275/6f d=4.43e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [rectcirc] rect40.7x24.5 c->p rc3.3 h1.7: occt 450.313645046874/7f truck 449.3650048769129/6f d=2.11e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [rectcirc] rect16.3x12.9 c->p rc0.7 h1.3: occt 79.92765333412243/7f truck 79.68232205852202/6f d=3.07e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [rectcirc] rect7.4x4.9 p->c rc1.2 h1.5: occt 37.96923874535868/7f truck 37.81449757608648/6f d=4.08e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [rectcirc] rect45.8x24.7 c->p rc11.1 h1.2: occt 902.481882242783/7f truck 901.3033668799202/6f d=1.31e-3 bar 0.0003
+GUARD-PASS-BUT-WRONG [rectcirc] rect3.4x3.3 c->p rc7.4 h2.0: occt 151.34233301489323/7f truck 151.22676890778445/6f d=7.64e-4 bar 0.0003
+[rectcirc] seed 101: {"cases":70,"guardPassed":68,"passBut":10,"refused":2,"refusedWouldBeWrong":0,"refusedExact":2,"refusedNoSolid":0,"maxPassD":0.006635717757001234,"maxPassCurvedD":0.006635717757001234}
+[rrcirc] seed 101: {"cases":70,"guardPassed":24,"passBut":0,"refused":46,"refusedWouldBeWrong":5,"refusedExact":41,"refusedNoSolid":0,"maxPassD":0.00016645764325458248,"maxPassCurvedD":0.00016645764325458248}
+TOTAL cases 280 guard-passed 232 PASS-BUT-WRONG 34

@@ -1,0 +1,1168 @@
+{
+ "n": 116,
+ "same": 116,
+ "diff": 0,
+ "stride": 3,
+ "rows": [
+  {
+   "id": "ov-c-box-top-front-20",
+   "ok": true,
+   "wasVolume": 16000,
+   "gotVolume": 16000,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "ov-c-box-front-left-35",
+   "ok": true,
+   "wasVolume": 12000,
+   "gotVolume": 12000,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "ov-f-box-top-front-25",
+   "ok": true,
+   "wasVolume": 24000,
+   "gotVolume": 24000,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "ov-f-pair-top-front-back-16",
+   "ok": true,
+   "wasVolume": 21801.664448969637,
+   "gotVolume": 21801.664448969637,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "round2",
+   "gotRefused": "round2"
+  },
+  {
+   "id": "gr-br-d1-r1",
+   "ok": true,
+   "wasVolume": 14379.999999999998,
+   "gotVolume": 14379.999999999998,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "gr-rb-r2-d2",
+   "ok": true,
+   "wasVolume": 14365.64118773875,
+   "gotVolume": 14365.64118773875,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "bevel1",
+   "gotRefused": "bevel1"
+  },
+  {
+   "id": "ls-round-vert4",
+   "ok": true,
+   "wasVolume": 14358.769410135144,
+   "gotVolume": 14358.769410135144,
+   "wasFaces": 10,
+   "gotFaces": 10,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "pr-thin-bevel6-then-round5-top-front",
+   "ok": true,
+   "wasVolume": 1826.4800000000002,
+   "gotVolume": 1826.4800000000002,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "bo-union-edge-of-operand",
+   "ok": true,
+   "wasVolume": 15000,
+   "gotVolume": 15000,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "cs-bevel1-then-bevel3",
+   "ok": true,
+   "wasVolume": 11980,
+   "gotVolume": 11980,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "bevel2",
+   "gotRefused": "bevel2"
+  },
+  {
+   "id": "sz-edge-bevel-neg",
+   "ok": true,
+   "wasVolume": 14400,
+   "gotVolume": 14400,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "bevel1",
+   "gotRefused": "bevel1"
+  },
+  {
+   "id": "tu-x90-round-top-front",
+   "ok": true,
+   "wasVolume": 12000,
+   "gotVolume": 12000,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "tu-x45-round-top-front",
+   "ok": true,
+   "wasVolume": 12000,
+   "gotVolume": 12000,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "mo-m15_0_0-round",
+   "ok": true,
+   "wasVolume": 12000,
+   "gotVolume": 12000,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "mo-1_1_1-round",
+   "ok": true,
+   "wasVolume": 12000,
+   "gotVolume": 12000,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "sg-H-a3-b4",
+   "ok": true,
+   "wasVolume": 11922.69267166096,
+   "gotVolume": 11922.69267166096,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "round2",
+   "gotRefused": "round2"
+  },
+  {
+   "id": "sg-V-a4-b2",
+   "ok": true,
+   "wasVolume": 11862.564752953316,
+   "gotVolume": 11862.564752953316,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "round2",
+   "gotRefused": "round2"
+  },
+  {
+   "id": "sg-V-a6-b3",
+   "ok": true,
+   "wasVolume": 11690.770716643829,
+   "gotVolume": 11690.770716643829,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "round2",
+   "gotRefused": "round2"
+  },
+  {
+   "id": "ch-fillet-top-loop4",
+   "ok": true,
+   "wasVolume": 14365.641186238156,
+   "gotVolume": 14365.641186238156,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "round2,round3,round4",
+   "gotRefused": "round2,round3,round4"
+  },
+  {
+   "id": "ch-bevel-all12-sequential",
+   "ok": true,
+   "wasVolume": 14240,
+   "gotVolume": 14240,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "bevel10,bevel11,bevel12,bevel3,bevel4,bevel5,bevel6,bevel7,bevel8,bevel9",
+   "gotRefused": "bevel10,bevel11,bevel12,bevel3,bevel4,bevel5,bevel6,bevel7,bevel8,bevel9"
+  },
+  {
+   "id": "ch-fillet-same-edge-twice",
+   "ok": true,
+   "wasVolume": 14365.641186238156,
+   "gotVolume": 14365.641186238156,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "round2",
+   "gotRefused": "round2"
+  },
+  {
+   "id": "o-turn-then-edge",
+   "ok": true,
+   "wasVolume": 14400.000000000002,
+   "gotVolume": 14400.000000000002,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "p-rim-fillet-r1",
+   "ok": true,
+   "wasVolume": 27995.701614313555,
+   "gotVolume": 27995.701614313555,
+   "wasFaces": 12,
+   "gotFaces": 12,
+   "wasRefused": "round2,round3,round4",
+   "gotRefused": "round2,round3,round4"
+  },
+  {
+   "id": "p-rim-hex-fillet",
+   "ok": true,
+   "wasVolume": 27758.70635716406,
+   "gotVolume": 27758.70635716406,
+   "wasFaces": 14,
+   "gotFaces": 14,
+   "wasRefused": "round2,round3,round4,round5,round6",
+   "gotRefused": "round2,round3,round4,round5,round6"
+  },
+  {
+   "id": "p-wall-wall-corner-fillet",
+   "ok": true,
+   "wasVolume": 28000.859677487344,
+   "gotVolume": 28000.859677487344,
+   "wasFaces": 12,
+   "gotFaces": 12,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "p-wall-front-nonadjacent",
+   "ok": true,
+   "wasVolume": 28000,
+   "gotVolume": 28000,
+   "wasFaces": 11,
+   "gotFaces": 11,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "b-cut-then-fillet-edge",
+   "ok": true,
+   "wasVolume": 30960.444973844118,
+   "gotVolume": 30960.444973844118,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "b-intersect-then-fillet-edge",
+   "ok": true,
+   "wasVolume": 17974.230889303715,
+   "gotVolume": 17974.230889303715,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "x-prism-edge",
+   "ok": true,
+   "wasVolume": 2598.076211353316,
+   "gotVolume": 2598.076211353316,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "n-prism6-left",
+   "ok": true,
+   "wasVolume": 2598.076211353316,
+   "gotVolume": 2598.076211353316,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "n-mirror-then-edge",
+   "ok": true,
+   "wasVolume": 14400,
+   "gotVolume": 14400,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "bo-subtract-edge",
+   "ok": true,
+   "wasVolume": 22394.99571832422,
+   "gotVolume": 22394.99571832422,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "fc-chamfer-edge__top-front",
+   "ok": true,
+   "wasVolume": 11920,
+   "gotVolume": 11920,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "fc-chamfer-edge__top-right-offcentre",
+   "ok": true,
+   "wasVolume": 11966.25,
+   "gotVolume": 11966.25,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "fc-fillet-edge__top-front",
+   "ok": true,
+   "wasVolume": 11922.69267166096,
+   "gotVolume": 11922.69267166096,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "fc-fillet-edge__bottom-right-tall",
+   "ok": true,
+   "wasVolume": 29974.230878051796,
+   "gotVolume": 29974.230878051796,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "fc-chamfer-edge__disc-rim",
+   "ok": true,
+   "wasVolume": 14033.36938435807,
+   "gotVolume": 14033.36938435807,
+   "wasFaces": 4,
+   "gotFaces": 4,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "fc-fillet-edge__L-prism-top-right",
+   "ok": true,
+   "wasVolume": 4491.410296434488,
+   "gotVolume": 4491.410296434488,
+   "wasFaces": 9,
+   "gotFaces": 9,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "fcb-fillet-after-pocket",
+   "ok": true,
+   "wasVolume": 11597.852573171076,
+   "gotVolume": 11597.852573171076,
+   "wasFaces": 12,
+   "gotFaces": 12,
+   "wasRefused": "round2,round3,round4",
+   "gotRefused": "round2,round3,round4"
+  },
+  {
+   "id": "ch-fillet-3corner",
+   "ok": true,
+   "wasVolume": 14365.641186238156,
+   "gotVolume": 14365.641186238156,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "round2,round3",
+   "gotRefused": "round2,round3"
+  },
+  {
+   "id": "ch-bevel-parallel2",
+   "ok": true,
+   "wasVolume": 14240,
+   "gotVolume": 14240,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "d-box-round-chamfer-offc",
+   "ok": true,
+   "wasVolume": 13791.999999999998,
+   "gotVolume": 13791.999999999998,
+   "wasFaces": 18,
+   "gotFaces": 18,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "ov-c-box-top-front-19.99",
+   "ok": true,
+   "wasVolume": 16007.998000000001,
+   "gotVolume": 16007.998000000001,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "ov-c-box-front-left-30",
+   "ok": true,
+   "wasVolume": 15000,
+   "gotVolume": 15000,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "ov-c-plate-top-front-10",
+   "ok": true,
+   "wasVolume": 10000,
+   "gotVolume": 10000,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "ov-f-plate-top-front-10.001",
+   "ok": true,
+   "wasVolume": 12000,
+   "gotVolume": 12000,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "ov-c-pair-vert-19-20",
+   "ok": true,
+   "wasVolume": 16390,
+   "gotVolume": 16390,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "ov-c-pair-cyl-9",
+   "ok": true,
+   "wasVolume": 8029.464268012464,
+   "gotVolume": 8029.464268012464,
+   "wasFaces": 5,
+   "gotFaces": 5,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "ov-c-cyl-single-14.9",
+   "ok": true,
+   "wasVolume": 7139.22679191905,
+   "gotVolume": 7139.22679191905,
+   "wasFaces": 4,
+   "gotFaces": 4,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "ov-d-box-chamfer-10",
+   "ok": true,
+   "wasVolume": 12000.000000000415,
+   "gotVolume": 12000.000000000415,
+   "wasFaces": 14,
+   "gotFaces": 14,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "ov-d-box-chamfer-14",
+   "ok": true,
+   "wasVolume": 0,
+   "gotVolume": 0,
+   "wasFaces": 0,
+   "gotFaces": 0,
+   "wasRefused": "b1",
+   "gotRefused": "b1"
+  },
+  {
+   "id": "ov-d-box-fillet-12",
+   "ok": true,
+   "wasVolume": 0,
+   "gotVolume": 0,
+   "wasFaces": 0,
+   "gotFaces": 0,
+   "wasRefused": "b1",
+   "gotRefused": "b1"
+  },
+  {
+   "id": "bo-union-edge-top-right-of-stub",
+   "ok": true,
+   "wasVolume": 13000,
+   "gotVolume": 13000,
+   "wasFaces": 11,
+   "gotFaces": 11,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "w-box-then-turn",
+   "ok": true,
+   "wasVolume": 13980.737033761141,
+   "gotVolume": 13980.737033761141,
+   "wasFaces": 26,
+   "gotFaces": 26,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "o-edge-then-hole",
+   "ok": true,
+   "wasVolume": 14026.390318835065,
+   "gotVolume": 14026.390318835065,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "o-shell-open-rim-edge",
+   "ok": true,
+   "wasVolume": 5038.388102976604,
+   "gotVolume": 5038.388102976604,
+   "wasFaces": 12,
+   "gotFaces": 12,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "p-rim-bevel-d1",
+   "ok": true,
+   "wasVolume": 27990,
+   "gotVolume": 27990,
+   "wasFaces": 12,
+   "gotFaces": 12,
+   "wasRefused": "bevel2,bevel3,bevel4",
+   "gotRefused": "bevel2,bevel3,bevel4"
+  },
+  {
+   "id": "p-rim-then-plate-edge",
+   "ok": true,
+   "wasVolume": 27995.701614313555,
+   "gotVolume": 27995.701614313555,
+   "wasFaces": 12,
+   "gotFaces": 12,
+   "wasRefused": "round2,round3,round4,round5",
+   "gotRefused": "round2,round3,round4,round5"
+  },
+  {
+   "id": "k-box-corner-offc",
+   "ok": true,
+   "wasVolume": 13980.73703376129,
+   "gotVolume": 13980.737033761294,
+   "wasFaces": 26,
+   "gotFaces": 26,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "x-round-whole-cyl-then-rim",
+   "ok": true,
+   "wasVolume": 13296.165734206565,
+   "gotVolume": 13296.165734206565,
+   "wasFaces": 5,
+   "gotFaces": 5,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "n-hollow-closed-then-edge",
+   "ok": true,
+   "wasVolume": 14400,
+   "gotVolume": 14400,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1,shell1",
+   "gotRefused": "round1,shell1"
+  },
+  {
+   "id": "w-box-r5.9",
+   "ok": true,
+   "wasVolume": 12223.632900185634,
+   "gotVolume": 12223.632900185634,
+   "wasFaces": 26,
+   "gotFaces": 26,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "e-bevel-top-front-d12",
+   "ok": true,
+   "wasVolume": 11520,
+   "gotVolume": 11520,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "c-bevel-top-side-d13",
+   "ok": true,
+   "wasVolume": 13570.148860573434,
+   "gotVolume": 13570.148860573434,
+   "wasFaces": 3,
+   "gotFaces": 3,
+   "wasRefused": "bevel1",
+   "gotRefused": "bevel1"
+  },
+  {
+   "id": "c-fillet-same-twice",
+   "ok": true,
+   "wasVolume": 13433.641165336643,
+   "gotVolume": 13433.641165336643,
+   "wasFaces": 4,
+   "gotFaces": 4,
+   "wasRefused": "round2",
+   "gotRefused": "round2"
+  },
+  {
+   "id": "n-e-fillet-r1000",
+   "ok": true,
+   "wasVolume": 14400,
+   "gotVolume": 14400,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "n-e-bevel-d1e-6",
+   "ok": true,
+   "wasVolume": 14400,
+   "gotVolume": 14400,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "bevel1",
+   "gotRefused": "bevel1"
+  },
+  {
+   "id": "n-e-fillet-vertical-r16",
+   "ok": true,
+   "wasVolume": 13740.499333977932,
+   "gotVolume": 13740.499333977932,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "pr-thin-round7-top-front",
+   "ok": true,
+   "wasVolume": 2546.48,
+   "gotVolume": 2546.48,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "cs-round3-then-bevel1",
+   "ok": true,
+   "wasVolume": 11922.69267166096,
+   "gotVolume": 11922.69267166096,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "bevel1",
+   "gotRefused": "bevel1"
+  },
+  {
+   "id": "sz-whole-round-0",
+   "ok": true,
+   "wasVolume": 14400,
+   "gotVolume": 14400,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-h-ref-r2",
+   "ok": true,
+   "wasVolume": 23400.223070898985,
+   "gotVolume": 23400.223070898985,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-h-fillet-r3.5",
+   "ok": true,
+   "wasVolume": 23332.831314640407,
+   "gotVolume": 23332.831314640407,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-h-ref-r4",
+   "ok": true,
+   "wasVolume": 23297.29939095317,
+   "gotVolume": 23297.29939095317,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-h-fillet-r6",
+   "ok": true,
+   "wasVolume": 23172.206652650493,
+   "gotVolume": 23172.206652650493,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-h-ref-r7",
+   "ok": true,
+   "wasVolume": 23020.09784233115,
+   "gotVolume": 23020.09784233115,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-h-bevel-d4",
+   "ok": true,
+   "wasVolume": 23115.84362213513,
+   "gotVolume": 23115.84362213513,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-h-bevelref-d5",
+   "ok": true,
+   "wasVolume": 22941.41629523619,
+   "gotVolume": 22941.41629523619,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-h-bevel-d7",
+   "ok": true,
+   "wasVolume": 22489.68955515129,
+   "gotVolume": 22489.68955515129,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-hpref-y6",
+   "ok": true,
+   "wasVolume": 23297.21127939007,
+   "gotVolume": 23297.21127939007,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-hp-y12b",
+   "ok": true,
+   "wasVolume": 23434.61228643145,
+   "gotVolume": 23434.61228643145,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "r3-hp-touch",
+   "ok": true,
+   "wasVolume": 23357.29992343773,
+   "gotVolume": 23357.29992343773,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-pk-fillet-r3",
+   "ok": true,
+   "wasVolume": 11549.35933833098,
+   "gotVolume": 11549.35933833098,
+   "wasFaces": 12,
+   "gotFaces": 12,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-pkpos-y0",
+   "ok": true,
+   "wasVolume": 11760,
+   "gotVolume": 11760,
+   "wasFaces": 10,
+   "gotFaces": 10,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "r3-pw-bevel-w12-d5.99",
+   "ok": true,
+   "wasVolume": 11831.760199999995,
+   "gotVolume": 11831.760199999995,
+   "wasFaces": 12,
+   "gotFaces": 12,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-pw-bevel-w12-d7",
+   "ok": true,
+   "wasVolume": 8578.88938541084,
+   "gotVolume": 8578.88938541084,
+   "wasFaces": 13,
+   "gotFaces": 13,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-pw-fillet-w12-r6.01",
+   "ok": true,
+   "wasVolume": 11760,
+   "gotVolume": 11760,
+   "wasFaces": 11,
+   "gotFaces": 11,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "r3-wt-fillet-r3.99",
+   "ok": true,
+   "wasVolume": 11725.812764556867,
+   "gotVolume": 11725.812764556867,
+   "wasFaces": 12,
+   "gotFaces": 12,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-rim-fillet-r1",
+   "ok": true,
+   "wasVolume": 8393.557720450868,
+   "gotVolume": 8393.557720450868,
+   "wasFaces": 12,
+   "gotFaces": 12,
+   "wasRefused": "round2,round3,round4",
+   "gotRefused": "round2,round3,round4"
+  },
+  {
+   "id": "r3-z-whole-neg2",
+   "ok": true,
+   "wasVolume": 0,
+   "gotVolume": 0,
+   "wasFaces": 0,
+   "gotFaces": 0,
+   "wasRefused": "box1",
+   "gotRefused": "box1"
+  },
+  {
+   "id": "r3-half-box-r10",
+   "ok": true,
+   "wasVolume": 17611.27429665706,
+   "gotVolume": 17611.27429665706,
+   "wasFaces": 10,
+   "gotFaces": 10,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-bbox-cyl-bevel-14.99",
+   "ok": true,
+   "wasVolume": 7075.144476269471,
+   "gotVolume": 7075.144476269471,
+   "wasFaces": 4,
+   "gotFaces": 4,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3-k-round3-wall2",
+   "ok": true,
+   "wasVolume": 5039.619384423001,
+   "gotVolume": 5039.619384423001,
+   "wasFaces": 14,
+   "gotFaces": 14,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3f-h-35",
+   "ok": true,
+   "wasVolume": 22634.37338482762,
+   "gotVolume": 22634.37338482762,
+   "wasFaces": 8,
+   "gotFaces": 8,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "r3f-p-13",
+   "ok": true,
+   "wasVolume": 11642.194074206947,
+   "gotVolume": 11642.194074206947,
+   "wasFaces": 12,
+   "gotFaces": 12,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "w-box-r4",
+   "ok": true,
+   "wasVolume": 30711.496919943005,
+   "gotVolume": 30711.496919943005,
+   "wasFaces": 26,
+   "gotFaces": 26,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "w-cyl-r12-eqR",
+   "ok": true,
+   "wasVolume": 0,
+   "gotVolume": 0,
+   "wasFaces": 0,
+   "gotFaces": 0,
+   "wasRefused": "cyl1",
+   "gotRefused": "cyl1"
+  },
+  {
+   "id": "e-fillet-top-left-r2",
+   "ok": true,
+   "wasVolume": 14374.230889678727,
+   "gotVolume": 14374.230889678727,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "e-fillet-bottom-back-r2",
+   "ok": true,
+   "wasVolume": 14365.641186738974,
+   "gotVolume": 14365.641186738974,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "e-fillet-front-left-r2",
+   "ok": true,
+   "wasVolume": 14389.692356471574,
+   "gotVolume": 14389.692356471574,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "e-fillet-back-right-r2",
+   "ok": true,
+   "wasVolume": 14389.692350771096,
+   "gotVolume": 14389.692350771096,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "e-bevel-top-left-d2",
+   "ok": true,
+   "wasVolume": 14340,
+   "gotVolume": 14340,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "e-bevel-bottom-back-d2",
+   "ok": true,
+   "wasVolume": 14320,
+   "gotVolume": 14320,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "e-bevel-front-left-d2",
+   "ok": true,
+   "wasVolume": 14376,
+   "gotVolume": 14376,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "e-bevel-back-right-d2",
+   "ok": true,
+   "wasVolume": 14376,
+   "gotVolume": 14376,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "e-alias-fillet-chamfer",
+   "ok": true,
+   "wasVolume": 14365.641186238156,
+   "gotVolume": 14365.641186238156,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "bevel1",
+   "gotRefused": "bevel1"
+  },
+  {
+   "id": "e-fillet-top-front-r5.9",
+   "ok": true,
+   "wasVolume": 14100.992449127647,
+   "gotVolume": 14100.992449127647,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "e-fillet-top-front-r13",
+   "ok": true,
+   "wasVolume": 14400,
+   "gotVolume": 14400,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "e-bevel-top-front-d11",
+   "ok": true,
+   "wasVolume": 11980,
+   "gotVolume": 11980,
+   "wasFaces": 7,
+   "gotFaces": 7,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "e-opposite-left-right-bevel",
+   "ok": true,
+   "wasVolume": 14400,
+   "gotVolume": 14400,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "bevel1",
+   "gotRefused": "bevel1"
+  },
+  {
+   "id": "e-zero-size",
+   "ok": true,
+   "wasVolume": 14400,
+   "gotVolume": 14400,
+   "wasFaces": 6,
+   "gotFaces": 6,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  },
+  {
+   "id": "c-fillet-top-side-r3",
+   "ok": true,
+   "wasVolume": 13433.641165336643,
+   "gotVolume": 13433.641165336643,
+   "wasFaces": 4,
+   "gotFaces": 4,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "c-bevel-bottom-side-d3",
+   "ok": true,
+   "wasVolume": 13259.230052635257,
+   "gotVolume": 13259.230052635257,
+   "wasFaces": 4,
+   "gotFaces": 4,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "c-fillet-side-bottom-r3",
+   "ok": true,
+   "wasVolume": 13433.641165336603,
+   "gotVolume": 13433.641165336603,
+   "wasFaces": 4,
+   "gotFaces": 4,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "c-fillet-top-side-r11",
+   "ok": true,
+   "wasVolume": 12014.507691247918,
+   "gotVolume": 12014.507691247918,
+   "wasFaces": 4,
+   "gotFaces": 4,
+   "wasRefused": "",
+   "gotRefused": ""
+  },
+  {
+   "id": "c-fillet-top-side-r16",
+   "ok": true,
+   "wasVolume": 13570.148860573434,
+   "gotVolume": 13570.148860573434,
+   "wasFaces": 3,
+   "gotFaces": 3,
+   "wasRefused": "round1",
+   "gotRefused": "round1"
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+[
+ {
+  "id": "rect-redundant-width-dimension",
+  "feats": [
+   "rule:distance",
+   "redundant/conflicting dimensions"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k2 (Coincident), k3 (Coincident), k4 (Coincident), k6 (Vertical), k8 (Vertical), k10 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ }
+]

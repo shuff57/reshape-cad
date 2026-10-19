@@ -1,0 +1,2232 @@
+{
+ "out": [
+  {
+   "name": "hole_box",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "box>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000007261921611118082,
+   "dBbox": 1.578983857244667e-15,
+   "dCom": 5.889373981795646e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 4.746285448836716e-16,
+   "brepDBbox": 0,
+   "occtVol": 22994.690350851262,
+   "tfeat": "box1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_box",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "box>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000007261921611276292,
+   "dBbox": 1.3322676295501877e-15,
+   "dCom": 7.037251700853918e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 1.5820951496122386e-16,
+   "brepDBbox": 2.2204460492503126e-16,
+   "occtVol": 22994.690350851262,
+   "tfeat": "box1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_box",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "box>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000007261921611276292,
+   "dBbox": 1.5225915766287856e-15,
+   "dCom": 7.037251697390375e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 0,
+   "brepDBbox": 1.6917684184764287e-16,
+   "occtVol": 22994.690350851262,
+   "tfeat": "box1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_box",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "box>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000007261921610959871,
+   "dBbox": 1.6830408109890863e-16,
+   "dCom": 4.727126575182769e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 6.328380598448954e-16,
+   "brepDBbox": 3.1123242414486634e-16,
+   "occtVol": 22994.690350851266,
+   "tfeat": "box1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_box",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "box>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000007261921610643453,
+   "dBbox": 5.863718911583581e-16,
+   "dCom": 4.604513541940057e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 1.5820951496122386e-16,
+   "brepDBbox": 1.6243360860485637e-16,
+   "occtVol": 22994.690350851262,
+   "tfeat": "box1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_box",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "box>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000007261921610327032,
+   "dBbox": 5.759043394263758e-16,
+   "dCom": 4.770148467656343e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 4.746285448836715e-16,
+   "brepDBbox": 2.0252375396089183e-16,
+   "occtVol": 22994.69035085127,
+   "tfeat": "box1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_box",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "box>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000007261921610643453,
+   "dBbox": 1.578983857244667e-15,
+   "dCom": 7.037251701018848e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 0,
+   "brepDBbox": 0,
+   "occtVol": 22994.690350851262,
+   "tfeat": "box1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_box",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "box>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000007261921610801663,
+   "dBbox": 1.5789838572446664e-15,
+   "dCom": 7.037251700606521e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 0,
+   "brepDBbox": 2.0898315757650005e-16,
+   "occtVol": 22994.690350851262,
+   "tfeat": "box1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "corner_box",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "box",
+   "last": "box1",
+   "v": "PASS",
+   "dVol": 0.00002029599794447766,
+   "dBbox": 1.0658141036401502e-15,
+   "dCom": 1.2168422599339595e-10,
+   "faces": 26,
+   "occtFaces": 26,
+   "brepRefused": "Rounding a rotated box is not supported by brep-rs yet -- box1 is shown without it.",
+   "occtVol": 5804.696111204563,
+   "tfeat": "box1:built"
+  },
+  {
+   "name": "corner_box",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "box",
+   "last": "box1",
+   "v": "PASS",
+   "dVol": 0.000020295997943694252,
+   "dBbox": 5.329070518200749e-16,
+   "dCom": 1.4588238539103735e-10,
+   "faces": 26,
+   "occtFaces": 26,
+   "brepRefused": "Rounding a rotated box is not supported by brep-rs yet -- box1 is shown without it.",
+   "occtVol": 5804.696111204562,
+   "tfeat": "box1:built"
+  },
+  {
+   "name": "corner_box",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "box",
+   "last": "box1",
+   "v": "PASS",
+   "dVol": 0.000020295997943850933,
+   "dBbox": 5.329070518200749e-16,
+   "dCom": 1.4588241801944252e-10,
+   "faces": 26,
+   "occtFaces": 26,
+   "brepRefused": "Rounding a rotated box is not supported by brep-rs yet -- box1 is shown without it.",
+   "occtVol": 5804.696111204562,
+   "tfeat": "box1:built"
+  },
+  {
+   "name": "corner_box",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "box",
+   "last": "box1",
+   "v": "PASS",
+   "dVol": 0.0000202959979441643,
+   "dBbox": 0.000009695938429748719,
+   "dCom": 9.086888621283535e-11,
+   "faces": 26,
+   "occtFaces": 26,
+   "brepRefused": "Rounding a rotated box is not supported by brep-rs yet -- box1 is shown without it.",
+   "occtVol": 5804.696111204561,
+   "tfeat": "box1:built"
+  },
+  {
+   "name": "corner_box",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "box",
+   "last": "box1",
+   "v": "PASS",
+   "dVol": 0.00002029599794494771,
+   "dBbox": 0.000005434033712392447,
+   "dCom": 8.453973447885875e-11,
+   "faces": 26,
+   "occtFaces": 26,
+   "brepRefused": "Rounding a rotated box is not supported by brep-rs yet -- box1 is shown without it.",
+   "occtVol": 5804.696111204562,
+   "tfeat": "box1:built"
+  },
+  {
+   "name": "corner_box",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "box",
+   "last": "box1",
+   "v": "PASS",
+   "dVol": 0.000020295997943850933,
+   "dBbox": 0.000008602610829792151,
+   "dCom": 1.1087005454475771e-10,
+   "faces": 26,
+   "occtFaces": 26,
+   "brepRefused": "Rounding a rotated box is not supported by brep-rs yet -- box1 is shown without it.",
+   "occtVol": 5804.696111204562,
+   "tfeat": "box1:built"
+  },
+  {
+   "name": "corner_box",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "box",
+   "last": "box1",
+   "v": "PASS",
+   "dVol": 0.000020295997943694252,
+   "dBbox": 1.0658141036401502e-15,
+   "dCom": 1.4588240249041545e-10,
+   "faces": 26,
+   "occtFaces": 26,
+   "brepRefused": "Rounding a rotated box is not supported by brep-rs yet -- box1 is shown without it.",
+   "occtVol": 5804.696111204562,
+   "tfeat": "box1:built"
+  },
+  {
+   "name": "corner_box",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "box",
+   "last": "box1",
+   "v": "PASS",
+   "dVol": 0.000020295997943067522,
+   "dBbox": 5.329070518200748e-16,
+   "dCom": 1.4588248327625272e-10,
+   "faces": 26,
+   "occtFaces": 26,
+   "brepRefused": "Rounding a rotated box is not supported by brep-rs yet -- box1 is shown without it.",
+   "occtVol": 5804.696111204562,
+   "tfeat": "box1:built"
+  },
+  {
+   "name": "fillet_box",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "box>fillet>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000002826872295456212,
+   "dBbox": 3.552713678800501e-16,
+   "dCom": 3.62581124639748e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 1.1655176841732304e-12,
+   "brepDBbox": 0,
+   "occtVol": 5974.247779614657,
+   "tfeat": "box1:built,round1:built,turn1:built"
+  },
+  {
+   "name": "fillet_box",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "box>fillet>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.0000028268722956084475,
+   "dBbox": 8.289665250534502e-16,
+   "dCom": 6.987523813615489e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 1.1655176841732304e-12,
+   "brepDBbox": 1.77635683940025e-16,
+   "occtVol": 5974.247779614657,
+   "tfeat": "box1:built,round1:built,turn1:built"
+  },
+  {
+   "name": "fillet_box",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "box>fillet>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.0000028268722959129194,
+   "dBbox": 7.105427357601001e-16,
+   "dCom": 6.987523813617344e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 1.1655176841732304e-12,
+   "brepDBbox": 1.7763568394002498e-16,
+   "occtVol": 5974.247779614657,
+   "tfeat": "box1:built,round1:built,turn1:built"
+  },
+  {
+   "name": "fillet_box",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "box>fillet>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000002826872295456212,
+   "dBbox": 4.6037372567283015e-8,
+   "dCom": 3.635580532898285e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 1.1655176841732304e-12,
+   "brepDBbox": 4.093863711918775e-16,
+   "occtVol": 5974.247779614657,
+   "tfeat": "box1:built,round1:built,turn1:built"
+  },
+  {
+   "name": "fillet_box",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "box>fillet>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.0000028268722954562123,
+   "dBbox": 8.921625912856826e-7,
+   "dCom": 4.017742433379612e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 1.1653654483210658e-12,
+   "brepDBbox": 4.3827969967246535e-16,
+   "occtVol": 5974.247779614656,
+   "tfeat": "box1:built,round1:built,turn1:built"
+  },
+  {
+   "name": "fillet_box",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "box>fillet>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000002826872295456212,
+   "dBbox": 7.949471441185697e-8,
+   "dCom": 4.264264492816964e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 1.1655176841732304e-12,
+   "brepDBbox": 1.970163213022385e-16,
+   "occtVol": 5974.247779614657,
+   "tfeat": "box1:built,round1:built,turn1:built"
+  },
+  {
+   "name": "fillet_box",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "box>fillet>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.0000028268722956084475,
+   "dBbox": 5.329070518200751e-16,
+   "dCom": 6.987523813263134e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 1.1655176841732304e-12,
+   "brepDBbox": 0,
+   "occtVol": 5974.247779614657,
+   "tfeat": "box1:built,round1:built,turn1:built"
+  },
+  {
+   "name": "fillet_box",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "box>fillet>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.0000028268722956084475,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 6.987523813281678e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "brepDVol": 1.1655176841732304e-12,
+   "brepDBbox": 0,
+   "occtVol": 5974.247779614657,
+   "tfeat": "box1:built,round1:built,turn1:built"
+  },
+  {
+   "name": "hollow_box",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "REFUSED",
+   "refused": "Turn 1 is not built because Hollow 1, which it uses, was refused.",
+   "brepDVol": 2.5955899023200015e-16,
+   "brepDBbox": 0,
+   "tfeat": "box1:built,shell1:refused,turn1:refused"
+  },
+  {
+   "name": "hollow_box",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "REFUSED",
+   "refused": "Turn 1 is not built because Hollow 1, which it uses, was refused.",
+   "brepDVol": 2.5955899023200015e-16,
+   "brepDBbox": 1.77635683940025e-16,
+   "tfeat": "box1:built,shell1:refused,turn1:refused"
+  },
+  {
+   "name": "hollow_box",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "REFUSED",
+   "refused": "Turn 1 is not built because Hollow 1, which it uses, was refused.",
+   "brepDVol": 0,
+   "brepDBbox": 1.7763568394002498e-16,
+   "tfeat": "box1:built,shell1:refused,turn1:refused"
+  },
+  {
+   "name": "hollow_box",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "REFUSED",
+   "refused": "Turn 1 is not built because Hollow 1, which it uses, was refused.",
+   "brepDVol": 2.5955899023200015e-16,
+   "brepDBbox": 4.093863711918775e-16,
+   "tfeat": "box1:built,shell1:refused,turn1:refused"
+  },
+  {
+   "name": "hollow_box",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "REFUSED",
+   "refused": "Turn 1 is not built because Hollow 1, which it uses, was refused.",
+   "brepDVol": 1.2977949511600008e-16,
+   "brepDBbox": 4.3827969967246535e-16,
+   "tfeat": "box1:built,shell1:refused,turn1:refused"
+  },
+  {
+   "name": "hollow_box",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "REFUSED",
+   "refused": "Turn 1 is not built because Hollow 1, which it uses, was refused.",
+   "brepDVol": 3.893384853480001e-16,
+   "brepDBbox": 1.5596929983960276e-16,
+   "tfeat": "box1:built,shell1:refused,turn1:refused"
+  },
+  {
+   "name": "hollow_box",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "REFUSED",
+   "refused": "Turn 1 is not built because Hollow 1, which it uses, was refused.",
+   "brepDVol": 2.5955899023200015e-16,
+   "brepDBbox": 0,
+   "tfeat": "box1:built,shell1:refused,turn1:refused"
+  },
+  {
+   "name": "hollow_box",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "REFUSED",
+   "refused": "Turn 1 is not built because Hollow 1, which it uses, was refused.",
+   "brepDVol": 2.5955899023200015e-16,
+   "brepDBbox": 0,
+   "tfeat": "box1:built,shell1:refused,turn1:refused"
+  },
+  {
+   "name": "hollow_open",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.7018987682876655e-16,
+   "dBbox": 0,
+   "dCom": 4.614251714821666e-17,
+   "faces": 11,
+   "occtFaces": 11,
+   "brepDVol": 3.403797536575331e-16,
+   "brepDBbox": 0,
+   "occtVol": 2671.9999999999995,
+   "tfeat": "box1:built,shell1:built,turn1:built"
+  },
+  {
+   "name": "hollow_open",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 5.105696304862998e-16,
+   "dBbox": 1.77635683940025e-16,
+   "dCom": 1.780317506166525e-17,
+   "faces": 11,
+   "occtFaces": 11,
+   "brepDVol": 5.105696304862998e-16,
+   "brepDBbox": 1.77635683940025e-16,
+   "occtVol": 2671.9999999999986,
+   "tfeat": "box1:built,shell1:built,turn1:built"
+  },
+  {
+   "name": "hollow_open",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0,
+   "dBbox": 1.7763568394002498e-16,
+   "dCom": 1.924827643060947e-17,
+   "faces": 11,
+   "occtFaces": 11,
+   "brepDVol": 1.7018987682876652e-16,
+   "brepDBbox": 1.7763568394002498e-16,
+   "occtVol": 2672,
+   "tfeat": "box1:built,shell1:built,turn1:built"
+  },
+  {
+   "name": "hollow_open",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 6.807595073150665e-16,
+   "dBbox": 2.2688674588037515e-16,
+   "dCom": 4.050461716419751e-17,
+   "faces": 11,
+   "occtFaces": 11,
+   "brepDVol": 1.7018987682876662e-16,
+   "brepDBbox": 4.093863711918775e-16,
+   "occtVol": 2671.999999999998,
+   "tfeat": "box1:built,shell1:built,turn1:built"
+  },
+  {
+   "name": "hollow_open",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 5.105696304862995e-16,
+   "dBbox": 4.3827969967246554e-16,
+   "dCom": 6.12439809501885e-17,
+   "faces": 11,
+   "occtFaces": 11,
+   "brepDVol": 5.105696304862995e-16,
+   "brepDBbox": 4.3827969967246535e-16,
+   "occtVol": 2672,
+   "tfeat": "box1:built,shell1:built,turn1:built"
+  },
+  {
+   "name": "hollow_open",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.3615190146301322e-15,
+   "dBbox": 1.9194236889659095e-16,
+   "dCom": 5.249426693549304e-17,
+   "faces": 11,
+   "occtFaces": 11,
+   "brepDVol": 0,
+   "brepDBbox": 1.5596929983960276e-16,
+   "occtVol": 2672,
+   "tfeat": "box1:built,shell1:built,turn1:built"
+  },
+  {
+   "name": "hollow_open",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 5.105696304862998e-16,
+   "dBbox": 0,
+   "dCom": 2.3737566748887e-17,
+   "faces": 11,
+   "occtFaces": 11,
+   "brepDVol": 3.403797536575332e-16,
+   "brepDBbox": 0,
+   "occtVol": 2671.9999999999986,
+   "tfeat": "box1:built,shell1:built,turn1:built"
+  },
+  {
+   "name": "hollow_open",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "box>shell>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 3.4037975365753314e-16,
+   "dBbox": 3.552713678800499e-16,
+   "dCom": 2.4318963406201317e-17,
+   "faces": 11,
+   "occtFaces": 11,
+   "brepDVol": 5.105696304862997e-16,
+   "brepDBbox": 0,
+   "occtVol": 2671.999999999999,
+   "tfeat": "box1:built,shell1:built,turn1:built"
+  },
+  {
+   "name": "hole_cyl",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "cylinder>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000028711842280641443,
+   "dBbox": 0.000006442640688201588,
+   "dCom": 5.177696957865711e-7,
+   "faces": 4,
+   "occtFaces": 4,
+   "brepDVol": 1.3402831250282475e-16,
+   "brepDBbox": 0,
+   "occtVol": 13571.680263507904,
+   "tfeat": "cyl1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_cyl",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "cylinder>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000028711842296322754,
+   "dBbox": 0.000025304437980290724,
+   "dCom": 4.881841406701696e-7,
+   "faces": 4,
+   "occtFaces": 4,
+   "brepDVol": 2.680566250056495e-16,
+   "brepDBbox": 2.537652627714643e-16,
+   "occtVol": 13571.680263507904,
+   "tfeat": "cyl1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_cyl",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "cylinder>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00002871184228560049,
+   "dBbox": 0.00002952184431196751,
+   "dCom": 4.881858919166019e-7,
+   "faces": 4,
+   "occtFaces": 4,
+   "brepDVol": 2.680566250056495e-16,
+   "brepDBbox": 2.2204460492503126e-16,
+   "occtVol": 13571.680263507904,
+   "tfeat": "cyl1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_cyl",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "cylinder>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000028711842294312328,
+   "dBbox": 0.000017483143823990185,
+   "dCom": 3.81501399588871e-7,
+   "faces": 4,
+   "occtFaces": 4,
+   "brepDVol": 8.041698750169485e-16,
+   "brepDBbox": 0,
+   "occtVol": 13571.680263507906,
+   "tfeat": "cyl1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_cyl",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "cylinder>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00002871184228144562,
+   "dBbox": 0.000006844101929167464,
+   "dCom": 3.630450594704469e-7,
+   "faces": 4,
+   "occtFaces": 4,
+   "brepDVol": 5.361132500112992e-16,
+   "brepDBbox": 3.691343982119285e-16,
+   "occtVol": 13571.6802635079,
+   "tfeat": "cyl1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_cyl",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "cylinder>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00002871184229203385,
+   "dBbox": 0.00000920465507357829,
+   "dCom": 3.7700349528729343e-7,
+   "faces": 4,
+   "occtFaces": 4,
+   "brepDVol": 2.680566250056495e-16,
+   "brepDBbox": 2.5488609446384275e-16,
+   "occtVol": 13571.680263507904,
+   "tfeat": "cyl1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_cyl",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "cylinder>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000028711842286002575,
+   "dBbox": 0.00002952184431196751,
+   "dCom": 4.881589653825205e-7,
+   "faces": 4,
+   "occtFaces": 4,
+   "brepDVol": 8.041698750169486e-16,
+   "brepDBbox": 0,
+   "occtVol": 13571.680263507904,
+   "tfeat": "cyl1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "hole_cyl",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "cylinder>hole>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000028711842286136603,
+   "dBbox": 0.00002952184431255962,
+   "dCom": 4.881589654582645e-7,
+   "faces": 4,
+   "occtFaces": 4,
+   "brepDVol": 8.041698750169486e-16,
+   "brepDBbox": 3.2297397080004545e-16,
+   "occtVol": 13571.680263507904,
+   "tfeat": "cyl1:built,hole1:built,turn1:built"
+  },
+  {
+   "name": "join_box_cyl",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00005471308995376785,
+   "dBbox": 1.7763568394002505e-15,
+   "dCom": 0.000006143621610248779,
+   "faces": 10,
+   "occtFaces": 11,
+   "brepDVol": 3.603959197346274e-16,
+   "brepDBbox": 0,
+   "occtVol": 7570.796326794894,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "join_box_cyl",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00005471308995412825,
+   "dBbox": 1.9539925233402753e-15,
+   "dCom": 0.000009971231480838434,
+   "faces": 10,
+   "occtFaces": 11,
+   "brepDVol": 3.603959197346274e-16,
+   "brepDBbox": 1.77635683940025e-16,
+   "occtVol": 7570.796326794894,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "join_box_cyl",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00005471308995424838,
+   "dBbox": 1.4210854715202003e-15,
+   "dCom": 0.000009971231480525989,
+   "faces": 10,
+   "occtFaces": 11,
+   "brepDVol": 3.603959197346274e-16,
+   "brepDBbox": 1.1842378929335005e-16,
+   "occtVol": 7570.796326794894,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "join_box_cyl",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00005471308995400812,
+   "dBbox": 0.00003377117731224052,
+   "dCom": 0.000005121360944455702,
+   "faces": 10,
+   "occtFaces": 11,
+   "brepDVol": 3.603959197346274e-16,
+   "brepDBbox": 4.093863711918775e-16,
+   "occtVol": 7570.796326794894,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "join_box_cyl",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00005471308995400812,
+   "dBbox": 0.00002158538292480688,
+   "dCom": 0.0000051780286912593355,
+   "faces": 10,
+   "occtFaces": 11,
+   "brepDVol": 4.805278929795032e-16,
+   "brepDBbox": 4.3827969967246535e-16,
+   "occtVol": 7570.796326794894,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "join_box_cyl",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00005471308995400812,
+   "dBbox": 0.000003461219413880999,
+   "dCom": 0.0000068365672249794035,
+   "faces": 10,
+   "occtFaces": 11,
+   "brepDVol": 3.603959197346274e-16,
+   "brepDBbox": 0,
+   "occtVol": 7570.796326794894,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "join_box_cyl",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00005471308995400812,
+   "dBbox": 1.7763568394002505e-15,
+   "dCom": 0.000009971231480781625,
+   "faces": 10,
+   "occtFaces": 11,
+   "brepDVol": 3.603959197346274e-16,
+   "brepDBbox": 0,
+   "occtVol": 7570.796326794894,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "join_box_cyl",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00005471308995400812,
+   "dBbox": 1.6579330501069003e-15,
+   "dCom": 0.000009971231480753221,
+   "faces": 10,
+   "occtFaces": 11,
+   "brepDVol": 3.603959197346274e-16,
+   "brepDBbox": 1.1842378929335e-16,
+   "occtVol": 7570.796326794894,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "cut_box_cyl",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00003262388080789633,
+   "dBbox": 3.907985046680551e-15,
+   "dCom": 0.000005813252732331057,
+   "faces": 7,
+   "occtFaces": 8,
+   "brepRefused": "turn turn1 cannot find op1",
+   "occtVol": 5214.601836602551,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "cut_box_cyl",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000032623880807721914,
+   "dBbox": 2.3092638912203253e-15,
+   "dCom": 0.000010455814001632431,
+   "faces": 7,
+   "occtFaces": 8,
+   "brepRefused": "turn turn1 cannot find op1",
+   "occtVol": 5214.601836602551,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "cut_box_cyl",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00003262388080789633,
+   "dBbox": 3.1974423109204497e-15,
+   "dCom": 0.00001045581400172738,
+   "faces": 7,
+   "occtFaces": 8,
+   "brepRefused": "turn turn1 cannot find op1",
+   "occtVol": 5214.601836602551,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "cut_box_cyl",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000032623880807373086,
+   "dBbox": 8.464330756555991e-16,
+   "dCom": 0.000004554983800597894,
+   "faces": 7,
+   "occtFaces": 8,
+   "brepRefused": "turn turn1 cannot find op1",
+   "occtVol": 5214.601836602551,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "cut_box_cyl",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.0000326238808075475,
+   "dBbox": 6.811973751647952e-16,
+   "dCom": 0.00000466558947486356,
+   "faces": 7,
+   "occtFaces": 8,
+   "brepRefused": "turn turn1 cannot find op1",
+   "occtVol": 5214.601836602551,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "cut_box_cyl",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00003262388080789633,
+   "dBbox": 1.247754398716822e-15,
+   "dCom": 0.000006132147907791763,
+   "faces": 7,
+   "occtFaces": 8,
+   "brepRefused": "turn turn1 cannot find op1",
+   "occtVol": 5214.601836602551,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "cut_box_cyl",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00003262388080789633,
+   "dBbox": 3.907985046680551e-15,
+   "dCom": 0.000010455814001656169,
+   "faces": 7,
+   "occtFaces": 8,
+   "brepRefused": "turn turn1 cannot find op1",
+   "occtVol": 5214.601836602551,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "cut_box_cyl",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.000032623880807721914,
+   "dBbox": 3.907985046680549e-15,
+   "dCom": 0.000010455814001596822,
+   "faces": 7,
+   "occtFaces": 8,
+   "brepRefused": "turn turn1 cannot find op1",
+   "occtVol": 5214.601836602551,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "keep_box_cyl",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00009206229344565204,
+   "dBbox": 0.00012217905206366453,
+   "dCom": 0.000009580497491126899,
+   "faces": 3,
+   "occtFaces": 3,
+   "brepDVol": 4.342517325091522e-16,
+   "brepDBbox": 0,
+   "occtVol": 785.3981633974482,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "keep_box_cyl",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.0000920607897356885,
+   "dBbox": 0.000044584837923800073,
+   "dCom": 0.000009261736811560402,
+   "faces": 3,
+   "occtFaces": 3,
+   "brepDVol": 4.342517325091521e-16,
+   "brepDBbox": 1.77635683940025e-16,
+   "occtVol": 785.3981633974483,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "keep_box_cyl",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00009205999903218488,
+   "dBbox": 0.00006230341648887361,
+   "dCom": 0.000004146223927768709,
+   "faces": 3,
+   "occtFaces": 3,
+   "brepDVol": 1.013254042521355e-15,
+   "brepDBbox": 3.552713678800502e-16,
+   "occtVol": 785.3981633974483,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "keep_box_cyl",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00012501668584628882,
+   "dBbox": 0.00005816510577811171,
+   "dCom": 0.000003588056547077794,
+   "faces": 3,
+   "occtFaces": 3,
+   "brepDVol": 1.447505775030507e-16,
+   "brepDBbox": 4.535543043360828e-16,
+   "occtVol": 785.3981633974483,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "keep_box_cyl",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.0001250135184433915,
+   "dBbox": 0.000029963333447575908,
+   "dCom": 0.000006038804216061144,
+   "faces": 3,
+   "occtFaces": 3,
+   "brepDVol": 4.342517325091521e-16,
+   "brepDBbox": 3.775020790599996e-16,
+   "occtVol": 785.3981633974483,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "keep_box_cyl",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00010382115854446154,
+   "dBbox": 0.00002421800424195541,
+   "dCom": 0.0000036337439431200905,
+   "faces": 3,
+   "occtFaces": 3,
+   "brepDVol": 1.447505775030507e-16,
+   "brepDBbox": 3.6173403140709857e-16,
+   "occtVol": 785.3981633974483,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "keep_box_cyl",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00009206078971730518,
+   "dBbox": 0.00006230341648887361,
+   "dCom": 0.000004146823754617151,
+   "faces": 3,
+   "occtFaces": 3,
+   "brepDVol": 2.895011550061014e-16,
+   "brepDBbox": 0,
+   "occtVol": 785.3981633974483,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "keep_box_cyl",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "box>cylinder>combine>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0.00009206078971759469,
+   "dBbox": 0.00006230341648958414,
+   "dCom": 0.000004146823754492741,
+   "faces": 3,
+   "occtFaces": 3,
+   "brepDVol": 4.342517325091521e-16,
+   "brepDBbox": 1.77635683940025e-16,
+   "occtVol": 785.3981633974483,
+   "tfeat": "box1:built,cyl1:built,op1:built,turn1:built"
+  },
+  {
+   "name": "mirror_box",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "box>mirror>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0,
+   "dBbox": 1.25607396694702e-16,
+   "dCom": 3.304949236661029e-17,
+   "faces": 6,
+   "occtFaces": 10,
+   "brepDVol": 0,
+   "brepDBbox": 1.25607396694702e-16,
+   "occtVol": 11999.999999999998,
+   "tfeat": "box1:built,mir1:built,turn1:built"
+  },
+  {
+   "name": "mirror_box",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "box>mirror>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 1.77635683940025e-16,
+   "dCom": 6.32826597360961e-18,
+   "faces": 6,
+   "occtFaces": 10,
+   "brepDVol": 1.5158245029548806e-16,
+   "brepDBbox": 1.77635683940025e-16,
+   "occtVol": 11999.999999999998,
+   "tfeat": "box1:built,mir1:built,turn1:built"
+  },
+  {
+   "name": "mirror_box",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "box>mirror>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 1.5543122344752192e-15,
+   "dCom": 2.0837349236045284e-18,
+   "faces": 6,
+   "occtFaces": 10,
+   "brepDVol": 1.5158245029548806e-16,
+   "brepDBbox": 1.5543122344752192e-15,
+   "occtVol": 11999.999999999998,
+   "tfeat": "box1:built,mir1:built,turn1:built"
+  },
+  {
+   "name": "mirror_box",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "box>mirror>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.5158245029548803e-16,
+   "dBbox": 1.968852372051592e-16,
+   "dCom": 4.2945429944119624e-17,
+   "faces": 6,
+   "occtFaces": 10,
+   "brepDVol": 0,
+   "brepDBbox": 1.358141151592273e-16,
+   "occtVol": 12000,
+   "tfeat": "box1:built,mir1:built,turn1:built"
+  },
+  {
+   "name": "mirror_box",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "box>mirror>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.5158245029548803e-16,
+   "dBbox": 2.906277896532685e-16,
+   "dCom": 8.252763002686701e-17,
+   "faces": 6,
+   "occtFaces": 10,
+   "brepDVol": 1.5158245029548803e-16,
+   "brepDBbox": 2.4845765476687314e-16,
+   "occtVol": 12000,
+   "tfeat": "box1:built,mir1:built,turn1:built"
+  },
+  {
+   "name": "mirror_box",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "box>mirror>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0,
+   "dBbox": 4.626495822596172e-16,
+   "dCom": 2.6953216845748082e-17,
+   "faces": 6,
+   "occtFaces": 10,
+   "brepDVol": 1.5158245029548803e-16,
+   "brepDBbox": 2.1506251562823118e-16,
+   "occtVol": 12000,
+   "tfeat": "box1:built,mir1:built,turn1:built"
+  },
+  {
+   "name": "mirror_box",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "box>mirror>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 0,
+   "dCom": 2.5245250035977936e-18,
+   "faces": 6,
+   "occtFaces": 10,
+   "brepDVol": 1.5158245029548806e-16,
+   "brepDBbox": 0,
+   "occtVol": 11999.999999999998,
+   "tfeat": "box1:built,mir1:built,turn1:built"
+  },
+  {
+   "name": "mirror_box",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "box>mirror>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 3.552713678800499e-16,
+   "dCom": 2.0010482530043928e-17,
+   "faces": 6,
+   "occtFaces": 10,
+   "brepDVol": 1.5158245029548806e-16,
+   "brepDBbox": 0,
+   "occtVol": 11999.999999999998,
+   "tfeat": "box1:built,mir1:built,turn1:built"
+  },
+  {
+   "name": "repeat_box",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 9.950948873945016e-16,
+   "dCom": 2.9727764306726992e-18,
+   "faces": 18,
+   "occtFaces": 18,
+   "brepDVol": 1.5158245029548806e-16,
+   "brepDBbox": 3.316982957981672e-16,
+   "occtVol": 2999.9999999999995,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeat_box",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 3.0316490059097617e-16,
+   "dBbox": 1.77635683940025e-16,
+   "dCom": 4.186913223156734e-17,
+   "faces": 18,
+   "occtFaces": 18,
+   "brepDVol": 1.5158245029548808e-16,
+   "brepDBbox": 1.77635683940025e-16,
+   "occtVol": 2999.999999999999,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeat_box",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 3.0316490059097617e-16,
+   "dBbox": 3.552713678800502e-16,
+   "dCom": 4.186913223156734e-17,
+   "faces": 18,
+   "occtFaces": 18,
+   "brepDVol": 3.0316490059097617e-16,
+   "brepDBbox": 1.776356839400251e-16,
+   "occtVol": 2999.999999999999,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeat_box",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 3.0316490059097617e-16,
+   "dBbox": 1.7763568394002505e-15,
+   "dCom": 1.2237101187383184e-16,
+   "faces": 18,
+   "occtFaces": 18,
+   "brepDVol": 3.0316490059097617e-16,
+   "brepDBbox": 8.881784197001252e-16,
+   "occtVol": 2999.999999999999,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeat_box",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 4.547473508864642e-16,
+   "dBbox": 2.0863995178225228e-16,
+   "dCom": 4.2288527192398037e-17,
+   "faces": 18,
+   "occtFaces": 18,
+   "brepDVol": 4.547473508864642e-16,
+   "brepDBbox": 8.881784197001252e-16,
+   "occtVol": 2999.999999999999,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeat_box",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 3.03164900590976e-16,
+   "dBbox": 2.4220589647772663e-15,
+   "dCom": 1.8338334359067414e-17,
+   "faces": 18,
+   "occtFaces": 18,
+   "brepDVol": 1.51582450295488e-16,
+   "brepDBbox": 1.446148342854227e-16,
+   "occtVol": 3000.0000000000005,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeat_box",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 3.0316490059097617e-16,
+   "dBbox": 0,
+   "dCom": 4.186913223156734e-17,
+   "faces": 18,
+   "occtFaces": 18,
+   "brepDVol": 1.5158245029548808e-16,
+   "brepDBbox": 0,
+   "occtVol": 2999.999999999999,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeat_box",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 1.7763568394002498e-16,
+   "dCom": 1.3680738956664628e-17,
+   "faces": 18,
+   "occtFaces": 18,
+   "brepDVol": 1.5158245029548806e-16,
+   "brepDBbox": 1.7763568394002498e-16,
+   "occtVol": 2999.9999999999995,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeatAround",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.1368683772161603e-16,
+   "dBbox": 1.25607396694702e-16,
+   "dCom": 5.170409472465254e-17,
+   "faces": 24,
+   "occtFaces": 24,
+   "brepDVol": 2.2737367544323206e-16,
+   "brepDBbox": 1.25607396694702e-16,
+   "occtVol": 3999.9999999999995,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeatAround",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 2.273736754432321e-16,
+   "dBbox": 5.329070518200746e-16,
+   "dCom": 8.555427139343688e-18,
+   "faces": 24,
+   "occtFaces": 24,
+   "brepDVol": 2.273736754432321e-16,
+   "brepDBbox": 5.329070518200746e-16,
+   "occtVol": 3999.999999999999,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeatAround",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.1368683772161603e-16,
+   "dBbox": 5.329070518200746e-16,
+   "dCom": 1.013691052451207e-17,
+   "faces": 24,
+   "occtFaces": 24,
+   "brepDVol": 1.1368683772161603e-16,
+   "brepDBbox": 5.329070518200746e-16,
+   "occtVol": 3999.9999999999995,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeatAround",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.1368683772161606e-16,
+   "dBbox": 1.2811922354561104e-16,
+   "dCom": 2.999908583183634e-17,
+   "faces": 24,
+   "occtFaces": 24,
+   "brepDVol": 1.1368683772161606e-16,
+   "brepDBbox": 1.5298596606806058e-16,
+   "occtVol": 3999.999999999999,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeatAround",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.1368683772161606e-16,
+   "dBbox": 1.2811922354561104e-16,
+   "dCom": 3.241141881404825e-17,
+   "faces": 24,
+   "occtFaces": 24,
+   "brepDVol": 1.1368683772161606e-16,
+   "brepDBbox": 2.750808263659723e-16,
+   "occtVol": 3999.999999999999,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeatAround",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.13686837721616e-16,
+   "dBbox": 2.1808915978341759e-16,
+   "dCom": 8.225780285276358e-17,
+   "faces": 24,
+   "occtFaces": 24,
+   "brepDVol": 1.13686837721616e-16,
+   "brepDBbox": 2.1318978529894945e-16,
+   "occtVol": 4000.000000000001,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeatAround",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 2.273736754432321e-16,
+   "dBbox": 0,
+   "dCom": 8.485502662294853e-18,
+   "faces": 24,
+   "occtFaces": 24,
+   "brepDVol": 2.273736754432321e-16,
+   "brepDBbox": 0,
+   "occtVol": 3999.999999999999,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "repeatAround",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "box>pattern>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 2.273736754432321e-16,
+   "dBbox": 3.5527136788004947e-16,
+   "dCom": 1.228299686797904e-17,
+   "faces": 24,
+   "occtFaces": 24,
+   "brepDVol": 2.273736754432321e-16,
+   "brepDBbox": 0,
+   "occtVol": 3999.999999999999,
+   "tfeat": "box1:built,pat1:built,turn1:built"
+  },
+  {
+   "name": "pull_rect",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "sketch>extrude>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 2.526374171591468e-16,
+   "dBbox": 0,
+   "dCom": 1.7273068344190488e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 2.526374171591468e-16,
+   "brepDBbox": 0,
+   "occtVol": 7199.999999999998,
+   "tfeat": "sk1:noop,pull1:built,turn1:built"
+  },
+  {
+   "name": "pull_rect",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "sketch>extrude>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 2.526374171591468e-16,
+   "dBbox": 2.2204460492503126e-16,
+   "dCom": 2.1156998613519553e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 2.526374171591468e-16,
+   "brepDBbox": 2.96059473233375e-16,
+   "occtVol": 7199.999999999998,
+   "tfeat": "sk1:noop,pull1:built,turn1:built"
+  },
+  {
+   "name": "pull_rect",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "sketch>extrude>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 2.526374171591468e-16,
+   "dBbox": 1.480297366166875e-16,
+   "dCom": 2.337311630789803e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 2.526374171591468e-16,
+   "brepDBbox": 1.480297366166875e-16,
+   "occtVol": 7199.999999999998,
+   "tfeat": "sk1:noop,pull1:built,turn1:built"
+  },
+  {
+   "name": "pull_rect",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "sketch>extrude>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 2.526374171591468e-16,
+   "dBbox": 2.0346183210132799e-16,
+   "dCom": 3.849128997783354e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 3.7895612573872017e-16,
+   "brepDBbox": 2.0346183210132799e-16,
+   "occtVol": 7199.999999999998,
+   "tfeat": "sk1:noop,pull1:built,turn1:built"
+  },
+  {
+   "name": "pull_rect",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "sketch>extrude>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.263187085795734e-16,
+   "dBbox": 2.187997296850396e-16,
+   "dCom": 1.5349935581399493e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 3.7895612573872017e-16,
+   "brepDBbox": 2.1670797641356187e-16,
+   "occtVol": 7199.999999999998,
+   "tfeat": "sk1:noop,pull1:built,turn1:built"
+  },
+  {
+   "name": "pull_rect",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "sketch>extrude>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 3.789561257387201e-16,
+   "dBbox": 0,
+   "dCom": 4.820588027305283e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 0,
+   "brepDBbox": 1.8809573314398452e-16,
+   "occtVol": 7200,
+   "tfeat": "sk1:noop,pull1:built,turn1:built"
+  },
+  {
+   "name": "pull_rect",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "sketch>extrude>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 2.526374171591468e-16,
+   "dBbox": 0,
+   "dCom": 2.337311630789803e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 2.526374171591468e-16,
+   "brepDBbox": 0,
+   "occtVol": 7199.999999999998,
+   "tfeat": "sk1:noop,pull1:built,turn1:built"
+  },
+  {
+   "name": "pull_rect",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "sketch>extrude>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 2.526374171591468e-16,
+   "dBbox": 2.1524166080566918e-16,
+   "dCom": 2.3373116307898028e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 2.526374171591468e-16,
+   "brepDBbox": 1.480297366166875e-16,
+   "occtVol": 7199.999999999998,
+   "tfeat": "sk1:noop,pull1:built,turn1:built"
+  },
+  {
+   "name": "moved_box",
+   "a": [
+    0,
+    0,
+    45
+   ],
+   "kinds": "box>move>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.8947806286936009e-16,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 1.451550991539404e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 1.8947806286936009e-16,
+   "brepDBbox": 0,
+   "occtVol": 1199.9999999999998,
+   "tfeat": "box1:built,move1:built,turn1:built"
+  },
+  {
+   "name": "moved_box",
+   "a": [
+    90,
+    0,
+    0
+   ],
+   "kinds": "box>move>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0,
+   "dBbox": 2.220446049250313e-16,
+   "dCom": 3.8363464653084385e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 0,
+   "brepDBbox": 2.2204460492503126e-16,
+   "occtVol": 1200,
+   "tfeat": "box1:built,move1:built,turn1:built"
+  },
+  {
+   "name": "moved_box",
+   "a": [
+    0,
+    90,
+    0
+   ],
+   "kinds": "box>move>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0,
+   "dBbox": 1.3664283380001925e-16,
+   "dCom": 0,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 1.8947806286936006e-16,
+   "brepDBbox": 1.3664283380001925e-16,
+   "occtVol": 1200,
+   "tfeat": "box1:built,move1:built,turn1:built"
+  },
+  {
+   "name": "moved_box",
+   "a": [
+    30,
+    40,
+    50
+   ],
+   "kinds": "box>move>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0,
+   "dBbox": 1.9984014443252818e-15,
+   "dCom": 5.130404237460474e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 1.8947806286936006e-16,
+   "brepDBbox": 1.7763568394002505e-15,
+   "occtVol": 1200,
+   "tfeat": "box1:built,move1:built,turn1:built"
+  },
+  {
+   "name": "moved_box",
+   "a": [
+    -30,
+    -40,
+    -50
+   ],
+   "kinds": "box>move>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0,
+   "dBbox": 1.7763568394002505e-15,
+   "dCom": 5.2374088882245214e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 1.8947806286936006e-16,
+   "brepDBbox": 5.7129004093442e-16,
+   "occtVol": 1200,
+   "tfeat": "box1:built,move1:built,turn1:built"
+  },
+  {
+   "name": "moved_box",
+   "a": [
+    10,
+    20,
+    300
+   ],
+   "kinds": "box>move>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 1.8947806286936006e-16,
+   "dBbox": 1.7763568394002505e-15,
+   "dCom": 5.456754916476112e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 1.8947806286936006e-16,
+   "brepDBbox": 1.7763568394002505e-15,
+   "occtVol": 1200,
+   "tfeat": "box1:built,move1:built,turn1:built"
+  },
+  {
+   "name": "moved_box",
+   "a": [
+    0,
+    0,
+    0
+   ],
+   "kinds": "box>move>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 0,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 0,
+   "brepDBbox": 0,
+   "occtVol": 1200,
+   "tfeat": "box1:built,move1:built,turn1:built"
+  },
+  {
+   "name": "moved_box",
+   "a": [
+    360,
+    0,
+    0
+   ],
+   "kinds": "box>move>rotate",
+   "last": "turn1",
+   "v": "PASS",
+   "dVol": 0,
+   "dBbox": 2.1524166080566918e-16,
+   "dCom": 3.8363464653084385e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "brepDVol": 0,
+   "brepDBbox": 1.77635683940025e-16,
+   "occtVol": 1200,
+   "tfeat": "box1:built,move1:built,turn1:built"
+  }
+ ],
+ "summary": {
+  "hole_box": {
+   "PASS": 8
+  },
+  "corner_box": {
+   "PASS": 8
+  },
+  "fillet_box": {
+   "PASS": 8
+  },
+  "hollow_box": {
+   "REFUSED": 8
+  },
+  "hollow_open": {
+   "PASS": 8
+  },
+  "hole_cyl": {
+   "PASS": 8
+  },
+  "join_box_cyl": {
+   "PASS": 8
+  },
+  "cut_box_cyl": {
+   "PASS": 8
+  },
+  "keep_box_cyl": {
+   "PASS": 8
+  },
+  "mirror_box": {
+   "PASS": 8
+  },
+  "repeat_box": {
+   "PASS": 8
+  },
+  "repeatAround": {
+   "PASS": 8
+  },
+  "pull_rect": {
+   "PASS": 8
+  },
+  "moved_box": {
+   "PASS": 8
+  }
+ }
+}

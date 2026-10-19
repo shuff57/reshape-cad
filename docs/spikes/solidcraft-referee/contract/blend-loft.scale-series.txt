@@ -1,0 +1,9 @@
+k 0.05 truck 1.4698463103929502 analytic 1.469846310392954 rel 2.568131278103746e-15 faceTypes {"other":4,"plane":2} faces 6 kfaces 6
+k 0.1 truck 11.758770483143602 analytic 11.758770483143632 rel 2.568131278103746e-15 faceTypes {"other":4,"plane":2} faces 6 kfaces 6
+k 0.2 truck 94.07016386514881 analytic 94.07016386514906 rel 2.568131278103746e-15 faceTypes {"other":4,"plane":2} faces 6 kfaces 6
+k 0.5 truck 1474.1883629937608 analytic 1469.8463103929544 rel 0.0029540861313899283 faceTypes {"other":4,"plane":2} faces 6 kfaces 6
+k 1 truck 11793.506903950087 analytic 11758.770483143635 rel 0.0029540861313899283 faceTypes {"other":4,"plane":2} faces 6 kfaces 6
+k 2 truck 94348.0552316007 analytic 94070.16386514908 rel 0.0029540861313899283 faceTypes {"other":4,"plane":2} faces 6 kfaces 6
+k 5 truck 1472852.3468088887 analytic 1469846.3103929544 rel 0.0020451365524948553 faceTypes {"other":4,"plane":2} faces 6 kfaces 6
+k 10 truck 11782818.77447111 analytic 11758770.483143635 rel 0.0020451365524948553 faceTypes {"other":4,"plane":2} faces 6 kfaces 6
+k 100 truck 11782818774.471155 analytic 11758770483.143635 rel 0.0020451365524987446 faceTypes {"other":4,"plane":2} faces 6 kfaces 6

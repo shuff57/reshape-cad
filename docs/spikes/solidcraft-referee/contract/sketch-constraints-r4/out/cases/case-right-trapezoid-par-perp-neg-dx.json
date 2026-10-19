@@ -1,0 +1,84 @@
+[
+ {
+  "id": "right-trapezoid-par-perp-neg-dx",
+  "feats": [
+   "rule:parallel",
+   "rule:perpendicular",
+   "rule:distanceX",
+   "right trapezoid",
+   "rough start: signed distanceX/distanceY branch"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.722376336128666e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4159.999999999804
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.6430371593182477e-11,
+      "db": 3.552713678800501e-15,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4159.99999993165
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.1018878117633554e-13,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4159.999999999542
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 7.192878771233014e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4159.999999999701
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.639735868453639e-11,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4159.999999931787
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ }
+]

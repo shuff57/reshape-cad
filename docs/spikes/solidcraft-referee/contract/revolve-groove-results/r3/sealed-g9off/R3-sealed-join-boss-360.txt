@@ -1,0 +1,1 @@
+R3-sealed-join-boss-360                  REFUSED  occtV 43077.5185 | tr-occt dV - dBb - dCom - F o/b/t 9/9/- | brep-occt dV 0.0e+0    | TRUCK REFUSED: groove1 (groove): a full-turn ring cut into a round part takes a minute or more here unless its axis is the part's own axis, so it is not built; centre the ring on the axis of the round part  | ms 1720 cpu 2179

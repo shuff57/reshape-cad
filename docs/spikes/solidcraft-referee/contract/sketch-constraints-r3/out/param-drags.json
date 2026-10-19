@@ -1,0 +1,2892 @@
+{
+ "tally": {
+  "RIGHT": 192,
+  "REFUSED-VALID": 38,
+  "REFUSED-INVALID": 44,
+  "WRONG": 0,
+  "BUILT-TOUCHING": 6,
+  "REFUSED-TOUCHING": 2
+ },
+ "rows": [
+  {
+   "id": "rect width param 30 -> 5..120",
+   "curved": false,
+   "paths": [
+    {
+     "path": [
+      30,
+      40,
+      50,
+      60,
+      80,
+      100,
+      120
+     ],
+     "steps": [
+      {
+       "v": 40,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.625721779419109e-14,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 50,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 6.548361852765083e-15,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 60,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 3.183231456205249e-15,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 80,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.7053025658242404e-15,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 100,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 9.094947017729283e-16,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 120,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 4.547473508864641e-16,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      }
+     ]
+    },
+    {
+     "path": [
+      30,
+      25,
+      20,
+      15,
+      10,
+      5
+     ],
+     "steps": [
+      {
+       "v": 25,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.6370904631912707e-14,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 20,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 6.7075234255753454e-15,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 15,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 3.183231456205249e-15,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 10,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.7053025658242404e-15,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 5,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 9.094947017729283e-16,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      }
+     ]
+    }
+   ],
+   "jumps": [
+    {
+     "v": 40,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.625721779419109e-14,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 50,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.6370904631912707e-14,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 60,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.6370904631912707e-14,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 80,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.625721779419109e-14,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 100,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.6370904631912707e-14,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 120,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.6370904631912707e-14,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 25,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.6370904631912707e-14,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 20,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.625721779419109e-14,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 15,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.6370904631912707e-14,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 10,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.625721779419109e-14,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 5,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.625721779419109e-14,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    }
+   ]
+  },
+  {
+   "id": "hole diameter param 10 in a 40x25 plate, centre (20,12.5)",
+   "curved": true,
+   "paths": [
+    {
+     "path": [
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24,
+      24.5,
+      25,
+      25.5,
+      26,
+      28,
+      30,
+      38
+     ],
+     "steps": [
+      {
+       "v": 12,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00002118147378479438,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 14,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00003022201478534633,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 16,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000041801924419177906,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 18,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00005216371837971067,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 20,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.0000626686082646794,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 22,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00007868716847232214,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 24,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00010016288886453237,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 24.5,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00010814095828101058,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 25,
+       "cls": "BUILT-TOUCHING",
+       "valid": "touching",
+       "dv": 0.00010879286979028523,
+       "bodies": 2,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 25.5,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 26,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 28,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 30,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 38,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      }
+     ]
+    },
+    {
+     "path": [
+      10,
+      8,
+      6,
+      4,
+      2,
+      1
+     ],
+     "steps": [
+      {
+       "v": 8,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000008791196917676885,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 6,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.0000048331463119806705,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 4,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.0000021139058373917223,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 2,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 5.235780880631641e-7,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 1,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 3.0933906720440545e-7,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      }
+     ]
+    }
+   ],
+   "jumps": [
+    {
+     "v": 12,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00002118147378479438,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 14,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00003022201478534633,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 16,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000041801924419177906,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 18,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00005216371837971067,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 20,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.0000626686082646794,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 22,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00007868716847232214,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 24,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00010016288886453237,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 24.5,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00010814095828101058,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 25,
+     "cls": "BUILT-TOUCHING",
+     "valid": "touching",
+     "dv": 0.00010879286979028523,
+     "bodies": 2,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 25.5,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 26,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 28,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 30,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 38,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 8,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000008791196917676885,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 6,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.0000048331463119806705,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 4,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.0000021139058373917223,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 2,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 5.235780880631641e-7,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 1,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 3.0933906720440545e-7,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    }
+   ]
+  },
+  {
+   "id": "hole centre distanceX param 20 -> -12 (hole r5, plate x 0..40)",
+   "curved": true,
+   "paths": [
+    {
+     "path": [
+      20,
+      18,
+      16,
+      14,
+      12,
+      10,
+      8,
+      6,
+      5.5,
+      5,
+      4.5,
+      4,
+      2,
+      1,
+      0.5,
+      0,
+      -0.5,
+      -2,
+      -4,
+      -5,
+      -5.5,
+      -6,
+      -8,
+      -12
+     ],
+     "steps": [
+      {
+       "v": 18,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000014157718877104608,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 16,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000014157705118909982,
+       "db": 4.275193532521371e-10,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 14,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00001415770047915151,
+       "db": 2.1375967662606854e-10,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 12,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000014157698159272273,
+       "db": 1.0687983831303427e-10,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 10,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00001415769699972746,
+       "db": 5.3439919156517135e-11,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 8,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00001415769641956025,
+       "db": 2.6719959578258567e-11,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 6,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000014157696129180538,
+       "db": 1.3361756145968684e-11,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 5.5,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000014157695984089385,
+       "db": 6.682654429823742e-12,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 5,
+       "cls": "BUILT-TOUCHING",
+       "valid": "touching",
+       "dv": 0.000014157695912826927,
+       "bodies": 1,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 4.5,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 4,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 2,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 1,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 0.5,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 0,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": -0.5,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -0.5 but the points are drawn on the other side; redraw them on the side you mean.",
+       "stage": "map"
+      },
+      {
+       "v": -2,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -2 but the points are drawn on the other side; redraw them on the side you mean.",
+       "stage": "map"
+      },
+      {
+       "v": -4,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -4 but the points are drawn on the other side; redraw them on the side you mean.",
+       "stage": "map"
+      },
+      {
+       "v": -5,
+       "cls": "REFUSED-TOUCHING",
+       "valid": "touching",
+       "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -5 but the points are drawn on the other side; redraw them on the side you mean.",
+       "stage": "map"
+      },
+      {
+       "v": -5.5,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -5.5 but the points are drawn on the other side; redraw them on the side you mean.",
+       "stage": "map"
+      },
+      {
+       "v": -6,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -6 but the points are drawn on the other side; redraw them on the side you mean.",
+       "stage": "map"
+      },
+      {
+       "v": -8,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -8 but the points are drawn on the other side; redraw them on the side you mean.",
+       "stage": "map"
+      },
+      {
+       "v": -12,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -12 but the points are drawn on the other side; redraw them on the side you mean.",
+       "stage": "map"
+      }
+     ]
+    },
+    {
+     "path": [
+      20,
+      25,
+      30,
+      34,
+      34.5,
+      35,
+      35.5,
+      36,
+      38,
+      40,
+      44,
+      46
+     ],
+     "steps": [
+      {
+       "v": 25,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000014157718877104608,
+       "db": 1.0614229495331529e-9,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 30,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00001415770511812037,
+       "db": 4.275193532521371e-10,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 34,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000014157700479743718,
+       "db": 2.1375967662606854e-10,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 34.5,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000014157698159272273,
+       "db": 1.0687983831303427e-10,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 35,
+       "cls": "BUILT-TOUCHING",
+       "valid": "touching",
+       "dv": 0.00001415769699972746,
+       "bodies": 1,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 35.5,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 36,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 38,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 40,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 44,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "the hole crosses the outline",
+       "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+       "stage": "branch"
+      },
+      {
+       "v": 46,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "stage": "branch"
+      }
+     ]
+    }
+   ],
+   "jumps": [
+    {
+     "v": 18,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000014157718877104608,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 16,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00001415771887789422,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 14,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000014157718877499414,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 12,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000014157718877499414,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 10,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000014157718876907206,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 8,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000014157718877104608,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 6,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000014157718877104608,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 5.5,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000014157718877104608,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 5,
+     "cls": "BUILT-TOUCHING",
+     "valid": "touching",
+     "dv": 0.000014157718877696816,
+     "bodies": 1,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 4.5,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 4,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 2,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 1,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 0.5,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 0,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": -0.5,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -0.5 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "REFUSED"
+    },
+    {
+     "v": -2,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -2 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "REFUSED"
+    },
+    {
+     "v": -4,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -4 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "REFUSED"
+    },
+    {
+     "v": -5,
+     "cls": "REFUSED-TOUCHING",
+     "valid": "touching",
+     "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -5 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "REFUSED"
+    },
+    {
+     "v": -5.5,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -5.5 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": -6,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -6 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": -8,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -8 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": -12,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 13 of sk.rules() asks for a horizontal offset of -12 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": 25,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000014157718877104608,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 30,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000014157718877104608,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 34,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00001415771887789422,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 34.5,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00001415771887789422,
+     "db": 1.0614229495331529e-9,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 35,
+     "cls": "BUILT-TOUCHING",
+     "valid": "touching",
+     "dv": 0.000014157718877696816,
+     "bodies": 1,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 35.5,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 36,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 38,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 40,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 44,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "the hole crosses the outline",
+     "sentence": "With these values the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to cutting across the outline through geometry 5, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 46,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+     "stage": "branch",
+     "brep": "RIGHT"
+    }
+   ]
+  },
+  {
+   "id": "circle-circle EXTERNAL tangent, small radius param 5 -> 1..14",
+   "curved": true,
+   "paths": [
+    {
+     "path": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      12,
+      14
+     ],
+     "steps": [
+      {
+       "v": 6,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00009766524775305945,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 7,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00009941079965725014,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 8,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00008913050542605868,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 9,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00008543244325631344,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 10,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00008127244987869557,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 12,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00007746851595631983,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 14,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.0000735904556244675,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      }
+     ]
+    },
+    {
+     "path": [
+      5,
+      4,
+      3,
+      2,
+      1
+     ],
+     "steps": [
+      {
+       "v": 4,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00009387202905064736,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 3,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00009308990831644368,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 2,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00009287733800828527,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 1,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00009031510913314263,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      }
+     ]
+    }
+   ],
+   "jumps": [
+    {
+     "v": 6,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00009766524775305945,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 7,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00009941079965725014,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 8,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00008913050542605868,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 9,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00008543244325631344,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 10,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00008127244987869557,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 12,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00007746851595631983,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 14,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.0000735904556244675,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 4,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00009387202905064736,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 3,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00009308990831644368,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 2,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00009287733800828527,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 1,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00009031510913314263,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    }
+   ]
+  },
+  {
+   "id": "circle-circle INTERNAL tangent, small radius param 5 -> 1..7.5 and past 8",
+   "curved": true,
+   "paths": [
+    {
+     "path": [
+      5,
+      4,
+      3,
+      2,
+      1
+     ],
+     "steps": [
+      {
+       "v": 4,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00007323677340624347,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 3,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00006392036313509736,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 2,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00003322785092896818,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 1,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00002602132651794044,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      }
+     ]
+    },
+    {
+     "path": [
+      5,
+      6,
+      7,
+      7.5,
+      7.9,
+      8,
+      8.1,
+      9,
+      10,
+      12
+     ],
+     "steps": [
+      {
+       "v": 6,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00005883107165565754,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 7,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000011883570044768177,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 7.5,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00008273566392523644,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 7.9,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00009027127912997394,
+       "db": 5.329070518200751e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 8,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "two equal circles on top of each other",
+       "sentence": "Row 3 of sk.rules() (it sets the radius of geometry 2 to 8) cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.",
+       "stage": "residual"
+      },
+      {
+       "v": 8.1,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1 would go from being around the outline through geometry 2 to being inside the outline through geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "stage": "branch"
+      },
+      {
+       "v": 9,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1 would go from being around the outline through geometry 2 to being inside the outline through geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "stage": "branch"
+      },
+      {
+       "v": 10,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1 would go from being around the outline through geometry 2 to being inside the outline through geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "stage": "branch"
+      },
+      {
+       "v": 12,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1 would go from being around the outline through geometry 2 to being inside the outline through geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "stage": "branch"
+      }
+     ]
+    }
+   ],
+   "jumps": [
+    {
+     "v": 4,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00007323677340624347,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 3,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00006392036313509736,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 2,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00003322785092896818,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 1,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00002602132651794044,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 6,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00005883107165565754,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 7,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000011883570044768177,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 7.5,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00008273566392523644,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 7.9,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00009027127912997394,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 8,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "two equal circles on top of each other",
+     "sentence": "Row 3 of sk.rules() (it sets the radius of geometry 2 to 8) cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.",
+     "stage": "residual",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 8.1,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00009245515601105803,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 9,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000031663994638655094,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 10,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000011185822209831285,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 12,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000039843239225187245,
+     "db": 5.329070518200751e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    }
+   ]
+  },
+  {
+   "id": "slot cap radius param 10 -> 1..25 (left cap centre locked at (0,10), length 40)",
+   "curved": true,
+   "paths": [
+    {
+     "path": [
+      10,
+      9,
+      8,
+      6,
+      4,
+      3,
+      2,
+      1
+     ],
+     "steps": [
+      {
+       "v": 9,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00003328794605387194,
+       "db": 0.0002008362453409518,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 8,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00004114066846156246,
+       "db": 0.00024213262603467456,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 6,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00003242482320959422,
+       "db": 0.000037098757736941934,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 4,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000021517684178379947,
+       "db": 0.00004775738453588474,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 3,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000015936792797833087,
+       "db": 0.0000701805253768839,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 2,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000009967369844698935,
+       "db": 0.00009183392300826654,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 1,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000003770968414457872,
+       "db": 0.00010422708517410229,
+       "sentence": null,
+       "stage": null
+      }
+     ]
+    },
+    {
+     "path": [
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      25
+     ],
+     "steps": [
+      {
+       "v": 12,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000033704715158525594,
+       "db": 0.0003019299344941828,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 14,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000036469441967567286,
+       "db": 0.0002766093576553885,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 16,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00003838919390882254,
+       "db": 0.00033556036755300056,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 18,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.0000420232086566634,
+       "db": 0.0003213417893022097,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 20,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.000044426074257314976,
+       "db": 0.00037221301995060685,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 25,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0.00005113103599991965,
+       "db": 0.0003780215833302236,
+       "sentence": null,
+       "stage": null
+      }
+     ]
+    }
+   ],
+   "jumps": [
+    {
+     "v": 9,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00003328794605387194,
+     "db": 0.0002008362453409518,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 8,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000032268699124299634,
+     "db": 0.00022424063750037249,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 6,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000027945524637327872,
+     "db": 0.00018430887991627287,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 4,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00001905987505638767,
+     "db": 0.00016152763856069896,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 3,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000014520692019857626,
+     "db": 0.00013350680034562856,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 2,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000009846328538727973,
+     "db": 0.00009705682104055313,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 1,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000004131737962003746,
+     "db": 0.00008921602658773509,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 12,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000033704715158525594,
+     "db": 0.0003019299344941828,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 14,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00003604424603216353,
+     "db": 0.0003029715434408331,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 16,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00003909385353990233,
+     "db": 0.0002896665160179168,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 18,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.000041759536454024944,
+     "db": 0.000339346746756064,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 20,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.00004415050354599468,
+     "db": 0.00039188558029934484,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 25,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0.0000492133910460691,
+     "db": 0.0005300090487736497,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    }
+   ]
+  },
+  {
+   "id": "triangle angle param 120 -> 10 and 120 -> 175 (steps of 5 degrees)",
+   "curved": false,
+   "paths": [
+    {
+     "path": [
+      120,
+      115,
+      110,
+      105,
+      100,
+      95,
+      90,
+      85,
+      80,
+      70,
+      60,
+      50,
+      40,
+      30,
+      20,
+      10
+     ],
+     "steps": [
+      {
+       "v": 115,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0,
+       "db": 7.105427357601002e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 110,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.6131067430189313e-16,
+       "db": 7.105427357601002e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 105,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0,
+       "db": 1.7763568394002505e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 100,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 4.617625617746602e-16,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 95,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.5216147063003934e-16,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 90,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 85,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.5216147063003934e-16,
+       "db": 1.7763568394002505e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 80,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.5392085392488675e-16,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 70,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 3.2262134860378627e-16,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 60,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.750323369650462e-16,
+       "db": 1.7763568394002505e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 50,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.9787683555057793e-16,
+       "db": 1.7763568394002505e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 40,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.1791021482928748e-16,
+       "db": 1.7763568394002505e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 30,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0,
+       "db": 1.7763568394002505e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 20,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 2.215987175807252e-16,
+       "db": 1.7763568394002505e-15,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 10,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (geometry 2 would fold straight back on geometry 3), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "stage": "branch"
+      }
+     ]
+    },
+    {
+     "path": [
+      120,
+      125,
+      130,
+      140,
+      150,
+      160,
+      170,
+      175
+     ],
+     "steps": [
+      {
+       "v": 125,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.8504800342292822e-16,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 130,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 140,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.179102148292874e-16,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 150,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 0,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 160,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 2.215987175807251e-16,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 170,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 4.364642702621219e-16,
+       "db": 0,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 175,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (geometry 1 would fold straight back on geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "stage": "branch"
+      }
+     ]
+    }
+   ],
+   "jumps": [
+    {
+     "v": 115,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0,
+     "db": 7.105427357601002e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 110,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.6131067430189313e-16,
+     "db": 7.105427357601002e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 105,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0,
+     "db": 1.7763568394002505e-15,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 100,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 4.617625617746602e-16,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 95,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.5216147063003934e-16,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 90,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 85,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 8 of sk.rules() asks for 85 degrees from line 1 to line 2, but the lines are drawn at about 120 degrees; the solver cannot swing a line across that far, so redraw the lines near 85 degrees first.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": 80,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 8 of sk.rules() asks for 80 degrees from line 1 to line 2, but the lines are drawn at about 120 degrees; the solver cannot swing a line across that far, so redraw the lines near 80 degrees first.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": 70,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 8 of sk.rules() asks for 70 degrees from line 1 to line 2, but the lines are drawn at about 120 degrees; the solver cannot swing a line across that far, so redraw the lines near 70 degrees first.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": 60,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 8 of sk.rules() asks for 60 degrees from line 1 to line 2, but the lines are drawn at about 120 degrees; the solver cannot swing a line across that far, so redraw the lines near 60 degrees first.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": 50,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 8 of sk.rules() asks for 50 degrees from line 1 to line 2, but the lines are drawn at about 120 degrees; the solver cannot swing a line across that far, so redraw the lines near 50 degrees first.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": 40,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 8 of sk.rules() asks for 40 degrees from line 1 to line 2, but the lines are drawn at about 120 degrees; the solver cannot swing a line across that far, so redraw the lines near 40 degrees first.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": 30,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 8 of sk.rules() asks for 30 degrees from line 1 to line 2, but the lines are drawn at about 120 degrees; the solver cannot swing a line across that far, so redraw the lines near 30 degrees first.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": 20,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 8 of sk.rules() asks for 20 degrees from line 1 to line 2, but the lines are drawn at about 120 degrees; the solver cannot swing a line across that far, so redraw the lines near 20 degrees first.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": 10,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 8 of sk.rules() asks for 10 degrees from line 1 to line 2, but the lines are drawn at about 120 degrees; the solver cannot swing a line across that far, so redraw the lines near 10 degrees first.",
+     "stage": "map",
+     "brep": "REFUSED"
+    },
+    {
+     "v": 125,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.8504800342292822e-16,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 130,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 140,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.179102148292874e-16,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 150,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 0,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 160,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 2.215987175807251e-16,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 170,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 4.364642702621219e-16,
+     "db": 0,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 175,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (geometry 1 would fold straight back on geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+     "stage": "branch",
+     "brep": "REFUSED"
+    }
+   ]
+  },
+  {
+   "id": "rect corner distanceX param +12 -> -12 (steps of 2)",
+   "curved": false,
+   "paths": [
+    {
+     "path": [
+      12,
+      10,
+      8,
+      6,
+      4,
+      2,
+      0,
+      -2,
+      -4,
+      -6,
+      -8,
+      -10,
+      -12
+     ],
+     "steps": [
+      {
+       "v": 10,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 4.422569569821159e-12,
+       "db": 1.7690382492219214e-10,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 8,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.7813969558725753e-12,
+       "db": 7.125322554202285e-11,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 6,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 8.906984779362877e-13,
+       "db": 3.5626612771011423e-11,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 4,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 4.4519765651784836e-13,
+       "db": 1.7813306385505712e-11,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 2,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 2.2267461948407192e-13,
+       "db": 8.906653192752856e-12,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 0,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.1141310096718371e-13,
+       "db": 4.455102953215828e-12,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": -2,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "Row 9 of sk.rules() sets a signed offset but the two points are drawn level, so the side it means cannot be told; draw them a little apart on the side you want.",
+       "stage": "map"
+      },
+      {
+       "v": -4,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "Row 9 of sk.rules() sets a signed offset but the two points are drawn level, so the side it means cannot be told; draw them a little apart on the side you want.",
+       "stage": "map"
+      },
+      {
+       "v": -6,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "Row 9 of sk.rules() sets a signed offset but the two points are drawn level, so the side it means cannot be told; draw them a little apart on the side you want.",
+       "stage": "map"
+      },
+      {
+       "v": -8,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "Row 9 of sk.rules() sets a signed offset but the two points are drawn level, so the side it means cannot be told; draw them a little apart on the side you want.",
+       "stage": "map"
+      },
+      {
+       "v": -10,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "Row 9 of sk.rules() sets a signed offset but the two points are drawn level, so the side it means cannot be told; draw them a little apart on the side you want.",
+       "stage": "map"
+      },
+      {
+       "v": -12,
+       "cls": "REFUSED-VALID",
+       "valid": true,
+       "sentence": "Row 9 of sk.rules() sets a signed offset but the two points are drawn level, so the side it means cannot be told; draw them a little apart on the side you want.",
+       "stage": "map"
+      }
+     ]
+    }
+   ],
+   "jumps": [
+    {
+     "v": 10,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 4.422569569821159e-12,
+     "db": 1.7690382492219214e-10,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 8,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 4.422569569821159e-12,
+     "db": 1.7690382492219214e-10,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 6,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 4.422569569821159e-12,
+     "db": 1.7690382492219214e-10,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 4,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 4.422569569821159e-12,
+     "db": 1.7690382492219214e-10,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 2,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 4.422569569821159e-12,
+     "db": 1.7690382492219214e-10,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 0,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 4.422569569821159e-12,
+     "db": 1.7690382492219214e-10,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": -2,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -2 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": -4,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -4 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": -6,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -6 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": -8,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -8 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": -10,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -10 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "RIGHT"
+    },
+    {
+     "v": -12,
+     "cls": "REFUSED-VALID",
+     "valid": true,
+     "sentence": "Row 9 of sk.rules() asks for a horizontal offset of -12 but the points are drawn on the other side; redraw them on the side you mean.",
+     "stage": "map",
+     "brep": "RIGHT"
+    }
+   ]
+  },
+  {
+   "id": "rect height param 20 -> 0.1, 0, -5",
+   "curved": false,
+   "paths": [
+    {
+     "path": [
+      20,
+      10,
+      5,
+      1,
+      0.1,
+      0,
+      -5
+     ],
+     "steps": [
+      {
+       "v": 10,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 7.942920395483573e-14,
+       "db": 1.5898393712632242e-12,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 5,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.1201943076836566e-13,
+       "db": 1.1191048088221578e-12,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 1,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 4.475471844974284e-13,
+       "db": 8.952838470577262e-13,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 0.1,
+       "cls": "RIGHT",
+       "valid": true,
+       "dv": 1.0074311755185287e-12,
+       "db": 2.0144996781823465e-13,
+       "sentence": null,
+       "stage": null
+      },
+      {
+       "v": 0,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "a length of zero or less",
+       "sentence": "Row 11 of sk.rules() is a distance of 0; a distance has to be more than zero.",
+       "stage": "map"
+      },
+      {
+       "v": -5,
+       "cls": "REFUSED-INVALID",
+       "valid": false,
+       "why": "a length of zero or less",
+       "sentence": "Row 11 of sk.rules() is a distance of -5; a distance has to be more than zero.",
+       "stage": "map"
+      }
+     ]
+    }
+   ],
+   "jumps": [
+    {
+     "v": 10,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 7.942920395483573e-14,
+     "db": 1.5898393712632242e-12,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 5,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 2.7087783867803713e-13,
+     "db": 2.708056001665682e-12,
+     "sentence": null,
+     "stage": null,
+     "brep": "RIGHT"
+    },
+    {
+     "v": 1,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.801936377887614e-12,
+     "db": 3.603783937933258e-12,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 0.1,
+     "cls": "RIGHT",
+     "valid": true,
+     "dv": 1.9025847564080323e-11,
+     "db": 3.805150639024646e-12,
+     "sentence": null,
+     "stage": null,
+     "brep": "REFUSED"
+    },
+    {
+     "v": 0,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "a length of zero or less",
+     "sentence": "Row 11 of sk.rules() is a distance of 0; a distance has to be more than zero.",
+     "stage": "map",
+     "brep": "REFUSED"
+    },
+    {
+     "v": -5,
+     "cls": "REFUSED-INVALID",
+     "valid": false,
+     "why": "a length of zero or less",
+     "sentence": "Row 11 of sk.rules() is a distance of -5; a distance has to be more than zero.",
+     "stage": "map",
+     "brep": "REFUSED"
+    }
+   ]
+  }
+ ]
+}

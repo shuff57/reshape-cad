@@ -1,0 +1,738 @@
+[
+ {
+  "id": "r2-alias-cuboid",
+  "feature": "alias",
+  "note": "",
+  "script": "cuboid(40, 30, 12);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      12
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 14400,
+  "occt": {
+   "volume": 14400,
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 14400,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ],
+   "faces": 6,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 14400,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ],
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 0,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 110
+ },
+ {
+  "id": "r2-alias-cuboid-opts",
+  "feature": "alias",
+  "note": "",
+  "script": "cuboid(40, 30, 12, { at: [15, -7, 3], corner: 3 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      12
+     ],
+     "center": [
+      15,
+      -7,
+      3
+     ],
+     "round": 3
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 13802.654703996952,
+  "occt": {
+   "volume": 13802.654704201143,
+   "com": [
+    14.999999999999993,
+    -7.000000000306626,
+    3.0000000003050946
+   ],
+   "bbox": [
+    -5,
+    -22,
+    -3.0000000000000004,
+    35,
+    8,
+    9
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 8
+   }
+  },
+  "brep": {
+   "volume": 13802.654703996954,
+   "bbox": [
+    -5,
+    -22,
+    -3,
+    35,
+    8,
+    9
+   ],
+   "faces": 26,
+   "dVol": 1.4793446686997626e-11,
+   "dBbox": 8.636534172095244e-18
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 12,
+     "center": [
+      15,
+      -7,
+      3
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       15,
+       -22,
+       -3
+      ],
+      [
+       15,
+       -22,
+       9
+      ],
+      [
+       15,
+       8,
+       -3
+      ],
+      [
+       15,
+       8,
+       9
+      ],
+      [
+       -5,
+       -7,
+       -3
+      ],
+      [
+       -5,
+       -7,
+       9
+      ],
+      [
+       35,
+       -7,
+       -3
+      ],
+      [
+       35,
+       -7,
+       9
+      ],
+      [
+       -5,
+       -22,
+       3
+      ],
+      [
+       -5,
+       8,
+       3
+      ],
+      [
+       35,
+       -22,
+       3
+      ],
+      [
+       35,
+       8,
+       3
+      ]
+     ],
+     "radius": 3,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 13802.297630845425,
+   "bbox": [
+    -5.0000000000000036,
+    -22.000000000000007,
+    -3.000000000000007,
+    35.00000000000001,
+    8.000000000000004,
+    9.000000000000005
+   ],
+   "com": [
+    14.999999992715356,
+    -6.999999989066164,
+    3.0000000007748207
+   ],
+   "faces": 26,
+   "faceTypes": {
+    "cylinder": 12,
+    "plane": 6,
+    "sphere": 8
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.000025869904258958587,
+   "dBboxOcct": 1.381845467535239e-16,
+   "dComOcct": 2.186016482941292e-10,
+   "facesOcct": 26,
+   "typesOcct": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 8
+   },
+   "dVolAnalytic": 0.000025869889465762826,
+   "dVolBrep": 0.000025869889465894607,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 5235
+ },
+ {
+  "id": "r2-alias-torus",
+  "feature": "alias",
+  "note": "",
+  "script": "torus(40, 10);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "ring1",
+     "kind": "torus",
+     "ringRadius": 15,
+     "tubeRadius": 5,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "torus",
+  "analytic": 7402.203300817018,
+  "occt": {
+   "volume": 7402.203300817018,
+   "com": [
+    -1.0658141036401503e-14,
+    -3.746613850627634e-15,
+    -2.8979931944015076e-16
+   ],
+   "bbox": [
+    -20.0000001,
+    -20.0000001,
+    -5.0000001,
+    20.0000001,
+    20.0000001,
+    5.0000001
+   ],
+   "faces": 1,
+   "types": {
+    "torus": 1
+   }
+  },
+  "brep": {
+   "volume": 7402.203300817026,
+   "bbox": [
+    -20,
+    -20,
+    -5,
+    20,
+    20,
+    5
+   ],
+   "faces": 1,
+   "dVol": 9.829448501340597e-16,
+   "dBbox": 1.7407765704047176e-9
+  },
+  "commands": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 15,
+     "minor": 5,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ring1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7401.117050536577,
+   "bbox": [
+    -19.99993957313294,
+    -19.999939573132938,
+    -4.9995509129152005,
+    19.999939573132973,
+    19.999939573132938,
+    4.9995509129152005
+   ],
+   "com": [
+    -8.520105666799491e-15,
+    -3.6046600897997844e-15,
+    -0.00004595785896603273
+   ],
+   "faces": 1,
+   "faceTypes": {
+    "other": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00014674688552816003,
+   "dBboxOcct": 0.000007819343438101208,
+   "dComOcct": 8.000236317861427e-7,
+   "facesOcct": 1,
+   "typesOcct": {
+    "torus": 1
+   },
+   "dVolAnalytic": 0.00014674688552816003,
+   "dVolBrep": 0.00014674688552914283,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 23578
+ },
+ {
+  "id": "r2-alias-torus-at",
+  "feature": "alias",
+  "note": "",
+  "script": "torus(40, 10, { at: [5, -3, 7] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "ring1",
+     "kind": "torus",
+     "ringRadius": 15,
+     "tubeRadius": 5,
+     "center": [
+      5,
+      -3,
+      7
+     ]
+    }
+   ]
+  },
+  "kind": "torus",
+  "analytic": 7402.203300817018,
+  "occt": {
+   "volume": 7402.203300817018,
+   "com": [
+    4.999999999999989,
+    -3.0000000000000036,
+    6.999999999999999
+   ],
+   "bbox": [
+    -15.0000001,
+    -23.0000001,
+    1.9999999,
+    25.0000001,
+    17.0000001,
+    12.0000001
+   ],
+   "faces": 1,
+   "types": {
+    "torus": 1
+   }
+  },
+  "brep": {
+   "volume": 7402.203300817019,
+   "bbox": [
+    -15,
+    -23,
+    2,
+    25,
+    17,
+    12
+   ],
+   "faces": 1,
+   "dVol": 1.2286810626675746e-16,
+   "dBbox": 1.7407765704047176e-9
+  },
+  "commands": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 15,
+     "minor": 5,
+     "center": [
+      5,
+      -3,
+      7
+     ],
+     "body_name": "b_ring1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7401.11705054366,
+   "bbox": [
+    -14.999939573132938,
+    -22.99993957313294,
+    2.000449087084799,
+    24.999939573132977,
+    16.99993957313294,
+    11.9995509129152
+   ],
+   "com": [
+    4.9999999999943086,
+    -2.999999999996563,
+    6.999954042152077
+   ],
+   "faces": 1,
+   "faceTypes": {
+    "other": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00014674688457126322,
+   "dBboxOcct": 0.000007819343438089612,
+   "dComOcct": 8.000234395382153e-7,
+   "facesOcct": 1,
+   "typesOcct": {
+    "torus": 1
+   },
+   "dVolAnalytic": 0.00014674688457126322,
+   "dVolBrep": 0.00014674688457138606,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 12302
+ },
+ {
+  "id": "r2-alias-box",
+  "feature": "alias",
+  "note": "",
+  "script": "box(40, 30, 12);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      12
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 14400,
+  "occt": {
+   "volume": 14400,
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 14400,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ],
+   "faces": 6,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 14400,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ],
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 0,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 5
+ },
+ {
+  "id": "r2-alias-ring",
+  "feature": "alias",
+  "note": "",
+  "script": "ring(40, 10);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "ring1",
+     "kind": "torus",
+     "ringRadius": 15,
+     "tubeRadius": 5,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "torus",
+  "analytic": 7402.203300817018,
+  "occt": {
+   "volume": 7402.203300817018,
+   "com": [
+    -1.0658141036401503e-14,
+    -3.746613850627634e-15,
+    -2.8979931944015076e-16
+   ],
+   "bbox": [
+    -20.0000001,
+    -20.0000001,
+    -5.0000001,
+    20.0000001,
+    20.0000001,
+    5.0000001
+   ],
+   "faces": 1,
+   "types": {
+    "torus": 1
+   }
+  },
+  "brep": {
+   "volume": 7402.203300817026,
+   "bbox": [
+    -20,
+    -20,
+    -5,
+    20,
+    20,
+    5
+   ],
+   "faces": 1,
+   "dVol": 9.829448501340597e-16,
+   "dBbox": 1.7407765704047176e-9
+  },
+  "commands": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 15,
+     "minor": 5,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ring1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7401.117050536577,
+   "bbox": [
+    -19.99993957313294,
+    -19.999939573132938,
+    -4.9995509129152005,
+    19.999939573132973,
+    19.999939573132938,
+    4.9995509129152005
+   ],
+   "com": [
+    -8.520105666799491e-15,
+    -3.6046600897997844e-15,
+    -0.00004595785896603273
+   ],
+   "faces": 1,
+   "faceTypes": {
+    "other": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00014674688552816003,
+   "dBboxOcct": 0.000007819343438101208,
+   "dComOcct": 8.000236317861427e-7,
+   "facesOcct": 1,
+   "typesOcct": {
+    "torus": 1
+   },
+   "dVolAnalytic": 0.00014674688552816003,
+   "dVolBrep": 0.00014674688552914283,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 10822
+ }
+]

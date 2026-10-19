@@ -1,0 +1,1 @@
+sl9-65-boxtan-top-m0.1                   PASS     occtV 70588.2137 | tr-occt dV 1.3e-6 dBb 0.0e+0 dCom 6.9e-7 F o/b/t 12/12/12 | brep-occt dV 2.1e-16      | ms 701 cpu 1137

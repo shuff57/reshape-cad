@@ -1,0 +1,84 @@
+[
+ {
+  "id": "symmetric-trapezoid-about-Y-axis",
+  "feats": [
+   "rule:symmetric",
+   "symmetric:about axis",
+   "axis-ref:X/Y axes (-2,-3)",
+   "rule:pointOnObject",
+   "symmetric trapezoid"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.8036290485825803e-12,
+      "db": 5.1490327885073106e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4499.999999991884
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.1455990564492012e-12,
+      "db": 4.96616081591128e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4500.000000009655
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 2.3194135994546943e-12,
+      "db": 6.622653011954842e-11,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4499.999999989563
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.512146102161043e-11,
+      "db": 3.4997249542811915e-10,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4500.000000068047
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 4.015318053360615e-12,
+      "db": 1.1464542861141059e-10,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4499.999999981931
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 10
+  }
+ }
+]

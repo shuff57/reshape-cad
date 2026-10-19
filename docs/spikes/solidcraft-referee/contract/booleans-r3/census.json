@@ -1,0 +1,794 @@
+{
+ "distinctRawTexts": 37,
+ "failing": 1,
+ "rows": [
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back",
+   "from": [
+    "emp-cut-three-total",
+    "emp-cut-identical",
+    "emp-cut-total",
+    "dis-keep"
+   ],
+   "per": {
+    "union": {
+     "code": "K3",
+     "sentence": "This join() could not be built, so nothing was changed; move the shapes so they overlap more clearly.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K2",
+     "sentence": "The cutting shapes would remove the whole shape, so nothing would be left.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K1",
+     "sentence": "Keeping the overlap of these shapes leaves nothing here: they do not overlap, or only by a sliver too thin to keep.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cyl1 came back",
+   "from": [
+    "emp-cut-cyl-total"
+   ],
+   "per": {
+    "union": {
+     "code": "K3",
+     "sentence": "This join() could not be built, so nothing was changed; move the shapes so they overlap more clearly.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K2",
+     "sentence": "The cutting shapes would remove the whole shape, so nothing would be left.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K1",
+     "sentence": "Keeping the overlap of these shapes leaves nothing here: they do not overlap, or only by a sliver too thin to keep.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_ball1 came back",
+   "from": [
+    "dis-keep-curved"
+   ],
+   "per": {
+    "union": {
+     "code": "K3",
+     "sentence": "This join() could not be built, so nothing was changed; move the shapes so they overlap more clearly.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K2",
+     "sentence": "The cutting shapes would remove the whole shape, so nothing would be left.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K1",
+     "sentence": "Keeping the overlap of these shapes leaves nothing here: they do not overlap, or only by a sliver too thin to keep.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_a came back",
+   "from": [
+    "dis-keep-edge-touch",
+    "dis-keep-face-touch",
+    "tan-keep-cyl-exact"
+   ],
+   "per": {
+    "union": {
+     "code": "K3",
+     "sentence": "This join() could not be built, so nothing was changed; move the shapes so they overlap more clearly.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K2",
+     "sentence": "The cutting shapes would remove the whole shape, so nothing would be left.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K1",
+     "sentence": "Keeping the overlap of these shapes leaves nothing here: they do not overlap, or only by a sliver too thin to keep.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op2 (combine): its target box1 was already changed in place by op1, and a solidcraft command list has no second copy of it",
+   "from": [
+    "reuse-target-after-union"
+   ],
+   "per": {
+    "union": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)",
+   "from": [
+    "reuse-tool-twice",
+    "reuse-tool-join-two",
+    "reuse-tool-keep-pair",
+    "reuse-tool-two-tools"
+   ],
+   "per": {
+    "union": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it",
+   "from": [
+    "reuse-tool-twice",
+    "reuse-tool-join-two",
+    "reuse-tool-three-parts",
+    "reuse-tool-keep-pair"
+   ],
+   "per": {
+    "union": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): needs two or more targets",
+   "from": [
+    "arity-modeldoc-one-target"
+   ],
+   "per": {
+    "union": {
+     "code": "K5",
+     "sentence": "A join, cut or keep needs two or more shapes.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K5",
+     "sentence": "A join, cut or keep needs two or more shapes.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K5",
+     "sentence": "A join, cut or keep needs two or more shapes.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself",
+   "from": [
+    "arity-cut-same-twice",
+    "arity-join-same-twice",
+    "sh-keep-a-a",
+    "sh-join-a-a-b"
+   ],
+   "per": {
+    "union": {
+     "code": "K4",
+     "sentence": "join() was given the same shape twice; give it two different shapes.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K4",
+     "sentence": "cut() was given the same shape twice; give it two different shapes.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K4",
+     "sentence": "keep() was given the same shape twice; give it two different shapes.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "keep() needs two or more shapes: keep(a, b).",
+   "from": [
+    "arity-keep-sketch",
+    "arity-keep-one",
+    "r3-arity-keep-first-number"
+   ],
+   "frontEnd": true,
+   "lint": []
+  },
+  {
+   "raw": "cut() needs two or more shapes: cut(a, b).",
+   "from": [
+    "arity-cut-number",
+    "arity-cut-one",
+    "r3-arity-cut-number",
+    "r3-arity-cut-sketch-second"
+   ],
+   "frontEnd": true,
+   "lint": []
+  },
+  {
+   "raw": "join() needs two or more shapes: join(a, b).",
+   "from": [
+    "arity-join-zero",
+    "arity-join-one",
+    "r3-arity-join-text",
+    "r3-arity-join-three-one-bad"
+   ],
+   "frontEnd": true,
+   "lint": []
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes...",
+   "from": [
+    "sp-cut-tube-360-blind"
+   ],
+   "per": {
+    "union": {
+     "code": "K9b",
+     "sentence": "This join() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9b",
+     "sentence": "This cut() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9b",
+     "sentence": "This keep() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: implausible result volume 1434.5103; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) t...",
+   "from": [
+    "kf-hollow-ball",
+    "r3-sph-in-concentric-cut"
+   ],
+   "per": {
+    "union": {
+     "code": "K9b",
+     "sentence": "This join() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9b",
+     "sentence": "This cut() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9b",
+     "sentence": "This keep() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes...",
+   "from": [
+    "kf-sph-internal-tangent"
+   ],
+   "per": {
+    "union": {
+     "code": "K9b",
+     "sentence": "This join() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9b",
+     "sentence": "This cut() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9b",
+     "sentence": "This keep() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solid.combine: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle)...",
+   "from": [
+    "kf-tor40-10-half"
+   ],
+   "per": {
+    "union": {
+     "code": "K9b",
+     "sentence": "This join() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9b",
+     "sentence": "This cut() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9b",
+     "sentence": "This keep() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op4 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)",
+   "from": [
+    "reuse-tool-three-parts"
+   ],
+   "per": {
+    "union": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op3 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it",
+   "from": [
+    "reuse-tool-three-parts"
+   ],
+   "per": {
+    "union": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): its target t was refused (t (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0)",
+   "from": [
+    "trap-box-cut-spindle"
+   ],
+   "per": {
+    "union": {
+     "code": "K7",
+     "sentence": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K7",
+     "sentence": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K7",
+     "sentence": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "t (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0",
+   "from": [
+    "trap-box-cut-spindle"
+   ],
+   "otherGroup": true
+  },
+  {
+   "raw": "op3 (combine): its target op2 was refused (op2 (combine): its target box3 was already changed in place by op1, and a solidcraft command list has no second copy of it)",
+   "from": [
+    "reuse-box-tool-two-plates",
+    "reuse-box-tool-keep"
+   ],
+   "per": {
+    "union": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op2 (combine): its target box3 was already changed in place by op1, and a solidcraft command list has no second copy of it",
+   "from": [
+    "reuse-box-tool-two-plates",
+    "reuse-box-tool-keep"
+   ],
+   "per": {
+    "union": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K6",
+     "sentence": "This shape was already used up by an earlier join, cut or keep, so it cannot be used again; make a second copy of it.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported ...",
+   "from": [
+    "r3-split-cone-slab"
+   ],
+   "per": {
+    "union": {
+     "code": "K9a",
+     "sentence": "This join() could not be calculated here because faces of the two shapes lie exactly on top of each other, so nothing was changed; move one shape a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9a",
+     "sentence": "This cut() could not be calculated here because faces of the two shapes lie exactly on top of each other, so nothing was changed; move one shape a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9a",
+     "sentence": "This keep() could not be calculated here because faces of the two shapes lie exactly on top of each other, so nothing was changed; move one shape a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "hole1 (hole): needs a single measured target body",
+   "from": [
+    "r3-split-then-hole"
+   ],
+   "otherGroup": true
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_ring1 came back",
+   "from": [
+    "r3-tor-cyl-inner-keep"
+   ],
+   "per": {
+    "union": {
+     "code": "K3",
+     "sentence": "This join() could not be built, so nothing was changed; move the shapes so they overlap more clearly.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K2",
+     "sentence": "The cutting shapes would remove the whole shape, so nothing would be left.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K1",
+     "sentence": "Keeping the overlap of these shapes leaves nothing here: they do not overlap, or only by a sliver too thin to keep.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes...",
+   "from": [
+    "r3-tor-cyl-outer-cut"
+   ],
+   "per": {
+    "union": {
+     "code": "K9b",
+     "sentence": "This join() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9b",
+     "sentence": "This cut() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9b",
+     "sentence": "This keep() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: implausible result volume 522.5937; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) ta...",
+   "from": [
+    "r3-sph-in-offcenter-cut"
+   ],
+   "per": {
+    "union": {
+     "code": "K9b",
+     "sentence": "This join() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9b",
+     "sentence": "This cut() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9b",
+     "sentence": "This keep() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes...",
+   "from": [
+    "r3-cone-cyl-parallel-cut"
+   ],
+   "per": {
+    "union": {
+     "code": "K9b",
+     "sentence": "This join() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9b",
+     "sentence": "This cut() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9b",
+     "sentence": "This keep() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes...",
+   "from": [
+    "r3-cone-sph-off-cut"
+   ],
+   "per": {
+    "union": {
+     "code": "K9b",
+     "sentence": "This join() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9b",
+     "sentence": "This cut() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9b",
+     "sentence": "This keep() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "nothing is not a tool here. Did you mean ring()?",
+   "from": [
+    "r3-arity-cut-unknown-name"
+   ],
+   "frontEnd": true,
+   "lint": [
+    "more than one sentence",
+    "no final period"
+   ]
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes...",
+   "from": [
+    "r3-tan-sph-in-1"
+   ],
+   "per": {
+    "union": {
+     "code": "K9b",
+     "sentence": "This join() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9b",
+     "sentence": "This cut() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9b",
+     "sentence": "This keep() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes...",
+   "from": [
+    "r3-tan-cyl-side-in-1"
+   ],
+   "per": {
+    "union": {
+     "code": "K9b",
+     "sentence": "This join() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9b",
+     "sentence": "This cut() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9b",
+     "sentence": "This keep() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "op1 (combine): solidcraft refused it -- (wasm): WASM TRAP: Unreachable code should not be executed (evaluating 'wasm.run(ptr0, len0)')",
+   "from": [
+    "r3-trap-keep-cyl-1e-7",
+    "r3-trap-keep-box-1e-7"
+   ],
+   "per": {
+    "union": {
+     "code": "K8",
+     "sentence": "The solid calculation for this join() failed part-way, so nothing was changed; if two faces of the shapes are almost, but not exactly, on top of each other, move one shape so they are clearly apart or exactly together.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K8",
+     "sentence": "The solid calculation for this cut() failed part-way, so nothing was changed; if two faces of the shapes are almost, but not exactly, on top of each other, move one shape so they are clearly apart or exactly together.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K8",
+     "sentence": "The solid calculation for this keep() failed part-way, so nothing was changed; if two faces of the shapes are almost, but not exactly, on top of each other, move one shape so they are clearly apart or exactly together.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces...",
+   "from": [
+    "torus-sphere-r4-on-centreline (join)"
+   ],
+   "per": {
+    "union": {
+     "code": "K9b",
+     "sentence": "This join() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9b",
+     "sentence": "This cut() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9b",
+     "sentence": "This keep() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "boolean Cut: implausible result volume 4418.0328; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces...",
+   "from": [
+    "box-minus-torus-R14r4-tangent-to-box-face (cut)"
+   ],
+   "per": {
+    "union": {
+     "code": "K9b",
+     "sentence": "This join() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K9b",
+     "sentence": "This cut() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K9b",
+     "sentence": "This keep() could not be calculated here because curved faces of the two shapes meet at a shallow angle or only just touch, so nothing was changed; change a size or a position a little so they clearly cross, or build the part in simpler steps.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "WASM TRAP: unreachable",
+   "from": [
+    "page (Worker catch)"
+   ],
+   "per": {
+    "union": {
+     "code": "K8",
+     "sentence": "The solid calculation for this join() failed part-way, so nothing was changed; if two faces of the shapes are almost, but not exactly, on top of each other, move one shape so they are clearly apart or exactly together.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K8",
+     "sentence": "The solid calculation for this cut() failed part-way, so nothing was changed; if two faces of the shapes are almost, but not exactly, on top of each other, move one shape so they are clearly apart or exactly together.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K8",
+     "sentence": "The solid calculation for this keep() failed part-way, so nothing was changed; if two faces of the shapes are almost, but not exactly, on top of each other, move one shape so they are clearly apart or exactly together.",
+     "lint": []
+    }
+   }
+  },
+  {
+   "raw": "WASM TRAP: Unreachable code should not be executed (evaluating 'wasm.run(ptr0, len0)')",
+   "from": [
+    "trap-hunt.mjs (real trap, keep() of two equal cylinders 1e-7 mm apart)"
+   ],
+   "per": {
+    "union": {
+     "code": "K8",
+     "sentence": "The solid calculation for this join() failed part-way, so nothing was changed; if two faces of the shapes are almost, but not exactly, on top of each other, move one shape so they are clearly apart or exactly together.",
+     "lint": []
+    },
+    "subtract": {
+     "code": "K8",
+     "sentence": "The solid calculation for this cut() failed part-way, so nothing was changed; if two faces of the shapes are almost, but not exactly, on top of each other, move one shape so they are clearly apart or exactly together.",
+     "lint": []
+    },
+    "intersect": {
+     "code": "K8",
+     "sentence": "The solid calculation for this keep() failed part-way, so nothing was changed; if two faces of the shapes are almost, but not exactly, on top of each other, move one shape so they are clearly apart or exactly together.",
+     "lint": []
+    }
+   }
+  }
+ ]
+}

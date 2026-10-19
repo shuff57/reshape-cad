@@ -1,0 +1,95 @@
+Running as unit: run-p1711709-i26831423.scope; invocation ID: aff1ae54005042bca57464d02b6f5b21
+rect-origin-dims                                         stored MATCH dv 1.6e-14 db 0.0e+0 brep 9.8e-12 occt 9.0e-12  r1Δ 0.0e+0
+rect-origin-dims                                         rough  MATCH dv 1.1e-14 db 3.3e-35 brep 7.9e-12 occt 7.3e-12  r1Δ -
+rect-corner-dx-dy-positive                               stored MATCH dv 2.2e-14 db 0.0e+0 brep 1.5e-11 occt 1.5e-11  r1Δ 0.0e+0
+rect-corner-dx-dy-positive                               rough  MATCH dv 2.5e-14 db 0.0e+0 brep 1.5e-11 occt 1.5e-11  r1Δ -
+rect-corner-dx-dy-negative                               stored MATCH dv 1.6e-14 db 4.4e-16 brep 1.3e-11 occt 1.2e-11  r1Δ 0.0e+0
+rect-corner-dx-dy-negative                               rough  MATCH dv 1.8e-14 db 0.0e+0 brep 7.9e-12 occt 6.9e-12  r1Δ -
+rect-diagonal-two-point-distance                         stored MATCH dv 4.5e-12 db 0.0e+0 brep 3.3e-12 occt 3.3e-12  r1Δ 0.0e+0
+rect-diagonal-two-point-distance                         rough  MATCH dv 7.0e-12 db 2.1e-15 brep 4.9e-12 occt 4.9e-12  r1Δ -
+circle-radius-dx-dy                                      stored MATCH dv 1.1e-4 db 8.9e-16 brep 1.1e-4 occt 1.1e-4  r1Δ 0.0e+0
+circle-radius-dx-dy                                      rough  MATCH dv 1.1e-4 db 8.9e-16 brep 1.1e-4 occt 1.1e-4  r1Δ -
+circle-diameter-origin-c                                 stored MATCH dv 7.2e-5 db 5.3e-16 brep extrude pull1: circle 1: a cir occt 7.2e-5  r1Δ 0.0e+0
+circle-diameter-origin-c                                 rough  MATCH dv 7.2e-5 db 5.3e-16 brep extrude pull1: circle 1: a cir occt 7.2e-5  r1Δ -
+rect-parallel-perpendicular-axes                         stored MATCH dv 5.8e-11 db 2.8e-15 brep extrude pull1: the sketch's ru occt Sketch 1: rule 5 names geometr  r1Δ 7.4e-15
+rect-parallel-perpendicular-axes                         rough  MATCH dv 5.6e-11 db 2.5e-13 brep extrude pull1: the sketch's ru occt Sketch 1: rule 1 (coincident)   r1Δ -
+right-trapezoid-par-perp-neg-dx                          stored MATCH dv 1.7e-10 db 0.0e+0 brep 1.7e-10 occt 1.7e-10  r1Δ 1.7e-10
+right-trapezoid-par-perp-neg-dx                          rough  MATCH dv 3.1e-11 db 5.3e-11 brep 1.8e-11 occt 1.9e-11  r1Δ -
+square-by-equal-lines                                    stored MATCH dv 1.4e-11 db 0.0e+0 brep 2.7e-11 occt 2.6e-11  r1Δ 1.4e-11
+square-by-equal-lines                                    rough  MATCH dv 6.2e-15 db 0.0e+0 brep 1.1e-11 occt 1.1e-11  r1Δ -
+two-circles-equal                                        stored MATCH dv 1.1e-4 db 1.8e-15 brep 1.1e-4 occt Sketch 1: this sketch draws 2   r1Δ 0.0e+0
+two-circles-equal                                        rough  MATCH dv 1.1e-4 db 1.8e-15 brep 1.1e-4 occt Sketch 1: this sketch draws 2   r1Δ -
+triangle-apex-on-diagonal-line                           stored MATCH dv 0.0e+0 db 0.0e+0 brep 2.0e-12 occt Sketch 1: line 4 is constructi  r1Δ 0.0e+0
+triangle-apex-on-diagonal-line                           rough  MATCH dv 0.0e+0 db 0.0e+0 brep 4.4e-11 occt Sketch 1: line 4 is constructi  r1Δ -
+hexagon-equal-pointOn-circle                             stored MATCH dv 1.8e-16 db 0.0e+0 brep 6.6e-13 occt Sketch 1: circle 7 is construc  r1Δ 1.9e-15
+hexagon-equal-pointOn-circle                             rough  MATCH dv 2.2e-14 db 9.7e-12 brep 4.2e-11 occt Sketch 1: circle 7 is construc  r1Δ -
+symmetric-trapezoid-about-Y-axis                         stored MATCH dv 5.7e-12 db 0.0e+0 brep extrude pull1: the sketch's ru occt Sketch 1: rule 5 names geometr  r1Δ 3.9e-12
+symmetric-trapezoid-about-Y-axis                         rough  MATCH dv 1.1e-11 db 1.8e-16 brep extrude pull1: the sketch's ru occt Sketch 1: rule 1 (coincident)   r1Δ -
+symmetric-about-construction-line                        stored MATCH dv 1.1e-10 db 8.0e-15 brep extrude pull1: the sketch's ru occt Sketch 1: line 5 is constructi  r1Δ 1.1e-15
+symmetric-about-construction-line                        rough  MATCH dv 1.1e-13 db 6.1e-10 brep extrude pull1: the sketch's ru occt Sketch 1: line 5 is constructi  r1Δ -
+symmetric-3point-midpoint                                stored MATCH dv 8.1e-13 db 2.0e-16 brep 2.0e-12 occt Sketch 1: rule 9 is a symmetri  r1Δ 0.0e+0
+symmetric-3point-midpoint                                rough  MATCH dv 8.2e-13 db 4.9e-14 brep 1.2e-12 occt Sketch 1: rule 9 is a symmetri  r1Δ -
+tangent-line-circle                                      stored MATCH dv 1.1e-4 db 5.3e-16 brep 1.1e-4 occt Sketch 1: line 1 is constructi  r1Δ 0.0e+0
+tangent-line-circle                                      rough  MATCH dv 1.1e-4 db 5.3e-16 brep 1.1e-4 occt Sketch 1: line 1 is constructi  r1Δ -
+tangent-line-circle-side-matching                        stored MATCH dv 1.1e-4 db 5.3e-16 brep 1.1e-4 occt Sketch 1: line 1 is constructi  r1Δ 0.0e+0
+tangent-line-circle-side-opposite                        stored REFUSED[map] Row 3 of sk.rules() asks for the circle on one side of the line but it is drawn 
+circle-circle-external-mode                              stored MATCH dv 9.6e-5 db 5.3e-16 brep extrude pull1: the sketch's ru occt Sketch 1: rule 4 names geometr  r1Δ 0.0e+0
+circle-circle-external-mode                              rough  MATCH dv 9.6e-5 db 5.3e-16 brep extrude pull1: the sketch's ru occt Sketch 1: rule 3 (radius) is o  r1Δ -
+circle-circle-external-no-mode                           stored MATCH dv 9.6e-5 db 5.3e-16 brep extrude pull1: the sketch's ru occt Sketch 1: rule 4 names geometr  r1Δ 0.0e+0
+circle-circle-external-no-mode                           rough  MATCH dv 9.6e-5 db 5.3e-16 brep extrude pull1: the sketch's ru occt Sketch 1: rule 3 (radius) is o  r1Δ -
+circle-circle-internal-mode                              stored MATCH dv 7.1e-5 db 5.3e-16 brep extrude pull1: the sketch's ru occt Sketch 1: rule 4 names geometr  r1Δ 0.0e+0
+circle-circle-internal-mode                              rough  MATCH dv 7.1e-5 db 5.3e-16 brep extrude pull1: the sketch's ru occt Sketch 1: rule 3 (radius) is o  r1Δ -
+circle-circle-internal-no-mode                           stored MATCH dv 7.1e-5 db 5.3e-16 brep extrude pull1: the sketch's ru occt Sketch 1: rule 4 names geometr  r1Δ 0.0e+0
+circle-circle-internal-no-mode                           rough  MATCH dv 7.1e-5 db 5.3e-16 brep extrude pull1: the sketch's ru occt Sketch 1: rule 3 (radius) is o  r1Δ -
+circle-circle-mode-request-external-start-internal       stored REFUSED[map] Row 5 of sk.rules() asks for external tangency but the two circles are drawn int
+circle-circle-mode-request-internal-start-external       stored REFUSED[map] Row 5 of sk.rules() asks for internal tangency but the two circles are drawn ext
+slot-hand-rows-R10-L40                                   stored MATCH dv 3.4e-5 db 7.6e-11 brep 3.4e-5 occt Sketch 1: rule 2 is a tangent   r1Δ 2.1e-6
+slot-hand-rows-R10-L40                                   rough  MATCH dv 4.0e-5 db 6.5e-6 brep 4.0e-5 occt Sketch 1: rule 2 is a tangent   r1Δ -
+slot-dims-from-points                                    stored MATCH dv 3.8e-5 db 3.2e-11 brep 3.8e-5 occt Sketch 1: rule 2 is a tangent   r1Δ 8.2e-10
+slot-dims-from-points                                    rough  MATCH dv 3.8e-5 db 3.5e-11 brep 3.8e-5 occt Sketch 1: rule 2 is a tangent   r1Δ -
+oval-four-arcs-endpoint-tangent                          stored MATCH dv 1.0e-4 db 7.1e-16 brep 1.0e-4 occt Sketch 1: rule 2 is a tangent   r1Δ 0.0e+0
+oval-four-arcs-endpoint-tangent                          rough  MATCH dv 1.0e-4 db 9.2e-11 brep 1.0e-4 occt Sketch 1: rule 2 is a tangent   r1Δ -
+triangle-length-angle-120                                stored MATCH dv 3.5e-16 db 0.0e+0 brep 2.0e-13 occt Sketch 1: rule 7 is a angle ru  r1Δ 0.0e+0
+triangle-length-angle-120                                rough  MATCH dv 3.5e-16 db 0.0e+0 brep 1.5e-12 occt Sketch 1: rule 7 is a angle ru  r1Δ -
+triangle-angle-120-with-quadrant                         stored MATCH dv 3.5e-16 db 0.0e+0 brep 2.0e-13 occt Sketch 1: rule 7 is a angle ru  r1Δ 0.0e+0
+triangle-angle-wrong-orientation-start                   stored REFUSED[map] Row 8 of sk.rules() asks for 120 degrees from line 1 to line 2, but the lines ar
+rect-lock-offset-corner                                  stored MATCH dv 1.1e-14 db 0.0e+0 brep 2.9e-12 occt 2.7e-12  r1Δ 0.0e+0
+rect-lock-offset-corner                                  rough  MATCH dv 8.9e-15 db 0.0e+0 brep 2.8e-12 occt 2.7e-12  r1Δ -
+rect-param-width                                         stored MATCH dv 0.0e+0 db 0.0e+0 brep 0.0e+0 occt 1.5e-16  r1Δ 0.0e+0
+rect-reference-dim-correct                               stored MATCH dv 1.6e-14 db 0.0e+0 brep 9.8e-12 occt 9.0e-12  r1Δ 0.0e+0
+rect-reference-dim-correct                               rough  MATCH dv 1.5e-14 db 8.9e-36 brep 8.8e-12 occt 8.0e-12  r1Δ -
+rect-reference-dim-wrong-value                           stored MATCH dv 1.6e-14 db 0.0e+0 brep 9.8e-12 occt Sketch 1: rule 11 (distance) i  r1Δ 0.0e+0
+rect-reference-distanceX-zero                            stored MATCH dv 0.0e+0 db 0.0e+0 brep 0.0e+0 occt 1.5e-16  r1Δ -
+rect-reference-distanceX-opposite-sign                   stored MATCH dv 1.6e-14 db 0.0e+0 brep 9.8e-12 occt 9.0e-12  r1Δ -
+rect-reference-distanceX-opposite-sign                   rough  MATCH dv 1.4e-14 db 1.1e-35 brep 8.2e-12 occt 7.5e-12  r1Δ -
+rect-inactive-conflicting-rule                           stored MATCH dv 1.6e-14 db 0.0e+0 brep 9.8e-12 occt Sketch 1: rule 11 (distance) i  r1Δ 0.0e+0
+rect-inactive-conflicting-rule                           rough  MATCH dv 1.9e-14 db 0.0e+0 brep 9.3e-12 occt Sketch 1: rule 11 (distance) i  r1Δ -
+plate-with-hole-default-profiles                         stored MATCH dv 1.4e-5 db 5.3e-16 brep 1.4e-5 occt 1.4e-5  r1Δ 2.3e-11
+rect-underconstrained-height-free                        stored MATCH dv 0.0e+0 db 0.0e+0 brep 0.0e+0 occt 1.8e-16  r1Δ 0.0e+0
+rect-redundant-width-dimension                           stored MATCH dv 0.0e+0 db 0.0e+0 brep 0.0e+0 occt 1.5e-16  r1Δ -
+rect-conflicting-width-dimension                         stored REFUSED[residual] Row 12 of sk.rules() (it sets the length of geometry 3 to 35) cannot be met toge
+slot-arc-rows-inconsistent-with-lock-c                   stored REFUSED[preflight] Arc 1 has an end that is not on its circle (off by 0.20) and a row pins its cent
+gauntlet:sk-rect-dof__corner-origin-25x60                stored MATCH dv 0.0e+0 db 0.0e+0 brep 0.0e+0 occt 2.4e-16 fc 0.0e+0 r1Δ 0.0e+0
+gauntlet:sk-rect-dof__corner-origin-25x60                rough  MATCH dv 3.6e-12 db 7.2e-12 brep 4.0e-12 occt 3.9e-12 fc 7.2e-12 r1Δ -
+gauntlet:sk-rect-dof__offset-corner-30x18                stored MATCH dv 0.0e+0 db 0.0e+0 brep 0.0e+0 occt 0.0e+0 fc 0.0e+0 r1Δ 0.0e+0
+gauntlet:sk-rect-dof__offset-corner-30x18                rough  MATCH dv 1.4e-11 db 0.0e+0 brep 1.4e-11 occt 1.4e-11 fc 0.0e+0 r1Δ -
+gauntlet:sk-rect-dof__square-by-equal                    stored MATCH dv 0.0e+0 db 0.0e+0 brep 1.9e-16 occt 1.9e-16 fc 0.0e+0 r1Δ 0.0e+0
+gauntlet:sk-rect-dof__square-by-equal                    rough  MATCH dv 4.9e-12 db 1.1e-11 brep 3.9e-12 occt 3.9e-12 fc 1.1e-11 r1Δ -
+gauntlet:sk-rect-dof__right-triangle                     stored MATCH dv 0.0e+0 db 0.0e+0 brep 0.0e+0 occt 0.0e+0 fc 0.0e+0 r1Δ 0.0e+0
+gauntlet:sk-rect-dof__right-triangle                     rough  MATCH dv 0.0e+0 db 0.0e+0 brep 1.9e-10 occt 1.9e-10 fc 0.0e+0 r1Δ -
+gauntlet:sk-rect-dof__parallelogram                      stored MATCH dv 0.0e+0 db 0.0e+0 brep 0.0e+0 occt 0.0e+0 fc 0.0e+0 r1Δ 0.0e+0
+gauntlet:sk-rect-dof__parallelogram                      rough  MATCH dv 3.3e-12 db 9.7e-14 brep 1.4e-11 occt 1.4e-11 fc 9.7e-14 r1Δ -
+gauntlet:sk-rect-dof__circle-pinned                      stored MATCH dv 1.1e-4 db 2.0e-15 brep 1.1e-4 occt 1.1e-4 fc 2.0e-15 r1Δ 0.0e+0
+gauntlet:sk-rect-dof__circle-pinned                      rough  MATCH dv 1.1e-4 db 2.0e-15 brep 1.1e-4 occt 1.1e-4 fc 2.0e-15 r1Δ -
+gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored     stored MATCH dv 3.8e-5 db 5.3e-16 brep extrude pull1: edge 1 and arc  occt Sketch 1: rule 2 is a tangent  fc 5.3e-16 r1Δ 0.0e+0
+gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored     rough  MATCH dv 3.5e-5 db 9.0e-6 brep extrude pull1: edge 1 and arc  occt Sketch 1: rule 2 is a tangent  fc 9.0e-6 r1Δ -
+gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored    stored MATCH dv 5.8e-5 db 3.6e-16 brep extrude pull1: edge 1 and arc  occt Sketch 1: rule 2 is a tangent  fc 5.3e-15 r1Δ 0.0e+0
+gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored    rough  MATCH dv 6.2e-5 db 3.7e-6 brep extrude pull1: edge 1 and arc  occt Sketch 1: rule 2 is a tangent  fc 3.7e-6 r1Δ -
+gauntlet:sk-circle-arc-tangent__slot-arc-first-order     stored MATCH dv 3.8e-5 db 5.3e-16 brep extrude pull1: edge 1 and arc  occt Sketch 1: rule 2 is a tangent  fc 5.3e-16 r1Δ 0.0e+0
+gauntlet:sk-circle-arc-tangent__slot-arc-first-order     rough  MATCH dv 3.6e-5 db 7.5e-6 brep extrude pull1: edge 1 and arc  occt Sketch 1: rule 2 is a tangent  fc 7.5e-6 r1Δ -
+gauntlet:sk-circle-arc-tangent__circle-circle-external   stored MATCH dv 9.6e-5 db 5.3e-16 brep extrude pull1: the shapes near occt Sketch 1: rule 4 is a tangent  fc 5.3e-16 r1Δ 0.0e+0
+gauntlet:sk-circle-arc-tangent__circle-circle-external   rough  MATCH dv 9.6e-5 db 5.3e-16 brep extrude pull1: the shapes near occt Sketch 1: rule 4 is a tangent  fc 5.3e-16 r1Δ -
+gauntlet:sk-circle-arc-tangent__circle-circle-no-mode    stored MATCH dv 9.6e-5 db 5.3e-16 brep extrude pull1: the sketch's ru occt Sketch 1: rule 4 is a tangent  fc 5.3e-16 r1Δ 0.0e+0
+gauntlet:sk-circle-arc-tangent__circle-circle-no-mode    rough  MATCH dv 9.6e-5 db 5.3e-16 brep extrude pull1: the sketch's ru occt Sketch 1: rule 2 (radius) is o fc 5.3e-16 r1Δ -
+gauntlet:sk-circle-arc-tangent__circle-circle-internal   stored MATCH dv 7.1e-5 db 5.3e-16 brep extrude pull1: the hole near ( occt Sketch 1: rule 4 is a tangent  fc 5.3e-16 r1Δ 0.0e+0
+gauntlet:sk-circle-arc-tangent__circle-circle-internal   rough  MATCH dv 7.1e-5 db 5.3e-16 brep 7.1e-5 occt Sketch 1: rule 4 is a tangent  fc 5.3e-16 r1Δ -

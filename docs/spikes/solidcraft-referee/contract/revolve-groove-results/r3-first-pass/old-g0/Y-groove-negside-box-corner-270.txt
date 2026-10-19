@@ -1,0 +1,1 @@
+Y-groove-negside-box-corner-270          PASS     occtV 133523.2599 | tr-occt dV 2.0e-7 dBb 1.2e-16 dCom 3.3e-7 F o/b/t 14/14/14 | brep-occt dV 5.6e-13      | ms 2074 cpu 2424

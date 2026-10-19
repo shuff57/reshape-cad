@@ -1,0 +1,2035 @@
+[
+ {
+  "k": "join(a,b);move(b)",
+  "script": "const a = box(20, 10, 6);\nconst b = box(10, 10, 6, { at: [30, 0, 0] });\njoin(a, b);\nmove(b, [0, 40, 0]);",
+  "topIds": [
+   "op1",
+   "move1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 1200,
+    "com": [
+     0,
+     0,
+     0
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     10,
+     5,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "box2": {
+    "volume": 600,
+    "com": [
+     30,
+     0,
+     0
+    ],
+    "bbox": [
+     25,
+     -5,
+     -3,
+     35,
+     5,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "op1": {
+    "volume": 1800,
+    "com": [
+     10,
+     9.843977485009722e-17,
+     -4.7369515717340015e-17
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     35,
+     5,
+     3
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 12
+    },
+    "components": {
+     "plane": 12
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 600,
+    "com": [
+     30,
+     40,
+     0
+    ],
+    "bbox": [
+     25,
+     35,
+     -3,
+     35,
+     45,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "box2",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 2.11759658676406e-18
+   },
+   {
+    "id": "move1",
+    "guard": "REFUSED",
+    "guardRefusal": "Move 1 is not built: Box 2 was already used up by Join 1, and this build keeps only one copy of a part, so make the moved or turned copy before Join 1: move(part, [x, y, z], { copy: true }).",
+    "shipped": "REFUSED",
+    "shippedRefusal": "move1 (move): its target box2 was already changed in place by op1, and a solidcraft command list has no second copy of it"
+   }
+  ]
+ },
+ {
+  "k": "join(a,b);move(a)",
+  "script": "const a = box(20, 10, 6);\nconst b = box(10, 10, 6, { at: [30, 0, 0] });\njoin(a, b);\nmove(a, [0, 40, 0]);",
+  "topIds": [
+   "op1",
+   "move1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 1200,
+    "com": [
+     0,
+     0,
+     0
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     10,
+     5,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "box2": {
+    "volume": 600,
+    "com": [
+     30,
+     0,
+     0
+    ],
+    "bbox": [
+     25,
+     -5,
+     -3,
+     35,
+     5,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "op1": {
+    "volume": 1800,
+    "com": [
+     10,
+     9.843977485009722e-17,
+     -4.7369515717340015e-17
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     35,
+     5,
+     3
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 12
+    },
+    "components": {
+     "plane": 12
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 1200,
+    "com": [
+     0,
+     40,
+     0
+    ],
+    "bbox": [
+     -10,
+     35,
+     -3,
+     10,
+     45,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "box2",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 2.11759658676406e-18
+   },
+   {
+    "id": "move1",
+    "guard": "REFUSED",
+    "guardRefusal": "Move 1 is not built: Box 1 was already used up by Join 1, and this build keeps only one copy of a part, so make the moved or turned copy before Join 1: move(part, [x, y, z], { copy: true }).",
+    "shipped": "REFUSED",
+    "shippedRefusal": "move1 (move): its target box1 was already changed in place by op1, and a solidcraft command list has no second copy of it"
+   }
+  ]
+ },
+ {
+  "k": "join(a,b);turn(b)",
+  "script": "const a = box(20, 10, 6);\nconst b = box(10, 10, 6, { at: [30, 0, 0] });\njoin(a, b);\nturn(b, [0, 0, 45]);",
+  "topIds": [
+   "op1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 1200,
+    "com": [
+     0,
+     0,
+     0
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     10,
+     5,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "box2": {
+    "volume": 600,
+    "com": [
+     30,
+     8.881784197001252e-16,
+     0
+    ],
+    "bbox": [
+     22.928932188134524,
+     -7.0710678118654755,
+     -3,
+     37.071067811865476,
+     7.0710678118654755,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "op1": {
+    "volume": 1800,
+    "com": [
+     10,
+     -4.843861937068275e-17,
+     -4.7369515717340015e-17
+    ],
+    "bbox": [
+     -10,
+     -7.0710678118654755,
+     -3,
+     37.071067811865476,
+     7.0710678118654755,
+     3
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 12
+    },
+    "components": {
+     "plane": 12
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "box2",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 1.8947806286936006e-16,
+    "dBbox": 0,
+    "dCom": 3.4028825454198546e-16
+   },
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.3818707205986186e-18
+   }
+  ]
+ },
+ {
+  "k": "join(a,b);turn(a)",
+  "script": "const a = box(20, 10, 6);\nconst b = box(10, 10, 6, { at: [30, 0, 0] });\njoin(a, b);\nturn(a, [0, 0, 45]);",
+  "topIds": [
+   "op1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 1200,
+    "com": [
+     8.881784197001252e-16,
+     -1.7763568394002505e-15,
+     0
+    ],
+    "bbox": [
+     -10.606601717798213,
+     -10.606601717798213,
+     -3,
+     10.606601717798213,
+     10.606601717798213,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "box2": {
+    "volume": 600,
+    "com": [
+     30,
+     0,
+     0
+    ],
+    "bbox": [
+     25,
+     -5,
+     -3,
+     35,
+     5,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "op1": {
+    "volume": 1800,
+    "com": [
+     10.000000000000002,
+     -8.325850297263026e-16,
+     -4.7369515717340015e-17
+    ],
+    "bbox": [
+     -10.606601717798213,
+     -10.606601717798213,
+     -3,
+     35,
+     10.606601717798213,
+     3
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 12
+    },
+    "components": {
+     "plane": 12
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 1.8947806286936006e-16,
+    "dBbox": 0,
+    "dCom": 5.754593264236215e-17
+   },
+   {
+    "id": "box2",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 1.2631870857957337e-16,
+    "dBbox": 0,
+    "dCom": 7.013504624707287e-17
+   }
+  ]
+ },
+ {
+  "k": "cut(a,c);move(c)",
+  "script": "const a = box(30, 30, 10);\nconst c = cylinder(5, 20, { at: [3, 3, 0] });\ncut(a, c);\nmove(c, [0, 50, 0]);",
+  "topIds": [
+   "op1",
+   "move1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 8999.999999999998,
+    "com": [
+     0,
+     0,
+     -8.881784197001252e-16
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -5,
+     15,
+     15,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "cyl1": {
+    "volume": 392.6990816987242,
+    "com": [
+     3.0000000000000004,
+     2.9999999999999996,
+     0
+    ],
+    "bbox": [
+     0.5,
+     0.5,
+     -10,
+     5.5,
+     5.5,
+     10
+    ],
+    "faces": 3,
+    "types": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "op1": {
+    "volume": 8803.650459150636,
+    "com": [
+     -0.06690958770811092,
+     -0.06690958770810938,
+     5.044375761062505e-19
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -5,
+     15,
+     15,
+     5
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 392.6990816987242,
+    "com": [
+     3.0000000000000004,
+     53,
+     0
+    ],
+    "bbox": [
+     0.5,
+     50.5,
+     -10,
+     5.5,
+     55.5,
+     10
+    ],
+    "faces": 3,
+    "types": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.0210993372731742e-16,
+    "dBbox": 0,
+    "dCom": 2.0376210396350003e-17
+   },
+   {
+    "id": "cyl1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0.0001661036865011641,
+    "dBbox": 0.00006716564839315264,
+    "dCom": 1.574279371906932e-14
+   },
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0.0000037046430600804842,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 2.606567251000966e-7
+   },
+   {
+    "id": "move1",
+    "guard": "REFUSED",
+    "guardRefusal": "Move 1 is not built: Cylinder 1 was already used up by Cut 1, and this build keeps only one copy of a part, so make the moved or turned copy before Cut 1: move(part, [x, y, z], { copy: true }).",
+    "shipped": "REFUSED",
+    "shippedRefusal": "move1 (move): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it"
+   }
+  ]
+ },
+ {
+  "k": "mirror(v);move(v)",
+  "script": "const a = box(10, 10, 10, { at: [20, 0, 0] });\nconst v = mirror(a, 'left-right');\nmove(v, [0, 40, 0]);",
+  "topIds": [
+   "box1",
+   "move1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 999.9999999999998,
+    "com": [
+     20,
+     0,
+     0
+    ],
+    "bbox": [
+     15,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "mir1": {
+    "volume": 1999.9999999999993,
+    "com": [
+     15.000000000000004,
+     9.792167077193884e-17,
+     9.015010959956274e-17
+    ],
+    "bbox": [
+     5,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 1999.9999999999993,
+    "com": [
+     15.000000000000004,
+     40,
+     9.015010959956274e-17
+    ],
+    "bbox": [
+     5,
+     35,
+     -5,
+     25,
+     45,
+     5
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "mir1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 3.410605131648482e-16,
+    "dBbox": 0,
+    "dCom": 1.4503892858778863e-16
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 3.410605131648482e-16,
+    "dBbox": 0,
+    "dCom": 1.4503892858778863e-16
+   }
+  ]
+ },
+ {
+  "k": "mirror(v);move(a)",
+  "script": "const a = box(10, 10, 10, { at: [20, 0, 0] });\nconst v = mirror(a, 'left-right');\nmove(a, [0, 40, 0]);",
+  "topIds": [
+   "mir1",
+   "move1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 999.9999999999998,
+    "com": [
+     20,
+     0,
+     0
+    ],
+    "bbox": [
+     15,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "mir1": {
+    "volume": 1999.9999999999993,
+    "com": [
+     15.000000000000004,
+     9.792167077193884e-17,
+     9.015010959956274e-17
+    ],
+    "bbox": [
+     5,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 999.9999999999998,
+    "com": [
+     20,
+     40,
+     0
+    ],
+    "bbox": [
+     15,
+     35,
+     -5,
+     25,
+     45,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "mir1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 3.410605131648482e-16,
+    "dBbox": 0,
+    "dCom": 1.4503892858778863e-16
+   },
+   {
+    "id": "move1",
+    "guard": "REFUSED",
+    "guardRefusal": "Move 1 is not built: Box 1 was already used up by Mirror 1, and this build keeps only one copy of a part, so make the moved or turned copy before Mirror 1: move(part, [x, y, z], { copy: true }).",
+    "shipped": "REFUSED",
+    "shippedRefusal": "move1 (move): its target box1 was already changed in place by mir1, and a solidcraft command list has no second copy of it"
+   }
+  ]
+ },
+ {
+  "k": "repeat(a);move(a)",
+  "script": "const a = box(10, 10, 10);\nrepeat(a, { count: 3, step: [15, 0, 0] });\nmove(a, [0, 40, 0]);",
+  "topIds": [
+   "move1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 999.9999999999998,
+    "com": [
+     0,
+     0,
+     0
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "pat1": {
+    "volume": 2999.999999999999,
+    "com": [
+     15.000000000000002,
+     1.6253665080512296e-16,
+     1.1368683772161606e-16
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     35,
+     5,
+     5
+    ],
+    "faces": 18,
+    "types": {
+     "plane": 18
+    },
+    "components": {
+     "plane": 18
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 2999.999999999999,
+    "com": [
+     15.000000000000002,
+     40,
+     1.1368683772161606e-16
+    ],
+    "bbox": [
+     -5,
+     35,
+     -5,
+     35,
+     45,
+     5
+    ],
+    "faces": 18,
+    "types": {
+     "plane": 18
+    },
+    "components": {
+     "plane": 18
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "pat1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 3.0316490059097617e-16,
+    "dBbox": 0,
+    "dCom": 4.186913223156734e-17
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 3.0316490059097617e-16,
+    "dBbox": 0,
+    "dCom": 4.186913223156734e-17
+   }
+  ]
+ },
+ {
+  "k": "repeat(a);turn(a)",
+  "script": "const a = box(10, 10, 10);\nrepeat(a, { count: 3, step: [15, 0, 0] });\nturn(a, [0, 0, 45]);",
+  "topIds": [
+   "turn1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 999.9999999999998,
+    "com": [
+     0,
+     0,
+     0
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "pat1": {
+    "volume": 2999.999999999999,
+    "com": [
+     15.000000000000002,
+     1.6253665080512296e-16,
+     1.1368683772161606e-16
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     35,
+     5,
+     5
+    ],
+    "faces": 18,
+    "types": {
+     "plane": 18
+    },
+    "components": {
+     "plane": 18
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "turn1": {
+    "volume": 2999.9999999999995,
+    "com": [
+     15,
+     0,
+     1.1368683772161603e-16
+    ],
+    "bbox": [
+     -2.677669529663688,
+     -17.67766952966369,
+     -5,
+     32.67766952966369,
+     17.67766952966369,
+     5
+    ],
+    "faces": 18,
+    "types": {
+     "plane": 18
+    },
+    "components": {
+     "plane": 18
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "pat1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 3.0316490059097617e-16,
+    "dBbox": 0,
+    "dCom": 4.186913223156734e-17
+   },
+   {
+    "id": "turn1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 9.950948873945016e-16,
+    "dCom": 2.9727764306726992e-18
+   }
+  ]
+ },
+ {
+  "k": "join(a,b derived);turn(b)",
+  "script": "const a = box(20, 10, 6);\nconst k = sketch('top');\nk.rect(10, 10);\nconst b = pull(k, 6);\nmove(b, [30, 0, 0]);\njoin(a, b);\nturn(b, [0, 0, 45]);",
+  "topIds": [
+   "op1",
+   "turn1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 1200,
+    "com": [
+     0,
+     0,
+     0
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     10,
+     5,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "pull1": {
+    "volume": 600,
+    "com": [
+     -1.850371707708594e-17,
+     -2.2204460492503132e-17,
+     2.9999999999999996
+    ],
+    "bbox": [
+     -5,
+     -5,
+     0,
+     5,
+     5,
+     6
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 600,
+    "com": [
+     30,
+     -2.2204460492503132e-17,
+     2.9999999999999996
+    ],
+    "bbox": [
+     25,
+     -5,
+     0,
+     35,
+     5,
+     6
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "op1": {
+    "volume": 1800,
+    "com": [
+     9.999999999999996,
+     7.642035152836494e-17,
+     0.9999999999999998
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     35,
+     5,
+     6
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 12
+    },
+    "components": {
+     "plane": 12
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "turn1": {
+    "volume": 600,
+    "com": [
+     30,
+     2.960594732333751e-17,
+     2.9999999999999996
+    ],
+    "bbox": [
+     22.928932188134524,
+     -7.0710678118654755,
+     0,
+     37.071067811865476,
+     7.0710678118654755,
+     6
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "pull1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 2.8907745304357104e-17
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 2.8907745304357104e-17
+   },
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 7.564103350046934e-17
+   },
+   {
+    "id": "turn1",
+    "guard": "REFUSED",
+    "guardRefusal": "Turn 1 is not built: Move 1 was already used up by Join 1, and this build keeps only one copy of a part, so make the moved or turned copy before Join 1: move(part, [x, y, z], { copy: true }).",
+    "shipped": "REFUSED",
+    "shippedRefusal": "turn1 (rotate): its target move1 was already changed in place by op1, and a solidcraft command list has no second copy of it"
+   }
+  ]
+ },
+ {
+  "k": "FIX join(a,b);move(b)",
+  "script": "const a = box(20, 10, 6);\nconst b = box(10, 10, 6, { at: [30, 0, 0] });\nmove(b, [0, 40, 0], { copy: true });\njoin(a, b);",
+  "topIds": [
+   "move1",
+   "op1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 1200,
+    "com": [
+     0,
+     0,
+     0
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     10,
+     5,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "box2": {
+    "volume": 600,
+    "com": [
+     30,
+     0,
+     0
+    ],
+    "bbox": [
+     25,
+     -5,
+     -3,
+     35,
+     5,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 600,
+    "com": [
+     30,
+     40,
+     0
+    ],
+    "bbox": [
+     25,
+     35,
+     -3,
+     35,
+     45,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "op1": {
+    "volume": 1800,
+    "com": [
+     10,
+     9.843977485009722e-17,
+     -4.7369515717340015e-17
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     35,
+     5,
+     3
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 12
+    },
+    "components": {
+     "plane": 12
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "box2",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 2.11759658676406e-18
+   }
+  ]
+ },
+ {
+  "k": "FIX cut(a,c);move(c)",
+  "script": "const a = box(30, 30, 10);\nconst c = cylinder(5, 20, { at: [3, 3, 0] });\nmove(c, [0, 50, 0], { copy: true });\ncut(a, c);",
+  "topIds": [
+   "move1",
+   "op1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 8999.999999999998,
+    "com": [
+     0,
+     0,
+     -8.881784197001252e-16
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -5,
+     15,
+     15,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "cyl1": {
+    "volume": 392.6990816987242,
+    "com": [
+     3.0000000000000004,
+     2.9999999999999996,
+     0
+    ],
+    "bbox": [
+     0.5,
+     0.5,
+     -10,
+     5.5,
+     5.5,
+     10
+    ],
+    "faces": 3,
+    "types": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 392.6990816987242,
+    "com": [
+     3.0000000000000004,
+     53,
+     0
+    ],
+    "bbox": [
+     0.5,
+     50.5,
+     -10,
+     5.5,
+     55.5,
+     10
+    ],
+    "faces": 3,
+    "types": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "op1": {
+    "volume": 8803.650459150636,
+    "com": [
+     -0.06690958770811092,
+     -0.06690958770810938,
+     5.044375761062505e-19
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -5,
+     15,
+     15,
+     5
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.0210993372731742e-16,
+    "dBbox": 0,
+    "dCom": 2.0376210396350003e-17
+   },
+   {
+    "id": "cyl1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0.0001661036865011641,
+    "dBbox": 0.00006716564839315264,
+    "dCom": 1.574279371906932e-14
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)",
+    "dVol": 0.00016610368650898062,
+    "dBbox": 0.000038609466904482304,
+    "dCom": 2.934188786788239e-13
+   },
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0.0000037046430600804842,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 2.606567251000966e-7
+   }
+  ]
+ },
+ {
+  "k": "FIX mirror(v);move(a)",
+  "script": "const a = box(10, 10, 10, { at: [20, 0, 0] });\nmove(a, [0, 40, 0], { copy: true });\nmirror(a, 'left-right');",
+  "topIds": [
+   "box1",
+   "move1",
+   "mir1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 999.9999999999998,
+    "com": [
+     20,
+     0,
+     0
+    ],
+    "bbox": [
+     15,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 999.9999999999998,
+    "com": [
+     20,
+     40,
+     0
+    ],
+    "bbox": [
+     15,
+     35,
+     -5,
+     25,
+     45,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "mir1": {
+    "volume": 1999.9999999999993,
+    "com": [
+     15.000000000000004,
+     9.792167077193884e-17,
+     9.015010959956274e-17
+    ],
+    "bbox": [
+     5,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "mir1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 3.410605131648482e-16,
+    "dBbox": 0,
+    "dCom": 1.4503892858778863e-16
+   }
+  ]
+ },
+ {
+  "k": "move(a);move(a) CONTROL",
+  "script": "const a = box(10, 10, 10);\nmove(a, [20, 0, 0]);\nmove(a, [0, 20, 0]);",
+  "topIds": [
+   "move2"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 999.9999999999998,
+    "com": [
+     0,
+     0,
+     0
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 999.9999999999998,
+    "com": [
+     20,
+     0,
+     0
+    ],
+    "bbox": [
+     15,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "move2": {
+    "volume": 999.9999999999998,
+    "com": [
+     20,
+     20,
+     0
+    ],
+    "bbox": [
+     15,
+     15,
+     -5,
+     25,
+     25,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "move2",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0
+   }
+  ]
+ },
+ {
+  "k": "hole(a);move(a) CONTROL",
+  "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nmove(a, [0, 40, 0]);",
+  "topIds": [
+   "move1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 5999.999999999999,
+    "com": [
+     0,
+     0,
+     -8.881784197001252e-16
+    ],
+    "bbox": [
+     -15,
+     -10,
+     -5,
+     15,
+     10,
+     5
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "hole1": {
+    "volume": 5874.336293856408,
+    "com": [
+     4.455757505054154e-16,
+     2.230277740724234e-16,
+     1.549762959850868e-17
+    ],
+    "bbox": [
+     -15,
+     -10,
+     -5,
+     15,
+     10,
+     5
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 5874.336293856408,
+    "com": [
+     4.47994892686646e-16,
+     40,
+     1.5403131857054356e-17
+    ],
+    "bbox": [
+     -15,
+     30,
+     -5,
+     15,
+     50,
+     5
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.3737566748887e-17
+   },
+   {
+    "id": "hole1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0.0000035532873513322003,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 1.144848527143122e-17
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0.000003553287352415976,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 1.709104805919864e-15
+   }
+  ]
+ },
+ {
+  "k": "move(copy);join CONTROL",
+  "script": "const a = box(20, 10, 6);\nconst b = move(a, [10, 0, 0], { copy: true });\njoin(a, b);",
+  "topIds": [
+   "op1"
+  ],
+  "occt": {
+   "box1": {
+    "volume": 1200,
+    "com": [
+     0,
+     0,
+     0
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     10,
+     5,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "move1": {
+    "volume": 1200,
+    "com": [
+     10,
+     0,
+     0
+    ],
+    "bbox": [
+     0,
+     -5,
+     -3,
+     20,
+     5,
+     3
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "op1": {
+    "volume": 1800,
+    "com": [
+     5,
+     6.303599617593945e-17,
+     -3.0592812234115424e-17
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     20,
+     5,
+     3
+    ],
+    "faces": 14,
+    "types": {
+     "plane": 14
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   }
+  },
+  "occtRefusals": {},
+  "features": [
+   {
+    "id": "box1",
+    "guard": "PASS",
+    "shipped": "PASS",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "move1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "shippedRefusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0
+   },
+   {
+    "id": "op1",
+    "guard": "PASS",
+    "shipped": "REFUSED",
+    "shippedRefusal": "op1 (combine): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))",
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.9584331096748016e-18
+   }
+  ]
+ }
+]

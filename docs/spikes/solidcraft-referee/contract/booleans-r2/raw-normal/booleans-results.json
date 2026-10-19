@@ -1,0 +1,7114 @@
+[
+ {
+  "id": "sl-cut-5e-3",
+  "feature": "sliver overlap: cut or keep with an overlap thinner than 0.01 mm (axis-aligned part)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(10,10,10,{at:[0,0,14.995]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "box2:box",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 31999.5,
+   "area": 6400.2,
+   "com": [
+    4.551014065411367e-16,
+    4.178663134786267e-16,
+    -0.00015621337833486695
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 11,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 31999.499999999996,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 11,
+   "dVol": 1.1368861410621143e-16,
+   "dBbox": 0
+  },
+  "analytic": 31999.5,
+  "occtVsAnalytic": 0,
+  "translateMs": 235,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      14.995
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6400.200000000001,
+    "edges": 24,
+    "faces": 11,
+    "mass_g": 41.279355,
+    "vertices": 16,
+    "volume_mm3": 31999.5
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 31999.5,
+     "area": 6400.200000000001,
+     "faces": 11,
+     "kernel": {
+      "edges": 28,
+      "faces": 11,
+      "shells": 1,
+      "vertices": 20
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 31999.5,
+   "area": 6400.200000000001,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "com": [
+    -3.2567050915841817e-16,
+    0,
+    -0.0001562133783338485
+   ],
+   "faces": 11,
+   "kernelFaces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    3
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 1e-9,
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 1.6974088512070977e-17,
+   "dArea": 1.4210410639869509e-16,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 11,
+   "solidsOcct": 1,
+   "dAnalytic": 0,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=31999.5000 T=31999.5000 dVol 0.0e+0 dBbox 0.0e+0 dCom 1.7e-17 dArea 1.4e-16 faces O/B/T 11/11/11 solids O/T 1/1",
+  "wallMs": 2257
+ },
+ {
+  "id": "sl-cut-2e-3",
+  "feature": "sliver overlap: cut or keep with an overlap thinner than 0.01 mm (axis-aligned part)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(10,10,10,{at:[0,0,14.998]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "box2:box",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 31999.799999999996,
+   "area": 6400.080000000001,
+   "com": [
+    6.938937272265182e-19,
+    1.3308890158587029e-16,
+    -0.00006249414058837315
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 11,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 31999.79999999999,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 11,
+   "dVol": 2.2737509653758546e-16,
+   "dBbox": 0
+  },
+  "analytic": 31999.8,
+  "occtVsAnalytic": 1.136875482687927e-16,
+  "translateMs": 160,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      14.998
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6400.08,
+    "edges": 24,
+    "faces": 11,
+    "mass_g": 41.279742000000006,
+    "vertices": 16,
+    "volume_mm3": 31999.800000000003
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 31999.800000000003,
+     "area": 6400.08,
+     "faces": 11,
+     "kernel": {
+      "edges": 28,
+      "faces": 11,
+      "shells": 1,
+      "vertices": 20
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 31999.800000000003,
+   "area": 6400.08,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "com": [
+    -2.4869151183798404e-17,
+    0,
+    -0.00006249414058838498
+   ],
+   "faces": 11,
+   "kernelFaces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    3
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 1e-9,
+   "dVol": 2.2737509653758546e-16,
+   "dBbox": 0,
+   "dCom": 2.2181483597645046e-18,
+   "dArea": 1.421067708173848e-16,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 11,
+   "solidsOcct": 1,
+   "dAnalytic": 1.136875482687927e-16,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=31999.8000 T=31999.8000 dVol 2.3e-16 dBbox 0.0e+0 dCom 2.2e-18 dArea 1.4e-16 faces O/B/T 11/11/11 solids O/T 1/1",
+  "wallMs": 1147
+ },
+ {
+  "id": "sl-cut-1e-3",
+  "feature": "sliver overlap: cut or keep with an overlap thinner than 0.01 mm (axis-aligned part)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(10,10,10,{at:[0,0,14.999]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "box2:box",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 31999.899999999994,
+   "area": 6400.04,
+   "com": [
+    1.0406204970906408e-18,
+    2.2176780995591693e-16,
+    -0.00003124853515210263
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 11,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 31999.89999999999,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 11,
+   "dVol": 1.1368719299409415e-16,
+   "dBbox": 0
+  },
+  "analytic": 31999.9,
+  "occtVsAnalytic": 2.2737438598818824e-16,
+  "translateMs": 127,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      14.999
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6400,
+    "edges": 12,
+    "faces": 6,
+    "mass_g": 41.28,
+    "vertices": 8,
+    "volume_mm3": 32000
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 32000,
+     "area": 6400,
+     "faces": 6,
+     "kernel": {
+      "edges": 12,
+      "faces": 6,
+      "shells": 1,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 32000,
+   "area": 6400,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 1e-9,
+   "dVol": 0.0000031250097658374177,
+   "dBbox": 0,
+   "dCom": 5.208089192017104e-7,
+   "dArea": 0.000006249960937738455,
+   "faceKeys": {
+    "plane": "UNEXPLAINED"
+   },
+   "faceOk": false,
+   "facesOcct": 11,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0000031250097656100428,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=31999.9000 T=32000.0000 dVol 3.1e-6 dBbox 0.0e+0 dCom 5.2e-7 dArea 6.2e-6 faces O/B/T 11/11/6 solids O/T 1/1 FACE-UNEXPLAINED",
+  "wallMs": 1061
+ },
+ {
+  "id": "sl-cut-1e-4",
+  "feature": "sliver overlap: cut or keep with an overlap thinner than 0.01 mm (axis-aligned part)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(10,10,10,{at:[0,0,14.9999]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "box2:box",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 31999.98999999999,
+   "area": 6400.004,
+   "com": [
+    6.938896072312253e-19,
+    2.0462804252550956e-16,
+    -0.0000031249853519263792
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 11,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 31999.98999999999,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 11,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "analytic": 31999.99,
+  "occtVsAnalytic": 3.4106061974629173e-16,
+  "translateMs": 76,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      14.9999
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6400,
+    "edges": 12,
+    "faces": 6,
+    "mass_g": 41.28,
+    "vertices": 8,
+    "volume_mm3": 32000
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 32000,
+     "area": 6400,
+     "faces": 6,
+     "kernel": {
+      "edges": 12,
+      "faces": 6,
+      "shells": 1,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 32000,
+   "area": 6400,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 1e-9,
+   "dVol": 3.12500097947319e-7,
+   "dBbox": 0,
+   "dCom": 5.2083089198772986e-8,
+   "dArea": 6.249996093604648e-7,
+   "faceKeys": {
+    "plane": "UNEXPLAINED"
+   },
+   "faceOk": false,
+   "facesOcct": 11,
+   "solidsOcct": 1,
+   "dAnalytic": 3.125000976062583e-7,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=31999.9900 T=32000.0000 dVol 3.1e-7 dBbox 0.0e+0 dCom 5.2e-8 dArea 6.2e-7 faces O/B/T 11/11/6 solids O/T 1/1 FACE-UNEXPLAINED",
+  "wallMs": 935
+ },
+ {
+  "id": "sl-keep-1e-3",
+  "feature": "sliver overlap: cut or keep with an overlap thinner than 0.01 mm (axis-aligned part)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(10,10,10,{at:[0,0,14.999]}); keep(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "box2:box",
+   "op1:combine/intersect"
+  ],
+  "occt": {
+   "volume": 0.09999999999994455,
+   "area": 200.03999999999994,
+   "com": [
+    1.046255096449092e-16,
+    -6.396792817668024e-17,
+    9.999500000000001
+   ],
+   "bbox": [
+    -5,
+    -5,
+    9.999,
+    5,
+    5,
+    10
+   ],
+   "faces": 6,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 0.10000000000008431,
+   "bbox": [
+    -5,
+    -5,
+    9.999,
+    5,
+    5,
+    10
+   ],
+   "faces": 6,
+   "dVol": 1.397632010124994e-13,
+   "dBbox": 0
+  },
+  "analytic": 0.1,
+  "occtVsAnalytic": 5.545564008002657e-14,
+  "translateMs": 101,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      14.999
+     ],
+     "body_name": "b_box2"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back"
+  },
+  "refusalSentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back",
+  "outcome": "REFUSED",
+  "summary": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back",
+  "wallMs": 1186
+ },
+ {
+  "id": "sl-keep-5e-3",
+  "feature": "sliver overlap: cut or keep with an overlap thinner than 0.01 mm (axis-aligned part)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(10,10,10,{at:[0,0,14.995]}); keep(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "box2:box",
+   "op1:combine/intersect"
+  ],
+  "occt": {
+   "volume": 0.5000000000000782,
+   "area": 200.20000000000002,
+   "com": [
+    -1.517883041479469e-17,
+    -2.16840434497067e-18,
+    9.997499999999999
+   ],
+   "bbox": [
+    -5,
+    -5,
+    9.995,
+    5,
+    5,
+    10
+   ],
+   "faces": 6,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 0.5000000000002037,
+   "bbox": [
+    -5,
+    -5,
+    9.995,
+    5,
+    5,
+    10
+   ],
+   "faces": 6,
+   "dVol": 1.255662240851052e-13,
+   "dBbox": 0
+  },
+  "analytic": 0.5,
+  "occtVsAnalytic": 7.815970093361102e-14,
+  "translateMs": 117,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      14.995
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "intersect"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 200.20000000000005,
+    "edges": 12,
+    "faces": 6,
+    "mass_g": 0.0006450000000000489,
+    "vertices": 8,
+    "volume_mm3": 0.5000000000000379
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 0.5000000000000379,
+     "area": 200.20000000000005,
+     "faces": 6,
+     "kernel": {
+      "edges": 12,
+      "faces": 6,
+      "shells": 1,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 0.5000000000000379,
+   "area": 200.20000000000005,
+   "bbox": [
+    -5,
+    -5,
+    9.995,
+    5,
+    5,
+    10
+   ],
+   "com": [
+    -3.031649005909531e-13,
+    -1.516194577296307e-13,
+    9.99749999999986
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 1e-9,
+   "dVol": 4.030109579389318e-14,
+   "dBbox": 0,
+   "dCom": 2.143592105742415e-14,
+   "dArea": 1.419665805714486e-16,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 6,
+   "solidsOcct": 1,
+   "dAnalytic": 3.785860513971784e-14,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=0.5000 T=0.5000 dVol 4.0e-14 dBbox 0.0e+0 dCom 2.1e-14 dArea 1.4e-16 faces O/B/T 6/6/6 solids O/T 1/1",
+  "wallMs": 924
+ },
+ {
+  "id": "sl-cut-side-1e-3",
+  "feature": "sliver overlap: cut or keep with an overlap thinner than 0.01 mm (axis-aligned part)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(10,10,10,{at:[24.999,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "box2:box",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 31999.899999999998,
+   "area": 6400.04,
+   "com": [
+    -0.0000624986328095744,
+    1.2628848054304776e-16,
+    2.380324562476508e-16
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 11,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 31999.89999999999,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 11,
+   "dVol": 2.273743859881883e-16,
+   "dBbox": 0
+  },
+  "analytic": 31999,
+  "occtVsAnalytic": 0.000028125878933648464,
+  "translateMs": 123,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      24.999,
+      0,
+      0
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6400,
+    "edges": 12,
+    "faces": 6,
+    "mass_g": 41.28,
+    "vertices": 8,
+    "volume_mm3": 32000
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 32000,
+     "area": 6400,
+     "faces": 6,
+     "kernel": {
+      "edges": 12,
+      "faces": 6,
+      "shells": 1,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 32000,
+   "area": 6400,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 1e-9,
+   "dVol": 0.0000031250097657237303,
+   "dBbox": 0,
+   "dCom": 0.0000010416438801595734,
+   "dArea": 0.000006249960937738455,
+   "faceKeys": {
+    "plane": "UNEXPLAINED"
+   },
+   "faceOk": false,
+   "facesOcct": 11,
+   "solidsOcct": 1,
+   "dAnalytic": 0.00003125097659301853,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=31999.9000 T=32000.0000 dVol 3.1e-6 dBbox 0.0e+0 dCom 1.0e-6 dArea 6.2e-6 faces O/B/T 11/11/6 solids O/T 1/1 FACE-UNEXPLAINED",
+  "wallMs": 1182
+ },
+ {
+  "id": "sl-cut-cyl-1e-3",
+  "feature": "sliver overlap: cut or keep with an overlap thinner than 0.01 mm (axis-aligned part)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(10,30,{at:[24.999,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "cyl1:cylinder",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 31999.997333413346,
+   "area": 6400.000000016002,
+   "com": [
+    -0.0000016665834632178976,
+    1.1394879454240146e-16,
+    1.21430653437294e-19
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 31999.99733341332,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20.000000000000004,
+    20,
+    10
+   ],
+   "faces": 8,
+   "dVol": 7.958079303666499e-16,
+   "dBbox": 1.7763568394002506e-16
+  },
+  "translateMs": 725,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 5,
+     "height": 30,
+     "base": [
+      24.999,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6400,
+    "edges": 12,
+    "faces": 6,
+    "mass_g": 41.28,
+    "vertices": 8,
+    "volume_mm3": 32000
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 32000,
+     "area": 6400,
+     "faces": 6,
+     "kernel": {
+      "edges": 12,
+      "faces": 6,
+      "shells": 1,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 32000,
+   "area": 6400,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 1e-9,
+   "dVol": 8.333083986603001e-8,
+   "dBbox": 0,
+   "dCom": 2.7776391053631627e-8,
+   "dArea": 2.5002577785863894e-12,
+   "faceKeys": {
+    "plane": "UNEXPLAINED",
+    "cylinder": "UNEXPLAINED"
+   },
+   "faceOk": false,
+   "facesOcct": 8,
+   "solidsOcct": 1,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=31999.9973 T=32000.0000 dVol 8.3e-8 dBbox 0.0e+0 dCom 2.8e-8 dArea 2.5e-12 faces O/B/T 8/8/6 solids O/T 1/1 FACE-UNEXPLAINED",
+  "wallMs": 2142
+ },
+ {
+  "id": "sl-cut-sph-1e-3",
+  "feature": "sliver overlap: cut or keep with an overlap thinner than 0.01 mm (axis-aligned part)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = sphere(10,{at:[24.999,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 31999.999984292815,
+   "area": 6400.000003141323,
+   "com": [
+    -9.816785328176288e-9,
+    1.5477245550722612e-16,
+    9.07003393667073e-16
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 7,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 6,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 6,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 31999.999984293074,
+   "bbox": [
+    -19.999999999999996,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 7,
+   "dVol": 8.07176548219676e-15,
+   "dBbox": 1.7763568394002506e-16
+  },
+  "translateMs": 5785,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 5,
+     "center": [
+      24.999,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6400,
+    "edges": 12,
+    "faces": 6,
+    "mass_g": 41.28,
+    "vertices": 8,
+    "volume_mm3": 32000
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 32000,
+     "area": 6400,
+     "faces": 6,
+     "kernel": {
+      "edges": 12,
+      "faces": 6,
+      "shells": 1,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 32000,
+   "area": 6400,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 1e-9,
+   "dVol": 4.908495159405983e-10,
+   "dBbox": 0,
+   "dCom": 1.6361308880293814e-10,
+   "dArea": 4.908316950469365e-10,
+   "faceKeys": {
+    "plane": "equal",
+    "sphere": "UNEXPLAINED"
+   },
+   "faceOk": false,
+   "facesOcct": 7,
+   "solidsOcct": 1,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=32000.0000 T=32000.0000 dVol 4.9e-10 dBbox 0.0e+0 dCom 1.6e-10 dArea 4.9e-10 faces O/B/T 7/7/6 solids O/T 1/1 FACE-UNEXPLAINED",
+  "wallMs": 6654
+ },
+ {
+  "id": "sl-join-1e-3",
+  "feature": "sliver overlap: cut or keep with an overlap thinner than 0.01 mm (axis-aligned part)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(10,10,10,{at:[0,0,14.999]}); join(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "box2:box",
+   "op1:combine/union"
+  ],
+  "occt": {
+   "volume": 32999.899999999994,
+   "area": 6799.959999999998,
+   "com": [
+    8.819369288008057e-16,
+    4.241468524466521e-16,
+    0.4544862272309911
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    19.999000000000002
+   ],
+   "faces": 11,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 32999.89999999999,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    19.999000000000002
+   ],
+   "faces": 11,
+   "dVol": 2.2048423220020144e-16,
+   "dBbox": 0
+  },
+  "analytic": 32999.9,
+  "occtVsAnalytic": 2.204842322002014e-16,
+  "translateMs": 111,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      14.999
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "join"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6799.959999999999,
+    "edges": 24,
+    "faces": 11,
+    "mass_g": 42.56987099999999,
+    "vertices": 16,
+    "volume_mm3": 32999.899999999994
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 32999.899999999994,
+     "area": 6799.959999999999,
+     "faces": 11,
+     "kernel": {
+      "edges": 24,
+      "faces": 11,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 32999.899999999994,
+   "area": 6799.959999999999,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    19.999000000000002
+   ],
+   "com": [
+    0,
+    5.741776880213579e-19,
+    0.45448622723099175
+   ],
+   "faces": 11,
+   "kernelFaces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    3
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 1e-9,
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 1.3773641573362771e-17,
+   "dArea": 1.3375000761371073e-16,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 11,
+   "solidsOcct": 1,
+   "dAnalytic": 2.204842322002014e-16,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=32999.9000 T=32999.9000 dVol 0.0e+0 dBbox 0.0e+0 dCom 1.4e-17 dArea 1.3e-16 faces O/B/T 11/11/11 solids O/T 1/1",
+  "wallMs": 1119
+ },
+ {
+  "id": "sl-cut-3op-1e-3",
+  "feature": "sliver overlap: cut or keep with an overlap thinner than 0.01 mm (axis-aligned part)",
+  "note": "one real tool and one sliver tool",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(10,30,{at:[0,0,0]}); const c = box(10,10,10,{at:[0,24.999,0]}); cut(a,b,c)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "cyl1:cylinder",
+   "box2:box",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 30429.103673205092,
+   "area": 6871.2788980384685,
+   "com": [
+    -7.904232692420287e-16,
+    -0.00006572490670602855,
+    2.4372320597784613e-17
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 12,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 11,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 11,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 30429.10367320509,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 12,
+   "dVol": 1.1955589774059635e-16,
+   "dBbox": 0
+  },
+  "translateMs": 2419,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 5,
+     "height": 30,
+     "base": [
+      0,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      24.999,
+      0
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1",
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6871.238896931012,
+    "edges": 14,
+    "faces": 7,
+    "mass_g": 39.25400931886278,
+    "vertices": 10,
+    "volume_mm3": 30429.46458826572
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 30429.46458826572,
+     "area": 6871.238896931012,
+     "faces": 7,
+     "kernel": {
+      "edges": 18,
+      "faces": 8,
+      "shells": 1,
+      "vertices": 12
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 30429.46458826572,
+   "area": 6871.238896931012,
+   "bbox": [
+    -20,
+    -20.000000000000004,
+    -10.000000000000005,
+    20,
+    20,
+    10.000000000000005
+   ],
+   "com": [
+    6.749846667679816e-16,
+    -5.6508172056452325e-16,
+    0
+   ],
+   "faces": 7,
+   "kernelFaces": 8,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.000011860850865148595,
+   "dBbox": 5.329070518200751e-16,
+   "dCom": 0.0000010954151117577243,
+   "dArea": 0.000005821493793187571,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "UNEXPLAINED"
+   },
+   "faceOk": false,
+   "facesOcct": 12,
+   "solidsOcct": 1,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=30429.1037 T=30429.4646 dVol 1.2e-5 dBbox 5.3e-16 dCom 1.1e-6 dArea 5.8e-6 faces O/B/T 12/12/7 solids O/T 1/1 FACE-UNEXPLAINED",
+  "wallMs": 4911
+ },
+ {
+  "id": "sl-esc-rot-cut-1e-3",
+  "feature": "sliver overlap the bounding-box test cannot see (rotated part)",
+  "note": null,
+  "source": null,
+  "featureKinds": [
+   "a:box",
+   "b:box",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 31999.899999999998,
+   "area": 6400.04,
+   "com": [
+    -0.000015624267577227263,
+    8.951202802614978e-17,
+    -0.00002706202527179317
+   ],
+   "bbox": [
+    -22.320508075688775,
+    -20,
+    -18.660254037844386,
+    22.320508075688775,
+    20,
+    18.660254037844386
+   ],
+   "faces": 11,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 31999.899999999994,
+   "bbox": [
+    -22.320508075688775,
+    -20,
+    -18.660254037844386,
+    22.320508075688775,
+    20,
+    18.660254037844386
+   ],
+   "faces": 11,
+   "dVol": 1.1368719299409415e-16,
+   "dBbox": 0
+  },
+  "analytic": 31999.9,
+  "occtVsAnalytic": 1.1368719299409412e-16,
+  "translateMs": 149,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "a",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "b",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_a"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_a"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 30
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_b"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_b"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 30
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_b"
+     ],
+     "translate": [
+      7.499499999999999,
+      0,
+      12.989515031362796
+     ]
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_a",
+     "tools": [
+      "b_b"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6400,
+    "edges": 12,
+    "faces": 6,
+    "mass_g": 41.28,
+    "vertices": 8,
+    "volume_mm3": 32000
+   },
+   "bodies": [
+    {
+     "name": "b_a",
+     "volume": 32000,
+     "area": 6400,
+     "faces": 6,
+     "kernel": {
+      "edges": 12,
+      "faces": 6,
+      "shells": 1,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_a"
+  ],
+  "truck": {
+   "volume": 32000,
+   "area": 6400,
+   "bbox": [
+    -22.320508075688775,
+    -20,
+    -18.66025403784439,
+    22.320508075688775,
+    20,
+    18.660254037844386
+   ],
+   "com": [
+    -3.789561257387201e-16,
+    4.547473508864641e-16,
+    0
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "bodyNames": [
+    "b_a"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 1e-9,
+   "dVol": 0.0000031250097657237303,
+   "dBbox": 1.9038935223471946e-16,
+   "dCom": 3.832655719448248e-7,
+   "dArea": 0.000006249960937738455,
+   "faceKeys": {
+    "plane": "UNEXPLAINED"
+   },
+   "faceOk": false,
+   "facesOcct": 11,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0000031250097656100428,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=31999.9000 T=32000.0000 dVol 3.1e-6 dBbox 1.9e-16 dCom 3.8e-7 dArea 6.2e-6 faces O/B/T 11/11/6 solids O/T 1/1 FACE-UNEXPLAINED",
+  "wallMs": 1207
+ },
+ {
+  "id": "sl-esc-rot-cut-1e-2",
+  "feature": "sliver overlap the bounding-box test cannot see (rotated part)",
+  "note": null,
+  "source": null,
+  "featureKinds": [
+   "a:box",
+   "b:box",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 31999,
+   "area": 6400.400000000001,
+   "com": [
+    -0.00015617675552363682,
+    1.7784900196263892e-16,
+    -0.00027050607552961533
+   ],
+   "bbox": [
+    -22.320508075688775,
+    -20,
+    -18.660254037844386,
+    22.320508075688775,
+    20,
+    18.660254037844386
+   ],
+   "faces": 11,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 11
+   },
+   "components": {
+    "plane": 11
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 31999,
+   "bbox": [
+    -22.320508075688775,
+    -20,
+    -18.660254037844386,
+    22.320508075688775,
+    20,
+    18.660254037844386
+   ],
+   "faces": 11,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "analytic": 31999,
+  "occtVsAnalytic": 0,
+  "translateMs": 89,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "a",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "b",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_a"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_a"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 30
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_b"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_b"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 30
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_b"
+     ],
+     "translate": [
+      7.494999999999999,
+      0,
+      12.981720802728736
+     ]
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_a",
+     "tools": [
+      "b_b"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6400,
+    "edges": 12,
+    "faces": 6,
+    "mass_g": 41.28,
+    "vertices": 8,
+    "volume_mm3": 32000
+   },
+   "bodies": [
+    {
+     "name": "b_a",
+     "volume": 32000,
+     "area": 6400,
+     "faces": 6,
+     "kernel": {
+      "edges": 12,
+      "faces": 6,
+      "shells": 1,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_a"
+  ],
+  "truck": {
+   "volume": 32000,
+   "area": 6400,
+   "bbox": [
+    -22.320508075688775,
+    -20,
+    -18.66025403784439,
+    22.320508075688775,
+    20,
+    18.660254037844386
+   ],
+   "com": [
+    -3.789561257387201e-16,
+    4.547473508864641e-16,
+    0
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "bodyNames": [
+    "b_a"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 1e-9,
+   "dVol": 0.00003125097659301853,
+   "dBbox": 1.9038935223471946e-16,
+   "dCom": 0.000003831038686541671,
+   "dArea": 0.00006249609399421063,
+   "faceKeys": {
+    "plane": "UNEXPLAINED"
+   },
+   "faceOk": false,
+   "facesOcct": 11,
+   "solidsOcct": 1,
+   "dAnalytic": 0.00003125097659301853,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=31999.0000 T=32000.0000 dVol 3.1e-5 dBbox 1.9e-16 dCom 3.8e-6 dArea 6.2e-5 faces O/B/T 11/11/6 solids O/T 1/1 FACE-UNEXPLAINED",
+  "wallMs": 1070
+ },
+ {
+  "id": "sl-esc-sph-sph-1e-3",
+  "feature": "sliver overlap the bounding-box test cannot see (rotated part)",
+  "note": "two spheres overlapping by 1e-3 mm: bbox overlap is 1e-3 too, so the guard sees it",
+  "source": "const a = sphere(20,{at:[0,0,0]}); const b = sphere(20,{at:[19.999,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "ball1:sphere",
+   "ball2:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 4188.790189078809,
+   "area": 1256.6370612906753,
+   "com": [
+    -3.755798573665511e-8,
+    -1.712198305820523e-10,
+    6.750372290263446e-16
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    9.9995,
+    10,
+    10
+   ],
+   "faces": 2,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "sphere": 2
+   },
+   "components": {
+    "sphere": 2
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 4188.79018907869,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    9.9995,
+    10,
+    10
+   ],
+   "faces": 2,
+   "dVol": 2.844348858600996e-14,
+   "dBbox": 0
+  },
+  "translateMs": 21595,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "ball2",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 10,
+     "center": [
+      19.999,
+      0,
+      0
+     ],
+     "body_name": "b_ball2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_ball1",
+     "tools": [
+      "b_ball2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 1256.5932659580835,
+    "edges": 0,
+    "faces": 1,
+    "mass_g": 5.403156048106221,
+    "vertices": 0,
+    "volume_mm3": 4188.493060547458
+   },
+   "bodies": [
+    {
+     "name": "b_ball1",
+     "volume": 4188.493060547458,
+     "area": 1256.5932659580835,
+     "faces": 1,
+     "kernel": {
+      "edges": 12,
+      "faces": 6,
+      "shells": 1,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_ball1"
+  ],
+  "truck": {
+   "volume": 4188.493060547458,
+   "area": 1256.5932659580835,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    10
+   ],
+   "com": [
+    -3.832964502467592e-12,
+    7.41261767405368e-17,
+    2.8373125922316683e-13
+   ],
+   "faces": 1,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_ball1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00007093421201312369,
+   "dBbox": 0.000050002500125067363,
+   "dCom": 1.08410404473462e-9,
+   "dArea": 0.000034851218335719935,
+   "faceKeys": {
+    "sphere": "UNEXPLAINED"
+   },
+   "faceOk": false,
+   "facesOcct": 2,
+   "solidsOcct": 1,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=4188.7902 T=4188.4931 dVol 7.1e-5 dBbox 5.0e-5 dCom 1.1e-9 dArea 3.5e-5 faces O/B/T 2/2/1 solids O/T 1/1 FACE-UNEXPLAINED",
+  "wallMs": 26777
+ },
+ {
+  "id": "sh-keep-a-a",
+  "feature": "same handle twice: keep(a, a)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); keep(a, a)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "op1:combine/intersect"
+  ],
+  "occt": {
+   "volume": 31999.999999999993,
+   "area": 6399.999999999999,
+   "com": [
+    4.618527782440652e-16,
+    6.501466032204919e-16,
+    2.273736754432321e-16
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 6,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 31999.999999999996,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 6,
+   "dVol": 1.1368683772161606e-16,
+   "dBbox": 0
+  },
+  "analytic": 32000,
+  "occtVsAnalytic": 2.2737367544323206e-16,
+  "translateMs": 19,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself"
+  },
+  "refusalSentence": "op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself",
+  "outcome": "REFUSED",
+  "summary": "op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself",
+  "wallMs": 440
+ },
+ {
+  "id": "sh-join-a-a-b",
+  "feature": "same handle twice: keep(a, a)",
+  "note": "the same shape appears twice among three",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,40,{at:[0,0,0]}); join(a, b, a)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "cyl1:cylinder",
+   "op1:combine/union"
+  ],
+  "occt": {
+   "volume": 36021.238596594936,
+   "area": 7405.309649148734,
+   "com": [
+    4.986647061523675e-16,
+    -9.46524518031132e-18,
+    2.0199076704906025e-16
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -20,
+    20,
+    20,
+    20
+   ],
+   "faces": 10,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 8,
+    "cylinder": 2
+   },
+   "components": {
+    "plane": 8,
+    "cylinder": 2
+   },
+   "bigCylinderComponents": 2
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 36021.23859659493,
+   "bbox": [
+    -20,
+    -20,
+    -20,
+    20,
+    20,
+    20
+   ],
+   "faces": 10,
+   "dVol": 2.0199076704906025e-16,
+   "dBbox": 0
+  },
+  "translateMs": 346,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 8,
+     "height": 40,
+     "base": [
+      0,
+      0,
+      -20
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself"
+  },
+  "refusalSentence": "op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself",
+  "outcome": "REFUSED",
+  "summary": "op1 (combine): solidcraft refused it -- solid.combine: a body cannot be combined with itself",
+  "wallMs": 843
+ },
+ {
+  "id": "noat-cut",
+  "feature": "cut or keep with a shape that touches nothing (a primitive written without at:)",
+  "note": "no at:: the interpreter puts the cylinder at x=40, beside the box",
+  "source": "const a = box(40,40,20); const b = cylinder(10,30); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "cyl1:cylinder",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 31999.999999999993,
+   "area": 6399.999999999999,
+   "com": [
+    4.618527782440652e-16,
+    6.501466032204919e-16,
+    2.273736754432321e-16
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 6,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 31999.999999999996,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 6,
+   "dVol": 1.1368683772161606e-16,
+   "dBbox": 0
+  },
+  "analytic": 32000,
+  "occtVsAnalytic": 2.2737367544323206e-16,
+  "translateMs": 417,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 5,
+     "height": 30,
+     "base": [
+      40,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6400,
+    "edges": 12,
+    "faces": 6,
+    "mass_g": 41.28,
+    "vertices": 8,
+    "volume_mm3": 32000
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 32000,
+     "area": 6400,
+     "faces": 6,
+     "kernel": {
+      "edges": 12,
+      "faces": 6,
+      "shells": 1,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 32000,
+   "area": 6400,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 1e-9,
+   "dVol": 2.273736754432321e-16,
+   "dBbox": 0,
+   "dCom": 1.0835776720341532e-17,
+   "dArea": 1.4210854715202006e-16,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 6,
+   "solidsOcct": 1,
+   "dAnalytic": 0,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=32000.0000 T=32000.0000 dVol 2.3e-16 dBbox 0.0e+0 dCom 1.1e-17 dArea 1.4e-16 faces O/B/T 6/6/6 solids O/T 1/1",
+  "wallMs": 903
+ },
+ {
+  "id": "noat-keep",
+  "feature": "cut or keep with a shape that touches nothing (a primitive written without at:)",
+  "note": null,
+  "source": "const a = box(40,40,20); const b = cylinder(10,30); keep(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "cyl1:cylinder",
+   "op1:combine/intersect"
+  ],
+  "occt": null,
+  "occtNote": "OCCT threw: undefined",
+  "brep": {
+   "refused": "combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it."
+  },
+  "translateMs": 466,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 5,
+     "height": 30,
+     "base": [
+      40,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back"
+  },
+  "refusalSentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back",
+  "outcome": "REFUSED",
+  "summary": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back",
+  "wallMs": 874
+ },
+ {
+  "id": "noat-join",
+  "feature": "cut or keep with a shape that touches nothing (a primitive written without at:)",
+  "note": "join of auto-placed disjoint shapes: two pieces, allowed",
+  "source": "const a = box(40,40,20); const b = cylinder(10,30); join(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "cyl1:cylinder",
+   "op1:combine/union"
+  ],
+  "occt": {
+   "volume": 34356.194490192334,
+   "area": 7499.557428756427,
+   "com": [
+    2.7432543390275264,
+    2.2069227806909868e-16,
+    2.1178007989972505e-16
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -15,
+    45,
+    20,
+    15
+   ],
+   "faces": 9,
+   "solids": 2,
+   "shells": 2,
+   "valid": true,
+   "types": {
+    "plane": 8,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 8,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 34356.19449019234,
+   "bbox": [
+    -20,
+    -20,
+    -15,
+    45,
+    20,
+    15
+   ],
+   "faces": 9,
+   "dVol": 2.1178007989972505e-16,
+   "dBbox": 0
+  },
+  "translateMs": 783,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 5,
+     "height": 30,
+     "base": [
+      40,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1"
+     ],
+     "operation": "join"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 7499.4921983296645,
+    "edges": 14,
+    "faces": 9,
+    "mass_g": 44.31898602170585,
+    "vertices": 10,
+    "volume_mm3": 34355.80311760143
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 34355.80311760143,
+     "area": 7499.4921983296645,
+     "faces": 9,
+     "kernel": {
+      "edges": 18,
+      "faces": 10,
+      "shells": 2,
+      "vertices": 12
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 34355.80311760143,
+   "area": 7499.4921983296645,
+   "bbox": [
+    -20,
+    -20,
+    -15.00000000000003,
+    44.9999227810662,
+    20,
+    15.000000000000007
+   ],
+   "com": [
+    2.7428299196350294,
+    -1.790555653335824e-15,
+    1.0589124622232674e-15
+   ],
+   "faces": 9,
+   "kernelFaces": 10,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 8
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    4
+   ],
+   "shells": [
+    2
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00001139161646728873,
+   "dBbox": 0.000001715976306589558,
+   "dCom": 0.000005175461414373385,
+   "dArea": 0.000008697903493909425,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 9,
+   "solidsOcct": 2,
+   "geomOk": true,
+   "bodiesOk": false
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=34356.1945 T=34355.8031 dVol 1.1e-5 dBbox 1.7e-6 dCom 5.2e-6 dArea 8.7e-6 faces O/B/T 9/9/9 solids O/T 2/1",
+  "wallMs": 1662
+ },
+ {
+  "id": "noat-cut-3op",
+  "feature": "cut or keep with a shape that touches nothing (a primitive written without at:)",
+  "note": "one real tool, one auto-placed tool that touches nothing",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(16,40,{at:[0,0,0]}); const c = cylinder(10,30); cut(a,b,c)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "cyl1:cylinder",
+   "cyl2:cylinder",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 27978.761403405064,
+   "area": 7003.18578948924,
+   "com": [
+    -1.0280215599561307e-15,
+    3.2981536525087034e-16,
+    -5.0791579049215945e-18
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 7,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 27978.76140340506,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 7,
+   "dVol": 1.300264423659928e-16,
+   "dBbox": 0
+  },
+  "translateMs": 1666,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "cyl2",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 8,
+     "height": 40,
+     "base": [
+      0,
+      0,
+      -20
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 5,
+     "height": 30,
+     "base": [
+      40,
+      0,
+      -15
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1",
+      "b_cyl2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 7003.210835563301,
+    "edges": 14,
+    "faces": 7,
+    "mass_g": 36.093463856288174,
+    "vertices": 10,
+    "volume_mm3": 27979.429345959823
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 27979.429345959823,
+     "area": 7003.210835563301,
+     "faces": 7,
+     "kernel": {
+      "edges": 18,
+      "faces": 8,
+      "shells": 1,
+      "vertices": 12
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 27979.429345959823,
+   "area": 7003.210835563301,
+   "bbox": [
+    -20,
+    -20.000000000000004,
+    -10.000000000000012,
+    20,
+    20,
+    10.000000000000007
+   ],
+   "com": [
+    1.3872542109009512e-15,
+    -5.184003409541997e-16,
+    -2.7738312169149596e-15
+   ],
+   "faces": 7,
+   "kernelFaces": 8,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00002387319957193586,
+   "dBbox": 1.2434497875801752e-15,
+   "dCom": 4.61458676501673e-17,
+   "dArea": 0.0000035763829225266307,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 7,
+   "solidsOcct": 1,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=27978.7614 T=27979.4293 dVol 2.4e-5 dBbox 1.2e-15 dCom 4.6e-17 dArea 3.6e-6 faces O/B/T 7/7/7 solids O/T 1/1",
+  "wallMs": 2613
+ },
+ {
+  "id": "sp-cut-tube-360-through",
+  "feature": "spin() operand: off-axis tube, half turn, tube inside the part",
+  "note": null,
+  "source": "const a = box(50,40,50,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[5,-20],[15,-20],[15,20],[5,20]]); cut(a, spin(s,360))",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "sk1:sketch",
+   "rev1:revolve",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 74867.25877128163,
+   "area": 16769.91118430775,
+   "com": [
+    -2.551100314168019e-16,
+    1.579252575437345e-16,
+    -2.512188441816498e-16
+   ],
+   "bbox": [
+    -25,
+    -20,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "faces": 10,
+   "solids": 2,
+   "shells": 2,
+   "valid": true,
+   "types": {
+    "plane": 8,
+    "cylinder": 2
+   },
+   "components": {
+    "plane": 8,
+    "cylinder": 2
+   },
+   "bigCylinderComponents": 2
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 74867.25877128169,
+   "bbox": [
+    -25,
+    -20,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "faces": 10,
+   "dVol": 7.77478190984539e-16,
+   "dBbox": 0
+  },
+  "analytic": 74867.25877128166,
+  "occtVsAnalytic": 3.8873909549226937e-16,
+  "translateMs": 29303,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 50,
+     "width": 40,
+     "height": 50,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       5,
+       -20
+      ],
+      [
+       15,
+       -20
+      ],
+      [
+       15,
+       20
+      ],
+      [
+       5,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_rev1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_rev1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 18026.44248763335,
+    "edges": 16,
+    "faces": 10,
+    "mass_g": 96.57970294763706,
+    "vertices": 12,
+    "volume_mm3": 74867.986781114
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 74867.986781114,
+     "area": 18026.44248763335,
+     "faces": 10,
+     "kernel": {
+      "edges": 30,
+      "faces": 14,
+      "shells": 1,
+      "vertices": 20
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 74867.986781114,
+   "area": 18026.44248763335,
+   "bbox": [
+    -25,
+    -20.00000002379462,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "com": [
+    -0.00003275729446949283,
+    0.000010090318228295613,
+    -0.00003844206643266557
+   ],
+   "faces": 10,
+   "kernelFaces": 14,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 8
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    4
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.000009724008122057403,
+   "dBbox": 1.1897309803998724e-9,
+   "dCom": 4.731891273492441e-7,
+   "dArea": 0.07492772558636944,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 10,
+   "solidsOcct": 2,
+   "dAnalytic": 0.00000972400812166866,
+   "geomOk": false,
+   "bodiesOk": false
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=74867.2588 T=74867.9868 dVol 9.7e-6 dBbox 1.2e-9 dCom 4.7e-7 dArea 7.5e-2 faces O/B/T 10/10/10 solids O/T 2/1",
+  "wallMs": 74373
+ },
+ {
+  "id": "sp-cut-tube-180-through",
+  "feature": "spin() operand: off-axis tube, half turn, tube inside the part",
+  "note": null,
+  "source": "const a = box(50,40,50,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[5,-20],[15,-20],[15,20],[5,20]]); cut(a, spin(s,180))",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "sk1:sketch",
+   "rev1:revolve",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 87433.62938564082,
+   "area": 15684.955592153876,
+   "com": [
+    -2.435810945829647e-10,
+    -1.564380634715851e-17,
+    0.9912280585006801
+   ],
+   "bbox": [
+    -25,
+    -20,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "faces": 10,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 8,
+    "cylinder": 2
+   },
+   "components": {
+    "plane": 8,
+    "cylinder": 2
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 87433.62938564084,
+   "bbox": [
+    -25,
+    -20,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "faces": 10,
+   "dVol": 3.3286769245694165e-16,
+   "dBbox": 0
+  },
+  "analytic": 87433.62938564083,
+  "occtVsAnalytic": 1.664338462284708e-16,
+  "translateMs": 11104,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 50,
+     "width": 40,
+     "height": 50,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       5,
+       -20
+      ],
+      [
+       15,
+       -20
+      ],
+      [
+       15,
+       20
+      ],
+      [
+       5,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_sk1_0",
+     "angle": -180,
+     "operation": "new",
+     "body_name": "b_rev1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_rev1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 16313.220128897668,
+    "edges": 24,
+    "faces": 11,
+    "mass_g": 112.78985072369105,
+    "vertices": 16,
+    "volume_mm3": 87433.99280906282
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 87433.99280906282,
+     "area": 16313.220128897668,
+     "faces": 11,
+     "kernel": {
+      "edges": 36,
+      "faces": 15,
+      "shells": 1,
+      "vertices": 24
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 87433.99280906282,
+   "area": 16313.220128897668,
+   "bbox": [
+    -25,
+    -20.000000024213698,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "com": [
+    -0.00001356045613393788,
+    0.000004244553142267808,
+    0.9911479763761345
+   ],
+   "faces": 11,
+   "kernelFaces": 15,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 9
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    3
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.000004156563379121709,
+   "dBbox": 1.2106848856774377e-9,
+   "dCom": 9.85742811110774e-7,
+   "dArea": 0.04005523210139472,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "UNEXPLAINED"
+   },
+   "faceOk": false,
+   "facesOcct": 10,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0000041565633789552745,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=87433.6294 T=87433.9928 dVol 4.2e-6 dBbox 1.2e-9 dCom 9.9e-7 dArea 4.0e-2 faces O/B/T 10/10/11 solids O/T 1/1 FACE-UNEXPLAINED",
+  "wallMs": 22985
+ },
+ {
+  "id": "sp-cut-tube-360-blind",
+  "feature": "spin() operand: off-axis tube, half turn, tube inside the part",
+  "note": null,
+  "source": "const a = box(50,40,50,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[5,0],[15,0],[15,20],[5,20]]); cut(a, spin(s,360))",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "sk1:sketch",
+   "rev1:revolve",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 87433.6293856408,
+   "area": 15513.274122871835,
+   "com": [
+    -2.3924865395342685e-16,
+    -1.4372468239804004,
+    -8.77190662551665e-17
+   ],
+   "bbox": [
+    -25,
+    -20,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "faces": 10,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 8,
+    "cylinder": 2
+   },
+   "components": {
+    "plane": 8,
+    "cylinder": 2
+   },
+   "bigCylinderComponents": 2
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 87433.62938564084,
+   "bbox": [
+    -25,
+    -20,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "faces": 10,
+   "dVol": 4.993015386854126e-16,
+   "dBbox": 0
+  },
+  "analytic": 87433.62938564083,
+  "occtVsAnalytic": 3.328676924569416e-16,
+  "translateMs": 4627,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Cut: implausible result volume 12533.8518; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cylinder)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 50,
+     "width": 40,
+     "height": 50,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       5,
+       0
+      ],
+      [
+       15,
+       0
+      ],
+      [
+       15,
+       20
+      ],
+      [
+       5,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_rev1"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Cut: implausible result volume 12533.8518; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cylinder)"
+  },
+  "refusalSentence": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Cut: implausible result volume 12533.8518; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cylinder)",
+  "outcome": "REFUSED",
+  "summary": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Cut: implausible result volume 12533.8518; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool has 6 curved faces (cylinder)",
+  "wallMs": 5642
+ },
+ {
+  "id": "sp-cut-solid-180",
+  "feature": "spin() operand: off-axis tube, half turn, tube inside the part",
+  "note": null,
+  "source": "const a = box(50,40,50,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[0,-20],[6,-20],[6,20],[0,20]]); cut(a, spin(s,180))",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "sk1:sketch",
+   "rev1:revolve",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 97738.05328941533,
+   "area": 14120.884901332316,
+   "com": [
+    -1.4482003952222493e-11,
+    4.2892220582406374e-17,
+    0.0589330338450502
+   ],
+   "bbox": [
+    -25,
+    -20,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "faces": 9,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 8,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 97738.05328941536,
+   "bbox": [
+    -25,
+    -20,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "faces": 9,
+   "dVol": 2.9777378899243477e-16,
+   "dBbox": 0
+  },
+  "analytic": 97738.05328941534,
+  "occtVsAnalytic": 1.4888689449621736e-16,
+  "translateMs": 739,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 50,
+     "width": 40,
+     "height": 50,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       -20
+      ],
+      [
+       6,
+       -20
+      ],
+      [
+       6,
+       20
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_sk1_0",
+     "angle": -180,
+     "operation": "new",
+     "body_name": "b_rev1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_rev1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 14120.872376080373,
+    "edges": 18,
+    "faces": 8,
+    "mass_g": 126.08257341916243,
+    "vertices": 12,
+    "volume_mm3": 97738.42900710266
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 97738.42900710266,
+     "area": 14120.872376080373,
+     "faces": 8,
+     "kernel": {
+      "edges": 20,
+      "faces": 8,
+      "shells": 1,
+      "vertices": 14
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 97738.42900710266,
+   "area": 14120.872376080373,
+   "bbox": [
+    -25,
+    -20.00000000000001,
+    -25,
+    25,
+    20.000000000000007,
+    25
+   ],
+   "com": [
+    -1.1495434419546586e-16,
+    0,
+    0.05891932396979014
+   ],
+   "faces": 8,
+   "kernelFaces": 8,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 7
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.000003844129023326111,
+   "dBbox": 5.329070518200751e-16,
+   "dCom": 1.6875689869013924e-7,
+   "dArea": 8.870019145669541e-7,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "truck-merges-edge-connected-same-surface-faces"
+   },
+   "faceOk": true,
+   "facesOcct": 9,
+   "solidsOcct": 1,
+   "dAnalytic": 0.000003844129023177223,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=97738.0533 T=97738.4290 dVol 3.8e-6 dBbox 5.3e-16 dCom 1.7e-7 dArea 8.9e-7 faces O/B/T 9/9/8 solids O/T 1/1",
+  "wallMs": 2183
+ },
+ {
+  "id": "sp-cut-tube-void",
+  "feature": "spin() operand: off-axis tube, half turn, tube inside the part",
+  "note": null,
+  "source": "const a = box(50,40,50,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[5,-10],[15,-10],[15,10],[5,10]]); cut(a, spin(s,360))",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "sk1:sketch",
+   "rev1:revolve",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 87433.6293856408,
+   "area": 16769.91118430775,
+   "com": [
+    -5.019020675327325e-16,
+    -1.45629615449912e-16,
+    -2.177715654295873e-17
+   ],
+   "bbox": [
+    -25,
+    -20,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "faces": 10,
+   "solids": 1,
+   "shells": 2,
+   "valid": true,
+   "types": {
+    "plane": 8,
+    "cylinder": 2
+   },
+   "components": {
+    "plane": 8,
+    "cylinder": 2
+   },
+   "bigCylinderComponents": 2
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 87433.62938564084,
+   "bbox": [
+    -25,
+    -20,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "faces": 10,
+   "dVol": 4.993015386854126e-16,
+   "dBbox": 0
+  },
+  "analytic": 87433.62938564083,
+  "occtVsAnalytic": 3.328676924569416e-16,
+  "translateMs": 2285,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 50,
+     "width": 40,
+     "height": 50,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       5,
+       -10
+      ],
+      [
+       15,
+       -10
+      ],
+      [
+       15,
+       10
+      ],
+      [
+       5,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_rev1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_rev1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 16769.826293632952,
+    "edges": 16,
+    "faces": 10,
+    "mass_g": 112.78982557819447,
+    "vertices": 12,
+    "volume_mm3": 87433.97331642981
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 87433.97331642981,
+     "area": 16769.826293632952,
+     "faces": 10,
+     "kernel": {
+      "edges": 36,
+      "faces": 18,
+      "shells": 2,
+      "vertices": 20
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 87433.97331642981,
+   "area": 16769.826293632952,
+   "bbox": [
+    -25,
+    -20,
+    -25,
+    25,
+    20,
+    25
+   ],
+   "com": [
+    2.799891711900636e-16,
+    4.614515318549861e-16,
+    -1.1771680943532706e-15
+   ],
+   "faces": 10,
+   "kernelFaces": 18,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 8
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    2
+   ],
+   "tol": 0.0003,
+   "dVol": 0.000003933621324245932,
+   "dBbox": 0,
+   "dCom": 1.4221879319908078e-17,
+   "dArea": 0.000005062082551702251,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 10,
+   "solidsOcct": 1,
+   "dAnalytic": 0.000003933621323913064,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=87433.6294 T=87433.9733 dVol 3.9e-6 dBbox 0.0e+0 dCom 1.4e-17 dArea 5.1e-6 faces O/B/T 10/10/10 solids O/T 1/1",
+  "wallMs": 4395
+ },
+ {
+  "id": "sp-join-tube-360",
+  "feature": "spin() operand: off-axis tube, half turn, tube inside the part",
+  "note": null,
+  "source": "const a = box(50,40,50,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[5,-30],[15,-30],[15,30],[5,30]]); join(a, spin(s,360))",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "sk1:sketch",
+   "rev1:revolve",
+   "op1:combine/union"
+  ],
+  "occt": {
+   "volume": 112566.37061435913,
+   "area": 15513.274122871837,
+   "com": [
+    -3.4540421165389317e-16,
+    -7.271667613766172e-16,
+    -6.028947566383866e-17
+   ],
+   "bbox": [
+    -25,
+    -30,
+    -25,
+    25,
+    30,
+    25
+   ],
+   "faces": 14,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 10,
+    "cylinder": 4
+   },
+   "components": {
+    "plane": 10,
+    "cylinder": 4
+   },
+   "bigCylinderComponents": 4
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 112566.37061435916,
+   "bbox": [
+    -25,
+    -30,
+    -25,
+    25,
+    30,
+    25
+   ],
+   "faces": 14,
+   "dVol": 2.5854818182279724e-16,
+   "dBbox": 0
+  },
+  "analytic": 112566.37061435917,
+  "occtVsAnalytic": 3.878222727341957e-16,
+  "translateMs": 5613,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 50,
+     "width": 40,
+     "height": 50,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       5,
+       -30
+      ],
+      [
+       15,
+       -30
+      ],
+      [
+       15,
+       30
+      ],
+      [
+       5,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_rev1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_rev1"
+     ],
+     "operation": "join"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 15513.22502921998,
+    "edges": 20,
+    "faces": 14,
+    "mass_g": 145.21018365185535,
+    "vertices": 16,
+    "volume_mm3": 112566.03383864755
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 112566.03383864755,
+     "area": 15513.22502921998,
+     "faces": 14,
+     "kernel": {
+      "edges": 48,
+      "faces": 22,
+      "shells": 1,
+      "vertices": 32
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 112566.03383864755,
+   "area": 15513.22502921998,
+   "bbox": [
+    -25,
+    -30,
+    -25,
+    25,
+    30,
+    25
+   ],
+   "com": [
+    -6.309873789194675e-15,
+    -3.3934550389522663e-15,
+    5.313046371502447e-15
+   ],
+   "faces": 14,
+   "kernelFaces": 22,
+   "faceTypes": {
+    "cylinder": 4,
+    "plane": 10
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    6
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.0000029917968371856033,
+   "dBbox": 0,
+   "dCom": 6.431652952337632e-17,
+   "dArea": 0.000003164622211112069,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 14,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0000029917968375734245,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=112566.3706 T=112566.0338 dVol 3.0e-6 dBbox 0.0e+0 dCom 6.4e-17 dArea 3.2e-6 faces O/B/T 14/14/14 solids O/T 1/1",
+  "wallMs": 9849
+ },
+ {
+  "id": "sp-keep-tube-360",
+  "feature": "spin() operand: off-axis tube, half turn, tube inside the part",
+  "note": null,
+  "source": "const a = box(50,40,50,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[5,-30],[15,-30],[15,30],[5,30]]); keep(a, spin(s,360))",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "sk1:sketch",
+   "rev1:revolve",
+   "op1:combine/intersect"
+  ],
+  "occt": {
+   "volume": 25132.741228718354,
+   "area": 6283.185307179587,
+   "com": [
+    -1.0132540425213546e-15,
+    2.8950115500610136e-16,
+    1.3826224595286504e-15
+   ],
+   "bbox": [
+    -15,
+    -20,
+    -15,
+    15,
+    20,
+    15
+   ],
+   "faces": 4,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 2,
+    "cylinder": 2
+   },
+   "components": {
+    "plane": 2,
+    "cylinder": 2
+   },
+   "bigCylinderComponents": 2
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 25132.741228718325,
+   "bbox": [
+    -15,
+    -20,
+    -15,
+    15,
+    20,
+    15
+   ],
+   "faces": 4,
+   "dVol": 1.1580046200244054e-15,
+   "dBbox": 0
+  },
+  "analytic": 25132.741228718347,
+  "occtVsAnalytic": 2.895011550061014e-16,
+  "translateMs": 5149,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 50,
+     "width": 40,
+     "height": 50,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       5,
+       -30
+      ],
+      [
+       15,
+       -30
+      ],
+      [
+       15,
+       30
+      ],
+      [
+       5,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_rev1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_rev1"
+     ],
+     "operation": "intersect"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 6283.051301853404,
+    "edges": 4,
+    "faces": 4,
+    "mass_g": 32.42034577840517,
+    "vertices": 4,
+    "volume_mm3": 25132.050991011758
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 25132.050991011758,
+     "area": 6283.051301853404,
+     "faces": 4,
+     "kernel": {
+      "edges": 18,
+      "faces": 8,
+      "shells": 1,
+      "vertices": 12
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 25132.050991011758,
+   "area": 6283.051301853404,
+   "bbox": [
+    -15.000000000000007,
+    -20,
+    -14.999999999999998,
+    15.000000000000007,
+    20,
+    15
+   ],
+   "com": [
+    -1.0760088439414075e-14,
+    -1.6330075889306432e-14,
+    -4.994032078382766e-15
+   ],
+   "faces": 4,
+   "kernelFaces": 8,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.000027463685728301044,
+   "dBbox": 4.736951571734001e-16,
+   "dCom": 2.8502339487665186e-16,
+   "dArea": 0.000021327610062648264,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 4,
+   "solidsOcct": 1,
+   "dAnalytic": 0.000027463685728011552,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=25132.7412 T=25132.0510 dVol 2.7e-5 dBbox 4.7e-16 dCom 2.9e-16 dArea 2.1e-5 faces O/B/T 4/4/4 solids O/T 1/1",
+  "wallMs": 9594
+ },
+ {
+  "id": "sp-keep-tube-180",
+  "feature": "spin() operand: off-axis tube, half turn, tube inside the part",
+  "note": null,
+  "source": "const a = box(50,40,50,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[5,-30],[15,-30],[15,30],[5,30]]); keep(a, spin(s,180))",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "sk1:sketch",
+   "rev1:revolve",
+   "op1:combine/intersect"
+  ],
+  "occt": {
+   "volume": 12566.370614359172,
+   "area": 3941.5926535897934,
+   "com": [
+    1.6947757401229904e-9,
+    5.790023100122029e-16,
+    -6.896714203587605
+   ],
+   "bbox": [
+    -15,
+    -20,
+    -15,
+    15,
+    20,
+    6.123233995736766e-16
+   ],
+   "faces": 6,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 4,
+    "cylinder": 2
+   },
+   "components": {
+    "plane": 4,
+    "cylinder": 2
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 12566.370614359163,
+   "bbox": [
+    -15,
+    -20,
+    -15,
+    15,
+    20,
+    9.18485099360515e-16
+   ],
+   "faces": 6,
+   "dVol": 7.237528875152537e-16,
+   "dBbox": 3.0616169978683836e-16
+  },
+  "analytic": 12566.370614359173,
+  "occtVsAnalytic": 1.447505775030507e-16,
+  "translateMs": 2804,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 50,
+     "width": 40,
+     "height": 50,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       5,
+       -30
+      ],
+      [
+       15,
+       -30
+      ],
+      [
+       15,
+       30
+      ],
+      [
+       5,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_sk1_0",
+     "angle": -180,
+     "operation": "new",
+     "body_name": "b_rev1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_rev1"
+     ],
+     "operation": "intersect"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 3941.5260450624273,
+    "edges": 12,
+    "faces": 6,
+    "mass_g": 16.210173213531544,
+    "vertices": 8,
+    "volume_mm3": 12566.025746923677
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 12566.025746923677,
+     "area": 3941.5260450624273,
+     "faces": 6,
+     "kernel": {
+      "edges": 24,
+      "faces": 10,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 12566.025746923677,
+   "area": 3941.5260450624273,
+   "bbox": [
+    -15,
+    -20,
+    -15.000000000000002,
+    15,
+    20,
+    1.7763568394002505e-14
+   ],
+   "com": [
+    1.7668206979815107e-14,
+    6.062020871049836e-15,
+    -6.896500282304124
+   ],
+   "faces": 6,
+   "kernelFaces": 10,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 4
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00002744367853522426,
+   "dBbox": 1.715124499442883e-14,
+   "dCom": 0.000004097988565728431,
+   "dArea": 0.00001689888662274102,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 6,
+   "solidsOcct": 1,
+   "dAnalytic": 0.000027443678535369007,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=12566.3706 T=12566.0257 dVol 2.7e-5 dBbox 1.7e-14 dCom 4.1e-6 dArea 1.7e-5 faces O/B/T 6/6/6 solids O/T 1/1",
+  "wallMs": 5502
+ },
+ {
+  "id": "sp-join-solid-180",
+  "feature": "spin() operand: off-axis tube, half turn, tube inside the part",
+  "note": null,
+  "source": "const a = box(50,40,50,{at:[0,0,0]}); const s = sketch('front', 0); s.polygon([[0,-30],[6,-30],[6,30],[0,30]]); join(a, spin(s,180))",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "sk1:sketch",
+   "rev1:revolve",
+   "op1:combine/union"
+  ],
+  "occt": {
+   "volume": 101130.97335529228,
+   "area": 13616.991118430775,
+   "com": [
+    6.998071457139793e-12,
+    -3.597294366297458e-17,
+    -0.028477922298930446
+   ],
+   "bbox": [
+    -25,
+    -30,
+    -25,
+    25,
+    30,
+    25
+   ],
+   "faces": 14,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 12,
+    "cylinder": 2
+   },
+   "components": {
+    "plane": 10,
+    "cylinder": 2
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 101130.97335529236,
+   "bbox": [
+    -25,
+    -30,
+    -25,
+    25,
+    30,
+    25
+   ],
+   "faces": 14,
+   "dVol": 7.194588732594917e-16,
+   "dBbox": 0
+  },
+  "translateMs": 842,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 50,
+     "width": 40,
+     "height": 50,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       -30
+      ],
+      [
+       6,
+       -30
+      ],
+      [
+       6,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_sk1_0",
+     "angle": -180,
+     "operation": "new",
+     "body_name": "b_rev1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_rev1"
+     ],
+     "operation": "join"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 13616.97546286256,
+    "edges": 24,
+    "faces": 12,
+    "mass_g": 130.4587132904195,
+    "vertices": 16,
+    "volume_mm3": 101130.78549644923
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 101130.78549644923,
+     "area": 13616.97546286256,
+     "faces": 12,
+     "kernel": {
+      "edges": 24,
+      "faces": 12,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 101130.78549644923,
+   "area": 13616.97546286256,
+   "bbox": [
+    -25,
+    -30.00000000000001,
+    -25,
+    25,
+    30.000000000000014,
+    25
+   ],
+   "com": [
+    3.8500899039941106e-17,
+    -1.942542566228263e-15,
+    -0.02847145967819397
+   ],
+   "faces": 12,
+   "kernelFaces": 12,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 10
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    4
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.0000018575796991041863,
+   "dBbox": 4.736951571734001e-16,
+   "dCom": 6.96882316176131e-8,
+   "dArea": 0.0000011497083371055446,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "truck-merges-edge-connected-same-surface-faces"
+   },
+   "faceOk": true,
+   "facesOcct": 14,
+   "solidsOcct": 1,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=101130.9734 T=101130.7855 dVol 1.9e-6 dBbox 4.7e-16 dCom 7.0e-8 dArea 1.1e-6 faces O/B/T 14/14/12 solids O/T 1/1",
+  "wallMs": 1765
+ },
+ {
+  "id": "kf-hollow-ball",
+  "feature": "kernel-failure refusals: hollow ball, internally tangent spheres, torus in an axis plane",
+  "note": null,
+  "source": "const s = sphere(30,{at:[0,0,0]}); const t = sphere(14,{at:[0,0,0]}); cut(s,t)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "ball1:sphere",
+   "ball2:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 12700.411900912344,
+   "area": 3443.1855483344134,
+   "com": [
+    -1.1192054506288386e-15,
+    -9.192295122094302e-16,
+    -7.522566562631663e-16
+   ],
+   "bbox": [
+    -15,
+    -15,
+    -15,
+    15,
+    15,
+    15
+   ],
+   "faces": 2,
+   "solids": 1,
+   "shells": 2,
+   "valid": true,
+   "types": {
+    "sphere": 2
+   },
+   "components": {
+    "sphere": 2
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 12700.411900912344,
+   "bbox": [
+    -15,
+    -15,
+    -15,
+    15,
+    15,
+    15
+   ],
+   "faces": 2,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "analytic": 12700.411900912337,
+  "occtVsAnalytic": 5.728914676901743e-16,
+  "translateMs": 37370,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "ball2",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: implausible result volume 1434.5103; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere); nudged: the operation failed: boolean Cut: implausible result volume 1434.5103; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 15,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 7,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball2"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: implausible result volume 1434.5103; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere); nudged: the operation failed: boolean Cut: implausible result volume 1434.5103; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere)"
+  },
+  "refusalSentence": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: implausible result volume 1434.5103; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere); nudged: the operation failed: boolean Cut: implausible result volume 1434.5103; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere)",
+  "outcome": "REFUSED",
+  "summary": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: implausible result volume 1434.5103; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere); nudged: the operation failed: boolean Cut: implausible result volume 1434.5103; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere)",
+  "wallMs": 37753
+ },
+ {
+  "id": "kf-sph-internal-tangent",
+  "feature": "kernel-failure refusals: hollow ball, internally tangent spheres, torus in an axis plane",
+  "note": null,
+  "source": "const s = sphere(30,{at:[0,0,0]}); const t = sphere(14,{at:[8,0,0]}); cut(s,t)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "ball1:sphere",
+   "ball2:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 12700.411900912342,
+   "area": 3443.1855483344134,
+   "com": [
+    -0.9050131926121374,
+    -1.0558197280186957e-15,
+    2.5296015111548616e-15
+   ],
+   "bbox": [
+    -15,
+    -15,
+    -15,
+    15,
+    15,
+    15
+   ],
+   "faces": 2,
+   "solids": 1,
+   "shells": 2,
+   "valid": true,
+   "types": {
+    "sphere": 2
+   },
+   "components": {
+    "sphere": 2
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: the cut touches the part's surface along a line or at a point, which leaves a solid no CAD kernel can hold as one body; move it a little or make it go all the way through -- op1 is shown without it."
+  },
+  "analytic": 12700.411900912337,
+  "occtVsAnalytic": 4.296686007676308e-16,
+  "translateMs": 49016,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "ball2",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 15,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 7,
+     "center": [
+      8,
+      0,
+      0
+     ],
+     "body_name": "b_ball2"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere)"
+  },
+  "refusalSentence": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere)",
+  "outcome": "REFUSED",
+  "summary": "op1 (combine): solidcraft refused it -- solid.combine: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (sphere) and the tool has 6 curved faces (sphere)",
+  "wallMs": 50193
+ },
+ {
+  "id": "kf-tor40-10-half",
+  "feature": "kernel-failure refusals: hollow ball, internally tangent spheres, torus in an axis plane",
+  "note": null,
+  "source": "const t = ring(40,10,{at:[0,0,0]}); const b = box(60,30,20,{at:[0,15,0]}); keep(t,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "ring1:torus",
+   "box1:box",
+   "op1:combine/intersect"
+  ],
+  "occt": {
+   "volume": 3701.1016504085082,
+   "area": 1637.5202928428935,
+   "com": [
+    3.2157272262268958e-9,
+    9.814554829576409,
+    3.676095533862051e-16
+   ],
+   "bbox": [
+    -20,
+    -4.898587196589413e-15,
+    -5.0000001,
+    20,
+    20,
+    5.0000001
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "other": 1,
+    "plane": 2
+   },
+   "components": {
+    "other": 1,
+    "plane": 2
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  "analytic": 3701.101650408509,
+  "occtVsAnalytic": 2.457362125335149e-16,
+  "translateMs": 31353,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "built"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): solidcraft refused it -- solid.combine: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus); nudged: the operation failed: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 15,
+     "minor": 5,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ring1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 60,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      15,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op1 (combine): solidcraft refused it -- solid.combine: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus); nudged: the operation failed: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus)"
+  },
+  "refusalSentence": "op1 (combine): solidcraft refused it -- solid.combine: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus); nudged: the operation failed: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus)",
+  "outcome": "REFUSED",
+  "summary": "op1 (combine): solidcraft refused it -- solid.combine: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus); nudged: the operation failed: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (torus)",
+  "wallMs": 32259
+ },
+ {
+  "id": "kf-tor36-8-half",
+  "feature": "kernel-failure refusals: hollow ball, internally tangent spheres, torus in an axis plane",
+  "note": "the existing x-tor-half again, same script, for the size comparison",
+  "source": "const t = ring(36,8,{at:[0,0,0]}); const b = box(60,30,20,{at:[0,15,0]}); keep(t,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "ring1:torus",
+   "box1:box",
+   "op1:combine/intersect"
+  ],
+  "occt": {
+   "volume": 2210.7913858440156,
+   "area": 1205.9266578368815,
+   "com": [
+    2.9798250491508384e-9,
+    9.094568181846867,
+    2.5716493680681857e-16
+   ],
+   "bbox": [
+    -18,
+    -4.408728476930472e-15,
+    -4.0000001,
+    18,
+    18.0000001,
+    4.0000001
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "other": 1,
+    "plane": 2
+   },
+   "components": {
+    "other": 1,
+    "plane": 2
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  "analytic": 2210.791385844016,
+  "occtVsAnalytic": 2.0569437433050915e-16,
+  "translateMs": 36450,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "built"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 14,
+     "minor": 4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ring1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 60,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      15,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_ring1",
+     "tools": [
+      "b_box1"
+     ],
+     "operation": "intersect"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 1205.8706493278469,
+    "edges": 3,
+    "faces": 4,
+    "mass_g": 2.8515086568880514,
+    "vertices": 3,
+    "volume_mm3": 2210.471827045001
+   },
+   "bodies": [
+    {
+     "name": "b_ring1",
+     "volume": 2210.471827045001,
+     "area": 1205.8706493278469,
+     "faces": 4,
+     "kernel": {
+      "edges": 14,
+      "faces": 8,
+      "shells": 1,
+      "vertices": 8
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_ring1"
+  ],
+  "truck": {
+   "volume": 2210.471827045001,
+   "area": 1205.8706493278469,
+   "bbox": [
+    -17.999951658474007,
+    -0.0000699791893876675,
+    -3.9996408909600873,
+    17.999951658506372,
+    17.99995165850635,
+    3.99964073033917
+   ],
+   "com": [
+    0.00000944085330738662,
+    9.094522780880412,
+    -0.00003792548651655908
+   ],
+   "faces": 4,
+   "kernelFaces": 8,
+   "faceTypes": {
+    "cylinder": 1,
+    "other": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_ring1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00014454498106904472,
+   "dBbox": 0.00008984241296153684,
+   "dCom": 0.0000011063538547690509,
+   "dArea": 0.00004644437426660705,
+   "faceKeys": {
+    "cylinder": "UNEXPLAINED",
+    "other": "equal",
+    "plane": "equal"
+   },
+   "faceOk": false,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0001445449810692504,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=2210.7914 T=2210.4718 dVol 1.4e-4 dBbox 9.0e-5 dCom 1.1e-6 dArea 4.6e-5 faces O/B/T 3/-/4 solids O/T 1/1 FACE-UNEXPLAINED",
+  "wallMs": 54781
+ },
+ {
+  "id": "reuse-tool-join-two",
+  "feature": "operand consumed by one combine used again",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(40,40,20,{at:[30,0,0]}); const c = cylinder(16,40,{at:[15,0,0]}); const x = cut(a,c); const y = cut(b,c); join(x,y)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "box2:box",
+   "cyl1:cylinder",
+   "op1:combine/subtract",
+   "op2:combine/subtract",
+   "op3:combine/union"
+  ],
+  "occt": {
+   "volume": 51978.76140339865,
+   "area": 10603.185789489236,
+   "com": [
+    15.000000000364974,
+    4.3743573202643715e-17,
+    1.6663567416882092e-16
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    50,
+    20,
+    10
+   ],
+   "faces": 21,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 16,
+    "cylinder": 5
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 51978.76140340507,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    50,
+    20,
+    10
+   ],
+   "faces": 10,
+   "dVol": 1.236018404413901e-13,
+   "dBbox": 0
+  },
+  "translateMs": 478,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   },
+   {
+    "id": "op2",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it"
+   },
+   {
+    "id": "op3",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      30,
+      0,
+      0
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 8,
+     "height": 40,
+     "base": [
+      15,
+      0,
+      -20
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)"
+  },
+  "refusalSentence": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)",
+  "outcome": "REFUSED",
+  "summary": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)",
+  "wallMs": 1022
+ },
+ {
+  "id": "reuse-tool-three-parts",
+  "feature": "operand consumed by one combine used again",
+  "note": "three uses of one cutter",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(40,40,20,{at:[30,0,0]}); const d = box(40,40,20,{at:[15,30,0]}); const c = cylinder(16,100,{at:[15,15,0]}); const x = cut(a,c); const y = cut(b,c); const z = cut(d,c); join(x,y,z)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "box2:box",
+   "box3:box",
+   "cyl1:cylinder",
+   "op1:combine/subtract",
+   "op2:combine/subtract",
+   "op3:combine/subtract",
+   "op4:combine/union"
+  ],
+  "occt": {
+   "volume": 75978.76140340164,
+   "area": 14203.185789489238,
+   "com": [
+    14.999999999940695,
+    10.261833789389431,
+    9.599684237878194e-17
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    50,
+    50,
+    10
+   ],
+   "faces": 29,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 22,
+    "cylinder": 7
+   },
+   "components": {
+    "plane": 10,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 75978.76140340506,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    50,
+    50,
+    10
+   ],
+   "faces": 16,
+   "dVol": 4.500863156362413e-14,
+   "dBbox": 0
+  },
+  "translateMs": 354,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box3",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   },
+   {
+    "id": "op2",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it"
+   },
+   {
+    "id": "op3",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op3 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it"
+   },
+   {
+    "id": "op4",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op4 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      30,
+      0,
+      0
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      15,
+      30,
+      0
+     ],
+     "body_name": "b_box3"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 8,
+     "height": 100,
+     "base": [
+      15,
+      15,
+      -50
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op4 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)"
+  },
+  "refusalSentence": "op4 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)",
+  "outcome": "REFUSED",
+  "summary": "op4 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)",
+  "wallMs": 853
+ },
+ {
+  "id": "reuse-tool-keep-pair",
+  "feature": "operand consumed by one combine used again",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(40,40,20,{at:[30,0,0]}); const c = cylinder(16,40,{at:[15,0,0]}); const x = keep(a,c); const y = keep(b,c); join(x,y)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "box2:box",
+   "cyl1:cylinder",
+   "op1:combine/intersect",
+   "op2:combine/intersect",
+   "op3:combine/union"
+  ],
+  "occt": {
+   "volume": 4021.2385966108213,
+   "area": 1407.4335088082273,
+   "com": [
+    14.999999988551885,
+    1.1634281943416826e-17,
+    5.654319433690582e-17
+   ],
+   "bbox": [
+    7,
+    -8,
+    -10,
+    23,
+    8,
+    10
+   ],
+   "faces": 11,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 6,
+    "cylinder": 5
+   },
+   "components": {
+    "plane": 2,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 4021.238596594938,
+   "bbox": [
+    7,
+    -8,
+    -10,
+    23,
+    8,
+    10
+   ],
+   "faces": 6,
+   "dVol": 3.949881383598892e-12,
+   "dBbox": 0
+  },
+  "translateMs": 601,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   },
+   {
+    "id": "op2",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it"
+   },
+   {
+    "id": "op3",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      30,
+      0,
+      0
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 8,
+     "height": 40,
+     "base": [
+      15,
+      0,
+      -20
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1"
+     ],
+     "operation": "intersect"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)"
+  },
+  "refusalSentence": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)",
+  "outcome": "REFUSED",
+  "summary": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)",
+  "wallMs": 1004
+ },
+ {
+  "id": "reuse-tool-two-tools",
+  "feature": "operand consumed by one combine used again",
+  "note": "one reused tool and one used once",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = box(40,40,20,{at:[30,0,0]}); const c = cylinder(16,40,{at:[15,0,0]}); const e = cylinder(6,40,{at:[0,10,0]}); const x = cut(a,c,e); const y = cut(b,c); join(x,y)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "box2:box",
+   "cyl1:cylinder",
+   "cyl2:cylinder",
+   "op1:combine/subtract",
+   "op2:combine/subtract",
+   "op3:combine/union"
+  ],
+  "occt": {
+   "volume": 51413.27472576191,
+   "area": 10923.628240155394,
+   "com": [
+    15.16498268592903,
+    -0.10998845780990994,
+    1.2483113155087973e-16
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    50,
+    20,
+    10
+   ],
+   "faces": 22,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 16,
+    "cylinder": 6
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "bigCylinderComponents": 2
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 51413.27472575891,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    50,
+    20,
+    10
+   ],
+   "faces": 11,
+   "dVol": 5.844736618482773e-14,
+   "dBbox": 0
+  },
+  "translateMs": 1314,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "cyl2",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   },
+   {
+    "id": "op2",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it"
+   },
+   {
+    "id": "op3",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      30,
+      0,
+      0
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 8,
+     "height": 40,
+     "base": [
+      15,
+      0,
+      -20
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 40,
+     "base": [
+      0,
+      10,
+      -20
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1",
+      "b_cyl2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)"
+  },
+  "refusalSentence": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)",
+  "outcome": "REFUSED",
+  "summary": "op3 (combine): its target op2 was refused (op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it)",
+  "wallMs": 1831
+ },
+ {
+  "id": "reuse-tool-first-arg",
+  "feature": "operand consumed by one combine used again",
+  "note": "c is a TARGET of the 2nd combine after being a tool of the 1st",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const c = cylinder(16,40,{at:[10,0,0]}); const x = join(a,c); const d = box(10,10,10,{at:[10,0,0]}); cut(c,d)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "cyl1:cylinder",
+   "op1:combine/union",
+   "box2:box",
+   "op2:combine/subtract"
+  ],
+  "occt": {
+   "volume": 7042.4771931898695,
+   "area": 3012.7431579569607,
+   "com": [
+    10.000000000000002,
+    -1.1073101567880158e-15,
+    -1.6931251543142495e-17
+   ],
+   "bbox": [
+    2,
+    -8,
+    -20,
+    18,
+    8,
+    20
+   ],
+   "faces": 9,
+   "solids": 1,
+   "shells": 2,
+   "valid": true,
+   "types": {
+    "cylinder": 1,
+    "plane": 8
+   },
+   "components": {
+    "cylinder": 1,
+    "plane": 8
+   },
+   "bigCylinderComponents": 1
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 7042.4771931898695,
+   "bbox": [
+    2,
+    -8,
+    -20,
+    18,
+    8,
+    20
+   ],
+   "faces": 9,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "translateMs": 999,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op2",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 8,
+     "height": 40,
+     "base": [
+      10,
+      0,
+      -20
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 10,
+     "height": 10,
+     "center": [
+      10,
+      0,
+      0
+     ],
+     "body_name": "b_box2"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it"
+  },
+  "refusalSentence": "op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it",
+  "outcome": "REFUSED",
+  "summary": "op2 (combine): its target cyl1 was already changed in place by op1, and a solidcraft command list has no second copy of it",
+  "wallMs": 1389
+ }
+]

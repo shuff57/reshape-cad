@@ -1,0 +1,27 @@
+[
+ {
+  "id": "probe-equal-line-vs-circle",
+  "feats": [
+   "rule:equal"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "equal across a line and a circle/arc is refused by brep-rs too (a radius is not a length)"
+     }
+    ]
+   }
+  },
+  "script": {
+   "thrown": "undefined is not an object (evaluating 'A.findIndex')"
+  }
+ }
+]

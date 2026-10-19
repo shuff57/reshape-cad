@@ -1,0 +1,1619 @@
+{
+ "copy/box": {
+  "script": "const a = box(20, 10, 6, { at: [5, 2, -1] });\nconst b = move(a, [30, -4, 6], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move"
+  ],
+  "v": {
+   "box1": "PASS",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "box1": {
+    "volume": 1200,
+    "occtVolume": 1200,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -5,
+     -3,
+     -4,
+     15,
+     7,
+     2
+    ],
+    "occtBbox": [
+     -5,
+     -3,
+     -4,
+     15,
+     7,
+     2
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  },
+  "brep": {
+   "box1": {
+    "volume": 1200,
+    "bbox": [
+     -5,
+     -3,
+     -4,
+     15,
+     7,
+     2
+    ],
+    "faces": 6,
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 1200,
+    "bbox": [
+     25,
+     -7,
+     2,
+     45,
+     3,
+     8
+    ],
+    "faces": 6,
+    "dVol": 0,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ]
+ },
+ "copy/cylinder": {
+  "script": "const a = cylinder(12, 20, { at: [5, 2, -1] });\nconst b = move(a, [30, -4, 6], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "cylinder",
+   "move"
+  ],
+  "v": {
+   "cyl1": "PASS",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "cyl1": {
+    "volume": 2261.672459357824,
+    "occtVolume": 2261.946710584651,
+    "dVol": 0.00012124566221810091,
+    "dBbox": 0.00009266272057217861,
+    "dCom": 7.449526656249767e-16,
+    "faces": 3,
+    "occtFaces": 3,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "curved": true,
+    "bodies": [
+     "b_cyl1"
+    ],
+    "bbox": [
+     -0.9999073372794278,
+     -3.999838802443856,
+     -11.000000000000023,
+     10.999907337279431,
+     7.999838802443857,
+     9.000000000000004
+    ],
+    "occtBbox": [
+     -1,
+     -4,
+     -11,
+     11,
+     8,
+     9
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  },
+  "brep": {
+   "cyl1": {
+    "volume": 2261.9467105846525,
+    "bbox": [
+     -1,
+     -4,
+     -11,
+     11,
+     8,
+     9
+    ],
+    "faces": 3,
+    "dVol": 6.031274062627113e-16,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 2261.9467105846506,
+    "bbox": [
+     29,
+     -8,
+     -5,
+     41,
+     4,
+     15
+    ],
+    "faces": 3,
+    "dVol": 2.010424687542371e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ]
+ },
+ "copy/sphere": {
+  "script": "const a = sphere(14, { at: [5, 2, -1] });\nconst b = move(a, [30, -4, 6], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "sphere",
+   "move"
+  ],
+  "v": {
+   "ball1": "PASS",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "ball1": {
+    "volume": 1436.6531197672284,
+    "occtVolume": 1436.7550402417316,
+    "dVol": 0.000070937962038458,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 1.1387052471549605e-12,
+    "faces": 1,
+    "occtFaces": 1,
+    "faceTypes": {
+     "sphere": 1
+    },
+    "occtTypes": {
+     "sphere": 1
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "sphere": "equal"
+    },
+    "curved": true,
+    "bodies": [
+     "b_ball1"
+    ],
+    "bbox": [
+     -2,
+     -5.000000000000001,
+     -8,
+     12,
+     9,
+     6
+    ],
+    "occtBbox": [
+     -2,
+     -5,
+     -8,
+     12,
+     9,
+     6
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  },
+  "brep": {
+   "ball1": {
+    "volume": 1436.755040241732,
+    "bbox": [
+     -2,
+     -5,
+     -8,
+     12,
+     9,
+     6
+    ],
+    "faces": 1,
+    "dVol": 3.165100091174579e-16,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 1436.7550402417326,
+    "bbox": [
+     28,
+     -9,
+     -2,
+     42,
+     5,
+     12
+    ],
+    "faces": 1,
+    "dVol": 6.330200182349158e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ]
+ },
+ "copy/cone": {
+  "script": "const a = cone(14, 18, { at: [5, 2, -1] });\nconst b = move(a, [30, -4, 6], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "cone",
+   "move"
+  ],
+  "v": {
+   "cone1": "PASS",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "cone1": {
+    "volume": 923.4598465372437,
+    "occtVolume": 923.6282401553995,
+    "dVol": 0.00018231752867084358,
+    "dBbox": 0.000017531971398199175,
+    "dCom": 3.319278597544155e-17,
+    "faces": 2,
+    "occtFaces": 2,
+    "faceTypes": {
+     "cone": 1,
+     "plane": 1
+    },
+    "occtTypes": {
+     "plane": 1,
+     "cone": 1
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "cone": "equal",
+     "plane": "equal"
+    },
+    "curved": true,
+    "bodies": [
+     "b_cone1"
+    ],
+    "bbox": [
+     -2,
+     -4.999912340143009,
+     -10.000000000000002,
+     12,
+     8.99991234014301,
+     8
+    ],
+    "occtBbox": [
+     -2,
+     -5,
+     -10,
+     12,
+     9,
+     8
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  },
+  "brep": {
+   "cone1": {
+    "volume": 923.6282401553993,
+    "bbox": [
+     -2,
+     -5,
+     -10,
+     12,
+     9,
+     8
+    ],
+    "faces": 2,
+    "dVol": 1.2308722576790023e-16,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 923.6282401553995,
+    "bbox": [
+     28,
+     -9,
+     -4,
+     42,
+     5,
+     14
+    ],
+    "faces": 2,
+    "dVol": 0,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ]
+ },
+ "copy/ring": {
+  "script": "const a = ring(30, 6, { at: [5, 2, -1] });\nconst b = move(a, [30, -4, 6], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "torus",
+   "move"
+  ],
+  "v": {
+   "ring1": "PASS",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "ring1": {
+    "volume": 2131.5217070395856,
+    "occtVolume": 2131.834550635301,
+    "dVol": 0.0001467485343186315,
+    "dBbox": 0.00013477611870318733,
+    "dCom": 6.847428973610701e-7,
+    "faces": 1,
+    "occtFaces": 1,
+    "faceTypes": {
+     "other": 1
+    },
+    "occtTypes": {
+     "other": 1
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "other": "equal"
+    },
+    "curved": true,
+    "bodies": [
+     "b_ring1"
+    ],
+    "bbox": [
+     -9.999963743879754,
+     -12.999963743879757,
+     -3.9997305477491194,
+     19.999963743879775,
+     16.99996374387976,
+     1.9997305477491158
+    ],
+    "occtBbox": [
+     -10.0000001,
+     -13.0000001,
+     -4.0000001,
+     20.0000001,
+     17.0000001,
+     2.0000001
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  },
+  "brep": {
+   "ring1": {
+    "volume": 2131.834550635301,
+    "bbox": [
+     -10,
+     -13,
+     -4,
+     20,
+     17,
+     2
+    ],
+    "faces": 1,
+    "dVol": 0,
+    "dBbox": 4.9999997418171186e-8
+   },
+   "move1": {
+    "volume": 2131.8345506353016,
+    "bbox": [
+     20,
+     -17,
+     2,
+     50,
+     13,
+     8
+    ],
+    "faces": 1,
+    "dVol": 6.399380534726954e-16,
+    "dBbox": 5.000000252919349e-8
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ]
+ },
+ "copy/prism": {
+  "script": "const a = prism(6, 20, 12, { at: [5, 2, -1] });\nconst b = move(a, [30, -4, 6], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "prism",
+   "move"
+  ],
+  "v": {
+   "prism1": "PASS",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "prism1": {
+    "volume": 3117.6914536239788,
+    "occtVolume": 3117.691453623979,
+    "dVol": 1.4586028080420515e-16,
+    "dBbox": 0,
+    "dCom": 4.585854301774145e-17,
+    "faces": 8,
+    "occtFaces": 8,
+    "faceTypes": {
+     "plane": 8
+    },
+    "occtTypes": {
+     "plane": 8
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_prism1"
+    ],
+    "bbox": [
+     -5,
+     -6.6602540378443855,
+     -7,
+     15,
+     10.660254037844387,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     -6.6602540378443855,
+     -7,
+     15,
+     10.660254037844387,
+     5
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  },
+  "brep": {
+   "prism1": {
+    "volume": 3117.69145362398,
+    "bbox": [
+     -5,
+     -6.6602540378443855,
+     -7,
+     15,
+     10.660254037844387,
+     5
+    ],
+    "faces": 8,
+    "dVol": 2.917205616084103e-16,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 3117.69145362398,
+    "bbox": [
+     25,
+     -10.660254037844386,
+     -1,
+     45,
+     6.660254037844387,
+     11
+    ],
+    "faces": 8,
+    "dVol": 2.917205616084103e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "prism1",
+    "kind": "prism",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ]
+ },
+ "copy/wedge": {
+  "script": "const a = wedge(20, 10, 8, { at: [5, 2, -1] });\nconst b = move(a, [30, -4, 6], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "wedge",
+   "move"
+  ],
+  "v": {
+   "wedge1": "PASS",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "wedge1": {
+    "volume": 800,
+    "occtVolume": 800,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 5.1423704915019624e-17,
+    "faces": 5,
+    "occtFaces": 5,
+    "faceTypes": {
+     "plane": 5
+    },
+    "occtTypes": {
+     "plane": 5
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_wedge1"
+    ],
+    "bbox": [
+     -5,
+     -3,
+     -5,
+     15,
+     7,
+     3
+    ],
+    "occtBbox": [
+     -5,
+     -3,
+     -5,
+     15,
+     7,
+     3
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  },
+  "brep": {
+   "wedge1": {
+    "volume": 800,
+    "bbox": [
+     -5,
+     -3,
+     -5,
+     15,
+     7,
+     3
+    ],
+    "faces": 5,
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 800.0000000000001,
+    "bbox": [
+     25,
+     -7,
+     1,
+     45,
+     3,
+     9
+    ],
+    "faces": 5,
+    "dVol": 1.4210854715202004e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "wedge1",
+    "kind": "wedge",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ]
+ },
+ "copy/derived/hole_box": {
+  "script": "const s = box(40, 30, 20, { at: [3, -2, 1] });\nhole(s, { across: 8, at: [5, 3] });\nconst cp = move(s, [60, 0, 0], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "box",
+   "hole",
+   "move"
+  ],
+  "v": {
+   "hole1": "PASS",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "hole1": {
+    "volume": 22994.857336490055,
+    "occtVolume": 22994.690350851262,
+    "dVol": 0.000007261921610801663,
+    "dBbox": 1.3816108750890837e-15,
+    "dCom": 7.037251700853918e-7,
+    "faces": 7,
+    "occtFaces": 7,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "curved": true,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -17,
+     -17,
+     -9.000000000000012,
+     23,
+     13,
+     11.000000000000007
+    ],
+    "occtBbox": [
+     -17,
+     -17,
+     -9,
+     23,
+     13,
+     11
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  },
+  "brep": {
+   "hole1": {
+    "volume": 22994.690350851262,
+    "bbox": [
+     -17,
+     -17,
+     -9,
+     23,
+     13,
+     11
+    ],
+    "faces": 7,
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 22994.690350851266,
+    "bbox": [
+     43,
+     -17,
+     -9,
+     83,
+     13,
+     11
+    ],
+    "faces": 7,
+    "dVol": 1.5820951496122386e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ]
+ },
+ "copy/derived/hollow_box": {
+  "script": "const s = box(30, 20, 10);\nhollow(s, { wall: 2 });\nconst cp = move(s, [60, 0, 0], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "box",
+   "shell",
+   "move"
+  ],
+  "v": {
+   "shell1": "REFUSED",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "shell1": {
+    "refused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
+   },
+   "move1": {
+    "refused": "move1 (move): its target shell1 was refused (shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points)"
+   }
+  },
+  "brep": {
+   "shell1": {
+    "volume": 3504,
+    "bbox": [
+     -15,
+     -10,
+     -5,
+     15,
+     10,
+     5
+    ],
+    "faces": 12,
+    "dVol": 2.5955899023200015e-16,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 3504,
+    "bbox": [
+     45,
+     -10,
+     -5,
+     75,
+     10,
+     5
+    ],
+    "faces": 12,
+    "dVol": 2.5955899023200015e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): its target shell1 was refused (shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points)"
+   }
+  ]
+ },
+ "copy/derived/join": {
+  "script": "const s0 = box(30, 20, 10);\nconst c = cylinder(10, 30, { at: [10, 0, 0] });\nconst s = join(s0, c);\nconst cp = move(s, [60, 0, 0], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "box",
+   "cylinder",
+   "combine",
+   "move"
+  ],
+  "v": {
+   "op1": "PASS",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "op1": {
+    "volume": 7570.382105134443,
+    "occtVolume": 7570.796326794894,
+    "dVol": 0.00005471308995400812,
+    "dBbox": 1.7763568394002505e-15,
+    "dCom": 0.000009971231480781625,
+    "faces": 10,
+    "occtFaces": 11,
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 8
+    },
+    "occtTypes": {
+     "plane": 9,
+     "cylinder": 2
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "curved": true,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -15,
+     -10,
+     -15.000000000000027,
+     15.000000000000012,
+     10,
+     14.999999999999993
+    ],
+    "occtBbox": [
+     -15,
+     -10,
+     -15,
+     15,
+     10,
+     15
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  },
+  "brep": {
+   "op1": {
+    "volume": 7570.796326794897,
+    "bbox": [
+     -15,
+     -10,
+     -15,
+     15,
+     10,
+     15
+    ],
+    "faces": 10,
+    "dVol": 3.603959197346274e-16,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 7570.796326794899,
+    "bbox": [
+     45,
+     -10,
+     -15,
+     75,
+     10,
+     15
+    ],
+    "faces": 10,
+    "dVol": 6.00659866224379e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ]
+ },
+ "copy/derived/mirror": {
+  "script": "const s0 = box(30, 20, 10, { at: [20, 0, 0] });\nconst s = mirror(s0, 'left-right');\nconst cp = move(s, [60, 0, 0], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "box",
+   "mirror",
+   "move"
+  ],
+  "v": {
+   "mir1": "PASS",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "mir1": {
+    "volume": 12000,
+    "occtVolume": 11999.999999999998,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 2.5245250035977936e-18,
+    "faces": 6,
+    "occtFaces": 10,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 10
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -25,
+     -10,
+     -5,
+     35,
+     10,
+     5
+    ],
+    "occtBbox": [
+     -25,
+     -10,
+     -5,
+     35,
+     10,
+     5
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  },
+  "brep": {
+   "mir1": {
+    "volume": 12000,
+    "bbox": [
+     -25,
+     -10,
+     -5,
+     35,
+     10,
+     5
+    ],
+    "faces": 12,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 12000,
+    "bbox": [
+     35,
+     -10,
+     -5,
+     95,
+     10,
+     5
+    ],
+    "faces": 12,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ]
+ },
+ "copy/derived/pull": {
+  "script": "const sk = sketch('top');\nsk.rect(30, 20);\nconst s = pull(sk, 12);\nconst cp = move(s, [60, 0, 0], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "sketch",
+   "extrude",
+   "move"
+  ],
+  "v": {
+   "pull1": "PASS",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "pull1": {
+    "volume": 7200,
+    "occtVolume": 7199.999999999998,
+    "dVol": 2.526374171591468e-16,
+    "dBbox": 0,
+    "dCom": 2.337311630789803e-17,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_pull1"
+    ],
+    "bbox": [
+     -15,
+     -10,
+     0,
+     15,
+     10,
+     12
+    ],
+    "occtBbox": [
+     -15,
+     -10,
+     0,
+     15,
+     10,
+     12
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  },
+  "brep": {
+   "pull1": {
+    "volume": 7200,
+    "bbox": [
+     -15,
+     -10,
+     0,
+     15,
+     10,
+     12
+    ],
+    "faces": 6,
+    "dVol": 2.526374171591468e-16,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 7200,
+    "bbox": [
+     45,
+     -10,
+     0,
+     75,
+     10,
+     12
+    ],
+    "faces": 6,
+    "dVol": 2.526374171591468e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ]
+ },
+ "copy/chain": {
+  "script": "const a = box(10, 10, 10);\nconst b = move(a, [20, 0, 0], { copy: true });\nconst c = move(b, [20, 0, 0], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move",
+   "move"
+  ],
+  "v": {
+   "box1": "PASS",
+   "move1": "REFUSED",
+   "move2": "REFUSED"
+  },
+  "truck": {
+   "box1": {
+    "volume": 1000,
+    "occtVolume": 999.9999999999998,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "occtBbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   },
+   "move2": {
+    "refused": "move2 (move): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  },
+  "brep": {
+   "box1": {
+    "volume": 999.9999999999999,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     5,
+     5,
+     5
+    ],
+    "faces": 6,
+    "dVol": 1.1368683772161606e-16,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 999.9999999999999,
+    "bbox": [
+     15,
+     -5,
+     -5,
+     25,
+     5,
+     5
+    ],
+    "faces": 6,
+    "dVol": 1.1368683772161606e-16,
+    "dBbox": 0
+   },
+   "move2": {
+    "volume": 999.9999999999999,
+    "bbox": [
+     35,
+     -5,
+     -5,
+     45,
+     5,
+     5
+    ],
+    "faces": 6,
+    "dVol": 1.1368683772161606e-16,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   },
+   {
+    "id": "move2",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move2 (move): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  ]
+ },
+ "copy/join-overlap": {
+  "script": "const a = box(20, 10, 6);\nconst b = move(a, [10, 0, 0], { copy: true });\njoin(a, b);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move",
+   "combine"
+  ],
+  "v": {
+   "op1": "REFUSED"
+  },
+  "truck": {
+   "op1": {
+    "refused": "op1 (combine): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  },
+  "brep": {
+   "op1": {
+    "volume": 1800,
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     20,
+     5,
+     3
+    ],
+    "faces": 6,
+    "dVol": 0,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  ]
+ },
+ "copy/join-touch": {
+  "script": "const a = box(20, 10, 6);\nconst b = move(a, [20, 0, 0], { copy: true });\njoin(a, b);",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move",
+   "combine"
+  ],
+  "v": {
+   "op1": "REFUSED"
+  },
+  "truck": {
+   "op1": {
+    "refused": "op1 (combine): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  },
+  "brep": {
+   "op1": {
+    "volume": 2400,
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     30,
+     5,
+     3
+    ],
+    "faces": 6,
+    "dVol": 0,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+   }
+  ]
+ },
+ "copy/offset-zero": {
+  "script": "const a = box(20, 10, 6);\nconst b = move(a, [0, 0, 0], { copy: true });",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move"
+  ],
+  "v": {
+   "box1": "PASS",
+   "move1": "REFUSED"
+  },
+  "truck": {
+   "box1": {
+    "volume": 1200,
+    "occtVolume": 1200,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     10,
+     5,
+     3
+    ],
+    "occtBbox": [
+     -10,
+     -5,
+     -3,
+     10,
+     5,
+     3
+    ]
+   },
+   "move1": {
+    "refused": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  },
+  "brep": {
+   "box1": {
+    "volume": 1200,
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     10,
+     5,
+     3
+    ],
+    "faces": 6,
+    "dVol": 0,
+    "dBbox": 0
+   },
+   "move1": {
+    "volume": 1200,
+    "bbox": [
+     -10,
+     -5,
+     -3,
+     10,
+     5,
+     3
+    ],
+    "faces": 6,
+    "dVol": 0,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)"
+   }
+  ]
+ },
+ "copy/copy-false-explicit": {
+  "script": "const a = box(20, 10, 6);\nmove(a, [10, 0, 0], { copy: false });",
+  "errors": [],
+  "kinds": [
+   "box",
+   "move"
+  ],
+  "v": {
+   "move1": "PASS"
+  },
+  "truck": {
+   "move1": {
+    "volume": 1200,
+    "occtVolume": 1200,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6
+    },
+    "faceOk": true,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "curved": false,
+    "bodies": [
+     "b_box1"
+    ],
+    "bbox": [
+     0,
+     -5,
+     -3,
+     20,
+     5,
+     3
+    ],
+    "occtBbox": [
+     0,
+     -5,
+     -3,
+     20,
+     5,
+     3
+    ]
+   }
+  },
+  "brep": {
+   "move1": {
+    "volume": 1200,
+    "bbox": [
+     0,
+     -5,
+     -3,
+     20,
+     5,
+     3
+    ],
+    "faces": 6,
+    "dVol": 0,
+    "dBbox": 0
+   }
+  },
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "copy/bad-option": {
+  "script": "const a = box(20, 10, 6);\nmove(a, [10, 0, 0], { copies: true });",
+  "errors": [
+   "move has no option called \"copies\". It takes copy."
+  ],
+  "v": {
+   "undefined": "SCRIPT-ERROR"
+  }
+ }
+}

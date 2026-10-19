@@ -1,0 +1,7 @@
+move/box [move1] PASS occtVol=1200.0000 brep(dVol=0.00e+0,dBbox=0.00e+0,faces=6) truck(dVol=0.00e+0,dBbox=0.00e+0,dCom=0.00e+0,faces=6/6,faceOk=true)
+move/cylinder [move1] PASS occtVol=2261.9467 brep(dVol=2.01e-16,dBbox=0.00e+0,faces=3) truck(dVol=1.21e-4,dBbox=3.58e-5,dCom=1.35e-15,faces=3/3,faceOk=true)
+move/sphere [move1] PASS occtVol=1436.7550 brep(dVol=9.50e-16,dBbox=0.00e+0,faces=1) truck(dVol=7.09e-5,dBbox=0.00e+0,dCom=3.42e-12,faces=1/1,faceOk=true)
+move/cone [move1] PASS occtVol=923.6282 brep(dVol=4.92e-16,dBbox=0.00e+0,faces=2) truck(dVol=1.82e-4,dBbox=1.59e-5,dCom=1.33e-16,faces=2/2,faceOk=true)
+move/ring [move1] PASS occtVol=2131.8346 brep(dVol=2.13e-16,dBbox=1.00e-7,faces=1) truck(dVol=1.47e-4,dBbox=8.29e-5,dCom=6.85e-7,faces=1/1,faceOk=true)
+move/prism [move1] PASS occtVol=3117.6915 brep(dVol=1.46e-16,dBbox=0.00e+0,faces=8) truck(dVol=1.46e-16,dBbox=0.00e+0,dCom=6.11e-17,faces=8/8,faceOk=true)
+move/wedge [move1] PASS occtVol=800.0000 brep(dVol=4.26e-16,dBbox=0.00e+0,faces=5) truck(dVol=0.00e+0,dBbox=0.00e+0,dCom=7.48e-17,faces=5/5,faceOk=true)

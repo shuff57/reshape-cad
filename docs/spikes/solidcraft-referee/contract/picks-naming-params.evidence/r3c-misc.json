@@ -1,0 +1,1227 @@
+{
+ "param min>max": {
+  "errors": [],
+  "namedParams": [
+   {
+    "name": "w",
+    "caption": "w",
+    "value": 40,
+    "min": 50,
+    "max": 10,
+    "step": 1,
+    "slots": [
+     "box1_width"
+    ]
+   }
+  ],
+  "size": [
+   40,
+   30,
+   20
+  ]
+ },
+ "param default above max": {
+  "errors": [],
+  "namedParams": [
+   {
+    "name": "w",
+    "caption": "w",
+    "value": 100,
+    "min": 20,
+    "max": 30,
+    "step": 1,
+    "slots": [
+     "box1_width"
+    ]
+   }
+  ],
+  "size": [
+   100,
+   30,
+   20
+  ]
+ },
+ "param default below min": {
+  "errors": [],
+  "namedParams": [
+   {
+    "name": "w",
+    "caption": "w",
+    "value": 5,
+    "min": 20,
+    "max": 80,
+    "step": 1,
+    "slots": [
+     "box1_width"
+    ]
+   }
+  ],
+  "size": [
+   5,
+   30,
+   20
+  ]
+ },
+ "param step 0": {
+  "errors": [],
+  "namedParams": [
+   {
+    "name": "w",
+    "caption": "w",
+    "value": 40,
+    "min": 20,
+    "max": 80,
+    "step": 0,
+    "slots": [
+     "box1_width"
+    ]
+   }
+  ],
+  "size": [
+   40,
+   30,
+   20
+  ]
+ },
+ "param step negative": {
+  "errors": [],
+  "namedParams": [
+   {
+    "name": "w",
+    "caption": "w",
+    "value": 40,
+    "min": 20,
+    "max": 80,
+    "step": -5,
+    "slots": [
+     "box1_width"
+    ]
+   }
+  ],
+  "size": [
+   40,
+   30,
+   20
+  ]
+ },
+ "param step bigger than range": {
+  "errors": [],
+  "namedParams": [
+   {
+    "name": "w",
+    "caption": "w",
+    "value": 25,
+    "min": 20,
+    "max": 30,
+    "step": 50,
+    "slots": [
+     "box1_width"
+    ]
+   }
+  ],
+  "size": [
+   25,
+   30,
+   20
+  ]
+ },
+ "param min=max": {
+  "errors": [],
+  "namedParams": [
+   {
+    "name": "w",
+    "caption": "w",
+    "value": 40,
+    "min": 40,
+    "max": 40,
+    "step": 1,
+    "slots": [
+     "box1_width"
+    ]
+   }
+  ],
+  "size": [
+   40,
+   30,
+   20
+  ]
+ },
+ "param NaN min": {
+  "errors": [
+   "param's min has to be a number, and you gave it NaN."
+  ],
+  "namedParams": []
+ },
+ "param name with a space": {
+  "errors": [],
+  "named": [
+   [
+    "my width",
+    [
+     "box1_width"
+    ]
+   ]
+  ],
+  "valuesByThatName": [
+   40,
+   30,
+   20
+  ]
+ },
+ "param name starting with a digit": {
+  "errors": [],
+  "named": [
+   [
+    "2w",
+    [
+     "box1_width"
+    ]
+   ]
+  ],
+  "valuesByThatName": [
+   40,
+   30,
+   20
+  ]
+ },
+ "param empty name": {
+  "errors": [
+   "param() needs a name first: param(\"wall\", 2). You gave it the text \"\"."
+  ],
+  "named": [],
+  "valuesByThatName": null
+ },
+ "param name with a dash": {
+  "errors": [],
+  "named": [
+   [
+    "w-1",
+    [
+     "box1_width"
+    ]
+   ]
+  ],
+  "valuesByThatName": [
+   40,
+   30,
+   20
+  ]
+ },
+ "param reserved-looking name": {
+  "errors": [],
+  "named": [
+   [
+    "box1_width",
+    [
+     "box1_width"
+    ]
+   ]
+  ],
+  "valuesByThatName": [
+   60,
+   30,
+   20
+  ]
+ },
+ "rect param: namedParams": {
+  "errors": [],
+  "named": [
+   {
+    "name": "w",
+    "caption": "w",
+    "value": 10,
+    "min": 4,
+    "max": 30,
+    "step": 1,
+    "slots": [
+     "sk2_width"
+    ]
+   }
+  ],
+  "generatedKeys": [
+   "sk2_p0u",
+   "sk2_p0v",
+   "sk2_p1u",
+   "sk2_p1v",
+   "sk2_p2u",
+   "sk2_p2v",
+   "sk2_p3u",
+   "sk2_p3v",
+   "sk2_offset"
+  ]
+ },
+ "rect param: values by key": {
+  "default": [
+   [
+    13,
+    10
+   ],
+   [
+    23,
+    10
+   ],
+   [
+    23,
+    18
+   ],
+   [
+    13,
+    18
+   ]
+  ],
+  "sk2_width": {
+   "errors": [],
+   "changed": false,
+   "outline": [
+    [
+     13,
+     10
+    ],
+    [
+     23,
+     10
+    ],
+    [
+     23,
+     18
+    ],
+    [
+     13,
+     18
+    ]
+   ]
+  },
+  "w": {
+   "errors": [],
+   "changed": false,
+   "outline": [
+    [
+     13,
+     10
+    ],
+    [
+     23,
+     10
+    ],
+    [
+     23,
+     18
+    ],
+    [
+     13,
+     18
+    ]
+   ]
+  },
+  "sk2_p0u": {
+   "errors": [],
+   "changed": true,
+   "outline": [
+    [
+     16.5,
+     10
+    ],
+    [
+     23,
+     10
+    ],
+    [
+     23,
+     18
+    ],
+    [
+     16.5,
+     18
+    ]
+   ]
+  },
+  "sk2_p0v": {
+   "errors": [],
+   "changed": true,
+   "outline": [
+    [
+     13,
+     15
+    ],
+    [
+     23,
+     15
+    ],
+    [
+     23,
+     18
+    ],
+    [
+     13,
+     18
+    ]
+   ]
+  },
+  "sk2_p1u": {
+   "errors": [],
+   "changed": true,
+   "outline": [
+    [
+     13,
+     10
+    ],
+    [
+     21.5,
+     10
+    ],
+    [
+     21.5,
+     18
+    ],
+    [
+     13,
+     18
+    ]
+   ]
+  },
+  "sk2_p1v": {
+   "errors": [],
+   "changed": true,
+   "outline": [
+    [
+     13,
+     15
+    ],
+    [
+     23,
+     15
+    ],
+    [
+     23,
+     18
+    ],
+    [
+     13,
+     18
+    ]
+   ]
+  },
+  "sk2_p2u": {
+   "errors": [],
+   "changed": true,
+   "outline": [
+    [
+     13,
+     10
+    ],
+    [
+     21.5,
+     10
+    ],
+    [
+     21.5,
+     18
+    ],
+    [
+     13,
+     18
+    ]
+   ]
+  },
+  "sk2_p2v": {
+   "errors": [],
+   "changed": true,
+   "outline": [
+    [
+     13,
+     10
+    ],
+    [
+     23,
+     10
+    ],
+    [
+     23,
+     19
+    ],
+    [
+     13,
+     19
+    ]
+   ]
+  },
+  "sk2_p3u": {
+   "errors": [],
+   "changed": true,
+   "outline": [
+    [
+     16.5,
+     10
+    ],
+    [
+     23,
+     10
+    ],
+    [
+     23,
+     18
+    ],
+    [
+     16.5,
+     18
+    ]
+   ]
+  },
+  "sk2_p3v": {
+   "errors": [],
+   "changed": true,
+   "outline": [
+    [
+     13,
+     10
+    ],
+    [
+     23,
+     10
+    ],
+    [
+     23,
+     19
+    ],
+    [
+     13,
+     19
+    ]
+   ]
+  },
+  "sk2_offset": {
+   "errors": [],
+   "changed": false,
+   "outline": [
+    [
+     13,
+     10
+    ],
+    [
+     23,
+     10
+    ],
+    [
+     23,
+     18
+    ],
+    [
+     13,
+     18
+    ]
+   ]
+  }
+ },
+ "pocket sketch slots": [
+  [
+   "sk2_p0u",
+   13,
+   -500,
+   500
+  ],
+  [
+   "sk2_p0v",
+   10,
+   -500,
+   500
+  ],
+  [
+   "sk2_p1u",
+   23,
+   -500,
+   500
+  ],
+  [
+   "sk2_p1v",
+   10,
+   -500,
+   500
+  ],
+  [
+   "sk2_p2u",
+   23,
+   -500,
+   500
+  ],
+  [
+   "sk2_p2v",
+   18,
+   -500,
+   500
+  ],
+  [
+   "sk2_p3u",
+   13,
+   -500,
+   500
+  ],
+  [
+   "sk2_p3v",
+   18,
+   -500,
+   500
+  ]
+ ],
+ "pocket corner sliders at min/max": [
+  {
+   "slot": "sk2_p0u",
+   "lbl": "min",
+   "v": -500,
+   "page": "PASS",
+   "scV": 11269.27095516569,
+   "occtV": 11269.27095516569,
+   "occtFaces": 11,
+   "scFaces": 11,
+   "dVol": 0,
+   "outlineGuard": null,
+   "guardedStatus": "built",
+   "guardSentence": null
+  },
+  {
+   "slot": "sk2_p0u",
+   "lbl": "max",
+   "v": 500,
+   "page": "FAIL",
+   "scV": 11473.37993627766,
+   "occtV": 11479.95071868583,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "dVol": 0.0005723702626592261,
+   "outlineGuard": "cross",
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross."
+  },
+  {
+   "slot": "sk2_p0v",
+   "lbl": "min",
+   "v": -500,
+   "page": "PASS",
+   "scV": 11283.921568627453,
+   "occtV": 11283.92156862745,
+   "occtFaces": 11,
+   "scFaces": 11,
+   "dVol": 3.224037658331782e-16,
+   "outlineGuard": null,
+   "guardedStatus": "built",
+   "guardSentence": null
+  },
+  {
+   "slot": "sk2_p0v",
+   "lbl": "max",
+   "v": 500,
+   "page": "FAIL",
+   "scV": 11531.101185264051,
+   "occtV": 11536.326530612245,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "dVol": 0.00045294707412518075,
+   "outlineGuard": "cross",
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross."
+  },
+  {
+   "slot": "sk2_p1u",
+   "lbl": "min",
+   "v": -500,
+   "page": "FAIL",
+   "scV": 11594.064198242964,
+   "occtV": 11600.183556405354,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "dVol": 0.0005275225286423361,
+   "outlineGuard": "cross",
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross."
+  },
+  {
+   "slot": "sk2_p1u",
+   "lbl": "max",
+   "v": 500,
+   "page": "PASS",
+   "scV": 11145.693920335434,
+   "occtV": 11145.69392033543,
+   "occtFaces": 11,
+   "scFaces": 11,
+   "dVol": 3.2640218124545694e-16,
+   "outlineGuard": null,
+   "guardedStatus": "built",
+   "guardSentence": null
+  },
+  {
+   "slot": "sk2_p1v",
+   "lbl": "min",
+   "v": -500,
+   "page": "PASS",
+   "scV": 11283.92156862745,
+   "occtV": 11283.92156862745,
+   "occtFaces": 11,
+   "scFaces": 11,
+   "dVol": 0,
+   "outlineGuard": null,
+   "guardedStatus": "built",
+   "guardSentence": null
+  },
+  {
+   "slot": "sk2_p1v",
+   "lbl": "max",
+   "v": 500,
+   "page": "FAIL",
+   "scV": 11531.10144175685,
+   "occtV": 11536.326530612245,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "dVol": 0.0004529248406353898,
+   "outlineGuard": "cross",
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross."
+  },
+  {
+   "slot": "sk2_p2u",
+   "lbl": "min",
+   "v": -500,
+   "page": "FAIL",
+   "scV": 11594.091743412098,
+   "occtV": 11600.183556405353,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "dVol": 0.0005251479826705434,
+   "outlineGuard": "cross",
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross."
+  },
+  {
+   "slot": "sk2_p2u",
+   "lbl": "max",
+   "v": 500,
+   "page": "PASS",
+   "scV": 11145.693920335434,
+   "occtV": 11145.693920335427,
+   "occtFaces": 11,
+   "scFaces": 11,
+   "dVol": 6.528043624909142e-16,
+   "outlineGuard": null,
+   "guardedStatus": "built",
+   "guardSentence": null
+  },
+  {
+   "slot": "sk2_p2v",
+   "lbl": "min",
+   "v": -500,
+   "page": "FAIL",
+   "scV": 11607.567612306002,
+   "occtV": 11612.509652509649,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "dVol": 0.00042557899640398837,
+   "outlineGuard": "cross",
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross."
+  },
+  {
+   "slot": "sk2_p2v",
+   "lbl": "max",
+   "v": 500,
+   "page": "PASS",
+   "scV": 11205.97510373443,
+   "occtV": 11205.975103734438,
+   "occtFaces": 11,
+   "scFaces": 11,
+   "dVol": 6.492926806305935e-16,
+   "outlineGuard": null,
+   "guardedStatus": "built",
+   "guardSentence": null
+  },
+  {
+   "slot": "sk2_p3u",
+   "lbl": "min",
+   "v": -500,
+   "page": "PASS",
+   "scV": 11269.27095516569,
+   "occtV": 11269.270955165688,
+   "occtFaces": 11,
+   "scFaces": 11,
+   "dVol": 1.614114533923825e-16,
+   "outlineGuard": null,
+   "guardedStatus": "built",
+   "guardSentence": null
+  },
+  {
+   "slot": "sk2_p3u",
+   "lbl": "max",
+   "v": 500,
+   "page": "FAIL",
+   "scV": 11473.518632145046,
+   "occtV": 11479.95071868583,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "dVol": 0.0005602886892462857,
+   "outlineGuard": "cross",
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross."
+  },
+  {
+   "slot": "sk2_p3v",
+   "lbl": "min",
+   "v": -500,
+   "page": "FAIL",
+   "scV": 11607.565715224,
+   "occtV": 11612.509652509654,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "dVol": 0.00042574236178013726,
+   "outlineGuard": "cross",
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross."
+  },
+  {
+   "slot": "sk2_p3v",
+   "lbl": "max",
+   "v": 500,
+   "page": "PASS",
+   "scV": 11205.97510373444,
+   "occtV": 11205.975103734438,
+   "occtFaces": 11,
+   "scFaces": 11,
+   "dVol": 1.6232317015764837e-16,
+   "outlineGuard": null,
+   "guardedStatus": "built",
+   "guardSentence": null
+  }
+ ],
+ "pocket bow-tie sweep": [
+  {
+   "slot": "sk2_p0u",
+   "v": 10,
+   "guardedStatus": "built",
+   "guardSentence": null,
+   "page": "PASS",
+   "scV": 11631.999999999347,
+   "occtV": 11631.99999999935,
+   "occtFaces": 11,
+   "scFaces": 11,
+   "outlineGuard": null,
+   "occtRefusals": {}
+  },
+  {
+   "slot": "sk2_p0u",
+   "v": 20,
+   "guardedStatus": "built",
+   "guardSentence": null,
+   "page": "PASS",
+   "scV": 11792.0000000015,
+   "occtV": 11792.000000001502,
+   "occtFaces": 11,
+   "scFaces": 11,
+   "outlineGuard": null,
+   "occtRefusals": {}
+  },
+  {
+   "slot": "sk2_p0u",
+   "v": 30,
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross.",
+   "page": "FAIL",
+   "scV": 11859.7664095578,
+   "occtV": 11952,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "outlineGuard": "cross",
+   "occtRefusals": {}
+  },
+  {
+   "slot": "sk2_p0u",
+   "v": 40,
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross.",
+   "page": "FAIL",
+   "scV": 11769.482554169585,
+   "occtV": 11888,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "outlineGuard": "cross",
+   "occtRefusals": {}
+  },
+  {
+   "slot": "sk2_p0u",
+   "v": 50,
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross.",
+   "page": "FAIL",
+   "scV": 11684.757539531842,
+   "occtV": 11771.243243243242,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "outlineGuard": "cross",
+   "occtRefusals": {}
+  },
+  {
+   "slot": "sk2_p0u",
+   "v": 60,
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross.",
+   "page": "FAIL",
+   "scV": 11636.085722612306,
+   "occtV": 11704.170212765954,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "outlineGuard": "cross",
+   "occtRefusals": {}
+  },
+  {
+   "slot": "sk2_p1u",
+   "v": -20,
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross.",
+   "page": "FAIL",
+   "scV": 11706.418624462482,
+   "occtV": 11780.837209302324,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "outlineGuard": "cross",
+   "occtRefusals": {}
+  },
+  {
+   "slot": "sk2_p1u",
+   "v": -5,
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross.",
+   "page": "FAIL",
+   "scV": 11772.000733243503,
+   "occtV": 11886.285714285712,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "outlineGuard": "cross",
+   "occtRefusals": {}
+  },
+  {
+   "slot": "sk2_p1u",
+   "v": 0,
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross.",
+   "page": "FAIL",
+   "scV": 11812.869986698055,
+   "occtV": 11952,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "outlineGuard": "cross",
+   "occtRefusals": {}
+  },
+  {
+   "slot": "sk2_p1u",
+   "v": 5,
+   "guardedStatus": "refused",
+   "guardSentence": "pocket1 is not built: the outline of sketch sk2 crosses or touches itself, so it is not a closed shape -- move its corners so the outline does not cross.",
+   "page": "FAIL",
+   "scV": 11854.223462647582,
+   "occtV": 11967.999999999998,
+   "occtFaces": 11,
+   "scFaces": 14,
+   "outlineGuard": "cross",
+   "occtRefusals": {}
+  },
+  {
+   "slot": "sk2_p1u",
+   "v": 10,
+   "guardedStatus": "built",
+   "guardSentence": null,
+   "page": "PASS",
+   "scV": 11888.000000001632,
+   "occtV": 11888.000000001637,
+   "occtFaces": 11,
+   "scFaces": 11,
+   "outlineGuard": null,
+   "occtRefusals": {}
+  },
+  {
+   "slot": "sk2_p1u",
+   "v": 20,
+   "guardedStatus": "built",
+   "guardSentence": null,
+   "page": "PASS",
+   "scV": 11728.000000000364,
+   "occtV": 11728.000000000366,
+   "occtFaces": 11,
+   "scFaces": 11,
+   "outlineGuard": null,
+   "occtRefusals": {}
+  }
+ ],
+ "checkModel x4 rim rounds": {
+  "refusedIds": [
+   "round2",
+   "round3",
+   "round4"
+  ],
+  "noRefusals": {
+   "passed": true,
+   "missing": [],
+   "message": ""
+  },
+  "pageRefusals": {
+   "passed": false,
+   "missing": [
+    {
+     "kind": "fillet",
+     "size": 1
+    },
+    {
+     "kind": "fillet",
+     "size": 1
+    },
+    {
+     "kind": "fillet",
+     "size": 1
+    }
+   ],
+   "message": "Expected a round 1, found a round 1."
+  },
+  "plainRefusals": {
+   "passed": false,
+   "missing": [
+    {
+     "kind": "fillet",
+     "size": 1
+    },
+    {
+     "kind": "fillet",
+     "size": 1
+    },
+    {
+     "kind": "fillet",
+     "size": 1
+    }
+   ],
+   "message": "Expected a round 1, found a round 1."
+  },
+  "maps": {
+   "round2": "round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.",
+   "round3": "round3 is not built because round2 could not be built, so round3 is shown without it.",
+   "round4": "round4 is not built because round3 could not be built, so round4 is shown without it."
+  }
+ },
+ "checkModel single fillet built": {
+  "passed": true,
+  "missing": [],
+  "message": ""
+ },
+ "checkModel single refused fillet": {
+  "refusals": {
+   "round1": "round1 (fillet): wedge1.edge[wedge1.face[-z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[-z]: faces of a wedge are not resolved in the browser demo"
+  },
+  "result": {
+   "passed": false,
+   "missing": [
+    {
+     "kind": "fillet",
+     "size": 2
+    }
+   ],
+   "message": "Expected a round 2; the round could not be built: round1 (fillet): wedge1.edge[wedge1.face[-z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[-z]: faces of a wedge are not resolved in the browser demo"
+  }
+ },
+ "slot sk.round": {
+  "generated": [
+   "sk1_p0u",
+   "sk1_p0v",
+   "sk1_p1u",
+   "sk1_p1v",
+   "sk1_p2u",
+   "sk1_p2v",
+   "sk1_p3u",
+   "sk1_p3v",
+   "sk1_r0",
+   "sk1_offset",
+   "pull1_height"
+  ],
+  "sketchCorners": "{\"0\":3}"
+ },
+ "slot sk.chamfer": {
+  "generated": [
+   "sk1_p0u",
+   "sk1_p0v",
+   "sk1_p1u",
+   "sk1_p1v",
+   "sk1_p2u",
+   "sk1_p2v",
+   "sk1_p3u",
+   "sk1_p3v",
+   "sk1_offset",
+   "pull1_height"
+  ],
+  "sketchCorners": "[\"id\",\"kind\",\"plane\",\"offset\",\"points\",\"constraints\",\"shape\",\"rounds\",\"chamfers\",\"bulges\"]"
+ },
+ "box handles vs solid": [
+  {
+   "label": "unmoved",
+   "scBbox": [
+    -20,
+    -15,
+    -10,
+    20,
+    15,
+    10
+   ],
+   "handles": [
+    {
+     "param": "box1_width",
+     "origin": [
+      20,
+      0,
+      0
+     ],
+     "gapToBbox": 0,
+     "onExtreme": true
+    },
+    {
+     "param": "box1_depth",
+     "origin": [
+      0,
+      15,
+      0
+     ],
+     "gapToBbox": 0,
+     "onExtreme": true
+    },
+    {
+     "param": "box1_height",
+     "origin": [
+      0,
+      0,
+      10
+     ],
+     "gapToBbox": 0,
+     "onExtreme": true
+    }
+   ]
+  },
+  {
+   "label": "move x10",
+   "scBbox": [
+    -10,
+    -15,
+    -10,
+    30,
+    15,
+    10
+   ],
+   "handles": [
+    {
+     "param": "box1_width",
+     "origin": [
+      20,
+      0,
+      0
+     ],
+     "gapToBbox": 0,
+     "onExtreme": false
+    },
+    {
+     "param": "box1_depth",
+     "origin": [
+      0,
+      15,
+      0
+     ],
+     "gapToBbox": 0,
+     "onExtreme": true
+    },
+    {
+     "param": "box1_height",
+     "origin": [
+      0,
+      0,
+      10
+     ],
+     "gapToBbox": 0,
+     "onExtreme": true
+    }
+   ]
+  },
+  {
+   "label": "move z15",
+   "scBbox": [
+    -20,
+    -15,
+    5,
+    20,
+    15,
+    25
+   ],
+   "handles": [
+    {
+     "param": "box1_width",
+     "origin": [
+      20,
+      0,
+      0
+     ],
+     "gapToBbox": 5,
+     "onExtreme": true
+    },
+    {
+     "param": "box1_depth",
+     "origin": [
+      0,
+      15,
+      0
+     ],
+     "gapToBbox": 5,
+     "onExtreme": true
+    },
+    {
+     "param": "box1_height",
+     "origin": [
+      0,
+      0,
+      10
+     ],
+     "gapToBbox": 0,
+     "onExtreme": false
+    }
+   ]
+  },
+  {
+   "label": "turn z30",
+   "scBbox": [
+    -24.821,
+    -22.99,
+    -10,
+    24.821,
+    22.99,
+    10
+   ],
+   "handles": [
+    {
+     "param": "box1_width",
+     "origin": [
+      20,
+      0,
+      0
+     ],
+     "gapToBbox": 0,
+     "onExtreme": false
+    },
+    {
+     "param": "box1_depth",
+     "origin": [
+      0,
+      15,
+      0
+     ],
+     "gapToBbox": 0,
+     "onExtreme": false
+    },
+    {
+     "param": "box1_height",
+     "origin": [
+      0,
+      0,
+      10
+     ],
+     "gapToBbox": 0,
+     "onExtreme": true
+    }
+   ]
+  }
+ ]
+}

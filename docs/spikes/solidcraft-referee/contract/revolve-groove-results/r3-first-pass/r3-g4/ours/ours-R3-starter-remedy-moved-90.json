@@ -1,0 +1,21 @@
+{
+ "id": "R3-starter-remedy-moved-90",
+ "outcome": "built",
+ "volume": 31428.521268141736,
+ "faces": 6,
+ "bbox": [
+  1.734723475976807e-18,
+  -1.7763568394002505e-14,
+  0,
+  40.01000000002911,
+  40.010000000000005,
+  25
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0.010000000000001563,0],[40.010000000000005,0],[40.010000000000005,25],[0.010000000000001563,25]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-90,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

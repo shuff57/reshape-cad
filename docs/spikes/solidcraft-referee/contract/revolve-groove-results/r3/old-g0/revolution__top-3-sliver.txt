@@ -1,0 +1,1 @@
+revolution__top-3-sliver                 PASS     occtV 235.6194 | tr-occt dV 9.8e-10 dBb 3.5e-13 dCom 1.2e-5 F o/b/t 6/6/6 | brep-occt dV 9.7e-16 | FC: occt 2.4e-16 brep 7.2e-16 truck 9.8e-10 dCom 3.8e-4 F 6     | ms 175 cpu 392

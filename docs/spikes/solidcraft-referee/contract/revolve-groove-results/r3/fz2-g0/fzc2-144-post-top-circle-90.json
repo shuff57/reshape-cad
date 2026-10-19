@@ -1,0 +1,44 @@
+[
+ {
+  "id": "fzc2-144-post-top-circle-90",
+  "src": "const k = sketch('top'); k.circle(40); const t = extrude(k, 30); const sk = sketch('top'); sk.circle(2.5, { at: [19.9, 6] }); groove(sk, t, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc2-144-post-top-circle-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "invalid": "OCCT: OCCT built nothing"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "groove groove1: a circle sketch has no outline to spin"
+   },
+   "ms": 416,
+   "load": [
+    19.9,
+    19.9
+   ],
+   "cpuMs": 741,
+   "truck": {
+    "refused": "groove1 (groove): a ring with a slanted or curved side (a triangle, a circle, a rounded corner) is not built, because in the measurements the engine cut such rings wrongly or took minutes and the two cannot be told apart in advance; give the ring straight sides that are parallel and square to its axis."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: OCCT built nothing",
+  "caseMs": 450
+ }
+]

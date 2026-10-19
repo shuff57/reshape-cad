@@ -1,0 +1,166 @@
+[
+ {
+  "id": "R3-tilt15-post-90",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.258819, 0.965926] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, cyl, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R3-tilt15-post-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 37352.12492572995,
+    "com": [
+     -0.044489280060746844,
+     -0.0022488033680817783,
+     15.09261520819436
+    ],
+    "bbox": [
+     -20,
+     -20,
+     -2.220446049250313e-16,
+     20,
+     20,
+     30
+    ],
+    "faces": 9,
+    "area": 6617.500387027515,
+    "types": {
+     "cylinder": 3,
+     "plane": 6
+    },
+    "components": {
+     "cylinder": 3,
+     "plane": 6
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: the ring is spun about the normal of its sketch, which crosses the axis of pull1's round wall -- sketch the ring on a plane square to that axis (the top plane for an upright post) -- groove1 is shown without it."
+   },
+   "ms": 254,
+   "load": [
+    61.6,
+    61.6
+   ],
+   "cpuMs": 545,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall.",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": "cylinder",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 1,
+       "headTypes": {
+        "cylinder": 1,
+        "plane": 2
+       },
+       "touchesAxis": false,
+       "worldAxis": false,
+       "reachesWall": false,
+       "rOuter": 9,
+       "nearest": null,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.circle.center",
+     "params": {
+      "center": [
+       0,
+       0
+      ],
+      "diameter": 40
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall.",
+    "firstRefusal": "groove1 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 379
+ }
+]

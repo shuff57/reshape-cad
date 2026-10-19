@@ -1,0 +1,5934 @@
+[
+ {
+  "label": "primitive box +x as shell open",
+  "id": "sh1",
+  "ms": 94,
+  "features": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       25,
+       -3,
+       2
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_b1"
+    },
+    "evidence": {
+     "name": "b1.face[+x]",
+     "rule": "planar face with outward normal +x at the extreme along it on b1's own shape",
+     "engineFace": "F1:+x",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+x",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 25,
+       "got": 25,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+x",
+       "got": "F1:+x",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_b1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       25,
+       -3,
+       2
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_b1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 8191.999999999997,
+    "com": [
+     3.070312499999998,
+     -2.9999999999999973,
+     2.000000000000001
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 8192,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 8191.999999999999,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25,
+    12,
+    12
+   ],
+   "com": [
+    3.0703125000000004,
+    -2.999999999999997,
+    2.0000000000000027
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 2.220446049250314e-16,
+   "dBbox": 0,
+   "dCom": 4.947917760233228e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.3306690738754706e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 3.3306690738754706e-16,
+   "dCom": 0.071666794577706,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "b1.face[+x]"
+  ]
+ },
+ {
+  "label": "swept edge0 shell open",
+  "id": "sh1",
+  "ms": 59,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.face[sk1.edge0]",
+     "rule": "planar wall through sketch edge 0 lifted by the height (centroid and area match)",
+     "engineFace": "F2:side:l1",
+     "target": {
+      "candidates": 1,
+      "face": "F2:side:l1",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc wall centroid",
+       "expected": [
+        20,
+        0,
+        6
+       ],
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 5376,
+    "com": [
+     20,
+     13.732142857142858,
+     6
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5376,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 5376,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    12
+   ],
+   "com": [
+    20,
+    13.732142857142858,
+    6
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 0,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 5.075305255429287e-16,
+   "dCom": 0.05063007013996382,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.face[sk1.edge0]"
+  ]
+ },
+ {
+  "label": "swept edge1 shell open",
+  "id": "sh1",
+  "ms": 50,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       40,
+       12.5,
+       6
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.face[sk1.edge1]",
+     "rule": "planar wall through sketch edge 1 lifted by the height (centroid and area match)",
+     "engineFace": "F2:side:l2",
+     "target": {
+      "candidates": 1,
+      "face": "F2:side:l2",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc wall centroid",
+       "expected": [
+        40,
+        12.5,
+        6
+       ],
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       40,
+       12.5,
+       6
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 5616,
+    "com": [
+     18.863247863247857,
+     12.5,
+     6
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5616,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 5616,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    12
+   ],
+   "com": [
+    18.863247863247864,
+    12.5,
+    6
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 1.4598481150308943e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0,
+   "dCom": 0.0467103632357799,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.face[sk1.edge1]"
+  ]
+ },
+ {
+  "label": "swept edge2 shell open",
+  "id": "sh1",
+  "ms": 51,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       20,
+       25,
+       6
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.face[sk1.edge2]",
+     "rule": "planar wall through sketch edge 2 lifted by the height (centroid and area match)",
+     "engineFace": "F2:side:l3",
+     "target": {
+      "candidates": 1,
+      "face": "F2:side:l3",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc wall centroid",
+       "expected": [
+        20,
+        25,
+        6
+       ],
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       20,
+       25,
+       6
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 5376,
+    "com": [
+     20,
+     11.267857142857142,
+     6
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5376,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 5376.000000000003,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    12
+   ],
+   "com": [
+    19.999999999999996,
+    11.26785714285714,
+    5.999999999999998
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 5.075305255429287e-16,
+   "dBbox": 0,
+   "dCom": 7.299240575154472e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0,
+   "dCom": 0.05063007013996378,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.face[sk1.edge2]"
+  ]
+ },
+ {
+  "label": "swept edge3 shell open",
+  "id": "sh1",
+  "ms": 55,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       0,
+       12.5,
+       6
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.face[sk1.edge3]",
+     "rule": "planar wall through sketch edge 3 lifted by the height (centroid and area match)",
+     "engineFace": "F2:side:l4",
+     "target": {
+      "candidates": 1,
+      "face": "F2:side:l4",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc wall centroid",
+       "expected": [
+        0,
+        12.5,
+        6
+       ],
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       0,
+       12.5,
+       6
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 5616,
+    "com": [
+     21.136752136752143,
+     12.5,
+     6
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5616,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 5616,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    12
+   ],
+   "com": [
+    21.136752136752136,
+    12.5,
+    6
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 1.4598481150308943e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0,
+   "dCom": 0.0467103632357799,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.face[sk1.edge3]"
+  ]
+ },
+ {
+  "label": "swept edge0 draft face",
+  "id": "d1",
+  "ms": 69,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "d1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.face[sk1.edge0]",
+     "rule": "planar wall through sketch edge 0 lifted by the height (centroid and area match)",
+     "engineFace": "F2:side:l1",
+     "target": {
+      "candidates": 1,
+      "face": "F2:side:l1",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc wall centroid",
+       "expected": [
+        20,
+        0,
+        6
+       ],
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11748.032649045339,
+    "com": [
+     20.000000000000004,
+     12.760589566886612,
+     5.9571047581358
+    ],
+    "bbox": [
+     0,
+     -1.3461454173580023e-15,
+     -2.220446049250313e-16,
+     40,
+     25,
+     12
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11748.032649045339,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11748.032649045337,
+   "bbox": [
+    0,
+    0,
+    -1.548196997228111e-16,
+    40,
+    25,
+    12.000000000000004
+   ],
+   "com": [
+    20,
+    12.760589566886612,
+    5.9571047581358
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.548335332293846e-16,
+   "dBbox": 1.3461454173580023e-15,
+   "dCom": 7.299240575154472e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 3.096670664587692e-16,
+   "dCom": 0.010707904503708237,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.face[sk1.edge0]"
+  ]
+ },
+ {
+  "label": "swept edge1 draft face",
+  "id": "d1",
+  "ms": 59,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "d1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       40,
+       12.5,
+       6
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.face[sk1.edge1]",
+     "rule": "planar wall through sketch edge 1 lifted by the height (centroid and area match)",
+     "engineFace": "F2:side:l2",
+     "target": {
+      "candidates": 1,
+      "face": "F2:side:l2",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc wall centroid",
+       "expected": [
+        40,
+        12.5,
+        6
+       ],
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       40,
+       12.5,
+       6
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11842.520405653337,
+    "com": [
+     19.738697417106575,
+     12.499999999999998,
+     5.973404378636918
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11842.520405653335,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11842.520405653335,
+   "bbox": [
+    0,
+    0,
+    -1.2439645816331217e-15,
+    40,
+    25,
+    12.000000000000002
+   ],
+   "com": [
+    19.73869741710658,
+    12.5,
+    5.973404378636919
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.5359816502216152e-16,
+   "dBbox": 1.2439645816331217e-15,
+   "dCom": 7.299240575154472e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.5359816502216152e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.5359816502216152e-16,
+   "dCom": 0.010737203095366325,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.face[sk1.edge1]"
+  ]
+ },
+ {
+  "label": "swept edge2 draft face",
+  "id": "d1",
+  "ms": 50,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "d1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       20,
+       25,
+       6
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.face[sk1.edge2]",
+     "rule": "planar wall through sketch edge 2 lifted by the height (centroid and area match)",
+     "engineFace": "F2:side:l3",
+     "target": {
+      "candidates": 1,
+      "face": "F2:side:l3",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc wall centroid",
+       "expected": [
+        20,
+        25,
+        6
+       ],
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       20,
+       25,
+       6
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11748.032649045339,
+    "com": [
+     20.000000000000004,
+     12.239410433113386,
+     5.9571047581358
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11748.032649045339,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11748.032649045335,
+   "bbox": [
+    0,
+    0,
+    -1.8642601942095196e-15,
+    40,
+    25,
+    12.000000000000002
+   ],
+   "com": [
+    20,
+    12.239410433113388,
+    5.9571047581358005
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 3.096670664587692e-16,
+   "dBbox": 1.8642601942095196e-15,
+   "dCom": 7.299240575154472e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 1.548335332293846e-16,
+   "dCom": 0.010707904503708274,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.face[sk1.edge2]"
+  ]
+ },
+ {
+  "label": "swept edge3 draft face",
+  "id": "d1",
+  "ms": 42,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "d1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       0,
+       12.5,
+       6
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.face[sk1.edge3]",
+     "rule": "planar wall through sketch edge 3 lifted by the height (centroid and area match)",
+     "engineFace": "F2:side:l4",
+     "target": {
+      "candidates": 1,
+      "face": "F2:side:l4",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc wall centroid",
+       "expected": [
+        0,
+        12.5,
+        6
+       ],
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       0,
+       12.5,
+       6
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11842.520405653338,
+    "com": [
+     20.261302582893425,
+     12.5,
+     5.973404378636919
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11842.520405653335,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11842.520405653335,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    12.000000000000004
+   ],
+   "com": [
+    20.261302582893425,
+    12.5,
+    5.973404378636919
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 3.07196330044323e-16,
+   "dBbox": 2.9605947323337506e-16,
+   "dCom": 0,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.07196330044323e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 3.07196330044323e-16,
+   "dCom": 0.01073720309536625,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.face[sk1.edge3]"
+  ]
+ },
+ {
+  "label": "round between(cap top, swept0)",
+  "id": "r1",
+  "ms": 130,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.edge[e1.cap[top] ^ e1.face[sk1.edge0]]",
+     "engineEdges": [
+      "F2:side:l1|F2:top"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:side:l1|F2:top"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       20,
+       0,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11965.663706155832,
+    "com": [
+     20,
+     12.53458766896295,
+     5.984064527958055
+    ],
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11965.66370614359,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11965.64118473781,
+   "bbox": [
+    -6.661338147750939e-15,
+    0,
+    0,
+    40.00000000000003,
+    25,
+    12.000000000000002
+   ],
+   "com": [
+    20.00000000000031,
+    12.534609770008862,
+    5.984054696421424
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.0000018821703982159946,
+   "dBbox": 6.661338147750939e-15,
+   "dCom": 4.5407782800072036e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.0230772806664893e-12
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.0000018827136169839855,
+   "dCom": 0.001421698474550604,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.edge[e1.cap[top] ^ e1.face[sk1.edge0]]"
+  ]
+ },
+ {
+  "label": "round between(cap top, swept1)",
+  "id": "r1",
+  "ms": 92,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       40,
+       12.5,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.edge[e1.cap[top] ^ e1.face[sk1.edge1]]",
+     "engineEdges": [
+      "F2:side:l2|F2:top"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:side:l2|F2:top"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       40,
+       12.5,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11978.539816351351,
+    "com": [
+     19.964969299824812,
+     12.499999999999998,
+     5.990051036283489
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11978.539816339746,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11978.525740461117,
+   "bbox": [
+    0,
+    -2.708167329094574e-15,
+    0,
+    40,
+    25.000000000000007,
+    12
+   ],
+   "com": [
+    19.964946690935836,
+    12.50000000000011,
+    5.990044904870962
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.000001175092327627959,
+   "dBbox": 2.708167329094574e-15,
+   "dCom": 4.645117357985054e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.688286362567254e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.000001174779168197421,
+   "dCom": 0.0014399134595354597,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.edge[e1.cap[top] ^ e1.face[sk1.edge1]]"
+  ]
+ },
+ {
+  "label": "round between(cap top, swept2)",
+  "id": "r1",
+  "ms": 96,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       25,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.edge[e1.cap[top] ^ e1.face[sk1.edge2]]",
+     "engineEdges": [
+      "F2:side:l3|F2:top"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:side:l3|F2:top"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       20,
+       25,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11965.66370615583,
+    "com": [
+     19.999999999999996,
+     12.465412331037045,
+     5.984064527958057
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11965.66370614359,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11965.641184738806,
+   "bbox": [
+    -1.776356866996514e-15,
+    0,
+    0,
+    40.00000000000002,
+    25,
+    12.000000000000004
+   ],
+   "com": [
+    20.000000005014165,
+    12.465390233126403,
+    5.984054696421697
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.0000018821703147584276,
+   "dBbox": 1.776356866996514e-15,
+   "dCom": 4.5401341220264465e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.0229252632399416e-12
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.0000018816688887733607,
+   "dCom": 0.0014216983396643608,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.edge[e1.cap[top] ^ e1.face[sk1.edge2]]"
+  ]
+ },
+ {
+  "label": "round between(cap top, swept3)",
+  "id": "r1",
+  "ms": 93,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       0,
+       12.5,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.edge[e1.cap[top] ^ e1.face[sk1.edge3]]",
+     "engineEdges": [
+      "F2:side:l4|F2:top"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:side:l4|F2:top"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       0,
+       12.5,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11978.539816351351,
+    "com": [
+     20.03503070017518,
+     12.499999999999998,
+     5.990051036283489
+    ],
+    "bbox": [
+     -4.440892098500626e-16,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11978.539816339742,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11978.525740461751,
+   "bbox": [
+    0,
+    -1.8706671786850136e-15,
+    0,
+    40,
+    25.00000000000001,
+    12
+   ],
+   "com": [
+    20.03505331219472,
+    12.50000000195655,
+    5.99004490487114
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.0000011750922746309067,
+   "dBbox": 1.8706671786850136e-15,
+   "dCom": 4.6457605488164354e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.691323442931694e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.0000011758229079394068,
+   "dCom": 0.0014399136747308674,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.edge[e1.cap[top] ^ e1.face[sk1.edge3]]"
+  ]
+ },
+ {
+  "label": "round between(cap bottom, swept0)",
+  "id": "r1",
+  "ms": 85,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       0
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.edge[e1.cap[bottom] ^ e1.face[sk1.edge0]]",
+     "engineEdges": [
+      "F2:side:l1|F2:start"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:side:l1|F2:start"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       20,
+       0,
+       0
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11965.663706155832,
+    "com": [
+     20,
+     12.53458766896295,
+     6.015935472041941
+    ],
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     -4.440892098500626e-16,
+     40,
+     25,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11965.663706143596,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11965.641190738701,
+   "bbox": [
+    -1.998401444325282e-15,
+    0,
+    0,
+    40.000000000000014,
+    25,
+    12
+   ],
+   "com": [
+    20.00000000000031,
+    12.534609764474792,
+    6.015945302066364
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.000001881668888925378,
+   "dBbox": 1.998401444325282e-15,
+   "dCom": 4.5396412758429636e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.022621228386846e-12
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.0000018821703149104449,
+   "dCom": 0.0014216983889489792,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.edge[e1.cap[bottom] ^ e1.face[sk1.edge0]]"
+  ]
+ },
+ {
+  "label": "round between(cap bottom, swept2)",
+  "id": "r1",
+  "ms": 109,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       25,
+       0
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.edge[e1.cap[bottom] ^ e1.face[sk1.edge2]]",
+     "engineEdges": [
+      "F2:side:l3|F2:start"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:side:l3|F2:start"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       20,
+       25,
+       0
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11965.66370615583,
+    "com": [
+     20.000000000000004,
+     12.465412331037045,
+     6.015935472041943
+    ],
+    "bbox": [
+     0,
+     0,
+     -4.440892098500626e-16,
+     40,
+     25,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11965.66370614359,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11965.641178237836,
+   "bbox": [
+    -1.5543122586219497e-15,
+    0,
+    0,
+    40.000000000000014,
+    25.000000000000004,
+    12
+   ],
+   "com": [
+    20.0000000104472,
+    12.465390228959969,
+    6.015945306784329
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.0000018827136168319685,
+   "dBbox": 1.5543122586219497e-15,
+   "dCom": 4.5409901382751253e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.0229252632399416e-12
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.0000018821703980639774,
+   "dCom": 0.0014216984533647408,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.edge[e1.cap[bottom] ^ e1.face[sk1.edge2]]"
+  ]
+ },
+ {
+  "label": "round between(swept0, swept1) vertical edge",
+  "id": "r1",
+  "ms": 84,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       40,
+       0,
+       6
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.edge[e1.face[sk1.edge0] ^ e1.face[sk1.edge1]]",
+     "engineEdges": [
+      "F2:side:l1|F2:side:l2"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F2:side:l1|F2:side:l2"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       40,
+       0,
+       6
+      ]
+     ],
+     "radius": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11989.699111850292,
+    "com": [
+     19.98320091421298,
+     12.51035549930516,
+     6.000000000000003
+    ],
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11989.69911184308,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 11989.692351221165,
+   "bbox": [
+    0,
+    0,
+    -2.7090795636923723e-16,
+    40.00000000000001,
+    25,
+    12.000000000000004
+   ],
+   "com": [
+    19.98319007844805,
+    12.510362106831945,
+    6.000000001501448
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 5.638697905371174e-7,
+   "dBbox": 4.440892098500626e-16,
+   "dCom": 2.226265952804167e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.015407824480672e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 5.636821017722215e-7,
+   "dCom": 0.0006905150764329696,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.edge[e1.face[sk1.edge0] ^ e1.face[sk1.edge1]]"
+  ]
+ },
+ {
+  "label": "swept on xz-plane sketch",
+  "id": "sh1",
+  "ms": 36,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       40,
+       -6,
+       12.5
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.face[sk1.edge1]",
+     "rule": "planar wall through sketch edge 1 lifted by the height (centroid and area match)",
+     "engineFace": "F2:side:l2",
+     "target": {
+      "candidates": 1,
+      "face": "F2:side:l2",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc wall centroid",
+       "expected": [
+        40,
+        -6,
+        12.5
+       ],
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       40,
+       -6,
+       12.5
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 5616,
+    "com": [
+     18.863247863247857,
+     -6,
+     12.5
+    ],
+    "bbox": [
+     0,
+     -12,
+     0,
+     40,
+     0,
+     25
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5616,
+    "bbox": [
+     0,
+     -12,
+     0,
+     40,
+     0,
+     25
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 5616,
+   "bbox": [
+    0,
+    -12,
+    0,
+    40,
+    0,
+    25
+   ],
+   "com": [
+    18.863247863247864,
+    -6,
+    12.5
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 1.4598481150308943e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 0
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0,
+   "dCom": 0.0467103632357799,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.face[sk1.edge1]"
+  ]
+ },
+ {
+  "label": "swept on offset sketch 5",
+  "id": "sh1",
+  "ms": 36,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       20,
+       25,
+       11
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.face[sk1.edge2]",
+     "rule": "planar wall through sketch edge 2 lifted by the height (centroid and area match)",
+     "engineFace": "F2:side:l3",
+     "target": {
+      "candidates": 1,
+      "face": "F2:side:l3",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc wall centroid",
+       "expected": [
+        20,
+        25,
+        11
+       ],
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       20,
+       25,
+       11
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 5376,
+    "com": [
+     20,
+     11.267857142857142,
+     11
+    ],
+    "bbox": [
+     0,
+     0,
+     5,
+     40,
+     25,
+     17
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5376.000000000001,
+    "bbox": [
+     0,
+     0,
+     5,
+     40,
+     25,
+     17
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 5376.000000000001,
+   "bbox": [
+    0,
+    0,
+    5,
+    40,
+    25,
+    17
+   ],
+   "com": [
+    20.000000000000004,
+    11.267857142857144,
+    11.000000000000002
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 1.691768418476429e-16,
+   "dBbox": 0,
+   "dCom": 7.299240575154472e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.691768418476429e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0,
+   "dCom": 0.05063007013996378,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.face[sk1.edge2]"
+  ]
+ },
+ {
+  "label": "swept on circle sketch",
+  "id": "sh1",
+  "ms": 233,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can.",
+    "raw": "sh1 (shell): e1.face[sk1.edge0]: sk1 is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the browser demo"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 20
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 3769.911184307752,
+    "com": [
+     -4.82501925010169e-16,
+     -1.0592425072488866e-15,
+     6
+    ],
+    "bbox": [
+     -10,
+     -10,
+     0,
+     10,
+     10,
+     12
+    ],
+    "faces": 3,
+    "types": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 2161.4157456697735,
+    "bbox": [
+     -10,
+     -10,
+     0,
+     10,
+     10,
+     12
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {
+    "sh1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {
+    "sh1": "sh1 could not find the face to leave open -- sh1 is shown closed."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "sh1": "sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can."
+  },
+  "outcome": "REFUSED",
+  "sentence": "sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can.",
+  "names": [
+   "e1.face[sk1.edge0]"
+  ]
+ },
+ {
+  "label": "swept on arc (bulge) sketch",
+  "id": "sh1",
+  "ms": 56,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can.",
+    "raw": "sh1 (shell): e1.face[sk1.edge0]: sketch edge 0 of sk1 is an arc; a swept name over an arc is not resolved in the browser demo (only straight edges are)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      0,
+      0
+     ],
+     "end": [
+      40,
+      0
+     ],
+     "through": [
+      20,
+      -10
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       25
+      ],
+      [
+       0,
+       0
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 6533.395913764381,
+    "com": [
+     19.999999993333894,
+     10.596776987846116,
+     6
+    ],
+    "bbox": [
+     0,
+     -9.999999999999995,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- sh1 is shown without it."
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "sh1": "brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- sh1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "sh1": "sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can."
+  },
+  "outcome": "REFUSED",
+  "sentence": "sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can.",
+  "names": [
+   "e1.face[sk1.edge0]"
+  ]
+ },
+ {
+  "label": "swept on extrude midplane",
+  "id": "sh1",
+  "ms": 0,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "e1 is not built: an extrude with the midplane option is not supported yet -- use a plain one-sided extrude.",
+    "raw": "e1 (extrude): the midplane option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)"
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "sh1 is not built because e1 could not be built, so sh1 is shown without it.",
+    "raw": "sh1 (shell): its target e1 was refused (e1 (extrude): the midplane option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))"
+   }
+  ],
+  "commands": [],
+  "ref": {
+   "occt": {
+    "volume": 5616,
+    "com": [
+     18.863247863247857,
+     12.5,
+     6
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5616,
+    "bbox": [
+     0,
+     0,
+     -6,
+     40,
+     25,
+     6
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "e1": "e1 is not built: an extrude with the midplane option is not supported yet -- use a plain one-sided extrude.",
+   "sh1": "sh1 is not built because e1 could not be built, so sh1 is shown without it."
+  },
+  "outcome": "REFUSED",
+  "sentence": "sh1 is not built because e1 could not be built, so sh1 is shown without it.",
+  "names": [
+   "e1.face[sk1.edge1]"
+  ]
+ },
+ {
+  "label": "swept on extrude taper",
+  "id": "sh1",
+  "ms": 0,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "e1 is not built: an extrude with the taper option is not supported yet -- use a plain one-sided extrude.",
+    "raw": "e1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)"
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "sh1 is not built because e1 could not be built, so sh1 is shown without it.",
+    "raw": "sh1 (shell): its target e1 was refused (e1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))"
+   }
+  ],
+  "commands": [],
+  "ref": {
+   "occt": {
+    "volume": 5616,
+    "com": [
+     18.863247863247857,
+     12.5,
+     6
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5952.989435903267,
+    "bbox": [
+     -1.0498639623110881,
+     -1.0498639623110881,
+     0,
+     41.049863962311086,
+     26.04986396231109,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "e1": "e1 is not built: an extrude with the taper option is not supported yet -- use a plain one-sided extrude.",
+   "sh1": "sh1 is not built because e1 could not be built, so sh1 is shown without it."
+  },
+  "outcome": "REFUSED",
+  "sentence": "sh1 is not built because e1 could not be built, so sh1 is shown without it.",
+  "names": [
+   "e1.face[sk1.edge1]"
+  ]
+ },
+ {
+  "label": "cap top shell open",
+  "id": "sh1",
+  "ms": 35,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       20,
+       12.499999999999998,
+       12
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.cap[top]",
+     "rule": "planar face, outward normal along the sketch normal at the sketch plane + height",
+     "engineFace": "F2:top",
+     "target": {
+      "candidates": 1,
+      "face": "F2:top",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 12,
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       20,
+       12.499999999999998,
+       12
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4440,
+    "com": [
+     19.99999999999999,
+     12.5,
+     4.2972972972972965
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 4439.999999999999,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 4440,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    12
+   ],
+   "com": [
+    20,
+    12.5,
+    4.297297297297297
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 2.1897721725463415e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.0484114904795681e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0,
+   "dCom": 0.06996587836027897,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.cap[top]"
+  ]
+ },
+ {
+  "label": "cap bottom shell open",
+  "id": "sh1",
+  "ms": 34,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       20,
+       12.499999999999998,
+       0
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    },
+    "evidence": {
+     "name": "e1.cap[bottom]",
+     "rule": "planar face, outward normal along the sketch normal reversed at the sketch plane",
+     "engineFace": "F2:start",
+     "target": {
+      "candidates": 1,
+      "face": "F2:start",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 0,
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       20,
+       12.499999999999998,
+       0
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4440,
+    "com": [
+     19.99999999999999,
+     12.5,
+     7.702702702702699
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 4439.999999999999,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 4440,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    12
+   ],
+   "com": [
+    20,
+    12.5,
+    7.702702702702703
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": 2.1897721725463415e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.0484114904795681e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0,
+   "dCom": 0.06996587836027887,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "e1.cap[bottom]"
+  ]
+ },
+ {
+  "label": "cap top draft",
+  "id": "d1",
+  "ms": 28,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "d1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "d1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.",
+    "raw": "d1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 12000,
+    "com": [
+     20,
+     12.5,
+     6
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 12000,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {
+    "d1": "Tilting Draft 1 at 5 degrees would not fit -- Draft 1 is shown without it."
+   },
+   "brepRefusals": {
+    "d1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- d1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "d1": "d1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead."
+  },
+  "outcome": "REFUSED",
+  "sentence": "d1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.",
+  "names": [
+   "e1.cap[top]"
+  ]
+ },
+ {
+  "label": "cap on reversed extrude",
+  "id": "sh1",
+  "ms": 1,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "e1 is not built: an extrude with the reversed option is not supported yet -- use a plain one-sided extrude.",
+    "raw": "e1 (extrude): the reversed option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)"
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "sh1 is not built because e1 could not be built, so sh1 is shown without it.",
+    "raw": "sh1 (shell): its target e1 was refused (e1 (extrude): the reversed option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))"
+   }
+  ],
+  "commands": [],
+  "ref": {
+   "occt": {
+    "volume": 4440,
+    "com": [
+     19.99999999999999,
+     12.5,
+     4.2972972972972965
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 4439.999999999999,
+    "bbox": [
+     0,
+     0,
+     -12,
+     40,
+     25,
+     0
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "e1": "e1 is not built: an extrude with the reversed option is not supported yet -- use a plain one-sided extrude.",
+   "sh1": "sh1 is not built because e1 could not be built, so sh1 is shown without it."
+  },
+  "outcome": "REFUSED",
+  "sentence": "sh1 is not built because e1 could not be built, so sh1 is shown without it.",
+  "names": [
+   "e1.cap[top]"
+  ]
+ },
+ {
+  "label": "rounded corner0 shell open",
+  "id": "sh1",
+  "ms": 46,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "sh1 is not built: a face made by a rounded sketch corner cannot be picked yet.",
+    "raw": "sh1 (shell): e1.face[sk1.corner0]: a name made by a ROUNDED sketch corner is not resolved in the browser demo (only primitive, cap, swept-by-a-straight-edge, carried-plane and between names are)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      0,
+      4.000000000000001
+     ],
+     "end": [
+      4.000000000000001,
+      0
+     ],
+     "through": [
+      1.1715728752538097,
+      1.1715728752538106
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       4.000000000000001,
+       0
+      ],
+      [
+       40,
+       0
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       25
+      ],
+      [
+       0,
+       4.000000000000001
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11958.796447384717,
+    "com": [
+     20.06583077455504,
+     12.539989825264424,
+     6.000000000000001
+    ],
+    "bbox": [
+     -8.881784197001252e-16,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "components": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5917.663706143594,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 14
+   },
+   "occtRefusals": {
+    "sh1": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {
+    "sh1": "sh1 could not find the face to leave open -- sh1 is shown closed."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "sh1": "sh1 is not built: a face made by a rounded sketch corner cannot be picked yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "sh1 is not built: a face made by a rounded sketch corner cannot be picked yet.",
+  "names": [
+   "e1.face[sk1.corner0]"
+  ]
+ },
+ {
+  "label": "rounded corner0 draft",
+  "id": "d1",
+  "ms": 45,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "d1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "d1 is not built: a face made by a rounded sketch corner cannot be picked yet.",
+    "raw": "d1 (draft): e1.face[sk1.corner0]: a name made by a ROUNDED sketch corner is not resolved in the browser demo (only primitive, cap, swept-by-a-straight-edge, carried-plane and between names are)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      0,
+      4.000000000000001
+     ],
+     "end": [
+      4.000000000000001,
+      0
+     ],
+     "through": [
+      1.1715728752538097,
+      1.1715728752538106
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       4.000000000000001,
+       0
+      ],
+      [
+       40,
+       0
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       25
+      ],
+      [
+       0,
+       4.000000000000001
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11563.626741808957,
+    "com": [
+     20.31091008380488,
+     12.790586547931904,
+     5.931952429782692
+    ],
+    "bbox": [
+     -8.881784197001252e-16,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "cone": 1,
+     "plane": 6
+    },
+    "components": {
+     "cone": 1,
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11958.796447372311,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "d1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- d1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "d1": "d1 is not built: a face made by a rounded sketch corner cannot be picked yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "d1 is not built: a face made by a rounded sketch corner cannot be picked yet.",
+  "names": [
+   "e1.face[sk1.corner0]"
+  ]
+ },
+ {
+  "label": "round between(cap top, rounded0)",
+  "id": "r1",
+  "ms": 113,
+  "features": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "e1",
+    "kind": "extrude",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "r1 is not built: a face made by a rounded sketch corner cannot be picked yet.",
+    "raw": "r1 (fillet): e1.edge[e1.cap[top] ^ e1.face[sk1.corner0]] cannot be resolved: e1.face[sk1.corner0]: a name made by a ROUNDED sketch corner is not resolved in the browser demo (only primitive, cap, swept-by-a-straight-edge, carried-plane and between names are)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      0,
+      4.000000000000001
+     ],
+     "end": [
+      4.000000000000001,
+      0
+     ],
+     "through": [
+      1.1715728752538097,
+      1.1715728752538106
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       4.000000000000001,
+       0
+      ],
+      [
+       40,
+       0
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       25
+      ],
+      [
+       0,
+       4.000000000000001
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_e1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11905.076067340055,
+    "com": [
+     20.097903344652373,
+     12.57277052399162,
+     5.974950862449056
+    ],
+    "bbox": [
+     -2.6645352591003757e-15,
+     -8.881784197001252e-16,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 10,
+    "types": {
+     "cylinder": 3,
+     "plane": 6,
+     "other": 1
+    },
+    "components": {
+     "cylinder": 3,
+     "plane": 6,
+     "other": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 11958.796447372311,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "r1": "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box before you hollow, chamfer or cut it -- r1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "r1": "r1 is not built: a face made by a rounded sketch corner cannot be picked yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "r1 is not built: a face made by a rounded sketch corner cannot be picked yet.",
+  "names": [
+   "e1.edge[e1.cap[top] ^ e1.face[sk1.corner0]]"
+  ]
+ }
+]

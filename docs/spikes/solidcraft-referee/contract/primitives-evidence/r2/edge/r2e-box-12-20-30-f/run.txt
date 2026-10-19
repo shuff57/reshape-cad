@@ -1,0 +1,2 @@
+r2e-box-12-20-30-f             refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/edge/r2e-box-12-20-30-f/primitives-measure.json

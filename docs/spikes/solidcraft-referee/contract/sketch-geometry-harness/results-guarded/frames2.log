@@ -1,0 +1,22 @@
+frame-swapped-round                PASS               vol 11797.692679 occt 11797.743339 brep 11797.743339 exact - dOcct 4.3e-6 dBbox 5.9e-16 dCom 1.5e-6 dExact - dBbxEx - faces o/b/t 8/8/8  bodies 1
+frame-swapped-circle               PASS               vol 1539.206699 occt 1539.380400 brep 1539.380400 exact - dOcct 1.1e-4 dBbox 3.9e-16 dCom 3.3e-10 dExact - dBbxEx - faces o/b/t 3/3/3  bodies 1
+frame-swapped-slot                 PASS               vol 2102.571332 occt undefined brep 2102.654825 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/6/6  bodies 1
+frame-swapped-dshape-cw            PASS               vol 1570.676564 occt 1570.796327 brep 1570.796327 exact - dOcct 7.6e-5 dBbox 5.9e-16 dCom 6.7e-6 dExact - dBbxEx - faces o/b/t 4/4/4  bodies 1
+frame-swapped-plate-hole           PASS               vol 5497.428668 occt 5497.345175 brep 5497.345175 exact - dOcct 1.5e-5 dBbox 3.9e-16 dCom 1.3e-6 dExact - dBbxEx - faces o/b/t 7/7/7  bodies 1
+frame-yzFrame-round                PASS               vol 11797.692679 occt 11797.743339 brep 11797.743339 exact - dOcct 4.3e-6 dBbox 4.8e-16 dCom 1.5e-6 dExact - dBbxEx - faces o/b/t 8/8/8  bodies 1
+frame-yzFrame-circle               PASS               vol 1539.206699 occt 1539.380400 brep 1539.380400 exact - dOcct 1.1e-4 dBbox 4.8e-16 dCom 2.9e-10 dExact - dBbxEx - faces o/b/t 3/3/3  bodies 1
+frame-yzFrame-slot                 PASS               vol 2102.571332 occt undefined brep 2102.654825 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/6/6  bodies 1
+frame-yzFrame-dshape-cw            PASS               vol 1570.676564 occt 1570.796327 brep 1570.796327 exact - dOcct 7.6e-5 dBbox 4.8e-16 dCom 6.7e-6 dExact - dBbxEx - faces o/b/t 4/4/4  bodies 1
+frame-yzFrame-plate-hole           PASS               vol 5497.428668 occt 5497.345175 brep 5497.345175 exact - dOcct 1.5e-5 dBbox 4.8e-16 dCom 1.3e-6 dExact - dBbxEx - faces o/b/t 7/7/7  bodies 1
+frame-tilt-round                   PASS               vol 11797.692679 occt 11797.743339 brep 11797.743339 exact - dOcct 4.3e-6 dBbox 0.0e+0 dCom 1.3e-6 dExact - dBbxEx - faces o/b/t 8/8/8  bodies 1
+frame-tilt-circle                  PASS               vol 1539.206699 occt 1539.380400 brep 1539.380400 exact - dOcct 1.1e-4 dBbox 2.4e-16 dCom 2.9e-10 dExact - dBbxEx - faces o/b/t 3/3/3  bodies 1
+frame-tilt-slot                    PASS               vol 2102.571332 occt undefined brep 2102.654825 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/6/6  bodies 1
+frame-tilt-dshape-cw               PASS               vol 1570.619081 occt 1570.796327 brep 1570.796327 exact - dOcct 1.1e-4 dBbox 1.3e-16 dCom 1.1e-5 dExact - dBbxEx - faces o/b/t 4/4/4  bodies 1
+frame-tilt-plate-hole              PASS               vol 5497.428668 occt 5497.345175 brep 5497.345175 exact - dOcct 1.5e-5 dBbox 0.0e+0 dCom 1.2e-6 dExact - dBbxEx - faces o/b/t 7/7/7  bodies 1
+frame-negU-round                   PASS               vol 11797.692679 occt 11797.743339 brep 11797.743339 exact - dOcct 4.3e-6 dBbox 3.6e-16 dCom 1.5e-6 dExact - dBbxEx - faces o/b/t 8/8/8  bodies 1
+frame-negU-circle                  PASS               vol 1539.206699 occt 1539.380400 brep 1539.380400 exact - dOcct 1.1e-4 dBbox 5.3e-16 dCom 2.2e-10 dExact - dBbxEx - faces o/b/t 3/3/3  bodies 1
+frame-negU-slot                    PASS               vol 2102.571332 occt undefined brep 2102.654825 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/6/6  bodies 1
+frame-negU-dshape-cw               PASS               vol 1570.676564 occt 1570.796327 brep 1570.796327 exact - dOcct 7.6e-5 dBbox 5.3e-16 dCom 6.7e-6 dExact - dBbxEx - faces o/b/t 4/4/4  bodies 1
+frame-negU-plate-hole              PASS               vol 5497.428668 occt 5497.345175 brep 5497.345175 exact - dOcct 1.5e-5 dBbox 3.6e-16 dCom 1.3e-6 dExact - dBbxEx - faces o/b/t 7/7/7  bodies 1
+frame-swapped-bulge                PASS               vol 4698.734599 occt 4698.898778 brep 4698.898778 exact - dOcct 3.5e-5 dBbox 1.0e-15 dCom 1.2e-5 dExact - dBbxEx - faces o/b/t 6/6/6  bodies 1
+wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/g5/frames2.json 21

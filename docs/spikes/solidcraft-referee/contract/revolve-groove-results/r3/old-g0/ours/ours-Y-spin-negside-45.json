@@ -1,0 +1,21 @@
+{
+ "id": "Y-spin-negside-45",
+ "outcome": "built",
+ "volume": 3533.9371844484963,
+ "faces": 6,
+ "bbox": [
+  -20,
+  -14.142135623730951,
+  0,
+  -7.071067811865474,
+  0,
+  30.000000000000007
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-20,0],[-10,0],[-10,30],[-20,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":45,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

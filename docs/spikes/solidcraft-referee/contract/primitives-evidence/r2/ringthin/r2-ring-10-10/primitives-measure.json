@@ -1,0 +1,56 @@
+[
+ {
+  "id": "r2-ring-10-10",
+  "feature": "ring.degenerate",
+  "note": "ringRadius 0",
+  "script": "ring(10, 10);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "ring1",
+     "kind": "torus",
+     "ringRadius": 0,
+     "tubeRadius": 5,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "torus",
+  "analytic": 0,
+  "occt": {
+   "volume": 6.483702463810914e-14,
+   "com": [
+    -0.205479452054794,
+    -4.71302989016593,
+    -6.465753424657534
+   ],
+   "bbox": [
+    -5.0000001,
+    -5.0000001,
+    -5.0000001,
+    5.0000001,
+    5.0000001,
+    5.0000001
+   ],
+   "faces": 1,
+   "types": {
+    "torus": 1
+   }
+  },
+  "brep": {
+   "refused": "ring1 builds an empty solid (nothing is left of it) -- ring1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "ring1 (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 56
+ }
+]

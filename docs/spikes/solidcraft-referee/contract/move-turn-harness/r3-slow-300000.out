@@ -1,0 +1,7 @@
+s01 box cut by cylinder turned [30,0,0]                  wall=55.9s calls=3 slowest=55.0s cpu=54.8s timeouts=0 PASS     dVol=8.2e-6 dCom=8.8e-10 f=7/7
+s02 box cut by cylinder turned [30,45,60]                wall=64.1s calls=3 slowest=62.8s cpu=61.7s timeouts=0 PASS     dVol=9.9e-6 dCom=3.2e-9 f=7/7
+s06 two perpendicular equal cylinders join               wall=302.4s calls=3 slowest=300.2s cpu=2.2s timeouts=1 REFUSED  Join 1 is not built: it took longer than 300 seconds to compute, so it is shown without it -- try a simpler shape.
+s07 two perpendicular UNEQUAL cylinders join (control)   wall=135.8s calls=3 slowest=133.0s cpu=131.7s timeouts=0 PASS     dVol=5.0e-5 dCom=1.8e-8 f=7/7
+s08 join two overlapping copied rings                    wall=353.0s calls=3 slowest=300.1s cpu=49.0s timeouts=1 REFUSED  Join 1 is not built: it took longer than 300 seconds to compute, so it is shown without it -- try a simpler shape.
+s09 cylinder + turned ring join                          wall=311.4s calls=3 slowest=300.1s cpu=11.4s timeouts=1 REFUSED  Join 1 is not built: it took longer than 300 seconds to compute, so it is shown without it -- try a simpler shape.
+s11 ring, hole                                           wall=18.1s calls=2 slowest=14.3s cpu=18.7s timeouts=0 REFUSED  Hole 1 could not be built by this engine, so it is shown without it.

@@ -1,0 +1,1575 @@
+[
+ {
+  "name": "mir-turn30-frontback",
+  "script": "const a = box(30, 20, 10);\nturn(a, [0, 0, 30]);\nmirror(a, 'front-back');",
+  "shown": [
+   "box1",
+   "mir1"
+  ],
+  "last": "mir1",
+  "occt": {
+   "volume": 12000,
+   "faces": 12,
+   "types": {
+    "plane": 12
+   }
+  },
+  "brep": {
+   "volume": 12000,
+   "bbox": [
+    -17.99038105676658,
+    -48.48076211353316,
+    -5,
+    17.99038105676658,
+    16.160254037844386,
+    5
+   ],
+   "faces": 12,
+   "dVol": 0,
+   "dBbox": 0.0000018960951297616524
+  },
+  "guard": {
+   "verdict": "REFUSED",
+   "refused": "Mirror 1 could not be built by this engine, so it is shown without it."
+  },
+  "shipped": {
+   "verdict": "REFUSED",
+   "refused": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous"
+  },
+  "guardFeatures": "box1:built mir1:refused"
+ },
+ {
+  "name": "mir-turn30-leftright",
+  "script": "const a = box(30, 20, 10, { at: [20, 0, 0] });\nturn(a, [0, 0, 30]);\nmirror(a, 'left-right');",
+  "shown": [
+   "box1",
+   "mir1"
+  ],
+  "last": "mir1",
+  "occt": {
+   "volume": 12000,
+   "faces": 12,
+   "types": {
+    "plane": 12
+   }
+  },
+  "brep": {
+   "volume": 12000,
+   "bbox": [
+    -33.97114317029974,
+    -16.160254037844386,
+    -5,
+    37.99038105676658,
+    16.160254037844382,
+    5
+   ],
+   "faces": 12,
+   "dVol": 0,
+   "dBbox": 0.0000011152531548959923
+  },
+  "guard": {
+   "verdict": "REFUSED",
+   "refused": "Mirror 1 could not be built by this engine, so it is shown without it."
+  },
+  "shipped": {
+   "verdict": "REFUSED",
+   "refused": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous"
+  },
+  "guardFeatures": "box1:built mir1:refused"
+ },
+ {
+  "name": "mir-hole-turn-mirror",
+  "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nturn(a, [0, 0, 30]);\nmirror(a, 'front-back');",
+  "shown": [
+   "turn1",
+   "mir1"
+  ],
+  "last": "mir1",
+  "occt": {
+   "volume": 11748.67258771282,
+   "faces": 14,
+   "types": {
+    "plane": 12,
+    "cylinder": 2
+   }
+  },
+  "brep": {
+   "volume": 11748.67258771282,
+   "bbox": [
+    -17.99038105676658,
+    -48.48076211353316,
+    -5,
+    17.99038105676658,
+    16.160254037844386,
+    5
+   ],
+   "faces": 14,
+   "dVol": 0,
+   "dBbox": 0.0000018960951297616524
+  },
+  "guard": {
+   "verdict": "REFUSED",
+   "refused": "Mirror 1 could not be built by this engine, so it is shown without it."
+  },
+  "shipped": {
+   "verdict": "REFUSED",
+   "refused": "mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous"
+  },
+  "guardFeatures": "box1:built hole1:built turn1:built mir1:refused"
+ },
+ {
+  "name": "mir-turn90-frontback (flat face on the plane)",
+  "script": "const a = box(30, 20, 10);\nturn(a, [0, 0, 90]);\nmirror(a, 'front-back');",
+  "shown": [
+   "box1",
+   "mir1"
+  ],
+  "last": "mir1",
+  "occt": {
+   "volume": 11999.999999999998,
+   "faces": 10,
+   "types": {
+    "plane": 10
+   }
+  },
+  "brep": {
+   "volume": 12000,
+   "bbox": [
+    -10.000000000000002,
+    -45,
+    -5,
+    10.000000000000002,
+    15,
+    5
+   ],
+   "faces": 12,
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 1.1842378929335e-16
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 3.5527136788005e-16,
+   "dCom": 2.7742033006569156e-17,
+   "faces": 6,
+   "occtFaces": 10,
+   "faceTypes": {
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 10
+   },
+   "faceKeys": {
+    "plane": "truck-merges-edge-connected-same-surface-faces"
+   },
+   "volume": 12000,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 3.5527136788005e-16,
+   "dCom": 2.7742033006569156e-17,
+   "faces": 6,
+   "occtFaces": 10,
+   "faceTypes": {
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 10
+   },
+   "faceKeys": {
+    "plane": "truck-merges-edge-connected-same-surface-faces"
+   },
+   "volume": 12000,
+   "bodies": 1
+  },
+  "guardFeatures": "box1:built mir1:built"
+ },
+ {
+  "name": "mir-control-mirror-then-turn",
+  "script": "const a = box(30, 20, 10);\nconst m = mirror(a, 'front-back');\nturn(m, [0, 0, 30]);",
+  "shown": [
+   "box1",
+   "turn1"
+  ],
+  "last": "turn1",
+  "occt": {
+   "volume": 12000,
+   "faces": 10,
+   "types": {
+    "plane": 10
+   }
+  },
+  "brep": {
+   "volume": 12000,
+   "bbox": [
+    -22.99038105676658,
+    -34.82050807568877,
+    -5,
+    22.99038105676658,
+    14.820508075688773,
+    5
+   ],
+   "faces": 12,
+   "dVol": 0,
+   "dBbox": 2.0405869271511056e-16
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 1.5158245029548803e-16,
+   "dBbox": 4.081173854302211e-16,
+   "dCom": 7.791121226932165e-17,
+   "faces": 6,
+   "occtFaces": 10,
+   "faceTypes": {
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 10
+   },
+   "faceKeys": {
+    "plane": "truck-merges-edge-connected-same-surface-faces"
+   },
+   "volume": 12000.000000000002,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 1.5158245029548803e-16,
+   "dBbox": 4.081173854302211e-16,
+   "dCom": 7.791121226932165e-17,
+   "faces": 6,
+   "occtFaces": 10,
+   "faceTypes": {
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 10
+   },
+   "faceKeys": {
+    "plane": "truck-merges-edge-connected-same-surface-faces"
+   },
+   "volume": 12000.000000000002,
+   "bodies": 1
+  },
+  "guardFeatures": "box1:built mir1:built turn1:built"
+ },
+ {
+  "name": "mir-control-move-then-mirror",
+  "script": "const a = box(30, 20, 10);\nmove(a, [0, 5, 0]);\nmirror(a, 'front-back');",
+  "shown": [
+   "move1",
+   "mir1"
+  ],
+  "last": "mir1",
+  "occt": {
+   "volume": 11999.999999999998,
+   "faces": 10,
+   "types": {
+    "plane": 10
+   }
+  },
+  "brep": {
+   "volume": 12000,
+   "bbox": [
+    -15,
+    -25,
+    -5,
+    15,
+    15,
+    5
+   ],
+   "faces": 12,
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 0
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 0,
+   "dCom": 1.741861189847285e-17,
+   "faces": 6,
+   "occtFaces": 10,
+   "faceTypes": {
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 10
+   },
+   "faceKeys": {
+    "plane": "truck-merges-edge-connected-same-surface-faces"
+   },
+   "volume": 12000,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 1.5158245029548806e-16,
+   "dBbox": 0,
+   "dCom": 1.741861189847285e-17,
+   "faces": 6,
+   "occtFaces": 10,
+   "faceTypes": {
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 10
+   },
+   "faceKeys": {
+    "plane": "truck-merges-edge-connected-same-surface-faces"
+   },
+   "volume": 12000,
+   "bodies": 1
+  },
+  "guardFeatures": "box1:built move1:built mir1:built"
+ },
+ {
+  "name": "cone-hole",
+  "script": "const a = cone(14, 18);\nhole(a, { across: 3 });",
+  "shown": [
+   "hole1"
+  ],
+  "last": "hole1",
+  "occt": {
+   "volume": 814.5700951807823,
+   "faces": 3,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   }
+  },
+  "brep": {
+   "volume": 814.5700951807822,
+   "bbox": [
+    -7,
+    -7,
+    -9,
+    7,
+    7,
+    5.142857142857142
+   ],
+   "faces": 3,
+   "dVol": 1.3956667252360257e-16,
+   "dBbox": 6.908054375445415e-16
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 0.000004706236802008285,
+   "dBbox": 0.000012522836712872529,
+   "dCom": 0.0000021497957363766547,
+   "faces": 3,
+   "occtFaces": 3,
+   "faceTypes": {
+    "cone": 1,
+    "cylinder": 1,
+    "plane": 1
+   },
+   "occtTypes": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cone": "equal",
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 814.5662616210226,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 0.000004706236802008285,
+   "dBbox": 0.000012522836712872529,
+   "dCom": 0.0000021497957363766547,
+   "faces": 3,
+   "occtFaces": 3,
+   "faceTypes": {
+    "cone": 1,
+    "cylinder": 1,
+    "plane": 1
+   },
+   "occtTypes": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cone": "equal",
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 814.5662616210226,
+   "bodies": 1
+  },
+  "guardFeatures": "cone1:built hole1:built"
+ },
+ {
+  "name": "cone-move-hole",
+  "script": "const a = cone(14, 18);\nmove(a, [5, 5, 5]);\nhole(a, { across: 3 });",
+  "shown": [
+   "hole1"
+  ],
+  "last": "hole1",
+  "occt": {
+   "volume": 814.5700951807822,
+   "faces": 3,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   }
+  },
+  "brep": {
+   "volume": 814.5700951807821,
+   "bbox": [
+    -2,
+    -2,
+    -4,
+    12,
+    12,
+    10.142857142857142
+   ],
+   "faces": 3,
+   "dVol": 1.395666725236026e-16,
+   "dBbox": 3.5026754579723236e-16
+  },
+  "guard": {
+   "verdict": "REFUSED",
+   "refused": "Hole 1 could not be built by this engine, so it is shown without it."
+  },
+  "shipped": {
+   "verdict": "REFUSED",
+   "refused": "hole1 (hole): solidcraft refused it -- solid.cylinder: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 2 curved faces (cylinder); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 2 curved faces (cylinder)"
+  },
+  "guardFeatures": "cone1:built move1:built hole1:refused"
+ },
+ {
+  "name": "cone-turn-hole",
+  "script": "const a = cone(14, 18);\nturn(a, [0, 30, 0]);\nhole(a, { across: 3 });",
+  "shown": [
+   "hole1"
+  ],
+  "last": "hole1",
+  "occt": {
+   "volume": 850.8559985255387,
+   "faces": 3,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   }
+  },
+  "brep": {
+   "refused": "hole hole1: a cone can be drilled down its own axis (z), or parallel to it beside the axis, through the base or stopping at a flat floor, as long as the bore stays inside the base circle and clear of the tip; this bore is across the axis, reaches the base rim, or would leave the tip floating loose -- hole1 is shown without it."
+  },
+  "guard": {
+   "verdict": "REFUSED",
+   "refused": "Hole 1 could not be built by this engine, so it is shown without it."
+  },
+  "shipped": {
+   "verdict": "REFUSED",
+   "refused": "hole1 (hole): solidcraft refused it -- solid.cylinder: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 2 curved faces (cylinder); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 2 curved faces (cylinder)"
+  },
+  "guardFeatures": "cone1:built hole1:refused"
+ },
+ {
+  "name": "cone-hole-move",
+  "script": "const a = cone(14, 18);\nhole(a, { across: 3 });\nmove(a, [5, 5, 5]);",
+  "shown": [
+   "move1"
+  ],
+  "last": "move1",
+  "occt": {
+   "volume": 814.5700951807822,
+   "faces": 3,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   }
+  },
+  "brep": {
+   "volume": 814.5700951807821,
+   "bbox": [
+    -2,
+    -2,
+    -4,
+    12,
+    12,
+    10.142857142857142
+   ],
+   "faces": 3,
+   "dVol": 1.395666725236026e-16,
+   "dBbox": 3.5026754579723236e-16
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 0.000004711913029940356,
+   "dBbox": 0.00004382992849549794,
+   "dCom": 0.000002149340364583947,
+   "faces": 3,
+   "occtFaces": 3,
+   "faceTypes": {
+    "cone": 1,
+    "cylinder": 1,
+    "plane": 1
+   },
+   "occtTypes": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cone": "equal",
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 814.566256997337,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 0.000004711913029940356,
+   "dBbox": 0.00004382992849549794,
+   "dCom": 0.000002149340364583947,
+   "faces": 3,
+   "occtFaces": 3,
+   "faceTypes": {
+    "cone": 1,
+    "cylinder": 1,
+    "plane": 1
+   },
+   "occtTypes": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cone": "equal",
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 814.566256997337,
+   "bodies": 1
+  },
+  "guardFeatures": "cone1:built hole1:built move1:built"
+ },
+ {
+  "name": "cone-hole-turn",
+  "script": "const a = cone(14, 18);\nhole(a, { across: 3 });\nturn(a, [0, 30, 0]);",
+  "shown": [
+   "turn1"
+  ],
+  "last": "turn1",
+  "occt": {
+   "volume": 814.5700951807823,
+   "faces": 3,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   }
+  },
+  "brep": {
+   "volume": 814.5700951807818,
+   "bbox": [
+    -9.597892112205354,
+    -7,
+    -11.552608212475674,
+    4.834752391390944,
+    7,
+    4.945465355332816
+   ],
+   "faces": 3,
+   "dVol": 6.978333626180128e-16,
+   "dBbox": 7.183780339234447e-16
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 0.00000470659833300459,
+   "dBbox": 0.000012522836712872529,
+   "dCom": 0.000001740714534581014,
+   "faces": 3,
+   "occtFaces": 3,
+   "faceTypes": {
+    "cone": 1,
+    "cylinder": 1,
+    "plane": 1
+   },
+   "occtTypes": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cone": "equal",
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 814.5662613265303,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 0.00000470659833300459,
+   "dBbox": 0.000012522836712872529,
+   "dCom": 0.000001740714534581014,
+   "faces": 3,
+   "occtFaces": 3,
+   "faceTypes": {
+    "cone": 1,
+    "cylinder": 1,
+    "plane": 1
+   },
+   "occtTypes": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cone": "equal",
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 814.5662613265303,
+   "bodies": 1
+  },
+  "guardFeatures": "cone1:built hole1:built turn1:built"
+ },
+ {
+  "name": "prism8-hole",
+  "script": "const a = prism(8, 30, 12);\nhole(a, { across: 5 });",
+  "shown": [
+   "hole1"
+  ],
+  "last": "hole1",
+  "occt": {
+   "volume": 7401.133787795479,
+   "faces": 11,
+   "types": {
+    "plane": 10,
+    "cylinder": 1
+   }
+  },
+  "brep": {
+   "volume": 7401.13378779548,
+   "bbox": [
+    -15,
+    -15,
+    -6,
+    15,
+    15,
+    6
+   ],
+   "faces": 11,
+   "dVol": 1.2288586152471548e-16,
+   "dBbox": 0
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 0.0000052880085963998295,
+   "dBbox": 1.7763568394002505e-15,
+   "dCom": 5.573165730870517e-17,
+   "faces": 11,
+   "occtFaces": 11,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 10
+   },
+   "occtTypes": {
+    "plane": 10,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 7401.172925054572,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 0.0000052880085963998295,
+   "dBbox": 1.7763568394002505e-15,
+   "dCom": 5.573165730870517e-17,
+   "faces": 11,
+   "occtFaces": 11,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 10
+   },
+   "occtTypes": {
+    "plane": 10,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 7401.172925054572,
+   "bodies": 1
+  },
+  "guardFeatures": "prism1:built hole1:built"
+ },
+ {
+  "name": "prism8-hole-move",
+  "script": "const a = prism(8, 30, 12);\nhole(a, { across: 5 });\nmove(a, [10, 5, 3]);",
+  "shown": [
+   "move1"
+  ],
+  "last": "move1",
+  "occt": {
+   "volume": 7401.133787795479,
+   "faces": 11,
+   "types": {
+    "plane": 10,
+    "cylinder": 1
+   }
+  },
+  "brep": {
+   "volume": 7401.13378779548,
+   "bbox": [
+    -5,
+    -10,
+    -3,
+    25,
+    20,
+    9
+   ],
+   "faces": 11,
+   "dVol": 1.2288586152471548e-16,
+   "dBbox": 0
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 0.000005288008596276944,
+   "dBbox": 3.4046839421838135e-15,
+   "dCom": 7.251946429389431e-16,
+   "faces": 11,
+   "occtFaces": 11,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 10
+   },
+   "occtTypes": {
+    "plane": 10,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 7401.172925054571,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 0.000005288008596276944,
+   "dBbox": 3.4046839421838135e-15,
+   "dCom": 7.251946429389431e-16,
+   "faces": 11,
+   "occtFaces": 11,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 10
+   },
+   "occtTypes": {
+    "plane": 10,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 7401.172925054571,
+   "bodies": 1
+  },
+  "guardFeatures": "prism1:built hole1:built move1:built"
+ },
+ {
+  "name": "prism8-hole-turn",
+  "script": "const a = prism(8, 30, 12);\nhole(a, { across: 5 });\nturn(a, [20, 30, 40]);",
+  "shown": [
+   "turn1"
+  ],
+  "last": "turn1",
+  "occt": {
+   "volume": 7401.13378779548,
+   "faces": 11,
+   "types": {
+    "plane": 10,
+    "cylinder": 1
+   }
+  },
+  "brep": {
+   "volume": 7401.13378779548,
+   "bbox": [
+    -15.532334529445496,
+    -14.945467991068575,
+    -13.327742570375815,
+    15.532334529445492,
+    14.945467991068574,
+    13.327742570375815
+   ],
+   "faces": 11,
+   "dVol": 0,
+   "dBbox": 1.1885588597572206e-16
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 0.000005288008596276943,
+   "dBbox": 3.998479479972791e-16,
+   "dCom": 4.653825152104464e-17,
+   "faces": 11,
+   "occtFaces": 11,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 10
+   },
+   "occtTypes": {
+    "plane": 10,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 7401.172925054572,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 0.000005288008596276943,
+   "dBbox": 3.998479479972791e-16,
+   "dCom": 4.653825152104464e-17,
+   "faces": 11,
+   "occtFaces": 11,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 10
+   },
+   "occtTypes": {
+    "plane": 10,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 7401.172925054572,
+   "bodies": 1
+  },
+  "guardFeatures": "prism1:built hole1:built turn1:built"
+ },
+ {
+  "name": "prism6-hole-move",
+  "script": "const a = prism(6, 30, 12);\nhole(a, { across: 5 });\nmove(a, [10, 5, 3]);",
+  "shown": [
+   "move1"
+  ],
+  "last": "move1",
+  "occt": {
+   "volume": 6779.186321634719,
+   "faces": 9,
+   "types": {
+    "plane": 8,
+    "cylinder": 1
+   }
+  },
+  "brep": {
+   "volume": 6779.18632163472,
+   "bbox": [
+    -5,
+    -7.990381056766578,
+    -3,
+    25,
+    17.99038105676658,
+    9
+   ],
+   "faces": 9,
+   "dVol": 1.341598620575477e-16,
+   "dBbox": 1.77635683940025e-16
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 0.000005773149937675966,
+   "dBbox": 1.4802973661668755e-15,
+   "dCom": 8.568844659516864e-16,
+   "faces": 9,
+   "occtFaces": 9,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 8
+   },
+   "occtTypes": {
+    "plane": 8,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 6779.225458893809,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 0.000005773149937675966,
+   "dBbox": 1.4802973661668755e-15,
+   "dCom": 8.568844659516864e-16,
+   "faces": 9,
+   "occtFaces": 9,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 8
+   },
+   "occtTypes": {
+    "plane": 8,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 6779.225458893809,
+   "bodies": 1
+  },
+  "guardFeatures": "prism1:built hole1:built move1:built"
+ },
+ {
+  "name": "prism5-hole-turn",
+  "script": "const a = prism(5, 30, 12);\nhole(a, { across: 5 });\nturn(a, [20, 30, 40]);",
+  "shown": [
+   "turn1"
+  ],
+  "last": "turn1",
+  "occt": {
+   "volume": 6184.012035973052,
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   }
+  },
+  "brep": {
+   "volume": 6184.012035973054,
+   "bbox": [
+    -15.217723109757939,
+    -15.108642952925562,
+    -11.666599817002295,
+    13.911942634796906,
+    13.860367207858546,
+    14.278113229596176
+   ],
+   "faces": 8,
+   "dVol": 2.941438976775276e-16,
+   "dBbox": 1.2816087862326566e-16
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 0.000006328781197360164,
+   "dBbox": 3.5018842699165903e-16,
+   "dCom": 1.1676079119142839e-7,
+   "faces": 8,
+   "occtFaces": 8,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 7
+   },
+   "occtTypes": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 6184.051173232149,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 0.000006328781197360164,
+   "dBbox": 3.5018842699165903e-16,
+   "dCom": 1.1676079119142839e-7,
+   "faces": 8,
+   "occtFaces": 8,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 7
+   },
+   "occtTypes": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 6184.051173232149,
+   "bodies": 1
+  },
+  "guardFeatures": "prism1:built hole1:built turn1:built"
+ },
+ {
+  "name": "cyl-hole",
+  "script": "const a = cylinder(30, 12);\nhole(a, { across: 5 });",
+  "shown": [
+   "hole1"
+  ],
+  "last": "hole1",
+  "occt": {
+   "volume": 8246.680715673205,
+   "faces": 4,
+   "types": {
+    "cylinder": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 8246.680715673208,
+   "bbox": [
+    -15,
+    -15,
+    -6,
+    15,
+    15,
+    6
+   ],
+   "faces": 4,
+   "dVol": 4.411446171521547e-16,
+   "dBbox": 0
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 0.000026435218676357844,
+   "dBbox": 0.000023617475449810853,
+   "dCom": 2.6767808500081227e-16,
+   "faces": 4,
+   "occtFaces": 4,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "occtTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 8246.462712865132,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 0.000026435218676357844,
+   "dBbox": 0.000023617475449810853,
+   "dCom": 2.6767808500081227e-16,
+   "faces": 4,
+   "occtFaces": 4,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "occtTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 8246.462712865132,
+   "bodies": 1
+  },
+  "guardFeatures": "cyl1:built hole1:built"
+ },
+ {
+  "name": "cyl-hole-move",
+  "script": "const a = cylinder(30, 12);\nhole(a, { across: 5 });\nmove(a, [10, 5, 3]);",
+  "shown": [
+   "move1"
+  ],
+  "last": "move1",
+  "occt": {
+   "volume": 8246.680715673207,
+   "faces": 4,
+   "types": {
+    "cylinder": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 8246.680715673205,
+   "bbox": [
+    -5,
+    -10,
+    -3,
+    25,
+    20,
+    9
+   ],
+   "faces": 4,
+   "dVol": 2.205723085760773e-16,
+   "dBbox": 0
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 0.00002643521866400579,
+   "dBbox": 0.000046331360285023496,
+   "dCom": 1.60392024373449e-10,
+   "faces": 4,
+   "occtFaces": 4,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "occtTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 8246.462712865236,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 0.00002643521866400579,
+   "dBbox": 0.000046331360285023496,
+   "dCom": 1.60392024373449e-10,
+   "faces": 4,
+   "occtFaces": 4,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "occtTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 8246.462712865236,
+   "bodies": 1
+  },
+  "guardFeatures": "cyl1:built hole1:built move1:built"
+ },
+ {
+  "name": "cyl-hole-turn",
+  "script": "const a = cylinder(30, 12);\nhole(a, { across: 5 });\nturn(a, [20, 30, 40]);",
+  "shown": [
+   "turn1"
+  ],
+  "last": "turn1",
+  "occt": {
+   "volume": 8246.680715673205,
+   "faces": 4,
+   "types": {
+    "cylinder": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 8246.680715673208,
+   "bbox": [
+    -15.700325247074609,
+    -15.228042476731467,
+    -13.600010423389913,
+    15.700325247074609,
+    15.228042476731467,
+    13.600010423389913
+   ],
+   "faces": 4,
+   "dVol": 4.411446171521547e-16,
+   "dBbox": 2.262828077056854e-16
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 0.00002643521867679899,
+   "dBbox": 0.00001618619350615791,
+   "dCom": 3.8028369365611595e-16,
+   "faces": 4,
+   "occtFaces": 4,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "occtTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 8246.462712865128,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 0.00002643521867679899,
+   "dBbox": 0.00001618619350615791,
+   "dCom": 3.8028369365611595e-16,
+   "faces": 4,
+   "occtFaces": 4,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "occtTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 8246.462712865128,
+   "bodies": 1
+  },
+  "guardFeatures": "cyl1:built hole1:built turn1:built"
+ },
+ {
+  "name": "cyl-offaxis-hole-turn",
+  "script": "const a = cylinder(30, 12);\nhole(a, { across: 5, at: [6, 3] });\nturn(a, [20, 30, 40]);",
+  "shown": [
+   "turn1"
+  ],
+  "last": "turn1",
+  "occt": {
+   "volume": 8246.680715673205,
+   "faces": 4,
+   "types": {
+    "cylinder": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 8246.680715673208,
+   "bbox": [
+    -15.700325247074609,
+    -15.228042476731467,
+    -13.600010423389913,
+    15.700325247074609,
+    15.228042476731467,
+    13.600010423389913
+   ],
+   "faces": 4,
+   "dVol": 4.411446171521547e-16,
+   "dBbox": 2.262828077056854e-16
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 0.000026435218676357844,
+   "dBbox": 0.00001618619350615791,
+   "dCom": 4.5160413377783777e-7,
+   "faces": 4,
+   "occtFaces": 4,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "occtTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 8246.462712865132,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 0.000026435218676357844,
+   "dBbox": 0.00001618619350615791,
+   "dCom": 4.5160413377783777e-7,
+   "faces": 4,
+   "occtFaces": 4,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "occtTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "volume": 8246.462712865132,
+   "bodies": 1
+  },
+  "guardFeatures": "cyl1:built hole1:built turn1:built"
+ },
+ {
+  "name": "keep-disjoint",
+  "script": "const a = box(10, 10, 10);\nconst b = box(10, 10, 10, { at: [40, 0, 0] });\nkeep(a, b);",
+  "shown": [
+   "op1"
+  ],
+  "last": "op1",
+  "occtException": "[object WebAssembly.Exception]",
+  "guard": {
+   "refused": "Overlap 1 could not be built by this engine, so it is shown without it."
+  },
+  "shipped": {
+   "refused": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back"
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it."
+  }
+ },
+ {
+  "name": "keep-disjoint-by-move",
+  "script": "const a = box(10, 10, 10);\nconst b = box(10, 10, 10, { at: [5, 0, 0] });\nmove(b, [60, 0, 0]);\nkeep(a, b);",
+  "shown": [
+   "op1"
+  ],
+  "last": "op1",
+  "occtException": "[object WebAssembly.Exception]",
+  "guard": {
+   "refused": "Overlap 1 could not be built by this engine, so it is shown without it."
+  },
+  "shipped": {
+   "refused": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back"
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it."
+  }
+ },
+ {
+  "name": "keep-disjoint-by-turn",
+  "script": "const a = box(40, 4, 4);\nconst b = box(40, 4, 4, { at: [0, 8, 0] });\nturn(b, [0, 0, 90]);\nkeep(a, b);",
+  "shown": [
+   "op1"
+  ],
+  "last": "op1",
+  "occt": {
+   "volume": 63.99999999999999,
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 64.00000000000004,
+   "bbox": [
+    -2.0000000000000036,
+    -2,
+    -2,
+    2,
+    2,
+    2
+   ],
+   "faces": 6,
+   "dVol": 7.771561172376097e-16,
+   "dBbox": 1.3322676295501873e-15
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 1.1102230246251568e-16,
+   "dBbox": 4.440892098500626e-16,
+   "dCom": 1.455854128739177e-16,
+   "faces": 6,
+   "occtFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6
+   },
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "volume": 64,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 1.1102230246251568e-16,
+   "dBbox": 4.440892098500626e-16,
+   "dCom": 1.455854128739177e-16,
+   "faces": 6,
+   "occtFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6
+   },
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "volume": 64,
+   "bodies": 1
+  },
+  "guardFeatures": "box1:built box2:built op1:built"
+ },
+ {
+  "name": "cut-disjoint",
+  "script": "const a = box(10, 10, 10);\nconst b = box(10, 10, 10, { at: [40, 0, 0] });\ncut(a, b);",
+  "shown": [
+   "op1"
+  ],
+  "last": "op1",
+  "occt": {
+   "volume": 999.9999999999998,
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 999.9999999999999,
+   "bbox": [
+    -5,
+    -5,
+    -5,
+    5,
+    5,
+    5
+   ],
+   "faces": 6,
+   "dVol": 1.1368683772161606e-16,
+   "dBbox": 0
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 2.273736754432321e-16,
+   "dBbox": 0,
+   "dCom": 9.384057909551795e-18,
+   "faces": 6,
+   "occtFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6
+   },
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "volume": 1000,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 2.273736754432321e-16,
+   "dBbox": 0,
+   "dCom": 9.384057909551795e-18,
+   "faces": 6,
+   "occtFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6
+   },
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "volume": 1000,
+   "bodies": 1
+  },
+  "guardFeatures": "box1:built box2:built op1:built"
+ },
+ {
+  "name": "keep-overlap (control)",
+  "script": "const a = box(10, 10, 10);\nconst b = box(10, 10, 10, { at: [5, 0, 0] });\nkeep(a, b);",
+  "shown": [
+   "op1"
+  ],
+  "last": "op1",
+  "occt": {
+   "volume": 499.9999999999999,
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 499.99999999999994,
+   "bbox": [
+    0,
+    -5,
+    -5,
+    5,
+    5,
+    5
+   ],
+   "faces": 6,
+   "dVol": 1.1368683772161606e-16,
+   "dBbox": 0
+  },
+  "guard": {
+   "verdict": "PASS",
+   "dVol": 2.273736754432321e-16,
+   "dBbox": 0,
+   "dCom": 2.960594732333751e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6
+   },
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "volume": 500,
+   "bodies": 1
+  },
+  "shipped": {
+   "verdict": "PASS",
+   "dVol": 2.273736754432321e-16,
+   "dBbox": 0,
+   "dCom": 2.960594732333751e-17,
+   "faces": 6,
+   "occtFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6
+   },
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "volume": 500,
+   "bodies": 1
+  },
+  "guardFeatures": "box1:built box2:built op1:built"
+ },
+ {
+  "name": "keep-touching-face",
+  "script": "const a = box(10, 10, 10);\nconst b = box(10, 10, 10, { at: [10, 0, 0] });\nkeep(a, b);",
+  "shown": [
+   "op1"
+  ],
+  "last": "op1",
+  "occtException": "[object WebAssembly.Exception]",
+  "guard": {
+   "refused": "Overlap 1 could not be built by this engine, so it is shown without it."
+  },
+  "shipped": {
+   "refused": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_box1 came back"
+  },
+  "brep": {
+   "refused": "combine op1: the two shapes do not overlap, so keeping their overlap leaves nothing -- op1 is shown without it."
+  }
+ }
+]

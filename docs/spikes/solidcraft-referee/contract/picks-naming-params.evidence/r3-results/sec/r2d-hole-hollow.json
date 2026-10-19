@@ -1,0 +1,234 @@
+[
+ {
+  "label": "hole deep8 at[5,5] across6, open top, at [7,-5,3]",
+  "src": "const b=box(40,30,20,{at:[7,-5,3]})\nhole(b,{across:6,at:[5,5],deep:8})\nhollow(b,{wall:2,open:\"top\"})",
+  "outcome": "NO-REFERENCE",
+  "sc": 7711.150443641621,
+  "closedForm": 7152,
+  "dCF": 0.07818099044206107,
+  "scFaces": 16,
+  "scBodies": 1,
+  "occt": 23773.805328941537,
+  "occtRefusals": {
+   "shell1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+  },
+  "occtFaces": 8,
+  "brep": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.",
+  "brepRefusals": {
+   "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+  },
+  "features": [
+   "box1:built",
+   "hole1:built",
+   "shell1:built"
+  ]
+ },
+ {
+  "label": "same at origin",
+  "src": "const b=box(40,30,20)\nhole(b,{across:6,at:[5,5],deep:8})\nhollow(b,{wall:2,open:\"top\"})",
+  "outcome": "NO-REFERENCE",
+  "sc": 7711.150443641615,
+  "closedForm": 7152,
+  "dCF": 0.07818099044206031,
+  "scFaces": 16,
+  "scBodies": 1,
+  "occt": 23773.805328941537,
+  "occtRefusals": {
+   "shell1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+  },
+  "occtFaces": 8,
+  "brep": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.",
+  "brepRefusals": {
+   "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+  },
+  "features": [
+   "box1:built",
+   "hole1:built",
+   "shell1:built"
+  ]
+ },
+ {
+  "label": "hole centred deep8",
+  "src": "const b=box(40,30,20)\nhole(b,{across:6,deep:8})\nhollow(b,{wall:2,open:\"top\"})",
+  "outcome": "NO-REFERENCE",
+  "sc": 7711.150443641597,
+  "closedForm": 7152,
+  "dCF": 0.07818099044205776,
+  "scFaces": 16,
+  "scBodies": 1,
+  "occt": 23773.805328941533,
+  "occtRefusals": {
+   "shell1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+  },
+  "occtFaces": 8,
+  "brep": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.",
+  "brepRefusals": {
+   "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+  },
+  "features": [
+   "box1:built",
+   "hole1:built",
+   "shell1:built"
+  ]
+ },
+ {
+  "label": "hole deep 3",
+  "src": "const b=box(40,30,20)\nhole(b,{across:6,at:[5,5],deep:3})\nhollow(b,{wall:2,open:\"top\"})",
+  "outcome": "NO-REFERENCE",
+  "sc": 7459.844859232563,
+  "closedForm": 7152,
+  "dCF": 0.043043185015738686,
+  "scFaces": 16,
+  "scBodies": 1,
+  "occt": 23915.17699835308,
+  "occtRefusals": {
+   "shell1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+  },
+  "occtFaces": 8,
+  "brep": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.",
+  "brepRefusals": {
+   "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+  },
+  "features": [
+   "box1:built",
+   "hole1:built",
+   "shell1:built"
+  ]
+ },
+ {
+  "label": "hole deep 17",
+  "src": "const b=box(40,30,20)\nhole(b,{across:6,at:[5,5],deep:17})\nhollow(b,{wall:2,open:\"top\"})",
+  "outcome": "NO-REFERENCE",
+  "sc": 8163.500495687734,
+  "closedForm": 7152,
+  "dCF": 0.141429040224795,
+  "scFaces": 16,
+  "scBodies": 1,
+  "occt": 23519.33632400076,
+  "occtRefusals": {
+   "shell1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+  },
+  "occtFaces": 8,
+  "brep": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.",
+  "brepRefusals": {
+   "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+  },
+  "features": [
+   "box1:built",
+   "hole1:built",
+   "shell1:built"
+  ]
+ },
+ {
+  "label": "hole deep 19 (floor left 1)",
+  "src": "const b=box(40,30,20)\nhole(b,{across:6,at:[5,5],deep:19})\nhollow(b,{wall:2,open:\"top\"})",
+  "outcome": "REFUSED",
+  "sentence": "shell1 is not built: the hollow could not be cut from this part because a wall meets another face at a shallow angle -- use a thinner wall or move the hole.",
+  "closedForm": 7123.725666117692,
+  "dCF": null,
+  "occt": 23462.787656236145,
+  "occtRefusals": {
+   "shell1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+  },
+  "occtFaces": 8,
+  "brep": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.",
+  "brepRefusals": {
+   "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+  },
+  "features": [
+   "box1:built",
+   "hole1:built",
+   "shell1:refused"
+  ]
+ },
+ {
+  "label": "hole across 10 deep 8",
+  "src": "const b=box(40,30,20)\nhole(b,{across:10,at:[5,5],deep:8})\nhollow(b,{wall:2,open:\"top\"})",
+  "outcome": "NO-REFERENCE",
+  "sc": 8062.9687146171955,
+  "closedForm": 7152,
+  "dCF": 0.12737258313998817,
+  "scFaces": 16,
+  "scBodies": 1,
+  "occt": 23371.68146928204,
+  "occtRefusals": {
+   "shell1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+  },
+  "occtFaces": 8,
+  "brep": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.",
+  "brepRefusals": {
+   "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+  },
+  "features": [
+   "box1:built",
+   "hole1:built",
+   "shell1:built"
+  ]
+ },
+ {
+  "label": "hole in the wall zone (x=-17) deep 8",
+  "src": "const b=box(40,30,20)\nhole(b,{across:3,at:[-17,0],deep:8})\nhollow(b,{wall:2,open:\"top\"})",
+  "outcome": "NO-REFERENCE",
+  "sc": 7356.904189361492,
+  "closedForm": null,
+  "dCF": null,
+  "scFaces": 15,
+  "scBodies": 1,
+  "occt": 23943.45133223538,
+  "occtRefusals": {
+   "shell1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+  },
+  "occtFaces": 8,
+  "brep": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.",
+  "brepRefusals": {
+   "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+  },
+  "features": [
+   "box1:built",
+   "hole1:built",
+   "shell1:built"
+  ]
+ },
+ {
+  "label": "through hole then hollow open top",
+  "src": "const b=box(40,30,20)\nhole(b,{across:6,at:[5,5]})\nhollow(b,{wall:2,open:\"top\"})",
+  "outcome": "PASS",
+  "sc": 8000.160829051739,
+  "closedForm": 7152,
+  "dCF": 0.11859071994571292,
+  "scFaces": 14,
+  "scBodies": 1,
+  "occt": 8000.2300164692415,
+  "occtRefusals": {},
+  "occtFaces": 14,
+  "brep": 8000.230016469243,
+  "brepRefusals": {},
+  "features": [
+   "box1:built",
+   "hole1:built",
+   "shell1:built"
+  ]
+ },
+ {
+  "label": "blind hole from top, hollow open bottom",
+  "src": "const b=box(40,30,20,{at:[7,-5,3]})\nhole(b,{across:6,at:[5,5],deep:8})\nhollow(b,{wall:2,open:\"bottom\"})",
+  "outcome": "FAIL",
+  "sc": 7554.088935055584,
+  "closedForm": null,
+  "dCF": null,
+  "scFaces": 15,
+  "scBodies": 1,
+  "occt": 7529.5656819703,
+  "occtRefusals": {},
+  "occtFaces": 16,
+  "brep": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.",
+  "brepRefusals": {
+   "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+  },
+  "features": [
+   "box1:built",
+   "hole1:built",
+   "shell1:built"
+  ]
+ }
+]

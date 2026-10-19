@@ -1,0 +1,701 @@
+{
+ "pick/move-generic": {
+  "script": "const a = box(30, 30, 10);\nmove(a, [10, 10, 10]);\nround(a.edge('top', 'front'), 2);",
+  "v": "REFUSED",
+  "truck": {
+   "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -15, 9.774648292756861]: the nearest edge is 11.081 mm away"
+  },
+  "brep": {
+   "volume": 8974.247779607695,
+   "bbox": [
+    -5,
+    -5,
+    5,
+    25,
+    25,
+    15
+   ],
+   "faces": 7,
+   "dVol": 1.1283746847884586e-12,
+   "dBbox": 0
+  },
+  "tf": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -15, 9.774648292756861]: the nearest edge is 11.081 mm away"
+   }
+  ]
+ },
+ "pick/move-stale-hits-wrong-edge": {
+  "script": "const a = box(30, 30, 10);\nmove(a, [0, -30, 0]);\nround(a.edge('top', 'front'), 2);",
+  "v": "FAIL",
+  "truck": {
+   "volume": 8974.230891179117,
+   "occtVolume": 8974.247779617821,
+   "dVol": 0.0000018818779154203062,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 0.0019167684156442416,
+   "faces": 7,
+   "occtFaces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "faceOk": true,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "curved": true,
+   "bodies": [
+    "b_box1"
+   ],
+   "bbox": [
+    -15.000000000000005,
+    -45,
+    -5,
+    15.000000000000009,
+    -15,
+    5.0000000000000036
+   ],
+   "occtBbox": [
+    -15,
+    -45,
+    -5,
+    15,
+    -15,
+    5
+   ]
+  },
+  "brep": {
+   "volume": 8974.247779607695,
+   "bbox": [
+    -15,
+    -45,
+    -5,
+    15,
+    -15,
+    5
+   ],
+   "faces": 7,
+   "dVol": 1.1283746847884586e-12,
+   "dBbox": 0
+  },
+  "tf": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built"
+   }
+  ]
+ },
+ "pick/move-stale-hits-wrong-edge-x": {
+  "script": "const a = box(30, 30, 10);\nmove(a, [30, 0, 0]);\nround(a.edge('top', 'front'), 2);",
+  "v": "REFUSED",
+  "truck": {
+   "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -15, 9.774648292756861]: the nearest edge is 15.742 mm away"
+  },
+  "brep": {
+   "volume": 8974.247779607693,
+   "bbox": [
+    15,
+    -15,
+    -5,
+    45,
+    15,
+    5
+   ],
+   "faces": 7,
+   "dVol": 1.1285773746905223e-12,
+   "dBbox": 0
+  },
+  "tf": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, -15, 9.774648292756861]: the nearest edge is 15.742 mm away"
+   }
+  ]
+ },
+ "pick/turn-primitive-180z": {
+  "script": "const a = box(30, 20, 10);\nturn(a, [0, 0, 180]);\nround(a.edge('top', 'front'), 2);",
+  "v": "PASS",
+  "truck": {
+   "volume": 5974.23089117912,
+   "occtVolume": 5974.247779614656,
+   "dVol": 0.000002826872295760684,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 6.98752381334102e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "faceOk": true,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "curved": true,
+   "bodies": [
+    "b_box1"
+   ],
+   "bbox": [
+    -15.00000000000001,
+    -10.000000000000002,
+    -5,
+    15.000000000000005,
+    10.000000000000002,
+    5
+   ],
+   "occtBbox": [
+    -15.000000000000002,
+    -10.000000000000002,
+    -5,
+    15.000000000000002,
+    10.000000000000002,
+    5
+   ]
+  },
+  "brep": {
+   "volume": 5974.247779607696,
+   "bbox": [
+    -15.000000000000002,
+    -10.000000000000002,
+    -5,
+    15.000000000000002,
+    10.000000000000002,
+    5
+   ],
+   "faces": 7,
+   "dVol": 1.1649087407645717e-12,
+   "dBbox": 0
+  },
+  "tf": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built"
+   }
+  ]
+ },
+ "pick/turn-primitive-30": {
+  "script": "const a = box(30, 20, 10);\nturn(a, [10, 20, 30]);\nround(a.edge('top', 'front'), 2);",
+  "v": "PASS",
+  "truck": {
+   "volume": 5991.410295809521,
+   "occtVolume": 5991.4159265403305,
+   "dVol": 9.39799686519594e-7,
+   "dBbox": 0.000009439396008549455,
+   "dCom": 2.603044419081463e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "faceOk": true,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "curved": true,
+   "bodies": [
+    "b_box1"
+   ],
+   "bbox": [
+    -18.50927285738839,
+    -15.2581874695117,
+    -11.389144153541995,
+    18.509272857388392,
+    15.963477404669659,
+    11.389144153541995
+   ],
+   "occtBbox": [
+    -18.509272857388392,
+    -15.258331498945148,
+    -11.389144153541997,
+    18.509272857388392,
+    15.963477404669657,
+    11.389144153541997
+   ]
+  },
+  "brep": {
+   "volume": 5991.415926535904,
+   "bbox": [
+    -18.509272857388396,
+    -15.25833149894515,
+    -11.389144153541999,
+    18.509272857388396,
+    15.963477404669659,
+    11.389144153541999
+   ],
+   "faces": 7,
+   "dVol": 7.388087837335099e-13,
+   "dBbox": 1.9194236889659095e-16
+  },
+  "tf": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built"
+   }
+  ]
+ },
+ "pick/turn-derived-180z": {
+  "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nturn(a, [0, 0, 180]);\nround(a.edge('top', 'front'), 2);",
+  "v": "FAIL",
+  "truck": {
+   "volume": 5848.588058240377,
+   "occtVolume": 5848.584073471356,
+   "dVol": 6.813220039781e-7,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 0.002249151887733296,
+   "faces": 8,
+   "occtFaces": 8,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "faceOk": true,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "curved": true,
+   "bodies": [
+    "b_box1"
+   ],
+   "bbox": [
+    -15.00000000000001,
+    -10.000000000000002,
+    -5.0000000000000036,
+    15.000000000000005,
+    10.000000000000002,
+    5.0000000000000036
+   ],
+   "occtBbox": [
+    -15.000000000000002,
+    -10.000000000000002,
+    -5,
+    15.000000000000002,
+    10.000000000000002,
+    5
+   ]
+  },
+  "brep": {
+   "volume": 5848.5840734641015,
+   "bbox": [
+    -15.000000000000002,
+    -10.000000000000002,
+    -5,
+    15.000000000000002,
+    10.000000000000002,
+    5
+   ],
+   "faces": 8,
+   "dVol": 1.2403223840527398e-12,
+   "dBbox": 0
+  },
+  "tf": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built"
+   },
+   {
+    "id": "turn1",
+    "kind": "rotate",
+    "status": "built"
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built"
+   }
+  ]
+ },
+ "pick/turn-derived-30": {
+  "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nturn(a, [10, 20, 30]);\nround(a.edge('top', 'front'), 2);",
+  "v": "PASS",
+  "truck": {
+   "volume": 5848.588058239827,
+   "occtVolume": 5848.5840734713565,
+   "dVol": 6.813219097409679e-7,
+   "dBbox": 7.949471480588961e-8,
+   "dCom": 4.331814402840921e-7,
+   "faces": 8,
+   "occtFaces": 8,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6,
+    "cylinder": 2
+   },
+   "faceOk": true,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "curved": true,
+   "bodies": [
+    "b_box1"
+   ],
+   "bbox": [
+    -18.50927285738839,
+    -15.963477404669659,
+    -11.389144153541999,
+    18.03258416813295,
+    15.963477404669659,
+    11.389144153541997
+   ],
+   "occtBbox": [
+    -18.509272857388392,
+    -15.963477404669653,
+    -11.389144153541997,
+    18.0325856016282,
+    15.963477404669657,
+    11.389144153541997
+   ]
+  },
+  "brep": {
+   "volume": 5874.33629385641,
+   "bbox": [
+    -18.509272857388396,
+    -15.963477404669653,
+    -11.389144153541995,
+    18.509272857388396,
+    15.963477404669653,
+    11.389144153541995
+   ],
+   "faces": 7,
+   "dVol": 0.0044031546886472575,
+   "dBbox": 0.026434770159480404
+  },
+  "tf": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built"
+   },
+   {
+    "id": "turn1",
+    "kind": "rotate",
+    "status": "built"
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built"
+   }
+  ]
+ },
+ "pick/round-then-move": {
+  "script": "const a = box(30, 20, 10);\nround(a.edge('top', 'front'), 2);\nmove(a, [10, 5, 3]);",
+  "v": "PASS",
+  "truck": {
+   "volume": 5974.230890053703,
+   "occtVolume": 5974.247779614656,
+   "dVol": 0.0000028270606737742753,
+   "dBbox": 8.881784197001252e-16,
+   "dCom": 6.987995775662122e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "faceOk": true,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "curved": true,
+   "bodies": [
+    "b_box1"
+   ],
+   "bbox": [
+    -5.000000000000004,
+    -5,
+    -2,
+    25.00000000000001,
+    15,
+    8.000000000000004
+   ],
+   "occtBbox": [
+    -5,
+    -5,
+    -2,
+    25,
+    15,
+    8
+   ]
+  },
+  "brep": {
+   "volume": 5974.247779607694,
+   "bbox": [
+    -5,
+    -5,
+    -2,
+    25,
+    15,
+    8
+   ],
+   "faces": 7,
+   "dVol": 1.1653654483210658e-12,
+   "dBbox": 0
+  },
+  "tf": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   }
+  ]
+ },
+ "pick/round-then-turn": {
+  "script": "const a = box(30, 20, 10);\nround(a.edge('top', 'front'), 2);\nturn(a, [10, 20, 30]);",
+  "v": "PASS",
+  "truck": {
+   "volume": 5974.230891179125,
+   "occtVolume": 5974.247779614657,
+   "dVol": 0.000002826872294999504,
+   "dBbox": 7.949471421484065e-8,
+   "dCom": 4.264264492171033e-7,
+   "faces": 7,
+   "occtFaces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "occtTypes": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "faceOk": true,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "curved": true,
+   "bodies": [
+    "b_box1"
+   ],
+   "bbox": [
+    -18.509272857388392,
+    -15.963477404669653,
+    -11.389144153542002,
+    18.03258416813296,
+    15.963477404669657,
+    11.389144153541997
+   ],
+   "occtBbox": [
+    -18.509272857388392,
+    -15.963477404669653,
+    -11.389144153541997,
+    18.0325856016282,
+    15.963477404669657,
+    11.389144153541997
+   ]
+  },
+  "brep": {
+   "volume": 5974.2477796076955,
+   "bbox": [
+    -18.509272857388396,
+    -15.963477404669653,
+    -11.389144153541995,
+    18.032585601628202,
+    15.963477404669653,
+    11.389144153541995
+   ],
+   "faces": 7,
+   "dVol": 1.165213212468901e-12,
+   "dBbox": 2.225526173740351e-16
+  },
+  "tf": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built"
+   },
+   {
+    "id": "turn1",
+    "kind": "rotate",
+    "status": "built"
+   }
+  ]
+ },
+ "pick/hole-then-turn-then-hole": {
+  "script": "const a = box(30, 20, 10);\nhole(a, { across: 4 });\nturn(a, [0, 90, 0]);\nhole(a, { across: 3, deep: 5 });",
+  "v": "PASS",
+  "truck": {
+   "volume": 5865.120533352502,
+   "occtVolume": 5865.106542155748,
+   "dVol": 0.0000023854974592310876,
+   "dBbox": 1.999999912317923e-8,
+   "dCom": 9.126660167078261e-11,
+   "faces": 11,
+   "occtFaces": 11,
+   "faceTypes": {
+    "cylinder": 3,
+    "plane": 8
+   },
+   "occtTypes": {
+    "plane": 8,
+    "cylinder": 3
+   },
+   "faceOk": true,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "curved": true,
+   "bodies": [
+    "b_box1"
+   ],
+   "bbox": [
+    -5.0000000000000036,
+    -10,
+    -15,
+    5.000000000000003,
+    10,
+    15
+   ],
+   "occtBbox": [
+    -5.0000001,
+    -10,
+    -15,
+    5.0000001,
+    10,
+    15.000000000000002
+   ]
+  },
+  "brep": {
+   "volume": 5865.1065421496605,
+   "bbox": [
+    -5.000000000000001,
+    -10,
+    -15,
+    5.000000000000001,
+    10,
+    15
+   ],
+   "faces": 11,
+   "dVol": 1.0378751000026696e-12,
+   "dBbox": 1.999999947845059e-8
+  },
+  "tf": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built"
+   },
+   {
+    "id": "turn1",
+    "kind": "rotate",
+    "status": "built"
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built"
+   }
+  ]
+ }
+}

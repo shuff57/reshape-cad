@@ -1,0 +1,21 @@
+{
+ "id": "sf5-12-side-180",
+ "outcome": "built",
+ "volume": 1064.029975230793,
+ "faces": 7,
+ "bbox": [
+  8.879999999999997,
+  -14.290000000000001,
+  -14.29,
+  23.62,
+  14.29,
+  8.881784197001252e-16
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[0,1,0],\"y_dir\":[1,0,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-12.43,8.88],[-14.29,8.88],[-14.29,23.62],[-13.17,23.62],[-12.43,17.72]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":180,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

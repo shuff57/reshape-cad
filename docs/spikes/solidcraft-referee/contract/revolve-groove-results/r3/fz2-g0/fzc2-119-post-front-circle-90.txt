@@ -1,0 +1,1 @@
+fzc2-119-post-front-circle-90            NO-OCCT OCCT: OCCT built nothing | truck REFUSED groove1 (groove): the ring does not reach the part, so it would cut nothing. | brep REFUSED groove groove1: a circle sketch has no outline to spin  | ms 398 cpu 727

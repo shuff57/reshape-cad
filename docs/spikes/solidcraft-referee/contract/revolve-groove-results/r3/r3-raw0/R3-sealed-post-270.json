@@ -1,0 +1,149 @@
+[
+ {
+  "id": "R3-sealed-post-270",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const s2 = sketch('top'); s2.rect(4, 6, { at: [10, 15] }); groove(s2, cyl, 270);",
+  "translator": "raw0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R3-sealed-post-270",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 36568.13848770686,
+    "com": [
+     0.0665059842244021,
+     -0.06650596476873927,
+     14.999999999999993
+    ],
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 9,
+    "area": 7273.663103256525,
+    "types": {
+     "cylinder": 3,
+     "plane": 6
+    },
+    "components": {
+     "cylinder": 3,
+     "plane": 6
+    },
+    "bigCylinderComponents": 3,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it."
+   },
+   "ms": 7965,
+   "load": [
+    42.4,
+    40.2
+   ],
+   "cpuMs": 8746,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): solidcraft refused it -- solid.revolve: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 2 curved faces (cylinder) and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 2 curved faces (cylinder) and the tool has 6 curved faces (cylinder)"
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.circle.center",
+     "params": {
+      "center": [
+       0,
+       0
+      ],
+      "diameter": 40
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): solidcraft refused it -- solid.revolve: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 2 curved faces (cylinder) and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 2 curved faces (cylinder) and the tool has 6 curved faces (cylinder)",
+    "firstRefusal": "groove1 (groove): solidcraft refused it -- solid.revolve: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 2 curved faces (cylinder) and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 2 curved faces (cylinder) and the tool has 6 curved faces (cylinder)"
+   },
+   "outcome": "REFUSED"
+  },
+  "analytic": {
+   "volume": 36568.13848778519,
+   "dOcct": 2.141910607313184e-12,
+   "dBrep": null,
+   "truckRefused": true
+  },
+  "caseMs": 8215
+ }
+]

@@ -1,0 +1,37 @@
+5 WRONG-UNREFUSED const b = cuboid(30.1,32.9,35.2) ; bevel(b.edge('back','right'), 41.7) ratio 1.385 OCCT 34858.208 truck 7984.943999999999 brepRefused true
+10 WRONG-UNREFUSED const b = cuboid(35.4,44.9,29.9) ; bevel(b.edge('front','right'), 49) ratio 1.384 OCCT 47524.854 truck 14646.365500000002 brepRefused true
+11 WRONG-UNREFUSED const b = cuboid(12.7,29.2,34) ; bevel(b.edge('back','left'), 16.1) ratio 1.268 OCCT 12608.559999999998 truck 8398.510000000002 brepRefused true
+13 WRONG-UNREFUSED const b = cuboid(28.6,21.1,37) ; bevel(b.edge('bottom','left'), 41.9) ratio 1.465 OCCT 22328.02 truck 5925.829500000003 brepRefused true
+15 WRONG-UNREFUSED const b = cuboid(20.5,17.5,8.4) ; bevel(b.edge('top','front'), 10.6) ratio 1.262 OCCT 3013.5 truck 1911.4199999999992 brepRefused true
+16 WRONG-UNREFUSED const b = cuboid(33.2,8.6,32.8) ; bevel(b.edge('bottom','right'), 49) ratio 1.494 OCCT 9365.055999999999 truck 1242.7000000000005 brepRefused true
+17 WRONG-UNREFUSED const b = cuboid(19.1,47.5,34) ; bevel(b.edge('front','right'), 23.9) ratio 1.251 OCCT 30846.5 truck 21527.610000000004 brepRefused true
+19 WRONG-UNREFUSED const b = cuboid(16.4,40.5,42.5) ; bevel(b.edge('front','left'), 24.4) ratio 1.488 OCCT 28228.5 truck 16937.100000000002 brepRefused true
+37 WRONG-UNREFUSED const b = cuboid(13.6,36.9,26.6) ; bevel(b.edge('bottom','left'), 18.2) ratio 1.338 OCCT 13348.944000000003 truck 7627.968 brepRefused true
+40 WRONG-UNREFUSED const b = cuboid(45,35,39.8) ; bevel(b.edge('bottom','front'), 51) ratio 1.457 OCCT 62684.999999999985 truck 12744.899999999978 brepRefused true
+42 WRONG-UNREFUSED const b = cuboid(44.5,18.9,31.6) ; bevel(b.edge('top','right'), 34.6) ratio 1.095 OCCT 26577.179999999993 truck 15349.067999999992 brepRefused true
+63 WRONG-UNREFUSED const b = cuboid(8.3,27.3,34.6) ; bevel(b.edge('top','right'), 11.7) ratio 1.41 OCCT 7840.014 truck 6129.2595 brepRefused true
+65 WRONG-UNREFUSED const b = cuboid(12.8,29.9,26.1) ; bevel(b.edge('front','left'), 14.4) ratio 1.125 OCCT 9988.992 truck 7316.352 brepRefused true
+67 WRONG-UNREFUSED const b = cuboid(32,35,38.5) ; bevel(b.edge('front','left'), 41.5) ratio 1.297 OCCT 43119.99999999999 truck 12517.3125 brepRefused true
+72 WRONG-UNREFUSED const b = cuboid(8,36.6,8.2) ; bevel(b.edge('back','right'), 11.7) ratio 1.462 OCCT 2400.9599999999996 truck 1895.8400000000001 brepRefused true
+76 WRONG-UNREFUSED const b = cuboid(11.9,21.4,45.4) ; bevel(b.edge('back','left'), 13.2) ratio 1.109 OCCT 11561.563999999998 truck 7644.678999999996 brepRefused true
+79 WRONG-UNREFUSED const b = cuboid(25,20,9.7) ; bevel(b.edge('bottom','back'), 12.7) ratio 1.309 OCCT 4849.999999999999 truck 2946.375 brepRefused true
+85 WRONG-UNREFUSED const b = cuboid(15.3,35.1,37.3) ; bevel(b.edge('front','right'), 18.1) ratio 1.183 OCCT 20031.218999999994 truck 14067.508499999996 brepRefused true
+86 WRONG-UNREFUSED const b = cuboid(28.1,45.2,44.4) ; bevel(b.edge('bottom','left'), 39.1) ratio 1.391 OCCT 56393.327999999994 truck 24576.821999999996 brepRefused true
+88 WRONG-UNREFUSED const b = cuboid(27.9,46.3,37.3) ; bevel(b.edge('bottom','front'), 42.4) ratio 1.137 OCCT 48183.02099999999 truck 23467.10849999999 brepRefused true
+98 WRONG-UNREFUSED const b = cuboid(12.2,27.1,35.5) ; bevel(b.edge('back','right'), 12.3) ratio 1.008 OCCT 11737.01 truck 9051.789999999999 brepRefused true
+103 WRONG-UNREFUSED const b = cuboid(22.7,39.7,35.1) ; bevel(b.edge('bottom','front'), 41.4) ratio 1.179 OCCT 31631.769 truck 12661.606000000002 brepRefused true
+104 WRONG-UNREFUSED const b = cuboid(35.9,34.6,19.5) ; bevel(b.edge('top','left'), 24.4) ratio 1.251 OCCT 24221.73 truck 14337.375 brepRefused true
+108 WRONG-UNREFUSED const b = cuboid(21.4,29.3,18.4) ; bevel(b.edge('bottom','right'), 27.6) ratio 1.5 OCCT 11537.167999999996 truck 2180.5059999999976 brepRefused true
+129 WRONG-UNREFUSED const b = cuboid(28.1,18.4,22.3) ; bevel(b.edge('bottom','front'), 25.6) ratio 1.391 OCCT 11529.992000000002 truck 3203.540499999996 brepRefused true
+132 WRONG-UNREFUSED const b = cuboid(9.3,46.8,29.1) ; bevel(b.edge('bottom','front'), 32.9) ratio 1.131 OCCT 12665.484 truck 7699.4235 brepRefused true
+139 WRONG-UNREFUSED const b = cuboid(31.5,45.8,32.4) ; round(b.edge('back','right'), 31.5) ratio 1 OCCT 46743.479999999996 truck 39841.715364246054 brepRefused true
+141 WRONG-UNREFUSED const b = cuboid(38.4,37.1,39.8) ; bevel(b.edge('bottom','back'), 37.1) ratio 1 OCCT 56700.672 truck 30273.59999999998 brepRefused true
+154 WRONG-UNREFUSED const b = cuboid(18.6,30,43.7) ; bevel(b.edge('back','right'), 21.5) ratio 1.156 OCCT 24384.600000000006 truck 14468.196000000002 brepRefused true
+158 WRONG-UNREFUSED const b = cuboid(24.5,41,43.5) ; round(b.edge('top','right'), 24.5) ratio 1 OCCT 43695.74999999999 truck 38412.39184381337 brepRefused true
+163 WRONG-UNREFUSED const b = cuboid(46.6,28.7,31.4) ; bevel(b.edge('back','right'), 38.6) ratio 1.345 OCCT 41994.988 truck 20141.373000000003 brepRefused true
+179 WRONG-UNREFUSED const b = cuboid(33.7,37.9,29.8) ; bevel(b.edge('top','front'), 34) ratio 1.141 OCCT 38061.454 truck 18880.088 brepRefused true
+182 WRONG-UNREFUSED const b = cuboid(26,22.2,20.8) ; bevel(b.edge('back','left'), 30.5) ratio 1.374 OCCT 12005.759999999998 truck 3258.216000000002 brepRefused true
+183 WRONG-UNREFUSED const b = cuboid(36.6,28.9,32.5) ; bevel(b.edge('top','back'), 34.9) ratio 1.208 OCCT 34376.549999999996 truck 12851.175000000001 brepRefused true
+190 WRONG-UNREFUSED const b = cuboid(9,24,24.8) ; bevel(b.edge('back','left'), 12.6) ratio 1.4 OCCT 5356.800000000001 truck 3548.8800000000006 brepRefused true
+{"match":125,"both-refused":40,"WRONG-UNREFUSED":35}
+EXIT 0

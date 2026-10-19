@@ -1,0 +1,212 @@
+{
+ "group": "fillet-chamfer",
+ "rig": {
+  "solidcraft": "fe3717f via sc-referee-pkg",
+  "oracles": "live OCCT replicad-opencascadejs, live brep-rs archive/brep-rs/pkg, closed forms",
+  "cases": 291,
+  "tally": {
+   "PASS": 151,
+   "oracle-could-not-build": 6,
+   "REFUSED": 72,
+   "FAIL": 20,
+   "script-refused": 42
+  }
+ },
+ "rows": [
+  {
+   "feature": "round(shape,size) whole-shape fillet of a BOX (sets primitive round, roundStyle fillet)",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). Interpreter: round(cuboid(40,40,20),4) -> {kind:box,round:4,roundStyle:fillet}. Box 40x40x20 r4: SolidCraft 30711.4969 vs OCCT 30712.2592 and closed form 30712.2592 (rbox formula), dVol 2.5e-5 (curved tessellation bar), faces 26/26/26 (O/brep/truck), brep-rs 1.4e-11. Off-centre 40x30x12 at [15,-7,3] r2.5: 1.8e-5, 26 faces. r5.9: 9.5e-5. r0.05: 1.1e-6, r0.001: 6.6e-9. r=6 (half the 12 thick side): SolidCraft builds 12154.0616 vs closed form 12155.2561 (9.8e-5, 10 faces) while OCCT throws 'radius too big' and brep-rs refuses. Then turn/hole/subtract/join (w-box-then-*): 1.8e-5..3.0e-5 vs OCCT. Caveats: (a) at r<=0.05 the 8 corner patches are typed cone, not sphere, by solidcraft (counts equal 26; geometry within 1.1e-6), the harness flags this as a face-type label mismatch. (b) interpreter lets round(b,-2) through (kernel refuses, see sizes row) and round(b,0) is a silent sharp box (doc round 0 is falsy), which is literally correct. (c) brep-rs silently treats round -2 as +2 (14129.156), irrelevant to SolidCraft."
+  },
+  {
+   "feature": "round(shape,size) whole-shape fillet of a CYLINDER (both rims)",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). cylinder(24,30) r3: SolidCraft 13296.1657 vs OCCT = closed form (Pappus) 13296.6935, dVol 4.0e-5, faces 5/5/5; r11: 1.8e-5; r0.05: 1.1e-4 (tessellation); at [5,3,2]: same. Then subtract box: 5.1e-5 vs OCCT. Size at or beyond the limits is refused, see next row."
+  },
+  {
+   "feature": "whole-shape round with size >= half the thinnest side of a box / >= radius of a cylinder / 1000",
+   "status": "refused",
+   "refusalSentence": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). Box 40x30x12 r8: SolidCraft refuses, brep-rs refuses, OCCT returns volume 20667.37 which is LARGER than the unrounded box (14400), i.e. the OCCT oracle is wrong there, so refusing is the right outcome. r1000: refused. cylinder(24,30) r12 (=R): SolidCraft and brep-rs refuse (OCCT builds a dome 9952.5655, so this is a capability gap, refused honestly); r13: refused (OCCT also throws); cylinder(60,30) r16: OCCT 123127.8 (> cylinder volume 84823, wrong), SolidCraft refuses. box r1e-6: refused 'fillet size must be positive' (the size is positive; the wording is misleading)."
+  },
+  {
+   "feature": "round(shape,size) on any shape other than a box or cylinder (sphere, ring, cone, prism, wedge, pull, spin, join/cut/keep result, hole, hollow, move, repeat, a sketch)",
+   "status": "refused",
+   "refusalSentence": "Rounding works on a shape, not a combination. Round the shape before you cut it.",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). Refused by the reSHape Script interpreter before any kernel is asked (whyCannotRound in model-types.ts), 16/16 cases wx-* (wx-mirror was my own bad mirror() call and is not counted; round(b) after mirror(b,'left-right') is accepted and rounds the pre-mirror box, so both copies come out rounded): sphere/ring 'That shape has no edges to round — it is curved all the way round.'; cone 'Rounding a cone is not supported yet.'; prism and wedge 'Rounding does not work on this shape.'; pull/spin 'Rounding works on a shape you build with a tool like Box or Cylinder, not one pulled from a sketch. If its sketch has corners, use Round a corner in the Rules panel before you pull it.'; subtract 'Rounding works on a shape, not a combination. Round the shape before you cut it.'; hole 'Rounding works on the shape, not the hole cut into it. Round the shape before you drill it.'; hollow 'Rounding works on a shape, not a hollowed-out one. A hollow shape rounds its edges one at a time: pick an edge and round that.'; move 'Rounding the whole shape works on the original, not a moved copy — round it before you move it, or click one edge of this shape in the viewport to round just that edge.'; repeat 'Rounding works on the original shape, not a repeated copy. Round it before you repeat it.'; round(sketch) 'round() needs a shape or an edge (shape.edge(a, b)) to round.'. Independent of the kernel, so identical on SolidCraft. "
+  },
+  {
+   "feature": "round(shape.edge(faceA,faceB),size) on a box edge: all 12 edges, either argument order",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). PICK: brep-rs resolve via phase0 translator; phase4 browser resolver not run. 12 edges of cuboid(40,30,12,{at:[15,-7,3]}) r2 (ids e-fillet-*-r2): worst SolidCraft deviation from the closed form (V - (1-pi/4) r^2 L) 1.6e-6, faces 7/7/7 on every one; two swapped-order cases (front,top) and (right,back): 1.6e-6 and 4.7e-7. Sizes r0.5..r11 on the 12 high face: 2.2e-7..2.9e-5. r12 (equals the face height): SolidCraft 13163.4363 vs closed form 13163.8934 (3.5e-5, 6 faces) while OCCT and brep-rs both REFUSE ('would not fit its edge'), so the harness's FAIL there is the oracle refusing, not a wrong solid. Wrong-pick negative controls (pick the opposite edge): 42/42 rejected across this and the other pick-bearing rows, smallest centre-of-mass miss 8.6e-5 vs tolerance 3e-5, so the score does see a wrong edge. Edge fillet then hole/repeat/move/turn (o-edge-then-*): 1.3e-6..1.6e-6 vs OCCT."
+  },
+  {
+   "feature": "round(shape.edge(faceA,faceB),size) with size larger than the face (13 on a 12 high face, 1000, 0, negative, 1e-6)",
+   "status": "refused",
+   "refusalSentence": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [15, -22, 15.366197723675814]: the nearest edge is 6.366 mm away",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). 13: refused (OCCT and brep-rs refuse too). 1000: refused. 0 and -2: the interpreter accepts them (only checks for a number); SolidCraft refuses, OCCT and brep-rs refuse. 1e-6: refused although positive; 0.001 builds (8.0e-10 vs closed form). In every case the sentence the rig surfaces is the LAST pick-retry's error ('no edge at [...]: the nearest edge is N mm away'), not the real cause, which the first attempt reports ('not supported yet: the blend is larger than the neighbouring faces' / 'invalid input: fillet size must be positive'). The student sentence is plain but names the wrong cause; the translator (phase0/translate.mjs variants loop) should surface the first error. scErrors per case are in cases-results.json."
+  },
+  {
+   "feature": "round(cylinder.edge(top|bottom, side),size): rim fillet, either argument order, upright or turned",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). PICK: brep-rs resolve via phase0 translator; phase4 browser resolver not run. cylinder(24,30,{at:[5,3,2]}) r3: top/side, bottom/side, side/top, side/bottom all 13433.6412 vs closed form (Pappus) 13434.1869 = OCCT = brep-rs, dVol 4.1e-5, faces 4/4/4; r0.5 9.1e-6; r11 1.7e-5. top then bottom rim: 4.0e-5. Turned about x90, y90, z30: 4.1e-5 (brep-rs refuses the turned ones, OCCT and closed form agree). Short disc R20 H2 r0.5: 7.6e-6 top and bottom. Rod R1 H30 r0.3: 1.1e-4 / 1.2e-4 (tessellation). Cylinder at [200,-150,80]: 4.0e-5. The rim centroid is the circle centre, which is not on the edge, so the translator retries the pick at centre+radius along x/y/z (VARIANT>1 on these cases); each build was checked against the closed form. 'front' on a cylinder is accepted by the interpreter and resolved to the same rim by all three kernels."
+  },
+  {
+   "feature": "round(cylinder.edge(top|bottom, side),size) with size >= cylinder radius (12, 13, 16)",
+   "status": "refused",
+   "refusalSentence": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [5, 3, 29]: the nearest edge is 16.924 mm away",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). r12 (=R): OCCT builds a dome (11762.1229 = closed form), brep-rs refuses/returns the unrounded cylinder with 1.5e-1 error, SolidCraft refuses. r13, r16: all three refuse. Same misattributed sentence as the box case: the shown error is the last retry ('no edge at [5, 3, 29]: the nearest edge is 16.924 mm away'); the first attempt's real reason is 'the blend is larger than a corner radius'. Round twice on the same rim (r3 then r1): refused with the same kind of sentence (nearest edge 14.958 mm away)."
+  },
+  {
+   "feature": "bevel(shape.edge(faceA,faceB),size) / chamfer on a box edge: all 12 edges",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). PICK: brep-rs resolve via phase0 translator; phase4 browser resolver not run. 12 edges of cuboid(40,30,12,{at:[15,-7,3]}) d2: worst deviation from the closed form 0.5 d^2 L is 1.3e-16 (planar, bar 1e-9), faces 7/7/7, brep-rs 1.3e-16. d0.5, d5, d11: 0 exact. d12 (equals the face height): 11520.0000 exact vs closed form, OCCT and brep-rs REFUSE ('would not fit its edge'). d13 (larger than the 12 high face): SolidCraft builds 11040.0000, which equals the closed form of the chamfer plane clipped by the bottom face (12*13-72)*40 removed; OCCT and brep-rs refuse. That build is geometrically exact but is no longer a chamfer of one edge (the front face disappears); a guard that refuses size > adjacent face width would match the reference kernels. d1000, 0, -1: refused (misleading 'no edge at' sentence, real cause 'chamfer size must be positive' / not fit)."
+  },
+  {
+   "feature": "bevel(cylinder.edge(top|bottom, side),size): rim chamfer",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). cylinder(24,30,{at:[5,3,2]}) d3: top/side, bottom/side, side/top, side/bottom all 13259.2301 vs closed form 13260.6626, dVol 1.1e-4 (cone face, tessellation-derived), faces 4/4/4; d11 1.4e-5; fillet top + bevel bottom 4.0e-5. Turned cylinders x90/y90/z30: 1.1e-4. Rod R1 d0.3 1.2e-4. d12 (=R), d13, d31: refused (OCCT builds d12, d13; refused here with the same last-retry sentence as the fillet case)."
+  },
+  {
+   "feature": "bevel(shape,size) on a whole shape",
+   "status": "refused",
+   "refusalSentence": "bevel() needs one edge: a whole shape is not supported yet -- chamfer one edge with bevel(shape.edge(faceA, faceB), size), or round the whole box or cylinder with fillet(shape, size).",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). Interpreter refuses before any kernel: bevel(cuboid(40,40,20),3) -> error line 2. bevel(list that is not edges), bevel(b.face('top')), round(b.face('top')) also refused with sentences (x-bevel-list-not-edges, x-bevel-face-ref, x-round-face-ref)."
+  },
+  {
+   "feature": "edge(a,b) arguments: face words top, bottom, front, back, left, right (and side on a cylinder); interpreter rejections of same face, unknown word, side on a box",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). PICK: brep-rs resolve via phase0 translator; phase4 browser resolver not run. All six words on a box and top/bottom with side on a cylinder build and match (rows above). Interpreter refusals, exact: edge('top','top') '.edge() needs two DIFFERENT faces to name the edge between them.'; edge('top','lid') '.edge() does not know the face \"lid\". Faces are named top, bottom, front, back, left, right.'; box.edge('top','side') '.edge(): \"side\" is the curved wall of a cylinder, not a flat face here.'; round(edge, size, extra) 'round() takes a shape or edge and a size; the third argument (3) was ignored. To pick the edge, use shape.edge(faceA, faceB).'; round(edge,'big') 'round's size has to be a number, and you gave it the text \"big\".'. Prism/wedge face words: n-prism5-front resolves to the nearest face on all three kernels."
+  },
+  {
+   "feature": "edge(a,b) with two faces that share no edge (top,bottom / left,right / cylinder top,bottom)",
+   "status": "refused",
+   "refusalSentence": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). round(b.edge('top','bottom'),2), bevel(b.edge('left','right'),2), cylinder top/bottom: OCCT and brep-rs report 'edge could not be found' and leave the shape unrounded; the SolidCraft rig refuses (3/3). The sentence is the rig's brep-rs-based one; the shipping resolver says 'matches no edge on <body> (the two faces do not meet there any more, or never did); not guessing' (resolve-names.mjs:333, read not run). Same for pocket edge('front', wall1) (not adjacent)."
+  },
+  {
+   "feature": "edge(face word, part.wall(sketch,n)) and edge(part.wall(a), part.wall(b)): pocket wall edges (top rim of one wall, vertical corner between two walls, bottom edge of a through pocket)",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). PICK: brep-rs resolve via phase0 translator; phase4 browser resolver not run. 60x40x12 plate, 20x10 pocket 4 deep. top/wall1 fillet r1: SolidCraft 27995.7016 vs OCCT = brep-rs 27995.7080 (2.3e-7), 12 faces; wall3 same; top/wall2 bevel d1: 27995.0000 exact; swapped argument order same; wall1/wall2 vertical (concave, adds material) fillet r1: 28000.8597 vs OCCT 28000.8584 (4.5e-8) (brep-rs refuses inside corners); same as bevel 28002.0000 exact; all four corners fillet: 28003.4387 vs 28003.4336 (1.8e-7); through pocket, bottom/wall1 fillet: 26395.7016 vs 26395.7080 (2.4e-7). Refusals: edge('front', wall1) (not adjacent) is refused in the rig ('the edge could not be resolved to a point (brep-rs resolve gave nothing)', OCCT/brep-rs also report not found). Interpreter: wall(sk,9) '.wall() needs a side number from 1 to 4 (the sketch has 4), and you gave it 9.'; wall without a pocket '.wall() names a face a pocket cut, and no pocket(...) was cut from that sketch.'; edge(wall1, wall1) '.edge() needs two DIFFERENT faces to name the edge between them.'"
+  },
+  {
+   "feature": "round(...) of two or three adjacent edges that meet at a corner (sequential round calls on one box); parallel and vertical edge sets",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). SolidCraft builds the literal solid (box minus each named fillet, mitred where two meet) and agrees with independent closed forms: two adjacent top edges r2 14340.6567 vs 14340.6784 (1.5e-6, 8 faces); r2 then r3 3.0e-6; r3 then r2 3.1e-6; r11+r11 4.7e-5; three fillets at one vertex (sphere patch) 14330.9058 vs 14330.9498 = OCCT (3.1e-6, 10 faces); two parallel edges 3.1e-6; four vertical edges 1.9e-6 vs OCCT. THE HARNESS REPORTS FAIL ON THE TWO-ADJACENT CASES BECAUSE THE ORACLES ARE WRONG THERE, not SolidCraft: OCCT's second fillet silently also rounds the vertical edge (tangent-chain propagation: its two-fillet volume 14330.9498 equals its own three-fillet volume, its third round then reports 'edge could not be found'), and brep-rs refuses the second round and returns 14365.6637 (one fillet). Evidence is the closed form (box minus the union of the two removal prisms, overlap r^3 (5/3 - pi/2) at r2), not OCCT."
+  },
+  {
+   "feature": "round(...) of a closed loop of 4 edges (top loop of a box, all 12 edges one by one) or a chain that ends on already rounded corners",
+   "status": "refused",
+   "refusalSentence": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [15, 8, 15.366197723675814]: the nearest edge is 6.366 mm away)",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). Top loop (4 calls) and all-12 sequential: first two/eight fillets build, then 'round3'/'round9' is refused; the dependent calls are refused with a pointer to it. Real first-attempt error: 'not supported yet: degenerate rolling-ball spine'; the shown sentence is the last retry's. (Contrast: whole-shape round of the same box in one call builds, and 12 bevels one by one build, exact.) The partial result (first fillets applied) is shown with the sentence."
+  },
+  {
+   "feature": "bevel(...) of several edges on one box: 2 adjacent, 3 at a corner, top loop of 4, all 12 one by one, parallel pair",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). SolidCraft = OCCT = brep-rs to <=3.4e-14 (planar bar 1e-9) with equal face counts: 2 adjacent 14262.6667 (8 faces), 3 at a corner 14242.0000 (9), top loop 14130.6667 (10), all 12 sequential 13792.0000 (18), parallel pair 14240.0000 (closed form exact)."
+  },
+  {
+   "feature": "round(edge) then bevel(adjacent edge) on the same corner",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). Fillet r2 on top/front then chamfer d2 on top/right: SolidCraft 14306.9927 vs independent closed form 14306.9970 (3.0e-7, 8 faces). OCCT is off by 1.5e-3 (same tangent-chain propagation) and brep-rs refuses the chamfer; fillet via alias fillet()/chamfer() likewise 8.1e-7. The opposite order (bevel then round) is refused, see next row."
+  },
+  {
+   "feature": "bevel(edge) then round(adjacent edge) on the same corner",
+   "status": "refused",
+   "refusalSentence": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [35, -7, 13.774648292756861]: the nearest edge is 4.775 mm away",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). Bevel d2 on top/front then round r2 on top/right: OCCT builds 14295.5811 (matches closed form 2.8e-9); SolidCraft refuses. First-attempt reason 'not supported yet: a fillet larger than the faces next to it'; shown sentence is the last retry's."
+  },
+  {
+   "feature": "round(part.rim(sketch),size) / bevel(part.rim(sketch),size): all rim edges of a RECTANGULAR or HEXAGONAL pocket (radius 0.5..6, depth 4)",
+   "status": "refused",
+   "refusalSentence": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). 60x40x12 plate, 20x10 pocket: the rim expands to 4 separate fillet features. For every size tried (fillet 0.5,1,2.5,3.9,4,4.5,5,6; bevel 0.5,1,3,4,5,6) the rim never completes: fillet r<=3.9 builds the first two edges and refuses the third (same for the off-centre pocket, the through pocket, plate-edge plus rim, and the hexagon); fillet r4 builds one edge and refuses the second; fillet r>=4.5 and bevel d>=4 refuse the first; bevel d<=3 builds one edge and refuses the second; two pockets: refused at the first edge (second sketch's wall name unresolved). The partly rounded plate is shown with the sentence. Real first error: 'not supported yet: the blend is larger than the neighbouring faces' (all except r4) or 'the blend uses up a neighbouring face at one end only' (r4). The sentence is misleading at r0.5. OCCT 'builds' these only by tangent propagation (its second round reports edge not found); brep-rs returns a partial result, so neither is a clean oracle; the closed form for the full rim (V - (1-pi/4) r^2 P - 2 pi r^3 (5/6 - pi/4), r1: 27986.82) is the reference. Interpreter refusals: rim on a front-plane sketch '.rim() finds the opening of a pocket cut down from a top-plane sketch; for another pocket name its edges one at a time with .edge(face, part.wall(sketch, n)).'; rim without a pocket '.wall() names a face a pocket cut, and no pocket(...) was cut from that sketch.'; round([],1) 'round() on a list needs a list of edges, like round(part.rim(sketch2), 1).'"
+  },
+  {
+   "feature": "round(part.rim(sketch),size) on a TRIANGULAR pocket",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). Triangle (-10,-8),(10,-8),(0,10) pocket 4 deep r1: SolidCraft 28066.3515, independent closed form 28066.5689 (V - (1-pi/4) r^2 P - 2 pi r^3 (5/6 - pi/4)), deviation 7.7e-6, 13 faces. OCCT 28071.0697 is 1.6e-4 off the closed form (its second round reports edge not found), brep-rs refuses and returns the unrounded 28080."
+  },
+  {
+   "feature": "round(part.rim(sketch),size) / bevel on a CIRCULAR pocket",
+   "status": "refused",
+   "refusalSentence": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). Rig: cannot resolve the swept wall of a circle sketch (brep-rs resolve gave nothing). OCCT and brep-rs build it (27487.0181 both). The phase 4 resolver also declines it by design (resolve-names.mjs:215 'is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the browser demo', read, not run). It is a capability gap with a sentence, no wrong solid."
+  },
+  {
+   "feature": "primitive-level round: box / cylinder corner option (cuboid(w,d,h,{corner:r}), cylinder(a,h,{corner:r})), fillet style",
+   "status": "supported",
+   "refusalSentence": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). cuboid(40,40,20,{corner:4}) 30711.4969 vs closed form 30712.2592 (2.5e-5, 26 faces); off-centre corner 2.5: 1.8e-5; cylinder corner 3: 4.0e-5. Same builds as whole-shape round (doc is {round:r} with no roundStyle, which OCCT and brep-rs treat as fillet; SolidCraft agrees). Too big a corner (8 on 12 thick box, 13 on R12) is refused: 'solid.fillet: not supported yet: the blend is taller than the walls'. Options on other shapes are interpreter refusals, exact: 'sphere has no option called \"corner\". It takes at.' (same for cone, prism); corner -2 or 0: 'box(): a size has to be a positive number -- got -2 for corner.'. Pick-after-corner: round(b.edge(...)) on a corner-rounded box is refused in the rig (also by OCCT and brep-rs 'edge could not be found'; shipping resolver refuses rounded primitives by design, resolve-names.mjs:133)."
+  },
+  {
+   "feature": "primitive-level roundStyle chamfer on a BOX (every edge, one operation; ModelDoc only, not reachable from script text)",
+   "status": "wrong",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). d-box-round-chamfer: box 40x40x20 round 4 style chamfer: SolidCraft 29184.0000 (18 faces) vs OCCT = brep-rs 29141.3333 (26 faces), 1.46e-3 apart; offset box 40x30x12 d2: 13792.0000 vs 13786.6667 (3.9e-4). THE TWO REFERENCE KERNELS AGREE AND SOLIDCRAFT DOES NOT, so this is reported WRONG against the oracle. Cause (convention): OCCT/brep-rs add 8 corner triangles that SolidCraft's one-shot chamfer does not; SolidCraft's value equals twelve chamfers applied one by one (ch-bevel-all12-sequential: SolidCraft = OCCT = brep-rs = 13792.0000 exactly) and the half-space intersection. Cylinder style chamfer is fine: 12948.3112 vs closed form 12949.6449 (1.0e-4). LANGUAGE-LAYER LOSS: toScript() of a doc with roundStyle chamfer emits round(b1, 4) (fillet), and re-running it gives roundStyle fillet (checked), so a chamfered primitive silently turns into a fillet on round trip. Script text cannot set roundStyle chamfer on a primitive (round() always writes fillet)."
+  },
+  {
+   "feature": "round/bevel of an edge of a boolean result: subtract (cylinder cut), intersect, notch, hole(), rounded-then-cut",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). PICK: brep-rs resolve via phase0 translator; phase4 browser resolver not run. Box 40x40x20 minus cylinder d8 then round r2 on top/right: SolidCraft 30960.4450 vs OCCT = brep-rs 30960.3541 (2.9e-6, 8 faces); bevel d2 5.4e-6; intersect then fillet 9.4e-7; notch corner 7.2e-7; hole() then round r3 2.7e-6 and bevel 5.4e-6; round then cut a tool through the corner 1.2e-6. The brep-rs kernel documented these (chamfer on a boolean result, fillet on boolean edges) as refusals; SolidCraft builds them and OCCT/brep-rs agree. Hole centred ON the edge (edge split into two segments): rounds ONE segment (31201.7519 vs OCCT 31201.6962, 1.8e-6; brep-rs refuses) with no sentence that the other half is untouched."
+  },
+  {
+   "feature": "round/bevel of an edge of a UNION (join) result",
+   "status": "refused",
+   "refusalSentence": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). box joined with a 10x10x10 box on its top, then round/bevel top/front: SolidCraft rig refuses; OCCT and brep-rs report not found / '3 edges of the part lie between a top face and a front face, so round1 cannot tell'. The three kernels agree to refuse."
+  },
+  {
+   "feature": "round/bevel on edges of prism, wedge, pulled polygon (edge between top and a side face of a non-box primitive)",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). hex prism top/front fillet r1: SolidCraft 2595.8738 vs OCCT 2595.8748 (4e-7, 9 faces); top/left, top/back same; bottom/front bevel exact 2592.8838; pentagon top/front 2375.0858 vs 2375.0873; wedge top/front 995.8023 vs 995.8038, top/back 995.3195 vs 995.3212, front/left 997.8526 vs 997.8540, bottom/front bevel 990.3333 exact; pulled triangle top/front 1195.7699 vs 1195.7719; pulled rectangle top/left bevel 1595.0000 exact. brep-rs refuses the sloped ones (round beyond a box) so OCCT alone is the oracle here (a second independent kernel, no closed form). 'front' on an odd prism resolves to the nearest face on all kernels."
+  },
+  {
+   "feature": "round/bevel edge of a sphere, cone, ring, spin result, or a pulled circle",
+   "status": "refused",
+   "refusalSentence": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here.",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). Interpreter: cone/ring/spin/pulled-circle .edge('top','side') -> '.edge(): \"side\" is the curved wall of a cylinder, not a flat face here.' (accurate for those shapes only in the sense that it declines); sphere(20).edge('top','front') passes the interpreter and is refused by the rig (OCCT and brep-rs also 'edge could not be found')."
+  },
+  {
+   "feature": "round/bevel a named edge AFTER move(): edge name resolved by brep-rs in the unmoved frame, picked on the moved body",
+   "status": "wrong",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). 20 cases (m-move-*, o-move-then-edge) moving a 40x30x12 box by [10,5,0],[0,0,-4],[0,3,0],[-3,0,0],[5,5,5],[20,0,0],[0,20,0],[0,0,-6],[0,-3,-3],[2,2,0], then fillet top/front and bevel front/right: 8 PASS, 11 REFUSED (misleading 'no edge ... nearest edge N mm away'), 1 SILENTLY WRONG: move [0,-3,-3] then bevel(front,right) d2: SolidCraft 14340.0000, correct 14376.0000 (OCCT = brep-rs = closed form 24 removed): the pick [20,-15,1.9099] was brep-rs's stale coordinate pushed by the retry list (centre + radius*z) onto the wrong 30 mm edge, which was chamfered instead of the 12 mm one (removed 60 instead of 24). Even the 8 passes (e.g. o-move-then-edge) only succeeded because the third retry happened to land within pick tolerance. Cause: brep-rs resolve answers in the named feature's own frame and the translator's multi-candidate retry snaps to the nearest edge. The phase 4 resolver refuses carried names through move/rotate/mirror/pattern (resolve-names.mjs:245,263, read not run) but a primitive name followed by a move was not exercised there by me. Needs a guard (refuse any named edge after a move, or resolve on the moved body) before this ships."
+  },
+  {
+   "feature": "round/bevel a named edge AFTER turn() (rotated primitive)",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). 10 cases m-turn-*: x90,y90,z90,z45,x30y20 with fillet top/front and bevel left/back, plus x90/y90/z30 cylinder rims. Wherever OCCT builds, SolidCraft agrees (e.g. turn z90 fillet 14374.2309 vs OCCT 14374.2478, 1.2e-6; x90 bevel 14340.0000 exact; cylinder rims 4.1e-5 / 1.1e-4 vs closed form); where OCCT and brep-rs report the edge not found (z45 left/back, x30y20 top/front) SolidCraft refuses too. Note face words follow the rotated solid's world faces on all three kernels (a z90 turn makes 'front' the old left or right face), which differs from a naive local-frame reading. The phase 4 resolver declines rotated primitives (resolve-names.mjs:132, read not run), so this is wider than the shipping path."
+  },
+  {
+   "feature": "name an edge that an earlier bevel/round already consumed (bevel then bevel the same edge; bevel then round the same edge; round twice)",
+   "status": "wrong",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). cuboid(40,30,12) bevel(top,front,2) then bevel(top,front,1): SolidCraft 14305.8579 (8 faces); OCCT and brep-rs 14320.0000 with 'Bevel 2's edge could not be found'. SolidCraft chamfered the 135-degree edge the first chamfer created (removed 14.142 = 0.5*1*1*sin45*40), i.e. a DIFFERENT edge. bevel then round(top,front,1): SolidCraft 14319.1367 (rounded the neighbouring edge, removed 0.863 = 0.0215 r^2 *40) vs oracles 'not found'. Round r2 then round r1 on the same edge: SolidCraft 14365.6412 = the single fillet, second request silently ignored, oracles say 'Round 2's edge could not be found'. Round then bevel the same edge: SolidCraft refuses (misleading 'nearest edge 6.673 mm away'). Cylinder rim rounded twice: refused. Cause: the pick is brep-rs's centroid of the original edge and solidcraft snaps to the nearest surviving edge. The phase 4 resolver requires the named edge to still exist on the target ('matches no edge ... not guessing', resolve-names.mjs:333, read not run), so this may be closed in the shipping path; it is open in the rig."
+  },
+  {
+   "feature": "round then hollow(open face) with fillet radius smaller than the wall (fillet-then-shell)",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). r1 on top/right then hollow wall2 open top: SolidCraft 5033.5577 vs brep-rs 5033.5619 (8e-7, 12 faces); vertical edge r1: 5037.4231 vs 5037.4248 (3.4e-7); shell then edge (bottom/right r2 and rim r0.5): 3.4e-6 / 4.7e-7 vs OCCT = brep-rs. OCCT refuses the hollow. Two independent kernels (truck, brep-rs) agree. Shell correctness in general belongs to the shell guard layer, not this row."
+  },
+  {
+   "feature": "round then hollow when the fillet radius equals the wall (2 and 2)",
+   "status": "unsupported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). top/right r2 then hollow wall2 open top: SolidCraft builds 5014.2309 (= sharp-cavity shell 5040 minus the fillet prism 25.77, a knife-edge lip of zero thickness), OCCT refuses the hollow, brep-rs refuses. No oracle can score it and the result has a zero-thickness lip, so it is not claimed as supported; a guard should refuse fillet radius >= wall before a hollow."
+  },
+  {
+   "feature": "draft then round(edge) on the drafted body",
+   "status": "supported",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). Draft right face 5 degrees (neutral z=-6) then round top/front r2: SolidCraft 14177.5339; independent check: brep-rs draft-only 14211.0245 minus the fillet prism on the drafted top width (40 - 12 tan5 = 38.950; 38.950*0.8584 + tan5*0.3835 = 33.4686) = 14177.5559, 1.5e-6; OCCT's round-then-draft gives 14177.5559 exactly. OCCT and brep-rs refuse the round on the drafted body, so the evidence is the arithmetic cross-check, not a second kernel."
+  },
+  {
+   "feature": "round(edge) then draft the body",
+   "status": "refused",
+   "refusalSentence": "draft1 (draft): solidcraft refused it -- solid.draft: offset: draft: faces next to the drafted walls must be square to the pull direction",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). Round top/front r2, then draft right face 5 degrees: OCCT builds it (14177.5559); SolidCraft refuses with a plain, accurate sentence."
+  },
+  {
+   "feature": "round/bevel after mirror() of the shape",
+   "status": "refused",
+   "refusalSentence": "round1 (fillet): its target box1 was already changed in place by mir1, and a solidcraft command list has no second copy of it",
+   "evidence": "cmd: SOLIDCRAFT_REFEREE_PKG=$S/sc-referee-pkg contract/fillet-chamfer-evidence/run.sh <tag> (bun drive.mjs, systemd-run 16G cap; 291 cases in cases-results.json; case ids quoted). mirror(b,'left-right') then round(b.edge('top','right'),2): refused by the translator (OCCT and brep-rs build it, 7174.2478). The sentence is accurate but speaks in solidcraft command-list terms."
+  }
+ ]
+}

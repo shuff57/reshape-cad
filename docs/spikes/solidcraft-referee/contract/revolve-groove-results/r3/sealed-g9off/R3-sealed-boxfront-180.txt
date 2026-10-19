@@ -1,0 +1,1 @@
+R3-sealed-boxfront-180                   PASS     occtV 215246.0178 | tr-occt dV 5.9e-7 dBb 0.0e+0 dCom 5.6e-8 F o/b/t 12/-/12 | brep-occt dV -  | ANALYTIC 215246.0178 dTruck 5.9e-7 dOcct 1.4e-16 dBrep -   | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 233 cpu 597

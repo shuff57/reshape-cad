@@ -1,0 +1,1 @@
+sl9-103-boxlip-side-m0.1                 PASS     occtV 70917.1883 | tr-occt dV 2.8e-6 dBb 1.8e-16 dCom 8.9e-7 F o/b/t 11/11/11 | brep-occt dV 4.1e-16      | ms 365 cpu 617

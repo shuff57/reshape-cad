@@ -1,0 +1,110 @@
+// Round 2 shared rig, group 'sketch-constraints'. Referee only.
+//   SOLIDCRAFT_REFEREE_PKG2=<dir with solidcraft_referee_p2.js>  wasm-bindgen --target nodejs build of phase2/wrapper2 (same sc-src fe3717f as the main pkg).
+//   It differs from the phase0 pkg only in that `run` returns EVERY command's output plus the `@sketch` dump (solved points, curves, SolveReport,
+//   profile list), which the round-1 rig could not see. It is the sibling groups' already-built pkg, reused read-only (nothing rebuilt).
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import path from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+export const HERE = path.dirname(fileURLToPath(import.meta.url));
+export const REPO = path.resolve(HERE, '../../../../..');
+export const SPIKE = path.join(REPO, 'docs/spikes/solidcraft-referee');
+const PKG2 = process.env.SOLIDCRAFT_REFEREE_PKG2;
+if (!PKG2) { console.error('FATAL: SOLIDCRAFT_REFEREE_PKG2 unset'); process.exit(2); }
+export const imp = (p) => import(pathToFileURL(p).href);
+export const clone = (o) => JSON.parse(JSON.stringify(o));
+export const sc2 = createRequire(import.meta.url)(path.join(PKG2, 'solidcraft_referee_p2.js'));
+export const mapper = await imp(path.join(SPIKE, 'phase2/sketch-map.mjs'));
+export const ruleCheck = await imp(path.join(SPIKE, 'phase2/rule-check.mjs'));
+export const { runScript } = await imp(path.join(REPO, 'packages/script/dist/reshape-script.js'));
+export const modelCodegen = await imp(path.join(REPO, 'packages/script/dist/model-codegen.js'));
+export const solveMod = await imp(path.join(REPO, 'packages/sketch/dist/sketch-solve.js'));
+export const arcMod = await imp(path.join(REPO, 'packages/sketch/dist/sketch-arc.js'));
+export const mt = await imp(path.join(REPO, 'packages/script/dist/model-types.js'));
+const BPKG = path.join(REPO, 'archive/brep-rs/pkg');
+export const brep = await imp(path.join(BPKG, 'brep_rs.js'));
+brep.initSync({ module: readFileSync(path.join(BPKG, 'brep_rs_bg.wasm')) });
+const { SketchSession2D } = await imp(path.join(REPO, 'packages/brep-adapter/dist/sketch-session.js'));
+const { BrepRsEngineAdapter } = await imp(path.join(REPO, 'packages/brep-adapter/dist/brep-rs-engine-adapter.js'));
+const stub = { BufferGeometry: class { setAttribute() {} setIndex() {} computeVertexNormals() {} addGroup() {} }, Float32BufferAttribute: class {} };
+const adapter = new BrepRsEngineAdapter(stub); adapter.loadFromBytes(brep);
+export { SketchSession2D, adapter };
+
+export const rel = (a, b) => (typeof a === 'number' && Number.isFinite(a) ? Math.abs(a - b) / Math.max(Math.abs(b), 1) : Infinity);
+export const ex = (x) => (typeof x === 'number' ? x.toExponential(1) : String(x));
+export const f6 = (x) => (typeof x === 'number' ? +x.toPrecision(10) : Array.isArray(x) ? x.map(f6) : x);
+
+/** raw wrapper2 run: every command's result + final measure. */
+export function scRaw(commands) {
+  try { return JSON.parse(sc2.run(JSON.stringify({ commands }))); } catch (e) { return { ok: false, error: `WASM TRAP: ${e.message}`, results: [], measure: null }; }
+}
+/** sum of all bodies of a measure */
+export function bodiesOf(measure) {
+  const bs = measure?.out?.bodies ?? measure?.bodies ?? null;
+  if (!bs || !bs.length) return null;
+  const volume = bs.reduce((a, b) => a + b.volume_mm3, 0);
+  return { bodies: bs.length, volume, faces: bs.reduce((a, b) => a + b.faces, 0),
+    bbox: [...[0, 1, 2].map((i) => Math.min(...bs.map((b) => b.bbox.min[i]))), ...[0, 1, 2].map((i) => Math.max(...bs.map((b) => b.bbox.max[i])))],
+    com: [0, 1, 2].map((i) => bs.reduce((a, b) => a + b.volume_mm3 * b.center_of_mass[i], 0) / volume) };
+}
+/** solved geoms (same shape as the soup rows) from a @sketch dump + the mapper's names table. */
+export function solvedGeoms(geoms, names, dump) {
+  const P = new Map(dump.sketch.points.map((p) => [p.id, p.pos]));
+  const C = new Map(dump.sketch.curves.map((c) => [c.id, c]));
+  return geoms.map((g) => {
+    const n = names.find((x) => x.geom === g.id);
+    if (g.k === 'point') return { ...g, p: P.get(n.points.a) };
+    if (g.k === 'line') return { ...g, a: P.get(n.points.a), b: P.get(n.points.b) };
+    if (g.k === 'circle') return { ...g, c: P.get(n.points.c), r: C.get(n.curve).r };
+    // an arc is stored by three points (no radius field): r is the centre-to-start distance, rEnd the centre-to-end distance (they differ by the joint error)
+    const a = P.get(n.points.a), b = P.get(n.points.b), c = P.get(n.points.c);
+    return { ...g, a, b, c, r: g.k === 'circle' ? C.get(n.curve).r : Math.hypot(a[0] - c[0], a[1] - c[1]), ...(g.k === 'arc' ? { rEnd: Math.hypot(b[0] - c[0], b[1] - c[1]) } : {}) };
+  });
+}
+/**
+ * UNGUARDED route (what round 1 measured): map + run + extrude. Returns mapperRefused | firstRefusal | {report, solved, profiles, volume...}.
+ * extra: optional extrude params (e.g. profiles) ; stops reading at the first refused command.
+ */
+export function scSketch(geoms, rules, { plane = 'xy', height = 10, extrude = true, extrudeExtra = null, mapOpts = {} } = {}) {
+  const m = mapper.mapSketch({ id: 'p', plane, geoms: clone(geoms), rules: clone(rules) }, { name: 'sk', ...mapOpts });
+  if (!m.ok) return { mapperRefused: m.refusals.map((r) => r.sentence), map: m };
+  const cmds = extrude ? mapper.extrudeCommands(m, { height }) : [...m.commands, { command: '@sketch', params: {} }];
+  if (extrudeExtra) { const e = cmds.find((c) => c.command === 'solid.extrude'); if (e) Object.assign(e.params, extrudeExtra); }
+  const r = scRaw(cmds);
+  const res = r.results ?? [];
+  const bad = res.find((x) => !x.ok && x.command !== '@sketch');
+  const sk = res.find((x) => x.command === '@sketch');
+  const dump = sk?.out;
+  const firstRefusal = bad ? { index: bad.i, command: bad.command, error: bad.error, rule: m.ruleMap.findIndex((ix) => ix && ix.includes(bad.i)) } : null;
+  const ext = res.find((x) => x.command === 'solid.extrude');
+  const body = bodiesOf(r.measure);
+  return {
+    map: m, results: res, firstRefusal, dump, cmds,
+    report: dump?.report ? { status: dump.report.status, dof: dump.report.dof, failing: dump.report.failing, redundant: dump.report.redundant, folded: dump.report.folded, max_residual: dump.report.max_residual } : null,
+    solved: dump?.sketch ? solvedGeoms(geoms, m.names, dump) : null,
+    profiles: dump?.profile_list ?? [],
+    extrudeError: ext && !ext.ok ? ext.error : null,
+    body,
+  };
+}
+/** brep-rs sketch session on soup geoms+rules: open + solve + diagnose + solved rows. */
+export function brepSolve(geoms, rules) {
+  const s = new SketchSession2D(); s.loadFromBytes(brep);
+  const o = { open: s.open(clone(geoms), clone(rules)) };
+  if (!o.open) { o.solved = s.solve(); if (o.solved) { try { o.geoms = s.solvedGeoms(); } catch { /* */ } } else o.lastError = s.lastError(); o.diag = s.diagnose(); }
+  s.close();
+  return o;
+}
+/** brep-rs build of a doc */
+export function brepBuild(doc) {
+  try {
+    const built = adapter.build(doc);
+    const refusals = Object.fromEntries(built.refusals ?? []);
+    const last = doc.features.at(-1).id;
+    if (Object.keys(refusals).length) return { outcome: 'refused', refusal: Object.values(refusals).join(' | ') };
+    if (!built.shapes.has(last)) return { outcome: 'refused', refusal: 'no shape built and no refusal sentence' };
+    const m = JSON.parse(brep.measure_doc(JSON.stringify(doc))).shapes?.[last];
+    if (!m) return { outcome: 'error', refusal: 'no measurement' };
+    return { outcome: 'built', volume: m.volume, faces: m.faces ?? m.face_count, bbox: [...m.bbox[0], ...m.bbox[1]] };
+  } catch (e) { return { outcome: 'error', refusal: String(e).slice(0, 200) }; }
+}

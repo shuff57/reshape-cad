@@ -1,0 +1,1 @@
+s15 ring, hole through the tube                          wall=129.2s calls=2 slowest=120.1s cpu=9.0s timeouts=1 REFUSED  Hole 1 is not built: it took longer than 120 seconds to compute, so it is shown without it -- try a simpler shape.

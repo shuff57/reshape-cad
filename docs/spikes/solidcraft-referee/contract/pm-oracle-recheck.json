@@ -1,0 +1,42 @@
+{
+ "fresh_cases": 410,
+ "stored_cases": 414,
+ "not_rerun": [
+  "r3-around-count-1001",
+  "r3-box-count-1000",
+  "r3-box-count-1001",
+  "r3-box-count-1e5"
+ ],
+ "script_refused": {
+  "same": 35,
+  "different": []
+ },
+ "occt": {
+  "compared": 374,
+  "max_dVol": 0.0,
+  "max_dBbox": 0.0,
+  "faces_differ": [],
+  "volume_differs": [],
+  "invalid_both": 1,
+  "invalid_one_side": []
+ },
+ "brep": {
+  "compared": 318,
+  "max_dVol": 0.0,
+  "max_dBbox": 0.0,
+  "faces_differ": [],
+  "volume_differs": [],
+  "refusal_differs": []
+ },
+ "stored_truck_vs_fresh_occt": {
+  "compared": 282,
+  "max_abs_difference_in_dVol": 0.0,
+  "cases_where_stored_dVol_does_not_match": []
+ },
+ "translator_refusal_text": {
+  "stored_refused": 93,
+  "reproduced_verbatim_without_truck": 0,
+  "needs_truck": 93,
+  "different_text": []
+ }
+}

@@ -1,0 +1,1874 @@
+[
+ {
+  "label": "subtract notch, round bottom|front (critic)",
+  "src": "const b = cuboid(40,40,20)\nconst c = cuboid(10,50,10,{at:[0,0,10]})\nconst d = subtract(b,c)\nround(d.edge('bottom','front'),2)",
+  "id": "round1",
+  "ms": 169,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): op1.edge[op1.face[-z] ^ op1.face[-y]] matches 3 separate edges on b_box1 (F1:-y|F1:-z~1, F1:-y|F1:-z~2, F1:-y|F1:-z~3) that do not form one closed loop; a name must pick exactly one edge, so nothing is picked"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 50,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      10
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 29965.66370617149,
+    "com": [
+     7.284294803740583e-16,
+     0.02240519740926146,
+     -0.4896262761766467
+    ],
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 29965.66370614359,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "refusals": {
+   "round1": "round1 (fillet): op1.edge[op1.face[-z] ^ op1.face[-y]] matches 3 separate edges on b_box1 (F1:-y|F1:-z~1, F1:-y|F1:-z~2, F1:-y|F1:-z~3) that do not form one closed loop; a name must pick exactly one edge, so nothing is picked"
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 (fillet): op1.edge[op1.face[-z] ^ op1.face[-y]] matches 3 separate edges on b_box1 (F1:-y|F1:-z~1, F1:-y|F1:-z~2, F1:-y|F1:-z~3) that do not form one closed loop; a name must pick exactly one edge, so nothing is picked",
+  "names": [
+   "op1.edge[op1.face[-y] ^ op1.face[-z]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 50,
+    "min": 1,
+    "max": 200,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "subtract notch, round top|front (edge split by notch)",
+  "src": "const b = cuboid(40,40,20)\nconst c = cuboid(10,50,10,{at:[0,0,10]})\nconst d = subtract(b,c)\nround(d.edge('top','front'),2)",
+  "id": "round1",
+  "ms": 64,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[-y]] cannot be resolved: op1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x]; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 50,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      10
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 29987.123889811668,
+    "com": [
+     0.00536734959868964,
+     0.008395936295283917,
+     -0.5043167504314711
+    ],
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 29987.123889803846,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "refusals": {
+   "round1": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[-y]] cannot be resolved: op1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x]; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked"
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[-y]] cannot be resolved: op1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x]; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked",
+  "names": [
+   "op1.edge[op1.face[+z] ^ op1.face[-y]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 50,
+    "min": 1,
+    "max": 200,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "subtract notch, round bottom|left",
+  "src": "const b = cuboid(40,40,20)\nconst c = cuboid(10,50,10,{at:[0,0,10]})\nconst d = subtract(b,c)\nround(d.edge('bottom','left'),2)",
+  "id": "round1",
+  "ms": 298,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -20,
+       0,
+       -10
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "op1.edge[op1.face[-z] ^ op1.face[-x]]",
+     "engineEdges": [
+      "F1:-x|F1:-z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:-x|F1:-z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 50,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      10
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       -20,
+       0,
+       -10
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 29965.663706171483,
+    "com": [
+     0.022405197409261342,
+     2.362297753328958e-16,
+     -0.4896262761766475
+    ],
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 29965.66370614359,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 29965.641175737965,
+   "bbox": [
+    -20.000000000000007,
+    -20.000000000000007,
+    -10.000000000000005,
+    20,
+    20.000000000000014,
+    10
+   ],
+   "com": [
+    0.022419654110562095,
+    8.3441270849021e-10,
+    -0.4896197220078727
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 10
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 7.518750039724094e-7,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 2.40945021679218e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.308114710046512e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 7.518750039724094e-7,
+   "dCom": 0.0007470808586637186,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "op1.edge[op1.face[-x] ^ op1.face[-z]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 50,
+    "min": 1,
+    "max": 200,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "subtract notch, round top|left (untouched edge)",
+  "src": "const b = cuboid(40,40,20)\nconst c = cuboid(10,50,10,{at:[0,0,10]})\nconst d = subtract(b,c)\nround(d.edge('top','left'),2)",
+  "id": "round1",
+  "ms": 83,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[-x]] cannot be resolved: op1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x]; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 50,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      10
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 29965.66370616445,
+    "com": [
+     0.02240519765791051,
+     -4.550905860052864e-16,
+     -0.5115195784312114
+    ],
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 30000,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 10
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "round1": "3 edges of the part lie between a top face and a left face, so round1 cannot tell which one you mean -- round or chamfer the edge on the plain box before you join or cut it -- round1 is shown without it."
+   }
+  },
+  "refusals": {
+   "round1": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[-x]] cannot be resolved: op1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x]; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked"
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[-x]] cannot be resolved: op1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x]; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked",
+  "names": [
+   "op1.edge[op1.face[+z] ^ op1.face[-x]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 50,
+    "min": 1,
+    "max": 200,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "subtract notch, bevel bottom|front",
+  "src": "const b = cuboid(40,40,20)\nconst c = cuboid(10,50,10,{at:[0,0,10]})\nconst d = subtract(b,c)\nbevel(d.edge('bottom','front'),2)",
+  "id": "bevel1",
+  "ms": 97,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "bevel1 (fillet): op1.edge[op1.face[-z] ^ op1.face[-y]] matches 3 separate edges on b_box1 (F1:-y|F1:-z~1, F1:-y|F1:-z~2, F1:-y|F1:-z~3) that do not form one closed loop; a name must pick exactly one edge, so nothing is picked"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 50,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      10
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 29920,
+    "com": [
+     -7.295412046306911e-16,
+     0.05169340463458136,
+     -0.4763814616755798
+    ],
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 29920,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "refusals": {
+   "bevel1": "bevel1 (fillet): op1.edge[op1.face[-z] ^ op1.face[-y]] matches 3 separate edges on b_box1 (F1:-y|F1:-z~1, F1:-y|F1:-z~2, F1:-y|F1:-z~3) that do not form one closed loop; a name must pick exactly one edge, so nothing is picked"
+  },
+  "outcome": "REFUSED",
+  "sentence": "bevel1 (fillet): op1.edge[op1.face[-z] ^ op1.face[-y]] matches 3 separate edges on b_box1 (F1:-y|F1:-z~1, F1:-y|F1:-z~2, F1:-y|F1:-z~3) that do not form one closed loop; a name must pick exactly one edge, so nothing is picked",
+  "names": [
+   "op1.edge[op1.face[-y] ^ op1.face[-z]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 50,
+    "min": 1,
+    "max": 200,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "bevel1_size",
+    "caption": "Bevel 1 cut",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "subtract notch, hollow open bottom",
+  "src": "const b = cuboid(40,40,20)\nconst c = cuboid(10,50,10,{at:[0,0,10]})\nconst d = subtract(b,c)\nhollow(d,{wall:2,open:'bottom'})",
+  "id": "shell1",
+  "ms": 220,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       2.842170943040401e-16,
+       0,
+       -10
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "op1.face[-z]",
+     "rule": "planar face with outward normal -z at the extreme along it on op1's own shape",
+     "engineFace": "F1:-z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "agree": null,
+       "note": "op1 is a combine: no doc-derived plane for a built shape; the rule is geometry on solidcraft's own shape only"
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 50,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      10
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       2.842170943040401e-16,
+       0,
+       -10
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 9130.194671058533,
+    "com": [
+     -6.476251156083942e-12,
+     8.010702405732656e-16,
+     2.4068460911187297
+    ],
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 21,
+    "types": {
+     "plane": 19,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 19,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 9192,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    2.4138381201044385
+   ],
+   "faces": 19,
+   "faceTypes": {
+    "plane": 19
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 0.006769333094000929,
+   "dBbox": 0,
+   "dCom": 0.00011653381642848052,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 21,
+    "truck": 19,
+    "brep": null,
+    "verdict": "UNEXPLAINED",
+    "keys": {
+     "plane": "equal",
+     "cylinder": "UNEXPLAINED"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "FAIL",
+  "control": {
+   "refused": "solid.shell: invalid input: select at least one face to remove"
+  },
+  "names": [
+   "op1.face[-z]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 50,
+    "min": 1,
+    "max": 200,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "join two boxes, round bottom|front of result",
+  "src": "const a = cuboid(30,30,10)\nconst c = cuboid(20,20,20,{at:[10,0,5]})\nconst u = join(a,c)\nround(u.edge('bottom','front'),2)",
+  "id": "round1",
+  "ms": 239,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       -5
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "op1.edge[op1.face[-z] ^ op1.face[-y]]",
+     "engineEdges": [
+      "F1:-y|F1:-z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:-y|F1:-z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 30,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 20,
+     "height": 20,
+     "center": [
+      10,
+      0,
+      5
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       0,
+       -15,
+       -5
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 13974.247779620822,
+    "com": [
+     4.114711640069508,
+     0.02681925117054336,
+     2.870799007140408
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -5,
+     20,
+     15,
+     15
+    ],
+    "faces": 15,
+    "types": {
+     "plane": 14,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 12,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 13974.247779607693,
+    "bbox": [
+     -15,
+     -15,
+     -5,
+     20,
+     15,
+     15
+    ],
+    "faces": 13
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 13974.230885554027,
+   "bbox": [
+    -15.000000000000005,
+    -15,
+    -5.0000000000000036,
+    20,
+    15,
+    15
+   ],
+   "com": [
+    4.114716613518707,
+    0.026836458445848217,
+    2.8708075645589455
+   ],
+   "faces": 13,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 12
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.0000012089428398477036,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 3.424375774102933e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 15,
+    "truck": 13,
+    "brep": 13,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 9.39547210114679e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.fillet: invalid parameters for `solid.fillet`: no edge at [5, 15, 15]: the nearest edge is 5.000 mm away"
+  },
+  "names": [
+   "op1.edge[op1.face[-y] ^ op1.face[-z]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 2,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ }
+]

@@ -1,0 +1,9 @@
+soup doc sk1:sketch pull1:extrude
+rows-and-rules sketch extrude: swept edge1 shell open REFUSED: sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can.   | OCCT:refusals {"sh1":"Hollow 1 could not find the face to leave open -- Hollow 1 is shown closed."} BREP:builds V=3616.0000
+    names: pull1.face[sk1.edge1]
+rows-and-rules sketch extrude: cap top shell open PASS[OCCT] V=3040.000000 (OCCT 3040.000000, brep 3040.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 2.3e-16 faces occt/truck/brep 11/11/11 | ctl {"rej":true,"dCom":"7.2e-2"} 
+    names: pull1.cap[top]
+hole, turn, then round edge(top,right)   REFUSED: round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.   | OCCT:builds V=23408.7611 BREP:refusals {"round1":"brep-rs can only round a straight edge between two flat faces yet, and this edge is not o
+    names: box1.edge[box1.face[+x] ^ box1.face[+z]]
+turn built part then hollow open top     PASS[OCCT] V=8000.160829 (OCCT 8000.230016) dVol 8.6e-6 dBbox 7.1e-16 dCOM 5.6e-7 faces occt/truck/brep 14/14/null | ctl {"rej":true,"dCom":"5.8e-2"} 
+    names: box1.face[+z]

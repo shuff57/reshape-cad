@@ -1,0 +1,1 @@
+fzc2-106-join-side-cone-45               REFUSED  occtV 43982.2972 | tr-occt dV - dBb - dCom - F o/b/t 5/-/- | brep-occt dV -    | TRUCK REFUSED: groove1 (groove): the ring does not reach the part, so it would cut nothing. | BREP REFUSED: groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it. | ms 2844 cpu 3484

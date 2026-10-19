@@ -1,0 +1,56 @@
+--- 1. solid.extrude parameters on a 20 x 10 rectangle at z=0 (what each parameter means at fe3717f)
+distance 5                                                             1000.000000 bbox [0,0,0]..[20,10,5]
+distance -5                                                            1000.000000 bbox [0,0,-5]..[20,10,0]
+distance 5 direction negative                                          1000.000000 bbox [0,0,-5]..[20,10,0]
+distance 5 direction symmetric (per side! total span 10)               2000.000000 bbox [0,0,-5]..[20,10,5]
+distance 5 distance2 3                                                 1600.000000 bbox [0,0,-3]..[20,10,5]
+distance 5 distance2 3 direction negative (direction ignored)          1600.000000 bbox [0,0,-3]..[20,10,5]
+taper +10                                                              1137.427103 bbox [-0.8816,-0.8816,0]..[20.8816,10.8816,5]
+taper -10                                                              872.936632 bbox [0,0,0]..[20,10,5]
+direction [1,0,1] (an ARRAY: silently read as positive, plain prism, 1000) 1000.000000 bbox [0,0,0]..[20,10,5]
+through_all with nothing to cut                                        REFUSED {"command":"solid.extrude","error":"through all needs a body to cut","index":3}
+distance 0                                                             REFUSED {"command":"solid.extrude","error":"invalid input: extrude distance is zero","index":3}
+--- 2. all-profiles default fills a hole: rect 40 x 30 with a circle r5 inside, distance 15
+profiles omitted (all)                                                 18000.000000 bbox [0,0,0]..[40,30,15]  <- hole filled; closed form 18000 - 25*pi*15 =  16821.9028
+profiles [{point:[5,5]}] (the plate region only)                       16822.098441 bbox [0,0,0]..[40,30,15]
+--- 3. annulus R20 / r10, distance 10, taper 5 on the ring region only
+taper 5 (ring pick)                                                    10248.898911 bbox [-20.8749,-20.8749,0]..[20.8749,20.8749,10]  closed form material-grows (hole shrinks): 10249.3392
+--- 4. crossing rectangles: all profiles (union) versus the even-odd faces (XOR), distance 15
+all profiles                                                           15000.000000 bbox [-20,-20,0]..[20,10,15]  (union 15000)
+picks in the A-only and B-only faces                                   6000.000000 bbox [-20,-10,0]..[10,10,15] + 6000.000000 bbox [-10,-20,0]..[20,0,15]  (XOR 12000)
+--- 5. solid.loft of two copies of an outline S apart = the slanted pull (S = (5,3,6))
+rect 20 x 10                                                           1200.000000 bbox [0,0,0]..[25,13,6]  exact 1200.0000
+circle r4                                                              301.562586 bbox [6,1,0]..[19,12,6]  exact 301.5929
+--- 6. raw truck taper on the fold cases (no mapping): what a mapping WITHOUT the fold guard would have built (rect 20 x 12, h 10)
+taper -30                                                              996.923583 bbox [0,0,0]..[20,12,10]
+taper -31.5                                                            REFUSED {"command":"solid.extrude","error":"invalid input: the taper closes the profile","index":3}
+taper -35                                                              REFUSED {"command":"solid.extrude","error":"invalid input: the taper closes the profile","index":3}
+taper -45                                                              REFUSED {"command":"solid.extrude","error":"invalid input: the taper closes the profile","index":3}
+taper -55                                                              549.402017 bbox [0,-2.2815,0]..[20,14.2815,10]
+taper -60                                                              857.437416 bbox [0,-5.3205,0]..[20,17.3205,10]
+taper -70                                                              3672.915152 bbox [-7.4748,-15.4748,0]..[27.4748,27.4748,10]
+taper -80                                                              27136.481481 bbox [-36.7128,-44.7128,0]..[56.7128,56.7128,10]
+taper -89                                                              4195258.394320 bbox [-552.8996,-560.8996,0]..[572.8996,572.8996,10]
+--- 7. the direction-based forms are wrong at the pinned commit (the mapping never uses them): extent along z of a 20 x 10 rectangle at z=0
+distance 10 direction symmetric (a student asking for a 10 mm midplane pad gets 20)                  4000.000000 bbox [0,0,-10]..[20,10,10]
+distance 10 distance2 4 direction negative (direction IGNORED: extent is [-4,10], not [-10,4])       2800.000000 bbox [0,0,-4]..[20,10,10]
+distance 10 distance2 4 (the form the mapping uses: [-4,10])                                         2800.000000 bbox [0,0,-4]..[20,10,10]
+--- 8. raw truck messages at degenerate scale (what the mapping turns into one plain sentence)
+pull 10 x 10 by 1e-9                                                   REFUSED {"command":"solid.extrude","error":"invalid input: extrude distance is zero","index":3}
+pull 10 x 10 by 1e-7                                                   REFUSED {"command":"solid.extrude","error":"invalid input: extrude distance is zero","index":3}
+pull 10 x 10 by 2e-7                                                   REFUSED {"command":"solid.extrude","error":"invalid input: extrude distance is zero","index":3}
+pull 10 x 10 by 5e-7                                                   REFUSED {"command":"solid.extrude","error":"invalid input: extrude distance is zero","index":3}
+pull 10 x 10 by 0.000001                                               0.000100 bbox [0,0,0]..[10,10,0]
+pull 10 x 10 by 0.00001                                                0.001000 bbox [0,0,0]..[10,10,0]
+pull a 0.000001 x 0.000001 square by 1                                 REFUSED {"command":"solid.extrude","error":"s has no closed profiles","index":3}
+pull a 0.00001 x 0.00001 square by 1                                   REFUSED {"command":"solid.extrude","error":"s has no closed profiles","index":3}
+pull a 0.0001 x 0.0001 square by 1                                     REFUSED {"command":"solid.extrude","error":"invalid input: profile: cannot attach a plane to a wire that is not on one plane.","index":3}
+pull a 0.001 x 0.001 square by 1                                       0.000001 bbox [0,0,0]..[0.001,0.001,1]
+pull a 0.01 x 0.01 square by 1                                         0.000100 bbox [0,0,0]..[0.01,0.01,1]
+--- 9. a wall or sliver thinner than ~0.3% of the part is LOST by a boolean (plate 40 x 30 x 10, pocket 20-w wide leaving a wall w, 5 deep)
+wall w=0.01                                                            10000.000000 bbox [0,0,0]..[40,30,10]  expected 10001.0000
+wall w=0.1                                                             10000.000000 bbox [0,0,0]..[40,30,10]  expected 10010.0000
+wall w=0.12                                                            10000.000000 bbox [0,0,0]..[40,30,10]  expected 10012.0000
+wall w=0.15                                                            10015.000000 bbox [0,0,0]..[40,30,10]  expected 10015.0000
+wall w=0.3                                                             10030.000000 bbox [0,0,0]..[40,30,10]  expected 10030.0000
+wall w=1                                                               10100.000000 bbox [0,0,0]..[40,30,10]  expected 10100.0000

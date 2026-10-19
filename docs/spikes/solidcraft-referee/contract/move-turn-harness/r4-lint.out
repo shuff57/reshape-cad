@@ -1,0 +1,10 @@
+ok  copy:1                             interpreter builds move1 copy=false offset=[1,2,3] | lint: move() needs copy: true or copy: false, but you wrote copy: 1 -- write copy: true to keep the original and get a copy, or leave the option out to move the original itself.
+ok  copy:'yes'                         interpreter builds move1 copy=false offset=[1,2,3] | lint: move() needs copy: true or copy: false, but you wrote copy: 'yes' -- write copy: true to keep the original and get a copy, or leave the option out to move the original itself.
+ok  copy:"true" (text)                 interpreter builds move1 copy=false offset=[1,2,3] | lint: move() needs copy: true or copy: false, but you wrote copy: "true" -- write copy: true to keep the original and get a copy, or leave the option out to move the original itself.
+ok  copy:0                             interpreter builds move1 copy=false offset=[1,2,3] | lint: move() needs copy: true or copy: false, but you wrote copy: 0 -- write copy: true to keep the original and get a copy, or leave the option out to move the original itself.
+ok  extra 4th argument after options   interpreter builds move1 copy=true offset=[1,2,3] | lint: move() takes a shape, an offset and one { } of options, but you gave it 1 more argument (4) -- remove it.
+ok  copy:true (control)                interpreter builds move1 copy=true offset=[1,2,3] | lint: (silent)
+ok  copy:false (control)               interpreter builds move1 copy=false offset=[1,2,3] | lint: (silent)
+ok  no options (control)               interpreter builds move1 copy=false offset=[1,2,3] | lint: (silent)
+ok  copy: variable (control)           interpreter builds move1 copy=true offset=[1,2,3] | lint: (silent)
+ok  param offsets + copy (control)     interpreter builds move1 copy=true offset=[3,0,0] | lint: (silent)

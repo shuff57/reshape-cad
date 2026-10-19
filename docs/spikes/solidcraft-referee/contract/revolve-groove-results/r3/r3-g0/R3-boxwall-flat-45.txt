@@ -1,0 +1,1 @@
+R3-boxwall-flat-45                       PASS     occtV 69455.3100 | tr-occt dV 3.7e-6 dBb 0.0e+0 dCom 1.3e-6 F o/b/t 12/-/12 | brep-occt dV -     | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 331 cpu 918

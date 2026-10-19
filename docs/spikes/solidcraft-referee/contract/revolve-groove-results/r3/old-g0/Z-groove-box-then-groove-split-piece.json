@@ -1,0 +1,217 @@
+[
+ {
+  "id": "Z-groove-box-then-groove-split-piece",
+  "src": "const bar = box(60,10,20); const g = sketch('top'); g.polygon([[10,-20],[12,-20],[12,20],[10,20]]); const g1 = groove(g, bar, 360); const h = sketch('top'); h.polygon([[20,-5],[22,-5],[22,5],[20,5]]); groove(h, g1, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove2",
+  "fixture": {
+   "id": "Z-groove-box-then-groove-split-piece",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove2",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 10765.308541287108,
+    "com": [
+     -3.4183179131598825e-11,
+     -6.336288678709261e-17,
+     8.662894677922819e-17
+    ],
+    "bbox": [
+     -30,
+     -5.000000000000012,
+     -10,
+     30,
+     5.000000000000005,
+     10
+    ],
+    "faces": 30,
+    "area": 4970.816701704839,
+    "types": {
+     "plane": 18,
+     "cylinder": 12
+    },
+    "components": {
+     "plane": 18,
+     "cylinder": 8
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 10765.308541287008,
+    "bbox": [
+     -30,
+     -5.0000000000000195,
+     -10,
+     30,
+     5.000000000000009,
+     10
+    ],
+    "faces": 26,
+    "dVol": 9.293223395440251e-15,
+    "dBbox": 1.4210854715201969e-15,
+    "pass": true
+   },
+   "ms": 6627,
+   "load": [
+    42.9,
+    46.7
+   ],
+   "cpuMs": 6759,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": false,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 12,
+       "nearest": 5,
+       "bodies": 1
+      },
+      "side": 1,
+      "kernelAngle": null,
+      "nudgeDeg": null
+     }
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove2",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove2 (groove): groove1 was left in 3 separate pieces, and a groove cuts one piece, so cut before the part is split."
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 60,
+      "width": 10,
+      "height": 20,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_box1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        10,
+        -20
+       ],
+       [
+        12,
+        -20
+       ],
+       [
+        12,
+        20
+       ],
+       [
+        10,
+        20
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "operation": "cut",
+      "targets": [
+       "b_box1"
+      ]
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove2 (groove): groove1 was left in 3 separate pieces, and a groove cuts one piece, so cut before the part is split.",
+    "firstRefusal": "groove2 (groove): groove1 was left in 3 separate pieces, and a groove cuts one piece, so cut before the part is split."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 8089
+ }
+]

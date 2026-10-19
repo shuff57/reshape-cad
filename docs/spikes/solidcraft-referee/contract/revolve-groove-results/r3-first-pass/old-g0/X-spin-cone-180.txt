@@ -1,0 +1,1 @@
+X-spin-cone-180                          PASS     occtV 6283.1853 | tr-occt dV 5.0e-5 dBb 0.0e+0 dCom 3.3e-6 F o/b/t 4/3/3 | brep-occt dV 5.8e-16  | ANALYTIC 6283.1853 dTruck 5.0e-5 dOcct 0.0e+0 dBrep 5.8e-16    | ms 261 cpu 538

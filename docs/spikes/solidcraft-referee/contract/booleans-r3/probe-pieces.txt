@@ -1,0 +1,11 @@
+cut -> pieces                                  {"ms":30,"bodies":[["A",5000,6,1],["A (1)",5000,6,1]]}
+per-piece cut: piece A (1) untouched           {"ms":35,"bodies":[["A",4000,10,1],["A (1)",5000,6,1]]}
+per-piece cut, T only touches A (1)            {"ms":36,"bodies":[["A",4000,10,1],["A (1)",5000,6,1],["T",3000,6,1]]}
+cut piece A (1) with T (consumed)              {"ms":38,"bodies":[["A",5000,6,1],["A (1)",5000,6,1]]}
+intersect piece with a tool that misses it     {"ms":35,"bodies":[["A",5000,6,1],["A (1)",1600,6,1],["B",12800,6,1]]}
+intersect target with a tool that misses it    {"ms":20,"bodies":[["B",12800,6,1]]}
+join pieces + bridge                           {"ms":55,"bodies":[["A",10275,18,1]]}
+cut W by pieces (tool = 2 pieces)              {"ms":53,"bodies":[["W",70000,18,3]]}
+keep W with pieces (tool = 2 pieces)           {"ms":41,"bodies":[["W",5000,6,1],["W (1)",5000,6,1]]}
+re-split A while A (1) exists                  {"ms":35,"bodies":[["A",2000,6,1],["A (2)",1800,6,1],["A (1)",5000,6,1]]}
+re-split A (1) while A exists                  {"ms":33,"bodies":[["A",5000,6,1],["A (1)",2000,6,1],["A (1) (1)",1800,6,1]]}

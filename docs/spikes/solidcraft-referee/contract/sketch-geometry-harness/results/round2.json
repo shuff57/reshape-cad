@@ -1,0 +1,2876 @@
+[
+ {
+  "id": "round-hex-all6-r6",
+  "feature": ".round",
+  "what": "hexagon s=10, six corners r6 (limit 8.66)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       10,
+       0
+      ],
+      [
+       5.000000000000001,
+       8.660254037844386
+      ],
+      [
+       -4.999999999999998,
+       8.660254037844387
+      ],
+      [
+       -10,
+       1.2246467991473533e-15
+      ],
+      [
+       -5.000000000000004,
+       -8.660254037844384
+      ],
+      [
+       5.000000000000001,
+       -8.660254037844386
+      ]
+     ],
+     "rounds": {
+      "0": 6,
+      "1": 6,
+      "2": 6,
+      "3": 6,
+      "4": 6,
+      "5": 6
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 2481.9729851962898,
+   "bbox": [
+    -9.07179676972449,
+    -8.660254037844386,
+    0,
+    9.07179676972449,
+    8.660254037844389,
+    10
+   ],
+   "com": [
+    -7.63588507931139e-16,
+    7.477744224387605e-16,
+    5.000000000000001
+   ],
+   "faces": 14,
+   "types": {
+    "cylinder": 6,
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 2481.9729851960496,
+   "bbox": [
+    -9.07179676972449,
+    -8.660254037844386,
+    0,
+    9.071796769724491,
+    8.660254037844387,
+    10
+   ],
+   "faces": 14
+  },
+  "exact": {
+   "volume": 2481.9729851960496
+  },
+  "curved": true,
+  "truck": {
+   "volume": 2481.770873869075,
+   "bbox": [
+    -9.071796769724497,
+    -8.660254037844387,
+    0,
+    9.071796769724491,
+    8.660254037844387,
+    10.000000000000005
+   ],
+   "com": [
+    4.3780764703414217e-16,
+    -4.867180381197003e-17,
+    5.00000000133994
+   ],
+   "faces": 14,
+   "kernelFaces": 14,
+   "faceTypes": {
+    "cylinder": 6,
+    "plane": 8
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.00008143171920902087,
+   "dBboxOcct": 7.832436658319005e-16,
+   "dComOcct": 4.962089845431283e-11,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.00008143171911228853,
+   "dBboxBrep": 7.832436658319005e-16,
+   "dVolExact": 0.00008143171911228853,
+   "occtVolExact": 9.674021542546611e-14,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 2481.770873869075,
+   "bodies": 1,
+   "faces": 14
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      8.267949192431121,
+      -3.0000000000000013
+     ],
+     "end": [
+      8.267949192431121,
+      3.000000000000001
+     ],
+     "through": [
+      9.07179676972449,
+      -2.220446049250313e-16
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       8.267949192431121,
+       3.000000000000001
+      ],
+      [
+       6.732050807568878,
+       5.6602540378443855
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      6.732050807568878,
+      5.6602540378443855
+     ],
+     "end": [
+      1.535898384862247,
+      8.660254037844387
+     ],
+     "through": [
+      4.5358983848622465,
+      7.856406460551018
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1.535898384862247,
+       8.660254037844387
+      ],
+      [
+       -1.5358983848622425,
+       8.660254037844387
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      -1.5358983848622425,
+      8.660254037844387
+     ],
+     "end": [
+      -6.732050807568876,
+      5.660254037844386
+     ],
+     "through": [
+      -4.535898384862245,
+      7.856406460551018
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -6.732050807568876,
+       5.660254037844386
+      ],
+      [
+       -8.267949192431121,
+       3.0000000000000004
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      -8.267949192431121,
+      3.0000000000000004
+     ],
+     "end": [
+      -8.267949192431123,
+      -2.9999999999999987
+     ],
+     "through": [
+      -9.07179676972449,
+      2.7491316091820616e-15
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -8.267949192431123,
+       -2.9999999999999987
+      ],
+      [
+       -6.73205080756888,
+       -5.660254037844384
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      -6.73205080756888,
+      -5.660254037844384
+     ],
+     "end": [
+      -1.5358983848622505,
+      -8.660254037844386
+     ],
+     "through": [
+      -4.535898384862251,
+      -7.856406460551015
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -1.5358983848622505,
+       -8.660254037844386
+      ],
+      [
+       1.5358983848622452,
+       -8.660254037844386
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      1.5358983848622452,
+      -8.660254037844386
+     ],
+     "end": [
+      6.7320508075688785,
+      -5.660254037844384
+     ],
+     "through": [
+      4.5358983848622465,
+      -7.856406460551016
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       6.7320508075688785,
+       -5.660254037844384
+      ],
+      [
+       8.267949192431121,
+       -3.0000000000000013
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "round-hex-all6-limit",
+  "feature": ".round",
+  "what": "hexagon s=10, six corners r8.66 = the limit (adjacent arcs meet)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       10,
+       0
+      ],
+      [
+       5.000000000000001,
+       8.660254037844386
+      ],
+      [
+       -4.999999999999998,
+       8.660254037844387
+      ],
+      [
+       -10,
+       1.2246467991473533e-15
+      ],
+      [
+       -5.000000000000004,
+       -8.660254037844384
+      ],
+      [
+       5.000000000000001,
+       -8.660254037844386
+      ]
+     ],
+     "rounds": {
+      "0": 8.66,
+      "1": 8.66,
+      "2": 8.66,
+      "3": 8.66,
+      "4": 8.66,
+      "5": 8.66
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 2356.208680586653,
+   "bbox": [
+    -8.660293337635682,
+    -8.660254037844386,
+    0,
+    8.660293337635682,
+    8.660254037844387,
+    10
+   ],
+   "com": [
+    1.7628931255116098e-16,
+    -8.375269892479276e-16,
+    5.000000000000002
+   ],
+   "faces": 14,
+   "types": {
+    "cylinder": 6,
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 2356.20868058665,
+   "bbox": [
+    -8.660293337635682,
+    -8.660254037844386,
+    0,
+    8.660293337635682,
+    8.660254037844387,
+    10
+   ],
+   "faces": 14
+  },
+  "exact": {
+   "volume": 2356.2086805866525
+  },
+  "curved": true,
+  "truck": {
+   "volume": 2355.7876417279986,
+   "bbox": [
+    -8.660293337635688,
+    -8.660254037844386,
+    0,
+    8.66029333763568,
+    8.66025403784439,
+    10.000000000000005
+   ],
+   "com": [
+    -1.2097306390715487e-15,
+    2.6283930449679935e-15,
+    5.000000002037064
+   ],
+   "faces": 14,
+   "kernelFaces": 14,
+   "faceTypes": {
+    "cylinder": 6,
+    "plane": 8
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.00017869336537268204,
+   "dBboxOcct": 6.1534526723729e-16,
+   "dComOcct": 7.699355961050907e-11,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.00017869336537152425,
+   "dBboxBrep": 6.1534526723729e-16,
+   "dVolExact": 0.00017869336537248908,
+   "occtVolExact": 1.929996076464842e-16,
+   "brepVolExact": 9.64998038232421e-16
+  },
+  "translatorReported": {
+   "volume": 2355.7876417279986,
+   "bodies": 1,
+   "faces": 14
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      7.5000733344089205,
+      -4.329999999999999
+     ],
+     "end": [
+      7.5000733344089205,
+      4.329999999999999
+     ],
+     "through": [
+      8.660293337635682,
+      0
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       7.5000733344089205,
+       4.329999999999999
+      ],
+      [
+       7.4999266655910795,
+       4.330254037844386
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      7.4999266655910795,
+      4.330254037844386
+     ],
+     "end": [
+      0.00014666881784286545,
+      8.660254037844387
+     ],
+     "through": [
+      4.330146668817843,
+      7.500034034617624
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0.00014666881784286545,
+       8.660254037844387
+      ],
+      [
+       -0.00014666881784020092,
+       8.660254037844387
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      -0.00014666881784020092,
+      8.660254037844387
+     ],
+     "end": [
+      -7.499926665591078,
+      4.330254037844389
+     ],
+     "through": [
+      -4.3301466688178385,
+      7.500034034617626
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -7.499926665591078,
+       4.330254037844389
+      ],
+      [
+       -7.5000733344089205,
+       4.33
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      -7.5000733344089205,
+      4.33
+     ],
+     "end": [
+      -7.500073334408922,
+      -4.329999999999999
+     ],
+     "through": [
+      -8.660293337635682,
+      3.812075746106363e-15
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -7.500073334408922,
+       -4.329999999999999
+      ],
+      [
+       -7.499926665591082,
+       -4.330254037844384
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      -7.499926665591082,
+      -4.330254037844384
+     ],
+     "end": [
+      -0.00014666881784641816,
+      -8.660254037844386
+     ],
+     "through": [
+      -4.330146668817844,
+      -7.500034034617623
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -0.00014666881784641816,
+       -8.660254037844386
+      ],
+      [
+       0.00014666881784020092,
+       -8.660254037844386
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      0.00014666881784020092,
+      -8.660254037844386
+     ],
+     "end": [
+      7.499926665591081,
+      -4.330254037844384
+     ],
+     "through": [
+      4.330146668817841,
+      -7.500034034617625
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       7.499926665591081,
+       -4.330254037844384
+      ],
+      [
+       7.5000733344089205,
+       -4.329999999999999
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "chamfer-hex-all6-d3",
+  "feature": ".chamfer",
+  "what": "hexagon s=10, six corners chamfer 3",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       10,
+       0
+      ],
+      [
+       5.000000000000001,
+       8.660254037844386
+      ],
+      [
+       -4.999999999999998,
+       8.660254037844387
+      ],
+      [
+       -10,
+       1.2246467991473533e-15
+      ],
+      [
+       -5.000000000000004,
+       -8.660254037844384
+      ],
+      [
+       5.000000000000001,
+       -8.660254037844386
+      ]
+     ],
+     "chamfers": {
+      "0": 3,
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 2364.249352331517,
+   "bbox": [
+    -8.5,
+    -8.660254037844386,
+    0,
+    8.5,
+    8.660254037844387,
+    10
+   ],
+   "com": [
+    -8.525603218049488e-18,
+    2.0622557575224939e-16,
+    5
+   ],
+   "faces": 14,
+   "types": {
+    "plane": 14
+   }
+  },
+  "brep": {
+   "volume": 2364.2493523315175,
+   "bbox": [
+    -8.5,
+    -8.660254037844386,
+    0,
+    8.5,
+    8.660254037844387,
+    10
+   ],
+   "faces": 14
+  },
+  "exact": {
+   "volume": 2364.2493523315175
+  },
+  "curved": false,
+  "truck": {
+   "volume": 2364.249352331517,
+   "bbox": [
+    -8.5,
+    -8.660254037844386,
+    0,
+    8.5,
+    8.660254037844387,
+    10.000000000000002
+   ],
+   "com": [
+    -2.564576365788223e-16,
+    3.2057204572352785e-17,
+    5.000000000000001
+   ],
+   "faces": 14,
+   "kernelFaces": 14,
+   "faceTypes": {
+    "plane": 14
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolOcct": 0,
+   "dBboxOcct": 1.7763568394002506e-16,
+   "dComOcct": 3.383690295774941e-17,
+   "comTol": 0.000001,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 1.9234322743411668e-16,
+   "dBboxBrep": 1.7763568394002506e-16,
+   "dVolExact": 1.9234322743411668e-16,
+   "occtVolExact": 1.9234322743411668e-16,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 2364.249352331517,
+   "bodies": 1,
+   "faces": 14
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       8.5,
+       -2.598076211353316
+      ],
+      [
+       8.5,
+       2.598076211353316
+      ],
+      [
+       6.500000000000001,
+       6.0621778264910695
+      ],
+      [
+       2.000000000000001,
+       8.660254037844386
+      ],
+      [
+       -1.9999999999999982,
+       8.660254037844387
+      ],
+      [
+       -6.499999999999999,
+       6.062177826491071
+      ],
+      [
+       -8.5,
+       2.5980762113533173
+      ],
+      [
+       -8.5,
+       -2.598076211353315
+      ],
+      [
+       -6.5000000000000036,
+       -6.062177826491068
+      ],
+      [
+       -2.0000000000000044,
+       -8.660254037844384
+      ],
+      [
+       2.000000000000001,
+       -8.660254037844386
+      ],
+      [
+       6.500000000000001,
+       -6.0621778264910695
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "round-tri-all3-r2",
+  "feature": ".round",
+  "what": "triangle 20x10, all three corners r2 (angles 90 / 26.6 / 63.4)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       20,
+       0
+      ],
+      [
+       0,
+       10
+      ]
+     ],
+     "rounds": {
+      "0": 2,
+      "1": 2,
+      "2": 2
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 851.499627579233,
+   "bbox": [
+    -4.440892098500626e-16,
+    -4.440892098500626e-16,
+    0,
+    13.527864045000419,
+    8.76393202250021,
+    10
+   ],
+   "com": [
+    5.703867439927096,
+    3.513398728585979,
+    5.000000000000001
+   ],
+   "faces": 8,
+   "types": {
+    "cylinder": 3,
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 851.4996274936043,
+   "bbox": [
+    0,
+    0,
+    0,
+    13.52786404500042,
+    8.76393202250021,
+    10
+   ],
+   "faces": 8
+  },
+  "exact": {
+   "volume": 851.4996274936044
+  },
+  "curved": true,
+  "truck": {
+   "volume": 851.4734126098869,
+   "bbox": [
+    0,
+    -4.440892098500626e-16,
+    0,
+    13.527761030885456,
+    8.7638351569269,
+    10.000000000000005
+   ],
+   "com": [
+    5.703821525499392,
+    3.5134077336550855,
+    5.000000004817371
+   ],
+   "faces": 8,
+   "kernelFaces": 8,
+   "faceTypes": {
+    "cylinder": 3,
+    "plane": 5
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.000030786824206453446,
+   "dBboxOcct": 0.000011052752698369048,
+   "dComOcct": 0.0000024205429665953364,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.00003078672364732248,
+   "dBboxBrep": 0.000011052752698369048,
+   "dVolExact": 0.000030786723647455984,
+   "occtVolExact": 1.0056209344853904e-10,
+   "brepVolExact": 1.335136670068243e-16
+  },
+  "translatorReported": {
+   "volume": 851.4734126098869,
+   "bodies": 1,
+   "faces": 8
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      0,
+      2.0000000000000004
+     ],
+     "end": [
+      2.0000000000000004,
+      0
+     ],
+     "through": [
+      0.5857864376269049,
+      0.5857864376269053
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       2.0000000000000004,
+       0
+      ],
+      [
+       11.527864045000417,
+       0
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      11.527864045000417,
+      0
+     ],
+     "end": [
+      12.422291236000333,
+      3.7888543819998337
+     ],
+     "through": [
+      13.474362023935878,
+      1.5404941589052783
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       12.422291236000333,
+       3.7888543819998337
+      ],
+      [
+       2.8944271909999157,
+       8.552786404500042
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      2.8944271909999157,
+      8.552786404500042
+     ],
+     "end": [
+      0,
+      6.76393202250021
+     ],
+     "through": [
+      0.948537775761733,
+      8.46523363920429
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       6.76393202250021
+      ],
+      [
+       0,
+       2.0000000000000004
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "round-L-all6-r2",
+  "feature": ".round",
+  "what": "L shape, all six corners r2 (five convex, one reflex)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       30,
+       0
+      ],
+      [
+       30,
+       10
+      ],
+      [
+       10,
+       10
+      ],
+      [
+       10,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "rounds": {
+      "0": 2,
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2,
+      "5": 2
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 4465.663706165749,
+   "bbox": [
+    -4.440892098500626e-16,
+    -4.440892098500626e-16,
+    0,
+    30,
+    25,
+    10
+   ],
+   "com": [
+    11.642754277880359,
+    9.142754277877998,
+    4.999999999999999
+   ],
+   "faces": 14,
+   "types": {
+    "cylinder": 6,
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 4465.663706143591,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    25,
+    10
+   ],
+   "faces": 14
+  },
+  "exact": {
+   "volume": 4465.663706143592
+  },
+  "curved": true,
+  "truck": {
+   "volume": 4465.641171987405,
+   "bbox": [
+    -1.7763568394002505e-15,
+    -4.440892098500626e-16,
+    0,
+    30.000000000000004,
+    25.000000000000004,
+    10.000000000000007
+   ],
+   "com": [
+    11.642739341655236,
+    9.142739342704948,
+    5.000000005248702
+   ],
+   "faces": 14,
+   "kernelFaces": 14,
+   "faceTypes": {
+    "cylinder": 6,
+    "plane": 8
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.0000050460983690386825,
+   "dBboxOcct": 1.3322676295501878e-15,
+   "dComOcct": 3.7052214376672025e-7,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.00000504609340719895,
+   "dBboxBrep": 1.7763568394002505e-15,
+   "dVolExact": 0.000005046093407402613,
+   "occtVolExact": 4.9616611063008746e-12,
+   "brepVolExact": 2.0366394821036345e-16
+  },
+  "translatorReported": {
+   "volume": 4465.641171987405,
+   "bodies": 1,
+   "faces": 14
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      0,
+      2.0000000000000004
+     ],
+     "end": [
+      2.0000000000000004,
+      0
+     ],
+     "through": [
+      0.5857864376269049,
+      0.5857864376269053
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       2.0000000000000004,
+       0
+      ],
+      [
+       28,
+       0
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      28,
+      0
+     ],
+     "end": [
+      30,
+      2.0000000000000004
+     ],
+     "through": [
+      29.414213562373096,
+      0.5857864376269053
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       30,
+       2.0000000000000004
+      ],
+      [
+       30,
+       8
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      30,
+      8
+     ],
+     "end": [
+      28,
+      10
+     ],
+     "through": [
+      29.414213562373096,
+      9.414213562373096
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       28,
+       10
+      ],
+      [
+       12,
+       10
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      12,
+      10
+     ],
+     "end": [
+      10,
+      12
+     ],
+     "through": [
+      10.585786437626904,
+      10.585786437626904
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       10,
+       12
+      ],
+      [
+       10,
+       23
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      10,
+      23
+     ],
+     "end": [
+      8,
+      25
+     ],
+     "through": [
+      9.414213562373096,
+      24.414213562373096
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       8,
+       25
+      ],
+      [
+       2.0000000000000004,
+       25
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      2.0000000000000004,
+      25
+     ],
+     "end": [
+      0,
+      23
+     ],
+     "through": [
+      0.5857864376269053,
+      24.414213562373096
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       23
+      ],
+      [
+       0,
+       2.0000000000000004
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "chamfer-reflex",
+  "feature": ".chamfer",
+  "what": "chamfer d4 at the reflex corner (10,10) of the L",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       30,
+       0
+      ],
+      [
+       30,
+       10
+      ],
+      [
+       10,
+       10
+      ],
+      [
+       10,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "chamfers": {
+      "3": 4
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 4579.999999999999,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    25,
+    10
+   ],
+   "com": [
+    11.660844250363903,
+    9.204512372634644,
+    5
+   ],
+   "faces": 9,
+   "types": {
+    "plane": 9
+   }
+  },
+  "brep": {
+   "volume": 4579.999999999999,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    25,
+    10
+   ],
+   "faces": 9
+  },
+  "exact": {
+   "volume": 4580
+  },
+  "curved": false,
+  "truck": {
+   "volume": 4580,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    25,
+    10
+   ],
+   "com": [
+    11.660844250363901,
+    9.204512372634643,
+    5
+   ],
+   "faces": 9,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "plane": 9
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolOcct": 1.9857962920806296e-16,
+   "dBboxOcct": 0,
+   "dComOcct": 4.4065989822147046e-17,
+   "comTol": 0.000001,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 1.9857962920806296e-16,
+   "dBboxBrep": 0,
+   "dVolExact": 0,
+   "occtVolExact": 1.9857962920806294e-16,
+   "brepVolExact": 1.9857962920806294e-16
+  },
+  "translatorReported": {
+   "volume": 4580,
+   "bodies": 1,
+   "faces": 9
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       30,
+       0
+      ],
+      [
+       30,
+       10
+      ],
+      [
+       14,
+       10
+      ],
+      [
+       10,
+       14
+      ],
+      [
+       10,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "round-concave-q",
+  "feature": ".round",
+  "what": "round at an acute reflex-adjacent corner of a dart",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       30,
+       5
+      ],
+      [
+       10,
+       10
+      ],
+      [
+       5,
+       30
+      ]
+     ],
+     "rounds": {
+      "2": 2
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 2502.3832199891804,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    30,
+    10
+   ],
+   "com": [
+    9.167635347535914,
+    9.167635347535914,
+    5
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   }
+  },
+  "brep": {
+   "volume": 2502.383219989177,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "curved": true,
+  "truck": {
+   "volume": 2502.387335602252,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    30,
+    10.000000000000004
+   ],
+   "com": [
+    9.167637210681962,
+    9.167637210681956,
+    5.000000000128023
+   ],
+   "faces": 7,
+   "kernelFaces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.0000016446773773844163,
+   "dBboxOcct": 3.552713678800501e-16,
+   "dComOcct": 4.274350179349375e-8,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.0000016446773786564984,
+   "dBboxBrep": 3.552713678800501e-16
+  },
+  "translatorReported": {
+   "volume": 2502.387335602252,
+   "bodies": 1,
+   "faces": 7
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       30,
+       5
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       30,
+       5
+      ],
+      [
+       11.164171000174399,
+       9.7089572499564
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      11.164171000174399,
+      9.7089572499564
+     ],
+     "end": [
+      9.7089572499564,
+      11.164171000174399
+     ],
+     "through": [
+      10.23502868787397,
+      10.23502868787397
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       9.7089572499564,
+       11.164171000174399
+      ],
+      [
+       5,
+       30
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       5,
+       30
+      ],
+      [
+       0,
+       0
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs",
+  "geomOk": true,
+  "exactOk": null,
+  "outcome": "PASS"
+ },
+ {
+  "id": "round-cw-polygon",
+  "feature": ".round",
+  "what": "CLOCKWISE polygon, corner 2 r5",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       30
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       40,
+       0
+      ]
+     ],
+     "rounds": {
+      "1": 5
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 11946.349540862548,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    20.08480332867973,
+    14.93765142217748,
+    5.000000000000001
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   }
+  },
+  "brep": {
+   "volume": 11946.349540849362,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 11946.349540849362
+  },
+  "curved": true,
+  "truck": {
+   "volume": 11946.314351155312,
+   "bbox": [
+    -3.55271367880052e-15,
+    0,
+    0,
+    40,
+    30.000000000000004,
+    10.000000000000004
+   ],
+   "com": [
+    20.08485665703152,
+    14.937612890604473,
+    4.999999999999714
+   ],
+   "faces": 7,
+   "kernelFaces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.0000029456452044718404,
+   "dBboxOcct": 3.55271367880052e-15,
+   "dComOcct": 0.0000010458550246269066,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.000002945644100719158,
+   "dBboxBrep": 3.55271367880052e-15,
+   "dVolExact": 0.000002945644100719158,
+   "occtVolExact": 1.1037559332427189e-12,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 11946.314351155312,
+   "bodies": 1,
+   "faces": 7
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       25
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      0,
+      25
+     ],
+     "end": [
+      5.000000000000001,
+      30
+     ],
+     "through": [
+      1.464466094067264,
+      28.535533905932738
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       5.000000000000001,
+       30
+      ],
+      [
+       40,
+       30
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       40,
+       30
+      ],
+      [
+       40,
+       0
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       40,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "chamfer-cw-polygon",
+  "feature": ".chamfer",
+  "what": "CLOCKWISE polygon, corner 3 chamfer 6",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       30
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       40,
+       0
+      ]
+     ],
+     "chamfers": {
+      "2": 6
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 11820,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    19.725888324873093,
+    14.802030456852789,
+    5
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 7
+   }
+  },
+  "brep": {
+   "volume": 11820,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 11820
+  },
+  "curved": false,
+  "truck": {
+   "volume": 11820,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    19.725888324873097,
+    14.802030456852792,
+    5
+   ],
+   "faces": 7,
+   "kernelFaces": 7,
+   "faceTypes": {
+    "plane": 7
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 6.96744475938914e-17,
+   "comTol": 0.000001,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0,
+   "dBboxBrep": 0,
+   "dVolExact": 0,
+   "occtVolExact": 0,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 11820,
+   "bodies": 1,
+   "faces": 7
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       30
+      ],
+      [
+       34,
+       30
+      ],
+      [
+       40,
+       24
+      ],
+      [
+       40,
+       0
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "round-all-cw-L",
+  "feature": ".round",
+  "what": "CW L shape, all six corners r2",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       25
+      ],
+      [
+       10,
+       25
+      ],
+      [
+       10,
+       10
+      ],
+      [
+       30,
+       10
+      ],
+      [
+       30,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "rounds": {
+      "0": 2,
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2,
+      "5": 2
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 4465.6637061657475,
+   "bbox": [
+    -4.440892098500626e-16,
+    -4.440892098500626e-16,
+    0,
+    30,
+    25,
+    10
+   ],
+   "com": [
+    11.64275427788036,
+    9.142754277877998,
+    5
+   ],
+   "faces": 14,
+   "types": {
+    "cylinder": 6,
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 4465.663706143591,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    25,
+    10
+   ],
+   "faces": 14
+  },
+  "exact": {
+   "volume": 4465.663706143592
+  },
+  "curved": true,
+  "truck": {
+   "volume": 4465.641171987405,
+   "bbox": [
+    -4.4408920985003555e-16,
+    0,
+    0,
+    30,
+    25,
+    10.000000000000007
+   ],
+   "com": [
+    11.642739341655231,
+    9.142739342704957,
+    5.000000005248702
+   ],
+   "faces": 14,
+   "kernelFaces": 14,
+   "faceTypes": {
+    "cylinder": 6,
+    "plane": 8
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.000005046098368631356,
+   "dBboxOcct": 7.105427357601002e-16,
+   "dComOcct": 3.705221439429842e-7,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.00000504609340719895,
+   "dBboxBrep": 7.105427357601002e-16,
+   "dVolExact": 0.000005046093407402613,
+   "occtVolExact": 4.961253778404453e-12,
+   "brepVolExact": 2.0366394821036345e-16
+  },
+  "translatorReported": {
+   "volume": 4465.641171987405,
+   "bodies": 1,
+   "faces": 14
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      0,
+      23
+     ],
+     "end": [
+      2.0000000000000004,
+      25
+     ],
+     "through": [
+      0.5857864376269053,
+      24.414213562373096
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       2.0000000000000004,
+       25
+      ],
+      [
+       8,
+       25
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      8,
+      25
+     ],
+     "end": [
+      10,
+      23
+     ],
+     "through": [
+      9.414213562373096,
+      24.414213562373096
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       10,
+       23
+      ],
+      [
+       10,
+       12
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      10,
+      12
+     ],
+     "end": [
+      12,
+      10
+     ],
+     "through": [
+      10.585786437626904,
+      10.585786437626904
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       12,
+       10
+      ],
+      [
+       28,
+       10
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      28,
+      10
+     ],
+     "end": [
+      30,
+      8
+     ],
+     "through": [
+      29.414213562373096,
+      9.414213562373096
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       30,
+       8
+      ],
+      [
+       30,
+       2.0000000000000004
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      30,
+      2.0000000000000004
+     ],
+     "end": [
+      28,
+      0
+     ],
+     "through": [
+      29.414213562373096,
+      0.5857864376269053
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       28,
+       0
+      ],
+      [
+       2.0000000000000004,
+       0
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      2.0000000000000004,
+      0
+     ],
+     "end": [
+      0,
+      2.0000000000000004
+     ],
+     "through": [
+      0.5857864376269053,
+      0.5857864376269051
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       2.0000000000000004
+      ],
+      [
+       0,
+       23
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ }
+]

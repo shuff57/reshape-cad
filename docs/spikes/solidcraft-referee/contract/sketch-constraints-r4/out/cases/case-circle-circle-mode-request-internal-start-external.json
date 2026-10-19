@@ -1,0 +1,30 @@
+[
+ {
+  "id": "circle-circle-mode-request-internal-start-external",
+  "feats": [
+   "tangent:mode option",
+   "rough start: tangent external/internal branch"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "asks for internal tangency but the circles start externally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ }
+]

@@ -1,0 +1,1 @@
+sl9-16-boxlip-top-m0.01                  FAIL     occtV 70578.3167 | tr-occt dV 2.8e-5 dBb 0.0e+0 dCom 5.6e-6 F o/b/t 12/12/11 | brep-occt dV 2.2e-13      | ms 1059 cpu 1548

@@ -1,0 +1,5 @@
+r2-cone-spire-2-100                                   dVol 2.7e-4 dBbox 1.3e-7 dCom 8.6e-19 dAn 2.7e-4 faces 2/2
+r2-cone-spire-1-100                                   dVol 7.3e-4 dBbox 2.1e-6 dCom 3.6e-17 dAn 7.3e-4 faces 2/2
+r2-cone-spire-4-400                                   dVol 7.3e-4 dBbox 2.1e-6 dCom 3.6e-17 dAn 7.3e-4 faces 2/2
+r2-cone-flat-100-2                                    dVol 5.6e-5 dBbox 4.4e-6 dCom 1.8e-17 dAn 5.6e-5 faces 2/2
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/r2-cone/primitives-measure.json

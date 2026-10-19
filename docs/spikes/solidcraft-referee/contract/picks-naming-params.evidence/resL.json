@@ -1,0 +1,3641 @@
+[
+ {
+  "label": "stepped union: hollow open top",
+  "src": "const a = box(40,30,10)\nconst b = box(20,20,10,{at:[0,0,10]})\nconst u = join(a,b)\nhollow(u,{wall:2, open:'top'})",
+  "id": "shell1",
+  "ms": 750,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       0,
+       0,
+       15
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "op1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on op1's own shape",
+     "engineFace": "F2:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F2:+z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "agree": null,
+       "note": "op1 is a combine: no doc-derived plane for a built shape; the rule is geometry on solidcraft's own shape only"
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 20,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      10
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       0,
+       0,
+       15
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 7253.994078952681,
+    "com": [
+     -4.04649226860459e-14,
+     1.667504307158964e-13,
+     1.675302864785995
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     15
+    ],
+    "faces": 25,
+    "types": {
+     "plane": 21,
+     "cylinder": 4
+    },
+    "components": {
+     "plane": 21,
+     "cylinder": 4
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 7312,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    15
+   ],
+   "com": [
+    -2.073064145178994e-17,
+    0,
+    1.6892778993435449
+   ],
+   "faces": 21,
+   "faceTypes": {
+    "plane": 21
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 0.007996411413626895,
+   "dBbox": 0,
+   "dCom": 0.0002595098768200193,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 25,
+    "truck": 21,
+    "brep": null,
+    "verdict": "UNEXPLAINED",
+    "keys": {
+     "plane": "equal",
+     "cylinder": "UNEXPLAINED"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "FAIL",
+  "control": {
+   "dVol": 0.17948650974645688,
+   "dCom": 0.0531521624003784,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "op1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "stepped union: hollow open bottom",
+  "src": "const a = box(40,30,10)\nconst b = box(20,20,10,{at:[0,0,10]})\nconst u = join(a,b)\nhollow(u,{wall:2, open:'bottom'})",
+  "id": "shell1",
+  "ms": 275,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       0,
+       0,
+       -5
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "op1.face[-z]",
+     "rule": "planar face with outward normal -z at the extreme along it on op1's own shape",
+     "engineFace": "F1:-z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "agree": null,
+       "note": "op1 is a combine: no doc-derived plane for a built shape; the rule is geometry on solidcraft's own shape only"
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 20,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      10
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       0,
+       0,
+       -5
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 5893.994078952747,
+    "com": [
+     -5.186822517390487e-14,
+     2.1850115226774918e-13,
+     4.54846691436944
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     15
+    ],
+    "faces": 25,
+    "types": {
+     "plane": 21,
+     "cylinder": 4
+    },
+    "components": {
+     "plane": 21,
+     "cylinder": 4
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 5952,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    15
+   ],
+   "com": [
+    -1.2733740784231186e-17,
+    0,
+    4.537634408602151
+   ],
+   "faces": 21,
+   "faceTypes": {
+    "plane": 21
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 0.009841530254397424,
+   "dBbox": 0,
+   "dCom": 0.00020115458217616165,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 25,
+    "truck": 21,
+    "brep": null,
+    "verdict": "UNEXPLAINED",
+    "keys": {
+     "plane": "equal",
+     "cylinder": "UNEXPLAINED"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "FAIL",
+  "control": {
+   "dVol": 0.24058489066198824,
+   "dCom": 0.05309380710573454,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "op1.face[-z]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "stepped union: hollow open right",
+  "src": "const a = box(40,30,10)\nconst b = box(20,20,10,{at:[0,0,10]})\nconst u = join(a,b)\nhollow(u,{wall:2, open:'right'})",
+  "id": "shell1",
+  "ms": 241,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       20,
+       0,
+       0
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "op1.face[+x]",
+     "rule": "planar face with outward normal +x at the extreme along it on op1's own shape",
+     "engineFace": "F1:+x",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+x",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "agree": null,
+       "note": "op1 is a combine: no doc-derived plane for a built shape; the rule is geometry on solidcraft's own shape only"
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 20,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      10
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       20,
+       0,
+       0
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 7453.99407895272,
+    "com": [
+     -0.795278334972101,
+     1.7029112940709145e-13,
+     2.5919844927382285
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     15
+    ],
+    "faces": 25,
+    "types": {
+     "plane": 21,
+     "cylinder": 4
+    },
+    "components": {
+     "plane": 21,
+     "cylinder": 4
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 7512,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    15
+   ],
+   "com": [
+    -0.7891373801916921,
+    0,
+    2.5985090521831737
+   ],
+   "faces": 21,
+   "faceTypes": {
+    "plane": 21
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 0.007781857676955629,
+   "dBbox": 0,
+   "dCom": 0.00012115802725853828,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 25,
+    "truck": 21,
+    "brep": null,
+    "verdict": "UNEXPLAINED",
+    "keys": {
+     "plane": "equal",
+     "cylinder": "UNEXPLAINED"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "FAIL",
+  "control": {
+   "refused": "solid.shell: invalid input: select at least one face to remove"
+  },
+  "names": [
+   "op1.face[+x]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "stepped union: round edge(top,right)",
+  "src": "const a = box(40,30,10)\nconst b = box(20,20,10,{at:[0,0,10]})\nconst u = join(a,b)\nround(u.edge('top','right'), 1)",
+  "id": "round1",
+  "ms": 124,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[+x]] matches no edge on b_box1 (the two faces do not meet there any more, or never did); not guessing"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 20,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      10
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "join"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 15999.999999999996,
+    "com": [
+     2.7289281945286355e-16,
+     1.9495516312417754e-16,
+     2.5000000000000004
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     15
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 16000,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     15
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {
+    "round1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepRefusals": {
+    "round1": "3 edges of the part lie between a top face and a right face, so round1 cannot tell which one you mean -- round or chamfer the edge on the plain box before you join or cut it -- round1 is shown without it."
+   }
+  },
+  "refusals": {
+   "round1": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[+x]] matches no edge on b_box1 (the two faces do not meet there any more, or never did); not guessing"
+  },
+  "outcome": "REFUSED",
+  "sentence": "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[+x]] matches no edge on b_box1 (the two faces do not meet there any more, or never did); not guessing",
+  "names": [
+   "op1.edge[op1.face[+x] ^ op1.face[+z]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "stepped union: draft face right",
+  "src": "const a = box(40,30,10)\nconst b = box(20,20,10,{at:[0,0,10]})\nconst u = join(a,b)\ndraft(u.face('right'), 5)",
+  "id": "draft1",
+  "ms": 266,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       20,
+       0,
+       0
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "op1.face[+x]",
+     "rule": "planar face with outward normal +x at the extreme along it on op1's own shape",
+     "engineFace": "F1:+x",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+x",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "agree": null,
+       "note": "op1 is a combine: no doc-derived plane for a built shape; the rule is geometry on solidcraft's own shape only"
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 20,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      10
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       20,
+       0,
+       0
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 15999.999999999996,
+    "com": [
+     0.0005979895504345224,
+     -4.3032244434471076e-16,
+     2.4863298963240745
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20.43744331762963,
+     15,
+     15
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 16000,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     15
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 16000,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20.43744331762962,
+    15,
+    15
+   ],
+   "com": [
+    0.0005979895504334157,
+    3.789561257387201e-17,
+    2.4863298963240745
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 2.273736754432321e-16,
+   "dBbox": 5.215007019595078e-16,
+   "dCom": 2.0428339183405608e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.draft: invalid input: no face at [-19.56255668237037, 0.0, 10.0]"
+  },
+  "names": [
+   "op1.face[+x]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 5,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "equal-height union: hollow open top (two coplanar tops)",
+  "src": "const a = box(20,30,10,{at:[-10,0,0]})\nconst b = box(20,30,10,{at:[10,0,0]})\nconst u = join(a,b)\nhollow(u,{wall:2, open:'top'})",
+  "id": "shell1",
+  "ms": 268,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       0,
+       0,
+       5
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "op1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on op1's own shape",
+     "engineFace": "F1:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "agree": null,
+       "note": "op1 is a combine: no doc-derived plane for a built shape; the rule is geometry on solidcraft's own shape only"
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 30,
+     "height": 10,
+     "center": [
+      -10,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 30,
+     "height": 10,
+     "center": [
+      10,
+      0,
+      0
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       0,
+       0,
+       5
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11999.999999999998,
+    "com": [
+     0,
+     8.437694987151191e-17,
+     3.3306690738754695e-17
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 4512,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {
+    "shell1": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {}
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 4512,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    5
+   ],
+   "com": [
+    0,
+    0,
+    -1.6595744680851063
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": false,
+   "brepOK": true,
+   "occtRefusals": {
+    "shell1": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0,
+   "dBbox": 0,
+   "dCom": null,
+   "tol": 1e-9,
+   "faces": {
+    "occt": null,
+    "truck": 11,
+    "brep": 11
+   },
+   "reference": "brep-rs (OCCT refused or no-opped a feature)"
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0,
+   "dCom": null,
+   "rejected": false,
+   "byCom": false
+  },
+  "names": [
+   "op1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": -10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "L-shape (cut): round edge(top,right)",
+  "src": "const a = box(40,30,10)\nconst b = box(20,15,10,{at:[10,7.5,0]})\nconst u = cut(a,b)\nround(u.edge('top','right'), 1)",
+  "id": "round1",
+  "ms": 368,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       20,
+       -7.5,
+       5
+      ]
+     ],
+     "radius": 1,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "op1.edge[op1.face[+z] ^ op1.face[+x]]",
+     "engineEdges": [
+      "F1:+x|F1:+z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:+z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 15,
+     "height": 10,
+     "center": [
+      10,
+      7.5,
+      0
+     ],
+     "body_name": "b_box2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_box2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       20,
+       -7.5,
+       5
+      ]
+     ],
+     "radius": 1,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 8996.780972454859,
+    "com": [
+     -3.341602025776082,
+     -2.4982110114960863,
+     -0.0017090677818004441
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 8,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 8,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 8996.780972450963,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 9
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 8996.778861163026,
+   "bbox": [
+    -20,
+    -15.000000000000005,
+    -5,
+    20,
+    15,
+    5
+   ],
+   "com": [
+    -3.3416074101940265,
+    -2.4982098379124658,
+    -0.0017101487245232447
+   ],
+   "faces": 9,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 8
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 2.346719164835904e-7,
+   "dBbox": 3.552713678800501e-16,
+   "dCom": 1.055971237224115e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 9,
+    "truck": 9,
+    "brep": 9,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 4.330743756377219e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.0003582673571452528,
+   "dCom": 0.00039315991783717575,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "op1.edge[op1.face[+x] ^ op1.face[+z]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_width",
+    "caption": "Box 2 width",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_depth",
+    "caption": "Box 2 depth",
+    "value": 15,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_height",
+    "caption": "Box 2 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box2_x",
+    "caption": "Box 2 x",
+    "value": 10,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_y",
+    "caption": "Box 2 y",
+    "value": 7.5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box2_z",
+    "caption": "Box 2 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1,
+    "min": 0.5,
+    "max": 1,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "plate with through hole: hollow open top (annular)",
+  "src": "const b = box(40,30,10)\nhole(b,{across:8})\nhollow(b,{wall:2, open:'top'})",
+  "id": "shell1",
+  "ms": 1728,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       11.21951219512195,
+       -6.219512195121951,
+       4.999999999999998
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on box1's own shape",
+     "engineFace": "F1:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+z",
+      "pickSource": "interior point (largest display triangle); the centroid is off the face"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 5,
+       "got": 5,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+z",
+       "got": "F1:+z",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 4,
+     "height": 12,
+     "base": [
+      0,
+      0,
+      -6
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       11.21951219512195,
+       -6.219512195121951,
+       4.999999999999998
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4914.123859659491,
+    "com": [
+     -8.386332915292337e-17,
+     7.732263696616098e-16,
+     -1.339653110864467
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 14,
+    "types": {
+     "plane": 12,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 12,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2
+   },
+   "brep": {
+    "volume": 4914.123859659493,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 14
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 4914.097651989056,
+   "bbox": [
+    -20,
+    -15,
+    -5.000000000000005,
+    20,
+    15,
+    5.000000000000003
+   ],
+   "com": [
+    -4.289583965773265e-16,
+    6.825830609019614e-16,
+    -1.3396825790776083
+   ],
+   "faces": 14,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 12
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.000005333131842678183,
+   "dBbox": 1.0658141036401502e-15,
+   "dCom": 5.779192070724691e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 14,
+    "truck": 14,
+    "brep": 14,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 3.701553838473859e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.000005333131842122949,
+   "dCom": 0.05254609602492388,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "box1.face[+z]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "hole1_diameter",
+    "caption": "Hole 1 diameter",
+    "value": 8,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "hole1_depth",
+    "caption": "Hole 1 depth",
+    "value": 12,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "hole1_x",
+    "caption": "Hole 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "hole1_y",
+    "caption": "Hole 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "plate with blind hole in top: hollow open bottom",
+  "src": "const b = box(40,30,10)\nhole(b,{across:8, deep:4})\nhollow(b,{wall:2, open:'bottom'})",
+  "id": "shell1",
+  "ms": 1227,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       0,
+       0,
+       -5
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[-z]",
+     "rule": "planar face with outward normal -z at the extreme along it on box1's own shape",
+     "engineFace": "F1:-z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 5,
+       "got": 5,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-z",
+       "got": "F1:-z",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 4,
+     "height": 4,
+     "base": [
+      0,
+      0,
+      1
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       0,
+       0,
+       -5
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4733.375702171448,
+    "com": [
+     -5.390944561252225e-16,
+     3.63632858019528e-16,
+     1.553506207291184
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 13,
+     "cylinder": 2,
+     "other": 1
+    },
+    "components": {
+     "plane": 13,
+     "cylinder": 2,
+     "other": 1
+    },
+    "bigCylinderComponents": 2
+   },
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 4763.305959170714,
+   "bbox": [
+    -20,
+    -15,
+    -5.000000000000001,
+    20,
+    15,
+    5.000000000000002
+   ],
+   "com": [
+    1.2802483355500587e-15,
+    -5.683976377982822e-15,
+    1.5403690119127984
+   ],
+   "faces": 15,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 13
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 0.006323237131913158,
+   "dBbox": 3.552713678800501e-16,
+   "dCom": 0.0002576415984164206,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 16,
+    "truck": 15,
+    "brep": null,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "other": "occt-other-surface-is-truck-plane"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "FAIL",
+  "control": {
+   "refused": "solid.shell: invalid input: select at least one face to remove"
+  },
+  "names": [
+   "box1.face[-z]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "hole1_diameter",
+    "caption": "Hole 1 diameter",
+    "value": 8,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "hole1_depth",
+    "caption": "Hole 1 depth",
+    "value": 4,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "hole1_x",
+    "caption": "Hole 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "hole1_y",
+    "caption": "Hole 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "hole off-centre then round edge(top,front)",
+  "src": "const b = box(40,30,10)\nhole(b,{across:8, at:[8,6]})\nround(b.edge('top','front'), 1.5)",
+  "id": "round1",
+  "ms": 2159,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       5
+      ]
+     ],
+     "radius": 1.5,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+z] ^ box1.face[-y]]",
+     "engineEdges": [
+      "F1:+z|F1:-y"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+z|F1:-y"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 4,
+     "height": 12,
+     "base": [
+      8,
+      6,
+      -6
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       0,
+       -15,
+       5
+      ]
+     ],
+     "radius": 1.5,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 11478.031010143404,
+    "com": [
+     -0.35034219658713833,
+     -0.2380798340320833,
+     -0.007849741024074576
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 8,
+    "types": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 11478.031010131403,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "faces": 8
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 11478.0576961338,
+   "bbox": [
+    -20.000000000000014,
+    -15,
+    -5.0000000000000036,
+    20.000000000000014,
+    15,
+    5.0000000000000036
+   ],
+   "com": [
+    -0.3503139543938453,
+    -0.238042811943365,
+    -0.007854585429283582
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.00000232496238870567,
+   "dBbox": 7.105427357601002e-16,
+   "dCom": 7.260628954177558e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 1.0456229011743727e-12
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.0000023246356288549656,
+   "dCom": 0.0009677995593570165,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "box1.edge[box1.face[+z] ^ box1.face[-y]]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 40,
+    "min": 1,
+    "max": 160,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "hole1_diameter",
+    "caption": "Hole 1 diameter",
+    "value": 8,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "hole1_depth",
+    "caption": "Hole 1 depth",
+    "value": 12,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "hole1_x",
+    "caption": "Hole 1 x",
+    "value": 8,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "hole1_y",
+    "caption": "Hole 1 y",
+    "value": 6,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1.5,
+    "min": 0.5,
+    "max": 4.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cylinder with hole: round rim (top,side)",
+  "src": "const c = cylinder(30,20)\nhole(c,{across:6})\nround(c.edge('top','side'), 1.5)",
+  "id": "round1",
+  "ms": 15839,
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -8.631084183902612,
+       12.268022897369661,
+       10
+      ]
+     ],
+     "radius": 1.5,
+     "body": "b_cyl1"
+    },
+    "evidence": {
+     "name": "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]",
+     "engineEdges": [
+      "F1:side#1|F1:top",
+      "F1:side#2|F1:top"
+     ],
+     "target": {
+      "candidates": 2,
+      "edges": [
+       "F1:side#1|F1:top",
+       "F1:side#2|F1:top"
+      ]
+     },
+     "checks": [
+      {
+       "check": "persistent names + plane of the planar face",
+       "agree": true,
+       "named": 2
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 15,
+     "height": 20,
+     "base": [
+      0,
+      0,
+      -10
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 22,
+     "base": [
+      1.7763568394002505e-15,
+      -4.440892098500626e-15,
+      -11.000000000000007
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_cyl1"
+     ]
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       -8.631084183902612,
+       12.268022897369661,
+       10
+      ]
+     ],
+     "radius": 1.5,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 13527.188834908578,
+    "com": [
+     -2.4078379776283446e-15,
+     -6.428080328147287e-16,
+     -0.03177793737997685
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ],
+    "faces": 5,
+    "types": {
+     "cylinder": 2,
+     "other": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 2,
+     "other": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 2
+   },
+   "brep": {
+    "volume": 13527.188834908588,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ],
+    "faces": 5
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 13526.912517924051,
+   "bbox": [
+    -14.999768343198578,
+    -14.999645737868262,
+    -10.000000000000043,
+    14.999768343198566,
+    14.999645737868248,
+    10
+   ],
+   "com": [
+    1.4343667567978137e-15,
+    -7.620073395488386e-15,
+    -0.03177946217895964
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "cylinder": 2,
+    "other": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.000020426785483650637,
+   "dBbox": 0.000023617475450166126,
+   "dCom": 3.250882354296451e-8,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 5,
+    "truck": 5,
+    "brep": 5,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 6.723456831073911e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.00002042678548472639,
+   "dCom": 0.0013550483115658356,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]"
+  ],
+  "params": [
+   {
+    "name": "cyl1_radius",
+    "caption": "Cylinder 1 across",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cyl1_height",
+    "caption": "Cylinder 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cyl1_x",
+    "caption": "Cylinder 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_y",
+    "caption": "Cylinder 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_z",
+    "caption": "Cylinder 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "hole1_diameter",
+    "caption": "Hole 1 diameter",
+    "value": 6,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "hole1_depth",
+    "caption": "Hole 1 depth",
+    "value": 22,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "hole1_x",
+    "caption": "Hole 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "hole1_y",
+    "caption": "Hole 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 1.5,
+    "min": 0.5,
+    "max": 9.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ },
+ {
+  "label": "cylinder hollow open top then round rim",
+  "src": "const c = cylinder(30,20)\nhollow(c,{wall:2, open:'top'})\nround(c.edge('top','side'), 0.8)",
+  "id": "round1",
+  "ms": 40127,
+  "features": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       1.4110382223078552e-15,
+       -1.6327728000990898e-15,
+       10
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_cyl1"
+    },
+    "evidence": {
+     "name": "cyl1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on cyl1's own shape",
+     "engineFace": "F1:top",
+     "target": {
+      "candidates": 1,
+      "face": "F1:top",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 10,
+       "got": 10,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:top",
+       "got": "F1:top",
+       "agree": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       -8.631084183902612,
+       12.268022897369661,
+       10
+      ]
+     ],
+     "radius": 0.8,
+     "body": "b_cyl1"
+    },
+    "evidence": {
+     "name": "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]",
+     "engineEdges": [
+      "F1:side#1|F1:top",
+      "F1:side#2|F1:top"
+     ],
+     "target": {
+      "candidates": 2,
+      "edges": [
+       "F1:side#1|F1:top",
+       "F1:side#2|F1:top"
+      ]
+     },
+     "checks": [
+      {
+       "check": "persistent names + plane of the planar face",
+       "agree": true,
+       "named": 2
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 15,
+     "height": 20,
+     "base": [
+      0,
+      0,
+      -10
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       1.4110382223078552e-15,
+       -1.6327728000990898e-15,
+       10
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       -8.631084183902612,
+       12.268022897369661,
+       10
+      ]
+     ],
+     "radius": 0.8,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4567.651818114605,
+    "com": [
+     5.17702819473155e-15,
+     -5.524305661768165e-16,
+     -2.119761088076618
+    ],
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ],
+    "faces": 6,
+    "types": {
+     "cylinder": 2,
+     "other": 1,
+     "plane": 3
+    },
+    "components": {
+     "cylinder": 2,
+     "other": 1,
+     "plane": 3
+    },
+    "bigCylinderComponents": 2
+   },
+   "brep": {
+    "volume": 4567.651818114608,
+    "bbox": [
+     -15,
+     -15,
+     -10,
+     15,
+     15,
+     10
+    ],
+    "faces": 6
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "refusals": {},
+  "truck": {
+   "volume": 4567.6199267555085,
+   "bbox": [
+    -14.999997262439072,
+    -14.999999634481117,
+    -10.000000000000023,
+    14.999997262439079,
+    14.999999634481124,
+    10.000000000000007
+   ],
+   "com": [
+    1.924805972939899e-15,
+    9.690402484456043e-15,
+    -2.1197598515258096
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "cylinder": 2,
+    "other": 1,
+    "plane": 3
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.000006982003087419789,
+   "dBbox": 1.8250406187784545e-7,
+   "dCom": 2.636335181640698e-8,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 6,
+    "truck": 6,
+    "brep": 6,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 7.964658761125462e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.0000069820030898091866,
+   "dCom": 0.0011728272681298388,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "cyl1.face[+z]",
+   "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]"
+  ],
+  "params": [
+   {
+    "name": "cyl1_radius",
+    "caption": "Cylinder 1 across",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "cyl1_height",
+    "caption": "Cylinder 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "cyl1_x",
+    "caption": "Cylinder 1 x",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_y",
+    "caption": "Cylinder 1 y",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "cyl1_z",
+    "caption": "Cylinder 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 2,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   },
+   {
+    "name": "round1_size",
+    "caption": "Round 1 radius",
+    "value": 0.8,
+    "min": 0.5,
+    "max": 9.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": []
+ }
+]

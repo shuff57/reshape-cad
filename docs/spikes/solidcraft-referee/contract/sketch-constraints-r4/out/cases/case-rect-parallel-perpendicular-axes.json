@@ -1,0 +1,82 @@
+[
+ {
+  "id": "rect-parallel-perpendicular-axes",
+  "feats": [
+   "rule:parallel",
+   "rule:perpendicular",
+   "axis-ref:X/Y axes (-2,-3)"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 5.828466479821751e-11,
+      "db": 2.9096796162284843e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999650292
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 6.389488286610383e-11,
+      "db": 3.5567855567491985e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999616631
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 6.464203276361029e-11,
+      "db": 3.648717452503504e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999612148
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 7.220463279130247e-11,
+      "db": 4.664713060265058e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999566772
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 8.344674521746734e-11,
+      "db": 6.428474529570678e-12,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.9999994993195
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 11
+  }
+ }
+]

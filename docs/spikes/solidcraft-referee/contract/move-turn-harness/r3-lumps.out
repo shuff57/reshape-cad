@@ -1,0 +1,29 @@
+cut/copy-at-origin                           ALL-PASS      box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | op1:PASS occt=10000.000 dVol=1.8e-16 dCom=1.4e-17 f=12/12 bodies=2
+cut/x07 copy moved +20                       ALL-PASS      box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | op1:PASS occt=10000.000 dVol=1.8e-16 dCom=1.4e-17 f=12/12 bodies=2
+cut/tool moved (no copy)                     ALL-PASS      op1:PASS occt=10000.000 dVol=3.6e-16 dCom=1.0e-17 f=12/12 bodies=2
+cut/turned tool 90                           ALL-PASS      op1:PASS occt=8000.000 dVol=2.3e-16 dCom=8.6e-18 f=12/12 bodies=2
+cut/turned tool 45                           ALL-PASS      op1:PASS occt=9171.573 dVol=4.0e-16 dCom=5.0e-17 f=12/12 bodies=2
+cut-split then move result                   ALL-PASS      box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | move2:PASS occt=10000.000 dVol=1.8e-16 dCom=1.4e-17 f=12/12 bodies=2
+cut-split then turn result                   ALL-PASS      box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | turn1:PASS occt=10000.000 dVol=1.8e-16 dCom=3.9e-17 f=12/12 bodies=2
+cut-split then copy-move result              ALL-PASS      box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | op1:PASS occt=10000.000 dVol=1.8e-16 dCom=1.4e-17 f=12/12 bodies=2 | move2:PASS occt=10000.000 dVol=1.8e-16 dCom=1.4e-17 f=12/12 bodies=2
+cut-split then hole                          REFUSED-some  box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | hole1:REFUSED(Hole 1 is not built: Cut 1 was split into 2 separate pieces by an earlier cut, and this build can only work on one piece at a time -- move or turn the)
+cut-split then round edge                    REFUSED-some  box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | round1:REFUSED(Round 1 is not built: Cut 1 was split into 2 separate pieces by an earlier cut, and this build can only work on one piece at a time -- move or turn th)
+cut-split then mirror                        REFUSED-some  box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | op1:PASS occt=10000.000 dVol=1.8e-16 dCom=1.4e-17 f=12/12 bodies=2 | mir1:REFUSED(Mirror 1 is not built: Cut 1 was split into 2 separate pieces by an earlier cut, and this build can only work on one piece at a time -- move or turn t)
+cut-split then repeat                        REFUSED-some  box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | pat1:REFUSED(Repeat 1 is not built: Cut 1 was split into 2 separate pieces by an earlier cut, and this build can only work on one piece at a time -- move or turn t)
+cut-split then join with box                 REFUSED-some  box2:PASS occt=8000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | op2:REFUSED(Join 1 is not built: Cut 1 was split into 2 separate pieces by an earlier cut, and this build can only work on one piece at a time -- move or turn the)
+cut by round tool (2 pieces)                 ALL-PASS      cyl1:PASS occt=21205.750 dVol=1.1e-4 dCom=1.1e-16 f=3/3 bodies=1 | op1:PASS(seam-face-split) occt=6480.158 dVol=3.6e-5 dCom=2.8e-11 f=14/13 bodies=2
+cut by round tool, then move result          ALL-PASS      cyl1:PASS occt=21205.750 dVol=1.1e-4 dCom=1.1e-16 f=3/3 bodies=1 | move2:PASS(seam-face-split) occt=6480.158 dVol=3.6e-5 dCom=2.9e-11 f=14/13 bodies=2
+cut by round tool, then turn result          ALL-PASS      cyl1:PASS occt=21205.750 dVol=1.1e-4 dCom=1.1e-16 f=3/3 bodies=1 | turn1:PASS occt=6480.158 dVol=4.0e-5 dCom=2.0e-11 f=12/13 bodies=2
+cut by joined disjoint tools (3 pieces)      ALL-PASS      op2:PASS occt=8000.000 dVol=1.1e-16 dCom=3.4e-17 f=18/18 bodies=3
+cut by joined disjoint tools, then turn result ALL-PASS      turn1:PASS occt=8000.000 dVol=1.1e-16 dCom=5.5e-18 f=18/18 bodies=3
+cut by one of two copies (2 pieces; second copy stays a separate shape) ALL-PASS      move1:PASS occt=4800.000 dVol=0.0e+0 dCom=0.0e+0 f=6/6 bodies=1 | op1:PASS occt=10800.000 dVol=0.0e+0 dCom=2.3e-18 f=12/12 bodies=2
+pocket-split                                 ALL-PASS      move1:PASS occt=10000.000 dVol=1.8e-16 dCom=1.4e-17 f=12/12 bodies=2
+pocket-split then turn                       ALL-PASS      turn1:PASS occt=10000.000 dVol=1.8e-16 dCom=1.9e-17 f=12/12 bodies=2
+pocket-split alone                           ALL-PASS      pocket1:PASS occt=10000.000 dVol=1.8e-16 dCom=1.4e-17 f=12/12 bodies=2
+keep(a, two disjoint tools) 2 pieces         ALL-PASS      op2:PASS(analytic) occt=4000.000 dVol=4.5e-16 dCom=1.7e-2 f=12/12 bodies=2
+join disjoint copy                           ALL-PASS      op1:PASS occt=24000.000 dVol=3.0e-16 dCom=6.0e-18 f=12/12 bodies=1
+join disjoint copy then move                 ALL-PASS      move2:PASS occt=24000.000 dVol=3.0e-16 dCom=1.8e-18 f=12/12 bodies=1
+join disjoint copy then turn                 ALL-PASS      turn1:PASS occt=24000.000 dVol=0.0e+0 dCom=6.5e-17 f=12/12 bodies=1
+cut (no split) by copy: control              ALL-PASS      cyl1:PASS occt=376.991 dVol=1.7e-4 dCom=1.8e-16 f=3/3 bodies=1 | op1:PASS occt=11874.336 dVol=1.8e-6 dCom=1.4e-7 f=7/7 bodies=1
+cut by overlapping copies 1 piece: control   ALL-PASS      box2:PASS occt=2000.000 dVol=2.3e-16 dCom=0.0e+0 f=6/6 bodies=1 | op1:PASS occt=11000.000 dVol=0.0e+0 dCom=4.2e-18 f=10/10 bodies=1
+WRONG scenarios: 0

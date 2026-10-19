@@ -1,0 +1,8 @@
+sweeps exit 0
+perm-test exit 0
+profiles-test exit 0
+stored-run exit 0
+param-grid exit 0
+legacy-run exit 0
+accuracy exit 0
+probes exit 0

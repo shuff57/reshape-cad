@@ -1,0 +1,311 @@
+[
+ {
+  "label": "row 38  bevel 2 on a 40x30x1 slab",
+  "src": "const b = cuboid(40,30,1);\nbevel(b.edge('top','front'), 2);",
+  "page": {
+   "outcome": "NO-REFERENCE",
+   "sc": 1140,
+   "faces": 6
+  },
+  "guarded": {
+   "outcome": "REFUSED",
+   "sentence": "bevel1 is not built: a bevel of 2 is too large for the faces next to this edge -- use a smaller size."
+  },
+  "oracle": {
+   "occt": 1199.9999999999998,
+   "occtFaces": 6,
+   "occtRefusals": {
+    "bevel1": "Chamfering Bevel 1 at 2 would not fit its edge -- Bevel 1 is shown without it."
+   },
+   "brep": 1200,
+   "brepFaces": 6,
+   "brepRefusals": {
+    "bevel1": "Chamfering bevel1 at 2 would not fit its edge -- bevel1 is shown without it."
+   }
+  }
+ },
+ {
+  "label": "row 38b bevel 2 on a 40x1x20 slab",
+  "src": "const b = cuboid(40,1,20);\nbevel(b.edge('top','front'), 2);",
+  "page": {
+   "outcome": "NO-REFERENCE",
+   "sc": 740.0000000000006,
+   "faces": 6
+  },
+  "guarded": {
+   "outcome": "REFUSED",
+   "sentence": "bevel1 is not built: a bevel of 2 is too large for the faces next to this edge -- use a smaller size."
+  },
+  "oracle": {
+   "occt": 799.9999999999998,
+   "occtFaces": 6,
+   "occtRefusals": {
+    "bevel1": "Chamfering Bevel 1 at 2 would not fit its edge -- Bevel 1 is shown without it."
+   },
+   "brep": 799.9999999999999,
+   "brepFaces": 6,
+   "brepRefusals": {
+    "bevel1": "Chamfering bevel1 at 2 would not fit its edge -- bevel1 is shown without it."
+   }
+  }
+ },
+ {
+  "label": "row 44  hollow then round r=3 of the rim",
+  "src": "const b = cuboid(40,30,20);\nhollow(b, { wall: 2, open: 'top' });\nround(b.edge('top','front'), 3);",
+  "page": {
+   "outcome": "NO-REFERENCE",
+   "sc": 7028.0259937459805,
+   "faces": 12
+  },
+  "guarded": {
+   "outcome": "REFUSED",
+   "sentence": "round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."
+  },
+  "oracle": {
+   "occt": 7151.999999999996,
+   "occtFaces": 11,
+   "occtRefusals": {
+    "round1": "Rounding Round 1 at 3 would not fit its edge -- Round 1 is shown without it."
+   },
+   "brep": 7152,
+   "brepFaces": 11,
+   "brepRefusals": {
+    "round1": "round round1 would reach a cut made earlier, and brep-rs can only round a corner the cuts stay clear of; round before you cut or hollow, or keep the cut away from that edge -- round1 is shown without it."
+   }
+  }
+ },
+ {
+  "label": "row 45  blind hole then hollow",
+  "src": "const b = cuboid(40,30,20, { at: [7,-5,3] });\nhole(b, { across: 6, at: [5,5], deep: 8 });\nhollow(b, { wall: 2, open: 'top' });",
+  "page": {
+   "outcome": "NO-REFERENCE",
+   "sc": 7711.150443641621,
+   "faces": 16
+  },
+  "guarded": {
+   "outcome": "REFUSED",
+   "sentence": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole."
+  },
+  "oracle": {
+   "occt": 23773.805328941537,
+   "occtFaces": 8,
+   "occtRefusals": {
+    "shell1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  }
+ },
+ {
+  "label": "row 17  hollow then draft 15 deg of the front wall",
+  "src": "const b = cuboid(40,30,20);\nhollow(b, { wall: 2, open: 'top' });\ndraft(b.face('front'), 15);",
+  "page": {
+   "outcome": "FAIL",
+   "sc": 7064.7356437460885,
+   "faces": 11,
+   "dVol": 0.012201392093667716
+  },
+  "guarded": {
+   "outcome": "REFUSED",
+   "sentence": "draft1 is not built: tilting the front face by 15 degrees would cut through the 2 mm wall of the hollow -- the most it can tilt here is about 11.3 degrees."
+  },
+  "oracle": {
+   "occt": 7152,
+   "occtFaces": 11,
+   "occtRefusals": {},
+   "brep": 7152,
+   "brepFaces": 11,
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  }
+ },
+ {
+  "label": "row 2   draft 80 deg right face of a 40x30x20 box",
+  "src": "const b = cuboid(40,30,20);\ndraft(b.face('right'), 80);",
+  "page": {
+   "outcome": "NO-REFERENCE",
+   "sc": 24738.770266429714,
+   "faces": 5
+  },
+  "guarded": {
+   "outcome": "REFUSED",
+   "sentence": "draft1 is not built: tilting the right face by 80 degrees would run it into the opposite side of the part -- the most it can tilt here is about 75.9 degrees."
+  },
+  "oracle": {
+   "occt": 23999.999999999996,
+   "occtFaces": 6,
+   "occtRefusals": {
+    "draft1": "Tilting Draft 1 at 80 degrees would not fit -- Draft 1 is shown without it."
+   },
+   "brep": 24000,
+   "brepFaces": 6,
+   "brepRefusals": {
+    "draft1": "Tilting draft1 at 80 degrees would not fit -- draft1 is shown without it."
+   }
+  }
+ },
+ {
+  "label": "row 40  hollow wall 15 of a 40x30x20 box",
+  "src": "const b = cuboid(40,30,20);\nhollow(b, { wall: 15, open: 'top' });",
+  "page": {
+   "outcome": "NO-REFERENCE",
+   "sc": 24000,
+   "faces": 8
+  },
+  "guarded": {
+   "outcome": "REFUSED",
+   "sentence": "shell1 is not built: a wall of 15 would collapse box1 -- the wall has to be under 15."
+  },
+  "oracle": {
+   "occt": 23999.999999999996,
+   "occtFaces": 6,
+   "occtRefusals": {
+    "shell1": "Hollowing Hollow 1 to 15 thick would collapse it -- the wall has to be under 10. Hollow 1 is shown without it."
+   },
+   "brep": 24000,
+   "brepFaces": 6,
+   "brepRefusals": {
+    "shell1": "Hollowing shell1 to 15 thick would collapse it -- the wall has to be under 10. shell1 is shown without it."
+   }
+  }
+ },
+ {
+  "label": "row 43 stepped union hollow open top",
+  "src": "const a = cuboid(40,30,10);\nconst c = cuboid(20,20,10,{at:[0,0,10]});\nconst u = join(a, c);\nhollow(u, { wall: 2, open: 'top' });",
+  "page": {
+   "outcome": "FAIL",
+   "sc": 7312,
+   "faces": 21,
+   "dVol": 0.007996411413626895
+  },
+  "guarded": {
+   "outcome": "REFUSED",
+   "sentence": "Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 2, so shell1 is shown without it -- hollow the plain shape first, or leave the hollow out."
+  },
+  "oracle": {
+   "occt": 7253.994078952681,
+   "occtFaces": 25,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  }
+ },
+ {
+  "label": "row 43 notch subtract hollow open bottom",
+  "src": "const b = cuboid(40,40,20);\nconst c = cuboid(10,50,10,{at:[0,0,10]});\nconst d = subtract(b, c);\nhollow(d, { wall: 2, open: 'bottom' });",
+  "page": {
+   "outcome": "FAIL",
+   "sc": 9192,
+   "faces": 19,
+   "dVol": 0.006769333094000929
+  },
+  "guarded": {
+   "outcome": "REFUSED",
+   "sentence": "Hollowing op1 is not supported yet because the part has inside corners (a cut) where the new wall would come out thicker than 2, so shell1 is shown without it -- hollow the plain shape first, or leave the hollow out."
+  },
+  "oracle": {
+   "occt": 9130.194671058533,
+   "occtFaces": 21,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   }
+  }
+ },
+ {
+  "label": "row 43 through hole then hollow top (control, must stay built)",
+  "src": "const b = cuboid(40,30,20,{at:[5,-3,2]});\nhole(b, { across: 6 });\nhollow(b, { wall: 2, open: 'top' });",
+  "page": {
+   "outcome": "PASS",
+   "sc": 8000.160829051753,
+   "faces": 14,
+   "dVol": 0.000008648178533535502
+  },
+  "guarded": {
+   "outcome": "PASS",
+   "sc": 8000.160829051753,
+   "faces": 14,
+   "dVol": 0.000008648178533535502
+  },
+  "oracle": {
+   "occt": 8000.230016469245,
+   "occtFaces": 14,
+   "occtRefusals": {},
+   "brep": 8000.230016469243,
+   "brepFaces": 14,
+   "brepRefusals": {}
+  }
+ },
+ {
+  "label": "row 43 plain box hollow (control, must stay built)",
+  "src": "const b = cuboid(40,30,20);\nhollow(b, { wall: 2, open: 'top' });",
+  "page": {
+   "outcome": "PASS",
+   "sc": 7152,
+   "faces": 11,
+   "dVol": 5.086659405888863e-16
+  },
+  "guarded": {
+   "outcome": "PASS",
+   "sc": 7152,
+   "faces": 11,
+   "dVol": 5.086659405888863e-16
+  },
+  "oracle": {
+   "occt": 7151.999999999996,
+   "occtFaces": 11,
+   "occtRefusals": {},
+   "brep": 7152,
+   "brepFaces": 11,
+   "brepRefusals": {}
+  }
+ },
+ {
+  "label": "round-then-hollow r=3 (new)",
+  "src": "const b = cuboid(40,30,20);\nround(b.edge('top','front'), 3);\nhollow(b, { wall: 2, open: 'top' });",
+  "page": {
+   "outcome": "NO-REFERENCE",
+   "sc": 7154.445502621077,
+   "faces": 14
+  },
+  "guarded": {
+   "outcome": "REFUSED",
+   "sentence": "shell1 is not built: the open edge of the part was rounded with a radius of 3, which is as large as or larger than the 2 mm wall, so the rim would have no thickness -- make the round smaller than the wall."
+  },
+  "oracle": {
+   "occt": 23922.743338847136,
+   "occtFaces": 7,
+   "occtRefusals": {
+    "shell1": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow shell1 yet -- shell1 is shown without it."
+   }
+  }
+ },
+ {
+  "label": "stale pocket + round (new)",
+  "src": "const sk1 = sketch('top'); sk1.rect(40,30,{at:[20,15]});\nconst p = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10,10,{at:[20,15]});\npocket(sk2, p, 4);\nround(p.edge('top','front'), 1);",
+  "page": {
+   "outcome": "FAIL",
+   "sc": 11591.410295184678,
+   "faces": 12,
+   "dVol": 0.03335766466688781
+  },
+  "guarded": {
+   "outcome": "REFUSED",
+   "sentence": "round1 is not built: pull1 was already cut by pocket1, so this round would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead."
+  },
+  "oracle": {
+   "occt": 11991.415926543494,
+   "occtFaces": 7,
+   "occtRefusals": {},
+   "brep": 11991.415926535898,
+   "brepFaces": 7,
+   "brepRefusals": {}
+  }
+ }
+]

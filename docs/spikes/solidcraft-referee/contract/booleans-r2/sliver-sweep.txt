@@ -1,0 +1,148 @@
+axis-aligned   cut       1       expected 31900.0000   SC 31900.0000   exact
+axis-aligned   cut       0.5     expected 31950.0000   SC 31950.0000   exact
+axis-aligned   cut       0.2     expected 31980.0000   SC 31980.0000   exact
+axis-aligned   cut       0.1     expected 31990.0000   SC 31990.0000   exact
+axis-aligned   cut       0.05    expected 31995.0000   SC 31995.0000   exact
+axis-aligned   cut       0.02    expected 31998.0000   SC 31998.0000   exact
+axis-aligned   cut       0.01    expected 31999.0000   SC 31999.0000   exact
+axis-aligned   cut       0.007   expected 31999.3000   SC 31999.3000   exact
+axis-aligned   cut       0.005   expected 31999.5000   SC 31999.5000   exact
+axis-aligned   cut       0.003   expected 31999.7000   SC 31999.7000   exact
+axis-aligned   cut       0.002   expected 31999.8000   SC 31999.8000   exact
+axis-aligned   cut       0.0015  expected 31999.8500   SC 32000.0000   SILENT NO-OP
+axis-aligned   cut       0.001   expected 31999.9000   SC 32000.0000   SILENT NO-OP
+axis-aligned   cut       0.0005  expected 31999.9500   SC 32000.0000   SILENT NO-OP
+axis-aligned   cut       0.0001  expected 31999.9900   SC 32000.0000   SILENT NO-OP
+axis-aligned   intersect 1       expected 100.0000     SC 100.0000     exact
+axis-aligned   intersect 0.5     expected 50.0000      SC 50.0000      exact
+axis-aligned   intersect 0.2     expected 20.0000      SC 20.0000      exact
+axis-aligned   intersect 0.1     expected 10.0000      SC 10.0000      exact
+axis-aligned   intersect 0.05    expected 5.0000       SC 5.0000       exact
+axis-aligned   intersect 0.02    expected 2.0000       SC 2.0000       exact
+axis-aligned   intersect 0.01    expected 1.0000       SC 1.0000       exact
+axis-aligned   intersect 0.007   expected 0.7000       SC 0.7000       exact
+axis-aligned   intersect 0.005   expected 0.5000       SC 0.5000       exact
+axis-aligned   intersect 0.003   expected 0.3000       SC 0.3000       exact
+axis-aligned   intersect 0.002   expected 0.2000       SC 0.2000       exact
+axis-aligned   intersect 0.0015  expected 0.1500       SC -            NO-BODY
+axis-aligned   intersect 0.001   expected 0.1000       SC -            NO-BODY
+axis-aligned   intersect 0.0005  expected 0.0500       SC -            NO-BODY
+axis-aligned   intersect 0.0001  expected 0.0100       SC -            NO-BODY
+axis-aligned   join      1       expected 32900.0000   SC 32900.0000   exact
+axis-aligned   join      0.5     expected 32950.0000   SC 32950.0000   exact
+axis-aligned   join      0.2     expected 32980.0000   SC 32980.0000   exact
+axis-aligned   join      0.1     expected 32990.0000   SC 32990.0000   exact
+axis-aligned   join      0.05    expected 32995.0000   SC 32995.0000   exact
+axis-aligned   join      0.02    expected 32998.0000   SC 32998.0000   exact
+axis-aligned   join      0.01    expected 32999.0000   SC 32999.0000   exact
+axis-aligned   join      0.007   expected 32999.3000   SC 32999.3000   exact
+axis-aligned   join      0.005   expected 32999.5000   SC 32999.5000   exact
+axis-aligned   join      0.003   expected 32999.7000   SC 32999.7000   exact
+axis-aligned   join      0.002   expected 32999.8000   SC 32999.8000   exact
+axis-aligned   join      0.0015  expected 32999.8500   SC 32999.8500   exact
+axis-aligned   join      0.001   expected 32999.9000   SC 32999.9000   exact
+axis-aligned   join      0.0005  expected 32999.9500   SC 32999.9500   exact
+axis-aligned   join      0.0001  expected 32999.9900   SC 32999.9900   exact
+rotated-30deg  cut       1       expected 31900.0000   SC 31900.0000   exact
+rotated-30deg  cut       0.5     expected 31950.0000   SC 31950.0000   exact
+rotated-30deg  cut       0.2     expected 31980.0000   SC 31980.0000   exact
+rotated-30deg  cut       0.1     expected 31990.0000   SC 31990.0000   exact
+rotated-30deg  cut       0.05    expected 31995.0000   SC 31995.0000   exact
+rotated-30deg  cut       0.02    expected 31998.0000   SC 32000.0000   SILENT NO-OP
+rotated-30deg  cut       0.01    expected 31999.0000   SC 32000.0000   SILENT NO-OP
+rotated-30deg  cut       0.007   expected 31999.3000   SC 32000.0000   SILENT NO-OP
+rotated-30deg  cut       0.005   expected 31999.5000   SC 32000.0000   SILENT NO-OP
+rotated-30deg  cut       0.003   expected 31999.7000   SC 32000.0000   SILENT NO-OP
+rotated-30deg  cut       0.002   expected 31999.8000   SC 32000.0000   SILENT NO-OP
+rotated-30deg  cut       0.0015  expected 31999.8500   SC 32000.0000   SILENT NO-OP
+rotated-30deg  cut       0.001   expected 31999.9000   SC 32000.0000   SILENT NO-OP
+rotated-30deg  cut       0.0005  expected 31999.9500   SC 32000.0000   SILENT NO-OP
+rotated-30deg  cut       0.0001  expected 31999.9900   SC 32000.0000   SILENT NO-OP
+rotated-30deg  intersect 1       expected 100.0000     SC 100.0000     exact
+rotated-30deg  intersect 0.5     expected 50.0000      SC 50.0000      exact
+rotated-30deg  intersect 0.2     expected 20.0000      SC 20.0000      exact
+rotated-30deg  intersect 0.1     expected 10.0000      SC 10.0000      exact
+rotated-30deg  intersect 0.05    expected 5.0000       SC 5.0000       exact
+rotated-30deg  intersect 0.02    expected 2.0000       SC -            NO-BODY
+rotated-30deg  intersect 0.01    expected 1.0000       SC -            NO-BODY
+rotated-30deg  intersect 0.007   expected 0.7000       SC -            NO-BODY
+rotated-30deg  intersect 0.005   expected 0.5000       SC -            NO-BODY
+rotated-30deg  intersect 0.003   expected 0.3000       SC -            NO-BODY
+rotated-30deg  intersect 0.002   expected 0.2000       SC -            NO-BODY
+rotated-30deg  intersect 0.0015  expected 0.1500       SC -            NO-BODY
+rotated-30deg  intersect 0.001   expected 0.1000       SC -            NO-BODY
+rotated-30deg  intersect 0.0005  expected 0.0500       SC -            NO-BODY
+rotated-30deg  intersect 0.0001  expected 0.0100       SC -            NO-BODY
+rotated-30deg  join      1       expected 32900.0000   SC 32900.0000   exact
+rotated-30deg  join      0.5     expected 32950.0000   SC 32950.0000   exact
+rotated-30deg  join      0.2     expected 32980.0000   SC 32980.0000   exact
+rotated-30deg  join      0.1     expected 32990.0000   SC 32990.0000   exact
+rotated-30deg  join      0.05    expected 32995.0000   SC 32995.0000   exact
+rotated-30deg  join      0.02    expected 32998.0000   SC 32998.0000   exact
+rotated-30deg  join      0.01    expected 32999.0000   SC 32999.0000   exact
+rotated-30deg  join      0.007   expected 32999.3000   SC 32999.3000   exact
+rotated-30deg  join      0.005   expected 32999.5000   SC 32999.5000   exact
+rotated-30deg  join      0.003   expected 32999.7000   SC 32999.7000   exact
+rotated-30deg  join      0.002   expected 32999.8000   SC 32999.8000   exact
+rotated-30deg  join      0.0015  expected 32999.8500   SC 32999.8500   exact
+rotated-30deg  join      0.001   expected 32999.9000   SC 32999.9000   exact
+rotated-30deg  join      0.0005  expected 32999.9500   SC 32999.9500   exact
+rotated-30deg  join      0.0001  expected 32999.9900   SC 32999.9900   exact
+{
+ "axis-aligned/cut": {
+  "thinnestExactMm": 0.002,
+  "silentBelow": [
+   "0.0015:SILENT NO-OP",
+   "0.001:SILENT NO-OP",
+   "0.0005:SILENT NO-OP",
+   "0.0001:SILENT NO-OP"
+  ]
+ },
+ "axis-aligned/intersect": {
+  "thinnestExactMm": 0.002,
+  "silentBelow": [
+   "0.0015:NO-BODY",
+   "0.001:NO-BODY",
+   "0.0005:NO-BODY",
+   "0.0001:NO-BODY"
+  ]
+ },
+ "axis-aligned/join": {
+  "thinnestExactMm": 0.0001,
+  "silentBelow": []
+ },
+ "rotated-30deg/cut": {
+  "thinnestExactMm": 0.05,
+  "silentBelow": [
+   "0.02:SILENT NO-OP",
+   "0.01:SILENT NO-OP",
+   "0.007:SILENT NO-OP",
+   "0.005:SILENT NO-OP",
+   "0.003:SILENT NO-OP",
+   "0.002:SILENT NO-OP",
+   "0.0015:SILENT NO-OP",
+   "0.001:SILENT NO-OP",
+   "0.0005:SILENT NO-OP",
+   "0.0001:SILENT NO-OP"
+  ]
+ },
+ "rotated-30deg/intersect": {
+  "thinnestExactMm": 0.05,
+  "silentBelow": [
+   "0.02:NO-BODY",
+   "0.01:NO-BODY",
+   "0.007:NO-BODY",
+   "0.005:NO-BODY",
+   "0.003:NO-BODY",
+   "0.002:NO-BODY",
+   "0.0015:NO-BODY",
+   "0.001:NO-BODY",
+   "0.0005:NO-BODY",
+   "0.0001:NO-BODY"
+  ]
+ },
+ "rotated-30deg/join": {
+  "thinnestExactMm": 0.0001,
+  "silentBelow": []
+ }
+}

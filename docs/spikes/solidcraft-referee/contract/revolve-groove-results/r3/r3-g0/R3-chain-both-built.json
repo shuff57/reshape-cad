@@ -1,0 +1,281 @@
+[
+ {
+  "id": "R3-chain-both-built",
+  "src": "const s0 = sketch('top', 1); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const a = sketch('front'); a.rect(7, 16, { at: [8.5, 6] }); groove(a, bx, 270); const c = sketch('side'); c.rect(7, 16, { at: [8.5, 6] }); groove(c, bx, 180);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove2",
+  "fixture": {
+   "id": "R3-chain-both-built",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 27991.058562531114,
+    "com": [
+     -0.3265795685002585,
+     -0.27996835614657484,
+     11.704931311527579
+    ],
+    "bbox": [
+     -20,
+     -20,
+     0.9999998999999998,
+     20,
+     20,
+     21
+    ],
+    "faces": 21,
+    "area": 7663.573039993901,
+    "types": {
+     "plane": 15,
+     "cylinder": 6
+    },
+    "components": {
+     "plane": 15,
+     "cylinder": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 2
+   },
+   "brep": {
+    "refused": "groove groove2: brep-rs cannot cut this groove yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- groove2 is shown without it."
+   },
+   "ms": 1137,
+   "load": [
+    50.8,
+    50.8
+   ],
+   "cpuMs": 1565,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 12,
+       "nearest": 1,
+       "bodies": 1
+      },
+      "side": 1,
+      "kernelAngle": -270,
+      "nudgeDeg": null
+     }
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove2",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove2 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall.",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": null,
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 2,
+       "headTypes": {
+        "cylinder": 2,
+        "plane": 9
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 12,
+       "nearest": 0.9999999391930494,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        1
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        -20,
+        -20
+       ],
+       [
+        20,
+        -20
+       ],
+       [
+        20,
+        20
+       ],
+       [
+        -20,
+        20
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 20,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk2_1",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        5,
+        -2
+       ],
+       [
+        12,
+        -2
+       ],
+       [
+        12,
+        14
+       ],
+       [
+        5,
+        14
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk2_1",
+      "angle": -270,
+      "operation": "cut",
+      "targets": [
+       "b_pull1"
+      ]
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove2 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall.",
+    "firstRefusal": "groove2 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 1866
+ }
+]

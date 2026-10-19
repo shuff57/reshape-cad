@@ -1,0 +1,482 @@
+[
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "eps": 0.001,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "POSE": 14,
+   "MATCH": 8,
+   "MATCH-OTHER-SIDE": 8
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.00078) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "eps": 0.05,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "POSE": 29,
+   "MATCH-OTHER-SIDE": 1
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.037) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "eps": 0.3,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "POSE": 30
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.054) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "eps": 1,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "POSE": 29,
+   "VOLUME": 1
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.15) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "slot-dims-from-points",
+  "eps": 0.001,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00003805453778294148
+ },
+ {
+  "id": "slot-dims-from-points",
+  "eps": 0.05,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00003805453060461752
+ },
+ {
+  "id": "slot-dims-from-points",
+  "eps": 0.3,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.000038054471453378844
+ },
+ {
+  "id": "slot-dims-from-points",
+  "eps": 1,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00003805438609774889
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "eps": 0.001,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "MATCH": 23,
+   "REFUSED": 2,
+   "VOLUME": 5
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.00099) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "eps": 0.05,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "VOLUME": 30
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.014) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "eps": 0.3,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "VOLUME": 29,
+   "REFUSED": 1
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.18) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "oval-four-arcs-endpoint-tangent",
+  "eps": 1,
+  "lockOnArcCentre": true,
+  "N": 30,
+  "guarded": {
+   "REFUSED": 30
+  },
+  "unguarded": {
+   "VOLUME": 23,
+   "REFUSED": 7
+  },
+  "brep": {
+   "MATCH": 30
+  },
+  "sentences": {
+   "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
+    "n": 30,
+    "raw": "Arc 1 has an end that is not on its circle (off by 0.58) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+   }
+  },
+  "worstGuardedDv": 0
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "eps": 0.001,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.000041917802554574
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "eps": 0.05,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 29,
+   "VOLUME": 1
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00004183343288010347
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "eps": 0.3,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00004200286258112761
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "eps": 1,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.000042076024457354444
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "eps": 0.001,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00006342003547966947
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "eps": 0.05,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00006359540599864058
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "eps": 0.3,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 30
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00006373879783596004
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored",
+  "eps": 1,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 29,
+   "REFUSED": 1
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00006507132461974242
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "eps": 0.001,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 29,
+   "REFUSED": 1
+  },
+  "unguarded": {
+   "VOLUME": 15,
+   "MATCH": 15
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {
+   "Th# rul#s can b# m#t by mor# than on# shap# and th# solv#r would pick a diff#r#nt on# from th# on# drawn (g#om#try # would fold straight back on g#om#try #), so nothing was built; r#draw th# sk#tch clos#r to th# shap# you want, or add a rul# that fix#s this#": {
+    "n": 1,
+    "raw": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (geometry 3 would fold straight back on geometry 4), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   }
+  },
+  "worstGuardedDv": 0.00004164023962868589
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "eps": 0.05,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "MATCH": 18,
+   "REFUSED": 2,
+   "VOLUME": 10
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.000042923260307331736
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "eps": 0.3,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 30
+  },
+  "unguarded": {
+   "VOLUME": 12,
+   "MATCH": 18
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {},
+  "worstGuardedDv": 0.00004205219438678597
+ },
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-arc-first-order",
+  "eps": 1,
+  "lockOnArcCentre": false,
+  "N": 30,
+  "guarded": {
+   "BUILT-MATCH": 27,
+   "REFUSED": 3
+  },
+  "unguarded": {
+   "VOLUME": 13,
+   "MATCH": 16,
+   "REFUSED": 1
+  },
+  "brep": {
+   "REFUSED": 30
+  },
+  "sentences": {
+   "With th#s# valu#s th# outlin# through g#om#try #, #, #, # would cross its#lf, which is not a valid outlin#, so nothing was built; chang# a valu# so th# shap#s stay cl#ar of #ach oth#r or fully insid# on# anoth#r#": {
+    "n": 1,
+    "raw": "With these values the outline through geometry 1, 2, 3, 4 would cross itself, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another."
+   },
+   "Th# rul#s can b# m#t by mor# than on# shap# and th# solv#r would pick a diff#r#nt on# from th# on# drawn (g#om#try # would fold straight back on g#om#try #), so nothing was built; r#draw th# sk#tch clos#r to th# shap# you want, or add a rul# that fix#s this#": {
+    "n": 2,
+    "raw": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (geometry 3 would fold straight back on geometry 4), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   }
+  },
+  "worstGuardedDv": 0.00004181555378049895
+ }
+]

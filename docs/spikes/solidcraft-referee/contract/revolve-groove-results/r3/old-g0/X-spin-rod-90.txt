@@ -1,0 +1,1 @@
+X-spin-rod-90                            PASS     occtV 3392.9201 | tr-occt dV 9.9e-5 dBb 3.3e-14 dCom 7.3e-6 F o/b/t 5/5/5 | brep-occt dV 1.1e-11  | ANALYTIC 3392.9201 dTruck 9.9e-5 dOcct 1.1e-11 dBrep 5.4e-16    | ms 248 cpu 689

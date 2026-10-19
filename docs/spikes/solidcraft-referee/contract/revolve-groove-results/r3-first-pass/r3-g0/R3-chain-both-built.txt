@@ -1,0 +1,1 @@
+R3-chain-both-built                      REFUSED  occtV 31143.2779 | tr-occt dV - dBb - dCom - F o/b/t 10/10/- | brep-occt dV 1.6e-12    | TRUCK REFUSED: groove2 (groove): groove1 was not built, so this groove has no finished part to cut; fix groove1 first.  | ms 90 cpu 390

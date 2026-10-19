@@ -1,0 +1,38 @@
+{
+ "group": "extrude-pocket",
+ "measuredOn": "2026-10-18",
+ "round": 4,
+ "rig": "SolidCraft fe3717f (truck) via contract/RIG.md; the status is the CONTRACT mapping = contract/translate-ep.mjs + outline-guard.mjs + soup-regions.mjs + option-lint.mjs (NOT WIRED into the pane: see the WIRING row); rows marked SHIPPED ROUTE describe phase7/pane/lib/translate-p4.mjs as the pane runs it today, rows marked RAW SOLIDCRAFT describe the kernel with no translator",
+ "statusMeaning": "ONE status and ONE outcome per row: supported | refused | wrong | unsupported. Plain rows describe the CONTRACT mapping (contract/translate-ep.mjs + guards); a row starting SHIPPED ROUTE describes the phase 7 translator the pane runs today; a row starting RAW SOLIDCRAFT describes the kernel with nothing in front of it; a row starting POLICY REFUSAL is refused although the kernel builds a correct solid. A refused row has exactly one sentence.",
+ "cases": 466,
+ "scriptErrors": [
+  {
+   "id": "pl-both-midplane",
+   "sentence": "pull() takes midplane (the same length either side) or length2 (a second length the other way), not both."
+  },
+  {
+   "id": "pl-zero-length2",
+   "sentence": "pull's length2 is the second length, a positive number. You gave it 0."
+  },
+  {
+   "id": "pt-90",
+   "sentence": "pull's taper is an angle in degrees between -90 and 90, like pull(..., { taper: 5 }). You gave it 90."
+  },
+  {
+   "id": "pd-alongnormal-alone",
+   "sentence": "pull's alongNormal only matters with a direction: add direction: [x, y, z], or drop alongNormal."
+  },
+  {
+   "id": "pd-zero-vector",
+   "sentence": "pull's direction [0, 0, 0] points nowhere. Give it at least one non-zero number."
+  },
+  {
+   "id": "fc-pocket-depth-negative",
+   "sentence": "pocket(): the depth is how far the cut goes into the material, so it has to be a positive number -- got -3."
+  },
+  {
+   "id": "fc-pocket-depth-zero",
+   "sentence": "pocket(): the depth is how far the cut goes into the material, so it has to be a positive number -- got 0."
+  }
+ ]
+}

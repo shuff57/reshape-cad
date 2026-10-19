@@ -1,0 +1,199 @@
+L chamfer d=1 swept0^swept1 (convex vertex) PASS[OCCT] V=11543.000000 (OCCT 11543.000000, brep 11543.000000) dVol 0.0e+0 dBbox 1.1e-15 dCOM 2.1e-16 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+L chamfer d=1 swept1^swept2 (convex vertex) PASS[OCCT] V=11543.000000 (OCCT 11543.000000, brep 11543.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 6.8e-17 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+L chamfer d=1 swept2^swept3 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11557.0000 BREP:builds V=11557.0000
+    names: pull1.edge[pull1.face[sk1.edge2] ^ pull1.face[sk1.edge3]]
+L chamfer d=2 swept0^swept1 (convex vertex) PASS[OCCT] V=11522.000000 (OCCT 11522.000000, brep 11522.000000) dVol 1.6e-16 dBbox 2.5e-16 dCOM 2.1e-16 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+L chamfer d=2 swept1^swept2 (convex vertex) PASS[OCCT] V=11522.000000 (OCCT 11522.000000, brep 11522.000000) dVol 0.0e+0 dBbox 2.5e-16 dCOM 6.8e-17 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+L chamfer d=2 swept2^swept3 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11578.0000 BREP:builds V=11578.0000
+    names: pull1.edge[pull1.face[sk1.edge2] ^ pull1.face[sk1.edge3]]
+L chamfer d=3 swept0^swept1 (convex vertex) PASS[OCCT] V=11487.000000 (OCCT 11487.000000, brep 11487.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 1.4e-16 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+L chamfer d=3 swept1^swept2 (convex vertex) PASS[OCCT] V=11487.000000 (OCCT 11487.000000, brep 11487.000000) dVol 0.0e+0 dBbox 2.5e-16 dCOM 6.8e-17 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+L chamfer d=3 swept2^swept3 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 3 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11613.0000 BREP:builds V=11613.0000
+    names: pull1.edge[pull1.face[sk1.edge2] ^ pull1.face[sk1.edge3]]
+L fillet d=1 swept0^swept1 (convex vertex) PASS[OCCT] V=11546.993601 (OCCT 11546.995574, brep 11546.995574) dVol 1.7e-7 dBbox 1.8e-15 dCOM 7.6e-8 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+L fillet d=1 swept1^swept2 (convex vertex) PASS[OCCT] V=11546.993599 (OCCT 11546.995574, brep 11546.995574) dVol 1.7e-7 dBbox 1.7e-15 dCOM 7.6e-8 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+L fillet d=1 swept2^swept3 (REFLEX vertex) PASS[OCCT] V=11553.006393 (OCCT 11553.004426, brep 11553.004426) dVol 1.7e-7 dBbox 1.9e-15 dCOM 1.2e-8 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge2] ^ pull1.face[sk1.edge3]]
+L fillet d=2 swept0^swept1 (convex vertex) PASS[OCCT] V=11537.974410 (OCCT 11537.982297, brep 11537.982297) dVol 6.8e-7 dBbox 1.4e-15 dCOM 3.0e-7 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+L fillet d=2 swept1^swept2 (convex vertex) PASS[OCCT] V=11537.974407 (OCCT 11537.982297, brep 11537.982297) dVol 6.8e-7 dBbox 1.5e-15 dCOM 3.0e-7 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+L fillet d=2 swept2^swept3 (REFLEX vertex) PASS[OCCT] V=11562.025578 (OCCT 11562.017703, brep 11562.017703) dVol 6.8e-7 dBbox 1.4e-15 dCOM 5.5e-8 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge2] ^ pull1.face[sk1.edge3]]
+L fillet d=3 swept0^swept1 (convex vertex) PASS[OCCT] V=11522.942427 (OCCT 11522.960169, brep 11522.960169) dVol 1.5e-6 dBbox 2.1e-15 dCOM 6.6e-7 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+L fillet d=3 swept1^swept2 (convex vertex) PASS[OCCT] V=11522.942423 (OCCT 11522.960169, brep 11522.960169) dVol 1.5e-6 dBbox 2.5e-15 dCOM 6.6e-7 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+L fillet d=3 swept2^swept3 (REFLEX vertex) PASS[OCCT] V=11577.057554 (OCCT 11577.039831, brep 11577.039831) dVol 1.5e-6 dBbox 2.3e-15 dCOM 1.4e-7 faces occt/truck/brep 9/9/9  
+    names: pull1.edge[pull1.face[sk1.edge2] ^ pull1.face[sk1.edge3]]
+T chamfer d=1 swept0^swept1 (convex vertex) PASS[OCCT] V=8393.000000 (OCCT 8393.000000, brep 8393.000000) dVol 0.0e+0 dBbox 8.9e-16 dCOM 6.8e-17 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+T chamfer d=1 swept1^swept2 (convex vertex) PASS[OCCT] V=8393.000000 (OCCT 8393.000000, brep 8393.000000) dVol 0.0e+0 dBbox 2.5e-16 dCOM 1.4e-16 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+T chamfer d=1 swept2^swept3 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=8407.0000 BREP:builds V=8407.0000
+    names: pull1.edge[pull1.face[sk1.edge2] ^ pull1.face[sk1.edge3]]
+T chamfer d=1 swept5^swept6 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=8407.0000 BREP:builds V=8407.0000
+    names: pull1.edge[pull1.face[sk1.edge5] ^ pull1.face[sk1.edge6]]
+T chamfer d=2 swept0^swept1 (convex vertex) PASS[OCCT] V=8372.000000 (OCCT 8372.000000, brep 8372.000000) dVol 0.0e+0 dBbox 8.9e-16 dCOM 6.8e-17 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+T chamfer d=2 swept1^swept2 (convex vertex) PASS[OCCT] V=8372.000000 (OCCT 8372.000000, brep 8372.000000) dVol 2.2e-16 dBbox 2.5e-16 dCOM 6.8e-17 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+T chamfer d=2 swept2^swept3 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=8428.0000 BREP:builds V=8428.0000
+    names: pull1.edge[pull1.face[sk1.edge2] ^ pull1.face[sk1.edge3]]
+T chamfer d=2 swept5^swept6 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=8428.0000 BREP:builds V=8428.0000
+    names: pull1.edge[pull1.face[sk1.edge5] ^ pull1.face[sk1.edge6]]
+T chamfer d=3 swept0^swept1 (convex vertex) PASS[OCCT] V=8337.000000 (OCCT 8337.000000, brep 8337.000000) dVol 0.0e+0 dBbox 5.6e-16 dCOM 0.0e+0 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+T chamfer d=3 swept1^swept2 (convex vertex) PASS[OCCT] V=8337.000000 (OCCT 8337.000000, brep 8337.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 1.7e-17 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+T chamfer d=3 swept2^swept3 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 3 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=8463.0000 BREP:builds V=8463.0000
+    names: pull1.edge[pull1.face[sk1.edge2] ^ pull1.face[sk1.edge3]]
+T chamfer d=3 swept5^swept6 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 3 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=8463.0000 BREP:builds V=8463.0000
+    names: pull1.edge[pull1.face[sk1.edge5] ^ pull1.face[sk1.edge6]]
+T fillet d=1 swept0^swept1 (convex vertex) PASS[OCCT] V=8396.993601 (OCCT 8396.995574, brep 8396.995574) dVol 2.4e-7 dBbox 1.8e-15 dCOM 8.9e-8 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+T fillet d=1 swept1^swept2 (convex vertex) PASS[OCCT] V=8396.993600 (OCCT 8396.995574, brep 8396.995574) dVol 2.4e-7 dBbox 1.7e-15 dCOM 8.9e-8 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+T fillet d=1 swept2^swept3 (REFLEX vertex) PASS[OCCT] V=8403.006393 (OCCT 8403.004426, brep 8403.004426) dVol 2.3e-7 dBbox 1.8e-15 dCOM 2.4e-8 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge2] ^ pull1.face[sk1.edge3]]
+T fillet d=1 swept5^swept6 (REFLEX vertex) PASS[OCCT] V=8403.006396 (OCCT 8403.004426, brep 8403.004426) dVol 2.3e-7 dBbox 5.1e-16 dCOM 2.4e-8 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge5] ^ pull1.face[sk1.edge6]]
+T fillet d=2 swept0^swept1 (convex vertex) PASS[OCCT] V=8387.974410 (OCCT 8387.982297, brep 8387.982297) dVol 9.4e-7 dBbox 1.4e-15 dCOM 3.5e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+T fillet d=2 swept1^swept2 (convex vertex) PASS[OCCT] V=8387.974408 (OCCT 8387.982297, brep 8387.982297) dVol 9.4e-7 dBbox 1.5e-15 dCOM 3.5e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+T fillet d=2 swept2^swept3 (REFLEX vertex) PASS[OCCT] V=8412.025577 (OCCT 8412.017703, brep 8412.017703) dVol 9.4e-7 dBbox 1.4e-15 dCOM 1.0e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge2] ^ pull1.face[sk1.edge3]]
+T fillet d=2 swept5^swept6 (REFLEX vertex) PASS[OCCT] V=8412.025584 (OCCT 8412.017703, brep 8412.017703) dVol 9.4e-7 dBbox 1.4e-15 dCOM 1.0e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge5] ^ pull1.face[sk1.edge6]]
+T fillet d=3 swept0^swept1 (convex vertex) PASS[OCCT] V=8372.942427 (OCCT 8372.960169, brep 8372.960169) dVol 2.1e-6 dBbox 2.1e-15 dCOM 7.7e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+T fillet d=3 swept1^swept2 (convex vertex) PASS[OCCT] V=8372.942425 (OCCT 8372.960169, brep 8372.960169) dVol 2.1e-6 dBbox 1.8e-15 dCOM 7.7e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+T fillet d=3 swept2^swept3 (REFLEX vertex) PASS[OCCT] V=8427.057553 (OCCT 8427.039831, brep 8427.039831) dVol 2.1e-6 dBbox 2.5e-15 dCOM 2.5e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge2] ^ pull1.face[sk1.edge3]]
+T fillet d=3 swept5^swept6 (REFLEX vertex) PASS[OCCT] V=8427.057564 (OCCT 8427.039831, brep 8427.039831) dVol 2.1e-6 dBbox 2.2e-15 dCOM 2.5e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge5] ^ pull1.face[sk1.edge6]]
+U chamfer d=1 swept0^swept1 (convex vertex) PASS[OCCT] V=11193.000000 (OCCT 11193.000000, brep 11193.000000) dVol 0.0e+0 dBbox 1.1e-15 dCOM 3.4e-17 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+U chamfer d=1 swept1^swept2 (convex vertex) PASS[OCCT] V=11193.000000 (OCCT 11193.000000, brep 11193.000000) dVol 1.6e-16 dBbox 2.5e-16 dCOM 1.4e-16 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+U chamfer d=1 swept3^swept4 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11207.0000 BREP:builds V=11207.0000
+    names: pull1.edge[pull1.face[sk1.edge3] ^ pull1.face[sk1.edge4]]
+U chamfer d=1 swept4^swept5 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11207.0000 BREP:builds V=11207.0000
+    names: pull1.edge[pull1.face[sk1.edge4] ^ pull1.face[sk1.edge5]]
+U chamfer d=2 swept0^swept1 (convex vertex) PASS[OCCT] V=11172.000000 (OCCT 11172.000000, brep 11172.000000) dVol 1.6e-16 dBbox 2.5e-16 dCOM 1.4e-16 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+U chamfer d=2 swept1^swept2 (convex vertex) PASS[OCCT] V=11172.000000 (OCCT 11172.000000, brep 11172.000000) dVol 0.0e+0 dBbox 2.5e-16 dCOM 3.4e-17 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+U chamfer d=2 swept3^swept4 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11228.0000 BREP:builds V=11228.0000
+    names: pull1.edge[pull1.face[sk1.edge3] ^ pull1.face[sk1.edge4]]
+U chamfer d=2 swept4^swept5 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11228.0000 BREP:builds V=11228.0000
+    names: pull1.edge[pull1.face[sk1.edge4] ^ pull1.face[sk1.edge5]]
+U chamfer d=3 swept0^swept1 (convex vertex) PASS[OCCT] V=11137.000000 (OCCT 11137.000000, brep 11137.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 1.0e-16 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+U chamfer d=3 swept1^swept2 (convex vertex) PASS[OCCT] V=11137.000000 (OCCT 11137.000000, brep 11137.000000) dVol 1.6e-16 dBbox 2.5e-16 dCOM 6.8e-17 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+U chamfer d=3 swept3^swept4 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 3 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11263.0000 BREP:builds V=11263.0000
+    names: pull1.edge[pull1.face[sk1.edge3] ^ pull1.face[sk1.edge4]]
+U chamfer d=3 swept4^swept5 (REFLEX vertex) REFUSED: round1 is not built: a bevel of 3 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.   | OCCT:builds V=11263.0000 BREP:builds V=11263.0000
+    names: pull1.edge[pull1.face[sk1.edge4] ^ pull1.face[sk1.edge5]]
+U fillet d=1 swept0^swept1 (convex vertex) PASS[OCCT] V=11196.993601 (OCCT 11196.995574, brep 11196.995574) dVol 1.8e-7 dBbox 1.8e-15 dCOM 6.7e-8 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+U fillet d=1 swept1^swept2 (convex vertex) PASS[OCCT] V=11196.993598 (OCCT 11196.995574, brep 11196.995574) dVol 1.8e-7 dBbox 1.7e-15 dCOM 6.7e-8 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+U fillet d=1 swept3^swept4 (REFLEX vertex) PASS[OCCT] V=11203.006398 (OCCT 11203.004426, brep 11203.004426) dVol 1.8e-7 dBbox 1.8e-15 dCOM 3.3e-8 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge3] ^ pull1.face[sk1.edge4]]
+U fillet d=1 swept4^swept5 (REFLEX vertex) PASS[OCCT] V=11203.006394 (OCCT 11203.004426, brep 11203.004426) dVol 1.8e-7 dBbox 1.7e-15 dCOM 3.2e-8 faces occt/truck/brep 11/11/12  
+    names: pull1.edge[pull1.face[sk1.edge4] ^ pull1.face[sk1.edge5]]
+U fillet d=2 swept0^swept1 (convex vertex) PASS[OCCT] V=11187.974410 (OCCT 11187.982297, brep 11187.982297) dVol 7.0e-7 dBbox 1.4e-15 dCOM 2.6e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+U fillet d=2 swept1^swept2 (convex vertex) PASS[OCCT] V=11187.974405 (OCCT 11187.982297, brep 11187.982297) dVol 7.1e-7 dBbox 1.5e-15 dCOM 2.6e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+U fillet d=2 swept3^swept4 (REFLEX vertex) PASS[OCCT] V=11212.025587 (OCCT 11212.017703, brep 11212.017703) dVol 7.0e-7 dBbox 1.4e-15 dCOM 1.2e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge3] ^ pull1.face[sk1.edge4]]
+U fillet d=2 swept4^swept5 (REFLEX vertex) PASS[OCCT] V=11212.025580 (OCCT 11212.017703, brep 11212.017703) dVol 7.0e-7 dBbox 1.5e-15 dCOM 1.2e-7 faces occt/truck/brep 11/11/12  
+    names: pull1.edge[pull1.face[sk1.edge4] ^ pull1.face[sk1.edge5]]
+U fillet d=3 swept0^swept1 (convex vertex) PASS[OCCT] V=11172.942427 (OCCT 11172.960169, brep 11172.960169) dVol 1.6e-6 dBbox 2.1e-15 dCOM 5.8e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge0] ^ pull1.face[sk1.edge1]]
+U fillet d=3 swept1^swept2 (convex vertex) PASS[OCCT] V=11172.942419 (OCCT 11172.960169, brep 11172.960169) dVol 1.6e-6 dBbox 1.8e-15 dCOM 5.8e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge1] ^ pull1.face[sk1.edge2]]
+U fillet d=3 swept3^swept4 (REFLEX vertex) PASS[OCCT] V=11227.057568 (OCCT 11227.039831, brep 11227.039831) dVol 1.6e-6 dBbox 2.5e-15 dCOM 2.7e-7 faces occt/truck/brep 11/11/11  
+    names: pull1.edge[pull1.face[sk1.edge3] ^ pull1.face[sk1.edge4]]
+U fillet d=3 swept4^swept5 (REFLEX vertex) PASS[OCCT] V=11227.057557 (OCCT 11227.039831, brep 11227.039831) dVol 1.6e-6 dBbox 2.3e-15 dCOM 2.7e-7 faces occt/truck/brep 11/11/12  
+    names: pull1.edge[pull1.face[sk1.edge4] ^ pull1.face[sk1.edge5]]
+--- SUMMARY (SC vs closed form)
+L chamfer d=1 swept0^swept1 (convex vertex)                  PASS     SC 11543.0000 closed 11543.0000 rel 0.0e+0 
+L chamfer d=1 swept1^swept2 (convex vertex)                  PASS     SC 11543.0000 closed 11543.0000 rel 0.0e+0 
+L chamfer d=1 swept2^swept3 (REFLEX vertex)                  REFUSED  SC undefined closed 11557.0000 rel - | round1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+L chamfer d=2 swept0^swept1 (convex vertex)                  PASS     SC 11522.0000 closed 11522.0000 rel 0.0e+0 
+L chamfer d=2 swept1^swept2 (convex vertex)                  PASS     SC 11522.0000 closed 11522.0000 rel 0.0e+0 
+L chamfer d=2 swept2^swept3 (REFLEX vertex)                  REFUSED  SC undefined closed 11578.0000 rel - | round1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+L chamfer d=3 swept0^swept1 (convex vertex)                  PASS     SC 11487.0000 closed 11487.0000 rel 0.0e+0 
+L chamfer d=3 swept1^swept2 (convex vertex)                  PASS     SC 11487.0000 closed 11487.0000 rel 0.0e+0 
+L chamfer d=3 swept2^swept3 (REFLEX vertex)                  REFUSED  SC undefined closed 11613.0000 rel - | round1 is not built: a bevel of 3 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+L fillet d=1 swept0^swept1 (convex vertex)                   PASS     SC 11546.9936 closed 11546.9956 rel 1.7e-7 
+L fillet d=1 swept1^swept2 (convex vertex)                   PASS     SC 11546.9936 closed 11546.9956 rel 1.7e-7 
+L fillet d=1 swept2^swept3 (REFLEX vertex)                   PASS     SC 11553.0064 closed 11553.0044 rel 1.7e-7 
+L fillet d=2 swept0^swept1 (convex vertex)                   PASS     SC 11537.9744 closed 11537.9823 rel 6.8e-7 
+L fillet d=2 swept1^swept2 (convex vertex)                   PASS     SC 11537.9744 closed 11537.9823 rel 6.8e-7 
+L fillet d=2 swept2^swept3 (REFLEX vertex)                   PASS     SC 11562.0256 closed 11562.0177 rel 6.8e-7 
+L fillet d=3 swept0^swept1 (convex vertex)                   PASS     SC 11522.9424 closed 11522.9602 rel 1.5e-6 
+L fillet d=3 swept1^swept2 (convex vertex)                   PASS     SC 11522.9424 closed 11522.9602 rel 1.5e-6 
+L fillet d=3 swept2^swept3 (REFLEX vertex)                   PASS     SC 11577.0576 closed 11577.0398 rel 1.5e-6 
+T chamfer d=1 swept0^swept1 (convex vertex)                  PASS     SC 8393.0000 closed 8393.0000 rel 0.0e+0 
+T chamfer d=1 swept1^swept2 (convex vertex)                  PASS     SC 8393.0000 closed 8393.0000 rel 0.0e+0 
+T chamfer d=1 swept2^swept3 (REFLEX vertex)                  REFUSED  SC undefined closed 8407.0000 rel - | round1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+T chamfer d=1 swept5^swept6 (REFLEX vertex)                  REFUSED  SC undefined closed 8407.0000 rel - | round1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+T chamfer d=2 swept0^swept1 (convex vertex)                  PASS     SC 8372.0000 closed 8372.0000 rel 0.0e+0 
+T chamfer d=2 swept1^swept2 (convex vertex)                  PASS     SC 8372.0000 closed 8372.0000 rel 0.0e+0 
+T chamfer d=2 swept2^swept3 (REFLEX vertex)                  REFUSED  SC undefined closed 8428.0000 rel - | round1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+T chamfer d=2 swept5^swept6 (REFLEX vertex)                  REFUSED  SC undefined closed 8428.0000 rel - | round1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+T chamfer d=3 swept0^swept1 (convex vertex)                  PASS     SC 8337.0000 closed 8337.0000 rel 0.0e+0 
+T chamfer d=3 swept1^swept2 (convex vertex)                  PASS     SC 8337.0000 closed 8337.0000 rel 0.0e+0 
+T chamfer d=3 swept2^swept3 (REFLEX vertex)                  REFUSED  SC undefined closed 8463.0000 rel - | round1 is not built: a bevel of 3 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+T chamfer d=3 swept5^swept6 (REFLEX vertex)                  REFUSED  SC undefined closed 8463.0000 rel - | round1 is not built: a bevel of 3 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+T fillet d=1 swept0^swept1 (convex vertex)                   PASS     SC 8396.9936 closed 8396.9956 rel 2.4e-7 
+T fillet d=1 swept1^swept2 (convex vertex)                   PASS     SC 8396.9936 closed 8396.9956 rel 2.4e-7 
+T fillet d=1 swept2^swept3 (REFLEX vertex)                   PASS     SC 8403.0064 closed 8403.0044 rel 2.3e-7 
+T fillet d=1 swept5^swept6 (REFLEX vertex)                   PASS     SC 8403.0064 closed 8403.0044 rel 2.3e-7 
+T fillet d=2 swept0^swept1 (convex vertex)                   PASS     SC 8387.9744 closed 8387.9823 rel 9.4e-7 
+T fillet d=2 swept1^swept2 (convex vertex)                   PASS     SC 8387.9744 closed 8387.9823 rel 9.4e-7 
+T fillet d=2 swept2^swept3 (REFLEX vertex)                   PASS     SC 8412.0256 closed 8412.0177 rel 9.4e-7 
+T fillet d=2 swept5^swept6 (REFLEX vertex)                   PASS     SC 8412.0256 closed 8412.0177 rel 9.4e-7 
+T fillet d=3 swept0^swept1 (convex vertex)                   PASS     SC 8372.9424 closed 8372.9602 rel 2.1e-6 
+T fillet d=3 swept1^swept2 (convex vertex)                   PASS     SC 8372.9424 closed 8372.9602 rel 2.1e-6 
+T fillet d=3 swept2^swept3 (REFLEX vertex)                   PASS     SC 8427.0576 closed 8427.0398 rel 2.1e-6 
+T fillet d=3 swept5^swept6 (REFLEX vertex)                   PASS     SC 8427.0576 closed 8427.0398 rel 2.1e-6 
+U chamfer d=1 swept0^swept1 (convex vertex)                  PASS     SC 11193.0000 closed 11193.0000 rel 0.0e+0 
+U chamfer d=1 swept1^swept2 (convex vertex)                  PASS     SC 11193.0000 closed 11193.0000 rel 0.0e+0 
+U chamfer d=1 swept3^swept4 (REFLEX vertex)                  REFUSED  SC undefined closed 11207.0000 rel - | round1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+U chamfer d=1 swept4^swept5 (REFLEX vertex)                  REFUSED  SC undefined closed 11207.0000 rel - | round1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+U chamfer d=2 swept0^swept1 (convex vertex)                  PASS     SC 11172.0000 closed 11172.0000 rel 0.0e+0 
+U chamfer d=2 swept1^swept2 (convex vertex)                  PASS     SC 11172.0000 closed 11172.0000 rel 0.0e+0 
+U chamfer d=2 swept3^swept4 (REFLEX vertex)                  REFUSED  SC undefined closed 11228.0000 rel - | round1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+U chamfer d=2 swept4^swept5 (REFLEX vertex)                  REFUSED  SC undefined closed 11228.0000 rel - | round1 is not built: a bevel of 2 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+U chamfer d=3 swept0^swept1 (convex vertex)                  PASS     SC 11137.0000 closed 11137.0000 rel 0.0e+0 
+U chamfer d=3 swept1^swept2 (convex vertex)                  PASS     SC 11137.0000 closed 11137.0000 rel 0.0e+0 
+U chamfer d=3 swept3^swept4 (REFLEX vertex)                  REFUSED  SC undefined closed 11263.0000 rel - | round1 is not built: a bevel of 3 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+U chamfer d=3 swept4^swept5 (REFLEX vertex)                  REFUSED  SC undefined closed 11263.0000 rel - | round1 is not built: a bevel of 3 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge inst
+U fillet d=1 swept0^swept1 (convex vertex)                   PASS     SC 11196.9936 closed 11196.9956 rel 1.8e-7 
+U fillet d=1 swept1^swept2 (convex vertex)                   PASS     SC 11196.9936 closed 11196.9956 rel 1.8e-7 
+U fillet d=1 swept3^swept4 (REFLEX vertex)                   PASS     SC 11203.0064 closed 11203.0044 rel 1.8e-7 
+U fillet d=1 swept4^swept5 (REFLEX vertex)                   PASS     SC 11203.0064 closed 11203.0044 rel 1.8e-7 
+U fillet d=2 swept0^swept1 (convex vertex)                   PASS     SC 11187.9744 closed 11187.9823 rel 7.0e-7 
+U fillet d=2 swept1^swept2 (convex vertex)                   PASS     SC 11187.9744 closed 11187.9823 rel 7.1e-7 
+U fillet d=2 swept3^swept4 (REFLEX vertex)                   PASS     SC 11212.0256 closed 11212.0177 rel 7.0e-7 
+U fillet d=2 swept4^swept5 (REFLEX vertex)                   PASS     SC 11212.0256 closed 11212.0177 rel 7.0e-7 
+U fillet d=3 swept0^swept1 (convex vertex)                   PASS     SC 11172.9424 closed 11172.9602 rel 1.6e-6 
+U fillet d=3 swept1^swept2 (convex vertex)                   PASS     SC 11172.9424 closed 11172.9602 rel 1.6e-6 
+U fillet d=3 swept3^swept4 (REFLEX vertex)                   PASS     SC 11227.0576 closed 11227.0398 rel 1.6e-6 
+U fillet d=3 swept4^swept5 (REFLEX vertex)                   PASS     SC 11227.0576 closed 11227.0398 rel 1.6e-6 

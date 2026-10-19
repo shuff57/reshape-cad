@@ -1,0 +1,20 @@
+r2-box-12-20-30-c6                                    Rounding box box1 (12x20x30) at radius 6 failed -- the radius is too big for this shape's edges.
+r2-box-10-20-30-c5                                    Rounding box box1 (10x20x30) at radius 5 failed -- the radius is too big for this shape's edges.
+r2-box-5-20-30-c2.5                                   Rounding box box1 (5x20x30) at radius 2.5 failed -- the radius is too big for this shape's edges.
+r2-box-20-30-12-c6                                    Rounding box box1 (20x30x12) at radius 6 failed -- the radius is too big for this shape's edges.
+r2-box-10-20-30-c4.99                                 dVol 1.2e-4 dBbox 9.5e-17 dCom 2.6e-10 dAn 1.2e-4 faces 26/26
+r2-box-10-20-30-c4.9                                  dVol 1.1e-4 dBbox 1.9e-16 dCom 2.5e-10 dAn 1.1e-4 faces 26/26
+r2-box-10-20-30-c5.1           refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+r2-box-10-20-30-c7             refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+r2-box-12-30-20-c7             refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+r2-box-20-30-12-c7             refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls
+r2-box-30-12-20-c7             refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+r2-box-30-20-12-c7             refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls
+r2-box-chamfer-4.9                                    dVol 2.1e-2 dBbox 4.7e-17 dCom 4.9e-17 dAn - faces 18/26
+r2-box-chamfer-5                                      Chamfering box x1 (10x20x30) at radius 5 failed -- the radius is too big for this shape's edges.
+r2-box-chamfer-5.5                                    Chamfering box x1 (10x20x30) at radius 5.5 failed -- the radius is too big for this shape's edges.
+r2-box-chamfer-2                                      dVol 9.6e-4 dBbox 4.7e-17 dCom 5.6e-17 dAn - faces 18/26
+r2-box-chamfer-1                                      dVol 4.7e-5 dBbox 6.9e-17 dCom 6.8e-17 dAn - faces 18/26
+r2-box-chamfer-5.9                                    dVol 3.4e-2 dBbox 1.3e-15 dCom 2.4e-15 dAn - faces 18/26
+r2-box-chamfer-6                                      Chamfering box x1 (20x30x12) at radius 6 failed -- the radius is too big for this shape's edges.
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/r2-box/primitives-measure.json

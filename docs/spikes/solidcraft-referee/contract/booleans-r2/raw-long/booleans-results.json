@@ -1,0 +1,198 @@
+[
+ {
+  "id": "x-cyl-cross-cyl-equal-keep",
+  "feature": "curved: cylinder crossing cylinder",
+  "note": "Steinmetz solid (equal radii): the hard case, analytic 16/3 r^3",
+  "source": null,
+  "featureKinds": [
+   "c1:cylinder",
+   "c2:cylinder",
+   "op1:combine/intersect"
+  ],
+  "occt": {
+   "volume": 2730.666666567672,
+   "area": 1024.0000000167518,
+   "com": [
+    -1.0459556150282798e-7,
+    6.39170882911068e-10,
+    -8.804283916821745e-8
+   ],
+   "bbox": [
+    -8,
+    -8,
+    -8.000000000000005,
+    8,
+    8,
+    7.999999999999998
+   ],
+   "faces": 4,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "cylinder": 4
+   },
+   "components": {
+    "cylinder": 4
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  "analytic": 2730.6666666666665,
+  "occtVsAnalytic": 3.625283406805124e-11,
+  "translateMs": 243856,
+  "translator": "phase0",
+  "truckFeatures": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "c2",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 8,
+     "height": 40,
+     "base": [
+      0,
+      0,
+      -20
+     ],
+     "axis": "Z",
+     "body_name": "b_c1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 8,
+     "height": 40,
+     "base": [
+      0,
+      0,
+      -20
+     ],
+     "axis": "Z",
+     "body_name": "b_c2"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_c2"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 90
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_c1",
+     "tools": [
+      "b_c2"
+     ],
+     "operation": "intersect"
+    }
+   }
+  ],
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 1023.9947884980713,
+    "edges": 2,
+    "faces": 3,
+    "mass_g": 3.522521563344692,
+    "vertices": 2,
+    "volume_mm3": 2730.6368708098385
+   },
+   "bodies": [
+    {
+     "name": "b_c1",
+     "volume": 2730.6368708098385,
+     "area": 1023.9947884980713,
+     "faces": 3,
+     "kernel": {
+      "edges": 10,
+      "faces": 6,
+      "shells": 1,
+      "vertices": 6
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_c1"
+  ],
+  "truck": {
+   "volume": 2730.6368708098385,
+   "area": 1023.9947884980713,
+   "bbox": [
+    -7.999999999972786,
+    -8.000000000000002,
+    -8.000000000000007,
+    7.999999999514584,
+    8.000000000000004,
+    8
+   ],
+   "com": [
+    3.237919835743156e-8,
+    3.288180000273153e-9,
+    1.5561685211997854e-8
+   ],
+   "faces": 3,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "cylinder": 3
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_c1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.000010911532410180837,
+   "dBbox": 6.067701896483868e-11,
+   "dCom": 4.942650904844074e-9,
+   "dArea": 0.00000508937371127006,
+   "faceKeys": {
+    "cylinder": "UNEXPLAINED"
+   },
+   "faceOk": false,
+   "facesOcct": 4,
+   "solidsOcct": 1,
+   "dAnalytic": 0.000010911568662619331,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=2730.6667 T=2730.6369 dVol 1.1e-5 dBbox 6.1e-11 dCom 4.9e-9 dArea 5.1e-6 faces O/B/T 4/-/3 solids O/T 1/1 FACE-UNEXPLAINED",
+  "wallMs": 493445
+ }
+]

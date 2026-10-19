@@ -1,0 +1,82 @@
+[
+ {
+  "id": "Z-spin-cross-axis-1e-7-360",
+  "src": "const s = sketch('top'); s.polygon([[-1e-7,0],[10,0],[10,30],[-1e-7,30]]); spin(s, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "Z-spin-cross-axis-1e-7-360",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "occt": {
+    "volume": 9424.777960769381,
+    "com": [
+     -9.65003850020338e-17,
+     -8.895929274501394e-16,
+     14.999999999999998
+    ],
+    "bbox": [
+     -10,
+     -10,
+     0,
+     10,
+     10,
+     30
+    ],
+    "faces": 3,
+    "area": 2513.2741228718346,
+    "types": {
+     "plane": 2,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 2,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "revolve rev1: this sketch's outline crosses the axis it spins about, so the two sides would overlap -- draw the whole outline on one side of that line -- rev1 is shown without it."
+   },
+   "ms": 2,
+   "load": [
+    21.4,
+    21.4
+   ],
+   "cpuMs": 6,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "refused",
+     "refusal": "rev1 (revolve): the outline crosses the line it spins about, so one side would overlap the other; draw the whole outline on one side of that line."
+    }
+   ],
+   "commands": [],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "rev1 (revolve): the outline crosses the line it spins about, so one side would overlap the other; draw the whole outline on one side of that line.",
+    "firstRefusal": "rev1 (revolve): the outline crosses the line it spins about, so one side would overlap the other; draw the whole outline on one side of that line."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 22
+ }
+]

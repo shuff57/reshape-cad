@@ -1,0 +1,1 @@
+R3-datum-spin-front3-270                 PASS     occtV 21205.7504 | tr-occt dV 9.7e-5 dBb 0.0e+0 dCom 2.6e-6 F o/b/t 6/6/6 | brep-occt dV 6.3e-11  | ANALYTIC 21205.7504 dTruck 9.7e-5 dOcct 6.3e-11 dBrep 8.6e-16    | ms 546 cpu 933

@@ -1,0 +1,1 @@
+X-spin-tube-359p9deg                     PASS     occtV 28266.4799 | tr-occt dV 1.6e-4 dBb 8.6e-7 dCom 5.7e-9 F o/b/t 6/6/6 | brep-occt dV 3.7e-13  | ANALYTIC 28266.4799 dTruck 1.6e-4 dOcct 3.7e-13 dBrep 1.3e-16    | ms 931 cpu 1663

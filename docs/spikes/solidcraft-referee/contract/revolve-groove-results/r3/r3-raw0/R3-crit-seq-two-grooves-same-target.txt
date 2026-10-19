@@ -1,0 +1,1 @@
+R3-crit-seq-two-grooves-same-target      PASS     occtV 138547.7659 | tr-occt dV 2.4e-6 dBb 2.2e-14 dCom 3.6e-7 F o/b/t 16/-/16 | brep-occt dV -     | BREP REFUSED: groove groove2 would leave a sealed cavity inside the part instead of opening onto a face -- groove2 is shown without it. | ms 3747 cpu 4434

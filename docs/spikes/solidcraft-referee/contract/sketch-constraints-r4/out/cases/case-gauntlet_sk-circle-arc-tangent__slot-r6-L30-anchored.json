@@ -1,0 +1,91 @@
+[
+ {
+  "id": "gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored",
+  "feats": [
+   "slot with tangent joints",
+   "tangent:endpoint line-arc",
+   "endpoint tangency curved accuracy"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000038053118549409936,
+      "db": 4.440892098500626e-16,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.793327002382
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00003436356520086489,
+      "db": 0.000009529822809994926,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.810782180967
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00004017226467489778,
+      "db": 0.0000025426408778944024,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.783301378527
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 34,
+     "BUILT-WRONG-VOLUME": 6
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000034501086176352926,
+      "db": 0.000008413387619773024,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.810131572896
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000041827716843459725,
+      "db": 0.000010185265633566587,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 4730.775469478426
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.2610036479591423,
+      "db": 0.00008527690204163108,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 3496.172051163525
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ }
+]

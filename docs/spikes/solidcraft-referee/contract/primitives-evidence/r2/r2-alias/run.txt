@@ -1,0 +1,7 @@
+r2-alias-cuboid                                       dVol 0.0e+0 dBbox 0.0e+0 dCom 0.0e+0 dAn 0.0e+0 faces 6/6
+r2-alias-cuboid-opts                                  dVol 2.6e-5 dBbox 1.4e-16 dCom 2.2e-10 dAn 2.6e-5 faces 26/26
+r2-alias-torus                                        dVol 1.5e-4 dBbox 7.8e-6 dCom 8.0e-7 dAn 1.5e-4 faces 1/1
+r2-alias-torus-at                                     dVol 1.5e-4 dBbox 7.8e-6 dCom 8.0e-7 dAn 1.5e-4 faces 1/1
+r2-alias-box                                          dVol 0.0e+0 dBbox 0.0e+0 dCom 0.0e+0 dAn 0.0e+0 faces 6/6
+r2-alias-ring                                         dVol 1.5e-4 dBbox 7.8e-6 dCom 8.0e-7 dAn 1.5e-4 faces 1/1
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/r2-alias/primitives-measure.json

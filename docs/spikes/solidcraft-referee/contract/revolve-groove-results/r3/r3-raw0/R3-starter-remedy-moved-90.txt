@@ -1,0 +1,11 @@
+366 |   const fc = r.vsFc;
+367 |   console.log(c.id.padEnd(40), f.outcome.padEnd(8),
+368 |     'occtV', f.occt.volume.toFixed(4), '| tr-occt dV', E(t?.dVol), 'dBb', E(t?.dBbox), 'dCom', E(t?.dCom), `F o/b/t ${f.occt.faces}/${f.brep?.faces ?? '-'}/${t?.faces ?? '-'}`,
+369 |     '| brep-occt dV', E(f.brep?.dVol),
+370 |     fc ? `| FC: occt ${E(fc.occt.dVol)} brep ${E(fc.brep.dVol)} truck ${E(fc.truck.dVol)} dCom ${E(fc.truck.dCom)} F ${r.fc.faces}` : (r.fcNote ? '| ' + r.fcNote : ''),
+371 |     r.analytic ? `| ANALYTIC ${r.analytic.volume.toFixed(4)} dTruck ${E(r.analytic.dTruck)} dOcct ${E(r.analytic.dOcct)} dBrep ${E(r.analytic.dBrep)}` : '',
+                                                ^
+TypeError: null is not an object (evaluating 'r.analytic.volume.toFixed')
+      at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/revolve-groove-rig/rg-run.mjs:371:43
+
+Bun v1.4.2 (Linux x64)

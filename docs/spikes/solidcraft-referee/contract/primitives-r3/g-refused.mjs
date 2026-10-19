@@ -1,0 +1,104 @@
+// G2: one or more inputs per REFUSED row. Run twice: without --guard (what a student gets today: a wrong solid, or truck's own text) and with
+// --guard (must be guard-refused with `code`). skipUnguarded: the unguarded run is a known hang/crash risk or already recorded (ring(1e5) 52-92 s).
+const D = (feat) => ({ version: 1, features: [{ id: 'x1', center: [0, 0, 0], ...feat }] });
+const c = [];
+const add = (id, row, code, src, extra = {}) => c.push({ id: `g2-${id}`, row, code, expect: 'guard-refused', ...(typeof src === 'string' ? { script: src } : { doc: src }), ...extra });
+// box corner (E1, r2): exact half, near half, over half, every axis
+add('bc-X-half', 'box.corner.limit', 'box-corner-too-big', 'box(12, 20, 30, { corner: 6 });');
+add('bc-Y-half', 'box.corner.limit', 'box-corner-too-big', 'box(20, 12, 30, { corner: 6 });');
+add('bc-Z-half', 'box.corner.limit', 'box-corner-too-big', 'box(20, 30, 12, { corner: 6 });');
+add('bc-X-1e-5', 'box.corner.limit', 'box-corner-too-big', 'box(12, 20, 30, { corner: 5.99999 });');
+add('bc-Z-1e-5', 'box.corner.limit', 'box-corner-too-big', 'box(20, 30, 12, { corner: 5.99999 });');
+add('bc-X-over', 'box.corner.limit', 'box-corner-too-big', 'box(12, 20, 30, { corner: 7 });');
+add('bc-Z-over', 'box.corner.limit', 'box-corner-too-big', 'box(20, 30, 12, { corner: 7 });');
+add('bc-capsule', 'box.corner.limit', 'box-corner-too-big', 'box(40, 6, 6, { corner: 3 });');
+add('bc-cube-half', 'box.corner.limit', 'box-corner-too-big', 'box(20, 20, 20, { corner: 10 });');
+add('bc-way-over', 'box.corner.limit', 'box-corner-too-big', 'box(10, 10, 10, { corner: 50 });');
+add('bchamfer', 'box.chamfer', 'box-chamfer', D({ kind: 'box', size: [40, 30, 12], round: 3, roundStyle: 'chamfer' }));
+add('bchamfer-cube', 'box.chamfer', 'box-chamfer', D({ kind: 'box', size: [20, 20, 20], round: 4, roundStyle: 'chamfer' }));
+add('bchamfer-half', 'box.chamfer', 'box-chamfer', D({ kind: 'box', size: [10, 20, 30], round: 5, roundStyle: 'chamfer' }));
+// cylinder corner / bevel (E2)
+add('cc-R-0.998', 'cylinder.corner.limit', 'cyl-corner-vs-radius', 'cylinder(10, 30, { corner: 4.99 });');
+add('cc-R-1', 'cylinder.corner.limit', 'cyl-corner-vs-radius', 'cylinder(10, 30, { corner: 5 });');
+add('cc-R-over', 'cylinder.corner.limit', 'cyl-corner-vs-radius', 'cylinder(24, 30, { corner: 13 });');
+add('cc-H-1e-5', 'cylinder.corner.limit', 'cyl-corner-vs-height', 'cylinder(48, 10, { corner: 4.99999 });');
+add('cc-H-half', 'cylinder.corner.limit', 'cyl-corner-vs-height', 'cylinder(24, 10, { corner: 5 });');
+add('cc-H-over', 'cylinder.corner.limit', 'cyl-corner-vs-height', 'cylinder(24, 10, { corner: 6 });');
+add('cb-R-0.995', 'cylinder.corner.limit', 'cyl-corner-vs-radius', D({ kind: 'cylinder', radius: 5, height: 30, round: 4.975, roundStyle: 'chamfer' }));
+add('cb-H-half', 'cylinder.corner.limit', 'cyl-corner-vs-height', D({ kind: 'cylinder', radius: 24, height: 10, round: 5, roundStyle: 'chamfer' }));
+// ring (E4, E10): thick tube, thin tube, spindle
+add('ring-20-10', 'ring.thick', 'ring-tube-too-thick', 'ring(20, 10);');
+add('ring-10-6', 'ring.thick', 'ring-tube-too-thick', 'ring(10, 6);');
+add('ring-10-10', 'ring.thick', 'ring-tube-too-thick', 'ring(10, 10);');
+add('ring-10-12', 'ring.thick', 'ring-tube-too-thick', 'ring(10, 12);');
+add('ring-10-5', 'ring.thick', 'ring-tube-too-thick', 'ring(10, 5);');
+add('ring-40-38', 'ring.spindle', 'ring-tube-too-thick', 'ring(40, 38);');
+add('ring-10-9.9999', 'ring.spindle', 'ring-tube-too-thick', 'ring(10, 9.9999);');
+add('ring-100-1', 'ring.thin', 'ring-tube-too-thin', 'ring(100, 1);');
+add('ring-200-1', 'ring.thin', 'ring-tube-too-thin', 'ring(200, 1);');
+add('ring-400-4', 'ring.thin', 'ring-tube-too-thin', 'ring(400, 4);');
+add('ring-1000-10', 'ring.thin', 'ring-tube-too-thin', 'ring(1000, 10);');
+add('ring-10-0.2', 'size.small', 'too-small-curved', 'ring(10, 0.2);');
+// size caps (E5b, E8, r2 big)
+add('big-sph-7e4', 'size.big', 'too-big-curved', 'sphere(70000);');
+add('big-sph-1e5', 'size.big', 'too-big-curved', 'sphere(100000);');
+add('big-sph-1e7', 'size.big', 'too-big-curved', 'sphere(10000000);');
+add('big-ring-1e5', 'size.big', 'too-big-curved', 'ring(100000, 25000);', { skipUnguarded: true });
+add('big-ring-1e6', 'size.big', 'too-big-curved', 'ring(1000000, 200000);', { skipUnguarded: true });
+add('big-cone-2e5', 'size.big', 'too-big-curved', 'cone(200000, 200000);');
+add('big-cone-3e5', 'size.big', 'too-big-curved', 'cone(300000, 300000);');
+add('big-cone-1e6', 'size.big', 'too-big-curved', 'cone(1000000, 1000000);');
+add('big-cyl-1e7', 'size.big', 'too-big-curved', 'cylinder(10000000, 10000000);');
+add('big-boxr-1e5', 'size.big', 'too-big-curved', 'box(100000, 100000, 100000, { corner: 10000 });');
+add('big-box-1e7', 'size.big', 'too-big', 'box(10000000, 10000000, 10000000);');
+add('big-box-1e10', 'size.big', 'too-big', 'box(10000000000, 10000000000, 10000000000);');
+add('big-box-1e308', 'size.big', 'too-big', 'box(1e308, 1e308, 1e308);');
+add('big-prism-1e7', 'size.big', 'too-big', 'prism(6, 10000000, 10000000);');
+add('big-wedge-1e7', 'size.big', 'too-big', 'wedge(10000000, 10000000, 10000000);');
+// size floors and slender (E5, E9)
+add('small-sph-0.3', 'size.small', 'too-small-curved', 'sphere(0.3);');
+add('small-sph-0.05', 'size.small', 'too-small-curved', 'sphere(0.05);');
+add('small-cyl-0.2', 'size.small', 'too-small-curved', 'cylinder(0.2, 0.2);');
+add('small-cone-0.02', 'size.small', 'too-small-curved', 'cone(0.02, 0.03);');
+add('small-ring-0.04', 'size.small', 'too-small-curved', 'ring(0.04, 0.01);');
+add('small-ring-1-0.25', 'size.small', 'too-small-curved', 'ring(1, 0.25);');
+add('small-boxr-0.2', 'size.small', 'too-small-curved', 'box(0.2, 0.2, 0.2, { corner: 0.04 });');
+add('small-box-1e-4', 'size.small', 'too-small', 'box(0.0001, 0.00015, 0.0002);');
+add('small-prism-1e-5', 'size.small', 'too-small', 'prism(6, 0.00001, 0.000015);');
+add('small-wedge-1e-6', 'size.small', 'too-small', 'wedge(0.000001, 0.0000015, 0.000002);');
+add('slender-cyl-2-100', 'size.slender', 'cyl-too-slender', 'cylinder(2, 100);');
+add('slender-cyl-1-100', 'size.slender', 'cyl-too-slender', 'cylinder(1, 100);');
+add('slender-cyl-50', 'size.slender', 'cyl-too-slender', 'cylinder(10, 500);');
+add('slender-cone-4-400', 'size.slender', 'cone-too-slender', 'cone(4, 400);');
+add('slender-cone-2-150', 'size.slender', 'cone-too-slender', 'cone(2, 150);');
+add('slender-cone-1-100', 'size.slender', 'cone-too-slender', 'cone(1, 100);');
+// far placement (E6, E6b, E7, E7b)
+add('far-sph-1e4', 'placement.far', 'too-far-curved', 'sphere(2, { at: [10000, -10000, 10000] });');
+add('far-sph-1e6', 'placement.far', 'too-far-curved', 'sphere(2, { at: [1000000, -1000000, 1000000] });');
+add('far-cyl-1e5', 'placement.far', 'too-far-curved', 'cylinder(2, 3, { at: [100000, -100000, 100000] });');
+add('far-cone-1e4', 'placement.far', 'too-far-curved', 'cone(2, 3, { at: [10000, -10000, 10000] });');
+add('far-ring-1e4', 'placement.far', 'too-far-curved', 'ring(4, 1, { at: [10000, -10000, 10000] });');
+add('far-boxr-1e4', 'placement.far', 'too-far-curved', 'box(2, 2, 2, { corner: 0.3, at: [10000, -10000, 10000] });');
+add('far-cylturn-1e5', 'placement.far', 'too-far-curved', 'turn(cylinder(2, 3, { at: [100000, 0, 0] }), [30, 40, 50]);');
+add('far-prism6-1e3', 'placement.far', 'too-far-planar', 'prism(6, 2, 3, { at: [1000, -1000, 1000] });');
+add('far-prism3-1e4', 'placement.far', 'too-far-planar', 'prism(3, 2, 3, { at: [10000, -10000, 10000] });');
+add('far-prism12-1e6', 'placement.far', 'too-far-planar', 'prism(12, 2, 3, { at: [1000000, -1000000, 1000000] });');
+add('far-tbox-1e3', 'placement.far', 'too-far-planar', 'turn(box(2, 3, 4, { at: [1000, -1000, 1000] }), [20, 35, 50]);');
+add('far-tprism-1e4', 'placement.far', 'too-far-planar', 'turn(prism(6, 2, 3, { at: [10000, -10000, 10000] }), [20, 35, 50]);');
+add('far-twedge-1e4', 'placement.far', 'too-far-planar', 'turn(wedge(2, 3, 4, { at: [10000, -10000, 10000] }), [20, 35, 50]);');
+add('far-needle-prism', 'placement.far', 'too-far-planar', 'prism(7, 1, 300, { at: [1500, -1500, 1500] });');
+add('far-box-1e7', 'placement.far', 'too-far', 'box(1, 1, 1, { at: [10000000, 10000000, 10000000] });');
+// script-text refusals (call-lint)
+add('lint-surplus-box', 'validation.surplus', 'surplus-argument', 'box(1, 2, 3, { at: [0, 0, 0] }, 99);');
+add('lint-surplus-prism', 'validation.surplus', 'surplus-argument', 'prism(6, 10, 5, { at: [0, 0, 0] }, 1);');
+add('lint-surplus-sphere', 'validation.surplus', 'surplus-argument', 'sphere(2, { at: [0, 0, 0] }, 1);');
+add('lint-surplus-cyl', 'validation.surplus', 'surplus-argument', 'cylinder(2, 3, { at: [0, 0, 0] }, 9);');
+add('lint-surplus-ring', 'validation.surplus', 'surplus-argument', 'ring(4, 1, { at: [0, 0, 0] }, 2);');
+add('lint-surplus-wedge', 'validation.surplus', 'surplus-argument', 'wedge(1, 2, 3, { at: [0, 0, 0] }, 4);');
+add('lint-sides-5.4', 'validation.sides', 'prism-sides-fraction', 'prism(5.4, 30, 12);');
+add('lint-sides-5.5', 'validation.sides', 'prism-sides-fraction', 'prism(5.5, 30, 12);');
+add('lint-sides-var', 'validation.sides', 'prism-sides-fraction', 'let n = 7.3; prism(n, 30, 12);');
+add('lint-sides-param', 'validation.sides', 'prism-sides-fraction', "prism(param('n', 7.3), 30, 12);");
+add('lint-cone-frustum', 'cone.frustum', 'cone-second-radius', 'cone(10, 5, 10);');
+add('lint-cone-frustum2', 'cone.frustum', 'cone-second-radius', 'cone(20, 30, 5, { at: [0, 0, 0] });');
+export default c;

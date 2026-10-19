@@ -1,0 +1,452 @@
+[
+ {
+  "name": "turn(box, 3 params)",
+  "script": "const t = box(30, 20, 10);\nturn(t, [param('ax', 30), param('ay', 40), param('az', 50)]);",
+  "errors": [],
+  "named": [
+   {
+    "name": "ax",
+    "value": 30,
+    "slots": [
+     "box1_rx"
+    ]
+   },
+   {
+    "name": "ay",
+    "value": 40,
+    "slots": [
+     "box1_ry"
+    ]
+   },
+   {
+    "name": "az",
+    "value": 50,
+    "slots": [
+     "box1_rz"
+    ]
+   }
+  ],
+  "dead": [],
+  "rotate": [
+   [
+    30,
+    40,
+    50
+   ]
+  ]
+ },
+ {
+  "name": "turn(cylinder, 3 params)",
+  "script": "const t = cylinder(10, 30);\nturn(t, [param('ax', 30), param('ay', 40), param('az', 50)]);",
+  "errors": [],
+  "named": [
+   {
+    "name": "ax",
+    "value": 30,
+    "slots": [
+     "cyl1_rx"
+    ]
+   },
+   {
+    "name": "ay",
+    "value": 40,
+    "slots": [
+     "cyl1_ry"
+    ]
+   },
+   {
+    "name": "az",
+    "value": 50,
+    "slots": [
+     "cyl1_rz"
+    ]
+   }
+  ],
+  "dead": [],
+  "rotate": [
+   [
+    30,
+    40,
+    50
+   ]
+  ]
+ },
+ {
+  "name": "turn(cone, 3 params)",
+  "script": "const t = cone(14, 18);\nturn(t, [param('ax', 30), param('ay', 40), param('az', 50)]);",
+  "errors": [],
+  "named": [
+   {
+    "name": "ax",
+    "value": 30,
+    "slots": [
+     "cone1_rx"
+    ]
+   },
+   {
+    "name": "ay",
+    "value": 40,
+    "slots": [
+     "cone1_ry"
+    ]
+   },
+   {
+    "name": "az",
+    "value": 50,
+    "slots": [
+     "cone1_rz"
+    ]
+   }
+  ],
+  "dead": [],
+  "rotate": [
+   [
+    30,
+    40,
+    50
+   ]
+  ]
+ },
+ {
+  "name": "turn(ring, 3 params)",
+  "script": "const t = ring(30, 6);\nturn(t, [param('ax', 30), param('ay', 40), param('az', 50)]);",
+  "errors": [],
+  "named": [
+   {
+    "name": "ax",
+    "value": 30,
+    "slots": [
+     "ring1_rx"
+    ]
+   },
+   {
+    "name": "ay",
+    "value": 40,
+    "slots": [
+     "ring1_ry"
+    ]
+   },
+   {
+    "name": "az",
+    "value": 50,
+    "slots": [
+     "ring1_rz"
+    ]
+   }
+  ],
+  "dead": [
+   "The slider \"ax\" does nothing: a ring has no turn slider yet -- the value 30 is used as typed; to change it, edit the number in the script.",
+   "The slider \"ay\" does nothing: a ring has no turn slider yet -- the value 40 is used as typed; to change it, edit the number in the script.",
+   "The slider \"az\" does nothing: a ring has no turn slider yet -- the value 50 is used as typed; to change it, edit the number in the script."
+  ],
+  "rotate": [
+   [
+    30,
+    40,
+    50
+   ]
+  ]
+ },
+ {
+  "name": "turn(prism, 3 params)",
+  "script": "const t = prism(6, 20, 12);\nturn(t, [param('ax', 30), param('ay', 40), param('az', 50)]);",
+  "errors": [],
+  "named": [
+   {
+    "name": "ax",
+    "value": 30,
+    "slots": [
+     "turn1_rx"
+    ]
+   },
+   {
+    "name": "ay",
+    "value": 40,
+    "slots": [
+     "turn1_ry"
+    ]
+   },
+   {
+    "name": "az",
+    "value": 50,
+    "slots": [
+     "turn1_rz"
+    ]
+   }
+  ],
+  "dead": [],
+  "rotate": [
+   null,
+   [
+    30,
+    40,
+    50
+   ]
+  ]
+ },
+ {
+  "name": "turn(wedge, 3 params)",
+  "script": "const t = wedge(20, 10, 8);\nturn(t, [param('ax', 30), param('ay', 40), param('az', 50)]);",
+  "errors": [],
+  "named": [
+   {
+    "name": "ax",
+    "value": 30,
+    "slots": [
+     "turn1_rx"
+    ]
+   },
+   {
+    "name": "ay",
+    "value": 40,
+    "slots": [
+     "turn1_ry"
+    ]
+   },
+   {
+    "name": "az",
+    "value": 50,
+    "slots": [
+     "turn1_rz"
+    ]
+   }
+  ],
+  "dead": [],
+  "rotate": [
+   null,
+   [
+    30,
+    40,
+    50
+   ]
+  ]
+ },
+ {
+  "name": "turn(sphere, 3 params)",
+  "script": "const t = sphere(14);\nturn(t, [param('ax', 30), param('ay', 40), param('az', 50)]);",
+  "errors": [],
+  "named": [
+   {
+    "name": "ax",
+    "value": 30,
+    "slots": []
+   },
+   {
+    "name": "ay",
+    "value": 40,
+    "slots": []
+   },
+   {
+    "name": "az",
+    "value": 50,
+    "slots": []
+   }
+  ],
+  "dead": [
+   "The slider \"ax\" does nothing: a ball looks the same however it is turned, so turn() ignores it -- the value 30 is used as typed; to change it, edit the number in the script.",
+   "The slider \"ay\" does nothing: a ball looks the same however it is turned, so turn() ignores it -- the value 40 is used as typed; to change it, edit the number in the script.",
+   "The slider \"az\" does nothing: a ball looks the same however it is turned, so turn() ignores it -- the value 50 is used as typed; to change it, edit the number in the script."
+  ],
+  "rotate": [
+   null
+  ]
+ },
+ {
+  "name": "turn(hole box, 3 params)",
+  "script": "const t = box(30, 20, 10);\nhole(t, { across: 4 });\nturn(t, [param('ax', 30), param('ay', 40), param('az', 50)]);",
+  "errors": [],
+  "named": [
+   {
+    "name": "ax",
+    "value": 30,
+    "slots": [
+     "turn1_rx"
+    ]
+   },
+   {
+    "name": "ay",
+    "value": 40,
+    "slots": [
+     "turn1_ry"
+    ]
+   },
+   {
+    "name": "az",
+    "value": 50,
+    "slots": [
+     "turn1_rz"
+    ]
+   }
+  ],
+  "dead": [],
+  "rotate": [
+   null,
+   null,
+   [
+    30,
+    40,
+    50
+   ]
+  ]
+ },
+ {
+  "name": "turn(join, 3 params)",
+  "script": "const a = box(30, 20, 10);\nconst b = box(10, 10, 10, { at: [0, 0, 10] });\nconst t = join(a, b);\nturn(t, [param('ax', 30), param('ay', 40), param('az', 50)]);",
+  "errors": [],
+  "named": [
+   {
+    "name": "ax",
+    "value": 30,
+    "slots": [
+     "turn1_rx"
+    ]
+   },
+   {
+    "name": "ay",
+    "value": 40,
+    "slots": [
+     "turn1_ry"
+    ]
+   },
+   {
+    "name": "az",
+    "value": 50,
+    "slots": [
+     "turn1_rz"
+    ]
+   }
+  ],
+  "dead": [],
+  "rotate": [
+   null,
+   null,
+   null,
+   [
+    30,
+    40,
+    50
+   ]
+  ]
+ },
+ {
+  "name": "move(box, 3 params)",
+  "script": "const t = box(30, 20, 10);\nmove(t, [param('dx', 3), param('dy', 4), param('dz', 5)]);",
+  "errors": [],
+  "named": [
+   {
+    "name": "dx",
+    "value": 3,
+    "slots": [
+     "move1_x"
+    ]
+   },
+   {
+    "name": "dy",
+    "value": 4,
+    "slots": [
+     "move1_y"
+    ]
+   },
+   {
+    "name": "dz",
+    "value": 5,
+    "slots": [
+     "move1_z"
+    ]
+   }
+  ],
+  "dead": [],
+  "rotate": [
+   null,
+   [
+    3,
+    4,
+    5
+   ]
+  ]
+ },
+ {
+  "name": "move copy(ring, 3 params)",
+  "script": "const t = ring(30, 6);\nmove(t, [param('dx', 3), param('dy', 4), param('dz', 5)], { copy: true });",
+  "errors": [],
+  "named": [
+   {
+    "name": "dx",
+    "value": 3,
+    "slots": [
+     "move1_x"
+    ]
+   },
+   {
+    "name": "dy",
+    "value": 4,
+    "slots": [
+     "move1_y"
+    ]
+   },
+   {
+    "name": "dz",
+    "value": 5,
+    "slots": [
+     "move1_z"
+    ]
+   }
+  ],
+  "dead": [],
+  "rotate": [
+   null,
+   [
+    3,
+    4,
+    5
+   ]
+  ]
+ },
+ {
+  "name": "move(sphere, param)",
+  "script": "const t = sphere(14);\nmove(t, [param('dx', 3), 0, 0]);",
+  "errors": [],
+  "named": [
+   {
+    "name": "dx",
+    "value": 3,
+    "slots": [
+     "move1_x"
+    ]
+   }
+  ],
+  "dead": [],
+  "rotate": [
+   null,
+   [
+    3,
+    0,
+    0
+   ]
+  ]
+ },
+ {
+  "name": "turn(ring) values on missing slot",
+  "script": "const t = ring(30, 6);\nturn(t, [param('ax', 30), 0, 0]);",
+  "errors": [],
+  "named": [
+   {
+    "name": "ax",
+    "value": 30,
+    "slots": [
+     "ring1_rx"
+    ]
+   }
+  ],
+  "dead": [
+   "The slider \"ax\" does nothing: a ring has no turn slider yet -- the value 30 is used as typed; to change it, edit the number in the script."
+  ],
+  "rotate": [
+   [
+    75,
+    0,
+    0
+   ]
+  ]
+ }
+]

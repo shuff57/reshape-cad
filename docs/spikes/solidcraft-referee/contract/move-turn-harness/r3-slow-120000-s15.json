@@ -1,0 +1,23 @@
+{
+ "boxMs": 120000,
+ "TIME_NOTE": 120,
+ "rows": [
+  {
+   "case": "s15 ring, hole through the tube",
+   "script": "const t = ring(30, 6, { at: [0, 0, 0] });\nhole(t, { across: 2, at: [12, 0] });",
+   "wallSec": 129.173,
+   "scCalls": 2,
+   "slowestCallSec": 120.124,
+   "scCpuSec": 9.046,
+   "timedOutCalls": 1,
+   "verdict": "REFUSED",
+   "refusal": "Hole 1 is not built: it took longer than 120 seconds to compute, so it is shown without it -- try a simpler shape.",
+   "occtVolume": 2113.25048550203,
+   "brep": {
+    "refused": "hole hole1: brep-rs cannot cut this hole yet; drilling the part before you round, chamfer or pattern it, or making the hole go right through, usually works -- hole1 is shown without it."
+   },
+   "occtRefusals": {},
+   "boxMs": 120000
+  }
+ ]
+}

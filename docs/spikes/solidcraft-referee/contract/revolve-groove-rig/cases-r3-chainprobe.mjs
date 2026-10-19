@@ -1,0 +1,10 @@
+const CB = (lift) => `const s0 = sketch('top', ${lift}); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20);`;
+export const cases = [];
+const add = (id, src) => cases.push({ id: `C-${id}`, src });
+add('top360-top360', `${CB(1)} const a = sketch('top'); a.rect(7, 16, { at: [8.5, 6] }); groove(a, bx, 360); const c = sketch('top'); c.rect(4, 16, { at: [16, 14] }); groove(c, bx, 360);`);
+add('top360-top360-form', `${CB(1)} const a = sketch('top'); a.rect(7, 16, { at: [8.5, 6] }); const g1 = groove(a, bx, 360); const c = sketch('top'); c.rect(4, 16, { at: [16, 14] }); groove(c, g1, 360);`);
+add('front360-top360', `${CB(1)} const a = sketch('front'); a.rect(7, 16, { at: [8.5, 6] }); groove(a, bx, 360); const c = sketch('top'); c.rect(4, 16, { at: [16, 14] }); groove(c, bx, 360);`);
+add('top90-top90', `${CB(1)} const a = sketch('top'); a.rect(7, 16, { at: [8.5, 6] }); groove(a, bx, 90); const c = sketch('top'); c.rect(4, 16, { at: [16, 14] }); groove(c, bx, 90);`);
+add('top180-top360', `${CB(1)} const a = sketch('top'); a.rect(7, 16, { at: [8.5, 6] }); groove(a, bx, 180); const c = sketch('top'); c.rect(4, 16, { at: [16, 14] }); groove(c, bx, 360);`);
+add('front180-side180', `${CB(1)} const a = sketch('front'); a.rect(7, 16, { at: [8.5, 6] }); groove(a, bx, 180); const c = sketch('side'); c.rect(7, 16, { at: [8.5, 6] }); groove(c, bx, 180);`);
+add('front360-side360', `${CB(1)} const a = sketch('front'); a.rect(7, 16, { at: [8.5, 6] }); groove(a, bx, 360); const c = sketch('side'); c.rect(7, 16, { at: [8.5, 6] }); groove(c, bx, 360);`);

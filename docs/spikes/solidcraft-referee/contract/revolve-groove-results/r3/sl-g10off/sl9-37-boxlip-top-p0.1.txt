@@ -1,0 +1,1 @@
+sl9-37-boxlip-top-p0.1                   FAIL     occtV 71044.8116 | tr-occt dV 1.5e-4 dBb 7.1e-16 dCom 4.7e-5 F o/b/t 12/12/11 | brep-occt dV 2.0e-16      | ms 703 cpu 1083

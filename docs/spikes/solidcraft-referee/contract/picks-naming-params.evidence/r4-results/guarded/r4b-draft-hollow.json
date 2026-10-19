@@ -1,0 +1,2024 @@
+[
+ {
+  "label": "hollow then draft front 4 deg",
+  "src": "const b = cuboid(30,36,20,{at:[-5,9,0]})\nhollow(b,{wall:1.5,open:'top'})\ndraft(b.face('front'),4,{neutral:-3})",
+  "id": "draft1",
+  "ms": 205,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -5,
+       9,
+       10
+      ]
+     ],
+     "thickness": 1.5,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on box1's own shape",
+     "engineFace": "F1:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 10,
+       "got": 10,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+z",
+       "got": "F1:+z",
+       "agree": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -5,
+       -9,
+       0
+      ]
+     ],
+     "angle": 4,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       -3
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[-y]",
+     "rule": "planar face with outward normal -y at the extreme along it on box1's own shape",
+     "engineFace": "F1:-y",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-y",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 9,
+       "got": 9,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-y",
+       "got": "F1:-y",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 30,
+     "width": 36,
+     "height": 20,
+     "center": [
+      -5,
+      9,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       -5,
+       9,
+       10
+      ]
+     ],
+     "thickness": 1.5,
+     "body": "b_box1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       -5,
+       -9,
+       0
+      ]
+     ],
+     "angle": 4,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       -3
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4990.631738501681,
+    "com": [
+     -4.999999999999996,
+     9.441533032843711,
+     -2.7573986541033895
+    ],
+    "bbox": [
+     -20,
+     -9.489487683604569,
+     -10,
+     10.000000000000004,
+     27,
+     10.000000000000004
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5116.5,
+    "bbox": [
+     -20,
+     -9,
+     -10,
+     10,
+     27,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 4990.631738501682,
+   "bbox": [
+    -20,
+    -9.489487683604573,
+    -10,
+    10,
+    27,
+    10.000000000000002
+   ],
+   "com": [
+    -5.000000000000001,
+    9.441533032843713,
+    -2.7573986541033926
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 1.8224039549068843e-16,
+   "dBbox": 3.743841392974976e-16,
+   "dCom": 1.0388460830972361e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "PASS",
+  "names": [
+   "box1.face[+z]",
+   "box1.face[-y]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 36,
+    "min": 1,
+    "max": 144,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 9,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 1.5,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 4,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": [],
+  "closed": 4990.631738501739,
+  "pierces": false
+ },
+ {
+  "label": "hollow then draft front 6 deg",
+  "src": "const b = cuboid(30,36,20,{at:[-5,9,0]})\nhollow(b,{wall:1.5,open:'top'})\ndraft(b.face('front'),6,{neutral:-3})",
+  "id": "draft1",
+  "ms": 145,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -5,
+       9,
+       10
+      ]
+     ],
+     "thickness": 1.5,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on box1's own shape",
+     "engineFace": "F1:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 10,
+       "got": 10,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+z",
+       "got": "F1:+z",
+       "agree": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -5,
+       -9,
+       0
+      ]
+     ],
+     "angle": 6,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       -3
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[-y]",
+     "rule": "planar face with outward normal -y at the extreme along it on box1's own shape",
+     "engineFace": "F1:-y",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-y",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 9,
+       "got": 9,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-y",
+       "got": "F1:-y",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 30,
+     "width": 36,
+     "height": 20,
+     "center": [
+      -5,
+      9,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       -5,
+       9,
+       10
+      ]
+     ],
+     "thickness": 1.5,
+     "body": "b_box1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       -5,
+       -9,
+       0
+      ]
+     ],
+     "angle": 6,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       -3
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4927.312376521784,
+    "com": [
+     -5.000000000000003,
+     9.662649602799037,
+     -2.935618568499249
+    ],
+    "bbox": [
+     -20,
+     -9.735729646859735,
+     -10,
+     10.000000000000004,
+     27,
+     10.000000000000007
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5116.5,
+    "bbox": [
+     -20,
+     -9,
+     -10,
+     10,
+     27,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 4927.312376521783,
+   "bbox": [
+    -20,
+    -9.735729646859738,
+    -10,
+    10,
+    27.000000000000004,
+    10
+   ],
+   "com": [
+    -5.000000000000003,
+    9.662649602799041,
+    -2.9356185684992533
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 1.845823102481977e-16,
+   "dBbox": 7.105427357600996e-16,
+   "dCom": 8.627542861116539e-17,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "PASS",
+  "names": [
+   "box1.face[+z]",
+   "box1.face[-y]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 36,
+    "min": 1,
+    "max": 144,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 9,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 1.5,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 6,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": [],
+  "closed": 4927.31237652179,
+  "pierces": false
+ },
+ {
+  "label": "hollow then draft front 6.5 deg",
+  "src": "const b = cuboid(30,36,20,{at:[-5,9,0]})\nhollow(b,{wall:1.5,open:'top'})\ndraft(b.face('front'),6.5,{neutral:-3})",
+  "id": "draft1",
+  "ms": 136,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -5,
+       9,
+       10
+      ]
+     ],
+     "thickness": 1.5,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on box1's own shape",
+     "engineFace": "F1:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 10,
+       "got": 10,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+z",
+       "got": "F1:+z",
+       "agree": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -5,
+       -9,
+       0
+      ]
+     ],
+     "angle": 6.5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       -3
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[-y]",
+     "rule": "planar face with outward normal -y at the extreme along it on box1's own shape",
+     "engineFace": "F1:-y",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-y",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 9,
+       "got": 9,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-y",
+       "got": "F1:-y",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 30,
+     "width": 36,
+     "height": 20,
+     "center": [
+      -5,
+      9,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       -5,
+       9,
+       10
+      ]
+     ],
+     "thickness": 1.5,
+     "body": "b_box1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       -5,
+       -9,
+       0
+      ]
+     ],
+     "angle": 6.5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       -3
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4911.415905057034,
+    "com": [
+     -4.999999999999999,
+     9.718051775107465,
+     -2.981082736438074
+    ],
+    "bbox": [
+     -20,
+     -9.797549258111518,
+     -10,
+     10,
+     27,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5116.5,
+    "bbox": [
+     -20,
+     -9,
+     -10,
+     10,
+     27,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 4911.415905057037,
+   "bbox": [
+    -20,
+    -9.79754925811152,
+    -10,
+    10,
+    27,
+    10
+   ],
+   "com": [
+    -4.999999999999997,
+    9.718051775107455,
+    -2.981082736438075
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 5.555392086647364e-16,
+   "dBbox": 1.8130624226559328e-16,
+   "dCom": 2.06883628518627e-16,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "PASS",
+  "names": [
+   "box1.face[+z]",
+   "box1.face[-y]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 36,
+    "min": 1,
+    "max": 144,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 9,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 1.5,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 6.5,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": [],
+  "closed": 4911.415905057038,
+  "pierces": false
+ },
+ {
+  "label": "hollow then draft front 7 deg",
+  "src": "const b = cuboid(30,36,20,{at:[-5,9,0]})\nhollow(b,{wall:1.5,open:'top'})\ndraft(b.face('front'),7,{neutral:-3})",
+  "id": "draft1",
+  "ms": 121,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -5,
+       9,
+       10
+      ]
+     ],
+     "thickness": 1.5,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on box1's own shape",
+     "engineFace": "F1:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 10,
+       "got": 10,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+z",
+       "got": "F1:+z",
+       "agree": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -5,
+       -9,
+       0
+      ]
+     ],
+     "angle": 7,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       -3
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[-y]",
+     "rule": "planar face with outward normal -y at the extreme along it on box1's own shape",
+     "engineFace": "F1:-y",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-y",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 9,
+       "got": 9,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-y",
+       "got": "F1:-y",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 30,
+     "width": 36,
+     "height": 20,
+     "center": [
+      -5,
+      9,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       -5,
+       9,
+       10
+      ]
+     ],
+     "thickness": 1.5,
+     "body": "b_box1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       -5,
+       -9,
+       0
+      ]
+     ],
+     "angle": 7,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       -3
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4895.487790374769,
+    "com": [
+     -4.999999999999994,
+     9.773519232561195,
+     -3.026933546273574
+    ],
+    "bbox": [
+     -20,
+     -9.859491926320331,
+     -10,
+     10.000000000000004,
+     27,
+     10.000000000000004
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5116.5,
+    "bbox": [
+     -20,
+     -9,
+     -10,
+     10,
+     27,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 4739.626723089856,
+   "bbox": [
+    -20,
+    -9.859491926320336,
+    -10,
+    10,
+    27,
+    10
+   ],
+   "com": [
+    -5.041105839233502,
+    9.991921851669883,
+    -3.3731082966534793
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 0.03183769911373465,
+   "dBbox": 5.405015347671793e-16,
+   "dCom": 0.006713779578997687,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "FAIL",
+  "names": [
+   "box1.face[+z]",
+   "box1.face[-y]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 36,
+    "min": 1,
+    "max": 144,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 9,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 1.5,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 7,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": [],
+  "closed": 4896.505288824483,
+  "pierces": true
+ },
+ {
+  "label": "hollow then draft front 8 deg",
+  "src": "const b = cuboid(30,36,20,{at:[-5,9,0]})\nhollow(b,{wall:1.5,open:'top'})\ndraft(b.face('front'),8,{neutral:-3})",
+  "id": "draft1",
+  "ms": 111,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -5,
+       9,
+       10
+      ]
+     ],
+     "thickness": 1.5,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on box1's own shape",
+     "engineFace": "F1:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 10,
+       "got": 10,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+z",
+       "got": "F1:+z",
+       "agree": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -5,
+       -9,
+       0
+      ]
+     ],
+     "angle": 8,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       -3
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[-y]",
+     "rule": "planar face with outward normal -y at the extreme along it on box1's own shape",
+     "engineFace": "F1:-y",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-y",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 9,
+       "got": 9,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-y",
+       "got": "F1:-y",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 30,
+     "width": 36,
+     "height": 20,
+     "center": [
+      -5,
+      9,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       -5,
+       9,
+       10
+      ]
+     ],
+     "thickness": 1.5,
+     "body": "b_box1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       -5,
+       -9,
+       0
+      ]
+     ],
+     "angle": 8,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       -3
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4863.526497535691,
+    "com": [
+     -5.000000000000002,
+     9.884682364444465,
+     -3.119843533644996
+    ],
+    "bbox": [
+     -20,
+     -9.98378584291674,
+     -10,
+     10.000000000000004,
+     27,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5116.5,
+    "bbox": [
+     -20,
+     -9,
+     -10,
+     10,
+     27,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 4729.5944283931485,
+   "bbox": [
+    -20,
+    -9.98378584291674,
+    -10,
+    10,
+    27,
+    10.000000000000002
+   ],
+   "com": [
+    -5.035397345155673,
+    10.034035706805412,
+    -3.4205749472927414
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 0.02753805684217102,
+   "dBbox": 3.5527136788004996e-16,
+   "dCom": 0.005822401201612099,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "FAIL",
+  "names": [
+   "box1.face[+z]",
+   "box1.face[-y]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 36,
+    "min": 1,
+    "max": 144,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 9,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 1.5,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 8,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": [],
+  "closed": 4873.799767226657,
+  "pierces": true
+ },
+ {
+  "label": "hollow then draft front 10 deg",
+  "src": "const b = cuboid(30,36,20,{at:[-5,9,0]})\nhollow(b,{wall:1.5,open:'top'})\ndraft(b.face('front'),10,{neutral:-3})",
+  "id": "draft1",
+  "ms": 121,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -5,
+       9,
+       10
+      ]
+     ],
+     "thickness": 1.5,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on box1's own shape",
+     "engineFace": "F1:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 10,
+       "got": 10,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+z",
+       "got": "F1:+z",
+       "agree": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       -5,
+       -9,
+       0
+      ]
+     ],
+     "angle": 10,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       -3
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[-y]",
+     "rule": "planar face with outward normal -y at the extreme along it on box1's own shape",
+     "engineFace": "F1:-y",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-y",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 9,
+       "got": 9,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-y",
+       "got": "F1:-y",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 30,
+     "width": 36,
+     "height": 20,
+     "center": [
+      -5,
+      9,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       -5,
+       9,
+       10
+      ]
+     ],
+     "thickness": 1.5,
+     "body": "b_box1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       -5,
+       -9,
+       0
+      ]
+     ],
+     "angle": 10,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       -3
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 4799.111434724757,
+    "com": [
+     -5.000000000000002,
+     10.108150113805818,
+     -3.3108555261294077
+    ],
+    "bbox": [
+     -20,
+     -10.234288864959254,
+     -10,
+     10.000000000000004,
+     27,
+     10.000000000000004
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 5116.5,
+    "bbox": [
+     -20,
+     -9,
+     -10,
+     10,
+     27,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 4709.375255899718,
+   "bbox": [
+    -20,
+    -10.234288864959254,
+    -10,
+    10,
+    27.000000000000004,
+    10.000000000000002
+   ],
+   "com": [
+    -5.0238184934170995,
+    10.116782925331467,
+    -3.5168541590752804
+   ],
+   "faces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "curved": false,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "draft1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 0.018698498679513526,
+   "dBbox": 3.5527136788004996e-16,
+   "dCom": 0.003974473667541001,
+   "tol": 1e-9,
+   "comTol": 0.000001,
+   "faces": {
+    "occt": 11,
+    "truck": 11,
+    "brep": 11,
+    "verdict": "explained",
+    "keys": {
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "FAIL",
+  "names": [
+   "box1.face[+z]",
+   "box1.face[-y]"
+  ],
+  "params": [
+   {
+    "name": "box1_width",
+    "caption": "Box 1 width",
+    "value": 30,
+    "min": 1,
+    "max": 120,
+    "step": 1
+   },
+   {
+    "name": "box1_depth",
+    "caption": "Box 1 depth",
+    "value": 36,
+    "min": 1,
+    "max": 144,
+    "step": 1
+   },
+   {
+    "name": "box1_height",
+    "caption": "Box 1 height",
+    "value": 20,
+    "min": 1,
+    "max": 100,
+    "step": 1
+   },
+   {
+    "name": "box1_x",
+    "caption": "Box 1 x",
+    "value": -5,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_y",
+    "caption": "Box 1 y",
+    "value": 9,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "box1_z",
+    "caption": "Box 1 z",
+    "value": 0,
+    "min": -500,
+    "max": 500,
+    "step": 1
+   },
+   {
+    "name": "shell1_thickness",
+    "caption": "Hollow 1 wall",
+    "value": 1.5,
+    "min": 0.5,
+    "max": 40,
+    "step": 0.5
+   },
+   {
+    "name": "draft1_angle",
+    "caption": "Draft 1 taper angle",
+    "value": 10,
+    "min": -89.5,
+    "max": 89.5,
+    "step": 0.5
+   }
+  ],
+  "namedParams": [],
+  "closed": 4847.166626482009,
+  "pierces": true
+ }
+]

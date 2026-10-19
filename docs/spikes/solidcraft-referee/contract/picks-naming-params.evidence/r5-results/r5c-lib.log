@@ -1,0 +1,48 @@
+Running as unit: run-p1907061-i1938086.scope; invocation ID: c0221c9c2b894b57b35ba3e59828a7fc
+checkModel [{box},{box w40}] -> {"passed":false,"missing":[{"kind":"box","width":40}],"message":"Expected a box 40 x ? x ?, found a box 10 x 10 x 10."}
+checkModel [{box w40},{box}] -> {"passed":true,"missing":[],"message":""}
+independent permutation matcher says satisfiable: true
+3 expects, 6 orders, failing orders (should be 0 for an order-insensitive matcher): 0
+pocket taper               stored {"depth":4,"taper":5} | slots ["sk1_p0u","sk1_p0v","sk1_p1u","sk1_p1v","sk1_p2u","sk1_p2v","sk1_p3u","sk1_p3v","sk1_offset","pull1_height","sk2_p0u","sk2_p0v","sk2_p1u","sk2_p1v","sk2_p2u","sk2_p2v","sk2_p3u","sk2_p3v","sk2_offset","pocket1_depth"]
+pocket plain (control)     stored {"depth":4} | slots ["sk1_p0u","sk1_p0v","sk1_p1u","sk1_p1v","sk1_p2u","sk1_p2v","sk1_p3u","sk1_p3v","sk1_offset","pull1_height","sk2_p0u","sk2_p0v","sk2_p1u","sk2_p1v","sk2_p2u","sk2_p2v","sk2_p3u","sk2_p3v","sk2_offset","pocket1_depth"]
+extrude taper              stored {"height":10,"taper":5} | slots ["sk1_p0u","sk1_p0v","sk1_p1u","sk1_p1v","sk1_p2u","sk1_p2v","sk1_p3u","sk1_p3v","sk1_offset","pull1_height"]
+extrude length2            stored {"height":10,"length2":4} | slots ["sk1_p0u","sk1_p0v","sk1_p1u","sk1_p1v","sk1_p2u","sk1_p2v","sk1_p3u","sk1_p3v","sk1_offset","pull1_height"]
+extrude direction          stored {"height":10,"direction":[0.2,0,1]} | slots ["sk1_p0u","sk1_p0v","sk1_p1u","sk1_p1v","sk1_p2u","sk1_p2v","sk1_p3u","sk1_p3v","sk1_offset","pull1_height"]
+extrude plain (control)    stored {"height":10} | slots ["sk1_p0u","sk1_p0v","sk1_p1u","sk1_p1v","sk1_p2u","sk1_p2v","sk1_p3u","sk1_p3v","sk1_offset","pull1_height"]
+values w=40                              PASS[OCCT] V=24000.000000 (OCCT 24000.000000, brep 24000.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 6.6e-17 faces occt/truck/brep 6/6/6  
+values w=5                               PASS[OCCT] V=3000.000000 (OCCT 3000.000000, brep 3000.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 4.9e-17 faces occt/truck/brep 6/6/6  
+values w=0                               REFUSED: box1 (box): solidcraft refused it -- solid.box: invalid input: box needs a positive size in x, y and z   | OCCT:builds V=undefined BREP:box1 builds an empty solid (nothing is left of it) -- box1 is shown without it.
+values w=-5                              PASS[OCCT] V=3000.000000 (OCCT 3000.000000, brep 1000.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 4.9e-17 faces occt/truck/brep 6/6/6 REFS-DISAGREE 6.7e-1  
+values w=-40                             PASS[OCCT] V=24000.000000 (OCCT 24000.000000, brep 8000.000000) dVol 1.5e-16 dBbox 0.0e+0 dCOM 6.6e-17 faces occt/truck/brep 6/6/6 REFS-DISAGREE 6.7e-1  
+extrude -8 then hollow cap top?          PASS[OCCT] V=2152.000000 (OCCT 2152.000000, brep 2152.000000) dVol 1.9e-15 dBbox 0.0e+0 dCOM 2.8e-16 faces occt/truck/brep 11/11/11  
+    names: pull1.face[+z]
+extrude -8 then hollow cap bottom?       PASS[OCCT] V=2152.000000 (OCCT 2152.000000, brep 2152.000000) dVol 1.9e-15 dBbox 0.0e+0 dCOM 2.8e-16 faces occt/truck/brep 11/11/11  
+    names: pull1.face[-z]
+extrude +8 then hollow top (control)     PASS[OCCT] V=2152.000000 (OCCT 2152.000000, brep 2152.000000) dVol 1.9e-15 dBbox 0.0e+0 dCOM 2.8e-16 faces occt/truck/brep 11/11/11  
+    names: pull1.face[+z]
+extrude -8 then round top|front          PASS[OCCT] V=9591.410298 (OCCT 9591.415927, brep 9591.415927) dVol 5.9e-7 dBbox 3.9e-15 dCOM 1.7e-7 faces occt/truck/brep 7/7/7  
+    names: pull1.edge[pull1.face[+z] ^ pull1.face[-y]]
+extrude -8 then round bottom|front       PASS[OCCT] V=9591.410298 (OCCT 9591.415927, brep 9591.415927) dVol 5.9e-7 dBbox 3.7e-15 dCOM 1.7e-7 faces occt/truck/brep 7/7/7  
+    names: pull1.edge[pull1.face[-y] ^ pull1.face[-z]]
+extrude -8 then draft right 5            PASS[OCCT] V=9683.989117 (OCCT 9683.989117, brep 9683.989117) dVol 5.6e-16 dBbox 1.6e-15 dCOM 2.1e-16 faces occt/truck/brep 6/6/6  
+    names: pull1.face[+x]
+ModelDoc extrude h=12 cap top as hollow open PASS[OCCT] V=4440.000000 (OCCT 4440.000000, brep 4440.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 2.2e-16 faces occt/truck/brep 11/11/11  
+    names: e1.cap[top]
+ModelDoc extrude h=12 cap bottom as hollow open PASS[OCCT] V=4440.000000 (OCCT 4440.000000, brep 4440.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 2.2e-16 faces occt/truck/brep 11/11/11  
+    names: e1.cap[bottom]
+ModelDoc extrude h=12 round between(cap top, swept1) PASS[OCCT] V=11978.525740 (OCCT 11978.539816, brep 11978.539816) dVol 1.2e-6 dBbox 2.7e-15 dCOM 4.6e-7 faces occt/truck/brep 7/7/7  
+    names: e1.edge[e1.cap[top] ^ e1.face[sk1.edge1]]
+ModelDoc extrude h=12 round between(cap bottom, swept1) PASS[OCCT] V=11978.525732 (OCCT 11978.539816, brep 11978.539816) dVol 1.2e-6 dBbox 2.7e-15 dCOM 4.6e-7 faces occt/truck/brep 7/7/7  
+    names: e1.edge[e1.cap[bottom] ^ e1.face[sk1.edge1]]
+ModelDoc extrude h=12 draft swept1       PASS[OCCT] V=11842.520406 (OCCT 11842.520406, brep 11842.520406) dVol 1.5e-16 dBbox 1.2e-15 dCOM 7.3e-17 faces occt/truck/brep 6/6/6  
+    names: e1.face[sk1.edge1]
+ModelDoc extrude h=-12 cap top as hollow open REFUSED: sh1 (shell): e1.cap[top] matches no face on b_e1 (planar face, outward normal along the sketch normal at the sketch plane + height); not guessing   | OCCT:builds V=4440.0000 BREP:builds V=4440.0000
+    names: e1.cap[top]
+ModelDoc extrude h=-12 cap bottom as hollow open REFUSED: sh1 (shell): e1.cap[bottom] matches no face on b_e1 (planar face, outward normal along the sketch normal reversed at the sketch plane); not guessing   | OCCT:builds V=4440.0000 BREP:builds V=4440.0000
+    names: e1.cap[bottom]
+ModelDoc extrude h=-12 round between(cap top, swept1) REFUSED: r1 (fillet): e1.edge[e1.cap[top] ^ e1.face[sk1.edge1]] cannot be resolved: e1.cap[top] matches no face on b_e1 (planar face, outward normal along the sketch normal at the sketch plane + height); not guessing   | OCCT:builds V=11978.5398 BREP:builds V=11978.5398
+    names: e1.edge[e1.cap[top] ^ e1.face[sk1.edge1]]
+ModelDoc extrude h=-12 round between(cap bottom, swept1) REFUSED: r1 (fillet): e1.edge[e1.cap[bottom] ^ e1.face[sk1.edge1]] cannot be resolved: e1.cap[bottom] matches no face on b_e1 (planar face, outward normal along the sketch normal reversed at the sketch plane); not guessing   | OCCT:builds V=11978.5398 BREP:builds V=11978.5398
+    names: e1.edge[e1.cap[bottom] ^ e1.face[sk1.edge1]]
+ModelDoc extrude h=-12 draft swept1      PASS[OCCT] V=12157.479594 (OCCT 12157.479594, brep 12157.479594) dVol 1.5e-16 dBbox 3.3e-15 dCOM 7.2e-17 faces occt/truck/brep 6/6/6  
+    names: e1.face[sk1.edge1]

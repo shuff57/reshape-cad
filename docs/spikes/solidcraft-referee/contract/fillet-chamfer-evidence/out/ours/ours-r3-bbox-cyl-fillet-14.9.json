@@ -1,0 +1,21 @@
+{
+ "id": "r3-bbox-cyl-fillet-14.9",
+ "outcome": "fail",
+ "volume": 10643.023230776564,
+ "faces": 4,
+ "bbox": [
+  -14.999997262439067,
+  -14.999999634481117,
+  -10.000000000000018,
+  14.999997262439075,
+  14.999999634481108,
+  10.000000000000009
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "cylinder",
+  "fillet"
+ ],
+ "scriptSource": "[{\"command\":\"solid.cylinder\",\"params\":{\"radius\":15,\"height\":20,\"base\":[0,0,-10],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}},{\"command\":\"solid.fillet\",\"params\":{\"edges\":[[14.999999999999998,0,10]],\"radius\":14.9,\"body\":\"b_cyl1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

@@ -1,0 +1,300 @@
+[
+ {
+  "id": "sl9-89-boxlip-top-m0.3",
+  "src": "const k = sketch('top', 1); k.rect(60, 40, { at: [0, 0] }); const b = extrude(k, 30); const s = sketch('top'); s.polygon([[13.91,1.300],[21.33,1.300],[21.33,12.920],[13.91,12.920]]); groove(s, b, 270);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "sl9-89-boxlip-top-m0.3",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 65071.55454763035,
+    "com": [
+     0.4141485531039908,
+     -0.3931885337484704,
+     16.94655614883758
+    ],
+    "bbox": [
+     -30,
+     -20,
+     1,
+     30,
+     20,
+     31
+    ],
+    "faces": 13,
+    "area": 13556.739543540365,
+    "types": {
+     "plane": 10,
+     "cylinder": 3
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 3
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 65071.55454773732,
+    "bbox": [
+     -30,
+     -20.000000000000004,
+     1,
+     30,
+     20.000000000000007,
+     31
+    ],
+    "faces": 13,
+    "dVol": 1.6439000049618485e-12,
+    "dBbox": 3.552713678800501e-16,
+    "pass": true
+   },
+   "ms": 1168,
+   "load": [
+    39.3,
+    39.3
+   ],
+   "cpuMs": 1559,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 21.33,
+       "nearest": 20,
+       "bodies": 1
+      },
+      "side": 1,
+      "kernelAngle": -270,
+      "nudgeDeg": null
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        1
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        -30,
+        -20
+       ],
+       [
+        30,
+        -20
+       ],
+       [
+        30,
+        20
+       ],
+       [
+        -30,
+        20
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk2_1",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        13.91,
+        1.3
+       ],
+       [
+        21.33,
+        1.3
+       ],
+       [
+        21.33,
+        12.92
+       ],
+       [
+        13.91,
+        12.92
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk2_1",
+      "angle": -270,
+      "operation": "cut",
+      "targets": [
+       "b_pull1"
+      ]
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": 0.000009392668815771163,
+    "area": 13556.61220957561,
+    "faceTypes": {
+     "cylinder": 3,
+     "plane": 10
+    },
+    "occtTypes": {
+     "plane": 10,
+     "cylinder": 3
+    },
+    "occtComponents": {
+     "plane": 10,
+     "cylinder": 3
+    },
+    "bigCylinderComponents": 1,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 65072.88583333052,
+    "bbox": [
+     -30,
+     -20.000000000000004,
+     1,
+     30,
+     20,
+     31
+    ],
+    "com": [
+     0.4140060062060076,
+     -0.3930984167250149,
+     16.946354908843873
+    ],
+    "faces": 13,
+    "kernelFaces": 16,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000020458796618899717,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 0.000002576614091199157,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "caseMs": 1312
+ }
+]

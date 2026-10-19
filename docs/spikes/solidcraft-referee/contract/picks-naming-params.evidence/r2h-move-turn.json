@@ -1,0 +1,76 @@
+[
+ {
+  "label": "box, move, round edge(top,right)",
+  "src": "const b=box(40,30,20)\nmove(b,[10,5,0])\nround(b.edge('top','right'),2)",
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.",
+  "occt": 23974.24777962415,
+  "occtRef": {},
+  "brep": 23974.247779607696
+ },
+ {
+  "label": "box, turn, round edge(top,right)",
+  "src": "const b=box(40,30,20)\nturn(b,[0,0,30])\nround(b.edge('top','right'),2)",
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.",
+  "occt": 23974.24777962415,
+  "occtRef": {},
+  "brep": 23974.24777960771
+ },
+ {
+  "label": "box, move, bevel edge(top,right)",
+  "src": "const b=box(40,30,20)\nmove(b,[10,5,0])\nbevel(b.edge('top','right'),2)",
+  "outcome": "REFUSED",
+  "sentence": "bevel1 is not built: the part was moved or turned before this bevel, and its edges cannot be found again yet -- put the bevel before the move() or turn() line.",
+  "occt": 23939.999999999996,
+  "occtRef": {},
+  "brep": 23940
+ },
+ {
+  "label": "box+hole, move, round edge(top,right)",
+  "src": "const b=box(40,30,20)\nhole(b,{across:6})\nmove(b,[10,5,0])\nround(b.edge('top','right'),2)",
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.",
+  "occt": 23408.761101978278,
+  "occtRef": {},
+  "brep": 23434.513322353832
+ },
+ {
+  "label": "box+hole, turn, round edge(top,right)",
+  "src": "const b=box(40,30,20)\nhole(b,{across:6})\nturn(b,[0,0,20])\nround(b.edge('top','right'),2)",
+  "outcome": "REFUSED",
+  "sentence": "round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.",
+  "occt": 23408.76110197828,
+  "occtRef": {},
+  "brep": 23434.513322353843
+ },
+ {
+  "label": "box, move, hollow open top (control)",
+  "src": "const b=box(40,30,20)\nmove(b,[10,5,0])\nhollow(b,{wall:2,open:'top'})",
+  "outcome": "PASS",
+  "sc": 7151.999999999997,
+  "dVol": 1.2716648514722158e-16,
+  "occt": 7151.999999999996,
+  "occtRef": {},
+  "brep": 7152
+ },
+ {
+  "label": "box, turn, hollow open top (control)",
+  "src": "const b=box(40,30,20)\nturn(b,[0,0,30])\nhollow(b,{wall:2,open:'top'})",
+  "outcome": "REFUSED",
+  "sentence": "shell1 is not built: the part was moved or turned before this hollow, and its faces cannot be found again yet -- put the hollow before the move() or turn() line.",
+  "occt": 7152,
+  "occtRef": {},
+  "brep": 7151.999999999995
+ },
+ {
+  "label": "round first, then move (control: order the other way)",
+  "src": "const b=box(40,30,20)\nround(b.edge('top','right'),2)\nmove(b,[10,5,0])",
+  "outcome": "PASS",
+  "sc": 23974.230889303715,
+  "dVol": 7.045193071764579e-7,
+  "occt": 23974.24777962415,
+  "occtRef": {},
+  "brep": 23974.247779607696
+ }
+]

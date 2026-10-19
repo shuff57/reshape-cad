@@ -1,0 +1,180 @@
+[
+ {
+  "id": "sl9-60-boxlip-side-m0.03",
+  "src": "const k = sketch('top', 1); k.rect(60, 40, { at: [0, 0] }); const b = extrude(k, 30); const s = sketch('side'); s.polygon([[-26.17,17.990],[-32.28,17.990],[-32.28,29.970],[-26.17,29.970]]); groove(s, b, 180);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "sl9-60-boxlip-side-m0.03",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 71999.99999999999,
+    "com": [
+     -1.1842378929335005e-16,
+     8.684411214845671e-17,
+     16
+    ],
+    "bbox": [
+     -30,
+     -20,
+     1,
+     30,
+     20,
+     31
+    ],
+    "faces": 6,
+    "area": 10800,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove1 does not touch the part, so it cuts nothing -- groove1 is shown without it."
+   },
+   "ms": 120,
+   "load": [
+    31.6,
+    31.6
+   ],
+   "cpuMs": 499,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): the ring does not cut the part (it misses it, or turns away from it), so there is nothing to remove.",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 32.28,
+       "nearest": 1,
+       "bodies": 1
+      },
+      "side": -1,
+      "kernelAngle": 180,
+      "nudgeDeg": null
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        1
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        -30,
+        -20
+       ],
+       [
+        30,
+        -20
+       ],
+       [
+        30,
+        20
+       ],
+       [
+        -30,
+        20
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): the ring does not cut the part (it misses it, or turns away from it), so there is nothing to remove.",
+    "firstRefusal": "groove1 (groove): the ring does not cut the part (it misses it, or turns away from it), so there is nothing to remove."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 183
+ }
+]

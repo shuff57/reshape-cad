@@ -1,0 +1,2488 @@
+[
+ {
+  "id": "r2-box-12-20-30-c6",
+  "feature": "box.corner.half",
+  "note": "",
+  "script": "box(12, 20, 30, { corner: 6 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      12,
+      20,
+      30
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 6
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 5573.3094079939065,
+  "occt": {
+   "refused": "Rounding box box1 (12x20x30) at radius 6 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding box by 6 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 12,
+     "width": 20,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       0,
+       -10,
+       -15
+      ],
+      [
+       0,
+       -10,
+       15
+      ],
+      [
+       0,
+       10,
+       -15
+      ],
+      [
+       0,
+       10,
+       15
+      ],
+      [
+       -6,
+       0,
+       -15
+      ],
+      [
+       -6,
+       0,
+       15
+      ],
+      [
+       6,
+       0,
+       -15
+      ],
+      [
+       6,
+       0,
+       15
+      ],
+      [
+       -6,
+       -10,
+       0
+      ],
+      [
+       -6,
+       10,
+       0
+      ],
+      [
+       6,
+       -10,
+       0
+      ],
+      [
+       6,
+       10,
+       0
+      ]
+     ],
+     "radius": 6,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7972.520211226249,
+   "bbox": [
+    -6.000000000000007,
+    -10.000000000000002,
+    -15.000000000000004,
+    6.000000000000007,
+    10.000000000000002,
+    15.000000000000004
+   ],
+   "com": [
+    1.82525912043171e-15,
+    4.563147801079274e-15,
+    2.9660460707015285e-15
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 4,
+    "plane": 4,
+    "sphere": 4
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolAnalytic": 0.430482255263113,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 3663
+ },
+ {
+  "id": "r2-box-10-20-30-c5",
+  "feature": "box.corner.half",
+  "note": "",
+  "script": "box(10, 20, 30, { corner: 5 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      10,
+      20,
+      30
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 5
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 4879.793265790644,
+  "occt": {
+   "refused": "Rounding box box1 (10x20x30) at radius 5 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding box by 5 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 20,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       0,
+       -10,
+       -15
+      ],
+      [
+       0,
+       -10,
+       15
+      ],
+      [
+       0,
+       10,
+       -15
+      ],
+      [
+       0,
+       10,
+       15
+      ],
+      [
+       -5,
+       0,
+       -15
+      ],
+      [
+       -5,
+       0,
+       15
+      ],
+      [
+       5,
+       0,
+       -15
+      ],
+      [
+       5,
+       0,
+       15
+      ],
+      [
+       -5,
+       -10,
+       0
+      ],
+      [
+       -5,
+       10,
+       0
+      ],
+      [
+       5,
+       -10,
+       0
+      ],
+      [
+       5,
+       10,
+       0
+      ]
+     ],
+     "radius": 5,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 6879.219249122125,
+   "bbox": [
+    -5.000000000000002,
+    -10.000000000000005,
+    -15.000000000000004,
+    5.000000000000011,
+    10.000000000000009,
+    15.000000000000004
+   ],
+   "com": [
+    3.745921683412172e-14,
+    -6.809928732429294e-9,
+    -2.270541422930736e-9
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 4,
+    "plane": 4,
+    "sphere": 4
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolAnalytic": 0.40973579707736363,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 3459
+ },
+ {
+  "id": "r2-box-5-20-30-c2.5",
+  "feature": "box.corner.half",
+  "note": "",
+  "script": "box(5, 20, 30, { corner: 2.5 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      5,
+      20,
+      30
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 2.5
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 2725.8480103472357,
+  "occt": {
+   "refused": "Rounding box box1 (5x20x30) at radius 2.5 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding box by 2.5 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 5,
+     "width": 20,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       0,
+       -10,
+       -15
+      ],
+      [
+       0,
+       -10,
+       15
+      ],
+      [
+       0,
+       10,
+       -15
+      ],
+      [
+       0,
+       10,
+       15
+      ],
+      [
+       -2.5,
+       0,
+       -15
+      ],
+      [
+       -2.5,
+       0,
+       15
+      ],
+      [
+       2.5,
+       0,
+       -15
+      ],
+      [
+       2.5,
+       0,
+       15
+      ],
+      [
+       -2.5,
+       -10,
+       0
+      ],
+      [
+       -2.5,
+       10,
+       0
+      ],
+      [
+       2.5,
+       -10,
+       0
+      ],
+      [
+       2.5,
+       10,
+       0
+      ]
+     ],
+     "radius": 2.5,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 3725.6882939126845,
+   "bbox": [
+    -2.5000000000000036,
+    -10.000000000000004,
+    -15.000000000000002,
+    2.5000000000000018,
+    10.000000000000002,
+    15.000000000000004
+   ],
+   "com": [
+    1.0513454013495216e-14,
+    -7.861715230345304e-9,
+    -3.2761230753153413e-9
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 4,
+    "plane": 4,
+    "sphere": 4
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolAnalytic": 0.3667997187554426,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 3317
+ },
+ {
+  "id": "r2-box-20-30-12-c6",
+  "feature": "box.corner.half",
+  "note": "",
+  "script": "box(20, 30, 12, { corner: 6 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      20,
+      30,
+      12
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 6
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 5573.3094079939065,
+  "occt": {
+   "refused": "Rounding box box1 (20x30x12) at radius 6 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding box by 6 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 30,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -10,
+       0,
+       -6
+      ],
+      [
+       -10,
+       0,
+       6
+      ],
+      [
+       10,
+       0,
+       -6
+      ],
+      [
+       10,
+       0,
+       6
+      ],
+      [
+       -10,
+       -15,
+       0
+      ],
+      [
+       -10,
+       15,
+       0
+      ],
+      [
+       10,
+       -15,
+       0
+      ],
+      [
+       10,
+       15,
+       0
+      ]
+     ],
+     "radius": 6,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 5572.52021082135,
+   "bbox": [
+    -10.000000000000004,
+    -15.000000000000002,
+    -6.000000000000002,
+    10.000000000000002,
+    15.000000000000002,
+    6.000000000000001
+   ],
+   "com": [
+    -2.1489403573788965e-15,
+    3.8082487345955133e-16,
+    4.080266501352335e-17
+   ],
+   "faces": 10,
+   "faceTypes": {
+    "cylinder": 4,
+    "plane": 2,
+    "sphere": 4
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolAnalytic": 0.00014160297137365247,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 3435
+ },
+ {
+  "id": "r2-box-10-20-30-c4.99",
+  "feature": "box.corner.under",
+  "note": "",
+  "script": "box(10, 20, 30, { corner: 4.99 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      10,
+      20,
+      30
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 4.99
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 4883.936141224782,
+  "occt": {
+   "volume": 4883.936141290783,
+   "com": [
+    8.881784197001252e-16,
+    -2.4638069362481474e-12,
+    8.496314762851398e-12
+   ],
+   "bbox": [
+    -5.000000000000001,
+    -10,
+    -15,
+    5.000000000000001,
+    10.000000000000002,
+    15.000000000000002
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 8
+   }
+  },
+  "brep": {
+   "volume": 4883.936141224782,
+   "bbox": [
+    -5,
+    -10,
+    -15,
+    5,
+    10,
+    15
+   ],
+   "faces": 26,
+   "dVol": 1.3513919736779379e-11,
+   "dBbox": 4.7475133497774e-17
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 20,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       0,
+       -10,
+       -15
+      ],
+      [
+       0,
+       -10,
+       15
+      ],
+      [
+       0,
+       10,
+       -15
+      ],
+      [
+       0,
+       10,
+       15
+      ],
+      [
+       -5,
+       0,
+       -15
+      ],
+      [
+       -5,
+       0,
+       15
+      ],
+      [
+       5,
+       0,
+       -15
+      ],
+      [
+       5,
+       0,
+       15
+      ],
+      [
+       -5,
+       -10,
+       0
+      ],
+      [
+       -5,
+       10,
+       0
+      ],
+      [
+       5,
+       -10,
+       0
+      ],
+      [
+       5,
+       10,
+       0
+      ]
+     ],
+     "radius": 4.99,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 4883.363885895205,
+   "bbox": [
+    -5.000000000000002,
+    -10.000000000000004,
+    -15.000000000000004,
+    5.0000000000000036,
+    10.000000000000002,
+    15.000000000000004
+   ],
+   "com": [
+    -5.975311765351337e-16,
+    3.2049096823041783e-9,
+    9.593967833943968e-9
+   ],
+   "faces": 26,
+   "faceTypes": {
+    "cylinder": 12,
+    "plane": 6,
+    "sphere": 8
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00011717094143377628,
+   "dBboxOcct": 9.4950266995548e-17,
+   "dComOcct": 2.561825022532519e-10,
+   "facesOcct": 26,
+   "typesOcct": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 8
+   },
+   "dVolAnalytic": 0.00011717092792143998,
+   "dVolBrep": 0.00011717092792143998,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 3296
+ },
+ {
+  "id": "r2-box-10-20-30-c4.9",
+  "feature": "box.corner.under",
+  "note": "",
+  "script": "box(10, 20, 30, { corner: 4.9 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      10,
+      20,
+      30
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 4.9
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 4920.937950951256,
+  "occt": {
+   "volume": 4920.937951019017,
+   "com": [
+    -8.881784197001252e-16,
+    -2.19824158875781e-11,
+    2.780886632081092e-11
+   ],
+   "bbox": [
+    -5.000000000000001,
+    -10,
+    -15,
+    5.000000000000001,
+    10.000000000000002,
+    15.000000000000002
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 8
+   }
+  },
+  "brep": {
+   "volume": 4920.937950951257,
+   "bbox": [
+    -5,
+    -10,
+    -15,
+    5,
+    10,
+    15
+   ],
+   "faces": 26,
+   "dVol": 1.3769749677936268e-11,
+   "dBbox": 4.7475133497774e-17
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 20,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       0,
+       -10,
+       -15
+      ],
+      [
+       0,
+       -10,
+       15
+      ],
+      [
+       0,
+       10,
+       -15
+      ],
+      [
+       0,
+       10,
+       15
+      ],
+      [
+       -5,
+       0,
+       -15
+      ],
+      [
+       -5,
+       0,
+       15
+      ],
+      [
+       5,
+       0,
+       -15
+      ],
+      [
+       5,
+       0,
+       15
+      ],
+      [
+       -5,
+       -10,
+       0
+      ],
+      [
+       -5,
+       10,
+       0
+      ],
+      [
+       5,
+       -10,
+       0
+      ],
+      [
+       5,
+       10,
+       0
+      ]
+     ],
+     "radius": 4.9,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 4920.381477078833,
+   "bbox": [
+    -5.0000000000000036,
+    -10.000000000000007,
+    -15.000000000000002,
+    5.0000000000000036,
+    10.000000000000005,
+    15.000000000000005
+   ],
+   "com": [
+    -1.5571501684350526e-12,
+    3.2366868672362298e-9,
+    9.519042612781435e-9
+   ],
+   "faces": 26,
+   "faceTypes": {
+    "cylinder": 12,
+    "plane": 6,
+    "sphere": 8
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00011308290121176983,
+   "dBboxOcct": 1.89900533991096e-16,
+   "dComOcct": 2.5366389183601794e-10,
+   "facesOcct": 26,
+   "typesOcct": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 8
+   },
+   "dVolAnalytic": 0.00011308288744339248,
+   "dVolBrep": 0.00011308288744357728,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 3151
+ },
+ {
+  "id": "r2-box-10-20-30-c5.1",
+  "feature": "box.corner.over",
+  "note": "",
+  "script": "box(10, 20, 30, { corner: 5.1 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      10,
+      20,
+      30
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 5.1
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "volume": 7936.840384120609,
+   "com": [
+    0.15103190534993338,
+    0.9443525123386571,
+    0.0037810300337124403
+   ],
+   "bbox": [
+    -5.000000000000001,
+    -10.069057118062497,
+    -15.08158840399192,
+    5.000000100000001,
+    10.07817492044442,
+    15.078174920460974
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 4,
+    "other": 4
+   }
+  },
+  "brep": {
+   "refused": "Rounding box by 5.1 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 559
+ },
+ {
+  "id": "r2-box-10-20-30-c7",
+  "feature": "box.corner.over",
+  "note": "",
+  "script": "box(10, 20, 30, { corner: 7 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      10,
+      20,
+      30
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 7
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "volume": 8240.03597600572,
+   "com": [
+    0.25392253247953445,
+    -0.0033779493621430845,
+    0.0031214867678883707
+   ],
+   "bbox": [
+    -5.000000000000001,
+    -10.094784242217788,
+    -15.111984046898906,
+    5.000000100000001,
+    10.107298873118285,
+    15.107298873338403
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 4,
+    "other": 4
+   }
+  },
+  "brep": {
+   "refused": "Rounding box by 7 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 448
+ },
+ {
+  "id": "r2-box-12-30-20-c7",
+  "feature": "box.corner.over",
+  "note": "",
+  "script": "box(12, 30, 20, { corner: 7 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      12,
+      30,
+      20
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 7
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "volume": 7743.89658963499,
+   "com": [
+    0.25973916599312474,
+    0.0034199651517763385,
+    0.008662152416006208
+   ],
+   "bbox": [
+    -6.000000000000001,
+    -15.094784242388185,
+    -10.111984046816856,
+    6.000000100000001,
+    15.107298873115836,
+    10.107298873162655
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 6,
+    "cylinder": 12,
+    "sphere": 4,
+    "other": 4
+   }
+  },
+  "brep": {
+   "refused": "Rounding box by 7 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 406
+ },
+ {
+  "id": "r2-box-20-30-12-c7",
+  "feature": "box.corner.over",
+  "note": "",
+  "script": "box(20, 30, 12, { corner: 7 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      20,
+      30,
+      12
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 7
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "volume": 7727.66837579357,
+   "com": [
+    -2.8421709430404007e-12,
+    -0.015405742156014313,
+    -0.009611960997153446
+   ],
+   "bbox": [
+    -10.109161884992206,
+    -15.113768473477336,
+    -6.000000100000001,
+    10.109161884894073,
+    15.107873349302592,
+    6.000000100000001
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 6,
+    "other": 4,
+    "cylinder": 12,
+    "sphere": 4
+   }
+  },
+  "brep": {
+   "refused": "Rounding box by 7 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 915
+ },
+ {
+  "id": "r2-box-30-12-20-c7",
+  "feature": "box.corner.over",
+  "note": "",
+  "script": "box(30, 12, 20, { corner: 7 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      30,
+      12,
+      20
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 7
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "volume": 7743.519360069988,
+   "com": [
+    1.7922552331128827e-10,
+    0.2595117329814487,
+    0.00005324254910554771
+   ],
+   "bbox": [
+    -15.10916188492329,
+    -6.000000000000001,
+    -10.09478424239915,
+    15.109161884795643,
+    6.000000100000001,
+    10.11376847366426
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 6,
+    "other": 4,
+    "cylinder": 12,
+    "sphere": 4
+   }
+  },
+  "brep": {
+   "refused": "Rounding box by 7 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 349
+ },
+ {
+  "id": "r2-box-30-20-12-c7",
+  "feature": "box.corner.over",
+  "note": "",
+  "script": "box(30, 20, 12, { corner: 7 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      30,
+      20,
+      12
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 7
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "volume": 7727.236863155338,
+   "com": [
+    -9.810818824007583e-12,
+    -0.015897116078807727,
+    -0.009809426632682694
+   ],
+   "bbox": [
+    -15.109161884992222,
+    -10.113768473318608,
+    -6.000000100000001,
+    15.109161884817638,
+    10.10787334935493,
+    6.000000100000001
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 6,
+    "other": 4,
+    "cylinder": 12,
+    "sphere": 4
+   }
+  },
+  "brep": {
+   "refused": "Rounding box by 7 would not fit its shortest side -- box1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 902
+ },
+ {
+  "id": "r2-box-chamfer-4.9",
+  "feature": "box.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "box",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "size": [
+      10,
+      20,
+      30
+     ],
+     "round": 4.9,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "volume": 3746.2613333333343,
+   "com": [
+    -8.881784197001252e-16,
+    0,
+    1.7763568394002505e-15
+   ],
+   "bbox": [
+    -5.000000000000002,
+    -10.000000000000002,
+    -15.000000000000002,
+    5.000000000000003,
+    10.000000000000002,
+    15.000000000000004
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 26
+   }
+  },
+  "brep": {
+   "volume": 3746.2613333333334,
+   "bbox": [
+    -5,
+    -10,
+    -15,
+    5,
+    10,
+    15
+   ],
+   "faces": 26,
+   "dVol": 2.427739607166384e-16,
+   "dBbox": 9.495026699554796e-17
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 20,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_x1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       0,
+       -10,
+       -15
+      ],
+      [
+       0,
+       -10,
+       15
+      ],
+      [
+       0,
+       10,
+       -15
+      ],
+      [
+       0,
+       10,
+       15
+      ],
+      [
+       -5,
+       0,
+       -15
+      ],
+      [
+       -5,
+       0,
+       15
+      ],
+      [
+       5,
+       0,
+       -15
+      ],
+      [
+       5,
+       0,
+       15
+      ],
+      [
+       -5,
+       -10,
+       0
+      ],
+      [
+       -5,
+       10,
+       0
+      ],
+      [
+       5,
+       -10,
+       0
+      ],
+      [
+       5,
+       10,
+       0
+      ]
+     ],
+     "distance": 4.9,
+     "body": "b_x1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 3824.694,
+   "bbox": [
+    -5,
+    -10.000000000000002,
+    -15,
+    5.000000000000001,
+    10.000000000000004,
+    15.000000000000004
+   ],
+   "com": [
+    1.5853027750244913e-16,
+    3.1706055500489825e-16,
+    -3.963256937561228e-17
+   ],
+   "faces": 18,
+   "faceTypes": {
+    "plane": 18
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.020936250754529758,
+   "dBboxOcct": 4.747513349777398e-17,
+   "dComOcct": 4.853435846892463e-17,
+   "facesOcct": 26,
+   "typesOcct": {
+    "plane": 26
+   },
+   "dVolBrep": 0.020936250754530008,
+   "tol": 1e-9
+  },
+  "planar": false,
+  "ms": 757
+ },
+ {
+  "id": "r2-box-chamfer-5",
+  "feature": "box.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "box",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "size": [
+      10,
+      20,
+      30
+     ],
+     "round": 5,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "refused": "Chamfering box x1 (10x20x30) at radius 5 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding box by 5 would not fit its shortest side -- x1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 20,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_x1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       0,
+       -10,
+       -15
+      ],
+      [
+       0,
+       -10,
+       15
+      ],
+      [
+       0,
+       10,
+       -15
+      ],
+      [
+       0,
+       10,
+       15
+      ],
+      [
+       -5,
+       0,
+       -15
+      ],
+      [
+       -5,
+       0,
+       15
+      ],
+      [
+       5,
+       0,
+       -15
+      ],
+      [
+       5,
+       0,
+       15
+      ],
+      [
+       -5,
+       -10,
+       0
+      ],
+      [
+       -5,
+       10,
+       0
+      ],
+      [
+       5,
+       -10,
+       0
+      ],
+      [
+       5,
+       10,
+       0
+      ]
+     ],
+     "distance": 5,
+     "body": "b_x1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 3749.9999999999914,
+   "bbox": [
+    -5,
+    -10,
+    -15,
+    5.000000000000001,
+    10,
+    15
+   ],
+   "com": [
+    -8.933259070747449e-15,
+    -2.991227019164304e-15,
+    4.747057068420378e-15
+   ],
+   "faces": 14,
+   "faceTypes": {
+    "plane": 14
+   },
+   "curved": false,
+   "bodies": 1,
+   "tol": 1e-9
+  },
+  "planar": false,
+  "ms": 813
+ },
+ {
+  "id": "r2-box-chamfer-5.5",
+  "feature": "box.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "box",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "size": [
+      10,
+      20,
+      30
+     ],
+     "round": 5.5,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "refused": "Chamfering box x1 (10x20x30) at radius 5.5 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding box by 5.5 would not fit its shortest side -- x1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 20,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_x1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       0,
+       -10,
+       -15
+      ],
+      [
+       0,
+       -10,
+       15
+      ],
+      [
+       0,
+       10,
+       -15
+      ],
+      [
+       0,
+       10,
+       15
+      ],
+      [
+       -5,
+       0,
+       -15
+      ],
+      [
+       -5,
+       0,
+       15
+      ],
+      [
+       5,
+       0,
+       -15
+      ],
+      [
+       5,
+       0,
+       15
+      ],
+      [
+       -5,
+       -10,
+       0
+      ],
+      [
+       -5,
+       10,
+       0
+      ],
+      [
+       5,
+       -10,
+       0
+      ],
+      [
+       5,
+       10,
+       0
+      ]
+     ],
+     "distance": 5.5,
+     "body": "b_x1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 3382.5833333333335,
+   "bbox": [
+    -5.000000000000002,
+    -9.500000000000002,
+    -14.500000000000002,
+    5.000000000000002,
+    9.500000000000002,
+    14.500000000000004
+   ],
+   "com": [
+    -6.721894275378247e-17,
+    -8.962525700504329e-17,
+    -7.394083702916073e-16
+   ],
+   "faces": 14,
+   "faceTypes": {
+    "plane": 14
+   },
+   "curved": false,
+   "bodies": 1,
+   "tol": 1e-9
+  },
+  "planar": false,
+  "ms": 589
+ },
+ {
+  "id": "r2-box-chamfer-2",
+  "feature": "box.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "box",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "size": [
+      10,
+      20,
+      30
+     ],
+     "round": 2,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "volume": 5562.666666666665,
+   "com": [
+    8.881784197001252e-16,
+    1.7763568394002505e-15,
+    1.7763568394002505e-15
+   ],
+   "bbox": [
+    -5.000000000000002,
+    -10.000000000000002,
+    -15.000000000000002,
+    5,
+    10.000000000000002,
+    15.000000000000002
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 26
+   }
+  },
+  "brep": {
+   "volume": 5562.666666666667,
+   "bbox": [
+    -5,
+    -10,
+    -15,
+    5,
+    10,
+    15
+   ],
+   "faces": 26,
+   "dVol": 3.2699953323571256e-16,
+   "dBbox": 4.747513349777398e-17
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10,
+     "width": 20,
+     "height": 30,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_x1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       0,
+       -10,
+       -15
+      ],
+      [
+       0,
+       -10,
+       15
+      ],
+      [
+       0,
+       10,
+       -15
+      ],
+      [
+       0,
+       10,
+       15
+      ],
+      [
+       -5,
+       0,
+       -15
+      ],
+      [
+       -5,
+       0,
+       15
+      ],
+      [
+       5,
+       0,
+       -15
+      ],
+      [
+       5,
+       0,
+       15
+      ],
+      [
+       -5,
+       -10,
+       0
+      ],
+      [
+       -5,
+       10,
+       0
+      ],
+      [
+       5,
+       -10,
+       0
+      ],
+      [
+       5,
+       10,
+       0
+      ]
+     ],
+     "distance": 2,
+     "body": "b_x1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 5568,
+   "bbox": [
+    -5,
+    -10,
+    -15,
+    5,
+    10.000000000000002,
+    15
+   ],
+   "com": [
+    -1.0889543843066669e-16,
+    -3.266863152920001e-16,
+    1.1570140333258335e-16
+   ],
+   "faces": 18,
+   "faceTypes": {
+    "plane": 18
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.0009587727708535805,
+   "dBboxOcct": 4.747513349777398e-17,
+   "dComOcct": 5.620619253184736e-17,
+   "facesOcct": 26,
+   "typesOcct": {
+    "plane": 26
+   },
+   "dVolBrep": 0.0009587727708532532,
+   "tol": 1e-9
+  },
+  "planar": false,
+  "ms": 608
+ },
+ {
+  "id": "r2-box-chamfer-1",
+  "feature": "box.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "box",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "size": [
+      40,
+      30,
+      12
+     ],
+     "round": 1,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "volume": 14241.333333333334,
+   "com": [
+    -3.552713678800501e-15,
+    0,
+    0
+   ],
+   "bbox": [
+    -20,
+    -15.000000000000002,
+    -6,
+    20,
+    15,
+    6.000000000000002
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 26
+   }
+  },
+  "brep": {
+   "volume": 14241.333333333334,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ],
+   "faces": 26,
+   "dVol": 0,
+   "dBbox": 3.4546136688380976e-17
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_x1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       -6
+      ],
+      [
+       -20,
+       0,
+       6
+      ],
+      [
+       20,
+       0,
+       -6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "distance": 1,
+     "body": "b_x1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 14242,
+   "bbox": [
+    -20,
+    -15.000000000000002,
+    -6.000000000000001,
+    20,
+    15.000000000000004,
+    6.000000000000001
+   ],
+   "com": [
+    -6.386004084910324e-17,
+    -1.915801225473097e-16,
+    -2.0388648458593898e-16
+   ],
+   "faces": 18,
+   "faceTypes": {
+    "plane": 18
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.000046812096245627304,
+   "dBboxOcct": 6.909227337676195e-17,
+   "dComOcct": 6.785033952024945e-17,
+   "facesOcct": 26,
+   "typesOcct": {
+    "plane": 26
+   },
+   "dVolBrep": 0.000046812096245627304,
+   "tol": 1e-9
+  },
+  "planar": false,
+  "ms": 507
+ },
+ {
+  "id": "r2-box-chamfer-5.9",
+  "feature": "box.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "box",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "size": [
+      20,
+      30,
+      12
+     ],
+     "round": 5.9,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "volume": 3978.9146666666675,
+   "com": [
+    1.7763568394002505e-15,
+    1.7763568394002505e-15,
+    0
+   ],
+   "bbox": [
+    -10.000000000000004,
+    -15.000000000000002,
+    -6.0000000000000036,
+    10.000000000000004,
+    15.000000000000002,
+    6.000000000000005
+   ],
+   "faces": 26,
+   "types": {
+    "plane": 26
+   }
+  },
+  "brep": {
+   "volume": 3978.9146666666657,
+   "bbox": [
+    -10,
+    -15,
+    -6,
+    10,
+    15,
+    6
+   ],
+   "faces": 26,
+   "dVol": 4.571571787614419e-16,
+   "dBbox": 1.4023869784738816e-16
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 30,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_x1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -10,
+       0,
+       -6
+      ],
+      [
+       -10,
+       0,
+       6
+      ],
+      [
+       10,
+       0,
+       -6
+      ],
+      [
+       10,
+       0,
+       6
+      ],
+      [
+       -10,
+       -15,
+       0
+      ],
+      [
+       -10,
+       15,
+       0
+      ],
+      [
+       10,
+       -15,
+       0
+      ],
+      [
+       10,
+       15,
+       0
+      ]
+     ],
+     "distance": 5.9,
+     "body": "b_x1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 4115.834000000042,
+   "bbox": [
+    -10,
+    -15.000000000000005,
+    -6.000000000000014,
+    10.000000000000002,
+    15.00000000000005,
+    6.0000000000000195
+   ],
+   "com": [
+    1.0864583663279063e-15,
+    9.107835728572585e-14,
+    1.9358222264817255e-14
+   ],
+   "faces": 18,
+   "faceTypes": {
+    "plane": 18
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.034411226377990725,
+   "dBboxOcct": 1.2621482806264935e-15,
+   "dComOcct": 2.3500526433243576e-15,
+   "facesOcct": 26,
+   "typesOcct": {
+    "plane": 26
+   },
+   "dVolBrep": 0.0344112263779912,
+   "tol": 1e-9
+  },
+  "planar": false,
+  "ms": 663
+ },
+ {
+  "id": "r2-box-chamfer-6",
+  "feature": "box.chamfer.limit",
+  "note": "",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "x1",
+     "kind": "box",
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "size": [
+      20,
+      30,
+      12
+     ],
+     "round": 6,
+     "roundStyle": "chamfer"
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": null,
+  "occt": {
+   "refused": "Chamfering box x1 (20x30x12) at radius 6 failed -- the radius is too big for this shape's edges."
+  },
+  "brep": {
+   "refused": "Rounding box by 6 would not fit its shortest side -- x1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 30,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_x1"
+    }
+   },
+   {
+    "command": "solid.chamfer",
+    "params": {
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -10,
+       0,
+       -6
+      ],
+      [
+       -10,
+       0,
+       6
+      ],
+      [
+       10,
+       0,
+       -6
+      ],
+      [
+       10,
+       0,
+       6
+      ],
+      [
+       -10,
+       -15,
+       0
+      ],
+      [
+       -10,
+       15,
+       0
+      ],
+      [
+       10,
+       -15,
+       0
+      ],
+      [
+       10,
+       15,
+       0
+      ]
+     ],
+     "distance": 6,
+     "body": "b_x1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 4032.000000000018,
+   "bbox": [
+    -10.000000000000083,
+    -15.000000000000114,
+    -6,
+    10.000000000000098,
+    15.000000000000252,
+    6
+   ],
+   "com": [
+    7.161819638216851e-15,
+    1.7876352955234185e-13,
+    -1.7879693904150172e-14
+   ],
+   "faces": 14,
+   "faceTypes": {
+    "plane": 14
+   },
+   "curved": false,
+   "bodies": 1,
+   "tol": 1e-9
+  },
+  "planar": false,
+  "ms": 709
+ }
+]

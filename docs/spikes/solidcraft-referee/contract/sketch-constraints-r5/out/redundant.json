@@ -1,0 +1,809 @@
+[
+ {
+  "id": "sk-conflict__width-30-vs-35",
+  "expect": "refuse",
+  "freecad": {
+   "solve": -4,
+   "dof": -1,
+   "redundant": [],
+   "conflicting": [
+    10,
+    12
+   ],
+   "state": [
+    "Touched",
+    "Invalid"
+   ],
+   "bbox": null
+  },
+  "brepDiag": {
+   "open": null,
+   "solved": true,
+   "lastError": null,
+   "dof": 0
+  },
+  "brepBuild": {
+   "refused": "extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+  },
+  "shipped": {
+   "stored": "refused: that would over-constrain the sketch (conflicts with k10, k12)",
+   "report": null
+  },
+  "guardedStored": {
+   "refused": "The rule that sets the width of geometry 1 (its horizontal extent) to 35 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.",
+   "stage": "residual",
+   "judged": "refused"
+  },
+  "rough": {
+   "guarded": {
+    "refused": 12
+   },
+   "shipped": {
+    "refused": 12
+   },
+   "sentences": {
+    "The rule that sets the width of geometry 1 (its horizontal extent) to 35 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.": 12
+   }
+  },
+  "perm": {
+   "guarded": {
+    "refused": 16
+   },
+   "shipped": {
+    "refused": 16
+   },
+   "sentences": {
+    "The rule that sets the width of geometry 1 (its horizontal extent) to 35 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.": 16
+   },
+   "demotedRows": {}
+  }
+ },
+ {
+  "id": "sk-conflict__redundant-width",
+  "expect": "build",
+  "freecad": {
+   "solve": -2,
+   "dof": 0,
+   "redundant": [
+    12
+   ],
+   "conflicting": [],
+   "state": [
+    "Touched",
+    "Invalid"
+   ],
+   "bbox": null
+  },
+  "brepDiag": {
+   "open": null,
+   "solved": true,
+   "lastError": null,
+   "dof": 0
+  },
+  "brepBuild": {
+   "volume": 6000,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "shipped": {
+   "stored": "refused: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+   "report": null
+  },
+  "guardedStored": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "faces": 6,
+   "demoted": [
+    11
+   ],
+   "rung": "JGTD*",
+   "judged": "built-right"
+  },
+  "rough": {
+   "guarded": {
+    "built-right": 12
+   },
+   "shipped": {
+    "refused": 12
+   },
+   "sentences": {}
+  },
+  "perm": {
+   "guarded": {
+    "built-right": 16
+   },
+   "shipped": {
+    "refused": 16
+   },
+   "sentences": {},
+   "demotedRows": {
+    "1": 16
+   }
+  }
+ },
+ {
+  "id": "sk-conflict__redundant-height",
+  "expect": "build",
+  "freecad": {
+   "solve": -2,
+   "dof": 0,
+   "redundant": [
+    12
+   ],
+   "conflicting": [],
+   "state": [
+    "Touched",
+    "Invalid"
+   ],
+   "bbox": null
+  },
+  "brepDiag": {
+   "open": null,
+   "solved": true,
+   "lastError": null,
+   "dof": 0
+  },
+  "brepBuild": {
+   "volume": 6000,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "shipped": {
+   "stored": "refused: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+   "report": null
+  },
+  "guardedStored": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "faces": 6,
+   "demoted": [
+    11
+   ],
+   "rung": "JGTD*",
+   "judged": "built-right"
+  },
+  "rough": {
+   "guarded": {
+    "built-right": 12
+   },
+   "shipped": {
+    "refused": 12
+   },
+   "sentences": {}
+  },
+  "perm": {
+   "guarded": {
+    "built-right": 16
+   },
+   "shipped": {
+    "refused": 16
+   },
+   "sentences": {},
+   "demotedRows": {
+    "1": 16
+   }
+  }
+ },
+ {
+  "id": "sk-conflict__redundant-perpendicular",
+  "expect": "build",
+  "freecad": {
+   "solve": -2,
+   "dof": 0,
+   "redundant": [
+    12
+   ],
+   "conflicting": [],
+   "state": [
+    "Touched",
+    "Invalid"
+   ],
+   "bbox": null
+  },
+  "brepDiag": {
+   "open": null,
+   "solved": true,
+   "lastError": null,
+   "dof": 0
+  },
+  "brepBuild": {
+   "volume": 6000,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "shipped": {
+   "stored": "built vol 6000.0000",
+   "report": null
+  },
+  "guardedStored": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "faces": 6,
+   "demoted": [],
+   "rung": "JGTD*",
+   "judged": "built-right"
+  },
+  "rough": {
+   "guarded": {
+    "built-right": 12
+   },
+   "shipped": {
+    "built-right": 12
+   },
+   "sentences": {}
+  },
+  "perm": {
+   "guarded": {
+    "built-right": 16
+   },
+   "shipped": {
+    "built-right": 16
+   },
+   "sentences": {},
+   "demotedRows": {
+    "0": 16
+   }
+  }
+ },
+ {
+  "id": "sk-conflict__radius-vs-diameter",
+  "expect": "refuse",
+  "freecad": {
+   "solve": -4,
+   "dof": -1,
+   "redundant": [],
+   "conflicting": [
+    2,
+    3
+   ],
+   "state": [
+    "Touched",
+    "Invalid"
+   ],
+   "bbox": null
+  },
+  "brepDiag": {
+   "open": null,
+   "solved": true,
+   "lastError": null,
+   "dof": 0
+  },
+  "brepBuild": {
+   "refused": "extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+  },
+  "shipped": {
+   "stored": "refused: that would over-constrain the sketch (conflicts with k2, k3)",
+   "report": null
+  },
+  "guardedStored": {
+   "refused": "The rule that sets the radius of geometry 1 to 5 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.",
+   "stage": "residual",
+   "judged": "refused"
+  },
+  "rough": {
+   "guarded": {
+    "refused": 12
+   },
+   "shipped": {
+    "refused": 12
+   },
+   "sentences": {
+    "The rule that sets the radius of geometry 1 to 5 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.": 12
+   }
+  },
+  "perm": {
+   "guarded": {
+    "refused": 16
+   },
+   "shipped": {
+    "refused": 16
+   },
+   "sentences": {
+    "The rule that sets the radius of geometry 1 to 5 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.": 16
+   },
+   "demotedRows": {}
+  }
+ },
+ {
+  "id": "sk-conflict__equal-vs-two-radii",
+  "expect": "refuse",
+  "freecad": {
+   "solve": -4,
+   "dof": -1,
+   "redundant": [],
+   "conflicting": [
+    4,
+    5,
+    6
+   ],
+   "state": [
+    "Touched",
+    "Invalid"
+   ],
+   "bbox": null
+  },
+  "brepDiag": {
+   "open": null,
+   "solved": true,
+   "lastError": null,
+   "dof": 0
+  },
+  "brepBuild": {
+   "refused": "extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+  },
+  "shipped": {
+   "stored": "refused: that would over-constrain the sketch (conflicts with k3, k4, k5)",
+   "report": null
+  },
+  "guardedStored": {
+   "refused": "The rule that sets the radius of geometry 2 to 6 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.",
+   "stage": "residual",
+   "judged": "refused"
+  },
+  "rough": {
+   "guarded": {
+    "refused": 12
+   },
+   "shipped": {
+    "refused": 12
+   },
+   "sentences": {
+    "The rule that sets the radius of geometry 2 to 6 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.": 12
+   }
+  },
+  "perm": {
+   "guarded": {
+    "refused": 16
+   },
+   "shipped": {
+    "refused": 16
+   },
+   "sentences": {
+    "The rule that sets the radius of geometry 2 to 6 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.": 16
+   },
+   "demotedRows": {}
+  }
+ },
+ {
+  "id": "sk-conflict__horizontal-and-vertical",
+  "expect": "refuse",
+  "freecad": {
+   "solve": -1,
+   "dof": 2,
+   "redundant": [],
+   "conflicting": [],
+   "state": [
+    "Touched",
+    "Invalid"
+   ],
+   "bbox": null
+  },
+  "brepDiag": {
+   "open": null,
+   "solved": true,
+   "lastError": null,
+   "dof": 2
+  },
+  "brepBuild": {
+   "refused": "extrude pull1: edge 1 has a loose end; the outline must close"
+  },
+  "shipped": {
+   "stored": "refused: sk has no closed profiles",
+   "report": null
+  },
+  "guardedStored": {
+   "refused": "Geometry 1 comes out smaller than a ten-millionth of the sketch (for example a line held both horizontal and vertical, or a size far out of scale with the rest), so nothing was built; remove or change the rule that squashes it, or bring the sizes closer together.",
+   "stage": "collapsed",
+   "judged": "refused"
+  },
+  "rough": {
+   "guarded": {
+    "refused": 12
+   },
+   "shipped": {
+    "refused": 12
+   },
+   "sentences": {
+    "Geometry 1 comes out smaller than a ten-millionth of the sketch (for example a line held both horizontal and vertical, or a size far out of scale with the rest), so nothing was built; remove or change the rule that squashes it, or bring the sizes closer together.": 12
+   }
+  },
+  "perm": {
+   "guarded": {
+    "refused": 16
+   },
+   "shipped": {
+    "refused": 16
+   },
+   "sentences": {
+    "Geometry 1 comes out smaller than a ten-millionth of the sketch (for example a line held both horizontal and vertical, or a size far out of scale with the rest), so nothing was built; remove or change the rule that squashes it, or bring the sizes closer together.": 16
+   },
+   "demotedRows": {}
+  }
+ },
+ {
+  "id": "sk-conflict__clean-30x20",
+  "expect": "build",
+  "freecad": {
+   "solve": 0,
+   "dof": 0,
+   "redundant": [],
+   "conflicting": [],
+   "state": [
+    "Up-to-date"
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    0
+   ]
+  },
+  "brepDiag": {
+   "open": null,
+   "solved": true,
+   "lastError": null,
+   "dof": 0
+  },
+  "brepBuild": {
+   "volume": 6000,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ]
+  },
+  "shipped": {
+   "stored": "built vol 6000.0000",
+   "report": null
+  },
+  "guardedStored": {
+   "volume": 6000,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "faces": 6,
+   "demoted": [],
+   "rung": "JGTD*",
+   "judged": "built-right"
+  },
+  "rough": {
+   "guarded": {
+    "built-right": 12
+   },
+   "shipped": {
+    "built-right": 12
+   },
+   "sentences": {}
+  },
+  "perm": {
+   "guarded": {
+    "built-right": 16
+   },
+   "shipped": {
+    "built-right": 16
+   },
+   "sentences": {},
+   "demotedRows": {
+    "0": 16
+   }
+  }
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-r6-L30-floating",
+  "expect": "build",
+  "freecad": {
+   "solve": 0,
+   "dof": 2,
+   "redundant": [],
+   "conflicting": [],
+   "state": [
+    "Up-to-date"
+   ],
+   "bbox": [
+    -6.000000001230622,
+    0,
+    0,
+    35.99999999876938,
+    12,
+    0
+   ]
+  },
+  "brepDiag": {
+   "open": null,
+   "solved": true,
+   "lastError": null,
+   "dof": 2
+  },
+  "brepBuild": {
+   "refused": "extrude pull1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"
+  },
+  "shipped": {
+   "stored": "built vol 4730.7933",
+   "report": null
+  },
+  "guardedStored": {
+   "volume": 4730.793327002382,
+   "bbox": [
+    -6.000000000000003,
+    0,
+    0,
+    36,
+    12.000000000000002,
+    10.000000000000005
+   ],
+   "faces": 6,
+   "demoted": [],
+   "rung": "JGTD*",
+   "judged": "built-right"
+  },
+  "rough": {
+   "guarded": {
+    "refused": 12
+   },
+   "shipped": {
+    "built-right": 12
+   },
+   "sentences": {
+    "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.": 12
+   }
+  },
+  "perm": {
+   "guarded": {
+    "built-right": 16
+   },
+   "shipped": {
+    "built-right": 16
+   },
+   "sentences": {},
+   "demotedRows": {
+    "0": 16
+   }
+  }
+ },
+ {
+  "id": "sk-circle-arc-tangent__slot-extra-radius",
+  "expect": "build",
+  "freecad": {
+   "solve": -2,
+   "dof": 0,
+   "redundant": [
+    10
+   ],
+   "conflicting": [],
+   "state": [
+    "Touched",
+    "Invalid"
+   ],
+   "bbox": null
+  },
+  "brepDiag": {
+   "open": null,
+   "solved": true,
+   "lastError": null,
+   "dof": 0
+  },
+  "brepBuild": {
+   "refused": "extrude pull1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"
+  },
+  "shipped": {
+   "stored": "refused: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (RadialDimension), k12 (Equal); add it as a driven (reference) dimension with driven: true",
+   "report": null
+  },
+  "guardedStored": {
+   "volume": 4730.793327002382,
+   "bbox": [
+    -6.000000000000003,
+    0,
+    0,
+    36,
+    12.000000000000002,
+    10.000000000000005
+   ],
+   "faces": 6,
+   "demoted": [
+    13
+   ],
+   "rung": "JGTD*",
+   "judged": "built-right"
+  },
+  "rough": {
+   "guarded": {
+    "built-right": 12
+   },
+   "shipped": {
+    "refused": 12
+   },
+   "sentences": {}
+  },
+  "perm": {
+   "guarded": {
+    "built-right": 16
+   },
+   "shipped": {
+    "built-right": 6,
+    "refused": 10
+   },
+   "sentences": {},
+   "demotedRows": {
+    "1": 16
+   }
+  }
+ },
+ {
+  "id": "sk-circle-arc-tangent__line-circle-tangent",
+  "expect": "build",
+  "freecad": {
+   "solve": 0,
+   "dof": 0,
+   "redundant": [],
+   "conflicting": [],
+   "state": [
+    "Up-to-date"
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    10,
+    0
+   ]
+  },
+  "brepDiag": {
+   "open": null,
+   "solved": true,
+   "lastError": null,
+   "dof": 0
+  },
+  "brepBuild": {
+   "refused": "extrude pull1: edge 1 has a loose end; the outline must close"
+  },
+  "shipped": {
+   "stored": "built vol 785.3095",
+   "report": null
+  },
+  "guardedStored": {
+   "refused": "The outline does not close into a loop (a loose end near [40, 0]), so there is nothing to extrude; check the rules that join the ends.",
+   "stage": "profiles",
+   "judged": "refused"
+  },
+  "rough": {
+   "guarded": {
+    "refused": 12
+   },
+   "shipped": {
+    "built-right": 12
+   },
+   "sentences": {
+    "The outline does not close into a loop (a loose end near [40, 0]), so there is nothing to extrude; check the rules that join the ends.": 12
+   }
+  },
+  "perm": {
+   "guarded": {
+    "refused": 16
+   },
+   "shipped": {
+    "built-right": 16
+   },
+   "sentences": {
+    "The outline does not close into a loop (a loose end near [40, 0]), so there is nothing to extrude; check the rules that join the ends.": 16
+   },
+   "demotedRows": {}
+  }
+ },
+ {
+  "id": "sk-circle-arc-tangent__arc-centre-radius",
+  "expect": "refuse",
+  "freecad": {
+   "solve": 0,
+   "dof": 2,
+   "redundant": [],
+   "conflicting": [],
+   "state": [
+    "Up-to-date"
+   ],
+   "bbox": [
+    -2.0510342851533114e-9,
+    0,
+    0,
+    10,
+    10,
+    0
+   ]
+  },
+  "brepDiag": {
+   "open": null,
+   "solved": true,
+   "lastError": null,
+   "dof": 2
+  },
+  "brepBuild": {
+   "refused": "extrude pull1: edge 1 has a loose end; the outline must close"
+  },
+  "shipped": {
+   "stored": "refused: sk has no closed profiles",
+   "report": null
+  },
+  "guardedStored": {
+   "refused": "The outline does not close into a loop (a loose end near [10, 0]), so there is nothing to extrude; check the rules that join the ends.",
+   "stage": "profiles",
+   "judged": "refused"
+  },
+  "rough": {
+   "guarded": {
+    "refused": 12
+   },
+   "shipped": {
+    "refused": 12
+   },
+   "sentences": {
+    "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.": 12
+   }
+  },
+  "perm": {
+   "guarded": {
+    "refused": 16
+   },
+   "shipped": {
+    "refused": 16
+   },
+   "sentences": {
+    "The outline does not close into a loop (a loose end near [10, 0]), so there is nothing to extrude; check the rules that join the ends.": 16
+   },
+   "demotedRows": {}
+  }
+ }
+]

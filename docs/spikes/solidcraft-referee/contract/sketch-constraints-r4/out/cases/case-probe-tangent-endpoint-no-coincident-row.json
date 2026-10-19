@@ -1,0 +1,29 @@
+[
+ {
+  "id": "probe-tangent-endpoint-no-coincident-row",
+  "feats": [
+   "tangent:endpoint line-arc"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "mapper",
+      "sentence": "is the endpoint tangent form with no coincident row joining those two ends before it; solidcraft's tangent is between curves, and it only treats it as tangent-at-the-joint when the ends are tied"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ }
+]

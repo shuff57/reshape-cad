@@ -1,0 +1,1 @@
+Z-groove-dup-vertex-90                   NO-OCCT OCCT: OCCT built nothing | truck REFUSED groove1 (groove): two corners of the sketch are in the same place, so delete one of them. | brep V 37400.6605 F 8 bbox -20,-20,0,20,20,30  | ms 821 cpu 1441

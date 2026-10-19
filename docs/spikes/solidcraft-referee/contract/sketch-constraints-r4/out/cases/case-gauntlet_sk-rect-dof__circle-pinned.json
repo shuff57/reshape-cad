@@ -1,0 +1,81 @@
+[
+ {
+  "id": "gauntlet:sk-rect-dof__circle-pinned",
+  "feats": [
+   "rule:lock",
+   "rule:radius"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.0001128381227344293,
+      "db": 1.9984014443252818e-15,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644592
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.0001128381227344293,
+      "db": 1.9984014443252818e-15,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644592
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.0001128381227344293,
+      "db": 1.9984014443252818e-15,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644592
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.0001128381227344293,
+      "db": 1.9984014443252818e-15,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644592
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.0001128381227344293,
+      "db": 1.9984014443252818e-15,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1539.2066994644592
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 2
+  }
+ }
+]

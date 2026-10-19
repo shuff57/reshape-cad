@@ -1,0 +1,1 @@
+fzc1-1-boxC-side-flat-135                PASS     occtV 71889.3610 | tr-occt dV 2.6e-7 dBb 0.0e+0 dCom 5.4e-9 F o/b/t 15/15/15 | brep-occt dV 2.0e-16      | ms 825 cpu 1099

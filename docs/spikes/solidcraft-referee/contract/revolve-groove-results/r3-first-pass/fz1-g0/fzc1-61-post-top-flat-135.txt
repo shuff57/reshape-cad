@@ -1,0 +1,1 @@
+fzc1-61-post-top-flat-135                REFUSED  occtV 35966.3617 | tr-occt dV - dBb - dCom - F o/b/t 9/9/- | brep-occt dV 3.9e-12    | TRUCK REFUSED: groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part.  | ms 211 cpu 465

@@ -1,0 +1,1 @@
+sl9-50-boxtan-top-m0.003                 FAIL     occtV 69304.7310 | tr-occt dV 4.1e-3 dBb 5.3e-16 dCom 3.4e-4 F o/b/t 16/14/16 | brep-occt dV 4.5e-13      | ms 4503 cpu 4836

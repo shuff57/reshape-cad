@@ -1,0 +1,154 @@
+[
+ {
+  "id": "r2-big-wedge-1000000",
+  "feature": "oversize",
+  "note": "",
+  "script": "wedge(1000000, 1000000, 1000000);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "wedge1",
+     "kind": "wedge",
+     "width": 1000000,
+     "depth": 1000000,
+     "height": 1000000,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "wedge",
+  "analytic": 500000000000000000,
+  "occt": {
+   "volume": 500000000000000000,
+   "com": [
+    -166666.66666666663,
+    -166666.66666666663,
+    1.1641532182693481e-10
+   ],
+   "bbox": [
+    -500000,
+    -500000,
+    -500000,
+    500000,
+    500000,
+    500000
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 500000000000000060,
+   "bbox": [
+    -500000,
+    -500000,
+    -500000,
+    500000,
+    500000,
+    500000
+   ],
+   "faces": 5,
+   "dVol": 1.28e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_wedge1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -500000
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -500000,
+       -500000
+      ],
+      [
+       500000,
+       -500000
+      ],
+      [
+       -500000,
+       500000
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 1000000,
+     "sketch": "sk_wedge1_0",
+     "operation": "new",
+     "body_name": "b_wedge1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 500000000000000000,
+   "bbox": [
+    -500000,
+    -500000,
+    -500000,
+    500000,
+    500000,
+    500000
+   ],
+   "com": [
+    -166666.66666666666,
+    -166666.66666666666,
+    0
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 6.721241739457773e-17,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 1.2799999999999998e-16,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 83
+ }
+]

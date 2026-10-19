@@ -1,0 +1,43 @@
+[
+ {
+  "id": "X-groove-circle-profile-90",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const s = sketch('top'); s.circle(4,{at:[20,15]}); groove(s, cyl, 90);",
+  "translator": "g0",
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "X-groove-circle-profile-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "invalid": "OCCT: OCCT built nothing"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "groove groove1: a circle sketch has no outline to spin"
+   },
+   "ms": 226,
+   "load": [
+    5.4,
+    5.4
+   ],
+   "cpuMs": 416,
+   "truck": {
+    "refused": "groove1 (groove): a ring whose outline has a curve (a circle or a rounded corner) takes a minute or more to cut here, so it is not built; give the ring straight sides"
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: OCCT built nothing",
+  "caseMs": 238
+ }
+]

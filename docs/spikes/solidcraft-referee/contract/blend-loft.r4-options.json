@@ -1,0 +1,2117 @@
+{
+ "O1": [
+  {
+   "name": "blend(a,b,30), a at 5",
+   "src": "const a = sketch('top', 5); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); blend(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 5,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 35,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": null,
+     "sentence": null,
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "blend(a,b,-30), a at 40",
+   "src": "const a = sketch('top', 40); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); blend(a, b, -30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 40,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 10,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk2",
+      "sk1"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": null,
+     "sentence": null,
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk2, sk1, 30)"
+   ]
+  },
+  {
+   "name": "loft(a,b,30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); loft(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": null,
+     "sentence": null,
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "three sketches blend(a,b,c,30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); const c = sketch('top'); c.rect(5, 5); blend(a, b, c, 30);",
+   "scriptErrors": [
+    "blend() takes two sketches and a gap; the fourth argument (30) was ignored."
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk3",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    }
+   ],
+   "blends": [],
+   "toScript": []
+  },
+  {
+   "name": "extra number blend(a,b,30,5)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); blend(a, b, 30, 5);",
+   "scriptErrors": [
+    "blend() takes two sketches and a gap; the fourth argument (5) was ignored."
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    }
+   ],
+   "blends": [],
+   "toScript": []
+  },
+  {
+   "name": "extra number loft(a,b,30,5)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); loft(a, b, 30, 5);",
+   "scriptErrors": [
+    "blend() takes two sketches and a gap; the fourth argument (5) was ignored."
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    }
+   ],
+   "blends": [],
+   "toScript": []
+  },
+  {
+   "name": "one sketch blend(a,30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); blend(a, 30);",
+   "scriptErrors": [
+    "blend() needs two sketches: blend(sketch1, sketch2, gap)."
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    }
+   ],
+   "blends": [],
+   "toScript": []
+  },
+  {
+   "name": "no gap blend(a,b)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); blend(a, b);",
+   "scriptErrors": [
+    "blend needs a number for gap."
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    }
+   ],
+   "blends": [],
+   "toScript": []
+  },
+  {
+   "name": "gap is a string blend(a,b,\"30\")",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); blend(a, b, \"30\");",
+   "scriptErrors": [
+    "blend's gap has to be a number, and you gave it the text \"30\"."
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    }
+   ],
+   "blends": [],
+   "toScript": []
+  },
+  {
+   "name": "loft(a,b) no gap, loft spelling",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); loft(a, b);",
+   "scriptErrors": [
+    "blend needs a number for gap."
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    }
+   ],
+   "blends": [],
+   "toScript": []
+  },
+  {
+   "name": "solid as an argument loft(a, box)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); loft(a, cuboid(5,5,5), 10);",
+   "scriptErrors": [
+    "blend() needs two sketches: blend(sketch1, sketch2, gap)."
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "box1",
+     "kind": "box"
+    }
+   ],
+   "blends": [],
+   "toScript": []
+  }
+ ],
+ "O2": [
+  {
+   "gap": 30,
+   "offsetsFirst": [
+    0,
+    30
+   ],
+   "emitted": "const bl1 = loft(sk1, sk2, 30)",
+   "offsetsBack": [
+    0,
+    30
+   ],
+   "same": true,
+   "errors": [],
+   "guardOnFirst": null
+  },
+  {
+   "gap": 30.1234567,
+   "offsetsFirst": [
+    0,
+    30.1234567
+   ],
+   "emitted": "const bl1 = loft(sk1, sk2, 30.123457)",
+   "offsetsBack": [
+    0,
+    30.123457
+   ],
+   "same": false,
+   "errors": [],
+   "guardOnFirst": null
+  },
+  {
+   "gap": 0.5,
+   "offsetsFirst": [
+    0,
+    0.5
+   ],
+   "emitted": "const bl1 = loft(sk1, sk2, 0.5)",
+   "offsetsBack": [
+    0,
+    0.5
+   ],
+   "same": true,
+   "errors": [],
+   "guardOnFirst": null
+  },
+  {
+   "gap": 0.001,
+   "offsetsFirst": [
+    0,
+    0.001
+   ],
+   "emitted": "const bl1 = loft(sk1, sk2, 0.001)",
+   "offsetsBack": [
+    0,
+    0.001
+   ],
+   "same": true,
+   "errors": [],
+   "guardOnFirst": null
+  },
+  {
+   "gap": 0.000001,
+   "offsetsFirst": [
+    0,
+    0.000001
+   ],
+   "emitted": "const bl1 = loft(sk1, sk2, 0.000001)",
+   "offsetsBack": [
+    0,
+    0.000001
+   ],
+   "same": true,
+   "errors": [],
+   "guardOnFirst": null
+  },
+  {
+   "gap": 5e-7,
+   "offsetsFirst": [
+    0,
+    5e-7
+   ],
+   "emitted": "const bl1 = loft(sk1, sk2, 0.000001)",
+   "offsetsBack": [
+    0,
+    0.000001
+   ],
+   "same": false,
+   "errors": [],
+   "guardOnFirst": "gap0"
+  },
+  {
+   "gap": 1e-7,
+   "offsetsFirst": [
+    0,
+    1e-7
+   ],
+   "emitted": "const bl1 = loft(sk1, sk2, 0)",
+   "offsetsBack": [
+    0,
+    0
+   ],
+   "same": false,
+   "errors": [],
+   "guardOnFirst": "gap0"
+  },
+  {
+   "gap": 1e-9,
+   "offsetsFirst": [
+    0,
+    1e-9
+   ],
+   "emitted": "const bl1 = loft(sk1, sk2, 0)",
+   "offsetsBack": [
+    0,
+    0
+   ],
+   "same": false,
+   "errors": [],
+   "guardOnFirst": "gap0"
+  }
+ ],
+ "O2b": [
+  {
+   "name": "rect->rect gap 30",
+   "errors1": [],
+   "errors2": [],
+   "features1": 3,
+   "features2": 3,
+   "identical": true,
+   "maxDelta": 0,
+   "targets1": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ],
+   "targets2": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ]
+  },
+  {
+   "name": "rect->rect negative gap",
+   "errors1": [],
+   "errors2": [],
+   "features1": 3,
+   "features2": 3,
+   "identical": true,
+   "maxDelta": 0,
+   "targets1": [
+    [
+     "sk2",
+     "sk1"
+    ]
+   ],
+   "targets2": [
+    [
+     "sk2",
+     "sk1"
+    ]
+   ]
+  },
+  {
+   "name": "circle->circle",
+   "errors1": [],
+   "errors2": [],
+   "features1": 3,
+   "features2": 3,
+   "identical": true,
+   "maxDelta": 0,
+   "targets1": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ],
+   "targets2": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ]
+  },
+  {
+   "name": "rect->circle front plane",
+   "errors1": [],
+   "errors2": [],
+   "features1": 3,
+   "features2": 3,
+   "identical": true,
+   "maxDelta": 0,
+   "targets1": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ],
+   "targets2": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ]
+  },
+  {
+   "name": "rounded square->circle",
+   "errors1": [],
+   "errors2": [],
+   "features1": 3,
+   "features2": 3,
+   "identical": true,
+   "maxDelta": 0,
+   "targets1": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ],
+   "targets2": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ]
+  },
+  {
+   "name": "polygon->polygon (L)",
+   "errors1": [],
+   "errors2": [],
+   "features1": 3,
+   "features2": 3,
+   "identical": true,
+   "maxDelta": 0,
+   "targets1": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ],
+   "targets2": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ]
+  },
+  {
+   "name": "rect with length rule",
+   "errors1": [],
+   "errors2": [],
+   "features1": 3,
+   "features2": 3,
+   "identical": true,
+   "maxDelta": 0,
+   "targets1": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ],
+   "targets2": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ]
+  },
+  {
+   "name": "gap 0.001",
+   "errors1": [],
+   "errors2": [],
+   "features1": 3,
+   "features2": 3,
+   "identical": true,
+   "maxDelta": 0,
+   "targets1": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ],
+   "targets2": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ]
+  },
+  {
+   "name": "datum sketches plane(top,0)/plane(top,30)",
+   "errors1": [],
+   "errors2": [],
+   "features1": 5,
+   "features2": 5,
+   "identical": true,
+   "maxDelta": 0,
+   "targets1": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ],
+   "targets2": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ]
+  },
+  {
+   "name": "irrational vertex coordinates",
+   "errors1": [],
+   "errors2": [],
+   "features1": 3,
+   "features2": 3,
+   "identical": false,
+   "maxDelta": 4.641020687756736e-7,
+   "targets1": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ],
+   "targets2": [
+    [
+     "sk1",
+     "sk2"
+    ]
+   ]
+  }
+ ],
+ "O3": [
+  {
+   "name": "loft(a, a, 30) same sketch twice",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); loft(a, a, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk1"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "same",
+     "sentence": "The loft was given the same sketch twice, so both of its ends would be in the same place whatever gap you type; draw a second sketch for the other end.",
+     "argOrder": [
+      "sk1",
+      "sk1"
+     ],
+     "occt": 0,
+     "occtFaces": 6,
+     "truck": -2.231293668349584e-10,
+     "truckFaces": 2,
+     "dRaw": null
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk1, 0)"
+   ]
+  },
+  {
+   "name": "alias b = a; loft(a, b, 30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); const c = a; loft(a, c, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk1"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "same",
+     "sentence": "The loft was given the same sketch twice, so both of its ends would be in the same place whatever gap you type; draw a second sketch for the other end.",
+     "argOrder": [
+      "sk1",
+      "sk1"
+     ],
+     "occt": 0,
+     "occtFaces": 6,
+     "truck": -2.231293668349584e-10,
+     "truckFaces": 2,
+     "dRaw": null
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk1, 0)"
+   ]
+  },
+  {
+   "name": "loft(a, a, -30) same sketch twice, negative gap",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); loft(a, a, -30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": -30,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk1"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "same",
+     "sentence": "The loft was given the same sketch twice, so both of its ends would be in the same place whatever gap you type; draw a second sketch for the other end.",
+     "argOrder": [
+      "sk1",
+      "sk1"
+     ],
+     "occt": 0,
+     "occtFaces": 6,
+     "truck": -2.231293668349584e-10,
+     "truckFaces": 2,
+     "dRaw": null
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk1, 0)"
+   ]
+  },
+  {
+   "name": "ModelDoc targets [a,a]",
+   "guard": "same",
+   "sentence": "The loft was given the same sketch twice, so both of its ends would be in the same place whatever gap you type; draw a second sketch for the other end.",
+   "occt": 0,
+   "truck": 0,
+   "truckFaces": 2
+  },
+  {
+   "name": "ModelDoc targets [a,a] plus pull(a, 10)",
+   "guard": "same",
+   "sentence": "The loft was given the same sketch twice, so both of its ends would be in the same place whatever gap you type; draw a second sketch for the other end.",
+   "occt": 0,
+   "truck": 0,
+   "truckFaces": 2
+  },
+  {
+   "name": "two identical sketches at 0 and 30 (a straight prism)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(40, 40); loft(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": null,
+     "sentence": null,
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 47999.99999999999,
+     "occtFaces": 6,
+     "truck": 47999.9999999996,
+     "truckFaces": 6,
+     "dRaw": 8.185452315956355e-15
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "chain loft(a,b,30); loft(b,c,30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(20, 20); const c = sketch('top'); c.rect(10, 10); const l1 = loft(a, b, 30); const l2 = loft(b, c, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "sk3",
+     "plane": "xy",
+     "offset": 60,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    },
+    {
+     "id": "bl2",
+     "kind": "blend",
+     "targets": [
+      "sk2",
+      "sk3"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "shared",
+     "sentence": "The second sketch is also used by another feature, and a loft moves its second sketch to the gap you give, which would move the other feature too, so draw a separate sketch for the loft.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 28000,
+     "occtFaces": 6,
+     "truck": 27999.999999999887,
+     "truckFaces": 6,
+     "dRaw": 4.027762250708682e-15
+    },
+    {
+     "id": "bl2",
+     "guard": "shared",
+     "sentence": "The first sketch is also used by another feature, and a loft moves its second sketch to the gap you give, which would move the other feature too, so draw a separate sketch for the loft.",
+     "argOrder": [
+      "sk2",
+      "sk3"
+     ],
+     "occt": 7000,
+     "occtFaces": 6,
+     "truck": 6999.999999999952,
+     "truckFaces": 6,
+     "dRaw": 6.886174170566457e-15
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)",
+    "const bl2 = loft(sk2, sk3, 30)"
+   ]
+  },
+  {
+   "name": "chain loft(a,b,30); loft(a,c,60) two lofts, one first sketch",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(20, 20); const c = sketch('top'); c.rect(10, 10); const l1 = loft(a, b, 30); const l2 = loft(a, c, 60);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "sk3",
+     "plane": "xy",
+     "offset": 60,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    },
+    {
+     "id": "bl2",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk3"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": null,
+     "sentence": null,
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 28000,
+     "occtFaces": 6,
+     "truck": 27999.999999999887,
+     "truckFaces": 6,
+     "dRaw": 4.027762250708682e-15
+    },
+    {
+     "id": "bl2",
+     "guard": null,
+     "sentence": null,
+     "argOrder": [
+      "sk1",
+      "sk3"
+     ],
+     "occt": 42000,
+     "occtFaces": 6,
+     "truck": 41999.99999999994,
+     "truckFaces": 6,
+     "dRaw": 1.3858966884158907e-15
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)",
+    "const bl2 = loft(sk1, sk3, 60)"
+   ]
+  }
+ ],
+ "O4": [
+  {
+   "name": "alias: const f = loft; pull(b,5); f(a,b,30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); pull(b, 5); const f = loft; f(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "shared",
+     "sentence": "The second sketch is also used by another feature, and a loft moves its second sketch to the gap you give, which would move the other feature too, so draw a separate sketch for the loft.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 21000,
+     "occtFaces": 6,
+     "truck": 20999.999999999996,
+     "truckFaces": 6,
+     "dRaw": 1.7323708605198634e-16
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "alias: const f = blend; pull(b,5); f(a,b,30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); pull(b, 5); const f = blend; f(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "shared",
+     "sentence": "The second sketch is also used by another feature, and a loft moves its second sketch to the gap you give, which would move the other feature too, so draw a separate sketch for the loft.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 21000,
+     "occtFaces": 6,
+     "truck": 20999.999999999996,
+     "truckFaces": 6,
+     "dRaw": 1.7323708605198634e-16
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "alias in an object: {k: loft}.k(a,b,30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); pull(b, 5); const o = { k: loft }; o.k(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "shared",
+     "sentence": "The second sketch is also used by another feature, and a loft moves its second sketch to the gap you give, which would move the other feature too, so draw a separate sketch for the loft.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 21000,
+     "occtFaces": 6,
+     "truck": 20999.999999999996,
+     "truckFaces": 6,
+     "dRaw": 1.7323708605198634e-16
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "alias via array: [loft][0](a,b,30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); pull(b, 5); [loft][0](a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "shared",
+     "sentence": "The second sketch is also used by another feature, and a loft moves its second sketch to the gap you give, which would move the other feature too, so draw a separate sketch for the loft.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 21000,
+     "occtFaces": 6,
+     "truck": 20999.999999999996,
+     "truckFaces": 6,
+     "dRaw": 1.7323708605198634e-16
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "no alias: pull(b,5); loft(a,b,30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); pull(b, 5); loft(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "shared",
+     "sentence": "The second sketch is also used by another feature, and a loft moves its second sketch to the gap you give, which would move the other feature too, so draw a separate sketch for the loft.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 21000,
+     "occtFaces": 6,
+     "truck": 20999.999999999996,
+     "truckFaces": 6,
+     "dRaw": 1.7323708605198634e-16
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "negative gap, b (second argument) crosses itself",
+   "src": "const a = sketch('top', 40); a.rect(40, 40); const b = sketch('top'); b.polygon([[-5,-5],[5,5],[5,-5],[-5,5]]); loft(a, b, -30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 40,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 10,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk2",
+      "sk1"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "crossing",
+     "sentence": "The second sketch crosses itself, so it is not a closed shape; reorder its corners so that no two sides cross.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 18000,
+     "occtFaces": 6,
+     "truckRefused": "bl1 (blend): solidcraft refused it -- solid.loft: each loft section must be one profile"
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk2, sk1, 30)"
+   ]
+  },
+  {
+   "name": "negative gap, a (first argument) crosses itself",
+   "src": "const a = sketch('top', 40); a.polygon([[-5,-5],[5,5],[5,-5],[-5,5]]); const b = sketch('top'); b.rect(10, 10); loft(a, b, -30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 40,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 10,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk2",
+      "sk1"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "crossing",
+     "sentence": "The first sketch crosses itself, so it is not a closed shape; reorder its corners so that no two sides cross.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 1500,
+     "occtFaces": 6,
+     "truckRefused": "bl1 (blend): solidcraft refused it -- solid.loft: each loft section must be one profile"
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk2, sk1, 30)"
+   ]
+  },
+  {
+   "name": "positive gap, b (second argument) crosses itself",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.polygon([[-5,-5],[5,5],[5,-5],[-5,5]]); loft(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "crossing",
+     "sentence": "The second sketch crosses itself, so it is not a closed shape; reorder its corners so that no two sides cross.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 18000,
+     "occtFaces": 6,
+     "truckRefused": "bl1 (blend): solidcraft refused it -- solid.loft: each loft section must be one profile"
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "negative gap, corner counts 4 (first) and 5 (second)",
+   "src": "const a = sketch('top', 40); a.rect(40, 40); const b = sketch('top'); b.polygon([[-10,-10],[0,-10],[10,-10],[10,10],[-10,10]]); loft(a, b, -30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 40,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 10,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk2",
+      "sk1"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "count",
+     "sentence": "The first sketch has 4 corners and the second has 5, but a loft needs the same number on both (a point in the middle of a straight side counts as a corner, so delete it if you did not mean one).",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 28000,
+     "occtFaces": 7,
+     "truck": 24093.74999999971,
+     "truckFaces": 7,
+     "dRaw": 0.13950892857143896
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk2, sk1, 30)"
+   ]
+  }
+ ],
+ "O5": [
+  {
+   "name": "rect 40x40 -> triangle",
+   "uiMessage": null,
+   "occt": 23288.69251294462,
+   "occtFaces": 9,
+   "truck": 21376.562500000065,
+   "truckFaces": 6,
+   "dRaw": 0.08210551158600812,
+   "guardWouldSay": "count"
+  },
+  {
+   "name": "rect 20x20 -> L (6 corners)",
+   "uiMessage": null,
+   "occt": 13787.878787878786,
+   "occtFaces": 10,
+   "truck": 13232.421874999927,
+   "truckFaces": 8,
+   "dRaw": 0.04028588598901615,
+   "guardWouldSay": "count"
+  },
+  {
+   "name": "square 40 -> square 20 rotated 20 deg",
+   "uiMessage": null,
+   "occt": 27517.540556954373,
+   "occtFaces": 6,
+   "truck": 27581.669360186468,
+   "truckFaces": 6,
+   "dRaw": 0.0023304700178188135,
+   "guardWouldSay": "sides"
+  },
+  {
+   "name": "rect 40x10 -> rect 10x40 (not parallel)",
+   "uiMessage": null,
+   "occt": 11000,
+   "occtFaces": 6,
+   "truck": 10999.999999999956,
+   "truckFaces": 6,
+   "dRaw": 3.96870415319096e-15,
+   "guardWouldSay": null
+  },
+  {
+   "name": "circle r20 -> rect 40x10 (4:1)",
+   "uiMessage": null,
+   "occt": 24193.966059860526,
+   "occtFaces": 6,
+   "truck": 24399.15241306309,
+   "truckFaces": 6,
+   "dRaw": 0.008480889519927948,
+   "guardWouldSay": "thin"
+  },
+  {
+   "name": "tiny circle r0.05 -> tiny circle, gap 1000",
+   "uiMessage": null,
+   "occt": 7.853981633974483,
+   "occtFaces": 3,
+   "truck": 3.3360572485089643,
+   "truckFaces": 3,
+   "dRaw": 0.5752399987698006,
+   "guardWouldSay": "coarse"
+  },
+  {
+   "name": "rect -> rect on front vs top",
+   "uiMessage": "Those two sketches sit on different planes, so there is no single direction to blend along. Put both on the same one first."
+  },
+  {
+   "name": "frame-placed rect -> rect (offset ignored)",
+   "uiMessage": null,
+   "occt": 0,
+   "occtFaces": 6,
+   "truck": 0,
+   "truckFaces": 2,
+   "dRaw": null,
+   "guardWouldSay": "frame"
+  },
+  {
+   "name": "same offset (the one thing it checks)",
+   "uiMessage": "Both sketches sit at the same offset, so there is no gap to fill. Slide one of them along its plane first."
+  }
+ ],
+ "O6": [
+  {
+   "name": "different planes top vs front",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('front'); b.rect(10, 10); loft(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xz",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "planes",
+     "sentence": "The two sketches are on different planes ('top' and 'front'), so there is no single direction to loft along; draw both on the same plane.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 3000,
+     "occtFaces": 6,
+     "truck": 3488.281250000002,
+     "truckFaces": 6,
+     "dRaw": 0.16276041666666727
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "different planes top vs side",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('side'); b.rect(10, 10); loft(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "yz",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "planes",
+     "sentence": "The two sketches are on different planes ('top' and 'side'), so there is no single direction to loft along; draw both on the same plane.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 3000,
+     "occtFaces": 6,
+     "truck": 1209.635416666635,
+     "truckFaces": 6,
+     "dRaw": 0.5967881944444551
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "corner counts 4 -> 5 (midpoint)",
+   "src": "const a = sketch('top'); a.rect(20, 20); const b = sketch('top'); b.polygon([[-10,-10],[0,-10],[10,-10],[10,10],[-10,10]]); loft(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "count",
+     "sentence": "The first sketch has 4 corners and the second has 5, but a loft needs the same number on both (a point in the middle of a straight side counts as a corner, so delete it if you did not mean one).",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 11999.999999999998,
+     "occtFaces": 7,
+     "truck": 9953.124999999885,
+     "truckFaces": 7,
+     "dRaw": 0.1705729166666761
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "corner counts 3 -> 6",
+   "src": "const a = sketch('top'); a.polygon([[0,0],[40,0],[20,30]]); const b = sketch('top'); b.polygon([[10,0],[20,0],[25,8],[20,16],[10,16],[5,8]]); loft(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "count",
+     "sentence": "The first sketch has 3 corners and the second has 6, but a loft needs the same number on both (a point in the middle of a straight side counts as a corner, so delete it if you did not mean one).",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 12273.28652408417,
+     "occtFaces": 11,
+     "truck": 11914.746093750005,
+     "truckFaces": 8,
+     "dRaw": 0.029213074234891463
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "corner counts 4 -> 8 (chamfered)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.polygon([[-8,-10],[8,-10],[10,-8],[10,8],[8,10],[-8,10],[-10,8],[-10,-8]]); loft(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "count",
+     "sentence": "The first sketch has 4 corners and the second has 8, but a loft needs the same number on both (a point in the middle of a straight side counts as a corner, so delete it if you did not mean one).",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 27840.000000000004,
+     "occtFaces": 10,
+     "truck": 27529.374999999916,
+     "truckFaces": 10,
+     "dRaw": 0.01115750718391118
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "frame-placed sketches, gap 30 silently ignored",
+   "src": "const a = sketch({ origin: [0,0,0], u: [1,0,0], v: [0,1,0] }); a.rect(40, 40); const b = sketch({ origin: [0,0,5], u: [1,0,0], v: [0,1,0] }); b.rect(10, 10); loft(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "frame",
+     "sentence": "The first sketch is placed with its own origin and direction, which a loft cannot combine with its gap, so draw both sketches on 'top', 'front' or 'side' and give the distance as the gap.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 3500.000000000001,
+     "occtFaces": 6,
+     "truck": 3500.00000000002,
+     "truckFaces": 6,
+     "dRaw": 5.456968210637568e-15
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "gap 0",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); loft(a, b, 0);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "gap0",
+     "sentence": "The two sketches are in the same place (the gap is zero), so there is nothing between them to fill; give the loft a gap above zero.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 0,
+     "occtFaces": 6,
+     "truck": 0,
+     "truckFaces": 2,
+     "dRaw": null
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 0)"
+   ]
+  },
+  {
+   "name": "gap 1e-12",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); loft(a, b, 1e-12);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 1e-12,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "gap0",
+     "sentence": "The two sketches are in the same place (the gap is zero), so there is nothing between them to fill; give the loft a gap above zero.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 7.000000000000001e-10,
+     "occtFaces": 6,
+     "truck": 7.000000000000039e-10,
+     "truckFaces": 2,
+     "dRaw": 5.4653004757967895e-15
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 0)"
+   ]
+  },
+  {
+   "name": "loft(a, a, 30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(10, 10); loft(a, a, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk1"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "same",
+     "sentence": "The loft was given the same sketch twice, so both of its ends would be in the same place whatever gap you type; draw a second sketch for the other end.",
+     "argOrder": [
+      "sk1",
+      "sk1"
+     ],
+     "occt": 0,
+     "occtFaces": 6,
+     "truck": -2.231293668349584e-10,
+     "truckFaces": 2,
+     "dRaw": null
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk1, 0)"
+   ]
+  },
+  {
+   "name": "non-parallel sides: square 40 -> rotated square 20 by 20 deg",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.polygon([[-10,-10],[10,-10],[10,10],[-10,10]].map(([x,y]) => [x*Math.cos(0.349066)-y*Math.sin(0.349066), x*Math.sin(0.349066)+y*Math.cos(0.349066)])); loft(a, b, 30);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 30,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "sides",
+     "sentence": "These two sketches cannot be lofted exactly because each side of the first has to run parallel to the matching side of the second (as when a shape is scaled up or down), so change one sketch to match.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 27517.540556954373,
+     "occtFaces": 6,
+     "truck": 27581.669360186468,
+     "truckFaces": 6,
+     "dRaw": 0.0023304700178188135
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 30)"
+   ]
+  },
+  {
+   "name": "aspect swap 40x10 -> 10x40",
+   "src": "const a = sketch('top'); a.rect(40, 10); const b = sketch('top'); b.rect(10, 40); loft(a, b, 20);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "poly"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 20,
+     "shape": "poly"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": null,
+     "sentence": null,
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 10999.999999999996,
+     "occtFaces": 6,
+     "truck": 10999.999999999998,
+     "truckFaces": 6,
+     "dRaw": 1.6536267304962338e-16
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 20)"
+   ]
+  },
+  {
+   "name": "tiny circles on a long part: r0.05 -> r0.05, gap 300",
+   "src": "const a = sketch('top'); a.circle(0.1); const b = sketch('top'); b.circle(0.1); loft(a, b, 300);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "circle"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 300,
+     "shape": "circle"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "coarse",
+     "sentence": "The circles are so small next to the length of this loft that the preview would draw them as rough many-sided shapes and the volume would come out wrong, so make the circles bigger or the loft shorter.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 2.3561944901923453,
+     "occtFaces": 3,
+     "truck": 1.0008171745526884,
+     "truckFaces": 3,
+     "dRaw": 0.5752399987698011
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 300)"
+   ]
+  },
+  {
+   "name": "tiny circles on a long part: r0.25 -> r0.25, gap 100",
+   "src": "const a = sketch('top'); a.circle(0.5); const b = sketch('top'); b.circle(0.5); loft(a, b, 100);",
+   "scriptErrors": [],
+   "features": [
+    {
+     "id": "sk1",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "circle"
+    },
+    {
+     "id": "sk2",
+     "plane": "xy",
+     "offset": 100,
+     "shape": "circle"
+    },
+    {
+     "id": "bl1",
+     "kind": "blend",
+     "targets": [
+      "sk1",
+      "sk2"
+     ]
+    }
+   ],
+   "blends": [
+    {
+     "id": "bl1",
+     "guard": "coarse",
+     "sentence": "The circles are so small next to the length of this loft that the preview would draw them as rough many-sided shapes and the volume would come out wrong, so make the circles bigger or the loft shorter.",
+     "argOrder": [
+      "sk1",
+      "sk2"
+     ],
+     "occt": 19.634954084936204,
+     "occtFaces": 3,
+     "truck": 19.603418241515204,
+     "truckFaces": 3,
+     "dRaw": 0.0016061073168077606
+    }
+   ],
+   "toScript": [
+    "const bl1 = loft(sk1, sk2, 100)"
+   ]
+  }
+ ]
+}

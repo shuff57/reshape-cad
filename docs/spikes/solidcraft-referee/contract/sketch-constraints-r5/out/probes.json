@@ -1,0 +1,639 @@
+{
+ "probes": [
+  {
+   "id": "tangent-line-circle-side-opposite",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "map",
+   "sentence": "The rule that makes geometry 1 tangent to geometry 2 asks for the circle on one side of the line but it is drawn on the other side; redraw it on the side you mean.",
+   "unguarded": "mapper: records side -1 for the line/circle tangency but the circle starts on the other side of the line; solidcraft's tangent has no side parameter, so it cannot be requested"
+  },
+  {
+   "id": "circle-circle-mode-request-external-start-internal",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "branch",
+   "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the tangent rule on geometry 1 and geometry 2 asks for external tangency but the solved circles are tangent internally), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+   "unguarded": "mapper: asks for external tangency but the circles start internally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested"
+  },
+  {
+   "id": "circle-circle-mode-request-internal-start-external",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "branch",
+   "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the tangent rule on geometry 1 and geometry 2 asks for internal tangency but the solved circles are tangent externally), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+   "unguarded": "mapper: asks for internal tangency but the circles start externally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested"
+  },
+  {
+   "id": "triangle-angle-wrong-orientation-start",
+   "expect": "refuse",
+   "guardedOk": true,
+   "sentence": null,
+   "unguarded": "mapper: is the directed angle 120 deg from line 1 to line 2; from this starting geometry solidcraft would apply the value to the opposite orientation (it would hold 60.000000 deg from 1 to 2); its angle dimension is undirected and takes its orientation from the start state"
+  },
+  {
+   "id": "rect-reference-distanceX-zero",
+   "expect": "build",
+   "guardedOk": true,
+   "sentence": null,
+   "unguarded": "mapper: is a reference distanceX of 0; solidcraft has no reference form of a point-pair level constraint"
+  },
+  {
+   "id": "rect-redundant-width-dimension",
+   "expect": "build",
+   "guardedOk": true,
+   "sentence": null,
+   "unguarded": "solidcraft: invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k2 (Coincident), k3 (Coincident), k4 (Coincident), k6 (Vertical), k8 (Vertical), k10 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+  },
+  {
+   "id": "rect-conflicting-width-dimension",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "residual",
+   "sentence": "The rule that sets the length of geometry 1 to 30 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.",
+   "unguarded": "solidcraft: that would over-constrain the sketch (conflicts with k1, k2, k3, k4, k6, k8, k10, k12)"
+  },
+  {
+   "id": "probe-coincident-circle-end-a",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "underconstrained",
+   "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
+   "unguarded": "mapper: geometry 5 is a circle and has no point 'a'"
+  },
+  {
+   "id": "probe-equal-line-vs-circle",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "underconstrained",
+   "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
+   "unguarded": "mapper: equal across a line and a circle/arc is refused by brep-rs too (a radius is not a length)"
+  },
+  {
+   "id": "probe-distance-names-no-end",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "residual",
+   "sentence": "The rule that sets the distance between geometry 1 and geometry 2 to 10 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.",
+   "unguarded": "mapper: needs a point of geometry 1 and the row names none (brep-rs refuses the same row) | needs a point of geometry 2 and the row names none (brep-rs refuses the same row)"
+  },
+  {
+   "id": "probe-radius-zero",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "collapsed",
+   "sentence": "Geometry 5 comes out smaller than a ten-millionth of the sketch (for example a line held both horizontal and vertical, or a size far out of scale with the rest), so nothing was built; remove or change the rule that squashes it, or bring the sizes closer together.",
+   "unguarded": "mapper: has value 0; a radius or diameter must be positive"
+  },
+  {
+   "id": "probe-tangent-endpoint-no-coincident-row",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "underconstrained",
+   "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
+   "unguarded": "mapper: is the endpoint tangent form with no coincident row joining those two ends before it; solidcraft's tangent is between curves, and it only treats it as tangent-at-the-joint when the ends are tied"
+  },
+  {
+   "id": "probe-lock-as-reference",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "preflight",
+   "sentence": "The rule that pins end a of geometry 1 is marked as a reference, and only a dimension (a distance, offset, radius, diameter or angle) can be a reference.",
+   "unguarded": "mapper: a lock cannot be a reference measurement"
+  },
+  {
+   "id": "probe-pointOn-target-is-point",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "internal",
+   "sentence": "The sketch could not be checked against its rules, so nothing was built; remove the last rule you added or simplify the sketch.",
+   "unguarded": "mapper: geometry 6 is a point, not a curve"
+  },
+  {
+   "id": "probe-angle-line-vs-circle",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "internal",
+   "sentence": "The sketch could not be checked against its rules, so nothing was built; remove the last rule you added or simplify the sketch.",
+   "unguarded": "mapper: geometry 5 is a circle; this rule needs line"
+  },
+  {
+   "id": "probe-distanceX-start-level",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "residual",
+   "sentence": "The rule that sets the horizontal offset from end a of geometry 1 to end a of geometry 4 to 5 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.",
+   "unguarded": "mapper: the two points start level in x, so the side (sign) of the signed distanceX 5 is not carried by the starting geometry"
+  },
+  {
+   "id": "probe-tangent-line-vs-line",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "preflight",
+   "sentence": "The rule that makes geometry 1 tangent to geometry 2 cannot be built, because tangent needs at least one circle or arc.",
+   "unguarded": "solidcraft: `g1` is the wrong kind of entity for this: tangent needs a circle or arc"
+  },
+  {
+   "id": "kind-probe: horizontal on a circle",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "internal",
+   "sentence": "The sketch could not be checked against its rules, so nothing was built; remove the last rule you added or simplify the sketch."
+  },
+  {
+   "id": "kind-probe: vertical on a circle",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "internal",
+   "sentence": "The sketch could not be checked against its rules, so nothing was built; remove the last rule you added or simplify the sketch."
+  },
+  {
+   "id": "kind-probe: parallel line to circle",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "internal",
+   "sentence": "The sketch could not be checked against its rules, so nothing was built; remove the last rule you added or simplify the sketch."
+  },
+  {
+   "id": "kind-probe: perpendicular line to circle",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "internal",
+   "sentence": "The sketch could not be checked against its rules, so nothing was built; remove the last rule you added or simplify the sketch."
+  },
+  {
+   "id": "kind-probe: symmetric about a circle",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "internal",
+   "sentence": "The sketch could not be checked against its rules, so nothing was built; remove the last rule you added or simplify the sketch."
+  },
+  {
+   "id": "kind-probe: radius on a line",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "residual",
+   "sentence": "The rules cannot all be met at once, so nothing was built; resolve the conflict, or redraw closer to the shape you mean."
+  },
+  {
+   "id": "kind-probe: diameter on a line",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "residual",
+   "sentence": "The rules cannot all be met at once, so nothing was built; resolve the conflict, or redraw closer to the shape you mean."
+  },
+  {
+   "id": "kind-probe: distanceY names a missing geometry",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "internal",
+   "sentence": "The sketch could not be checked against its rules, so nothing was built; remove the last rule you added or simplify the sketch."
+  },
+  {
+   "id": "kind-probe: tangent endpoint on a circle end",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "underconstrained",
+   "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+  },
+  {
+   "id": "kind-probe: pointOnObject on a missing curve",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "internal",
+   "sentence": "The sketch could not be checked against its rules, so nothing was built; remove the last rule you added or simplify the sketch."
+  },
+  {
+   "id": "kind-probe: unknown rule kind",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "preflight",
+   "sentence": "The sketch uses a rule the solver cannot check (rule kind collinear), so nothing was built."
+  },
+  {
+   "id": "kind-probe: distance with no value",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "residual",
+   "sentence": "The rules cannot all be met at once, so nothing was built; resolve the conflict, or redraw closer to the shape you mean."
+  },
+  {
+   "id": "legacy-number-probe: across(9) on a 4-corner polygon",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "script",
+   "sentence": ".across()'s edge has to be a whole number from 1 to 4 -- you gave it 9."
+  },
+  {
+   "id": "legacy-number-probe: across(0)",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "script",
+   "sentence": ".across()'s edge has to be a whole number from 1 to 4 -- you gave it 0."
+  },
+  {
+   "id": "legacy-number-probe: pin(7) on a 4-corner polygon",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "script",
+   "sentence": ".pin()'s corner has to be a whole number from 1 to 4 -- you gave it 7."
+  },
+  {
+   "id": "legacy-number-probe: distX(0, 2, 5)",
+   "expect": "refuse",
+   "guardedOk": false,
+   "stage": "script",
+   "sentence": ".distX()'s corner has to be a whole number from 1 to 4 -- you gave it 0."
+  }
+ ],
+ "repros": [
+  {
+   "name": "arc rows off the circle + lock on c",
+   "unguardedVolume": 11141.136098946576,
+   "wantVolume": 11141.592653589794,
+   "unguardedLockViolationMm": null,
+   "guardedBuilt": false,
+   "guardedSentence": "Arc 1 has an end that is not on its circle (off by 0.20) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+  },
+  {
+   "name": "origin (-1) without an end in distanceX",
+   "unguardedScBuilt": true,
+   "unguardedScBbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ],
+   "brepRsOpenError": "this rule needs a point of geometry -1 and the row names none",
+   "brepRsSolved": false,
+   "guardedBuilt": false,
+   "guardedSentence": "The rule that sets the horizontal offset from the origin to end a of geometry 1 to 5 measures from the origin without naming which point of it; write aEnd: 'a'."
+  },
+  {
+   "name": "conflicting equal + tangent (over-constrained circles)",
+   "unguarded": "that would over-constrain the sketch (conflicts with k2, k3, k5, k6)",
+   "guardedBuilt": false,
+   "guardedSentence": "The rule that sets the horizontal offset from the centre of geometry 1 to the centre of geometry 2 to 14 cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean."
+  }
+ ],
+ "slotRefusals": [
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "order": "as written",
+   "frac": 0.02,
+   "unguarded": {
+    "MATCH": 24
+   },
+   "guarded": {
+    "WRONG": 18,
+    "MATCH": 6
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "order": "as written",
+   "frac": 0.04,
+   "unguarded": {
+    "MATCH": 23,
+    "VOLUME": 1
+   },
+   "guarded": {
+    "WRONG": 16,
+    "MATCH": 8
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "order": "as written",
+   "frac": 0.06,
+   "unguarded": {
+    "VOLUME": 1,
+    "MATCH": 23
+   },
+   "guarded": {
+    "WRONG": 13,
+    "MATCH": 11
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "order": "reversed",
+   "frac": 0.02,
+   "unguarded": {
+    "MATCH": 23,
+    "VOLUME": 1
+   },
+   "guarded": {
+    "WRONG": 18,
+    "MATCH": 6
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "order": "reversed",
+   "frac": 0.04,
+   "unguarded": {
+    "MATCH": 18,
+    "VOLUME": 6
+   },
+   "guarded": {
+    "WRONG": 16,
+    "MATCH": 8
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "order": "reversed",
+   "frac": 0.06,
+   "unguarded": {
+    "MATCH": 21,
+    "VOLUME": 3
+   },
+   "guarded": {
+    "WRONG": 13,
+    "MATCH": 11
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "order": "dimensions first",
+   "frac": 0.02,
+   "unguarded": {
+    "MATCH": 23,
+    "VOLUME": 1
+   },
+   "guarded": {
+    "WRONG": 18,
+    "MATCH": 6
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "order": "dimensions first",
+   "frac": 0.04,
+   "unguarded": {
+    "MATCH": 20,
+    "VOLUME": 4
+   },
+   "guarded": {
+    "WRONG": 16,
+    "MATCH": 8
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "order": "dimensions first",
+   "frac": 0.06,
+   "unguarded": {
+    "MATCH": 21,
+    "VOLUME": 3
+   },
+   "guarded": {
+    "WRONG": 13,
+    "MATCH": 11
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "order": "tangents first",
+   "frac": 0.02,
+   "unguarded": {
+    "MATCH": 18,
+    "REFUSED": 3,
+    "VOLUME": 3
+   },
+   "guarded": {
+    "WRONG": 18,
+    "MATCH": 6
+   },
+   "unguardedErrors": {
+    "that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#, k#, k#)": 1,
+    "that would over#constrain the sketch (conflicts with k#)": 1,
+    "invalid input: profile: cannot attach a plane to a wire that is not on one plane#": 1
+   }
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "order": "tangents first",
+   "frac": 0.04,
+   "unguarded": {
+    "VOLUME": 12,
+    "REFUSED": 3,
+    "MATCH": 9
+   },
+   "guarded": {
+    "WRONG": 16,
+    "MATCH": 8
+   },
+   "unguardedErrors": {
+    "invalid input: profile: cannot attach a plane to a wire that is not on one plane#": 1,
+    "that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#, k#, k#)": 2
+   }
+  },
+  {
+   "id": "slot-hand-rows-R10-L40",
+   "order": "tangents first",
+   "frac": 0.06,
+   "unguarded": {
+    "VOLUME": 16,
+    "MATCH": 5,
+    "REFUSED": 3
+   },
+   "guarded": {
+    "WRONG": 13,
+    "MATCH": 11
+   },
+   "unguardedErrors": {
+    "that would over#constrain the sketch (conflicts with k#)": 1,
+    "invalid input: profile: cannot attach a plane to a wire that is not on one plane#": 1,
+    "that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#, k#, k#, k#, k#)": 1
+   }
+  },
+  {
+   "id": "slot-dims-from-points",
+   "order": "as written",
+   "frac": 0.02,
+   "unguarded": {
+    "MATCH": 24
+   },
+   "guarded": {
+    "MATCH": 24
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-dims-from-points",
+   "order": "as written",
+   "frac": 0.04,
+   "unguarded": {
+    "MATCH": 24
+   },
+   "guarded": {
+    "MATCH": 24
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-dims-from-points",
+   "order": "as written",
+   "frac": 0.06,
+   "unguarded": {
+    "MATCH": 24
+   },
+   "guarded": {
+    "MATCH": 24
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-dims-from-points",
+   "order": "reversed",
+   "frac": 0.02,
+   "unguarded": {
+    "MATCH": 19,
+    "VOLUME": 5
+   },
+   "guarded": {
+    "MATCH": 24
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-dims-from-points",
+   "order": "reversed",
+   "frac": 0.04,
+   "unguarded": {
+    "MATCH": 24
+   },
+   "guarded": {
+    "MATCH": 24
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-dims-from-points",
+   "order": "reversed",
+   "frac": 0.06,
+   "unguarded": {
+    "MATCH": 23,
+    "VOLUME": 1
+   },
+   "guarded": {
+    "MATCH": 24
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-dims-from-points",
+   "order": "dimensions first",
+   "frac": 0.02,
+   "unguarded": {
+    "MATCH": 15,
+    "VOLUME": 4,
+    "REFUSED": 5
+   },
+   "guarded": {
+    "MATCH": 24
+   },
+   "unguardedErrors": {
+    "that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#)": 1,
+    "invalid parameters for `sketch#constraint#horizontal_vertical`: that would over#constrain the sketch (it conflicts with what the o": 2,
+    "invalid input: profile loop is not closed": 1,
+    "invalid input: profile: cannot attach a plane to a wire that is not on one plane#": 1
+   }
+  },
+  {
+   "id": "slot-dims-from-points",
+   "order": "dimensions first",
+   "frac": 0.04,
+   "unguarded": {
+    "MATCH": 10,
+    "REFUSED": 3,
+    "VOLUME": 11
+   },
+   "guarded": {
+    "MATCH": 24
+   },
+   "unguardedErrors": {
+    "that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#, k#, k#, k#)": 1,
+    "invalid input: profile loop is not closed": 2
+   }
+  },
+  {
+   "id": "slot-dims-from-points",
+   "order": "dimensions first",
+   "frac": 0.06,
+   "unguarded": {
+    "VOLUME": 11,
+    "REFUSED": 3,
+    "MATCH": 10
+   },
+   "guarded": {
+    "MATCH": 24
+   },
+   "unguardedErrors": {
+    "that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#, k#, k#)": 1,
+    "invalid input: profile: cannot attach a plane to a wire that is not on one plane#": 2
+   }
+  },
+  {
+   "id": "slot-dims-from-points",
+   "order": "tangents first",
+   "frac": 0.02,
+   "unguarded": {
+    "MATCH": 22,
+    "VOLUME": 2
+   },
+   "guarded": {
+    "MATCH": 24
+   },
+   "unguardedErrors": {}
+  },
+  {
+   "id": "slot-dims-from-points",
+   "order": "tangents first",
+   "frac": 0.04,
+   "unguarded": {
+    "MATCH": 15,
+    "REFUSED": 3,
+    "VOLUME": 6
+   },
+   "guarded": {
+    "MATCH": 24
+   },
+   "unguardedErrors": {
+    "that would over#constrain the sketch (conflicts with k#, k#, k#)": 1,
+    "invalid parameters for `sketch#constraint#coincident`: that conflicts with the sketch: neither entity can move to satisfy it (they": 1,
+    "invalid input: profile loop is not closed": 1
+   }
+  },
+  {
+   "id": "slot-dims-from-points",
+   "order": "tangents first",
+   "frac": 0.06,
+   "unguarded": {
+    "VOLUME": 4,
+    "MATCH": 18,
+    "REFUSED": 2
+   },
+   "guarded": {
+    "MATCH": 24
+   },
+   "unguardedErrors": {
+    "that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#)": 1,
+    "that would over#constrain the sketch (conflicts with k#, k#, k#, k#, k#, k#, k#, k#, k#)": 1
+   }
+  }
+ ]
+}

@@ -1,0 +1,276 @@
+{
+ "group": "picks-naming-params",
+ "rows": [
+  {
+   "feature": "shape.face('top'|'bottom'|'front'|'back'|'left'|'right') on a box, used as hollow open face (all 6 words)",
+   "status": "supported",
+   "evidence": "cmd: cd docs/spikes/solidcraft-referee/contract/picks-naming-params.evidence/ && bun secA.mjs (needs SOLIDCRAFT_REFEREE_PKG; paths in lib.mjs). Script: const b = box(40,30,20,{at:[5,-3,2]}); hollow(b,{wall:2, open:'<word>'}). 6/6 PASS vs live OCCT and brep-rs: volumes 7152.0/7152.0/7872.0/7872.0/8192.0/8192.0; max dVol 3.8e-16, max dCOM 9.9e-17, faces 11/11/11 each. Negative control (opposite face through the part centre) rejected 6/6 (dCOM 7.2e-2 to 8.7e-2). rig: SolidCraft wasm pkg sc-referee-pkg (fe3717f, NOT the phase7-patched shell/sketch build) scores every solid; the native solidcraft-cli (same fe3717f engine, volumes equal to the wasm on 188/188 command lists, worst rel diff 2.8e-15) only reads model.faces/model.edges; translator = phase7/pane/lib/translate-p4.mjs + resolve-names.mjs (the named-pick resolver); pick-hit test emulated in lib.mjs."
+  },
+  {
+   "feature": "shape.face('front'|'back'|'left'|'right') as draft(face, 5) with default pull z (4 side words)",
+   "status": "supported",
+   "evidence": "cmd: bun secA.mjs. draft(b.face(w),5) on the off-centre box: 4/4 PASS vs OCCT and brep-rs, volumes 23860.018/23860.018/23895.014/23895.014, max dVol 4.6e-16, max dCOM 9.8e-17, faces 6/6/6. Mirrored-pick control: SolidCraft refuses the wrong face (\"solid.draft: invalid input: no face at [...]\") 4/4. Options from/neutral/negative angle also PASS (secK: from:'bottom' V=23475.068 = OCCT; neutral:4 and angle -5 V=24104.986 = OCCT)."
+  },
+  {
+   "feature": "shape.face('top'|'bottom') as draft(face, angle) (face parallel to the default z pull)",
+   "status": "refused",
+   "refusalSentence": "draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction",
+   "evidence": "cmd: bun secA.mjs. Both words REFUSED by SolidCraft; OCCT also refuses (\"Tilting Draft 1 at 5 degrees would not fit -- Draft 1 is shown without it.\") and brep-rs refuses (\"brep-rs can only tilt a side wall of an axis-aligned box yet\"). Same on a swept cap (secC: draft of cap[top] refused with the same sentence) and a cylinder top (secB: \"offset: draft: a chosen face isn't parallel to the pull direction\"). The pick is not the problem: a face perpendicular to the pull cannot be tilted."
+  },
+  {
+   "feature": "cylinder: face('top'|'bottom') as hollow open face, edge('top'|'bottom','side') with round/bevel (rim edges)",
+   "status": "supported",
+   "evidence": "cmd: bun secB.mjs. cylinder(20,30,{at:[4,-2,1]}): round(c.edge('top','side'),2), round(c.edge('bottom','side'),2), bevel(c.edge('top','side'),2), hollow open top, hollow open bottom: 5/5 PASS vs OCCT and brep-rs. Curved results: max dVol 1.1e-4 (truck volume is tessellation-derived, bar 3e-4), max dBbox 3.4e-5, max dCOM 1.5e-6, faces 4/4/4 and 5/5/5. Controls rejected 5/5. The rim is picked as ONE closed loop of solidcraft's two half-circle edges (evidence: 2 candidates 'F1:side#1|F1:top' + 'F1:side#2|F1:top')."
+  },
+  {
+   "feature": "cylinder: face('side') as a draft face",
+   "status": "refused",
+   "refusalSentence": "draft1 (draft): cyl1.face[side] names a set of 2 faces, but this feature needs a face",
+   "evidence": "cmd: bun secB.mjs. draft(c.face('side'),5): REFUSED because solidcraft splits the cylinder wall at its seam into 2 faces and a face pick would choose one half silently. OCCT builds it (V=9314.6919) so this is narrower than the oracle, never a wrong solid."
+  },
+  {
+   "feature": "face('side') used where it is not allowed: hollow open:'side', box.face('side'), edge('side','side'), a non-cylinder",
+   "status": "refused",
+   "refusalSentence": ".face(): \"side\" is the curved wall of a cylinder, not a flat face here.",
+   "evidence": "cmd: bun secB.mjs. All stopped by the interpreter before any geometry: hollow(c,{open:'side'}) -> hollow: \"side\" is the curved wall of a cylinder, not a flat face here.; box.face('side') -> .face(): \"side\" is the curved wall of a cylinder, not a flat face here.; edge('side','side') -> .edge() needs two DIFFERENT faces to name the edge between them.; unknown word face('up') -> .face() does not know the face \"up\". Faces are named top, bottom, front, back, left, right."
+  },
+  {
+   "feature": "box words on a cylinder or prism side: cylinder face('left'|'front'..), prism face('right'..)",
+   "status": "refused",
+   "refusalSentence": "draft1 (draft): prism1.face[+x]: a prism has no +x face",
+   "evidence": "cmd: bun secB.mjs. cylinder: draft1 (draft): cyl1.face[-x]: a cylinder has no -x face | round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[-y]] cannot be resolved: cyl1.face[-y]: a cylinder has no -y face. prism: draft1 (draft): prism1.face[+x]: a prism has no +x face. OCCT builds all of these (e.g. cyl draft face(left) V=9314.6919, prism round edge V=11678.0240), so SolidCraft is narrower; nothing wrong is built. The sentence is plain but says nothing about what to do."
+  },
+  {
+   "feature": "prism: face('top'|'bottom') as hollow open face",
+   "status": "supported",
+   "evidence": "cmd: bun secB.mjs. prism(6,30,20): hollow open top PASS, V=4159.718979 = OCCT = brep-rs, dVol 4.4e-16, faces 15/15/15, control rejected (dCOM 8.1e-2)."
+  },
+  {
+   "feature": "sphere / cone / ring (torus) / wedge faces by word: face('top'|'bottom'|'front'..) as hollow open, draft face, or edge(a,b)",
+   "status": "refused",
+   "refusalSentence": "shell1 (shell): ball1.face[+z]: faces of a sphere are not resolved in the browser demo",
+   "evidence": "cmd: bun secB.mjs. 11 probes, 11 REFUSED with the same sentence family, e.g. shell1 (shell): ball1.face[+z]: faces of a sphere are not resolved in the browser demo | shell1 (shell): cone1.face[-z]: faces of a cone are not resolved in the browser demo | shell1 (shell): ring1.face[+z]: faces of a torus are not resolved in the browser demo | shell1 (shell): wedge1.face[-z]: faces of a wedge are not resolved in the browser demo. OCCT builds cone hollow open top (V=1277.0574), wedge hollow (V=1779.4068) and cone/wedge edge rounds, so these are coverage gaps vs the oracle; none builds a wrong solid. The sentence says \"the browser demo\", which a student would not understand."
+  },
+  {
+   "feature": "TopoName cause primitive on a rotated primitive (turn(b,...) then b.edge()) or a primitive with a whole-shape round",
+   "status": "refused",
+   "refusalSentence": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+   "evidence": "cmd: bun secK.mjs. turn(b,[0,0,30]); round(b.edge('top','right'),2): REFUSED; OCCT and brep-rs build V=23974.2478. Whole-shape round(b,2) then round(b.edge(..)): REFUSED, OCCT and brep-rs also refuse. Nothing wrong is built."
+  },
+  {
+   "feature": "TopoName cause swept: a straight sketch edge of a plain extrude, used as shell open face, draft face, or in edge(cap, swept) / edge(swept, swept)",
+   "status": "supported",
+   "evidence": "cmd: bun secC.mjs (ModelDoc cases; script surface only creates swept names through wall()). Rect sketch edges 0-3: shell open 4/4 PASS (V=5376/5616/5376/5616, max dVol 5.1e-16), draft 4/4 PASS (max dVol 3.1e-16), round between cap top/bottom and swept edge n + the vertical swept-swept edge: 7/7 PASS (max dVol 1.9e-6, max dCOM 4.6e-7); also an xz-plane sketch and an offset-5 sketch PASS. Controls rejected 15/15. Non-rect polygon extrude (secK): round between(cap top, swept2) PASS dVol 1.8e-6 (brep-rs 9600.0 is a silent no-op there)."
+  },
+  {
+   "feature": "TopoName cause swept over an arc, a circle, a rounded/chamfered corner, a rows-and-rules sketch, a revolve, or an extrude with midplane/taper/reversed",
+   "status": "refused",
+   "refusalSentence": "sh1 (shell): e1.face[sk1.edge0]: sketch edge 0 of sk1 is an arc; a swept name over an arc is not resolved in the browser demo (only straight edges are)",
+   "evidence": "cmd: bun secC.mjs, secK.mjs, secN.mjs. rows-and-rules sketch (a soup rect with distance rules): sh1 (shell): pull1.face[sk1.edge1]: sk1 is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the browser demo (its cap[top] resolves fine: V=3040.0 = OCCT). circle: sh1 (shell): e1.face[sk1.edge0]: sk1 is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the browser demo | arc: sh1 (shell): e1.face[sk1.edge0]: sketch edge 0 of sk1 is an arc; a swept name over an arc is not resolved in the browser demo (only straight edges are) | revolve: sh1 (shell): r1.face[sk1.edge0]: r1 is a revolve, not a plain extrude; sweep names of other features are not resolved in the browser demo | midplane: sh1 (shell): its target e1 was refused (e1 (extrude): the midplane option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)) (taper and reversed refuse the same way at the extrude). Rounded-corner pocket wall: see the wall row. OCCT builds the arc case (V=6533.3959) and the revolve case (V=3015.9289)."
+  },
+  {
+   "feature": "TopoName cause cap (top|bottom) of a plain extrude as shell open face",
+   "status": "supported",
+   "evidence": "cmd: bun secC.mjs. cap[top] and cap[bottom] as hollow open: PASS V=4440.0 both, dVol 0.0e+0, controls rejected. Circle-sketch extrude, cap[top]: PASS V=2098.3471 vs OCCT 2098.5839 (dVol 1.1e-4). cap on a reversed/midplane extrude is refused by the extrude itself (\"the reversed option is not mapped in phase 0 ...\"); cap as a draft face is refused (face parallel to the pull)."
+  },
+  {
+   "feature": "TopoName cause rounded (face made by a rounded/chamfered sketch corner)",
+   "status": "refused",
+   "refusalSentence": "sh1 (shell): e1.face[sk1.corner0]: a name made by a ROUNDED sketch corner is not resolved in the browser demo (only primitive, cap, swept-by-a-straight-edge, carried-plane and between names are)",
+   "evidence": "cmd: bun secC.mjs. e1.face[sk1.corner0] as shell open, draft face and in edge(cap, rounded): all REFUSED. OCCT builds the draft (V=11563.6267) and the edge round (V=11905.0761)."
+  },
+  {
+   "feature": "TopoName cause carried: a planar face carried through hole, round or hollow (used as shell open face, draft face, edge member)",
+   "status": "supported",
+   "evidence": "cmd: bun secC2.mjs. Through hole: shell open carried[+z] and [-z] V=8000.1608 vs OCCT 8000.2300 (dVol 8.6e-6); draft carried[+x] V=23329.6209 = OCCT 23329.5269 (brep-rs 23434.5133 differs from both: brep-rs is the outlier there); round between(carried +z, carried +x) and mixed carried/primitive PASS dVol 2.2e-6. Carried through a round (OCCT cannot hollow a rounded body): shell open carried[-y] V=7846.230884 vs brep-rs 7846.247780 (dVol 2.2e-6). Carried through round + open +x and rounding the rim of a shelled box have NO valid OCCT/brep-rs result (both refuse); SolidCraft gives 8166.230892 and 7126.230879, which equal my independent closed forms to 1e-7: (a) hollowed box 7152 minus the rounded rim edge (1-pi/4)*2^2*30 = 25.7699 -> 7126.2301; (b) rounded outer 24000-25.7699 = 23974.2301 minus cavity 38*26*16 = 15808 (open +x) -> 8166.2301. VERIFIED by closed form only, no second kernel agrees."
+  },
+  {
+   "feature": "TopoName cause carried through move, move(copy), turn, mirror, join (consumed target) or a second round of the same edge",
+   "status": "refused",
+   "refusalSentence": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+   "evidence": "cmd: bun secC2.mjs, secK.mjs, secN.mjs. turn of a built part (box+hole, turn(b,[0,0,20]), then round edge(top,right)): round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked (OCCT builds V=23408.7611). r1 (fillet): move1.edge[move1.same[box1.face[+z]] ^ move1.same[box1.face[+x]]] cannot be resolved: move1.same[box1.face[+z]]: move1 is a move, which moves or copies faces; a carried name through it is not resolved | move then edge: round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked | join then edge of the consumed target: round1 (fillet): its target box1 was already changed in place by op1, and a solidcraft command list has no second copy of it | mirror: round1 (fillet): its target box1 was already changed in place by mir1, and a solidcraft command list has no second copy of it | second round of the same edge: round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked. OCCT builds move/union/mirror (V=23974.2478, 8974.2478, 1995.7080); SolidCraft refuses rather than guess. Contrast: repeat()/repeatAround() then round(b.edge('top','right')) DOES resolve and PASSes (see the consumers row), and hollow(open:'top') after turn() of a built part PASSes (V=8000.1608, dVol 8.6e-6), because the extreme-face word is found again on the new shape."
+  },
+  {
+   "feature": "TopoName cause split (piece of a split face with an on-point discriminator)",
+   "status": "refused",
+   "refusalSentence": "sh1 (shell): box1.split: a 'split' name (a piece of a face, or a face an operation made) is not resolved in the browser demo; it needs a discriminator point and solidcraft has no history record to read it from",
+   "evidence": "cmd: bun secC2.mjs. split names as shell open, draft face and edge member are all REFUSED, even where the face is simple (b1.split at u,v 0.2/0.5 on a channel plate). OCCT also fails on those fixtures (shell refused / face not found)."
+  },
+  {
+   "feature": "TopoName cause made (face an operation made, e.g. a pocket wall named by discriminator)",
+   "status": "refused",
+   "refusalSentence": "sh1 (shell): pocket1.made: a 'made' name (a piece of a face, or a face an operation made) is not resolved in the browser demo; it needs a discriminator point and solidcraft has no history record to read it from",
+   "evidence": "cmd: bun secC2.mjs. pocket1.made[face,near(.5,.5)] as shell open: REFUSED; OCCT also refuses that fixture (cannot hollow a shape with a blind hole)."
+  },
+  {
+   "feature": "Ambiguous names: a face word that matches two coplanar faces (top split by a channel, two bosses at one height)",
+   "status": "refused",
+   "refusalSentence": "shell1 (shell): op1.face[+z] matches 2 faces on b_box1 (F2:+z, F3:+z; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked",
+   "evidence": "cmd: bun secM.mjs. hollow open top / round edge(top,left|front) on a channel plate and on two coplanar bosses: 5/5 REFUSED with the count instead of picking one (e.g. shell1 (shell): op1.face[+z] matches 2 faces on b_box1 (F2:+z, F3:+z; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked). OCCT builds the channel cases (V=3219.9823, 11093.5619), so over-conservative, never silent. Negative: a face word whose faces were merged by the union (equal-height boxes joined) resolves as one face and PASSes against brep-rs (V=4512 = closed form 12000-36*26*8)."
+  },
+  {
+   "feature": "TopoName cause between + shape.edge(faceWord, faceWord): all 12 box edges, round(edge,2) and bevel(edge,2)",
+   "status": "supported",
+   "evidence": "cmd: bun secA.mjs. Off-centre box 40x30x20 at [5,-3,2]. round: 12/12 PASS vs OCCT and brep-rs (V 23965.641 .. 23982.821; max dVol 9.4e-7, max dCOM 2.5e-7, faces 7/7/7). bevel: 12/12 PASS exact (max dVol 1.5e-16, V=23920/23940/23960). Negative control (opposite edge) rejected 24/24 (dCOM 5.2e-4 .. 1.8e-3). Prior evidence (phase0/COVERAGE.md, not re-measured here): chamfer of all 12 box edges at once differs from OCCT by the corner-triangle convention; single-edge bevel does not."
+  },
+  {
+   "feature": "shape.edge(a,b) invalid pairs: the same face twice, non-adjacent faces (top,bottom / front,back)",
+   "status": "refused",
+   "refusalSentence": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-z]] matches no edge on b_box1 (the two faces do not meet there any more, or never did); not guessing",
+   "evidence": "cmd: bun secB.mjs. edge('top','top') -> .edge() needs two DIFFERENT faces to name the edge between them. ; edge('top','bottom') -> SolidCraft round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-z]] matches no edge on b_box1 (the two faces do not meet there any more, or never did); not guessing ; OCCT and brep-rs both refuse (\"Round 1's edge could not be found\")."
+  },
+  {
+   "feature": "shape.edge('top', part.wall(sketch, n)), n = 1..4 of a rectangular top-plane pocket",
+   "status": "supported",
+   "evidence": "cmd: bun secD.mjs. 40x30x10 plate, 10x10x4 pocket: round 1 on each wall edge: 4/4 PASS V=11597.852573 vs OCCT 11597.853982 (dVol 1.2e-7, dCOM 1.3e-8, faces 12/12/12). Mirrored-edge control: SolidCraft says \"solid.fillet: invalid parameters: no edge\" 4/4 (the control point is off every edge). Also edge('front', wall 1) on a front-plane pocket: PASS V=11757.852574 (dVol 1.2e-7). Pocket sketch edges are 1-based in the script, 0-based in the name (wall n = swept edge n-1)."
+  },
+  {
+   "feature": "shape.edge(wall a, wall b): the vertical edge between two adjacent pocket walls",
+   "status": "supported",
+   "evidence": "cmd: bun secD.mjs. 4/4 PASS vs OCCT: V=11600.858971 vs 11600.858407 (dVol 4.9e-8, dCOM 4.4e-9); the round is a concave fillet, so it ADDS 0.859 mm3. brep-rs returns 11600.000 here with 11 faces (a silent no-op) and is NOT a valid reference for this row; OCCT is. Opposite walls (wall 1, wall 3) are REFUSED: round1 (fillet): pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge2]] matches no edge on b_pull1 (the two faces do not meet there any more, or never did); not guessing."
+  },
+  {
+   "feature": "part.wall(sketch, n) argument and context errors",
+   "status": "refused",
+   "refusalSentence": ".wall() names a face a pocket cut, and no pocket(...) was cut from that sketch.",
+   "evidence": "cmd: bun secD.mjs, secP.mjs. n=5 and n=0 on a 4-sided sketch: .wall() needs a side number from 1 to 4 (the sketch has 4), and you gave it 5. ; wall of a sketch no pocket was cut from: .wall() names a face a pocket cut, and no pocket(...) was cut from that sketch. ; pocket depth is a param(): A pocket whose depth is a param() cannot have its walls named yet -- give pocket() a plain number for the depth, or cut it as subtract(shape, pull(sketch, -depth)). ; pocket with through/reversed/midplane/length2/taper/direction: A pocket with a direction option (through, reversed, midplane, length2, taper, direction) cannot have its walls named yet -- name the walls of a plain one-sided pocket."
+  },
+  {
+   "feature": "part.wall / edge(top, wall) of a circular or rounded-corner pocket",
+   "status": "refused",
+   "refusalSentence": "round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] cannot be resolved: pull2.face[sk2.edge0]: sk2 is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the browser demo",
+   "evidence": "cmd: bun secD.mjs. circle pocket (sk2.circle(12)): round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] cannot be resolved: pull2.face[sk2.edge0]: sk2 is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the browser demo ; rounded-corner rectangle: round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] cannot be resolved: pull2.face[sk2.edge0]: sk2 has rounded or chamfered corners (its outline has 5 segments for 4 design edges), so the sketch edge index does not map to one straight wall; not resolved ; OCCT builds the circle pocket rim (V=11539.2192)."
+  },
+  {
+   "feature": "part.rim(sketch) with round()/bevel() of the list, rectangular top-plane pocket (4 edges)",
+   "status": "refused",
+   "refusalSentence": "round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked",
+   "evidence": "cmd: bun secD.mjs and bun exp1.mjs. round(part.rim(sk2),1) builds ONLY the first rim edge; edges 2-4 are refused one after another because the translator rounds one edge per feature and the neighbour is no longer 'present whole' after round1 (nested sentences, internal ids b_pull1 / F2:top|F4:side:l2 are shown to the student). OCCT fails the same way at round2 (\"Round 2's edge could not be found\"); brep-rs builds all four (V=11591.0324). The ENGINE can do it: one solid.fillet with the 4 rim-edge midpoints gives V=11591.0291 (rel diff 2.9e-7 vs brep-rs 11591.0324); r=0.5: 11597.8028 vs 11597.8060; r=1.5: 11579.3837 vs 11579.3916; single solid.chamfer d=1: 11578.6667 = brep-rs 11578.6667 exactly. So this is a translator limitation (one edge per feature), not a kernel one. Triangle pocket, deep pocket 4/10, rim r=2 all fail the same way; r=5 (half the pocket): round1 is refused by solidcraft (\"solid.fillet: not supported yet: the blend is larger than the neighbouring faces\"), the other three cascade from it; OCCT refuses r=5 too."
+  },
+  {
+   "feature": "part.rim(sketch) on a pocket that is not cut from a top-plane sketch",
+   "status": "refused",
+   "refusalSentence": ".rim() finds the opening of a pocket cut down from a top-plane sketch; for another pocket name its edges one at a time with .edge(face, part.wall(sketch, n)).",
+   "evidence": "cmd: bun secD.mjs. .rim() finds the opening of a pocket cut down from a top-plane sketch; for another pocket name its edges one at a time with .edge(face, part.wall(sketch, n))."
+  },
+  {
+   "feature": "Names survive a rebuild with changed upstream dimensions (formatName text stable, resolved against live geometry)",
+   "status": "supported",
+   "evidence": "cmd: bun secE.mjs. 5 scripts, 22 parameter sets (box width/round/wall, plate thickness/pocket offset/round, cylinder radius/height/round, hole diameter/round, box size/draft angle) via runScript({values}). formatName text identical across all sets: 22/22. SolidCraft vs live reference: 21 PASS, 1 REFUSED, 0 FAIL; max dVol 1.2e-4 (curved), max dCOM 1.9e-6. Where OCCT refuses a shell after a round, brep-rs (volume/bbox/faces only) was the reference (3 sets). The one refusal is honest: raising the plate to 16 while the pocket sketch stays at z=10 means the pocket no longer opens through the top, and the name is not moved to another edge: \"round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] matches no edge on b_pull1 (the two faces do not meet there any more, or never did); not guessing\". Controls using only volume (brep-rs reference) cannot tell opposite edges apart on a symmetric box (1 of 21 not rejected)."
+  },
+  {
+   "feature": "A name whose feature/sketch edge is gone is refused, never moved to a neighbour (whyNameLost / nameIsStructurallyValid)",
+   "status": "refused",
+   "refusalSentence": "round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]] cannot be resolved: pull2.face[sk2.edge3]: sk2 has no edge 3",
+   "evidence": "cmd: bun secJ.mjs. Structural: after deleting pull2 -> \"That face was made by pull2, which is no longer in the model.\"; swept edge 3 after the sketch lost a corner -> \"That face was pulled from edge 4 of sk2, which now has only 3 edges.\". SolidCraft translator, same case: refused: round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge3]] cannot be resolved: pull2.face[sk2.edge3]: sk2 has no edge 3. OCCT says \"That face was pulled from edge 4 of Sketch 2, which now has only 3 edges.\". The sentence the student sees from the translator is more technical than whyNameLost's."
+  },
+  {
+   "feature": "Consumers of picks: round(edge) and bevel(edge) options, round/bevel of a list (part.rim), after hole, after hollow, on L-shapes and cylinders",
+   "status": "supported",
+   "evidence": "cmd: bun secL.mjs, secK.mjs. hole off-centre then round edge(top,front): PASS dVol 2.3e-6; cut L-shape round edge(top,right): PASS dVol 2.3e-7; cylinder with hole, round rim: PASS dVol 2.0e-5; hollow then round rim edge: PASS dVol 4.2e-7; round then bevel other edge: PASS dVol 7.1e-7; repeat/repeatAround then round: PASS (brep-rs 3000.0/4000.0 are silent no-ops there, OCCT is the reference). The 4-edge rim list is the exception (see rim row). Refused (plain sentences): round/bevel of a face, draft of an edge, hollow open: edge -> e.g. round() on a single reference needs an edge -- try round(shape.edge(faceA, faceB), size)."
+  },
+  {
+   "feature": "draft(shape, angle) whole body / {whole:true}; hollow(shape,{wall}) with no open face; draft whose {from} pulls parallel to the face",
+   "status": "refused",
+   "refusalSentence": "draft1 (draft): a whole-body draft is not mapped (needs a face pick per face)",
+   "evidence": "cmd: bun secK.mjs. draft whole/ {whole:true}: draft1 (draft): a whole-body draft is not mapped (needs a face pick per face) (OCCT builds V=24000.0000); hollow(b,{wall:2}) with no open: shell1 (shell): this spike's shell needs a face to remove; a closed hollow box is not mapped (OCCT builds V=9024.0000); draft face('right') with from:'left' (pull x, face parallel to pull): draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction. The supported options (from:'bottom', neutral:4, angle -5) PASS and are in the face-word row."
+  },
+  {
+   "feature": "hollow(shape,{open:word}) on a shape with a reflex edge (stepped join, blind hole, channel/pocket): face pick is right, shell volume is not",
+   "status": "wrong",
+   "evidence": "WRONG, builds without any sentence. cmd: bun secL.mjs, secM.mjs, euclid.mjs. Stepped union (box 40x30x10 + box 20x20x10 on top), wall 2: open top SolidCraft V=7312.000 vs OCCT 7253.994 (dVol 8.0e-3, faces 21 vs 25); open bottom 5952.000 vs 5893.994 (9.8e-3); open right 7512.000 vs 7453.994 (7.8e-3); plate with a 4-deep blind hole, open bottom 4763.306 vs 4733.376 (6.3e-3); plate with a through channel, open bottom 2532.000 vs 2519.982 (4.8e-3). Diagnosis: SolidCraft uses plane-offset (my closed form for the stepped union is exactly 7312.000 = SolidCraft); OCCT offsets true surfaces and rounds the cavity at the reflex edge. An independent voxel Euclidean-erosion estimator (euclid.mjs, h=0.1) gives 7249.7 for the stepped union, matching OCCT (7253.994, 6e-4) not SolidCraft (8.6e-3 away). The pick itself is right: mirrored-pick control rejected (dCOM 5.3e-2). Shells of boxes (dVol 1e-16), plates with a through hole (5.3e-6) and cylinders (9e-5, tessellation) are unaffected. Same family as the plane-offset convention noted in phase7/README.md and fuzz/README.md; the shell-draft group should own the fix (refuse any shell whose cavity meets a reflex edge)."
+  },
+  {
+   "feature": "topoRefs()/dependsOn(): names create dependencies; orphanedBy, withoutFeatures, danglingRefs, firstOrderViolation",
+   "status": "supported",
+   "evidence": "cmd: bun secJ.mjs (kernel independent, plus the translator cascade). round1 (edge between carried pull1 +z and swept pull2 edge1): topoRefs=[pocket1,pull1,pull2], dependsOn=[pocket1,pull1,pull2]. orphanedBy(pull1)=[pull1,pocket1,round1,shell1]; orphanedBy(sk2)=[sk2,pull2,pocket1,round1,shell1]; danglingRefs after a raw delete of pull2 lists pocket1 and round1; whyDeletingCosts(pull2): \"pocket1, round1 and shell1 are built from pull2, so they go too.\". Translator cascade: a refused upstream feature refuses its dependents with a pointer (\"shell1 (shell): its target pull1 was refused (pull1 (extrude): the midplane option is not mapped in phase 0 ...)\"); the nested text grows with every dependent."
+  },
+  {
+   "feature": "param(name, value, {min,max,step,caption}): declaration, defaults, each name once, errors",
+   "status": "supported",
+   "evidence": "cmd: bun secP.mjs (script layer, kernel independent). param('w',40) -> namedParams {caption:'w', min:0, max:160, step:1, slots:['box1_width']}; with opts {min:20,max:80,step:5,caption:'Width'} they are carried to params panel. Duplicate name: \"param() already used the name \"w\" earlier in this script. Give each one its own name.\". Non-numeric value: \"param's value has to be a number, and you gave it the text \"abc\".\"; non-string name: \"param() needs a name first: param(\"wall\", 2). You gave it 5.\"; unknown option: \"param has no option called \"color\". It takes min, max, step, caption.\"; non-integer count: \"repeat(): count has to be a whole number of at least 1 -- got 3.5.\". Gaps (accepted silently, no sentence): min > max (min 50, max 10) and a default outside [min,max] (100 in [20,80]); toScript(doc, namedParams) round trips to the same doc and params."
+  },
+  {
+   "feature": "applyParam / runScript({values}) re-evaluate geometry numerically on SolidCraft (param feeding box, round, hollow, hole, pocket offset, draft, sketch rule value)",
+   "status": "supported",
+   "evidence": "cmd: bun secE.mjs, secP2.mjs. 22 runScript({values}) variants of 5 param scripts: 21 PASS vs OCCT/brep-rs, 1 honest refusal (above). Sketch rule bound to param L1 (sk1_rule9-value) = 30/45/12 -> SolidCraft V=3000.000000/4500.000000/1200.000000 (expected 3000/4500/1200, dVol <= 2.8e-12). Out-of-range values are applied without a clamp or sentence: box width 500 (declared max 80) builds V=300000; width -5 builds V=3000 (the size is read as 5, same in OCCT; brep-rs reads it as 1000); width 0 and 1e-9 REFUSED by solidcraft: \"box1 (box): solidcraft refused it -- solid.box: invalid input: box needs a positive size in x, y and z\"; an unknown values key is ignored silently (box stays 40 wide); NaN falls back to the default."
+  },
+  {
+   "feature": "param value used inside an expression (box(w*2,...), w+5): the named param no longer drives a slot",
+   "status": "unsupported",
+   "evidence": "cmd: bun secP.mjs. const w=param('w',20); box(w*2,30,20): namedParams w has slots=[] (no slot) although it is declared, so a 'w' slider would move nothing; only the generated slot box1_width (value 40) is live. No sentence is shown. w+5 behaves the same (box width 25, slots []). Direct use (box(w,..), count:n, rule value) binds fine."
+  },
+  {
+   "feature": "param does not re-evaluate control flow (if (w > 30) {...} keeps the literal default's branch), as specified",
+   "status": "supported",
+   "evidence": "cmd: bun secP.mjs. const w=param('w',20,{min:5,max:60}); box(w,...); if (w>30) hole(...) else round(edge...): features with default = [box,fillet], with values {box1_width:50} = [box,fillet] (width becomes 50, branch unchanged). This is the documented behaviour (RunOptions.values), not a bug, but a student cannot make a slider switch between a hole and a round."
+  },
+  {
+   "feature": "generatedParams slot keys pname(featureId, slot): every numeric field that HAS a slot, of box, cylinder, cone, ring, sphere, sketch corners/offset/rounds, extrude, revolve, groove, pocket, hole, hollow, round, bevel, draft, move, turn, repeat, repeatAround, join, subtract, mirror, datum",
+   "status": "supported",
+   "evidence": "cmd: bun secG.mjs (288 slots over 30 scripts; ~25 minutes). For each slot: applyParam(doc, slot, new) -> solveDoc -> SolidCraft vs live OCCT/brep-rs. 245/288 PASS (max dVol 1.8e-4, max dCOM 4.7e-6); every slot reads back the value written (generatedParams round trip 282/282 changed slots). Not 100%: 6 dead prism/wedge sliders, 30 refused (24 counterbore/countersink, 2 groove, 3 intersect, 1 circular-pattern angle), 7 bbox/face flags (separate rows)."
+  },
+  {
+   "feature": "generatedParams slots prism1_x/y/z and wedge1_x/y/z (position of a prism or wedge)",
+   "status": "unsupported",
+   "evidence": "cmd: bun secG.mjs and bun exp3.mjs. The panel lists these slots but applyParam leaves the doc unchanged (prism/wedge are not isShape()): prism(6,30,20,{at:[3,2,1]}), applyParam(doc,'prism1_x',99) -> center stays [3,2,1]; runScript(src,{values:{prism1_x:99}}) same. A dead slider, no sentence. 6/6 slots. Also: handlesFor() returns no handles at all for a prism or wedge."
+  },
+  {
+   "feature": "generatedParams slots hole1_counterboreAcross/Deep and hole1_countersinkAcross/Angle (and every other slot of a doc containing them)",
+   "status": "refused",
+   "refusalSentence": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+   "evidence": "cmd: bun secG.mjs. 24/24 slots of the counterbore and countersink scripts (including the box and hole size slots, because the hole feature itself is not mapped) REFUSED with one sentence; OCCT builds 22 of the 24 (the other 2 change box height, which OCCT also refuses)."
+  },
+  {
+   "feature": "generatedParams slots pat1_totalangle < 360 (repeatAround angle), groove sketch corner slots, intersect() slots",
+   "status": "refused",
+   "refusalSentence": "pat1 (pattern): a circular pattern over less than 360 degrees is not mapped (solidcraft's angle semantics were not verified)",
+   "evidence": "cmd: bun secG.mjs. repeatAround totalangle 360->324: pat1 (pattern): a circular pattern over less than 360 degrees is not mapped (solidcraft's angle semantics were not verified). groove sk1_p0u/p3u (+3): groove1 (groove): solidcraft refused it -- solid.revolve: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces tha (OCCT and brep-rs refuse too). intersect(box, sphere): 3 slots REFUSED: op1 (combine): solidcraft refused it -- solid.combine: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for; OCCT builds them."
+  },
+  {
+   "feature": "generatedParams slots of intersect(box, sphere) and ring1_z: SolidCraft bbox/face report disagrees with OCCT, volume agrees",
+   "status": "supported",
+   "evidence": "cmd: bun secG.mjs, bun exp7.mjs. 7 slots flagged FAIL by the harness, all with dVol <= 1.5e-4 (inside the 3e-4 curved bar) and dCOM <= 3.7e-6. Cause for 6: the OCCT bbox (AddOptimal) is looser than the geometry: intersect result x-max reads 16.0004 / 19.58 although the box face is at 15 / 18.75, SolidCraft reports 15.0 / 18.75 (the correct values, because the result lies inside the box); ring1_z: dBbox 4.5e-4 is tessellation of the torus against the |b|>=1 scale floor. One case (box height 12.5) reports 8 faces (4 'cone', 3 plane, 1 sphere) against OCCT's 4 (3 plane, 1 sphere): exp8.mjs shows the 4 extra faces are slivers of 0.348 mm2 each (1.4 mm2 of ~2200 mm2) where the sphere meets the box edges. Independent check: the exact volume of ball(r15 at x=5) intersect box 30x30x12.5 by 1-D integration is 7489.2049 (exp9.mjs) = OCCT 7489.2049; SolidCraft 7488.8459 (4.8e-5, tessellation). So the solid is right; why truck splits off the slivers is not explained."
+  },
+  {
+   "feature": "Numeric feature fields with no generatedParams slot: extrude taper / length2, draft neutral, hole axial offset, blend",
+   "status": "unsupported",
+   "evidence": "cmd: bun exp6.mjs. pull(s,12,{taper:5}), pull(s,12,{length2:4}), draft(face,5,{neutral:3}) store the numbers in the doc but generatedParams lists no slot for them (only pull1_height, draft1_angle); hole(...,{deep:8, along:'x'}) offers hole1_y/z but not the axial offset; blend has only its sketch slots. So \"every numeric feature field\" is not true: those cannot be driven by a slider or runScript({values}). No sentence. (SolidCraft cannot build taper/length2 anyway: the extrude options are refused by the translator.)"
+  },
+  {
+   "feature": "checkModel / ModelExpect lesson checks (kind, derived width/depth/height/across, tolerance, open:true, formatName text, greedy distinct match)",
+   "status": "supported",
+   "evidence": "cmd: bun secH.mjs (pure function, no kernel). 19 probes: derived box width/depth/height and size tuple pass; wrong width -> \"Expected a box 41 x ? x ?, found a box 40 x 30 x 20.\"; tolerance 0.01 default (40.005 passes, 40.02 fails), custom 0.05 passes; hole across; fillet style/size/edge text (box1.edge[box1.face[+x] ^ box1.face[+z]]) match, wrong edge text fails with \"Expected a round, found a round 2.\"; shell open:true, open:'box1.face[-z]' match and 'box1.face[+z]' does not; two {kind:'hole'} entries need two holes; sketch width/depth and circle across pass; null doc -> \"Build or run the model first\"."
+  },
+  {
+   "feature": "checkModel with SolidCraft refusals: a feature the translator refused must not count as built",
+   "status": "supported",
+   "evidence": "cmd: bun secH.mjs. Doc: wedge1 + round of wedge1.edge(bottom,front) (SolidCraft REFUSES it). checkModel({expect:[{kind:'fillet',size:2}]}, doc) with NO refusals map -> passed:true (fail-open); with the translator's refusals ({round1: \"round1 (fillet): wedge1.edge[wedge1.face[-z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[-z]: faces of a wedge are not resolved in the browser demo\"}) -> passed:false, \"Expected a round 2; the round could not be built: round1 (fillet): wedge1.edge[wedge1.face[-z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[-z]: faces of a wedge are not resolved in the browser demo\"; with the OCCT refusals the product feeds today -> passed:true (OCCT builds it). So the host MUST pass translator refusals keyed by feature id (the ids match); the sentence shown to the student is the translator's text verbatim."
+  },
+  {
+   "feature": "model-handles size handles (box width/depth/height, cylinder across/height, cone, sphere, ring tube, extrude height, datum offset, draft angle) on unturned shapes",
+   "status": "supported",
+   "evidence": "cmd: bun secI.mjs, bun secI2.mjs (handlesFor on the doc; SolidCraft body from translator + model.faces/edges). Handle origin lies on the SolidCraft bbox extreme along its axis: 8/8 (exact for box 0.0; curved <= 6.5e-4 = tessellation). Simulated drag d=3 along the axis with the handle's scale: SolidCraft's extreme moves 3.0000 (box exact, cylinder/cone 2.9998-3.0000), and the dragged doc matches live OCCT in every case (32/32 size drags PASS; max dVol 1.8e-4). Pocket depth handle sits on the pocket floor plane (z=6, planar face of the SolidCraft body) and extrude height handle on the cap."
+  },
+  {
+   "feature": "model-handles move arrows (x/y/z) and turn handles (rx/ry/rz): drag changes the SolidCraft solid like OCCT",
+   "status": "supported",
+   "evidence": "cmd: bun secI.mjs. move: 36 drags (box, cylinder, cone, ring, sphere, move feature, fillet/draft chains) -> 35 PASS, the 1 non-PASS is ring z (dBbox 4.5e-4 torus tessellation, dVol 1.5e-4); SolidCraft's extreme moves exactly 3.0000 for a 3.0 drag. turn: 9 drags (box, cylinder, cone, turned) all PASS vs OCCT (max dVol 1.8e-4). Move arrows sit offset out from the part by design (not on the solid)."
+  },
+  {
+   "feature": "model-handles on a turned shape: handle positions ignore the rotation",
+   "status": "unsupported",
+   "evidence": "cmd: bun secI.mjs. box 40x30x20 turned [0,0,15]: the width and depth handles are computed from centre +/- size/2 without the rotation, so they float 3.20 mm and 4.67 mm off the SolidCraft solid's extreme (unturned: 0.0). Dragging the width handle by 3 moves the solid's extreme by 2.8978 not 3.0000; the height handle (along the turn axis) is exact. Same for a turned cylinder/cone. The param change itself matches OCCT (PASS), so the SOLID is right; only the handle position is wrong (rotation not mapped, no sentence). Kernel independent (the same doc arithmetic is used for every engine); reported because the handle is the interaction surface on turned parts."
+  },
+  {
+   "feature": "model-handles sketch corner point handles, corner round (radius) handle, fillet radius handle",
+   "status": "supported",
+   "evidence": "cmd: bun secI2.mjs. 28 sketch corner drags (rect, polygon, front-plane, pocket sketch, datum sketch): 28 PASS vs OCCT (max dVol 3.1e-6); handle origin equals a SolidCraft vertex in 27/28 (the exception is the design corner of a rounded corner, which is virtual by design); corner-round handle ('round corner 1'): origin = an arc end vertex before AND after the drag (afterDrag.originOnVertex true), drag PASS dVol 5.8e-6; fillet radius handle: origin equals the midpoint of SolidCraft's fillet boundary edge before and after the drag (round: dVol 4.4e-6, bevel: 1.5e-16). A corner of a constrained rectangle dragged by (+2,+2) lands at (+1,+1) because the rectangle rules are re-solved (exp4.mjs): the handle follows the SOLVED corner, which is on a SolidCraft vertex."
+  },
+  {
+   "feature": "model-handles: no handles for prism, wedge, hole, hollow, join/subtract, pattern, mirror, groove, revolve, blend",
+   "status": "unsupported",
+   "evidence": "cmd: bun secI.mjs. handlesFor() returns [] for prism and wedge (isShape false) although both have size and position slots; hole, shell, combine, pattern, mirror, groove, revolve and blend were not probed beyond the code read (handlesFor falls through to []). No sentence is shown, the shape just has no dots."
+  }
+ ]
+}

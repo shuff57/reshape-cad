@@ -1,0 +1,22 @@
+{
+ "id": "r3-hb-deep12-r6",
+ "outcome": "fail",
+ "volume": 23398.36375060177,
+ "faces": 9,
+ "bbox": [
+  -20.000000000000007,
+  -15,
+  -10,
+  20.00000000000001,
+  15,
+  10.000000000000007
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "hole",
+  "fillet"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":30,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":12,\"base\":[0,-9,-2],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}},{\"command\":\"solid.fillet\",\"params\":{\"edges\":[[0,-15,10]],\"radius\":6,\"body\":\"b_box1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

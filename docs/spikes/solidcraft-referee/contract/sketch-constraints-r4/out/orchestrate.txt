@@ -1,0 +1,64 @@
+cached rect-origin-dims {"stored":{"BUILT-RIGHT":1},"rough3.5":{"BUILT-RIGHT":40},"rough15":{"BUILT-RIGHT":40}}
+cached rect-corner-dx-dy-positive {"stored":{"BUILT-RIGHT":1},"rough3.5":{"BUILT-RIGHT":40},"rough15":{"BUILT-RIGHT":21,"REFUSED":12,"BUILT-OTHER-POSE":7}}
+cached rect-corner-dx-dy-negative {"stored":{"BUILT-RIGHT":1},"rough3.5":{"BUILT-RIGHT":40},"rough15":{"BUILT-RIGHT":40}}
+cached rect-diagonal-two-point-distance {"stored":{"BUILT-RIGHT":1},"rough3.5":{"BUILT-RIGHT":40},"rough15":{"BUILT-RIGHT":40}}
+cached circle-radius-dx-dy {"stored":{"BUILT-RIGHT":1},"rough3.5":{"BUILT-RIGHT":40},"rough15":{"BUILT-RIGHT":40}}
+cached circle-diameter-origin-c {"stored":{"BUILT-RIGHT":1},"rough3.5":{"BUILT-RIGHT":40},"rough15":{"BUILT-RIGHT":40}}
+cached rect-parallel-perpendicular-axes {"stored":{"BUILT-RIGHT":1},"rough3.5":{"BUILT-RIGHT":40},"rough15":{"BUILT-RIGHT":40}}
+cached right-trapezoid-par-perp-neg-dx {"stored":{"BUILT-RIGHT":1},"rough3.5":{"BUILT-RIGHT":40},"rough15":{"BUILT-RIGHT":40}}
+cached square-by-equal-lines {"stored":{"BUILT-RIGHT":1},"rough3.5":{"BUILT-RIGHT":40},"rough15":{"BUILT-RIGHT":40}}
+two-circles-equal                                    expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":34,"REFUSED":6} 139.6s
+triangle-apex-on-diagonal-line                       expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 4.9s
+hexagon-equal-pointOn-circle                         expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-WRONG-VOLUME":2,"REFUSED":21,"BUILT-RIGHT":17} 21.7s
+symmetric-trapezoid-about-Y-axis                     expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 5.4s
+symmetric-about-construction-line                    expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 6.4s
+symmetric-3point-midpoint                            expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 6.9s
+tangent-line-circle                                  expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 69.3s
+tangent-line-circle-side-matching                    expect build  stored {"BUILT-RIGHT":1} r3.5 - r15 - 1.5s
+tangent-line-circle-side-opposite                    expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.3s
+circle-circle-external-mode                          expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 134.7s
+circle-circle-external-no-mode                       expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 120.5s
+circle-circle-internal-mode                          expect build  stored {"BUILT-WRONG-VOLUME":1} r3.5 {"BUILT-WRONG-VOLUME":40} r15 {"BUILT-WRONG-VOLUME":40} 61.6s
+circle-circle-internal-no-mode                       expect build  stored {"BUILT-WRONG-VOLUME":1} r3.5 {"BUILT-WRONG-VOLUME":40} r15 {"BUILT-WRONG-VOLUME":40} 59.4s
+circle-circle-mode-request-external-start-internal   expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.2s
+circle-circle-mode-request-internal-start-external   expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.2s
+slot-hand-rows-R10-L40                               expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":38,"BUILT-WRONG-VOLUME":2} r15 {"BUILT-RIGHT":27,"REFUSED":2,"BUILT-WRONG-VOLUME":11} 50.2s
+slot-dims-from-points                                expect build  stored {"REFUSED":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-WRONG-VOLUME":8,"BUILT-RIGHT":31,"REFUSED":1} 74.2s
+oval-four-arcs-endpoint-tangent                      expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":36,"REFUSED":2,"BUILT-WRONG-VOLUME":2} r15 {"BUILT-RIGHT":32,"BUILT-WRONG-VOLUME":7,"REFUSED":1} 89.5s
+triangle-length-angle-120                            expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 2.2s
+triangle-angle-120-with-quadrant                     expect build  stored {"BUILT-RIGHT":1} r3.5 - r15 - 0.3s
+triangle-angle-wrong-orientation-start               expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.2s
+rect-lock-offset-corner                              expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 3.7s
+rect-param-width                                     expect build  stored {"BUILT-RIGHT":1} r3.5 - r15 - 0.3s
+rect-reference-dim-correct                           expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40}  SCRIPT-REWROTE-RULES 3.4s
+rect-reference-dim-wrong-value                       expect build  stored {"BUILT-RIGHT":1} r3.5 - r15 - 0.4s
+rect-reference-distanceX-zero                        expect build  stored {"REFUSED":1} r3.5 - r15 - 0.2s
+rect-reference-distanceX-opposite-sign               expect build  stored {"REFUSED":1} r3.5 {"REFUSED":40} r15 {"REFUSED":40} 0.3s
+rect-inactive-conflicting-rule                       expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 4.1s
+plate-with-hole-default-profiles                     expect build  stored {"BUILT-WRONG-VOLUME":1} r3.5 - r15 - 0.5s
+rect-underconstrained-height-free                    expect build  stored {"BUILT-RIGHT":1} r3.5 - r15 - 0.3s
+rect-redundant-width-dimension                       expect build  stored {"REFUSED":1} r3.5 - r15 - 0.3s
+rect-conflicting-width-dimension                     expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.3s
+slot-arc-rows-inconsistent-with-lock-c               expect refuse stored {"BUILT-OTHER-POSE":1} r3.5 - r15 - 1.3s
+probe-coincident-circle-end-a                        expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.2s
+probe-equal-line-vs-circle                           expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.2s
+probe-distance-names-no-end                          expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.2s
+probe-radius-zero                                    expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.2s
+probe-tangent-endpoint-no-coincident-row             expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.2s
+probe-lock-as-reference                              expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.2s
+probe-pointOn-target-is-point                        expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.2s
+probe-angle-line-vs-circle                           expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.2s
+probe-distanceX-start-level                          expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.2s
+probe-tangent-line-vs-line                           expect refuse stored {"REFUSED":1} r3.5 - r15 - 0.3s
+gauntlet:sk-rect-dof__corner-origin-25x60            expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 2.9s
+gauntlet:sk-rect-dof__offset-corner-30x18            expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 2.9s
+gauntlet:sk-rect-dof__square-by-equal                expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 2.3s
+gauntlet:sk-rect-dof__right-triangle                 expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 1.4s
+gauntlet:sk-rect-dof__parallelogram                  expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":39,"REFUSED":1} 2.5s
+gauntlet:sk-rect-dof__circle-pinned                  expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 52.7s
+gauntlet:sk-circle-arc-tangent__slot-r6-L30-anchored expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":34,"BUILT-WRONG-VOLUME":6} 62.0s
+gauntlet:sk-circle-arc-tangent__slot-r12-L18-anchored expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":39,"REFUSED":1} r15 {"BUILT-RIGHT":38,"REFUSED":1,"BUILT-WRONG-VOLUME":1} 47.0s
+gauntlet:sk-circle-arc-tangent__slot-arc-first-order expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":30,"REFUSED":1,"BUILT-WRONG-VOLUME":9} r15 {"BUILT-RIGHT":19,"BUILT-WRONG-VOLUME":16,"REFUSED":5} 12617.6s
+gauntlet:sk-circle-arc-tangent__circle-circle-external expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":38,"REFUSED":2} 137.9s
+gauntlet:sk-circle-arc-tangent__circle-circle-no-mode expect build  stored {"BUILT-RIGHT":1} r3.5 {"BUILT-RIGHT":40} r15 {"BUILT-RIGHT":40} 156.7s
+gauntlet:sk-circle-arc-tangent__circle-circle-internal expect build  stored {"BUILT-WRONG-VOLUME":1} r3.5 {"BUILT-WRONG-VOLUME":40} r15 {"BUILT-WRONG-VOLUME":38,"REFUSED":2} 77.4s

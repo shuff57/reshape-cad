@@ -1,0 +1,33 @@
+copy/box                       ALL-PASS box1:PASS/PASS dVol=0.0e+0 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | move1:PASS/REFUSED dVol=0.0e+0 dBbox=0.0e+0 dCom=0.0e+0 f=6/6
+copy/cylinder                  ALL-PASS cyl1:PASS/PASS dVol=1.2e-4 dBbox=9.3e-5 dCom=7.4e-16 f=3/3 | move1:PASS/REFUSED dVol=1.2e-4 dBbox=4.0e-5 dCom=3.0e-15 f=3/3
+copy/sphere                    ALL-PASS ball1:PASS/PASS dVol=7.1e-5 dBbox=1.8e-16 dCom=1.1e-12 f=1/1 | move1:PASS/REFUSED dVol=7.1e-5 dBbox=1.8e-16 dCom=1.4e-12 f=1/1
+copy/cone                      ALL-PASS cone1:PASS/PASS dVol=1.8e-4 dBbox=1.8e-5 dCom=3.3e-17 f=2/2 | move1:PASS/REFUSED dVol=1.8e-4 dBbox=1.8e-5 dCom=1.6e-15 f=2/2
+copy/ring                      ALL-PASS ring1:PASS/PASS dVol=1.5e-4 dBbox=9.0e-5 dCom=6.8e-7 f=1/1 | move1:PASS/REFUSED dVol=1.5e-4 dBbox=1.6e-5 dCom=6.8e-7 f=1/1
+copy/prism                     ALL-PASS prism1:PASS/PASS dVol=1.5e-16 dBbox=0.0e+0 dCom=3.1e-17 f=8/8 | move1:PASS/REFUSED dVol=2.9e-16 dBbox=0.0e+0 dCom=2.7e-17 f=8/8
+copy/wedge                     ALL-PASS wedge1:PASS/PASS dVol=0.0e+0 dBbox=0.0e+0 dCom=3.7e-17 f=5/5 | move1:PASS/REFUSED dVol=1.4e-16 dBbox=0.0e+0 dCom=1.5e-16 f=5/5
+copy/hole                      ALL-PASS hole1:PASS/PASS dVol=7.3e-6 dBbox=7.1e-16 dCom=7.0e-7 f=7/7 | move1:PASS/REFUSED dVol=7.3e-6 dBbox=5.3e-16 dCom=7.0e-7 f=7/7
+copy/hollow                    ALL-PASS shell1:PASS/PASS dVol=5.1e-16 dBbox=0.0e+0 dCom=2.2e-17 f=11/11 | move1:PASS/REFUSED dVol=5.1e-16 dBbox=0.0e+0 dCom=2.1e-17 f=11/11
+copy/pull                      ALL-PASS pull1:PASS/PASS dVol=1.5e-16 dBbox=0.0e+0 dCom=2.4e-17 f=6/6 | move1:PASS/REFUSED dVol=1.5e-16 dBbox=0.0e+0 dCom=2.4e-17 f=6/6
+copy/join                      ALL-PASS op1:PASS/PASS dVol=2.7e-16 dBbox=0.0e+0 dCom=3.4e-17 f=11/11 | move1:PASS/REFUSED dVol=2.7e-16 dBbox=0.0e+0 dCom=3.4e-17 f=11/11
+copy/mirror-result             ALL-PASS box1:PASS/PASS dVol=0.0e+0 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | mir1:PASS/PASS dVol=0.0e+0 dBbox=0.0e+0 dCom=1.5e-18 f=6/10 | move1:PASS/REFUSED dVol=0.0e+0 dBbox=0.0e+0 dCom=1.5e-18 f=6/10
+copy/turned-orig               ALL-PASS box1:PASS/PASS dVol=0.0e+0 dBbox=1.6e-16 dCom=5.3e-17 f=6/6 | move1:PASS/REFUSED dVol=1.9e-16 dBbox=1.4e-16 dCom=3.4e-17 f=6/6
+copy/chain3                    ALL-PASS box1:PASS/PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | move1:PASS/REFUSED dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | move2:PASS/REFUSED dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6
+copy/copy-then-move-orig       ALL-PASS move1:PASS/REFUSED dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | move2:PASS/PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6
+copy/copy-then-move-copy       ALL-PASS box1:PASS/PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | move2:PASS/REFUSED dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6
+copy/copy-then-turn-copy       ALL-PASS box1:PASS/PASS dVol=1.5e-16 dBbox=0.0e+0 dCom=2.7e-17 f=6/6 | turn1:PASS/REFUSED dVol=1.5e-16 dBbox=1.8e-16 dCom=2.7e-17 f=6/6
+copy/join-overlap              ALL-PASS op1:PASS/REFUSED dVol=0.0e+0 dBbox=0.0e+0 dCom=2.0e-18 f=6/14
+copy/join-touch                ALL-PASS op1:PASS/REFUSED dVol=0.0e+0 dBbox=0.0e+0 dCom=1.5e-18 f=6/10
+copy/cut-by-copy               ALL-PASS cyl1:PASS/PASS dVol=1.7e-4 dBbox=2.7e-5 dCom=1.1e-13 f=3/3 | op1:PASS/REFUSED dVol=2.0e-16 dBbox=0.0e+0 dCom=2.7e-18 f=6/6
+collide/copy-then-repeat       ALL-PASS move1:PASS/REFUSED/naive=PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | pat1:PASS/PASS/naive=FAIL bbox [-5,-5,-5,20,55,5] dVol=3.0e-16 dBbox=0.0e+0 dCom=4.2e-17 f=18/18
+collide/repeat-then-copy       ALL-PASS pat1:PASS/PASS/naive=PASS dVol=3.0e-16 dBbox=0.0e+0 dCom=4.2e-17 f=18/18 | move1:PASS/REFUSED/naive=PASS dVol=3.0e-16 dBbox=0.0e+0 dCom=4.2e-17 f=18/18
+collide/copy-then-repeat-copy  ALL-PASS box1:PASS/PASS/naive=PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | pat1:PASS/REFUSED/naive=PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=6.2e-17 f=12/12
+collide/copy-then-repeatAround ALL-PASS move1:PASS/REFUSED/naive=PASS dVol=1.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | pat1:PASS/PASS/naive=FAIL bbox [-23,-3,-3,23,23,33] dVol=0.0e+0 dBbox=0.0e+0 dCom=2.0e-17 f=24/24
+collide/copy-then-mirror       ALL-PASS box1:PASS/PASS/naive=PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | move1:PASS/REFUSED/naive=PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | mir1:PASS/PASS/naive=PASS dVol=3.4e-16 dBbox=0.0e+0 dCom=1.5e-16 f=6/10
+collide/two-copies-then-repeat ALL-PASS move1:PASS/REFUSED/naive=PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | move2:PASS/REFUSED/naive=PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | pat1:PASS/PASS/naive=FAIL bbox [-5,-5,-5,5,85,5] dVol=3.0e-16 dBbox=0.0e+0 dCom=4.2e-17 f=18/18
+collide/repeat-twice-with-copy ALL-PASS move1:PASS/REFUSED/naive=PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | pat2:PASS/PASS/naive=FAIL bbox [-5,-5,-5,5,55,20] dVol=2.3e-16 dBbox=0.0e+0 dCom=4.8e-17 f=24/24
+copy/param                     ALL-PASS box1:PASS/PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | move1:PASS/REFUSED dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6
+copy/param@dx=40               ALL-PASS box1:PASS/PASS dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6 | move1:PASS/REFUSED dVol=2.3e-16 dBbox=0.0e+0 dCom=0.0e+0 f=6/6
+
+real	1m50.945s
+user	1m53.697s
+sys	0m0.728s

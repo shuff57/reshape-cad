@@ -1,0 +1,21 @@
+{
+ "id": "revolution__arc-top-cone-tip-round-90",
+ "outcome": "built",
+ "volume": 2802.0590498631204,
+ "faces": 5,
+ "bbox": [
+  -6.217248937900877e-15,
+  -3.552713678800501e-15,
+  0,
+  16.525541210249543,
+  16.525541210249546,
+  30
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[12.52593163271468,0]]}},{\"command\":\"sketch.arc.three_point\",\"params\":{\"start\":[12.52593163271468,0],\"end\":[15.854132810066055,6.2188007849009175],\"through\":[16.052630027786456,2.1125682978719036]}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[15.854132810066055,6.2188007849009175],[0,30]]}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,30],[0,0]]}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-90,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

@@ -1,0 +1,480 @@
+Running as unit: run-p1181572-i1085437.scope; invocation ID: 43abac10ce844dad8a73727e26978b1a
+E1 summary [{"n":3,"cases":30,"planarSided":0,"nonPlanarSided":30,"overBar":24,"overBarAndPlanar":0,"maxDVol":0.0025234351442394217,"medianDVol":0.0008677450134162123,"truckOver":8,"truckUnder":16,"occtVsAnalyticMax":4.206710580015216e-16,"faceCountMismatch":0,"scale0p1Probed":24,"scale0p1Exact":4,"scale0p1OverBar":16,"scale10Exact":2,"scale10OverBar":20},{"n":4,"cases":30,"planarSided":0,"nonPlanarSided":30,"overBar":22,"overBarAndPlanar":0,"maxDVol":0.001663894583434834,"medianDVol":0.0005230526711761739,"truckOver":10,"truckUnder":12,"occtVsAnalyticMax":5.388204492932729e-16,"faceCountMismatch":0,"scale0p1Probed":22,"scale0p1Exact":1,"scale0p1OverBar":14,"scale10Exact":1,"scale10OverBar":15},{"n":5,"cases":30,"planarSided":0,"nonPlanarSided":30,"overBar":16,"overBarAndPlanar":0,"maxDVol":0.0009581212955817312,"medianDVol":0.0003344581657766301,"truckOver":9,"truckUnder":7,"occtVsAnalyticMax":5.966425948326755e-16,"faceCountMismatch":0,"scale0p1Probed":16,"scale0p1Exact":0,"scale0p1OverBar":9,"scale10Exact":0,"scale10OverBar":9},{"n":6,"cases":30,"planarSided":0,"nonPlanarSided":30,"overBar":15,"overBarAndPlanar":0,"maxDVol":0.05876944797029832,"medianDVol":0.0003228795263006867,"truckOver":7,"truckUnder":8,"occtVsAnalyticMax":4.514477507327124e-16,"faceCountMismatch":0,"scale0p1Probed":15,"scale0p1Exact":0,"scale0p1OverBar":7,"scale10Exact":0,"scale10OverBar":10}]
+E1 worst: fuzz n=6 k=28: 5.9e-2 (planar=false); fuzz n=3 k=29: 2.5e-3 (planar=false); fuzz n=3 k=21: 2.1e-3 (planar=false); fuzz n=3 k=1: 2.0e-3 (planar=false); fuzz n=3 k=2: 2.0e-3 (planar=false)
+E2 summary [{"n":3,"cases":30,"allPlanarFlag":true,"maxDVolTruckOcct":8.132216748662293e-14,"maxDVolTruckAnalytic":8.146816778731702e-14,"maxDVolOcctAnalytic":1.6565988574801388e-15,"faceMismatch":0,"maxDBbox":1e-7,"brepBuilt":30,"maxBrepVsAnalytic":1.7545488189952538e-15},{"n":4,"cases":30,"allPlanarFlag":true,"maxDVolTruckOcct":1.1989489163766125e-13,"maxDVolTruckAnalytic":1.1938324914134116e-13,"maxDVolOcctAnalytic":1.251585469097726e-15,"faceMismatch":0,"maxDBbox":1e-7,"brepBuilt":30,"maxBrepVsAnalytic":2.0313011600675185e-15},{"n":5,"cases":30,"allPlanarFlag":true,"maxDVolTruckOcct":1.4648912825521833e-14,"maxDVolTruckAnalytic":1.4155129247133462e-14,"maxDVolOcctAnalytic":4.937835783883767e-16,"faceMismatch":0,"maxDBbox":1e-7,"brepBuilt":30,"maxBrepVsAnalytic":1.1521616829062122e-15},{"n":6,"cases":30,"allPlanarFlag":true,"maxDVolTruckOcct":0.20596228105757855,"maxDVolTruckAnalytic":0.20596228105757847,"maxDVolOcctAnalytic":5.054794310684865e-16,"faceMismatch":0,"maxDBbox":1e-7,"brepBuilt":30,"maxBrepVsAnalytic":5.94577121219106e-16}]
+rhombus 40x20 -> rect 20x10                  planarSides=false OCCT 5333.3333 | truck 5364.5833 | an 5333.3333 | dT/O 5.9e-3 dT/An 5.9e-3 dO/An 3.4e-16 | faces O/T 6/6 types {"other":4,"plane":2}
+rhombus 40x20 -> rhombus 20x10 (similar)     planarSides=true  OCCT 4666.6667 | truck 4666.6667 | an 4666.6667 | dT/O 2.3e-15 dT/An 2.5e-15 dO/An 1.9e-16 | faces O/T 6/6 types {"plane":6}
+rect 20x20 -> dart (concave kite)            planarSides=false OCCT 5280.0000 | truck 5280.0000 | an 5280.0000 | dT/O 8.6e-16 dT/An 1.0e-15 dO/An 1.7e-16 | faces O/T 6/6 types {"other":4,"plane":2}
+trapezoid 40/20x20 -> rect 20x10             planarSides=false OCCT 7666.6667 | truck 7666.6667 | an 7666.6667 | dT/O 6.2e-15 dT/An 5.8e-15 dO/An 3.6e-16 | faces O/T 6/6 types {"other":2,"plane":4}
+trapezoid 40/20x20 -> same trapezoid half size planarSides=true  OCCT 7000.0000 | truck 7000.0000 | an 7000.0000 | dT/O 4.3e-15 dT/An 4.4e-15 dO/An 1.3e-16 | faces O/T 6/6 types {"plane":6}
+trapezoid 40/20x20 -> trapezoid 20/20x10     planarSides=false OCCT 7666.6667 | truck 7666.6667 | an 7666.6667 | dT/O 6.2e-15 dT/An 5.8e-15 dO/An 3.6e-16 | faces O/T 6/6 types {"other":2,"plane":4}
+rect 40x20 -> trapezoid 20/10x10             planarSides=false OCCT 8666.6667 | truck 8670.5729 | an 8666.6667 | dT/O 4.5e-4 dT/An 4.5e-4 dO/An 2.1e-16 | faces O/T 6/6 types {"other":2,"plane":4}
+triangle [[0,0],[40,0],[0,30]] -> [[5,5],[15,5],[5,12]] (gap20) planarSides=false OCCT 5200.0000 | truck 5200.7812 | an 5200.0000 | dT/O 1.5e-4 dT/An 1.5e-4 dO/An 1.7e-16 | faces O/T 5/5 types {"other":1,"plane":4}
+triangle right 40x30 -> similar half size    planarSides=true  OCCT 7000.0000 | truck 7000.0000 | an 7000.0000 | dT/O 1.0e-15 dT/An 1.0e-15 dO/An 0.0e+0 | faces O/T 5/5 types {"plane":5}
+triangle isosceles -> other triangle         planarSides=false OCCT 5683.3333 | truck 5683.3333 | an 5683.3333 | dT/O 4.8e-16 dT/An 3.2e-16 dO/An 1.6e-16 | faces O/T 5/5 types {"other":2,"plane":3}
+hexagon r20 -> hexagon r8 (homothetic)       planarSides=true  OCCT 13509.9963 | truck 13509.9963 | an 13509.9963 | dT/O 8.1e-16 dT/An 9.4e-16 dO/An 1.3e-16 | faces O/T 8/8 types {"plane":8}
+hexagon r20 -> hexagon r8 rotated 30         planarSides=false OCCT 13045.8947 | truck 13065.4259 | an 13045.8947 | dT/O 1.5e-3 dT/An 1.5e-3 dO/An 2.8e-16 | faces O/T 8/8 types {"other":6,"plane":2}
+rect 20x20 -> same rect rotated 2 deg        planarSides=false OCCT 7998.3755 | truck 8000.5568 | an 7998.3755 | dT/O 2.7e-4 dT/An 2.7e-4 dO/An 0.0e+0 | faces O/T 6/6 types {"other":4,"plane":2}
+rect 20x20 -> same rect rotated 5 deg        planarSides=false OCCT 7989.8525 | truck 7995.2998 | an 7989.8525 | dT/O 6.8e-4 dT/An 6.8e-4 dO/An 0.0e+0 | faces O/T 6/6 types {"other":4,"plane":2}
+rect 20x20 -> same rect rotated 10 deg       planarSides=false OCCT 7959.4873 | truck 7959.4873 | an 7959.4873 | dT/O 3.1e-15 dT/An 2.9e-15 dO/An 2.3e-16 | faces O/T 6/6 types {"other":4,"plane":2}
+rect 20x20 -> same rect rotated 15 deg       planarSides=false OCCT 7909.1355 | truck 7909.1355 | an 7909.1355 | dT/O 2.0e-15 dT/An 1.6e-15 dO/An 3.4e-16 | faces O/T 6/6 types {"other":4,"plane":2}
+rect 20x20 -> same rect rotated 20 deg       planarSides=false OCCT 7839.1803 | truck 7860.5566 | an 7839.1803 | dT/O 2.7e-3 dT/An 2.7e-3 dO/An 0.0e+0 | faces O/T 6/6 types {"other":4,"plane":2}
+rect 20x20 -> same rect rotated 30 deg       planarSides=false OCCT 7642.7344 | truck 7673.9844 | an 7642.7344 | dT/O 4.1e-3 dT/An 4.1e-3 dO/An 0.0e+0 | faces O/T 6/6 types {"other":4,"plane":2}
+rect 20x20 -> same rect rotated 45 deg       planarSides=false OCCT 7218.9514 | truck 7218.9514 | an 7218.9514 | dT/O 2.0e-15 dT/An 2.1e-15 dO/An 1.3e-16 | faces O/T 6/6 types {"other":4,"plane":2}
+rect 20x20 -> same rect rotated 60 deg       planarSides=false OCCT 7642.7344 | truck 7642.7344 | an 6666.6667 | dT/O 2.4e-16 dT/An 1.5e-1 dO/An 1.5e-1 | faces O/T 6/6 types {"other":4,"plane":2}
+rect 20x20 -> same rect rotated 90 deg       planarSides=false OCCT 8000.0000 | truck 8000.0000 | an 5333.3333 | dT/O 1.0e-14 dT/An 5.0e-1 dO/An 5.0e-1 | faces O/T 6/6 types {"plane":6}
+rect 30x20 -> same rect rotated 2 deg        planarSides=false OCCT 11997.5633 | truck 12001.1078 | an 11997.5633 | dT/O 3.0e-4 dT/An 3.0e-4 dO/An 3.0e-16 | faces O/T 6/6 types {"other":4,"plane":2}
+rect 30x20 -> same rect rotated 5 deg        planarSides=false OCCT 11984.7788 | truck 11987.5024 | an 11984.7788 | dT/O 2.3e-4 dT/An 2.3e-4 dO/An 0.0e+0 | faces O/T 6/6 types {"other":4,"plane":2}
+rect 30x20 -> same rect rotated 20 deg       planarSides=false OCCT 11758.7705 | truck 11793.5069 | an 11758.7705 | dT/O 3.0e-3 dT/An 3.0e-3 dO/An 1.5e-16 | faces O/T 6/6 types {"other":4,"plane":2}
+tilt 1 deg                                   planarSides=false OCCT 20999.5431 | truck 20999.5431 | an 20999.5431 | dT/O 1.4e-15 dT/An 1.6e-15 dO/An 1.7e-16 | faces O/T 6/6 types {"other":2,"plane":4}
+tilt 5 deg                                   planarSides=false OCCT 20988.5841 | truck 20988.5841 | an 20988.5841 | dT/O 1.0e-15 dT/An 5.2e-16 dO/An 5.2e-16 | faces O/T 6/6 types {"other":2,"plane":4}
+tilt 10 deg                                  planarSides=false OCCT 20954.4233 | truck 20956.4582 | an 20954.4233 | dT/O 9.7e-5 dT/An 9.7e-5 dO/An 0.0e+0 | faces O/T 6/6 types {"cone":2,"plane":4}
+tilt 15 deg                                  planarSides=false OCCT 20897.7775 | truck 20900.8105 | an 20897.7775 | dT/O 1.5e-4 dT/An 1.5e-4 dO/An 1.7e-16 | faces O/T 6/6 types {"other":2,"plane":4}
+tilt 22.5 deg                                planarSides=false OCCT 20771.6386 | truck 20776.1232 | an 20771.6386 | dT/O 2.2e-4 dT/An 2.2e-4 dO/An 1.8e-16 | faces O/T 6/6 types {"other":2,"plane":4}
+tilt 30 deg                                  planarSides=false OCCT 20598.0762 | truck 20598.0762 | an 20598.0762 | dT/O 1.6e-15 dT/An 1.4e-15 dO/An 1.8e-16 | faces O/T 6/6 types {"other":2,"plane":4}
+tilt 36.8699 deg                             planarSides=false OCCT 20399.9999 | truck 20399.9999 | an 20399.9999 | dT/O 1.2e-15 dT/An 1.2e-15 dO/An 0.0e+0 | faces O/T 6/6 types {"other":2,"plane":4}
+tilt 45 deg                                  planarSides=false OCCT 20121.3203 | truck 20121.3203 | an 20121.3203 | dT/O 1.6e-15 dT/An 1.4e-15 dO/An 1.8e-16 | faces O/T 6/6 types {"other":2,"plane":4}
+tilt 60 deg                                  planarSides=false OCCT 19500.0000 | truck 19500.0000 | an 19500.0000 | dT/O 2.4e-15 dT/An 2.2e-15 dO/An 1.9e-16 | faces O/T 6/6 types {"other":2,"plane":4}
+tilt 75 deg                                  planarSides=false OCCT 18776.4571 | truck 18765.1377 | an 18776.4571 | dT/O 6.0e-4 dT/An 6.0e-4 dO/An 0.0e+0 | faces O/T 6/6 types {"other":2,"plane":4}
+tilt 90 deg                                  planarSides=false OCCT 18000.0000 | truck 18000.0000 | an 18000.0000 | dT/O 1.4e-15 dT/An 1.2e-15 dO/An 2.0e-16 | faces O/T 6/6 types {"cone":1,"other":1,"plane":4}
+3 targets 40@0, 20@20, 10@40                 planarSides=-     OCCT 18666.6667 | truck 21867.7435 | an - | dT/O 1.7e-1 dT/An - dO/An - | faces O/T 6/6 types {"cylinder":4,"plane":2} piecewise=23333.3333 firstLast=28000.0000
+3 targets 40@0, 40@20, 10@40 (middle off the straight line) planarSides=-     OCCT 32000.0000 | truck 52796.0745 | an - | dT/O 6.5e-1 dT/An - dO/An - | faces O/T 6/6 types {"other":4,"plane":2} piecewise=46000.0000 firstLast=28000.0000
+1 target                                     planarSides=-     OCCT REF[OCCT built nothing] | truck REF[bl1 (blend): needs two or more sketches] | an - | dT/O - dT/An - dO/An - | faces O/T undefined/undefined types {}
+0 targets                                    planarSides=-     OCCT REF[OCCT built nothing] | truck REF[bl1 (blend): needs two or more sketches] | an - | dT/O - dT/An - dO/An - | faces O/T undefined/undefined types {}
+L (6 corners) -> rect 20x15 (4 corners)      planarSides=-     OCCT 8348.3310 | truck 8757.8125 | an - | dT/O 4.9e-2 dT/An - dO/An - | faces O/T 11/8 types {"other":3,"plane":5}
+bowtie section b                             planarSides=-     OCCT 3333.3333 | truck REF[bl1 (blend): solidcraft refused it -- solid.loft: each loft section must be one profile] | an - | dT/O - dT/An - dO/An - | faces O/T 6/undefined types {} OCCT valid=false
+collinear section b                          planarSides=-     OCCT REF[OCCT threw: [object WebAssembly.Exception]] | truck REF[bl1 (blend): solidcraft refused it -- solid.loft: sk_b_1 has no closed profiles] | an - | dT/O - dT/An - dO/An - | faces O/T undefined/undefined types {}
+E6 blend(a, b, 30, 5);                                                    -> errors=["blend() takes two sketches and a gap; the fourth argument (5) was ignored."] kinds=sketch,sketch
+E6 blend(a, b, 30, 'zzz');                                                -> errors=["blend() takes two sketches and a gap; the fourth argument (the text \"zzz\") was ignored."] kinds=sketch,sketch
+E6 blend(a, b, 30, { height: 30 });                                       -> errors=["blend() takes two sketches and a gap; the fourth argument (a { } object) was ignored."] kinds=sketch,sketch
+E6 blend(a, b, 30, 5, 6);                                                 -> errors=["blend() takes two sketches and a gap; the fourth argument (5) was ignored."] kinds=sketch,sketch
+E6 loft(a, b, 30, 5);                                                     -> errors=["blend() takes two sketches and a gap; the fourth argument (5) was ignored."] kinds=sketch,sketch
+E6 loft(a, b);                                                            -> errors=["blend needs a number for gap."] kinds=sketch,sketch
+E6 blend(a, b);                                                           -> errors=["blend needs a number for gap."] kinds=sketch,sketch
+E6 loft(a);                                                               -> errors=["blend() needs two sketches: blend(sketch1, sketch2, gap)."] kinds=sketch,sketch
+E6 blend(a);                                                              -> errors=["blend() needs two sketches: blend(sketch1, sketch2, gap)."] kinds=sketch,sketch
+E6 loft(a, b, "tall");                                                    -> errors=["blend's gap has to be a number, and you gave it the text \"tall\"."] kinds=sketch,sketch
+E6 loft(a, 7, 30);                                                        -> errors=["blend() needs two sketches: blend(sketch1, sketch2, gap)."] kinds=sketch,sketch
+E6 const c = sketch("top"); c.rect(5, 5); blend(a, b, c, 30);             -> errors=["blend() takes two sketches and a gap; the fourth argument (30) was ignored."] kinds=sketch,sketch,sketch
+E6 const c = sketch("top"); c.rect(5, 5); loft(a, b, c, 30);              -> errors=["blend() takes two sketches and a gap; the fourth argument (30) was ignored."] kinds=sketch,sketch,sketch
+E6 blend(a, a, 30);                                                       -> errors=[] kinds=sketch,sketch,blend
+E6 blend(a, b, 0);                                                        -> errors=[] kinds=sketch,sketch,blend
+E6 blend(a, b, 30); const k = cuboid(5,5,5);                              -> errors=[] kinds=sketch,sketch,blend,box
+E6 (statement AFTER a refused blend: cuboid)                              -> errors=["blend() takes two sketches and a gap; the fourth argument (5) was ignored."] kinds=sketch,sketch
+critic L (6) -> rect 10x10 at (10,10) (4 corners) planarSides=-     OCCT REF[OCCT threw: [object WebAssembly.Exception]] | truck 5422.5260 | an - | dT/O - dT/An - dO/An - | faces O/T undefined/8 types {"other":2,"plane":6}
+poly->circle n=3 phase=0rad                  planarSides=-     OCCT 10529.1071 | truck 10528.6854 | an - | dT/O 4.0e-5 dT/An - dO/An - | faces O/T 5/5 types {"other":3,"plane":2}
+circle->poly n=3 phase=0rad                  planarSides=-     OCCT 10529.1071 | truck 10526.9767 | an - | dT/O 2.0e-4 dT/An - dO/An - | faces O/T 5/5 types {"other":3,"plane":2}
+poly->circle n=3 phase=0.3rad                planarSides=-     OCCT 10498.1735 | truck 10528.6873 | an - | dT/O 2.9e-3 dT/An - dO/An - | faces O/T 6/5 types {"other":3,"plane":2}
+circle->poly n=3 phase=0.3rad                planarSides=-     OCCT 10494.9019 | truck 10526.9819 | an - | dT/O 3.1e-3 dT/An - dO/An - | faces O/T 5/5 types {"other":3,"plane":2}
+poly->circle n=5 phase=0rad                  planarSides=-     OCCT 15125.6882 | truck 15125.0786 | an - | dT/O 4.0e-5 dT/An - dO/An - | faces O/T 7/7 types {"other":5,"plane":2}
+circle->poly n=5 phase=0rad                  planarSides=-     OCCT 15125.6882 | truck 15125.3296 | an - | dT/O 2.4e-5 dT/An - dO/An - | faces O/T 7/7 types {"other":5,"plane":2}
+poly->circle n=5 phase=0.3rad                planarSides=-     OCCT 15123.9254 | truck 15125.0786 | an - | dT/O 7.6e-5 dT/An - dO/An - | faces O/T 8/7 types {"other":5,"plane":2}
+circle->poly n=5 phase=0.3rad                planarSides=-     OCCT 15098.6895 | truck 15125.3292 | an - | dT/O 1.8e-3 dT/An - dO/An - | faces O/T 7/7 types {"other":5,"plane":2}
+poly->circle n=6 phase=0rad                  planarSides=-     OCCT 16052.8962 | truck 16052.4821 | an - | dT/O 2.6e-5 dT/An - dO/An - | faces O/T 8/8 types {"other":6,"plane":2}
+circle->poly n=6 phase=0rad                  planarSides=-     OCCT 16052.8962 | truck 16051.7478 | an - | dT/O 7.2e-5 dT/An - dO/An - | faces O/T 8/8 types {"other":6,"plane":2}
+poly->circle n=6 phase=0.3rad                planarSides=-     OCCT 16052.3655 | truck 16052.4797 | an - | dT/O 7.1e-6 dT/An - dO/An - | faces O/T 9/8 types {"other":6,"plane":2}
+circle->poly n=6 phase=0.3rad                planarSides=-     OCCT 16029.3513 | truck 16051.7434 | an - | dT/O 1.4e-3 dT/An - dO/An - | faces O/T 8/8 types {"other":6,"plane":2}
+poly->circle n=8 phase=0rad                  planarSides=-     OCCT 17018.3940 | truck 17017.5135 | an - | dT/O 5.2e-5 dT/An - dO/An - | faces O/T 10/10 types {"other":8,"plane":2}
+circle->poly n=8 phase=0rad                  planarSides=-     OCCT 17018.3940 | truck 17017.6716 | an - | dT/O 4.2e-5 dT/An - dO/An - | faces O/T 10/10 types {"other":8,"plane":2}
+poly->circle n=8 phase=0.3rad                planarSides=-     OCCT 17018.3494 | truck 17017.5134 | an - | dT/O 4.9e-5 dT/An - dO/An - | faces O/T 11/10 types {"other":8,"plane":2}
+circle->poly n=8 phase=0.3rad                planarSides=-     OCCT 16999.9276 | truck 17017.6706 | an - | dT/O 1.0e-3 dT/An - dO/An - | faces O/T 10/10 types {"other":8,"plane":2}
+lesson example 40x40 -> 20x20 gap 30         planarSides=-     OCCT 28000.0000 | truck 28000.0000 | an 28000.0000 | dT/O 4.0e-15 dT/An 4.0e-15 dO/An 0.0e+0 | faces O/T 6/6 types {"plane":6}
+lesson-text claim: loft between two circles  planarSides=-     OCCT 5497.7871 | truck 5497.2423 | an 5497.7871 | dT/O 9.9e-5 dT/An 9.9e-5 dO/An 0.0e+0 | faces O/T 3/3 types {"cone":1,"plane":2}
+E9 square twist +2 deg                            truck 8000.5568 vs mirror 7996.1943 (d 5.5e-4); OCCT 7998.3755 vs mirror 7998.3755 (d 0.0e+0); dT/O 2.7e-4 / mirror 2.7e-4
+E9 square twist +5 deg                            truck 7995.2998 vs mirror 7984.4053 (d 1.4e-3); OCCT 7989.8525 vs mirror 7989.8525 (d 0.0e+0); dT/O 6.8e-4 / mirror 6.8e-4
+E9 square twist +20 deg                           truck 7860.5566 vs mirror 7817.8041 (d 5.5e-3); OCCT 7839.1803 vs mirror 7839.1803 (d 1.2e-16); dT/O 2.7e-3 / mirror 2.7e-3
+E9 square twist +30 deg                           truck 7673.9844 vs mirror 7611.4844 (d 8.2e-3); OCCT 7642.7344 vs mirror 7642.7344 (d 0.0e+0); dT/O 4.1e-3 / mirror 4.1e-3
+E9 fuzz n=3 k=1 (random non-planar)               truck 4682.1836 vs mirror 4697.3669 (d 3.2e-3); OCCT 4691.6869 vs mirror 4691.6869 (d 3.9e-16); dT/O 2.0e-3 / mirror 1.2e-3
+E9 fuzz n=3 k=2 (random non-planar)               truck 5871.7393 vs mirror 5895.2072 (d 4.0e-3); OCCT 5883.4733 vs mirror 5883.4733 (d 1.5e-16); dT/O 2.0e-3 / mirror 2.0e-3
+E9 fuzz n=3 k=3 (random non-planar)               truck 7412.7615 vs mirror 7426.1369 (d 1.8e-3); OCCT 7419.4492 vs mirror 7419.4492 (d 3.7e-16); dT/O 9.0e-4 / mirror 9.0e-4
+E9 fuzz n=3 k=4 (random non-planar)               truck 4714.0002 vs mirror 4719.4737 (d 1.2e-3); OCCT 4717.5813 vs mirror 4717.5813 (d 0.0e+0); dT/O 7.6e-4 / mirror 4.0e-4
+E9 fuzz n=3 k=5 (random non-planar)               truck 5857.0773 vs mirror 5869.1895 (d 2.1e-3); OCCT 5863.1334 vs mirror 5863.1334 (d 1.6e-16); dT/O 1.0e-3 / mirror 1.0e-3
+E9 fuzz n=3 k=6 (random non-planar)               truck 5045.0089 vs mirror 5048.4311 (d 6.8e-4); OCCT 5046.7555 vs mirror 5046.7555 (d 3.6e-16); dT/O 3.5e-4 / mirror 3.3e-4
+E9 fuzz n=3 k=7 (random non-planar)               truck 5559.9614 vs mirror 5558.1629 (d 3.2e-4); OCCT 5558.1629 vs mirror 5558.1629 (d 0.0e+0); dT/O 3.2e-4 / mirror 3.9e-15
+E9 fuzz n=3 k=8 (random non-planar)               truck 7337.6711 vs mirror 7330.3841 (d 9.9e-4); OCCT 7334.0276 vs mirror 7334.0276 (d 2.5e-16); dT/O 5.0e-4 / mirror 5.0e-4
+E9 fuzz n=3 k=9 (random non-planar)               truck 8245.3304 vs mirror 8229.3116 (d 1.9e-3); OCCT 8238.0674 vs mirror 8238.0674 (d 0.0e+0); dT/O 8.8e-4 / mirror 1.1e-3
+E9 fuzz n=3 k=10 (random non-planar)              truck 6638.2900 vs mirror 6642.0143 (d 5.6e-4); OCCT 6645.7500 vs mirror 6645.7500 (d 0.0e+0); dT/O 1.1e-3 / mirror 5.6e-4
+E9 fuzz n=3 k=11 (random non-planar)              truck 5190.6763 vs mirror 5206.2769 (d 3.0e-3); OCCT 5198.4766 vs mirror 5198.4766 (d 3.5e-16); dT/O 1.5e-3 / mirror 1.5e-3
+E9 fuzz n=3 k=12 (random non-planar)              truck 6263.2745 vs mirror 6276.7025 (d 2.1e-3); OCCT 6269.9885 vs mirror 6269.9885 (d 1.5e-16); dT/O 1.1e-3 / mirror 1.1e-3
+E9 summary: truck differs from its own mirror image (>1e-6) in 16 of 16; OCCT differs from its mirror in 0
+reg n=3 ph=0.000 p->c                                      O 10529.107 T 10528.685 dT/O 4.0e-5 signed -4.0e-5 faces 5/5
+reg n=3 ph=0.000 c->p                                      O 10529.107 T 10526.977 dT/O 2.0e-4 signed -2.0e-4 faces 5/5
+reg n=3 ph=1.047 p->c                                      O 10529.107 T 10528.685 dT/O 4.0e-5 signed -4.0e-5 faces 6/5
+reg n=3 ph=1.047 c->p                                      O 10529.107 T 10526.977 dT/O 2.0e-4 signed -2.0e-4 faces 6/5
+reg n=3 ph=0.300 p->c                                      O 10498.174 T 10528.687 dT/O 2.9e-3 signed 2.9e-3 faces 6/5
+reg n=3 ph=0.300 c->p                                      O 10494.902 T 10526.982 dT/O 3.1e-3 signed 3.1e-3 faces 5/5
+reg n=3 ph=1.000 p->c                                      O 10528.907 T 10528.688 dT/O 2.1e-5 signed -2.1e-5 faces 6/5
+reg n=3 ph=1.000 c->p                                      O 10528.907 T 10526.974 dT/O 1.8e-4 signed -1.8e-4 faces 6/5
+reg n=4 ph=0.000 p->c                                      O 13528.792 T 13528.135 dT/O 4.9e-5 signed -4.9e-5 faces 6/6
+reg n=4 ph=0.000 c->p                                      O 13528.792 T 13527.727 dT/O 7.9e-5 signed -7.9e-5 faces 6/6
+reg n=4 ph=0.785 p->c                                      O 13528.792 T 13528.389 dT/O 3.0e-5 signed -3.0e-5 faces 7/6
+reg n=4 ph=0.785 c->p                                      O 13528.792 T 13527.796 dT/O 7.4e-5 signed -7.4e-5 faces 7/6
+reg n=4 ph=0.300 p->c                                      O 13522.297 T 13528.148 dT/O 4.3e-4 signed 4.3e-4 faces 7/6
+reg n=4 ph=0.300 c->p                                      O 13497.791 T 13527.727 dT/O 2.2e-3 signed 2.2e-3 faces 6/6
+reg n=4 ph=1.000 p->c                                      O 13527.022 T 13528.307 dT/O 9.5e-5 signed 9.5e-5 faces 7/6
+reg n=4 ph=1.000 c->p                                      O 13527.022 T 13527.740 dT/O 5.3e-5 signed 5.3e-5 faces 7/6
+reg n=5 ph=0.000 p->c                                      O 15125.688 T 15125.079 dT/O 4.0e-5 signed -4.0e-5 faces 7/7
+reg n=5 ph=0.000 c->p                                      O 15125.688 T 15125.330 dT/O 2.4e-5 signed -2.4e-5 faces 7/7
+reg n=5 ph=0.628 p->c                                      O 15125.688 T 15125.079 dT/O 4.0e-5 signed -4.0e-5 faces 8/7
+reg n=5 ph=0.628 c->p                                      O 15125.688 T 15125.330 dT/O 2.4e-5 signed -2.4e-5 faces 8/7
+reg n=5 ph=0.300 p->c                                      O 15123.925 T 15125.079 dT/O 7.6e-5 signed 7.6e-5 faces 8/7
+reg n=5 ph=0.300 c->p                                      O 15098.689 T 15125.329 dT/O 1.8e-3 signed 1.8e-3 faces 7/7
+reg n=5 ph=1.000 p->c                                      O 15123.645 T 15125.079 dT/O 9.5e-5 signed 9.5e-5 faces 8/7
+reg n=5 ph=1.000 c->p                                      O 15123.645 T 15125.326 dT/O 1.1e-4 signed 1.1e-4 faces 8/7
+reg n=6 ph=0.000 p->c                                      O 16052.896 T 16052.482 dT/O 2.6e-5 signed -2.6e-5 faces 8/8
+reg n=6 ph=0.000 c->p                                      O 16052.896 T 16051.748 dT/O 7.2e-5 signed -7.2e-5 faces 8/8
+reg n=6 ph=0.524 p->c                                      O 16052.896 T 16052.482 dT/O 2.6e-5 signed -2.6e-5 faces 9/8
+reg n=6 ph=0.524 c->p                                      O 15981.820 T 16051.748 dT/O 4.4e-3 signed 4.4e-3 faces 8/8
+reg n=6 ph=0.300 p->c                                      O 16052.365 T 16052.480 dT/O 7.1e-6 signed 7.1e-6 faces 9/8
+reg n=6 ph=0.300 c->p                                      O 16029.351 T 16051.743 dT/O 1.4e-3 signed 1.4e-3 faces 8/8
+reg n=6 ph=1.000 p->c                                      O 16052.311 T 16052.481 dT/O 1.1e-5 signed 1.1e-5 faces 8/8
+reg n=6 ph=1.000 c->p                                      O 16052.311 T 16051.748 dT/O 3.5e-5 signed -3.5e-5 faces 8/8
+reg n=8 ph=0.000 p->c                                      O 17018.394 T 17017.514 dT/O 5.2e-5 signed -5.2e-5 faces 10/10
+reg n=8 ph=0.000 c->p                                      O 17018.394 T 17017.672 dT/O 4.2e-5 signed -4.2e-5 faces 10/10
+reg n=8 ph=0.393 p->c                                      O 17018.394 T 17017.511 dT/O 5.2e-5 signed -5.2e-5 faces 11/10
+reg n=8 ph=0.393 c->p                                      O 16986.853 T 17017.672 dT/O 1.8e-3 signed 1.8e-3 faces 10/10
+reg n=8 ph=0.300 p->c                                      O 17018.349 T 17017.513 dT/O 4.9e-5 signed -4.9e-5 faces 11/10
+reg n=8 ph=0.300 c->p                                      O 16999.928 T 17017.671 dT/O 1.0e-3 signed 1.0e-3 faces 10/10
+reg n=8 ph=1.000 p->c                                      O 17018.254 T 17017.514 dT/O 4.4e-5 signed -4.4e-5 faces 11/10
+reg n=8 ph=1.000 c->p                                      O 17018.254 T 17017.672 dT/O 3.4e-5 signed -3.4e-5 faces 11/10
+rect 40x40 p->c                                            O 21953.436 T 21952.875 dT/O 2.6e-5 signed -2.6e-5 faces 7/6
+rect 40x40 c->p                                            O 21953.436 T 21951.426 dT/O 9.2e-5 signed -9.2e-5 faces 7/6
+rect 40x30 p->c                                            O 17824.739 T 17824.017 dT/O 4.1e-5 signed -4.1e-5 faces 7/6
+rect 40x30 c->p                                            O 17824.739 T 17823.059 dT/O 9.4e-5 signed -9.4e-5 faces 7/6
+rect 40x20 p->c                                            O 13585.137 T 13584.683 dT/O 3.3e-5 signed -3.3e-5 faces 7/6
+rect 40x20 c->p                                            O 13585.137 T 13584.596 dT/O 4.0e-5 signed -4.0e-5 faces 7/6
+rect 40x10 p->c                                            O 9215.455 T 9215.022 dT/O 4.7e-5 signed -4.7e-5 faces 7/6
+rect 40x10 c->p                                            O 9129.492 T 9215.050 dT/O 9.4e-3 signed 9.4e-3 faces 6/6
+rect 30x40 p->c                                            O 17824.739 T 17824.017 dT/O 4.1e-5 signed -4.1e-5 faces 7/6
+rect 30x40 c->p                                            O 17824.739 T 17823.059 dT/O 9.4e-5 signed -9.4e-5 faces 7/6
+irr tri [[12,0],[-4,9],[-6,-5]] vs d60 p->c                O 29735.196 T 29818.581 dT/O 2.8e-3 signed 2.8e-3 faces 6/5
+irr quad [[12,0],[0,6],[-8,0],[0,-10]] vs d60 p->c         O 30608.258 T 30649.468 dT/O 1.3e-3 signed 1.3e-3 faces 7/6
+irr tri [[20,0],[-8,14],[-12,-9]] vs d20 p->c              O 8485.632 T 8528.747 dT/O 5.1e-3 signed 5.1e-3 faces 6/5
+L [[0,0],[30,0],[30,10],[10,10],[10,30],[0,30]] vs d20 c(10,10) p->c O REF T 8921.917 dT/O - signed - faces undefined/8
+L centered vertex0 at(20,0) p->c                           O 8821.233 T 8172.235 dT/O 7.4e-2 signed -7.4e-2 faces 9/8
+irr tri [[12,0],[-4,9],[-6,-5]] vs d60 c->p                O 29803.920 T 29818.687 dT/O 5.0e-4 signed 5.0e-4 faces 5/5
+irr quad [[12,0],[0,6],[-8,0],[0,-10]] vs d60 c->p         O 30639.781 T 30648.998 dT/O 3.0e-4 signed 3.0e-4 faces 6/6
+irr tri [[20,0],[-8,14],[-12,-9]] vs d20 c->p              O 8519.445 T 8528.773 dT/O 1.1e-3 signed 1.1e-3 faces 5/5
+L [[0,0],[30,0],[30,10],[10,10],[10,30],[0,30]] vs d20 c(10,10) c->p O REF T 8921.343 dT/O - signed - faces undefined/8
+L centered vertex0 at(20,0) c->p                           O 8782.808 T 8171.068 dT/O 7.0e-2 signed -7.0e-2 faces 8/8
+square r28.28 rot 0 p->c                                   O 21953.436 T 21952.875 dT/O 2.6e-5 signed -2.6e-5 faces 7/6
+square r28.28 rot 0 c->p                                   O 21953.436 T 21951.426 dT/O 9.2e-5 signed -9.2e-5 faces 7/6
+square r28.28 rot 10 p->c                                  O 21951.744 T 21952.875 dT/O 5.2e-5 signed 5.2e-5 faces 7/6
+square r28.28 rot 10 c->p                                  O 21951.744 T 21951.426 dT/O 1.4e-5 signed -1.4e-5 faces 7/6
+square r28.28 rot 15 p->c                                  O 21949.828 T 21952.875 dT/O 1.4e-4 signed 1.4e-4 faces 7/6
+square r28.28 rot 15 c->p                                  O 21949.828 T 21951.426 dT/O 7.3e-5 signed 7.3e-5 faces 7/6
+square r28.28 rot 30 p->c                                  O 21943.680 T 21952.875 dT/O 4.2e-4 signed 4.2e-4 faces 7/6
+square r28.28 rot 30 c->p                                  O 21943.680 T 21951.426 dT/O 3.5e-4 signed 3.5e-4 faces 7/6
+square r28.28 rot 45 p->c                                  O 21953.436 T 21952.875 dT/O 2.6e-5 signed -2.6e-5 faces 6/6
+square r28.28 rot 45 c->p                                  O 21953.436 T 21951.426 dT/O 9.2e-5 signed -9.2e-5 faces 6/6
+square r28.28 rot 60 p->c                                  O 21943.680 T 21952.875 dT/O 4.2e-4 signed 4.2e-4 faces 7/6
+square r28.28 rot 60 c->p                                  O 21943.680 T 21951.426 dT/O 3.5e-4 signed 3.5e-4 faces 7/6
+square r28.28 rot 75 p->c                                  O 21949.828 T 21952.875 dT/O 1.4e-4 signed 1.4e-4 faces 7/6
+square r28.28 rot 75 c->p                                  O 21949.828 T 21951.426 dT/O 7.3e-5 signed 7.3e-5 faces 7/6
+square r28.28 rot 90 p->c                                  O 21953.436 T 21952.875 dT/O 2.6e-5 signed -2.6e-5 faces 7/6
+square r28.28 rot 90 c->p                                  O 21953.436 T 21951.426 dT/O 9.2e-5 signed -9.2e-5 faces 7/6
+reg hex ph0 circle off-centre 5,3 p->c                     O 16052.896 T 16052.480 dT/O 2.6e-5 signed -2.6e-5 faces 8/8
+reg hex ph0 circle off-centre 5,3 c->p                     O 16052.896 T 16051.748 dT/O 7.2e-5 signed -7.2e-5 faces 8/8
+reg hex ph0 circle off-centre 15,-8 p->c                   O 16052.896 T 16052.390 dT/O 3.2e-5 signed -3.2e-5 faces 8/8
+reg hex ph0 circle off-centre 15,-8 c->p                   O 16052.896 T 16051.835 dT/O 6.6e-5 signed -6.6e-5 faces 8/8
+rect 40x40 d30 c->p                O 28226.983 T 28223.957 B REF dT/O 1.1e-4 faces 7/6
+rect 40x26.7 d20 c->p              O 16439.364 T 16437.664 B REF dT/O 1.0e-4 faces 7/6
+rect 40x20 d10 c->p                O 9471.403 T 9470.358 B REF dT/O 1.1e-4 faces 7/6
+rect 40x13.3 d10 c->p              O 6841.048 T 6897.580 B REF dT/O 8.3e-3 faces 6/6
+rect 40x13.3 d20 c->p              O 10557.760 T 10671.183 B REF dT/O 1.1e-2 faces 6/6
+rect 40x13.3 d30 c->p              O 15583.469 T 15753.515 B REF dT/O 1.1e-2 faces 6/6
+rect 40x13.3 d50 p->c              O 29846.456 T 29843.249 B REF dT/O 1.1e-4 faces 7/6
+rect 40x13.3 d50 c->p              O 29561.878 T 29845.208 B REF dT/O 9.6e-3 faces 6/6
+rect 40x10 d10 c->p                O 5576.914 T 5619.489 B REF dT/O 7.6e-3 faces 6/6
+rect 40x10 d20 c->p                O 9129.492 T 9215.050 B REF dT/O 9.4e-3 faces 6/6
+rect 40x10 d30 c->p                O 13991.067 T 14119.321 B REF dT/O 9.2e-3 faces 6/6
+rect 40x10 d50 c->p                O 27641.207 T 27854.855 B REF dT/O 7.7e-3 faces 6/6
+rect 60x20 d10 c->p                O 13286.762 T 13371.200 B REF dT/O 6.4e-3 faces 6/6
+rect 60x20 d20 c->p                O 17882.521 T 18051.331 B REF dT/O 9.4e-3 faces 6/6
+rect 60x20 d30 c->p                O 23787.278 T 24040.421 B REF dT/O 1.1e-2 faces 6/6
+rect 60x20 d50 c->p                O 39523.781 T 39949.506 B REF dT/O 1.1e-2 faces 6/6
+rect 20x40 d10 c->p                O 9471.403 T 9470.358 B REF dT/O 1.1e-4 faces 7/6
+rect-circle grid 64 max 1.1e-2 over 3e-4: 12
+rect 30x20 at 5,3 vs d20@0 p->c              O 11306.810 T 11306.415 B REF dT/O 3.5e-5 faces 7/6
+rect 30x20 at 5,3 vs d20@0 c->p              O 11306.810 T 11306.388 B REF dT/O 3.7e-5 faces 7/6
+rect 30x20 at 12,-7 vs d20@0 p->c            O 11306.810 T 11306.439 B REF dT/O 3.3e-5 faces 7/6
+rect 30x20 at 12,-7 vs d20@0 c->p            O 11306.810 T 11305.842 B REF dT/O 8.6e-5 faces 7/6
+rect 30x20 at 0,20 vs d20@0 p->c             O 11306.810 T 11306.370 B REF dT/O 3.9e-5 faces 7/6
+rect 30x20 at 0,20 vs d20@0 c->p             O 11306.810 T 11306.317 B REF dT/O 4.4e-5 faces 7/6
+--- circle circle
+circle d20@0,0 -> d10@0,0                O 5497.787 T 5497.242 B 5497.787 dT/O 9.9e-5 faces 3/3
+circle d20@0,0 -> d30@0,0                O 14922.565 T 14921.086 B 14922.565 dT/O 9.9e-5 faces 3/3
+circle d20@0,0 -> d10@8,5                O 5497.787 T 5497.242 B REF dT/O 9.9e-5 faces 3/3
+circle d40@0,0 -> d5@0,0                 O 14333.516 T 14333.336 B 14333.516 dT/O 1.3e-5 faces 3/3
+circle d20@0,0 -> d20@10,0               O 9424.778 T 9423.831 B REF dT/O 1.0e-4 faces 3/3
+rounded 40x40 r6 d20 p->c                    O 25860.825 T 25860.130 B REF dT/O 2.7e-5 faces 11/3
+rounded 40x40 r6 d20 c->p                    O 25860.825 T 25859.982 B REF dT/O 3.3e-5 faces 11/3
+rounded 40x40 r3 d20 p->c                    O 26182.073 T 26181.902 B REF dT/O 6.5e-6 faces 11/3
+rounded 40x40 r3 d20 c->p                    O 26182.073 T 26181.686 B REF dT/O 1.5e-5 faces 11/3
+rounded 40x40 r10 d20 p->c                   O 25171.644 T 25170.447 B REF dT/O 4.8e-5 faces 11/3
+rounded 40x40 r10 d20 c->p                   O 25171.644 T 25170.139 B REF dT/O 6.0e-5 faces 11/3
+rounded 40x30 r5 d20 p->c                    O 21008.720 T 21008.239 B REF dT/O 2.3e-5 faces 11/3
+rounded 40x30 r5 d20 c->p                    O 21008.720 T 21007.943 B REF dT/O 3.7e-5 faces 11/3
+rounded 40x20 r5 d20 p->c                    O 15831.682 T 15831.152 B REF dT/O 3.4e-5 faces 11/3
+rounded 40x20 r5 d20 c->p                    O 15820.445 T 15831.202 B REF dT/O 6.8e-4 faces 10/3
+rounded 40x40 r19 d20 p->c                   O 22409.119 T 22407.196 B REF dT/O 8.6e-5 faces 11/10
+rounded 40x40 r19 d20 c->p                   O 22409.119 T 22408.130 B REF dT/O 4.4e-5 faces 10/10
+rounded40 r6 -> rounded20 r3                 O 27459.203 T 27459.010 B REF dT/O 7.0e-6 faces 10/10
+rounded40 r6 -> rounded20 r6                 O 27072.920 T 27072.579 B REF dT/O 1.3e-5 faces 10/10
+rounded40 r6 -> rounded20 r3 (1.5 ratio)     O 27459.203 T 27459.010 B REF dT/O 7.0e-6 faces 10/10
+rounded40 r6 -> rect20                       O 27619.201 T 27254.708 B REF dT/O 1.3e-2 faces 14/10
+only 1 corner rounded r6 -> circle           O 26225.507 T 26225.991 B REF dT/O 1.8e-5 faces 8/5
+rounded40x30 r5 -> circle d20 off            O 21008.720 T 21008.239 B REF dT/O 2.3e-5 faces 11/3
+--- start-shifted rect (b listed from each corner), CCW and CW
+rect40x30 -> rect20x15 CCW start+0             O 14000.0000 T 14000.0000 B 14000.0000 dT/O 6.5e-16 faces 6/6/6 | parShifts [0] geo 14000.0000 idx 14000.0000 brep-vs-geo 3.9e-16
+rect40x30 -> rect20x15 CCW start+1             O 14000.0000 T 14000.0000 B REF[brep-rs can only blend two matching stra] dT/O 6.5e-16 faces 6/6/undefined | parShifts [3] geo 14000.0000 idx 10000.0000 brep-vs-geo -
+rect40x30 -> rect20x15 CCW start+2             O 14000.0000 T 14000.0000 B 6000.0000 dT/O 6.5e-16 faces 6/6/6 | parShifts [2] geo 14000.0000 idx 6000.0000 brep-vs-geo 5.7e-1
+rect40x30 -> rect20x15 CCW start+3             O 14000.0000 T 14000.0000 B REF[brep-rs can only blend two matching stra] dT/O 6.5e-16 faces 6/6/undefined | parShifts [1] geo 14000.0000 idx 10000.0000 brep-vs-geo -
+rect40x30 -> rect20x15 CW start+0              O 14000.0000 T 14000.0000 B REF[brep-rs can only blend two matching stra] dT/O 6.5e-16 faces 6/6/undefined | parShifts [0] geo 14000.0000 idx 14000.0000 brep-vs-geo -
+rect40x30 -> rect20x15 CW start+1              O 14000.0000 T 14000.0000 B REF[brep-rs can only blend two matching stra] dT/O 6.5e-16 faces 6/6/undefined | parShifts [1] geo 14000.0000 idx 10000.0000 brep-vs-geo -
+rect40x30 -> rect20x15 CW start+2              O 14000.0000 T 14000.0000 B REF[brep-rs can only blend two matching stra] dT/O 6.5e-16 faces 6/6/undefined | parShifts [2] geo 14000.0000 idx 6000.0000 brep-vs-geo -
+rect40x30 -> rect20x15 CW start+3              O 14000.0000 T 14000.0000 B REF[brep-rs can only blend two matching stra] dT/O 6.5e-16 faces 6/6/undefined | parShifts [3] geo 14000.0000 idx 10000.0000 brep-vs-geo -
+critic: 40x30 -> b=[[20,15],[0,15],[0,0],[20,0]] O 14000.0000 T 14000.0000 B 6000.0000 dT/O 3.9e-16 faces 6/6/6 | parShifts [2] geo 14000.0000 idx 6000.0000 brep-vs-geo 5.7e-1
+--- L
+L -> half L start+0                            O 7000.0000 T 7000.0000 B 7000.0000 dT/O 5.8e-15 faces 8/8/8 | parShifts [0] geo 7000.0000 idx 7000.0000 brep-vs-geo 1.3e-16
+L -> half L start+1                            O 7000.0000 T 7000.0000 B REF[brep-rs can only blend two matching stra] dT/O 5.8e-15 faces 8/8/undefined | parShifts [5] geo 7000.0000 idx 5500.0000 brep-vs-geo -
+L -> half L start+2                            O 7000.0000 T 7000.0000 B 4000.0000 dT/O 5.8e-15 faces 8/8/8 | parShifts [4] geo 7000.0000 idx 4000.0000 brep-vs-geo 4.3e-1
+L -> half L start+3                            O 7000.0000 T 7000.0000 B REF[brep-rs can only blend two matching stra] dT/O 5.8e-15 faces 8/8/undefined | parShifts [3] geo 7000.0000 idx 4000.0000 brep-vs-geo -
+L -> half L start+4                            O 7000.0000 T 7000.0000 B 4000.0000 dT/O 5.7e-15 faces 8/8/8 | parShifts [2] geo 7000.0000 idx 4000.0000 brep-vs-geo 4.3e-1
+L -> half L start+5                            O 7000.0000 T 7000.0000 B REF[brep-rs can only blend two matching stra] dT/O 5.8e-15 faces 8/8/undefined | parShifts [1] geo 7000.0000 idx 5500.0000 brep-vs-geo -
+L -> mirrored half L start+0                   O 8333.3333 T 4666.6667 B 2000.0000 dT/O 4.4e-1 faces 8/8/8 | parShifts [] geo undefined idx 2000.0000 brep-vs-geo -
+L -> mirrored half L start+2                   O 8333.3333 T 2000.0000 B 4666.6667 dT/O 7.6e-1 faces 8/8/8 | parShifts [] geo undefined idx 4666.6667 brep-vs-geo -
+L -> mirrored half L start+4                   O 8333.3333 T 8333.3333 B 8333.3333 dT/O 5.5e-15 faces 8/8/8 | parShifts [] geo undefined idx 8333.3333 brep-vs-geo -
+mirrored L -> mirrored half L                  O 7000.0000 T 7000.0000 B 7000.0000 dT/O 2.6e-15 faces 8/8/8 | parShifts [0] geo 7000.0000 idx 7000.0000 brep-vs-geo 2.6e-16
+--- triangles
+tri -> half tri start+0                        O 7000.0000 T 7000.0000 B 7000.0000 dT/O 1.9e-15 faces 5/5/5 | parShifts [0] geo 7000.0000 idx 7000.0000 brep-vs-geo 3.9e-16
+tri -> half tri start+1                        O 7000.0000 T 7000.0000 B REF[brep-rs can only blend two matching stra] dT/O 1.9e-15 faces 5/5/undefined | parShifts [2] geo 7000.0000 idx 4000.0000 brep-vs-geo -
+tri -> half tri start+2                        O 7000.0000 T 7000.0000 B REF[brep-rs can only blend two matching stra] dT/O 1.9e-15 faces 5/5/undefined | parShifts [1] geo 7000.0000 idx 4000.0000 brep-vs-geo -
+tri -> tri rotated 180 (flip)                  O 6000.0000 T 6023.4375 B 3000.0000 dT/O 3.9e-3 faces 5/5/5 | parShifts [] geo undefined idx 3000.0000 brep-vs-geo -
+tri -> tri rotated 60                          O 6000.0000 T 6049.0522 B REF[brep-rs can only blend two matching stra] dT/O 8.2e-3 faces 5/5/undefined | parShifts [] geo undefined idx 6000.0000 brep-vs-geo -
+--- twist table 40x40 -> rotated 20x20 and same-size squares
+square40 -> square20 rot 0                     O 18666.6667 T 18666.6667 B 18666.6667 dT/O 3.9e-15 faces 6/6/6 | parShifts [0] geo 18666.6667 idx 18666.6667 brep-vs-geo 0.0e+0
+square40 -> square20 rot 5                     O 18646.3717 T 18657.2662 B REF[brep-rs can only blend two matching stra] dT/O 5.8e-4 faces 6/6/undefined | parShifts [] geo undefined idx 18646.3717 brep-vs-geo -
+square40 -> square20 rot 10                    O 18585.6413 T 18585.6413 B REF[brep-rs can only blend two matching stra] dT/O 2.2e-15 faces 6/6/undefined | parShifts [] geo undefined idx 18585.6413 brep-vs-geo -
+square40 -> square20 rot 20                    O 18345.0273 T 18387.7798 B REF[brep-rs can only blend two matching stra] dT/O 2.3e-3 faces 6/6/undefined | parShifts [] geo undefined idx 18345.0273 brep-vs-geo -
+square40 -> square20 rot 30                    O 17952.1355 T 18014.6355 B REF[brep-rs can only blend two matching stra] dT/O 3.5e-3 faces 6/6/undefined | parShifts [] geo undefined idx 17952.1355 brep-vs-geo -
+square40 -> square20 rot 40                    O 17418.9037 T 17418.9037 B REF[brep-rs can only blend two matching stra] dT/O 4.2e-16 faces 6/6/undefined | parShifts [] geo undefined idx 17418.9037 brep-vs-geo -
+square40 -> square20 rot 44                    O 17169.8123 T 17169.8123 B REF[brep-rs can only blend two matching stra] dT/O 1.9e-15 faces 6/6/undefined | parShifts [] geo undefined idx 17169.8123 brep-vs-geo -
+square40 -> square20 rot 45                    O 17104.5695 T 17104.5695 B REF[brep-rs can only blend two matching stra] dT/O 1.5e-15 faces 6/6/undefined | parShifts [] geo undefined idx 17104.5695 brep-vs-geo -
+square40 -> square20 rot 46                    O 17169.8123 T 17169.8123 B REF[brep-rs can only blend two matching stra] dT/O 1.3e-15 faces 6/6/undefined | parShifts [] geo undefined idx 17038.1780 brep-vs-geo -
+square40 -> square20 rot 50                    O 17418.9037 T 17418.9037 B REF[brep-rs can only blend two matching stra] dT/O 1.0e-15 faces 6/6/undefined | parShifts [] geo undefined idx 16761.5339 brep-vs-geo -
+square40 -> square20 rot 60                    O 17952.1355 T 17889.6355 B REF[brep-rs can only blend two matching stra] dT/O 3.5e-3 faces 6/6/undefined | parShifts [] geo undefined idx 16000.0000 brep-vs-geo -
+square40 -> square20 rot 70                    O 18345.0273 T 18345.0273 B REF[brep-rs can only blend two matching stra] dT/O 9.9e-16 faces 6/6/undefined | parShifts [] geo undefined idx 15157.4408 brep-vs-geo -
+square40 -> square20 rot 80                    O 18585.6413 T 18563.9353 B REF[brep-rs can only blend two matching stra] dT/O 1.2e-3 faces 6/6/undefined | parShifts [] geo undefined idx 14259.4569 brep-vs-geo -
+square40 -> square20 rot 90                    O 18666.6667 T 18666.6667 B REF[brep-rs can only blend two matching stra] dT/O 7.8e-16 faces 6/6/undefined | parShifts [3] geo 18666.6667 idx 13333.3333 brep-vs-geo -
+square20 -> square20 rot 10                    O 7959.4873 T 7959.4873 B REF[brep-rs can only blend two matching stra] dT/O 9.1e-15 faces 6/6/undefined | parShifts [] geo undefined idx 7959.4873 brep-vs-geo -
+square20 -> square20 rot 44                    O 7251.5728 T 7294.9889 B REF[brep-rs can only blend two matching stra] dT/O 6.0e-3 faces 6/6/undefined | parShifts [] geo undefined idx 7251.5728 brep-vs-geo -
+square20 -> square20 rot 45                    O 7218.9514 T 7263.1456 B REF[brep-rs can only blend two matching stra] dT/O 6.1e-3 faces 6/6/undefined | parShifts [] geo undefined idx 7218.9514 brep-vs-geo -
+square20 -> square20 rot 60                    O 7642.7344 T 7611.4844 B REF[brep-rs can only blend two matching stra] dT/O 4.1e-3 faces 6/6/undefined | parShifts [] geo undefined idx 6666.6667 brep-vs-geo -
+square20 -> square20 rot 70                    O 7839.1803 T 7839.1803 B REF[brep-rs can only blend two matching stra] dT/O 8.1e-15 faces 6/6/undefined | parShifts [] geo undefined idx 6245.3870 brep-vs-geo -
+--- tie cases
+tri r20 -> tri r10 rot 60 (tie)                O 5196.1524 T 5155.5575 B REF[brep-rs can only blend two matching stra] dT/O 7.8e-3 faces 5/5/undefined | parShifts [] geo undefined idx 5196.1524 brep-vs-geo -
+tri r20 -> tri r10 rot 180 (tie)               O 5196.1524 T 5236.7474 B 2598.0762 dT/O 7.8e-3 faces 5/5/5 | parShifts [] geo undefined idx 2598.0762 brep-vs-geo -
+pentagon r20 -> pentagon r10 rot 36 (tie)      O 10490.2073 T 10502.8994 B REF[brep-rs can only blend two matching stra] dT/O 1.2e-3 faces 7/7/undefined | parShifts [] geo undefined idx 10490.2073 brep-vs-geo -
+square r20 -> square r10 rot 45 (tie)          O 8552.2847 T 8596.4789 B REF[brep-rs can only blend two matching stra] dT/O 5.2e-3 faces 6/6/undefined | parShifts [] geo undefined idx 8552.2847 brep-vs-geo -
+hexagon r20 -> hexagon r10 rot 30 (tie)        O 11660.2540 T 11679.7853 B REF[brep-rs can only blend two matching stra] dT/O 1.7e-3 faces 8/8/undefined | parShifts [] geo undefined idx 11660.2540 brep-vs-geo -
+hexagon r20 -> hexagon r10 rot 29              O 11690.0256 T 11708.9635 B REF[brep-rs can only blend two matching stra] dT/O 1.6e-3 faces 8/8/undefined | parShifts [] geo undefined idx 11690.0256 brep-vs-geo -
+hexagon r20 -> hexagon r10 rot 31              O 11690.0256 T 11674.8753 B REF[brep-rs can only blend two matching stra] dT/O 1.3e-3 faces 8/8/undefined | parShifts [] geo undefined idx 11629.5687 brep-vs-geo -
+--- redundant collinear vertex
+rect40 + midpoint (5) -> rect20 (4)                O 28000.0000 T 24093.7500 B REF[brep-rs can only blend two matching stra] dT/O 1.4e-1 faces 7/7/undefined closed 28000.0000
+rect20 (4) -> rect40 + midpoint (5)                O 28000.0000 T 23906.2500 B REF[brep-rs can only blend two matching stra] dT/O 1.5e-1 faces 7/7/undefined closed 28000.0000
+rect40 mid (5) -> rect20 mid (5) same side         O 28000.0000 T 28000.0000 B 28000.0000 dT/O 4.7e-15 faces 7/6/7 closed 28000.0000
+rect40 mid (5) -> rect20 mid (5) other side        O 27500.0000 T 27511.7187 B REF[brep-rs can only blend two matching stra] dT/O 4.3e-4 faces 7/7/undefined closed 28000.0000
+rect40 mid (5) -> rect20 mid (5) other side, start shifted O 27500.0000 T 27511.7187 B REF[brep-rs can only blend two matching stra] dT/O 4.3e-4 faces 7/7/undefined closed 28000.0000
+--- twist constructions: 40x40 -> 20x20 rotated; variants of centring/start
+twist 10 deg: centred, both from (-,-)             O 18585.6413 T 18585.6413 B REF[brep-rs can only blend two matching stra] dT/O 3.9e-16 faces 6/6/undefined closed 18585.6413
+twist 10 deg: a corner at origin [0,40], b centre (20,20) O 18585.6413 T 18596.4944 B REF[brep-rs can only blend two matching stra] dT/O 5.8e-4 faces 6/6/undefined closed 18585.6413
+twist 10 deg: a centred, b rotated about its first corner O 18585.6413 T 18591.0679 B REF[brep-rs can only blend two matching stra] dT/O 2.9e-4 faces 6/6/undefined closed 18585.6413
+twist 10 deg: a centred, b rotated about origin of a CW listed O 18585.6413 T 18585.6413 B REF[brep-rs can only blend two matching stra] dT/O 3.9e-16 faces 6/6/undefined closed 8000.0000
+twist 10 deg: a centred, b = rotated 20x20 list started at 3rd vertex O 18585.6413 T 18585.6413 B REF[brep-rs can only blend two matching stra] dT/O 3.9e-16 faces 6/6/undefined closed 8081.0253
+twist 20 deg: centred, both from (-,-)             O 18345.0273 T 18387.7798 B REF[brep-rs can only blend two matching stra] dT/O 2.3e-3 faces 6/6/undefined closed 18345.0273
+twist 20 deg: a corner at origin [0,40], b centre (20,20) O 18345.0273 T 18377.0917 B REF[brep-rs can only blend two matching stra] dT/O 1.7e-3 faces 6/6/undefined closed 18345.0273
+twist 20 deg: a centred, b rotated about its first corner O 18345.0273 T 18377.0917 B REF[brep-rs can only blend two matching stra] dT/O 1.7e-3 faces 6/6/undefined closed 18345.0273
+twist 20 deg: a centred, b rotated about origin of a CW listed O 18345.0273 T 18387.7798 B REF[brep-rs can only blend two matching stra] dT/O 2.3e-3 faces 6/6/undefined closed 8000.0000
+twist 20 deg: a centred, b = rotated 20x20 list started at 3rd vertex O 18345.0273 T 18387.7798 B REF[brep-rs can only blend two matching stra] dT/O 2.3e-3 faces 6/6/undefined closed 8321.6394
+twist 40 deg: centred, both from (-,-)             O 17418.9037 T 17418.9037 B REF[brep-rs can only blend two matching stra] dT/O 2.1e-16 faces 6/6/undefined closed 17418.9037
+twist 40 deg: a corner at origin [0,40], b centre (20,20) O 17418.9037 T 17499.2521 B REF[brep-rs can only blend two matching stra] dT/O 4.6e-3 faces 6/6/undefined closed 17418.9037
+twist 40 deg: a centred, b rotated about its first corner O 17418.9037 T 17479.1650 B REF[brep-rs can only blend two matching stra] dT/O 3.5e-3 faces 6/6/undefined closed 17418.9037
+twist 40 deg: a centred, b rotated about origin of a CW listed O 17418.9037 T 17418.9037 B REF[brep-rs can only blend two matching stra] dT/O 2.1e-16 faces 6/6/undefined closed 8000.0000
+twist 40 deg: a centred, b = rotated 20x20 list started at 3rd vertex O 17418.9037 T 17418.9037 B REF[brep-rs can only blend two matching stra] dT/O 2.1e-16 faces 6/6/undefined closed 9247.7630
+twist 44 deg: centred, both from (-,-)             O 17169.8123 T 17169.8123 B REF[brep-rs can only blend two matching stra] dT/O 1.1e-15 faces 6/6/undefined closed 17169.8123
+twist 44 deg: a corner at origin [0,40], b centre (20,20) O 17169.8123 T 17169.8123 B REF[brep-rs can only blend two matching stra] dT/O 5.3e-15 faces 6/6/undefined closed 17169.8123
+twist 44 deg: a centred, b rotated about its first corner O 17169.8123 T 17191.5203 B REF[brep-rs can only blend two matching stra] dT/O 1.3e-3 faces 6/6/undefined closed 17169.8123
+twist 44 deg: a centred, b rotated about origin of a CW listed O 17169.8123 T 17169.8123 B REF[brep-rs can only blend two matching stra] dT/O 1.1e-15 faces 6/6/undefined closed 8000.0000
+twist 44 deg: a centred, b = rotated 20x20 list started at 3rd vertex O 17169.8123 T 17169.8123 B REF[brep-rs can only blend two matching stra] dT/O 1.1e-15 faces 6/6/undefined closed 9496.8544
+twist 46 deg: centred, both from (-,-)             O 17169.8123 T 17082.9800 B REF[brep-rs can only blend two matching stra] dT/O 5.1e-3 faces 6/6/undefined closed 17038.1780
+twist 46 deg: a corner at origin [0,40], b centre (20,20) O 17169.8123 T 17104.6880 B REF[brep-rs can only blend two matching stra] dT/O 3.8e-3 faces 6/6/undefined closed 17038.1780
+twist 46 deg: a centred, b rotated about its first corner O 17169.8123 T 17148.1042 B REF[brep-rs can only blend two matching stra] dT/O 1.3e-3 faces 6/6/undefined closed 17038.1780
+twist 46 deg: a centred, b rotated about origin of a CW listed O 17169.8123 T 17082.9800 B REF[brep-rs can only blend two matching stra] dT/O 5.1e-3 faces 6/6/undefined closed 8000.0000
+twist 46 deg: a centred, b = rotated 20x20 list started at 3rd vertex O 17169.8123 T 17082.9800 B REF[brep-rs can only blend two matching stra] dT/O 5.1e-3 faces 6/6/undefined closed 9628.4887
+--- gap series
+gap 0 guard=gap0                                     O 0.0000 B REF[bl1 builds an empty solid (nothing is left of it) ] T 0.0000
+gap 1e-12 guard=gap0                                 O 0.0000 B REF[bl1 builds an empty solid (nothing is left of it) ] T 0.0000
+gap 1e-9 guard=gap0                                  O 0.0000 B 0.0000 T 0.0000
+gap 1e-7 guard=gap0                                  O 0.0001 B 0.0001 T 0.0001
+gap 0.000001 guard=PASS                              O 0.0007 B 0.0007 T 0.0007
+gap 0.00001 guard=PASS                               O 0.0070 B 0.0070 T 0.0070
+gap 0.0001 guard=PASS                                O 0.0700 B 0.0700 T 0.0700
+gap 0.001 guard=PASS                                 O 0.7000 B 0.7000 T 0.7000
+gap 0.01 guard=PASS                                  O 7.0000 B 7.0000 T 7.0000
+--- undrawn second sketch
+undrawn b (default starter outline)                  O 39000.0000 B 39000.0000 T 39000.0000
+  errors [] b points [[0,0],[40,0],[40,25],[0,25]]
+  rect(40,25) points [[-20,-12.5],[20,-12.5],[20,12.5],[-20,12.5]]
+undrawn FIRST sketch                                 O 14250.0000 B 14250.0000 T 14250.0000
+  polygon starter-lookalike errors [] [[0,0],[40,0],[40,25],[0,25]]
+--- sketch reuse
+  errs [] kinds sk1:sketch@0 sk2:sketch@10 bl1:blend bl2:blend move1:move@100,0,0
+l1 after l2 rewrites b (expect 28000)                O 9333.3333 B 9333.3333 T 9333.3333
+l2 (expect 9333.33)                                  O 9333.3333 B 9333.3333 T 9333.3333
+  errs [] kinds sk1:sketch@0 sk2:sketch@30 pull1:extrude bl1:blend op1:combine
+pull(b,10)->loft(a,b,30) feature pull1               O 4000.0000 B 4000.0000 T 4000.0000
+pull(b,10)->loft(a,b,30) feature bl1                 O 28000.0000 B 28000.0000 T 28000.0000
+pull(b,10)->loft(a,b,30) feature op1                 O 32000.0000 B 32000.0000 T 32000.0000
+pull(b,10) alone (expected 4000, z 0..10)            O 4000.0000 B 4000.0000 T 4000.0000
+  errs [] kinds sk1:sketch@0 pull1:extrude sk2:sketch@30 bl1:blend
+pull(a,10) then loft(a,b,30) (a not moved) pull1     O 16000.0000 B 16000.0000 T 16000.0000
+pull(a,10) then loft(a,b,30) (a not moved) bl1       O 28000.0000 B 28000.0000 T 28000.0000
+two lofts from a (a shared, not moved) bl1           O 28000.0000 B 28000.0000 T 28000.0000
+two lofts from a (a shared, not moved) bl2           O 7000.0000 B 7000.0000 T 7000.0000
+--- datum vs gap
+plane(top,0), plane(top,30), gap 10 (contradiction)  O 9333.3333 B 9333.3333 T 9333.3333
+   errs [] offsets sk1@0(datum pl1) sk2@10(datum pl2) expected if gap ignored vs honoured: see numbers
+plane(top,0), plane(top,30), gap 30 (consistent)     O 28000.0000 B 28000.0000 T 28000.0000
+   errs [] offsets sk1@0(datum pl1) sk2@30(datum pl2) expected if gap ignored vs honoured: see numbers
+sketch('top'), sketch('top',30), gap 10 (contradiction) O 9333.3333 B 9333.3333 T 9333.3333
+   errs [] offsets sk1@0 sk2@10 expected if gap ignored vs honoured: see numbers
+sketch('top',5), sketch('top',35), gap 30 (consistent) O 28000.0000 B 28000.0000 T 28000.0000
+   errs [] offsets sk1@5 sk2@35 expected if gap ignored vs honoured: see numbers
+sketch('top',5), sketch('top',20), gap 30 (contradiction) O 28000.0000 B 28000.0000 T 28000.0000
+   errs [] offsets sk1@5 sk2@35 expected if gap ignored vs honoured: see numbers
+N7 fuzz: 240 planar-sided pairs with random start/winding/centre; guard PASS 225 (max truck-vs-closed 7.6e-13, max OCCT-vs-closed 5.0e-14, max truck-vs-OCCT 7.3e-13); guard REFUSED 15 by code {"crossing":10,"start":5}
+N7 of the refused: 6 would have built a wrong solid (truck or OCCT off the closed form by >1e-9); 9 were exact anyway (over-refusal)
+N7 brep-rs vs closed form: built 28, wrong(>1e-9) 0, refused 212
+N7p nudged pairs: 40; guard refuses 40; max truck-vs-closed 1.4e-1 (so the 1e-9 parallel test over-refuses nudged pairs that are exact to <1e-6)
+N7h fuzz: 200 planar-sided pairs with random start/winding/centre; guard PASS 196 (max truck-vs-closed 5.0e-13, max OCCT-vs-closed 3.0e-14, max truck-vs-OCCT 5.3e-13); guard REFUSED 4 by code {"start":4}
+N7h of the refused: 4 would have built a wrong solid (truck or OCCT off the closed form by >1e-9); 0 were exact anyway (over-refusal)
+N7h brep-rs vs closed form: built 26, wrong(>1e-9) 0, refused 174
+N7p2 fuzz: 160 planar-sided pairs with random start/winding/centre; guard PASS 154 (max truck-vs-closed 1.4e-13, max OCCT-vs-closed 4.1e-15, max truck-vs-OCCT 1.4e-13); guard REFUSED 6 by code {"start":6}
+N7p2 of the refused: 6 would have built a wrong solid (truck or OCCT off the closed form by >1e-9); 0 were exact anyway (over-refusal)
+N7p2 brep-rs vs closed form: built 18, wrong(>1e-9) 0, refused 142
+N10 blend(a, b);                                                             -> errors=["blend needs a number for gap."] kinds=sketch,sketch
+N10 blend(a);                                                                -> errors=["blend() needs two sketches: blend(sketch1, sketch2, gap)."] kinds=sketch,sketch
+N10 blend();                                                                 -> errors=["blend() needs two sketches: blend(sketch1, sketch2, gap)."] kinds=sketch,sketch
+N10 blend(a, b, "tall");                                                     -> errors=["blend's gap has to be a number, and you gave it the text \"tall\"."] kinds=sketch,sketch
+N10 blend(a, 7, 30);                                                         -> errors=["blend() needs two sketches: blend(sketch1, sketch2, gap)."] kinds=sketch,sketch
+N10 blend(a, b, 30, 5);                                                      -> errors=["blend() takes two sketches and a gap; the fourth argument (5) was ignored."] kinds=sketch,sketch
+N10 blend(a, b, 30, 'zzz');                                                  -> errors=["blend() takes two sketches and a gap; the fourth argument (the text \"zzz\") was ignored."] kinds=sketch,sketch
+N10 blend(a, b, 30, { height: 30 });                                         -> errors=["blend() takes two sketches and a gap; the fourth argument (a { } object) was ignored."] kinds=sketch,sketch
+N10 blend(a, b, 30, 5, 6);                                                   -> errors=["blend() takes two sketches and a gap; the fourth argument (5) was ignored."] kinds=sketch,sketch
+N10 const c = sketch("top"); c.rect(5, 5); blend(a, b, c, 30);               -> errors=["blend() takes two sketches and a gap; the fourth argument (30) was ignored."] kinds=sketch,sketch,sketch
+N10 blend(a, b, 30); const k = cuboid(5, 5, 5);                              -> errors=[] kinds=sketch,sketch,blend,box
+N10 loft(a, b);                                                              -> errors=["blend needs a number for gap."] kinds=sketch,sketch
+N10 loft(a);                                                                 -> errors=["blend() needs two sketches: blend(sketch1, sketch2, gap)."] kinds=sketch,sketch
+N10 loft();                                                                  -> errors=["blend() needs two sketches: blend(sketch1, sketch2, gap)."] kinds=sketch,sketch
+N10 loft(a, b, "tall");                                                      -> errors=["blend's gap has to be a number, and you gave it the text \"tall\"."] kinds=sketch,sketch
+N10 loft(a, 7, 30);                                                          -> errors=["blend() needs two sketches: blend(sketch1, sketch2, gap)."] kinds=sketch,sketch
+N10 loft(a, b, 30, 5);                                                       -> errors=["blend() takes two sketches and a gap; the fourth argument (5) was ignored."] kinds=sketch,sketch
+N10 loft(a, b, 30, 'zzz');                                                   -> errors=["blend() takes two sketches and a gap; the fourth argument (the text \"zzz\") was ignored."] kinds=sketch,sketch
+N10 loft(a, b, 30, { height: 30 });                                          -> errors=["blend() takes two sketches and a gap; the fourth argument (a { } object) was ignored."] kinds=sketch,sketch
+N10 loft(a, b, 30, 5, 6);                                                    -> errors=["blend() takes two sketches and a gap; the fourth argument (5) was ignored."] kinds=sketch,sketch
+N10 const c = sketch("top"); c.rect(5, 5); loft(a, b, c, 30);                -> errors=["blend() takes two sketches and a gap; the fourth argument (30) was ignored."] kinds=sketch,sketch,sketch
+N10 loft(a, b, 30); const k = cuboid(5, 5, 5);                               -> errors=[] kinds=sketch,sketch,blend,box
+N9 circle(30) irregular tri [[12,0],[-4,9],[-6,-5]] c->p              guard=circle-poly O 9515.640 T 9523.370 dT/O 8.1e-4
+N9 circle(30) irregular quad [[12,0],[0,6],[-8,0],[0,-10]] c->p       guard=circle-poly O 10096.071 T 10100.988 dT/O 4.9e-4
+N9 circle(10) irregular tri [[20,0],[-8,14],[-12,-9]] c->p            guard=circle-poly O 5063.557 T 5067.982 dT/O 8.7e-4
+N9 circle(30) irregular tri [[20,0],[-8,14],[-12,-9]] c->p            guard=circle-poly O 13284.329 T 13298.297 dT/O 1.1e-3
+N9 circle(30) L (corner at origin side) c->p                          guard=circle-poly O REF[OCCT threw: [object WebAssembl] T 13263.035 dT/O -
+N9 circle(30) L rotated 37 deg (corner away from seam) c->p           guard=circle-poly O REF[OCCT threw: [object WebAssembl] T 13263.035 dT/O -
+N9 circle(30) L rotated 90 deg c->p                                   guard=circle-poly O REF[OCCT threw: [object WebAssembl] T 10406.511 dT/O -
+N9 circle(30) irregular tri [[12,0],[-4,9],[-6,-5]] p->c              guard=circle-poly O 9481.279 T 9523.415 dT/O 4.4e-3
+N9 circle(30) irregular quad [[12,0],[0,6],[-8,0],[0,-10]] p->c       guard=circle-poly O 10080.310 T 10101.165 dT/O 2.1e-3
+N9 circle(10) irregular tri [[20,0],[-8,14],[-12,-9]] p->c            guard=circle-poly O 5046.651 T 5068.259 dT/O 4.3e-3
+N9 circle(30) irregular tri [[20,0],[-8,14],[-12,-9]] p->c            guard=circle-poly O 13233.610 T 13298.295 dT/O 4.9e-3
+N9 circle(30) L (corner at origin side) p->c                          guard=circle-poly O REF[OCCT threw: [object WebAssembl] T 13262.951 dT/O -
+N9 circle(30) L rotated 37 deg (corner away from seam) p->c           guard=circle-poly O REF[OCCT threw: [object WebAssembl] T 13262.985 dT/O -
+N9 circle(30) L rotated 90 deg p->c                                   guard=circle-poly O REF[OCCT threw: [object WebAssembl] T 10401.563 dT/O -
+N9 rect 40x30 start+0 CCW vs d20 p->c                                 guard=thin        O 17824.739 T 17824.017 dT/O 4.1e-5
+N9 rect 40x30 start+0 CW vs d20 p->c                                  guard=thin        O 17824.739 T 17824.017 dT/O 4.1e-5
+N9 rect 40x30 start+1 CCW vs d20 p->c                                 guard=thin        O 17824.739 T 17824.017 dT/O 4.1e-5
+N9 rect 40x30 start+1 CW vs d20 p->c                                  guard=thin        O 17824.739 T 17824.017 dT/O 4.1e-5
+N9 rect 40x30 start+2 CCW vs d20 p->c                                 guard=thin        O 17824.739 T 17824.017 dT/O 4.1e-5
+N9 rect 40x30 start+2 CW vs d20 p->c                                  guard=thin        O 17824.739 T 17824.017 dT/O 4.1e-5
+N9 rect 40x30 start+3 CCW vs d20 p->c                                 guard=thin        O 17824.739 T 17824.017 dT/O 4.1e-5
+N9 rect 40x30 start+3 CW vs d20 p->c                                  guard=thin        O 17824.739 T 17824.017 dT/O 4.1e-5
+N9 rect 40x30 start+0 CCW vs d20 c->p                                 guard=thin        O 17824.739 T 17823.059 dT/O 9.4e-5
+N9 rect 40x30 start+0 CW vs d20 c->p                                  guard=thin        O 17824.739 T 17823.059 dT/O 9.4e-5
+N9 rect 40x30 start+1 CCW vs d20 c->p                                 guard=thin        O 17824.739 T 17823.059 dT/O 9.4e-5
+N9 rect 40x30 start+1 CW vs d20 c->p                                  guard=thin        O 17824.739 T 17823.059 dT/O 9.4e-5
+N9 rect 40x30 start+2 CCW vs d20 c->p                                 guard=thin        O 17824.739 T 17823.059 dT/O 9.4e-5
+N9 rect 40x30 start+2 CW vs d20 c->p                                  guard=thin        O 17824.739 T 17823.059 dT/O 9.4e-5
+N9 rect 40x30 start+3 CCW vs d20 c->p                                 guard=thin        O 17824.739 T 17823.059 dT/O 9.4e-5
+N9 rect 40x30 start+3 CW vs d20 c->p                                  guard=thin        O 17824.739 T 17823.059 dT/O 9.4e-5
+N9 hex phase0 start+0 CCW vs d20 p->c                                 guard=PASS        O 16052.896 T 16052.482 dT/O 2.6e-5
+N9 hex phase0 start+2 CCW vs d20 p->c                                 guard=PASS        O 16052.896 T 16052.482 dT/O 2.6e-5
+N9 hex phase0 start+4 CCW vs d20 p->c                                 guard=PASS        O 16052.896 T 16052.482 dT/O 2.6e-5
+N9 hex phase0 start+0 CW vs d20 p->c                                  guard=PASS        O 16052.896 T 16052.482 dT/O 2.6e-5
+N9 hex phase0 start+3 CW vs d20 p->c                                  guard=PASS        O 16052.896 T 16052.482 dT/O 2.6e-5
+N9 hex phase0 start+0 CCW vs d20 c->p                                 guard=PASS        O 16052.896 T 16051.748 dT/O 7.2e-5
+N9 hex phase0 start+2 CCW vs d20 c->p                                 guard=PASS        O 16052.896 T 16051.748 dT/O 7.2e-5
+N9 hex phase0 start+4 CCW vs d20 c->p                                 guard=PASS        O 16052.896 T 16051.748 dT/O 7.2e-5
+N9 hex phase0 start+0 CW vs d20 c->p                                  guard=PASS        O 16052.896 T 16051.748 dT/O 7.2e-5
+N9 hex phase0 start+3 CW vs d20 c->p                                  guard=PASS        O 16052.896 T 16051.748 dT/O 7.2e-5
+N9 guard PASS 10 of 40; max dT/O among PASS 7.2e-5; refused-but-within-3e-4 16
+N8 ordinary 40->10 gap 30                                         BUILT O 21000.0000 T 21000.0000 d 1.7e-16 exact
+N8 40x30 -> 20x15 off-centre                                      BUILT O 17500.0000 T 17500.0000 d 1.7e-15 exact
+N8 aspect swap 40x10 -> 10x40 (not parallel)                      BUILT O 11000.0000 T 11000.0000 d 1.7e-16 exact
+N8 negative gap                                                   BUILT O 21000.0000 T 21000.0000 d 1.3e-14 exact
+N8 rect -> circle                                                 REFUSED[thin]
+N8 circle -> rect 40x20                                           REFUSED[thin]
+N8 circle -> rect 40x10 (4:1)                                     REFUSED[thin]
+N8 circle -> circle                                               BUILT O 21991.1486 T 21990.0573 d 5.0e-5 exact
+N8 hexagon phase 0 -> circle                                      BUILT O 16052.8962 T 16052.4820 d 2.6e-5 exact
+N8 hexagon phase 0.3 -> circle                                    REFUSED[circle-poly]
+N8 pentagon phase 0 -> circle                                     BUILT O 15125.6882 T 15125.0786 d 4.0e-5 exact
+N8 irregular triangle -> circle d60                               REFUSED[circle-poly]
+N8 circle -> irregular triangle                                   REFUSED[circle-poly]
+N8 circle -> L                                                    REFUSED[circle-poly]
+N8 rounded square r6 -> circle                                    BUILT O 25860.8249 T 25860.1295 d 2.7e-5 exact
+N8 rounded 40x20 r5 -> circle                                     REFUSED[arcs]
+N8 rounded square -> rect (unequal count)                         REFUSED[arcs]
+N8 triangle -> square (unequal count)                             REFUSED[count]
+N8 rect + midpoint (5) -> rect (4)                                REFUSED[count]
+N8 rect + midpoint (5) -> rect + midpoint (5), same side          BUILT O 28000.0000 T 28000.0000 d 4.7e-15 exact
+N8 critic start-shifted b=[[20,15],[0,15],[0,0],[20,0]] vs 40x30  BUILT O 14000.0000 T 14000.0000 d 3.9e-16 exact
+N8 rhombus -> rect                                                REFUSED[sides]
+N8 square 40 -> square 20 rotated 20 deg                          REFUSED[sides]
+N8 square 40 -> square 20 rotated 90 deg (prism-like)             BUILT O 28000.0000 T 28000.0000 d 4.0e-15 exact
+N8 triangle r20 -> triangle r10 rot 60 (tie)                      REFUSED[tie]
+N8 pentagon r20 -> pentagon r10 rot 36 (tie)                      REFUSED[tie]
+N8 gap 0                                                          REFUSED[gap0]
+N8 gap 1e-12                                                      REFUSED[gap0]
+N8 gap 1e-6                                                       BUILT O 0.0007 T 0.0007 d 5.7e-15 exact
+N8 loft(a, a, 30)                                                 REFUSED[gap0]
+N8 different planes top vs front                                  REFUSED[planes]
+N8 frame-placed sketches                                          REFUSED[frame]
+N8 tilted frame 22.5 deg                                          REFUSED[frame]
+N8 datum contradiction plane(top,0)/plane(top,30) gap 10          REFUSED[datum]
+N8 datum consistent plane(top,0)/plane(top,30) gap 30             BUILT O 28000.0000 T 28000.0000 d 4.0e-15 exact
+N8 sketch('top',5)/sketch('top',20) gap 30                        REFUSED[datum]
+N8 sketch('top',5)/sketch('top',35) gap 30 (consistent)           BUILT O 28000.0000 T 28000.0000 d 8.3e-15 exact
+N8 sketch reuse: two lofts of the same pair                       REFUSED[shared] | REFUSED[shared]
+N8 sketch reuse: pull(b,10) then loft(a,b,30)                     REFUSED[shared]
+N8 sketch reuse: pull(a,10) then loft(a,b,30) (a is not moved)    BUILT O 28000.0000 T 28000.0000 d 4.0e-15 exact
+N8 two lofts from the same first sketch                           BUILT O 28000.0000 T 28000.0000 d 4.0e-15 exact | BUILT O 7000.0000 T 7000.0000 d 3.4e-15 exact
+N8 undrawn second sketch                                          REFUSED[undrawn]
+N8 undrawn first sketch                                           REFUSED[undrawn]
+N8 polygon that equals the starter outline (drawn on purpose)     BUILT O 30000.0000 T 30000.0000 d 3.3e-15 exact
+N8 bowtie second sketch                                           REFUSED[crossing]
+N8 collinear second sketch                                        REFUSED[flat]
+N8 rows and rules sketch (slot)                                   REFUSED[soup]
+N8 rect with a length rule                                        BUILT O 15100.0000 T 15100.0000 d 1.6e-15 exact
+N8 concave L -> small rect (OCCT throws)                          REFUSED[count]
+N8 concave L -> half L (parallel sides)                           BUILT O 7000.0000 T 7000.0000 d 5.8e-15 exact
+N8 summary: 50 scripts; guard let through 20 blends, of which NOT exact vs OCCT: 0
+wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/bl4/r4-results.json

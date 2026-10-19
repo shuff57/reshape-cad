@@ -1,0 +1,1 @@
+sl9-99-boxlip-top-m0                     PASS     occtV 69936.6248 | tr-occt dV 5.0e-6 dBb 1.1e-16 dCom 6.2e-7 F o/b/t 10/10/10 | brep-occt dV 4.2e-16      | ms 2216 cpu 2544

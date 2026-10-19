@@ -1,0 +1,1 @@
+revolution__arc-top-round-359            PASS     occtV 27961.8687 | tr-occt dV 4.3e-5 dBb 2.9e-5 dCom 1.1e-7 F o/b/t 7/7/7 | brep-occt dV 3.7e-12 | FC: occt 3.7e-12 brep 1.3e-16 truck 4.3e-5 dCom 6.9e-6 F 7     | ms 3220 cpu 3604

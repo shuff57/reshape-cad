@@ -1,0 +1,98 @@
+[
+ {
+  "label": "counterbore hole then round",
+  "pageStatuses": [
+   "box1:built",
+   "hole1:refused",
+   "round1:refused"
+  ],
+  "refused": [
+   {
+    "id": "hole1",
+    "raw": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+    "plain": "hole1 is not built: counterbore and countersink holes are not supported yet -- use a plain hole."
+   },
+   {
+    "id": "round1",
+    "raw": "round1 (fillet): its target hole1 was refused (hole1 (hole): counterbore and countersink are not mapped in phase 0)",
+    "plain": "round1 is not built because hole1 could not be built, so round1 is shown without it."
+   }
+  ],
+  "unmapped": []
+ },
+ {
+  "label": "repeatAround slot pat1_totalangle=324",
+  "pageStatuses": [
+   "box1:built",
+   "pat1:refused"
+  ],
+  "refused": [
+   {
+    "id": "pat1",
+    "raw": "pat1 (pattern): a circular pattern over less than 360 degrees is not mapped (solidcraft's angle semantics were not verified)",
+    "plain": "pat1 is not built: a circular pattern over less than 360 degrees is not supported yet -- use the full 360 degrees."
+   }
+  ],
+  "unmapped": []
+ },
+ {
+  "label": "groove slot sk1_p0u+3",
+  "pageStatuses": [
+   "box1:built",
+   "sk1:noop",
+   "groove1:refused"
+  ],
+  "refused": [
+   {
+    "id": "groove1",
+    "raw": "groove1 (groove): solidcraft refused it -- solid.revolve: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces tha",
+    "plain": "groove1 is not built: these two shapes touch or cross in a way that cannot be cut yet -- change their sizes or positions."
+   }
+  ],
+  "unmapped": []
+ },
+ {
+  "label": "keep (intersect) box and sphere",
+  "pageStatuses": [
+   "box1:built",
+   "ball1:built",
+   "op1:refused"
+  ],
+  "refused": [
+   {
+    "id": "op1",
+    "raw": "op1 (combine): solidcraft refused it -- solid.combine: boolean Intersect: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces ",
+    "plain": "op1 is not built: these two shapes touch or cross in a way that cannot be intersected yet -- change their sizes or positions."
+   }
+  ],
+  "unmapped": []
+ },
+ {
+  "label": "box with zero width",
+  "scriptError": "box(): a size has to be a positive number -- got 0 for width."
+ },
+ {
+  "label": "hollow box with a blind hole near the floor",
+  "pageStatuses": [
+   "box1:built",
+   "hole1:built",
+   "shell1:refused"
+  ],
+  "refused": [
+   {
+    "id": "shell1",
+    "raw": "shell1 (shell): solidcraft refused it -- solid.shell: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that to",
+    "plain": "shell1 is not built: the hollow could not be cut from this part because a wall meets another face at a shallow angle -- use a thinner wall or move the hole."
+   }
+  ],
+  "unmapped": []
+ },
+ {
+  "label": "wall of a pocket given a param depth",
+  "scriptError": "A pocket whose depth is a param() cannot have its walls named yet -- give pocket() a plain number for the depth, or cut it as subtract(shape, pull(sketch, -depth))."
+ },
+ {
+  "label": "round of a face (script error)",
+  "scriptError": "round() on a single reference needs an edge -- try round(shape.edge(faceA, faceB), size)."
+ }
+]

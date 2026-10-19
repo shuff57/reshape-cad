@@ -1,0 +1,15 @@
+circle-across-0.5                  PASS               vol 1.963012 occt 1.963495 brep 1.963495 exact 1.9634954084936207 dOcct 2.5e-4 dBbox 5.3e-16 dCom 3.2e-9 dExact 2.5e-4 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.5-h1               PASS               vol 0.098151 occt 0.098175 brep 0.098175 exact 0.09817477042468103 dOcct 2.4e-5 dBbox 5.6e-17 dCom 1.6e-9 dExact 2.4e-5 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.1                  PASS               vol 0.078398 occt 0.078540 brep 0.078540 exact 0.07853981633974483 dOcct 1.4e-4 dBbox 3.6e-16 dCom 3.8e-10 dExact 1.4e-4 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.1-h1               PASS               vol 0.000784 occt 0.000785 brep 0.000785 exact 0.0007853981633974484 dOcct 1.4e-6 dBbox 5.6e-17 dCom 2.1e-11 dExact 1.4e-6 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.05                 PASS               vol 0.019591 occt 0.019635 brep 0.019635 exact 0.019634954084936207 dOcct 4.4e-5 dBbox 3.6e-16 dCom 2.5e-10 dExact 4.4e-5 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.05-h1              PASS               vol 0.000098 occt 0.000098 brep 0.000098 exact 0.00009817477042468105 dOcct 2.2e-7 dBbox 2.8e-17 dCom 6.2e-12 dExact 2.2e-7 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.02                 PASS               vol 0.003052 occt 0.003142 brep 0.003142 exact 0.0031415926535897937 dOcct 8.9e-5 dBbox 3.6e-16 dCom 5.9e-9 dExact 8.9e-5 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.02-h1              PASS               vol 0.000006 occt 0.000006 brep 0.000006 exact 0.0000062831853071795875 dOcct 4.5e-8 dBbox 1.0e-17 dCom 7.7e-13 dExact 4.5e-8 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.01                 PASS               vol 0.000747 occt 0.000785 brep 0.000785 exact 0.0007853981633974484 dOcct 3.8e-5 dBbox 1.8e-16 dCom 1.1e-9 dExact 3.8e-5 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.01-h1              PASS               vol 0.000001 occt 0.000001 brep 0.000001 exact 7.853981633974484e-7 dOcct 9.9e-9 dBbox 5.2e-18 dCom 6.1e-11 dExact 9.9e-9 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.005                FAIL               vol 0.000083 occt 0.000196 brep 0.000196 exact 0.0001963495408493621 dOcct 1.1e-4 dBbox 1.8e-16 dCom 2.5e-1 dExact 1.1e-4 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.005-h1             PASS               vol 0.000000 occt 0.000000 brep 0.000000 exact 9.817477042468105e-8 dOcct 2.8e-9 dBbox 2.6e-18 dCom 2.9e-11 dExact 2.8e-9 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.002                FAIL               vol -0.000013 occt 0.000031 brep 0.000031 exact 0.000031415926535897935 dOcct 4.5e-5 dBbox 1.8e-16 dCom 2.5e-1 dExact 4.5e-5 dBbxEx - faces o/b/t 3/3/3  bodies 1
+circle-across-0.002-h1             FAIL               vol 0.000000 occt 0.000000 brep 0.000000 exact 6.283185307179587e-9 dOcct 9.7e-10 dBbox 1.1e-18 dCom 8.2e-5 dExact 9.7e-10 dBbxEx - faces o/b/t 3/3/3  bodies 1
+wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/u4/micro.json 14

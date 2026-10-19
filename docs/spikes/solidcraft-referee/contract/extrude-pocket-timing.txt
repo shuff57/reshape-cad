@@ -1,0 +1,15 @@
+# wall clock in Bun 1.4.2, load average 23.9 42.4 62.0 on 24 cores, 2026-10-18
+# columns: contract translator end to end | shipped translator end to end | one raw run of the accepted commands | outcome
+1 round holes in one pocket (d4, 4 deep, 100 x 100 plate)          | contract   0.6 s | shipped   0.2 s | raw   0.2 s | built
+2 round holes in one pocket (d4, 4 deep, 100 x 100 plate)          | contract   1.0 s | shipped   0.4 s | raw   0.4 s | built
+4 round holes in one pocket (d4, 4 deep, 100 x 100 plate)          | contract   2.0 s | shipped   0.9 s | raw   0.9 s | built
+8 round holes in one pocket (d4, 4 deep, 100 x 100 plate)          | contract   3.9 s | shipped   2.2 s | raw   2.1 s | built
+12 round holes in one pocket (d4, 4 deep, 100 x 100 plate)         | contract  14.6 s | shipped   4.4 s | raw   4.2 s | built
+24 round holes in one pocket (d4, 4 deep, 100 x 100 plate)         | contract  22.1 s | shipped   6.9 s | raw   6.6 s | built
+25 round holes in one pocket (d4, 4 deep, 100 x 100 plate)         | contract   0.1 s | shipped       - | raw       - | refused: pocket1: this sketch has 25 separate shapes, more than the 24 that one pocket is built with (SolidCraft needs 
+48 round holes in one pocket (d4, 4 deep, 100 x 100 plate)         | contract   0.2 s | shipped       - | raw       - | refused: pocket1: this sketch has 48 separate shapes, more than the 24 that one pocket is built with (SolidCraft needs 
+12 round holes as 12 separate pockets                              | contract  48.2 s | shipped  54.2 s | raw   6.1 s | built
+a d10 circle tangent to the plate edge (pocket 5 deep)             | contract   4.6 s | shipped   3.3 s | raw   3.0 s | built
+a deep tapered cone pocket (d8, 9 deep, taper 5)                   | contract   1.2 s | shipped   0.2 s | raw   0.9 s | built
+a plain d8 round pocket (control)                                  | contract   0.6 s | shipped   0.2 s | raw   0.2 s | built
+a plain round pull d20 (control)                                   | contract   0.3 s | shipped   0.3 s | raw   0.3 s | built

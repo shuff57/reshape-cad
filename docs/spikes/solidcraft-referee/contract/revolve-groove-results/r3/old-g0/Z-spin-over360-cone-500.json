@@ -1,0 +1,194 @@
+[
+ {
+  "id": "Z-spin-over360-cone-500",
+  "src": "const s = sketch('top'); s.polygon([[0,0],[20,0],[0,30]]); spin(s, 500);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "Z-spin-over360-cone-500",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "occt": {
+    "volume": 4886.921905176287,
+    "com": [
+     2.630643824303296,
+     7.227634909265604,
+     7.499999999807412
+    ],
+    "bbox": [
+     -15.32088886237955,
+     -1.7763568394002505e-15,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 4,
+    "area": 1969.694566046999,
+    "types": {
+     "plane": 3,
+     "cone": 1
+    },
+    "components": {
+     "plane": 3,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 3
+   },
+   "brep": {
+    "refused": "revolve rev1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- rev1 is shown without it."
+   },
+   "ms": 84,
+   "load": [
+    22.3,
+    22.3
+   ],
+   "cpuMs": 314,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "side": 1,
+      "kernelAngle": null,
+      "nudgeDeg": null
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        20,
+        0
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_rev1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": 0.7880276105804278,
+    "area": 3521.868268502268,
+    "faceTypes": {
+     "cone": 1,
+     "plane": 1
+    },
+    "occtTypes": {
+     "plane": 3,
+     "cone": 1
+    },
+    "occtComponents": {
+     "plane": 3,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cone": "equal",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 12565.280609792831,
+    "bbox": [
+     -20,
+     -19.999749543265743,
+     -3.1086244689504375e-15,
+     20,
+     19.999749543265743,
+     30
+    ],
+    "com": [
+     -1.9301751230590273e-16,
+     1.9301751230590273e-15,
+     7.5
+    ],
+    "faces": 2,
+    "kernelFaces": 4,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 1.571205526424217,
+    "dBbox": 19.999749543265743,
+    "dCom": 0.1431968794205044,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "analytic": {
+   "volume": 12566.370614359172,
+   "dTruck": 0.00008673980736289129,
+   "dOcct": 0.6111111111435656,
+   "dBrep": null
+  },
+  "caseMs": 117
+ }
+]

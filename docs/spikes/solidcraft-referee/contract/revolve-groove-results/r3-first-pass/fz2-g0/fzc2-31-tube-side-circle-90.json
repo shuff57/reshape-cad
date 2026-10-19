@@ -1,0 +1,44 @@
+[
+ {
+  "id": "fzc2-31-tube-side-circle-90",
+  "src": "const k = sketch('top'); k.rect(10, 30, { at: [15, 15] }); const t = spin(k, 360); const sk = sketch('side'); sk.circle(2, { at: [2.1, 32.8] }); groove(sk, t, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc2-31-tube-side-circle-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "groove"
+   ],
+   "invalid": "OCCT: OCCT built nothing"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "groove groove1: a circle sketch has no outline to spin"
+   },
+   "ms": 1076,
+   "load": [
+    34.1,
+    34.1
+   ],
+   "cpuMs": 1502,
+   "truck": {
+    "refused": "groove1 (groove): the ring does not reach the part, so it would cut nothing."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: OCCT built nothing",
+  "caseMs": 1129
+ }
+]

@@ -1,0 +1,2 @@
+r2-ring-20-0.5                                        dVol 2.2e-4 dBbox 8.0e-7 dCom 1.1e-7 dAn 2.2e-4 faces 1/1
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/ringthin/r2-ring-20-0.5/primitives-measure.json

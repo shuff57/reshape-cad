@@ -1,0 +1,130 @@
+[
+ {
+  "id": "fzc21-165-boxC-top-cone-270",
+  "src": "const t = box(60, 40, 30); const sk = sketch('top'); sk.polygon([[30.2,11.8],[36.6,11.8],[30.2,18.9]]); groove(sk, t, 270);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc21-165-boxC-top-cone-270",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 71592.49649029985,
+    "com": [
+     0.05266935144412885,
+     -0.029067717644161876,
+     -0.0760605371110246
+    ],
+    "bbox": [
+     -30,
+     -20.000000000000004,
+     -15,
+     30.000000000000007,
+     20.000000000000018,
+     15.000000000000007
+    ],
+    "faces": 24,
+    "area": 10821.80338479107,
+    "types": {
+     "plane": 18,
+     "cylinder": 3,
+     "cone": 3
+    },
+    "components": {
+     "plane": 18,
+     "cylinder": 3,
+     "cone": 3
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 12
+   },
+   "brep": {
+    "refused": "groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it."
+   },
+   "ms": 24,
+   "load": [
+    15.1,
+    15.1
+   ],
+   "cpuMs": 102,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): the round wall of the ring touches or passes within 0.2 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
+     "guard": {
+      "cost": {
+       "tool": "cone",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cone",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 36.6,
+       "nearest": 20,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 60,
+      "width": 40,
+      "height": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_box1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): the round wall of the ring touches or passes within 0.2 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
+    "firstRefusal": "groove1 (groove): the round wall of the ring touches or passes within 0.2 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 181
+ }
+]

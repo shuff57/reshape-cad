@@ -1,0 +1,1 @@
+X-spin-circle-crossing-axis-360          NO-OCCT OCCT: OCCT built nothing | truck REFUSED rev1 (revolve): the outline crosses the line it spins about, so one side would overlap the other; draw the whole outline on one side of that line. | brep REFUSED revolve rev1: a circle sketch has no outline to spin  | ms 1 cpu 1

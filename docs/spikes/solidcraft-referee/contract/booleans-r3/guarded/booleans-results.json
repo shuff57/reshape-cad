@@ -1,0 +1,387 @@
+[
+ {
+  "id": "arity-join-one",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); join(a)",
+  "frontEndErrors": [
+   "join() needs two or more shapes: join(a, b)."
+  ],
+  "refusalSentence": "join() needs two or more shapes: join(a, b).",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: join() needs two or more shapes: join(a, b).",
+  "wallMs": 323
+ },
+ {
+  "id": "arity-cut-one",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); cut(a)",
+  "frontEndErrors": [
+   "cut() needs two or more shapes: cut(a, b)."
+  ],
+  "refusalSentence": "cut() needs two or more shapes: cut(a, b).",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: cut() needs two or more shapes: cut(a, b).",
+  "wallMs": 400
+ },
+ {
+  "id": "arity-keep-one",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); keep(a)",
+  "frontEndErrors": [
+   "keep() needs two or more shapes: keep(a, b)."
+  ],
+  "refusalSentence": "keep() needs two or more shapes: keep(a, b).",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: keep() needs two or more shapes: keep(a, b).",
+  "wallMs": 377
+ },
+ {
+  "id": "arity-join-zero",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "note": null,
+  "source": "join()",
+  "frontEndErrors": [
+   "join() needs two or more shapes: join(a, b)."
+  ],
+  "refusalSentence": "join() needs two or more shapes: join(a, b).",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: join() needs two or more shapes: join(a, b).",
+  "wallMs": 337
+ },
+ {
+  "id": "arity-cut-number",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); cut(a, 3)",
+  "frontEndErrors": [
+   "cut() needs two or more shapes: cut(a, b)."
+  ],
+  "refusalSentence": "cut() works on shapes, but argument 2 is a number; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "interpreterRaw": "cut() needs two or more shapes: cut(a, b).",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: cut() works on shapes, but argument 2 is a number; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "wallMs": 403
+ },
+ {
+  "id": "arity-keep-sketch",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "note": "a sketch handle is not a solid",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const s = sketch('top', 10); s.circle(4); keep(a, s)",
+  "frontEndErrors": [
+   "keep() needs two or more shapes: keep(a, b)."
+  ],
+  "refusalSentence": "keep() works on shapes, but argument 2 is a sketch, which has no volume; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "interpreterRaw": "keep() needs two or more shapes: keep(a, b).",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: keep() works on shapes, but argument 2 is a sketch, which has no volume; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "wallMs": 387
+ },
+ {
+  "id": "arity-join-same-twice",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "note": "the same handle twice passes the front end",
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); join(a, a)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "op1:combine/union"
+  ],
+  "occt": {
+   "volume": 31999.999999999993,
+   "area": 6399.999999999999,
+   "com": [
+    0,
+    2.131628207280301e-16,
+    2.939870569207415e-16
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 6,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 6
+   },
+   "components": {
+    "plane": 6
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 31999.999999999996,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 6,
+   "dVol": 1.1368683772161606e-16,
+   "dBbox": 0
+  },
+  "translateMs": 21,
+  "translator": "guarded",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "join() was given the same shape twice; give it two different shapes."
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "join() was given the same shape twice; give it two different shapes."
+  },
+  "refusalSentence": "join() was given the same shape twice; give it two different shapes.",
+  "outcome": "REFUSED",
+  "summary": "join() was given the same shape twice; give it two different shapes.",
+  "wallMs": 446
+ },
+ {
+  "id": "arity-cut-same-twice",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); cut(a, a)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "op1:combine/subtract"
+  ],
+  "occt": null,
+  "occtNote": "OCCT threw: undefined",
+  "brep": {
+   "refused": "combine op1: the two solids are the same shape in the same place, so cutting one from the other leaves nothing (an empty solid) -- op1 is shown without it."
+  },
+  "translateMs": 22,
+  "translator": "guarded",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "cut() was given the same shape twice; give it two different shapes."
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "cut() was given the same shape twice; give it two different shapes."
+  },
+  "refusalSentence": "cut() was given the same shape twice; give it two different shapes.",
+  "outcome": "REFUSED",
+  "summary": "cut() was given the same shape twice; give it two different shapes.",
+  "wallMs": 456
+ },
+ {
+  "id": "arity-modeldoc-one-target",
+  "feature": "two-or-more-shapes rule (join, cut, keep)",
+  "note": "ModelDoc path, bypassing the interpreter",
+  "source": null,
+  "featureKinds": [
+   "a:box",
+   "op1:combine/union"
+  ],
+  "occt": null,
+  "occtNote": "OCCT built nothing: no shape",
+  "brep": {
+   "volume": 31999.999999999996,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 6
+  },
+  "translateMs": 15,
+  "translator": "guarded",
+  "truckFeatures": [
+   {
+    "id": "a",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "A join, cut or keep needs two or more shapes."
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 40,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_a"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "A join, cut or keep needs two or more shapes."
+  },
+  "refusalSentence": "A join, cut or keep needs two or more shapes.",
+  "outcome": "REFUSED",
+  "summary": "A join, cut or keep needs two or more shapes.",
+  "wallMs": 359
+ },
+ {
+  "id": "r3-arity-cut-number",
+  "feature": "two-or-more-shapes rule: wrong kind of argument",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); cut(a, 5)",
+  "frontEndErrors": [
+   "cut() needs two or more shapes: cut(a, b)."
+  ],
+  "refusalSentence": "cut() works on shapes, but argument 2 is a number; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "interpreterRaw": "cut() needs two or more shapes: cut(a, b).",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: cut() works on shapes, but argument 2 is a number; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "wallMs": 376
+ },
+ {
+  "id": "r3-arity-join-text",
+  "feature": "two-or-more-shapes rule: wrong kind of argument",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); join(a, 'b')",
+  "frontEndErrors": [
+   "join() needs two or more shapes: join(a, b)."
+  ],
+  "refusalSentence": "join() works on shapes, but argument 2 is text; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "interpreterRaw": "join() needs two or more shapes: join(a, b).",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: join() works on shapes, but argument 2 is text; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "wallMs": 362
+ },
+ {
+  "id": "r3-arity-keep-first-number",
+  "feature": "two-or-more-shapes rule: wrong kind of argument",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); keep(5, a)",
+  "frontEndErrors": [
+   "keep() needs two or more shapes: keep(a, b)."
+  ],
+  "refusalSentence": "keep() works on shapes, but argument 1 is a number; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "interpreterRaw": "keep() needs two or more shapes: keep(a, b).",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: keep() works on shapes, but argument 1 is a number; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "wallMs": 347
+ },
+ {
+  "id": "r3-arity-cut-sketch-second",
+  "feature": "two-or-more-shapes rule: wrong kind of argument",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const s = sketch('top', 0); s.circle(10); cut(a, s)",
+  "frontEndErrors": [
+   "cut() needs two or more shapes: cut(a, b)."
+  ],
+  "refusalSentence": "cut() works on shapes, but argument 2 is a sketch, which has no volume; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "interpreterRaw": "cut() needs two or more shapes: cut(a, b).",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: cut() works on shapes, but argument 2 is a sketch, which has no volume; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "wallMs": 377
+ },
+ {
+  "id": "r3-arity-join-three-one-bad",
+  "feature": "two-or-more-shapes rule: wrong kind of argument",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); const b = cylinder(10,40,{at:[0,0,0]}); join(a, b, 7)",
+  "frontEndErrors": [
+   "join() needs two or more shapes: join(a, b)."
+  ],
+  "refusalSentence": "join() works on shapes, but argument 3 is a number; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "interpreterRaw": "join() needs two or more shapes: join(a, b).",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: join() works on shapes, but argument 3 is a number; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "wallMs": 420
+ },
+ {
+  "id": "r3-arity-cut-unknown-name",
+  "feature": "two-or-more-shapes rule: wrong kind of argument",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); cut(a, nothing)",
+  "frontEndErrors": [
+   "nothing is not a tool here. Did you mean ring()?"
+  ],
+  "refusalSentence": "nothing is not a tool here. Did you mean ring()?",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: nothing is not a tool here. Did you mean ring()?",
+  "wallMs": 360
+ },
+ {
+  "id": "r3-arity-cut-point-list",
+  "feature": "two-or-more-shapes rule: wrong kind of argument",
+  "note": null,
+  "source": "const a = box(40,40,20,{at:[0,0,0]}); cut(a, [1, 2])",
+  "frontEndErrors": [
+   "cut() needs two or more shapes: cut(a, b)."
+  ],
+  "refusalSentence": "cut() works on shapes, but argument 2 is a list; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "interpreterRaw": "cut() needs two or more shapes: cut(a, b).",
+  "outcome": "REFUSED-FRONT",
+  "summary": "interpreter: cut() works on shapes, but argument 2 is a list; give it a solid such as a box(), a cylinder() or the result of pull().",
+  "wallMs": 441
+ }
+]

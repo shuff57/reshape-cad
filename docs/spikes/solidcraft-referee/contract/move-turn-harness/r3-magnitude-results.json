@@ -1,0 +1,542 @@
+{
+ "MAX_COORD": 3000,
+ "rows": [
+  {
+   "name": "move box 30x20x10",
+   "F": 2000,
+   "D": 1985,
+   "shipped": "PASS",
+   "shippedDCom": 0,
+   "guard": "PASS",
+   "guardRefusal": null,
+   "guardDVol": 1.5158245029548806e-16,
+   "guardDBbox": 0,
+   "guardDCom": 0,
+   "occtBbox": [
+    1970,
+    1975,
+    1980,
+    2000,
+    1995,
+    1990
+   ]
+  },
+  {
+   "name": "move box 30x20x10",
+   "F": 3000,
+   "D": 2985,
+   "shipped": "PASS",
+   "shippedDCom": 0,
+   "guard": "PASS",
+   "guardRefusal": null,
+   "guardDVol": 1.5158245029548806e-16,
+   "guardDBbox": 0,
+   "guardDCom": 0,
+   "occtBbox": [
+    2970,
+    2975,
+    2980,
+    3000,
+    2995,
+    2990
+   ]
+  },
+  {
+   "name": "move box 30x20x10",
+   "F": 3001,
+   "D": 2986,
+   "shipped": "PASS",
+   "shippedDCom": 0,
+   "guard": "REFUSED",
+   "guardRefusal": "Move 1 is not built: it puts the part 3001 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    2971,
+    2976,
+    2981,
+    3001,
+    2996,
+    2991
+   ]
+  },
+  {
+   "name": "move box 30x20x10",
+   "F": 5000,
+   "D": 4985,
+   "shipped": "PASS",
+   "shippedDCom": 0,
+   "guard": "REFUSED",
+   "guardRefusal": "Move 1 is not built: it puts the part 5000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    4970,
+    4975,
+    4980,
+    5000,
+    4995,
+    4990
+   ]
+  },
+  {
+   "name": "move box 30x20x10",
+   "F": 100000,
+   "D": 99985,
+   "shipped": "PASS",
+   "shippedDCom": 0,
+   "guard": "REFUSED",
+   "guardRefusal": "Move 1 is not built: it puts the part 100000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    99970,
+    99975,
+    99980,
+    100000,
+    99995,
+    99990
+   ]
+  },
+  {
+   "name": "move box 30x20x10",
+   "F": 10000000,
+   "D": 9999985,
+   "shipped": "FAIL",
+   "shippedDCom": 0.000011878262771569505,
+   "guard": "REFUSED",
+   "guardRefusal": "Move 1 is not built: it puts the part 10000000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    9999970,
+    9999975,
+    9999980,
+    10000000,
+    9999995,
+    9999990
+   ]
+  },
+  {
+   "name": "move cylinder d16 h20",
+   "F": 2000,
+   "D": 1990,
+   "shipped": "PASS",
+   "shippedDCom": 6.564384316459056e-8,
+   "guard": "PASS",
+   "guardRefusal": null,
+   "guardDVol": 0.00011283801515943038,
+   "guardDBbox": 1.0844100604450702e-7,
+   "guardDCom": 6.564384316459056e-8,
+   "occtBbox": [
+    1982,
+    1982,
+    1980,
+    1998,
+    1998,
+    2000
+   ]
+  },
+  {
+   "name": "move cylinder d16 h20",
+   "F": 3000,
+   "D": 2990,
+   "shipped": "PASS",
+   "shippedDCom": 2.003201341127455e-7,
+   "guard": "PASS",
+   "guardRefusal": null,
+   "guardDVol": 0.00011283384905766342,
+   "guardDBbox": 7.207581287062808e-8,
+   "guardDCom": 2.003201341127455e-7,
+   "occtBbox": [
+    2982,
+    2982,
+    2980,
+    2998,
+    2998,
+    3000
+   ]
+  },
+  {
+   "name": "move cylinder d16 h20",
+   "F": 3001,
+   "D": 2991,
+   "shipped": "PASS",
+   "shippedDCom": 8.407700963552302e-8,
+   "guard": "REFUSED",
+   "guardRefusal": "Move 1 is not built: it puts the part 3001 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    2983,
+    2983,
+    2981,
+    2999,
+    2999,
+    3001
+   ]
+  },
+  {
+   "name": "move cylinder d16 h20",
+   "F": 5000,
+   "D": 4990,
+   "shipped": "PASS",
+   "shippedDCom": 0.0000011857664994319403,
+   "guard": "REFUSED",
+   "guardRefusal": "Move 1 is not built: it puts the part 5000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    4982,
+    4982,
+    4980,
+    4998,
+    4998,
+    5000
+   ]
+  },
+  {
+   "name": "move cylinder d16 h20",
+   "F": 100000,
+   "D": 99990,
+   "shipped": "FAIL",
+   "shippedDCom": 0.046592088599693486,
+   "guard": "REFUSED",
+   "guardRefusal": "Move 1 is not built: it puts the part 100000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    99982,
+    99982,
+    99980,
+    99998,
+    99998,
+    100000
+   ]
+  },
+  {
+   "name": "move cylinder d16 h20",
+   "F": 10000000,
+   "D": 9999990,
+   "shipped": "FAIL",
+   "shippedDCom": 81797.67041285228,
+   "guard": "REFUSED",
+   "guardRefusal": "Move 1 is not built: it puts the part 10000000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    9999982,
+    9999982,
+    9999980,
+    9999998,
+    9999998,
+    10000000
+   ]
+  },
+  {
+   "name": "move sphere d14",
+   "F": 2000,
+   "D": 1993,
+   "shipped": "PASS",
+   "shippedDCom": 9.027149002409749e-9,
+   "guard": "PASS",
+   "guardRefusal": null,
+   "guardDVol": 0.0000709375317570272,
+   "guardDBbox": 0,
+   "guardDCom": 9.027149002409749e-9,
+   "occtBbox": [
+    1986,
+    1986,
+    1986,
+    2000,
+    2000,
+    2000
+   ]
+  },
+  {
+   "name": "move sphere d14",
+   "F": 3000,
+   "D": 2993,
+   "shipped": "PASS",
+   "shippedDCom": 0.000001176544439842898,
+   "guard": "PASS",
+   "guardRefusal": null,
+   "guardDVol": 0.00007097611109810337,
+   "guardDBbox": 0,
+   "guardDCom": 0.000001176544439842898,
+   "occtBbox": [
+    2986,
+    2986,
+    2986,
+    3000,
+    3000,
+    3000
+   ]
+  },
+  {
+   "name": "move sphere d14",
+   "F": 3001,
+   "D": 2994,
+   "shipped": "PASS",
+   "shippedDCom": 0.0000028550007009014766,
+   "guard": "REFUSED",
+   "guardRefusal": "Move 1 is not built: it puts the part 3001 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    2987,
+    2987,
+    2987,
+    3001,
+    3001,
+    3001
+   ]
+  },
+  {
+   "name": "move sphere d14",
+   "F": 5000,
+   "D": 4993,
+   "shipped": "PASS",
+   "shippedDCom": 0.000007678454545606158,
+   "guard": "REFUSED",
+   "guardRefusal": "Move 1 is not built: it puts the part 5000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    4986,
+    4986,
+    4986,
+    5000,
+    5000,
+    5000
+   ]
+  },
+  {
+   "name": "move sphere d14",
+   "F": 100000,
+   "D": 99993,
+   "shipped": "FAIL",
+   "shippedDCom": 0.1661541148308548,
+   "guard": "REFUSED",
+   "guardRefusal": "Move 1 is not built: it puts the part 100000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    99986,
+    99986,
+    99986,
+    100000,
+    100000,
+    100000
+   ]
+  },
+  {
+   "name": "move sphere d14",
+   "F": 10000000,
+   "D": 9999993,
+   "shipped": "FAIL",
+   "shippedDCom": 103078.60829270341,
+   "guard": "REFUSED",
+   "guardRefusal": "Move 1 is not built: it puts the part 10000000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    9999986,
+    9999986,
+    9999986,
+    10000000,
+    10000000,
+    10000000
+   ]
+  },
+  {
+   "name": "move,hole,turn(derived)",
+   "F": 2000,
+   "D": 1985,
+   "shipped": "PASS",
+   "shippedDCom": 2.069689972040225e-9,
+   "guard": "PASS",
+   "guardRefusal": null,
+   "guardDVol": 0.000003553066042476933,
+   "guardDBbox": 1.1547458507449997e-16,
+   "guardDCom": 2.069689972040225e-9,
+   "occtBbox": [
+    1966.4907271426116,
+    1969.0365225953306,
+    1973.6108558464582,
+    2003.5092728573884,
+    2000.96347740467,
+    1996.389144153542
+   ]
+  },
+  {
+   "name": "move,hole,turn(derived)",
+   "F": 3000,
+   "D": 2985,
+   "shipped": "PASS",
+   "shippedDCom": 1.860183779931259e-8,
+   "guard": "REFUSED",
+   "guardRefusal": "Turn 1 is not built: it puts the part 3004 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    2966.490727142612,
+    2969.0365225953315,
+    2973.610855846457,
+    3003.5092728573886,
+    3000.963477404671,
+    2996.389144153541
+   ]
+  },
+  {
+   "name": "move,hole,turn(derived)",
+   "F": 3001,
+   "D": 2986,
+   "shipped": "PASS",
+   "shippedDCom": 3.341328011026308e-8,
+   "guard": "REFUSED",
+   "guardRefusal": "Turn 1 is not built because Move 1, which it uses, was refused.",
+   "occtBbox": [
+    2967.4907271426114,
+    2970.0365225953306,
+    2974.610855846458,
+    3004.509272857388,
+    3001.96347740467,
+    2997.389144153542
+   ]
+  },
+  {
+   "name": "move,hole,turn(derived)",
+   "F": 5000,
+   "D": 4985,
+   "shipped": "PASS",
+   "shippedDCom": 4.896563055276908e-7,
+   "guard": "REFUSED",
+   "guardRefusal": "Turn 1 is not built because Move 1, which it uses, was refused.",
+   "occtBbox": [
+    4966.490727142612,
+    4969.036522595332,
+    4973.6108558464575,
+    5003.509272857389,
+    5000.963477404672,
+    4996.389144153542
+   ]
+  },
+  {
+   "name": "move,hole,turn(derived)",
+   "F": 100000,
+   "D": 99985,
+   "shipped": "FAIL",
+   "shippedDCom": 0.03902841816532007,
+   "guard": "REFUSED",
+   "guardRefusal": "Turn 1 is not built because Move 1, which it uses, was refused.",
+   "occtBbox": [
+    99966.4907271426,
+    99969.03652259531,
+    99973.61085584646,
+    100003.50927285738,
+    100000.96347740466,
+    99996.38914415355
+   ]
+  },
+  {
+   "name": "move,hole,turn(derived)",
+   "F": 10000000,
+   "D": 9999985,
+   "shipped": "FAIL",
+   "shippedDCom": 47223.97592188982,
+   "guard": "REFUSED",
+   "guardRefusal": "Turn 1 is not built because Move 1, which it uses, was refused.",
+   "occtBbox": [
+    9999966.490727143,
+    9999969.036522599,
+    9999973.610855846,
+    10000003.509272857,
+    10000000.963477409,
+    9999996.389144152
+   ]
+  },
+  {
+   "name": "box at D own turn",
+   "F": 2000,
+   "D": 1985,
+   "shipped": "PASS",
+   "shippedDCom": 0,
+   "guard": "PASS",
+   "guardRefusal": null,
+   "guardDVol": 1.5158245029548806e-16,
+   "guardDBbox": 0,
+   "guardDCom": 0,
+   "occtBbox": [
+    1970,
+    1975,
+    1980,
+    2000,
+    1995,
+    1990
+   ]
+  },
+  {
+   "name": "box at D own turn",
+   "F": 3000,
+   "D": 2985,
+   "shipped": "PASS",
+   "shippedDCom": 0,
+   "guard": "PASS",
+   "guardRefusal": null,
+   "guardDVol": 1.5158245029548806e-16,
+   "guardDBbox": 0,
+   "guardDCom": 0,
+   "occtBbox": [
+    2970,
+    2975,
+    2980,
+    3000,
+    2995,
+    2990
+   ]
+  },
+  {
+   "name": "box at D own turn",
+   "F": 3001,
+   "D": 2986,
+   "shipped": "PASS",
+   "shippedDCom": 0,
+   "guard": "REFUSED",
+   "guardRefusal": "Box 1 is not built: it puts the part 3001 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    2971,
+    2976,
+    2981,
+    3001,
+    2996,
+    2991
+   ]
+  },
+  {
+   "name": "box at D own turn",
+   "F": 5000,
+   "D": 4985,
+   "shipped": "PASS",
+   "shippedDCom": 0,
+   "guard": "REFUSED",
+   "guardRefusal": "Box 1 is not built: it puts the part 5000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    4970,
+    4975,
+    4980,
+    5000,
+    4995,
+    4990
+   ]
+  },
+  {
+   "name": "box at D own turn",
+   "F": 100000,
+   "D": 99985,
+   "shipped": "PASS",
+   "shippedDCom": 0,
+   "guard": "REFUSED",
+   "guardRefusal": "Box 1 is not built: it puts the part 100000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    99970,
+    99975,
+    99980,
+    100000,
+    99995,
+    99990
+   ]
+  },
+  {
+   "name": "box at D own turn",
+   "F": 10000000,
+   "D": 9999985,
+   "shipped": "FAIL",
+   "shippedDCom": 0.000011878262771569505,
+   "guard": "REFUSED",
+   "guardRefusal": "Box 1 is not built: it puts the part 10000000 mm from the origin, and this build loses accuracy beyond 3000 mm (3 m) -- keep the part within 3000 mm of the origin.",
+   "occtBbox": [
+    9999970,
+    9999975,
+    9999980,
+    10000000,
+    9999995,
+    9999990
+   ]
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "id": "r3-h-bevelref-d6",
+ "outcome": "built",
+ "volume": 22732.58012068099,
+ "faces": 8,
+ "bbox": [
+  -20.000000000000007,
+  -15,
+  -10.000000000000009,
+  20,
+  15,
+  10.000000000000009
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "fillet",
+  "hole"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":30,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}},{\"command\":\"solid.chamfer\",\"params\":{\"edges\":[[0,-15,10]],\"distance\":6,\"body\":\"b_box1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":22,\"base\":[-3.552713678800501e-15,-9,-10.999999999999998],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

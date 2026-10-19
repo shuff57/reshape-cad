@@ -1,0 +1,81 @@
+[
+ {
+  "id": "P-spin-0-patched",
+  "src": "const s = sketch('top'); s.rect(10,30,{at:[15,15]}); spin(s, 90);",
+  "translator": "g0",
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "P-spin-0-patched",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "occt": {
+    "volume": 0,
+    "com": [
+     0,
+     0,
+     0
+    ],
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 6,
+    "area": 600,
+    "types": {
+     "plane": 4,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 4,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "revolve rev1: a spin needs an angle other than 0 -- rev1 is shown without it."
+   },
+   "ms": 2,
+   "load": [
+    5.7,
+    5.7
+   ],
+   "cpuMs": 3,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "refused",
+     "refusal": "rev1 (revolve): a spin needs an angle other than 0 degrees."
+    }
+   ],
+   "commands": [],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "rev1 (revolve): a spin needs an angle other than 0 degrees.",
+    "firstRefusal": "rev1 (revolve): a spin needs an angle other than 0 degrees."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 24
+ }
+]

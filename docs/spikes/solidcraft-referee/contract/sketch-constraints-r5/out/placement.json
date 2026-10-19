@@ -1,0 +1,3593 @@
+{
+ "tally": {
+  "cases": 83,
+  "guardedRight": 4,
+  "guardedRefused": 79,
+  "guardedWrong": 0,
+  "dropRefused": 71,
+  "dropBuiltWrongPlace": 0,
+  "dropBuiltRightPlace": 0,
+  "noCheckBuiltWrongPlace": 37
+ },
+ "bad": [
+  {
+   "name": "unknown plane word",
+   "built": false,
+   "sentence": "The sketch is on a plane called 'top', and the sketch planes are xy, xz and yz.",
+   "stage": "preflight"
+  },
+  {
+   "name": "offset not a number",
+   "built": false,
+   "sentence": "The sketch plane's offset has to be a plain number.",
+   "stage": "preflight"
+  },
+  {
+   "name": "offset NaN",
+   "built": false,
+   "sentence": "The sketch plane's offset has to be a plain number.",
+   "stage": "preflight"
+  },
+  {
+   "name": "frame with a 2-vector",
+   "built": false,
+   "sentence": "The sketch frame needs an origin and two in-plane axes u and v, each three plain numbers.",
+   "stage": "preflight"
+  },
+  {
+   "name": "frame axes not unit",
+   "built": false,
+   "sentence": "The sketch frame's axes u and v have to be unit length and at right angles to each other, and these are not.",
+   "stage": "preflight"
+  },
+  {
+   "name": "frame axes not at right angles",
+   "built": false,
+   "sentence": "The sketch frame's axes u and v have to be unit length and at right angles to each other, and these are not.",
+   "stage": "preflight"
+  }
+ ],
+ "rows": [
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "xy offset 0",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     -1.460025165925442e-11,
+     -2.542541488162691e-10,
+     0,
+     29.999999999984304,
+     19.999999999682515,
+     10
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999994616,
+    "bbox": [
+     -1.460165321987006e-11,
+     -2.542541488162691e-10,
+     0,
+     29.999999999984304,
+     19.999999999682515,
+     10
+    ]
+   },
+   "guarded": {
+    "volume": 5999.999999999964,
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "vsClosedVol": 6.063298011819522e-15,
+    "vsBrep": {
+     "vol": 9.785405078921043e-12,
+     "bbox": 3.1748470519232797e-10
+    },
+    "vsOcct": {
+     "vol": 8.967314594660948e-12,
+     "bbox": 3.1748470519232797e-10
+    },
+    "faces": 6,
+    "brepFaces": 6,
+    "ok": true
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": true
+   },
+   "round2RouteWithPlacementCheck": {
+    "builtAnyway": true,
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "xy offset 0",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999957265,
+    "faces": 6,
+    "bbox": [
+     -5.216872889753013e-13,
+     -1.9134842337403638e-10,
+     0,
+     30.00000000000001,
+     19.999999999761133,
+     10
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999996088,
+    "bbox": [
+     -5.222489107836736e-13,
+     -1.9134842337403638e-10,
+     0,
+     30.00000000000001,
+     19.999999999761133,
+     10
+    ]
+   },
+   "guarded": {
+    "volume": 5999.999999999967,
+    "bbox": [
+     -2.1760032419882104e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "vsClosedVol": 5.4569682106375695e-15,
+    "vsBrep": {
+     "vol": 7.1170992063244464e-12,
+     "bbox": 2.388667041941517e-10
+    },
+    "vsOcct": {
+     "vol": 6.514558966391664e-12,
+     "bbox": 2.388667041941517e-10
+    },
+    "faces": 6,
+    "brepFaces": 6,
+    "ok": true
+   },
+   "round2Route": {
+    "bbox": [
+     -2.1760032419882104e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": true
+   },
+   "round2RouteWithPlacementCheck": {
+    "builtAnyway": true,
+    "bbox": [
+     -2.1760032419882104e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "xy offset 7",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     -1.460025165925442e-11,
+     -2.542541488162691e-10,
+     7,
+     29.999999999984304,
+     19.999999999682515,
+     17
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999994616,
+    "bbox": [
+     -1.460165321987006e-11,
+     -2.542541488162691e-10,
+     7,
+     29.999999999984304,
+     19.999999999682515,
+     17
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -2.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "xy offset 7",
+   "curved": false,
+   "brep": {
+    "volume": 6000.000000002355,
+    "faces": 6,
+    "bbox": [
+     -9.074097507144725e-12,
+     5.18073368942232e-12,
+     7,
+     29.99999999999046,
+     20.00000000002368,
+     17
+    ]
+   },
+   "occt": {
+    "volume": 6000.00000000217,
+    "bbox": [
+     -9.07363073565648e-12,
+     5.18073368942232e-12,
+     7,
+     29.99999999999046,
+     20.00000000002368,
+     17
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -4.143770584327509e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -2.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "xy offset -5",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     -1.460025165925442e-11,
+     -2.542541488162691e-10,
+     -5,
+     29.999999999984304,
+     19.999999999682515,
+     5
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999994616,
+    "bbox": [
+     -1.460165321987006e-11,
+     -2.542541488162691e-10,
+     -5,
+     29.999999999984304,
+     19.999999999682515,
+     5
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 10.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "xy offset -5",
+   "curved": false,
+   "brep": {
+    "volume": 5999.99999993027,
+    "faces": 6,
+    "bbox": [
+     -5.766668962893278e-12,
+     -3.0822855721693023e-10,
+     -5,
+     29.999999999993776,
+     19.999999999615167,
+     5
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999934653,
+    "bbox": [
+     -5.766054300693213e-12,
+     -3.0822855721693023e-10,
+     -5,
+     29.999999999993776,
+     19.999999999615167,
+     5
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -2.3146061612661492e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 10.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "xy offset 3",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     -1.460025165925442e-11,
+     -2.542541488162691e-10,
+     3,
+     29.999999999984304,
+     19.999999999682515,
+     13
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999994616,
+    "bbox": [
+     -1.460165321987006e-11,
+     -2.542541488162691e-10,
+     3,
+     29.999999999984304,
+     19.999999999682515,
+     13
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 2.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "xy offset 3",
+   "curved": false,
+   "brep": {
+    "volume": 6000.000000009168,
+    "faces": 6,
+    "bbox": [
+     -8.984848583585136e-12,
+     1.6313129100919198e-11,
+     3,
+     29.99999999999078,
+     20.000000000071516,
+     13
+    ]
+   },
+   "occt": {
+    "volume": 6000.000000008437,
+    "bbox": [
+     -8.984812893686467e-12,
+     1.6313129100919198e-11,
+     3,
+     29.99999999999078,
+     20.000000000071516,
+     13
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -4.202766145742713e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 2.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "xy offset 12.5",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     -1.460025165925442e-11,
+     -2.542541488162691e-10,
+     12.5,
+     29.999999999984304,
+     19.999999999682515,
+     22.5
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999994616,
+    "bbox": [
+     -1.460165321987006e-11,
+     -2.542541488162691e-10,
+     12.5,
+     29.999999999984304,
+     19.999999999682515,
+     22.5
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -7.5000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "xy offset 12.5",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999942743,
+    "faces": 6,
+    "bbox": [
+     -1.5515101552241698e-11,
+     -2.468315969407103e-10,
+     12.5,
+     29.999999999983086,
+     19.999999999691806,
+     22.5
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999947521,
+    "bbox": [
+     -1.5514700635321788e-11,
+     -2.468315969407103e-10,
+     12.5,
+     29.999999999983086,
+     19.999999999691806,
+     22.5
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -7.5000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "xz offset 0",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     -1.460025165925442e-11,
+     -10,
+     -2.542541488162691e-10,
+     29.999999999984304,
+     0,
+     19.999999999682515
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999992829,
+    "bbox": [
+     -1.460165321987006e-11,
+     -10,
+     -2.542541488162691e-10,
+     29.999999999984304,
+     0,
+     19.999999999682515
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "xz offset 0",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999972305,
+    "faces": 6,
+    "bbox": [
+     -5.302422776490454e-12,
+     -10,
+     -1.21879527424934e-10,
+     29.99999999999485,
+     0,
+     19.999999999847926
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999966034,
+    "bbox": [
+     -5.300648808770347e-12,
+     -10,
+     -1.21879527424934e-10,
+     29.99999999999485,
+     0,
+     19.999999999847926
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "xz offset 7",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     -1.460025165925442e-11,
+     -3,
+     -2.542541488162691e-10,
+     29.999999999984304,
+     7,
+     19.999999999682515
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999992829,
+    "bbox": [
+     -1.460165321987006e-11,
+     -3,
+     -2.542541488162691e-10,
+     29.999999999984304,
+     7,
+     19.999999999682515
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "xz offset 7",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999945284,
+    "faces": 6,
+    "bbox": [
+     -1.1527096209177009e-11,
+     -3,
+     -2.384124844827462e-10,
+     29.999999999987974,
+     7,
+     19.999999999702283
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999933056,
+    "bbox": [
+     -1.1528555887707626e-11,
+     -3,
+     -2.384124844827462e-10,
+     29.999999999987974,
+     7,
+     19.999999999702283
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "xz offset -5",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     -1.460025165925442e-11,
+     -15,
+     -2.542541488162691e-10,
+     29.999999999984304,
+     -5,
+     19.999999999682515
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999992829,
+    "bbox": [
+     -1.460165321987006e-11,
+     -15,
+     -2.542541488162691e-10,
+     29.999999999984304,
+     -5,
+     19.999999999682515
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "xz offset -5",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999942989,
+    "faces": 6,
+    "bbox": [
+     -6.525252186092478e-12,
+     -15,
+     -2.513142755006632e-10,
+     29.999999999993264,
+     -5,
+     19.99999999968619
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999930011,
+    "bbox": [
+     -6.52633502795652e-12,
+     -15,
+     -2.513142755006632e-10,
+     29.999999999993264,
+     -5,
+     19.99999999968619
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "xz offset 3",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     -1.460025165925442e-11,
+     -7,
+     -2.542541488162691e-10,
+     29.999999999984304,
+     3,
+     19.999999999682515
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999992829,
+    "bbox": [
+     -1.460165321987006e-11,
+     -7,
+     -2.542541488162691e-10,
+     29.999999999984304,
+     3,
+     19.999999999682515
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "xz offset 3",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999943339,
+    "faces": 6,
+    "bbox": [
+     -1.355848629404329e-11,
+     -7,
+     -2.4626240324899864e-10,
+     29.999999999985867,
+     3,
+     19.999999999692534
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999930745,
+    "bbox": [
+     -1.3557155398302712e-11,
+     -7,
+     -2.4626240324899864e-10,
+     29.999999999985867,
+     3,
+     19.999999999692534
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "xz offset 12.5",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     -1.460025165925442e-11,
+     2.5,
+     -2.542541488162691e-10,
+     29.999999999984304,
+     12.5,
+     19.999999999682515
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999992829,
+    "bbox": [
+     -1.460165321987006e-11,
+     2.5,
+     -2.542541488162691e-10,
+     29.999999999984304,
+     12.5,
+     19.999999999682515
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "xz offset 12.5",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999965272,
+    "faces": 6,
+    "bbox": [
+     -5.393448910870708e-12,
+     2.5,
+     -1.524625287106554e-10,
+     29.99999999999428,
+     12.5,
+     19.99999999980971
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999957447,
+    "bbox": [
+     -5.3930193644191604e-12,
+     2.5,
+     -1.524625287106554e-10,
+     29.99999999999428,
+     12.5,
+     19.99999999980971
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "yz offset 0",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     0,
+     -1.460025165925442e-11,
+     -2.542541488162691e-10,
+     10,
+     29.999999999984304,
+     19.999999999682515
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999928037,
+    "bbox": [
+     0,
+     -1.460165321987006e-11,
+     -2.542541488162691e-10,
+     10,
+     29.999999999984304,
+     19.999999999682515
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "yz offset 0",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999943611,
+    "faces": 6,
+    "bbox": [
+     0,
+     -1.0538688250438148e-11,
+     -2.4561139001725306e-10,
+     10,
+     29.99999999998847,
+     19.999999999693294
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999993084,
+    "bbox": [
+     0,
+     -1.0537348771322286e-11,
+     -2.4561139001725306e-10,
+     10,
+     29.99999999998847,
+     19.999999999693294
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "yz offset 7",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     7,
+     -1.460025165925442e-11,
+     -2.542541488162691e-10,
+     17,
+     29.999999999984304,
+     19.999999999682515
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999928037,
+    "bbox": [
+     7,
+     -1.460165321987006e-11,
+     -2.542541488162691e-10,
+     17,
+     29.999999999984304,
+     19.999999999682515
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "yz offset 7",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999949913,
+    "faces": 6,
+    "bbox": [
+     7,
+     2.362133134876958e-12,
+     -2.265815166915617e-10,
+     17,
+     30.00000000000678,
+     19.999999999717073
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999938133,
+    "bbox": [
+     7,
+     2.362133134876958e-12,
+     -2.265815166915617e-10,
+     17,
+     30.00000000000678,
+     19.999999999717073
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "yz offset -5",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     -5,
+     -1.460025165925442e-11,
+     -2.542541488162691e-10,
+     5,
+     29.999999999984304,
+     19.999999999682515
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999928037,
+    "bbox": [
+     -5,
+     -1.460165321987006e-11,
+     -2.542541488162691e-10,
+     5,
+     29.999999999984304,
+     19.999999999682515
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "yz offset -5",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999978369,
+    "faces": 6,
+    "bbox": [
+     -5,
+     -5.394238186980556e-12,
+     -9.470236836822919e-11,
+     5,
+     29.999999999994635,
+     19.99999999988189
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999973471,
+    "bbox": [
+     -5,
+     -5.3930193644191604e-12,
+     -9.470236836822919e-11,
+     5,
+     29.999999999994635,
+     19.99999999988189
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "yz offset 3",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     3,
+     -1.460025165925442e-11,
+     -2.542541488162691e-10,
+     13,
+     29.999999999984304,
+     19.999999999682515
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999928037,
+    "bbox": [
+     3,
+     -1.460165321987006e-11,
+     -2.542541488162691e-10,
+     13,
+     29.999999999984304,
+     19.999999999682515
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "yz offset 3",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999946917,
+    "faces": 6,
+    "bbox": [
+     3,
+     -3.2239051596188085e-12,
+     -2.3605659611727155e-10,
+     13,
+     29.99999999999714,
+     19.999999999705242
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999934641,
+    "bbox": [
+     3,
+     -3.2223113066720543e-12,
+     -2.3605659611727155e-10,
+     13,
+     29.99999999999714,
+     19.999999999705242
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "yz offset 12.5",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     12.5,
+     -1.460025165925442e-11,
+     -2.542541488162691e-10,
+     22.5,
+     29.999999999984304,
+     19.999999999682515
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999928037,
+    "bbox": [
+     12.5,
+     -1.460165321987006e-11,
+     -2.542541488162691e-10,
+     22.5,
+     29.999999999984304,
+     19.999999999682515
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "yz offset 12.5",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999933239,
+    "faces": 6,
+    "bbox": [
+     12.5,
+     -1.7331265717573113e-11,
+     -2.8886393419810633e-10,
+     22.5,
+     29.99999999998159,
+     19.999999999639307
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999991823,
+    "bbox": [
+     12.5,
+     -1.7330137325188844e-11,
+     -2.8886393419810633e-10,
+     22.5,
+     29.99999999998159,
+     19.999999999639307
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "frame axis-aligned, origin (3,4,5)",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999942331,
+    "faces": 6,
+    "bbox": [
+     2.9999999999853997,
+     3.999999999745746,
+     5,
+     32.999999999984304,
+     23.999999999682515,
+     15
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999994616,
+    "bbox": [
+     2.9999999999853983,
+     3.999999999745746,
+     5,
+     32.999999999984304,
+     23.999999999682515,
+     15
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 0.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "frame axis-aligned, origin (3,4,5)",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999961758,
+    "faces": 6,
+    "bbox": [
+     2.9999999999822355,
+     3.99999999983488,
+     5,
+     32.9999999999814,
+     23.999999999793907,
+     15
+    ]
+   },
+   "occt": {
+    "volume": 5999.9999999642805,
+    "bbox": [
+     2.9999999999822364,
+     3.99999999983488,
+     5,
+     32.9999999999814,
+     23.999999999793907,
+     15
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 0.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "frame turned 36.87 deg about z, origin (3,4,5)",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999942983,
+    "faces": 6,
+    "bbox": [
+     -8.999999999774953,
+     3.999999999915563,
+     5,
+     27.000000000136275,
+     37.999999999732026,
+     15
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999938676,
+    "bbox": [
+     -8.999999999774953,
+     3.9999999999155627,
+     5,
+     27.000000000136275,
+     37.999999999732026,
+     15
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 0.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "frame turned 36.87 deg about z, origin (3,4,5)",
+   "curved": false,
+   "brep": {
+    "volume": 5999.99999994876,
+    "faces": 6,
+    "bbox": [
+     -8.999999999806846,
+     3.9999999999211373,
+     5,
+     27.000000000112948,
+     37.99999999975566,
+     15
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999945113,
+    "bbox": [
+     -8.999999999806846,
+     3.999999999921137,
+     5,
+     27.000000000112948,
+     37.99999999975566,
+     15
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.770696889430197e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 0.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "frame tilted: u=x, v=(0,0.6,0.8), origin (-2,1,6)",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999940523,
+    "faces": 6,
+    "bbox": [
+     -2.0000000000146003,
+     -7.000000000152553,
+     5.9999999997965965,
+     27.999999999984304,
+     12.999999999809509,
+     27.999999999746013
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999992829,
+    "bbox": [
+     -2.0000000000146017,
+     -7.000000000152553,
+     5.9999999997965965,
+     27.999999999984304,
+     12.999999999809509,
+     27.999999999746013
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -7.8000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "frame tilted: u=x, v=(0,0.6,0.8), origin (-2,1,6)",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941538,
+    "faces": 6,
+    "bbox": [
+     -2.000000000021764,
+     -7.000000000147734,
+     5.999999999803022,
+     27.999999999976804,
+     12.999999999815532,
+     27.999999999754046
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999929821,
+    "bbox": [
+     -2.000000000021764,
+     -7.000000000147734,
+     5.999999999803022,
+     27.999999999976804,
+     12.999999999815532,
+     27.999999999754046
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.545755052278901e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -7.8000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "stored",
+   "place": "frame swapped axes (u=y, v=x, normal -z), origin (0,0,9)",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999941251,
+    "faces": 6,
+    "bbox": [
+     -2.542541488162691e-10,
+     -1.460025165925442e-11,
+     -1,
+     19.999999999682515,
+     29.999999999984304,
+     9
+    ]
+   },
+   "occt": {
+    "volume": 5999.99999992829,
+    "bbox": [
+     -2.542541488162691e-10,
+     -1.460165321987006e-11,
+     -1,
+     19.999999999682515,
+     29.999999999984304,
+     9
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 4.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "rect-origin-dims",
+   "mode": "rough",
+   "place": "frame swapped axes (u=y, v=x, normal -z), origin (0,0,9)",
+   "curved": false,
+   "brep": {
+    "volume": 5999.999999974716,
+    "faces": 6,
+    "bbox": [
+     -1.2483324115021308e-10,
+     1.2170508149062578e-11,
+     -1,
+     19.999999999844235,
+     30.000000000031726,
+     9
+    ]
+   },
+   "occt": {
+    "volume": 5999.999999967816,
+    "bbox": [
+     -1.2483324115021308e-10,
+     1.2170508149062578e-11,
+     -1,
+     19.999999999844235,
+     30.000000000031726,
+     9
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 4.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "xy offset 0",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     -9.999999999989097,
+     -4.903174595491343e-11,
+     0,
+     50.00000000097486,
+     20.000000000218208,
+     10
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "volume": 11141.176810322662,
+    "bbox": [
+     -9.999999999999996,
+     2.086600359150776e-15,
+     0,
+     50.000000000000036,
+     20.000000000000007,
+     10.000000000000005
+    ],
+    "vsClosedVol": 0.000037323503027012976,
+    "vsBrep": {
+     "vol": 0.000037323514890432565,
+     "bbox": 9.748220008987118e-10
+    },
+    "vsOcct": null,
+    "faces": 6,
+    "brepFaces": 6,
+    "ok": true
+   },
+   "round2Route": {
+    "bbox": [
+     -9.999999999999996,
+     2.086600359150776e-15,
+     0,
+     50.000000000000036,
+     20.000000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": true
+   },
+   "round2RouteWithPlacementCheck": {
+    "builtAnyway": true,
+    "bbox": [
+     -9.999999999999996,
+     2.086600359150776e-15,
+     0,
+     50.000000000000036,
+     20.000000000000007,
+     10.000000000000005
+    ]
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "xy offset 7",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     -9.999999999989097,
+     -4.903174595491343e-11,
+     7,
+     50.00000000097486,
+     20.000000000218208,
+     17
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -9.999999999999996,
+     2.086600359150776e-15,
+     0,
+     50.000000000000036,
+     20.000000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -2.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "rough",
+   "place": "xy offset 7",
+   "curved": true,
+   "brep": {
+    "volume": 11141.59265362953,
+    "faces": 6,
+    "bbox": [
+     -9.999999999999227,
+     -1.329932736266744e-11,
+     7,
+     50.00000000026001,
+     20.000000000040075,
+     17
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -10.00000000000002,
+     -7.140954494389007e-13,
+     0,
+     50.000000000000135,
+     19.999999999999833,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -2.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "xy offset -5",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     -9.999999999989097,
+     -4.903174595491343e-11,
+     -5,
+     50.00000000097486,
+     20.000000000218208,
+     5
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -9.999999999999996,
+     2.086600359150776e-15,
+     0,
+     50.000000000000036,
+     20.000000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 10.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "xy offset 3",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     -9.999999999989097,
+     -4.903174595491343e-11,
+     3,
+     50.00000000097486,
+     20.000000000218208,
+     13
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -9.999999999999996,
+     2.086600359150776e-15,
+     0,
+     50.000000000000036,
+     20.000000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 2.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "xy offset 12.5",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     -9.999999999989097,
+     -4.903174595491343e-11,
+     12.5,
+     50.00000000097486,
+     20.000000000218208,
+     22.5
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -9.999999999999996,
+     2.086600359150776e-15,
+     0,
+     50.000000000000036,
+     20.000000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -7.5000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "xz offset 0",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     -9.999999999989097,
+     -10,
+     -4.903174595491343e-11,
+     50.00000000097486,
+     0,
+     20.000000000218208
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "xz offset 7",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     -9.999999999989097,
+     -3,
+     -4.903174595491343e-11,
+     50.00000000097486,
+     7,
+     20.000000000218208
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "rough",
+   "place": "xz offset 7",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653548216,
+    "faces": 6,
+    "bbox": [
+     -10.000000000000936,
+     -3,
+     -1.0278231901554498e-10,
+     49.99999999972603,
+     7,
+     20.000000000000938
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "xz offset -5",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     -9.999999999989097,
+     -15,
+     -4.903174595491343e-11,
+     50.00000000097486,
+     -5,
+     20.000000000218208
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "xz offset 3",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     -9.999999999989097,
+     -7,
+     -4.903174595491343e-11,
+     50.00000000097486,
+     3,
+     20.000000000218208
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "xz offset 12.5",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721973,
+    "faces": 6,
+    "bbox": [
+     -9.999999999989097,
+     2.5,
+     -4.903174595491343e-11,
+     50.00000000097486,
+     12.5,
+     20.000000000218208
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "yz offset 0",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     0,
+     -9.999999999989097,
+     -4.903174595491343e-11,
+     10,
+     50.00000000097486,
+     20.000000000218208
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "yz offset 7",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     7,
+     -9.999999999989097,
+     -4.903174595491343e-11,
+     17,
+     50.00000000097486,
+     20.000000000218208
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "rough",
+   "place": "yz offset 7",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653579331,
+    "faces": 6,
+    "bbox": [
+     7,
+     -10.000000000000195,
+     -2.378142145842221e-11,
+     17,
+     49.99999999993176,
+     20.000000000000195
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "yz offset -5",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     -5,
+     -9.999999999989097,
+     -4.903174595491343e-11,
+     5,
+     50.00000000097486,
+     20.000000000218208
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "yz offset 3",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     3,
+     -9.999999999989097,
+     -4.903174595491343e-11,
+     13,
+     50.00000000097486,
+     20.000000000218208
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "yz offset 12.5",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     12.5,
+     -9.999999999989097,
+     -4.903174595491343e-11,
+     22.5,
+     50.00000000097486,
+     20.000000000218208
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "frame axis-aligned, origin (3,4,5)",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653718437,
+    "faces": 6,
+    "bbox": [
+     -6.999999999989097,
+     3.999999999950968,
+     5,
+     53.00000000097486,
+     24.000000000218208,
+     15
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -9.999999999999996,
+     2.086600359150776e-15,
+     0,
+     50.000000000000036,
+     20.000000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 0.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "rough",
+   "place": "frame axis-aligned, origin (3,4,5)",
+   "curved": true,
+   "brep": {
+    "volume": 11141.59265359093,
+    "faces": 6,
+    "bbox": [
+     -7.000000000000009,
+     3.999999999999675,
+     5,
+     53.00000000000715,
+     24.000000000000483,
+     15
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -10.0000000000001,
+     -1.3180567748349858e-12,
+     0,
+     50.000000000000014,
+     19.999999999999698,
+     10.000000000000007
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 0.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "frame turned 36.87 deg about z, origin (3,4,5)",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653725034,
+    "faces": 6,
+    "bbox": [
+     -12.999999999989097,
+     2.0000000000109033,
+     5,
+     39.000000000565926,
+     46.000000000800995,
+     15
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -9.999999999999996,
+     2.086600359150776e-15,
+     0,
+     50.000000000000036,
+     20.000000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 0.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "rough",
+   "place": "frame turned 36.87 deg about z, origin (3,4,5)",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653586025,
+    "faces": 6,
+    "bbox": [
+     -13.000000000000064,
+     1.9999999999999343,
+     5,
+     38.99999999998405,
+     45.999999999981895,
+     15
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -9.99999999999993,
+     2.0250467969162701e-13,
+     0,
+     49.999999999999936,
+     20.000000000000682,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 0.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "frame tilted: u=x, v=(0,0.6,0.8), origin (-2,1,6)",
+   "curved": true,
+   "brep": {
+    "volume": 11141.59265371027,
+    "faces": 6,
+    "bbox": [
+     -11.999999999989097,
+     -7.000000000029419,
+     5.9999999999607745,
+     48.00000000097486,
+     13.000000000130923,
+     28.000000000174566
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -9.999999999999996,
+     2.086600359150776e-15,
+     0,
+     50.000000000000036,
+     20.000000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -7.8000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "rough",
+   "place": "frame tilted: u=x, v=(0,0.6,0.8), origin (-2,1,6)",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653581514,
+    "faces": 6,
+    "bbox": [
+     -12.000000000000178,
+     -7.000000000012567,
+     5.9999999999832445,
+     47.99999999994155,
+     13.000000000000107,
+     28.000000000000142
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -10.000000000000114,
+     -1.4601653219870059e-12,
+     0,
+     50.000000000000014,
+     19.99999999999967,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -7.8000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "stored",
+   "place": "frame swapped axes (u=y, v=x, normal -z), origin (0,0,9)",
+   "curved": true,
+   "brep": {
+    "volume": 11141.592653721977,
+    "faces": 6,
+    "bbox": [
+     -4.903174595491343e-11,
+     -9.999999999989097,
+     -1,
+     20.000000000218208,
+     50.00000000097486,
+     9
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -9.999999999999996,
+     2.086600359150776e-15,
+     0,
+     50.000000000000036,
+     20.000000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 4.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "slot-hand-rows-R10-L40",
+   "mode": "rough",
+   "place": "frame swapped axes (u=y, v=x, normal -z), origin (0,0,9)",
+   "curved": true,
+   "brep": {
+    "volume": 11141.59265358613,
+    "faces": 6,
+    "bbox": [
+     -7.059172813422414e-12,
+     -10.00000000000005,
+     -1,
+     20.00000000000005,
+     49.99999999997652,
+     9
+    ]
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -9.999999999999964,
+     6.354916060755696e-14,
+     0,
+     49.99999999999995,
+     20.000000000000234,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 4.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "xy offset 0",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     -1.0463163781506625e-11,
+     2.7162895586566087e-11,
+     0,
+     39.99999999998878,
+     25.000000000112014,
+     10
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836620192,
+    "bbox": [
+     -1.0466294497746276e-11,
+     2.7162895586566087e-11,
+     0,
+     39.99999999998878,
+     25.000000000112014,
+     10
+    ]
+   },
+   "guarded": {
+    "volume": 9214.732294132653,
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     40,
+     25.00000000000007,
+     10.000000000000005
+    ],
+    "vsClosedVol": 0.000014157695841169663,
+    "vsBrep": {
+     "vol": 0.000014157693754393744,
+     "bbox": 1.1194245530532498e-10
+    },
+    "vsOcct": {
+     "vol": 0.000014157693926926348,
+     "bbox": 1.1194245530532498e-10
+    },
+    "faces": 7,
+    "brepFaces": 7,
+    "ok": true
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     40,
+     25.00000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": true
+   },
+   "round2RouteWithPlacementCheck": {
+    "builtAnyway": true,
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     40,
+     25.00000000000007,
+     10.000000000000005
+    ]
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "xy offset 7",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     -1.0463163781506625e-11,
+     2.7162895586566087e-11,
+     7,
+     39.99999999998878,
+     25.000000000112014,
+     17
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836620192,
+    "bbox": [
+     -1.0466294497746276e-11,
+     2.7162895586566087e-11,
+     7,
+     39.99999999998878,
+     25.000000000112014,
+     17
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     40,
+     25.00000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -2.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "xy offset -5",
+   "curved": true,
+   "brep": {
+    "volume": 9214.60183662178,
+    "faces": 7,
+    "bbox": [
+     -1.0463163781506625e-11,
+     2.7162895586566087e-11,
+     -5,
+     39.99999999998878,
+     25.000000000112014,
+     5
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836620192,
+    "bbox": [
+     -1.0466294497746276e-11,
+     2.7162895586566087e-11,
+     -5,
+     39.99999999998878,
+     25.000000000112014,
+     5
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     40,
+     25.00000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 10.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "xy offset 3",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     -1.0463163781506625e-11,
+     2.7162895586566087e-11,
+     3,
+     39.99999999998878,
+     25.000000000112014,
+     13
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836620192,
+    "bbox": [
+     -1.0466294497746276e-11,
+     2.7162895586566087e-11,
+     3,
+     39.99999999998878,
+     25.000000000112014,
+     13
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     40,
+     25.00000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 2.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "xy offset 12.5",
+   "curved": true,
+   "brep": {
+    "volume": 9214.60183662178,
+    "faces": 7,
+    "bbox": [
+     -1.0463163781506625e-11,
+     2.7162895586566087e-11,
+     12.5,
+     39.99999999998878,
+     25.000000000112014,
+     22.5
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836620192,
+    "bbox": [
+     -1.0466294497746276e-11,
+     2.7162895586566087e-11,
+     12.5,
+     39.99999999998878,
+     25.000000000112014,
+     22.5
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     40,
+     25.00000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -7.5000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "xz offset 0",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     -1.0463163781506625e-11,
+     -10,
+     2.7162895586566087e-11,
+     39.99999999998878,
+     0,
+     25.000000000112014
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836626614,
+    "bbox": [
+     -1.0466294497746276e-11,
+     -10,
+     2.7162895586566087e-11,
+     39.99999999998878,
+     0,
+     25.000000000112014
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "xz offset 7",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     -1.0463163781506625e-11,
+     -3,
+     2.7162895586566087e-11,
+     39.99999999998878,
+     7,
+     25.000000000112014
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836626614,
+    "bbox": [
+     -1.0466294497746276e-11,
+     -3,
+     2.7162895586566087e-11,
+     39.99999999998878,
+     7,
+     25.000000000112014
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "xz offset -5",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     -1.0463163781506625e-11,
+     -15,
+     2.7162895586566087e-11,
+     39.99999999998878,
+     -5,
+     25.000000000112014
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836626614,
+    "bbox": [
+     -1.0466294497746276e-11,
+     -15,
+     2.7162895586566087e-11,
+     39.99999999998878,
+     -5,
+     25.000000000112014
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "xz offset 3",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     -1.0463163781506625e-11,
+     -7,
+     2.7162895586566087e-11,
+     39.99999999998878,
+     3,
+     25.000000000112014
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836626614,
+    "bbox": [
+     -1.0466294497746276e-11,
+     -7,
+     2.7162895586566087e-11,
+     39.99999999998878,
+     3,
+     25.000000000112014
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "xz offset 12.5",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     -1.0463163781506625e-11,
+     2.5,
+     2.7162895586566087e-11,
+     39.99999999998878,
+     12.5,
+     25.000000000112014
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836626614,
+    "bbox": [
+     -1.0466294497746276e-11,
+     2.5,
+     2.7162895586566087e-11,
+     39.99999999998878,
+     12.5,
+     25.000000000112014
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "yz offset 0",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     0,
+     -1.0463163781506625e-11,
+     2.7162895586566087e-11,
+     10,
+     39.99999999998878,
+     25.000000000112014
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836626614,
+    "bbox": [
+     0,
+     -1.0466294497746276e-11,
+     2.7162895586566087e-11,
+     10,
+     39.99999999998878,
+     25.000000000112014
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "yz offset 7",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     7,
+     -1.0463163781506625e-11,
+     2.7162895586566087e-11,
+     17,
+     39.99999999998878,
+     25.000000000112014
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836626614,
+    "bbox": [
+     7,
+     -1.0466294497746276e-11,
+     2.7162895586566087e-11,
+     17,
+     39.99999999998878,
+     25.000000000112014
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "yz offset -5",
+   "curved": true,
+   "brep": {
+    "volume": 9214.60183662178,
+    "faces": 7,
+    "bbox": [
+     -5,
+     -1.0463163781506625e-11,
+     2.7162895586566087e-11,
+     5,
+     39.99999999998878,
+     25.000000000112014
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836626614,
+    "bbox": [
+     -5,
+     -1.0466294497746276e-11,
+     2.7162895586566087e-11,
+     5,
+     39.99999999998878,
+     25.000000000112014
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "yz offset 3",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     3,
+     -1.0463163781506625e-11,
+     2.7162895586566087e-11,
+     13,
+     39.99999999998878,
+     25.000000000112014
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836626614,
+    "bbox": [
+     3,
+     -1.0466294497746276e-11,
+     2.7162895586566087e-11,
+     13,
+     39.99999999998878,
+     25.000000000112014
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "yz offset 12.5",
+   "curved": true,
+   "brep": {
+    "volume": 9214.60183662178,
+    "faces": 7,
+    "bbox": [
+     12.5,
+     -1.0463163781506625e-11,
+     2.7162895586566087e-11,
+     22.5,
+     39.99999999998878,
+     25.000000000112014
+    ]
+   },
+   "occt": {
+    "volume": 9214.601836626614,
+    "bbox": [
+     12.5,
+     -1.0466294497746276e-11,
+     2.7162895586566087e-11,
+     22.5,
+     39.99999999998878,
+     25.000000000112014
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "frame axis-aligned, origin (3,4,5)",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621481,
+    "faces": 7,
+    "bbox": [
+     2.999999999989537,
+     4.000000000027163,
+     5,
+     42.99999999998878,
+     29.000000000112014,
+     15
+    ]
+   },
+   "occt": {
+    "volume": 9214.60183662019,
+    "bbox": [
+     2.9999999999895337,
+     4.000000000027163,
+     5,
+     42.99999999998878,
+     29.000000000112014,
+     15
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     40,
+     25.00000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -0.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "frame turned 36.87 deg about z, origin (3,4,5)",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621308,
+    "faces": 7,
+    "bbox": [
+     -12.000000000075273,
+     4.000000000016891,
+     5,
+     34.999999999960835,
+     48.00000000007077,
+     15
+    ]
+   },
+   "occt": {
+    "volume": 9214.60183662333,
+    "bbox": [
+     -12.000000000075273,
+     4.000000000016893,
+     5,
+     34.999999999960835,
+     48.00000000007077,
+     15
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     40,
+     25.00000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -0.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "frame tilted: u=x, v=(0,0.6,0.8), origin (-2,1,6)",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621972,
+    "faces": 7,
+    "bbox": [
+     -2.000000000010463,
+     -6.999999999983702,
+     6.00000000002173,
+     37.99999999998878,
+     16.000000000067207,
+     32.000000000089614
+    ]
+   },
+   "occt": {
+    "volume": 9214.60183662682,
+    "bbox": [
+     -2.0000000000104663,
+     -6.999999999983702,
+     6.00000000002173,
+     37.99999999998878,
+     16.000000000067207,
+     32.000000000089614
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     40,
+     25.00000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits -9.8000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  },
+  {
+   "shape": "plate-with-hole-default-profiles",
+   "mode": "stored",
+   "place": "frame swapped axes (u=y, v=x, normal -z), origin (0,0,9)",
+   "curved": true,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     2.7162895586566087e-11,
+     -1.0463163781506625e-11,
+     -1,
+     25.000000000112014,
+     39.99999999998878,
+     9
+    ]
+   },
+   "occt": {
+    "volume": 9214.60183662682,
+    "bbox": [
+     2.7162895586566087e-11,
+     -1.0466294497746276e-11,
+     -1,
+     25.000000000112014,
+     39.99999999998878,
+     9
+    ]
+   },
+   "guarded": {
+    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "stage": "mismatch"
+   },
+   "round2Route": {
+    "bbox": [
+     -7.105427357601002e-15,
+     0,
+     0,
+     40,
+     25.00000000000007,
+     10.000000000000005
+    ],
+    "atRightPlace": false
+   },
+   "round2RouteWithPlacementCheck": {
+    "refused": "The solid did not land where the sketch plane is, so nothing was built (the solid sits 4.0000 along the sketch normal from the sketch plane, not 5.0000).",
+    "stage": "placement"
+   }
+  }
+ ]
+}

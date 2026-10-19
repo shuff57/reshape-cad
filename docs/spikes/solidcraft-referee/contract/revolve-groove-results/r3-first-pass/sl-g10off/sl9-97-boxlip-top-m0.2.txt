@@ -1,0 +1,1 @@
+sl9-97-boxlip-top-m0.2                   PASS     occtV 71215.0619 | tr-occt dV 8.5e-7 dBb 1.8e-16 dCom 1.5e-7 F o/b/t 16/16/16 | brep-occt dV 4.7e-15      | ms 1621 cpu 2036

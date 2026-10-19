@@ -1,0 +1,6167 @@
+[
+ {
+  "id": "fc-chamfer-edge__top-front",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nchamfer(pad.edge('top', 'front'), 2);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:bevel1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      0
+     ],
+     [
+      40,
+      30
+     ],
+     [
+      0,
+      30
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-y"
+      }
+     ]
+    },
+    "size": 2,
+    "style": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "fc-chamfer-edge__top-front",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "bevel1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 11919.999999999996,
+    "com": [
+     20.000000000000004,
+     15.096196868008953,
+     4.9709172259507834
+    ],
+    "bbox": [
+     0,
+     -2.220446049250313e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11920,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "dVol": 3.051995643533317e-16,
+    "dBbox": 2.220446049250313e-16,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 96,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "bevel1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        20,
+        0,
+        10
+       ]
+      ],
+      "distance": 2,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        40,
+        0
+       ],
+       [
+        40,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        20,
+        0,
+        10
+       ]
+      ],
+      "distance": 2,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "plane": 7
+    },
+    "occtTypes": {
+     "plane": 7
+    },
+    "occtComponents": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 11920,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10.000000000000004
+    ],
+    "com": [
+     20,
+     15.09619686800895,
+     4.970917225950784
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 3.051995643533317e-16,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 6.96744475938914e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "distance": 2,
+     "body": "b_pull1"
+    },
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 11920,
+   "faces": 7,
+   "com": [
+    20.000000000000004,
+    15.09619686800895,
+    4.9709172259507834
+   ],
+   "src": "variants/refs/ref-chamfer-edge__top-front.json",
+   "truckVol": 11920,
+   "truckFaces": 7,
+   "truckCom": [
+    20,
+    15.09619686800895,
+    4.970917225950784
+   ],
+   "dVol": 0,
+   "dOcctVol": 3.051995643533316e-16,
+   "dBrepVol": 0,
+   "dCom": 3.552713678800501e-15
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__bottom-back",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 20)\nchamfer(pad.edge('bottom', 'back'), 3);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:bevel1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      0
+     ],
+     [
+      40,
+      30
+     ],
+     [
+      0,
+      30
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 20
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+y"
+      }
+     ]
+    },
+    "size": 3,
+    "style": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "fc-chamfer-edge__bottom-back",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "bevel1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 23820,
+    "com": [
+     20,
+     14.89420654911839,
+     10.06801007556675
+    ],
+    "bbox": [
+     0,
+     0,
+     -2.6645352591003757e-15,
+     40,
+     30,
+     20
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23820,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     20
+    ],
+    "faces": 7,
+    "dVol": 0,
+    "dBbox": 2.6645352591003757e-15,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 61,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "bevel1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        20,
+        30,
+        0
+       ]
+      ],
+      "distance": 3,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        40,
+        0
+       ],
+       [
+        40,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 20,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        20,
+        30,
+        0
+       ]
+      ],
+      "distance": 3,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "plane": 7
+    },
+    "occtTypes": {
+     "plane": 7
+    },
+    "occtComponents": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 23820,
+    "bbox": [
+     0,
+     0,
+     -8.881784197001252e-16,
+     40,
+     30,
+     20
+    ],
+    "com": [
+     20,
+     14.894206549118389,
+     10.06801007556675
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0,
+    "dBbox": 1.7763568394002505e-15,
+    "dCom": 3.2986118401554854e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       20,
+       30,
+       0
+      ]
+     ],
+     "distance": 3,
+     "body": "b_pull1"
+    },
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 23820,
+   "faces": 7,
+   "com": [
+    20,
+    14.89420654911839,
+    10.06801007556675
+   ],
+   "src": "variants/refs/ref-chamfer-edge__bottom-back.json",
+   "truckVol": 23820,
+   "truckFaces": 7,
+   "truckCom": [
+    20,
+    14.894206549118389,
+    10.06801007556675
+   ],
+   "dVol": 0,
+   "dOcctVol": 0,
+   "dBrepVol": 0,
+   "dCom": 1.7763568394002505e-15
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__vertical-front-left",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nchamfer(pad.edge('front', 'left'), 4);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:bevel1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      0
+     ],
+     [
+      40,
+      30
+     ],
+     [
+      0,
+      30
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-y"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-x"
+      }
+     ]
+    },
+    "size": 4,
+    "style": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "fc-chamfer-edge__vertical-front-left",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "bevel1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 11920,
+    "com": [
+     20.125279642058164,
+     15.091722595078298,
+     4.999999999999999
+    ],
+    "bbox": [
+     -8.881784197001252e-16,
+     -1.1102230246251565e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11920,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "dVol": 0,
+    "dBbox": 8.881784197001252e-16,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 37,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "bevel1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        0,
+        0,
+        5
+       ]
+      ],
+      "distance": 4,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        40,
+        0
+       ],
+       [
+        40,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        0,
+        0,
+        5
+       ]
+      ],
+      "distance": 4,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "plane": 7
+    },
+    "occtTypes": {
+     "plane": 7
+    },
+    "occtComponents": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 11920,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10.000000000000002
+    ],
+    "com": [
+     20.125279642058164,
+     15.0917225950783,
+     5
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0,
+    "dBbox": 8.881784197001252e-16,
+    "dCom": 3.48372237969457e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       0,
+       0,
+       5
+      ]
+     ],
+     "distance": 4,
+     "body": "b_pull1"
+    },
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 11920,
+   "faces": 7,
+   "com": [
+    20.125279642058167,
+    15.0917225950783,
+    4.999999999999999
+   ],
+   "src": "variants/refs/ref-chamfer-edge__vertical-front-left.json",
+   "truckVol": 11920,
+   "truckFaces": 7,
+   "truckCom": [
+    20.125279642058164,
+    15.0917225950783,
+    5
+   ],
+   "dVol": 0,
+   "dOcctVol": 0,
+   "dBrepVol": 0,
+   "dCom": 3.552713678800501e-15
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__top-right-offcentre",
+  "row": "fcref",
+  "script": "const sk = sketch('top', 5)\nsk.rect(40, 30, { at: [0, 25] })\nconst pad = extrude(sk, 10)\nchamfer(pad.edge('top', 'right'), 1.5);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:bevel1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 5,
+    "points": [
+     [
+      -20,
+      10
+     ],
+     [
+      20,
+      10
+     ],
+     [
+      20,
+      40
+     ],
+     [
+      -20,
+      40
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+x"
+      }
+     ]
+    },
+    "size": 1.5,
+    "style": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "fc-chamfer-edge__top-right-offcentre",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "bevel1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 11966.249999999998,
+    "com": [
+     -0.054998433093074055,
+     25,
+     9.9873080539016
+    ],
+    "bbox": [
+     -20,
+     10,
+     5,
+     20.000000000000007,
+     40,
+     15.000000000000004
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11966.25,
+    "bbox": [
+     -20,
+     10,
+     5,
+     20,
+     40,
+     15
+    ],
+    "faces": 7,
+    "dVol": 1.520099783596245e-16,
+    "dBbox": 3.5527136788004996e-16,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 34,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "bevel1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        20,
+        25,
+        15
+       ]
+      ],
+      "distance": 1.5,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        5
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        -20,
+        10
+       ],
+       [
+        20,
+        10
+       ],
+       [
+        20,
+        40
+       ],
+       [
+        -20,
+        40
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        20,
+        25,
+        15
+       ]
+      ],
+      "distance": 1.5,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "plane": 7
+    },
+    "occtTypes": {
+     "plane": 7
+    },
+    "occtComponents": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 11966.25,
+    "bbox": [
+     -20,
+     10,
+     5,
+     20,
+     40,
+     15
+    ],
+    "com": [
+     -0.05499843309307427,
+     25,
+     9.987308053901598
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 1.520099783596245e-16,
+    "dBbox": 3.5527136788004996e-16,
+    "dCom": 3.4837223796945695e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       20,
+       25,
+       15
+      ]
+     ],
+     "distance": 1.5,
+     "body": "b_pull1"
+    },
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 11966.25,
+   "faces": 7,
+   "com": [
+    -0.05499843309307324,
+    25,
+    9.9873080539016
+   ],
+   "src": "variants/refs/ref-chamfer-edge__top-right-offcentre.json",
+   "truckVol": 11966.25,
+   "truckFaces": 7,
+   "truckCom": [
+    -0.05499843309307427,
+    25,
+    9.987308053901598
+   ],
+   "dVol": 0,
+   "dOcctVol": 1.5200997835962447e-16,
+   "dBrepVol": 0,
+   "dCom": 1.7763568394002505e-15
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__large-size",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nchamfer(pad.edge('top', 'back'), 9);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:bevel1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      0
+     ],
+     [
+      40,
+      30
+     ],
+     [
+      0,
+      30
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+y"
+      }
+     ]
+    },
+    "size": 9,
+    "style": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "fc-chamfer-edge__large-size",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "bevel1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 10380,
+    "com": [
+     19.999999999999996,
+     13.127167630057802,
+     4.687861271676301
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10.000000000000002
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 10380.000000000002,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "dVol": 1.7523982693120005e-16,
+    "dBbox": 1.77635683940025e-16,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 30,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "bevel1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        20,
+        30,
+        10
+       ]
+      ],
+      "distance": 9,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        40,
+        0
+       ],
+       [
+        40,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        20,
+        30,
+        10
+       ]
+      ],
+      "distance": 9,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "plane": 7
+    },
+    "occtTypes": {
+     "plane": 7
+    },
+    "occtComponents": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 10380,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "com": [
+     20,
+     13.127167630057802,
+     4.687861271676301
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0,
+    "dBbox": 1.77635683940025e-16,
+    "dCom": 6.96744475938914e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       20,
+       30,
+       10
+      ]
+     ],
+     "distance": 9,
+     "body": "b_pull1"
+    },
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 10380,
+   "faces": 7,
+   "com": [
+    20,
+    13.127167630057803,
+    4.687861271676301
+   ],
+   "src": "variants/refs/ref-chamfer-edge__large-size.json",
+   "truckVol": 10380,
+   "truckFaces": 7,
+   "truckCom": [
+    20,
+    13.127167630057802,
+    4.687861271676301
+   ],
+   "dVol": 0,
+   "dOcctVol": 0,
+   "dBrepVol": 1.7523982693120005e-16,
+   "dCom": 1.7763568394002505e-15
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__thin-sliver",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.rect(100, 6, { at: [50, 3] })\nconst pad = extrude(sk, 3)\nchamfer(pad.edge('top', 'left'), 1);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:bevel1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      100,
+      0
+     ],
+     [
+      100,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 3
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-x"
+      }
+     ]
+    },
+    "size": 1,
+    "style": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "fc-chamfer-edge__thin-sliver",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "bevel1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 1796.9999999999995,
+    "com": [
+     50.08291597106289,
+     3.0000000000000004,
+     1.4980523094045628
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     100,
+     6,
+     3
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 1797,
+    "bbox": [
+     0,
+     0,
+     0,
+     100,
+     6,
+     3
+    ],
+    "faces": 7,
+    "dVol": 2.530591824632522e-16,
+    "dBbox": 0,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 35,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "bevel1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        0,
+        3,
+        3
+       ]
+      ],
+      "distance": 1,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        100,
+        0
+       ],
+       [
+        100,
+        6
+       ],
+       [
+        0,
+        6
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 3,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        0,
+        3,
+        3
+       ]
+      ],
+      "distance": 1,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "plane": 7
+    },
+    "occtTypes": {
+     "plane": 7
+    },
+    "occtComponents": {
+     "plane": 7
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 1797,
+    "bbox": [
+     0,
+     0,
+     0,
+     100,
+     6,
+     3
+    ],
+    "com": [
+     50.08291597106288,
+     3,
+     1.4980523094045632
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 2.530591824632522e-16,
+    "dBbox": 0,
+    "dCom": 7.089493901340744e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       0,
+       3,
+       3
+      ]
+     ],
+     "distance": 1,
+     "body": "b_pull1"
+    },
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 1796.9999999999995,
+   "faces": 7,
+   "com": [
+    50.08291597106289,
+    3.0000000000000004,
+    1.4980523094045628
+   ],
+   "src": "variants/refs/ref-chamfer-edge__thin-sliver.json",
+   "truckVol": 1797,
+   "truckFaces": 7,
+   "truckCom": [
+    50.08291597106288,
+    3,
+    1.4980523094045632
+   ],
+   "dVol": 2.530591824632522e-16,
+   "dOcctVol": 0,
+   "dBrepVol": 2.530591824632522e-16,
+   "dCom": 7.105427357601002e-15
+  }
+ },
+ {
+  "id": "fc-fillet-edge__top-front",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nfillet(pad.edge('top', 'front'), 3);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:round1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      0
+     ],
+     [
+      40,
+      30
+     ],
+     [
+      0,
+      30
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-y"
+      }
+     ]
+    },
+    "size": 3,
+    "style": "fillet"
+   }
+  ],
+  "fx": {
+   "id": "fc-fillet-edge__top-front",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "round1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 11922.743338840806,
+    "com": [
+     20,
+     15.092854462979618,
+     4.971943260960453
+    ],
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11922.74333882308,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "dVol": 1.4867427096084578e-12,
+    "dBbox": 4.440892098500626e-16,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 206,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        20,
+        0,
+        10
+       ]
+      ],
+      "radius": 3,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        40,
+        0
+       ],
+       [
+        40,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.fillet",
+     "params": {
+      "edges": [
+       [
+        20,
+        0,
+        10
+       ]
+      ],
+      "radius": 3,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "occtComponents": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 11922.69267166096,
+    "bbox": [
+     -2.6096948363226262e-15,
+     0,
+     0,
+     40.000000000000014,
+     30,
+     10
+    ],
+    "com": [
+     20.000000000000707,
+     15.092913551660482,
+     4.971926942560425
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000004249624302620232,
+    "dBbox": 2.6096948363226262e-15,
+    "dCom": 0.0000011588243721420992,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "radius": 3,
+     "body": "b_pull1"
+    },
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 11922.74333882308,
+   "faces": 7,
+   "com": [
+    20,
+    15.092854463327926,
+    4.971943258959154
+   ],
+   "src": "variants/refs/ref-fillet-edge__top-front.json",
+   "truckVol": 11922.69267166096,
+   "truckFaces": 7,
+   "truckCom": [
+    20.000000000000707,
+    15.092913551660482,
+    4.971926942560425
+   ],
+   "dVol": 0.00000424962281588384,
+   "dOcctVol": 1.4867427096106682e-12,
+   "dBrepVol": 0,
+   "dCom": 0.00005908833255574564
+  }
+ },
+ {
+  "id": "fc-fillet-edge__top-back-small",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nfillet(pad.edge('top', 'back'), 0.5);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:round1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      0
+     ],
+     [
+      40,
+      30
+     ],
+     [
+      0,
+      30
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+y"
+      }
+     ]
+    },
+    "size": 0.5,
+    "style": "fillet"
+   }
+  ],
+  "fx": {
+   "id": "fc-fillet-edge__top-back-small",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "round1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 11997.853981637982,
+    "com": [
+     19.999999999999993,
+     14.997336973812574,
+     4.9991256423705055
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11997.853981633976,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "dVol": 3.33844258543072e-13,
+    "dBbox": 0,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 103,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        20,
+        30,
+        10
+       ]
+      ],
+      "radius": 0.5,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        40,
+        0
+       ],
+       [
+        40,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.fillet",
+     "params": {
+      "edges": [
+       [
+        20,
+        30,
+        10
+       ]
+      ],
+      "radius": 0.5,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "occtComponents": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 11997.850805969067,
+    "bbox": [
+     -2.756612760263446e-16,
+     0,
+     0,
+     40.00000000000002,
+     30,
+     10.000000000000002
+    ],
+    "com": [
+     20.000000001041936,
+     14.997333050943748,
+     4.999124366233221
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 2.646864114075504e-7,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 7.693378728528653e-8,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       20,
+       30,
+       10
+      ]
+     ],
+     "radius": 0.5,
+     "body": "b_pull1"
+    },
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 11997.853981633974,
+   "faces": 7,
+   "com": [
+    19.999999999999996,
+    14.997336973788013,
+    4.999125642302657
+   ],
+   "src": "variants/refs/ref-fillet-edge__top-back-small.json",
+   "truckVol": 11997.850805969067,
+   "truckFaces": 7,
+   "truckCom": [
+    20.000000001041936,
+    14.997333050943748,
+    4.999124366233221
+   ],
+   "dVol": 2.646860774117707e-7,
+   "dOcctVol": 3.339958681065546e-13,
+   "dBrepVol": 1.5160956337110966e-16,
+   "dCom": 0.000003922844264536707
+  }
+ },
+ {
+  "id": "fc-fillet-edge__vertical-front-left",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nfillet(pad.edge('front', 'left'), 5);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:round1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      0
+     ],
+     [
+      40,
+      30
+     ],
+     [
+      0,
+      30
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-y"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-x"
+      }
+     ]
+    },
+    "size": 5,
+    "style": "fillet"
+   }
+  ],
+  "fx": {
+   "id": "fc-fillet-edge__vertical-front-left",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "round1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 11946.349540862548,
+    "com": [
+     20.08480332867973,
+     15.062348577822522,
+     5
+    ],
+    "bbox": [
+     -8.881784197001252e-16,
+     -8.881784197001252e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11946.349540849362,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "dVol": 1.1037559332415005e-12,
+    "dBbox": 8.881784197001252e-16,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 114,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        0,
+        0,
+        5
+       ]
+      ],
+      "radius": 5,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        40,
+        0
+       ],
+       [
+        40,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.fillet",
+     "params": {
+      "edges": [
+       [
+        0,
+        0,
+        5
+       ]
+      ],
+      "radius": 5,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "occtComponents": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 11946.314360529366,
+    "bbox": [
+     0,
+     0,
+     -2.900308709386795e-15,
+     40,
+     30,
+     10.000000000000004
+    ],
+    "com": [
+     20.08485664421421,
+     15.062387103463173,
+     5.000000000000121
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000002944860525056699,
+    "dBbox": 2.900308709386795e-15,
+    "dCom": 0.0000010456036564992509,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       0,
+       0,
+       5
+      ]
+     ],
+     "radius": 5,
+     "body": "b_pull1"
+    },
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 11946.349540849362,
+   "faces": 7,
+   "com": [
+    20.084803329848064,
+    15.062348579563391,
+    4.999999999999999
+   ],
+   "src": "variants/refs/ref-fillet-edge__vertical-front-left.json",
+   "truckVol": 11946.314360529366,
+   "truckFaces": 7,
+   "truckCom": [
+    20.08485664421421,
+    15.062387103463173,
+    5.000000000000121
+   ],
+   "dVol": 0.000002944859421304016,
+   "dOcctVol": 1.1037559332427189e-12,
+   "dBrepVol": 0,
+   "dCom": 0.0000533143661449742
+  }
+ },
+ {
+  "id": "fc-fillet-edge__bottom-right-tall",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 25)\nfillet(pad.edge('bottom', 'right'), 2);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:round1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      0
+     ],
+     [
+      40,
+      30
+     ],
+     [
+      0,
+      30
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 25
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+x"
+      }
+     ]
+    },
+    "size": 2,
+    "style": "fillet"
+   }
+  ],
+  "fx": {
+   "id": "fc-fillet-edge__bottom-right-tall",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "round1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 29974.24777962573,
+    "com": [
+     19.983200914212972,
+     15.000000000000002,
+     12.51035549930516
+    ],
+    "bbox": [
+     0,
+     0,
+     -4.440892098500626e-16,
+     40,
+     30,
+     25
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 29974.247779607696,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     25
+    ],
+    "faces": 7,
+    "dVol": 6.016318100570127e-13,
+    "dBbox": 4.440892098500626e-16,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 151,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        40,
+        15,
+        0
+       ]
+      ],
+      "radius": 2,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        40,
+        0
+       ],
+       [
+        40,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 25,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.fillet",
+     "params": {
+      "edges": [
+       [
+        40,
+        15,
+        0
+       ]
+      ],
+      "radius": 2,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "occtComponents": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 29974.230878051796,
+    "bbox": [
+     0,
+     -7.105427357601003e-15,
+     0,
+     40.00000000000002,
+     30.00000000000001,
+     25
+    ],
+    "com": [
+     19.983190078447333,
+     15.00000000000007,
+     12.510362106832364
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 5.63869827797752e-7,
+    "dBbox": 7.105427357601003e-15,
+    "dCom": 1.9383606846413207e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       40,
+       15,
+       0
+      ]
+     ],
+     "radius": 2,
+     "body": "b_pull1"
+    },
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 29974.247779607693,
+   "faces": 7,
+   "com": [
+    19.983200913972425,
+    15.000000000000002,
+    12.510355499707666
+   ],
+   "src": "variants/refs/ref-fillet-edge__bottom-right-tall.json",
+   "truckVol": 29974.230878051796,
+   "truckFaces": 7,
+   "truckCom": [
+    19.983190078447333,
+    15.00000000000007,
+    12.510362106832364
+   ],
+   "dVol": 5.638692260449111e-7,
+   "dOcctVol": 6.017531802026354e-13,
+   "dBrepVol": 1.213701452607171e-16,
+   "dCom": 0.0000108355250922898
+  }
+ },
+ {
+  "id": "fc-fillet-edge__offcentre-block",
+  "row": "fcref",
+  "script": "const sk = sketch('top', 2)\nsk.rect(40, 30, { at: [-10, 5] })\nconst pad = extrude(sk, 12)\nfillet(pad.edge('top', 'left'), 4);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:round1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 2,
+    "points": [
+     [
+      -30,
+      -10
+     ],
+     [
+      10,
+      -10
+     ],
+     [
+      10,
+      20
+     ],
+     [
+      -30,
+      20
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 12
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-x"
+      }
+     ]
+    },
+    "size": 4,
+    "style": "fillet"
+   }
+  ],
+  "fx": {
+   "id": "fc-fillet-edge__offcentre-block",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "round1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 14296.991118453563,
+    "com": [
+     -9.862338719860928,
+     5,
+     7.96320780251064
+    ],
+    "bbox": [
+     -30,
+     -10,
+     2,
+     10,
+     20,
+     14
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 14296.991118430777,
+    "bbox": [
+     -30,
+     -10,
+     2,
+     10,
+     20,
+     14
+    ],
+    "faces": 7,
+    "dVol": 1.5937955104978513e-12,
+    "dBbox": 0,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 148,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        -30,
+        5,
+        14
+       ]
+      ],
+      "radius": 4,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        2
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        -30,
+        -10
+       ],
+       [
+        10,
+        -10
+       ],
+       [
+        10,
+        20
+       ],
+       [
+        -30,
+        20
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 12,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.fillet",
+     "params": {
+      "edges": [
+       [
+        -30,
+        5,
+        14
+       ]
+      ],
+      "radius": 4,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "occtComponents": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 14296.92356171653,
+    "bbox": [
+     -30,
+     -10.000000000000005,
+     2,
+     10,
+     20.000000000000014,
+     14
+    ],
+    "com": [
+     -9.862251057528448,
+     5.000000003671645,
+     7.9631867627688875
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000004725241589151486,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 0.0000017048347792964313,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       -30,
+       5,
+       14
+      ]
+     ],
+     "radius": 4,
+     "body": "b_pull1"
+    },
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 14296.991118430775,
+   "faces": 7,
+   "com": [
+    -9.862338719468713,
+    5.000000000000001,
+    7.963207799544595
+   ],
+   "src": "variants/refs/ref-fillet-edge__offcentre-block.json",
+   "truckVol": 14296.92356171653,
+   "truckFaces": 7,
+   "truckCom": [
+    -9.862251057528448,
+    5.000000003671645,
+    7.9631867627688875
+   ],
+   "dVol": 0.000004725239995236279,
+   "dOcctVol": 1.5939227393269664e-12,
+   "dBrepVol": 1.2722882657463013e-16,
+   "dCom": 0.00008766194026499363
+  }
+ },
+ {
+  "id": "fc-fillet-edge__half-the-height",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nfillet(pad.edge('top', 'right'), 5);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:round1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      0
+     ],
+     [
+      40,
+      30
+     ],
+     [
+      0,
+      30
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+x"
+      }
+     ]
+    },
+    "size": 5,
+    "style": "fillet"
+   }
+  ],
+  "fx": {
+   "id": "fc-fillet-edge__half-the-height",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "round1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 11839.048622571825,
+    "com": [
+     19.743284214944243,
+     15,
+     4.947208601142469
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11839.048622548087,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "dVol": 2.0050438572416984e-12,
+    "dBbox": 0,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 135,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        40,
+        15,
+        10
+       ]
+      ],
+      "radius": 5,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        40,
+        0
+       ],
+       [
+        40,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.fillet",
+     "params": {
+      "edges": [
+       [
+        40,
+        15,
+        10
+       ]
+      ],
+      "radius": 5,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "occtComponents": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 11838.94307221126,
+    "bbox": [
+     0,
+     -4.2484267246421144e-15,
+     0,
+     40,
+     30.000000000000014,
+     10
+    ],
+    "com": [
+     19.74312128353677,
+     15.000000000001126,
+     4.9471812065040774
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000008915442780133525,
+    "dBbox": 4.2484267246421144e-15,
+    "dCom": 0.0000031953477926301106,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       40,
+       15,
+       10
+      ]
+     ],
+     "radius": 5,
+     "body": "b_pull1"
+    },
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 11839.048622548085,
+   "faces": 7,
+   "com": [
+    19.74328421491654,
+    15.000000000000002,
+    4.947208595899366
+   ],
+   "src": "variants/refs/ref-fillet-edge__half-the-height.json",
+   "truckVol": 11838.94307221126,
+   "truckFaces": 7,
+   "truckCom": [
+    19.74312128353677,
+    15.000000000001126,
+    4.9471812065040774
+   ],
+   "dVol": 0.000008915440774953902,
+   "dOcctVol": 2.0051975004531707e-12,
+   "dBrepVol": 1.536432074517792e-16,
+   "dCom": 0.00016293137976930439
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__disc-rim",
+  "row": "fcref",
+  "script": "const c = cylinder(30, 20, { at: [0, 0, 10] })\nchamfer(c.edge('top', 'side'), 1.5);",
+  "expect": null,
+  "doc": "cylinder:cyl1 fillet:bevel1",
+  "docJson": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "radius": 15,
+    "height": 20,
+    "center": [
+     0,
+     0,
+     10
+    ]
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "target": "cyl1",
+    "edge": {
+     "cause": "between",
+     "feature": "cyl1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "cyl1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "cyl1",
+       "kind": "face",
+       "part": "side"
+      }
+     ]
+    },
+    "size": 1.5,
+    "style": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "fc-chamfer-edge__disc-rim",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "bevel1",
+   "control": false,
+   "featureKinds": [
+    "cylinder",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 14034.672480830703,
+    "com": [
+     3.8882048855012364e-16,
+     -9.293295084185397e-16,
+     9.930653487786453
+    ],
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     20
+    ],
+    "faces": 4,
+    "types": {
+     "cylinder": 1,
+     "cone": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "cone": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 14034.672480830704,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     20
+    ],
+    "faces": 4,
+    "dVol": 1.2960682951670787e-16,
+    "dBbox": 0,
+    "pass": true
+   },
+   "scErrors": [
+    "solid.chamfer: invalid parameters for `solid.chamfer`: no edge at [0, 0, 20]: the nearest edge is 14.946 mm away"
+   ],
+   "ms": 1431,
+   "truckFeatures": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "bevel1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        14.999999999999998,
+        0,
+        20
+       ]
+      ],
+      "distance": 1.5,
+      "body": "b_cyl1"
+     },
+     "variantsTried": 2
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.cylinder",
+     "params": {
+      "radius": 15,
+      "height": 20,
+      "base": [
+       0,
+       0,
+       0
+      ],
+      "axis": "Z",
+      "body_name": "b_cyl1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        14.999999999999998,
+        0,
+        20
+       ]
+      ],
+      "distance": 1.5,
+      "body": "b_cyl1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "cone": 1,
+     "cylinder": 1,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 1,
+     "cone": 1,
+     "plane": 2
+    },
+    "occtComponents": {
+     "cylinder": 1,
+     "cone": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "faceKeys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 14033.36938435807,
+    "bbox": [
+     -14.999768343198571,
+     -14.999597006109646,
+     0,
+     14.999768343198578,
+     14.99959700610964,
+     20
+    ],
+    "com": [
+     1.7023277526776006e-14,
+     1.136325378056368e-14,
+     9.930683111660738
+    ],
+    "faces": 4,
+    "kernelFaces": 6,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.00009284837066293873,
+    "dBbox": 0.000026866259357305465,
+    "dCom": 6.315831218828588e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       14.999999999999998,
+       0,
+       20
+      ]
+     ],
+     "distance": 1.5,
+     "body": "b_cyl1"
+    },
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 14034.672480830703,
+   "faces": 4,
+   "com": [
+    6.480341475835394e-16,
+    2.6807357803789283e-16,
+    9.930653487786453
+   ],
+   "src": "variants/refs/ref-chamfer-edge__disc-rim.json",
+   "truckVol": 14033.36938435807,
+   "truckFaces": 4,
+   "truckCom": [
+    1.7023277526776006e-14,
+    1.136325378056368e-14,
+    9.930683111660738
+   ],
+   "dVol": 0.00009284837066293873,
+   "dOcctVol": 0,
+   "dBrepVol": 1.2960682951670787e-16,
+   "dCom": 0.00002962387428517843
+  }
+ },
+ {
+  "id": "fc-fillet-edge__disc-rim",
+  "row": "fcref",
+  "script": "const c = cylinder(30, 20, { at: [0, 0, 10] })\nfillet(c.edge('top', 'side'), 2);",
+  "expect": null,
+  "doc": "cylinder:cyl1 fillet:round1",
+  "docJson": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "radius": 15,
+    "height": 20,
+    "center": [
+     0,
+     0,
+     10
+    ]
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "target": "cyl1",
+    "edge": {
+     "cause": "between",
+     "feature": "cyl1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "cyl1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "cyl1",
+       "kind": "face",
+       "part": "side"
+      }
+     ]
+    },
+    "size": 2,
+    "style": "fillet"
+   }
+  ],
+  "fx": {
+   "id": "fc-fillet-edge__disc-rim",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "round1",
+   "control": false,
+   "featureKinds": [
+    "cylinder",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 14058.673439199481,
+    "com": [
+     1.2938556481965144e-16,
+     -1.037748745815751e-15,
+     9.94669319727664
+    ],
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15.0000001,
+     20
+    ],
+    "faces": 4,
+    "types": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 14058.673439199476,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     20
+    ],
+    "faces": 4,
+    "dVol": 3.881566944589543e-16,
+    "dBbox": 6.66666658170575e-9,
+    "pass": true
+   },
+   "scErrors": [
+    "solid.fillet: invalid parameters for `solid.fillet`: no edge at [0, 0, 20]: the nearest edge is 14.946 mm away"
+   ],
+   "ms": 10524,
+   "truckFeatures": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        14.999999999999998,
+        0,
+        20
+       ]
+      ],
+      "radius": 2,
+      "body": "b_cyl1"
+     },
+     "variantsTried": 2
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.cylinder",
+     "params": {
+      "radius": 15,
+      "height": 20,
+      "base": [
+       0,
+       0,
+       0
+      ],
+      "axis": "Z",
+      "body_name": "b_cyl1"
+     }
+    },
+    {
+     "command": "solid.fillet",
+     "params": {
+      "edges": [
+       [
+        14.999999999999998,
+        0,
+        20
+       ]
+      ],
+      "radius": 2,
+      "body": "b_cyl1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "occtTypes": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "occtComponents": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "bigCylinderComponents": 1,
+    "faceKeys": {
+     "cylinder": "equal",
+     "other": "equal",
+     "plane": "equal"
+    },
+    "volume": 14058.269413846894,
+    "bbox": [
+     -14.999768343198571,
+     -14.999645737868256,
+     0,
+     14.999768343198578,
+     14.999645737868253,
+     20
+    ],
+    "com": [
+     -1.2852668805326222e-14,
+     -1.673434730357911e-14,
+     9.946687278687172
+    ],
+    "faces": 4,
+    "kernelFaces": 6,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000028738511804444777,
+    "dBbox": 0.000023624141958942725,
+    "dCom": 1.2618475125465152e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       14.999999999999998,
+       0,
+       20
+      ]
+     ],
+     "radius": 2,
+     "body": "b_cyl1"
+    },
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 14058.673439199483,
+   "faces": 4,
+   "com": [
+    3.0405607732618082e-15,
+    -5.441123499532705e-17,
+    9.946693197276645
+   ],
+   "src": "variants/refs/ref-fillet-edge__disc-rim.json",
+   "truckVol": 14058.269413846894,
+   "truckFaces": 4,
+   "truckCom": [
+    -1.2852668805326222e-14,
+    -1.673434730357911e-14,
+    9.946687278687172
+   ],
+   "dVol": 0.00002873851180457416,
+   "dOcctVol": 1.293855648196514e-16,
+   "dBrepVol": 5.175422592786056e-16,
+   "dCom": 0.000005918589472742042
+  }
+ },
+ {
+  "id": "fc-fillet-edge__radius-too-big",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nfillet(pad.edge('top', 'front'), 12);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:round1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      0
+     ],
+     [
+      40,
+      30
+     ],
+     [
+      0,
+      30
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-y"
+      }
+     ]
+    },
+    "size": 12,
+    "style": "fillet"
+   }
+  ],
+  "fx": {
+   "id": "fc-fillet-edge__radius-too-big",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "round1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {
+    "round1": "Rounding Round 1 at 12 would not fit its edge -- Round 1 is shown without it."
+   },
+   "occt": {
+    "volume": 11999.999999999998,
+    "com": [
+     20,
+     15,
+     4.999999999999999
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {
+    "round1": "Rounding round1 at 12 would not fit its edge -- round1 is shown without it."
+   },
+   "brep": {
+    "volume": 12000,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 6,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "pass": true
+   },
+   "scErrors": [
+    "solid.fillet: not supported yet: the blend is larger than the neighbouring faces",
+    "solid.fillet: not supported yet: the blend is larger than the neighbouring faces",
+    "solid.fillet: invalid parameters for `solid.fillet`: no edge at [20, 6.366197723675814, 10]: the nearest edge is 6.366 mm away",
+    "solid.fillet: invalid parameters for `solid.fillet`: no edge at [20, 0, 16.366197723675814]: the nearest edge is 6.366 mm away"
+   ],
+   "ms": 53,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "refused",
+     "refusal": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [20, 0, 16.366197723675814]: the nearest edge is 6.366 mm away"
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        40,
+        0
+       ],
+       [
+        40,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [20, 0, 16.366197723675814]: the nearest edge is 6.366 mm away",
+    "firstRefusal": "round1 (fillet): solidcraft refused it -- solid.fillet: invalid parameters for `solid.fillet`: no edge at [20, 0, 16.366197723675814]: the nearest edge is 6.366 mm away"
+   },
+   "outcome": "REFUSED"
+  },
+  "fc": {
+   "ok": false,
+   "bad": {
+    "Fillet": [
+     "Touched",
+     "Invalid"
+    ]
+   },
+   "src": "variants/refs/ref-fillet-edge__radius-too-big.json",
+   "truckVol": null,
+   "truckFaces": null,
+   "truckCom": null,
+   "dVol": null,
+   "dOcctVol": null,
+   "dBrepVol": null,
+   "dCom": null
+  }
+ },
+ {
+  "id": "fc-fillet-edge__L-prism-top-right",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.polygon([[0,0],[30,0],[30,10],[10,10],[10,25],[0,25]])\nconst pad = extrude(sk, 10)\nfillet(pad.edge('top', 'right'), 2);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:round1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      0
+     ],
+     [
+      30,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      25
+     ],
+     [
+      0,
+      25
+     ]
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+x"
+      }
+     ]
+    },
+    "size": 2,
+    "style": "fillet"
+   }
+  ],
+  "fx": {
+   "id": "fc-fillet-edge__L-prism-top-right",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "round1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 4491.415926539892,
+    "com": [
+     11.632481485795168,
+     9.174630073605849,
+     4.991297721945903
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     25,
+     10
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 8,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 8,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 4491.415926535897,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     25,
+     10
+    ],
+    "faces": 9,
+    "dVol": 8.895658496643546e-13,
+    "dBbox": 0,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 124,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        30,
+        5,
+        10
+       ]
+      ],
+      "radius": 2,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        30,
+        0
+       ],
+       [
+        30,
+        10
+       ],
+       [
+        10,
+        10
+       ],
+       [
+        10,
+        25
+       ],
+       [
+        0,
+        25
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.fillet",
+     "params": {
+      "edges": [
+       [
+        30,
+        5,
+        10
+       ]
+      ],
+      "radius": 2,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 8
+    },
+    "occtTypes": {
+     "plane": 8,
+     "cylinder": 1
+    },
+    "occtComponents": {
+     "plane": 8,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 4491.410296434488,
+    "bbox": [
+     0,
+     -1.1102230246251561e-15,
+     0,
+     30,
+     25,
+     10.000000000000005
+    ],
+    "com": [
+     11.632459456855804,
+     9.174635306617377,
+     4.991292436221789
+    ],
+    "faces": 9,
+    "kernelFaces": 9,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0000012535257245841885,
+    "dBbox": 1.1102230246251561e-15,
+    "dCom": 5.464707294641818e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       30,
+       5,
+       10
+      ]
+     ],
+     "radius": 2,
+     "body": "b_pull1"
+    },
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 4491.415926535898,
+   "faces": 9,
+   "com": [
+    11.63248148562538,
+    9.174630073608292,
+    4.991297721171912
+   ],
+   "src": "variants/refs/ref-fillet-edge__L-prism-top-right.json",
+   "truckVol": 4491.410296434488,
+   "truckFaces": 9,
+   "truckCom": [
+    11.632459456855804,
+    9.174635306617377,
+    4.991292436221789
+   ],
+   "dVol": 0.00000125352483522195,
+   "dOcctVol": 8.893633534553426e-13,
+   "dBrepVol": 2.0249620980312902e-16,
+   "dCom": 0.00002202876957646538
+  }
+ },
+ {
+  "id": "fc-chamfer-edge__L-prism-top-front",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.polygon([[0,0],[30,0],[30,10],[10,10],[10,25],[0,25]])\nconst pad = extrude(sk, 10)\nchamfer(pad.edge('top', 'front'), 2);",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:bevel1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      0
+     ],
+     [
+      30,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      25
+     ],
+     [
+      0,
+      25
+     ]
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-y"
+      }
+     ]
+    },
+    "size": 2,
+    "style": "chamfer"
+   }
+  ],
+  "fx": {
+   "id": "fc-chamfer-edge__L-prism-top-front",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "bevel1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 4440,
+    "com": [
+     11.62162162162162,
+     9.281531531531531,
+     4.94144144144144
+    ],
+    "bbox": [
+     0,
+     -2.220446049250313e-16,
+     0,
+     30,
+     25,
+     10
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 9
+    },
+    "components": {
+     "plane": 9
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 4439.999999999999,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     25,
+     10.000000000000004
+    ],
+    "faces": 9,
+    "dVol": 2.0484114904795681e-16,
+    "dBbox": 3.552713678800501e-16,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 31,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "bevel1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        15,
+        0,
+        10
+       ]
+      ],
+      "distance": 2,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        30,
+        0
+       ],
+       [
+        30,
+        10
+       ],
+       [
+        10,
+        10
+       ],
+       [
+        10,
+        25
+       ],
+       [
+        0,
+        25
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.chamfer",
+     "params": {
+      "edges": [
+       [
+        15,
+        0,
+        10
+       ]
+      ],
+      "distance": 2,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "plane": 9
+    },
+    "occtTypes": {
+     "plane": 9
+    },
+    "occtComponents": {
+     "plane": 9
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 4439.999999999999,
+    "bbox": [
+     -4.108650548026103e-34,
+     -1.1102230246251565e-16,
+     0,
+     30,
+     25,
+     10.000000000000002
+    ],
+    "com": [
+     11.621621621621621,
+     9.281531531531535,
+     4.941441441441442
+    ],
+    "faces": 9,
+    "kernelFaces": 9,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 2.0484114904795681e-16,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 8.813197964429409e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       15,
+       0,
+       10
+      ]
+     ],
+     "distance": 2,
+     "body": "b_pull1"
+    },
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 4440,
+   "faces": 9,
+   "com": [
+    11.621621621621621,
+    9.281531531531535,
+    4.941441441441443
+   ],
+   "src": "variants/refs/ref-chamfer-edge__L-prism-top-front.json",
+   "truckVol": 4439.999999999999,
+   "truckFaces": 9,
+   "truckCom": [
+    11.621621621621621,
+    9.281531531531535,
+    4.941441441441442
+   ],
+   "dVol": 2.0484114904795681e-16,
+   "dOcctVol": 0,
+   "dBrepVol": 2.0484114904795681e-16,
+   "dCom": 8.881784197001252e-16
+  }
+ },
+ {
+  "id": "fcb-fillet-edge",
+  "row": "fcref",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst pad = extrude(sk, 10)\nfillet(pad.edge('front', 'right'), 3)",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 fillet:round1",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      0
+     ],
+     [
+      40,
+      30
+     ],
+     [
+      0,
+      30
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "target": "pull1",
+    "edge": {
+     "cause": "between",
+     "feature": "pull1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "-y"
+      },
+      {
+       "cause": "primitive",
+       "feature": "pull1",
+       "kind": "face",
+       "part": "+x"
+      }
+     ]
+    },
+    "size": 3,
+    "style": "fillet"
+   }
+  ],
+  "fx": {
+   "id": "fcb-fillet-edge",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "round1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+   ],
+   "occtRefusals": {},
+   "occt": {
+    "volume": 11980.68583471495,
+    "com": [
+     19.96883811085027,
+     15.023101346519011,
+     5
+    ],
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11980.68583470577,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "dVol": 7.662699486781395e-13,
+    "dBbox": 4.440892098500626e-16,
+    "pass": true
+   },
+   "scErrors": [],
+   "ms": 111,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        40,
+        0,
+        5
+       ]
+      ],
+      "radius": 3,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        40,
+        0
+       ],
+       [
+        40,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.fillet",
+     "params": {
+      "edges": [
+       [
+        40,
+        0,
+        5
+       ]
+      ],
+      "radius": 3,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "occtComponents": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 11980.673162290244,
+    "bbox": [
+     0,
+     0,
+     -1.6607148876989409e-15,
+     40.00000000000001,
+     30,
+     10.000000000000007
+    ],
+    "com": [
+     19.968818185135614,
+     15.02311598007365,
+     5.000000001565152
+    ],
+    "faces": 7,
+    "kernelFaces": 7,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0000010577378357548336,
+    "dBbox": 1.6607148876989409e-15,
+    "dCom": 3.907754148381602e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": {
+     "edges": [
+      [
+       40,
+       0,
+       5
+      ]
+     ],
+     "radius": 3,
+     "body": "b_pull1"
+    },
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 11980.685834705771,
+   "faces": 7,
+   "src": "baseline/ref-fillet-edge.json",
+   "truckVol": 11980.673162290244,
+   "truckFaces": 7,
+   "truckCom": [
+    19.968818185135614,
+    15.02311598007365,
+    5.000000001565152
+   ],
+   "dVol": 0.000001057737069637522,
+   "dOcctVol": 7.661181218610767e-13,
+   "dBrepVol": 1.5182681764983683e-16,
+   "dCom": null
+  }
+ },
+ {
+  "id": "fcb-fillet-after-pocket",
+  "row": "fcref",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)",
+  "expect": null,
+  "doc": "sketch:sk1 extrude:pull1 sketch:sk2 extrude:pull2 combine:pocket1 fillet:round1 fillet:round2 fillet:round3 fillet:round4",
+  "docJson": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      40,
+      0
+     ],
+     [
+      40,
+      30
+     ],
+     [
+      0,
+      30
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 10,
+    "points": [
+     [
+      15,
+      10
+     ],
+     [
+      25,
+      10
+     ],
+     [
+      25,
+      20
+     ],
+     [
+      15,
+      20
+     ]
+    ],
+    "constraints": [
+     {
+      "kind": "horizontal",
+      "edge": 0
+     },
+     {
+      "kind": "vertical",
+      "edge": 1
+     },
+     {
+      "kind": "horizontal",
+      "edge": 2
+     },
+     {
+      "kind": "vertical",
+      "edge": 3
+     }
+    ]
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "target": "sk2",
+    "height": -4
+   },
+   {
+    "id": "pocket1",
+    "kind": "combine",
+    "op": "subtract",
+    "targets": [
+     "pull1",
+     "pull2"
+    ]
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "target": "pocket1",
+    "edge": {
+     "cause": "between",
+     "feature": "pocket1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "carried",
+       "feature": "pocket1",
+       "kind": "face",
+       "of": {
+        "cause": "primitive",
+        "feature": "pull1",
+        "kind": "face",
+        "part": "+z"
+       }
+      },
+      {
+       "cause": "swept",
+       "feature": "pull2",
+       "kind": "face",
+       "from": "sk2",
+       "edge": 0
+      }
+     ]
+    },
+    "size": 1,
+    "style": "fillet"
+   },
+   {
+    "id": "round2",
+    "kind": "fillet",
+    "target": "round1",
+    "edge": {
+     "cause": "between",
+     "feature": "pocket1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "carried",
+       "feature": "pocket1",
+       "kind": "face",
+       "of": {
+        "cause": "primitive",
+        "feature": "pull1",
+        "kind": "face",
+        "part": "+z"
+       }
+      },
+      {
+       "cause": "swept",
+       "feature": "pull2",
+       "kind": "face",
+       "from": "sk2",
+       "edge": 1
+      }
+     ]
+    },
+    "size": 1,
+    "style": "fillet"
+   },
+   {
+    "id": "round3",
+    "kind": "fillet",
+    "target": "round2",
+    "edge": {
+     "cause": "between",
+     "feature": "pocket1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "carried",
+       "feature": "pocket1",
+       "kind": "face",
+       "of": {
+        "cause": "primitive",
+        "feature": "pull1",
+        "kind": "face",
+        "part": "+z"
+       }
+      },
+      {
+       "cause": "swept",
+       "feature": "pull2",
+       "kind": "face",
+       "from": "sk2",
+       "edge": 2
+      }
+     ]
+    },
+    "size": 1,
+    "style": "fillet"
+   },
+   {
+    "id": "round4",
+    "kind": "fillet",
+    "target": "round3",
+    "edge": {
+     "cause": "between",
+     "feature": "pocket1",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "carried",
+       "feature": "pocket1",
+       "kind": "face",
+       "of": {
+        "cause": "primitive",
+        "feature": "pull1",
+        "kind": "face",
+        "part": "+z"
+       }
+      },
+      {
+       "cause": "swept",
+       "feature": "pull2",
+       "kind": "face",
+       "from": "sk2",
+       "edge": 3
+      }
+     ]
+    },
+    "size": 1,
+    "style": "fillet"
+   }
+  ],
+  "fx": {
+   "id": "fcb-fillet-after-pocket",
+   "kind": "fillet-case",
+   "tol": "approx",
+   "measureId": "round4",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "combine",
+    "fillet"
+   ],
+   "occtRefusals": {
+    "round2": "Round 2's edge could not be found -- Round 2 is shown without it."
+   },
+   "occt": {
+    "volume": 11593.370204219173,
+    "com": [
+     20.001054301182467,
+     14.999999999999996,
+     4.893759465170332
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 11,
+     "cylinder": 5
+    },
+    "components": {
+     "plane": 11,
+     "cylinder": 3
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11591.03244517641,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 15,
+    "dVol": 0.0002016461996453669,
+    "dBbox": 0,
+    "pass": false
+   },
+   "scErrors": [
+    "solid.fillet: not supported yet: the blend is larger than the neighbouring faces",
+    "solid.fillet: not supported yet: the blend is larger than the neighbouring faces",
+    "solid.fillet: not supported yet: the blend is larger than the neighbouring faces",
+    "solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   ],
+   "ms": 3175,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull2",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "pocket1",
+     "kind": "combine",
+     "status": "built",
+     "pick": null,
+     "variantsTried": 1
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        20,
+        10,
+        10
+       ]
+      ],
+      "radius": 1,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "pick": {
+      "edges": [
+       [
+        25,
+        15,
+        10
+       ]
+      ],
+      "radius": 1,
+      "body": "b_pull1"
+     },
+     "variantsTried": 1
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "refused",
+     "refusal": "round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "refused",
+     "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)"
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        40,
+        0
+       ],
+       [
+        40,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk2_1",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        10
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        15,
+        10
+       ],
+       [
+        25,
+        10
+       ],
+       [
+        25,
+        20
+       ],
+       [
+        15,
+        20
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": -4,
+      "sketch": "sk_sk2_1",
+      "operation": "new",
+      "body_name": "b_pull2"
+     }
+    },
+    {
+     "command": "solid.combine",
+     "params": {
+      "target": "b_pull1",
+      "tools": [
+       "b_pull2"
+      ],
+      "operation": "cut"
+     }
+    },
+    {
+     "command": "solid.fillet",
+     "params": {
+      "edges": [
+       [
+        20,
+        10,
+        10
+       ]
+      ],
+      "radius": 1,
+      "body": "b_pull1"
+     }
+    },
+    {
+     "command": "solid.fillet",
+     "params": {
+      "edges": [
+       [
+        25,
+        15,
+        10
+       ]
+      ],
+      "radius": 1,
+      "body": "b_pull1"
+     }
+    }
+   ],
+   "usesBrepPick": true,
+   "truck": {
+    "refused": "round4 (fillet): its target round3 was refused (round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces)",
+    "firstRefusal": "round3 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces"
+   },
+   "outcome": "REFUSED"
+  },
+  "fc": {
+   "ok": true,
+   "volume": 11591.03244517401,
+   "faces": 15,
+   "src": "baseline/ref-fillet-after-pocket.json",
+   "truckVol": null,
+   "truckFaces": null,
+   "truckCom": null,
+   "dVol": null,
+   "dOcctVol": 0.0002016868692430598,
+   "dBrepVol": 2.069916579584698e-13,
+   "dCom": null
+  }
+ }
+]

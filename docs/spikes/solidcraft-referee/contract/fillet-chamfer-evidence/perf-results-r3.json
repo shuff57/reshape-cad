@@ -1,0 +1,72 @@
+[
+ {
+  "id": "pf-cyl-whole-r3",
+  "commands": 2,
+  "times": [
+   16810,
+   32192
+  ],
+  "volume": 13296.165734206565,
+  "loadavgAtStart": [
+   25.2,
+   33.3,
+   35.2
+  ]
+ },
+ {
+  "id": "pf-cyl-offc-whole-r3",
+  "commands": 2,
+  "times": [
+   23231,
+   10552
+  ],
+  "volume": 13296.165734207398,
+  "loadavgAtStart": [
+   25.2,
+   33.3,
+   35.2
+  ]
+ },
+ {
+  "id": "ov-f-pair-cyl-10",
+  "commands": 3,
+  "times": [
+   5104,
+   4854
+  ],
+  "volume": 10693.562347528428,
+  "loadavgAtStart": [
+   25.2,
+   33.3,
+   35.2
+  ]
+ },
+ {
+  "id": "ov-c-cyl-single-14.9",
+  "commands": 2,
+  "times": [
+   3383,
+   2662
+  ],
+  "volume": 7139.22679191905,
+  "loadavgAtStart": [
+   25.2,
+   33.3,
+   35.2
+  ]
+ },
+ {
+  "id": "ov-d-box-fillet-4",
+  "commands": 2,
+  "times": [
+   1675,
+   2165
+  ],
+  "volume": 22848.93218326762,
+  "loadavgAtStart": [
+   25.2,
+   33.3,
+   35.2
+  ]
+ }
+]

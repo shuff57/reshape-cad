@@ -1,0 +1,22 @@
+{
+ "id": "R3-datum-spin-front3-90",
+ "outcome": "built",
+ "volume": 7067.878425404674,
+ "faces": 6,
+ "bbox": [
+  8.881784197001252e-16,
+  3,
+  -20,
+  20.000000000000004,
+  33,
+  8.881784197001252e-16
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "datum",
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,3,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,0],[20,0],[20,30],[10,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-90,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

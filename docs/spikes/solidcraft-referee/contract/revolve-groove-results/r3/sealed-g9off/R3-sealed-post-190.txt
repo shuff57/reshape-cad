@@ -1,0 +1,1 @@
+R3-sealed-post-190                       PASS     occtV 36903.2417 | tr-occt dV 9.4e-5 dBb 8.9e-16 dCom 3.9e-7 F o/b/t 9/-/9 | brep-occt dV -  | ANALYTIC 36903.2417 dTruck 9.4e-5 dOcct 4.0e-13 dBrep -   | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 2374 cpu 2871

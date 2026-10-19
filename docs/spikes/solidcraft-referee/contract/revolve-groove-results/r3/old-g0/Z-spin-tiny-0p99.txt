@@ -1,0 +1,1 @@
+Z-spin-tiny-0p99                         REFUSED  occtV 77.7544 | tr-occt dV - dBb - dCom - F o/b/t 6/6/- | brep-occt dV 2.2e-15  | ANALYTIC 77.7544 dTruck - dOcct 1.8e-16 dBrep 2.4e-15  | TRUCK REFUSED: rev1 (revolve): a turn of 0.99 degrees is too thin to build as a curved part here; use a turn of 1 degree or more.  | ms 2 cpu 4

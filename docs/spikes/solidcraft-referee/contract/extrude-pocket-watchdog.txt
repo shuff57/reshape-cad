@@ -1,0 +1,4 @@
+case sx-hole-cross-b: 15 commands, budget 8 s
+slow call  : {"outcome":"KILLED by the watchdog","waitedMs":8011,"terminateReturnedMs":114} | the page's own timer ticked 80 times in the meantime (100 ms each) = the page stayed responsive
+next call  : {"outcome":"finished","ok":true,"ms":28,"bodies":["b=1000.000"],"waitedMs":211} (a FRESH worker builds a box after the kill)
+sentence   : sx-hole-cross-b: SolidCraft needed more than 8 seconds for this feature and was stopped, so nothing is built; simplify the sketch or cut it in a different order

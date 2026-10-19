@@ -1,0 +1,82 @@
+[
+ {
+  "id": "tangent-line-circle",
+  "feats": [
+   "rule:tangent",
+   "tangent:line-circle",
+   "rule:lock"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812299724105,
+      "db": 0,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1130.8457383817545
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812299724105,
+      "db": 0,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1130.8457383817545
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812299724105,
+      "db": 0,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1130.8457383817545
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812299724105,
+      "db": 0,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1130.8457383817545
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00011283812299724105,
+      "db": 0,
+      "bodies": 1,
+      "faces": 3,
+      "volume": 1130.8457383817545
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ }
+]

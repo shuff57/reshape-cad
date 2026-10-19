@@ -1,0 +1,6399 @@
+[
+ {
+  "id": "r2-farp-prism6-100",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(6, 2, 3, { at: [100, -100, 100] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      100,
+      -100,
+      100
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 7.794228634059948,
+  "occt": {
+   "volume": 7.794228634059941,
+   "com": [
+    100,
+    -100,
+    100
+   ],
+   "bbox": [
+    99,
+    -100.86602540378443,
+    98.5,
+    101,
+    -99.13397459621557,
+    101.5
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7.79422863405991,
+   "bbox": [
+    99,
+    -100.86602540378443,
+    98.5,
+    101,
+    -99.13397459621557,
+    101.5
+   ],
+   "faces": 8,
+   "dVol": 3.988367053239988e-15,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       100,
+       -100,
+       98.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7.794228634127497,
+   "bbox": [
+    99,
+    -100.86602540378443,
+    98.5,
+    101,
+    -99.13397459621557,
+    101.5
+   ],
+   "com": [
+    99.99999999977977,
+    -99.99999999978553,
+    99.99999999978584
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 8.667405326756763e-12,
+   "dBboxOcct": 0,
+   "dComOcct": 5.505640388037142e-11,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolAnalytic": 8.66649370000173e-12,
+   "dVolBrep": 8.671393693810039e-12,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 178
+ },
+ {
+  "id": "r2-farp-prism3-100",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(3, 2, 3, { at: [100, -100, 100] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 3,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      100,
+      -100,
+      100
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 3.897114317029974,
+  "occt": {
+   "volume": 3.897114317029964,
+   "com": [
+    100,
+    -100,
+    100
+   ],
+   "bbox": [
+    99.5,
+    -100.86602540378445,
+    98.5,
+    101,
+    -99.13397459621557,
+    101.5
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 3.8971143170299882,
+   "bbox": [
+    99.5,
+    -100.86602540378443,
+    98.5,
+    101,
+    -99.13397459621557,
+    101.5
+   ],
+   "faces": 5,
+   "dVol": 6.2674339408057065e-15,
+   "dBbox": 3.764547378367077e-15
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       100,
+       -100,
+       98.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 3.897114317072919,
+   "bbox": [
+    99.5,
+    -100.86602540378443,
+    98.5,
+    101,
+    -99.13397459621557,
+    101.5
+   ],
+   "com": [
+    99.99999999972384,
+    -99.99999999972695,
+    99.9999999997296
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 1.1022365141678429e-11,
+   "dBboxOcct": 3.764547378367077e-15,
+   "dComOcct": 7.315644920380742e-11,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 1.1019744214757699e-11,
+   "dVolBrep": 1.1016097707737553e-11,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 44
+ },
+ {
+  "id": "r2-farp-prism12-100",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(12, 2, 3, { at: [100, -100, 100] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 12,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      100,
+      -100,
+      100
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 8.999999999999998,
+  "occt": {
+   "volume": 9,
+   "com": [
+    100,
+    -100,
+    100
+   ],
+   "bbox": [
+    99,
+    -101,
+    98.5,
+    101,
+    -99,
+    101.5
+   ],
+   "faces": 14,
+   "types": {
+    "plane": 14
+   }
+  },
+  "brep": {
+   "volume": 8.999999999999924,
+   "bbox": [
+    99,
+    -101,
+    98.5,
+    101,
+    -99,
+    101.5
+   ],
+   "faces": 14,
+   "dVol": 8.487038232690085e-15,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       100,
+       -100,
+       98.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.8660254037844387,
+       0.49999999999999994
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       6.123233995736766e-17,
+       1
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -0.8660254037844387,
+       0.49999999999999994
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.8660254037844388,
+       -0.4999999999999997
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       -1.8369701987210297e-16,
+       -1
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ],
+      [
+       0.8660254037844384,
+       -0.5000000000000004
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 9.000000000139456,
+   "bbox": [
+    99,
+    -101,
+    98.5,
+    101,
+    -99,
+    101.5
+   ],
+   "com": [
+    99.99999999960184,
+    -99.99999999961263,
+    99.99999999961868
+   ],
+   "faces": 14,
+   "faceTypes": {
+    "plane": 14
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 1.5495160710088385e-11,
+   "dBboxOcct": 0,
+   "dComOcct": 9.656791835180879e-11,
+   "facesOcct": 14,
+   "typesOcct": {
+    "plane": 14
+   },
+   "dVolAnalytic": 1.5495358083070544e-11,
+   "dVolBrep": 1.5503647748321207e-11,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 87
+ },
+ {
+  "id": "r2-farp-wedge-100",
+  "feature": "far.planar",
+  "note": "",
+  "script": "wedge(2, 3, 4, { at: [100, -100, 100] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "wedge1",
+     "kind": "wedge",
+     "width": 2,
+     "depth": 3,
+     "height": 4,
+     "center": [
+      100,
+      -100,
+      100
+     ]
+    }
+   ]
+  },
+  "kind": "wedge",
+  "analytic": 12,
+  "occt": {
+   "volume": 12,
+   "com": [
+    99.66666666666667,
+    -100.5,
+    100
+   ],
+   "bbox": [
+    99,
+    -101.5,
+    98,
+    101,
+    -98.5,
+    102
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 12.000000000000227,
+   "bbox": [
+    99,
+    -101.5,
+    98,
+    101,
+    -98.5,
+    102
+   ],
+   "faces": 5,
+   "dVol": 1.8947806286936004e-14,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_wedge1_0",
+     "plane": {
+      "origin": [
+       100,
+       -100,
+       98
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -1,
+       -1.5
+      ],
+      [
+       1,
+       -1.5
+      ],
+      [
+       -1,
+       1.5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 4,
+     "sketch": "sk_wedge1_0",
+     "operation": "new",
+     "body_name": "b_wedge1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 12,
+   "bbox": [
+    99,
+    -101.5,
+    98,
+    101,
+    -98.5,
+    102
+   ],
+   "com": [
+    99.66666666666667,
+    -100.5,
+    100
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 1.8947806286935647e-14,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 50
+ },
+ {
+  "id": "r2-farp-box-100",
+  "feature": "far.planar",
+  "note": "",
+  "script": "box(2, 3, 4, { at: [100, -100, 100] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      2,
+      3,
+      4
+     ],
+     "center": [
+      100,
+      -100,
+      100
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 24,
+  "occt": {
+   "volume": 24,
+   "com": [
+    100,
+    -100,
+    100
+   ],
+   "bbox": [
+    99,
+    -101.5,
+    98,
+    101,
+    -98.5,
+    102
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 24,
+   "bbox": [
+    99,
+    -101.5,
+    98,
+    101,
+    -98.5,
+    102
+   ],
+   "faces": 6,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 2,
+     "width": 3,
+     "height": 4,
+     "center": [
+      100,
+      -100,
+      100
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 24,
+   "bbox": [
+    99,
+    -101.5,
+    98,
+    101,
+    -98.5,
+    102
+   ],
+   "com": [
+    100,
+    -100,
+    100
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 0,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 17
+ },
+ {
+  "id": "r2-farp-boxturn-100",
+  "feature": "far.planar",
+  "note": "",
+  "script": "turn(box(2, 3, 4, { at: [100, -100, 100] }), [20, 35, 50]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      2,
+      3,
+      4
+     ],
+     "center": [
+      100,
+      -100,
+      100
+     ],
+     "rotate": [
+      20,
+      35,
+      50
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 24,
+  "occt": {
+   "volume": 24,
+   "com": [
+    100,
+    -100,
+    100
+   ],
+   "bbox": [
+    97.36592602446244,
+    -102.14503997645744,
+    97.46667155161899,
+    102.63407397553755,
+    -97.85496002354255,
+    102.53332844838101
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 23.999999999999318,
+   "bbox": [
+    97.36592602446245,
+    -102.14503997645744,
+    97.46667155161899,
+    102.63407397553758,
+    -97.85496002354256,
+    102.53332844838103
+   ],
+   "faces": 6,
+   "dVol": 2.842170943040401e-14,
+   "dBbox": 3.3535110212249887e-15
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 2,
+     "width": 3,
+     "height": 4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 20
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 35
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 50
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      100,
+      -100,
+      100
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 24.000000000018645,
+   "bbox": [
+    97.36592602446244,
+    -102.14503997645744,
+    97.46667155161899,
+    102.63407397553756,
+    -97.85496002354256,
+    102.53332844838101
+   ],
+   "com": [
+    99.99999999998032,
+    -99.99999999998131,
+    99.99999999997819
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 7.768600577643762e-13,
+   "dBboxOcct": 1.6767555106124944e-15,
+   "dComOcct": 2.573819708790179e-12,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 7.768600577643762e-13,
+   "dVolBrep": 8.052817671948031e-13,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 73
+ },
+ {
+  "id": "r2-farp-prism6turn-100",
+  "feature": "far.planar",
+  "note": "",
+  "script": "turn(prism(6, 2, 3, { at: [100, -100, 100] }), [20, 35, 50]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      100,
+      -100,
+      100
+     ]
+    },
+    {
+     "id": "turn1",
+     "kind": "rotate",
+     "target": "prism1",
+     "angles": [
+      20,
+      35,
+      50
+     ]
+    }
+   ]
+  },
+  "kind": "rotate",
+  "analytic": null,
+  "occt": {
+   "volume": 7.79422863405995,
+   "com": [
+    99.99999999999997,
+    -99.99999999999999,
+    100
+   ],
+   "bbox": [
+    98.30984527164657,
+    -101.25655838764581,
+    98.27179686666886,
+    101.69015472835338,
+    -98.74344161235415,
+    101.72820313333114
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7.794228634059816,
+   "bbox": [
+    98.3098452716466,
+    -101.25655838764584,
+    98.27179686666888,
+    101.6901547283534,
+    -98.74344161235416,
+    101.72820313333114
+   ],
+   "faces": 8,
+   "dVol": 1.720695500112107e-14,
+   "dBbox": 5.216178768607942e-15
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       100,
+       -100,
+       98.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "translate": [
+      -100,
+      100,
+      -100
+     ]
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 20
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 35
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 50
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "translate": [
+      100,
+      -100,
+      100
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7.7942286340304845,
+   "bbox": [
+    98.3098452716466,
+    -101.25655838764584,
+    98.27179686666886,
+    101.6901547283534,
+    -98.74344161235416,
+    101.72820313333114
+   ],
+   "com": [
+    100.00000000008767,
+    -100.0000000000897,
+    100.00000000010121
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 3.780402199749613e-12,
+   "dBboxOcct": 5.216178768607942e-15,
+   "dComOcct": 1.857481259501288e-11,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolBrep": 3.763195244748556e-12,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 56
+ },
+ {
+  "id": "r2-farp-prism6-1000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(6, 2, 3, { at: [1000, -1000, 1000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      1000,
+      -1000,
+      1000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 7.794228634059948,
+  "occt": {
+   "volume": 7.79422863405989,
+   "com": [
+    1000,
+    -1000,
+    1000
+   ],
+   "bbox": [
+    999,
+    -1000.8660254037844,
+    998.5,
+    1001,
+    -999.1339745962156,
+    1001.5
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7.794228634059588,
+   "bbox": [
+    999,
+    -1000.8660254037844,
+    998.5,
+    1001,
+    -999.1339745962156,
+    1001.5
+   ],
+   "faces": 8,
+   "dVol": 3.874413708861728e-14,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       1000,
+       -1000,
+       998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7.794228582148207,
+   "bbox": [
+    999,
+    -1000.8660254037844,
+    998.5,
+    1001,
+    -999.1339745962156,
+    1001.5
+   ],
+   "com": [
+    1000.0000016668978,
+    -1000.0000016638509,
+    1000.0000016649462
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 6.66027202812832e-9,
+   "dBboxOcct": 0,
+   "dComOcct": 4.167244469499581e-7,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolAnalytic": 6.660279435095656e-9,
+   "dVolBrep": 6.66023328399149e-9,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 23
+ },
+ {
+  "id": "r2-farp-prism3-1000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(3, 2, 3, { at: [1000, -1000, 1000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 3,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      1000,
+      -1000,
+      1000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 3.897114317029974,
+  "occt": {
+   "volume": 3.8971143170299465,
+   "com": [
+    1000,
+    -1000,
+    1000
+   ],
+   "bbox": [
+    999.5,
+    -1000.8660254037844,
+    998.5,
+    1001,
+    -999.1339745962156,
+    1001.5
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 3.8971143170303244,
+   "bbox": [
+    999.5,
+    -1000.8660254037844,
+    998.5,
+    1001,
+    -999.1339745962156,
+    1001.5
+   ],
+   "faces": 5,
+   "dVol": 9.697429606592144e-14,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       1000,
+       -1000,
+       998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 3.897114286858899,
+   "bbox": [
+    999.5,
+    -1000.8660254037844,
+    998.5,
+    1001,
+    -999.1339745962156,
+    1001.5
+   ],
+   "com": [
+    1000.0000019390235,
+    -1000.0000019341643,
+    1000.0000019353093
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 7.741894382298133e-9,
+   "dBboxOcct": 0,
+   "dComOcct": 5.136598710153783e-7,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 7.74190144740543e-9,
+   "dVolBrep": 7.741991356593449e-9,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 16
+ },
+ {
+  "id": "r2-farp-prism12-1000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(12, 2, 3, { at: [1000, -1000, 1000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 12,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      1000,
+      -1000,
+      1000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 8.999999999999998,
+  "occt": {
+   "volume": 9.00000000000019,
+   "com": [
+    1000,
+    -1000,
+    1000
+   ],
+   "bbox": [
+    999,
+    -1001,
+    998.5,
+    1001,
+    -999,
+    1001.5
+   ],
+   "faces": 14,
+   "types": {
+    "plane": 14
+   }
+  },
+  "brep": {
+   "volume": 8.999999999999849,
+   "bbox": [
+    999,
+    -1001,
+    998.5,
+    1001,
+    -999,
+    1001.5
+   ],
+   "faces": 14,
+   "dVol": 3.789561257387121e-14,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       1000,
+       -1000,
+       998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.8660254037844387,
+       0.49999999999999994
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       6.123233995736766e-17,
+       1
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -0.8660254037844387,
+       0.49999999999999994
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.8660254037844388,
+       -0.4999999999999997
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       -1.8369701987210297e-16,
+       -1
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ],
+      [
+       0.8660254037844384,
+       -0.5000000000000004
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 8.999999931276156,
+   "bbox": [
+    999,
+    -1001,
+    998.5,
+    1001,
+    -999,
+    1001.5
+   ],
+   "com": [
+    1000.0000019110394,
+    -1000.0000019059862,
+    1000.0000019190936
+   ],
+   "faces": 14,
+   "faceTypes": {
+    "plane": 14
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 7.636003829247623e-9,
+   "dBboxOcct": 0,
+   "dComOcct": 4.6544857063418816e-7,
+   "facesOcct": 14,
+   "typesOcct": {
+    "plane": 14
+   },
+   "dVolAnalytic": 7.635982512965713e-9,
+   "dVolBrep": 7.635965933635338e-9,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 32
+ },
+ {
+  "id": "r2-farp-wedge-1000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "wedge(2, 3, 4, { at: [1000, -1000, 1000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "wedge1",
+     "kind": "wedge",
+     "width": 2,
+     "depth": 3,
+     "height": 4,
+     "center": [
+      1000,
+      -1000,
+      1000
+     ]
+    }
+   ]
+  },
+  "kind": "wedge",
+  "analytic": 12,
+  "occt": {
+   "volume": 12,
+   "com": [
+    999.6666666666666,
+    -1000.5,
+    1000
+   ],
+   "bbox": [
+    999,
+    -1001.5,
+    998,
+    1001,
+    -998.5,
+    1002
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 12.000000000001819,
+   "bbox": [
+    999,
+    -1001.5,
+    998,
+    1001,
+    -998.5,
+    1002
+   ],
+   "faces": 5,
+   "dVol": 1.5158245029548803e-13,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_wedge1_0",
+     "plane": {
+      "origin": [
+       1000,
+       -1000,
+       998
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -1,
+       -1.5
+      ],
+      [
+       1,
+       -1.5
+      ],
+      [
+       -1,
+       1.5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 4,
+     "sketch": "sk_wedge1_0",
+     "operation": "new",
+     "body_name": "b_wedge1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 12,
+   "bbox": [
+    999,
+    -1001.5,
+    998,
+    1001,
+    -998.5,
+    1002
+   ],
+   "com": [
+    999.6666666666666,
+    -1000.5,
+    1000
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 1.5158245029546506e-13,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 16
+ },
+ {
+  "id": "r2-farp-box-1000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "box(2, 3, 4, { at: [1000, -1000, 1000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      2,
+      3,
+      4
+     ],
+     "center": [
+      1000,
+      -1000,
+      1000
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 24,
+  "occt": {
+   "volume": 24,
+   "com": [
+    1000,
+    -1000,
+    1000
+   ],
+   "bbox": [
+    999,
+    -1001.5,
+    998,
+    1001,
+    -998.5,
+    1002
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 24,
+   "bbox": [
+    999,
+    -1001.5,
+    998,
+    1001,
+    -998.5,
+    1002
+   ],
+   "faces": 6,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 2,
+     "width": 3,
+     "height": 4,
+     "center": [
+      1000,
+      -1000,
+      1000
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 24,
+   "bbox": [
+    999,
+    -1001.5,
+    998,
+    1001,
+    -998.5,
+    1002
+   ],
+   "com": [
+    1000,
+    -1000,
+    1000
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 0,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 18
+ },
+ {
+  "id": "r2-farp-boxturn-1000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "turn(box(2, 3, 4, { at: [1000, -1000, 1000] }), [20, 35, 50]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      2,
+      3,
+      4
+     ],
+     "center": [
+      1000,
+      -1000,
+      1000
+     ],
+     "rotate": [
+      20,
+      35,
+      50
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 24,
+  "occt": {
+   "volume": 24.000000000000018,
+   "com": [
+    1000,
+    -1000,
+    1000
+   ],
+   "bbox": [
+    997.3659260244624,
+    -1002.1450399764575,
+    997.4666715516189,
+    1002.6340739755376,
+    -997.8549600235426,
+    1002.533328448381
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 24.000000000063057,
+   "bbox": [
+    997.3659260244626,
+    -1002.1450399764574,
+    997.4666715516188,
+    1002.6340739755376,
+    -997.8549600235426,
+    1002.5333284483808
+   ],
+   "faces": 6,
+   "dVol": 2.626639646526502e-12,
+   "dBbox": 2.682808816979963e-14
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 2,
+     "width": 3,
+     "height": 4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 20
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 35
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 50
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      1000,
+      -1000,
+      1000
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 23.9999999840317,
+   "bbox": [
+    997.3659260244624,
+    -1002.1450399764575,
+    997.466671551619,
+    1002.6340739755376,
+    -997.8549600235425,
+    1002.533328448381
+   ],
+   "com": [
+    1000.0000001646307,
+    -1000.0000001667003,
+    1000.0000001643849
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 6.653465926357659e-10,
+   "dBboxOcct": 1.3414044084899814e-14,
+   "dComOcct": 1.966916039617353e-8,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 6.653458524870833e-10,
+   "dVolBrep": 6.679732322805378e-10,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 22
+ },
+ {
+  "id": "r2-farp-prism6turn-1000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "turn(prism(6, 2, 3, { at: [1000, -1000, 1000] }), [20, 35, 50]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      1000,
+      -1000,
+      1000
+     ]
+    },
+    {
+     "id": "turn1",
+     "kind": "rotate",
+     "target": "prism1",
+     "angles": [
+      20,
+      35,
+      50
+     ]
+    }
+   ]
+  },
+  "kind": "rotate",
+  "analytic": null,
+  "occt": {
+   "volume": 7.79422863405993,
+   "com": [
+    1000,
+    -1000,
+    1000.0000000000001
+   ],
+   "bbox": [
+    998.3098452716466,
+    -1001.2565583876458,
+    998.2717968666689,
+    1001.6901547283534,
+    -998.7434416123541,
+    1001.7282031333312
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7.794228634257403,
+   "bbox": [
+    998.3098452716465,
+    -1001.2565583876458,
+    998.2717968666688,
+    1001.6901547283533,
+    -998.7434416123542,
+    1001.728203133331
+   ],
+   "faces": 8,
+   "dVol": 2.5335816822346112e-11,
+   "dBbox": 4.17294301488632e-14
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       1000,
+       -1000,
+       998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "translate": [
+      -1000,
+      1000,
+      -1000
+     ]
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 20
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 35
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 50
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "translate": [
+      1000,
+      -1000,
+      1000
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7.794228593324078,
+   "bbox": [
+    998.3098452716466,
+    -1001.2565583876459,
+    998.2717968666689,
+    1001.6901547283534,
+    -998.7434416123541,
+    1001.7282031333311
+   ],
+   "com": [
+    1000.0000013088697,
+    -1000.0000013075155,
+    1000.0000013075354
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 5.226412251611122e-9,
+   "dBboxOcct": 2.08647150744316e-14,
+   "dComOcct": 2.4021421276902654e-7,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolBrep": 5.25174806830041e-9,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 45
+ },
+ {
+  "id": "r2-farp-prism6-10000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(6, 2, 3, { at: [10000, -10000, 10000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      10000,
+      -10000,
+      10000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 7.794228634059948,
+  "occt": {
+   "volume": 7.7942286340595,
+   "com": [
+    10000,
+    -10000,
+    10000
+   ],
+   "bbox": [
+    9999,
+    -10000.866025403784,
+    9998.5,
+    10001,
+    -9999.133974596216,
+    10001.5
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7.794228634057315,
+   "bbox": [
+    9999,
+    -10000.866025403784,
+    9998.5,
+    10001,
+    -9999.133974596216,
+    10001.5
+   ],
+   "faces": 8,
+   "dVol": 2.8043918051497616e-13,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       10000,
+       -10000,
+       9998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7.7942189909517765,
+   "bbox": [
+    9999,
+    -10000.866025403784,
+    9998.5,
+    10001,
+    -9999.133974596216,
+    10001.5
+   ],
+   "com": [
+    10000.003099526508,
+    -10000.003093478777,
+    10000.003096310824
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.0000012372112978249302,
+   "dBboxOcct": 0,
+   "dComOcct": 0.0007748816269668772,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolAnalytic": 0.000001237211355257345,
+   "dVolBrep": 0.0000012372110173860967,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 22
+ },
+ {
+  "id": "r2-farp-prism3-10000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(3, 2, 3, { at: [10000, -10000, 10000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 3,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      10000,
+      -10000,
+      10000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 3.897114317029974,
+  "occt": {
+   "volume": 3.8971143170303844,
+   "com": [
+    10000,
+    -10000,
+    10000
+   ],
+   "bbox": [
+    9999.5,
+    -10000.866025403784,
+    9998.5,
+    10001,
+    -9999.133974596216,
+    10001.5
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 3.8971143170322953,
+   "bbox": [
+    9999.5,
+    -10000.866025403784,
+    9998.5,
+    10001,
+    -9999.133974596216,
+    10001.5
+   ],
+   "faces": 5,
+   "dVol": 4.903412408597099e-13,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       10000,
+       -10000,
+       9998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 3.8971607759594917,
+   "bbox": [
+    9999.5,
+    -10000.866025403784,
+    9998.5,
+    10001,
+    -9999.133974596216,
+    10001.5
+   ],
+   "com": [
+    9999.970198710818,
+    -9999.970197471974,
+    9999.970203486488
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.000011921366767289358,
+   "dBboxOcct": 0,
+   "dComOcct": 0.007894882538626215,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 0.000011921366872583504,
+   "dVolBrep": 0.000011921366276942273,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 14
+ },
+ {
+  "id": "r2-farp-prism12-10000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(12, 2, 3, { at: [10000, -10000, 10000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 12,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      10000,
+      -10000,
+      10000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 8.999999999999998,
+  "occt": {
+   "volume": 9.00000000000049,
+   "com": [
+    10000,
+    -10000,
+    10000
+   ],
+   "bbox": [
+    9999,
+    -10001,
+    9998.5,
+    10001,
+    -9999,
+    10001.5
+   ],
+   "faces": 14,
+   "types": {
+    "plane": 14
+   }
+  },
+  "brep": {
+   "volume": 8.999999999996362,
+   "bbox": [
+    9999,
+    -10001,
+    9998.5,
+    10001,
+    -9999,
+    10001.5
+   ],
+   "faces": 14,
+   "dVol": 4.586948105295508e-13,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       10000,
+       -10000,
+       9998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.8660254037844387,
+       0.49999999999999994
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       6.123233995736766e-17,
+       1
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -0.8660254037844387,
+       0.49999999999999994
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.8660254037844388,
+       -0.4999999999999997
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       -1.8369701987210297e-16,
+       -1
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ],
+      [
+       0.8660254037844384,
+       -0.5000000000000004
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 9.00002567221721,
+   "bbox": [
+    9999,
+    -10001,
+    9998.5,
+    10001,
+    -9999,
+    10001.5
+   ],
+   "com": [
+    9999.992871054259,
+    -9999.992872959396,
+    9999.992882334958
+   ],
+   "faces": 14,
+   "faceTypes": {
+    "plane": 14
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.000002852468524494456,
+   "dBboxOcct": 0,
+   "dComOcct": 0.0017290233111405186,
+   "facesOcct": 14,
+   "typesOcct": {
+    "plane": 14
+   },
+   "dVolAnalytic": 0.000002852468579166928,
+   "dVolBrep": 0.000002852468983190575,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 42
+ },
+ {
+  "id": "r2-farp-wedge-10000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "wedge(2, 3, 4, { at: [10000, -10000, 10000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "wedge1",
+     "kind": "wedge",
+     "width": 2,
+     "depth": 3,
+     "height": 4,
+     "center": [
+      10000,
+      -10000,
+      10000
+     ]
+    }
+   ]
+  },
+  "kind": "wedge",
+  "analytic": 12,
+  "occt": {
+   "volume": 12,
+   "com": [
+    9999.666666666666,
+    -10000.5,
+    10000
+   ],
+   "bbox": [
+    9999,
+    -10001.5,
+    9998,
+    10001,
+    -9998.5,
+    10002
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 12.0000000000097,
+   "bbox": [
+    9999,
+    -10001.5,
+    9998,
+    10001,
+    -9998.5,
+    10002
+   ],
+   "faces": 5,
+   "dVol": 8.083903916637306e-13,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_wedge1_0",
+     "plane": {
+      "origin": [
+       10000,
+       -10000,
+       9998
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -1,
+       -1.5
+      ],
+      [
+       1,
+       -1.5
+      ],
+      [
+       -1,
+       1.5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 4,
+     "sketch": "sk_wedge1_0",
+     "operation": "new",
+     "body_name": "b_wedge1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 12,
+   "bbox": [
+    9999,
+    -10001.5,
+    9998,
+    10001,
+    -9998.5,
+    10002
+   ],
+   "com": [
+    9999.666666666666,
+    -10000.5,
+    10000
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 8.083903916630771e-13,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 19
+ },
+ {
+  "id": "r2-farp-box-10000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "box(2, 3, 4, { at: [10000, -10000, 10000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      2,
+      3,
+      4
+     ],
+     "center": [
+      10000,
+      -10000,
+      10000
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 24,
+  "occt": {
+   "volume": 24,
+   "com": [
+    10000,
+    -10000,
+    10000
+   ],
+   "bbox": [
+    9999,
+    -10001.5,
+    9998,
+    10001,
+    -9998.5,
+    10002
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 24,
+   "bbox": [
+    9999,
+    -10001.5,
+    9998,
+    10001,
+    -9998.5,
+    10002
+   ],
+   "faces": 6,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 2,
+     "width": 3,
+     "height": 4,
+     "center": [
+      10000,
+      -10000,
+      10000
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 24,
+   "bbox": [
+    9999,
+    -10001.5,
+    9998,
+    10001,
+    -9998.5,
+    10002
+   ],
+   "com": [
+    10000,
+    -10000,
+    10000
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 0,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 14
+ },
+ {
+  "id": "r2-farp-boxturn-10000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "turn(box(2, 3, 4, { at: [10000, -10000, 10000] }), [20, 35, 50]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      2,
+      3,
+      4
+     ],
+     "center": [
+      10000,
+      -10000,
+      10000
+     ],
+     "rotate": [
+      20,
+      35,
+      50
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 24,
+  "occt": {
+   "volume": 24.000000000000902,
+   "com": [
+    10000,
+    -10000,
+    10000
+   ],
+   "bbox": [
+    9997.365926024462,
+    -10002.145039976458,
+    9997.46667155162,
+    10002.634073975538,
+    -9997.854960023544,
+    10002.53332844838
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 23.999999999961194,
+   "bbox": [
+    9997.365926024464,
+    -10002.145039976458,
+    9997.466671551621,
+    10002.634073975536,
+    -9997.854960023544,
+    10002.533328448382
+   ],
+   "faces": 6,
+   "dVol": 1.6545283661646544e-12,
+   "dBbox": 2.1462470535841604e-13
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 2,
+     "width": 3,
+     "height": 4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 20
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 35
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 50
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      10000,
+      -10000,
+      10000
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 24.000023963550728,
+   "bbox": [
+    9997.365926024462,
+    -10002.145039976458,
+    9997.46667155162,
+    10002.634073975538,
+    -9997.854960023542,
+    10002.53332844838
+   ],
+   "com": [
+    9999.997503693741,
+    -9999.997502429627,
+    9999.997506351114
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 9.984812427236139e-7,
+   "dBboxOcct": 2.1462470535841604e-13,
+   "dComOcct": 0.0002946912743488688,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 9.984812803232046e-7,
+   "dVolBrep": 9.984828972536321e-7,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 26
+ },
+ {
+  "id": "r2-farp-prism6turn-10000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "turn(prism(6, 2, 3, { at: [10000, -10000, 10000] }), [20, 35, 50]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      10000,
+      -10000,
+      10000
+     ]
+    },
+    {
+     "id": "turn1",
+     "kind": "rotate",
+     "target": "prism1",
+     "angles": [
+      20,
+      35,
+      50
+     ]
+    }
+   ]
+  },
+  "kind": "rotate",
+  "analytic": null,
+  "occt": {
+   "volume": 7.794228634059496,
+   "com": [
+    10000,
+    -10000,
+    10000
+   ],
+   "bbox": [
+    9998.309845271646,
+    -10001.256558387646,
+    9998.27179686667,
+    10001.690154728352,
+    -9998.743441612352,
+    10001.72820313333
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7.794228637952377,
+   "bbox": [
+    9998.309845271648,
+    -10001.256558387646,
+    9998.271796866671,
+    10001.690154728352,
+    -9998.743441612354,
+    10001.728203133334
+   ],
+   "faces": 8,
+   "dVol": 4.99456824689987e-10,
+   "dBbox": 6.676708823818116e-13
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       10000,
+       -10000,
+       9998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "translate": [
+      -10000,
+      10000,
+      -10000
+     ]
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 20
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 35
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 50
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "translate": [
+      10000,
+      -10000,
+      10000
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7.794225972145796,
+   "bbox": [
+    9998.309845271646,
+    -10001.256558387646,
+    9998.27179686667,
+    10001.690154728354,
+    -9998.743441612354,
+    10001.72820313333
+   ],
+   "com": [
+    10000.000855826458,
+    -10000.000849081556,
+    10000.000854892216
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 3.4152368696221517e-7,
+   "dBboxOcct": 3.338354411909058e-13,
+   "dComOcct": 0.00015706809652315214,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolBrep": 3.4202314361607936e-7,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 45
+ },
+ {
+  "id": "r2-farp-prism6-100000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(6, 2, 3, { at: [100000, -100000, 100000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      100000,
+      -100000,
+      100000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 7.794228634059948,
+  "occt": {
+   "volume": 7.79422863405341,
+   "com": [
+    100000,
+    -100000,
+    100000
+   ],
+   "bbox": [
+    99999,
+    -100000.86602540378,
+    99998.5,
+    100001,
+    -99999.13397459622,
+    100001.5
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7.794228634059739,
+   "bbox": [
+    99999,
+    -100000.86602540378,
+    99998.5,
+    100001,
+    -99999.13397459622,
+    100001.5
+   ],
+   "faces": 8,
+   "dVol": 8.12031532040342e-13,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       100000,
+       -100000,
+       99998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7.904153823852539,
+   "bbox": [
+    99999,
+    -100000.86602540378,
+    99998.5,
+    100001,
+    -99999.13397459622,
+    100001.5
+   ],
+   "com": [
+    99652.31710517859,
+    -99652.31907330014,
+    99652.3207578024
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.014103408426955781,
+   "dBboxOcct": 0,
+   "dComOcct": 86.92072370539344,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolAnalytic": 0.01410340842610514,
+   "dVolBrep": 0.014103408426132297,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 23
+ },
+ {
+  "id": "r2-farp-prism3-100000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(3, 2, 3, { at: [100000, -100000, 100000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 3,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      100000,
+      -100000,
+      100000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 3.897114317029974,
+  "occt": {
+   "volume": 3.8971143170267064,
+   "com": [
+    100000,
+    -100000,
+    100000
+   ],
+   "bbox": [
+    99999.5,
+    -100000.86602540378,
+    99998.5,
+    100001,
+    -99999.13397459622,
+    100001.5
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 3.897114316961961,
+   "bbox": [
+    99999.5,
+    -100000.86602540378,
+    99998.5,
+    100001,
+    -99999.13397459622,
+    100001.5
+   ],
+   "faces": 5,
+   "dVol": 1.6613713890301653e-11,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       100000,
+       -100000,
+       99998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 4.0185286204020185,
+   "bbox": [
+    99999.5,
+    -100000.86602540378,
+    99998.5,
+    100001,
+    -99999.13397459622,
+    100001.5
+   ],
+   "com": [
+    99244.65245303491,
+    -99244.66038709306,
+    99244.6643193153
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.031154924772118273,
+   "dBboxOcct": 0,
+   "dComOcct": 200.09645335709928,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 0.03115492477125368,
+   "dVolBrep": 0.031154924789249586,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 15
+ },
+ {
+  "id": "r2-farp-prism12-100000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(12, 2, 3, { at: [100000, -100000, 100000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 12,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      100000,
+      -100000,
+      100000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 8.999999999999998,
+  "occt": {
+   "volume": 9.00000000001143,
+   "com": [
+    100000,
+    -100000,
+    100000
+   ],
+   "bbox": [
+    99999,
+    -100001,
+    99998.5,
+    100001,
+    -99999,
+    100001.5
+   ],
+   "faces": 14,
+   "types": {
+    "plane": 14
+   }
+  },
+  "brep": {
+   "volume": 8.999999999961195,
+   "bbox": [
+    99999,
+    -100001,
+    99998.5,
+    100001,
+    -99999,
+    100001.5
+   ],
+   "faces": 14,
+   "dVol": 5.581707935352809e-12,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       100000,
+       -100000,
+       99998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.8660254037844387,
+       0.49999999999999994
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       6.123233995736766e-17,
+       1
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -0.8660254037844387,
+       0.49999999999999994
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.8660254037844388,
+       -0.4999999999999997
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       -1.8369701987210297e-16,
+       -1
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ],
+      [
+       0.8660254037844384,
+       -0.5000000000000004
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 9.045952955881754,
+   "bbox": [
+    99999,
+    -100001,
+    99998.5,
+    100001,
+    -99999,
+    100001.5
+   ],
+   "com": [
+    99872.9988972666,
+    -99873.00228184758,
+    99872.97688975908
+   ],
+   "faces": 14,
+   "faceTypes": {
+    "plane": 14
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.005105883985584972,
+   "dBboxOcct": 0,
+   "dComOcct": 30.807629436339624,
+   "facesOcct": 14,
+   "typesOcct": {
+    "plane": 14
+   },
+   "dVolAnalytic": 0.00510588398686175,
+   "dVolBrep": 0.005105883991195179,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 35
+ },
+ {
+  "id": "r2-farp-wedge-100000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "wedge(2, 3, 4, { at: [100000, -100000, 100000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "wedge1",
+     "kind": "wedge",
+     "width": 2,
+     "depth": 3,
+     "height": 4,
+     "center": [
+      100000,
+      -100000,
+      100000
+     ]
+    }
+   ]
+  },
+  "kind": "wedge",
+  "analytic": 12,
+  "occt": {
+   "volume": 12,
+   "com": [
+    99999.66666666667,
+    -100000.5,
+    100000
+   ],
+   "bbox": [
+    99999,
+    -100001.5,
+    99998,
+    100001,
+    -99998.5,
+    100002
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 12.000000000135818,
+   "bbox": [
+    99999,
+    -100001.5,
+    99998,
+    100001,
+    -99998.5,
+    100002
+   ],
+   "faces": 5,
+   "dVol": 1.1318205631975312e-11,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_wedge1_0",
+     "plane": {
+      "origin": [
+       100000,
+       -100000,
+       99998
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -1,
+       -1.5
+      ],
+      [
+       1,
+       -1.5
+      ],
+      [
+       -1,
+       1.5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 4,
+     "sketch": "sk_wedge1_0",
+     "operation": "new",
+     "body_name": "b_wedge1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 12,
+   "bbox": [
+    99999,
+    -100001.5,
+    99998,
+    100001,
+    -99998.5,
+    100002
+   ],
+   "com": [
+    99999.66666666667,
+    -100000.5,
+    100000
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 1.131820563184721e-11,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 15
+ },
+ {
+  "id": "r2-farp-box-100000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "box(2, 3, 4, { at: [100000, -100000, 100000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      2,
+      3,
+      4
+     ],
+     "center": [
+      100000,
+      -100000,
+      100000
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 24,
+  "occt": {
+   "volume": 24,
+   "com": [
+    100000,
+    -100000,
+    100000
+   ],
+   "bbox": [
+    99999,
+    -100001.5,
+    99998,
+    100001,
+    -99998.5,
+    100002
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 24,
+   "bbox": [
+    99999,
+    -100001.5,
+    99998,
+    100001,
+    -99998.5,
+    100002
+   ],
+   "faces": 6,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 2,
+     "width": 3,
+     "height": 4,
+     "center": [
+      100000,
+      -100000,
+      100000
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 24,
+   "bbox": [
+    99999,
+    -100001.5,
+    99998,
+    100001,
+    -99998.5,
+    100002
+   ],
+   "com": [
+    100000,
+    -100000,
+    100000
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 0,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 12
+ },
+ {
+  "id": "r2-farp-boxturn-100000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "turn(box(2, 3, 4, { at: [100000, -100000, 100000] }), [20, 35, 50]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      2,
+      3,
+      4
+     ],
+     "center": [
+      100000,
+      -100000,
+      100000
+     ],
+     "rotate": [
+      20,
+      35,
+      50
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 24,
+  "occt": {
+   "volume": 23.999999999992855,
+   "com": [
+    100000,
+    -100000,
+    100000
+   ],
+   "bbox": [
+    99997.36592602446,
+    -100002.14503997646,
+    99997.46667155162,
+    100002.63407397555,
+    -99997.85496002354,
+    100002.53332844838
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 24.000000892672688,
+   "bbox": [
+    99997.3659260245,
+    -100002.14503997646,
+    99997.46667155162,
+    100002.63407397555,
+    -99997.85496002354,
+    100002.5333284484
+   ],
+   "faces": 6,
+   "dVol": 3.7194993011517085e-8,
+   "dBbox": 5.1509929285958754e-12
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 2,
+     "width": 3,
+     "height": 4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 20
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 35
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 50
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      100000,
+      -100000,
+      100000
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 23.971038500467937,
+   "bbox": [
+    99997.36592602446,
+    -100002.14503997646,
+    99997.46667155162,
+    100002.63407397554,
+    -99997.85496002354,
+    100002.53332844838
+   ],
+   "com": [
+    100030.20631040348,
+    -100030.20422336485,
+    100030.20540894112
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.0012067291468719472,
+   "dBboxOcct": 1.7169976428652919e-12,
+   "dComOcct": 3.5640781951039933,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0.0012067291471692758,
+   "dVolBrep": 0.0012067662969792946,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 21
+ },
+ {
+  "id": "r2-farp-prism6turn-100000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "turn(prism(6, 2, 3, { at: [100000, -100000, 100000] }), [20, 35, 50]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      100000,
+      -100000,
+      100000
+     ]
+    },
+    {
+     "id": "turn1",
+     "kind": "rotate",
+     "target": "prism1",
+     "angles": [
+      20,
+      35,
+      50
+     ]
+    }
+   ]
+  },
+  "kind": "rotate",
+  "analytic": null,
+  "occt": {
+   "volume": 7.794228634060811,
+   "com": [
+    99999.99999999997,
+    -99999.99999999999,
+    100000
+   ],
+   "bbox": [
+    99998.30984527161,
+    -100001.25655838763,
+    99998.27179686667,
+    100001.69015472832,
+    -99998.74344161233,
+    100001.72820313333
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7.794229259598069,
+   "bbox": [
+    99998.30984527167,
+    -100001.25655838763,
+    99998.27179686668,
+    100001.69015472836,
+    -99998.74344161236,
+    100001.72820313333
+   ],
+   "faces": 8,
+   "dVol": 8.025646756299948e-8,
+   "dBbox": 1.0682734118097415e-11
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       100000,
+       -100000,
+       99998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "translate": [
+      -100000,
+      100000,
+      -100000
+     ]
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 20
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 35
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 50
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "translate": [
+      100000,
+      -100000,
+      100000
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7.834507465362549,
+   "bbox": [
+    99998.30984527165,
+    -100001.25655838764,
+    99998.27179686667,
+    100001.69015472835,
+    -99998.74344161234,
+    100001.72820313333
+   ],
+   "com": [
+    99871.47126384033,
+    -99871.46908264741,
+    99871.46693018217
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.005167776465488686,
+   "dBboxOcct": 8.012050588573062e-12,
+   "dComOcct": 23.589413982602355,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolBrep": 0.005167695794280112,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 39
+ },
+ {
+  "id": "r2-farp-prism6-1000000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(6, 2, 3, { at: [1000000, -1000000, 1000000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      1000000,
+      -1000000,
+      1000000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 7.794228634059948,
+  "occt": {
+   "volume": 7.7942286341875375,
+   "com": [
+    1000000,
+    -1000000,
+    1000000
+   ],
+   "bbox": [
+    999999,
+    -1000000.8660254038,
+    999998.5,
+    1000001,
+    -999999.1339745962,
+    1000001.5
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7.794228634331375,
+   "bbox": [
+    999999,
+    -1000000.8660254038,
+    999998.5,
+    1000001,
+    -999999.1339745962,
+    1000001.5
+   ],
+   "faces": 8,
+   "dVol": 1.845440226172807e-11,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       1000000,
+       -1000000,
+       999998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 62.29881795247396,
+   "bbox": [
+    999999,
+    -1000000.8660254038,
+    999998.5,
+    1000001,
+    -999999.1339745962,
+    1000001.5
+   ],
+   "com": [
+    781277.3607179229,
+    -781277.7500571093,
+    781277.6090093388
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 6.992942069881675,
+   "dBboxOcct": 0,
+   "dComOcct": 54680.659819855966,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolAnalytic": 6.992942070012518,
+   "dVolBrep": 6.992942069734171,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 22
+ },
+ {
+  "id": "r2-farp-prism3-1000000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(3, 2, 3, { at: [1000000, -1000000, 1000000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 3,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      1000000,
+      -1000000,
+      1000000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 3.897114317029974,
+  "occt": {
+   "volume": 3.8971143170532745,
+   "com": [
+    1000000,
+    -1000000,
+    1000000
+   ],
+   "bbox": [
+    999999.5,
+    -1000000.8660254038,
+    999998.5,
+    1000001,
+    -999999.1339745962,
+    1000001.5
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 3.8971143170880773,
+   "bbox": [
+    999999.5,
+    -1000000.8660254038,
+    999998.5,
+    1000001,
+    -999999.1339745962,
+    1000001.5
+   ],
+   "faces": 5,
+   "dVol": 8.930409645528443e-12,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       1000000,
+       -1000000,
+       999998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 35.628641764322914,
+   "bbox": [
+    999999.5,
+    -1000000.8660254038,
+    999998.5,
+    1000001,
+    -999999.1339745962,
+    1000001.5
+   ],
+   "com": [
+    777344.9725522621,
+    -777345.5385854082,
+    777345.4008276521
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 8.142313739275373,
+   "dBboxOcct": 0,
+   "dComOcct": 58982.75766274349,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 8.142313739330035,
+   "dVolBrep": 8.142313739193728,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 16
+ },
+ {
+  "id": "r2-farp-prism12-1000000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(12, 2, 3, { at: [1000000, -1000000, 1000000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 12,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      1000000,
+      -1000000,
+      1000000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 8.999999999999998,
+  "occt": {
+   "volume": 8.999999999790813,
+   "com": [
+    1000000,
+    -1000000,
+    1000000
+   ],
+   "bbox": [
+    999999,
+    -1000001,
+    999998.5,
+    1000001,
+    -999999,
+    1000001.5
+   ],
+   "faces": 14,
+   "types": {
+    "plane": 14
+   }
+  },
+  "brep": {
+   "volume": 9.000000000620881,
+   "bbox": [
+    999999,
+    -1000001,
+    999998.5,
+    1000001,
+    -999999,
+    1000001.5
+   ],
+   "faces": 14,
+   "dVol": 9.222982871467979e-11,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       1000000,
+       -1000000,
+       999998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.8660254037844387,
+       0.49999999999999994
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       6.123233995736766e-17,
+       1
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -0.8660254037844387,
+       0.49999999999999994
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.8660254037844388,
+       -0.4999999999999997
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       -1.8369701987210297e-16,
+       -1
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ],
+      [
+       0.8660254037844384,
+       -0.5000000000000004
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 35.874908447265625,
+   "bbox": [
+    999999,
+    -1000001,
+    999998.5,
+    1000001,
+    -999999,
+    1000001.5
+   ],
+   "com": [
+    812717.380024709,
+    -812718.409498881,
+    812717.241336601
+   ],
+   "faces": 14,
+   "faceTypes": {
+    "plane": 14
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 2.9861009386777186,
+   "dBboxOcct": 0,
+   "dComOcct": 45422.740930956184,
+   "facesOcct": 14,
+   "typesOcct": {
+    "plane": 14
+   },
+   "dVolAnalytic": 2.98610093858507,
+   "dVolBrep": 2.986100938310081,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 49
+ },
+ {
+  "id": "r2-farp-wedge-1000000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "wedge(2, 3, 4, { at: [1000000, -1000000, 1000000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "wedge1",
+     "kind": "wedge",
+     "width": 2,
+     "depth": 3,
+     "height": 4,
+     "center": [
+      1000000,
+      -1000000,
+      1000000
+     ]
+    }
+   ]
+  },
+  "kind": "wedge",
+  "analytic": 12,
+  "occt": {
+   "volume": 12,
+   "com": [
+    999999.6666666666,
+    -1000000.5,
+    1000000
+   ],
+   "bbox": [
+    999999,
+    -1000001.5,
+    999998,
+    1000001,
+    -999998.5,
+    1000002
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "volume": 12.000000001862645,
+   "bbox": [
+    999999,
+    -1000001.5,
+    999998,
+    1000001,
+    -999998.5,
+    1000002
+   ],
+   "faces": 5,
+   "dVol": 1.5522042910257974e-10,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_wedge1_0",
+     "plane": {
+      "origin": [
+       1000000,
+       -1000000,
+       999998
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -1,
+       -1.5
+      ],
+      [
+       1,
+       -1.5
+      ],
+      [
+       -1,
+       1.5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 4,
+     "sketch": "sk_wedge1_0",
+     "operation": "new",
+     "body_name": "b_wedge1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 12,
+   "bbox": [
+    999999,
+    -1000001.5,
+    999998,
+    1000001,
+    -999998.5,
+    1000002
+   ],
+   "com": [
+    999999.6666666666,
+    -1000000.5,
+    1000000
+   ],
+   "faces": 5,
+   "faceTypes": {
+    "plane": 5
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 5,
+   "typesOcct": {
+    "plane": 5
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 1.5522042907848638e-10,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 17
+ },
+ {
+  "id": "r2-farp-box-1000000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "box(2, 3, 4, { at: [1000000, -1000000, 1000000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      2,
+      3,
+      4
+     ],
+     "center": [
+      1000000,
+      -1000000,
+      1000000
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 24,
+  "occt": {
+   "volume": 24,
+   "com": [
+    1000000,
+    -1000000,
+    1000000
+   ],
+   "bbox": [
+    999999,
+    -1000001.5,
+    999998,
+    1000001,
+    -999998.5,
+    1000002
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 24,
+   "bbox": [
+    999999,
+    -1000001.5,
+    999998,
+    1000001,
+    -999998.5,
+    1000002
+   ],
+   "faces": 6,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 2,
+     "width": 3,
+     "height": 4,
+     "center": [
+      1000000,
+      -1000000,
+      1000000
+     ],
+     "body_name": "b_box1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 24,
+   "bbox": [
+    999999,
+    -1000001.5,
+    999998,
+    1000001,
+    -999998.5,
+    1000002
+   ],
+   "com": [
+    1000000,
+    -1000000,
+    1000000
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0,
+   "dBboxOcct": 0,
+   "dComOcct": 0,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0,
+   "dVolBrep": 0,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 13
+ },
+ {
+  "id": "r2-farp-boxturn-1000000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "turn(box(2, 3, 4, { at: [1000000, -1000000, 1000000] }), [20, 35, 50]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      2,
+      3,
+      4
+     ],
+     "center": [
+      1000000,
+      -1000000,
+      1000000
+     ],
+     "rotate": [
+      20,
+      35,
+      50
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 24,
+  "occt": {
+   "volume": 24.00000000003871,
+   "com": [
+    1000000,
+    -1000000,
+    1000000
+   ],
+   "bbox": [
+    999997.3659260245,
+    -1000002.1450399765,
+    999997.4666715516,
+    1000002.6340739756,
+    -999997.8549600235,
+    1000002.5333284484
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 23.999946618452668,
+   "bbox": [
+    999997.3659260245,
+    -1000002.1450399766,
+    999997.4666715517,
+    1000002.6340739755,
+    -999997.8549600235,
+    1000002.5333284484
+   ],
+   "faces": 6,
+   "dVol": 0.000002224232751753839,
+   "dBbox": 1.373598114282308e-11
+  },
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 2,
+     "width": 3,
+     "height": 4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 20
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 35
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 50
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      1000000,
+      -1000000,
+      1000000
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 22.146891276041668,
+   "bbox": [
+    999997.3659260245,
+    -1000002.1450399765,
+    999997.4666715516,
+    1000002.6340739755,
+    -999997.8549600235,
+    1000002.5333284484
+   ],
+   "com": [
+    1020917.5270760378,
+    -1020918.5797068432,
+    1020918.6917076075
+   ],
+   "faces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.07721286349975223,
+   "dBboxOcct": 1.373598114282308e-11,
+   "dComOcct": 2468.221109721184,
+   "facesOcct": 6,
+   "typesOcct": {
+    "plane": 6
+   },
+   "dVolAnalytic": 0.07721286349826384,
+   "dVolBrep": 0.0772108110018151,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 15
+ },
+ {
+  "id": "r2-farp-prism6turn-1000000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "turn(prism(6, 2, 3, { at: [1000000, -1000000, 1000000] }), [20, 35, 50]);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 1,
+     "height": 3,
+     "center": [
+      1000000,
+      -1000000,
+      1000000
+     ]
+    },
+    {
+     "id": "turn1",
+     "kind": "rotate",
+     "target": "prism1",
+     "angles": [
+      20,
+      35,
+      50
+     ]
+    }
+   ]
+  },
+  "kind": "rotate",
+  "analytic": null,
+  "occt": {
+   "volume": 7.794228634038828,
+   "com": [
+    999999.9999999998,
+    -1000000.0000000002,
+    1000000
+   ],
+   "bbox": [
+    999998.3098452714,
+    -1000001.2565583879,
+    999998.2717968667,
+    1000001.6901547282,
+    -999998.7434416125,
+    1000001.7282031333
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7.794144969278325,
+   "bbox": [
+    999998.3098452718,
+    -1000001.2565583877,
+    999998.2717968667,
+    1000001.6901547285,
+    -999998.7434416122,
+    1000001.7282031334
+   ],
+   "faces": 8,
+   "dVol": 0.000010734193777344469,
+   "dBbox": 6.409640470691811e-11
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       1000000,
+       -1000000,
+       999998.5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       1,
+       0
+      ],
+      [
+       0.5000000000000001,
+       0.8660254037844386
+      ],
+      [
+       -0.4999999999999998,
+       0.8660254037844387
+      ],
+      [
+       -1,
+       1.2246467991473532e-16
+      ],
+      [
+       -0.5000000000000004,
+       -0.8660254037844384
+      ],
+      [
+       0.5000000000000001,
+       -0.8660254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 3,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "translate": [
+      -1000000,
+      1000000,
+      -1000000
+     ]
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      1,
+      0,
+      0
+     ],
+     "angle": 20
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "angle": 35
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 50
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_prism1"
+     ],
+     "translate": [
+      1000000,
+      -1000000,
+      1000000
+     ]
+    }
+   }
+  ],
+  "truck": {
+   "volume": 12.703806559244791,
+   "bbox": [
+    999998.3098452716,
+    -1000001.2565583877,
+    999998.2717968667,
+    1000001.6901547285,
+    -999998.7434416123,
+    1000001.7282031333
+   ],
+   "com": [
+    903384.8770862444,
+    -903385.3929590378,
+    903386.2870403216
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 0.6298991414961751,
+   "dBboxOcct": 4.273093647127874e-11,
+   "dComOcct": 17731.577831008814,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolBrep": 0.6299166373372012,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 37
+ },
+ {
+  "id": "r2-farp-prism6big-100",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(6, 200, 300, { at: [100, -100, 100] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 100,
+     "height": 300,
+     "center": [
+      100,
+      -100,
+      100
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 7794228.634059947,
+  "occt": {
+   "volume": 7794228.634059947,
+   "com": [
+    100,
+    -100,
+    100
+   ],
+   "bbox": [
+    0,
+    -186.60254037844388,
+    -50,
+    200,
+    -13.397459621556123,
+    250
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7794228.634059951,
+   "bbox": [
+    0,
+    -186.60254037844385,
+    -50,
+    200,
+    -13.397459621556123,
+    250
+   ],
+   "faces": 8,
+   "dVol": 4.779549681392195e-16,
+   "dBbox": 7.105427357601001e-17
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       100,
+       -100,
+       -50
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       100,
+       0
+      ],
+      [
+       50.000000000000014,
+       86.60254037844386
+      ],
+      [
+       -49.99999999999998,
+       86.60254037844388
+      ],
+      [
+       -100,
+       1.2246467991473532e-14
+      ],
+      [
+       -50.00000000000004,
+       -86.60254037844383
+      ],
+      [
+       50.000000000000014,
+       -86.60254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 300,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7794228.634059948,
+   "bbox": [
+    -1.4210854715202004e-14,
+    -186.60254037844385,
+    -50,
+    200,
+    -13.397459621556123,
+    250
+   ],
+   "com": [
+    99.99999999999999,
+    -99.99999999999999,
+    99.99999999999999
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 1.1948874203480488e-16,
+   "dBboxOcct": 7.105427357601001e-17,
+   "dComOcct": 3.5527136788005004e-17,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolAnalytic": 1.1948874203480488e-16,
+   "dVolBrep": 3.584662261044144e-16,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 22
+ },
+ {
+  "id": "r2-farp-prism6big-1000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(6, 200, 300, { at: [1000, -1000, 1000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 100,
+     "height": 300,
+     "center": [
+      1000,
+      -1000,
+      1000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 7794228.634059947,
+  "occt": {
+   "volume": 7794228.634059947,
+   "com": [
+    1000,
+    -1000,
+    1000
+   ],
+   "bbox": [
+    900,
+    -1086.6025403784438,
+    850,
+    1100,
+    -913.3974596215561,
+    1150
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7794228.634059947,
+   "bbox": [
+    900,
+    -1086.6025403784438,
+    850,
+    1100,
+    -913.3974596215561,
+    1150
+   ],
+   "faces": 8,
+   "dVol": 0,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       1000,
+       -1000,
+       850
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       100,
+       0
+      ],
+      [
+       50.000000000000014,
+       86.60254037844386
+      ],
+      [
+       -49.99999999999998,
+       86.60254037844388
+      ],
+      [
+       -100,
+       1.2246467991473532e-14
+      ],
+      [
+       -50.00000000000004,
+       -86.60254037844383
+      ],
+      [
+       50.000000000000014,
+       -86.60254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 300,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7794228.63405989,
+   "bbox": [
+    900,
+    -1086.6025403784438,
+    850,
+    1100,
+    -913.3974596215561,
+    1150
+   ],
+   "com": [
+    1000.0000000000019,
+    -1000.0000000000013,
+    1000.0000000000017
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 7.288813264123097e-15,
+   "dBboxOcct": 0,
+   "dComOcct": 4.831690603168682e-15,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolAnalytic": 7.288813264123097e-15,
+   "dVolBrep": 7.288813264123097e-15,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 23
+ },
+ {
+  "id": "r2-farp-prism6big-10000",
+  "feature": "far.planar",
+  "note": "",
+  "script": "prism(6, 200, 300, { at: [10000, -10000, 10000] });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "prism1",
+     "kind": "prism",
+     "sides": 6,
+     "radius": 100,
+     "height": 300,
+     "center": [
+      10000,
+      -10000,
+      10000
+     ]
+    }
+   ]
+  },
+  "kind": "prism",
+  "analytic": 7794228.634059947,
+  "occt": {
+   "volume": 7794228.63405996,
+   "com": [
+    10000,
+    -10000,
+    10000
+   ],
+   "bbox": [
+    9900,
+    -10086.602540378444,
+    9850,
+    10100,
+    -9913.397459621556,
+    10150
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "volume": 7794228.634059966,
+   "bbox": [
+    9900,
+    -10086.602540378444,
+    9850,
+    10100,
+    -9913.397459621556,
+    10150
+   ],
+   "faces": 8,
+   "dVol": 7.16932452208828e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_prism1_0",
+     "plane": {
+      "origin": [
+       10000,
+       -10000,
+       9850
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       100,
+       0
+      ],
+      [
+       50.000000000000014,
+       86.60254037844386
+      ],
+      [
+       -49.99999999999998,
+       86.60254037844388
+      ],
+      [
+       -100,
+       1.2246467991473532e-14
+      ],
+      [
+       -50.00000000000004,
+       -86.60254037844383
+      ],
+      [
+       50.000000000000014,
+       -86.60254037844386
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 300,
+     "sketch": "sk_prism1_0",
+     "operation": "new",
+     "body_name": "b_prism1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 7794228.634024779,
+   "bbox": [
+    9900,
+    -10086.602540378444,
+    9850,
+    10100,
+    -9913.397459621556,
+    10150
+   ],
+   "com": [
+    10000.000000010286,
+    -10000.000000011445,
+    10000.00000001085
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "plane": 8
+   },
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 4.513687230364746e-12,
+   "dBboxOcct": 0,
+   "dComOcct": 2.86127033177763e-11,
+   "facesOcct": 8,
+   "typesOcct": {
+    "plane": 8
+   },
+   "dVolAnalytic": 4.512014387976267e-12,
+   "dVolBrep": 4.514404162816952e-12,
+   "tol": 1e-9
+  },
+  "planar": true,
+  "ms": 16
+ }
+]

@@ -1,0 +1,4 @@
+r2-capsule-40-6-6                                     Rounding box box1 (40x6x6) at radius 3 failed -- the radius is too big for this shape's edges.
+r2-capsule-6-40-6                                     Rounding box box1 (6x40x6) at radius 3 failed -- the radius is too big for this shape's edges.
+r2-capsule-6-6-40              refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/r2-capsule/primitives-measure.json

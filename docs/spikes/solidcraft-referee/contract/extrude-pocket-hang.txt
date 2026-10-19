@@ -1,0 +1,9 @@
+slanted d6 bore, 5 deep, ends inside the 10 mm plate                                     built 11858.6448  (12.0 s)
+slanted bore, 10 deep: ends flush with the bottom face                                   built 11717.2875  (12.1 s)
+slanted bore, 10.01 deep: crosses the bottom face by 0.01                                built 11717.2859  (21.5 s)
+slanted bore, 11 deep: crosses the bottom face                                           exit 1 RuntimeError: Unreachable code should not be executed (evaluating 'wasm.run(ptr0, len0)')
+
+Bun v1.4.  (2.5 s)
+slanted bore, 15 deep                                                                    built 11717.2859  (19.5 s)
+join(plate, slanted circle pull 12 long that runs down into the plate)                   built 12056.5470  (19.2 s)
+join(plate, slanted circle pull 5 long leaving the plate upward)                         built 12141.3575  (0.9 s)

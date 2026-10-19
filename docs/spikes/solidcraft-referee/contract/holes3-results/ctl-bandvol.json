@@ -1,0 +1,1449 @@
+[
+ {
+  "id": "cs-blind-d6-D12-a90-b3",
+  "row": "cs-band",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, deep: 3, countersink: { across: 12, angle: 90 } });",
+  "note": "blind 3 under a 12/90 countersink on a 6 bore (cone alone 3.000 deep, cone TOOL 3.300 deep)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 3,
+   "center": [
+    0,
+    0,
+    8.5
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 12,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31915.176998353076,
+   "com": [
+    -8.025426043738983e-16,
+    2.420931726564736e-16,
+    -0.022590992180180007
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {
+   "hole1": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: its counterbore or countersink is not a shape brep-rs can cut yet -- hole1 is shown without it."
+  },
+  "truckMs": 3747,
+  "translateCpuMs": 4600.213,
+  "loadavg": 25.87,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.75,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.08835729338221293,
+     "removed": 0.08833553721706267,
+     "ratio": 0.9997537705794568,
+     "dFaces": 2,
+     "failed": null,
+     "need": 3.35,
+     "expected": 197.92033717615698
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "volume": 31794.429404156137,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10.000000000000004
+   ],
+   "com": [
+    -3.534620568900965e-9,
+    -1.6385524909749395e-9,
+    -0.0565621680984142
+   ],
+   "faces": 8,
+   "kernelFaces": 9,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 7
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 3094.292,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 31794.429404156137,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000004
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      0,
+      0,
+      10
+     ],
+     "diameter": 6,
+     "body": "b_box1",
+     "depth": 3,
+     "type": "countersink",
+     "cs_diameter": 12,
+     "cs_angle": "90 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 197.92033717615698,
+   "volume": 31802.079662823842
+  },
+  "closedFromOcct": {
+   "volume": 31802.079662823835
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.003783391024375948,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 0.0005661862653039033,
+    "faces": "8/8",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "plane": "equal",
+      "cylinder": "UNEXPLAINED"
+     }
+    },
+    "removedOcct": 84.82300164691696,
+    "removedTruck": 205.57059584386298,
+    "dRemoved": 1.4235241839185113
+   },
+   "vsClosed": {
+    "removedClosed": 197.92033717615698,
+    "removedTruck": 205.57059584386298,
+    "dRemoved": 0.038653221679270704,
+    "dVol": 0.00024055843985097117
+   }
+  },
+  "ms": 6959
+ },
+ {
+  "id": "cs-blind-d6-D12-a90-b3.1",
+  "row": "cs-band",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, deep: 3.1, countersink: { across: 12, angle: 90 } });",
+  "note": "blind 3.1 under a 12/90 countersink on a 6 bore (cone alone 3.000 deep, cone TOOL 3.300 deep)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 3.1,
+   "center": [
+    0,
+    0,
+    8.45
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 12,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31912.34956496484,
+   "com": [
+    -9.282743275280651e-16,
+    2.687639198181084e-16,
+    -0.02320876357095938
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31799.252229435613,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 9
+  },
+  "truckMs": 4613,
+  "translateCpuMs": 4745.608,
+  "loadavg": 26.61,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.75,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.08835729338221293,
+     "removed": 0.08833553721706267,
+     "ratio": 0.9997537705794568,
+     "dFaces": 2,
+     "failed": null,
+     "need": 3.35,
+     "expected": 200.74777056438785
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "volume": 31794.3364980685,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10.000000000000004
+   ],
+   "com": [
+    -3.738063462474991e-9,
+    -2.7965497808050983e-9,
+    -0.056582607584125796
+   ],
+   "faces": 11,
+   "kernelFaces": 14,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 2,
+    "cylinder": 1,
+    "plane": 8
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 3634.995,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 31794.3364980685,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000004
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      0,
+      0,
+      10
+     ],
+     "diameter": 6,
+     "body": "b_box1",
+     "depth": 3.1,
+     "type": "countersink",
+     "cs_diameter": 12,
+     "cs_angle": "90 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 200.74777056438785,
+   "volume": 31799.252229435613
+  },
+  "closedFromOcct": {
+   "volume": 31799.252229435606
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.0036980375467527667,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 0.0005562307335527735,
+    "faces": "8/11",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "cylinder": "equal",
+      "plane": "UNEXPLAINED"
+     }
+    },
+    "removedOcct": 87.65043503515335,
+    "removedTruck": 205.66350193149992,
+    "dRemoved": 1.346405945948995
+   },
+   "vsBrep": {
+    "dVol": 0.00015458638246099054,
+    "dBbox": 3.552713678800501e-16,
+    "faces": "9/11"
+   },
+   "vsClosed": {
+    "removedClosed": 200.74777056438785,
+    "removedTruck": 205.66350193149992,
+    "dRemoved": 0.02448710316080647,
+    "dVol": 0.00015458638246099054
+   }
+  },
+  "ms": 8285
+ },
+ {
+  "id": "cs-blind-d6-D12-a90-b3.2",
+  "row": "cs-band",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, deep: 3.2, countersink: { across: 12, angle: 90 } });",
+  "note": "blind 3.2 under a 12/90 countersink on a 6 bore (cone alone 3.000 deep, cone TOOL 3.300 deep)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 3.2,
+   "center": [
+    0,
+    0,
+    8.4
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 12,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31909.522131576607,
+   "com": [
+    -1.052998464130095e-15,
+    2.9599607895708846e-16,
+    -0.02381778365788644
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31796.424796047384,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 9
+  },
+  "truckMs": 3791,
+  "translateCpuMs": 3839.908,
+  "loadavg": 24.96,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.75,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.08835729338221293,
+     "removed": 0.08833553721706267,
+     "ratio": 0.9997537705794568,
+     "dFaces": 2,
+     "failed": null,
+     "need": 3.35,
+     "expected": 203.57520395261866
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "volume": 31794.061451068585,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10.000000000000004
+   ],
+   "com": [
+    -3.8520841971887215e-9,
+    -2.709566403445325e-9,
+    -0.05664230865749174
+   ],
+   "faces": 11,
+   "kernelFaces": 14,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 2,
+    "cylinder": 1,
+    "plane": 8
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 2588.689,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 31794.061451068585,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000004
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      0,
+      0,
+      10
+     ],
+     "diameter": 6,
+     "body": "b_box1",
+     "depth": 3.2,
+     "type": "countersink",
+     "cs_diameter": 12,
+     "cs_angle": "90 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 203.57520395261866,
+   "volume": 31796.42479604738
+  },
+  "closedFromOcct": {
+   "volume": 31796.424796047373
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.0036183769857764804,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 0.0005470754166600882,
+    "faces": "8/11",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "cylinder": "equal",
+      "plane": "UNEXPLAINED"
+     }
+    },
+    "removedOcct": 90.4778684233861,
+    "removedTruck": 205.93854893141543,
+    "dRemoved": 1.2761206969171461
+   },
+   "vsBrep": {
+    "dVol": 0.00007432738095426439,
+    "dBbox": 3.552713678800501e-16,
+    "faces": "9/11"
+   },
+   "vsClosed": {
+    "removedClosed": 203.57520395261866,
+    "removedTruck": 205.93854893141543,
+    "dRemoved": 0.011609198629843052,
+    "dVol": 0.00007432738095414999
+   }
+  },
+  "ms": 6399
+ },
+ {
+  "id": "cs-blind-d6-D12-a90-b3.34",
+  "row": "cs-band",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, deep: 3.34, countersink: { across: 12, angle: 90 } });",
+  "note": "blind 3.34 under a 12/90 countersink on a 6 bore (cone alone 3.000 deep, cone TOOL 3.300 deep)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 3.34,
+   "center": [
+    0,
+    0,
+    8.33
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 12,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31905.563724833086,
+   "com": [
+    -7.725804782678708e-16,
+    1.9026237089278096e-18,
+    -0.024655705159288128
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31792.466389303856,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 9
+  },
+  "truckMs": 1744,
+  "translateCpuMs": 1772.237,
+  "loadavg": 23.36,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.75,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.08835729338221293,
+     "removed": 0.08833553721706267,
+     "ratio": 0.9997537705794568,
+     "dFaces": 2,
+     "failed": null,
+     "need": 3.35,
+     "expected": 207.5336106961418
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "volume": 31792.480233250742,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10.000000000000004
+   ],
+   "com": [
+    -4.97975443265985e-9,
+    -3.5024936199962574e-9,
+    -0.056978273236865405
+   ],
+   "faces": 9,
+   "kernelFaces": 11,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 1,
+    "cylinder": 1,
+    "plane": 7
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 1825.972,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 31792.480233250742,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000004
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      0,
+      0,
+      10
+     ],
+     "diameter": 6,
+     "body": "b_box1",
+     "depth": 3.34,
+     "type": "countersink",
+     "cs_diameter": 12,
+     "cs_angle": "90 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 207.5336106961418,
+   "volume": 31792.46638930386
+  },
+  "closedFromOcct": {
+   "volume": 31792.466389303852
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.0035443188704522726,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 0.0005387094679596212,
+    "faces": "8/9",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 94.43627516690685,
+    "removedTruck": 207.51976674925754,
+    "dRemoved": 1.1974581947719423
+   },
+   "vsBrep": {
+    "dVol": 4.354474018140136e-7,
+    "dBbox": 3.552713678800501e-16,
+    "faces": "9/9"
+   },
+   "vsClosed": {
+    "removedClosed": 207.5336106961418,
+    "removedTruck": 207.51976674925754,
+    "dRemoved": 0.00006670701115750497,
+    "dVol": 4.3544740169958457e-7
+   }
+  },
+  "ms": 3579
+ },
+ {
+  "id": "cs-blind-d6-D12-a120-b1.8",
+  "row": "cs-band",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 6, deep: 1.8, countersink: { across: 12, angle: 120 } });",
+  "note": "blind 1.8 under a 12/120 countersink on a 6 bore (cone alone 1.732 deep, cone TOOL 1.905 deep)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 1.8,
+   "center": [
+    0,
+    0,
+    9.1
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 12,
+    "angleDeg": 120
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31949.10619901184,
+   "com": [
+    -6.691409277309683e-16,
+    1.7049773435787602e-16,
+    -0.014495979515275035
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31883.809421899412,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 9
+  },
+  "truckMs": 2209,
+  "translateCpuMs": 2235.94,
+  "loadavg": 21.97,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.75,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.08835729338221293,
+     "removed": 0.08833553721706267,
+     "ratio": 0.9997537705794568,
+     "dFaces": 2,
+     "failed": null,
+     "need": 1.9552558883257656,
+     "expected": 116.19057810058652
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "volume": 31881.239474100705,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10.000000000000002
+   ],
+   "com": [
+    -1.461761449663644e-12,
+    -1.0285969745952473e-12,
+    -0.034556126001406125
+   ],
+   "faces": 11,
+   "kernelFaces": 14,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 2,
+    "cylinder": 1,
+    "plane": 8
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 1746.302,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 31881.239474100705,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000002
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      0,
+      0,
+      10
+     ],
+     "diameter": 6,
+     "body": "b_box1",
+     "depth": 1.8,
+     "type": "countersink",
+     "cs_diameter": 12,
+     "cs_angle": "120 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 116.19057810058652,
+   "volume": 31883.809421899412
+  },
+  "closedFromOcct": {
+   "volume": 31883.809421899405
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.002124213569180662,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 0.00033433577476885145,
+    "faces": "8/11",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "cylinder": "equal",
+      "plane": "UNEXPLAINED"
+     }
+    },
+    "removedOcct": 50.89380098815309,
+    "removedTruck": 118.76052589929532,
+    "dRemoved": 1.3334968816131467
+   },
+   "vsBrep": {
+    "dVol": 0.00008060353656931971,
+    "dBbox": 1.7763568394002506e-16,
+    "faces": "9/11"
+   },
+   "vsClosed": {
+    "removedClosed": 116.19057810058652,
+    "removedTruck": 118.76052589929532,
+    "dRemoved": 0.022118383785679978,
+    "dVol": 0.00008060353656931971
+   }
+  },
+  "ms": 3951
+ },
+ {
+  "id": "cs-blind-d10-D20-a90-b5.4",
+  "row": "cs-band",
+  "script": "const b = cuboid(40, 40, 20);  hole(b, { across: 10, deep: 5.4, countersink: { across: 20, angle: 90 } });",
+  "note": "blind 5.4 under a 20/90 countersink on a 10 bore (cone alone 5.000 deep, cone TOOL 5.500 deep)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 10,
+   "depth": 5.4,
+   "center": [
+    0,
+    0,
+    7.3
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 20,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31575.88499176538,
+   "com": [
+    -2.3290296747137586e-17,
+    3.3494477147188244e-17,
+    -0.09805076123504243
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31052.28621616708,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 9
+  },
+  "truckMs": 2112,
+  "translateCpuMs": 2127.087,
+  "loadavg": 20.61,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 1,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.15707963267948966,
+     "removed": 0.1570535411774472,
+     "ratio": 0.9998338963390899,
+     "dFaces": 2,
+     "failed": null,
+     "need": 5.550000000000001,
+     "expected": 947.7137838329211
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "volume": 31045.841717955755,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10.000000331402584
+   ],
+   "com": [
+    -3.191596013845635e-11,
+    4.5389884199093845e-11,
+    -0.24296471419016705
+   ],
+   "faces": 11,
+   "kernelFaces": 14,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 2,
+    "cylinder": 1,
+    "plane": 8
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 2031.21,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 31045.841717955755,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000331402584
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      0,
+      0,
+      10
+     ],
+     "diameter": 10,
+     "body": "b_box1",
+     "depth": 5.4,
+     "type": "countersink",
+     "cs_diameter": 20,
+     "cs_angle": "90 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 947.7137838329211,
+   "volume": 31052.28621616708
+  },
+  "closedFromOcct": {
+   "volume": 31052.28621616707
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.01678633152951543,
+    "dBbox": 3.314025835976508e-8,
+    "dCom": 0.0024152325492520768,
+    "faces": "8/11",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "cylinder": "equal",
+      "plane": "UNEXPLAINED"
+     }
+    },
+    "removedOcct": 424.1150082346139,
+    "removedTruck": 954.1582820442454,
+    "dRemoved": 1.2497630678431915
+   },
+   "vsBrep": {
+    "dVol": 0.00020753699635707966,
+    "dBbox": 3.314025835976508e-8,
+    "faces": "9/11"
+   },
+   "vsClosed": {
+    "removedClosed": 947.7137838329211,
+    "removedTruck": 954.1582820442454,
+    "dRemoved": 0.006800046935331362,
+    "dVol": 0.00020753699635707966
+   }
+  },
+  "ms": 4145
+ },
+ {
+  "id": "holes-cs-blind-band",
+  "row": "holes-recess",
+  "script": "const b = cuboid(40, 40, 20);  holes(b, { across: 4, apart: [20, 20], deep: 2.1, countersink: { across: 8, angle: 90 } });",
+  "note": "cone (2 deep, tool 2.2) deeper than the 2.1 deep holes",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 4,
+   "depth": 2.1,
+   "center": [
+    0,
+    0,
+    8.95
+   ],
+   "axis": "z",
+   "corners": {
+    "dx": 10,
+    "dy": 10
+   },
+   "countersink": {
+    "diameter": 8,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31894.442486839373,
+   "com": [
+    -1.416877501871662e-16,
+    1.9604594365519853e-16,
+    -0.029620826361123762
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 14,
+   "types": {
+    "plane": 10,
+    "cylinder": 4
+   },
+   "components": {
+    "plane": 10,
+    "cylinder": 4
+   },
+   "bigCylinderComponents": 4,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31760.4012002862,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 18
+  },
+  "truckMs": 9750,
+  "translateCpuMs": 9982.796,
+  "loadavg": 18.22,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.5,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.039269908169872414,
+     "removed": 0.15700874841058976,
+     "ratio": 0.999548736728685,
+     "dFaces": 8,
+     "failed": null,
+     "need": 2.2500000000000004,
+     "expected": 239.59879971378163
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "volume": 31756.114165253417,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10.000000000000004
+   ],
+   "com": [
+    -2.547372401429028e-9,
+    -1.7462851368683031e-9,
+    -0.07038063465095673
+   ],
+   "faces": 26,
+   "kernelFaces": 38,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 8,
+    "cylinder": 4,
+    "plane": 14
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 9460.562,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 31756.114165253417,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000004
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      -10,
+      -10,
+      10
+     ],
+     "diameter": 4,
+     "body": "b_box1",
+     "depth": 2.1,
+     "type": "countersink",
+     "cs_diameter": 8,
+     "cs_angle": "90 deg"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      10,
+      -10,
+      10
+     ],
+     "diameter": 4,
+     "body": "b_box1",
+     "depth": 2.1,
+     "type": "countersink",
+     "cs_diameter": 8,
+     "cs_angle": "90 deg"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      -10,
+      10,
+      10
+     ],
+     "diameter": 4,
+     "body": "b_box1",
+     "depth": 2.1,
+     "type": "countersink",
+     "cs_diameter": 8,
+     "cs_angle": "90 deg"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      10,
+      10,
+      10
+     ],
+     "diameter": 4,
+     "body": "b_box1",
+     "depth": 2.1,
+     "type": "countersink",
+     "cs_diameter": 8,
+     "cs_angle": "90 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.004337066610994504,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 0.0006793301381638829,
+    "faces": "14/26",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "cylinder": "equal",
+      "plane": "UNEXPLAINED"
+     }
+    },
+    "removedOcct": 105.55751316062015,
+    "removedTruck": 243.885834746583,
+    "dRemoved": 1.3104545327387302
+   },
+   "vsBrep": {
+    "dVol": 0.00013498050625205553,
+    "dBbox": 3.552713678800501e-16,
+    "faces": "18/26"
+   }
+  },
+  "ms": 19163
+ }
+]

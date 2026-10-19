@@ -1,0 +1,57 @@
+[
+ {
+  "id": "r2-big-wedge-10000000",
+  "feature": "oversize",
+  "note": "",
+  "script": "wedge(10000000, 10000000, 10000000);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "wedge1",
+     "kind": "wedge",
+     "width": 10000000,
+     "depth": 10000000,
+     "height": 10000000,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "wedge",
+  "analytic": 500000000000000000000,
+  "occt": {
+   "volume": 499999999999999930000,
+   "com": [
+    -1666666.6666666665,
+    -1666666.666666666,
+    0
+   ],
+   "bbox": [
+    -5000000,
+    -5000000,
+    -5000000,
+    5000000,
+    5000000,
+    5000000
+   ],
+   "faces": 5,
+   "types": {
+    "plane": 5
+   }
+  },
+  "brep": {
+   "refused": "wedge wedge1: it has a size or position of 1.000e7, past the 1e6 brep-rs builds exactly -- wedge1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "wedge1 (wedge): solidcraft refused it -- solid.extrude: invalid input: end = 10000000"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 30
+ }
+]

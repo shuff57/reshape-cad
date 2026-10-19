@@ -1,0 +1,1 @@
+Z-coin-box-side-ring5-9-360              PASS     occtV 31296.2832 | tr-occt dV 2.4e-6 dBb 1.7e-8 dCom 6.0e-8 F o/b/t 10/10/10 | brep-occt dV 1.9e-12      | ms 902 cpu 1284

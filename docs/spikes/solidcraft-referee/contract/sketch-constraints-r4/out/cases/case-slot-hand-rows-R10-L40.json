@@ -1,0 +1,103 @@
+[
+ {
+  "id": "slot-hand-rows-R10-L40",
+  "feats": [
+   "rule:tangent",
+   "tangent:endpoint line-arc",
+   "rule:lock",
+   "rule:equal",
+   "rule:radius",
+   "slot with tangent joints",
+   "endpoint tangency curved accuracy",
+   "point-ref:a/b/c ends"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00003175760120367676,
+      "db": 0.000006201537757135611,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 11141.238823333528
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 38,
+     "BUILT-WRONG-VOLUME": 2
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00003360887364945121,
+      "db": 0.000004138846881716063,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 11141.218197210046
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000033612533074358137,
+      "db": 0.0000041347677068870325,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 11141.218156438224
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.17573269175815964,
+      "db": 0.9999856595607663,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 9183.650586101523
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 27,
+     "REFUSED": 2,
+     "BUILT-WRONG-VOLUME": 11
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.000033944244020468,
+      "db": 0.000003765157446196099,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 11141.214460649984
+     },
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "invalid input: profile: cannot attach a plane to a wire that is not on one plane."
+     },
+     {
+      "cls": "BUILT-WRONG-VOLUME",
+      "dv": 0.21809634705119793,
+      "db": 0.00032986614822405613,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 8711.651995509397
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 13
+  }
+ }
+]

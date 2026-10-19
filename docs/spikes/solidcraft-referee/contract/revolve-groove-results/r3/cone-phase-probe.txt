@@ -1,0 +1,6 @@
+phi 0 dVol 2.62e-3 V 35780.92 F 7 {"cone":1,"cylinder":3,"plane":3}
+phi 11 dVol 2.62e-3 V 35780.94 F 7 {"cone":1,"cylinder":3,"plane":3}
+phi 37 dVol 2.62e-3 V 35780.97 F 7 {"cone":1,"cylinder":3,"plane":3}
+phi 90 dVol 2.62e-3 V 35780.94 F 7 {"cone":1,"cylinder":3,"plane":3}
+phi 133 dVol 2.62e-3 V 35780.95 F 7 {"cone":1,"cylinder":3,"plane":3}
+phi 200 dVol 2.62e-3 V 35780.97 F 7 {"cone":1,"cylinder":3,"plane":3}

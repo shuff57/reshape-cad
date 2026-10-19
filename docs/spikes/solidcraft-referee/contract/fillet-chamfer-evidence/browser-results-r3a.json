@@ -1,0 +1,1696 @@
+[
+ {
+  "id": "r3-h-fillet-r2",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -9] })\nround(b.edge('top','front'), 2)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 23400.223070898992,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000007,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.00000000000001,
+    -15,
+    -10.000000000000018
+   ]
+  }
+ },
+ {
+  "id": "r3-h-ref-r2",
+  "script": "const b = cuboid(40,30,20)\nround(b.edge('top','front'), 2)\nhole(b, { across: 6, at: [0, -9] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 23400.223070898985,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000007,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.00000000000001,
+    -15,
+    -10.000000000000009
+   ]
+  }
+ },
+ {
+  "id": "r3-h-fillet-r3",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -9] })\nround(b.edge('top','front'), 3)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 3,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 23357.29992343773,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.00000000000001,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.000000000000014,
+    -15,
+    -10.000000000000018
+   ]
+  }
+ },
+ {
+  "id": "r3-h-ref-r3",
+  "script": "const b = cuboid(40,30,20)\nround(b.edge('top','front'), 3)\nhole(b, { across: 6, at: [0, -9] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 3,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 23357.299923437724,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.00000000000001,
+    15,
+    10.000000000000007
+   ],
+   "min": [
+    -20.000000000000014,
+    -15,
+    -10.000000000000007
+   ]
+  }
+ },
+ {
+  "id": "r3-h-fillet-r3.5",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -9] })\nround(b.edge('top','front'), 3.5)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 3.5,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 23332.831314640407,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.00000000000001,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.000000000000014,
+    -15,
+    -10.000000000000018
+   ]
+  }
+ },
+ {
+  "id": "r3-h-ref-r3.5",
+  "script": "const b = cuboid(40,30,20)\nround(b.edge('top','front'), 3.5)\nhole(b, { across: 6, at: [0, -9] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 3.5,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 23329.42272661743,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.00000000000001,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.000000000000014,
+    -15,
+    -10.00000000000001
+   ]
+  }
+ },
+ {
+  "id": "r3-h-fillet-r4",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -9] })\nround(b.edge('top','front'), 4)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 4,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 23305.437624425544,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000018,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.000000000000014,
+    -15,
+    -10.000000000000018
+   ]
+  }
+ },
+ {
+  "id": "r3-h-ref-r4",
+  "script": "const b = cuboid(40,30,20)\nround(b.edge('top','front'), 4)\nhole(b, { across: 6, at: [0, -9] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 4,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 23297.29939095317,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000018,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.000000000000014,
+    -15.000000000000002,
+    -10.000000000000009
+   ]
+  }
+ },
+ {
+  "id": "r3-h-fillet-r5",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -9] })\nround(b.edge('top','front'), 5)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 5,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 23246.148620210148,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.00000000000001,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.000000000000018,
+    -15,
+    -10.000000000000018
+   ]
+  }
+ },
+ {
+  "id": "r3-h-ref-r5",
+  "script": "const b = cuboid(40,30,20)\nround(b.edge('top','front'), 5)\nhole(b, { across: 6, at: [0, -9] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 5,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 23220.73226572463,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.00000000000001,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.000000000000014,
+    -15.000000000000002,
+    -10.000000000000009
+   ]
+  }
+ },
+ {
+  "id": "r3-h-fillet-r6",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -9] })\nround(b.edge('top','front'), 6)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 6,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 23172.206652650493,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000014,
+    15,
+    10.000000000000007
+   ],
+   "min": [
+    -20.00000000000001,
+    -15,
+    -10.000000000000018
+   ]
+  }
+ },
+ {
+  "id": "r3-h-ref-r6",
+  "script": "const b = cuboid(40,30,20)\nround(b.edge('top','front'), 6)\nhole(b, { across: 6, at: [0, -9] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 6,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 23128.200419597397,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000014,
+    15,
+    10.000000000000009
+   ],
+   "min": [
+    -20.00000000000001,
+    -15.000000000000002,
+    -10.000000000000009
+   ]
+  }
+ },
+ {
+  "id": "r3-h-fillet-r7",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -9] })\nround(b.edge('top','front'), 7)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 7,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 23079.3791437341,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.00000000000001,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.00000000000001,
+    -15,
+    -10.000000000000018
+   ]
+  }
+ },
+ {
+  "id": "r3-h-ref-r7",
+  "script": "const b = cuboid(40,30,20)\nround(b.edge('top','front'), 7)\nhole(b, { across: 6, at: [0, -9] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 7,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 23020.09784233115,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.00000000000001,
+    15,
+    10.000000000000004
+   ],
+   "min": [
+    -20.00000000000001,
+    -15.000000000000002,
+    -10.000000000000009
+   ]
+  }
+ },
+ {
+  "id": "r3-h-bevel-d3",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -9] })\nbevel(b.edge('top','front'), 3)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 3,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 23254.607251775655,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20,
+    -15,
+    -10.000000000000018
+   ]
+  }
+ },
+ {
+  "id": "r3-h-bevelref-d3",
+  "script": "const b = cuboid(40,30,20)\nbevel(b.edge('top','front'), 3)\nhole(b, { across: 6, at: [0, -9] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 3,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 23254.607251775655,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.00000000000001
+   ],
+   "min": [
+    -20.000000000000007,
+    -15,
+    -10.000000000000007
+   ]
+  }
+ },
+ {
+  "id": "r3-h-bevel-d4",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -9] })\nbevel(b.edge('top','front'), 4)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 4,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 23115.84362213513,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.000000000000007
+   ],
+   "min": [
+    -20,
+    -15,
+    -10.000000000000018
+   ]
+  }
+ },
+ {
+  "id": "r3-h-bevelref-d4",
+  "script": "const b = cuboid(40,30,20)\nbevel(b.edge('top','front'), 4)\nhole(b, { across: 6, at: [0, -9] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 4,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 23115.84358478332,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.000000000000018,
+    -15,
+    -10.000000000000007
+   ]
+  }
+ },
+ {
+  "id": "r3-h-bevel-d5",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -9] })\nbevel(b.edge('top','front'), 5)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 5,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 22941.418331501543,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20,
+    -15,
+    -10.000000000000018
+   ]
+  }
+ },
+ {
+  "id": "r3-h-bevelref-d5",
+  "script": "const b = cuboid(40,30,20)\nbevel(b.edge('top','front'), 5)\nhole(b, { across: 6, at: [0, -9] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 5,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 22941.41629523619,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20,
+    -15,
+    -10.000000000000009
+   ]
+  }
+ },
+ {
+  "id": "r3-h-bevel-d6",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -9] })\nbevel(b.edge('top','front'), 6)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 6,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 22732.582014300762,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20,
+    -15,
+    -10.000000000000018
+   ]
+  }
+ },
+ {
+  "id": "r3-h-bevelref-d6",
+  "script": "const b = cuboid(40,30,20)\nbevel(b.edge('top','front'), 6)\nhole(b, { across: 6, at: [0, -9] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 6,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 22732.58012068099,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.000000000000009
+   ],
+   "min": [
+    -20.000000000000007,
+    -15,
+    -10.000000000000009
+   ]
+  }
+ },
+ {
+  "id": "r3-h-bevel-d7",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -9] })\nbevel(b.edge('top','front'), 7)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 7,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 22489.68955515129,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20,
+    -15,
+    -10.000000000000018
+   ]
+  }
+ },
+ {
+  "id": "r3-h-bevelref-d7",
+  "script": "const b = cuboid(40,30,20)\nbevel(b.edge('top','front'), 7)\nhole(b, { across: 6, at: [0, -9] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "distance": 7,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 22489.687753593622,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000004,
+    15,
+    10.000000000000004
+   ],
+   "min": [
+    -20,
+    -15.000000000000002,
+    -10.00000000000001
+   ]
+  }
+ },
+ {
+  "id": "r3-hp-y6",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -6] })\nround(b.edge('top','front'), 4)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 4,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "volume": 23297.211279390074,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000018,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.000000000000014,
+    -15,
+    -10.000000000000007
+   ]
+  }
+ },
+ {
+  "id": "r3-hpref-y6",
+  "script": "const b = cuboid(40,30,20)\nround(b.edge('top','front'), 4)\nhole(b, { across: 6, at: [0, -6] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 4,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 23297.21127939007,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000018,
+    15,
+    10.000000000000005
+   ],
+   "min": [
+    -20.000000000000014,
+    -15,
+    -10.00000000000001
+   ]
+  }
+ },
+ {
+  "id": "r3-hp-y12",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -12] })\nround(b.edge('top','front'), 4)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 23434.61228643145,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.000000000000004
+   ],
+   "min": [
+    -20,
+    -15,
+    -10.000000000000007
+   ]
+  }
+ },
+ {
+  "id": "r3-hpref-y12",
+  "script": "const b = cuboid(40,30,20)\nround(b.edge('top','front'), 4)\nhole(b, { across: 6, at: [0, -12] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 4,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 23309.91098396971,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000014,
+    15,
+    10.000000000000007
+   ],
+   "min": [
+    -20.000000000000014,
+    -15,
+    -10.000000000000007
+   ]
+  }
+ },
+ {
+  "id": "r3-hp-y12b",
+  "script": "const b = cuboid(40,30,20)\nhole(b, { across: 6, at: [0, -12] })\nround(b.edge('top','front'), 8)",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 2, refused 1.",
+  "noNewBuild": null,
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked"
+  ],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+    "pick": null
+   }
+  ],
+  "volume": 23434.61228643145,
+  "faces": 7,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20,
+    15,
+    10.000000000000004
+   ],
+   "min": [
+    -20,
+    -15,
+    -10.000000000000007
+   ]
+  }
+ },
+ {
+  "id": "r3-hpref-y12b",
+  "script": "const b = cuboid(40,30,20)\nround(b.edge('top','front'), 8)\nhole(b, { across: 6, at: [0, -12] })",
+  "ok": true,
+  "error": null,
+  "verdict": "Custom script: no reference. Built 3, refused 0.",
+  "noNewBuild": null,
+  "refusals": [],
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "refusal": null,
+    "pick": {
+     "edges": [
+      [
+       0,
+       -15,
+       10
+      ]
+     ],
+     "radius": 8,
+     "body": "b_box1"
+    }
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "pick": null
+   }
+  ],
+  "volume": 22944.842709363813,
+  "faces": 8,
+  "bodies": 1,
+  "bbox": {
+   "max": [
+    20.000000000000014,
+    15,
+    10.000000000000002
+   ],
+   "min": [
+    -20.000000000000014,
+    -15,
+    -10.000000000000009
+   ]
+  }
+ }
+]

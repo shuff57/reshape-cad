@@ -1,0 +1,530 @@
+[
+ {
+  "id": "bm-circle-r1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.circle(20,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 1,
+  "style": "fillet",
+  "size": 1,
+  "base": {
+   "volume": 27543.36293856408,
+   "com": [
+    -8.858772111606894e-16,
+    1.1453974425024639e-16,
+    -0.18249580695558007
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27529.57792194229,
+   "faces": 9
+  },
+  "picks": [
+   [
+    10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 3095,
+   "volume": 27529.588116792012,
+   "faces": 9,
+   "pick": [
+    [
+     10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 27529.57792194229,
+   "faces": 9,
+   "edges": 1
+  },
+  "scSeq": {
+   "refused": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 3.7032350260538625e-7,
+  "dBatchVsOcctSeq": 3.7032350260538625e-7,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bm-circle-r2",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.circle(20,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 2)",
+  "fc": null,
+  "n": 1,
+  "style": "fillet",
+  "size": 2,
+  "base": {
+   "volume": 27543.36293856408,
+   "com": [
+    -8.858772111606894e-16,
+    1.1453974425024639e-16,
+    -0.18249580695558007
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27487.01812985518,
+   "faces": 9
+  },
+  "picks": [
+   [
+    10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 3921,
+   "volume": 27487.0151055303,
+   "faces": 9,
+   "pick": [
+    [
+     10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 27487.01812985518,
+   "faces": 9,
+   "edges": 1
+  },
+  "scSeq": {
+   "refused": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 1.1002739060147904e-7,
+  "dBatchVsOcctSeq": 1.1002739060147904e-7,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bm-circle-d1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.circle(20,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 1,
+  "style": "chamfer",
+  "size": 1,
+  "base": {
+   "volume": 27543.36293856408,
+   "com": [
+    -8.858772111606894e-16,
+    1.1453974425024639e-16,
+    -0.18249580695558007
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27510.899814476987,
+   "faces": 9
+  },
+  "picks": [
+   [
+    10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 189,
+   "volume": 27511.087636404965,
+   "faces": 9,
+   "pick": [
+    [
+     10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 27510.899814476987,
+   "faces": 9,
+   "edges": 1
+  },
+  "scSeq": {
+   "refused": "bevel1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 0.000006827182289398098,
+  "dBatchVsOcctSeq": 0.000006827182289398098,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bm-circle-d2",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.circle(20,{at:[0,0]})\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 2)",
+  "fc": null,
+  "n": 1,
+  "style": "chamfer",
+  "size": 2,
+  "base": {
+   "volume": 27543.36293856408,
+   "com": [
+    -8.858772111606894e-16,
+    1.1453974425024639e-16,
+    -0.18249580695558007
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 7,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 27409.321652010916,
+   "faces": 9
+  },
+  "picks": [
+   [
+    10,
+    0,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 206,
+   "volume": 27409.477252536333,
+   "faces": 9,
+   "pick": [
+    [
+     10,
+     0,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 27409.321652010916,
+   "faces": 9,
+   "edges": 1
+  },
+  "scSeq": {
+   "refused": "bevel1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 0.000005676919968777916,
+  "dBatchVsOcctSeq": 0.000005676919968777916,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bm-L-r1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.polygon([[0,0],[16,0],[16,6],[6,6],[6,14],[0,14]])\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 6,
+  "style": "fillet",
+  "size": 1,
+  "base": {
+   "volume": 28224,
+   "com": [
+    -0.12925170068027073,
+    -0.10884353741496516,
+    -0.0816326530612244
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 13,
+   "types": {
+    "plane": 13
+   },
+   "components": {
+    "plane": 13
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 28213.936574831925,
+   "faces": 19
+  },
+  "picks": [
+   [
+    8,
+    0,
+    6
+   ],
+   [
+    16,
+    3,
+    6
+   ],
+   [
+    11,
+    6,
+    6
+   ],
+   [
+    6,
+    10,
+    6
+   ],
+   [
+    3,
+    14,
+    6
+   ],
+   [
+    0,
+    7,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 237,
+   "volume": 28210.72089580401,
+   "faces": 19,
+   "pick": [
+    [
+     8,
+     0,
+     6
+    ],
+    [
+     16,
+     3,
+     6
+    ],
+    [
+     11,
+     6,
+     6
+    ],
+    [
+     6,
+     10,
+     6
+    ],
+    [
+     3,
+     14,
+     6
+    ],
+    [
+     0,
+     7,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 28210.740408435307,
+   "faces": 19,
+   "edges": 6
+  },
+  "scSeq": {
+   "refused": "round6 (fillet): its target round5 was refused (round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing))))))",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 6.916738453120524e-7,
+  "dBatchVsOcctSeq": 0.00011397484428966774,
+  "dBatchVsFc": null
+ },
+ {
+  "id": "bm-L-d1",
+  "script": "const plate = cuboid(60,40,12)\nconst sk2 = sketch('top', 6)\nsk2.polygon([[0,0],[16,0],[16,6],[6,6],[6,14],[0,14]])\nconst part = pocket(sk2, plate, 4)\nbevel(part.rim(sk2), 1)",
+  "fc": null,
+  "n": 6,
+  "style": "chamfer",
+  "size": 1,
+  "base": {
+   "volume": 28224,
+   "com": [
+    -0.12925170068027073,
+    -0.10884353741496516,
+    -0.0816326530612244
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "faces": 13,
+   "types": {
+    "plane": 13
+   },
+   "components": {
+    "plane": 13
+   },
+   "bigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtSeq": {
+   "volume": 28200.333333332943,
+   "faces": 19
+  },
+  "picks": [
+   [
+    8,
+    0,
+    6
+   ],
+   [
+    16,
+    3,
+    6
+   ],
+   [
+    11,
+    6,
+    6
+   ],
+   [
+    6,
+    10,
+    6
+   ],
+   [
+    3,
+    14,
+    6
+   ],
+   [
+    0,
+    7,
+    6
+   ]
+  ],
+  "sc": {
+   "variantsTried": 1,
+   "ms": 15,
+   "volume": 28192.666666666668,
+   "faces": 19,
+   "pick": [
+    [
+     8,
+     0,
+     6
+    ],
+    [
+     16,
+     3,
+     6
+    ],
+    [
+     11,
+     6,
+     6
+    ],
+    [
+     6,
+     10,
+     6
+    ],
+    [
+     3,
+     14,
+     6
+    ],
+    [
+     0,
+     7,
+     6
+    ]
+   ]
+  },
+  "occtEdgeDist": 0,
+  "occtSim": {
+   "volume": 28192.666666666664,
+   "faces": 19,
+   "edges": 6
+  },
+  "scSeq": {
+   "refused": "bevel6 (fillet): its target bevel5 was refused (bevel5 (fillet): its target bevel4 was refused (bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing))))))",
+   "firstRefusedAt": -2
+  },
+  "dBatchVsOcctSim": 1.2903989715144767e-16,
+  "dBatchVsOcctSeq": 0.0002718643987520863,
+  "dBatchVsFc": null
+ }
+]

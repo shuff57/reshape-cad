@@ -1,0 +1,1 @@
+fzc2-49-boxG-top-circle-180              NO-OCCT OCCT: OCCT built nothing | truck REFUSED groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part. | brep REFUSED groove groove1: a circle sketch has no outline to spin  | ms 36 cpu 98

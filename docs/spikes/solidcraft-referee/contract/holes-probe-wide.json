@@ -1,0 +1,174 @@
+[
+ {
+  "name": "plate 40x30x10, 10 across at x=35 (tangent to x=40 along a line)",
+  "bodies": [
+   {
+    "name": "P",
+    "volume": 11214.771956306387,
+    "faces": 7,
+    "kernel": {
+     "edges": 23,
+     "faces": 9,
+     "shells": 1,
+     "vertices": 16
+    }
+   }
+  ]
+ },
+ {
+  "name": "plate, 9.99 across at x=35 (control)",
+  "bodies": [
+   {
+    "name": "P",
+    "volume": 11216.302044276665,
+    "faces": 7,
+    "kernel": {
+     "edges": 18,
+     "faces": 8,
+     "shells": 1,
+     "vertices": 12
+    }
+   }
+  ]
+ },
+ {
+  "name": "plate, 30 across (tangent to both long sides)",
+  "bodies": [
+   {
+    "name": "P",
+    "volume": 4932.391716613449,
+    "faces": 9,
+    "kernel": {
+     "edges": 30,
+     "faces": 14,
+     "shells": 2,
+     "vertices": 20
+    }
+   }
+  ]
+ },
+ {
+  "name": "plate, 29.99 across (control)",
+  "bodies": [
+   {
+    "name": "P",
+    "volume": 4936.925207028112,
+    "faces": 7,
+    "kernel": {
+     "edges": 18,
+     "faces": 8,
+     "shells": 1,
+     "vertices": 12
+    }
+   }
+  ]
+ },
+ {
+  "name": "plate, 31 across (splits)",
+  "bodies": [
+   {
+    "name": "P (1)",
+    "volume": 2252.5149667329883,
+    "faces": 6,
+    "kernel": {
+     "edges": 15,
+     "faces": 7,
+     "shells": 1,
+     "vertices": 10
+    }
+   },
+   {
+    "name": "P",
+    "volume": 2252.514973680797,
+    "faces": 6,
+    "kernel": {
+     "edges": 15,
+     "faces": 7,
+     "shells": 1,
+     "vertices": 10
+    }
+   }
+  ]
+ },
+ {
+  "name": "box 40x40x20, 40 across (tangent to all four sides)",
+  "bodies": [
+   {
+    "name": "P",
+    "volume": 6869.973501900917,
+    "faces": 13,
+    "kernel": {
+     "edges": 42,
+     "faces": 22,
+     "shells": 4,
+     "vertices": 28
+    }
+   }
+  ]
+ },
+ {
+  "name": "box, 39.99 across (control)",
+  "bodies": [
+   {
+    "name": "P",
+    "volume": 6882.6580846227835,
+    "faces": 7,
+    "kernel": {
+     "edges": 18,
+     "faces": 8,
+     "shells": 1,
+     "vertices": 12
+    }
+   }
+  ]
+ },
+ {
+  "name": "box, 41 across (four corner pieces)",
+  "bodies": [
+   {
+    "name": "P",
+    "volume": 1459.1906652425278,
+    "faces": 5,
+    "kernel": {
+     "edges": 12,
+     "faces": 6,
+     "shells": 1,
+     "vertices": 8
+    }
+   },
+   {
+    "name": "P (3)",
+    "volume": 1459.1906635830953,
+    "faces": 5,
+    "kernel": {
+     "edges": 12,
+     "faces": 6,
+     "shells": 1,
+     "vertices": 8
+    }
+   },
+   {
+    "name": "P (2)",
+    "volume": 1459.1222801998058,
+    "faces": 5,
+    "kernel": {
+     "edges": 9,
+     "faces": 5,
+     "shells": 1,
+     "vertices": 6
+    }
+   },
+   {
+    "name": "P (1)",
+    "volume": 1459.1222801997876,
+    "faces": 5,
+    "kernel": {
+     "edges": 9,
+     "faces": 5,
+     "shells": 1,
+     "vertices": 6
+    }
+   }
+  ]
+ }
+]

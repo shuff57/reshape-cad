@@ -1,0 +1,1 @@
+revolution__side-270                     PASS     occtV 21205.7504 | tr-occt dV 9.7e-5 dBb 0.0e+0 dCom 2.6e-6 F o/b/t 6/6/6 | brep-occt dV 6.3e-11 | FC: occt 6.3e-11 brep 3.4e-16 truck 9.7e-5 dCom 1.6e-4 F 6     | ms 1281 cpu 1783

@@ -1,0 +1,8 @@
+{"k":"prism","a":[30,40,50],"step":"PASS","own":"PASS","occtDelta":{"dVol":1.4586028080420515e-16,"dBbox":1.7763568394002505e-15,"dCom":8.881784197001252e-16},"brepOwn":2.917205616084103e-16}
+{"k":"prism","a":[0,90,0],"step":"PASS","own":"PASS","occtDelta":{"dVol":0,"dBbox":0,"dCom":0},"brepOwn":1.4586028080420515e-16}
+{"k":"prism","a":[10,20,300],"step":"PASS","own":"PASS","occtDelta":{"dVol":0,"dBbox":0,"dCom":4.440892098500626e-16},"brepOwn":2.917205616084103e-16}
+{"k":"prism","a":[45,45,45],"step":"PASS","own":"PASS","occtDelta":{"dVol":0,"dBbox":1.7763568394002505e-15,"dCom":2.220446049250313e-16},"brepOwn":1.4586028080420515e-16}
+{"k":"wedge","a":[30,40,50],"step":"PASS","own":"PASS","occtDelta":{"dVol":1.4210854715202004e-16,"dBbox":1.7763568394002505e-15,"dCom":8.881784197001252e-16},"brepOwn":0}
+{"k":"wedge","a":[0,90,0],"step":"PASS","own":"PASS","occtDelta":{"dVol":0,"dBbox":0,"dCom":0},"brepOwn":1.4210854715202004e-16}
+{"k":"wedge","a":[10,20,300],"step":"PASS","own":"PASS","occtDelta":{"dVol":0,"dBbox":0,"dCom":0},"brepOwn":1.4210854715202004e-16}
+{"k":"wedge","a":[45,45,45],"step":"PASS","own":"PASS","occtDelta":{"dVol":0,"dBbox":0,"dCom":0},"brepOwn":0}

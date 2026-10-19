@@ -1,0 +1,12 @@
+# fit_seed1: bun rg3-cost-eval.mjs cost-fit-seed1.json --features=features-fuzz1.json
+records 120; scored 78 (skipped 42: no engine work or no features)
+slow & refused 25 | slow & NOT refused (HOLES) 0 | fast & refused (over-refusal) 42 | fast & built 11
+max cpu of unrefused scored cases: 8.5 s
+# heldout_seed2: bun rg3-cost-eval.mjs cost-heldout-seed2.json --features=features-fuzz2.json
+records 150; scored 101 (skipped 49: no engine work or no features)
+slow & refused 28 | slow & NOT refused (HOLES) 0 | fast & refused (over-refusal) 63 | fast & built 10
+max cpu of unrefused scored cases: 9.1 s
+# round3_cases: bun rg3-cost-eval.mjs cost-r3all.json --features=features-old-corpus.json
+records 88; scored 71 (skipped 17: no engine work or no features)
+slow & refused 8 | slow & NOT refused (HOLES) 0 | fast & refused (over-refusal) 26 | fast & built 37
+max cpu of unrefused scored cases: 16.9 s

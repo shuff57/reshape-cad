@@ -1,0 +1,130 @@
+[
+ {
+  "id": "fzc21-161-boxC-top-cone-45",
+  "src": "const t = box(60, 40, 30); const sk = sketch('top'); sk.polygon([[28.1,14.9],[33.8,14.9],[28.1,17.7]]); groove(sk, t, 45);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc21-161-boxC-top-cone-45",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 71991.63731198397,
+    "com": [
+     -0.0031308393305896944,
+     -0.0014594455016761806,
+     -0.0017366080479431422
+    ],
+    "bbox": [
+     -30,
+     -20,
+     -15,
+     30.000000000000014,
+     20.000000000000007,
+     15.000000000000007
+    ],
+    "faces": 12,
+    "area": 10802.525569528165,
+    "types": {
+     "plane": 10,
+     "cylinder": 1,
+     "cone": 1
+    },
+    "components": {
+     "plane": 10,
+     "cylinder": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 1
+   },
+   "brep": {
+    "refused": "groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it."
+   },
+   "ms": 19,
+   "load": [
+    15.4,
+    15.4
+   ],
+   "cpuMs": 79,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): the ring ends 0.1 mm short of a face of the part, which leaves a wall thinner than 0.25 mm that cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
+     "guard": {
+      "cost": {
+       "tool": "cone",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cone",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 33.8,
+       "nearest": 20,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 60,
+      "width": 40,
+      "height": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_box1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): the ring ends 0.1 mm short of a face of the part, which leaves a wall thinner than 0.25 mm that cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
+    "firstRefusal": "groove1 (groove): the ring ends 0.1 mm short of a face of the part, which leaves a wall thinner than 0.25 mm that cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 111
+ }
+]

@@ -1,0 +1,305 @@
+{
+ "seed": 808,
+ "n": 3000,
+ "modes": [
+  "idx",
+  "par"
+ ],
+ "summary": {
+  "idx": {
+   "cases": 3000,
+   "guardPassed": 2931,
+   "passBut": 0,
+   "refused": 69,
+   "refusedWouldBeWrong": 0,
+   "refusedExact": 0,
+   "refusedNoSolid": 0,
+   "maxPassD": 0,
+   "maxPassCurvedD": 0,
+   "scanned": 3000,
+   "start": 7,
+   "adviceTried": 7,
+   "adviceWorked": 7,
+   "startRawWrong": 7
+  },
+  "par": {
+   "cases": 3000,
+   "guardPassed": 2918,
+   "passBut": 0,
+   "refused": 82,
+   "refusedWouldBeWrong": 0,
+   "refusedExact": 0,
+   "refusedNoSolid": 0,
+   "maxPassD": 0,
+   "maxPassCurvedD": 0,
+   "scanned": 3000,
+   "start": 13,
+   "adviceTried": 13,
+   "adviceWorked": 13,
+   "startRawWrong": 13
+  }
+ },
+ "violations": 0,
+ "rows": [
+  {
+   "mode": "idx",
+   "tag": "idx n7 sc4.8 h7.0",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.09247031185186712
+  },
+  {
+   "mode": "idx",
+   "tag": "idx n6 sc3.7 h4.2",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.14657035058113893
+  },
+  {
+   "mode": "idx",
+   "tag": "idx n7 sc21.2 h78.7",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.12323657417556298
+  },
+  {
+   "mode": "idx",
+   "tag": "idx n6 sc28.2 h-8.2",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.09739247906617872
+  },
+  {
+   "mode": "idx",
+   "tag": "idx n7 sc43.1 h14.9",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.05836969790033714
+  },
+  {
+   "mode": "idx",
+   "tag": "idx n7 sc21.5 h2.7",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.10430228783359691
+  },
+  {
+   "mode": "idx",
+   "tag": "idx n7 sc3.3 h1.4",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.11039631540350754
+  },
+  {
+   "mode": "par",
+   "tag": "par n8 sc24.0 shift3 rev h2.2 xy",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.21533325329310204
+  },
+  {
+   "mode": "par",
+   "tag": "par n8 sc21.7 shift1 rev h124.1 xy",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.0973551320789188
+  },
+  {
+   "mode": "par",
+   "tag": "par n7 sc8.4 shift5 rev h1.5 xy",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.24879604663398353
+  },
+  {
+   "mode": "par",
+   "tag": "par n8 sc11.1 shift3 h97.2 xy",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.08738443922560812
+  },
+  {
+   "mode": "par",
+   "tag": "par n8 sc7.4 shift5 h13.3 xy",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.08811520525576419
+  },
+  {
+   "mode": "par",
+   "tag": "par n8 sc5.7 shift7 rev h27.0 xy",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.10564420244108702
+  },
+  {
+   "mode": "par",
+   "tag": "par n8 sc44.4 shift0 h46.5 xy",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.08567246476662543
+  },
+  {
+   "mode": "par",
+   "tag": "par n8 sc49.7 shift5 h11.6 xy",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.05331127822557334
+  },
+  {
+   "mode": "par",
+   "tag": "par n7 sc22.2 shift3 rev h5.9 xy",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.11359625424273864
+  },
+  {
+   "mode": "par",
+   "tag": "par n7 sc25.8 shift4 rev h143.9 xy",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.11468262796444957
+  },
+  {
+   "mode": "par",
+   "tag": "par n8 sc12.1 shift7 h3.7 xy",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.08046177380604501
+  },
+  {
+   "mode": "par",
+   "tag": "par n7 sc4.9 shift1 h3.1 yz",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.12248322163939905
+  },
+  {
+   "mode": "par",
+   "tag": "par n8 sc10.0 shift5 h1.8 yz",
+   "guard": "start",
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead.",
+   "advice": {
+    "sketch": "second",
+    "corner": 2
+   },
+   "adviceWorked": true,
+   "adviceGuard": null,
+   "rawD": 0.05316126191269178
+  }
+ ]
+}

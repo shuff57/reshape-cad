@@ -1,0 +1,1 @@
+revolution__arc-top-cone-tip-round-90    PASS     occtV 2802.2225 | tr-occt dV 5.8e-5 dBb 2.4e-5 dCom 4.8e-6 F o/b/t 5/5/5 | brep-occt dV 1.2e-11 | FC: occt 1.2e-11 brep 1.6e-16 truck 5.8e-5 dCom 1.8e-4 F 5     | ms 854 cpu 1313

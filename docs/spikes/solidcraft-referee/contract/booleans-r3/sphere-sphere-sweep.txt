@@ -1,0 +1,8 @@
+R15 r12 off 8,0,0    join  faces 5 {"cone":3,"sphere":2} kernel 14 27889ms
+R15 r12 off 8,0,0    cut   faces 5 {"cone":3,"sphere":2} kernel 14 21575ms
+R15 r12 off 10,0,0   join  faces 5 {"cone":3,"sphere":2} kernel 14 27524ms
+R15 r12 off 10,0,0   cut   faces 5 {"cone":3,"sphere":2} kernel 14 42364ms
+R15 r12 off 12,0,0   join  faces 2 {"sphere":2} kernel 14 18230ms
+R15 r12 off 12,0,0   cut   faces 2 {"sphere":2} kernel 14 27201ms
+R15 r12 off 0,10,0   join  faces 4 {"cone":2,"sphere":2} kernel 14 31415ms
+R15 r12 off 0,10,0   cut   faces 4 {"cone":2,"sphere":2} kernel 14 19682ms

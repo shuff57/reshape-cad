@@ -1,0 +1,853 @@
+{
+ "c1": [
+  {
+   "id": "sk-conflict__redundant-width",
+   "kind": "redundant",
+   "withoutFlag": {
+    "status": "refused",
+    "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+    "atCommand": "sketch.dimension",
+    "rule": 11
+   },
+   "withDrivenFlag": {
+    "status": "built",
+    "volume": 6000,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "outcome": "built",
+    "volume": 6000
+   },
+   "freecad": {
+    "bucket": "redundant",
+    "dof": 0,
+    "bbox": null
+   }
+  },
+  {
+   "id": "sk-conflict__redundant-height",
+   "kind": "redundant",
+   "withoutFlag": {
+    "status": "refused",
+    "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+    "atCommand": "sketch.dimension",
+    "rule": 11
+   },
+   "withDrivenFlag": {
+    "status": "built",
+    "volume": 6000,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "outcome": "built",
+    "volume": 6000
+   },
+   "freecad": {
+    "bucket": "redundant",
+    "dof": 0,
+    "bbox": null
+   }
+  },
+  {
+   "id": "sk-circle-arc-tangent__slot-extra-radius",
+   "kind": "redundant",
+   "withoutFlag": {
+    "status": "refused",
+    "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (RadialDimension), k12 (Equal); add it as a driven (reference) dimension with driven: true",
+    "atCommand": "sketch.dimension",
+    "rule": 13
+   },
+   "withDrivenFlag": {
+    "status": "built",
+    "volume": 4730.79333,
+    "bbox": [
+     -6,
+     0,
+     0,
+     36,
+     12,
+     10
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "outcome": "refused",
+    "refusal": "extrude e1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"
+   },
+   "freecad": {
+    "bucket": "redundant",
+    "dof": 0,
+    "bbox": null
+   }
+  },
+  {
+   "id": "sk-conflict__redundant-perpendicular",
+   "kind": "redundant",
+   "withoutFlag": {
+    "status": "built",
+    "volume": 6000,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "withDrivenFlag": {
+    "status": "built",
+    "volume": 6000,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "outcome": "built",
+    "volume": 6000
+   },
+   "freecad": {
+    "bucket": "redundant",
+    "dof": 0,
+    "bbox": null
+   }
+  },
+  {
+   "id": "legacy-R1-opposite-length-implied",
+   "kind": "redundant",
+   "withoutFlag": {
+    "status": "refused",
+    "sentence": "invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (Coincident), k3 (Coincident), k4 (Coincident), k5 (Coincident), k7 (Vertical), k9 (Vertical), k10 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+    "atCommand": "sketch.dimension",
+    "rule": 11
+   },
+   "withDrivenFlag": {
+    "status": "built",
+    "volume": 10000,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     10
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "outcome": "built",
+    "volume": 10000
+   },
+   "freecad": null
+  },
+  {
+   "id": "sk-conflict__width-30-vs-35",
+   "kind": "conflicting",
+   "withoutFlag": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k10, k12)",
+    "atCommand": "sketch.dimension",
+    "rule": 11
+   },
+   "withDrivenFlag": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k10, k12)",
+    "atCommand": "sketch.dimension",
+    "rule": 11
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "outcome": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "freecad": {
+    "bucket": "conflicting",
+    "dof": -1,
+    "bbox": null
+   }
+  },
+  {
+   "id": "sk-conflict__radius-vs-diameter",
+   "kind": "conflicting",
+   "withoutFlag": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k2, k3)",
+    "atCommand": "sketch.dimension",
+    "rule": 2
+   },
+   "withDrivenFlag": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k2, k3)",
+    "atCommand": "sketch.dimension",
+    "rule": 2
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "outcome": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "freecad": {
+    "bucket": "conflicting",
+    "dof": -1,
+    "bbox": null
+   }
+  },
+  {
+   "id": "sk-conflict__equal-vs-two-radii",
+   "kind": "conflicting",
+   "withoutFlag": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k3, k4, k5)",
+    "atCommand": "sketch.dimension",
+    "rule": 4
+   },
+   "withDrivenFlag": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k3, k4, k5)",
+    "atCommand": "sketch.dimension",
+    "rule": 4
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "outcome": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "freecad": {
+    "bucket": "conflicting",
+    "dof": -1,
+    "bbox": null
+   }
+  },
+  {
+   "id": "legacy-X1-two-lengths-one-edge",
+   "kind": "conflicting",
+   "withoutFlag": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k10, k11)",
+    "atCommand": "sketch.dimension",
+    "rule": 10
+   },
+   "withDrivenFlag": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k10, k11)",
+    "atCommand": "sketch.dimension",
+    "rule": 10
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "outcome": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "freecad": null
+  },
+  {
+   "id": "legacy-X2-opposite-sides-different-lengths",
+   "kind": "conflicting",
+   "withoutFlag": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k7, k9, k10, k11)",
+    "atCommand": "sketch.dimension",
+    "rule": 10
+   },
+   "withDrivenFlag": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k2, k3, k4, k5, k7, k9, k10, k11)",
+    "atCommand": "sketch.dimension",
+    "rule": 10
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "outcome": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "freecad": null
+  },
+  {
+   "id": "legacy-X3-equal-vs-two-lengths",
+   "kind": "conflicting",
+   "withoutFlag": {
+    "status": "refused",
+    "sentence": "invalid parameters for `sketch.constraint.equal`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+    "atCommand": "sketch.constraint.equal",
+    "rule": 11
+   },
+   "withDrivenFlag": {
+    "status": "refused",
+    "sentence": "invalid parameters for `sketch.constraint.equal`: that conflicts with the sketch: neither entity can move to satisfy it (they are fixed or fully constrained)",
+    "atCommand": "sketch.constraint.equal",
+    "rule": 11
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "outcome": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "freecad": null
+  },
+  {
+   "id": "legacy-X5-three-lengths-one-edge",
+   "kind": "conflicting",
+   "withoutFlag": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k5, k6)",
+    "atCommand": "sketch.dimension",
+    "rule": 5
+   },
+   "withDrivenFlag": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k5, k6)",
+    "atCommand": "sketch.dimension",
+    "rule": 5
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "outcome": "refused",
+    "refusal": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "freecad": null
+  }
+ ],
+ "c2": [
+  {
+   "id": "R-perpendicular-implied-by-hv",
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 0,
+    "redundantIds": [
+     "k12"
+    ],
+    "redundantRuleIdx": [
+     11
+    ],
+    "addedRuleIdx": [
+     11
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "dof": 0,
+    "open": null
+   },
+   "indep": {
+    "consistent": true,
+    "dependentRows": 1,
+    "dof": 0
+   }
+  },
+  {
+   "id": "R-horizontal-twice",
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 0,
+    "redundantIds": [
+     "k12"
+    ],
+    "redundantRuleIdx": [
+     11
+    ],
+    "addedRuleIdx": [
+     11
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "dof": 0,
+    "open": null
+   },
+   "indep": {
+    "consistent": true,
+    "dependentRows": 1,
+    "dof": 0
+   }
+  },
+  {
+   "id": "R-vertical-twice",
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 0,
+    "redundantIds": [
+     "k12"
+    ],
+    "redundantRuleIdx": [
+     11
+    ],
+    "addedRuleIdx": [
+     11
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "dof": 0,
+    "open": null
+   },
+   "indep": {
+    "consistent": true,
+    "dependentRows": 1,
+    "dof": 0
+   }
+  },
+  {
+   "id": "R-parallel-implied",
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 0,
+    "redundantIds": [
+     "k12"
+    ],
+    "redundantRuleIdx": [
+     11
+    ],
+    "addedRuleIdx": [
+     11
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "dof": 0,
+    "open": null
+   },
+   "indep": {
+    "consistent": true,
+    "dependentRows": 1,
+    "dof": 0
+   }
+  },
+  {
+   "id": "R-equal-implied-by-lengths",
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 0,
+    "redundantIds": [
+     "k12"
+    ],
+    "redundantRuleIdx": [
+     11
+    ],
+    "addedRuleIdx": [
+     11
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "dof": 0,
+    "open": null
+   },
+   "indep": {
+    "consistent": true,
+    "dependentRows": 1,
+    "dof": 0
+   }
+  },
+  {
+   "id": "R-equal-twice",
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 0,
+    "redundantIds": [
+     "k12",
+     "k13"
+    ],
+    "redundantRuleIdx": [
+     11,
+     12
+    ],
+    "addedRuleIdx": [
+     11,
+     12
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "dof": 0,
+    "open": null
+   },
+   "indep": {
+    "consistent": true,
+    "dependentRows": 2,
+    "dof": 0
+   }
+  },
+  {
+   "id": "R-duplicate-coincident",
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 0,
+    "redundantIds": [],
+    "redundantRuleIdx": [],
+    "addedRuleIdx": [
+     11
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "dof": 0,
+    "open": null
+   },
+   "indep": {
+    "consistent": true,
+    "dependentRows": 2,
+    "dof": 0
+   }
+  },
+  {
+   "id": "R-origin-coincident-twice",
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 0,
+    "redundantIds": [],
+    "redundantRuleIdx": [],
+    "addedRuleIdx": [
+     11
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "dof": 0,
+    "open": null
+   },
+   "indep": {
+    "consistent": true,
+    "dependentRows": 2,
+    "dof": 0
+   }
+  },
+  {
+   "id": "R-lock-then-origin-coincident",
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 0,
+    "redundantIds": [],
+    "redundantRuleIdx": [],
+    "addedRuleIdx": [
+     11
+    ]
+   },
+   "brep": {
+    "bucket": "redundant",
+    "dof": 0,
+    "open": null
+   },
+   "indep": {
+    "consistent": true,
+    "dependentRows": 2,
+    "dof": 0
+   }
+  }
+ ],
+ "c3": [
+  {
+   "id": "ref-length-on-D3(dof2)",
+   "expectDof": 2,
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 2,
+    "failing": [],
+    "redundant": []
+   },
+   "scBuild": {
+    "status": "built",
+    "volume": 12000,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brep": {
+    "bucket": "consistent",
+    "dof": 2
+   },
+   "brepBuild": 12000,
+   "indep": {
+    "consistent": true,
+    "dof": 1,
+    "dofIfReferenceRowsAreDropped": 2
+   },
+   "notes": []
+  },
+  {
+   "id": "driving-length-on-D3(dof1)",
+   "expectDof": 1,
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 1,
+    "failing": [],
+    "redundant": []
+   },
+   "scBuild": {
+    "status": "built",
+    "volume": 12000,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brep": {
+    "bucket": "consistent",
+    "dof": 1
+   },
+   "brepBuild": 12000,
+   "indep": {
+    "consistent": true,
+    "dof": 1,
+    "dofIfReferenceRowsAreDropped": 1
+   },
+   "notes": []
+  },
+  {
+   "id": "ref-length-that-DISAGREES-with-drawn(40 vs 55)",
+   "expectDof": 2,
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 2,
+    "failing": [],
+    "redundant": []
+   },
+   "scBuild": {
+    "status": "built",
+    "volume": 12000,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brep": {
+    "bucket": "consistent",
+    "dof": 2
+   },
+   "brepBuild": 12000,
+   "indep": {
+    "consistent": true,
+    "dof": 1,
+    "dofIfReferenceRowsAreDropped": 2
+   },
+   "notes": []
+  },
+  {
+   "id": "inactive-conflicting-length",
+   "expectDof": 1,
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 1,
+    "failing": [],
+    "redundant": []
+   },
+   "scBuild": {
+    "status": "built",
+    "volume": 12000,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brep": {
+    "bucket": "consistent",
+    "dof": 1
+   },
+   "brepBuild": 12000,
+   "indep": {
+    "consistent": true,
+    "dof": 1,
+    "dofIfReferenceRowsAreDropped": 1
+   },
+   "notes": [
+    "rule 10 (distance) is inactive: skipped, as brep-rs drops it from the solve, the diagnosis and the profile"
+   ]
+  },
+  {
+   "id": "active-conflicting-length(control)",
+   "expectDof": "conflict",
+   "sc": {
+    "errs": [
+     "sketch.dimension: that would over-constrain the sketch (conflicts with k10, k11)"
+    ],
+    "status": "solved",
+    "dof": 1,
+    "failing": [],
+    "redundant": []
+   },
+   "scBuild": {
+    "status": "refused",
+    "sentence": "that would over-constrain the sketch (conflicts with k10, k11)",
+    "atCommand": "sketch.dimension",
+    "rule": 10
+   },
+   "brep": {
+    "bucket": "conflicting",
+    "dof": 1
+   },
+   "brepBuild": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first",
+   "indep": {
+    "consistent": false,
+    "dof": 1,
+    "dofIfReferenceRowsAreDropped": 1
+   },
+   "notes": []
+  },
+  {
+   "id": "inactive-perpendicular-and-parallel-conflict",
+   "expectDof": 2,
+   "sc": {
+    "errs": [],
+    "status": "solved",
+    "dof": 2,
+    "failing": [],
+    "redundant": []
+   },
+   "scBuild": {
+    "status": "built",
+    "volume": 12000,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brep": {
+    "bucket": "consistent",
+    "dof": 2
+   },
+   "brepBuild": 12000,
+   "indep": {
+    "consistent": true,
+    "dof": 2,
+    "dofIfReferenceRowsAreDropped": 2
+   },
+   "notes": [
+    "rule 9 (parallel) is inactive: skipped, as brep-rs drops it from the solve, the diagnosis and the profile"
+   ]
+  }
+ ],
+ "c4": [
+  {
+   "v": 40,
+   "closed": 12000,
+   "sc": 12000,
+   "scRel": 0,
+   "brep": 12000
+  },
+  {
+   "v": 30,
+   "closed": 9000,
+   "sc": 9000,
+   "scRel": 0,
+   "brep": 9000
+  },
+  {
+   "v": 20,
+   "closed": 6000,
+   "sc": 6000,
+   "scRel": 0,
+   "brep": 6000
+  },
+  {
+   "v": 12,
+   "closed": 3600,
+   "sc": 3600,
+   "scRel": 0,
+   "brep": 3600
+  },
+  {
+   "v": 10.5,
+   "closed": 3150,
+   "sc": 3150,
+   "scRel": 0,
+   "brep": 3150
+  },
+  {
+   "v": 10,
+   "closed": 3000,
+   "sc": 3000,
+   "scRel": 0,
+   "brep": 3000
+  },
+  {
+   "v": 9.9,
+   "closed": 2970,
+   "sc": 2970,
+   "scRel": 0,
+   "brep": "extrude e1: the outline collapsed while solving: 1200.0000 square mm of area became 297.0000"
+  },
+  {
+   "v": 8,
+   "closed": 2400,
+   "sc": 2400,
+   "scRel": 0,
+   "brep": "extrude e1: the outline collapsed while solving: 1200.0000 square mm of area became 240.0000"
+  },
+  {
+   "v": 5,
+   "closed": 1500,
+   "sc": 1500,
+   "scRel": 0,
+   "brep": "extrude e1: the outline collapsed while solving: 1200.0000 square mm of area became 150.0000"
+  },
+  {
+   "v": 2,
+   "closed": 600,
+   "sc": 600,
+   "scRel": 0,
+   "brep": "extrude e1: the outline collapsed while solving: 1200.0000 square mm of area became 60.0000"
+  },
+  {
+   "v": 1,
+   "closed": 300,
+   "sc": 300,
+   "scRel": 0,
+   "brep": "extrude e1: the outline collapsed while solving: 1200.0000 square mm of area became 30.0000"
+  }
+ ]
+}

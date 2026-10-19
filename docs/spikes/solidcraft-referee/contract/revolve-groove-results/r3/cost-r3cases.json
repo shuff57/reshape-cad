@@ -1,0 +1,3134 @@
+[
+ {
+  "id": "R3-datum-groove-top-lift-360",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const p = plane('top', 4); const g = sketch(p); g.polygon([[18,10],[20,10],[20,15],[18,15]]); groove(g, cyl, 360);",
+  "tag": null,
+  "wallS": 10.6,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 36500.974614426974,
+  "faces": 7,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 4
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.00000000000002,
+   -20.000000000000018,
+   0,
+   20.000000000000004,
+   20.000000000000004,
+   30.000000000000014
+  ],
+  "ms": 10536,
+  "cpuMs": 10934,
+  "load": 4.27,
+  "wallTotalMs": 10540,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": true,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 20,
+   "nearest": 20,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-datum-groove-top-lift-180",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const p = plane('top', 4); const g = sketch(p); g.polygon([[18,10],[20,10],[20,15],[18,15]]); groove(g, cyl, 180);",
+  "tag": null,
+  "wallS": 53.3,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 37097.953576284795,
+  "faces": 8,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 6
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20.000000000000018,
+   0,
+   20.000000000000014,
+   20.000000000000004,
+   30.000000000000014
+  ],
+  "ms": 53272,
+  "cpuMs": 53668,
+  "load": 4.41,
+  "wallTotalMs": 53275,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": true,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 20,
+   "nearest": 20,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-datum-groove-top-lift-90",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const p = plane('top', 4); const g = sketch(p); g.polygon([[18,10],[20,10],[20,15],[18,15]]); groove(g, cyl, 90);",
+  "tag": null,
+  "wallS": 27.3,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 37396.435458841595,
+  "faces": 8,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 6
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20.000000000000018,
+   -6.661338147750939e-15,
+   20.000000000000004,
+   20,
+   30.000000000000014
+  ],
+  "ms": 27199,
+  "cpuMs": 27625,
+  "load": 4.55,
+  "wallTotalMs": 27202,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": true,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 20,
+   "nearest": 20,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-datum-groove-box-front-360",
+  "src": "const b = box(40, 40, 20); const p = plane('front', 3); const g = sketch(p); g.rect(6, 8, { at: [14, 0] }); groove(g, b, 360);",
+  "tag": null,
+  "wallS": 1.7,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 29834.594489985335,
+  "faces": 16,
+  "faceTypes": {
+   "cylinder": 6,
+   "plane": 10
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20,
+   -10.000000000000002,
+   20,
+   20,
+   10.000000000000007
+  ],
+  "ms": 1617,
+  "cpuMs": 1865,
+  "load": 4.5,
+  "wallTotalMs": 1621,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 17,
+   "nearest": 10,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-datum-groove-box-front-90",
+  "src": "const b = box(40, 40, 20); const p = plane('front', 3); const g = sketch(p); g.rect(6, 8, { at: [14, 0] }); groove(g, b, 90);",
+  "tag": null,
+  "wallS": 0.5,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 31458.657244665763,
+  "faces": 11,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 9
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20,
+   -10,
+   20,
+   20,
+   10
+  ],
+  "ms": 452,
+  "cpuMs": 634,
+  "load": 4.5,
+  "wallTotalMs": 457,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 17,
+   "nearest": 10,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-datum-groove-box-top-90",
+  "src": "const b = box(40, 40, 20); const p = plane('top', 4); const g = sketch(p); g.rect(6, 8, { at: [14, 0] }); groove(g, b, 90);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 13,
+  "cpuMs": 42,
+  "load": 4.5,
+  "wallTotalMs": 17,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": false,
+   "rOuter": 17,
+   "nearest": 20,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-ground-front-360",
+  "src": "const s0 = sketch('top', 0); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('front'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 360);",
+  "tag": null,
+  "wallS": 1.2,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 29009.455831408806,
+  "faces": 10,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20,
+   0,
+   20,
+   20,
+   20
+  ],
+  "ms": 1098,
+  "cpuMs": 1367,
+  "load": 4.5,
+  "wallTotalMs": 1102,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": 17,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-ground-front-360-lift1",
+  "src": "const s0 = sketch('top', 1); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('front'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 360);",
+  "tag": null,
+  "wallS": 1.1,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 29234.272037416024,
+  "faces": 10,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20,
+   0.9999998319988765,
+   20,
+   20,
+   21
+  ],
+  "ms": 1003,
+  "cpuMs": 1259,
+  "load": 4.5,
+  "wallTotalMs": 1008,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 1,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-ground-front-270",
+  "src": "const s0 = sketch('top', 0); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('front'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 270);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 19,
+  "cpuMs": 55,
+  "load": 4.5,
+  "wallTotalMs": 23,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-ground-front-270-lift1",
+  "src": "const s0 = sketch('top', 1); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('front'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 270);",
+  "tag": null,
+  "wallS": 0.6,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 30616.984110700825,
+  "faces": 11,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 9
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20,
+   0.9999999391930494,
+   20,
+   20,
+   21
+  ],
+  "ms": 566,
+  "cpuMs": 821,
+  "load": 4.54,
+  "wallTotalMs": 571,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 1,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-ground-front-180",
+  "src": "const s0 = sketch('top', 0); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('front'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 180);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 18,
+  "cpuMs": 55,
+  "load": 4.54,
+  "wallTotalMs": 23,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-ground-front-180-lift1",
+  "src": "const s0 = sketch('top', 1); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('front'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 180);",
+  "tag": null,
+  "wallS": 0.2,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring does not cut the part (it misses it, or turns away from it), so there is nothing to remove.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 123,
+  "cpuMs": 305,
+  "load": 4.54,
+  "wallTotalMs": 128,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 1,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-ground-front-90",
+  "src": "const s0 = sketch('top', 0); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('front'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 90);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 15,
+  "cpuMs": 55,
+  "load": 4.54,
+  "wallTotalMs": 19,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-ground-front-90-lift1",
+  "src": "const s0 = sketch('top', 1); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('front'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 90);",
+  "tag": null,
+  "wallS": 0.2,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring does not cut the part (it misses it, or turns away from it), so there is nothing to remove.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 80,
+  "cpuMs": 245,
+  "load": 4.54,
+  "wallTotalMs": 85,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 1,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-ground-side-360",
+  "src": "const s0 = sketch('top', 0); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('side'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 360);",
+  "tag": null,
+  "wallS": 1.2,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 29009.268944981504,
+  "faces": 10,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20,
+   -2.2635022522976556e-8,
+   20,
+   20,
+   20
+  ],
+  "ms": 1078,
+  "cpuMs": 1346,
+  "load": 4.54,
+  "wallTotalMs": 1083,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": 17,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-ground-side-360-lift1",
+  "src": "const s0 = sketch('top', 1); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('side'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 360);",
+  "tag": null,
+  "wallS": 1,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 29234.27203413358,
+  "faces": 10,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20,
+   0.9999998319988777,
+   20,
+   20,
+   21
+  ],
+  "ms": 964,
+  "cpuMs": 1225,
+  "load": 4.54,
+  "wallTotalMs": 970,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 1,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-ground-side-270",
+  "src": "const s0 = sketch('top', 0); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('side'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 270);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 18,
+  "cpuMs": 54,
+  "load": 4.54,
+  "wallTotalMs": 23,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-ground-side-270-lift1",
+  "src": "const s0 = sketch('top', 1); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('side'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 270);",
+  "tag": null,
+  "wallS": 1,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 29233.968220921113,
+  "faces": 10,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20,
+   0.9999999391930467,
+   20,
+   20,
+   21
+  ],
+  "ms": 924,
+  "cpuMs": 1178,
+  "load": 4.54,
+  "wallTotalMs": 928,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 1,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-ground-side-180",
+  "src": "const s0 = sketch('top', 0); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('side'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 180);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 17,
+  "cpuMs": 54,
+  "load": 4.54,
+  "wallTotalMs": 22,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-ground-side-180-lift1",
+  "src": "const s0 = sketch('top', 1); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('side'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 180);",
+  "tag": null,
+  "wallS": 1,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 29234.14040339857,
+  "faces": 10,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20,
+   0.999999999999992,
+   20,
+   20,
+   21
+  ],
+  "ms": 945,
+  "cpuMs": 1207,
+  "load": 4.5,
+  "wallTotalMs": 951,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 1,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-ground-side-90",
+  "src": "const s0 = sketch('top', 0); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('side'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 90);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 17,
+  "cpuMs": 53,
+  "load": 4.5,
+  "wallTotalMs": 22,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-ground-side-90-lift1",
+  "src": "const s0 = sketch('top', 1); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('side'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 90);",
+  "tag": null,
+  "wallS": 0.6,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 30617.028846715344,
+  "faces": 11,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 9
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20,
+   0.9999999242527182,
+   20,
+   20,
+   21
+  ],
+  "ms": 509,
+  "cpuMs": 756,
+  "load": 4.5,
+  "wallTotalMs": 515,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 1,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-crit-gn-box-front-off-5-300",
+  "src": "const s1 = sketch('top'); s1.rect(60, 60, { at: [0, 0] }); const b = extrude(s1, 40); const sk = sketch('front', -5); sk.rect(7, 18, { at: [8.5, 17] }); groove(sk, b, 300);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 16,
+  "cpuMs": 54,
+  "load": 4.5,
+  "wallTotalMs": 20,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-crit-gn-box-yz-off4-270",
+  "src": "const s1 = sketch('top'); s1.rect(60, 60, { at: [0, 0] }); const b = extrude(s1, 40); const sk = sketch('side', 4); sk.rect(7, 18, { at: [8.5, 17] }); groove(sk, b, 270);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 17,
+  "cpuMs": 56,
+  "load": 4.5,
+  "wallTotalMs": 23,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-ground-front-360-nudge-offset-3",
+  "src": "const s0 = sketch('top', 0); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('front', 3); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 360);",
+  "tag": null,
+  "wallS": 1.2,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 29009.455831362735,
+  "faces": 10,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20,
+   0,
+   20,
+   20,
+   20
+  ],
+  "ms": 1087,
+  "cpuMs": 1360,
+  "load": 4.5,
+  "wallTotalMs": 1092,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": 17,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-ground-hang-below-360",
+  "src": "const s0 = sketch('top', -20); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('front'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 360);",
+  "tag": null,
+  "wallS": 1.3,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 29009.268944981504,
+  "faces": 10,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20,
+   -20,
+   20,
+   20,
+   2.2635022522976556e-8
+  ],
+  "ms": 1270,
+  "cpuMs": 1555,
+  "load": 4.5,
+  "wallTotalMs": 1276,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": 17,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-ground-hang-below-90",
+  "src": "const s0 = sketch('top', -20); s0.rect(40, 40, { at: [0, 0] }); const bx = extrude(s0, 20); const sk2 = sketch('front'); sk2.rect(7, 16, { at: [8.5, 6] }); groove(sk2, bx, 90);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring starts in the flat plane z = 0, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 19,
+  "cpuMs": 56,
+  "load": 4.5,
+  "wallTotalMs": 24,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-box-circle-d6p7-360",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.circle(6.7, { at: [27.6, 0.5] }); groove(sk, b, 360);",
+  "tag": null,
+  "wallS": 120.1,
+  "status": "TIMEOUT",
+  "timeoutS": 120,
+  "stderr": ""
+ },
+ {
+  "id": "R3-box-cone-tri-360",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.polygon([[21.7, 2], [33.3, 2], [21.7, 6.8]]); groove(sk, b, 360);",
+  "tag": null,
+  "wallS": 20.1,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 70066.44927149273,
+  "faces": 12,
+  "faceTypes": {
+   "cone": 2,
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.00000023405401,
+   -15.000134151837557,
+   0,
+   40,
+   25.00331918323756,
+   30
+  ],
+  "ms": 20059,
+  "cpuMs": 20358,
+  "load": 4.81,
+  "wallTotalMs": 20064,
+  "cost": {
+   "tool": "cone",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cone",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 33.3,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-trapezoid-360",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.polygon([[20, 4], [28, 4], [26, 12], [20, 12]]); groove(sk, b, 360);",
+  "tag": null,
+  "wallS": 19.9,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 67623.73366327531,
+  "faces": 12,
+  "faceTypes": {
+   "cone": 2,
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.00000044712676,
+   -15.000083807773436,
+   0,
+   40,
+   25.00000000000005,
+   30
+  ],
+  "ms": 19814,
+  "cpuMs": 20169,
+  "load": 4.81,
+  "wallTotalMs": 19818,
+  "cost": {
+   "tool": "cone",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cone",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 28,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-round-corner-360",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.polygon([[20,4],[28,4],[28,14],[20,14]]); sk.round(2, 3); groove(sk, b, 360);",
+  "tag": null,
+  "wallS": 97.2,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 66057.81776264521,
+  "faces": 13,
+  "faceTypes": {
+   "cylinder": 4,
+   "other": 1,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.000000204102097,
+   -15.000000088286686,
+   0,
+   40,
+   25.000000981522962,
+   30
+  ],
+  "ms": 97081,
+  "cpuMs": 97345,
+  "load": 4.56,
+  "wallTotalMs": 97088,
+  "cost": {
+   "tool": "torus",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "torus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 28,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-flat-360",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.polygon([[20,4],[28,4],[28,14],[20,14]]); groove(sk, b, 360);",
+  "tag": null,
+  "wallS": 16.6,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 65943.45649570273,
+  "faces": 12,
+  "faceTypes": {
+   "cylinder": 4,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.000000000005663,
+   -15.000000000000478,
+   0,
+   40,
+   25,
+   30
+  ],
+  "ms": 16519,
+  "cpuMs": 16873,
+  "load": 4.51,
+  "wallTotalMs": 16524,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 28,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-circle-d6p7-180",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.circle(6.7, { at: [27.6, 0.5] }); groove(sk, b, 180);",
+  "tag": null,
+  "wallS": 113.4,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 71092.7895601399,
+  "faces": 9,
+  "faceTypes": {
+   "other": 1,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.000001022558397,
+   -15,
+   -1.0426997000453978e-7,
+   40,
+   25.002074334238266,
+   30
+  ],
+  "ms": 113307,
+  "cpuMs": 113469,
+  "load": 4.34,
+  "wallTotalMs": 113311,
+  "cost": {
+   "tool": "torus",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "torus"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 30.950000000000003,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-cone-tri-180",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.polygon([[21.7, 2], [33.3, 2], [21.7, 6.8]]); groove(sk, b, 180);",
+  "tag": null,
+  "wallS": 10,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 70567.9116130769,
+  "faces": 10,
+  "faceTypes": {
+   "cone": 1,
+   "cylinder": 1,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.000000295387505,
+   -15,
+   0,
+   40,
+   25.003320082289015,
+   30
+  ],
+  "ms": 9883,
+  "cpuMs": 10153,
+  "load": 4.37,
+  "wallTotalMs": 9888,
+  "cost": {
+   "tool": "cone",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cone",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 33.3,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-trapezoid-180",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.polygon([[20, 4], [28, 4], [26, 12], [20, 12]]); groove(sk, b, 180);",
+  "tag": null,
+  "wallS": 14.2,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 68787.22054707819,
+  "faces": 14,
+  "faceTypes": {
+   "cone": 2,
+   "cylinder": 2,
+   "plane": 10
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.00000072185479,
+   -15,
+   0,
+   40,
+   25,
+   30
+  ],
+  "ms": 14074,
+  "cpuMs": 14409,
+  "load": 4.28,
+  "wallTotalMs": 14079,
+  "cost": {
+   "tool": "cone",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cone",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 28,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-round-corner-180",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.polygon([[20,4],[28,4],[28,14],[20,14]]); sk.round(2, 3); groove(sk, b, 180);",
+  "tag": null,
+  "wallS": 62.1,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 67640.02653975716,
+  "faces": 16,
+  "faceTypes": {
+   "cylinder": 5,
+   "other": 1,
+   "plane": 10
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.000000162450846,
+   -15,
+   0,
+   40,
+   25.00713093996049,
+   30
+  ],
+  "ms": 61969,
+  "cpuMs": 62279,
+  "load": 4.37,
+  "wallTotalMs": 61972,
+  "cost": {
+   "tool": "torus",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "torus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 28,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-flat-180",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.polygon([[20,4],[28,4],[28,14],[20,14]]); groove(sk, b, 180);",
+  "tag": null,
+  "wallS": 10.9,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 67556.98815198285,
+  "faces": 13,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 10
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -15,
+   0,
+   40,
+   25,
+   30
+  ],
+  "ms": 10862,
+  "cpuMs": 11192,
+  "load": 4.31,
+  "wallTotalMs": 10866,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 28,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-circle-d6p7-90",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.circle(6.7, { at: [27.6, 0.5] }); groove(sk, b, 90);",
+  "tag": null,
+  "wallS": 56,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 71327.11597856892,
+  "faces": 9,
+  "faceTypes": {
+   "other": 1,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -15,
+   -1.1003531719236166e-12,
+   40,
+   25.000049850760714,
+   30
+  ],
+  "ms": 55913,
+  "cpuMs": 56196,
+  "load": 4.13,
+  "wallTotalMs": 55917,
+  "cost": {
+   "tool": "torus",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "torus"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 30.950000000000003,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-cone-tri-90",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.polygon([[21.7, 2], [33.3, 2], [21.7, 6.8]]); groove(sk, b, 90);",
+  "tag": null,
+  "wallS": 5.6,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 71049.03841716533,
+  "faces": 11,
+  "faceTypes": {
+   "cone": 1,
+   "cylinder": 1,
+   "plane": 9
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -15,
+   0,
+   40,
+   25.000000000000018,
+   30
+  ],
+  "ms": 5515,
+  "cpuMs": 5752,
+  "load": 4.04,
+  "wallTotalMs": 5520,
+  "cost": {
+   "tool": "cone",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cone",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 33.3,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-trapezoid-90",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.polygon([[20, 4], [28, 4], [26, 12], [20, 12]]); groove(sk, b, 90);",
+  "tag": null,
+  "wallS": 1.3,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 70044.22725810885,
+  "faces": 12,
+  "faceTypes": {
+   "cone": 1,
+   "cylinder": 1,
+   "plane": 10
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -15,
+   0,
+   40,
+   25.000000168698786,
+   30
+  ],
+  "ms": 1177,
+  "cpuMs": 1414,
+  "load": 4.12,
+  "wallTotalMs": 1181,
+  "cost": {
+   "tool": "cone",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cone",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 28,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-round-corner-90",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.polygon([[20,4],[28,4],[28,14],[20,14]]); sk.round(2, 3); groove(sk, b, 90);",
+  "tag": null,
+  "wallS": 15.2,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 69300.194655021,
+  "faces": 13,
+  "faceTypes": {
+   "cylinder": 2,
+   "other": 1,
+   "plane": 10
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -15,
+   0,
+   40,
+   25.004764189784602,
+   30
+  ],
+  "ms": 15096,
+  "cpuMs": 15465,
+  "load": 4.25,
+  "wallTotalMs": 15101,
+  "cost": {
+   "tool": "torus",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "torus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 28,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-box-flat-90",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [10, 5] }); const b = extrude(k, 30); const sk = sketch('top'); sk.polygon([[20,4],[28,4],[28,14],[20,14]]); groove(sk, b, 90);",
+  "tag": null,
+  "wallS": 0.7,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 69239.16593368423,
+  "faces": 12,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 10
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -15,
+   0,
+   40,
+   25,
+   30
+  ],
+  "ms": 575,
+  "cpuMs": 794,
+  "load": 4.25,
+  "wallTotalMs": 579,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 28,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt15-post-360",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.258819, 0.965926] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, cyl, 360);",
+  "tag": null,
+  "wallS": 9.1,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 36974.220591399324,
+  "faces": 8,
+  "faceTypes": {
+   "cylinder": 4,
+   "plane": 4
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20.000000000000018,
+   -0.000038579049889797545,
+   20,
+   20,
+   30.000000000000014
+  ],
+  "ms": 9020,
+  "cpuMs": 9413,
+  "load": 4.22,
+  "wallTotalMs": 9024,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": false,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": null,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt15-box-360",
+  "src": "const b = box(60, 40, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.258819, 0.965926] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, b, 360);",
+  "tag": null,
+  "wallS": 0.4,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 70586.52673715955,
+  "faces": 10,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -30,
+   -20,
+   -15,
+   30,
+   20,
+   15
+  ],
+  "ms": 343,
+  "cpuMs": 597,
+  "load": 4.22,
+  "wallTotalMs": 346,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": false,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": null,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt15-post-90",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.258819, 0.965926] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, cyl, 90);",
+  "tag": null,
+  "wallS": 3.1,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 37350.17321121092,
+  "faces": 9,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 6
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20.000000000000018,
+   -0.00000489914366585964,
+   20,
+   20,
+   30.000000000000014
+  ],
+  "ms": 3010,
+  "cpuMs": 3375,
+  "load": 4.22,
+  "wallTotalMs": 3013,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": false,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": null,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt15-box-90",
+  "src": "const b = box(60, 40, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.258819, 0.965926] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, b, 90);",
+  "tag": null,
+  "wallS": 0.3,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 71646.60515399782,
+  "faces": 12,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 10
+  },
+  "bodies": 1,
+  "bbox": [
+   -30,
+   -20,
+   -15,
+   30,
+   20,
+   15
+  ],
+  "ms": 174,
+  "cpuMs": 389,
+  "load": 4.22,
+  "wallTotalMs": 178,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": false,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": null,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt30-post-360",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.500000, 0.866025] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, cyl, 360);",
+  "tag": null,
+  "wallS": 24.3,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 36954.706877873425,
+  "faces": 7,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 4
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20.000000000000018,
+   -2.6745285897078475e-7,
+   20,
+   20,
+   30.000000000000014
+  ],
+  "ms": 24228,
+  "cpuMs": 24574,
+  "load": 4.58,
+  "wallTotalMs": 24232,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": false,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": null,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt30-box-360",
+  "src": "const b = box(60, 40, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.500000, 0.866025] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, b, 360);",
+  "tag": null,
+  "wallS": 0.4,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 70586.52673715955,
+  "faces": 10,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -30,
+   -20,
+   -15,
+   30,
+   20,
+   15
+  ],
+  "ms": 364,
+  "cpuMs": 619,
+  "load": 4.58,
+  "wallTotalMs": 369,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": false,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": null,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt30-post-90",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.500000, 0.866025] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, cyl, 90);",
+  "tag": null,
+  "wallS": 6.8,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 37357.70609253799,
+  "faces": 9,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 6
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20.000000000000018,
+   -0.000027698687456778615,
+   20,
+   20,
+   30.000000000000014
+  ],
+  "ms": 6684,
+  "cpuMs": 7069,
+  "load": 4.65,
+  "wallTotalMs": 6688,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": false,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": null,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt30-box-90",
+  "src": "const b = box(60, 40, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.500000, 0.866025] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, b, 90);",
+  "tag": null,
+  "wallS": 0.2,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 71646.60515399782,
+  "faces": 12,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 10
+  },
+  "bodies": 1,
+  "bbox": [
+   -30,
+   -20,
+   -15,
+   30,
+   20,
+   15
+  ],
+  "ms": 167,
+  "cpuMs": 403,
+  "load": 4.65,
+  "wallTotalMs": 171,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": false,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": null,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt45-post-360",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.707107, 0.707107] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, cyl, 360);",
+  "tag": null,
+  "wallS": 41.6,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 36924.20157889359,
+  "faces": 7,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 4
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20.000000000000018,
+   -5.015841782474162e-7,
+   20,
+   20,
+   30.000000000000014
+  ],
+  "ms": 41507,
+  "cpuMs": 41842,
+  "load": 4.22,
+  "wallTotalMs": 41512,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": false,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": null,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt45-box-360",
+  "src": "const b = box(60, 40, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.707107, 0.707107] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, b, 360);",
+  "tag": null,
+  "wallS": 0.4,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 70586.52673715955,
+  "faces": 10,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -30,
+   -20,
+   -15,
+   30,
+   20,
+   15
+  ],
+  "ms": 349,
+  "cpuMs": 603,
+  "load": 4.22,
+  "wallTotalMs": 353,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": false,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": null,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt45-post-90",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.707107, 0.707107] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, cyl, 90);",
+  "tag": null,
+  "wallS": 8.2,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 37368.389379867986,
+  "faces": 9,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 6
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20.000000000000018,
+   -5.06090762367184e-7,
+   20,
+   20,
+   30.000000000000014
+  ],
+  "ms": 8133,
+  "cpuMs": 8524,
+  "load": 4.34,
+  "wallTotalMs": 8139,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": false,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": null,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt45-box-90",
+  "src": "const b = box(60, 40, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 0.707107, 0.707107] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, b, 90);",
+  "tag": null,
+  "wallS": 0.3,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 71646.60515399782,
+  "faces": 12,
+  "faceTypes": {
+   "cylinder": 2,
+   "plane": 10
+  },
+  "bodies": 1,
+  "bbox": [
+   -30,
+   -20,
+   -15,
+   30,
+   20,
+   15
+  ],
+  "ms": 184,
+  "cpuMs": 400,
+  "load": 4.34,
+  "wallTotalMs": 188,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": false,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": null,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt90-post-360",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 1.000000, 0.000000] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, cyl, 360);",
+  "tag": null,
+  "wallS": 6.6,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 36849.04056623698,
+  "faces": 7,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 4
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20.000000000000018,
+   0,
+   20,
+   20,
+   30.000000000000014
+  ],
+  "ms": 6488,
+  "cpuMs": 6870,
+  "load": 4.55,
+  "wallTotalMs": 6491,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": true,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": 20,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt90-box-360",
+  "src": "const b = box(60, 40, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 1.000000, 0.000000] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, b, 360);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 17,
+  "cpuMs": 54,
+  "load": 4.55,
+  "wallTotalMs": 23,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": 20,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-tilt90-post-90",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 1.000000, 0.000000] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, cyl, 90);",
+  "tag": null,
+  "wallS": 3.5,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 37485.089557124724,
+  "faces": 8,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 5
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20.000000000000018,
+   -4.440892098500626e-16,
+   20,
+   20,
+   30.000000000000014
+  ],
+  "ms": 3412,
+  "cpuMs": 3774,
+  "load": 4.83,
+  "wallTotalMs": 3417,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": true,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": 20,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-tilt90-box-90",
+  "src": "const b = box(60, 40, 30); const g = sketch({ origin: [0, 0, 0], u: [1, 0, 0], v: [0, 1.000000, 0.000000] }); g.polygon([[6,-4],[9,-4],[9,6],[6,6]]); groove(g, b, 90);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove1 (groove): the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 14,
+  "cpuMs": 47,
+  "load": 4.83,
+  "wallTotalMs": 19,
+  "cost": {
+   "tool": "flat",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": false,
+   "rOuter": 9,
+   "nearest": 20,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:refused"
+ },
+ {
+  "id": "R3-cost-post-coaxial-360-rep1",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const sk2 = sketch('top'); sk2.rect(2, 5, { at: [19, 12.5] }); groove(sk2, cyl, 360);",
+  "tag": null,
+  "wallS": 11.8,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 36500.975098929506,
+  "faces": 7,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 4
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.000000000000004,
+   -20.000000000000018,
+   0,
+   20,
+   20,
+   30.000000000000014
+  ],
+  "ms": 11757,
+  "cpuMs": 12144,
+  "load": 4.7,
+  "wallTotalMs": 11763,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": true,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 20,
+   "nearest": 20,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-cost-post-coaxial-360-rep2",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const sk2 = sketch('top'); sk2.rect(2, 5, { at: [19, 12.5] }); groove(sk2, cyl, 360);",
+  "tag": null,
+  "wallS": 13.7,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 36500.975098929506,
+  "faces": 7,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 4
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.000000000000004,
+   -20.000000000000018,
+   0,
+   20,
+   20,
+   30.000000000000014
+  ],
+  "ms": 13577,
+  "cpuMs": 13995,
+  "load": 4.55,
+  "wallTotalMs": 13583,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": true,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 20,
+   "nearest": 20,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-cost-post-coaxial-360-rep3",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const sk2 = sketch('top'); sk2.rect(2, 5, { at: [19, 12.5] }); groove(sk2, cyl, 360);",
+  "tag": null,
+  "wallS": 11.8,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 36500.975098929506,
+  "faces": 7,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 4
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.000000000000004,
+   -20.000000000000018,
+   0,
+   20,
+   20,
+   30.000000000000014
+  ],
+  "ms": 11739,
+  "cpuMs": 12123,
+  "load": 4.62,
+  "wallTotalMs": 11743,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": true,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 20,
+   "nearest": 20,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-crit-fz-groove-1",
+  "src": "const s1 = sketch('top'); s1.rect(60,40,{at:[10,5]}); const b = extrude(s1, 30); const sk = sketch('top'); sk.circle(6.7, { at: [27.6, 0.5] }); groove(sk, b, 90);",
+  "tag": null,
+  "wallS": 56.3,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 71327.11597856892,
+  "faces": 9,
+  "faceTypes": {
+   "other": 1,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -15,
+   -1.1003531719236166e-12,
+   40,
+   25.000049850760714,
+   30
+  ],
+  "ms": 56213,
+  "cpuMs": 56554,
+  "load": 4.66,
+  "wallTotalMs": 56219,
+  "cost": {
+   "tool": "torus",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "torus"
+   ],
+   "partial": true,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 30.950000000000003,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-crit-fz-groove-13",
+  "src": "const s1 = sketch('top'); s1.rect(60,40,{at:[10,5]}); const b = extrude(s1, 30); const sk = sketch('top'); sk.polygon([[21.7,2],[33.3,2],[21.7,6.8]]); groove(sk, b, 360);",
+  "tag": null,
+  "wallS": 16.9,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 70066.44927149273,
+  "faces": 12,
+  "faceTypes": {
+   "cone": 2,
+   "cylinder": 2,
+   "plane": 8
+  },
+  "bodies": 1,
+  "bbox": [
+   -20.00000023405401,
+   -15.000134151837557,
+   0,
+   40,
+   25.00331918323756,
+   30
+  ],
+  "ms": 16808,
+  "cpuMs": 17081,
+  "load": 4.29,
+  "wallTotalMs": 16812,
+  "cost": {
+   "tool": "cone",
+   "shape": "box",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cone",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 0,
+   "headTypes": {
+    "plane": 6
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 33.3,
+   "nearest": 15,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-crit-fz-groove-37",
+  "src": "const s1 = sketch('top'); s1.rect(60,40,{at:[10,5]}); const b = extrude(s1, 30); const sk = sketch('top', 4.8); sk.circle(6.2, { at: [26.5, 18.8] }); groove(sk, b, 360);",
+  "tag": null,
+  "wallS": 120.1,
+  "status": "TIMEOUT",
+  "timeoutS": 120,
+  "stderr": ""
+ },
+ {
+  "id": "R3-crit-seq-two-grooves-same-target",
+  "src": "const s1 = sketch('top'); s1.rect(60,60,{at:[0,0]}); const b = extrude(s1, 40); const a = sketch('side', 4); a.rect(7,18,{at:[8.5,17]}); groove(a, b, 90); const c = sketch('top'); c.rect(6,10,{at:[20,25]}); groove(c, b, 180);",
+  "tag": null,
+  "wallS": 0.1,
+  "scriptErrors": null,
+  "status": "refused",
+  "refusal": "groove2 (groove): groove1 was not built, so this groove has no finished part to cut; fix groove1 first.",
+  "volume": null,
+  "faces": null,
+  "faceTypes": null,
+  "bodies": null,
+  "bbox": null,
+  "ms": 18,
+  "cpuMs": 58,
+  "load": 4.78,
+  "wallTotalMs": 23,
+  "cost": null,
+  "nudge": null,
+  "chain": "groove1:refused,groove2:refused"
+ },
+ {
+  "id": "R3-crit-gv-cyl-front-360",
+  "src": "const s1 = sketch('top'); s1.circle(40, { at: [0, 0] }); const b = extrude(s1, 30); const sk = sketch('front'); sk.rect(7, 16, { at: [8.5, 0] }); groove(sk, b, 360);",
+  "tag": null,
+  "wallS": 10.5,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 34706.78537354434,
+  "faces": 9,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 6
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20.000000000000018,
+   -6.804940811488623e-10,
+   20,
+   20,
+   30.000000000000014
+  ],
+  "ms": 10462,
+  "cpuMs": 10889,
+  "load": 5.06,
+  "wallTotalMs": 10466,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 0,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ },
+ {
+  "id": "R3-crit-gv-cyl-front-lift-360",
+  "src": "const s1 = sketch('top', 3); s1.circle(40, { at: [0, 0] }); const b = extrude(s1, 30); const sk = sketch('front'); sk.rect(7, 16, { at: [8.5, 0] }); groove(sk, b, 360);",
+  "tag": null,
+  "wallS": 6,
+  "scriptErrors": null,
+  "status": "built",
+  "refusal": null,
+  "volume": 35397.50480022934,
+  "faces": 7,
+  "faceTypes": {
+   "cylinder": 3,
+   "plane": 4
+  },
+  "bodies": 1,
+  "bbox": [
+   -20,
+   -20.000000000000018,
+   2.9999998622970496,
+   20,
+   20,
+   33.000000000000014
+  ],
+  "ms": 5866,
+  "cpuMs": 6244,
+  "load": 5.06,
+  "wallTotalMs": 5872,
+  "cost": {
+   "tool": "flat",
+   "shape": "cylinder",
+   "coaxial": false,
+   "kinds": [
+    "annulus",
+    "cylinder"
+   ],
+   "partial": false,
+   "curved": 1,
+   "headTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "touchesAxis": false,
+   "worldAxis": true,
+   "reachesWall": true,
+   "rOuter": 12,
+   "nearest": 2.999999999999993,
+   "bodies": 1
+  },
+  "nudge": null,
+  "chain": "groove1:built"
+ }
+]

@@ -1,0 +1,222 @@
+cases re-run 392; refused features 161; distinct plain sentences 58; changed outcome/volume 47; unmapped 0; failing the lint 0
+CHANGED {"file":"resC2.json","label":"round rim of shelled box: between(+z,+x) after shell","old":"NO-REFERENCE","now":"REFUSED","oldV":7126.2308791780815,"sentence":"r1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.01 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.1 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2b-rim.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2c-shell-edges.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2c-shell-edges.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2c-shell-edges.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2c-shell-edges.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2c-shell-edges.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 2.5 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+CHANGED {"file":"r2c-shell-edges.json","old":"NO-REFERENCE","now":"REFUSED","sentence":"round1 is not built: a round of 3 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."}
+  4 | draft1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.
+      raw: draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction
+      resA.json:draft face(top) 5deg ; resA.json:draft face(bottom) 5deg ; resB.json:cyl draft face(top)
+  1 | draft1 is not built: the curved side of a cylinder cannot be drafted yet -- draft a flat face instead.
+      raw: draft1 (draft): cyl1.face[side] names a set of 2 faces, but this feature needs a face
+      resB.json:cyl draft face(side)
+  2 | round1 is not built: the top and bottom faces never meet, so there is no edge between them -- name two faces that touch.
+      raw: round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[-z]] matches no edge on b_cyl1 (the two faces do not meet there any more, or never did); not guessing
+      resB.json:cyl edge(top,bottom) ; resB.json:box edge(top,bottom)
+  1 | round1 is not built: a cylinder has no left, right, front or back face, only a top, a bottom and one curved side.
+      raw: round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[-y]] cannot be resolved: cyl1.face[-y]: a cylinder has no -y face
+      resB.json:cyl edge(top,front)
+  1 | draft1 is not built: a cylinder has no left, right, front or back face, only a top, a bottom and one curved side.
+      raw: draft1 (draft): cyl1.face[-x]: a cylinder has no -x face
+      resB.json:cyl face(left)
+  1 | round1 is not built: the front and back faces never meet, so there is no edge between them -- name two faces that touch.
+      raw: round1 (fillet): box1.edge[box1.face[-y] ^ box1.face[+y]] matches no edge on b_box1 (the two faces do not meet there any more, or never did); not guessing
+      resB.json:box edge(front,back)
+  1 | round1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked.
+      raw: round1 (fillet): prism1.edge[prism1.face[+z] ^ prism1.face[+x]] cannot be resolved: prism1.face[+x]: a prism has no +x face
+      resB.json:prism round edge(top,side?)
+  1 | draft1 is not built: picking the sides of a prism by direction (left, right, front or back) is not supported yet -- only its top and bottom can be picked.
+      raw: draft1 (draft): prism1.face[+x]: a prism has no +x face
+      resB.json:prism draft face(right)
+  1 | draft1 is not built: the faces of a sphere cannot be picked by direction yet.
+      raw: draft1 (draft): ball1.face[+z]: faces of a sphere are not resolved in the browser demo
+      resB.json:sphere face(top) draft
+  1 | shell1 is not built: the faces of a sphere cannot be picked by direction yet.
+      raw: shell1 (shell): ball1.face[+z]: faces of a sphere are not resolved in the browser demo
+      resB.json:sphere hollow open top
+  1 | round1 is not built: the faces of a sphere cannot be picked by direction yet.
+      raw: round1 (fillet): ball1.edge[ball1.face[+z] ^ ball1.face[-y]] cannot be resolved: ball1.face[+z]: faces of a sphere are not resolved in the browser demo
+      resB.json:sphere edge(top,front)
+  2 | shell1 is not built: the faces of a cone cannot be picked by direction yet.
+      raw: shell1 (shell): cone1.face[-z]: faces of a cone are not resolved in the browser demo
+      resB.json:cone hollow open bottom ; resB.json:cone hollow open top
+  1 | round1 is not built: the faces of a cone cannot be picked by direction yet.
+      raw: round1 (fillet): cone1.edge[cone1.face[-z] ^ cone1.face[-y]] cannot be resolved: cone1.face[-z]: faces of a cone are not resolved in the browser demo
+      resB.json:cone edge(bottom,side?)
+  1 | shell1 is not built: the faces of a ring cannot be picked by direction yet.
+      raw: shell1 (shell): ring1.face[+z]: faces of a torus are not resolved in the browser demo
+      resB.json:ring hollow open top
+  3 | shell1 is not built: the faces of a wedge cannot be picked by direction yet.
+      raw: shell1 (shell): wedge1.face[-z]: faces of a wedge are not resolved in the browser demo
+      resB.json:wedge hollow open bottom ; resB.json:wedge hollow open top ; resB.json:wedge hollow open front
+  1 | round1 is not built: the faces of a wedge cannot be picked by direction yet.
+      raw: round1 (fillet): wedge1.edge[wedge1.face[-z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[-z]: faces of a wedge are not resolved in the browser demo
+      resB.json:wedge edge(bottom,front)
+  4 | sh1 is not built: a face swept from a curved, rounded or revolved sketch edge cannot be picked yet -- only faces from straight sketch edges can.
+      raw: sh1 (shell): e1.face[sk1.edge0]: sk1 is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the browser demo
+      resC1.json:swept on circle sketch ; resC1.json:swept on arc (bulge) sketch ; resK.json:revolve swept edge1 shell open
+  1 | e1 is not built: an extrude with the midplane option is not supported yet -- use a plain one-sided extrude.
+      raw: e1 (extrude): the midplane option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)
+      resC1.json:swept on extrude midplane
+  3 | sh1 is not built because e1 could not be built, so sh1 is shown without it.
+      raw: sh1 (shell): its target e1 was refused (e1 (extrude): the midplane option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))
+      resC1.json:swept on extrude midplane ; resC1.json:swept on extrude taper ; resC1.json:cap on reversed extrude
+  1 | e1 is not built: an extrude with the taper option is not supported yet -- use a plain one-sided extrude.
+      raw: e1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)
+      resC1.json:swept on extrude taper
+  1 | d1 is not built: the top and bottom faces are square to the pull direction, so they cannot be tilted -- draft a side face (left, right, front or back) instead.
+      raw: d1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction
+      resC1.json:cap top draft
+  1 | e1 is not built: an extrude with the reversed option is not supported yet -- use a plain one-sided extrude.
+      raw: e1 (extrude): the reversed option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)
+      resC1.json:cap on reversed extrude
+  1 | sh1 is not built: a face made by a rounded sketch corner cannot be picked yet.
+      raw: sh1 (shell): e1.face[sk1.corner0]: a name made by a ROUNDED sketch corner is not resolved in the browser demo (only primitive, cap, swept-by-a-straight-edge, carried-plane and between names are)
+      resC1.json:rounded corner0 shell open
+  1 | d1 is not built: a face made by a rounded sketch corner cannot be picked yet.
+      raw: d1 (draft): e1.face[sk1.corner0]: a name made by a ROUNDED sketch corner is not resolved in the browser demo (only primitive, cap, swept-by-a-straight-edge, carried-plane and between names are)
+      resC1.json:rounded corner0 draft
+  1 | r1 is not built: a face made by a rounded sketch corner cannot be picked yet.
+      raw: r1 (fillet): e1.edge[e1.cap[top] ^ e1.face[sk1.corner0]] cannot be resolved: e1.face[sk1.corner0]: a name made by a ROUNDED sketch corner is not resolved in the browser demo (only primitive, cap, swept-by-a-straight-edge
+      resC1.json:round between(cap top, rounded0)
+  1 | r1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall.
+      raw: r1 (fillet): solidcraft refused it -- solid.fillet: @@G-RIM@@
+      resC2.json:round rim of shelled box: between(+z,+x) after shell
+  1 | r1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.
+      raw: r1 (fillet): move1.edge[move1.same[box1.face[+z]] ^ move1.same[box1.face[+x]]] cannot be resolved: move1.same[box1.face[+z]]: move1 is a move, which moves or copies faces; a carried name through it is not resolved
+      resC2.json:edge after move (carried)
+  2 | sh1 is not built: the part was moved or turned before this hollow, and its faces cannot be found again yet -- put the hollow before the move() or turn() line.
+      raw: sh1 (shell): move1.same[box1.face[+z]]: move1 is a move, which moves or copies faces; a carried name through it is not resolved
+      resC2.json:shell open carried through move ; resC2.json:rotated box primitive face shell
+  1 | sh1 is not built: a piece of a split face cannot be picked yet.
+      raw: sh1 (shell): box1.split: a 'split' name (a piece of a face, or a face an operation made) is not resolved in the browser demo; it needs a discriminator point and solidcraft has no history record to read it from
+      resC2.json:split: shell open
+  1 | d1 is not built: a piece of a split face cannot be picked yet.
+      raw: d1 (draft): box1.split: a 'split' name (a piece of a face, or a face an operation made) is not resolved in the browser demo; it needs a discriminator point and solidcraft has no history record to read it from
+      resC2.json:split: draft
+  1 | sh1 is not built: a face made by an earlier cut cannot be picked by name yet.
+      raw: sh1 (shell): pocket1.made: a 'made' name (a piece of a face, or a face an operation made) is not resolved in the browser demo; it needs a discriminator point and solidcraft has no history record to read it from
+      resC2.json:made: shell open
+  1 | r1 is not built: a piece of a split face cannot be picked yet.
+      raw: r1 (fillet): pocket1.edge[box1.split ^ box1.face[+y]] cannot be resolved: box1.split: a 'split' name (a piece of a face, or a face an operation made) is not resolved in the browser demo; it needs a discriminator point an
+      resC2.json:round between(split, +x)
+ 10 | round2 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+      raw: round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or rem
+      resD.json:rim(sk2) round 1 ; resD.json:rim thru pocket (deep 10) ; resD.json:rim off-centre pocket
+ 15 | round3 is not built because round2 could not be built, so round3 is shown without it.
+      raw: round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_
+      resD.json:rim(sk2) round 1 ; resD.json:rim(sk2) round 1 ; resD.json:rim thru pocket (deep 10)
+  2 | bevel2 is not built: bevel1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+      raw: bevel2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or rem
+      resD.json:rim(sk2) bevel 1 ; r2e-adjacent.json:bevel top|front, then bevel top|right
+  2 | bevel3 is not built because bevel2 could not be built, so bevel3 is shown without it.
+      raw: bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_
+      resD.json:rim(sk2) bevel 1 ; resD.json:rim(sk2) bevel 1
+  1 | round1 is not built: wall 1 and wall 3 of the pocket do not touch, so there is no edge between them -- name two walls that meet.
+      raw: round1 (fillet): pocket1.edge[pull2.face[sk2.edge0] ^ pull2.face[sk2.edge2]] matches no edge on b_pull1 (the two faces do not meet there any more, or never did); not guessing
+      resD.json:edge(wall1, wall3) opposite walls
+  3 | round1 is not built: the two faces named for this edge do not meet on the part as it is now, so there is no edge to round.
+      raw: round1 (fillet): pocket1.edge[pocket1.same[pull1.face[-z]] ^ pull2.face[sk2.edge0]] matches no edge on b_pull1 (the two faces do not meet there any more, or never did); not guessing
+      resD.json:edge(bottom, wall 1) (pocket floor edge?) ; resD.json:edge(front, wall 1) ; resL.json:stepped union: round edge(top,right)
+  3 | round1 is not built: a round of 5 is too large for the 4 mm tall pocket wall it sits on -- use a smaller size.
+      raw: round1 (fillet): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+      resD.json:rim round too big (r 5 in 10 pocket) ; r2k-pocket-radius.json:undefined ; r2k-pocket-radius.json:undefined
+  3 | round1 is not built: the walls of a circular or rounded-corner pocket cannot be picked one by one yet -- only pockets with plain straight sides can.
+      raw: round1 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] cannot be resolved: pull2.face[sk2.edge0]: sk2 is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the brows
+      resD.json:circle pocket rim ; resD.json:circle pocket wall1 edge(top,wall) ; resD.json:rounded-corner pocket rim
+  7 | round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.
+      raw: round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a r
+      resK.json:turn box then round edge(top,right) ; resK.json:move box then round edge(top,right) ; resN.json:hole, turn, then round edge(top,right)
+  1 | round1 is not built: box1 was rounded as a whole, which changed its faces and edges, so they cannot be found again yet -- pick the edge before the whole-shape round.
+      raw: round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] cannot be resolved: box1.face[+z]: box1 carries a whole-shape round, which changes its faces and edges; not resolved
+      resK.json:whole-round box then round edge
+  1 | move1 is not built: a move that leaves a copy behind is not supported yet -- use repeat() to make copies.
+      raw: move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)
+      resK.json:move(copy) then round edge
+  1 | round1 is not built because move1 could not be built, so round1 is shown without it.
+      raw: round1 (fillet): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))
+      resK.json:move(copy) then round edge
+  1 | round1 is not built: box1 was already joined by op1, so its edges can no longer be picked -- pick the edge on the result of op1 instead.
+      raw: round1 (fillet): its target box1 was already changed in place by op1, and a solidcraft command list has no second copy of it
+      resK.json:union two boxes then round edge of first
+  1 | round1 is not built: box1 was already mirrored by mir1, so its edges can no longer be picked -- pick the edge on the result of mir1 instead.
+      raw: round1 (fillet): its target box1 was already changed in place by mir1, and a solidcraft command list has no second copy of it
+      resK.json:mirror then round edge
+  1 | shell1 is not built: a hollow with no open side is not supported yet -- add open:'top' (or bottom, front, back, left, right) to leave one side open.
+      raw: shell1 (shell): this spike's shell needs a face to remove; a closed hollow box is not mapped
+      resK.json:hollow with no open face
+  1 | draft1 is not built: drafting a whole shape is not supported yet -- draft its side faces one at a time, for example draft(shape.face('right'), 5).
+      raw: draft1 (draft): a whole-body draft is not mapped (needs a face pick per face)
+      resK.json:draft whole
+  2 | shell1 is not built: two separate faces of this part are both the top (same direction, same height), so 'top' does not pick just one of them.
+      raw: shell1 (shell): pocket1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F3:side:l4], F1:+z#[F1:+x,F3:side:l2]; planar face with outward normal +z at the extreme along it on pocket1's own shape); a name must pick exactly
+      resM.json:channel splits top: hollow open top ; resM.json:two coplanar bosses: hollow open top
+  3 | round1 is not built: two separate faces of this part are both the top (same direction, same height), so 'top' does not pick just one of them.
+      raw: round1 (fillet): pocket1.edge[pocket1.face[+z] ^ pocket1.face[-x]] cannot be resolved: pocket1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F3:side:l4], F1:+z#[F1:+x,F3:side:l2]; planar face with outward normal +z at
+      resM.json:channel splits top: round edge(top,left) ; resM.json:channel splits top: round edge(top,front) ; resM.json:two coplanar bosses: edge(top,right)
+ 46 | round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall.
+      raw: round1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall.
+      r2b-rim.json:undefined ; r2b-rim.json:undefined ; r2b-rim.json:undefined
+  5 | round1 is not built: the hollow changed the edges of box1, so this edge cannot be found again yet -- round it before the hollow() line.
+      raw: round1 (fillet): box1.edge[box1.face[-y] ^ box1.face[-x]] resolves to F1:-x|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked
+      r2c-shell-edges.json:undefined ; r2c-shell-edges.json:undefined ; r2c-shell-edges.json:undefined
+  1 | bevel1 is not built: round1 already worked on the corner this edge shares with it, and edges that meet at a corner cannot be rounded or bevelled one after the other yet.
+      raw: bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked
+      r2e-adjacent.json:round top|front, then bevel top|right
+  1 | bevel1 is not built: the part was moved or turned before this bevel, and its edges cannot be found again yet -- put the bevel before the move() or turn() line.
+      raw: bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked
+      r2h-move-turn.json:box, move, bevel edge(top,right)
+  1 | shell1 is not built: the part was moved or turned before this hollow, and its faces cannot be found again yet -- put the hollow before the move() or turn() line.
+      raw: shell1 (shell): box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)
+      r2h-move-turn.json:box, turn, hollow open top (control)
+  1 | draft1 is not built: no flat face of this part points exactly to the left, so there is nothing to draft -- draft a face that does.
+      raw: draft1 (draft): pull1.face[-x] matches no face on b_pull1 (planar face with outward normal -x at the extreme along it on pull1's own shape); not guessing
+      r2j-pull-words.json:triangle pull: draft face(left)
+  1 | draft1 is not built: no flat face of this part points exactly to the right, so there is nothing to draft -- draft a face that does.
+      raw: draft1 (draft): pull1.face[+x] matches no face on b_pull1 (planar face with outward normal +x at the extreme along it on pull1's own shape); not guessing
+      r2j-pull-words.json:triangle pull: draft face(right)
+  2 | bevel1 is not built: a bevel of 4 is too large for the 4 mm tall pocket wall it sits on -- use a smaller size.
+      raw: bevel1 (fillet): solidcraft refused it -- solid.chamfer: not supported yet: the blend is larger than the neighbouring faces
+      r2k-pocket-radius.json:undefined ; r2k-pocket-radius.json:undefined

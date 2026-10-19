@@ -1,0 +1,96 @@
+[
+ {
+  "id": "r2-big-ring-10000000",
+  "feature": "oversize",
+  "note": "",
+  "script": "ring(10000000, 2000000);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "ring1",
+     "kind": "torus",
+     "ringRadius": 4000000,
+     "tubeRadius": 1000000,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "torus",
+  "analytic": 78956835208714860000,
+  "occt": {
+   "volume": 78956835208714880000,
+   "com": [
+    2.7939677238464355e-9,
+    -9.95011589383396e-10,
+    -5.551368898492729e-11
+   ],
+   "bbox": [
+    -5000000.0000001,
+    -5000000.0000001,
+    -1000000.0000001,
+    5000000.0000001,
+    5000000.0000001,
+    1000000.0000001
+   ],
+   "faces": 1,
+   "types": {
+    "torus": 1
+   }
+  },
+  "brep": {
+   "refused": "torus ring1: it has a size or position of 4.000e6, past the 1e6 brep-rs builds exactly -- ring1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.torus",
+    "params": {
+     "major": 4000000,
+     "minor": 1000000,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ring1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 0,
+   "bbox": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "com": [
+    null,
+    null,
+    null
+   ],
+   "faces": 0,
+   "faceTypes": {},
+   "curved": false,
+   "bodies": 1,
+   "dVolOcct": 1,
+   "dBboxOcct": 0.3500700210070019,
+   "dComOcct": null,
+   "facesOcct": 1,
+   "typesOcct": {
+    "torus": 1
+   },
+   "dVolAnalytic": 1,
+   "tol": 1e-9
+  },
+  "planar": false,
+  "ms": 1261
+ }
+]

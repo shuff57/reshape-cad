@@ -1,0 +1,5115 @@
+[
+ {
+  "id": "c-rim-then-far-edge-same-size",
+  "group": "c-mixed",
+  "note": "rim (4 edges) + one far edge of the same size: the far edge is its own component",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)\nround(part.edge('top','front'), 1)",
+  "pane": {
+   "volume": 11597.852573171076,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11597.852573171076,
+     "faces": 12,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round3",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round4",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked))",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round5",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)))",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 3821
+  },
+  "contract": {
+   "volume": 11582.441812823286,
+   "faces": 16,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11582.441812823286,
+     "faces": 16,
+     "bbox": [
+      -8.21565038222616e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 5,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5"
+     ]
+    },
+    {
+     "id": "round5",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ],
+      [
+       25,
+       15,
+       10
+      ],
+      [
+       20,
+       20,
+       10
+      ],
+      [
+       15,
+       15,
+       10
+      ]
+     ],
+     "size": 1
+    },
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 4246
+  },
+  "grouped": {
+   "volume": 11582.441812823286,
+   "faces": 16,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11582.441812823286,
+     "faces": 16,
+     "bbox": [
+      -8.21565038222616e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 5,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5"
+     ]
+    },
+    {
+     "id": "round5",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ],
+      [
+       25,
+       15,
+       10
+      ],
+      [
+       20,
+       20,
+       10
+      ],
+      [
+       15,
+       15,
+       10
+      ]
+     ],
+     "size": 1
+    },
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 3228
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Round 2's edge could not be found -- Round 2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11584.786130762463,
+     "faces": 17
+    }
+   },
+   "brepSeq": {
+    "volume": 11582.448371712308,
+    "faces": 16,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "occtSim": {
+    "volume": 11582.448371715083,
+    "faces": 16,
+    "bbox": [
+     0,
+     -2.220446049250313e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "types": {
+     "plane": 11,
+     "cylinder": 5
+    },
+    "edgeDist": 0,
+    "distinctEdges": 5
+   }
+  },
+  "base": {
+   "volume": 11600.000000000002,
+   "faces": 11,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 6.96744475938914e-17,
+   "grouped": 2.786977903755656e-16,
+   "contract": 2.786977903755656e-16
+  },
+  "ms": 17387
+ },
+ {
+  "id": "c-rim-then-far-edge-other-size",
+  "group": "c-mixed",
+  "note": "a different size breaks the group; the front edge is far from the rim",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)\nround(part.edge('top','front'), 2)",
+  "pane": {
+   "volume": 11597.852573171076,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11597.852573171076,
+     "faces": 12,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round3",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round4",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked))",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round5",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)))",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 1284
+  },
+  "contract": {
+   "volume": 11556.680067963816,
+   "faces": 16,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11556.680067963816,
+     "faces": 16,
+     "bbox": [
+      -6.661338147750939e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 5,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round5",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ],
+      [
+       25,
+       15,
+       10
+      ],
+      [
+       20,
+       20,
+       10
+      ],
+      [
+       15,
+       15,
+       10
+      ]
+     ],
+     "size": 1
+    },
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3376
+  },
+  "grouped": {
+   "volume": 11556.680067963816,
+   "faces": 16,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11556.680067963816,
+     "faces": 16,
+     "bbox": [
+      -6.661338147750939e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 5,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round5",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ],
+      [
+       25,
+       15,
+       10
+      ],
+      [
+       20,
+       20,
+       10
+      ],
+      [
+       15,
+       15,
+       10
+      ]
+     ],
+     "size": 1
+    },
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 2957
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Round 2's edge could not be found -- Round 2 is shown without it.",
+    "shapeWithout": {
+     "volume": 11559.033910375798,
+     "faces": 17
+    }
+   },
+   "brepSeq": {
+    "refused": "round4 already has rounds mitred at the corners of a pocket's rim, and brep-rs can only round or chamfer more of its edges in the same pick (the same size and style) yet -- round5 is shown without it.",
+    "shapeWithout": {
+     "volume": 11591.03244517641,
+     "faces": 15
+    }
+   },
+   "closedForm": {
+    "volume": 11556.696151317603,
+    "faces": 16
+   }
+  },
+  "base": {
+   "volume": 11600.000000000002,
+   "faces": 11,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": null,
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "no-oracle",
+   "contract": "no-oracle"
+  },
+  "ms": 12278
+ },
+ {
+  "id": "c-rim-then-touching-edge",
+  "group": "c-mixed",
+  "note": "a second round on a rim edge that the rim round already consumed",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nconst sk2 = sketch('top', 10)\nsk2.rect(10, 10, { at: [20, 15] })\nconst part = pocket(sk2, plate, 4)\nround(part.rim(sk2), 1)\nround(part.edge('top', part.wall(sk2, 1)), 2)",
+  "pane": {
+   "volume": 11597.852573171076,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11597.852573171076,
+     "faces": 12,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round3",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round4",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked))",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round5",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge1]] resolves to F2:top|F4:side:l2 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked)))",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 2022
+  },
+  "contract": {
+   "volume": 11591.029061208932,
+   "faces": 15,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11591.029061208932,
+     "faces": 15,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 4,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round5",
+     "status": "refused",
+     "sentence": "The round round5 touches an edge that round4 already changed with a different size, so round5 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round5 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] resolves to F2:top|F4:side:l1 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ],
+      [
+       25,
+       15,
+       10
+      ],
+      [
+       20,
+       20,
+       10
+      ],
+      [
+       15,
+       15,
+       10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 2710
+  },
+  "grouped": {
+   "volume": 11591.029061208932,
+   "faces": 15,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11591.029061208932,
+     "faces": 15,
+     "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 4,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round5",
+     "status": "refused",
+     "sentence": "The round round5 touches an edge that round4 already changed with a different size, so round5 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+     "refusal": "round5 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2.edge0]] resolves to F2:top|F4:side:l1 on pocket1, but that edge is no longer present whole on b_pull1 (an operation after pocket1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       10,
+       10
+      ],
+      [
+       25,
+       15,
+       10
+      ],
+      [
+       20,
+       20,
+       10
+      ],
+      [
+       15,
+       15,
+       10
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 2339
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Round 2's edge could not be found -- Round 2 is shown without it. | Rounding Round 5 at 2 would not fit its edge -- Round 5 is shown without it.",
+    "shapeWithout": {
+     "volume": 11593.370204219173,
+     "faces": 16
+    }
+   },
+   "brepSeq": {
+    "refused": "round4 already has rounds mitred at the corners of a pocket's rim, and brep-rs can only round or chamfer more of its edges in the same pick (the same size and style) yet -- round5 is shown without it.",
+    "shapeWithout": {
+     "volume": 11591.03244517641,
+     "faces": 15
+    }
+   }
+  },
+  "base": {
+   "volume": 11600.000000000002,
+   "faces": 11,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": null,
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "ms": 11779
+ },
+ {
+  "id": "c-pull-rect-top4-round-2",
+  "group": "c-mixed",
+  "note": "pulled rectangle, top loop",
+  "script": "const sk = sketch('top')\nsk.rect(30,20)\nconst p = pull(sk, 8)\nround(p.edge('top','front'), 2)\nround(p.edge('top','right'), 2)\nround(p.edge('top','back'), 2)\nround(p.edge('top','left'), 2)",
+  "pane": {
+   "volume": 4774.230890053951,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4774.230890053951,
+     "faces": 7,
+     "bbox": [
+      -15.000000000000009,
+      -10,
+      0,
+      15.000000000000005,
+      10,
+      8
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round3",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked)",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round4",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked))",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 599
+  },
+  "contract": {
+   "volume": 4717.197184725977,
+   "faces": 10,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4717.197184725977,
+     "faces": 10,
+     "bbox": [
+      -15.000000000000014,
+      -10.000000000000009,
+      0,
+      15.000000000000014,
+      10.000000000000009,
+      8
+     ],
+     "faceTypes": {
+      "cylinder": 4,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ],
+      [
+       15,
+       0,
+       8
+      ],
+      [
+       0,
+       10,
+       8
+      ],
+      [
+       -15,
+       0,
+       8
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1402
+  },
+  "grouped": {
+   "volume": 4717.197184725977,
+   "faces": 10,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4717.197184725977,
+     "faces": 10,
+     "bbox": [
+      -15.000000000000014,
+      -10.000000000000009,
+      0,
+      15.000000000000014,
+      10.000000000000009,
+      8
+     ],
+     "faceTypes": {
+      "cylinder": 4,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ],
+      [
+       15,
+       0,
+       8
+      ],
+      [
+       0,
+       10,
+       8
+      ],
+      [
+       -15,
+       0,
+       8
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1283
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 4692.047167447127,
+    "faces": 18,
+    "bbox": [
+     -15,
+     -10,
+     0,
+     15,
+     10,
+     8
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it. | brep-rs can only ",
+    "shapeWithout": {
+     "volume": 4748.495559215388,
+     "faces": 8
+    }
+   },
+   "occtSim": {
+    "volume": 4717.227116128168,
+    "faces": 10,
+    "bbox": [
+     -15,
+     -10,
+     0,
+     15,
+     10,
+     8
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 4
+    },
+    "edgeDist": 0,
+    "distinctEdges": 4
+   }
+  },
+  "base": {
+   "volume": 4799.999999999999,
+   "faces": 6,
+   "bbox": [
+    -15,
+    -10,
+    0,
+    15,
+    10,
+    8
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 2.404877901591195e-16,
+   "grouped": 3.847804642545912e-16,
+   "contract": 3.847804642545912e-16
+  },
+  "ms": 7410
+ },
+ {
+  "id": "c-pull-rect-top4-bevel-3",
+  "group": "c-mixed",
+  "note": null,
+  "script": "const sk = sketch('top')\nsk.rect(30,20)\nconst p = pull(sk, 8)\nbevel(p.edge('top','front'), 3)\nbevel(p.edge('top','right'), 3)\nbevel(p.edge('top','back'), 3)\nbevel(p.edge('top','left'), 3)",
+  "pane": {
+   "volume": 4665,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4665,
+     "faces": 7,
+     "bbox": [
+      -15.000000000000004,
+      -10,
+      0,
+      15.000000000000002,
+      10,
+      8
+     ],
+     "faceTypes": {
+      "plane": 7
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel3",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked)",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel4",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked))",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 671
+  },
+  "contract": {
+   "volume": 4386,
+   "faces": 10,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4386,
+     "faces": 10,
+     "bbox": [
+      -15,
+      -10,
+      0,
+      15.000000000000002,
+      10,
+      8.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 10
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    },
+    {
+     "id": "bevel2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    },
+    {
+     "id": "bevel3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    },
+    {
+     "id": "bevel4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ],
+      [
+       15,
+       0,
+       8
+      ],
+      [
+       0,
+       10,
+       8
+      ],
+      [
+       -15,
+       0,
+       8
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1193
+  },
+  "grouped": {
+   "volume": 4386,
+   "faces": 10,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4386,
+     "faces": 10,
+     "bbox": [
+      -15,
+      -10,
+      0,
+      15.000000000000002,
+      10,
+      8.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 10
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    },
+    {
+     "id": "bevel2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    },
+    {
+     "id": "bevel3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    },
+    {
+     "id": "bevel4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ],
+      [
+       15,
+       0,
+       8
+      ],
+      [
+       0,
+       10,
+       8
+      ],
+      [
+       -15,
+       0,
+       8
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 1673
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 4386,
+    "faces": 10,
+    "bbox": [
+     -15,
+     -10,
+     0,
+     15,
+     10.000000000000002,
+     8
+    ]
+   },
+   "brepSeq": {
+    "volume": 4386,
+    "faces": 10,
+    "bbox": [
+     -15,
+     -10.000000000000002,
+     0,
+     15,
+     10,
+     8
+    ]
+   },
+   "occtSim": {
+    "volume": 4385.999999999999,
+    "faces": 10,
+    "bbox": [
+     -15,
+     -10.000000000000004,
+     0,
+     15,
+     10.000000000000004,
+     8
+    ],
+    "types": {
+     "plane": 10
+    },
+    "edgeDist": 0,
+    "distinctEdges": 4
+   }
+  },
+  "base": {
+   "volume": 4799.999999999999,
+   "faces": 6,
+   "bbox": [
+    -15,
+    -10,
+    0,
+    15,
+    10,
+    8
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 9.61951160636478e-17,
+   "grouped": 9.61951160636478e-17,
+   "contract": 9.61951160636478e-17
+  },
+  "ms": 8342
+ },
+ {
+  "id": "c-pull-rect-top4-bevel-10-oversize",
+  "group": "c-mixed",
+  "note": "opposite blends 10 + 10 on a 20 wide face and 10 on an 8 tall wall",
+  "script": "const sk = sketch('top')\nsk.rect(30,20)\nconst p = pull(sk, 8)\nbevel(p.edge('top','front'), 10)\nbevel(p.edge('top','right'), 10)\nbevel(p.edge('top','back'), 10)\nbevel(p.edge('top','left'), 10)",
+  "pane": {
+   "volume": 3360,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 3360,
+     "faces": 6,
+     "bbox": [
+      -15,
+      -8,
+      0,
+      15,
+      10,
+      8
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel3",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked)",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "bevel4",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked))",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 1275
+  },
+  "contract": {
+   "volume": 4800,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4800,
+     "faces": 6,
+     "bbox": [
+      -15,
+      -10,
+      0,
+      15,
+      10,
+      8
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The bevel bevel1 is as big as or bigger than the face it cuts into (8 wide), so bevel1 is shown without it -- use a size under 8.",
+     "refusal": "bevel1 (fillet): GUARD too-big",
+     "guard": {
+      "ok": false,
+      "code": "too-big",
+      "args": {
+       "face": "F2:side:l1",
+       "extent": 8,
+       "equal": false,
+       "edge": "F2:side:l1|F2:top",
+       "faces": [
+        "F2:side:l1",
+        "F2:top"
+       ],
+       "size": 10,
+       "style": "chamfer",
+       "legs": [
+        {
+         "face": "F2:side:l1",
+         "nbr": "F2:side:l1|F2:side:l2",
+         "reach": 8
+        }
+       ],
+       "member": 0,
+       "ofGroup": 4
+      }
+     },
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    },
+    {
+     "id": "bevel2",
+     "status": "refused",
+     "sentence": "The bevel bevel2 is as big as or bigger than the face it cuts into (8 wide), so bevel2 is shown without it -- use a size under 8.",
+     "refusal": "bevel2 (fillet): GUARD too-big",
+     "guard": {
+      "ok": false,
+      "code": "too-big",
+      "args": {
+       "face": "F2:side:l1",
+       "extent": 8,
+       "equal": false,
+       "edge": "F2:side:l1|F2:top",
+       "faces": [
+        "F2:side:l1",
+        "F2:top"
+       ],
+       "size": 10,
+       "style": "chamfer",
+       "legs": [
+        {
+         "face": "F2:side:l1",
+         "nbr": "F2:side:l1|F2:side:l2",
+         "reach": 8
+        }
+       ],
+       "member": 0,
+       "ofGroup": 4
+      }
+     },
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    },
+    {
+     "id": "bevel3",
+     "status": "refused",
+     "sentence": "The bevel bevel3 is as big as or bigger than the face it cuts into (8 wide), so bevel3 is shown without it -- use a size under 8.",
+     "refusal": "bevel3 (fillet): GUARD too-big",
+     "guard": {
+      "ok": false,
+      "code": "too-big",
+      "args": {
+       "face": "F2:side:l1",
+       "extent": 8,
+       "equal": false,
+       "edge": "F2:side:l1|F2:top",
+       "faces": [
+        "F2:side:l1",
+        "F2:top"
+       ],
+       "size": 10,
+       "style": "chamfer",
+       "legs": [
+        {
+         "face": "F2:side:l1",
+         "nbr": "F2:side:l1|F2:side:l2",
+         "reach": 8
+        }
+       ],
+       "member": 0,
+       "ofGroup": 4
+      }
+     },
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    },
+    {
+     "id": "bevel4",
+     "status": "refused",
+     "sentence": "The bevel bevel4 is as big as or bigger than the face it cuts into (8 wide), so bevel4 is shown without it -- use a size under 8.",
+     "refusal": "bevel4 (fillet): GUARD too-big",
+     "guard": {
+      "ok": false,
+      "code": "too-big",
+      "args": {
+       "face": "F2:side:l1",
+       "extent": 8,
+       "equal": false,
+       "edge": "F2:side:l1|F2:top",
+       "faces": [
+        "F2:side:l1",
+        "F2:top"
+       ],
+       "size": 10,
+       "style": "chamfer",
+       "legs": [
+        {
+         "face": "F2:side:l1",
+         "nbr": "F2:side:l1|F2:side:l2",
+         "reach": 8
+        }
+       ],
+       "member": 0,
+       "ofGroup": 4
+      }
+     },
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ],
+      [
+       15,
+       0,
+       8
+      ],
+      [
+       0,
+       10,
+       8
+      ],
+      [
+       -15,
+       0,
+       8
+      ]
+     ],
+     "size": 10
+    },
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ],
+      [
+       15,
+       0,
+       8
+      ],
+      [
+       0,
+       10,
+       8
+      ],
+      [
+       -15,
+       0,
+       8
+      ]
+     ],
+     "size": 10
+    },
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ],
+      [
+       15,
+       0,
+       8
+      ],
+      [
+       0,
+       10,
+       8
+      ],
+      [
+       -15,
+       0,
+       8
+      ]
+     ],
+     "size": 10
+    },
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ],
+      [
+       15,
+       0,
+       8
+      ],
+      [
+       0,
+       10,
+       8
+      ],
+      [
+       -15,
+       0,
+       8
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 1562
+  },
+  "grouped": {
+   "volume": 1322.6666666666663,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 1322.6666666666663,
+     "faces": 5,
+     "bbox": [
+      -13.000000000000002,
+      -8.000000000000002,
+      -6.217248937900871e-15,
+      13,
+      8,
+      8.000000000000004
+     ],
+     "faceTypes": {
+      "plane": 5
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    },
+    {
+     "id": "bevel2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    },
+    {
+     "id": "bevel3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    },
+    {
+     "id": "bevel4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "bevel1",
+      "bevel2",
+      "bevel3",
+      "bevel4"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ],
+      [
+       15,
+       0,
+       8
+      ],
+      [
+       0,
+       10,
+       8
+      ],
+      [
+       -15,
+       0,
+       8
+      ]
+     ],
+     "size": 10
+    }
+   ],
+   "ms": 1662
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Chamfering Bevel 1 at 10 would not fit its edge -- Bevel 1 is shown without it. | Chamfering Bevel 2 at 10 would not fit its edge -- Bevel 2 is shown without it. | Chamfering Bevel 3 at 10 would not f",
+    "shapeWithout": {
+     "volume": 4799.999999999999,
+     "faces": 6
+    }
+   },
+   "brepSeq": {
+    "refused": "Chamfering bevel1 at 10 would not fit its edge -- bevel1 is shown without it. | Chamfering bevel2 at 10 would not fit its edge -- bevel2 is shown without it. | Chamfering bevel3 at 10 would not fit it",
+    "shapeWithout": {
+     "volume": 4799.999999999999,
+     "faces": 6
+    }
+   },
+   "occtSim": {
+    "refused": "OCCT maker not done",
+    "edgeDist": 0
+   }
+  },
+  "base": {
+   "volume": 4799.999999999999,
+   "faces": 6,
+   "bbox": [
+    -15,
+    -10,
+    0,
+    15,
+    10,
+    8
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": null,
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "no-oracle",
+   "contract": "some-refused"
+  },
+  "ms": 10300
+ },
+ {
+  "id": "c-hole-then-top4-round-1",
+  "group": "c-mixed",
+  "note": "hole in the middle of the top face, loop of 4 top edges r1 (far from the hole)",
+  "script": "const b = cuboid(40,30,12)\nhole(b,{across:6,at:[0,0]})\nround(b.edge('top','front'), 1)\nround(b.edge('top','right'), 1)\nround(b.edge('top','back'), 1)\nround(b.edge('top','left'), 1)",
+  "pane": {
+   "volume": 14052.139179553298,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14052.139179553298,
+     "faces": 8,
+     "bbox": [
+      -20.00000000000001,
+      -15,
+      -6.000000000000004,
+      20.00000000000001,
+      15,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round3",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked)",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round4",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked))",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 3036
+  },
+  "contract": {
+   "volume": 14031.053321042664,
+   "faces": 11,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14031.053321042664,
+     "faces": 11,
+     "bbox": [
+      -20.000000000000004,
+      -15.00000000000002,
+      -6.000000000000004,
+      20.000000000000004,
+      15.00000000000002,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 5,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       6
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 6282
+  },
+  "grouped": {
+   "volume": 14031.053321042664,
+   "faces": 11,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14031.053321042664,
+     "faces": 11,
+     "bbox": [
+      -20.000000000000004,
+      -15.00000000000002,
+      -6.000000000000004,
+      20.000000000000004,
+      15.00000000000002,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 5,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       6
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 5250
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14021.032465326536,
+    "faces": 19,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs cannot round round2 on this part even before the cuts -- round2 is shown without it. | brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to i",
+    "shapeWithout": {
+     "volume": 14043.539846484098,
+     "faces": 9
+    }
+   },
+   "occtSim": {
+    "volume": 14031.047217651403,
+    "faces": 11,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 5
+    },
+    "edgeDist": 0,
+    "distinctEdges": 4
+   }
+  },
+  "base": {
+   "volume": 14060.707993412301,
+   "faces": 7,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 2.0727682013028587e-16,
+   "grouped": 3.8000750357219074e-16,
+   "contract": 3.8000750357219074e-16
+  },
+  "ms": 21084
+ },
+ {
+  "id": "c-hole-near-then-top4-round-3",
+  "group": "c-mixed",
+  "note": "hole 6 mm from the front edge; r3 reaches it",
+  "script": "const b = cuboid(40,30,12)\nhole(b,{across:6,at:[0,-9]})\nround(b.edge('top','front'), 3)\nround(b.edge('top','right'), 3)\nround(b.edge('top','back'), 3)\nround(b.edge('top','left'), 3)",
+  "pane": {
+   "volume": 13983.457025727921,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13983.457025727921,
+     "faces": 8,
+     "bbox": [
+      -20.00000000000001,
+      -15,
+      -6.000000000000009,
+      20.000000000000007,
+      15,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round3",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked)",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round4",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked))",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 3017
+  },
+  "contract": {
+   "volume": 13800.614711864591,
+   "faces": 11,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13800.614711864591,
+     "faces": 11,
+     "bbox": [
+      -20.000000000000014,
+      -15.00000000000001,
+      -6.000000000000009,
+      20.000000000000018,
+      15.000000000000016,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 5,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       6
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 2965
+  },
+  "grouped": {
+   "volume": 13800.614711864591,
+   "faces": 11,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13800.614711864591,
+     "faces": 11,
+     "bbox": [
+      -20.000000000000014,
+      -15.00000000000001,
+      -6.000000000000009,
+      20.000000000000018,
+      15.000000000000016,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 5,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       6
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 2721
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13715.681348826623,
+    "faces": 19,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "refused": "round round1 would reach a cut made earlier, and brep-rs can only round a corner the cuts stay clear of; round before you cut or hollow, or keep the cut away from that edge -- round1 is shown without ",
+    "shapeWithout": {
+     "volume": 13944.823001646924,
+     "faces": 9
+    }
+   },
+   "occtSim": {
+    "volume": 13800.663675343994,
+    "faces": 11,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 5
+    },
+    "edgeDist": 0,
+    "distinctEdges": 4
+   }
+  },
+  "base": {
+   "volume": 14060.707993412301,
+   "faces": 7,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 2.0727682013028587e-16,
+   "grouped": 3.454613668838098e-16,
+   "contract": 3.454613668838098e-16
+  },
+  "ms": 13862
+ },
+ {
+  "id": "c-top4-round-1-then-hole",
+  "group": "c-mixed",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','front'), 1)\nround(b.edge('top','right'), 1)\nround(b.edge('top','back'), 1)\nround(b.edge('top','left'), 1)\nhole(b,{across:6,at:[0,0]})",
+  "pane": {
+   "volume": 14391.410296184577,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14391.410296184577,
+     "faces": 7,
+     "bbox": [
+      -20.00000000000001,
+      -15,
+      -6,
+      20.00000000000001,
+      15,
+      6.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round3",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked)",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round4",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked))",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "hole1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "hole1 (hole): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked)))",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 606
+  },
+  "contract": {
+   "volume": 14031.05332090646,
+   "faces": 11,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14031.05332090646,
+     "faces": 11,
+     "bbox": [
+      -20.000000000000004,
+      -15.00000000000002,
+      -6.0000000000000036,
+      20.000000000000004,
+      15.00000000000002,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 5,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       6
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 2874
+  },
+  "grouped": {
+   "volume": 14031.05332090646,
+   "faces": 11,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14031.05332090646,
+     "faces": 11,
+     "bbox": [
+      -20.000000000000004,
+      -15.00000000000002,
+      -6.0000000000000036,
+      20.000000000000004,
+      15.00000000000002,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 5,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       6
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 2627
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14021.032465326536,
+    "faces": 19,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it. | brep-rs can only ",
+    "shapeWithout": {
+     "volume": 14043.539846484098,
+     "faces": 9
+    }
+   },
+   "closedForm": {
+    "volume": 14031.047217651403,
+    "faces": 11,
+    "why": "order independence: the 6 mm hole is 14 mm from every blended edge, so hole-then-loop and loop-then-hole are the same solid; the number is OCCT simultaneous of the hole-first case (OCCT one-by-one blends the loop with tangent propagation and builds a different solid)"
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": false,
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "volume-differs 7.1e-4",
+   "contract": "volume-differs 7.1e-4"
+  },
+  "bboxDelta": {
+   "pane": 2.0727682013028587e-16,
+   "grouped": 3.8000750357219074e-16,
+   "contract": 3.8000750357219074e-16
+  },
+  "ms": 10229
+ },
+ {
+  "id": "c-top4-round-3-then-bottom4-round-3",
+  "group": "c-mixed",
+  "note": "eight rounds in one run, two connected sets",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 3)\nround(plate.edge('top','right'), 3)\nround(plate.edge('top','back'), 3)\nround(plate.edge('top','left'), 3)\nround(plate.edge('bottom','front'), 3)\nround(plate.edge('bottom','right'), 3)\nround(plate.edge('bottom','back'), 3)\nround(plate.edge('bottom','left'), 3)",
+  "pane": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round3",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked)",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round4",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked))",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round5",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked)))",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round6",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round6 (fillet): its target round5 was refused (round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked))))",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round7",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round7 (fillet): its target round6 was refused (round6 (fillet): its target round5 was refused (round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked)))))",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round8",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round8 (fillet): its target round7 was refused (round7 (fillet): its target round6 was refused (round6 (fillet): its target round5 was refused (round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked))))))",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 669
+  },
+  "contract": {
+   "volume": 11479.723614777948,
+   "faces": 14,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11479.723614777948,
+     "faces": 14,
+     "bbox": [
+      -1.4210854715202004e-14,
+      -1.0658141046250769e-14,
+      0,
+      40.000000000000014,
+      30.000000000000014,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 8,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round5",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round6",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round7",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round8",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       15,
+       10
+      ],
+      [
+       20,
+       30,
+       10
+      ],
+      [
+       0,
+       15,
+       10
+      ]
+     ],
+     "size": 3
+    },
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       0
+      ],
+      [
+       40,
+       15,
+       0
+      ],
+      [
+       20,
+       30,
+       0
+      ],
+      [
+       0,
+       15,
+       0
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 3590
+  },
+  "grouped": {
+   "volume": 11479.723614777948,
+   "faces": 14,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11479.723614777948,
+     "faces": 14,
+     "bbox": [
+      -1.4210854715202004e-14,
+      -1.0658141046250769e-14,
+      0,
+      40.000000000000014,
+      30.000000000000014,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 8,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round5",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round6",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round7",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round8",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       15,
+       10
+      ],
+      [
+       20,
+       30,
+       10
+      ],
+      [
+       0,
+       15,
+       10
+      ]
+     ],
+     "size": 3
+    },
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       0
+      ],
+      [
+       40,
+       15,
+       0
+      ],
+      [
+       20,
+       30,
+       0
+      ],
+      [
+       0,
+       15,
+       0
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 2863
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Round 6's edge could not be found -- Round 6 is shown without it. | Rounding Round 7 at 3 would not fit its edge -- Round 7 is shown without it. | Rounding Round 8 at 3 would not fit its edge -- Round",
+    "shapeWithout": {
+     "volume": 11418.106036414742,
+     "faces": 26
+    }
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it. | brep-rs can only ",
+    "shapeWithout": {
+     "volume": 11690.973355292326,
+     "faces": 10
+    }
+   },
+   "occtSim": {
+    "volume": 11479.911364312367,
+    "faces": 14,
+    "bbox": [
+     -4.440892098500626e-16,
+     -4.440892098500626e-16,
+     -4.440892098500626e-16,
+     40,
+     30,
+     10
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 8
+    },
+    "edgeDist": 0,
+    "distinctEdges": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 2.786977903755656e-16,
+   "grouped": 2.786977903755656e-16,
+   "contract": 2.786977903755656e-16
+  },
+  "ms": 11561
+ },
+ {
+  "id": "c-top4-round-3-then-vert4-round-3",
+  "group": "c-mixed",
+  "note": "top loop plus the 4 vertical edges: one connected set of 8",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround(plate.edge('top','front'), 3)\nround(plate.edge('top','right'), 3)\nround(plate.edge('top','back'), 3)\nround(plate.edge('top','left'), 3)\nround(plate.edge('front','left'), 3)\nround(plate.edge('front','right'), 3)\nround(plate.edge('back','left'), 3)\nround(plate.edge('back','right'), 3)",
+  "pane": {
+   "volume": 11922.69267166096,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11922.69267166096,
+     "faces": 7,
+     "bbox": [
+      -2.6096948363226262e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round3",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked)",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round4",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked))",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round5",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked)))",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round6",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round6 (fillet): its target round5 was refused (round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked))))",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round7",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round7 (fillet): its target round6 was refused (round6 (fillet): its target round5 was refused (round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked)))))",
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round8",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round8 (fillet): its target round7 was refused (round7 (fillet): its target round6 was refused (round6 (fillet): its target round5 was refused (round5 (fillet): its target round4 was refused (round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[+x]] resolves to F2:side:l2|F2:top on pull1, but that edge is no longer present whole on b_pull1 (an operation after pull1 changed or removed it); nothing is picked))))))",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 874
+  },
+  "contract": {
+   "volume": 11670.225860549623,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11670.225860549623,
+     "faces": 18,
+     "bbox": [
+      -3.1086244689504344e-15,
+      -7.105427357601002e-15,
+      -1.818248199442312e-15,
+      40.00000000000001,
+      30.000000000000007,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 8,
+      "plane": 6,
+      "sphere": 4
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round5",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round6",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round7",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round8",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       15,
+       10
+      ],
+      [
+       20,
+       30,
+       10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       0,
+       0,
+       5
+      ],
+      [
+       40,
+       0,
+       5
+      ],
+      [
+       0,
+       30,
+       5
+      ],
+      [
+       40,
+       30,
+       5
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 2602
+  },
+  "grouped": {
+   "volume": 11670.225860549623,
+   "faces": 18,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11670.225860549623,
+     "faces": 18,
+     "bbox": [
+      -3.1086244689504344e-15,
+      -7.105427357601002e-15,
+      -1.818248199442312e-15,
+      40.00000000000001,
+      30.000000000000007,
+      10.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 8,
+      "plane": 6,
+      "sphere": 4
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round3",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round4",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round5",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round6",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round7",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    },
+    {
+     "id": "round8",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2",
+      "round3",
+      "round4",
+      "round5",
+      "round6",
+      "round7",
+      "round8"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ],
+      [
+       40,
+       15,
+       10
+      ],
+      [
+       20,
+       30,
+       10
+      ],
+      [
+       0,
+       15,
+       10
+      ],
+      [
+       0,
+       0,
+       5
+      ],
+      [
+       40,
+       0,
+       5
+      ],
+      [
+       0,
+       30,
+       5
+      ],
+      [
+       40,
+       30,
+       5
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 3081
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Round 5's edge could not be found -- Round 5 is shown without it. | Rounding Round 6 at 3 would not fit its edge -- Round 6 is shown without it. | Rounding Round 7 at 3 would not fit its edge -- Round",
+    "shapeWithout": {
+     "volume": 11670.424687637189,
+     "faces": 18
+    }
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it. | brep-rs can only ",
+    "shapeWithout": {
+     "volume": 11845.486677646164,
+     "faces": 8
+    }
+   },
+   "occtSim": {
+    "volume": 11670.424687637187,
+    "faces": 18,
+    "bbox": [
+     -4.440892098500626e-16,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 8,
+     "sphere": 4
+    },
+    "edgeDist": 0,
+    "distinctEdges": 8
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 2.786977903755656e-16,
+   "grouped": 1.393488951877828e-16,
+   "contract": 1.393488951877828e-16
+  },
+  "ms": 10807
+ },
+ {
+  "id": "c-cyl-top-bottom-round-3",
+  "group": "c-mixed",
+  "note": "two rims, two components",
+  "script": "const c = cylinder(24,30)\nround(c.edge('top','side'), 3)\nround(c.edge('bottom','side'), 3)",
+  "pane": {
+   "volume": 13296.165734206565,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13296.165734206565,
+     "faces": 5,
+     "bbox": [
+      -11.999814674558857,
+      -11.999716590294605,
+      -15.000000000000012,
+      11.999814674558863,
+      11.999716590294604,
+      15
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       -6.904867347122082,
+       9.814418317895726,
+       14.999999999999998
+      ]
+     ],
+     "size": 3
+    },
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       6.904867347122084,
+       -9.814418317895731,
+       -15
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 17319
+  },
+  "contract": {
+   "volume": 13296.165734206565,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13296.165734206565,
+     "faces": 5,
+     "bbox": [
+      -11.999814674558857,
+      -11.999716590294605,
+      -15.000000000000012,
+      11.999814674558863,
+      11.999716590294604,
+      15
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       -6.904867347122082,
+       9.814418317895726,
+       14.999999999999998
+      ]
+     ],
+     "size": 3
+    },
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       6.904867347122084,
+       -9.814418317895731,
+       -15
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 17621
+  },
+  "grouped": {
+   "volume": 13296.165734206565,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13296.165734206565,
+     "faces": 5,
+     "bbox": [
+      -11.999814674558857,
+      -11.999716590294605,
+      -15.000000000000012,
+      11.999814674558863,
+      11.999716590294604,
+      15
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 2,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    },
+    {
+     "id": "round2",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": [
+      "round1",
+      "round2"
+     ]
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       -6.904867347122082,
+       9.814418317895726,
+       14.999999999999998
+      ]
+     ],
+     "size": 3
+    },
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       6.904867347122084,
+       -9.814418317895731,
+       -15
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 24407
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13296.693532468435,
+    "faces": 5,
+    "bbox": [
+     -12.0000001,
+     -12,
+     -15,
+     12,
+     12.0000001,
+     15
+    ]
+   },
+   "brepSeq": {
+    "volume": 13296.69353246844,
+    "faces": 5,
+    "bbox": [
+     -12,
+     -12,
+     -15,
+     12,
+     12,
+     15
+    ]
+   },
+   "occtSim": {
+    "volume": 13296.693532468435,
+    "faces": 5,
+    "bbox": [
+     -12.0000001,
+     -12,
+     -15,
+     12,
+     12.0000001,
+     15
+    ],
+    "types": {
+     "cylinder": 1,
+     "other": 2,
+     "plane": 2
+    },
+    "edgeDist": 0.005873190541272195,
+    "distinctEdges": 2
+   }
+  },
+  "base": {
+   "volume": 13571.680263507908,
+   "faces": 3,
+   "bbox": [
+    -12,
+    -12,
+    -15,
+    12,
+    12,
+    15
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 6.258629624336339e-06,
+   "grouped": 6.258629624336339e-06,
+   "contract": 6.258629624336339e-06
+  },
+  "ms": 64660
+ },
+ {
+  "id": "c-box-1-edge-list-of-1",
+  "group": "c-mixed",
+  "note": "a list of one edge",
+  "script": "const sk1 = sketch('top')\nsk1.rect(40, 30, { at: [20, 15] })\nconst plate = extrude(sk1, 10)\nround([plate.edge('top','front')], 2)",
+  "pane": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1134
+  },
+  "contract": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1033
+  },
+  "grouped": {
+   "volume": 11965.641185737959,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 11965.641185737959,
+     "faces": 7,
+     "bbox": [
+      -2.24073944016881e-15,
+      0,
+      0,
+      40.000000000000014,
+      30,
+      10.000000000000002
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       10
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 824
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 11965.663706157095,
+    "faces": 7,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "brepSeq": {
+    "volume": 11965.66370614359,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "occtSim": {
+    "volume": 11965.663706157095,
+    "faces": 7,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     40,
+     30,
+     10
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "edgeDist": 0,
+    "distinctEdges": 1
+   }
+  },
+  "base": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 2.786977903755656e-16,
+   "grouped": 2.786977903755656e-16,
+   "contract": 2.786977903755656e-16
+  },
+  "ms": 8524
+ }
+]

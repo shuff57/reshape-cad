@@ -1,0 +1,3 @@
+[{"id":"sk1","status":"noop"},{"id":"sk2","status":"noop"},{"id":"bl1","status":"refused","refusal":"bl1 (blend): sketch sk1 is a constrained sketch (rows and rules); this demo maps those for extrude and pocket only, not for revolve, groove or blend"}]
+[{"id":"sk1","status":"noop"},{"id":"sk2","status":"noop"},{"id":"bl1","status":"refused","refusal":"bl1 (blend): sketch sk1 is a constrained sketch (rows and rules); this demo maps those for extrude and pocket only, not for revolve, groove or blend"}]
+[{"id":"sk1","status":"noop"},{"id":"sk2","status":"noop"},{"id":"bl1","status":"built","vol":15100.000000088012}]

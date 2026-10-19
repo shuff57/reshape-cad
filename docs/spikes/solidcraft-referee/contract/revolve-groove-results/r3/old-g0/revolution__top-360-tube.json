@@ -1,0 +1,239 @@
+[
+ {
+  "id": "revolution__top-360-tube",
+  "src": "const sk = sketch('top'); sk.rect(6, 20, { at: [11, 10] }); revolve(sk, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "revolution__top-360-tube",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "occt": {
+    "volume": 8293.804605477053,
+    "com": [
+     -6.140933591038516e-15,
+     -1.7121417708449376e-16,
+     10
+    ],
+    "bbox": [
+     -14,
+     -14,
+     0,
+     14,
+     14,
+     20
+    ],
+    "faces": 4,
+    "area": 3593.981995706723,
+    "types": {
+     "plane": 2,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 2,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 8293.804605477053,
+    "bbox": [
+     -14,
+     -14,
+     0,
+     14,
+     14,
+     20
+    ],
+    "faces": 4,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 820,
+   "load": [
+    22.2,
+    22.2
+   ],
+   "cpuMs": 1519,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "side": 1,
+      "kernelAngle": null,
+      "nudgeDeg": null
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        8,
+        0
+       ],
+       [
+        14,
+        0
+       ],
+       [
+        14,
+        20
+       ],
+       [
+        8,
+        20
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_rev1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": 0.00004121528459255247,
+    "area": 3593.8338687159494,
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "occtTypes": {
+     "plane": 2,
+     "cylinder": 2
+    },
+    "occtComponents": {
+     "plane": 2,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 8292.465186759015,
+    "bbox": [
+     -14,
+     -14,
+     0,
+     14,
+     14,
+     20
+    ],
+    "com": [
+     -2.2045125416776877e-14,
+     2.3397811387623886e-15,
+     10.0000000000001
+    ],
+    "faces": 4,
+    "kernelFaces": 12,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.00016149629533758678,
+    "dBbox": 0,
+    "dCom": 2.242361831389426e-15,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "fc": {
+   "volume": 8293.804605477057,
+   "bbox": [
+    -14,
+    -14,
+    -3.108624468950439e-15,
+    14,
+    14.000000000000005,
+    20.000000000000004
+   ],
+   "faces": 4,
+   "com": [
+    1.6448929261710303e-15,
+    2.262163520478653e-15,
+    10
+   ]
+  },
+  "vsFc": {
+   "occt": {
+    "dVol": 4.3863811364560807e-16,
+    "dBbox": 5.329070518200751e-15,
+    "faces": 4,
+    "dCom": 7.785826517209546e-15
+   },
+   "brep": {
+    "dVol": 4.3863811364560807e-16,
+    "dBbox": 5.329070518200751e-15,
+    "faces": 4
+   },
+   "truck": {
+    "dVol": 0.00016149629533802537,
+    "dBbox": 5.329070518200751e-15,
+    "faces": 4,
+    "dCom": 9.947598300641403e-14
+   }
+  },
+  "caseMs": 890
+ }
+]

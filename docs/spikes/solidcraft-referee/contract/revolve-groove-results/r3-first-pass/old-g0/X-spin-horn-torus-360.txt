@@ -1,0 +1,1 @@
+X-spin-horn-torus-360                    NO-OCCT OCCT: OCCT built nothing | truck V 2467.1258 F 1 bbox -10,-9.9999,10,10,9.9999,20 types {"other":1} bodies 1 | brep REFUSED revolve rev1: a circle sketch has no outline to spin | ANALYTIC 2467.4011 dTruck 1.1e-4 dBrep - | ms 8719 cpu 8957

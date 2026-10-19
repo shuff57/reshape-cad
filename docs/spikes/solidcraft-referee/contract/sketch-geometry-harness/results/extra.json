@@ -1,0 +1,1737 @@
+[
+ {
+  "id": "selfx-pentagram",
+  "feature": ".polygon",
+  "what": "pentagram {5/2}: self-crossing five-point star order",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       6.123233995736766e-16,
+       10
+      ],
+      [
+       -5.877852522924733,
+       -8.090169943749473
+      ],
+      [
+       9.510565162951536,
+       3.090169943749472
+      ],
+      [
+       -9.510565162951535,
+       3.090169943749478
+      ],
+      [
+       5.877852522924728,
+       -8.090169943749476
+      ]
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 1469.463130731183,
+   "bbox": [
+    -9.510565162951536,
+    -8.090169943749476,
+    0,
+    9.510565162951536,
+    10,
+    10
+   ],
+   "com": [
+    2.496974819778151e-16,
+    1.3697387310636132e-16,
+    4.999999999999999
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 7
+   }
+  },
+  "brep": {
+   "refused": "extrude pull1: this sketch's outline cannot be pulled: two of its edges cross each other, so it does not enclose one area -- move a corner so no edge crosses another."
+  },
+  "curved": false,
+  "truck": {
+   "volume": 1122.5699414489634,
+   "bbox": [
+    -9.510565162951536,
+    -8.090169943749476,
+    0,
+    9.510565162951536,
+    10,
+    10
+   ],
+   "com": [
+    -9.114635103928287e-16,
+    5.401265246772318e-16,
+    5
+   ],
+   "faces": 12,
+   "kernelFaces": 12,
+   "faceTypes": {
+    "plane": 12
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolOcct": 0.23606797749978978,
+   "dBboxOcct": 0,
+   "dComOcct": 4.133691589249431e-17,
+   "comTol": 0.000001,
+   "faceKeys": {
+    "plane": "UNEXPLAINED"
+   },
+   "faceOk": false
+  },
+  "translatorReported": {
+   "volume": 1122.5699414489634,
+   "bodies": 1,
+   "faces": 12
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       6.123233995736766e-16,
+       10
+      ],
+      [
+       -5.877852522924733,
+       -8.090169943749473
+      ],
+      [
+       9.510565162951536,
+       3.090169943749472
+      ],
+      [
+       -9.510565162951535,
+       3.090169943749478
+      ],
+      [
+       5.877852522924728,
+       -8.090169943749476
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT",
+  "geomOk": false,
+  "exactOk": null,
+  "outcome": "FAIL"
+ },
+ {
+  "id": "selfx-unequal-bowtie",
+  "feature": ".polygon",
+  "what": "figure-8 with unequal lobes",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       10
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       2,
+       6
+      ]
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 200.00000000000003,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ],
+   "com": [
+    10.666666666666666,
+    5.333333333333333,
+    5
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "refused": "extrude pull1: this sketch's outline cannot be pulled: two of its edges cross each other, so it does not enclose one area -- move a corner so no edge crosses another."
+  },
+  "curved": false,
+  "truck": {
+   "volume": 371.42857142857144,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ],
+   "com": [
+    6.71062271062271,
+    4.454212454212454,
+    5
+   ],
+   "faces": 10,
+   "kernelFaces": 10,
+   "faceTypes": {
+    "plane": 10
+   },
+   "bodies": 2,
+   "tol": 1e-9,
+   "dVolOcct": 0.857142857142857,
+   "dBboxOcct": 0,
+   "dComOcct": 0.22840230429479705,
+   "comTol": 0.000001,
+   "faceKeys": {
+    "plane": "UNEXPLAINED"
+   },
+   "faceOk": false
+  },
+  "translatorReported": {
+   "volume": 285.7142857142857,
+   "bodies": 1,
+   "faces": 5
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       10
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       2,
+       6
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT",
+  "geomOk": false,
+  "exactOk": null,
+  "outcome": "FAIL"
+ },
+ {
+  "id": "selfx-pinch",
+  "feature": ".polygon",
+  "what": "vertex (5,0) lands on the edge (0,0)-(10,0): pinched",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       10,
+       10
+      ],
+      [
+       5,
+       0
+      ],
+      [
+       0,
+       10
+      ]
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 499.9999999999998,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ],
+   "com": [
+    4.999999999999999,
+    3.333333333333333,
+    4.999999999999998
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 7
+   }
+  },
+  "brep": {
+   "refused": "extrude pull1: this sketch's outline cannot be pulled: two of its edges touch where they should not (a corner lands on another edge, or two curves just touch), so the outline pinches -- move it so they stay apart."
+  },
+  "curved": false,
+  "truck": {
+   "volume": 500,
+   "bbox": [
+    0,
+    0,
+    0,
+    10,
+    10,
+    10
+   ],
+   "com": [
+    5,
+    3.3333333333333335,
+    5
+   ],
+   "faces": 10,
+   "kernelFaces": 10,
+   "faceTypes": {
+    "plane": 10
+   },
+   "bodies": 2,
+   "tol": 1e-9,
+   "dVolOcct": 4.547473508864643e-16,
+   "dBboxOcct": 0,
+   "dComOcct": 1.0255800994045675e-16,
+   "comTol": 0.000001,
+   "faceKeys": {
+    "plane": "UNEXPLAINED"
+   },
+   "faceOk": false
+  },
+  "translatorReported": {
+   "volume": 250,
+   "bodies": 1,
+   "faces": 5
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       10,
+       10
+      ],
+      [
+       5,
+       0
+      ],
+      [
+       0,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT",
+  "geomOk": true,
+  "exactOk": null,
+  "outcome": "PASS-FACES-DIFFER"
+ },
+ {
+  "id": "selfx-overlap-edges",
+  "feature": ".polygon",
+  "what": "a spike back through the outline",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       10,
+       10
+      ],
+      [
+       0,
+       10
+      ],
+      [
+       5,
+       10
+      ],
+      [
+       5,
+       -5
+      ]
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 374.9999999999999,
+   "bbox": [
+    0,
+    -5,
+    0,
+    10,
+    10,
+    10
+   ],
+   "com": [
+    8.888888888888891,
+    7.222222222222221,
+    5
+   ],
+   "faces": 8,
+   "types": {
+    "plane": 8
+   }
+  },
+  "brep": {
+   "refused": "extrude pull1: this sketch's outline cannot be pulled: two of its edges cross each other, so it does not enclose one area -- move a corner so no edge crosses another."
+  },
+  "curved": false,
+  "truck": {
+   "volume": 625,
+   "bbox": [
+    0,
+    -5,
+    0,
+    10,
+    10,
+    10
+   ],
+   "com": [
+    6.666666666666667,
+    3.6666666666666665,
+    5
+   ],
+   "faces": 11,
+   "kernelFaces": 11,
+   "faceTypes": {
+    "plane": 11
+   },
+   "bodies": 2,
+   "tol": 1e-9,
+   "dVolOcct": 0.6666666666666672,
+   "dBboxOcct": 0,
+   "dComOcct": 0.17246977780361453,
+   "comTol": 0.000001,
+   "faceKeys": {
+    "plane": "UNEXPLAINED"
+   },
+   "faceOk": false
+  },
+  "translatorReported": {
+   "volume": 500,
+   "bodies": 1,
+   "faces": 6
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       10,
+       10
+      ],
+      [
+       0,
+       10
+      ],
+      [
+       5,
+       10
+      ],
+      [
+       5,
+       -5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT",
+  "geomOk": false,
+  "exactOk": null,
+  "outcome": "FAIL"
+ },
+ {
+  "id": "param-values-circle-across",
+  "feature": "param circle/arc radius",
+  "what": "across 12 -> 20 by slider",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -10,
+       0
+      ],
+      [
+       10,
+       0
+      ]
+     ],
+     "shape": "circle"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 3141.592653589794,
+   "bbox": [
+    -10,
+    -10,
+    0,
+    10,
+    10,
+    10
+   ],
+   "com": [
+    1.0132540425213548e-15,
+    -1.0109923147478697e-15,
+    4.999999999999999
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 3141.592653589796,
+   "bbox": [
+    -10,
+    -10,
+    0,
+    10,
+    10,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 3141.5926535897934
+  },
+  "curved": true,
+  "truck": {
+   "volume": 3141.35312821641,
+   "bbox": [
+    -10,
+    -10.000000000000009,
+    0,
+    10,
+    10.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    7.025107214318413e-16,
+    -2.045391630303299e-15,
+    5.000000002006273
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.00007624329433996319,
+   "dBboxOcct": 8.881784197001252e-16,
+   "dComOcct": 6.687580859458345e-11,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.00007624329434068688,
+   "dBboxBrep": 8.881784197001252e-16,
+   "dVolExact": 0.00007624329433981845,
+   "occtVolExact": 1.447505775030507e-16,
+   "brepVolExact": 8.685034650183042e-16
+  },
+  "translatorReported": {
+   "volume": 3141.35312821641,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "diameter": 20
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "param-values-geom-r",
+  "feature": "param circle/arc radius",
+  "what": "circle row r 6 -> 9 by slider",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ],
+     "geoms": [
+      {
+       "k": "circle",
+       "id": 1,
+       "c": [
+        0,
+        0
+       ],
+       "r": 9
+      }
+     ],
+     "geom": [
+      {
+       "k": "circle",
+       "id": 1,
+       "c": [
+        0,
+        0
+       ],
+       "r": 9
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 2544.6900494077317,
+   "bbox": [
+    -9,
+    -9,
+    0,
+    9,
+    9,
+    10
+   ],
+   "com": [
+    -1.4296353333634642e-15,
+    -8.48845979184557e-16,
+    5
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 2544.690049407735,
+   "bbox": [
+    -9,
+    -9,
+    0,
+    9,
+    9,
+    10
+   ],
+   "faces": 3
+  },
+  "exact": {
+   "volume": 2544.690049407732
+  },
+  "curved": true,
+  "truck": {
+   "volume": 2544.4800857146547,
+   "bbox": [
+    -9.000000000000002,
+    -9.000000000000002,
+    0,
+    9,
+    9.000000000000002,
+    10.000000000000005
+   ],
+   "com": [
+    3.868143427875295e-15,
+    -1.1710429001097768e-15,
+    5.000000002006175
+   ],
+   "faces": 3,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.00008251051758775547,
+   "dBboxOcct": 5.329070518200751e-16,
+   "dComOcct": 7.335301479747279e-11,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.0000825105175890063,
+   "dBboxBrep": 5.329070518200751e-16,
+   "dVolExact": 0.00008251051758793416,
+   "occtVolExact": 1.78704416670433e-16,
+   "brepVolExact": 1.072226500022598e-15
+  },
+  "translatorReported": {
+   "volume": 2544.4800857146547,
+   "bodies": 1,
+   "faces": 3
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      0,
+      0
+     ],
+     "radius": 9,
+     "id": "g1",
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1",
+     "profiles": [
+      {
+       "point": [
+        8.583492077007644,
+        2.6037738553301684
+       ]
+      }
+     ]
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "param-values-arc-r",
+  "feature": "param circle/arc radius",
+  "what": "arc row r 10 -> 14 by slider: the arc moves, ends fixed (the sketch is NOT re-solved here)",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       25
+      ],
+      [
+       0,
+       25
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ],
+     "geoms": [
+      {
+       "k": "line",
+       "id": 1,
+       "a": [
+        0,
+        -10
+       ],
+       "b": [
+        0,
+        10
+       ]
+      },
+      {
+       "k": "arc",
+       "id": 2,
+       "c": [
+        0,
+        0
+       ],
+       "r": 14,
+       "a": [
+        0,
+        10
+       ],
+       "b": [
+        0,
+        -10
+       ],
+       "sense": "cw"
+      }
+     ],
+     "geom": [
+      {
+       "k": "line",
+       "id": 1,
+       "a": [
+        0,
+        -10
+       ],
+       "b": [
+        0,
+        10
+       ]
+      },
+      {
+       "k": "arc",
+       "id": 2,
+       "c": [
+        0,
+        0
+       ],
+       "r": 14,
+       "a": [
+        0,
+        10
+       ],
+       "b": [
+        0,
+        -10
+       ],
+       "sense": "cw"
+      }
+     ],
+     "rules": [
+      {
+       "k": "coincident",
+       "a": 1,
+       "aEnd": "b",
+       "b": 2,
+       "bEnd": "a"
+      },
+      {
+       "k": "coincident",
+       "a": 2,
+       "aEnd": "b",
+       "b": 1,
+       "bEnd": "a"
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "sk1: Sketch 1: this sketch measures 246.742633 mm2 as a face where its outline and 0 hole(s) come to 307.876080 mm2"
+  },
+  "brep": {
+   "volume": 1959.0319197544693,
+   "bbox": [
+    -3.9432761378410675e-7,
+    -11.002333048432028,
+    0,
+    11.263947441364628,
+    11.002333048432028,
+    10
+   ],
+   "faces": 4
+  },
+  "curved": true,
+  "truck": {
+   "volume": 2467.296083235541,
+   "bbox": [
+    -8.881784197001252e-16,
+    -10.571223384639277,
+    0,
+    14.000000000000004,
+    10.571223384639277,
+    10.000000000000005
+   ],
+   "com": [
+    6.130284008430973,
+    7.82768546628887e-13,
+    5.000000002793083
+   ],
+   "faces": 4,
+   "kernelFaces": 4,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 3
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolBrep": 0.2594465962273723,
+   "dBboxBrep": 0.2429035267501126
+  },
+  "translatorReported": {
+   "volume": 2467.296083235541,
+   "bodies": 1,
+   "faces": 4
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       -10
+      ],
+      [
+       0,
+       10
+      ]
+     ],
+     "ids": [
+      "g1"
+     ],
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      0,
+      10
+     ],
+     "end": [
+      0,
+      -10
+     ],
+     "through": [
+      14,
+      0
+     ],
+     "id": "g2",
+     "connect": false
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g1.end",
+     "b": "g2.end"
+    }
+   },
+   {
+    "command": "sketch.constraint.coincident",
+    "params": {
+     "a": "g2.start",
+     "b": "g1.start"
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1",
+     "profiles": [
+      {
+       "point": [
+        0.024424742523838208,
+        -8.73846153859712
+       ]
+      }
+     ]
+    }
+   }
+  ],
+  "refBasis": "brep-rs",
+  "geomOk": false,
+  "exactOk": null,
+  "outcome": "FAIL"
+ },
+ {
+  "id": "param-values-round",
+  "feature": ".round",
+  "what": "round r 3 -> 8 by slider",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ],
+     "rounds": {
+      "0": 8
+     }
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 10
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "volume": 11862.654824590401,
+   "bbox": [
+    -1.7763568394002505e-15,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "com": [
+    20.210869780038383,
+    15.15298004920966,
+    5
+   ],
+   "faces": 7,
+   "types": {
+    "cylinder": 1,
+    "plane": 6
+   }
+  },
+  "brep": {
+   "volume": 11862.654824574367,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7
+  },
+  "exact": {
+   "volume": 11862.654824574367
+  },
+  "curved": true,
+  "truck": {
+   "volume": 11862.564762953514,
+   "bbox": [
+    0,
+    -1.7763568394002505e-15,
+    0,
+    40,
+    30,
+    10.000000000000005
+   ],
+   "com": [
+    20.21099916528248,
+    15.153071035997725,
+    5.000000000000159
+   ],
+   "faces": 7,
+   "kernelFaces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 0.0003,
+   "dVolOcct": 0.000007592030470320529,
+   "dBboxOcct": 1.7763568394002505e-15,
+   "dComOcct": 0.000002537453401627994,
+   "comTol": 0.00003,
+   "faceKeys": {
+    "cylinder": "equal",
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "dVolBrep": 0.0000075920291186610485,
+   "dBboxBrep": 1.7763568394002505e-15,
+   "dVolExact": 0.0000075920291186610485,
+   "occtVolExact": 1.3516697425133114e-12,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 11862.564762953514,
+   "bodies": 1,
+   "faces": 7
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.arc.three_point",
+    "params": {
+     "start": [
+      0,
+      8.000000000000002
+     ],
+     "end": [
+      8.000000000000002,
+      0
+     ],
+     "through": [
+      2.3431457505076194,
+      2.343145750507621
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       8.000000000000002,
+       0
+      ],
+      [
+       40,
+       0
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       40,
+       0
+      ],
+      [
+       40,
+       30
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       40,
+       30
+      ],
+      [
+       0,
+       30
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       30
+      ],
+      [
+       0,
+       8.000000000000002
+      ]
+     ]
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "roundtrip-rect",
+  "feature": ".rect",
+  "custom": true,
+  "outcome": "ROUNDTRIP-EQUAL",
+  "summary": {
+   "text": "const sk1 = sketch('top')\nsk1.rect(30, 20, { at: [5, 5] })\nconst pull1 = extrude(sk1, 10)\n",
+   "errors": [],
+   "equal": true
+  }
+ },
+ {
+  "id": "roundtrip-circle",
+  "feature": ".circle",
+  "custom": true,
+  "outcome": "ROUNDTRIP-EQUAL",
+  "summary": {
+   "text": "const sk1 = sketch('front', 3)\nsk1.circle(10, { at: [5, 5] })\nconst pull1 = extrude(sk1, 10)\n",
+   "errors": [],
+   "equal": true
+  }
+ },
+ {
+  "id": "roundtrip-polygon-round-chamfer",
+  "feature": ".round",
+  "custom": true,
+  "outcome": "ROUNDTRIP-EQUAL",
+  "summary": {
+   "text": "const sk1 = sketch('top')\nsk1.polygon([[0, 0], [40, 0], [40, 30], [0, 30]])\nsk1.round(1, 5)\nsk1.chamfer(3, 4)\nconst pull1 = extrude(sk1, 10)\n",
+   "errors": [],
+   "equal": true
+  }
+ },
+ {
+  "id": "roundtrip-slot",
+  "feature": ".slot",
+  "custom": true,
+  "outcome": "ROUNDTRIP-EQUAL",
+  "summary": {
+   "text": "const sk1 = sketch('top')\nsk1.geom([{ k:'arc', id:1, c:[0, 0], r:5, a:[0, -5], b:[0, 5], sense:'cw' }, { k:'arc', id:2, c:[20, 0], r:5, a:[20, 5], b:[20, -5], sense:'cw' }, { k:'line', id:3, a:[0, 5], b:[20, 5] }, { k:'line', id:4, a:[20, -5], b:[0, -5] }])\nsk1.rules([{ k:'coincident', a:3, aEnd:'a', b:1, bEnd:'b' }, { k:'tangent', a:3, aEnd:'a', b:1, bEnd:'b' }, { k:'coincident', a:3, aEnd:'b', b:2, bEnd:'a' }, { k:'tangent', a:3, aEnd:'b', b:2, bEnd:'a' }, { k:'coincident', a:4, aEnd:'a', b:2, bEnd:'b' }, { k:'tangent', a:4, aEnd:'a', b:2, bEnd:'b' }, { k:'coincident', a:4, aEnd:'b', b:1, bEnd:'a' }, { k:'tangent', a:4, aEnd:'b', b:1, bEnd:'a' }])\nconst pull1 = extrude(sk1, 10)\n",
+   "errors": [],
+   "equal": true
+  }
+ },
+ {
+  "id": "roundtrip-geom",
+  "feature": ".geom",
+  "custom": true,
+  "outcome": "ROUNDTRIP-EQUAL",
+  "summary": {
+   "text": "const sk1 = sketch('top')\nsk1.geom([{ k:'line', id:1, a:[0, -10], b:[0, 10] }, { k:'arc', id:2, c:[0, 0], r:10, a:[0, 10], b:[0, -10], sense:'cw' }, { k:'point', id:3, p:[1, 1] }, { k:'line', id:4, a:[0, 0], b:[5, 5], construction: true }])\nsk1.rules([{ k:'coincident', a:1, aEnd:'b', b:2, bEnd:'a' }, { k:'coincident', a:2, aEnd:'b', b:1, bEnd:'a' }])\nconst pull1 = extrude(sk1, 10)\n",
+   "errors": [],
+   "equal": true
+  }
+ },
+ {
+  "id": "roundtrip-multi",
+  "feature": "several shapes",
+  "custom": true,
+  "outcome": "ROUNDTRIP-EQUAL",
+  "summary": {
+   "text": "const sk1 = sketch('top')\nsk1.geom([{ k:'line', id:1, a:[-20, -15], b:[20, -15] }, { k:'line', id:2, a:[20, -15], b:[20, 15] }, { k:'line', id:3, a:[20, 15], b:[-20, 15] }, { k:'line', id:4, a:[-20, 15], b:[-20, -15] }, { k:'circle', id:5, c:[0, 0], r:10 }, { k:'circle', id:6, c:[0, 0], r:4 }])\nsk1.rules([{ k:'coincident', a:1, aEnd:'b', b:2, bEnd:'a' }, { k:'coincident', a:2, aEnd:'b', b:3, bEnd:'a' }, { k:'coincident', a:3, aEnd:'b', b:4, bEnd:'a' }, { k:'coincident', a:4, aEnd:'b', b:1, bEnd:'a' }, { k:'horizontal', a:1 }, { k:'vertical', a:2 }, { k:'horizontal', a:3 }, { k:'vertical', a:4 }])\nconst pull1 = extrude(sk1, 10)\n",
+   "errors": [],
+   "equal": true
+  }
+ },
+ {
+  "id": "roundtrip-frame",
+  "feature": "sketch({origin,u,v})",
+  "custom": true,
+  "outcome": "ROUNDTRIP-EQUAL",
+  "summary": {
+   "text": "const sk1 = sketch({ origin: [1, 2, 3], u: [0, 1, 0], v: [0, 0, 1] })\nsk1.rect(10, 10)\nconst pull1 = extrude(sk1, 5)\n",
+   "errors": [],
+   "equal": true
+  }
+ },
+ {
+  "id": "roundtrip-datum",
+  "feature": "plane(datum)",
+  "custom": true,
+  "outcome": "ROUNDTRIP-EQUAL",
+  "summary": {
+   "text": "const pl1 = plane('side', 4)\nconst sk1 = sketch(pl1)\nsk1.rect(10, 10)\nconst pull1 = extrude(sk1, 5)\n",
+   "errors": [],
+   "equal": true
+  }
+ },
+ {
+  "id": "roundtrip-bulge-doc",
+  "feature": "bulges",
+  "custom": true,
+  "outcome": "BULGE-LOST",
+  "summary": {
+   "text": "const sk1 = sketch('top')\nsk1.polygon([[0, 0], [20, 0], [20, 20], [0, 20]])\nconst pull1 = extrude(sk1, 10)\n",
+   "errors": [],
+   "bulges": null
+  }
+ }
+]

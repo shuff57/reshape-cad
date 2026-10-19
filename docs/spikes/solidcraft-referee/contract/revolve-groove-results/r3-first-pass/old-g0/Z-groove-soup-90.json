@@ -1,0 +1,43 @@
+[
+ {
+  "id": "Z-groove-soup-90",
+  "src": "const sk1 = sketch('top'); sk1.circle(40); const cyl = extrude(sk1, 30); const g = sketch('top'); g.geom([{ k: 'circle', id: 1, c: [19, 12.5], r: 3 }, { k: 'circle', id: 2, c: [19, 12.5], r: 1 }]); groove(g, cyl, 90);",
+  "translator": "g0",
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "Z-groove-soup-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "invalid": "OCCT: Groove 1: sketch Sketch 2 is drawn as rows and rules, which this reference path cannot spin yet"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "groove groove1: this sketch's outline has a hole in it, and a spin builds only a solid outline -- draw the outline without the hole -- groove1 is shown without it."
+   },
+   "ms": 245,
+   "load": [
+    15.6,
+    15.6
+   ],
+   "cpuMs": 461,
+   "truck": {
+    "refused": "groove1 (groove): the sketch holds more than one shape (or a hole, geom() or slot()), and a groove takes one plain outline, so draw one rect, circle or polygon per sketch."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: Groove 1: sketch Sketch 2 is drawn as rows and rules, which this reference path cannot spin yet",
+  "caseMs": 267
+ }
+]

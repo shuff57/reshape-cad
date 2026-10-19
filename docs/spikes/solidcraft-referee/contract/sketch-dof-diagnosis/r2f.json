@@ -1,0 +1,489 @@
+{
+ "f1": [
+  {
+   "id": "X1-two-lengths-one-edge",
+   "scRefusalEdges": [
+    0
+   ],
+   "tsLosingEdges": [
+    0
+   ],
+   "brepBlameEdges": [
+    0
+   ],
+   "scCoversBrep": true,
+   "tsCoversBrep": true
+  },
+  {
+   "id": "X2-opposite-sides-different-lengths",
+   "scRefusalEdges": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "tsLosingEdges": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "brepBlameEdges": [
+    2
+   ],
+   "scCoversBrep": true,
+   "tsCoversBrep": true
+  },
+  {
+   "id": "X3-equal-vs-two-lengths",
+   "scRefusalEdges": [
+    0,
+    1
+   ],
+   "tsLosingEdges": [
+    0,
+    1
+   ],
+   "brepBlameEdges": [
+    0,
+    1
+   ],
+   "scCoversBrep": true,
+   "tsCoversBrep": true
+  },
+  {
+   "id": "X4-lock-vs-horizontal",
+   "scRefusalEdges": [
+    0
+   ],
+   "tsLosingEdges": [
+    0
+   ],
+   "brepBlameEdges": [
+    0
+   ],
+   "scCoversBrep": true,
+   "tsCoversBrep": true
+  },
+  {
+   "id": "X5-three-lengths-one-edge",
+   "scRefusalEdges": [
+    0
+   ],
+   "tsLosingEdges": [
+    0
+   ],
+   "brepBlameEdges": [
+    0
+   ],
+   "scCoversBrep": true,
+   "tsCoversBrep": true
+  },
+  {
+   "id": "X6-triangle-three-perpendicular",
+   "scRefusalEdges": [
+    1,
+    2
+   ],
+   "tsLosingEdges": [
+    0,
+    1,
+    2
+   ],
+   "brepBlameEdges": [
+    0,
+    2
+   ],
+   "scCoversBrep": false,
+   "tsCoversBrep": true
+  }
+ ],
+ "f2": [
+  {
+   "id": "D1-rect-lengths-lock",
+   "scDims": [
+    {
+     "asked": 40,
+     "measured": 40,
+     "type": "LinearDimension",
+     "dofAfter": 1
+    },
+    {
+     "asked": 25,
+     "measured": 25,
+     "type": "LinearDimension",
+     "dofAfter": 0
+    }
+   ],
+   "maxMeasuredVsAsked": 0,
+   "tsLengthLabels": [
+    {
+     "edge": 1,
+     "asked": 40,
+     "tsLabel": "40",
+     "tsKind": "dimension"
+    },
+    {
+     "edge": 2,
+     "asked": 25,
+     "tsLabel": "25",
+     "tsKind": "dimension"
+    }
+   ],
+   "labelsEqualAsked": true
+  },
+  {
+   "id": "D2-square-by-equal",
+   "scDims": [
+    {
+     "asked": 22,
+     "measured": 22,
+     "type": "LinearDimension",
+     "dofAfter": 1
+    }
+   ],
+   "maxMeasuredVsAsked": 0,
+   "tsLengthLabels": [
+    {
+     "edge": 1,
+     "asked": 22,
+     "tsLabel": "22",
+     "tsKind": "dimension"
+    }
+   ],
+   "labelsEqualAsked": true
+  },
+  {
+   "id": "D3-right-trapezoid-parallel-perpendicular-distX",
+   "scDims": [
+    {
+     "asked": 30,
+     "measured": 30,
+     "type": "LinearDimension",
+     "dofAfter": 4
+    },
+    {
+     "asked": 16,
+     "measured": 16,
+     "type": "LinearDimension",
+     "dofAfter": 1
+    },
+    {
+     "asked": 8,
+     "measured": 8,
+     "type": "LinearDimension",
+     "dofAfter": 0
+    }
+   ],
+   "maxMeasuredVsAsked": 0,
+   "tsLengthLabels": [
+    {
+     "edge": 1,
+     "asked": 30,
+     "tsLabel": "30",
+     "tsKind": "dimension"
+    },
+    {
+     "edge": 4,
+     "asked": 16,
+     "tsLabel": "16",
+     "tsKind": "dimension"
+    }
+   ],
+   "labelsEqualAsked": true
+  },
+  {
+   "id": "D4-rect-diagonal-distX-distY",
+   "scDims": [
+    {
+     "asked": 30,
+     "measured": 30,
+     "type": "LinearDimension",
+     "dofAfter": 1
+    },
+    {
+     "asked": 20,
+     "measured": 20,
+     "type": "LinearDimension",
+     "dofAfter": 0
+    }
+   ],
+   "maxMeasuredVsAsked": 0,
+   "tsLengthLabels": [],
+   "labelsEqualAsked": true
+  },
+  {
+   "id": "D5-pentagon-symmetric-centre",
+   "scDims": [
+    {
+     "asked": 10,
+     "measured": 10,
+     "type": "LinearDimension",
+     "dofAfter": 6
+    },
+    {
+     "asked": 8,
+     "measured": 8,
+     "type": "LinearDimension",
+     "dofAfter": 4
+    },
+    {
+     "asked": 10,
+     "measured": 10,
+     "type": "LinearDimension",
+     "dofAfter": 2
+    }
+   ],
+   "maxMeasuredVsAsked": 0,
+   "tsLengthLabels": [
+    {
+     "edge": 1,
+     "asked": 10,
+     "tsLabel": "10",
+     "tsKind": "dimension"
+    },
+    {
+     "edge": 2,
+     "asked": 8,
+     "tsLabel": "8",
+     "tsKind": "dimension"
+    },
+    {
+     "edge": 3,
+     "asked": 10,
+     "tsLabel": "10",
+     "tsKind": "dimension"
+    }
+   ],
+   "labelsEqualAsked": true
+  },
+  {
+   "id": "D6-triangle-angle-120",
+   "scDims": [
+    {
+     "asked": 30,
+     "measured": 30,
+     "type": "LinearDimension",
+     "dofAfter": 2
+    },
+    {
+     "asked": null,
+     "measured": 120,
+     "type": "AngularDimension",
+     "dofAfter": 1
+    },
+    {
+     "asked": 20,
+     "measured": 20,
+     "type": "LinearDimension",
+     "dofAfter": 0
+    }
+   ],
+   "maxMeasuredVsAsked": 0,
+   "tsLengthLabels": [
+    {
+     "edge": 1,
+     "asked": 30,
+     "tsLabel": "30",
+     "tsKind": "dimension"
+    },
+    {
+     "edge": 2,
+     "asked": 20,
+     "tsLabel": "20",
+     "tsKind": "dimension"
+    }
+   ],
+   "labelsEqualAsked": true
+  },
+  {
+   "id": "D7-parallelogram",
+   "scDims": [
+    {
+     "asked": 30,
+     "measured": 30,
+     "type": "LinearDimension",
+     "dofAfter": 4
+    },
+    {
+     "asked": 10,
+     "measured": 10,
+     "type": "LinearDimension",
+     "dofAfter": 1
+    },
+    {
+     "asked": 15,
+     "measured": 15,
+     "type": "LinearDimension",
+     "dofAfter": 0
+    }
+   ],
+   "maxMeasuredVsAsked": 0,
+   "tsLengthLabels": [
+    {
+     "edge": 1,
+     "asked": 30,
+     "tsLabel": "30",
+     "tsKind": "dimension"
+    }
+   ],
+   "labelsEqualAsked": true
+  }
+ ],
+ "f2ref": {
+  "askedReferenceValue": 55,
+  "scMeasured": 25,
+  "driven": true,
+  "dofAfter": 0,
+  "edge2TrueLength": 25
+ },
+ "f3": [
+  {
+   "id": "D1-rect-lengths-lock",
+   "reportKeys": [
+    "continuations",
+    "curve_determined",
+    "dof",
+    "failing",
+    "folded",
+    "iterations",
+    "max_residual",
+    "point_determined",
+    "redundant",
+    "status"
+   ],
+   "status": "solved",
+   "dof": 0,
+   "max_residual": 4.760636329592671e-13,
+   "iterations": 0,
+   "continuations": 0,
+   "failing": []
+  },
+  {
+   "id": "D2-square-by-equal",
+   "reportKeys": [
+    "continuations",
+    "curve_determined",
+    "dof",
+    "failing",
+    "folded",
+    "iterations",
+    "max_residual",
+    "point_determined",
+    "redundant",
+    "status"
+   ],
+   "status": "solved",
+   "dof": 0,
+   "max_residual": 2.565698764556146e-10,
+   "iterations": 0,
+   "continuations": 0,
+   "failing": []
+  },
+  {
+   "id": "D3-right-trapezoid-parallel-perpendicular-distX",
+   "reportKeys": [
+    "continuations",
+    "curve_determined",
+    "dof",
+    "failing",
+    "folded",
+    "iterations",
+    "max_residual",
+    "point_determined",
+    "redundant",
+    "status"
+   ],
+   "status": "solved",
+   "dof": 0,
+   "max_residual": 0,
+   "iterations": 0,
+   "continuations": 0,
+   "failing": []
+  },
+  {
+   "id": "D4-rect-diagonal-distX-distY",
+   "reportKeys": [
+    "continuations",
+    "curve_determined",
+    "dof",
+    "failing",
+    "folded",
+    "iterations",
+    "max_residual",
+    "point_determined",
+    "redundant",
+    "status"
+   ],
+   "status": "solved",
+   "dof": 0,
+   "max_residual": 3.161915174132446e-13,
+   "iterations": 0,
+   "continuations": 0,
+   "failing": []
+  },
+  {
+   "id": "D5-pentagon-symmetric-centre",
+   "reportKeys": [
+    "continuations",
+    "curve_determined",
+    "dof",
+    "failing",
+    "folded",
+    "iterations",
+    "max_residual",
+    "point_determined",
+    "redundant",
+    "status"
+   ],
+   "status": "solved",
+   "dof": 0,
+   "max_residual": 0,
+   "iterations": 0,
+   "continuations": 0,
+   "failing": []
+  },
+  {
+   "id": "D6-triangle-angle-120",
+   "reportKeys": [
+    "continuations",
+    "curve_determined",
+    "dof",
+    "failing",
+    "folded",
+    "iterations",
+    "max_residual",
+    "point_determined",
+    "redundant",
+    "status"
+   ],
+   "status": "solved",
+   "dof": 0,
+   "max_residual": 1.1102230246251565e-14,
+   "iterations": 0,
+   "continuations": 0,
+   "failing": []
+  },
+  {
+   "id": "D7-parallelogram",
+   "reportKeys": [
+    "continuations",
+    "curve_determined",
+    "dof",
+    "failing",
+    "folded",
+    "iterations",
+    "max_residual",
+    "point_determined",
+    "redundant",
+    "status"
+   ],
+   "status": "solved",
+   "dof": 0,
+   "max_residual": 1.3602286706207338e-10,
+   "iterations": 0,
+   "continuations": 0,
+   "failing": []
+  }
+ ]
+}

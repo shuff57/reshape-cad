@@ -1,0 +1,46 @@
+<!doctype html>
+<meta charset="utf-8"><title>solidcraft browser bench</title>
+<body><pre id="out">idle</pre>
+<script type="module">
+import init, { run } from '/pkg/solidcraft_referee.js';
+const cmds = await (await fetch('/cmds.json')).json();
+const q = new URLSearchParams(location.search);
+let mainInit = null;
+// heartbeat: a 50 ms timer; its largest gap is how long the page was frozen. longtask entries are the browser's own measure.
+function heartbeat() {
+  const h = { last: performance.now(), max: 0, ticks: 0, long: [] };
+  h.timer = setInterval(() => { const n = performance.now(); h.max = Math.max(h.max, n - h.last); h.last = n; h.ticks++; }, 50);
+  try { h.po = new PerformanceObserver((l) => { for (const e of l.getEntries()) h.long.push(Math.round(e.duration)); }); h.po.observe({ entryTypes: ['longtask'] }); } catch {}
+  h.stop = () => { clearInterval(h.timer); h.po?.disconnect(); return { maxGapMs: Math.round(h.max), ticks: h.ticks, longTasksMs: h.long }; };
+  return h;
+}
+const tick = () => new Promise((r) => setTimeout(r, 120));
+// mode main: the call runs on the page's own thread
+window.benchMain = async (name) => {
+  if (!mainInit) { const t0 = performance.now(); await init({ module_or_path: '/pkg/solidcraft_referee_bg.wasm' }); mainInit = performance.now() - t0; }
+  const h = heartbeat(); await tick();
+  const t0 = performance.now(); const reply = run(cmds[name].calls[0].request); const ms = performance.now() - t0;
+  await tick(); const hb = h.stop();
+  return { name, mode: 'main', initMs: Math.round(mainInit), callMs: Math.round(ms), ok: JSON.parse(reply).ok, hb };
+};
+// mode worker: the call runs in a Worker; the page keeps ticking. budgetMs > 0: terminate the worker when the budget is spent.
+let worker = null; let wid = 0;
+window.benchWorker = async (name, budgetMs = 0) => {
+  const fresh = !worker; if (!worker) worker = new Worker('/worker.js', { type: 'module' });
+  const h = heartbeat(); await tick();
+  const id = ++wid; const t0 = performance.now();
+  const res = await new Promise((resolve) => {
+    let done = false;
+    worker.onmessage = (e) => { if (e.data.id === id && !done) { done = true; resolve(e.data); } };
+    if (budgetMs > 0) setTimeout(() => { if (!done) { done = true; worker.terminate(); worker = null; resolve({ timedOut: true }); } }, budgetMs);
+    worker.postMessage({ id, request: cmds[name].calls[0].request });
+  });
+  const wall = performance.now() - t0; await tick(); const hb = h.stop();
+  return { name, mode: 'worker', budgetMs, fresh, wallMs: Math.round(wall), ...(res.timedOut ? { timedOut: true } : { initMs: Math.round(res.initMs), callMs: Math.round(res.ms), ok: res.ok, err: res.err }), hb };
+};
+// UI contract demonstrated by the harness: what the student reads when the budget runs out
+window.sentenceFor = (call, seconds) => `${call}: building this took more than ${seconds} seconds, so it was stopped and is not shown -- try a bigger corner, a thicker tube, or fewer rounded edges.`;
+window.names = Object.keys(cmds);
+document.getElementById('out').textContent = 'ready: ' + window.names.join(', ');
+window.__ready = true;
+</script>

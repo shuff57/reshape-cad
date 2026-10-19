@@ -1,0 +1,1 @@
+sl9-116-boxtan-top-p0.01                 FAIL     occtV 70173.0238 | tr-occt dV 1.5e-3 dBb 3.6e-16 dCom 2.4e-4 F o/b/t 17/16/16 | brep-occt dV 3.1e-13      | ms 9322 cpu 9523

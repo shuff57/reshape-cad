@@ -1,0 +1,248 @@
+[
+ {
+  "id": "R3-crit-gv-cyl-front-360",
+  "src": "const s1 = sketch('top'); s1.circle(40, { at: [0, 0] }); const b = extrude(s1, 30); const sk = sketch('front'); sk.rect(7, 16, { at: [8.5, 0] }); groove(sk, b, 360);",
+  "translator": "raw0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R3-crit-gv-cyl-front-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 34708.31563708515,
+    "com": [
+     5.027912455958333e-9,
+     -6.976799648793861e-16,
+     15.799902772230773
+    ],
+    "bbox": [
+     -20,
+     -20,
+     -1.4695761589768238e-15,
+     20,
+     20,
+     30
+    ],
+    "faces": 7,
+    "area": 7287.548034733195,
+    "types": {
+     "cylinder": 3,
+     "plane": 4
+    },
+    "components": {
+     "cylinder": 3,
+     "plane": 4
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: the ring is spun about the normal of its sketch, which crosses the axis of pull1's round wall -- sketch the ring on a plane square to that axis (the top plane for an upright post) -- groove1 is shown without it."
+   },
+   "ms": 37609,
+   "load": [
+    31.5,
+    55.6
+   ],
+   "cpuMs": 35271,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "built",
+     "pick": null
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.circle.center",
+     "params": {
+      "center": [
+       0,
+       0
+      ],
+      "diameter": 40
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk2_1",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        5,
+        -8
+       ],
+       [
+        12,
+        -8
+       ],
+       [
+        12,
+        8
+       ],
+       [
+        5,
+        8
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk2_1",
+      "operation": "cut",
+      "targets": [
+       "b_pull1"
+      ]
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": null,
+    "faceTypes": {
+     "cylinder": 3,
+     "plane": 6
+    },
+    "occtTypes": {
+     "cylinder": 3,
+     "plane": 4
+    },
+    "occtComponents": {
+     "cylinder": 3,
+     "plane": 4
+    },
+    "bigCylinderComponents": 1,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 34706.78537354434,
+    "bbox": [
+     -20,
+     -20.000000000000018,
+     -6.804940811488623e-10,
+     20,
+     20,
+     30.000000000000014
+    ],
+    "com": [
+     -0.000005256606166588456,
+     0.0000033798580987606405,
+     15.799942081291553
+    ],
+    "faces": 9,
+    "kernelFaces": 12,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000044089248144697645,
+    "dBbox": 6.804926115727033e-10,
+    "dCom": 6.13904389828259e-7,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "caseMs": 38446
+ }
+]

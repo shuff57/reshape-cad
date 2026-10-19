@@ -1,0 +1,1072 @@
+[
+ {
+  "name": "cut/copy-at-origin",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 40, 20, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\ncut(a, c);",
+  "worst": "WRONG",
+  "top": [
+   "box2",
+   "op1"
+  ],
+  "per": [
+   {
+    "id": "box2",
+    "v": "PASS",
+    "occtVolume": 7999.999999999998,
+    "scVolume": 8000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bodies": [
+     "b_box2"
+    ],
+    "brepDVol": 1.1368683772161606e-16,
+    "brepFaces": 6
+   },
+   {
+    "id": "op1",
+    "v": "FAIL",
+    "occtVolume": 9999.999999999998,
+    "scVolume": 5000,
+    "dVol": 0.4999999999999999,
+    "dBbox": 1.1666666666666667,
+    "dCom": 0.2733040833050606,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 1.8189894035458568e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 4
+ },
+ {
+  "name": "cut/x07 copy moved +20",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 40, 20, { at: [-20, 0, 0] });\nconst c = move(b, [20, 0, 0], { copy: true });\ncut(a, c);",
+  "worst": "WRONG",
+  "top": [
+   "box2",
+   "op1"
+  ],
+  "per": [
+   {
+    "id": "box2",
+    "v": "PASS",
+    "occtVolume": 7999.999999999998,
+    "scVolume": 8000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bodies": [
+     "b_box2"
+    ],
+    "brepDVol": 1.1368683772161606e-16,
+    "brepFaces": 6
+   },
+   {
+    "id": "op1",
+    "v": "FAIL",
+    "occtVolume": 9999.999999999998,
+    "scVolume": 5000,
+    "dVol": 0.4999999999999999,
+    "dBbox": 1.1666666666666667,
+    "dCom": 0.2733040833050606,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 1.8189894035458568e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 4
+ },
+ {
+  "name": "cut/tool moved (no copy)",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 40, 20, { at: [0, 0, 0] });\nmove(b, [5, 0, 0]);\ncut(a, b);",
+  "worst": "WRONG",
+  "top": [
+   "op1"
+  ],
+  "per": [
+   {
+    "id": "op1",
+    "v": "FAIL",
+    "occtVolume": 9999.999999999996,
+    "scVolume": 4000,
+    "dVol": 0.5999999999999999,
+    "dBbox": 1.3333333333333333,
+    "dCom": 0.32796489996607275,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 3.637978807091714e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 4
+ },
+ {
+  "name": "cut/turned tool 90",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(60, 20, 10, { at: [0, 0, 0] });\nturn(b, [0, 0, 90]);\ncut(a, b);",
+  "worst": "WRONG",
+  "top": [
+   "op1"
+  ],
+  "per": [
+   {
+    "id": "op1",
+    "v": "FAIL",
+    "occtVolume": 7999.999999999998,
+    "scVolume": 4000,
+    "dVol": 0.4999999999999999,
+    "dBbox": 1.3333333333333333,
+    "dCom": 0.31234752377721214,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 2.273736754432321e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 4
+ },
+ {
+  "name": "cut/turned tool 45",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 60, 20, { at: [0, 0, 0] });\nturn(b, [0, 0, 45]);\ncut(a, b);",
+  "worst": "WRONG",
+  "top": [
+   "op1"
+  ],
+  "per": [
+   {
+    "id": "op1",
+    "v": "FAIL",
+    "occtVolume": 9171.572875253809,
+    "scVolume": 4585.786437626903,
+    "dVol": 0.5000000000000002,
+    "dBbox": 0.9023689270621827,
+    "dCom": 0.27812438995384875,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 3.966581148700776e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 4
+ },
+ {
+  "name": "cut-split then move result",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 40, 20, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\nconst r = cut(a, c);\nmove(r, [0, 30, 5]);",
+  "worst": "WRONG",
+  "top": [
+   "box2",
+   "move2"
+  ],
+  "per": [
+   {
+    "id": "box2",
+    "v": "PASS",
+    "occtVolume": 7999.999999999998,
+    "scVolume": 8000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bodies": [
+     "b_box2"
+    ],
+    "brepDVol": 1.1368683772161606e-16,
+    "brepFaces": 6
+   },
+   {
+    "id": "move2",
+    "v": "FAIL",
+    "occtVolume": 9999.999999999998,
+    "scVolume": 4999.999999999999,
+    "dVol": 0.5,
+    "dBbox": 1.1666666666666667,
+    "dCom": 0.2733040833050607,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 1.8189894035458568e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 5
+ },
+ {
+  "name": "cut-split then turn result",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 40, 20, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\nconst r = cut(a, c);\nturn(r, [10, 20, 30]);",
+  "worst": "WRONG",
+  "top": [
+   "box2",
+   "turn1"
+  ],
+  "per": [
+   {
+    "id": "box2",
+    "v": "PASS",
+    "occtVolume": 7999.999999999998,
+    "scVolume": 8000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bodies": [
+     "b_box2"
+    ],
+    "brepDVol": 1.1368683772161606e-16,
+    "brepFaces": 6
+   },
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "occtVolume": 10000.000000000002,
+    "scVolume": 4999.999999999999,
+    "dVol": 0.5000000000000002,
+    "dBbox": 1.0333771780057832,
+    "dCom": 0.20941085405181162,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 0,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 9
+ },
+ {
+  "name": "cut-split then copy-move result",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 40, 20, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\nconst r = cut(a, c);\nmove(r, [0, 40, 0], { copy: true });",
+  "worst": "WRONG",
+  "top": [
+   "box2",
+   "op1",
+   "move2"
+  ],
+  "per": [
+   {
+    "id": "box2",
+    "v": "PASS",
+    "occtVolume": 7999.999999999998,
+    "scVolume": 8000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bodies": [
+     "b_box2"
+    ],
+    "brepDVol": 1.1368683772161606e-16,
+    "brepFaces": 6
+   },
+   {
+    "id": "op1",
+    "v": "FAIL",
+    "occtVolume": 9999.999999999998,
+    "scVolume": 5000,
+    "dVol": 0.4999999999999999,
+    "dBbox": 1.1666666666666667,
+    "dCom": 0.2733040833050606,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 1.8189894035458568e-16,
+    "brepFaces": 12
+   },
+   {
+    "id": "move2",
+    "v": "FAIL",
+    "occtVolume": 9999.999999999998,
+    "scVolume": 4999.999999999999,
+    "dVol": 0.5,
+    "dBbox": 1.1666666666666667,
+    "dCom": 0.2733040833050607,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1 (2)"
+    ],
+    "brepDVol": 1.8189894035458568e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 5
+ },
+ {
+  "name": "cut-split then hole",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 40, 20, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\nconst r = cut(a, c);\nhole(r, { across: 4 });",
+  "worst": "WRONG",
+  "top": [
+   "box2",
+   "hole1"
+  ],
+  "per": [
+   {
+    "id": "box2",
+    "v": "PASS",
+    "occtVolume": 7999.999999999998,
+    "scVolume": 8000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bodies": [
+     "b_box2"
+    ],
+    "brepDVol": 1.1368683772161606e-16,
+    "brepFaces": 6
+   },
+   {
+    "id": "hole1",
+    "v": "FAIL",
+    "occtVolume": 9999.999999999998,
+    "scVolume": 4874.357167061263,
+    "dVol": 0.5125642832938736,
+    "dBbox": 1.1666666666666667,
+    "dCom": 0.2733040833050613,
+    "faces": 7,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepRefused": "hole1 does not touch the part, so it cuts nothing -- hole1 is shown without it."
+   }
+  ],
+  "cmds": 5
+ },
+ {
+  "name": "cut-split then round edge",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 40, 20, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\nconst r = cut(a, c);\nround(r.edge('top', 'front'), 1);",
+  "worst": "REFUSED-some",
+  "top": [
+   "box2",
+   "round1"
+  ],
+  "per": [
+   {
+    "id": "box2",
+    "v": "PASS",
+    "occtVolume": 7999.999999999998,
+    "scVolume": 8000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bodies": [
+     "b_box2"
+    ],
+    "brepDVol": 1.1368683772161606e-16,
+    "brepFaces": 6
+   },
+   {
+    "id": "round1",
+    "v": "REFUSED",
+    "refused": "Round 1 is not built: it picks the edge by name on a shape that Copy 1 moved, and a name cannot be followed through a move or a turn yet -- round the shape first, then move or turn it.",
+    "brepDVol": 3.8091884687234104e-13,
+    "brepFaces": 13
+   }
+  ],
+  "cmds": 4
+ },
+ {
+  "name": "cut-split then mirror",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 40, 20, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\nconst r = cut(a, c);\nmirror(r, 'top-bottom');",
+  "worst": "WRONG",
+  "top": [
+   "box2",
+   "op1",
+   "mir1"
+  ],
+  "per": [
+   {
+    "id": "box2",
+    "v": "PASS",
+    "occtVolume": 7999.999999999998,
+    "scVolume": 8000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bodies": [
+     "b_box2"
+    ],
+    "brepDVol": 1.1368683772161606e-16,
+    "brepFaces": 6
+   },
+   {
+    "id": "op1",
+    "v": "FAIL",
+    "occtVolume": 9999.999999999998,
+    "scVolume": 5000,
+    "dVol": 0.4999999999999999,
+    "dBbox": 1.1666666666666667,
+    "dCom": 0.2733040833050606,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 1.8189894035458568e-16,
+    "brepFaces": 12
+   },
+   {
+    "id": "mir1",
+    "v": "FAIL",
+    "occtVolume": 19999.999999999996,
+    "scVolume": 10000,
+    "dVol": 0.4999999999999999,
+    "dBbox": 1.1666666666666667,
+    "dCom": 0.26382242650554316,
+    "faces": 6,
+    "occtFaces": 20,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 1.8189894035458568e-16,
+    "brepFaces": 24
+   }
+  ],
+  "cmds": 5
+ },
+ {
+  "name": "cut-split then repeat",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 40, 20, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\nconst r = cut(a, c);\nrepeat(r, { count: 2, step: [0, 40, 0] });",
+  "worst": "WRONG",
+  "top": [
+   "box2",
+   "pat1"
+  ],
+  "per": [
+   {
+    "id": "box2",
+    "v": "PASS",
+    "occtVolume": 7999.999999999998,
+    "scVolume": 8000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bodies": [
+     "b_box2"
+    ],
+    "brepDVol": 1.1368683772161606e-16,
+    "brepFaces": 6
+   },
+   {
+    "id": "pat1",
+    "v": "FAIL",
+    "occtVolume": 19999.999999999993,
+    "scVolume": 10000,
+    "dVol": 0.49999999999999983,
+    "dBbox": 1.1666666666666667,
+    "dCom": 0.2048220075932285,
+    "faces": 12,
+    "occtFaces": 24,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 3.637978807091714e-16,
+    "brepFaces": 24
+   }
+  ],
+  "cmds": 6
+ },
+ {
+  "name": "cut-split then join with box",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 40, 20, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\nconst r = cut(a, c);\nconst d = box(70, 4, 4, { at: [0, 0, 0] });\njoin(r, d);",
+  "worst": "WRONG",
+  "top": [
+   "box2",
+   "op2"
+  ],
+  "per": [
+   {
+    "id": "box2",
+    "v": "PASS",
+    "occtVolume": 7999.999999999998,
+    "scVolume": 8000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bodies": [
+     "b_box2"
+    ],
+    "brepDVol": 1.1368683772161606e-16,
+    "brepFaces": 6
+   },
+   {
+    "id": "op2",
+    "v": "FAIL",
+    "occtVolume": 10320,
+    "scVolume": 5720,
+    "dVol": 0.44573643410852715,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 0.19151507798567,
+    "faces": 16,
+    "occtFaces": 26,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 0,
+    "brepFaces": 26
+   }
+  ],
+  "cmds": 6
+ },
+ {
+  "name": "cut by round tool (2 pieces)",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = cylinder(30, 30, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\ncut(a, c);",
+  "worst": "WRONG",
+  "top": [
+   "cyl1",
+   "op1"
+  ],
+  "per": [
+   {
+    "id": "cyl1",
+    "v": "PASS",
+    "occtVolume": 21205.7504117311,
+    "scVolume": 21203.357594652003,
+    "dVol": 0.00011283812327495577,
+    "dBbox": 0.000026866259357305465,
+    "dCom": 1.1110085122514685e-16,
+    "faces": 3,
+    "occtFaces": 3,
+    "bodies": [
+     "b_cyl1"
+    ],
+    "brepDVol": 5.146687200108471e-16,
+    "brepFaces": 3
+   },
+   {
+    "id": "op1",
+    "v": "FAIL",
+    "occtVolume": 6480.157569476783,
+    "scVolume": 3240.194657033568,
+    "dVol": 0.4999821189077681,
+    "dBbox": 1.372677996249965,
+    "dCom": 0.34141648739105745,
+    "faces": 7,
+    "occtFaces": 13,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 3.199996138689118e-13,
+    "brepFaces": 12,
+    "seam": {
+     "closedFormVol": 6480.157569478862,
+     "dVolClosed": 0.49998211890792854
+    }
+   }
+  ],
+  "cmds": 4
+ },
+ {
+  "name": "cut by round tool, then move result",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = cylinder(30, 30, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\nconst r = cut(a, c);\nmove(r, [0, 30, 0]);",
+  "worst": "WRONG",
+  "top": [
+   "cyl1",
+   "move2"
+  ],
+  "per": [
+   {
+    "id": "cyl1",
+    "v": "PASS",
+    "occtVolume": 21205.7504117311,
+    "scVolume": 21203.357594652003,
+    "dVol": 0.00011283812327495577,
+    "dBbox": 0.000026866259357305465,
+    "dCom": 1.1110085122514685e-16,
+    "faces": 3,
+    "occtFaces": 3,
+    "bodies": [
+     "b_cyl1"
+    ],
+    "brepDVol": 5.146687200108471e-16,
+    "brepFaces": 3
+   },
+   {
+    "id": "move2",
+    "v": "FAIL",
+    "occtVolume": 6480.157569476783,
+    "scVolume": 3240.194656978958,
+    "dVol": 0.49998211891619543,
+    "dBbox": 1.372677996249965,
+    "dCom": 0.34141648739596375,
+    "faces": 7,
+    "occtFaces": 13,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 3.2084171811593527e-13,
+    "brepFaces": 12,
+    "seam": {
+     "closedFormVol": 6480.157569478862,
+     "dVolClosed": 0.49998211891635586
+    }
+   }
+  ],
+  "cmds": 5
+ },
+ {
+  "name": "cut by round tool, then turn result",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = cylinder(30, 30, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\nconst r = cut(a, c);\nturn(r, [0, 0, 30]);",
+  "worst": "WRONG",
+  "top": [
+   "cyl1",
+   "turn1"
+  ],
+  "per": [
+   {
+    "id": "cyl1",
+    "v": "PASS",
+    "occtVolume": 21205.7504117311,
+    "scVolume": 21203.357594652003,
+    "dVol": 0.00011283812327495577,
+    "dBbox": 0.000026866259357305465,
+    "dCom": 1.1110085122514685e-16,
+    "faces": 3,
+    "occtFaces": 3,
+    "bodies": [
+     "b_cyl1"
+    ],
+    "brepDVol": 5.146687200108471e-16,
+    "brepFaces": 3
+   },
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "occtVolume": 6480.157569476783,
+    "scVolume": 3240.2085989383104,
+    "dVol": 0.4999799674315744,
+    "dBbox": 1.24018189231348,
+    "dCom": 0.27595534193443993,
+    "faces": 7,
+    "occtFaces": 13,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 3.202803152845863e-13,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 7
+ },
+ {
+  "name": "cut by joined disjoint tools (3 pieces)",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst c1 = box(10, 40, 20, { at: [-20, 0, 0] });\nconst c2 = move(c1, [40, 0, 0], { copy: true });\nconst u = join(c1, c2);\ncut(a, u);",
+  "worst": "WRONG",
+  "top": [
+   "op2"
+  ],
+  "per": [
+   {
+    "id": "op2",
+    "v": "FAIL",
+    "occtVolume": 7999.999999999999,
+    "scVolume": 1000,
+    "dVol": 0.875,
+    "dBbox": 1.8333333333333333,
+    "dCom": 0.4294778451936666,
+    "faces": 6,
+    "occtFaces": 18,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 0,
+    "brepFaces": 18
+   }
+  ],
+  "cmds": 5
+ },
+ {
+  "name": "cut by joined disjoint tools, then turn result",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst c1 = box(10, 40, 20, { at: [-20, 0, 0] });\nconst c2 = move(c1, [40, 0, 0], { copy: true });\nconst u = join(c1, c2);\nconst r = cut(a, u);\nturn(r, [0, 0, 90]);",
+  "worst": "WRONG",
+  "top": [
+   "turn1"
+  ],
+  "per": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "occtVolume": 7999.999999999999,
+    "scVolume": 1000,
+    "dVol": 0.875,
+    "dBbox": 2.7499999999999996,
+    "dCom": 0.42947784519366666,
+    "faces": 6,
+    "occtFaces": 18,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 0,
+    "brepFaces": 18
+   }
+  ],
+  "cmds": 8
+ },
+ {
+  "name": "cut by one of two copies (2 pieces; second copy stays a separate shape)",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(6, 40, 20, { at: [-15, 0, 0] });\nmove(b, [30, 0, 0], { copy: true });\ncut(a, b);",
+  "worst": "WRONG",
+  "top": [
+   "move1",
+   "op1"
+  ],
+  "per": [
+   {
+    "id": "move1",
+    "v": "PASS",
+    "occtVolume": 4800,
+    "scVolume": 4800,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bodies": [
+     "b_box2 (2)"
+    ],
+    "brepDVol": 1.8947806286936006e-16,
+    "brepFaces": 6
+   },
+   {
+    "id": "op1",
+    "v": "FAIL",
+    "occtVolume": 10800,
+    "scVolume": 8400,
+    "dVol": 0.2222222222222222,
+    "dBbox": 0.6,
+    "dCom": 0.11452742538497777,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 0,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 4
+ },
+ {
+  "name": "pocket-split",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst k = sketch('top', 5);\nk.rect(10, 40);\nconst p = pocket(k, a, 10);\nmove(p, [0, 30, 0]);",
+  "worst": "WRONG",
+  "top": [
+   "move1"
+  ],
+  "per": [
+   {
+    "id": "move1",
+    "v": "FAIL",
+    "occtVolume": 9999.999999999998,
+    "scVolume": 4999.999999999999,
+    "dVol": 0.5,
+    "dBbox": 1.1666666666666667,
+    "dCom": 0.2733040833050607,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 1.8189894035458568e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 6
+ },
+ {
+  "name": "pocket-split then turn",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst k = sketch('top', 5);\nk.rect(10, 40);\nconst p = pocket(k, a, 10);\nturn(p, [0, 0, 30]);",
+  "worst": "WRONG",
+  "top": [
+   "turn1"
+  ],
+  "per": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "occtVolume": 10000.000000000002,
+    "scVolume": 5000.000000000001,
+    "dVol": 0.5,
+    "dBbox": 1.0540555602395258,
+    "dCom": 0.22263728381740439,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 1.818989403545856e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 8
+ },
+ {
+  "name": "pocket-split alone",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst k = sketch('top', 5);\nk.rect(10, 40);\npocket(k, a, 10);",
+  "worst": "WRONG",
+  "top": [
+   "pocket1"
+  ],
+  "per": [
+   {
+    "id": "pocket1",
+    "v": "FAIL",
+    "occtVolume": 9999.999999999998,
+    "scVolume": 5000,
+    "dVol": 0.4999999999999999,
+    "dBbox": 1.1666666666666667,
+    "dCom": 0.2733040833050606,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 1.8189894035458568e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 5
+ },
+ {
+  "name": "keep(a, two disjoint tools) 2 pieces",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst c1 = box(10, 40, 20, { at: [-20, 0, 0] });\nconst c2 = move(c1, [40, 0, 0], { copy: true });\nconst u = join(c1, c2);\nkeep(a, u);",
+  "worst": "WRONG",
+  "top": [
+   "op2"
+  ],
+  "per": [
+   {
+    "id": "op2",
+    "v": "FAIL",
+    "occtVolume": 3999.999999999998,
+    "scVolume": 2000,
+    "dVol": 0.4999999999999998,
+    "dBbox": 1.6,
+    "dCom": 0.3822647015921471,
+    "faces": 6,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 7.958078640513126e-16,
+    "brepFaces": 12,
+    "analytic": {
+     "vol": 4000,
+     "dVol": 0.5,
+     "dCom": 0.36514837167011066,
+     "comOcct": [
+      0.9375000000000011,
+      0.6249999999999999,
+      2.9087843245179115e-17
+     ]
+    }
+   }
+  ],
+  "cmds": 5
+ },
+ {
+  "name": "join disjoint copy",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = move(a, [0, 40, 0], { copy: true });\njoin(a, b);",
+  "worst": "ALL-PASS",
+  "top": [
+   "op1"
+  ],
+  "per": [
+   {
+    "id": "op1",
+    "v": "PASS",
+    "occtVolume": 23999.999999999993,
+    "scVolume": 24000,
+    "dVol": 3.0316490059097617e-16,
+    "dBbox": 0,
+    "dCom": 6.029298427079843e-18,
+    "faces": 12,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 3.0316490059097617e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 3
+ },
+ {
+  "name": "join disjoint copy then move",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = move(a, [0, 40, 0], { copy: true });\nconst u = join(a, b);\nmove(u, [10, 0, 0]);",
+  "worst": "ALL-PASS",
+  "top": [
+   "move2"
+  ],
+  "per": [
+   {
+    "id": "move2",
+    "v": "PASS",
+    "occtVolume": 23999.999999999993,
+    "scVolume": 24000,
+    "dVol": 3.0316490059097617e-16,
+    "dBbox": 0,
+    "dCom": 1.7741383877384365e-18,
+    "faces": 12,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 3.0316490059097617e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 4
+ },
+ {
+  "name": "join disjoint copy then turn",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = move(a, [0, 40, 0], { copy: true });\nconst u = join(a, b);\nturn(u, [0, 0, 20]);",
+  "worst": "ALL-PASS",
+  "top": [
+   "turn1"
+  ],
+  "per": [
+   {
+    "id": "turn1",
+    "v": "PASS",
+    "occtVolume": 24000,
+    "scVolume": 24000,
+    "dVol": 0,
+    "dBbox": 3.850891495298276e-16,
+    "dCom": 6.505865788718771e-17,
+    "faces": 12,
+    "occtFaces": 12,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 1.5158245029548803e-16,
+    "brepFaces": 12
+   }
+  ],
+  "cmds": 6
+ },
+ {
+  "name": "cut (no split) by copy: control",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = cylinder(4, 30, { at: [0, 0, 0] });\nconst c = move(b, [5, 0, 0], { copy: true });\ncut(a, c);",
+  "worst": "ALL-PASS",
+  "top": [
+   "cyl1",
+   "op1"
+  ],
+  "per": [
+   {
+    "id": "cyl1",
+    "v": "PASS",
+    "occtVolume": 376.99111843077526,
+    "scVolume": 376.9284988162213,
+    "dVol": 0.00016610368651288286,
+    "dBbox": 0.00002686625935721665,
+    "dCom": 1.7674276590798478e-16,
+    "faces": 3,
+    "occtFaces": 3,
+    "bodies": [
+     "b_cyl1"
+    ],
+    "brepDVol": 7.53909257828389e-16,
+    "brepFaces": 3
+   },
+   {
+    "id": "op1",
+    "v": "PASS",
+    "occtVolume": 11874.33629385641,
+    "scVolume": 11874.357167061258,
+    "dVol": 0.000001757841813812543,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 1.387167820055573e-7,
+    "faces": 7,
+    "occtFaces": 7,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 0,
+    "brepFaces": 7
+   }
+  ],
+  "cmds": 4
+ },
+ {
+  "name": "cut by overlapping copies 1 piece: control",
+  "script": "const a = box(60, 20, 10, { at: [0, 0, 0] });\nconst b = box(10, 10, 20, { at: [0, 0, 0] });\nconst c = move(b, [0, 0, 0], { copy: true });\ncut(a, c);",
+  "worst": "ALL-PASS",
+  "top": [
+   "box2",
+   "op1"
+  ],
+  "per": [
+   {
+    "id": "box2",
+    "v": "PASS",
+    "occtVolume": 1999.9999999999995,
+    "scVolume": 2000,
+    "dVol": 2.273736754432321e-16,
+    "dBbox": 0,
+    "dCom": 0,
+    "faces": 6,
+    "occtFaces": 6,
+    "bodies": [
+     "b_box2"
+    ],
+    "brepDVol": 1.1368683772161606e-16,
+    "brepFaces": 6
+   },
+   {
+    "id": "op1",
+    "v": "PASS",
+    "occtVolume": 11000,
+    "scVolume": 11000,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 4.155630444234031e-18,
+    "faces": 10,
+    "occtFaces": 10,
+    "bodies": [
+     "b_box1"
+    ],
+    "brepDVol": 0,
+    "brepFaces": 10
+   }
+  ],
+  "cmds": 4
+ }
+]

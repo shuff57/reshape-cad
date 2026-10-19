@@ -1,0 +1,15 @@
+Running as unit: run-p1872583-i1893442.scope; invocation ID: d03e18fef2b64dedb3e27c4cf05c279f
+box, move, round edge(top,right)                       REFUSED   SC undefined dVol undefined | OCCT 23974.2478 | BREP 23974.2478
+        round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.
+box, turn, round edge(top,right)                       REFUSED   SC undefined dVol undefined | OCCT 23974.2478 | BREP 23974.2478
+        round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.
+box, move, bevel edge(top,right)                       REFUSED   SC undefined dVol undefined | OCCT 23940.0000 | BREP 23940.0000
+        bevel1 is not built: the part was moved or turned before this bevel, and its edges cannot be found again yet -- put the bevel before the move() or turn() line.
+box+hole, move, round edge(top,right)                  REFUSED   SC undefined dVol undefined | OCCT 23408.7611 | BREP 23434.5133
+        round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.
+box+hole, turn, round edge(top,right)                  REFUSED   SC undefined dVol undefined | OCCT 23408.7611 | BREP 23434.5133
+        round1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.
+box, move, hollow open top (control)                   PASS      SC 7152.0000 dVol 1.3e-16 | OCCT 7152.0000 | BREP 7152.0000
+box, turn, hollow open top (control)                   REFUSED   SC undefined dVol undefined | OCCT 7152.0000 | BREP 7152.0000
+        shell1 is not built: the part was moved or turned before this hollow, and its faces cannot be found again yet -- put the hollow before the move() or turn() line.
+round first, then move (control: order the other way)  PASS      SC 23974.2309 dVol 7.0e-7 | OCCT 23974.2478 | BREP 23974.2478

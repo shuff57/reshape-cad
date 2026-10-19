@@ -1,0 +1,1 @@
+Z-spin-over360-cone-500                  FAIL     occtV 4886.9219 | tr-occt dV 1.6e+0 dBb 2.0e+1 dCom 1.4e-1 F o/b/t 4/-/2 | brep-occt dV -  | ANALYTIC 12566.3706 dTruck 8.7e-5 dOcct 6.1e-1 dBrep -   | BREP REFUSED: revolve rev1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- rev1 is shown without it. | ms 84 cpu 314

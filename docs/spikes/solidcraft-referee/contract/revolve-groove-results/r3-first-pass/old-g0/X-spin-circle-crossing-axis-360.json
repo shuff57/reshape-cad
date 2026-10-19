@@ -1,0 +1,40 @@
+[
+ {
+  "id": "X-spin-circle-crossing-axis-360",
+  "src": "const s = sketch('top'); s.circle(10,{at:[2,15]}); spin(s, 360);",
+  "translator": "g0",
+  "kinds": [
+   "sketch",
+   "revolve"
+  ],
+  "measureId": "rev1",
+  "fixture": {
+   "id": "X-spin-circle-crossing-axis-360",
+   "kind": "revolve",
+   "tol": "approx",
+   "measureId": "rev1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve"
+   ],
+   "invalid": "OCCT: OCCT built nothing"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "revolve rev1: a circle sketch has no outline to spin"
+   },
+   "ms": 1,
+   "load": [
+    5.7,
+    5.7
+   ],
+   "cpuMs": 1,
+   "truck": {
+    "refused": "rev1 (revolve): the outline crosses the line it spins about, so one side would overlap the other; draw the whole outline on one side of that line."
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: OCCT built nothing",
+  "caseMs": 9
+ }
+]

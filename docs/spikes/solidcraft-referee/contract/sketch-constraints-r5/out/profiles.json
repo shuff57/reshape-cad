@@ -1,0 +1,777 @@
+{
+ "rows": [
+  {
+   "name": "2 discs r10@(0,3) r5@(30,-2)",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759128,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.662668759128,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      3
+     ],
+     [
+      30,
+      -2
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,0) r5@(30,0)",
+   "defaultAllProfiles": {
+    "volume": 3926.6626687590715,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.6626687590715,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      0
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,0.1) r5@(30,0.1)",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759101,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.662668759101,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      0.1
+     ],
+     [
+      30,
+      0.1
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,7.3) r5@(30,7.3)",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759097,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.662668759097,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      7.3
+     ],
+     [
+      30,
+      7.3
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,1) r5@(30,-1)",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759101,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.662668759101,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      1
+     ],
+     [
+      30,
+      -1
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,2) r5@(30,2)",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759113,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.662668759113,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      2
+     ],
+     [
+      30,
+      2
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,5) r5@(30,-5)",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759104,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.662668759104,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      5
+     ],
+     [
+      30,
+      -5
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,-3) r5@(30,3)",
+   "defaultAllProfiles": {
+    "volume": 3926.6626687591374,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.6626687591374,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      -3
+     ],
+     [
+      30,
+      3
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,4) r5@(30,0)",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759104,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.662668759104,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      4
+     ],
+     [
+      30,
+      0
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,0) r5@(30,4)",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759059,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.662668759059,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      4
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,6) r5@(30,1.5)",
+   "defaultAllProfiles": {
+    "volume": 3926.6626687590874,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.6626687590874,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      6
+     ],
+     [
+      30,
+      1.5
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,3) r5@(28,-2)",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759124,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.662668759124,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      3
+     ],
+     [
+      28,
+      -2
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,0) r5@(28,0)",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759069,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.662668759069,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      0
+     ],
+     [
+      28,
+      0
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,0.1) r5@(28,0.1)",
+   "defaultAllProfiles": {
+    "volume": 3926.6626687591024,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.6626687591024,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      0.1
+     ],
+     [
+      28,
+      0.1
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,7.3) r5@(28,7.3)",
+   "defaultAllProfiles": {
+    "volume": 3926.6626687591033,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.6626687591033,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      7.3
+     ],
+     [
+      28,
+      7.3
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,1) r5@(28,-1)",
+   "defaultAllProfiles": {
+    "volume": 3926.66266875911,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.66266875911,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      1
+     ],
+     [
+      28,
+      -1
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,2) r5@(28,2)",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759116,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.662668759116,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      2
+     ],
+     [
+      28,
+      2
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,5) r5@(28,-5)",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759106,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.662668759106,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      5
+     ],
+     [
+      28,
+      -5
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,-3) r5@(28,3)",
+   "defaultAllProfiles": {
+    "volume": 3926.6626687591233,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.6626687591233,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      -3
+     ],
+     [
+      28,
+      3
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,4) r5@(28,0)",
+   "defaultAllProfiles": {
+    "volume": 3926.6626687591015,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.6626687591015,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      4
+     ],
+     [
+      28,
+      0
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,0) r5@(28,4)",
+   "defaultAllProfiles": {
+    "volume": 3926.6626687590656,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.6626687590656,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      0
+     ],
+     [
+      28,
+      4
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "2 discs r10@(0,6) r5@(28,1.5)",
+   "defaultAllProfiles": {
+    "volume": 3926.6626687590838,
+    "bodies": 2,
+    "ok": true
+   },
+   "guarded": {
+    "volume": 3926.6626687590838,
+    "bodies": 2,
+    "chosen": [
+     [
+      0,
+      6
+     ],
+     [
+      28,
+      1.5
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3926.990816987241,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "annulus r10@(0,0) r4@(2,0)",
+   "defaultAllProfiles": {
+    "volume": 3141.35312821641,
+    "bodies": 1,
+    "ok": false
+   },
+   "guarded": {
+    "volume": 2638.778316215551,
+    "bodies": 1,
+    "chosen": [
+     [
+      -6,
+      0
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 2638.9378290154264,
+    "bodies": 1
+   }
+  },
+  {
+   "name": "annulus r10@(0,3) r4@(2,3.5)",
+   "defaultAllProfiles": {
+    "volume": 3141.3531282164618,
+    "bodies": 1,
+    "ok": false
+   },
+   "guarded": {
+    "volume": 2638.7783162156024,
+    "bodies": 1,
+    "chosen": [
+     [
+      -5.98431,
+      3
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 2638.9378290154264,
+    "bodies": 1
+   }
+  },
+  {
+   "name": "annulus r10@(0,3) r4@(2,-2)",
+   "defaultAllProfiles": {
+    "volume": 3141.3531282164618,
+    "bodies": 1,
+    "ok": false
+   },
+   "guarded": {
+    "volume": 2638.7586271535497,
+    "bodies": 1,
+    "chosen": [
+     [
+      0,
+      3
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 2638.9378290154264,
+    "bodies": 1
+   }
+  },
+  {
+   "name": "annulus r10@(0,7.3) r4@(2,6)",
+   "defaultAllProfiles": {
+    "volume": 3141.35312821644,
+    "bodies": 1,
+    "ok": false
+   },
+   "guarded": {
+    "volume": 2638.7783162155806,
+    "bodies": 1,
+    "chosen": [
+     [
+      -5.891426,
+      7.3
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 2638.9378290154264,
+    "bodies": 1
+   }
+  },
+  {
+   "name": "3 discs (r10, r4 inside, r5 apart) y=0",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759076,
+    "bodies": 2,
+    "ok": false
+   },
+   "guarded": {
+    "volume": 3424.0878567582145,
+    "bodies": 2,
+    "chosen": [
+     [
+      -6.48431,
+      0
+     ],
+     [
+      30,
+      -2
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3424.3359924128745,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "3 discs (r10, r4 inside, r5 apart) y=3",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759121,
+    "bodies": 2,
+    "ok": false
+   },
+   "guarded": {
+    "volume": 3424.0878567582567,
+    "bodies": 2,
+    "chosen": [
+     [
+      -6.48431,
+      3
+     ],
+     [
+      30,
+      1
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3424.3359924128745,
+    "bodies": 2
+   }
+  },
+  {
+   "name": "3 discs (r10, r4 inside, r5 apart) y=-2",
+   "defaultAllProfiles": {
+    "volume": 3926.662668759109,
+    "bodies": 2,
+    "ok": false
+   },
+   "guarded": {
+    "volume": 3424.087856758247,
+    "bodies": 2,
+    "chosen": [
+     [
+      -6.48431,
+      -2
+     ],
+     [
+      30,
+      -4
+     ]
+    ],
+    "ok": true
+   },
+   "want": {
+    "volume": 3424.3359924128745,
+    "bodies": 2
+   }
+  }
+ ],
+ "seeded": {
+  "n": 80,
+  "defaultAllWrong": 0,
+  "guardedWrong": 0,
+  "guardedRefused": 0
+ }
+}

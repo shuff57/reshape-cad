@@ -1,0 +1,1 @@
+Z-spin-negside-touch-axis-neg90          PASS     occtV 2356.1945 | tr-occt dV 9.9e-5 dBb 0.0e+0 dCom 6.3e-6 F o/b/t 5/5/5 | brep-occt dV 1.1e-11  | ANALYTIC 2356.1945 dTruck 9.9e-5 dOcct 1.1e-11 dBrep 1.9e-16    | ms 103 cpu 400

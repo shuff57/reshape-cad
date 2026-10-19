@@ -1,0 +1,83 @@
+{
+ "cases": 71,
+ "withBlend": 61,
+ "scriptHalted": 10,
+ "guardPass": 28,
+ "guardPassExact": 28,
+ "FALSE_PASS": [],
+ "passWithoutOracle": [],
+ "refusedWhichWouldBeWrong": 20,
+ "refusedButExact_overRefusal": [
+  "gap-zero[gap0]",
+  "rect-rotated-20deg-x0.1-scale[sides]",
+  "same-sketch-twice[gap0]",
+  "empty-sketch-default[undrawn]",
+  "twist-scan-square-10deg[sides]",
+  "twist-scan-square-44deg[sides]",
+  "twist-scan-square-45deg[tie]",
+  "twist-scan-square-60deg[sides]",
+  "twist-scan-square-70deg[sides]"
+ ],
+ "refusedWhereTruckRefusedToo": 4
+}
+rect-rect-parity                                 guard=PASS       truckBuilt=true exact=true dT/O=1.7e-16 dT/An=1.7e-16
+rect-rect-other-size-offcentre                   guard=PASS       truckBuilt=true exact=true dT/O=1.1e-15 dT/An=1.3e-15
+rect-rect-aspect-swap                            guard=PASS       truckBuilt=true exact=true dT/O=1.7e-16 dT/An=1.7e-16
+rect-rect-grow                                   guard=PASS       truckBuilt=true exact=true dT/O=1.1e-14 dT/An=1.1e-14
+rect-rect-same-size-prism                        guard=PASS       truckBuilt=true exact=true dT/O=8.2e-15 dT/An=8.3e-15
+rect-to-circle                                   guard=PASS       truckBuilt=true exact=true dT/O=2.2e-5 dT/An=undefined
+circle-to-rect                                   guard=PASS       truckBuilt=true exact=true dT/O=7.4e-5 dT/An=undefined
+circle-to-circle-concentric                      guard=PASS       truckBuilt=true exact=true dT/O=5.0e-5 dT/An=5.0e-5
+circle-to-circle-offcentre                       guard=PASS       truckBuilt=true exact=true dT/O=5.0e-5 dT/An=5.0e-5
+triangle-triangle                                guard=sides      truckBuilt=true exact=false dT/O=1.5e-4 dT/An=1.5e-4
+hexagon-hexagon                                  guard=PASS       truckBuilt=true exact=true dT/O=8.1e-16 dT/An=9.4e-16
+L-shape-L-shape-concave                          guard=PASS       truckBuilt=true exact=true dT/O=3.8e-15 dT/An=3.8e-15
+triangle-to-square-differing-corner-count        guard=count      truckBuilt=true exact=false dT/O=8.6e-2 dT/An=undefined
+rect-to-hexagon-differing-corner-count           guard=count      truckBuilt=true exact=false dT/O=8.4e-2 dT/An=undefined
+rect-to-diamond-45deg-twist                      guard=tie        truckBuilt=true exact=false dT/O=6.1e-3 dT/An=undefined
+rect-to-rect-rotated-20deg-nonplanar-sides       guard=sides      truckBuilt=true exact=false dT/O=3.0e-3 dT/An=3.0e-3
+rounded-rect-to-circle-arc-outline               guard=PASS       truckBuilt=true exact=true dT/O=2.7e-5 dT/An=undefined
+rounded-rect-to-rect                             guard=arcs       truckBuilt=true exact=false dT/O=1.3e-2 dT/An=undefined
+chamfered-rect-to-rect                           guard=count      truckBuilt=true exact=false dT/O=1.7e-1 dT/An=undefined
+nonzero-start-offset                             guard=PASS       truckBuilt=true exact=true dT/O=2.9e-15 dT/An=2.9e-15
+negative-gap                                     guard=PASS       truckBuilt=true exact=true dT/O=2.7e-14 dT/An=2.7e-14
+gap-zero                                         guard=gap0       truckBuilt=true exact=true dT/O=0.0e+0 dT/An=undefined
+gap-tiny-0.001                                   guard=PASS       truckBuilt=true exact=true dT/O=3.8e-15 dT/An=3.8e-15
+gap-large-1000                                   guard=PASS       truckBuilt=true exact=true dT/O=3.3e-15 dT/An=3.2e-15
+extreme-scale-ratio-100-to-0.5                   guard=PASS       truckBuilt=true exact=true dT/O=9.6e-15 dT/An=9.6e-15
+front-plane                                      guard=PASS       truckBuilt=true exact=true dT/O=8.7e-16 dT/An=8.7e-16
+side-plane                                       guard=PASS       truckBuilt=true exact=true dT/O=1.7e-16 dT/An=1.7e-16
+front-plane-offcentre-circle                     guard=PASS       truckBuilt=true exact=true dT/O=3.9e-5 dT/An=undefined
+different-planes                                 guard=planes     truckBuilt=true exact=false dT/O=1.6e-1 dT/An=undefined
+slot-sketch                                      guard=soup       truckBuilt=false exact=false dT/O=undefined dT/An=undefined
+square-to-square-start-vertex-shifted-90deg      guard=PASS       truckBuilt=true exact=true dT/O=1.0e-14 dT/An=5.0e-1
+triangle-to-triangle-start-vertex-shifted-120deg guard=PASS       truckBuilt=true exact=true dT/O=0.0e+0 dT/An=1.0e+0
+square-to-square-rotated-60deg                   guard=sides      truckBuilt=true exact=false dT/O=2.4e-16 dT/An=1.5e-1
+rect-rotated-20deg-x10-scale                     guard=sides      truckBuilt=true exact=false dT/O=2.0e-3 dT/An=2.0e-3
+rect-rotated-20deg-x0.1-scale                    guard=sides      truckBuilt=true exact=true dT/O=2.6e-15 dT/An=2.6e-15
+triangle-triangle-x10-scale                      guard=sides      truckBuilt=true exact=false dT/O=1.5e-4 dT/An=1.5e-4
+rect-to-circle-x10-scale                         guard=PASS       truckBuilt=true exact=true dT/O=2.2e-5 dT/An=undefined
+circle-to-circle-x10-scale                       guard=PASS       truckBuilt=true exact=true dT/O=5.0e-5 dT/An=5.0e-5
+frame-sketches-gap-ignored                       guard=frame      truckBuilt=true exact=false dT/O=5.5e-15 dT/An=undefined
+frame-sketches-same-origin                       guard=frame      truckBuilt=true exact=false dT/O=0.0e+0 dT/An=undefined
+frame-sketches-tilted-nonparallel                guard=frame      truckBuilt=true exact=false dT/O=2.2e-4 dT/An=undefined
+plane-offset-datum-sketches                      guard=PASS       truckBuilt=true exact=true dT/O=4.9e-15 dT/An=4.9e-15
+cw-vs-ccw-orientation                            guard=PASS       truckBuilt=true exact=true dT/O=4.7e-15 dT/An=4.7e-15
+degenerate-collinear-section                     guard=flat       truckBuilt=false exact=false dT/O=undefined dT/An=undefined
+bowtie-self-intersecting-section                 guard=crossing   truckBuilt=false exact=false dT/O=undefined dT/An=undefined
+rows-circle-only-sketch                          guard=soup       truckBuilt=false exact=false dT/O=undefined dT/An=undefined
+rect-with-length-rule                            guard=PASS       truckBuilt=true exact=true dT/O=1.6e-15 dT/An=undefined
+loft-alias-ok                                    guard=PASS       truckBuilt=true exact=true dT/O=1.7e-16 dT/An=1.7e-16
+same-sketch-twice                                guard=gap0       truckBuilt=true exact=true dT/O=2.2e-10 dT/An=undefined
+empty-sketch-default                             guard=undrawn    truckBuilt=true exact=true dT/O=8.9e-16 dT/An=undefined
+twist-scan-square-10deg                          guard=sides      truckBuilt=true exact=7959.487341365888,4870.271526221518,2707.179325300778,5796.395140445147 dT/O=3.1e-15 dT/An=3.0e-15
+twist-scan-square-20deg                          guard=sides      truckBuilt=true exact=false dT/O=2.7e-3 dT/An=2.7e-3
+twist-scan-square-30deg                          guard=sides      truckBuilt=true exact=false dT/O=4.1e-3 dT/An=4.1e-3
+twist-scan-square-40deg                          guard=sides      truckBuilt=true exact=false dT/O=5.4e-3 dT/An=5.4e-3
+twist-scan-square-44deg                          guard=sides      truckBuilt=true exact=7251.572800903072,3480.911012109341,3415.093865763597,7185.755654557328 dT/O=4.8e-15 dT/An=5.0e-15
+twist-scan-square-45deg                          guard=tie        truckBuilt=true exact=7218.951416497461,3447.7152501692067,3447.7152501692067,7218.951416497461 dT/O=2.0e-15 dT/An=2.1e-15
+twist-scan-square-46deg                          guard=sides      truckBuilt=true exact=false dT/O=6.0e-3 dT/An=3.1e-3
+twist-scan-square-50deg                          guard=sides      truckBuilt=true exact=false dT/O=5.4e-3 dT/An=4.1e-2
+twist-scan-square-60deg                          guard=sides      truckBuilt=true exact=6666.666666666667,3023.9322565748303,4000,7642.734410091836 dT/O=2.4e-16 dT/An=1.5e-1
+twist-scan-square-70deg                          guard=sides      truckBuilt=true exact=6245.387048868451,2827.486344570911,4421.279617798216,7839.180322095755 dT/O=8.1e-15 dT/An=2.6e-1
+twist-scan-square-80deg                          guard=sides      truckBuilt=true exact=false dT/O=1.4e-3 dT/An=3.7e-1

@@ -1,0 +1,1 @@
+fzc21-78-boxG-top-cone-360               REFUSED  occtV 71552.9784 | tr-occt dV - dBb - dCom - F o/b/t 10/10/- | brep-occt dV 0.0e+0    | TRUCK REFUSED: groove1 (groove): the ring ends 0.2 mm short of a face of the part, which leaves a wall thinner than 0.25 mm that cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.  | ms 83 cpu 201

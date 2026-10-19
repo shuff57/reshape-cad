@@ -1,0 +1,59 @@
+[
+ {
+  "id": "r2-big-box-1e10",
+  "feature": "oversize",
+  "note": "",
+  "script": "box(1e10, 1e10, 1e10);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      10000000000,
+      10000000000,
+      10000000000
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 1e+30,
+  "occt": {
+   "volume": 9.999999999999997e+29,
+   "com": [
+    0,
+    0,
+    0
+   ],
+   "bbox": [
+    -5000000000,
+    -5000000000,
+    -5000000000,
+    5000000000,
+    5000000000,
+    5000000000
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "refused": "box box1: it has a size or position of 1.000e10, past the 1e6 brep-rs builds exactly -- box1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "box1 (box): solidcraft refused it -- solid.box: invalid parameters for `solid.box`: `length` must be a number or an expression"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 23
+ }
+]

@@ -1,0 +1,21 @@
+{
+ "id": "X-spin-oblique-frame-120",
+ "outcome": "built",
+ "volume": 9423.166518423795,
+ "faces": 6,
+ "bbox": [
+  -9.000000000000009,
+  -22.000000000000014,
+  3,
+  21,
+  13.999999999999996,
+  37.00000000000001
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[1,2,3],\"x_dir\":[1,0,0],\"y_dir\":[0,-0.8,0.6]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,0],[20,0],[20,30],[10,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-120,\"operation\":\"new\",\"body_name\":\"b_rev1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

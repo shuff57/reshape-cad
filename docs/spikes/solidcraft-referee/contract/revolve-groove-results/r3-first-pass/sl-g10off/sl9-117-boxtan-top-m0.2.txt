@@ -1,0 +1,1 @@
+sl9-117-boxtan-top-m0.2                  PASS     occtV 71257.3604 | tr-occt dV 6.9e-7 dBb 3.6e-16 dCom 3.6e-7 F o/b/t 12/12/12 | brep-occt dV 0.0e+0      | ms 668 cpu 1139

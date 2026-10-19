@@ -1,0 +1,471 @@
+[
+ {
+  "case": "hollow(no open) then turn",
+  "script": "const a = box(30, 20, 10);\nhollow(a, { wall: 2 });\nturn(a, [0, 0, 45]);",
+  "features": [
+   {
+    "id": "box1",
+    "guard": {
+     "id": "box1",
+     "kind": "box",
+     "status": "built"
+    },
+    "shipped": {
+     "id": "box1",
+     "kind": "box",
+     "status": "built"
+    }
+   },
+   {
+    "id": "shell1",
+    "guard": {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "refusal": "Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' })."
+    },
+    "shipped": {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "refusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
+    }
+   },
+   {
+    "id": "turn1",
+    "guard": {
+     "id": "turn1",
+     "kind": "rotate",
+     "status": "refused",
+     "refusal": "Turn 1 is not built because Hollow 1, which it uses, was refused."
+    },
+    "shipped": {
+     "id": "turn1",
+     "kind": "rotate",
+     "status": "refused",
+     "refusal": "turn1 (rotate): its target shell1 was refused (shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points)"
+    }
+   }
+  ]
+ },
+ {
+  "case": "hollow(no open) then move",
+  "script": "const a = box(30, 20, 10);\nhollow(a, { wall: 2 });\nmove(a, [0, 30, 0]);",
+  "features": [
+   {
+    "id": "box1",
+    "guard": {
+     "id": "box1",
+     "kind": "box",
+     "status": "built"
+    },
+    "shipped": {
+     "id": "box1",
+     "kind": "box",
+     "status": "built"
+    }
+   },
+   {
+    "id": "shell1",
+    "guard": {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "refusal": "Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' })."
+    },
+    "shipped": {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "refusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
+    }
+   },
+   {
+    "id": "move1",
+    "guard": {
+     "id": "move1",
+     "kind": "move",
+     "status": "refused",
+     "refusal": "Move 1 is not built because Hollow 1, which it uses, was refused."
+    },
+    "shipped": {
+     "id": "move1",
+     "kind": "move",
+     "status": "refused",
+     "refusal": "move1 (move): its target shell1 was refused (shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points)"
+    }
+   }
+  ]
+ },
+ {
+  "case": "hollow(no open) then copy",
+  "script": "const a = box(30, 20, 10);\nhollow(a, { wall: 2 });\nmove(a, [0, 30, 0], { copy: true });",
+  "features": [
+   {
+    "id": "box1",
+    "guard": {
+     "id": "box1",
+     "kind": "box",
+     "status": "built"
+    },
+    "shipped": {
+     "id": "box1",
+     "kind": "box",
+     "status": "built"
+    }
+   },
+   {
+    "id": "shell1",
+    "guard": {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "refusal": "Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' })."
+    },
+    "shipped": {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "refusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
+    }
+   },
+   {
+    "id": "move1",
+    "guard": {
+     "id": "move1",
+     "kind": "move",
+     "status": "refused",
+     "refusal": "Copy 1 is not built because Hollow 1, which it uses, was refused."
+    },
+    "shipped": {
+     "id": "move1",
+     "kind": "move",
+     "status": "refused",
+     "refusal": "move1 (move): its target shell1 was refused (shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points)"
+    }
+   }
+  ]
+ },
+ {
+  "case": "hollow(no open), turn, then join with box",
+  "script": "const a = box(30, 20, 10);\nhollow(a, { wall: 2 });\nturn(a, [0, 0, 45]);\nconst b = box(10, 10, 10, { at: [0, 0, 0] });\njoin(a, b);",
+  "features": [
+   {
+    "id": "box1",
+    "guard": {
+     "id": "box1",
+     "kind": "box",
+     "status": "built"
+    },
+    "shipped": {
+     "id": "box1",
+     "kind": "box",
+     "status": "built"
+    }
+   },
+   {
+    "id": "shell1",
+    "guard": {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "refusal": "Hollow 1 is not built: hollowing a shape with no open face is not supported yet -- leave one face open, for example hollow(shape, { wall: 2, open: 'top' })."
+    },
+    "shipped": {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "refusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
+    }
+   },
+   {
+    "id": "turn1",
+    "guard": {
+     "id": "turn1",
+     "kind": "rotate",
+     "status": "refused",
+     "refusal": "Turn 1 is not built because Hollow 1, which it uses, was refused."
+    },
+    "shipped": {
+     "id": "turn1",
+     "kind": "rotate",
+     "status": "refused",
+     "refusal": "turn1 (rotate): its target shell1 was refused (shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points)"
+    }
+   },
+   {
+    "id": "box2",
+    "guard": {
+     "id": "box2",
+     "kind": "box",
+     "status": "built"
+    },
+    "shipped": {
+     "id": "box2",
+     "kind": "box",
+     "status": "built"
+    }
+   },
+   {
+    "id": "op1",
+    "guard": {
+     "id": "op1",
+     "kind": "combine",
+     "status": "refused",
+     "refusal": "Join 1 is not built because Turn 1, which it uses, was refused."
+    },
+    "shipped": {
+     "id": "op1",
+     "kind": "combine",
+     "status": "refused",
+     "refusal": "op1 (combine): its target turn1 was refused (turn1 (rotate): its target shell1 was refused (shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points))"
+    }
+   }
+  ]
+ },
+ {
+  "case": "ring, hole (engine refuses), then turn",
+  "script": "const t = ring(30, 6);\nhole(t, { across: 3 });\nturn(t, [0, 0, 30]);",
+  "features": [
+   {
+    "id": "ring1",
+    "guard": {
+     "id": "ring1",
+     "kind": "torus",
+     "status": "built"
+    },
+    "shipped": {
+     "id": "ring1",
+     "kind": "torus",
+     "status": "built"
+    }
+   },
+   {
+    "id": "hole1",
+    "guard": {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "refused",
+     "refusal": "Hole 1 could not be built by this engine, so it is shown without it."
+    },
+    "shipped": {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "refused",
+     "refusal": "hole1 (hole): solidcraft refused it -- solid.cylinder: the cut could not be computed reliably: it came out empty. The result was refused rather than kept wrong; where the bodies only touch (faces flush with each other), overlapping them slightly usually helps (refined tolerance 1.693712e-2 mm)"
+    }
+   },
+   {
+    "id": "turn1",
+    "guard": {
+     "id": "turn1",
+     "kind": "rotate",
+     "status": "refused",
+     "refusal": "Turn 1 is not built because Hole 1, which it uses, was refused."
+    },
+    "shipped": {
+     "id": "turn1",
+     "kind": "rotate",
+     "status": "refused",
+     "refusal": "turn1 (rotate): its target hole1 was refused (hole1 (hole): solidcraft refused it -- solid.cylinder: the cut could not be computed reliably: it came out empty. The result was refused rather than kept wrong; where the bodies only touch (faces flush with each other), overlapping them slightly usually helps (refined tolerance 1.693712e-2 mm))"
+    }
+   }
+  ]
+ },
+ {
+  "case": "ring, hole through the tube (time limit), then turn",
+  "script": "const t = ring(30, 6);\nhole(t, { across: 2, at: [12, 0] });\nturn(t, [0, 0, 30]);",
+  "features": [
+   {
+    "id": "ring1",
+    "guard": {
+     "id": "ring1",
+     "kind": "torus",
+     "status": "built"
+    },
+    "shipped": {
+     "id": "ring1",
+     "kind": "torus",
+     "status": "built"
+    }
+   },
+   {
+    "id": "hole1",
+    "guard": {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "refused",
+     "refusal": "Hole 1 is not built: it took longer than 120 seconds to compute, so it is shown without it -- try a simpler shape."
+    },
+    "shipped": {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "refused",
+     "refusal": "hole1 (hole): solidcraft refused it -- (time limit): TIME_LIMIT after 120000 ms"
+    }
+   },
+   {
+    "id": "turn1",
+    "guard": {
+     "id": "turn1",
+     "kind": "rotate",
+     "status": "refused",
+     "refusal": "Turn 1 is not built because Hole 1, which it uses, was refused."
+    },
+    "shipped": {
+     "id": "turn1",
+     "kind": "rotate",
+     "status": "refused",
+     "refusal": "turn1 (rotate): its target hole1 was refused (hole1 (hole): solidcraft refused it -- (time limit): TIME_LIMIT after 120000 ms)"
+    }
+   }
+  ]
+ },
+ {
+  "case": "ring, hole (engine refuses), then copy",
+  "script": "const t = ring(30, 6);\nhole(t, { across: 3 });\nmove(t, [0, 40, 0], { copy: true });",
+  "features": [
+   {
+    "id": "ring1",
+    "guard": {
+     "id": "ring1",
+     "kind": "torus",
+     "status": "built"
+    },
+    "shipped": {
+     "id": "ring1",
+     "kind": "torus",
+     "status": "built"
+    }
+   },
+   {
+    "id": "hole1",
+    "guard": {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "refused",
+     "refusal": "Hole 1 could not be built by this engine, so it is shown without it."
+    },
+    "shipped": {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "refused",
+     "refusal": "hole1 (hole): solidcraft refused it -- solid.cylinder: the cut could not be computed reliably: it came out empty. The result was refused rather than kept wrong; where the bodies only touch (faces flush with each other), overlapping them slightly usually helps (refined tolerance 1.693712e-2 mm)"
+    }
+   },
+   {
+    "id": "move1",
+    "guard": {
+     "id": "move1",
+     "kind": "move",
+     "status": "refused",
+     "refusal": "Copy 1 is not built because Hole 1, which it uses, was refused."
+    },
+    "shipped": {
+     "id": "move1",
+     "kind": "move",
+     "status": "refused",
+     "refusal": "move1 (move): its target hole1 was refused (hole1 (hole): solidcraft refused it -- solid.cylinder: the cut could not be computed reliably: it came out empty. The result was refused rather than kept wrong; where the bodies only touch (faces flush with each other), overlapping them slightly usually helps (refined tolerance 1.693712e-2 mm))"
+    }
+   }
+  ]
+ },
+ {
+  "case": "turned box, draft (engine refuses), then move",
+  "script": "const a = box(30, 20, 10);\nturn(a, [10, 20, 30]);\ndraft(a.face('right'), 5);\nmove(a, [0, 40, 0]);",
+  "features": [
+   {
+    "id": "box1",
+    "guard": {
+     "id": "box1",
+     "kind": "box",
+     "status": "built"
+    },
+    "shipped": {
+     "id": "box1",
+     "kind": "box",
+     "status": "built"
+    }
+   },
+   {
+    "id": "draft1",
+    "guard": {
+     "id": "draft1",
+     "kind": "draft",
+     "status": "refused",
+     "refusal": "Draft 1 could not be built by this engine, so it is shown without it."
+    },
+    "shipped": {
+     "id": "draft1",
+     "kind": "draft",
+     "status": "refused",
+     "refusal": "draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction"
+    }
+   },
+   {
+    "id": "move1",
+    "guard": {
+     "id": "move1",
+     "kind": "move",
+     "status": "refused",
+     "refusal": "Move 1 is not built because Draft 1, which it uses, was refused."
+    },
+    "shipped": {
+     "id": "move1",
+     "kind": "move",
+     "status": "refused",
+     "refusal": "move1 (move): its target draft1 was refused (draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction)"
+    }
+   }
+  ]
+ },
+ {
+  "case": "turned box, draft (engine refuses), then turn",
+  "script": "const a = box(30, 20, 10);\nturn(a, [10, 20, 30]);\ndraft(a.face('right'), 5);\nturn(a, [0, 0, 20]);",
+  "features": [
+   {
+    "id": "box1",
+    "guard": {
+     "id": "box1",
+     "kind": "box",
+     "status": "built"
+    },
+    "shipped": {
+     "id": "box1",
+     "kind": "box",
+     "status": "built"
+    }
+   },
+   {
+    "id": "draft1",
+    "guard": {
+     "id": "draft1",
+     "kind": "draft",
+     "status": "refused",
+     "refusal": "Draft 1 could not be built by this engine, so it is shown without it."
+    },
+    "shipped": {
+     "id": "draft1",
+     "kind": "draft",
+     "status": "refused",
+     "refusal": "draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction"
+    }
+   },
+   {
+    "id": "turn1",
+    "guard": {
+     "id": "turn1",
+     "kind": "rotate",
+     "status": "refused",
+     "refusal": "Turn 1 is not built because Draft 1, which it uses, was refused."
+    },
+    "shipped": {
+     "id": "turn1",
+     "kind": "rotate",
+     "status": "refused",
+     "refusal": "turn1 (rotate): its target draft1 was refused (draft1 (draft): solidcraft refused it -- solid.draft: not supported yet: drafting faces that aren't parallel to the pull direction)"
+    }
+   }
+  ]
+ }
+]

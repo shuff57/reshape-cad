@@ -1,0 +1,1 @@
+Z-spin-r105-5deg                         FAIL     occtV 2748.8936 | tr-occt dV 2.0e-5 dBb 3.5e-14 dCom 3.1e-5 F o/b/t 6/6/8 | brep-occt dV 1.5e-15  | ANALYTIC 2748.8936 dTruck 2.0e-5 dOcct 1.7e-16 dBrep 1.3e-15    | ms 70 cpu 262

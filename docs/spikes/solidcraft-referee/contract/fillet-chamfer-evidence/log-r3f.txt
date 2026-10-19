@@ -1,0 +1,73 @@
+r3f-h-0                            PASS     OCCTvol 21801.9611 brep 1.7e-16 truck dV 5.2e-6 dCom 9.1e-8 faces O/B/T 8/8/8  closed dT 5.2e-6 dO 0.0e+0  
+r3f-h-1                            PASS     OCCTvol 22753.4638 brep 1.6e-16 truck dV 5.3e-6 dCom 1.0e-6 faces O/B/T 8/8/8  closed dT 5.3e-6 dO 1.6e-16  
+r3f-h-2                            PASS     OCCTvol 22348.4018 brep 0.0e+0 truck dV 4.8e-6 dCom 7.5e-7 faces O/B/T 8/8/8  closed dT 4.8e-6 dO 0.0e+0  
+r3f-h-3                            PASS     OCCTvol 23569.7615 brep 1.2e-12 truck dV 7.5e-7 dCom 4.1e-7 faces O/B/T 8/8/8  closed dT 7.5e-7 dO 1.2e-12  
+r3f-h-4                            PASS     OCCTvol 22747.3616 brep 1.6e-16 truck dV 5.8e-6 dCom 9.9e-7 faces O/B/T 8/8/8  closed dT 5.8e-6 dO 1.6e-16  
+r3f-h-5                            PASS     OCCTvol 22381.8500 brep 1.6e-12 truck dV 3.1e-6 dCom 2.0e-6 faces O/B/T 8/8/8  closed dT 3.1e-6 dO 1.6e-12  
+r3f-h-6                            PASS     OCCTvol 23364.2885 brep 1.6e-16 truck dV 2.6e-6 dCom 5.2e-7 faces O/B/T 8/8/8  closed dT 2.6e-6 dO 0.0e+0  
+r3f-h-7                            PASS     OCCTvol 22979.8726 brep 1.6e-16 truck dV 1.8e-6 dCom 2.2e-7 faces O/B/T 8/8/8  closed dT 1.8e-6 dO 1.6e-16  
+r3f-h-8                            PASS     OCCTvol 22350.7722 brep 1.6e-16 truck dV 9.2e-6 dCom 1.6e-6 faces O/B/T 8/8/8  closed dT 9.2e-6 dO 0.0e+0  
+r3f-h-9                            PASS     OCCTvol 23560.2539 brep 1.5e-12 truck dV 3.2e-6 dCom 1.1e-6 faces O/B/T 8/8/8  closed dT 3.2e-6 dO 1.5e-12  
+r3f-h-10                           PASS     OCCTvol 23225.9242 brep 1.5e-12 truck dV 3.6e-6 dCom 1.6e-6 faces O/B/T 8/8/8  closed dT 3.6e-6 dO 1.5e-12  
+r3f-h-11                           PASS     OCCTvol 23348.7403 brep 3.1e-16 truck dV 1.2e-6 dCom 3.0e-8 faces O/B/T 8/8/8  closed dT 1.2e-6 dO 0.0e+0  
+r3f-h-12                           FAIL     OCCTvol 23376.5509 brep 1.6e-16 truck dV 1.8e-2 dCom 4.8e-3 faces O/B/T 7/7/8 FACE? closed dT 3.2e-6 dO 1.9e-2  
+r3f-h-13                           PASS     OCCTvol 22283.0003 brep 1.3e-12 truck dV 2.5e-6 dCom 2.2e-6 faces O/B/T 8/8/8  closed dT 2.5e-6 dO 1.3e-12  
+r3f-h-14                           PASS     OCCTvol 23647.7491 brep 3.1e-16 truck dV 1.9e-6 dCom 3.2e-7 faces O/B/T 8/8/8  closed dT 1.9e-6 dO 0.0e+0  
+r3f-h-15                           PASS     OCCTvol 22609.5983 brep 1.6e-16 truck dV 3.6e-6 dCom 3.8e-7 faces O/B/T 8/8/8  closed dT 3.6e-6 dO 0.0e+0  
+r3f-h-16                           PASS     OCCTvol 23329.2518 brep 1.2e-12 truck dV 1.9e-6 dCom 7.4e-7 faces O/B/T 8/8/8  closed dT 1.9e-6 dO 1.2e-12  
+r3f-h-17                           PASS     OCCTvol 23126.1389 brep 1.5e-12 truck dV 1.9e-6 dCom 1.2e-6 faces O/B/T 8/8/8  closed dT 1.9e-6 dO 1.5e-12  
+r3f-h-18                           PASS     OCCTvol 23133.8819 brep 0.0e+0 truck dV 1.7e-6 dCom 3.3e-7 faces O/B/T 8/8/8  closed dT 1.7e-6 dO 0.0e+0  
+r3f-h-19                           PASS     OCCTvol 21903.1580 brep 1.7e-16 truck dV 1.6e-6 dCom 4.3e-8 faces O/B/T 8/8/8  closed dT 1.6e-6 dO 1.7e-16  
+r3f-h-20                           PASS     OCCTvol 23157.8868 brep 7.3e-13 truck dV 3.2e-6 dCom 1.9e-7 faces O/B/T 8/8/8  closed dT 3.2e-6 dO 7.3e-13  
+r3f-h-21                           PASS     OCCTvol 22995.9080 brep 1.6e-16 truck dV 6.6e-6 dCom 8.9e-7 faces O/B/T 8/8/8  closed dT 6.6e-6 dO 0.0e+0  
+r3f-h-22                           PASS     OCCTvol 23006.2361 brep 1.4e-12 truck dV 1.2e-6 dCom 8.8e-7 faces O/B/T 8/8/8  closed dT 1.2e-6 dO 1.4e-12  
+r3f-h-23                           PASS     OCCTvol 23396.1487 brep 1.2e-12 truck dV 1.7e-6 dCom 4.9e-7 faces O/B/T 8/8/8  closed dT 1.7e-6 dO 1.2e-12  
+r3f-h-24                           PASS     OCCTvol 22609.8539 brep 1.5e-12 truck dV 1.2e-6 dCom 1.9e-6 faces O/B/T 8/8/8  closed dT 1.2e-6 dO 1.5e-12  
+r3f-h-25                           PASS     OCCTvol 23517.2283 brep 9.5e-13 truck dV 1.4e-6 dCom 5.5e-7 faces O/B/T 8/8/8  closed dT 1.4e-6 dO 9.5e-13  
+r3f-h-26                           PASS     OCCTvol 22604.9607 brep 1.5e-12 truck dV 5.4e-6 dCom 1.7e-6 faces O/B/T 8/8/8  closed dT 5.4e-6 dO 1.5e-12  
+r3f-h-27                           PASS     OCCTvol 22707.6550 brep 1.6e-16 truck dV 9.3e-6 dCom 3.6e-7 faces O/B/T 8/8/8  closed dT 9.3e-6 dO 1.6e-16  
+r3f-h-28                           PASS     OCCTvol 23285.1386 brep 1.6e-16 truck dV 4.7e-6 dCom 7.7e-7 faces O/B/T 8/8/8  closed dT 4.7e-6 dO 1.6e-16  
+r3f-h-29                           PASS     OCCTvol 22351.4248 brep 1.6e-16 truck dV 1.5e-6 dCom 3.4e-7 faces O/B/T 8/8/8  closed dT 1.5e-6 dO 0.0e+0  
+r3f-h-30                           FAIL     OCCTvol 22612.0444 brep 1.6e-16 truck dV 9.6e-3 dCom 3.1e-3 faces O/B/T 7/7/8  closed dT 4.9e-3 dO 1.5e-2  
+r3f-h-31                           PASS     OCCTvol 23452.2700 brep 6.1e-13 truck dV 2.0e-6 dCom 9.6e-8 faces O/B/T 8/8/8  closed dT 2.0e-6 dO 6.1e-13  
+r3f-h-32                           PASS     OCCTvol 22954.3859 brep 0.0e+0 truck dV 4.4e-6 dCom 4.6e-7 faces O/B/T 8/8/8  closed dT 4.4e-6 dO 1.6e-16  
+r3f-h-33                           PASS     OCCTvol 23268.1558 brep 0.0e+0 truck dV 3.3e-6 dCom 3.1e-7 faces O/B/T 8/8/8  closed dT 3.3e-6 dO 1.6e-16  
+r3f-h-34                           PASS     OCCTvol 23096.0933 brep 1.5e-12 truck dV 9.1e-7 dCom 1.3e-6 faces O/B/T 8/8/8  closed dT 9.1e-7 dO 1.5e-12  
+r3f-h-35                           FAIL     OCCTvol 23116.4271 brep 0.0e+0 truck dV 2.1e-2 dCom 6.0e-3 faces O/B/T 7/7/8  closed dT 4.5e-3 dO 2.6e-2  
+r3f-p-0                            FAIL     OCCTvol 11674.9100 brep 4.5e-2 truck dV 4.5e-2 dCom 1.3e-2 faces O/B/T 11/12/12 FACE? closed dT 5.2e-5 dO 4.7e-2  
+r3f-p-1                            PASS     OCCTvol 11600.3058 brep 6.3e-13 truck dV 1.1e-6 dCom 3.2e-7 faces O/B/T 12/12/12  closed dT 1.1e-6 dO 6.3e-13  
+r3f-p-2                            PASS     OCCTvol 11436.2480 brep 0.0e+0 truck dV 3.2e-16 dCom 1.7e-16 faces O/B/T 12/12/12  closed dT 6.4e-16 dO 3.2e-16  
+r3f-p-3                            PASS     OCCTvol 11127.3317 brep 1.1e-12 truck dV 2.0e-6 dCom 5.8e-7 faces O/B/T 12/12/12  closed dT 2.0e-6 dO 1.1e-12  
+r3f-p-4                            FAIL     OCCTvol 11745.1200 brep 5.4e-2 truck dV 5.4e-2 dCom 1.5e-2 faces O/B/T 11/11/11  closed dT 3.3e-16 dO 5.7e-2  
+r3f-p-5                            FAIL     OCCTvol 11412.4000 brep 8.8e-3 truck dV 8.8e-3 dCom 2.6e-3 faces O/B/T 11/12/12 FACE? closed dT 8.0e-16 dO 8.9e-3  
+r3f-p-6                            PASS     OCCTvol 10751.8960 brep 1.7e-16 truck dV 3.4e-16 dCom 2.8e-16 faces O/B/T 12/12/12  closed dT 3.4e-16 dO 0.0e+0  
+r3f-p-7                            PASS     OCCTvol 11819.4272 brep 7.1e-13 truck dV 9.3e-7 dCom 2.7e-7 faces O/B/T 12/12/12  closed dT 9.3e-7 dO 7.1e-13  
+r3f-p-8                            PASS     OCCTvol 11353.5564 brep 1.4e-12 truck dV 2.0e-5 dCom 5.1e-6 faces O/B/T 12/12/12  closed dT 2.0e-5 dO 1.4e-12  
+r3f-p-9                            PASS     OCCTvol 11798.7791 brep 1.1e-12 truck dV 4.6e-6 dCom 1.3e-6 faces O/B/T 12/12/12  closed dT 4.6e-6 dO 1.1e-12  
+r3f-p-10                           FAIL     OCCTvol 11733.6000 brep 2.2e-2 truck dV 2.2e-2 dCom 6.1e-3 faces O/B/T 11/12/12 FACE? closed dT 4.8e-16 dO 2.2e-2  
+r3f-p-11                           PASS     OCCTvol 11325.8000 brep 1.5e-12 truck dV 7.2e-6 dCom 1.9e-6 faces O/B/T 12/12/12  closed dT 7.2e-6 dO 1.5e-12  
+r3f-p-12                           PASS     OCCTvol 11549.7811 brep 1.0e-12 truck dV 2.4e-6 dCom 6.6e-7 faces O/B/T 12/12/12  closed dT 2.4e-6 dO 1.0e-12  
+r3f-p-13                           FAIL     OCCTvol 11735.8080 brep 3.1e-16 truck dV 8.0e-3 dCom 2.2e-3 faces O/B/T 11/11/12 FACE? closed dT 4.8e-3 dO 3.2e-3  
+r3f-p-14                           PASS     OCCTvol 11287.0000 brep 0.0e+0 truck dV 1.6e-16 dCom 1.0e-16 faces O/B/T 12/12/12  closed dT 0.0e+0 dO 1.6e-16  
+r3f-p-15                           PASS     OCCTvol 11021.4328 brep 9.2e-13 truck dV 1.3e-6 dCom 3.8e-7 faces O/B/T 12/12/12  closed dT 1.3e-6 dO 9.2e-13  
+r3f-p-16                           PASS     OCCTvol 11228.4250 brep 1.6e-16 truck dV 1.6e-16 dCom 7.0e-17 faces O/B/T 12/12/12  closed dT 1.6e-16 dO 0.0e+0  
+r3f-p-17                           PASS     OCCTvol 10581.9960 brep 0.0e+0 truck dV 1.5e-15 dCom 4.9e-16 faces O/B/T 12/12/12  closed dT 1.5e-15 dO 0.0e+0  
+r3f-p-18                           PASS     OCCTvol 11667.3520 brep 0.0e+0 truck dV 3.1e-16 dCom 1.4e-16 faces O/B/T 12/12/12  closed dT 1.6e-16 dO 1.6e-16  
+r3f-p-19                           FAIL     OCCTvol 11633.4000 brep 3.1e-16 truck dV 3.1e-2 dCom 8.7e-3 faces O/B/T 11/11/12 FACE? closed dT 2.1e-5 dO 3.2e-2  
+r3f-p-20                           FAIL     OCCTvol 11637.3229 brep 1.6e-2 truck dV 1.6e-3 dCom 1.6e-3 faces O/B/T 7/11/12 FACE? closed dT 1.3e-2 dO 1.1e-2  
+r3f-p-21                           FAIL     OCCTvol 11760.1500 brep 4.8e-2 truck dV 4.8e-2 dCom 1.3e-2 faces O/B/T 11/12/12 FACE? closed dT 1.6e-16 dO 5.0e-2  
+r3f-p-22                           PASS     OCCTvol 10877.2000 brep 1.7e-16 truck dV 1.7e-16 dCom 7.0e-17 faces O/B/T 12/12/12  closed dT 1.7e-16 dO 3.3e-16  
+r3f-p-23                           FAIL     OCCTvol 11567.5200 brep 1.6e-16 truck dV 3.6e-2 dCom 8.6e-3 faces O/B/T 11/11/12 FACE? closed dT 2.0e-2 dO 1.7e-2  
+r3f-p-24                           PASS     OCCTvol 11793.3652 brep 7.9e-13 truck dV 9.4e-7 dCom 2.7e-7 faces O/B/T 12/12/12  closed dT 9.4e-7 dO 7.9e-13  
+r3f-p-25                           FAIL     OCCTvol 11450.9280 brep 1.6e-16 truck dV 2.3e-2 dCom 6.0e-3 faces O/B/T 11/11/12 FACE? closed dT 2.1e-2 dO 3.0e-3  
+r3f-p-26                           FAIL     OCCTvol 11871.3750 brep 1.5e-16 truck dV 4.2e-2 dCom 1.1e-2 faces O/B/T 11/11/12 FACE? closed dT 1.4e-2 dO 2.9e-2  
+r3f-p-27                           PASS     OCCTvol 11753.6217 brep 1.3e-12 truck dV 8.1e-6 dCom 2.1e-6 faces O/B/T 12/12/12  closed dT 8.1e-6 dO 1.3e-12  
+r3f-p-28                           PASS     OCCTvol 10923.6510 brep 1.7e-16 truck dV 1.7e-16 dCom 7.0e-17 faces O/B/T 12/12/12  closed dT 3.3e-16 dO 5.0e-16  
+r3f-p-29                           PASS     OCCTvol 11830.3448 brep 7.2e-13 truck dV 1.2e-6 dCom 3.5e-7 faces O/B/T 12/12/12  closed dT 1.2e-6 dO 7.2e-13  
+r3f-p-30                           PASS     OCCTvol 11893.2339 brep 5.9e-13 truck dV 3.8e-7 dCom 1.1e-7 faces O/B/T 12/12/12  closed dT 3.8e-7 dO 5.9e-13  
+r3f-p-31                           PASS     OCCTvol 11856.0559 brep 5.7e-13 truck dV 4.7e-7 dCom 1.4e-7 faces O/B/T 12/12/12  closed dT 4.7e-7 dO 5.7e-13  
+r3f-p-32                           FAIL     OCCTvol 11531.2800 brep 8.1e-3 truck dV 8.1e-3 dCom 2.4e-3 faces O/B/T 11/12/12 FACE? closed dT 4.8e-16 dO 8.2e-3  
+r3f-p-33                           FAIL     OCCTvol 11923.6380 brep 0.0e+0 truck dV 1.8e-2 dCom 5.0e-3 faces O/B/T 11/11/12 FACE? closed dT 1.7e-3 dO 2.0e-2  
+r3f-p-34                           PASS     OCCTvol 11385.7245 brep 1.9e-12 truck dV 1.0e-5 dCom 2.6e-6 faces O/B/T 12/12/12  closed dT 1.0e-5 dO 1.9e-12  
+r3f-p-35                           PASS     OCCTvol 11237.9731 brep 1.4e-12 truck dV 5.1e-6 dCom 1.4e-6 faces O/B/T 12/12/12  closed dT 5.1e-6 dO 1.4e-12  
+EXIT 0 last: solidcraft run: [{"command":"sketch.create","params":{"name":"sk_sk1_0","plane":{"origin":[0,0,0],"x_dir":[1,0,0],"y_dir":[0,1,0]}}},{"command":"sketch.line","params":{"points":[[0,0],[40,0],[40,30],[0,30]],"closed":true}},{"command":"sketch.finish","params":{}},{"command":"solid.extrude","params":{"distance":10,"sketch":"sk_sk1_0","operation":"new","body_name":"b_pull1"}},{"command":"sketch.create","params":{"name":"sk_sk2_1","plane":{"origin":[0,0,10],"x_dir":[1,0,0],"y_dir":[0,1,0]}}},{"command":"sketch.line","params":{"points":[[13.45,6.049999999999999],[26.55,6.049999999999999],[26.55,14.35],[13.45,14.35

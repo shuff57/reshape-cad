@@ -1,0 +1,48 @@
+[
+ {
+  "id": "fzc2-34-join-side-circle-45",
+  "src": "const k = sketch('top'); k.circle(40); const a = extrude(k, 30); const k2 = sketch('top', 30); k2.circle(20); const b = extrude(k2, 20); const t = union(a, b); const sk = sketch('side', 2.5); sk.circle(3.9, { at: [17.9, 17.4] }); groove(sk, t, 45);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "extrude",
+   "combine",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc2-34-join-side-circle-45",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "combine",
+    "groove"
+   ],
+   "invalid": "OCCT: OCCT built nothing"
+  },
+  "noOcct": {
+   "brep": {
+    "refused": "groove groove1: a circle sketch has no outline to spin"
+   },
+   "ms": 1558,
+   "load": [
+    36.1,
+    36.1
+   ],
+   "cpuMs": 2006,
+   "truck": {
+    "refused": "groove1 (groove): a ring whose outline has a curve (a circle or a rounded corner) takes a minute or more to cut here, so it is not built; give the ring straight sides"
+   }
+  },
+  "fcNote": "fixture invalid: OCCT: OCCT built nothing",
+  "caseMs": 1610
+ }
+]

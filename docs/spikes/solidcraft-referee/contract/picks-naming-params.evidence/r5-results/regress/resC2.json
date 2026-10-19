@@ -1,0 +1,2617 @@
+[
+ {
+  "label": "carried +z through hole: shell open",
+  "id": "sh1",
+  "ms": 1790,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       16.21951219512195,
+       -9.21951219512195,
+       12
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "hole1.same[box1.face[+z]]",
+     "rule": "the planar face on F1:+z's plane on hole1's own shape",
+     "engineFace": "F1:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+z",
+      "pickSource": "interior point (largest display triangle); the centroid is off the face"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 12,
+       "got": 12,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+z",
+       "got": "F1:+z",
+       "agree": true
+      },
+      {
+       "check": "lift",
+       "from": "box1",
+       "to": "hole1",
+       "flipped": false,
+       "plane": {
+        "n": [
+         0,
+         0,
+         1
+        ],
+        "d": 12
+       }
+      },
+      {
+       "check": "area vs original",
+       "ratio": 0.9771082352941175
+      },
+      {
+       "check": "engine persistent name kept",
+       "expected": "F1:+z",
+       "got": "F1:+z",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 22,
+     "base": [
+      5,
+      -3,
+      -9
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       16.21951219512195,
+       -9.21951219512195,
+       12
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 8000.230016469245,
+    "com": [
+     4.999999999999999,
+     -2.9999999999999982,
+     0.07077005609693199
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 14,
+    "types": {
+     "plane": 12,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 12,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2
+   },
+   "brep": {
+    "volume": 8000.230016469243,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 14
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 8000.160829051753,
+   "bbox": [
+    -15,
+    -18,
+    -8.000000000000002,
+    25,
+    12,
+    12.000000000000009
+   ],
+   "com": [
+    5.0000000000000595,
+    -3.0000000000000266,
+    0.07073298243257732
+   ],
+   "faces": 14,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 12
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.000008648178533535502,
+   "dBbox": 7.401486830834377e-16,
+   "dCom": 6.884406639802416e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 14,
+    "truck": 14,
+    "brep": 14,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.2736713816993905e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.0000086481785328534,
+   "dCom": 0.07165048981153706,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "hole1.same[box1.face[+z]]"
+  ]
+ },
+ {
+  "label": "carried +x through hole: draft",
+  "id": "d1",
+  "ms": 1327,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "d1",
+    "kind": "draft",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       25,
+       -3,
+       2
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "hole1.same[box1.face[+x]]",
+     "rule": "the planar face on F1:+x's plane on hole1's own shape",
+     "engineFace": "F1:+x",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+x",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 25,
+       "got": 25,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+x",
+       "got": "F1:+x",
+       "agree": true
+      },
+      {
+       "check": "lift",
+       "from": "box1",
+       "to": "hole1",
+       "flipped": false,
+       "plane": {
+        "n": [
+         1,
+         0,
+         0
+        ],
+        "d": 25
+       }
+      },
+      {
+       "check": "area vs original",
+       "ratio": 1
+      },
+      {
+       "check": "engine persistent name kept",
+       "expected": "F1:+x",
+       "got": "F1:+x",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 22,
+     "base": [
+      5,
+      -3,
+      -9
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       25,
+       -3,
+       2
+      ]
+     ],
+     "angle": 5,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23329.52692612273,
+    "com": [
+     4.913671625273426,
+     -2.999999999999999,
+     1.9249974816866426
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25.699909308207395,
+     12,
+     12.000000000000005
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 23434.513322353832,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "d1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- d1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23329.62085554455,
+   "bbox": [
+    -15,
+    -18,
+    -8,
+    25.699909308207395,
+    12,
+    12.000000000000007
+   ],
+   "com": [
+    4.913671972847643,
+    -3.0000000000000075,
+    1.9249977836608148
+   ],
+   "faces": 7,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": false,
+   "occtRefusals": {},
+   "brepRefusals": {
+    "d1": "brep-rs can only tilt a side wall of an axis-aligned box yet -- d1 is shown without it."
+   }
+  },
+  "score": {
+   "dVol": 0.00000402620345094017,
+   "dBbox": 1.4802973661668748e-16,
+   "dCom": 6.392340325943304e-9,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 7,
+    "truck": 7,
+    "brep": 7,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT"
+  },
+  "outcome": "PASS",
+  "control": {
+   "refused": "solid.draft: invalid input: no face at [-14.300090691792605, -3.0, 2.0000000000000053]"
+  },
+  "names": [
+   "hole1.same[box1.face[+x]]"
+  ]
+ },
+ {
+  "label": "round between(carried +z, carried +x)",
+  "id": "r1",
+  "ms": 1336,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       -3,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "hole1.edge[hole1.same[box1.face[+z]] ^ hole1.same[box1.face[+x]]]",
+     "engineEdges": [
+      "F1:+x|F1:+z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:+z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 22,
+     "base": [
+      5,
+      -3,
+      -9
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       25,
+       -3,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23408.761101978278,
+    "com": [
+     4.978489251989435,
+     -2.9999999999999996,
+     1.98949035577044
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 8,
+    "types": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 23408.761101961532,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 8
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23408.812773714355,
+   "bbox": [
+    -15,
+    -18.00000000000001,
+    -8,
+    25,
+    12.000000000000005,
+    12.000000000000005
+   ],
+   "com": [
+    4.978475440867457,
+    -3.0000000008650436,
+    1.9894837348623722
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.000002207367397696334,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 2.5646609664045013e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 7.153568006479412e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.000002207319325190933,
+   "dCom": 0.0007991456201545333,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "hole1.edge[hole1.same[box1.face[+x]] ^ hole1.same[box1.face[+z]]]"
+  ]
+ },
+ {
+  "label": "round between(carried +z, primitive +x) mixed",
+  "id": "r1",
+  "ms": 1552,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       -3,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "hole1.edge[hole1.same[box1.face[+z]] ^ box1.face[+x]]",
+     "engineEdges": [
+      "F1:+x|F1:+z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:+z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 22,
+     "base": [
+      5,
+      -3,
+      -9
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       25,
+       -3,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23408.761101978278,
+    "com": [
+     4.978489251989435,
+     -2.9999999999999996,
+     1.98949035577044
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 8,
+    "types": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 1
+   },
+   "brep": {
+    "volume": 23408.761101961532,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 8
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 23408.812773714355,
+   "bbox": [
+    -15,
+    -18.00000000000001,
+    -8,
+    25,
+    12.000000000000005,
+    12.000000000000005
+   ],
+   "com": [
+    4.978475440867457,
+    -3.0000000008650436,
+    1.9894837348623722
+   ],
+   "faces": 8,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.000002207367397696334,
+   "dBbox": 5.921189464667501e-16,
+   "dCom": 2.5646609664045013e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 8,
+    "truck": 8,
+    "brep": 8,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 7.153568006479412e-13
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.000002207319325190933,
+   "dCom": 0.0007991456201545333,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "hole1.edge[box1.face[+x] ^ hole1.same[box1.face[+z]]]"
+  ]
+ },
+ {
+  "label": "carried bottom through hole: shell open",
+  "id": "sh1",
+  "ms": 2098,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       16.21951219512195,
+       3.2195121951219505,
+       -8
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "hole1.same[box1.face[-z]]",
+     "rule": "the planar face on F1:-z's plane on hole1's own shape",
+     "engineFace": "F1:-z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-z",
+      "pickSource": "interior point (largest display triangle); the centroid is off the face"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 8,
+       "got": 8,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-z",
+       "got": "F1:-z",
+       "agree": true
+      },
+      {
+       "check": "lift",
+       "from": "box1",
+       "to": "hole1",
+       "flipped": false,
+       "plane": {
+        "n": [
+         0,
+         0,
+         -1
+        ],
+        "d": 8
+       }
+      },
+      {
+       "check": "area vs original",
+       "ratio": 0.9771082352941175
+      },
+      {
+       "check": "engine persistent name kept",
+       "expected": "F1:-z",
+       "got": "F1:-z",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 22,
+     "base": [
+      5,
+      -3,
+      -9
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       16.21951219512195,
+       3.2195121951219505,
+       -8
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 8000.230016469245,
+    "com": [
+     4.999999999999999,
+     -3,
+     3.9292299439030693
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 14,
+    "types": {
+     "plane": 12,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 12,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2
+   },
+   "brep": {
+    "volume": 8000.230016469243,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 14
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 8000.160829051759,
+   "bbox": [
+    -15,
+    -18,
+    -8.000000000000004,
+    25,
+    12,
+    12.000000000000009
+   ],
+   "com": [
+    5.000000000000056,
+    -3.000000000000026,
+    3.929267017567319
+   ],
+   "faces": 14,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 12
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": true,
+   "brepOK": true,
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.0000086481785328534,
+   "dBbox": 7.401486830834377e-16,
+   "dCom": 6.884406620301951e-7,
+   "tol": 0.0003,
+   "comTol": 0.00003,
+   "faces": {
+    "occt": 14,
+    "truck": 14,
+    "brep": 14,
+    "verdict": "explained",
+    "keys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    }
+   },
+   "reference": "OCCT",
+   "brepVsOcct": 2.2736713816993905e-16
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.000008648178533535502,
+   "dCom": 0.071650489811539,
+   "rejected": true,
+   "byCom": true
+  },
+  "names": [
+   "hole1.same[box1.face[-z]]"
+  ]
+ },
+ {
+  "label": "carried through round: shell open front",
+  "id": "sh1",
+  "ms": 522,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       -3,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+z] ^ box1.face[+x]]",
+     "engineEdges": [
+      "F1:+x|F1:+z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:+z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       4.977052589647392,
+       -18,
+       1.9888027772812065
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "round1.same[box1.face[-y]]",
+     "rule": "the planar face on F1:-y's plane on round1's own shape",
+     "engineFace": "F1:-y",
+     "target": {
+      "candidates": 1,
+      "face": "F1:-y",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 18,
+       "got": 18.000000000000004,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:-y",
+       "got": "F1:-y",
+       "agree": true
+      },
+      {
+       "check": "lift",
+       "from": "box1",
+       "to": "round1",
+       "flipped": false,
+       "plane": {
+        "n": [
+         0,
+         -1,
+         0
+        ],
+        "d": 18.000000000000004
+       }
+      },
+      {
+       "check": "area vs original",
+       "ratio": 0.9988263602853047
+      },
+      {
+       "check": "engine persistent name kept",
+       "expected": "F1:-y",
+       "got": "F1:-y",
+       "agree": true
+      }
+     ]
+    }
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       25,
+       -3,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       4.977052589647392,
+       -18,
+       1.9888027772812065
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23974.24777962415,
+    "com": [
+     4.978996631462344,
+     -2.9999999999999987,
+     1.989738249417398
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 7846.2477796076955,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 12
+   },
+   "occtRefusals": {
+    "sh1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {},
+  "truck": {
+   "volume": 7846.230884002683,
+   "bbox": [
+    -15,
+    -18.000000000000007,
+    -8,
+    25.000000000000004,
+    12.000000000000009,
+    12.000000000000012
+   ],
+   "com": [
+    4.93578261319399,
+    -0.9444907668908022,
+    1.9686252795696255
+   ],
+   "faces": 12,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 11
+   },
+   "curved": true,
+   "bodies": 1
+  },
+  "refs": {
+   "occtOK": false,
+   "brepOK": true,
+   "occtRefusals": {
+    "sh1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {}
+  },
+  "score": {
+   "dVol": 0.000002153335643671222,
+   "dBbox": 1.0362081563168128e-15,
+   "dCom": null,
+   "tol": 0.0003,
+   "faces": {
+    "occt": null,
+    "truck": 12,
+    "brep": 12
+   },
+   "reference": "brep-rs (OCCT refused or no-opped a feature)"
+  },
+  "outcome": "PASS",
+  "control": {
+   "dVol": 0.000002152797089353612,
+   "dCom": null,
+   "rejected": true,
+   "byCom": false
+  },
+  "names": [
+   "box1.edge[box1.face[+x] ^ box1.face[+z]]",
+   "round1.same[box1.face[-y]]"
+  ]
+ },
+ {
+  "label": "carried +x across round (now trimmed)",
+  "id": "sh1",
+  "ms": 438,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "built",
+    "pick": {
+     "edges": [
+      [
+       25,
+       -3,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.edge[box1.face[+z] ^ box1.face[+x]]",
+     "engineEdges": [
+      "F1:+x|F1:+z"
+     ],
+     "target": {
+      "candidates": 1,
+      "edges": [
+       "F1:+x|F1:+z"
+      ]
+     },
+     "checks": [
+      {
+       "check": "geometry vs persistent names",
+       "agree": true,
+       "geometric": 1,
+       "named": 1
+      }
+     ]
+    }
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "sh1 is not built: the open edge of the part was rounded with a radius of 2, which is as large as or larger than the 2 mm wall, so the rim would have no thickness -- make the round smaller than the wall.",
+    "raw": "sh1 (shell): solidcraft refused it -- solid.shell: @@G-RIMFIRST@@"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       25,
+       -3,
+       12
+      ]
+     ],
+     "radius": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23974.24777962415,
+    "com": [
+     4.978996631462344,
+     -2.9999999999999987,
+     1.989738249417398
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs cannot hollow sh1 yet -- sh1 is shown without it."
+   },
+   "occtRefusals": {
+    "sh1": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {
+    "sh1": "brep-rs cannot hollow sh1 yet -- sh1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "sh1": "sh1 is not built: the open edge of the part was rounded with a radius of 2, which is as large as or larger than the 2 mm wall, so the rim would have no thickness -- make the round smaller than the wall."
+  },
+  "outcome": "REFUSED",
+  "sentence": "sh1 is not built: the open edge of the part was rounded with a radius of 2, which is as large as or larger than the 2 mm wall, so the rim would have no thickness -- make the round smaller than the wall.",
+  "names": [
+   "box1.edge[box1.face[+x] ^ box1.face[+z]]",
+   "round1.same[box1.face[+x]]"
+  ]
+ },
+ {
+  "label": "round rim of shelled box: between(+z,+x) after shell",
+  "id": "r1",
+  "ms": 139,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "pick": {
+     "faces": [
+      [
+       5,
+       -3,
+       12
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    },
+    "evidence": {
+     "name": "box1.face[+z]",
+     "rule": "planar face with outward normal +z at the extreme along it on box1's own shape",
+     "engineFace": "F1:+z",
+     "target": {
+      "candidates": 1,
+      "face": "F1:+z",
+      "pickSource": "centroid"
+     },
+     "checks": [
+      {
+       "check": "doc plane",
+       "expected": 12,
+       "got": 12,
+       "agree": true
+      },
+      {
+       "check": "engine persistent name",
+       "expected": "F1:+z",
+       "got": "F1:+z",
+       "agree": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "r1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall.",
+    "raw": "r1 (fillet): solidcraft refused it -- solid.fillet: @@G-RIM@@"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      5,
+      -3,
+      2
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       5,
+       -3,
+       12
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_box1"
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 7151.999999999996,
+    "com": [
+     5.0000000000000036,
+     -3.0000000000000004,
+     -0.3557046979865776
+    ],
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 7152,
+    "bbox": [
+     -15,
+     -18,
+     -8,
+     25,
+     12,
+     12
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {
+    "r1": "Rounding Round 1 at 2 would not fit its edge -- Round 1 is shown without it."
+   },
+   "brepRefusals": {
+    "r1": "round r1 would reach a cut made earlier, and brep-rs can only round a corner the cuts stay clear of; round before you cut or hollow, or keep the cut away from that edge -- r1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "r1": "r1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall."
+  },
+  "outcome": "REFUSED",
+  "sentence": "r1 is not built: a round of 2 is as large as or larger than the 2 mm wall of the hollow, so it would cut through the wall -- use a size smaller than the wall.",
+  "names": [
+   "box1.face[+z]",
+   "box1.edge[box1.face[+x] ^ box1.face[+z]]"
+  ]
+ },
+ {
+  "label": "edge after move (carried)",
+  "id": "r1",
+  "ms": 4,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "r1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.",
+    "raw": "r1 (fillet): move1.edge[move1.same[box1.face[+z]] ^ move1.same[box1.face[+x]]] cannot be resolved: move1.same[box1.face[+z]]: move1 is a move, which moves or copies faces; a carried name through it is not resolved"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      10,
+      5,
+      0
+     ]
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 23974.24777962415,
+    "com": [
+     9.978996631462344,
+     5,
+     -0.010261750582602041
+    ],
+    "bbox": [
+     -10,
+     -10,
+     -10,
+     30,
+     20,
+     10
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 23974.247779607696,
+    "bbox": [
+     -10,
+     -10,
+     -10,
+     30,
+     20,
+     10
+    ],
+    "faces": 7
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "r1": "r1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line."
+  },
+  "outcome": "REFUSED",
+  "sentence": "r1 is not built: the part was moved or turned before this round, and its edges cannot be found again yet -- put the round before the move() or turn() line.",
+  "names": [
+   "move1.edge[move1.same[box1.face[+x]] ^ move1.same[box1.face[+z]]]"
+  ]
+ },
+ {
+  "label": "shell open carried through move",
+  "id": "sh1",
+  "ms": 4,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "sh1 is not built: the part was moved or turned before this hollow, and its faces cannot be found again yet -- put the hollow before the move() or turn() line.",
+    "raw": "sh1 (shell): move1.same[box1.face[+z]]: move1 is a move, which moves or copies faces; a carried name through it is not resolved"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "translate": [
+      10,
+      5,
+      0
+     ]
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 7151.999999999996,
+    "com": [
+     10.000000000000002,
+     5.000000000000001,
+     -2.355704697986577
+    ],
+    "bbox": [
+     -10,
+     -10,
+     -10,
+     30,
+     20,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 7152,
+    "bbox": [
+     -10,
+     -10,
+     -10,
+     30,
+     20,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "sh1": "sh1 is not built: the part was moved or turned before this hollow, and its faces cannot be found again yet -- put the hollow before the move() or turn() line."
+  },
+  "outcome": "REFUSED",
+  "sentence": "sh1 is not built: the part was moved or turned before this hollow, and its faces cannot be found again yet -- put the hollow before the move() or turn() line.",
+  "names": [
+   "move1.same[box1.face[+z]]"
+  ]
+ },
+ {
+  "label": "rotated box primitive face shell",
+  "id": "sh1",
+  "ms": 2,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "sh1 is not built: the part was moved or turned before this hollow, and its faces cannot be found again yet -- put the hollow before the move() or turn() line.",
+    "raw": "sh1 (shell): box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.move",
+    "params": {
+     "bodies": [
+      "b_box1"
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "angle": 30
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 7152,
+    "com": [
+     1.5187950325688662e-15,
+     1.3629415766511288e-15,
+     -2.3557046979865763
+    ],
+    "bbox": [
+     -24.82050807568877,
+     -22.99038105676658,
+     -10,
+     24.820508075688775,
+     22.99038105676658,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 7151.999999999995,
+    "bbox": [
+     -24.820508075688775,
+     -22.99038105676658,
+     -10,
+     24.820508075688775,
+     22.99038105676658,
+     10
+    ],
+    "faces": 11
+   },
+   "occtRefusals": {},
+   "brepRefusals": {}
+  },
+  "unmapped": [],
+  "refusals": {
+   "sh1": "sh1 is not built: the part was moved or turned before this hollow, and its faces cannot be found again yet -- put the hollow before the move() or turn() line."
+  },
+  "outcome": "REFUSED",
+  "sentence": "sh1 is not built: the part was moved or turned before this hollow, and its faces cannot be found again yet -- put the hollow before the move() or turn() line.",
+  "names": [
+   "box1.face[+z]"
+  ]
+ },
+ {
+  "label": "split: shell open",
+  "id": "sh1",
+  "ms": 18,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "sh1 is not built: a piece of a split face cannot be picked yet.",
+    "raw": "sh1 (shell): box1.split: a 'split' name (a piece of a face, or a face an operation made) is not resolved in the browser demo; it needs a discriminator point and solidcraft has no history record to read it from"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -20
+      ],
+      [
+       5,
+       -20
+      ],
+      [
+       5,
+       20
+      ],
+      [
+       -5,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 5,
+     "direction": "negative",
+     "sketch": "sk_sk1_0",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 22499.999999999996,
+    "com": [
+     -8.58967218341099e-17,
+     2.0161650127192843e-16,
+     -0.5000000000000008
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 10
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- sh1 is shown without it."
+   },
+   "occtRefusals": {
+    "sh1": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {
+    "sh1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- sh1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "sh1": "sh1 is not built: a piece of a split face cannot be picked yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "sh1 is not built: a piece of a split face cannot be picked yet.",
+  "names": [
+   "box1.split[box1.face[+z], near(0.2,0.5), lo(0)]"
+  ]
+ },
+ {
+  "label": "split: draft",
+  "id": "d1",
+  "ms": 14,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "d1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "d1 is not built: a piece of a split face cannot be picked yet.",
+    "raw": "d1 (draft): box1.split: a 'split' name (a piece of a face, or a face an operation made) is not resolved in the browser demo; it needs a discriminator point and solidcraft has no history record to read it from"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -20
+      ],
+      [
+       5,
+       -20
+      ],
+      [
+       5,
+       20
+      ],
+      [
+       -5,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 5,
+     "direction": "negative",
+     "sketch": "sk_sk1_0",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 22499.999999999996,
+    "com": [
+     -8.58967218341099e-17,
+     2.0161650127192843e-16,
+     -0.5000000000000008
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 10
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 22500,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 10
+   },
+   "occtRefusals": {
+    "d1": "Draft 1's face could not be found -- Draft 1 is shown without it."
+   },
+   "brepRefusals": {
+    "d1": "d1's face could not be found -- d1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "d1": "d1 is not built: a piece of a split face cannot be picked yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "d1 is not built: a piece of a split face cannot be picked yet.",
+  "names": [
+   "box1.split[box1.face[+x], near(0.5,0.5)]"
+  ]
+ },
+ {
+  "label": "made: shell open",
+  "id": "sh1",
+  "ms": 15,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sh1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "sh1 is not built: a face made by an earlier cut cannot be picked by name yet.",
+    "raw": "sh1 (shell): pocket1.made: a 'made' name (a piece of a face, or a face an operation made) is not resolved in the browser demo; it needs a discriminator point and solidcraft has no history record to read it from"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -20
+      ],
+      [
+       5,
+       -20
+      ],
+      [
+       5,
+       20
+      ],
+      [
+       -5,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 5,
+     "direction": "negative",
+     "sketch": "sk_sk1_0",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 22499.999999999996,
+    "com": [
+     -8.58967218341099e-17,
+     2.0161650127192843e-16,
+     -0.5000000000000008
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 10
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- sh1 is shown without it."
+   },
+   "occtRefusals": {
+    "sh1": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   },
+   "brepRefusals": {
+    "sh1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- sh1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "sh1": "sh1 is not built: a face made by an earlier cut cannot be picked by name yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "sh1 is not built: a face made by an earlier cut cannot be picked by name yet.",
+  "names": [
+   "pocket1.made[face, near(0.5,0.5)]"
+  ]
+ },
+ {
+  "label": "round between(split, +x)",
+  "id": "r1",
+  "ms": 14,
+  "features": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "pick": null
+   },
+   {
+    "id": "r1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "r1 is not built: a piece of a split face cannot be picked yet.",
+    "raw": "r1 (fillet): pocket1.edge[box1.split ^ box1.face[+y]] cannot be resolved: box1.split: a 'split' name (a piece of a face, or a face an operation made) is not resolved in the browser demo; it needs a discriminator point and solidcraft has no history record to read it from"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 30,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -20
+      ],
+      [
+       5,
+       -20
+      ],
+      [
+       5,
+       20
+      ],
+      [
+       -5,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 5,
+     "direction": "negative",
+     "sketch": "sk_sk1_0",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   }
+  ],
+  "ref": {
+   "occt": {
+    "volume": 22499.999999999996,
+    "com": [
+     -8.58967218341099e-17,
+     2.0161650127192843e-16,
+     -0.5000000000000008
+    ],
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 10
+    },
+    "bigCylinderComponents": 0
+   },
+   "brep": {
+    "volume": 22500,
+    "bbox": [
+     -20,
+     -15,
+     -10,
+     20,
+     15,
+     10
+    ],
+    "faces": 10
+   },
+   "occtRefusals": {
+    "r1": "Round 1's edge could not be found -- Round 1 is shown without it."
+   },
+   "brepRefusals": {
+    "r1": "r1's edge could not be found -- r1 is shown without it."
+   }
+  },
+  "unmapped": [],
+  "refusals": {
+   "r1": "r1 is not built: a piece of a split face cannot be picked yet."
+  },
+  "outcome": "REFUSED",
+  "sentence": "r1 is not built: a piece of a split face cannot be picked yet.",
+  "names": [
+   "pocket1.edge[box1.face[+y] ^ box1.split[box1.face[+z], near(0.2,0.5), lo(0)]]"
+  ]
+ }
+]

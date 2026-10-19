@@ -1,0 +1,32 @@
+[
+ {
+  "id": "rect-reference-dim-wrong-value",
+  "feats": [
+   "driving:false reference dimension"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 1.6370904631912707e-14,
+      "db": 0,
+      "bodies": 1,
+      "faces": 6,
+      "volume": 5999.999999999902
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ }
+]

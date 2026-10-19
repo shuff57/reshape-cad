@@ -1,0 +1,29 @@
+[
+ {
+  "id": "probe-tangent-line-vs-line",
+  "feats": [
+   "rule:tangent"
+  ],
+  "expect": "refuse",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "REFUSED": 1
+    },
+    "samples": [
+     {
+      "cls": "REFUSED",
+      "stage": "solidcraft",
+      "sentence": "`g1` is the wrong kind of entity for this: tangent needs a circle or arc"
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 12
+  }
+ }
+]

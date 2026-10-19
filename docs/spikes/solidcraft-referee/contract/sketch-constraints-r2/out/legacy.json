@@ -1,0 +1,723 @@
+[
+ {
+  "id": "legacy-across-up-length-pin",
+  "conflict": false,
+  "statements": 7,
+  "keptConstraints": 7,
+  "warnings": [],
+  "A": {
+   "worstKind": "horizontal",
+   "worstResidual": 0.0000013714549218008406,
+   "worstUnit": "mm",
+   "violations1e9": [
+    "horizontal:1.4e-6mm",
+    "horizontal:4.2e-9mm",
+    "length:7.4e-9mm"
+   ],
+   "area": 599.9999792709621,
+   "bbox": [
+    -9.059795051535616e-13,
+    -0.0000013714549218008406,
+    30.000000000146205,
+    19.99999862532543
+   ],
+   "areaRel": 3.454839657024422e-8,
+   "bboxRel": 0.0000013714549218008406,
+   "scVolume": 5999.999792709619,
+   "scVsOwnPolygon": 3.031649110648376e-16,
+   "occt": {
+    "volume": 5999.999792709651,
+    "vsSc": 5.305385943634632e-15
+   },
+   "brep": {
+    "volume": 5999.999792709619,
+    "vsSc": 0
+   },
+   "verdictToday": "BUILT-DESPITE-VIOLATION",
+   "guard": {
+    "refuse": false
+   }
+  },
+  "B": {
+   "volume": 5999.999999999916,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "rung": "JGTD*",
+   "legacyViolations": [],
+   "volRel": 1.3945585427184899e-14,
+   "bboxRel": 0,
+   "occtVsSc": 4.395891058569195e-15,
+   "brepVsSc": 1.5158245029549018e-16
+  }
+ },
+ {
+  "id": "legacy-pin-offset-corner",
+  "conflict": false,
+  "statements": 7,
+  "keptConstraints": 7,
+  "warnings": [],
+  "A": {
+   "worstKind": "horizontal",
+   "worstResidual": 2.6584287615705193e-7,
+   "worstUnit": "mm",
+   "violations1e9": [
+    "horizontal:2.7e-7mm",
+    "horizontal:7.4e-9mm",
+    "length:1.9e-8mm"
+   ],
+   "area": 599.9999953275619,
+   "bbox": [
+    4.999999999999517,
+    2.999999734157124,
+    35.00000000001653,
+    22.999999715003728
+   ],
+   "areaRel": 7.787396801480403e-9,
+   "bboxRel": 8.861429205235065e-8,
+   "scVolume": 5999.999953275619,
+   "scVsOwnPolygon": 0,
+   "occt": {
+    "volume": 5999.999953275635,
+    "vsSc": 2.576901675090646e-15
+   },
+   "brep": {
+    "volume": 5999.999953275619,
+    "vsSc": 0
+   },
+   "verdictToday": "BUILT-DESPITE-VIOLATION",
+   "guard": {
+    "refuse": false
+   }
+  },
+  "B": {
+   "volume": 5999.999999999949,
+   "bodies": 1,
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ],
+   "rung": "JGTD*",
+   "legacyViolations": [],
+   "volRel": 8.488617216547331e-15,
+   "bboxRel": 0,
+   "occtVsSc": 2.7284841053188005e-15,
+   "brepVsSc": 0
+  }
+ },
+ {
+  "id": "legacy-equal-edges-square",
+  "conflict": false,
+  "statements": 7,
+  "keptConstraints": 7,
+  "warnings": [],
+  "A": {
+   "worstKind": "horizontal",
+   "worstResidual": 0.0000018893388227288988,
+   "worstUnit": "mm",
+   "violations1e9": [
+    "horizontal:1.9e-6mm",
+    "vertical:2.3e-8mm",
+    "horizontal:3.7e-8mm",
+    "length:5.9e-9mm",
+    "equal:5.8e-8mm"
+   ],
+   "area": 484.00002164226964,
+   "bbox": [
+    0,
+    0,
+    22.0000000174538,
+    22.000001941308696
+   ],
+   "areaRel": 4.471543314868225e-8,
+   "bboxRel": 8.824130436447707e-8,
+   "scVolume": 4840.000216422696,
+   "scVsOwnPolygon": 0,
+   "occt": {
+    "volume": 4840.000216422728,
+    "vsSc": 6.576924202201779e-15
+   },
+   "brep": {
+    "volume": 4840.000216422697,
+    "vsSc": 1.8791212006290916e-16
+   },
+   "verdictToday": "BUILT-DESPITE-VIOLATION",
+   "guard": {
+    "refuse": false
+   }
+  },
+  "B": {
+   "volume": 4839.999999999979,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    22,
+    22,
+    10
+   ],
+   "rung": "JGTD*",
+   "legacyViolations": [],
+   "volRel": 4.3219789547060636e-15,
+   "bboxRel": 0,
+   "occtVsSc": 1.3153848992583711e-15,
+   "brepVsSc": 0
+  }
+ },
+ {
+  "id": "legacy-parallel-perpendicular-trapezoid",
+  "conflict": false,
+  "statements": 7,
+  "keptConstraints": 7,
+  "warnings": [],
+  "A": {
+   "worstKind": "horizontal",
+   "worstResidual": 0.000002117891769050764,
+   "worstUnit": "mm",
+   "violations1e9": [
+    "horizontal:2.1e-6mm",
+    "perpendicular:1.4e-8cos",
+    "parallel:1.8e-9sin",
+    "length:1.1e-9mm",
+    "length:3.6e-8mm"
+   ],
+   "area": 416.0000111602201,
+   "bbox": [
+    -0.000001357139114894935,
+    0,
+    29.999999998896882,
+    16.000001548223178
+   ],
+   "areaRel": 2.6827452123038363e-8,
+   "bboxRel": 0.000001357139114894935,
+   "scVolume": 4160.0001116022,
+   "scVsOwnPolygon": 2.1862852821478443e-16,
+   "occt": {
+    "volume": 4160.0001116022,
+    "vsSc": 0
+   },
+   "brep": {
+    "volume": 4160.000111602201,
+    "vsSc": 2.1862852821478443e-16
+   },
+   "verdictToday": "BUILT-DESPITE-VIOLATION",
+   "guard": {
+    "refuse": false
+   }
+  },
+  "B": {
+   "volume": 4160,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    16,
+    10
+   ],
+   "rung": "JGTD*",
+   "legacyViolations": [],
+   "volRel": 0,
+   "bboxRel": 0,
+   "occtVsSc": 0,
+   "brepVsSc": 2.186285340800308e-16
+  }
+ },
+ {
+  "id": "legacy-distX-distY-rect",
+  "conflict": false,
+  "statements": 7,
+  "keptConstraints": 7,
+  "warnings": [],
+  "A": {
+   "worstKind": "horizontal",
+   "worstResidual": 0.0000018322144542331152,
+   "worstUnit": "mm",
+   "violations1e9": [
+    "horizontal:1.8e-6mm",
+    "horizontal:4.3e-8mm",
+    "distanceY:1.4e-8mm"
+   ],
+   "area": 599.9999722875018,
+   "bbox": [
+    0,
+    -0.0000018322144542331152,
+    30.000000000392834,
+    19.999998181588378
+   ],
+   "areaRel": 4.618749699147884e-8,
+   "bboxRel": 0.0000018322144542331152,
+   "scVolume": 5999.999722875017,
+   "scVsOwnPolygon": 1.5158245729670233e-16,
+   "occt": {
+    "volume": 5999.999722875047,
+    "vsSc": 5.0022210907911526e-15
+   },
+   "brep": {
+    "volume": 5999.999722875017,
+    "vsSc": 0
+   },
+   "verdictToday": "BUILT-DESPITE-VIOLATION",
+   "guard": {
+    "refuse": false
+   }
+  },
+  "B": {
+   "volume": 5999.99999994064,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    10
+   ],
+   "rung": "JGTD*",
+   "legacyViolations": [],
+   "volRel": 9.893331783435618e-12,
+   "bboxRel": 0,
+   "occtVsSc": 2.1964297048028694e-13,
+   "brepVsSc": 1.515824502969877e-16
+  }
+ },
+ {
+  "id": "legacy-symmetric-midpoint-corner",
+  "conflict": false,
+  "statements": 9,
+  "keptConstraints": 9,
+  "warnings": [],
+  "A": {
+   "worstKind": "horizontal",
+   "worstResidual": 0.000018208613634929673,
+   "worstUnit": "mm",
+   "violations1e9": [
+    "horizontal:1.8e-5mm",
+    "vertical:5.6e-7mm",
+    "horizontal:1.1e-6mm",
+    "vertical:2.4e-8mm",
+    "length:1.2e-6mm",
+    "distanceX:8.3e-8mm",
+    "symmetric:1.6e-5mm",
+    "distanceY:1.2e-6mm"
+   ],
+   "area": 300.00082945245856,
+   "bbox": [
+    -2.433733747633679e-8,
+    0,
+    20.000000083214207,
+    15.000067582650747
+   ],
+   "areaRel": 0.000002764841528536029,
+   "bboxRel": 0.000004505510049786683,
+   "scVolume": 3000.0082945245854,
+   "scVsOwnPolygon": 1.515820311951932e-16,
+   "occt": {
+    "volume": 3000.0082945245845,
+    "vsSc": 3.0316406239038653e-16
+   },
+   "brep": {
+    "volume": 3000.0082945245863,
+    "vsSc": 3.0316406239038634e-16
+   },
+   "verdictToday": "BUILT-DESPITE-VIOLATION",
+   "guard": {
+    "refuse": false
+   }
+  },
+  "B": {
+   "volume": 2999.9999999624074,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    20,
+    15,
+    10
+   ],
+   "rung": "GTDJ*",
+   "legacyViolations": [],
+   "volRel": 1.253086641857711e-11,
+   "bboxRel": 0,
+   "occtVsSc": 0,
+   "brepVsSc": 0
+  }
+ },
+ {
+  "id": "legacy-angle-triangle",
+  "conflict": false,
+  "statements": 5,
+  "keptConstraints": 5,
+  "warnings": [],
+  "A": {
+   "worstKind": "horizontal",
+   "worstResidual": 2.094226442120475e-7,
+   "worstUnit": "mm",
+   "violations1e9": [
+    "horizontal:2.1e-7mm",
+    "length:3.3e-9mm"
+   ],
+   "area": 519.6152423190202,
+   "bbox": [
+    0,
+    0,
+    40.00000000058372,
+    25.98076224646103
+   ],
+   "areaRel": 9.30631620313666e-11,
+   "bboxRel": 5.116396223187783e-9,
+   "scVolume": 5196.152423190201,
+   "scVsOwnPolygon": 1.7503233694875712e-16,
+   "occt": {
+    "volume": 5196.152423190203,
+    "vsSc": 3.500646738975142e-16
+   },
+   "brep": {
+    "volume": 5196.152423190203,
+    "vsSc": 3.500646738975142e-16
+   },
+   "verdictToday": "BUILT-DESPITE-VIOLATION",
+   "guard": {
+    "refuse": false
+   }
+  },
+  "B": {
+   "volume": 5196.15242270663,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25.98076211353316,
+    10
+   ],
+   "rung": "JGTD*",
+   "legacyViolations": [],
+   "volRel": 3.500646739300923e-16,
+   "bboxRel": 1.3674401325394234e-16,
+   "occtVsSc": 3.500646739300923e-16,
+   "brepVsSc": 3.500646739300923e-16
+  }
+ },
+ {
+  "id": "legacy-rect-helper-dimensions",
+  "conflict": false,
+  "statements": 3,
+  "keptConstraints": 7,
+  "warnings": [],
+  "A": {
+   "worstKind": "horizontal",
+   "worstResidual": 9.232969944150682e-10,
+   "worstUnit": "mm",
+   "violations1e9": [],
+   "area": 600.0000000306516,
+   "bbox": [
+    -14,
+    -8.5,
+    16.000000000417938,
+    11.500000001424192
+   ],
+   "areaRel": 5.108593844245964e-11,
+   "bboxRel": 1.2384281040280968e-10,
+   "scVolume": 6000.000000306514,
+   "scVsOwnPolygon": 3.031649005754886e-16,
+   "occt": {
+    "volume": 6000.000000303993,
+    "vsSc": 4.2018655219780387e-13
+   },
+   "brep": {
+    "volume": 6000.000000306514,
+    "vsSc": 0
+   },
+   "verdictToday": "rules met at 1e-9",
+   "guard": {
+    "refuse": false
+   }
+  },
+  "B": {
+   "volume": 5999.999999999899,
+   "bodies": 1,
+   "bbox": [
+    -14,
+    -8.5,
+    0,
+    16,
+    11.5,
+    10
+   ],
+   "rung": "JGTD*",
+   "legacyViolations": [],
+   "volRel": 1.682565198279917e-14,
+   "bboxRel": 0,
+   "occtVsSc": 5.456968210637631e-15,
+   "brepVsSc": 0
+  }
+ },
+ {
+  "id": "legacy-fight-length-35-with-pin",
+  "conflict": true,
+  "statements": 8,
+  "keptConstraints": 7,
+  "warnings": [],
+  "A": {
+   "worstKind": "vertical",
+   "worstResidual": 0.000002240291298556321,
+   "worstUnit": "mm",
+   "violations1e9": [
+    "vertical:6.7e-8mm",
+    "vertical:2.2e-6mm",
+    "length:3.4e-8mm"
+   ],
+   "area": 699.9999775932476,
+   "bbox": [
+    -0.000002240291298556321,
+    -1.1336915507205171e-10,
+    34.99999779323699,
+    19.999999999773856
+   ],
+   "scVolume": 6999.999775932479,
+   "scVsOwnPolygon": 3.897834560937998e-16,
+   "occt": {
+    "volume": 6999.999775944099,
+    "vsSc": 1.6600877395007368e-12
+   },
+   "brep": {
+    "volume": 6999.999775932479,
+    "vsSc": 0
+   },
+   "verdictToday": "BUILT-DESPITE-VIOLATION",
+   "guard": {
+    "refuse": false
+   }
+  },
+  "B": {
+   "volume": 6999.999999999748,
+   "bodies": 1,
+   "bbox": [
+    -4.62811275620165e-13,
+    -3.552713678800501e-15,
+    0,
+    34.999999999998735,
+    20.000000000000007,
+    10
+   ],
+   "rung": "JGTD*",
+   "legacyViolations": [],
+   "occtVsSc": 2.2087728471629005e-15,
+   "brepVsSc": 0
+  }
+ },
+ {
+  "id": "legacy-fight-lengths-30-20-35-20",
+  "conflict": true,
+  "statements": 8,
+  "keptConstraints": 6,
+  "warnings": [],
+  "A": {
+   "worstKind": "horizontal",
+   "worstResidual": 6.606667496411589e-8,
+   "worstUnit": "mm",
+   "violations1e9": [
+    "horizontal:6.6e-8mm",
+    "vertical:1.2e-9mm"
+   ],
+   "area": 870.4163446794863,
+   "bbox": [
+    0.0015765144539009537,
+    -0.2944979115854305,
+    30.001576514365848,
+    37.73325846858556
+   ],
+   "scVolume": 8704.163446794862,
+   "scVsOwnPolygon": 0,
+   "occt": {
+    "volume": 8704.163446794862,
+    "vsSc": 0
+   },
+   "brep": {
+    "volume": 8704.16344679486,
+    "vsSc": 2.0897923329043918e-16
+   },
+   "verdictToday": "BUILT-DESPITE-VIOLATION",
+   "guard": {
+    "refuse": false
+   }
+  },
+  "B": {
+   "volume": 8704.16345661946,
+   "bodies": 1,
+   "bbox": [
+    -4.999999999933696,
+    0,
+    0,
+    25.000000000016815,
+    38.02775637763157,
+    10
+   ],
+   "rung": "GTDJ*",
+   "legacyViolations": [],
+   "occtVsSc": 2.0897923305455922e-16,
+   "brepVsSc": 0
+  }
+ },
+ {
+  "id": "legacy-fight-three-perpendicular",
+  "conflict": true,
+  "statements": 3,
+  "keptConstraints": 1,
+  "warnings": [],
+  "A": {
+   "worstKind": "perpendicular",
+   "worstResidual": 1.2510734186133449e-11,
+   "worstUnit": "cos",
+   "violations1e9": [],
+   "area": 219.08535201975155,
+   "bbox": [
+    3.8713409399673653,
+    -3.3205998634187788,
+    30.610693044938905,
+    24.994114411999874
+   ],
+   "scVolume": 2190.853520197515,
+   "scVsOwnPolygon": 2.0756629628322506e-16,
+   "occt": {
+    "volume": 2190.853520197515,
+    "vsSc": 0
+   },
+   "brep": {
+    "volume": 2190.853520197514,
+    "vsSc": 4.1513259256645037e-16
+   },
+   "verdictToday": "rules met at 1e-9",
+   "guard": {
+    "refuse": false
+   }
+  },
+  "B": {
+   "volume": 3750,
+   "bodies": 1,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    25,
+    10
+   ],
+   "rung": "JGTD*",
+   "legacyViolations": [],
+   "occtVsSc": 0,
+   "brepVsSc": 0
+  }
+ },
+ {
+  "id": "legacy-fight-parallel-adjacent-edges",
+  "conflict": true,
+  "statements": 3,
+  "keptConstraints": 3,
+  "warnings": [
+   "edge 1 ∥ edge 2 cannot hold along with the rules already on this sketch -- the shape is as close as it can get to all of them. Remove one to settle it."
+  ],
+  "A": {
+   "worstKind": "parallel",
+   "worstResidual": 1,
+   "worstUnit": "sin",
+   "violations1e9": [
+    "parallel:1.0e+0sin"
+   ],
+   "area": 600,
+   "bbox": [
+    0,
+    0,
+    30,
+    20
+   ],
+   "scVolume": 6000,
+   "scVsOwnPolygon": 0,
+   "occt": {
+    "volume": 5999.999999999999,
+    "vsSc": 1.5158245029548806e-16
+   },
+   "brep": {
+    "volume": 6000,
+    "vsSc": 0
+   },
+   "verdictToday": "BUILT-DESPITE-VIOLATION",
+   "guard": {
+    "refuse": true,
+    "because": "parallel off by 1.0e+0 sin"
+   }
+  },
+  "B": {
+   "refused": "Row 7 of sk.rules() (it makes geometry 1 parallel to geometry 2) cannot be met together with the other rules from this drawing: they conflict, or the drawing is too far from the shape they describe. Nothing was built; resolve the conflict first, or redraw closer.",
+   "stage": "solve"
+  }
+ },
+ {
+  "id": "legacy-fight-angle-60-on-rectangle",
+  "conflict": true,
+  "statements": 3,
+  "keptConstraints": 2,
+  "warnings": [],
+  "A": {
+   "worstKind": "angle",
+   "worstResidual": 0.0000052758869415470144,
+   "worstUnit": "deg",
+   "violations1e9": [
+    "vertical:3.2e-7mm",
+    "angle:5.3e-6deg"
+   ],
+   "area": 533.8565474920298,
+   "bbox": [
+    0,
+    -6.928201739501138,
+    28.000077502774445,
+    20
+   ],
+   "scVolume": 5338.565474920299,
+   "scVsOwnPolygon": 1.7036312583325704e-16,
+   "occt": {
+    "volume": 5338.5654749202995,
+    "vsSc": 1.7036312583325696e-16
+   },
+   "brep": {
+    "volume": 5338.565474920299,
+    "vsSc": 0
+   },
+   "verdictToday": "BUILT-DESPITE-VIOLATION",
+   "guard": {
+    "refuse": false
+   }
+  },
+  "B": {
+   "volume": 5117.646732905997,
+   "bodies": 1,
+   "bbox": [
+    -7.105427357601002e-15,
+    -6.782173951609481,
+    0,
+    29.367072080358607,
+    20,
+    10
+   ],
+   "rung": "JGTD*",
+   "legacyViolations": [],
+   "occtVsSc": 1.7771736683678483e-16,
+   "brepVsSc": 0
+  }
+ }
+]

@@ -1,0 +1,19 @@
+# one child process per case, hard limit 300 s; load average at start 25.5 32.3 33.7; cpus 24
+sx-plain-block             {"id":"sx-plain-block","ms":6389,"commands":11,"result":"b_pull1=35858.6461","wallS":7.1}   load 32.2
+sx-hole-clear              {"id":"sx-hole-clear","ms":6301,"commands":15,"result":"b_pull1=32745.4904","wallS":7.1}   load 34.0
+sx-hole-cross              NO RESULT after 4.8 s (exit 1) RuntimeError: Unreachable code should not be executed (evaluating 'wasm.run(ptr0, len0)')
+
+Bun v1.4.2 (Linux x64)
+   load 34.5
+sx-hole-cross-a            {"id":"sx-hole-cross-a","ms":43004,"commands":15,"result":"b_pull1=32723.3493","wallS":44.1}   load 38.2
+sx-hole-cross-b            {"id":"sx-hole-cross-b","ms":40490,"commands":15,"result":"b_pull1=32592.3345","wallS":41.3}   load 30.4
+sx-hole-cross-c            {"id":"sx-hole-cross-c","ms":33230,"commands":15,"result":"b_pull1=32690.0235","wallS":34.1}   load 42.8
+sx-hole-cross-d            {"id":"sx-hole-cross-d","ms":13907,"commands":15,"result":"ERR boolean Cut: the operation failed: no result; the operation failed: pushing a face: a neighbouring f","wallS":15.3}   load 47.6
+sx-hole-cross-e            {"id":"sx-hole-cross-e","ms":3040,"commands":15,"result":"ERR boolean Cut: the operation failed: no result; the operation failed: pushing a face: a neighbouring f","wallS":3.9}   load 47.8
+sx-pocket-cross            NO RESULT after 1.0 s (exit 1) RuntimeError: Unreachable code should not be executed (evaluating 'wasm.run(ptr0, len0)')
+
+Bun v1.4.2 (Linux x64)
+   load 47.8
+sx-pocket-cross-a          {"id":"sx-pocket-cross-a","ms":4500,"commands":15,"result":"b_pull1=33373.8317","wallS":4.8}   load 47.4
+sx-pocket-cross-b          {"id":"sx-pocket-cross-b","ms":7203,"commands":15,"result":"b_pull1=33465.4818","wallS":7.6}   load 42.9
+sx-pocket-cross-c          {"id":"sx-pocket-cross-c","ms":4261,"commands":15,"result":"b_pull1=33459.9048","wallS":4.5}   load 42.9

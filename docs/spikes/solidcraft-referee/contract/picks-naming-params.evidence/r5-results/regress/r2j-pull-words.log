@@ -1,0 +1,28 @@
+Running as unit: run-p1873396-i1874467.scope; invocation ID: dee52421732e4650a9255021c5392240
+rect pull: hollow open top                   PASS         SC 7152.0000 dVol 5.1e-16 dCom 1.3e-16 OCCT | OCCT 7152.0000 
+rect pull: hollow open bottom                PASS         SC 7152.0000 dVol 5.1e-16 dCom 1.6e-16 OCCT | OCCT 7152.0000 
+rect pull: hollow open front                 PASS         SC 7872.0000 dVol 0.0e+0 dCom 2.0e-16 OCCT | OCCT 7872.0000 
+rect pull: hollow open back                  PASS         SC 7872.0000 dVol 0.0e+0 dCom 6.6e-17 OCCT | OCCT 7872.0000 
+rect pull: hollow open left                  PASS         SC 8192.0000 dVol 3.3e-16 dCom 3.3e-17 OCCT | OCCT 8192.0000 
+rect pull: hollow open right                 PASS         SC 8192.0000 dVol 3.3e-16 dCom 2.0e-16 OCCT | OCCT 8192.0000 
+rect pull: draft front 5                     PASS         SC 23300.0907 dVol 0.0e+0 dCom 6.6e-17 OCCT | OCCT 23300.0907 
+rect pull: draft back 5                      PASS         SC 23300.0907 dVol 1.6e-16 dCom 9.9e-17 OCCT | OCCT 23300.0907 
+rect pull: draft left 5                      PASS         SC 23475.0680 dVol 0.0e+0 dCom 6.6e-17 OCCT | OCCT 23475.0680 
+rect pull: draft right 5                     PASS         SC 23475.0680 dVol 7.7e-16 dCom 5.9e-16 OCCT | OCCT 23475.0680 
+rect pull: round edge(top,right) 2           PASS         SC 23974.2309 dVol 7.0e-7 dCom 2.5e-7 OCCT | OCCT 23974.2478 
+rect pull: round edge(top,front) 2           PASS         SC 23965.6412 dVol 9.4e-7 dCom 2.5e-7 OCCT | OCCT 23965.6637 
+rect pull: round edge(bottom,left) 2         PASS         SC 23974.2309 dVol 7.0e-7 dCom 2.5e-7 OCCT | OCCT 23974.2478 
+rect pull: round edge(front,right) 2         PASS         SC 23982.8206 dVol 4.7e-7 dCom 1.7e-7 OCCT | OCCT 23982.8319 
+rect pull: bevel edge(top,back) 2            PASS         SC 23920.0000 dVol 0.0e+0 dCom 6.6e-17 OCCT | OCCT 23920.0000 
+circle pull: hollow open top                 PASS         SC 2663.7792 dVol 1.1e-4 dCom 2.4e-7 OCCT | OCCT 2664.0706 
+circle pull: hollow open bottom              PASS         SC 2663.7792 dVol 1.1e-4 dCom 2.4e-7 OCCT | OCCT 2664.0706 
+circle pull: round edge(top,side)            SCRIPT ERR .edge(): "side" is the curved wall of a cylinder, not a flat face here.
+circle pull: draft face(side)                SCRIPT ERR .face(): "side" is the curved wall of a cylinder, not a flat face here.
+triangle pull: hollow open top               PASS         SC 4858.9305 dVol 1.9e-16 dCom 2.0e-16 OCCT | OCCT 4858.9305 
+triangle pull: hollow open bottom            PASS         SC 4858.9305 dVol 5.6e-16 dCom 1.6e-16 OCCT | OCCT 4858.9305 
+triangle pull: draft face(left)              REFUSED      SC undefined dVol undefined dCom undefined  | OCCT 11380.1664 | draft1 is not built: no flat face of this part points exactly to the left, so there is nothing to draft -- draft a face that does.
+triangle pull: draft face(right)             REFUSED      SC undefined dVol undefined dCom undefined  | OCCT 11380.1664 | draft1 is not built: no flat face of this part points exactly to the right, so there is nothing to draft -- draft a face that does.
+triangle pull: draft face(front)             PASS         SC 11313.6983 dVol 3.2e-16 dCom 0.0e+0 OCCT | OCCT 11313.6983 
+front-plane rect pull: hollow open front     PASS         SC 7152.0000 dVol 5.1e-16 dCom 1.3e-16 OCCT | OCCT 7152.0000 
+front-plane rect pull: hollow open back      PASS         SC 7152.0000 dVol 5.1e-16 dCom 2.0e-16 OCCT | OCCT 7152.0000 
+front-plane rect pull: round edge(front,top) PASS         SC 23965.6412 dVol 9.4e-7 dCom 2.5e-7 OCCT | OCCT 23965.6637 

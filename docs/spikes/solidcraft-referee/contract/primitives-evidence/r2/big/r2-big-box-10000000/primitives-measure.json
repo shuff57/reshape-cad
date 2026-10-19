@@ -1,0 +1,59 @@
+[
+ {
+  "id": "r2-big-box-10000000",
+  "feature": "oversize",
+  "note": "",
+  "script": "box(10000000, 10000000, 10000000);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "size": [
+      10000000,
+      10000000,
+      10000000
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "box",
+  "analytic": 1e+21,
+  "occt": {
+   "volume": 1.0000000000000003e+21,
+   "com": [
+    -1.862645149230957e-9,
+    -1.862645149230957e-9,
+    0
+   ],
+   "bbox": [
+    -5000000,
+    -5000000,
+    -5000000,
+    5000000,
+    5000000,
+    5000000
+   ],
+   "faces": 6,
+   "types": {
+    "plane": 6
+   }
+  },
+  "brep": {
+   "refused": "box box1: it has a size or position of 1.000e7, past the 1e6 brep-rs builds exactly -- box1 is shown without it."
+  },
+  "commands": [],
+  "truck": {
+   "refused": "box1 (box): solidcraft refused it -- solid.box: invalid input: box needs a positive size in x, y and z"
+  },
+  "status": "refused-by-solidcraft",
+  "ms": 25
+ }
+]

@@ -1,0 +1,1 @@
+{"id":"r3-tor-cyl-outer-cut","feature":"torus with a cylinder coaxial with it, tangent to the ring at a circle","source":"const t = ring(36,8,{at:[0,0,0]}); const c = cylinder(36,12,{at:[0,0,0]}); cut(c,t)","outcome":"HANG","lastStage":"solidcraft","detail":"SystemError: spawnSync /home/shuff57/.bun/bin/bun ETIMEDOUT","signal":"SIGTERM","timeoutMs":150000,"wallMs":150187}

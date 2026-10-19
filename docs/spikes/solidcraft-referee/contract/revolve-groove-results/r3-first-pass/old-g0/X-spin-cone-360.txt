@@ -1,0 +1,1 @@
+X-spin-cone-360                          PASS     occtV 12566.3706 | tr-occt dV 8.7e-5 dBb 1.3e-5 dCom 4.4e-17 F o/b/t 2/-/2 | brep-occt dV -  | ANALYTIC 12566.3706 dTruck 8.7e-5 dOcct 0.0e+0 dBrep -   | BREP REFUSED: revolve rev1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- rev1 is shown without it. | ms 46 cpu 178

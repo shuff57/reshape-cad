@@ -1,0 +1,130 @@
+[
+ {
+  "id": "fzc2-20-boxC-top-round-45",
+  "src": "const t = box(60, 40, 30); const sk = sketch('top'); sk.polygon([[1.6,11.7],[5.1,11.7],[5.1,23.2],[1.6,23.2]]); sk.round(2, 1.4); groove(sk, t, 45);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "box",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "fzc2-20-boxC-top-round-45",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 71971.19247960894,
+    "com": [
+     -0.001294343697501619,
+     -0.0005361347138777173,
+     -0.005372731853119321
+    ],
+    "bbox": [
+     -30,
+     -20,
+     -15,
+     30,
+     20,
+     15
+    ],
+    "faces": 12,
+    "area": 10837.108067870016,
+    "types": {
+     "plane": 9,
+     "cylinder": 2,
+     "other": 1
+    },
+    "components": {
+     "plane": 9,
+     "cylinder": 2,
+     "other": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: a groove with a curved outline (an arc or a round) is not built yet -- cut it with a straight outline -- groove1 is shown without it."
+   },
+   "ms": 31,
+   "load": [
+    32.6,
+    32.6
+   ],
+   "cpuMs": 144,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a ring whose outline has a curve (a circle or a rounded corner) takes a minute or more to cut here, so it is not built; give the ring straight sides",
+     "guard": {
+      "cost": {
+       "tool": "torus",
+       "shape": "box",
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "torus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 0,
+       "headTypes": {
+        "plane": 6
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": false,
+       "rOuter": 5.1,
+       "nearest": 20,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.box",
+     "params": {
+      "length": 60,
+      "width": 40,
+      "height": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_box1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a ring whose outline has a curve (a circle or a rounded corner) takes a minute or more to cut here, so it is not built; give the ring straight sides",
+    "firstRefusal": "groove1 (groove): a ring whose outline has a curve (a circle or a rounded corner) takes a minute or more to cut here, so it is not built; give the ring straight sides"
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 190
+ }
+]

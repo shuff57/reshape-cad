@@ -1,0 +1,1 @@
+fzc1-9-boxG-front-flat-360               PASS     occtV 69928.0191 | tr-occt dV 2.3e-6 dBb 3.6e-14 dCom 5.4e-7 F o/b/t 10/10/10 | brep-occt dV 1.3e-12      | ms 1841 cpu 2179

@@ -1,0 +1,114 @@
+[
+ {
+  "id": "r2-cyl-disc-100-0.2",
+  "feature": "cyl.thin",
+  "note": "",
+  "script": "cylinder(100, 0.2);",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 50,
+     "height": 0.2,
+     "center": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 1570.7963267948967,
+  "occt": {
+   "volume": 1570.796326794897,
+   "com": [
+    1.042204158021965e-14,
+    -5.298440271327098e-15,
+    -2.7755575615628914e-17
+   ],
+   "bbox": [
+    -50,
+    -50,
+    -0.1,
+    50,
+    50,
+    0.1
+   ],
+   "faces": 3,
+   "types": {
+    "cylinder": 1,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 1570.7963267948983,
+   "bbox": [
+    -50,
+    -50,
+    -0.1,
+    50,
+    50,
+    0.1
+   ],
+   "faces": 3,
+   "dVol": 8.685034650183041e-16,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 50,
+     "height": 0.2,
+     "base": [
+      0,
+      0,
+      -0.1
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 1570.6996165546946,
+   "bbox": [
+    -49.99922781066192,
+    -49.99881912622752,
+    -0.10000000000000014,
+    49.9992278106619,
+    49.99881912622751,
+    0.10000000000000007
+   ],
+   "com": [
+    2.0733781120482775e-15,
+    -5.197393460147199e-15,
+    -2.865031573012165e-17
+   ],
+   "faces": 3,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.00006156765110323775,
+   "dBboxOcct": 0.000008350030172508033,
+   "dComOcct": 5.903390648800681e-17,
+   "facesOcct": 3,
+   "typesOcct": {
+    "cylinder": 1,
+    "plane": 2
+   },
+   "dVolAnalytic": 0.000061567651103093,
+   "dVolBrep": 0.00006156765110410619,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 147
+ }
+]

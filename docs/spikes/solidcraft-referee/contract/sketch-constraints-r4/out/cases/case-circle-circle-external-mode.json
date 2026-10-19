@@ -1,0 +1,82 @@
+[
+ {
+  "id": "circle-circle-external-mode",
+  "feats": [
+   "rule:tangent",
+   "tangent:circle-circle external",
+   "tangent:mode option"
+  ],
+  "expect": "build",
+  "starts": {
+   "stored": {
+    "n": 1,
+    "tally": {
+     "BUILT-RIGHT": 1
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   },
+   "rough3.5": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   },
+   "rough15": {
+    "n": 40,
+    "tally": {
+     "BUILT-RIGHT": 40
+    },
+    "samples": [
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     },
+     {
+      "cls": "BUILT-RIGHT",
+      "dv": 0.00009578994864405292,
+      "db": 2.220446049250313e-16,
+      "bodies": 2,
+      "faces": 6,
+      "volume": 2795.7496313258525
+     }
+    ]
+   }
+  },
+  "script": {
+   "errors": [],
+   "rulesPassThrough": true,
+   "nRules": 5
+  }
+ }
+]

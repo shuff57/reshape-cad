@@ -1,0 +1,380 @@
+[
+ {
+  "id": "r3-tan-cyl-through-3",
+  "feature": "cut whose round tool goes THROUGH the part and is tangent to its side faces along lines",
+  "note": "box 40x60: cylinder r20 centred at y=10 is tangent to x=-20, x=+20 and y=+30 (three sides)",
+  "source": "const a = box(40,60,20,{at:[0,0,0]}); const b = cylinder(40,40,{at:[0,10,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "cyl1:cylinder",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 22867.25877128164,
+   "area": 8799.999999999998,
+   "com": [
+    -1.214481897711604e-9,
+    -10.990710113402917,
+    5.59304872158272e-16
+   ],
+   "bbox": [
+    -20,
+    -30,
+    -10,
+    20,
+    30,
+    10
+   ],
+   "faces": 16,
+   "solids": 3,
+   "shells": 3,
+   "valid": true,
+   "types": {
+    "plane": 13,
+    "cylinder": 3
+   },
+   "components": {
+    "plane": 10,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  "translateMs": 704,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 40,
+     "width": 60,
+     "height": 20,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 20,
+     "height": 40,
+     "base": [
+      0,
+      10,
+      -20
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 235,
+   "cpuMs": 271,
+   "load1": 25.4
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 8800.25981729689,
+    "edges": 27,
+    "faces": 11,
+    "mass_g": 29.50323279374978,
+    "vertices": 14,
+    "volume_mm3": 22870.72309593006
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 22870.72309593006,
+     "area": 8800.25981729689,
+     "faces": 11,
+     "kernel": {
+      "edges": 36,
+      "faces": 18,
+      "shells": 3,
+      "vertices": 24
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 22870.72309593006,
+   "area": 8800.25981729689,
+   "bbox": [
+    -20.000000000000025,
+    -30,
+    -10.00000000000086,
+    20.00000000000001,
+    30.000000000000007,
+    10.000000000000007
+   ],
+   "com": [
+    0.00005643147623939932,
+    -10.987349124470718,
+    -1.1934011885990029e-10
+   ],
+   "faces": 11,
+   "kernelFaces": 18,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 10
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    6
+   ],
+   "shells": [
+    3
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00015149715508417942,
+   "dBbox": 8.597567102697212e-14,
+   "dCom": 0.00004491310380367156,
+   "dArea": 0.000029524692828627772,
+   "faceKeys": {
+    "cylinder": "truck-merges-edge-connected-same-surface-faces",
+    "plane": "truck-merges-edge-connected-same-surface-faces"
+   },
+   "faceOk": true,
+   "facesOcct": 16,
+   "solidsOcct": 3,
+   "geomOk": false,
+   "bodiesOk": false
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=22867.2588 T=22870.7231 dVol 1.5e-4 dBbox 8.6e-14 dCom 4.5e-5 dArea 3.0e-5 faces O/B/T 16/-/11 solids O/T 3/1",
+  "wallMs": 1416
+ },
+ {
+  "id": "r3-tan-cyl-through-4-small",
+  "feature": "cut whose round tool goes THROUGH the part and is tangent to its side faces along lines",
+  "note": "the critic's four-sided repro at half the size",
+  "source": "const a = box(20,20,10,{at:[0,0,0]}); const b = cylinder(20,20,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "box1:box",
+   "cyl1:cylinder",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 858.4073464102063,
+   "area": 1599.9999999999998,
+   "com": [
+    -2.271704218546457e-10,
+    -1.5892711757006135e-15,
+    5.173408775067102e-16
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -5,
+    10,
+    10,
+    5
+   ],
+   "faces": 20,
+   "solids": 4,
+   "shells": 4,
+   "valid": true,
+   "types": {
+    "plane": 16,
+    "cylinder": 4
+   },
+   "components": {
+    "plane": 12,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1
+  },
+  "occtNote": null,
+  "brep": {
+   "refused": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  "translateMs": 555,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 20,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_box1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 10,
+     "height": 20,
+     "base": [
+      0,
+      0,
+      -10
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_box1",
+     "tools": [
+      "b_cyl1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 184,
+   "cpuMs": 226,
+   "load1": 25.4
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 1600.0508996425026,
+    "edges": 32,
+    "faces": 13,
+    "mass_g": 1.1077832271815233,
+    "vertices": 16,
+    "volume_mm3": 858.746687737615
+   },
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 858.746687737615,
+     "area": 1600.0508996425026,
+     "faces": 13,
+     "kernel": {
+      "edges": 42,
+      "faces": 22,
+      "shells": 4,
+      "vertices": 28
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_box1"
+  ],
+  "truck": {
+   "volume": 858.746687737615,
+   "area": 1600.0508996425026,
+   "bbox": [
+    -10.00000000000001,
+    -10,
+    -5.000000000001074,
+    10.000000000000005,
+    10.000000000000007,
+    5.0000000000000036
+   ],
+   "com": [
+    9.664245897171627e-15,
+    -7.501926038900349e-16,
+    -7.718158024727477e-14
+   ],
+   "faces": 13,
+   "kernelFaces": 22,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 12
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ],
+   "euler": [
+    8
+   ],
+   "shells": [
+    4
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00039531503175952544,
+   "dBbox": 2.147615418834903e-13,
+   "dCom": 7.572669536684763e-12,
+   "dArea": 0.000031812276564267,
+   "faceKeys": {
+    "cylinder": "truck-merges-edge-connected-same-surface-faces",
+    "plane": "truck-merges-edge-connected-same-surface-faces"
+   },
+   "faceOk": true,
+   "facesOcct": 20,
+   "solidsOcct": 4,
+   "geomOk": false,
+   "bodiesOk": false
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=858.4073 T=858.7467 dVol 4.0e-4 dBbox 2.1e-13 dCom 7.6e-12 dArea 3.2e-5 faces O/B/T 20/-/13 solids O/T 4/1",
+  "wallMs": 1229
+ }
+]

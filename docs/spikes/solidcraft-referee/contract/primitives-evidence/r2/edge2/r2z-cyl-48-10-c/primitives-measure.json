@@ -1,0 +1,123 @@
+[
+ {
+  "id": "r2z-cyl-48-10-c",
+  "feature": "cyl.corner.edge",
+  "note": "",
+  "script": "cylinder(48, 10, { corner: 5.000001 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 24,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 5.000001
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": null,
+  "occt": {
+   "volume": 28616.525533313586,
+   "com": [
+    -1.1768679850606636,
+    -4.0190752524241655e-15,
+    1.7763568394002505e-15
+   ],
+   "bbox": [
+    -24,
+    -24,
+    -5,
+    24.0000001,
+    24,
+    5
+   ],
+   "faces": 6,
+   "types": {
+    "cylinder": 2,
+    "torus": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "refused": "Rounding cylinder by 5.000001 would not fit its radius or height -- cyl1 is shown without it."
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 24,
+     "height": 10,
+     "base": [
+      0,
+      0,
+      -5
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       24,
+       0,
+       5
+      ],
+      [
+       24,
+       0,
+       -5
+      ]
+     ],
+     "radius": 5.000001,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 16552.10478929213,
+   "bbox": [
+    -23.99962934911771,
+    -23.99943318056068,
+    -5,
+    23.99962934911772,
+    23.999433180560676,
+    5
+   ],
+   "com": [
+    1.7583159862280185e-15,
+    -1.1722106574853456e-14,
+    3.209512780194876e-11
+   ],
+   "faces": 3,
+   "faceTypes": {
+    "other": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.42158929217234303,
+   "dBboxOcct": 0.00000826088371120766,
+   "dComOcct": 0.017151792781870925,
+   "facesOcct": 6,
+   "typesOcct": {
+    "cylinder": 2,
+    "torus": 2,
+    "plane": 2
+   },
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 10866
+ }
+]

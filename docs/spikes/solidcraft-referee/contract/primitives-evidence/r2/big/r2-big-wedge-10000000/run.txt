@@ -1,0 +1,2 @@
+r2-big-wedge-10000000          refused-by-solidcraft  wedge1 (wedge): solidcraft refused it -- solid.extrude: invalid input: end = 10000000
+wrote /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/primitives-evidence/r2/big/r2-big-wedge-10000000/primitives-measure.json

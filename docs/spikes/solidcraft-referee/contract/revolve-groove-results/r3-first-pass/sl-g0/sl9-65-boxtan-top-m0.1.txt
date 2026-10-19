@@ -1,0 +1,1 @@
+sl9-65-boxtan-top-m0.1                   REFUSED  occtV 70588.2137 | tr-occt dV - dBb - dCom - F o/b/t 12/12/- | brep-occt dV 2.1e-16    | TRUCK REFUSED: groove1 (groove): the round wall of the ring touches or passes within 0.1 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.  | ms 122 cpu 330

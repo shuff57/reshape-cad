@@ -1,0 +1,6 @@
+round bottom|front THEN subtract notch   PASS[OCCT] V=29965.641185 (OCCT 29965.663706, brep 29965.663706) dVol 7.5e-7 dBbox 8.9e-16 dCOM 2.4e-7 faces occt/truck/brep 11/11/11  
+    names: box1.edge[box1.face[-y] ^ box1.face[-z]]
+bevel bottom|front THEN subtract notch   PASS[OCCT] V=29920.000000 (OCCT 29920.000000, brep 29920.000000) dVol 0.0e+0 dBbox 0.0e+0 dCOM 1.2e-17 faces occt/truck/brep 11/11/11  
+    names: box1.edge[box1.face[-y] ^ box1.face[-z]]
+round bottom|left THEN subtract notch    PASS[OCCT] V=29965.641176 (OCCT 29965.663706, brep 29965.663706) dVol 7.5e-7 dBbox 5.3e-16 dCOM 2.4e-7 faces occt/truck/brep 11/11/11  
+    names: box1.edge[box1.face[-x] ^ box1.face[-z]]

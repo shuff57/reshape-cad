@@ -1,0 +1,8968 @@
+[
+ {
+  "id": "b-cyl-turn-x90-top-rim-round3",
+  "group": "b-turn",
+  "note": "turned cylinder, rim fillet",
+  "script": "const c = cylinder(24,30)\nturn(c,[90,0,0])\nround(c.edge('top','side'), 3)",
+  "pane": {
+   "volume": 13570.148860573347,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573347,
+     "faces": 3,
+     "bbox": [
+      -11.99981467455886,
+      -15.000000000000007,
+      -11.999677604887713,
+      11.999814674558857,
+      15.000000000000014,
+      11.999677604887712
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 2660
+  },
+  "contract": {
+   "volume": 13570.148860573347,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573347,
+     "faces": 3,
+     "bbox": [
+      -11.99981467455886,
+      -15.000000000000007,
+      -11.999677604887713,
+      11.999814674558857,
+      15.000000000000014,
+      11.999677604887712
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1534
+  },
+  "grouped": {
+   "volume": 13570.148860573347,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573347,
+     "faces": 3,
+     "bbox": [
+      -11.99981467455886,
+      -15.000000000000007,
+      -11.999677604887713,
+      11.999814674558857,
+      15.000000000000014,
+      11.999677604887712
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1226
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13434.186897988171,
+    "faces": 4,
+    "bbox": [
+     -12,
+     -15.000000000000002,
+     -12.000000000000002,
+     12,
+     15.000000000000002,
+     12.000000100000001
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box ",
+    "shapeWithout": {
+     "volume": 13571.680263507913,
+     "faces": 3
+    }
+   }
+  },
+  "base": {
+   "volume": 13571.680263507908,
+   "faces": 3,
+   "bbox": [
+    -12,
+    -15.000000000000002,
+    -12.000000000000002,
+    12,
+    15.000000000000002,
+    12.000000000000002
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.000007119253512053833,
+   "grouped": 0.000007119253512053833,
+   "contract": 0.000007119253512053833
+  },
+  "ms": 11846,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-turn-x90-bottom-rim-bevel3",
+  "group": "b-turn",
+  "note": null,
+  "script": "const c = cylinder(24,30)\nturn(c,[90,0,0])\nbevel(c.edge('bottom','side'), 3)",
+  "pane": {
+   "volume": 13570.148860573347,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573347,
+     "faces": 3,
+     "bbox": [
+      -11.99981467455886,
+      -15.000000000000007,
+      -11.999677604887713,
+      11.999814674558857,
+      15.000000000000014,
+      11.999677604887712
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 797
+  },
+  "contract": {
+   "volume": 13570.148860573347,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573347,
+     "faces": 3,
+     "bbox": [
+      -11.99981467455886,
+      -15.000000000000007,
+      -11.999677604887713,
+      11.999814674558857,
+      15.000000000000014,
+      11.999677604887712
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1088
+  },
+  "grouped": {
+   "volume": 13570.148860573347,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573347,
+     "faces": 3,
+     "bbox": [
+      -11.99981467455886,
+      -15.000000000000007,
+      -11.999677604887713,
+      11.999814674558857,
+      15.000000000000014,
+      11.999677604887712
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 905
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13260.662590802518,
+    "faces": 4,
+    "bbox": [
+     -12,
+     -15.000000000000002,
+     -12.000000000000002,
+     12,
+     15.000000000000002,
+     12.000000000000002
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+    "shapeWithout": {
+     "volume": 13571.680263507913,
+     "faces": 3
+    }
+   }
+  },
+  "base": {
+   "volume": 13571.680263507908,
+   "faces": 3,
+   "bbox": [
+    -12,
+    -15.000000000000002,
+    -12.000000000000002,
+    12,
+    15.000000000000002,
+    12.000000000000002
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.000007117045966465418,
+   "grouped": 0.000007117045966465418,
+   "contract": 0.000007117045966465418
+  },
+  "ms": 8517,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-turn-y90-top-rim-round3",
+  "group": "b-turn",
+  "note": "turned cylinder, rim fillet",
+  "script": "const c = cylinder(24,30)\nturn(c,[0,90,0])\nround(c.edge('top','side'), 3)",
+  "pane": {
+   "volume": 13570.148860573347,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573347,
+     "faces": 3,
+     "bbox": [
+      -15.000000000000014,
+      -11.999677604887713,
+      -11.999814674558857,
+      15.000000000000007,
+      11.999677604887712,
+      11.999814674558857
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 744
+  },
+  "contract": {
+   "volume": 13570.148860573347,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573347,
+     "faces": 3,
+     "bbox": [
+      -15.000000000000014,
+      -11.999677604887713,
+      -11.999814674558857,
+      15.000000000000007,
+      11.999677604887712,
+      11.999814674558857
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 838
+  },
+  "grouped": {
+   "volume": 13570.148860573347,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573347,
+     "faces": 3,
+     "bbox": [
+      -15.000000000000014,
+      -11.999677604887713,
+      -11.999814674558857,
+      15.000000000000007,
+      11.999677604887712,
+      11.999814674558857
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 884
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13434.186897988171,
+    "faces": 4,
+    "bbox": [
+     -15.000000000000002,
+     -12,
+     -12.000000000000002,
+     15.000000000000002,
+     12,
+     12.000000000000002
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box ",
+    "shapeWithout": {
+     "volume": 13571.680263507913,
+     "faces": 3
+    }
+   }
+  },
+  "base": {
+   "volume": 13571.680263507908,
+   "faces": 3,
+   "bbox": [
+    -15.000000000000002,
+    -12,
+    -12.000000000000002,
+    15.000000000000002,
+    12,
+    12.000000000000002
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.000007117045966426204,
+   "grouped": 0.000007117045966426204,
+   "contract": 0.000007117045966426204
+  },
+  "ms": 6950,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-turn-y90-bottom-rim-bevel3",
+  "group": "b-turn",
+  "note": null,
+  "script": "const c = cylinder(24,30)\nturn(c,[0,90,0])\nbevel(c.edge('bottom','side'), 3)",
+  "pane": {
+   "volume": 13570.148860573347,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573347,
+     "faces": 3,
+     "bbox": [
+      -15.000000000000014,
+      -11.999677604887713,
+      -11.999814674558857,
+      15.000000000000007,
+      11.999677604887712,
+      11.999814674558857
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 2450
+  },
+  "contract": {
+   "volume": 13570.148860573347,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573347,
+     "faces": 3,
+     "bbox": [
+      -15.000000000000014,
+      -11.999677604887713,
+      -11.999814674558857,
+      15.000000000000007,
+      11.999677604887712,
+      11.999814674558857
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1777
+  },
+  "grouped": {
+   "volume": 13570.148860573347,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573347,
+     "faces": 3,
+     "bbox": [
+      -15.000000000000014,
+      -11.999677604887713,
+      -11.999814674558857,
+      15.000000000000007,
+      11.999677604887712,
+      11.999814674558857
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1691
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13260.662590802518,
+    "faces": 4,
+    "bbox": [
+     -15.000000000000002,
+     -12,
+     -12.000000000000002,
+     15.000000000000002,
+     12,
+     12.000000000000002
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+    "shapeWithout": {
+     "volume": 13571.680263507913,
+     "faces": 3
+    }
+   }
+  },
+  "base": {
+   "volume": 13571.680263507908,
+   "faces": 3,
+   "bbox": [
+    -15.000000000000002,
+    -12,
+    -12.000000000000002,
+    15.000000000000002,
+    12,
+    12.000000000000002
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.000007117045966426204,
+   "grouped": 0.000007117045966426204,
+   "contract": 0.000007117045966426204
+  },
+  "ms": 13426,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-turn-z30-top-rim-round3",
+  "group": "b-turn",
+  "note": "turned cylinder, rim fillet",
+  "script": "const c = cylinder(24,30)\nturn(c,[0,0,30])\nround(c.edge('top','side'), 3)",
+  "pane": {
+   "volume": 13570.148860573338,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573338,
+     "faces": 3,
+     "bbox": [
+      -11.99993136636059,
+      -11.999952484295955,
+      -15.000000000000014,
+      11.999931366360594,
+      11.999952484295955,
+      15.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 2225
+  },
+  "contract": {
+   "volume": 13570.148860573338,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573338,
+     "faces": 3,
+     "bbox": [
+      -11.99993136636059,
+      -11.999952484295955,
+      -15.000000000000014,
+      11.999931366360594,
+      11.999952484295955,
+      15.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1165
+  },
+  "grouped": {
+   "volume": 13570.148860573338,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573338,
+     "faces": 3,
+     "bbox": [
+      -11.99993136636059,
+      -11.999952484295955,
+      -15.000000000000014,
+      11.999931366360594,
+      11.999952484295955,
+      15.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 5685
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13434.186897988171,
+    "faces": 4,
+    "bbox": [
+     -12,
+     -12,
+     -15,
+     12,
+     12,
+     15
+    ]
+   },
+   "brepSeq": {
+    "volume": 13434.186897988176,
+    "faces": 4,
+    "bbox": [
+     -12,
+     -12,
+     -15,
+     12,
+     12,
+     15
+    ]
+   }
+  },
+  "base": {
+   "volume": 13571.680263507908,
+   "faces": 3,
+   "bbox": [
+    -12,
+    -12,
+    -15,
+    12,
+    12,
+    15
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.0000015151246030282038,
+   "grouped": 0.0000015151246030282038,
+   "contract": 0.0000015151246030282038
+  },
+  "ms": 18673,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-turn-z30-bottom-rim-bevel3",
+  "group": "b-turn",
+  "note": null,
+  "script": "const c = cylinder(24,30)\nturn(c,[0,0,30])\nbevel(c.edge('bottom','side'), 3)",
+  "pane": {
+   "volume": 13570.148860573338,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573338,
+     "faces": 3,
+     "bbox": [
+      -11.99993136636059,
+      -11.999952484295955,
+      -15.000000000000014,
+      11.999931366360594,
+      11.999952484295955,
+      15.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1149
+  },
+  "contract": {
+   "volume": 13570.148860573338,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573338,
+     "faces": 3,
+     "bbox": [
+      -11.99993136636059,
+      -11.999952484295955,
+      -15.000000000000014,
+      11.999931366360594,
+      11.999952484295955,
+      15.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1731
+  },
+  "grouped": {
+   "volume": 13570.148860573338,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.148860573338,
+     "faces": 3,
+     "bbox": [
+      -11.99993136636059,
+      -11.999952484295955,
+      -15.000000000000014,
+      11.999931366360594,
+      11.999952484295955,
+      15.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1726
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13260.662590802518,
+    "faces": 4,
+    "bbox": [
+     -12,
+     -12,
+     -15,
+     12,
+     12,
+     15
+    ]
+   },
+   "brepSeq": {
+    "volume": 13260.662590802523,
+    "faces": 4,
+    "bbox": [
+     -12,
+     -12,
+     -15,
+     12,
+     12,
+     15
+    ]
+   }
+  },
+  "base": {
+   "volume": 13571.680263507908,
+   "faces": 3,
+   "bbox": [
+    -12,
+    -12,
+    -15,
+    12,
+    12,
+    15
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.0000015151246030282038,
+   "grouped": 0.0000015151246030282038,
+   "contract": 0.0000015151246030282038
+  },
+  "ms": 12723,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-turn-x45-top-rim-round3",
+  "group": "b-turn",
+  "note": "turned cylinder, rim fillet",
+  "script": "const c = cylinder(24,30)\nturn(c,[45,0,0])\nround(c.edge('top','side'), 3)",
+  "pane": {
+   "volume": 13570.034756146872,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.034756146872,
+     "faces": 3,
+     "bbox": [
+      -11.999814674558857,
+      -19.09165512426666,
+      -19.091655124266662,
+      11.999814674558857,
+      19.09165512426667,
+      19.091655124266648
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 3606
+  },
+  "contract": {
+   "volume": 13570.034756146872,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.034756146872,
+     "faces": 3,
+     "bbox": [
+      -11.999814674558857,
+      -19.09165512426666,
+      -19.091655124266662,
+      11.999814674558857,
+      19.09165512426667,
+      19.091655124266648
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1374
+  },
+  "grouped": {
+   "volume": 13570.034756146872,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.034756146872,
+     "faces": 3,
+     "bbox": [
+      -11.999814674558857,
+      -19.09165512426666,
+      -19.091655124266662,
+      11.999814674558857,
+      19.09165512426667,
+      19.091655124266648
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1886
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13434.186897988171,
+    "faces": 4,
+    "bbox": [
+     -12,
+     -17.849242504917502,
+     -19.09188309203678,
+     12.0000001,
+     19.09188309203678,
+     17.8492425049175
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box ",
+    "shapeWithout": {
+     "volume": 13571.680263507913,
+     "faces": 3
+    }
+   }
+  },
+  "base": {
+   "volume": 13571.680263507908,
+   "faces": 3,
+   "bbox": [
+    -12,
+    -19.09188309203678,
+    -19.09188309203678,
+    12,
+    19.09188309203678,
+    19.09188309203678
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.02161030206764026,
+   "grouped": 0.02161030206764026,
+   "contract": 0.02161030206764026
+  },
+  "ms": 19069,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-turn-x45-bottom-rim-bevel3",
+  "group": "b-turn",
+  "note": null,
+  "script": "const c = cylinder(24,30)\nturn(c,[45,0,0])\nbevel(c.edge('bottom','side'), 3)",
+  "pane": {
+   "volume": 13570.034756146872,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.034756146872,
+     "faces": 3,
+     "bbox": [
+      -11.999814674558857,
+      -19.09165512426666,
+      -19.091655124266662,
+      11.999814674558857,
+      19.09165512426667,
+      19.091655124266648
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 2478
+  },
+  "contract": {
+   "volume": 13570.034756146872,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.034756146872,
+     "faces": 3,
+     "bbox": [
+      -11.999814674558857,
+      -19.09165512426666,
+      -19.091655124266662,
+      11.999814674558857,
+      19.09165512426667,
+      19.091655124266648
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 3064
+  },
+  "grouped": {
+   "volume": 13570.034756146872,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.034756146872,
+     "faces": 3,
+     "bbox": [
+      -11.999814674558857,
+      -19.09165512426666,
+      -19.091655124266662,
+      11.999814674558857,
+      19.09165512426667,
+      19.091655124266648
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1353
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13260.662590802518,
+    "faces": 4,
+    "bbox": [
+     -12,
+     -19.09188309203678,
+     -16.970562748477143,
+     12,
+     16.970562748477143,
+     19.09188309203678
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+    "shapeWithout": {
+     "volume": 13571.680263507913,
+     "faces": 3
+    }
+   }
+  },
+  "base": {
+   "volume": 13571.680263507908,
+   "faces": 3,
+   "bbox": [
+    -12,
+    -19.09188309203678,
+    -19.09188309203678,
+    12,
+    19.09188309203678,
+    19.09188309203678
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.037631451974711815,
+   "grouped": 0.037631451974711815,
+   "contract": 0.037631451974711815
+  },
+  "ms": 13424,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-turn-x30y40-top-rim-round3",
+  "group": "b-turn",
+  "note": "turned cylinder, rim fillet",
+  "script": "const c = cylinder(24,30)\nturn(c,[30,40,0])\nround(c.edge('top','side'), 3)",
+  "pane": {
+   "volume": 13569.938854325452,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13569.938854325452,
+     "faces": 3,
+     "bbox": [
+      -18.31842848036218,
+      -17.892025643055955,
+      -18.929754559947014,
+      18.318428480362176,
+      17.89202564305597,
+      18.929754559920646
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 931
+  },
+  "contract": {
+   "volume": 13569.938854325452,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13569.938854325452,
+     "faces": 3,
+     "bbox": [
+      -18.31842848036218,
+      -17.892025643055955,
+      -18.929754559947014,
+      18.318428480362176,
+      17.89202564305597,
+      18.929754559920646
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 2392
+  },
+  "grouped": {
+   "volume": 13569.938854325452,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13569.938854325452,
+     "faces": 3,
+     "bbox": [
+      -18.31842848036218,
+      -17.892025643055955,
+      -18.929754559947014,
+      18.318428480362176,
+      17.89202564305597,
+      18.929754559920646
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 956
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13434.186897988173,
+    "faces": 4,
+    "bbox": [
+     -18.318857400502672,
+     -16.79422873405995,
+     -18.93024026190496,
+     17.156645949796825,
+     17.892304845413264,
+     17.695240757555425
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box ",
+    "shapeWithout": {
+     "volume": 13571.680263507915,
+     "faces": 3
+    }
+   }
+  },
+  "base": {
+   "volume": 13571.680263507904,
+   "faces": 3,
+   "bbox": [
+    -18.318857400502672,
+    -17.892304845413264,
+    -18.93024026190496,
+    18.318857400502672,
+    17.892304845413264,
+    18.93024026190496
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.02001831357405848,
+   "grouped": 0.02001831357405848,
+   "contract": 0.02001831357405848
+  },
+  "ms": 9955,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-turn-x30y40-bottom-rim-bevel3",
+  "group": "b-turn",
+  "note": null,
+  "script": "const c = cylinder(24,30)\nturn(c,[30,40,0])\nbevel(c.edge('bottom','side'), 3)",
+  "pane": {
+   "volume": 13569.938854325452,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13569.938854325452,
+     "faces": 3,
+     "bbox": [
+      -18.31842848036218,
+      -17.892025643055955,
+      -18.929754559947014,
+      18.318428480362176,
+      17.89202564305597,
+      18.929754559920646
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1706
+  },
+  "contract": {
+   "volume": 13569.938854325452,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13569.938854325452,
+     "faces": 3,
+     "bbox": [
+      -18.31842848036218,
+      -17.892025643055955,
+      -18.929754559947014,
+      18.318428480362176,
+      17.89202564305597,
+      18.929754559920646
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1434
+  },
+  "grouped": {
+   "volume": 13569.938854325452,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13569.938854325452,
+     "faces": 3,
+     "bbox": [
+      -18.31842848036218,
+      -17.892025643055955,
+      -18.929754559947014,
+      18.318428480362176,
+      17.89202564305597,
+      18.929754559920646
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1274
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13260.662590802516,
+    "faces": 4,
+    "bbox": [
+     -16.648846202823414,
+     -17.892304845413264,
+     -16.939998417398144,
+     18.318857400502672,
+     16.392304845413264,
+     18.93024026190496
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+    "shapeWithout": {
+     "volume": 13571.680263507915,
+     "faces": 3
+    }
+   }
+  },
+  "base": {
+   "volume": 13571.680263507904,
+   "faces": 3,
+   "bbox": [
+    -18.318857400502672,
+    -17.892304845413264,
+    -18.93024026190496,
+    18.318857400502672,
+    17.892304845413264,
+    18.93024026190496
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.03277857121348732,
+   "grouped": 0.03277857121348732,
+   "contract": 0.03277857121348732
+  },
+  "ms": 11407,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-turn-x30y40z50-top-rim-round3",
+  "group": "b-turn",
+  "note": "turned cylinder, rim fillet",
+  "script": "const c = cylinder(24,30)\nturn(c,[30,40,50])\nround(c.edge('top','side'), 3)",
+  "pane": {
+   "volume": 13570.0764087816,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.0764087816,
+     "faces": 3,
+     "bbox": [
+      -19.17251802000773,
+      -13.509195228469487,
+      -18.929754559947014,
+      19.172518020002222,
+      13.509195228481687,
+      18.929754559920646
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1950
+  },
+  "contract": {
+   "volume": 13570.0764087816,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.0764087816,
+     "faces": 3,
+     "bbox": [
+      -19.17251802000773,
+      -13.509195228469487,
+      -18.929754559947014,
+      19.172518020002222,
+      13.509195228481687,
+      18.929754559920646
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 3397
+  },
+  "grouped": {
+   "volume": 13570.0764087816,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.0764087816,
+     "faces": 3,
+     "bbox": [
+      -19.17251802000773,
+      -13.509195228469487,
+      -18.929754559947014,
+      19.172518020002222,
+      13.509195228481687,
+      18.929754559920646
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1318
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13434.18689798817,
+    "faces": 4,
+    "bbox": [
+     -19.17278390226231,
+     -13.509222304612429,
+     -18.93024026190496,
+     17.93522031934285,
+     13.210697174309034,
+     17.695240757555425
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box ",
+    "shapeWithout": {
+     "volume": 13571.680263507913,
+     "faces": 3
+    }
+   }
+  },
+  "base": {
+   "volume": 13571.680263507904,
+   "faces": 3,
+   "bbox": [
+    -19.17278390226231,
+    -13.509222304612429,
+    -18.93024026190496,
+    19.17278390226231,
+    13.509222304612429,
+    18.93024026190496
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.02111914225786608,
+   "grouped": 0.02111914225786608,
+   "contract": 0.02111914225786608
+  },
+  "ms": 11162,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-turn-x30y40z50-bottom-rim-bevel3",
+  "group": "b-turn",
+  "note": null,
+  "script": "const c = cylinder(24,30)\nturn(c,[30,40,50])\nbevel(c.edge('bottom','side'), 3)",
+  "pane": {
+   "volume": 13570.0764087816,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.0764087816,
+     "faces": 3,
+     "bbox": [
+      -19.17251802000773,
+      -13.509195228469487,
+      -18.929754559947014,
+      19.172518020002222,
+      13.509195228481687,
+      18.929754559920646
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 655
+  },
+  "contract": {
+   "volume": 13570.0764087816,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.0764087816,
+     "faces": 3,
+     "bbox": [
+      -19.17251802000773,
+      -13.509195228469487,
+      -18.929754559947014,
+      19.172518020002222,
+      13.509195228481687,
+      18.929754559920646
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 699
+  },
+  "grouped": {
+   "volume": 13570.0764087816,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.0764087816,
+     "faces": 3,
+     "bbox": [
+      -19.17251802000773,
+      -13.509195228469487,
+      -18.929754559947014,
+      19.172518020002222,
+      13.509195228481687,
+      18.929754559920646
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "bevel1 (fillet): cyl1.edge[cyl1.face[-z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[-z]: cyl1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 2078
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13260.662590802518,
+    "faces": 4,
+    "bbox": [
+     -17.157749389927318,
+     -13.194100921213572,
+     -16.939998417398144,
+     19.17278390226231,
+     13.509222304612429,
+     18.93024026190496
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain ",
+    "shapeWithout": {
+     "volume": 13571.680263507913,
+     "faces": 3
+    }
+   }
+  },
+  "base": {
+   "volume": 13571.680263507904,
+   "faces": 3,
+   "bbox": [
+    -19.17278390226231,
+    -13.509222304612429,
+    -18.93024026190496,
+    19.17278390226231,
+    13.509222304612429,
+    18.93024026190496
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.034968667829286565,
+   "grouped": 0.034968667829286565,
+   "contract": 0.034968667829286565
+  },
+  "ms": 7640,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-upright-top-rim-round3",
+  "group": "b-turn",
+  "note": "upright control",
+  "script": "const c = cylinder(24,30)\nround(c.edge('top','side'), 3)",
+  "pane": {
+   "volume": 13433.641165336332,
+   "faces": 4,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13433.641165336332,
+     "faces": 4,
+     "bbox": [
+      -11.999814674558857,
+      -11.999716590294605,
+      -15.000000000000014,
+      11.999814674558863,
+      11.999716590294604,
+      15
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       -6.904867347122082,
+       9.814418317895726,
+       14.999999999999998
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 42295
+  },
+  "contract": {
+   "volume": 13433.641165336332,
+   "faces": 4,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13433.641165336332,
+     "faces": 4,
+     "bbox": [
+      -11.999814674558857,
+      -11.999716590294605,
+      -15.000000000000014,
+      11.999814674558863,
+      11.999716590294604,
+      15
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       -6.904867347122082,
+       9.814418317895726,
+       14.999999999999998
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 14704
+  },
+  "grouped": {
+   "volume": 13433.641165336332,
+   "faces": 4,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13433.641165336332,
+     "faces": 4,
+     "bbox": [
+      -11.999814674558857,
+      -11.999716590294605,
+      -15.000000000000014,
+      11.999814674558863,
+      11.999716590294604,
+      15
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "other": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       -6.904867347122082,
+       9.814418317895726,
+       14.999999999999998
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 17281
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13434.186897988171,
+    "faces": 4,
+    "bbox": [
+     -12,
+     -12,
+     -15,
+     12,
+     12.0000001,
+     15
+    ]
+   },
+   "brepSeq": {
+    "volume": 13434.186897988176,
+    "faces": 4,
+    "bbox": [
+     -12,
+     -12,
+     -15,
+     12,
+     12,
+     15
+    ]
+   },
+   "occtSim": {
+    "volume": 13434.186897988171,
+    "faces": 4,
+    "bbox": [
+     -12,
+     -12,
+     -15,
+     12,
+     12.0000001,
+     15
+    ],
+    "types": {
+     "cylinder": 1,
+     "other": 1,
+     "plane": 2
+    },
+    "edgeDist": 0.0058731905412617285,
+    "distinctEdges": 1
+   }
+  },
+  "base": {
+   "volume": 13571.680263507908,
+   "faces": 3,
+   "bbox": [
+    -12,
+    -12,
+    -15,
+    12,
+    12,
+    15
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 0.000006258629631656375,
+   "grouped": 0.000006258629631656375,
+   "contract": 0.000006258629631656375
+  },
+  "ms": 84645,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-moved-top-rim-round3",
+  "group": "b-turn",
+  "note": null,
+  "script": "const c = cylinder(24,30)\nmove(c,[10,5,2])\nround(c.edge('top','side'), 3)",
+  "pane": {
+   "volume": 13570.14886057342,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.14886057342,
+     "faces": 3,
+     "bbox": [
+      -1.9998146745588556,
+      -6.999677604887712,
+      -13.000000000000014,
+      21.99981467455886,
+      16.99967760488771,
+      17.00000000000001
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] resolves to F1:side#1|F1:top, F1:side#2|F1:top on cyl1, but that edge is no longer present whole on b_cyl1 (an operation after cyl1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 2593
+  },
+  "contract": {
+   "volume": 13570.14886057342,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.14886057342,
+     "faces": 3,
+     "bbox": [
+      -1.9998146745588556,
+      -6.999677604887712,
+      -13.000000000000014,
+      21.99981467455886,
+      16.99967760488771,
+      17.00000000000001
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edge for round1 was already changed by an earlier move, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] resolves to F1:side#1|F1:top, F1:side#2|F1:top on cyl1, but that edge is no longer present whole on b_cyl1 (an operation after cyl1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 2114
+  },
+  "grouped": {
+   "volume": 13570.14886057342,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13570.14886057342,
+     "faces": 3,
+     "bbox": [
+      -1.9998146745588556,
+      -6.999677604887712,
+      -13.000000000000014,
+      21.99981467455886,
+      16.99967760488771,
+      17.00000000000001
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edge for round1 was already changed by an earlier move, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+     "refusal": "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] resolves to F1:side#1|F1:top, F1:side#2|F1:top on cyl1, but that edge is no longer present whole on b_cyl1 (an operation after cyl1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 4029
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13434.186897988171,
+    "faces": 4,
+    "bbox": [
+     -2,
+     -7,
+     -13,
+     22,
+     17,
+     17
+    ]
+   },
+   "brepSeq": {
+    "volume": 13434.186897988175,
+    "faces": 4,
+    "bbox": [
+     -2,
+     -7,
+     -13,
+     22,
+     17,
+     17
+    ]
+   }
+  },
+  "base": {
+   "volume": 13571.680263507908,
+   "faces": 3,
+   "bbox": [
+    -2,
+    -7,
+    -13,
+    22,
+    17,
+    17
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.000007117045966426205,
+   "grouped": 0.000007117045966426205,
+   "contract": 0.000007117045966426205
+  },
+  "ms": 13731,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-box-turn-z90-edge",
+  "group": "b-turn",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nturn(b,[0,0,90])\nround(b.edge('top','front'), 2)",
+  "pane": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -15.000000000000002,
+      -20,
+      -6,
+      15.000000000000002,
+      20,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 315
+  },
+  "contract": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -15.000000000000002,
+      -20,
+      -6,
+      15.000000000000002,
+      20,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1180
+  },
+  "grouped": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -15.000000000000002,
+      -20,
+      -6,
+      15.000000000000002,
+      20,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 152
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14374.247779621619,
+    "faces": 7,
+    "bbox": [
+     -15.000000000000002,
+     -20,
+     -6,
+     15.000000000000004,
+     20.000000000000004,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 14374.247779607698,
+    "faces": 7,
+    "bbox": [
+     -15.000000000000002,
+     -20,
+     -6,
+     15.000000000000002,
+     20,
+     6
+    ]
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -15.000000000000002,
+    -20,
+    -6,
+    15.000000000000004,
+    20.000000000000004,
+    6
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 6.909227337676195e-17,
+   "grouped": 6.909227337676195e-17,
+   "contract": 6.909227337676195e-17
+  },
+  "ms": 9715,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-box-turn-x90-edge",
+  "group": "b-turn",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nturn(b,[90,0,0])\nround(b.edge('top','front'), 2)",
+  "pane": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -6.000000000000001,
+      -15,
+      20,
+      6.000000000000001,
+      15
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 960
+  },
+  "contract": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -6.000000000000001,
+      -15,
+      20,
+      6.000000000000001,
+      15
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 467
+  },
+  "grouped": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -6.000000000000001,
+      -15,
+      20,
+      6.000000000000001,
+      15
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 991
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14365.66370615794,
+    "faces": 7,
+    "bbox": [
+     -20,
+     -6.000000000000002,
+     -15,
+     20,
+     6.000000000000002,
+     15.000000000000002
+    ]
+   },
+   "brepSeq": {
+    "volume": 14365.663706143596,
+    "faces": 7,
+    "bbox": [
+     -20,
+     -6.000000000000001,
+     -15,
+     20,
+     6.000000000000001,
+     15
+    ]
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -6.000000000000002,
+    -15,
+    20,
+    6.000000000000002,
+    15.000000000000002
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 3.4546136688380976e-17,
+   "grouped": 3.4546136688380976e-17,
+   "contract": 3.4546136688380976e-17
+  },
+  "ms": 9047,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-box-turn-z30-edge",
+  "group": "b-turn",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nturn(b,[0,0,30])\nround(b.edge('top','front'), 2)",
+  "pane": {
+   "volume": 14400.000000000002,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400.000000000002,
+     "faces": 6,
+     "bbox": [
+      -24.820508075688775,
+      -22.99038105676658,
+      -6,
+      24.820508075688775,
+      22.99038105676658,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 706
+  },
+  "contract": {
+   "volume": 14400.000000000002,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400.000000000002,
+     "faces": 6,
+     "bbox": [
+      -24.820508075688775,
+      -22.99038105676658,
+      -6,
+      24.820508075688775,
+      22.99038105676658,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 308
+  },
+  "grouped": {
+   "volume": 14400.000000000002,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400.000000000002,
+     "faces": 6,
+     "bbox": [
+      -24.820508075688775,
+      -22.99038105676658,
+      -6,
+      24.820508075688775,
+      22.99038105676658,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 421
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14365.66370615794,
+    "faces": 7,
+    "bbox": [
+     -24.82050807568877,
+     -22.99038105676658,
+     -6,
+     24.820508075688775,
+     22.99038105676658,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 14365.663706143603,
+    "faces": 7,
+    "bbox": [
+     -24.820508075688778,
+     -22.990381056766584,
+     -6,
+     24.820508075688778,
+     22.990381056766584,
+     6
+    ]
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -24.82050807568877,
+    -22.99038105676658,
+    -6,
+    24.820508075688775,
+    22.99038105676658,
+    6
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 5.1698271091601923e-17,
+   "grouped": 5.1698271091601923e-17,
+   "contract": 5.1698271091601923e-17
+  },
+  "ms": 6531,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-box-turn-x45-edge",
+  "group": "b-turn",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nturn(b,[45,0,0])\nround(b.edge('top','front'), 2)",
+  "pane": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -14.849242404917497,
+      -14.849242404917499,
+      20,
+      14.849242404917497,
+      14.849242404917497
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 210
+  },
+  "contract": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -14.849242404917497,
+      -14.849242404917499,
+      20,
+      14.849242404917497,
+      14.849242404917497
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 393
+  },
+  "grouped": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -14.849242404917497,
+      -14.849242404917499,
+      20,
+      14.849242404917497,
+      14.849242404917497
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was turned, so its edge cannot be found reliably and round1 is shown without it -- round or bevel the edge before you turn the part.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 520
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Round 1's edge could not be found -- Round 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14400,
+     "faces": 6
+    }
+   },
+   "brepSeq": {
+    "refused": "round1's edge could not be found -- round1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14400,
+     "faces": 6
+    }
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -14.849242404917497,
+    -14.849242404917497,
+    20,
+    14.849242404917497,
+    14.849242404917497
+   ]
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "ms": 5467,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-box-move-10_5_0-edge",
+  "group": "b-turn",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nmove(b,[10,5,0])\nround(b.edge('top','front'), 2)",
+  "pane": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -10,
+      -10,
+      -6,
+      30,
+      20,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1887
+  },
+  "contract": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -10,
+      -10,
+      -6,
+      30,
+      20,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edge for round1 was already changed by an earlier move, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 2324
+  },
+  "grouped": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -10,
+      -10,
+      -6,
+      30,
+      20,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edge for round1 was already changed by an earlier move, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 3113
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14365.66370615794,
+    "faces": 7,
+    "bbox": [
+     -10,
+     -10,
+     -6,
+     30,
+     20,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 14365.66370614359,
+    "faces": 7,
+    "bbox": [
+     -10,
+     -10,
+     -6,
+     30,
+     20,
+     6
+    ]
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -10,
+    -10,
+    -6,
+    30,
+    20,
+    6
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0,
+   "grouped": 0,
+   "contract": 0
+  },
+  "ms": 16298,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-box-move--15_0_0-edge",
+  "group": "b-turn",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nmove(b,[-15,0,0])\nround(b.edge('top','front'), 2)",
+  "pane": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -35,
+      -15,
+      -6,
+      5,
+      15,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 2907
+  },
+  "contract": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -35,
+      -15,
+      -6,
+      5,
+      15,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edge for round1 was already changed by an earlier move, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1609
+  },
+  "grouped": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -35,
+      -15,
+      -6,
+      5,
+      15,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edge for round1 was already changed by an earlier move, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1376
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14365.66370615794,
+    "faces": 7,
+    "bbox": [
+     -35,
+     -15,
+     -6,
+     5,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 14365.66370614359,
+    "faces": 7,
+    "bbox": [
+     -35,
+     -15,
+     -6,
+     5,
+     15,
+     6
+    ]
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -35,
+    -15,
+    -6,
+    5,
+    15,
+    6
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0,
+   "grouped": 0,
+   "contract": 0
+  },
+  "ms": 12671,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-box-move-0_0_7-edge",
+  "group": "b-turn",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nmove(b,[0,0,7])\nround(b.edge('top','front'), 2)",
+  "pane": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      1,
+      20,
+      15,
+      13
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1414
+  },
+  "contract": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      1,
+      20,
+      15,
+      13
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edge for round1 was already changed by an earlier move, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 2650
+  },
+  "grouped": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      1,
+      20,
+      15,
+      13
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edge for round1 was already changed by an earlier move, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1293
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14365.66370615794,
+    "faces": 7,
+    "bbox": [
+     -20,
+     -15,
+     1,
+     20,
+     15,
+     13
+    ]
+   },
+   "brepSeq": {
+    "volume": 14365.66370614359,
+    "faces": 7,
+    "bbox": [
+     -20,
+     -15,
+     1,
+     20,
+     15,
+     13
+    ]
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    1,
+    20,
+    15,
+    13
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0,
+   "grouped": 0,
+   "contract": 0
+  },
+  "ms": 11357,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-box-mirror-edge",
+  "group": "b-turn",
+  "note": null,
+  "script": "const b = cuboid(20,30,12,{at:[20,0,0]})\nmirror(b,'left-right')\nround(b.edge('top','right'), 2)",
+  "pane": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -10,
+      -15,
+      -6,
+      30,
+      15,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): its target box1 was already changed in place by mir1, and a solidcraft command list has no second copy of it",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 970
+  },
+  "contract": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -10,
+      -15,
+      -6,
+      30,
+      15,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The shape for round1 was already combined, moved or mirrored, so its edges are not named any more and round1 is shown without it -- round or bevel before you combine, move or mirror.",
+     "refusal": "round1 (fillet): its target box1 was already changed in place by mir1, and a solidcraft command list has no second copy of it",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 920
+  },
+  "grouped": {
+   "volume": 14400,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14400,
+     "faces": 6,
+     "bbox": [
+      -10,
+      -15,
+      -6,
+      30,
+      15,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The shape for round1 was already combined, moved or mirrored, so its edges are not named any more and round1 is shown without it -- round or bevel before you combine, move or mirror.",
+     "refusal": "round1 (fillet): its target box1 was already changed in place by mir1, and a solidcraft command list has no second copy of it",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 2162
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 7174.24777961529,
+    "faces": 7,
+    "bbox": [
+     10,
+     -15,
+     -6,
+     30,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 7174.247779607693,
+    "faces": 7,
+    "bbox": [
+     10,
+     -15,
+     -6,
+     30,
+     15,
+     6
+    ]
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 10,
+   "bbox": [
+    -10,
+    -15,
+    -6,
+    30,
+    15,
+    6
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0.5263157894736842,
+   "grouped": 0.5263157894736842,
+   "contract": 0.5263157894736842
+  },
+  "ms": 8321,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-box-edge-then-move",
+  "group": "b-turn",
+  "note": "blend first, then move: fine",
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','front'), 2)\nmove(b,[10,5,0])",
+  "pane": {
+   "volume": 14365.641187738505,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14365.641187738505,
+     "faces": 7,
+     "bbox": [
+      -10.000000000000007,
+      -10,
+      -6,
+      30.000000000000007,
+      20,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1422
+  },
+  "contract": {
+   "volume": 14365.641187738505,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14365.641187738505,
+     "faces": 7,
+     "bbox": [
+      -10.000000000000007,
+      -10,
+      -6,
+      30.000000000000007,
+      20,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1849
+  },
+  "grouped": {
+   "volume": 14365.641187738505,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14365.641187738505,
+     "faces": 7,
+     "bbox": [
+      -10.000000000000007,
+      -10,
+      -6,
+      30.000000000000007,
+      20,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1438
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14365.66370615794,
+    "faces": 7,
+    "bbox": [
+     -10,
+     -10,
+     -6,
+     30,
+     20,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 14365.66370614359,
+    "faces": 7,
+    "bbox": [
+     -10,
+     -10,
+     -6,
+     30,
+     20,
+     6
+    ]
+   },
+   "occtSim": {
+    "notTail": true,
+    "was": {
+     "volume": 14365.66370615794,
+     "faces": 7,
+     "bbox": [
+      -20,
+      -15,
+      -6,
+      20,
+      15,
+      6
+     ],
+     "types": {
+      "plane": 6,
+      "cylinder": 1
+     },
+     "edgeDist": 0,
+     "distinctEdges": 1
+    }
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 0.19447746039610364,
+   "grouped": 0.19447746039610364,
+   "contract": 0.19447746039610364
+  },
+  "ms": 9998,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-box-edge-then-turn",
+  "group": "b-turn",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','front'), 2)\nturn(b,[0,0,30])",
+  "pane": {
+   "volume": 14365.641187738756,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14365.641187738756,
+     "faces": 7,
+     "bbox": [
+      -24.820508075688775,
+      -22.990381056766584,
+      -6,
+      24.820508075688775,
+      22.99038105676658,
+      6.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1302
+  },
+  "contract": {
+   "volume": 14365.641187738756,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14365.641187738756,
+     "faces": 7,
+     "bbox": [
+      -24.820508075688775,
+      -22.990381056766584,
+      -6,
+      24.820508075688775,
+      22.99038105676658,
+      6.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 2667
+  },
+  "grouped": {
+   "volume": 14365.641187738756,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14365.641187738756,
+     "faces": 7,
+     "bbox": [
+      -24.820508075688775,
+      -22.990381056766584,
+      -6,
+      24.820508075688775,
+      22.99038105676658,
+      6.000000000000005
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1713
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14365.66370615794,
+    "faces": 7,
+    "bbox": [
+     -24.82050807568877,
+     -22.99038105676658,
+     -6,
+     24.820508075688775,
+     22.99038105676658,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 14365.663706143596,
+    "faces": 7,
+    "bbox": [
+     -24.820508075688775,
+     -22.99038105676658,
+     -6,
+     24.820508075688775,
+     22.99038105676658,
+     6
+    ]
+   },
+   "occtSim": {
+    "notTail": true,
+    "was": {
+     "volume": 14365.66370615794,
+     "faces": 7,
+     "bbox": [
+      -20,
+      -15,
+      -6,
+      20,
+      15,
+      6
+     ],
+     "types": {
+      "plane": 6,
+      "cylinder": 1
+     },
+     "edgeDist": 0,
+     "distinctEdges": 1
+    }
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 0.15539490155170987,
+   "grouped": 0.15539490155170987,
+   "contract": 0.15539490155170987
+  },
+  "ms": 10703,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-prism-edge-top-front",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const s = prism(6,20,10)\nround(s.edge('top','front'), 1)",
+  "pane": {
+   "volume": 2598.076211353316,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2598.076211353316,
+     "faces": 8,
+     "bbox": [
+      -10,
+      -8.660254037844386,
+      -5,
+      10,
+      8.660254037844387,
+      5.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): prism1.edge[prism1.face[+z] ^ prism1.face[-y]] cannot be resolved: prism1.face[-y]: a prism has no -y face",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 625
+  },
+  "contract": {
+   "volume": 2598.076211353316,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2598.076211353316,
+     "faces": 8,
+     "bbox": [
+      -10,
+      -8.660254037844386,
+      -5,
+      10,
+      8.660254037844387,
+      5.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edges of a prism cannot be picked yet, so round1 is shown without it -- round an edge of a box, a cylinder or a shape pulled from a sketch instead.",
+     "refusal": "round1 (fillet): prism1.edge[prism1.face[+z] ^ prism1.face[-y]] cannot be resolved: prism1.face[-y]: a prism has no -y face",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1013
+  },
+  "grouped": {
+   "volume": 2598.076211353316,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2598.076211353316,
+     "faces": 8,
+     "bbox": [
+      -10,
+      -8.660254037844386,
+      -5,
+      10,
+      8.660254037844387,
+      5.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edges of a prism cannot be picked yet, so round1 is shown without it -- round an edge of a box, a cylinder or a shape pulled from a sketch instead.",
+     "refusal": "round1 (fillet): prism1.edge[prism1.face[+z] ^ prism1.face[-y]] cannot be resolved: prism1.face[-y]: a prism has no -y face",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 745
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 2595.8748352389593,
+    "faces": 9,
+    "bbox": [
+     -10,
+     -8.660254037844387,
+     -5,
+     10,
+     8.660254037844387,
+     5
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+    "shapeWithout": {
+     "volume": 2598.0762113533165,
+     "faces": 8
+    }
+   }
+  },
+  "base": {
+   "volume": 2598.0762113533165,
+   "faces": 8,
+   "bbox": [
+    -10,
+    -8.660254037844386,
+    -5,
+    10,
+    8.660254037844387,
+    5
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 6.2803698347351e-17,
+   "grouped": 6.2803698347351e-17,
+   "contract": 6.2803698347351e-17
+  },
+  "ms": 6602,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-prism-edge-top-left",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const s = prism(6,20,10)\nround(s.edge('top','left'), 1)",
+  "pane": {
+   "volume": 2598.076211353316,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2598.076211353316,
+     "faces": 8,
+     "bbox": [
+      -10,
+      -8.660254037844386,
+      -5,
+      10,
+      8.660254037844387,
+      5.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): prism1.edge[prism1.face[+z] ^ prism1.face[-x]] cannot be resolved: prism1.face[-x]: a prism has no -x face",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 747
+  },
+  "contract": {
+   "volume": 2598.076211353316,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2598.076211353316,
+     "faces": 8,
+     "bbox": [
+      -10,
+      -8.660254037844386,
+      -5,
+      10,
+      8.660254037844387,
+      5.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edges of a prism cannot be picked yet, so round1 is shown without it -- round an edge of a box, a cylinder or a shape pulled from a sketch instead.",
+     "refusal": "round1 (fillet): prism1.edge[prism1.face[+z] ^ prism1.face[-x]] cannot be resolved: prism1.face[-x]: a prism has no -x face",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 385
+  },
+  "grouped": {
+   "volume": 2598.076211353316,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2598.076211353316,
+     "faces": 8,
+     "bbox": [
+      -10,
+      -8.660254037844386,
+      -5,
+      10,
+      8.660254037844387,
+      5.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edges of a prism cannot be picked yet, so round1 is shown without it -- round an edge of a box, a cylinder or a shape pulled from a sketch instead.",
+     "refusal": "round1 (fillet): prism1.edge[prism1.face[+z] ^ prism1.face[-x]] cannot be resolved: prism1.face[-x]: a prism has no -x face",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 556
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 2595.8748352389593,
+    "faces": 9,
+    "bbox": [
+     -10.000000000000004,
+     -8.660254037844386,
+     -5,
+     10,
+     8.660254037844387,
+     5
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+    "shapeWithout": {
+     "volume": 2598.0762113533165,
+     "faces": 8
+    }
+   }
+  },
+  "base": {
+   "volume": 2598.0762113533165,
+   "faces": 8,
+   "bbox": [
+    -10,
+    -8.660254037844386,
+    -5,
+    10,
+    8.660254037844387,
+    5
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 1.25607396694702e-16,
+   "grouped": 1.25607396694702e-16,
+   "contract": 1.25607396694702e-16
+  },
+  "ms": 6161,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-prism-bevel-top-front",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const s = prism(6,20,10)\nbevel(s.edge('top','front'), 1)",
+  "pane": {
+   "volume": 2598.076211353316,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2598.076211353316,
+     "faces": 8,
+     "bbox": [
+      -10,
+      -8.660254037844386,
+      -5,
+      10,
+      8.660254037844387,
+      5.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel1 (fillet): prism1.edge[prism1.face[+z] ^ prism1.face[-y]] cannot be resolved: prism1.face[-y]: a prism has no -y face",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 525
+  },
+  "contract": {
+   "volume": 2598.076211353316,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2598.076211353316,
+     "faces": 8,
+     "bbox": [
+      -10,
+      -8.660254037844386,
+      -5,
+      10,
+      8.660254037844387,
+      5.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The edges of a prism cannot be picked yet, so bevel1 is shown without it -- bevel an edge of a box, a cylinder or a shape pulled from a sketch instead.",
+     "refusal": "bevel1 (fillet): prism1.edge[prism1.face[+z] ^ prism1.face[-y]] cannot be resolved: prism1.face[-y]: a prism has no -y face",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 631
+  },
+  "grouped": {
+   "volume": 2598.076211353316,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2598.076211353316,
+     "faces": 8,
+     "bbox": [
+      -10,
+      -8.660254037844386,
+      -5,
+      10,
+      8.660254037844387,
+      5.000000000000002
+     ],
+     "faceTypes": {
+      "plane": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The edges of a prism cannot be picked yet, so bevel1 is shown without it -- bevel an edge of a box, a cylinder or a shape pulled from a sketch instead.",
+     "refusal": "bevel1 (fillet): prism1.edge[prism1.face[+z] ^ prism1.face[-y]] cannot be resolved: prism1.face[-y]: a prism has no -y face",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1049
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 2592.883761263586,
+    "faces": 9,
+    "bbox": [
+     -10,
+     -8.660254037844387,
+     -5,
+     10,
+     8.660254037844387,
+     5
+    ]
+   },
+   "brepSeq": {
+    "volume": 2592.8837612635857,
+    "faces": 9,
+    "bbox": [
+     -10,
+     -8.660254037844387,
+     -5,
+     10,
+     8.660254037844387,
+     5
+    ]
+   }
+  },
+  "base": {
+   "volume": 2598.0762113533165,
+   "faces": 8,
+   "bbox": [
+    -10,
+    -8.660254037844386,
+    -5,
+    10,
+    8.660254037844387,
+    5
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 6.2803698347351e-17,
+   "grouped": 6.2803698347351e-17,
+   "contract": 6.2803698347351e-17
+  },
+  "ms": 6978,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-wedge-edge-top-front",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const s = wedge(20,10,10)\nround(s.edge('top','front'), 1)",
+  "pane": {
+   "volume": 1000,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 1000,
+     "faces": 5,
+     "bbox": [
+      -10,
+      -5,
+      -5,
+      10,
+      5,
+      5
+     ],
+     "faceTypes": {
+      "plane": 5
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): wedge1.edge[wedge1.face[+z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[+z]: faces of a wedge are not resolved in the browser demo",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 572
+  },
+  "contract": {
+   "volume": 1000,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 1000,
+     "faces": 5,
+     "bbox": [
+      -10,
+      -5,
+      -5,
+      10,
+      5,
+      5
+     ],
+     "faceTypes": {
+      "plane": 5
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edges of a wedge cannot be picked yet, so round1 is shown without it -- round an edge of a box, a cylinder or a shape pulled from a sketch instead.",
+     "refusal": "round1 (fillet): wedge1.edge[wedge1.face[+z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[+z]: faces of a wedge are not resolved in the browser demo",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 421
+  },
+  "grouped": {
+   "volume": 1000,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 1000,
+     "faces": 5,
+     "bbox": [
+      -10,
+      -5,
+      -5,
+      10,
+      5,
+      5
+     ],
+     "faceTypes": {
+      "plane": 5
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edges of a wedge cannot be picked yet, so round1 is shown without it -- round an edge of a box, a cylinder or a shape pulled from a sketch instead.",
+     "refusal": "round1 (fillet): wedge1.edge[wedge1.face[+z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[+z]: faces of a wedge are not resolved in the browser demo",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 504
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 995.8038400513719,
+    "faces": 6,
+    "bbox": [
+     -10,
+     -5,
+     -5,
+     10,
+     5,
+     5
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+    "shapeWithout": {
+     "volume": 999.9999999999999,
+     "faces": 5
+    }
+   }
+  },
+  "base": {
+   "volume": 1000.0000000000001,
+   "faces": 5,
+   "bbox": [
+    -10,
+    -5,
+    -5,
+    10,
+    5,
+    5
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 0,
+   "grouped": 0,
+   "contract": 0
+  },
+  "ms": 6530,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-wedge-bevel-bottom-front",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const s = wedge(20,10,10)\nbevel(s.edge('bottom','front'), 1)",
+  "pane": {
+   "volume": 1000,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 1000,
+     "faces": 5,
+     "bbox": [
+      -10,
+      -5,
+      -5,
+      10,
+      5,
+      5
+     ],
+     "faceTypes": {
+      "plane": 5
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel1 (fillet): wedge1.edge[wedge1.face[-z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[-z]: faces of a wedge are not resolved in the browser demo",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 291
+  },
+  "contract": {
+   "volume": 1000,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 1000,
+     "faces": 5,
+     "bbox": [
+      -10,
+      -5,
+      -5,
+      10,
+      5,
+      5
+     ],
+     "faceTypes": {
+      "plane": 5
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The edges of a wedge cannot be picked yet, so bevel1 is shown without it -- bevel an edge of a box, a cylinder or a shape pulled from a sketch instead.",
+     "refusal": "bevel1 (fillet): wedge1.edge[wedge1.face[-z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[-z]: faces of a wedge are not resolved in the browser demo",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 283
+  },
+  "grouped": {
+   "volume": 1000,
+   "faces": 5,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 1000,
+     "faces": 5,
+     "bbox": [
+      -10,
+      -5,
+      -5,
+      10,
+      5,
+      5
+     ],
+     "faceTypes": {
+      "plane": 5
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The edges of a wedge cannot be picked yet, so bevel1 is shown without it -- bevel an edge of a box, a cylinder or a shape pulled from a sketch instead.",
+     "refusal": "bevel1 (fillet): wedge1.edge[wedge1.face[-z] ^ wedge1.face[-y]] cannot be resolved: wedge1.face[-z]: faces of a wedge are not resolved in the browser demo",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 395
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 990.3333333333335,
+    "faces": 6,
+    "bbox": [
+     -10,
+     -5,
+     -5.000000000000001,
+     10.000000000000002,
+     5,
+     5
+    ]
+   },
+   "brepSeq": {
+    "volume": 990.3333333333334,
+    "faces": 6,
+    "bbox": [
+     -10.000000000000004,
+     -5,
+     -5,
+     10,
+     5.000000000000002,
+     5
+    ]
+   }
+  },
+  "base": {
+   "volume": 1000.0000000000001,
+   "faces": 5,
+   "bbox": [
+    -10,
+    -5,
+    -5,
+    10,
+    5,
+    5
+   ]
+  },
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 7.251946429389432e-17,
+   "grouped": 7.251946429389432e-17,
+   "contract": 7.251946429389432e-17
+  },
+  "ms": 5783,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-sphere-edge",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const s = sphere(20)\nround(s.edge('top','front'), 1)",
+  "pane": {
+   "volume": 4188.493060547458,
+   "faces": 1,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4188.493060547458,
+     "faces": 1,
+     "bbox": [
+      -10,
+      -10,
+      -10,
+      10,
+      10,
+      10
+     ],
+     "faceTypes": {
+      "sphere": 1
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): ball1.edge[ball1.face[+z] ^ ball1.face[-y]] cannot be resolved: ball1.face[+z]: faces of a sphere are not resolved in the browser demo",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 8207
+  },
+  "contract": {
+   "volume": 4188.493060547458,
+   "faces": 1,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4188.493060547458,
+     "faces": 1,
+     "bbox": [
+      -10,
+      -10,
+      -10,
+      10,
+      10,
+      10
+     ],
+     "faceTypes": {
+      "sphere": 1
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edges of a sphere cannot be picked yet, so round1 is shown without it -- round an edge of a box, a cylinder or a shape pulled from a sketch instead.",
+     "refusal": "round1 (fillet): ball1.edge[ball1.face[+z] ^ ball1.face[-y]] cannot be resolved: ball1.face[+z]: faces of a sphere are not resolved in the browser demo",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 6003
+  },
+  "grouped": {
+   "volume": 4188.493060547458,
+   "faces": 1,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4188.493060547458,
+     "faces": 1,
+     "bbox": [
+      -10,
+      -10,
+      -10,
+      10,
+      10,
+      10
+     ],
+     "faceTypes": {
+      "sphere": 1
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edges of a sphere cannot be picked yet, so round1 is shown without it -- round an edge of a box, a cylinder or a shape pulled from a sketch instead.",
+     "refusal": "round1 (fillet): ball1.edge[ball1.face[+z] ^ ball1.face[-y]] cannot be resolved: ball1.face[+z]: faces of a sphere are not resolved in the browser demo",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 5151
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Round 1's edge could not be found -- Round 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 4188.790204786391,
+     "faces": 1
+    }
+   },
+   "brepSeq": {
+    "refused": "brep-rs cannot round a flat edge -- round1 is shown without it.",
+    "shapeWithout": {
+     "volume": 4188.790204786393,
+     "faces": 1
+    }
+   }
+  },
+  "base": {
+   "volume": 4188.790204786391,
+   "faces": 1,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    10
+   ]
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "ms": 23663,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-ring-edge-top-side",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const s = ring(30,8)\nround(s.edge('top','side'), 1)",
+  "pane": {
+   "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here."
+  },
+  "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here.",
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-cone-edge-top-side",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const s = cone(20,30)\nround(s.edge('top','side'), 1)",
+  "pane": {
+   "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here."
+  },
+  "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here.",
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-spin-edge-top-side",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const sk = sketch('front')\nsk.rect(10,20,{at:[20,0]})\nconst p = spin(sk, 360)\nround(p.edge('top','side'), 1)",
+  "pane": {
+   "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here."
+  },
+  "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here.",
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-pulled-disc-rim-top-side",
+  "group": "b-shapes",
+  "note": "critic: a pulled disc has no row; the interpreter text names a box",
+  "script": "const sk = sketch('top')\nsk.circle(20)\nconst p = pull(sk, 8)\nround(p.edge('top','side'), 1)",
+  "pane": {
+   "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here."
+  },
+  "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here.",
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-pulled-disc-rim-bevel",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const sk = sketch('top')\nsk.circle(20)\nconst p = pull(sk, 8)\nbevel(p.edge('bottom','side'), 1)",
+  "pane": {
+   "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here."
+  },
+  "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here.",
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-box-edge-top-side",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','side'), 1)",
+  "pane": {
+   "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here."
+  },
+  "scriptError": ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here.",
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-pulled-rect-top-front",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const sk = sketch('top')\nsk.rect(30,20)\nconst p = pull(sk, 8)\nround(p.edge('top','front'), 1)",
+  "pane": {
+   "volume": 4793.557721763377,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4793.557721763377,
+     "faces": 7,
+     "bbox": [
+      -15.000000000000009,
+      -10,
+      0,
+      15.000000000000007,
+      10,
+      8.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 3102
+  },
+  "contract": {
+   "volume": 4793.557721763377,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4793.557721763377,
+     "faces": 7,
+     "bbox": [
+      -15.000000000000009,
+      -10,
+      0,
+      15.000000000000007,
+      10,
+      8.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 3750
+  },
+  "grouped": {
+   "volume": 4793.557721763377,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 4793.557721763377,
+     "faces": 7,
+     "bbox": [
+      -15.000000000000009,
+      -10,
+      0,
+      15.000000000000007,
+      10,
+      8.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -10,
+       8
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 3482
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 4793.561944905721,
+    "faces": 7,
+    "bbox": [
+     -15,
+     -10,
+     0,
+     15,
+     10,
+     8
+    ]
+   },
+   "brepSeq": {
+    "volume": 4793.561944901922,
+    "faces": 7,
+    "bbox": [
+     -15,
+     -10,
+     0,
+     15,
+     10,
+     8
+    ]
+   },
+   "occtSim": {
+    "volume": 4793.561944905721,
+    "faces": 7,
+    "bbox": [
+     -15,
+     -10,
+     0,
+     15,
+     10,
+     8
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 1
+    },
+    "edgeDist": 0,
+    "distinctEdges": 1
+   }
+  },
+  "base": {
+   "volume": 4799.999999999999,
+   "faces": 6,
+   "bbox": [
+    -15,
+    -10,
+    0,
+    15,
+    10,
+    8
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 2.404877901591195e-16,
+   "grouped": 2.404877901591195e-16,
+   "contract": 2.404877901591195e-16
+  },
+  "ms": 18352,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-pulled-tri-top-front",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const sk = sketch('top')\nsk.polygon([[0,0],[30,0],[10,20]])\nconst p = pull(sk, 8)\nround(p.edge('top','front'), 1)",
+  "pane": {
+   "volume": 2393.631509080025,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2393.631509080025,
+     "faces": 6,
+     "bbox": [
+      0,
+      0,
+      0,
+      30.000000000000007,
+      20,
+      8
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 5
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       8
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 1653
+  },
+  "contract": {
+   "volume": 2393.631509080025,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2393.631509080025,
+     "faces": 6,
+     "bbox": [
+      0,
+      0,
+      0,
+      30.000000000000007,
+      20,
+      8
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 5
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       8
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 1295
+  },
+  "grouped": {
+   "volume": 2393.631509080025,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2393.631509080025,
+     "faces": 6,
+     "bbox": [
+      0,
+      0,
+      0,
+      30.000000000000007,
+      20,
+      8
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 5
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       15,
+       0,
+       8
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 410
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 2393.633854641108,
+    "faces": 6,
+    "bbox": [
+     -1.7763568394002505e-15,
+     -2.220446049250313e-16,
+     0,
+     30,
+     20,
+     8
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+    "shapeWithout": {
+     "volume": 2400.0000000000005,
+     "faces": 5
+    }
+   },
+   "occtSim": {
+    "volume": 2393.633854641108,
+    "faces": 6,
+    "bbox": [
+     -1.7763568394002505e-15,
+     -2.220446049250313e-16,
+     0,
+     30,
+     20,
+     8
+    ],
+    "types": {
+     "plane": 5,
+     "cylinder": 1
+    },
+    "edgeDist": 0,
+    "distinctEdges": 1
+   }
+  },
+  "base": {
+   "volume": 2400,
+   "faces": 5,
+   "bbox": [
+    0,
+    0,
+    0,
+    30,
+    20,
+    8
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 1.923902321272956e-16,
+   "grouped": 1.923902321272956e-16,
+   "contract": 1.923902321272956e-16
+  },
+  "ms": 8573,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-edge-round-then-whole",
+  "group": "b-order",
+  "note": "critic: edge-then-whole, the interpreter text does not say why",
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','front'), 2)\nround(b, 1)",
+  "pane": {
+   "scriptError": "Rounding does not work on this shape."
+  },
+  "scriptError": "Rounding does not work on this shape.",
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-edge-bevel-then-whole",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nbevel(b.edge('top','front'), 2)\nround(b, 1)",
+  "pane": {
+   "scriptError": "Rounding does not work on this shape."
+  },
+  "scriptError": "Rounding does not work on this shape.",
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-whole-then-edge-round",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b, 2)\nround(b.edge('top','front'), 1)",
+  "pane": {
+   "volume": 14128.988897217932,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14128.988897217932,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -6.0000000000000036,
+      20.00000000000001,
+      15.000000000000007,
+      6.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 carries a whole-shape round, which changes its faces and edges; not resolved",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       -6
+      ],
+      [
+       -20,
+       0,
+       6
+      ],
+      [
+       20,
+       0,
+       -6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 2533
+  },
+  "contract": {
+   "volume": 14128.98889721793,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14128.98889721793,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -6.0000000000000036,
+      20.00000000000001,
+      15.000000000000007,
+      6.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was already rounded all over, so its edges are not named any more and round1 is shown without it -- round single edges or the whole shape, not both.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 carries a whole-shape round, which changes its faces and edges; not resolved",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       -6
+      ],
+      [
+       -20,
+       0,
+       6
+      ],
+      [
+       20,
+       0,
+       -6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3319
+  },
+  "grouped": {
+   "volume": 14128.988897217932,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14128.988897217932,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -6.0000000000000036,
+      20.00000000000001,
+      15.000000000000007,
+      6.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was already rounded all over, so its edges are not named any more and round1 is shown without it -- round single edges or the whole shape, not both.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 carries a whole-shape round, which changes its faces and edges; not resolved",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       -6
+      ],
+      [
+       -20,
+       0,
+       6
+      ],
+      [
+       20,
+       0,
+       -6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 2548
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Round 1's edge could not be found -- Round 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14129.156264804054,
+     "faces": 26
+    }
+   },
+   "brepSeq": {
+    "refused": "round1's edge could not be found -- round1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14129.156264643423,
+     "faces": 26
+    }
+   },
+   "occtSim": {
+    "refused": "[object WebAssembly.Exception]",
+    "edgeDist": 2
+   }
+  },
+  "base": {
+   "volume": 14129.156264804054,
+   "faces": 26,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "ms": 14564,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-whole-then-edge-bevel",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b, 2)\nbevel(b.edge('top','front'), 1)",
+  "pane": {
+   "volume": 14128.988897217932,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14128.988897217932,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -6.0000000000000036,
+      20.00000000000001,
+      15.000000000000007,
+      6.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 carries a whole-shape round, which changes its faces and edges; not resolved",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       -6
+      ],
+      [
+       -20,
+       0,
+       6
+      ],
+      [
+       20,
+       0,
+       -6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 4048
+  },
+  "contract": {
+   "volume": 14128.98889721793,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14128.98889721793,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -6.0000000000000036,
+      20.00000000000001,
+      15.000000000000007,
+      6.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was already rounded all over, so its edges are not named any more and bevel1 is shown without it -- round single edges or the whole shape, not both.",
+     "refusal": "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 carries a whole-shape round, which changes its faces and edges; not resolved",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       -6
+      ],
+      [
+       -20,
+       0,
+       6
+      ],
+      [
+       20,
+       0,
+       -6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3619
+  },
+  "grouped": {
+   "volume": 14128.988897217932,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14128.988897217932,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -6.0000000000000036,
+      20.00000000000001,
+      15.000000000000007,
+      6.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "refused",
+     "sentence": "The part for bevel1 was already rounded all over, so its edges are not named any more and bevel1 is shown without it -- round single edges or the whole shape, not both.",
+     "refusal": "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 carries a whole-shape round, which changes its faces and edges; not resolved",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       -6
+      ],
+      [
+       -20,
+       0,
+       6
+      ],
+      [
+       20,
+       0,
+       -6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3006
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Bevel 1's edge could not be found -- Bevel 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14129.156264804054,
+     "faces": 26
+    }
+   },
+   "brepSeq": {
+    "refused": "bevel1's edge could not be found -- bevel1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14129.156264643423,
+     "faces": 26
+    }
+   },
+   "occtSim": {
+    "refused": "[object WebAssembly.Exception]",
+    "edgeDist": 2
+   }
+  },
+  "base": {
+   "volume": 14129.156264804054,
+   "faces": 26,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "ms": 17147,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-corner-then-edge",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12,{corner:2})\nround(b.edge('top','front'), 1)",
+  "pane": {
+   "volume": 14128.988897217932,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14128.988897217932,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -6.0000000000000036,
+      20.00000000000001,
+      15.000000000000007,
+      6.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 carries a whole-shape round, which changes its faces and edges; not resolved",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       -6
+      ],
+      [
+       -20,
+       0,
+       6
+      ],
+      [
+       20,
+       0,
+       -6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3528
+  },
+  "contract": {
+   "volume": 14128.988897217932,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14128.988897217932,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -6.0000000000000036,
+      20.00000000000001,
+      15.000000000000007,
+      6.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was already rounded all over, so its edges are not named any more and round1 is shown without it -- round single edges or the whole shape, not both.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 carries a whole-shape round, which changes its faces and edges; not resolved",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       -6
+      ],
+      [
+       -20,
+       0,
+       6
+      ],
+      [
+       20,
+       0,
+       -6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 4779
+  },
+  "grouped": {
+   "volume": 14128.988897217932,
+   "faces": 26,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14128.988897217932,
+     "faces": 26,
+     "bbox": [
+      -20.000000000000007,
+      -15.000000000000004,
+      -6.0000000000000036,
+      20.00000000000001,
+      15.000000000000007,
+      6.000000000000007
+     ],
+     "faceTypes": {
+      "cylinder": 12,
+      "plane": 6,
+      "sphere": 8
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The part for round1 was already rounded all over, so its edges are not named any more and round1 is shown without it -- round single edges or the whole shape, not both.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: box1 carries a whole-shape round, which changes its faces and edges; not resolved",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       -6
+      ],
+      [
+       0,
+       -15,
+       6
+      ],
+      [
+       0,
+       15,
+       -6
+      ],
+      [
+       0,
+       15,
+       6
+      ],
+      [
+       -20,
+       0,
+       -6
+      ],
+      [
+       -20,
+       0,
+       6
+      ],
+      [
+       20,
+       0,
+       -6
+      ],
+      [
+       20,
+       0,
+       6
+      ],
+      [
+       -20,
+       -15,
+       0
+      ],
+      [
+       -20,
+       15,
+       0
+      ],
+      [
+       20,
+       -15,
+       0
+      ],
+      [
+       20,
+       15,
+       0
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 4934
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Round 1's edge could not be found -- Round 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14129.156264804054,
+     "faces": 26
+    }
+   },
+   "brepSeq": {
+    "refused": "round1's edge could not be found -- round1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14129.156264643423,
+     "faces": 26
+    }
+   },
+   "occtSim": {
+    "refused": "[object WebAssembly.Exception]",
+    "edgeDist": 2
+   }
+  },
+  "base": {
+   "volume": 14129.156264804054,
+   "faces": 26,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "ms": 20319,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-cyl-edge-then-whole",
+  "group": "b-order",
+  "note": null,
+  "script": "const c = cylinder(24,30)\nround(c.edge('top','side'), 2)\nround(c, 1)",
+  "pane": {
+   "scriptError": "Rounding does not work on this shape."
+  },
+  "scriptError": "Rounding does not work on this shape.",
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-draft-then-edge",
+  "group": "b-order",
+  "note": "critic: the edge-changed sentence names round/bevel/cut/hole, a draft is not among them",
+  "script": "const b = cuboid(40,30,12)\ndraft(b.face('right'), 5, {neutral: -6})\nround(b.edge('top','front'), 2)",
+  "pane": {
+   "volume": 14211.024486784001,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14211.024486784001,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -6.000000000000001,
+      20,
+      15.000000000000007,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1304
+  },
+  "contract": {
+   "volume": 14211.024486784001,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14211.024486784001,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -6.000000000000001,
+      20,
+      15.000000000000007,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edge for round1 was already changed by an earlier draft, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 757
+  },
+  "grouped": {
+   "volume": 14211.024486784001,
+   "faces": 6,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14211.024486784001,
+     "faces": 6,
+     "bbox": [
+      -20,
+      -15,
+      -6.000000000000001,
+      20,
+      15.000000000000007,
+      6
+     ],
+     "faceTypes": {
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The edge for round1 was already changed by an earlier draft, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+     "refusal": "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 683
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Rounding Round 1 at 2 would not fit its edge -- Round 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14211.024486784001,
+     "faces": 6
+    }
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14211.024486784007,
+     "faces": 6
+    }
+   }
+  },
+  "base": {
+   "volume": 14211.024486784001,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "truthSource": null,
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "ms": 6866,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-edge-then-draft",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','front'), 2)\ndraft(b.face('right'), 5, {neutral: -6})",
+  "pane": {
+   "volume": 14365.64118773875,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14365.64118773875,
+     "faces": 7,
+     "bbox": [
+      -20.000000000000014,
+      -15,
+      -6,
+      20.000000000000007,
+      15,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "draft1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "draft1 (draft): solidcraft refused it -- solid.draft: offset: draft: faces next to the drafted walls must be square to the pull direction",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1025
+  },
+  "contract": {
+   "volume": 14365.64118773875,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14365.64118773875,
+     "faces": 7,
+     "bbox": [
+      -20.000000000000014,
+      -15,
+      -6,
+      20.000000000000007,
+      15,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "draft1",
+     "status": "refused",
+     "sentence": "The draft after draft1 cannot be built on a rounded part, so draft1 is shown without it -- draft the shape before you round its edges.",
+     "refusal": "draft1 (draft): solidcraft refused it -- solid.draft: offset: draft: faces next to the drafted walls must be square to the pull direction",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1399
+  },
+  "grouped": {
+   "volume": 14365.64118773875,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14365.64118773875,
+     "faces": 7,
+     "bbox": [
+      -20.000000000000014,
+      -15,
+      -6,
+      20.000000000000007,
+      15,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "draft1",
+     "status": "refused",
+     "sentence": "The draft after draft1 cannot be built on a rounded part, so draft1 is shown without it -- draft the shape before you round its edges.",
+     "refusal": "draft1 (draft): solidcraft refused it -- solid.draft: offset: draft: faces next to the drafted walls must be square to the pull direction",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 914
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14177.55585360904,
+    "faces": 7,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "refused": "brep-rs can only tilt a side wall of an axis-aligned box yet -- draft1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14365.66370614359,
+     "faces": 7
+    }
+   },
+   "occtSim": {
+    "notTail": true,
+    "was": {
+     "volume": 14365.66370615794,
+     "faces": 7,
+     "bbox": [
+      -20,
+      -15,
+      -6,
+      20,
+      15,
+      6
+     ],
+     "types": {
+      "plane": 6,
+      "cylinder": 1
+     },
+     "edgeDist": 0,
+     "distinctEdges": 1
+    }
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 2.763690935070478e-16,
+   "grouped": 2.763690935070478e-16,
+   "contract": 2.763690935070478e-16
+  },
+  "ms": 7225,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-hole-then-edge-far",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nhole(b,{across:6,at:[0,-9]})\nround(b.edge('top','right'), 2)",
+  "pane": {
+   "volume": 14034.980021900386,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14034.980021900386,
+     "faces": 8,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6.000000000000009,
+      20,
+      15.000000000000005,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 1968
+  },
+  "contract": {
+   "volume": 14034.980021900386,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14034.980021900386,
+     "faces": 8,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6.000000000000009,
+      20,
+      15.000000000000005,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3569
+  },
+  "grouped": {
+   "volume": 14034.980021900386,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14034.980021900386,
+     "faces": 8,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6.000000000000009,
+      20,
+      15.000000000000005,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3325
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14034.955773034106,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 14034.955773019994,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "occtSim": {
+    "volume": 14034.955773034106,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "edgeDist": 0,
+    "distinctEdges": 1
+   }
+  },
+  "base": {
+   "volume": 14060.707993412301,
+   "faces": 7,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 1.727306834419049e-16,
+   "grouped": 1.727306834419049e-16,
+   "contract": 1.727306834419049e-16
+  },
+  "ms": 15589,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-hole-then-edge-near",
+  "group": "b-order",
+  "note": "hole 6 across 6 mm from the front edge, r2 reaches 2 mm",
+  "script": "const b = cuboid(40,30,12)\nhole(b,{across:6,at:[0,-9]})\nround(b.edge('top','front'), 2)",
+  "pane": {
+   "volume": 14026.390318835081,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14026.390318835081,
+     "faces": 8,
+     "bbox": [
+      -20.000000000000014,
+      -15,
+      -6.000000000000009,
+      20.000000000000007,
+      15,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3101
+  },
+  "contract": {
+   "volume": 14026.390318835081,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14026.390318835081,
+     "faces": 8,
+     "bbox": [
+      -20.000000000000014,
+      -15,
+      -6.000000000000009,
+      20.000000000000007,
+      15,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3519
+  },
+  "grouped": {
+   "volume": 14026.390318835081,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14026.390318835081,
+     "faces": 8,
+     "bbox": [
+      -20.000000000000014,
+      -15,
+      -6.000000000000009,
+      20.000000000000007,
+      15,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 3789
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 14026.371699569256,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 14026.371699555893,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "occtSim": {
+    "volume": 14026.371699569256,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "edgeDist": 0,
+    "distinctEdges": 1
+   }
+  },
+  "base": {
+   "volume": 14060.707993412301,
+   "faces": 7,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 2.763690935070478e-16,
+   "grouped": 2.763690935070478e-16,
+   "contract": 2.763690935070478e-16
+  },
+  "ms": 16588,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-hole-then-edge-near-r4",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nhole(b,{across:6,at:[0,-9]})\nround(b.edge('top','front'), 4)",
+  "pane": {
+   "volume": 13928.304185939063,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13928.304185939063,
+     "faces": 8,
+     "bbox": [
+      -20.00000000000001,
+      -15,
+      -6.000000000000009,
+      20.000000000000018,
+      15,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 3002
+  },
+  "contract": {
+   "volume": 14060.764351065396,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14060.764351065396,
+     "faces": 7,
+     "bbox": [
+      -20,
+      -15,
+      -6.000000000000009,
+      20,
+      15,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "The round round1 would reach a hole, pocket or cut next to the edge, so round1 is shown without it -- round the edge before you cut, or use a smaller size.",
+     "refusal": "round1 (fillet): GUARD in-the-way",
+     "guard": {
+      "ok": false,
+      "code": "in-the-way",
+      "args": {
+       "face": "F1:+z",
+       "other": "F1:+z|F2:side#2",
+       "edge": "F1:+z|F1:-y",
+       "faces": [
+        "F1:+z",
+        "F1:-y"
+       ],
+       "size": 4,
+       "style": "fillet",
+       "legs": [
+        {
+         "face": "F1:+z",
+         "nbr": "F1:+x|F1:+z",
+         "reach": 30
+        },
+        {
+         "face": "F1:+z",
+         "nbr": "F1:+z|F1:-x",
+         "reach": 30
+        }
+       ]
+      }
+     },
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 3271
+  },
+  "grouped": {
+   "volume": 13928.304185939063,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13928.304185939063,
+     "faces": 8,
+     "bbox": [
+      -20.00000000000001,
+      -15,
+      -6.000000000000009,
+      20.000000000000018,
+      15,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 2570
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13924.452821824896,
+    "faces": 10,
+    "bbox": [
+     -20.0000001,
+     -15.000000100000005,
+     -6.0000001,
+     20.0000001,
+     15,
+     6.000000100000003
+    ]
+   },
+   "brepSeq": {
+    "refused": "round round1 would reach a cut made earlier, and brep-rs can only round a corner the cuts stay clear of; round before you cut or hollow, or keep the cut away from that edge -- round1 is shown without ",
+    "shapeWithout": {
+     "volume": 14060.707993412303,
+     "faces": 7
+    }
+   },
+   "occtSim": {
+    "volume": 13924.452821824896,
+    "faces": 10,
+    "bbox": [
+     -20.0000001,
+     -15.000000100000005,
+     -6.0000001,
+     20.0000001,
+     15,
+     6.000000100000003
+    ],
+    "types": {
+     "plane": 6,
+     "cylinder": 3,
+     "other": 1
+    },
+    "edgeDist": 0,
+    "distinctEdges": 1
+   }
+  },
+  "base": {
+   "volume": 14060.707993412301,
+   "faces": 7,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "faces 8 vs 10",
+   "grouped": "faces 8 vs 10",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 1.9447746859238625e-9,
+   "grouped": 1.9447746859238625e-9,
+   "contract": 1.9447746859238625e-9
+  },
+  "ms": 15195,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-edge-then-hole",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','front'), 4)\nhole(b,{across:6,at:[0,-9]})",
+  "pane": {
+   "volume": 13923.458067459498,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13923.458067459498,
+     "faces": 8,
+     "bbox": [
+      -20.00000000000001,
+      -15.000000000000002,
+      -6.000000000000006,
+      20.000000000000018,
+      15,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 8571
+  },
+  "contract": {
+   "volume": 13923.458067459498,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13923.458067459498,
+     "faces": 8,
+     "bbox": [
+      -20.00000000000001,
+      -15.000000000000002,
+      -6.000000000000006,
+      20.000000000000018,
+      15,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 6928
+  },
+  "grouped": {
+   "volume": 13923.458067459498,
+   "faces": 8,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 13923.458067459498,
+     "faces": 8,
+     "bbox": [
+      -20.00000000000001,
+      -15.000000000000002,
+      -6.000000000000006,
+      20.000000000000018,
+      15,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       0,
+       -15,
+       6
+      ]
+     ],
+     "size": 4
+    }
+   ],
+   "ms": 9819
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 13923.454195149234,
+    "faces": 8,
+    "bbox": [
+     -20.0000001,
+     -15.0000001,
+     -6.0000001,
+     20.0000001,
+     15,
+     6.000000100000001
+    ]
+   },
+   "brepSeq": {
+    "refused": "hole hole1: the cut reaches a rounded, chamfered or otherwise curved face of the part, which brep-rs cannot cut across yet; drill the part before you round or chamfer it, or keep the hole clear of the curved faces -- hole1 is shown without it."
+   },
+   "occtSim": {
+    "notTail": true,
+    "was": {
+     "volume": 14262.654824596311,
+     "faces": 7,
+     "bbox": [
+      -20,
+      -15,
+      -6,
+      20,
+      15,
+      6.000000000000001
+     ],
+     "types": {
+      "plane": 6,
+      "cylinder": 1
+     },
+     "edgeDist": 0,
+     "distinctEdges": 1
+    }
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "volume-differs 2.4e-2",
+   "grouped": "volume-differs 2.4e-2",
+   "contract": "volume-differs 2.4e-2"
+  },
+  "bboxDelta": {
+   "pane": 3.454613668838098e-16,
+   "grouped": 3.454613668838098e-16,
+   "contract": 3.454613668838098e-16
+  },
+  "ms": 29746,
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-hollow-then-edge",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nhollow(b,{wall:2,open:'top'})\nround(b.edge('top','right'), 0.5)",
+  "pane": {
+   "volume": 5038.388102976604,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5038.388102976604,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6,
+      20,
+      15.000000000000007,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 0.5
+    }
+   ],
+   "ms": 1044
+  },
+  "contract": {
+   "volume": 5038.388102976604,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5038.388102976604,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6,
+      20,
+      15.000000000000007,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 0.5
+    }
+   ],
+   "ms": 1246
+  },
+  "grouped": {
+   "volume": 5038.388102976604,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5038.388102976604,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6,
+      20,
+      15.000000000000007,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 0.5
+    }
+   ],
+   "ms": 1054
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 5038.390486229787,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 5038.39048622548,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "occtSim": {
+    "volume": 5038.390486229787,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ],
+    "types": {
+     "plane": 11,
+     "cylinder": 1
+    },
+    "edgeDist": 0,
+    "distinctEdges": 1
+   }
+  },
+  "base": {
+   "volume": 5040,
+   "faces": 11,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "truthSource": "occtSim",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 1.727306834419049e-16,
+   "grouped": 1.727306834419049e-16,
+   "contract": 1.727306834419049e-16
+  },
+  "ms": 7291,
+  "tailOnlyBlends": true
+ },
+ {
+  "id": "b-list-empty",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround([], 2)",
+  "pane": {
+   "scriptError": "round() on a list needs a list of edges, like round(part.rim(sketch2), 1)."
+  },
+  "scriptError": "round() on a list needs a list of edges, like round(part.rim(sketch2), 1).",
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-circle-sketch",
+  "group": "b-order",
+  "note": null,
+  "script": "const sk = sketch('top')\nsk.circle(20)\nround(sk, 1)",
+  "pane": {
+   "scriptError": "round() needs a shape or an edge (shape.edge(a, b)) to round."
+  },
+  "scriptError": "round() needs a shape or an edge (shape.edge(a, b)) to round.",
+  "tailOnlyBlends": false
+ },
+ {
+  "id": "b-pulled-disc-top-front",
+  "group": "b-shapes",
+  "note": null,
+  "script": "const sk = sketch('top')\nsk.circle(20)\nconst p = pull(sk, 8)\nround(p.edge('top','front'), 1)",
+  "pane": {
+   "volume": 2513.0972469719272,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2513.0972469719272,
+     "faces": 3,
+     "bbox": [
+      -10,
+      -10.000000000000009,
+      0,
+      10,
+      10.000000000000002,
+      8
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": null,
+     "refusal": "round1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[-y]] cannot be resolved: pull1.face[-y] matches no face on b_pull1 (planar face with outward normal -y at the extreme along it on pull1's own shape); not guessing",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 1184
+  },
+  "contract": {
+   "volume": 2513.0972469719272,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2513.0972469719272,
+     "faces": 3,
+     "bbox": [
+      -10,
+      -10.000000000000009,
+      0,
+      10,
+      10.000000000000002,
+      8
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "A face named in the edge does not exist on this part (a disc pulled from a circle has only a top and a bottom), so round1 is shown without it -- name two faces that exist, such as top and front on a box.",
+     "refusal": "round1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[-y]] cannot be resolved: pull1.face[-y] matches no face on b_pull1 (planar face with outward normal -y at the extreme along it on pull1's own shape); not guessing",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 401
+  },
+  "grouped": {
+   "volume": 2513.0972469719272,
+   "faces": 3,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 2513.0972469719272,
+     "faces": 3,
+     "bbox": [
+      -10,
+      -10.000000000000009,
+      0,
+      10,
+      10.000000000000002,
+      8
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 2
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "refused",
+     "sentence": "A face named in the edge does not exist on this part (a disc pulled from a circle has only a top and a bottom), so round1 is shown without it -- name two faces that exist, such as top and front on a box.",
+     "refusal": "round1 (fillet): pull1.edge[pull1.face[+z] ^ pull1.face[-y]] cannot be resolved: pull1.face[-y] matches no face on b_pull1 (planar face with outward normal -y at the extreme along it on pull1's own shape); not guessing",
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [],
+   "ms": 500
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 2500.0914773609234,
+    "faces": 4,
+    "bbox": [
+     -10,
+     -10,
+     0,
+     10,
+     10,
+     8
+    ]
+   },
+   "brepSeq": {
+    "volume": 2500.091477360924,
+    "faces": 4,
+    "bbox": [
+     -10,
+     -10,
+     0,
+     10,
+     10,
+     8
+    ]
+   }
+  },
+  "base": {
+   "volume": 2513.2741228718346,
+   "faces": 3,
+   "bbox": [
+    -10,
+    -10,
+    0,
+    10,
+    10,
+    8
+   ]
+  },
+  "tailOnlyBlends": true,
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "some-refused",
+   "grouped": "some-refused",
+   "contract": "some-refused"
+  },
+  "bboxDelta": {
+   "pane": 3.0216443455789297e-16,
+   "grouped": 3.0216443455789297e-16,
+   "contract": 3.0216443455789297e-16
+  },
+  "ms": 5379
+ },
+ {
+  "id": "b-edge-then-hollow-r1",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','right'), 1)\nhollow(b,{wall:2,open:'top'})",
+  "pane": {
+   "volume": 5033.55772293822,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5033.55772293822,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000007,
+      -6,
+      20.000000000000007,
+      15.000000000000009,
+      6
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 984
+  },
+  "contract": {
+   "volume": 5033.55772293822,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5033.55772293822,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000007,
+      -6,
+      20.000000000000007,
+      15.000000000000009,
+      6
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 543
+  },
+  "grouped": {
+   "volume": 5033.55772293822,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5033.55772293822,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000007,
+      -6,
+      20.000000000000007,
+      15.000000000000009,
+      6
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 1
+    }
+   ],
+   "ms": 440
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14393.56194490952,
+     "faces": 7
+    }
+   },
+   "brepSeq": {
+    "volume": 5033.561944901924,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": false,
+  "truthSource": null,
+  "verdicts": {
+   "pane": "no-oracle",
+   "grouped": "no-oracle",
+   "contract": "no-oracle"
+  },
+  "ms": 5236
+ },
+ {
+  "id": "b-edge-then-hollow-r2",
+  "group": "b-order",
+  "note": "radius equals the wall: knife-edge rim",
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','right'), 2)\nhollow(b,{wall:2,open:'top'})",
+  "pane": {
+   "volume": 5014.230892402965,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5014.230892402965,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6,
+      20.000000000000007,
+      15.00000000000001,
+      6.000000000000012
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 488
+  },
+  "contract": {
+   "volume": 14374.230890804065,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14374.230890804065,
+     "faces": 7,
+     "bbox": [
+      -20,
+      -15.000000000000007,
+      -6,
+      20,
+      15.000000000000007,
+      6.000000000000004
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "shell1",
+     "status": "refused",
+     "sentence": "The hollow's open edge is rounded with a radius of 2, which is at least as large as the wall (2), so the rim would have no thickness and shell1 is shown without it -- make the round smaller than the wall.",
+     "refusal": "shell1 (shell): GUARD knife-rim",
+     "guard": {
+      "ok": false,
+      "code": "knife-rim",
+      "args": {
+       "size": 2,
+       "wall": 2
+      }
+     },
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 306
+  },
+  "grouped": {
+   "volume": 5014.230892402965,
+   "faces": 12,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5014.230892402965,
+     "faces": 12,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6,
+      20.000000000000007,
+      15.00000000000001,
+      6.000000000000012
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 11
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 424
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14374.247779621619,
+     "faces": 7
+    }
+   },
+   "brepSeq": {
+    "refused": "brep-rs cannot hollow shell1 yet -- shell1 is shown without it."
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": false,
+  "truthSource": null,
+  "verdicts": {
+   "pane": "no-oracle",
+   "grouped": "no-oracle",
+   "contract": "some-refused"
+  },
+  "ms": 4399
+ },
+ {
+  "id": "b-edge-then-hollow-r3",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nround(b.edge('top','right'), 3)\nhollow(b,{wall:2,open:'top'})",
+  "pane": {
+   "volume": 5039.619384423001,
+   "faces": 14,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5039.619384423001,
+     "faces": 14,
+     "bbox": [
+      -20.000000000000004,
+      -15.000000000000009,
+      -6,
+      20.000000000000004,
+      15.00000000000001,
+      6.000000000000013
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 12
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 483
+  },
+  "contract": {
+   "volume": 14342.019505996897,
+   "faces": 7,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 14342.019505996897,
+     "faces": 7,
+     "bbox": [
+      -20,
+      -15.000000000000009,
+      -6,
+      20,
+      15.000000000000005,
+      6.0000000000000036
+     ],
+     "faceTypes": {
+      "cylinder": 1,
+      "plane": 6
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    },
+    {
+     "id": "shell1",
+     "status": "refused",
+     "sentence": "The hollow's open edge is rounded with a radius of 3, which is at least as large as the wall (2), so the rim would have no thickness and shell1 is shown without it -- make the round smaller than the wall.",
+     "refusal": "shell1 (shell): GUARD knife-rim",
+     "guard": {
+      "ok": false,
+      "code": "knife-rim",
+      "args": {
+       "size": 3,
+       "wall": 2
+      }
+     },
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 413
+  },
+  "grouped": {
+   "volume": 5039.619384423001,
+   "faces": 14,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5039.619384423001,
+     "faces": 14,
+     "bbox": [
+      -20.000000000000004,
+      -15.000000000000009,
+      -6,
+      20.000000000000004,
+      15.00000000000001,
+      6.000000000000013
+     ],
+     "faceTypes": {
+      "cylinder": 2,
+      "plane": 12
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "round1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.fillet",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 3
+    }
+   ],
+   "ms": 592
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "refused": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it.",
+    "shapeWithout": {
+     "volume": 14342.0575041363,
+     "faces": 7
+    }
+   },
+   "brepSeq": {
+    "refused": "brep-rs cannot hollow shell1 yet -- shell1 is shown without it."
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": false,
+  "truthSource": null,
+  "verdicts": {
+   "pane": "no-oracle",
+   "grouped": "no-oracle",
+   "contract": "some-refused"
+  },
+  "ms": 4604
+ },
+ {
+  "id": "b-edge-then-hollow-bevel2",
+  "group": "b-order",
+  "note": null,
+  "script": "const b = cuboid(40,30,12)\nbevel(b.edge('top','right'), 2)\nhollow(b,{wall:2,open:'top'})",
+  "pane": {
+   "volume": 5083.999999999997,
+   "faces": 13,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5083.999999999997,
+     "faces": 13,
+     "bbox": [
+      -20,
+      -14.999999999999998,
+      -6,
+      20,
+      15.000000000000002,
+      6.000000000000003
+     ],
+     "faceTypes": {
+      "plane": 13
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 290
+  },
+  "contract": {
+   "volume": 5083.999999999997,
+   "faces": 13,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5083.999999999997,
+     "faces": 13,
+     "bbox": [
+      -20,
+      -14.999999999999998,
+      -6,
+      20,
+      15.000000000000002,
+      6.000000000000003
+     ],
+     "faceTypes": {
+      "plane": 13
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 346
+  },
+  "grouped": {
+   "volume": 5083.999999999997,
+   "faces": 13,
+   "ok": true,
+   "bodies": [
+    {
+     "volume": 5083.999999999997,
+     "faces": 13,
+     "bbox": [
+      -20,
+      -14.999999999999998,
+      -6,
+      20,
+      15.000000000000002,
+      6.000000000000003
+     ],
+     "faceTypes": {
+      "plane": 13
+     }
+    }
+   ],
+   "features": [
+    {
+     "id": "bevel1",
+     "status": "built",
+     "sentence": null,
+     "refusal": null,
+     "guard": null,
+     "group": null
+    }
+   ],
+   "blendCommands": [
+    {
+     "command": "solid.chamfer",
+     "edges": [
+      [
+       20,
+       0,
+       6
+      ]
+     ],
+     "size": 2
+    }
+   ],
+   "ms": 324
+  },
+  "hasBlend": true,
+  "oracle": {
+   "occtSeq": {
+    "volume": 5084.000004003481,
+    "faces": 13,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   },
+   "brepSeq": {
+    "volume": 5083.999999999999,
+    "faces": 13,
+    "bbox": [
+     -20,
+     -15,
+     -6,
+     20,
+     15,
+     6
+    ]
+   }
+  },
+  "base": {
+   "volume": 14400,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -6,
+    20,
+    15,
+    6
+   ]
+  },
+  "tailOnlyBlends": false,
+  "truthSource": "occtSeq",
+  "verdicts": {
+   "pane": "match",
+   "grouped": "match",
+   "contract": "match"
+  },
+  "bboxDelta": {
+   "pane": 5.181920503257147e-17,
+   "grouped": 5.181920503257147e-17,
+   "contract": 5.181920503257147e-17
+  },
+  "ms": 3918
+ }
+]

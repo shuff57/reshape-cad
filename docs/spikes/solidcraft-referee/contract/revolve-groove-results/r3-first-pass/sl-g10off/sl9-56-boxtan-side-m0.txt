@@ -1,0 +1,1 @@
+sl9-56-boxtan-side-m0                    FAIL     occtV 69635.6742 | tr-occt dV 1.2e-3 dBb 2.7e-13 dCom 2.0e-4 F o/b/t 11/-/11 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- groove1 is shown without it. | ms 1747 cpu 2617

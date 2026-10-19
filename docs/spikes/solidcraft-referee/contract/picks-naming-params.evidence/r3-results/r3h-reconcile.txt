@@ -1,0 +1,21 @@
+round top|front then round top|right (adjacent, r2)      PAGE {"built":false,"sentence":"round2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer prese 
+   PHASE0 {"built":true,"V":23940.656750696857,"faces":8,"com":[4.97958234673606,-2.9795823277648723,1.9763259033544893],"bbox":[-15.000000000000005,-18,-8,25,12.000000000000009,12.000000000 
+   OCCT {"V":23924.082573145646,"faces":10,"com":[4.966020209599749,-2.969488655253013,1.9765451481451966],"refusals":{}} BREP {"V":23965.663706143594,"faces":7,"refusals":{"round2":"brep-rs can only round a straight edge betwe
+bevel top|front then bevel top|right (adjacent, d2)      PAGE {"built":false,"sentence":"bevel2 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] resolves to F1:+x|F1:+z on box1, but that edge is no longer prese 
+   PHASE0 {"built":true,"V":23862.666666666668,"faces":8,"com":[4.953539699390959,-2.9535396993909573,1.9463038498072298],"bbox":[-15,-18,-8,25,12,12.000000000000002]} 
+   OCCT {"V":23862.666666666664,"faces":8,"com":[4.9535396993909595,-2.95353969939096,1.9463038498072305],"refusals":{}} BREP {"V":23862.666666666668,"faces":8,"refusals":{}}
+triangular pocket rim round 1                            PAGE {"built":false,"sentence":"round3 (fillet): its target round2 was refused (round2 (fillet): pocket1.edge[pocket1.same[pull1.face[+z]] ^ pull2.face[sk2 
+   PHASE0 {"built":true,"V":11751.917938022685,"faces":13,"com":[20.084439681800443,15.035209659090256,4.935444511441459],"bbox":[0,0,0,40,30,10.000000000000002]} 
+   OCCT {"V":11754.698459157391,"faces":13,"com":[20.084231118619176,15.035225923990879,4.9365918040388985],"refusals":{"round2":"Round 2's edge cou BREP {"V":11760,"faces":10,"refusals":{"round1":"brep-rs can only round a straight edge between two flat 
+move box(40,30,4) up 2 then round top|front 1.5          PAGE {"built":false,"sentence":"round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] resolves to F1:+z|F1:-y on box1, but that edge is no longer prese 
+   PHASE0 {"built":true,"V":4780.67316416496,"faces":7,"com":[-5.8833513346425325e-9,0.05928532099012176,2.006730201144393],"bbox":[-20.000000000000007,-15,0,20.000000000000007,15,4]} 
+   OCCT {"V":4780.685834714633,"faces":7,"com":[0,0.059246986921870436,1.9932735433671571],"refusals":{}} BREP {"V":4780.6858347057705,"faces":7,"refusals":{}}
+hollow open bottom of a cone (shell-draft row 5)         PAGE {"built":false,"sentence":"shell1 (shell): cone1.face[-z]: faces of a cone are not resolved in the browser demo"} 
+   PHASE0 {"built":true,"V":1985.3316969778955,"faces":3,"com":[-2.2116406734497396e-10,3.8307670494575255e-10,-3.8554871610105668],"bbox":[-14.999999999999996,-14.999812157449309,-10.000000 
+   OCCT {"V":4712.3889803846905,"faces":2,"com":[5.790023100122028e-16,-1.9600536841251426e-16,-4.999999999999998],"refusals":{"shell1":"Hollowing H BREP {"V":1985.3120241435497,"faces":3,"refusals":{}}
+draft 80 deg on the 40x30x20 box                         PAGE {"built":true,"V":24738.770266429714,"faces":5,"com":[12.237606065392361,4.901858860824106e-17,-4.315640257220466],"outcome":"NO-REFERENCE"} 
+   PHASE0 {"built":true,"V":24738.770266429714,"faces":5,"com":[12.237606065392361,4.901858860824106e-17,-4.315640257220466],"bbox":[-20,-15,-10,76.71281819617707,15,7.053079228338605]} 
+   OCCT {"V":23999.999999999996,"faces":6,"com":[-3.552713678800501e-15,0,-1.7763568394002505e-15],"refusals":{"draft1":"Tilting Draft 1 at 80 degre BREP {"V":24000,"faces":6,"refusals":{"draft1":"Tilting draft1 at 80 degrees would not fit -- draft1 is s
+bevel 2 on the 1 mm thin edge (40x30x1)                  PAGE {"built":true,"V":1140,"faces":6,"com":[0,0.7485380116959064,-0.0029239766081871135],"outcome":"NO-REFERENCE"} 
+   PHASE0 {"built":true,"V":1140,"faces":6,"com":[0,0.7485380116959064,-0.0029239766081871135],"bbox":[-20,-14,-0.5,20,15,0.5000000000000001]} 
+   OCCT {"V":1199.9999999999998,"faces":6,"com":[0,0,0],"refusals":{"bevel1":"Chamfering Bevel 1 at 2 would not fit its edge -- Bevel 1 is shown wit BREP {"V":1200,"faces":6,"refusals":{"bevel1":"Chamfering bevel1 at 2 would not fit its edge -- bevel1 is

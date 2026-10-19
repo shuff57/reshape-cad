@@ -1,0 +1,1 @@
+R3-boxwall-flat-360                      PASS     occtV 64407.6868 | tr-occt dV 6.6e-6 dBb 2.4e-16 dCom 4.6e-6 F o/b/t 15/13/13 | brep-occt dV 4.2e-12      | ms 6526 cpu 6849

@@ -1,0 +1,136 @@
+[
+ {
+  "id": "r2z-cyl-48-10-b",
+  "feature": "cyl.corner.edge",
+  "note": "",
+  "script": "cylinder(48, 10, { corner: 4.9999999 });",
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "radius": 24,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "round": 4.9999999
+    }
+   ]
+  },
+  "kind": "cylinder",
+  "analytic": 16552.810405779506,
+  "occt": {
+   "volume": 16552.8104057795,
+   "com": [
+    -1.274724748479247e-14,
+    -2.8293346473393908e-15,
+    -8.881784197001252e-16
+   ],
+   "bbox": [
+    -24,
+    -24,
+    -5,
+    24,
+    24,
+    5
+   ],
+   "faces": 5,
+   "types": {
+    "cylinder": 1,
+    "torus": 2,
+    "plane": 2
+   }
+  },
+  "brep": {
+   "volume": 16552.810405779517,
+   "bbox": [
+    -24,
+    -24,
+    -5,
+    24,
+    24,
+    5
+   ],
+   "faces": 5,
+   "dVol": 1.0989006452407302e-15,
+   "dBbox": 0
+  },
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 24,
+     "height": 10,
+     "base": [
+      0,
+      0,
+      -5
+     ],
+     "axis": "Z",
+     "body_name": "b_cyl1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       24,
+       0,
+       5
+      ],
+      [
+       24,
+       0,
+       -5
+      ]
+     ],
+     "radius": 4.9999999,
+     "body": "b_cyl1"
+    }
+   }
+  ],
+  "truck": {
+   "volume": 16552.10545153104,
+   "bbox": [
+    -23.99962934911771,
+    -23.99943318056068,
+    -5,
+    23.999629349117715,
+    23.999433180560672,
+    5
+   ],
+   "com": [
+    1.6850527527173237e-14,
+    2.930526526464911e-15,
+    -3.4000701391677514e-12
+   ],
+   "faces": 3,
+   "faceTypes": {
+    "other": 1,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "dVolOcct": 0.000042588190837610735,
+   "dBboxOcct": 0.00000826088371968175,
+   "dComOcct": 4.954002098634732e-14,
+   "facesOcct": 5,
+   "typesOcct": {
+    "cylinder": 1,
+    "torus": 2,
+    "plane": 2
+   },
+   "dVolAnalytic": 0.00004258819083805028,
+   "dVolBrep": 0.00004258819083870959,
+   "tol": 0.0003
+  },
+  "planar": false,
+  "ms": 7587
+ }
+]

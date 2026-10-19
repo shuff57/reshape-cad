@@ -1,0 +1,202 @@
+box-plain                                             dVol 0.0e+0 dBbox 0.0e+0 dCom 0.0e+0 dAn 0.0e+0 faces 6/6
+box-cube                                              dVol 2.3e-16 dBbox 0.0e+0 dCom 0.0e+0 dAn 0.0e+0 faces 6/6
+box-at                                                dVol 0.0e+0 dBbox 0.0e+0 dCom 0.0e+0 dAn 0.0e+0 faces 6/6
+box-at-neg                                            dVol 0.0e+0 dBbox 0.0e+0 dCom 0.0e+0 dAn 0.0e+0 faces 6/6
+box-tiny                                              dVol 0.0e+0 dBbox 4.6e-17 dCom 2.9e-17 dAn 1.4e-16 faces 6/6
+box-huge                                              dVol 0.0e+0 dBbox 0.0e+0 dCom 0.0e+0 dAn 0.0e+0 faces 6/6
+box-thin                                              dVol 2.8e-16 dBbox 0.0e+0 dCom 5.0e-17 dAn 0.0e+0 faces 6/6
+box-turn-x30                                          dVol 0.0e+0 dBbox 0.0e+0 dCom 3.3e-17 dAn 0.0e+0 faces 6/6
+box-turn-y45                                          dVol 0.0e+0 dBbox 0.0e+0 dCom 5.1e-17 dAn 0.0e+0 faces 6/6
+box-turn-z20                                          dVol 3.8e-16 dBbox 1.1e-16 dCom 3.5e-17 dAn 3.8e-16 faces 6/6
+box-turn-xyz                                          dVol 3.8e-16 dBbox 9.0e-17 dCom 9.0e-17 dAn 3.8e-16 faces 6/6
+box-turn-neg                                          dVol 2.5e-16 dBbox 1.1e-16 dCom 1.1e-16 dAn 0.0e+0 faces 6/6
+box-turn-360                                          dVol 0.0e+0 dBbox 0.0e+0 dCom 0.0e+0 dAn 0.0e+0 faces 6/6
+box-turn-90s                                          dVol 0.0e+0 dBbox 1.4e-16 dCom 0.0e+0 dAn 0.0e+0 faces 6/6
+box-corner-fillet                                     dVol 2.6e-5 dBbox 6.9e-17 dCom 1.6e-10 dAn 2.6e-5 faces 26/26
+box-corner-fillet-small                               dVol 1.8e-6 dBbox 6.9e-17 dCom 3.5e-11 dAn 1.8e-6 faces 26/26
+box-corner-fillet-at                                  dVol 2.6e-5 dBbox 1.4e-16 dCom 2.2e-10 dAn 2.6e-5 faces 26/26
+box-corner-fillet-turn                                dVol 2.6e-5 dBbox 4.3e-6 dCom 2.1e-10 dAn 2.6e-5 faces 26/26
+box-corner-cube-5                                     dVol 8.3e-5 dBbox 1.5e-16 dCom 9.0e-11 dAn 8.3e-5 faces 26/26
+box-corner-just-under-half                            dVol 1.4e-4 dBbox 1.9e-16 dCom 2.7e-10 dAn 1.4e-4 faces 26/26
+box-corner-half                                       Rounding box box1 (20x30x12) at radius 6 failed -- the radius is too big for this shape's edges.
+box-corner-over-half           refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls
+box-corner-way-over            refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than the neighbouring faces
+box-corner-cube-half           refused-by-solidcraft  box1 (box): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius
+box-corner-thin-plate                                 dVol 1.0e-5 dBbox 1.0e-16 dCom 2.5e-10 dAn 1.0e-5 faces 26/26
+box-corner-huge                                       dVol 5.3e-6 dBbox 2.4e-16 dCom 1.7e-13 dAn 5.3e-6 faces 26/26
+box-chamfer                                           dVol 1.4e-3 dBbox 6.9e-17 dCom 6.6e-17 dAn - faces 18/26
+box-chamfer-cube                                      dVol 6.6e-3 dBbox 1.5e-16 dCom 1.6e-17 dAn - faces 18/26
+box-bevel-script               refused-by-script      bevel() needs one edge: a whole shape is not supported yet -- chamfer one edge with bevel(shape.edge(faceA, faceB), size), or round the whole box or cylinder with fillet(shape, size).
+box-bevel-script-small         refused-by-script      bevel() needs one edge: a whole shape is not supported yet -- chamfer one edge with bevel(shape.edge(faceA, faceB), size), or round the whole box or cylinder with fillet(shape, size).
+box-round-script                                      dVol 2.6e-5 dBbox 6.9e-17 dCom 1.6e-10 dAn 2.6e-5 faces 26/26
+cyl-plain                                             dVol 1.1e-4 dBbox 7.1e-6 dCom 6.3e-17 dAn 1.1e-4 faces 3/3
+cyl-at                                                dVol 1.1e-4 dBbox 7.1e-6 dCom 8.2e-11 dAn 1.1e-4 faces 3/3
+cyl-tiny                                              dVol 7.2e-3 dBbox 9.5e-4 dCom 3.9e-17 dAn 7.2e-3 faces 3/3
+cyl-huge                                              dVol 1.2e-4 dBbox 6.5e-6 dCom 1.3e-15 dAn 1.2e-4 faces 3/3
+cyl-disc                                              dVol 6.2e-5 dBbox 8.4e-6 dCom 5.9e-17 dAn 6.2e-5 faces 3/3
+cyl-needle                                            dVol 1.8e-3 dBbox 1.2e-6 dCom 2.4e-16 dAn 1.8e-3 faces 3/3
+cyl-turn-x90                                          dVol 1.1e-4 dBbox 7.1e-6 dCom 1.1e-16 dAn 1.1e-4 faces 3/3
+cyl-turn-y90                                          dVol 1.1e-4 dBbox 7.1e-6 dCom 4.4e-11 dAn 1.1e-4 faces 3/3
+cyl-turn-y30                                          dVol 1.2e-4 dBbox 5.6e-6 dCom 2.2e-15 dAn 1.2e-4 faces 3/3
+cyl-turn-xyz                                          dVol 1.2e-4 dBbox 1.2e-5 dCom 1.0e-14 dAn 1.2e-4 faces 3/3
+cyl-corner                                            dVol 4.0e-5 dBbox 6.3e-6 dCom 4.6e-16 dAn 4.0e-5 faces 5/5
+cyl-corner-small                                      dVol 9.3e-6 dBbox 5.1e-8 dCom 1.3e-16 dAn 9.3e-6 faces 5/5
+cyl-corner-at                                         dVol 4.0e-5 dBbox 6.3e-6 dCom 6.7e-11 dAn 4.0e-5 faces 5/5
+cyl-corner-turn                                       dVol 4.0e-5 dBbox 3.3e-6 dCom 2.6e-11 dAn 4.0e-5 faces 5/5
+cyl-corner-under-height-half                          dVol 1.6e-4 dBbox 9.1e-6 dCom 3.0e-16 dAn 1.6e-4 faces 5/5
+cyl-corner-height-half                                Rounding cylinder cyl1 (radius 12, height 10) at radius 5 failed -- the radius is too big for this shape's edges.
+cyl-corner-over-height-half    refused-by-solidcraft  cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is taller than the walls
+cyl-corner-radius              refused-by-solidcraft  cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius
+cyl-corner-over-radius         refused-by-solidcraft  cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius
+cyl-corner-way-over            refused-by-solidcraft  cyl1 (cylinder): solidcraft refused it -- solid.fillet: not supported yet: the blend is larger than a corner radius
+cyl-chamfer                                           dVol 1.0e-4 dBbox 7.1e-6 dCom 3.1e-16 dAn - faces 5/5
+cyl-bevel-script               refused-by-script      bevel() needs one edge: a whole shape is not supported yet -- chamfer one edge with bevel(shape.edge(faceA, faceB), size), or round the whole box or cylinder with fillet(shape, size).
+sph-plain                                             dVol 7.1e-5 dBbox 0.0e+0 dCom 1.1e-13 dAn 7.1e-5 faces 1/1
+sph-at                                                dVol 7.1e-5 dBbox 0.0e+0 dCom 2.7e-12 dAn 7.1e-5 faces 1/1
+sph-tiny                                              dVol 8.4e-2 dBbox 5.0e-17 dCom 5.4e-8 dAn 8.4e-2 faces 1/1
+sph-huge                                              dVol 7.1e-5 dBbox 0.0e+0 dCom 2.0e-16 dAn 7.1e-5 faces 1/1
+sph-turn                                              dVol 7.1e-5 dBbox 0.0e+0 dCom 2.7e-12 dAn 7.1e-5 faces 1/1
+cone-plain                                            dVol 1.8e-4 dBbox 3.0e-6 dCom 3.3e-17 dAn 1.8e-4 faces 2/2
+cone-at                                               dVol 1.8e-4 dBbox 3.0e-6 dCom 6.5e-17 dAn 1.8e-4 faces 2/2
+cone-flat                                             dVol 5.6e-5 dBbox 4.4e-6 dCom 1.8e-17 dAn 5.6e-5 faces 2/2
+cone-spire                                            dVol 2.7e-4 dBbox 1.3e-7 dCom 8.6e-19 dAn 2.7e-4 faces 2/2
+cone-tiny                                             dVol 4.6e-2 dBbox 1.8e-4 dCom 4.2e-17 dAn 4.6e-2 faces 2/2
+cone-huge                                             dVol 1.8e-4 dBbox 3.0e-6 dCom 5.5e-17 dAn 1.8e-4 faces 2/2
+cone-turn-x90                                         dVol 1.8e-4 dBbox 3.0e-6 dCom 6.5e-17 dAn 1.8e-4 faces 2/2
+cone-turn-xyz                                         dVol 1.8e-4 dBbox 1.0e-5 dCom 2.4e-16 dAn 1.8e-4 faces 2/2
+cone-turn-y180                                        dVol 1.8e-4 dBbox 3.0e-6 dCom 1.7e-15 dAn 1.8e-4 faces 2/2
+ring-plain                                            dVol 1.5e-4 dBbox 7.8e-6 dCom 8.0e-7 dAn 1.5e-4 faces 1/1
+ring-at                                               dVol 1.5e-4 dBbox 7.8e-6 dCom 8.0e-7 dAn 1.5e-4 faces 1/1
+ring-thin                                             dVol 2.7e-4 dBbox 9.6e-7 dCom 1.2e-8 dAn 2.7e-4 faces 1/1
+ring-fat                                              dVol 4.4e-5 dBbox 1.8e-6 dCom 6.4e-7 dAn 4.4e-5 faces 1/1
+ring-tiny                                             dVol 3.7e-2 dBbox 7.4e-4 dCom 9.3e-4 dAn 3.7e-2 faces 1/1
+ring-huge                                             dVol 1.5e-4 dBbox 6.3e-6 dCom 6.8e-7 dAn 1.5e-4 faces 1/1
+ring-turn-x90                                         dVol 1.5e-4 dBbox 7.8e-6 dCom 8.0e-7 dAn 1.5e-4 faces 1/1
+ring-turn-xyz                                         dVol 1.5e-4 dBbox 7.5e-6 dCom 5.9e-7 dAn 1.5e-4 faces 1/1
+ring-horn                      refused-by-solidcraft  ring1 (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0
+ring-spindle                   refused-by-solidcraft  ring1 (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0
+ring-spindle-mild              refused-by-solidcraft  ring1 (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0
+ring-zero-major                refused-by-solidcraft  ring1 (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0
+ring-negative-major            refused-by-solidcraft  ring1 (torus): solidcraft refused it -- solid.torus: invalid input: torus needs major > minor > 0
+ring-near-horn                                        dVol 3.9e-5 dBbox 2.0e-6 dCom 4.2e-7 dAn 3.9e-5 faces 1/1
+prism-3                                               dVol 1.3e-16 dBbox 4.9e-17 dCom 3.1e-17 dAn 0.0e+0 faces 5/5
+prism-4                                               dVol 1.7e-16 dBbox 0.0e+0 dCom 1.0e-17 dAn 1.7e-16 faces 6/6
+prism-5                                               dVol 0.0e+0 dBbox 2.2e-16 dCom 5.8e-17 dAn 1.4e-16 faces 7/7
+prism-6                                               dVol 1.3e-16 dBbox 4.3e-17 dCom 2.1e-17 dAn 1.3e-16 faces 8/8
+prism-7                                               dVol 0.0e+0 dBbox 0.0e+0 dCom 1.2e-17 dAn 1.2e-16 faces 9/9
+prism-8                                               dVol 1.2e-16 dBbox 8.1e-17 dCom 2.7e-17 dAn 0.0e+0 faces 10/10
+prism-9                                               dVol 3.5e-16 dBbox 8.2e-17 dCom 1.3e-17 dAn 1.2e-16 faces 11/11
+prism-10                                              dVol 5.7e-16 dBbox 0.0e+0 dCom 2.3e-17 dAn 3.4e-16 faces 12/12
+prism-11                                              dVol 1.1e-16 dBbox 8.2e-17 dCom 2.9e-17 dAn 2.3e-16 faces 13/13
+prism-12                                              dVol 1.1e-16 dBbox 0.0e+0 dCom 1.4e-17 dAn 2.2e-16 faces 14/14
+prism-at                                              dVol 2.8e-16 dBbox 1.7e-16 dCom 8.6e-17 dAn 1.4e-16 faces 7/7
+prism-tiny                                            dVol 1.4e-16 dBbox 0.0e+0 dCom 4.7e-17 dAn 2.9e-16 faces 8/8
+prism-huge                                            dVol 1.2e-16 dBbox 1.4e-16 dCom 2.2e-17 dAn 1.2e-16 faces 9/9
+prism-thin                                            dVol 0.0e+0 dBbox 1.2e-20 dCom 8.7e-18 dAn 0.0e+0 faces 10/10
+prism-turn-script                                     dVol 2.8e-16 dBbox 7.0e-17 dCom 3.5e-17 dAn - faces 7/7
+prism-docrotate-x90                                   dVol 4.3e-16 dBbox 2.2e-16 dCom 6.7e-17 dAn 1.4e-16 faces 7/7
+prism-docrotate-xyz-at                                dVol 1.4e-16 dBbox 7.0e-17 dCom 3.5e-17 dAn 2.8e-16 faces 7/7
+prism-frac-5.4                                        dVol 0.0e+0 dBbox 2.2e-16 dCom 5.8e-17 dAn 1.4e-16 faces 7/7
+prism-frac-5.5                                        dVol 1.3e-16 dBbox 4.3e-17 dCom 2.1e-17 dAn 1.3e-16 faces 8/8
+prism-2                        refused-by-script      prism() needs 3 to 12 sides.
+prism-13                       refused-by-script      prism() needs 3 to 12 sides.
+wedge-plain                                           dVol 2.5e-16 dBbox 0.0e+0 dCom 3.5e-17 dAn 0.0e+0 faces 5/5
+wedge-at                                              dVol 0.0e+0 dBbox 0.0e+0 dCom 3.5e-17 dAn 0.0e+0 faces 5/5
+wedge-tiny                                            dVol 0.0e+0 dBbox 0.0e+0 dCom 4.6e-17 dAn 1.4e-16 faces 5/5
+wedge-huge                                            dVol 2.5e-16 dBbox 3.7e-17 dCom 1.4e-17 dAn 0.0e+0 faces 5/5
+wedge-thin                                            dVol 1.1e-16 dBbox 0.0e+0 dCom 3.6e-17 dAn 0.0e+0 faces 5/5
+wedge-turn-script                                     dVol 2.5e-16 dBbox 1.4e-16 dCom 2.6e-17 dAn - faces 5/5
+wedge-docrotate-x90                                   dVol 2.5e-16 dBbox 3.5e-17 dCom 1.7e-17 dAn 0.0e+0 faces 5/5
+wedge-docrotate-xyz-at                                dVol 3.8e-16 dBbox 1.1e-16 dCom 4.0e-17 dAn 3.8e-16 faces 5/5
+fc-box-thin-plate                                     dVol 0.0e+0 dBbox 0.0e+0 dCom 6.1e-17 dAn 0.0e+0 faces 6/6
+fc-box-slender-post                                   dVol 0.0e+0 dBbox 0.0e+0 dCom 0.0e+0 dAn 0.0e+0 faces 6/6
+fc-cyl-offcentre                                      dVol 1.1e-4 dBbox 6.8e-6 dCom 2.0e-10 dAn 1.1e-4 faces 3/3
+fc-cyl-rod                                            dVol 1.1e-4 dBbox 7.1e-6 dCom 1.3e-10 dAn 1.1e-4 faces 3/3
+fc-prism-hexagon                                      dVol 1.3e-16 dBbox 6.5e-17 dCom 3.2e-17 dAn 1.3e-16 faces 8/8
+sweep-sph-0.05                                        dVol 4.7e-3 dBbox 4.0e-17 dCom 3.4e-8 dAn 4.7e-3 faces 1/1
+sweep-cyl-0.05                                        dVol 2.3e-3 dBbox 1.3e-4 dCom 6.1e-11 dAn 2.3e-3 faces 3/3
+sweep-cone-0.05                                       dVol 2.9e-3 dBbox 2.1e-4 dCom 4.0e-17 dAn 2.9e-3 faces 2/2
+sweep-ring-0.05                                       dVol 8.6e-3 dBbox 2.5e-4 dCom 2.7e-5 dAn 8.6e-3 faces 1/1
+sweep-boxr-0.05                                       dVol 1.9e-3 dBbox 1.2e-16 dCom 2.0e-11 dAn 1.9e-3 faces 26/26
+sweep-sph-0.1                                         dVol 1.4e-3 dBbox 4.0e-17 dCom 6.9e-9 dAn 1.4e-3 faces 1/1
+sweep-cyl-0.1                                         dVol 1.8e-3 dBbox 1.3e-4 dCom 6.1e-11 dAn 1.8e-3 faces 3/3
+sweep-cone-0.1                                        dVol 1.1e-3 dBbox 1.2e-4 dCom 4.5e-18 dAn 1.1e-3 faces 2/2
+sweep-ring-0.1                                        dVol 4.3e-3 dBbox 8.3e-5 dCom 1.0e-5 dAn 4.3e-3 faces 1/1
+sweep-boxr-0.1                                        dVol 1.1e-3 dBbox 1.2e-16 dCom 2.1e-11 dAn 1.1e-3 faces 26/26
+sweep-sph-0.2                                         dVol 1.2e-3 dBbox 4.0e-17 dCom 6.9e-9 dAn 1.2e-3 faces 1/1
+sweep-cyl-0.2                                         dVol 5.7e-4 dBbox 5.2e-5 dCom 6.6e-17 dAn 5.7e-4 faces 3/3
+sweep-cone-0.2                                        dVol 7.3e-4 dBbox 1.2e-4 dCom 8.6e-18 dAn 7.3e-4 faces 2/2
+sweep-ring-0.2                                        dVol 2.1e-3 dBbox 8.3e-5 dCom 9.0e-6 dAn 2.1e-3 faces 1/1
+sweep-boxr-0.2                                        dVol 5.0e-4 dBbox 1.2e-16 dCom 2.9e-9 dAn 5.0e-4 faces 26/26
+sweep-sph-0.5                                         dVol 2.9e-4 dBbox 0.0e+0 dCom 9.7e-11 dAn 2.9e-4 faces 1/1
+sweep-cyl-0.5                                         dVol 2.5e-4 dBbox 5.2e-5 dCom 1.7e-16 dAn 2.5e-4 faces 3/3
+sweep-cone-0.5                                        dVol 1.8e-4 dBbox 3.6e-6 dCom 3.2e-17 dAn 1.8e-4 faces 2/2
+sweep-ring-0.5                                        dVol 8.0e-4 dBbox 4.8e-5 dCom 3.8e-6 dAn 8.0e-4 faces 1/1
+sweep-boxr-0.5                                        dVol 1.4e-4 dBbox 1.3e-16 dCom 1.2e-10 dAn 1.4e-4 faces 26/26
+sweep-sph-1                                           dVol 2.8e-4 dBbox 0.0e+0 dCom 9.7e-11 dAn 2.8e-4 faces 1/1
+sweep-cyl-1                                           dVol 1.2e-4 dBbox 7.8e-6 dCom 1.8e-16 dAn 1.2e-4 faces 3/3
+sweep-cone-1                                          dVol 1.8e-4 dBbox 3.6e-6 dCom 3.2e-17 dAn 1.8e-4 faces 2/2
+sweep-ring-1                                          dVol 4.2e-4 dBbox 1.2e-5 dCom 2.8e-6 dAn 4.2e-4 faces 1/1
+sweep-boxr-1                                          dVol 1.1e-4 dBbox 1.3e-16 dCom 1.2e-10 dAn 1.1e-4 faces 26/26
+sweep-sph-2                                           dVol 7.1e-5 dBbox 0.0e+0 dCom 3.3e-12 dAn 7.1e-5 faces 1/1
+sweep-cyl-2                                           dVol 1.1e-4 dBbox 7.8e-6 dCom 1.4e-16 dAn 1.1e-4 faces 3/3
+sweep-cone-2                                          dVol 1.2e-4 dBbox 3.6e-6 dCom 2.3e-17 dAn 1.2e-4 faces 2/2
+sweep-ring-2                                          dVol 2.1e-4 dBbox 7.8e-6 dCom 7.9e-7 dAn 2.1e-4 faces 1/1
+sweep-boxr-2                                          dVol 5.5e-5 dBbox 1.3e-16 dCom 1.2e-10 dAn 5.5e-5 faces 26/26
+sweep-sph-5                                           dVol 7.1e-5 dBbox 0.0e+0 dCom 3.3e-12 dAn 7.1e-5 faces 1/1
+sweep-cyl-5                                           dVol 1.1e-4 dBbox 7.8e-6 dCom 1.0e-16 dAn 1.1e-4 faces 3/3
+sweep-cone-5                                          dVol 1.2e-4 dBbox 3.6e-6 dCom 2.9e-17 dAn 1.2e-4 faces 2/2
+sweep-ring-5                                          dVol 1.5e-4 dBbox 7.8e-6 dCom 8.0e-7 dAn 1.5e-4 faces 1/1
+sweep-boxr-5                                          dVol 5.5e-5 dBbox 1.5e-16 dCom 8.6e-11 dAn 5.5e-5 faces 26/26
+sweep-sph-10                                          dVol 7.1e-5 dBbox 0.0e+0 dCom 3.3e-12 dAn 7.1e-5 faces 1/1
+sweep-cyl-10                                          dVol 1.1e-4 dBbox 7.8e-6 dCom 1.0e-16 dAn 1.1e-4 faces 3/3
+sweep-cone-10                                         dVol 1.2e-4 dBbox 3.6e-6 dCom 2.9e-17 dAn 1.2e-4 faces 2/2
+sweep-ring-10                                         dVol 1.5e-4 dBbox 7.8e-6 dCom 8.0e-7 dAn 1.5e-4 faces 1/1
+sweep-boxr-10                                         dVol 5.5e-5 dBbox 1.5e-16 dCom 8.6e-11 dAn 5.5e-5 faces 26/26
+param-box                                             dVol 0.0e+0 dBbox 0.0e+0 dCom 0.0e+0 dAn 0.0e+0 faces 6/6
+param-cyl                                             dVol 1.1e-4 dBbox 7.1e-6 dCom 6.3e-17 dAn 1.1e-4 faces 3/3
+param-ring                                            dVol 1.5e-4 dBbox 7.8e-6 dCom 8.0e-7 dAn 1.5e-4 faces 1/1
+param-prism                                           dVol 1.3e-16 dBbox 4.3e-17 dCom 2.1e-17 dAn 1.3e-16 faces 8/8
+param-box-corner                                      dVol 2.6e-5 dBbox 6.9e-17 dCom 1.6e-10 dAn 2.6e-5 faces 26/26
+param-at                                              dVol 0.0e+0 dBbox 0.0e+0 dCom 0.0e+0 dAn 0.0e+0 faces 6/6
+v-box-neg                      refused-by-script      box(): a size has to be a positive number -- got -10 for width.
+v-box-zero                     refused-by-script      box(): a size has to be a positive number -- got 0 for width.
+v-box-nan                      refused-by-script      box's width has to be a number, and you gave it NaN.
+v-box-inf                      refused-by-script      box's width has to be a number, and you gave it Infinity.
+v-box-str                      refused-by-script      box's width has to be a number, and you gave it the text "10".
+v-box-missing                  refused-by-script      box needs a number for height.
+v-box-null                     refused-by-script      box's width has to be a number, and you gave it null.
+v-box-extra                    refused-by-script      box's extras go in a { } object at the end, like box(..., { at: ... }). You gave it 10.
+v-box-unknown-opt              refused-by-script      box has no option called "colour". It takes at, corner.
+v-box-opts-array               refused-by-script      box's extras go in a { } object at the end, like box(..., { at: ... }). You gave it a list of 3.
+v-box-at-short                 refused-by-script      box's at needs three numbers, like [x, y, z]. You gave it a list of 2.
+v-box-at-str                   refused-by-script      box's at z has to be a number, and you gave it the text "3".
+v-box-corner-zero              refused-by-script      box(): a size has to be a positive number -- got 0 for corner.
+v-box-corner-neg               refused-by-script      box(): a size has to be a positive number -- got -1 for corner.
+v-box-corner-str               refused-by-script      box's corner has to be a number, and you gave it the text "1".
+v-box-rotate-opt               refused-by-script      box has no option called "rotate". It takes at, corner.
+v-box-center-opt               refused-by-script      box has no option called "center". It takes at, corner.
+v-cyl-neg                      refused-by-script      cylinder(): a size has to be a positive number -- got -10 for across.
+v-cyl-zero-tall                refused-by-script      cylinder(): a size has to be a positive number -- got 0 for tall.
+v-cyl-unknown                  refused-by-script      cylinder has no option called "radius". It takes at, corner.
+v-sph-corner                   refused-by-script      sphere has no option called "corner". It takes at.
+v-sph-neg                      refused-by-script      sphere(): a size has to be a positive number -- got -1 for across.
+v-sph-rotate-opt               refused-by-script      sphere has no option called "rotate". It takes at.
+v-cone-corner                  refused-by-script      cone has no option called "corner". It takes at.
+v-cone-three-arg               refused-by-script      cone's extras go in a { } object at the end, like cone(..., { at: ... }). You gave it 10.
+v-cone-zero                    refused-by-script      cone(): a size has to be a positive number -- got 0 for across.
+v-ring-corner                  refused-by-script      ring has no option called "corner". It takes at.
+v-ring-zero-tube               refused-by-script      ring(): a size has to be a positive number -- got 0 for tubeAcross.
+v-ring-neg                     refused-by-script      ring(): a size has to be a positive number -- got -10 for across.
+v-prism-corner                 refused-by-script      prism has no option called "corner". It takes at.
+v-prism-neg                    refused-by-script      prism(): a size has to be a positive number -- got -10 for across.
+v-prism-zero-sides             refused-by-script      prism(): a size has to be a positive number -- got 0 for sides.
+v-prism-neg-sides              refused-by-script      prism(): a size has to be a positive number -- got -3 for sides.
+v-wedge-corner                 refused-by-script      wedge has no option called "corner". It takes at.
+v-wedge-neg                    refused-by-script      wedge(): a size has to be a positive number -- got -10 for depth.
+v-wedge-missing                refused-by-script      wedge needs a number for height.
+v-param-zero                   refused-by-script      box(): a size has to be a positive number -- got 0 for width.
+v-param-neg                    refused-by-script      box(): a size has to be a positive number -- got -5 for width.
+v-param-str                    refused-by-script      param's value has to be a number, and you gave it the text "5".
+v-turn-prism                   refused-by-script      turn's angles needs three numbers, like [x, y, z]. You gave it the text "x".
+wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/prim-out/primitives-measure.json

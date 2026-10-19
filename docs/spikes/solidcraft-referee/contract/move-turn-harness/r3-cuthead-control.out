@@ -1,0 +1,14 @@
+box;pocket;move(a)                     kinds box sketch pocket>sk1 move>box1                              | pocket1:PASS dVol=7.3e-6 dCom=5.1e-7 | move1:FAIL dVol=4.2e-2 dCom=2.9e-3 | OCCT-refuses {}
+box;pocket;move(a,copy)                kinds box sketch pocket>sk1 move>box1                              | pocket1:PASS dVol=7.3e-6 dCom=5.1e-7 | move1:FAIL dVol=4.2e-2 dCom=2.9e-3 | OCCT-refuses {}
+box;pocket;move(pocket result)         kinds box sketch pocket>sk1 move>pocket1                           | move1:PASS dVol=7.3e-6 dCom=5.1e-7 | OCCT-refuses {}
+box;pocket;turn(a) [own rotate]        kinds box sketch pocket>sk1                                        | pocket1:PASS dVol=7.3e-6 dCom=3.8e-7 | OCCT-refuses {}
+join;pocket;turn(a) [RotateFeature]    kinds box box combine sketch pocket>sk1 rotate>op1                 | pocket1:PASS dVol=6.4e-6 dCom=5.8e-7 | turn1:FAIL dVol=3.7e-2 dCom=2.6e-3 | OCCT-refuses {}
+join;pocket;turn(pocket result)        kinds box box combine sketch pocket>sk1 rotate>pocket1             | turn1:PASS dVol=6.4e-6 dCom=4.6e-7 | OCCT-refuses {}
+join;pocket;move(a)                    kinds box box combine sketch pocket>sk1 move>op1                   | pocket1:PASS dVol=6.4e-6 dCom=5.8e-7 | move1:FAIL dVol=3.7e-2 dCom=3.4e-3 | OCCT-refuses {}
+box;groove;move(a)                     kinds box sketch groove>sk1 move>box1                              | groove1:PASS dVol=7.9e-6 dCom=3.4e-17 | move1:FAIL dVol=4.4e-2 dCom=1.6e-16 | OCCT-refuses {}
+box;groove control (no move)           kinds box sketch groove>sk1                                        | groove1:PASS dVol=7.9e-6 dCom=3.4e-17 | OCCT-refuses {}
+box;hole;move(a) control               kinds box hole>box1 move>hole1                                     | move1:PASS dVol=3.6e-6 dCom=6.2e-16 | OCCT-refuses {}
+box;hole;pocket;move(a)                kinds box sketch hole>box1 pocket>sk1 move>hole1                   | pocket1:PASS dVol=6.8e-6 dCom=2.3e-7 | move1:FAIL dVol=3.2e-2 dCom=2.2e-3 | OCCT-refuses {}
+box;pocket;pocket;move(a)              kinds box sketch pocket>sk1 pocket>sk1 move>box1                   | pocket2:PASS dVol=7.3e-6 dCom=5.1e-7 | move1:FAIL dVol=4.2e-2 dCom=2.9e-3 | OCCT-refuses {}
+box;move;pocket control                kinds box move>box1 sketch pocket>sk1                              | pocket1:PASS dVol=1.5e-16 dCom=4.7e-17 | OCCT-refuses {}
+box;pocket control (no move)           kinds box sketch pocket>sk1                                        | pocket1:PASS dVol=7.3e-6 dCom=5.1e-7 | OCCT-refuses {}

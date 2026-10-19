@@ -1,0 +1,1 @@
+X-spin-L-270-axis-edge                   PASS     occtV 1743.5839 | tr-occt dV 1.1e-4 dBb 7.7e-7 dCom 1.1e-5 F o/b/t 7/7/7 | brep-occt dV 1.1e-10      | ms 388 cpu 827

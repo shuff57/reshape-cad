@@ -1,0 +1,2468 @@
+[
+ {
+  "id": "through-sphere",
+  "row": "through",
+  "script": "const t = sphere(20); hole(t, { across: 2 });",
+  "featureKinds": [
+   "ball1:sphere",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "ball1",
+   "diameter": 2,
+   "depth": 22,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z"
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 4126.115694133348,
+   "com": [
+    -5.456784202975992e-16,
+    -9.545688012531411e-16,
+    -5.259128039273002e-17
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -9.949874371066201,
+    10,
+    10,
+    9.949874371066201
+   ],
+   "faces": 2,
+   "types": {
+    "sphere": 1,
+    "cylinder": 1
+   },
+   "components": {
+    "sphere": 1,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 4188.790204786391,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 4126.115694133349,
+   "bbox": [
+    -10,
+    -10,
+    -9.9498743710662,
+    10,
+    10,
+    9.9498743710662
+   ],
+   "faces": 2
+  },
+  "truckMs": 28830,
+  "translateCpuMs": 29270.443,
+  "loadavg": 23.19,
+  "truckFeatures": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {}
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 4188.493060547458,
+  "truck": {
+   "volume": 4126.03856409566,
+   "bbox": [
+    -10,
+    -10,
+    -9.94987458288512,
+    10,
+    10,
+    9.949874582885117
+   ],
+   "com": [
+    -6.06271481077044e-11,
+    -4.2615599419722626e-11,
+    -4.4665646685812896e-9
+   ],
+   "faces": 2,
+   "kernelFaces": 8,
+   "shells": 1,
+   "faceTypes": {
+    "cylinder": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_ball1"
+   ]
+  },
+  "finalCpuMs": 19825.37,
+  "allBodies": [
+   {
+    "name": "b_ball1",
+    "volume": 4126.03856409566,
+    "bbox": [
+     -10,
+     -10,
+     -9.94987458288512,
+     10,
+     10,
+     9.949874582885117
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 22,
+     "base": [
+      0,
+      0,
+      -11
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_ball1"
+     ]
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 62.68527005665515,
+   "volume": 4125.807790490803
+  },
+  "closedFromOcct": {
+   "volume": 4126.104934729736
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.00001869313499810173,
+    "dBbox": 2.128860225382764e-8,
+    "dCom": 1.291540506009539e-10,
+    "faces": "2/2",
+    "faceVerdict": {
+     "ok": true,
+     "keys": {
+      "cylinder": "equal",
+      "sphere": "equal"
+     }
+    },
+    "removedOcct": 62.67451065304249,
+    "removedTruck": 62.45449645179815,
+    "dRemoved": 0.0035104255135282644
+   },
+   "vsBrep": {
+    "dVol": 0.00001869313499832215,
+    "dBbox": 2.1288602432358222e-8,
+    "faces": "2/2"
+   },
+   "vsClosed": {
+    "removedClosed": 62.68527005665515,
+    "removedTruck": 62.45449645179815,
+    "dRemoved": 0.003681464635127604,
+    "dVol": 0.00005593416285383883
+   }
+  },
+  "ms": 48805
+ },
+ {
+  "id": "through-cone",
+  "row": "through",
+  "script": "const t = cone(20, 30); hole(t, { across: 2 });",
+  "featureKinds": [
+   "cone1:cone",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "cone1",
+   "diameter": 2,
+   "depth": 32,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z"
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 3053.6280592892795,
+   "com": [
+    4.479244818887805e-16,
+    -3.327899529287106e-17,
+    -7.687500000000001
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -15,
+    10,
+    10,
+    12
+   ],
+   "faces": 3,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 3141.5926535897934,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 3053.62805928928,
+   "bbox": [
+    -10,
+    -10,
+    -15,
+    10,
+    10,
+    12
+   ],
+   "faces": 3
+  },
+  "truckMs": 5787,
+  "translateCpuMs": 5839.136,
+  "loadavg": 17.76,
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {}
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 3141.0198861811004,
+  "truck": {
+   "volume": 3053.61491706681,
+   "bbox": [
+    -10.000000000000002,
+    -9.999941845420036,
+    -15.000000000000034,
+    10.000000000000004,
+    9.999941845420036,
+    12.000000134155318
+   ],
+   "com": [
+    9.26934026220041e-9,
+    1.4303876907081828e-8,
+    -7.687484233940401
+   ],
+   "faces": 3,
+   "kernelFaces": 6,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 1,
+    "cylinder": 1,
+    "plane": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ]
+  },
+  "finalCpuMs": 5428.602,
+  "allBodies": [
+   {
+    "name": "b_cone1",
+    "volume": 3053.61491706681,
+    "bbox": [
+     -10.000000000000002,
+     -9.999941845420036,
+     -15.000000000000034,
+     10.000000000000004,
+     9.999941845420036,
+     12.000000134155318
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 32,
+     "base": [
+      0,
+      0,
+      -16
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_cone1"
+     ]
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 87.96459430051421,
+   "volume": 3053.055291880586
+  },
+  "closedFromOcct": {
+   "volume": 3053.628059289279
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.000004303805903764075,
+    "dBbox": 0.000005815457996405371,
+    "dCom": 4.031989767532764e-7,
+    "faces": "3/3",
+    "faceVerdict": {
+     "ok": true,
+     "keys": {
+      "cone": "equal",
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 87.96459430051391,
+    "removedTruck": 87.40496911429045,
+    "dRemoved": 0.00636193676187042
+   },
+   "vsBrep": {
+    "dVol": 0.000004303805903912994,
+    "dBbox": 0.000005815457996405371,
+    "faces": "3/3"
+   },
+   "vsClosed": {
+    "removedClosed": 87.96459430051421,
+    "removedTruck": 87.40496911429045,
+    "dRemoved": 0.006361936761873792,
+    "dVol": 0.0001833000495314318
+   }
+  },
+  "ms": 11233
+ },
+ {
+  "id": "holes-countersink",
+  "row": "holes-recess",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); holes(plate, { across: 4, apart: [20, 10], countersink: { across: 8, angle: 90 } });",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "pull1",
+   "diameter": 4,
+   "depth": 12,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z",
+   "corners": {
+    "dx": 10,
+    "dy": 5
+   },
+   "countersink": {
+    "diameter": 8,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 11497.345175425631,
+   "com": [
+    20,
+    15,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 10,
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "bigCylinderComponents": 4,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 11999.999999999998,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 11363.303888872471,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 14
+  },
+  "truckMs": 12988,
+  "translateCpuMs": 13342.64,
+  "loadavg": 14.48,
+  "truckFeatures": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.5,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.039269908169872414,
+     "removed": 0.15700874846334045,
+     "ratio": 0.9995487370645064,
+     "dFaces": 8,
+     "failed": null,
+     "need": null,
+     "expected": 636.6961111275315
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 12000,
+  "truck": {
+   "volume": 11363.385292932542,
+   "bbox": [
+    0,
+    0,
+    -1.960525218255937e-14,
+    40,
+    30,
+    10.000000110458762
+   ],
+   "com": [
+    19.99999998469683,
+    14.999999990054127,
+    4.948392432059173
+   ],
+   "faces": 14,
+   "kernelFaces": 22,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 4,
+    "cylinder": 4,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_pull1"
+   ]
+  },
+  "finalCpuMs": 11590.951,
+  "allBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 11363.385292932542,
+    "bbox": [
+     0,
+     0,
+     -1.960525218255937e-14,
+     40,
+     30,
+     10.000000110458762
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      10,
+      10,
+      10
+     ],
+     "diameter": 4,
+     "body": "b_pull1",
+     "type": "countersink",
+     "cs_diameter": 8,
+     "cs_angle": "90 deg"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      30,
+      10,
+      10
+     ],
+     "diameter": 4,
+     "body": "b_pull1",
+     "type": "countersink",
+     "cs_diameter": 8,
+     "cs_angle": "90 deg"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      10,
+      20,
+      10
+     ],
+     "diameter": 4,
+     "body": "b_pull1",
+     "type": "countersink",
+     "cs_diameter": 8,
+     "cs_angle": "90 deg"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      30,
+      20,
+      10
+     ],
+     "diameter": 4,
+     "body": "b_pull1",
+     "type": "countersink",
+     "cs_diameter": 8,
+     "cs_angle": "90 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 636.6961111275315,
+   "volume": 11363.303888872468
+  },
+  "closedFromOcct": {
+   "volume": 11363.303888872466
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.011651375204374504,
+    "dBbox": 1.1045876213700012e-8,
+    "dCom": 0.0010121076768436327,
+    "faces": "10/14",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 502.654824574367,
+    "removedTruck": 636.6147070674579,
+    "dRemoved": 0.2665047184348107
+   },
+   "vsBrep": {
+    "dVol": 0.000007163766882138591,
+    "dBbox": 1.1045876213700012e-8,
+    "faces": "14/14"
+   },
+   "vsClosed": {
+    "removedClosed": 636.6961111275315,
+    "removedTruck": 636.6147070674579,
+    "dRemoved": 0.00012785386725460625,
+    "dVol": 0.0000071637668824587444
+   }
+  },
+  "ms": 24833
+ },
+ {
+  "id": "rot-box-y45-hole-z",
+  "row": "host-rotated",
+  "script": "const b = cuboid(40, 30, 10); turn(b, [0, 45, 0]); hole(b, { across: 6 });",
+  "note": "slab tilted 45 degrees: the bore sees 10 / cos 45 of material",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 37.35533906,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z"
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 11600.14053556598,
+   "com": [
+    4.307919412940944e-15,
+    -4.8661718225362734e-15,
+    -1.093893321853156e-12
+   ],
+   "bbox": [
+    -17.67766952966369,
+    -15,
+    -17.67766952966369,
+    17.67766952966369,
+    15,
+    17.67766952966369
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 11999.999999999998,
+  "brepRefusals": {
+   "hole1": "hole hole1: brep-rs cannot cut this hole yet; drilling the part before you round, chamfer or pattern it, or making the hole go right through, usually works -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: brep-rs cannot cut this hole yet; drilling the part before you round, chamfer or pattern it, or making the hole go right through, usually works -- hole1 is shown without it."
+  },
+  "truckMs": 29046,
+  "translateCpuMs": 28973.225,
+  "loadavg": 10.75,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {}
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 12000,
+  "truck": {
+   "volume": 11600.18982804707,
+   "bbox": [
+    -17.67766952966369,
+    -15.000000000000007,
+    -17.67766952966369,
+    17.67766952966369,
+    15,
+    17.67766952966369
+   ],
+   "com": [
+    -4.5902247678943905e-9,
+    1.5224475763396924e-8,
+    1.860141321143671e-9
+   ],
+   "faces": 7,
+   "kernelFaces": 8,
+   "shells": 1,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 29488.987,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11600.18982804707,
+    "bbox": [
+     -17.67766952966369,
+     -15.000000000000007,
+     -17.67766952966369,
+     17.67766952966369,
+     15,
+     17.67766952966369
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 37.35533906,
+     "base": [
+      0,
+      -3.552713678800501e-15,
+      -18.67766953
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 399.8594644342529,
+   "volume": 11600.140535565748
+  },
+  "closedFromOcct": {
+   "volume": 11600.140535565744
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.000004249300337226138,
+    "dBbox": 4.736951571734001e-16,
+    "dCom": 2.6109768875005726e-10,
+    "faces": "7/7",
+    "faceVerdict": {
+     "ok": true,
+     "keys": {
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 399.85946443401735,
+    "removedTruck": 399.8101719529295,
+    "dRemoved": 0.00012327451385351943
+   },
+   "vsClosed": {
+    "removedClosed": 399.8594644342529,
+    "removedTruck": 399.8101719529295,
+    "dRemoved": 0.00012327451444255159,
+    "dVol": 0.000004249300357297588
+   }
+  },
+  "ms": 58666
+ },
+ {
+  "id": "rot-cylinder-x90-hole-z",
+  "row": "host-rotated",
+  "script": "const c = cylinder(30, 20); turn(c, [90, 0, 0]); hole(c, { across: 6 });",
+  "note": "cylinder lying along y, bore along z through its middle",
+  "featureKinds": [
+   "cyl1:cylinder",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "cyl1",
+   "diameter": 6,
+   "depth": 32,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z"
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 13293.19954969257,
+   "com": [
+    -3.451477040220431e-9,
+    4.4160718534856275e-10,
+    1.6071193611691458e-8
+   ],
+   "bbox": [
+    -15.0000001,
+    -10.000000100000001,
+    -15.000000105900316,
+    15.0000001,
+    10.000000100000001,
+    15.000000105907933
+   ],
+   "faces": 4,
+   "types": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "components": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "bigCylinderComponents": 2,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 14137.166941154066,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 13293.199550327985,
+   "bbox": [
+    -15,
+    -10.000000000000002,
+    -15,
+    15,
+    10.000000000000002,
+    15
+   ],
+   "faces": 4
+  },
+  "truckMs": 66593,
+  "translateCpuMs": 66257.471,
+  "loadavg": 12.25,
+  "truckFeatures": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {}
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 14135.809206739914,
+  "truck": {
+   "volume": 13292.875589336072,
+   "bbox": [
+    -14.999768343198571,
+    -10.000000000000007,
+    -14.999998548208005,
+    14.999768343198578,
+    10.00000000000002,
+    14.999999665922473
+   ],
+   "com": [
+    8.858283009205475e-9,
+    1.9763472438779532e-8,
+    2.1933501561812486e-7
+   ],
+   "faces": 4,
+   "kernelFaces": 6,
+   "shells": 1,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cyl1"
+   ]
+  },
+  "finalCpuMs": 75429.606,
+  "allBodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 13292.875589336072,
+    "bbox": [
+     -14.999768343198571,
+     -10.000000000000007,
+     -14.999998548208005,
+     14.999768343198578,
+     10.00000000000002,
+     14.999999665922473
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 32,
+     "base": [
+      1.7763568394002505e-15,
+      7.105427357601002e-15,
+      -16.000000000000004
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_cyl1"
+     ]
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 844.1119039194288,
+   "volume": 13291.697302820485
+  },
+  "closedFromOcct": {
+   "volume": 13293.055037234637
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.000024370382411470215,
+    "dBbox": 0.000015450453325534472,
+    "dCom": 4.333599213880201e-9,
+    "faces": "4/4",
+    "faceVerdict": {
+     "ok": true,
+     "keys": {
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 843.9673914614959,
+    "removedTruck": 842.9336174038417,
+    "dRemoved": 0.0012248981040180282
+   },
+   "vsBrep": {
+    "dVol": 0.000024370430210297557,
+    "dBbox": 0.000015443786761911345,
+    "faces": "4/4"
+   },
+   "vsClosed": {
+    "removedClosed": 844.1119039194288,
+    "removedTruck": 842.9336174038417,
+    "dRemoved": 0.0013958889930540718,
+    "dVol": 0.00008864831095253401
+   }
+  },
+  "ms": 143053
+ },
+ {
+  "id": "cross-bore-through-cylinder",
+  "row": "host-misc",
+  "script": "const c = cylinder(20, 30); hole(c, { across: 4, along: \"x\" });",
+  "featureKinds": [
+   "cyl1:cylinder",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "cyl1",
+   "diameter": 4,
+   "depth": 22,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "x"
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 9174.713548404345,
+   "com": [
+    -9.547282842891376e-9,
+    -2.2252870287765106e-8,
+    6.2610876144431436e-12
+   ],
+   "bbox": [
+    -10.0000001,
+    -10.0000001,
+    -15.0000001,
+    10.0000001,
+    10.0000001,
+    15.0000001
+   ],
+   "faces": 4,
+   "types": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "components": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "bigCylinderComponents": 2,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 9424.777960769381,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 9174.713548672766,
+   "bbox": [
+    -10,
+    -10,
+    -15,
+    10,
+    10,
+    15
+   ],
+   "faces": 4
+  },
+  "truckMs": 67166,
+  "translateCpuMs": 66603.988,
+  "loadavg": 21.59,
+  "truckFeatures": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {}
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 9423.690515173826,
+  "truck": {
+   "volume": 9174.479552541585,
+   "bbox": [
+    -9.999999590561206,
+    -9.999763825245505,
+    -15.000000000000025,
+    9.999996231880521,
+    9.999763825245505,
+    15.000000000000009
+   ],
+   "com": [
+    3.46249609883051e-8,
+    3.3576911968991536e-9,
+    -7.68547972837962e-9
+   ],
+   "faces": 4,
+   "kernelFaces": 6,
+   "shells": 1,
+   "faceTypes": {
+    "cylinder": 2,
+    "plane": 2
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cyl1"
+   ]
+  },
+  "finalCpuMs": 69100.638,
+  "allBodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 9174.479552541585,
+    "bbox": [
+     -9.999999590561206,
+     -9.999763825245505,
+     -15.000000000000025,
+     9.999996231880521,
+     9.999763825245505,
+     15.000000000000009
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 22,
+     "base": [
+      -11,
+      0,
+      -8.881784197001252e-15
+     ],
+     "axis": "X",
+     "operation": "cut",
+     "targets": [
+      "b_cyl1"
+     ]
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 250.1072307910597,
+   "volume": 9173.583284382767
+  },
+  "closedFromOcct": {
+   "volume": 9174.670729978321
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.000025504432538998232,
+    "dBbox": 0.000023627475213120058,
+    "dCom": 1.0713342678629014e-9,
+    "faces": "4/4",
+    "faceVerdict": {
+     "ok": true,
+     "keys": {
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 250.06441236503633,
+    "removedTruck": 249.21096263224172,
+    "dRemoved": 0.0034129195942874746
+   },
+   "vsBrep": {
+    "dVol": 0.00002550446179485924,
+    "dBbox": 0.000023617475449455584,
+    "faces": "4/4"
+   },
+   "vsClosed": {
+    "removedClosed": 250.1072307910597,
+    "removedTruck": 249.21096263224172,
+    "dRemoved": 0.0035835355738543994,
+    "dVol": 0.0000977009889193486
+   }
+  },
+  "ms": 136828
+ },
+ {
+  "id": "round-box-hole-37",
+  "row": "host-round",
+  "script": "const b = cuboid(40, 40, 20);  round(b, 2); hole(b, { across: 37 });",
+  "note": "37 across: the bore reaches into the rounded top and bottom rims",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 37,
+   "depth": 22,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z"
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 10163.47871828914,
+   "com": [
+    1.0441985927959178e-10,
+    2.1893926069253625e-11,
+    1.2942678211743558e-10
+   ],
+   "bbox": [
+    -20.0000001,
+    -20.0000001,
+    -10.0000001,
+    20.0000001,
+    20.0000001,
+    10.0000001
+   ],
+   "faces": 33,
+   "types": {
+    "plane": 12,
+    "cylinder": 13,
+    "sphere": 8
+   },
+   "components": {
+    "plane": 12,
+    "cylinder": 13,
+    "sphere": 8
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 8
+  },
+  "occtPrevVolume": 31667.350935971288,
+  "brepRefusals": {
+   "hole1": "hole hole1: the cut reaches a rounded, chamfered or otherwise curved face of the part, which brep-rs cannot cut across yet; drill the part before you round or chamfer it, or keep the hole clear of the curved faces -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: the cut reaches a rounded, chamfered or otherwise curved face of the part, which brep-rs cannot cut across yet; drill the part before you round or chamfer it, or keep the hole clear of the curved faces -- hole1 is shown without it."
+  },
+  "truckMs": 75108,
+  "translateCpuMs": 74493.528,
+  "loadavg": 18.65,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {}
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 31667.14301321957,
+  "truck": {
+   "volume": 10163.869411050853,
+   "bbox": [
+    -20.000000000000007,
+    -20.000000000000007,
+    -10.000000000000007,
+    20.000000000000007,
+    20.000000000000007,
+    10.000000000000007
+   ],
+   "com": [
+    9.5067387014559e-10,
+    1.1983330678868387e-9,
+    -6.73779173094403e-11
+   ],
+   "faces": 33,
+   "kernelFaces": 34,
+   "shells": 1,
+   "faceTypes": {
+    "cylinder": 13,
+    "plane": 12,
+    "sphere": 8
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 87089.255,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 10163.86941105094,
+    "bbox": [
+     -20.000000000000007,
+     -20.000000000000007,
+     -10.000000000000007,
+     20.000000000000007,
+     20.000000000000007,
+     10.000000000000007
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 18.5,
+     "height": 22,
+     "base": [
+      0,
+      0,
+      -11.000000000000002
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.00003844085008123553,
+    "dBbox": 9.999999128682564e-9,
+    "dCom": 1.9607318921363536e-11,
+    "faces": "33/33",
+    "faceVerdict": {
+     "ok": true,
+     "keys": {
+      "cylinder": "equal",
+      "plane": "equal",
+      "sphere": "equal"
+     }
+    },
+    "removedOcct": 21503.872217682147,
+    "removedTruck": 21503.273602168716,
+    "dRemoved": 0.000027837568386326772
+   }
+  },
+  "ms": 163673
+ },
+ {
+  "id": "cs-thin-plate-T3",
+  "row": "cs-thin",
+  "script": "const b = cuboid(40, 40, 3); hole(b, { across: 6, countersink: { across: 12, angle: 90 } });",
+  "note": "through hole in a 3 thick plate, cone 3 deep (tool 3.3)",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 5,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 12,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 4715.176998353076,
+   "com": [
+    -6.055962735509767e-16,
+    1.6273949389811852e-16,
+    -2.825488057003002e-18
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -1.5,
+    20,
+    20,
+    1.5
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 4800,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 4602.079662823843,
+   "bbox": [
+    -20,
+    -20,
+    -1.5000000000000004,
+    20,
+    20,
+    1.5
+   ],
+   "faces": 7
+  },
+  "truckMs": 3200,
+  "translateCpuMs": 3216.672,
+  "loadavg": 24.03,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 1.5,
+     "eps": 0.75,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.08835729338221293,
+     "removed": 0.08833770784622175,
+     "ratio": 0.9997783370761884,
+     "dFaces": 2,
+     "failed": null,
+     "need": null,
+     "expected": 197.92033717615698
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 4800,
+  "truck": {
+   "volume": 4602.091612659439,
+   "bbox": [
+    -20,
+    -20,
+    -1.5000000188636278,
+    20,
+    20,
+    1.5000000664228175
+   ],
+   "com": [
+    -2.241844882649976e-8,
+    -1.848226927703145e-8,
+    -0.01382277103314771
+   ],
+   "faces": 7,
+   "kernelFaces": 8,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 2846.879,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 4602.091612659439,
+    "bbox": [
+     -20,
+     -20,
+     -1.5000000188636278,
+     20,
+     20,
+     1.5000000664228175
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      0,
+      0,
+      1.5
+     ],
+     "diameter": 6,
+     "body": "b_box1",
+     "type": "countersink",
+     "cs_diameter": 12,
+     "cs_angle": "90 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 197.92033717615698,
+   "volume": 4602.079662823843
+  },
+  "closedFromOcct": {
+   "volume": 4602.079662823843
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.023983274802437976,
+    "dBbox": 4.428187831232814e-8,
+    "dCom": 0.0002440114780995381,
+    "faces": "7/7",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "plane": "equal",
+      "cylinder": "UNEXPLAINED"
+     }
+    },
+    "removedOcct": 84.82300164692424,
+    "removedTruck": 197.9083873405607,
+    "dRemoved": 1.3331924536737616
+   },
+   "vsBrep": {
+    "dVol": 0.0000025966164151181033,
+    "dBbox": 4.428187831232814e-8,
+    "faces": "7/7"
+   },
+   "vsClosed": {
+    "removedClosed": 197.92033717615698,
+    "removedTruck": 197.9083873405607,
+    "dRemoved": 0.000060376996961395816,
+    "dVol": 0.0000025966164151181033
+   }
+  },
+  "ms": 6092
+ },
+ {
+  "id": "cs-wide-mouth-wider-than-plate",
+  "row": "cs",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); hole(plate, { across: 6, countersink: { across: 36, angle: 90 } });",
+  "note": "mouth 36 on a 30 deep plate: the cone breaks out of both long edges",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "pull1",
+   "diameter": 6,
+   "depth": 12,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 36,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 11717.256661176918,
+   "com": [
+    19.999999999999993,
+    15,
+    5
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 11999.999999999998,
+  "brepRefusals": {
+   "hole1": "The recess on hole1 at diameter 36 would not fit pull1 -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "The recess on hole1 at diameter 36 would not fit pull1 -- hole1 is shown without it."
+  },
+  "truckMs": 12347,
+  "translateCpuMs": 12328.294,
+  "loadavg": 20.59,
+  "truckFeatures": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.75,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.08835729338221293,
+     "removed": 0.08834044591094425,
+     "ratio": 0.999809325629795,
+     "dFaces": 2,
+     "failed": null,
+     "need": null,
+     "expected": null
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 12000,
+  "truck": {
+   "volume": 6524.700503564462,
+   "bbox": [
+    0,
+    -5.2384365631101056e-8,
+    -5.0303005939002966e-8,
+    40,
+    30.000000052384365,
+    10.000000002231447
+   ],
+   "com": [
+    20.00000004250268,
+    14.999999961579285,
+    4.01757146860005
+   ],
+   "faces": 8,
+   "kernelFaces": 9,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 7
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_pull1"
+   ]
+  },
+  "finalCpuMs": 12398.461,
+  "allBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 6524.700503564462,
+    "bbox": [
+     0,
+     -5.2384365631101056e-8,
+     -5.0303005939002966e-8,
+     40,
+     30.000000052384365,
+     10.000000002231447
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      20,
+      15,
+      10
+     ],
+     "diameter": 6,
+     "body": "b_pull1",
+     "type": "countersink",
+     "cs_diameter": 36,
+     "cs_angle": "90 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 5474.914689988586,
+   "volume": 6525.085310011414
+  },
+  "closedFromOcct": {
+   "volume": 6525.085310011412
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.4431545973399288,
+    "dBbox": 5.2384365631101056e-8,
+    "dCom": 0.019267008662764033,
+    "faces": "7/8",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "plane": "UNEXPLAINED",
+      "cylinder": "UNEXPLAINED"
+     }
+    },
+    "removedOcct": 282.7433388230802,
+    "removedTruck": 5475.299496435538,
+    "dRemoved": 18.364910661472997
+   },
+   "vsClosed": {
+    "removedClosed": 5474.914689988586,
+    "removedTruck": 5475.299496435538,
+    "dRemoved": 0.00007028537771644995,
+    "dVol": 0.000058973397077396245
+   }
+  },
+  "ms": 24785
+ },
+ {
+  "id": "cs-ring-breaks-out-side",
+  "row": "cs",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); hole(plate, { across: 6, at: [-16, 0], countersink: { across: 12, angle: 90 } });",
+  "note": "cone mouth radius 6 centred 4 from the x=0 edge",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "pull1",
+   "diameter": 6,
+   "depth": 12,
+   "center": [
+    -16,
+    0,
+    0
+   ],
+   "axis": "z",
+   "countersink": {
+    "diameter": 12,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 11717.25666117692,
+   "com": [
+    20.386088105090195,
+    14.999999999999995,
+    4.999999999999999
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 11999.999999999998,
+  "brepRefusals": {
+   "hole1": "hole hole1: brep-rs cannot cut this hole yet; drilling the part before you round, chamfer or pattern it, or making the hole go right through, usually works -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: brep-rs cannot cut this hole yet; drilling the part before you round, chamfer or pattern it, or making the hole go right through, usually works -- hole1 is shown without it."
+  },
+  "truckMs": 10161,
+  "translateCpuMs": 10179.448,
+  "loadavg": 15.38,
+  "truckFeatures": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.75,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.08835729338221293,
+     "removed": 0.08834044590912526,
+     "ratio": 0.9998093256092082,
+     "dFaces": 2,
+     "failed": null,
+     "need": null,
+     "expected": null
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 12000,
+  "truck": {
+   "volume": 11614.122106560828,
+   "bbox": [
+    -0.01645196949923953,
+    0,
+    -7.617544343194164e-15,
+    40,
+    30,
+    10.000000000603954
+   ],
+   "com": [
+    20.527990364852652,
+    15.000061995182632,
+    4.964177942001883
+   ],
+   "faces": 8,
+   "kernelFaces": 10,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 1,
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_pull1"
+   ]
+  },
+  "finalCpuMs": 9580.742,
+  "allBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 11614.122106560828,
+    "bbox": [
+     -0.01645196949923953,
+     0,
+     -7.617544343194164e-15,
+     40,
+     30,
+     10.000000000603954
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      4,
+      15,
+      10
+     ],
+     "diameter": 6,
+     "body": "b_pull1",
+     "type": "countersink",
+     "cs_diameter": 12,
+     "cs_angle": "90 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 386.3424117740682,
+   "volume": 11613.657588225931
+  },
+  "closedFromOcct": {
+   "volume": 11613.65758822593
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.008801936971971453,
+    "dBbox": 0.01645196949923953,
+    "dCom": 0.0027829322751987684,
+    "faces": "7/8",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 282.7433388230784,
+    "removedTruck": 385.8778934391721,
+    "dRemoved": 0.3647638704607232
+   },
+   "vsClosed": {
+    "removedClosed": 386.3424117740682,
+    "removedTruck": 385.8778934391721,
+    "dRemoved": 0.0012023487992504401,
+    "dVol": 0.000039997591746425586
+   }
+  },
+  "ms": 19802
+ },
+ {
+  "id": "holes-cb-touching",
+  "row": "holes-recess",
+  "script": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); holes(plate, { across: 4, apart: [12, 14], counterbore: { across: 12, deep: 3 } });",
+  "note": "recess circles of neighbouring bores tangent (12 apart, 12 across)",
+  "featureKinds": [
+   "sk1:sketch",
+   "pull1:extrude",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "pull1",
+   "diameter": 4,
+   "depth": 12,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z",
+   "corners": {
+    "dx": 6,
+    "dy": 7
+   },
+   "counterbore": {
+    "diameter": 12,
+    "depth": 3
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 11497.345175425633,
+   "com": [
+    20,
+    15,
+    4.999999999999997
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 10,
+   "types": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 4
+   },
+   "bigCylinderComponents": 4,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 11999.999999999998,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 10290.973596447153,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 18
+  },
+  "truckMs": 3,
+  "translateCpuMs": 5.296,
+  "loadavg": 14.01,
+  "truckFeatures": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop"
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): its recess would touch the edge of the part along a line, which leaves a zero-thickness wall, so hole1 is shown without it -- move it a little or change its size.",
+    "guard": "G-TANGENT"
+   }
+  ],
+  "lint": [
+   {
+    "id": "hole1",
+    "problems": []
+   }
+  ],
+  "truckPrevVolume": 12000,
+  "truck": {
+   "refused": "hole1 (hole): its recess would touch the edge of the part along a line, which leaves a zero-thickness wall, so hole1 is shown without it -- move it a little or change its size.",
+   "guard": "G-TANGENT",
+   "firstRefusal": "hole1 (hole): its recess would touch the edge of the part along a line, which leaves a zero-thickness wall, so hole1 is shown without it -- move it a little or change its size."
+  },
+  "verdict": "truck-refused",
+  "closed": {
+   "removed": 1709.0264035528476,
+   "volume": 10290.973596447153
+  },
+  "closedFromOcct": {
+   "volume": 10290.973596447151
+  },
+  "ms": 537
+ },
+ {
+  "id": "holes-cs-blind",
+  "row": "holes-recess",
+  "script": "const b = cuboid(40, 40, 20);  holes(b, { across: 4, apart: [20, 20], deep: 10, countersink: { across: 8, angle: 90 } });",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 4,
+   "depth": 10,
+   "center": [
+    0,
+    0,
+    5
+   ],
+   "axis": "z",
+   "corners": {
+    "dx": 10,
+    "dy": 10
+   },
+   "countersink": {
+    "diameter": 8,
+    "angleDeg": 90
+   }
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 31497.345175425635,
+   "com": [
+    -1.615211047060435e-16,
+    9.925877942829488e-18,
+    -0.07979320507407986
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 14,
+   "types": {
+    "plane": 10,
+    "cylinder": 4
+   },
+   "components": {
+    "plane": 10,
+    "cylinder": 4
+   },
+   "bigCylinderComponents": 4,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 31999.999999999993,
+  "brepRefusals": {},
+  "brep": {
+   "volume": 31363.30388887245,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "faces": 18
+  },
+  "truckMs": 9811,
+  "translateCpuMs": 9928.723,
+  "loadavg": 12.48,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {
+     "top": 10,
+     "eps": 0.5,
+     "delta": 0.05,
+     "curvedBase": false,
+     "wantEach": 0.039269908169872414,
+     "removed": 0.15700874841058976,
+     "ratio": 0.999548736728685,
+     "dFaces": 8,
+     "failed": null,
+     "need": 2.2500000000000004,
+     "expected": 636.6961111275315
+    }
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 32000,
+  "truck": {
+   "volume": 31363.385271495223,
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10.000000000000004
+   ],
+   "com": [
+    -3.133145994082335e-9,
+    -3.160512024735371e-9,
+    -0.12018824752967398
+   ],
+   "faces": 18,
+   "kernelFaces": 26,
+   "shells": 1,
+   "faceTypes": {
+    "cone": 4,
+    "cylinder": 4,
+    "plane": 10
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 8959.095,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 31363.385271495223,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10.000000000000004
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      -10,
+      -10,
+      10
+     ],
+     "diameter": 4,
+     "body": "b_box1",
+     "depth": 10,
+     "type": "countersink",
+     "cs_diameter": 8,
+     "cs_angle": "90 deg"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      10,
+      -10,
+      10
+     ],
+     "diameter": 4,
+     "body": "b_box1",
+     "depth": 10,
+     "type": "countersink",
+     "cs_diameter": 8,
+     "cs_angle": "90 deg"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      -10,
+      10,
+      10
+     ],
+     "diameter": 4,
+     "body": "b_box1",
+     "depth": 10,
+     "type": "countersink",
+     "cs_diameter": 8,
+     "cs_angle": "90 deg"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      10,
+      10,
+      10
+     ],
+     "diameter": 4,
+     "body": "b_box1",
+     "depth": 10,
+     "type": "countersink",
+     "cs_diameter": 8,
+     "cs_angle": "90 deg"
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "closed": {
+   "removed": 636.6961111275315,
+   "volume": 31363.30388887247
+  },
+  "closedFromOcct": {
+   "volume": 31363.303888872462
+  },
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.004253053810863025,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 0.0006732507075932354,
+    "faces": "14/18",
+    "faceVerdict": {
+     "ok": false,
+     "keys": {
+      "cone": "UNEXPLAINED",
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 502.6548245743579,
+    "removedTruck": 636.6147285047773,
+    "dRemoved": 0.26650476108302557
+   },
+   "vsBrep": {
+    "dVol": 0.000002594835769206624,
+    "dBbox": 3.552713678800501e-16,
+    "faces": "18/18"
+   },
+   "vsClosed": {
+    "removedClosed": 636.6961111275315,
+    "removedTruck": 636.6147285047773,
+    "dRemoved": 0.00012782019762937682,
+    "dVol": 0.000002594835768626649
+   }
+  },
+  "ms": 18801
+ },
+ {
+  "id": "tilt-x30-through",
+  "row": "tilt",
+  "script": "const b = cuboid(40, 30, 10); turn(b, [30, 0, 0]); hole(b, { across: 6 });",
+  "note": "through bore in the same tilted slab",
+  "featureKinds": [
+   "box1:box",
+   "hole1:hole"
+  ],
+  "lastFeature": {
+   "id": "hole1",
+   "kind": "hole",
+   "target": "box1",
+   "diameter": 6,
+   "depth": 25.660254038,
+   "center": [
+    0,
+    0,
+    0
+   ],
+   "axis": "z"
+  },
+  "occtRefusals": {},
+  "occt": {
+   "solids": 1,
+   "volume": 11673.516114437938,
+   "com": [
+    -8.041322806579457e-14,
+    1.86123672472925e-14,
+    1.7332212254338284e-12
+   ],
+   "bbox": [
+    -20,
+    -15.49038105676658,
+    -11.830127018922193,
+    20,
+    15.49038105676658,
+    11.830127018922193
+   ],
+   "faces": 7,
+   "types": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "components": {
+    "plane": 6,
+    "cylinder": 1
+   },
+   "bigCylinderComponents": 1,
+   "partialBigCylinderComponents": 0,
+   "triangles": 0
+  },
+  "occtPrevVolume": 12000,
+  "brepRefusals": {
+   "hole1": "hole hole1: brep-rs cannot cut this hole yet; drilling the part before you round, chamfer or pattern it, or making the hole go right through, usually works -- hole1 is shown without it."
+  },
+  "brep": {
+   "refused": "hole hole1: brep-rs cannot cut this hole yet; drilling the part before you round, chamfer or pattern it, or making the hole go right through, usually works -- hole1 is shown without it."
+  },
+  "truckMs": 23962,
+  "translateCpuMs": 23961.322,
+  "loadavg": 9.71,
+  "truckFeatures": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "probe": {}
+   }
+  ],
+  "lint": [],
+  "truckPrevVolume": 12000,
+  "truck": {
+   "volume": 11673.56368655144,
+   "bbox": [
+    -20,
+    -15.49038105676658,
+    -11.830127018922193,
+    20,
+    15.490381056766582,
+    11.830127018922193
+   ],
+   "com": [
+    2.3948518553741552e-9,
+    6.451376108207445e-9,
+    4.9406575585340405e-8
+   ],
+   "faces": 7,
+   "kernelFaces": 8,
+   "shells": 1,
+   "faceTypes": {
+    "cylinder": 1,
+    "plane": 6
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_box1"
+   ]
+  },
+  "finalCpuMs": 23604.623,
+  "allBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11673.56368655144,
+    "bbox": [
+     -20,
+     -15.49038105676658,
+     -11.830127018922193,
+     20,
+     15.490381056766582,
+     11.830127018922193
+    ]
+   }
+  ],
+  "droppedBodies": [],
+  "commands": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 25.660254038,
+     "base": [
+      0,
+      8.881784197001252e-16,
+      -12.830127019
+     ],
+     "axis": "Z",
+     "operation": "cut",
+     "targets": [
+      "b_box1"
+     ]
+    }
+   }
+  ],
+  "verdict": "truck-built",
+  "cmp": {
+   "vsOcct": {
+    "dVol": 0.0000040752171870284105,
+    "dBbox": 1.1467483161909009e-16,
+    "dCom": 8.84543104177235e-10,
+    "faces": "7/7",
+    "faceVerdict": {
+     "ok": true,
+     "keys": {
+      "cylinder": "equal",
+      "plane": "equal"
+     }
+    },
+    "removedOcct": 326.4838855620619,
+    "removedTruck": 326.4363134485593,
+    "dRemoved": 0.0001457104488349013
+   }
+  },
+  "ms": 47685
+ }
+]

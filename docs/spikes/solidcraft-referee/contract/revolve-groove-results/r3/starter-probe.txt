@@ -1,0 +1,5 @@
+result keys: doc,params,namedParams,errors
+undrawn   sketch: {"id":"sk1","kind":"sketch","plane":"xz","offset":0,"points":[[0,0],[40,0],[40,25],[0,25]],"constraints":[{"kind":"horizontal","edge":0},{"kind":"vertical","edge":1},{"kind":"horizontal","edge":2},{"kind":"vertical","edge":3}]}
+deliberate sketch: {"id":"sk1","kind":"sketch","plane":"xz","offset":0,"points":[[0,0],[40,0],[40,25],[0,25]],"constraints":[{"kind":"horizontal","edge":0},{"kind":"vertical","edge":1},{"kind":"horizontal","edge":2},{"kind":"vertical","edge":3}]}
+moved 0.01 sketch: {"id":"sk1","kind":"sketch","plane":"xz","offset":0,"points":[[0.010000000000001563,0],[40.010000000000005,0],[40.010000000000005,25],[0.010000000000001563,25]],"constraints":[{"kind":"horizontal","edge":0},{"kind":"vertical","edge":1},{"kind":"horizontal","edge":2},{"kind":"vertical","edge":3}]}
+undrawn doc === deliberate doc: true | params equal: true

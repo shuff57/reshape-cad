@@ -1,0 +1,49 @@
+bt-fcbaseline-rect10-r1        n=4 batch 11591.0291 f15 | occtSim 11591.0324 f15 | occtSeq 11593.3702 f16 | scSeq REFUSED@-4 | d(batch,sim) 2.9e-7 d(batch,fc) 2.9e-7 
+bt-rect10-r0.5                 n=4 batch 11597.8028 f15 | occtSim 11597.8060 f15 | occtSeq 11598.3665 f16 | scSeq REFUSED@-4 | d(batch,sim) 2.8e-7 d(batch,fc) - 
+bt-rect10-r2                   n=4 batch 11562.5813 f15 | occtSim 11562.5959 f15 | occtSeq 11572.7139 f16 | scSeq REFUSED@-4 | d(batch,sim) 1.3e-6 d(batch,fc) - 
+bt-rect10-r3.9                 n=4 batch 11446.6268 f15 | occtSim 11446.6885 f15 | occtSeq 11490.7033 f16 | scSeq REFUSED@-4 | d(batch,sim) 5.4e-6 d(batch,fc) - 
+bt-rect10-d1                   n=4 batch 11578.6667 f15 | occtSim 11578.6667 f15 | occtSeq 11584.3333 f16 | scSeq REFUSED@-4 | d(batch,sim) 0.0e+0 d(batch,fc) - 
+bt-rect10-d2                   n=4 batch 11509.3333 f15 | occtSim 11509.3333 f15 | occtSeq 11534.6667 f16 | scSeq REFUSED@-4 | d(batch,sim) 3.2e-16 d(batch,fc) - 
+bt-rect10-d3.9                 n=4 batch 11216.7080 f15 | occtSim 11216.7080 f15 | occtSeq 11332.3040 f16 | scSeq REFUSED@-4 | d(batch,sim) 1.6e-16 d(batch,fc) - 
+bt-rect10-r4-ge-depth          n=4 batch 11438.0467 f11 | occtSim BRepFilletAPI did not complete f- | occtSeq 11600.0000 f11 | scSeq REFUSED@-4 | d(batch,sim) - d(batch,fc) - 
+bt-rect10-r4.5-ge-depth        n=4 batch REFUSED solid.fillet: not supported yet: the blend is taller than the walls f- | occtSim BRepFilletAPI did not complete f- | occtSeq 11600.0000 f11 | scSeq REFUSED@-4 | d(batch,sim) - d(batch,fc) - 
+bt-rect20x10-r0.5              n=4 batch 27996.7282 f15 | occtSim 27996.7330 f15 | occtSeq 27997.2935 f16 | scSeq REFUSED@-2 | d(batch,sim) 1.7e-7 d(batch,fc) - 
+bt-rect20x10-r1                n=4 batch 27986.7207 f15 | occtSim 27986.7404 f15 | occtSeq 27989.0782 f16 | scSeq REFUSED@-2 | d(batch,sim) 7.0e-7 d(batch,fc) - 
+bt-rect20x10-r2.5              n=4 batch 27913.4991 f15 | occtSim 27913.5324 f15 | occtSeq 27929.9410 f16 | scSeq REFUSED@-2 | d(batch,sim) 1.2e-6 d(batch,fc) - 
+bt-rect20x10-r3.9              n=4 batch 27781.3207 f15 | occtSim 27781.4066 f15 | occtSeq 27825.4214 f16 | scSeq REFUSED@-2 | d(batch,sim) 3.1e-6 d(batch,fc) - 
+bt-rect20x10-r4                n=4 batch 27769.3487 f11 | occtSim BRepFilletAPI did not complete f- | occtSeq 28000.0000 f11 | scSeq REFUSED@-2 | d(batch,sim) - d(batch,fc) - 
+bt-rect20x10-r5                n=4 batch REFUSED solid.fillet: not supported yet: the blend is taller than the walls f- | occtSim BRepFilletAPI did not complete f- | occtSeq 28000.0000 f11 | scSeq REFUSED@-2 | d(batch,sim) - d(batch,fc) - 
+bt-rect20x10-r6                n=4 batch REFUSED solid.fillet: not supported yet: the blend is taller than the walls f- | occtSim BRepFilletAPI did not complete f- | occtSeq 28000.0000 f11 | scSeq REFUSED@-2 | d(batch,sim) - d(batch,fc) - 
+bt-rect20x10-d1                n=4 batch 27968.6667 f15 | occtSim 27968.6667 f15 | occtSeq 27974.3333 f16 | scSeq REFUSED@-2 | d(batch,sim) 1.3e-16 d(batch,fc) - 
+bt-rect20x10-d3                n=4 batch 27694.0000 f15 | occtSim 27694.0000 f15 | occtSeq 27757.0000 f16 | scSeq REFUSED@-2 | d(batch,sim) 1.3e-16 d(batch,fc) - 
+bt-rect20x10-d4                n=4 batch 27434.6667 f11 | occtSim BRepFilletAPI did not complete f- | occtSeq 28000.0000 f11 | scSeq REFUSED@-2 | d(batch,sim) - d(batch,fc) - 
+bt-rect20x10-d5                n=4 batch REFUSED solid.chamfer: not supported yet: the blend is taller than the walls f- | occtSim BRepFilletAPI did not complete f- | occtSeq 28000.0000 f11 | scSeq REFUSED@-2 | d(batch,sim) - d(batch,fc) - 
+bt-rect20x10-d6                n=4 batch REFUSED solid.chamfer: not supported yet: the blend is taller than the walls f- | occtSim BRepFilletAPI did not complete f- | occtSeq 28000.0000 f11 | scSeq REFUSED@-2 | d(batch,sim) - d(batch,fc) - 
+bt-hex-r1                      n=6 batch 27747.5723 f19 | occtSim 27747.5920 f19 | occtSeq 27749.9040 f22 | scSeq REFUSED@-2 | d(batch,sim) 7.1e-7 d(batch,fc) - 
+bt-hex-d1                      n=6 batch 27729.6457 f19 | occtSim 27729.6457 f19 | occtSeq 27735.2231 f22 | scSeq REFUSED@-2 | d(batch,sim) 0.0e+0 d(batch,fc) - 
+bt-tri-r1                      n=3 batch 28066.3514 f13 | occtSim 28066.3717 f13 | occtSeq 28071.0697 f13 | scSeq 28066.3515 | d(batch,sim) 7.2e-7 d(batch,fc) - 
+bt-tri-d1                      n=3 batch 28047.6757 f13 | occtSim 28047.6757 f13 | occtSeq 28058.9416 f13 | scSeq REFUSED@-2 | d(batch,sim) 1.3e-16 d(batch,fc) - 
+bt-L-r1                        n=6 batch REFUSED  f- | occtSim undefined f- | occtSeq 28213.9366 f19 | scSeq REFUSED@undefined | d(batch,sim) - d(batch,fc) - Error: pick 0: null
+    at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence/batch.mjs:87:48
+bt-L-d1                        n=6 batch REFUSED  f- | occtSim undefined f- | occtSeq 28200.3333 f19 | scSeq REFUSED@undefined | d(batch,sim) - d(batch,fc) - Error: pick 0: null
+    at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence/batch.mjs:87:48
+bt-through-rect-r1             n=4 batch 26386.7207 f14 | occtSim 26386.7404 f14 | occtSeq 26389.0782 f15 | scSeq REFUSED@-2 | d(batch,sim) 7.5e-7 d(batch,fc) - 
+bt-circle-r1                   n=1 batch REFUSED  f- | occtSim undefined f- | occtSeq 27529.5779 f9 | scSeq REFUSED@undefined | d(batch,sim) - d(batch,fc) - Error: pick 0: null
+    at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence/batch.mjs:87:48
+bt-circle-r2                   n=1 batch REFUSED  f- | occtSim undefined f- | occtSeq 27487.0181 f9 | scSeq REFUSED@undefined | d(batch,sim) - d(batch,fc) - Error: pick 0: null
+    at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence/batch.mjs:87:48
+bt-circle-d1                   n=1 batch REFUSED  f- | occtSim undefined f- | occtSeq 27510.8998 f9 | scSeq REFUSED@undefined | d(batch,sim) - d(batch,fc) - Error: pick 0: null
+    at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence/batch.mjs:87:48
+bt-circle-d2                   n=1 batch REFUSED  f- | occtSim undefined f- | occtSeq 27409.3217 f9 | scSeq REFUSED@undefined | d(batch,sim) - d(batch,fc) - Error: pick 0: null
+    at /home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence/batch.mjs:87:48
+bt-ring4-top-r3                n=4 batch 11739.8618 f10 | occtSim 11739.9557 f10 | occtSeq 11670.4247 f18 | scSeq REFUSED@-1 | d(batch,sim) 8.0e-6 d(batch,fc) - 
+bt-ring4-top-d3                n=4 batch 11406.0000 f10 | occtSim 11406.0000 f10 | occtSeq 11406.0000 f10 | scSeq 11406.0000 | d(batch,sim) 1.6e-16 d(batch,fc) - 
+bt-ring4-top-r1                n=4 batch 11970.3283 f10 | occtSim 11970.3392 f10 | occtSeq 11962.0413 f18 | scSeq REFUSED@-1 | d(batch,sim) 9.1e-7 d(batch,fc) - 
+bt-all12-r2                    n=12 batch 11735.8607 f26 | occtSim 11736.0235 f26 | occtSeq 11736.0235 f26 | scSeq REFUSED@-1 | d(batch,sim) 1.4e-5 d(batch,fc) - 
+bt-all12-d2                    n=12 batch 11408.0000 f18 | occtSim 11402.6667 f26 | occtSeq 11408.0000 f18 | scSeq 11408.0000 | d(batch,sim) 4.7e-4 d(batch,fc) - 
+bt-all12-r4                    n=12 batch 10986.3675 f26 | occtSim 10986.9496 f26 | occtSeq 10986.9496 f26 | scSeq REFUSED@-1 | d(batch,sim) 5.3e-5 d(batch,fc) - 
+bt-adj2-r3                     n=2 batch 11867.3409 f8 | occtSim 11867.3893 f8 | occtSeq 11850.0066 f10 | scSeq 11867.3410 | d(batch,sim) 4.1e-6 d(batch,fc) - 
+bt-corner3-r2                  n=3 batch 11932.6238 f10 | occtSim 11932.6666 f10 | occtSeq 11932.6666 f10 | scSeq 11932.6238 | d(batch,sim) 3.6e-6 d(batch,fc) - 
+bt-vert4-r3                    n=4 batch 11922.6927 f10 | occtSim 11922.7433 f10 | occtSeq 11922.7433 f10 | scSeq 11922.6927 | d(batch,sim) 4.3e-6 d(batch,fc) - 
+bt-ring4-top-d16-oversize      n=4 batch 1782.0000 f5 | occtSim BRepFilletAPI did not complete f- | occtSeq 12000.0000 f6 | scSeq 1335.3078 | d(batch,sim) - d(batch,fc) - 
+bt-pair-d16-oversize           n=2 batch 3240.0000 f5 | occtSim BRepFilletAPI did not complete f- | occtSeq 12000.0000 f6 | scSeq 3240.0000 | d(batch,sim) - d(batch,fc) - 

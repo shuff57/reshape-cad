@@ -1,0 +1,1 @@
+sl9-72-boxlip-top-p0.15                  FAIL     occtV 71233.9815 | tr-occt dV 1.6e-4 dBb 0.0e+0 dCom 3.9e-5 F o/b/t 12/-/11 | brep-occt dV -     | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 990 cpu 1396
