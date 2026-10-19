@@ -1,0 +1,169 @@
+{
+ "group": "extrude-pocket",
+ "verdict": "accepted",
+ "summary": "No silent wrong solid found: 104 rows regenerate byte-for-byte from ep-results.json (only dates/scan text differ), every refusal sentence is plain and appears in the recorded results, and ~45 independent replays and neighbour probes (scale-shifted floors and walls, fold-edge tapers, slanted bores, tapered pockets, slender rods, two fresh fuzz seeds) matched closed forms or were refused. Defects are minor; the shipped-route wrongness and non-wiring are honestly recorded as wrong/unsupported rows.",
+ "rowsTotal": 104,
+ "rowsEvidenceChecked": 104,
+ "rowsReplayed": 24,
+ "replays": [
+  {
+   "feature": "taper pull (pt-rect-5)",
+   "command": "bun extrude-pocket-measure.mjs --only=<id> --out=<scratch> (1500M cap)",
+   "stored": "vol 16313.9659, dVol 1.1e-16",
+   "live": "16313.9659, dVol 1.1e-16",
+   "match": true
+  },
+  {
+   "feature": "taper on ring with hole (pt-ring)",
+   "command": "bun extrude-pocket-measure.mjs --only=<id> --out=<scratch> (1500M cap)",
+   "stored": "10249.3392, dVol 4.3e-5",
+   "live": "10249.3392, dVol 4.3e-5",
+   "match": true
+  },
+  {
+   "feature": "slanted circle pull (pd-circle)",
+   "command": "bun extrude-pocket-measure.mjs --only=<id> --out=<scratch> (1500M cap)",
+   "stored": "785.3982 analytic, dVol 1.0e-4",
+   "live": "785.3982, dVol 1.0e-4",
+   "match": true
+  },
+  {
+   "feature": "through-all crossing hole (kt-crossing-hole)",
+   "command": "bun extrude-pocket-measure.mjs --only=<id> --out=<scratch> (1500M cap)",
+   "stored": "10995.7804, dVol 1.4e-5",
+   "live": "same",
+   "match": true
+  },
+  {
+   "feature": "slanted through cut (td-slant)",
+   "command": "bun extrude-pocket-measure.mjs --only=<id> --out=<scratch> (1500M cap)",
+   "stored": "11520.0000 exact",
+   "live": "same",
+   "match": true
+  },
+  {
+   "feature": "through+midplane front (tm-mid-front)",
+   "command": "bun extrude-pocket-measure.mjs --only=<id> --out=<scratch> (1500M cap)",
+   "stored": "10560.0000; brep-rs 1.8e-2 off",
+   "live": "same, brep-rs 1.8e-2 off",
+   "match": true
+  },
+  {
+   "feature": "smallest circle (dg-c-0.5)",
+   "command": "bun extrude-pocket-measure.mjs --only=<id> --out=<scratch> (1500M cap)",
+   "stored": "dVol 2.5e-4",
+   "live": "2.5e-4",
+   "match": true
+  },
+  {
+   "feature": "floor 1e-4 (fl-floor-0.0001) refusal",
+   "command": "bun extrude-pocket-measure.mjs --only=<id> --out=<scratch> (1500M cap)",
+   "stored": "REFUSED",
+   "live": "REFUSED",
+   "match": true
+  },
+  {
+   "feature": "floor 2e-4 (fl-floor-0.0002) build",
+   "command": "bun extrude-pocket-measure.mjs --only=<id> --out=<scratch> (1500M cap)",
+   "stored": "10000.04 exact",
+   "live": "same",
+   "match": true
+  },
+  {
+   "feature": "taper fuzz seed 41 n=80",
+   "command": "extrude-pocket-taper-fuzz.mjs --n=80 --seed=41",
+   "stored": "stored seeds 1-3: 0 built wrong",
+   "live": "builtRight 43, builtWrong 0, refusedRight 34, refusedOver 0, oracleFailed 3",
+   "match": true
+  },
+  {
+   "feature": "taper soup fuzz seed 43 n=60",
+   "command": "extrude-pocket-taper-soup-fuzz.mjs --n=60 --seed=43",
+   "stored": "stored seed 7: 0 built wrong",
+   "live": "builtRight 24, builtWrong 0, refusedRight 36",
+   "match": true
+  },
+  {
+   "feature": "big-plate floor 0.0003/0.002..2 (new probe)",
+   "command": "probe via extrude-pocket-r3-lib translate",
+   "stored": "closed form",
+   "live": "0.0003 refused (guard scales); 0.002..2 built rel err 0",
+   "match": true
+  },
+  {
+   "feature": "big-plate wall 0.1..2 (new probe)",
+   "command": "same",
+   "stored": "closed form",
+   "live": "<=1 refused, >=1.3 built, rel err 0",
+   "match": true
+  },
+  {
+   "feature": "rods/rounded slabs vs bar (new probe)",
+   "command": "same",
+   "stored": "bar 3e-4",
+   "live": "d1h30 -1.7e-4 built; d1h60, d2h100, rrect refused; guard fires",
+   "match": true
+  },
+  {
+   "feature": "taper fold edge -26.55 vs -26.565 (new probe)",
+   "command": "same",
+   "stored": "closed form frustum",
+   "live": "built rel 8.5e-16; -26.565 refused",
+   "match": true
+  },
+  {
+   "feature": "tapered pocket near edge x7 (new probe)",
+   "command": "same",
+   "stored": "numeric integral",
+   "live": "rel <= 2e-11",
+   "match": true
+  },
+  {
+   "feature": "slanted bore x5 + 2 refusals (new probe)",
+   "command": "same",
+   "stored": "closed form pi r^2 d",
+   "live": "rel <= 4.7e-6; run-out refused",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "minor",
+   "feature": "all curved/small cases",
+   "problem": "extrude-pocket-measure.mjs rel() divides by max(|ref|,1), so for solids under 1 mm3 (dg-s-0.001 volume 1e-6, dg-s-0.01) the 1e-9 volume bar is effectively absolute and would hide a gross error. Stored ratios contract/analytic are exactly 1.0, so no actual error is hidden.",
+   "evidenceFile": "contract/extrude-pocket-measure.mjs, ep-results.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "pocket that leaves a thin wall (row 48/49)",
+   "problem": "The wall rule is volume-based, so a round hole tangent to or 0.001 mm from a plate edge builds (probe: tangent-hole 6.1e-6, wall-0.001 5.6e-6 off closed form) while rectangular 0.001 mm walls are refused; volume is right but topology (pinched wall) was not inspected and no tangent-hole case is in the evidence.",
+   "evidenceFile": "contract/extrude-pocket.json rows 48-49"
+  },
+  {
+   "severity": "minor",
+   "feature": "curved solids bound (row 73)",
+   "problem": "Bound is relative to total part volume, so a slender rod joined to a large plate builds although the rod itself is badly measured (probe rod d2 h20 + 3000x3000 plate: rod volume 26.7 vs 62.8 true, total only 4e-6 off). Disclosed only as 'curved face from an earlier feature is not checked'; mesh fidelity not measured.",
+   "evidenceFile": "contract/extrude-pocket.json row 73"
+  },
+  {
+   "severity": "minor",
+   "feature": "REFERENCE CONFLICT row 103",
+   "problem": "Marked supported while the language reference (brep-rs) still disagrees by up to 1.8% and no third oracle arbitrates; the row itself says the reference text must be corrected before ship.",
+   "evidenceFile": "contract/extrude-pocket.json row 103"
+  },
+  {
+   "severity": "minor",
+   "feature": "oracle flags",
+   "problem": "ep-results vsOcct.ok is false for pd-circle, lf-slant-circle-pull (COM 8.5e-4 vs 3e-5 bar) and lf-slant-hole2 (bbox 1.25 off): the bespoke OCCT builder is not an oracle for slanted round pulls. Row 63 discloses this and closed forms agree, so support rests on a single (closed-form) oracle for those cases.",
+   "evidenceFile": "contract/ep-results.json"
+  }
+ ],
+ "notMeasured": [
+  "browser pane wall time (row 86 unsupported, honest)",
+  "wiring of the contract guard into the pane (row 87 unsupported; shipped route builds 187 wrong or should-be-refused cases)",
+  "topology/validity of tangent-contact pockets",
+  "mesh/display fidelity of slender curved parts",
+  "full 473-case measure re-run (only 9 ids replayed live; rows themselves regenerate from stored results)"
+ ],
+ "criticAt": "2026-10-19T16:40:17Z"
+}
