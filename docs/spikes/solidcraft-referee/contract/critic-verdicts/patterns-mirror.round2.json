@@ -1,0 +1,107 @@
+{
+ "group": "patterns-mirror",
+ "verdict": "not-accepted",
+ "summary": "Builder script reproduces patterns-mirror.json byte-for-byte and all 8 stored cases I replayed live match, but repeat(pocket) and mirror(pocket,{at}) silently lose a thin web of material between copies when the web is 0.15 mm or less (row 12 'tight web' only measured a 1 mm web; no guard covers webs). This is the same lost-sliver class the snap guard refuses at a 0.01 mm shift, and it is not refused or listed. Rows 25 and 76 are still open unrefused 'wrong' language defects.",
+ "rowsTotal": 86,
+ "rowsEvidenceChecked": 86,
+ "rowsReplayed": 8,
+ "replays": [
+  {
+   "feature": "r3-cone2-step8 (row 56)",
+   "command": "pm-run.mjs --r3 --only=...",
+   "stored": "OCCT 1034.4001 truck dVol 1.4e-5 faces 5/-/4",
+   "live": "same, rig FAIL on faces only as row says",
+   "match": true
+  },
+  {
+   "feature": "r3-sph2-step6 (row 56/57)",
+   "command": "same",
+   "stored": "OCCT 938.2890 truck dVol 1.6e-4",
+   "live": "same; closed form 938.3 confirmed by hand",
+   "match": true
+  },
+  {
+   "feature": "r3-sub-1e-9 (row 65)",
+   "command": "same",
+   "stored": "dVol 2.2e-11 faces 14/18/6",
+   "live": "same",
+   "match": true
+  },
+  {
+   "feature": "r3-sub--0.001 (row 65)",
+   "command": "same",
+   "stored": "OCCT 2999.8 dVol 1.5e-16",
+   "live": "same",
+   "match": true
+  },
+  {
+   "feature": "r3-sub-0.000001 (row 64)",
+   "command": "same",
+   "stored": "REFUSED sub-resolution gap 1.0e-6",
+   "live": "same sentence",
+   "match": true
+  },
+  {
+   "feature": "r3-mir-loft-tb (row 71)",
+   "command": "same",
+   "stored": "dVol 4.4e-15 dBbox 5.0e-9 (rig FAIL on bbox)",
+   "live": "same",
+   "match": true
+  },
+  {
+   "feature": "r3-mir-turned45-tb (row 73)",
+   "command": "same",
+   "stored": "dVol 3.4e-16",
+   "live": "same",
+   "match": true
+  },
+  {
+   "feature": "r3-adv-cyl-tb (row 75)",
+   "command": "same",
+   "stored": "dVol 1.7e-4",
+   "live": "same",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "blocking",
+   "feature": "row 12 (repeat of a pocket, 'tight web'), also mirror(pocket,{at}) rows 40/42/43 and hand-written second pocket",
+   "problem": "Silent wrong solid. Live probe through the contract translator with all guards on (plate 60x40x10, rect pocket 10x6x4, repeat step 10+web): web 0.0005 -> 23519.988 vs closed form 23520 (5.1e-7); 0.005 -> 23519.88 (5.1e-6); 0.05 -> 23518.8 (5.1e-5); 0.1 -> 23517.6 (1.0e-4); 0.15 -> 23516.4 (1.5e-4); 0.2 and above exact. The thin wall between the cuts is removed with no error and no sentence. Same with mirror(pk,'left-right',{at}) (web 0.05: 23518.8, web 0.15: 23516.4) and repeat count 3 (web 0.15: 23272.8 vs 23280). Hand-written second pocket gives the same. Rows only measured a 1 mm web (linear-pattern__holes-x5-tight); the snap guard (row 82) tests shift of same-size cuts, not the remaining web, so it does not fire. Probe: scratch critic-patterns-mirror/probe.mjs, cases4.json, cases5.json, cases6.json.",
+   "evidenceFile": "patterns-mirror.json row 12 / pm-cases.mjs linear-pattern__holes-x5-tight"
+  },
+  {
+   "severity": "major",
+   "feature": "rows 25 and 76 (status wrong)",
+   "problem": "repeatAround(pocket|hole,{angle:720|-360}) and the angle/(count-1) vs angle/count split between pocket/hole and whole solid/pad are live language defects with no guard and no refusalSentence; the shipped call still builds a solid that disagrees with FreeCAD / changes meaning silently. Labelled honestly, but not fixed or refused after a fix round.",
+   "evidenceFile": "patterns-mirror.json rows 25, 76; pm3-angle-probe.txt"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 4 / near-tangent curved copies",
+   "problem": "Spheres or cylinders actually apart by 1e-4..1e-3 mm (sphere d10 step 10.0001, 10.001; cylinder step 10.0001) are refused with 'meet only along an edge or at a point', which is untrue (they are apart). Safe over-refusal with a misleading sentence. Same for r2-sens-sphere-ring-d20-n12 (0.70 mm apart).",
+   "evidenceFile": "critic probe out1.txt"
+  },
+  {
+   "severity": "minor",
+   "feature": "curved bar 3e-4",
+   "problem": "Supported curved rows pass at up to 2.8e-4 against a 3e-4 bar (5% margin); the oracle (tessellated truck volume) cannot see a 3e-4 error, e.g. a lost lens or sliver on curved copies (curved copies are not judged by the gap or sum guards).",
+   "evidenceFile": "patterns-mirror.json rows 4, 56, 57"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 58",
+   "problem": "The shown time-budget sentence says '3 seconds' (demo limit); the product value is 600 s and no case of the suite reaches it, so the live refusal path at 600 s is demonstrated only with a 3 s limit.",
+   "evidenceFile": "pm-results-budget-demo.json"
+  }
+ ],
+ "notMeasured": [
+  "8 stored-not-replayed cases (r3-box-count-1000/1001/1e5, r3-around-count-1001/360, r3-pocket-count-40/60, r3-hole-count-60); I did not replay count 1000 either (resource)",
+  "repeatAround of 300 to 1000 boxes (r4-snap-around-*) has no record, as the row says",
+  "Thin web for repeatAround(pocket) at ring scale, and for hole() webs (hole probe hit a script edge refusal in my layout)",
+  "Torus rows (49-53) and the budget kill were not re-run by me; I did not re-run the fuzz files",
+  "Checked and found robust: turned-box repeat with step 10 at 0.0005..3 degrees (all exact or refused), tiny-angle turned box mirror (refused), different-size and web/overlap hand-written pockets of a mirrored near-plane (only webs <= 0.15 mm wrong)",
+  "pm-make-rows.py ran clean (all assertions pass) and rewrote patterns-mirror.json identically (cmp identical, git status clean)"
+ ],
+ "criticAt": "2026-10-20T06:09:43Z"
+}
