@@ -1,0 +1,22 @@
+{
+ "group": "sketch-constraints",
+ "verdict": "accepted",
+ "summary": "The oracle change is legitimate: images are still rule-checked, volume, bbox, centre of mass and face count are compared, and the independent closed forms for the cited fixtures (6000, 4160, 7500, 1539.38, 10392.30, 5196.15, 1225.22, 2796.02, 11141.59) agree with the stored builds. The slot-r6-L30-floating rough starts are all refused by the current guard, including 162 starts of my own at 6 amplitudes x 3 scales. About 1000 builds at my own seeds and scales (1e-3 to 1e5) found no solid that breaks its rules; the only builds my stricter judge flagged follow the drawn branch of an ambiguous rule set (unsigned length, no tangent mode).",
+ "rowsTotal": 139, "rowsEvidenceChecked": 139, "rowsReplayed": 12,
+ "replays": [
+  {"feature":"139 floating slot, critic start 0.035","command":"bun sketch-constraints-r5/floating-slot.mjs","stored":"unguarded 3634.80 WRONG, guard REFUSED (underconstrained)","live":"identical; 40 seeds at 0.035 and 0.15: guard REFUSED 40/40 each","match":true},
+  {"feature":"139 floating slot, own starts","command":"critic mine fs2.mjs: scales 1, 0.1, 20 x 9 amplitudes 0.0005..0.6 x 6 seeds","stored":"n/a","live":"162 of 162 refused (underconstrained), 0 built","match":true},
+  {"feature":"136/137 curved scale bar","command":"bun sketch-constraints-r5/scale.mjs","stored":"45 runs, 34 built, worst dv 1.6e-4","live":"45 runs identical (0 differences), worst dv 1.597e-4","match":true},
+  {"feature":"stored fixtures through the guard (rows 6,7,12,16,22,51 stored cases)","command":"bun sketch-constraints-r5/stored-smoke.mjs","stored":"MATCH / EXP-REFUSE per fixture","live":"all MATCH or the expected refusal; circle-circle-internal dv 7.1e-5, slot dv 3.7e-5","match":true},
+  {"feature":"rows 6,7,12,15,16,51,55 rough start + scale","command":"critic mine.mjs: 4 planar fixtures x scales 0.01,0.1,10,1000 x fracs 0.035,0.4 x 2 seeds","stored":"guarded 0 wrong","live":"0 wrong, 0 off-pose, some refusals at 0.4 and tiny scale","match":true},
+  {"feature":"all non-nested fixtures, rough starts at own seeds","command":"critic mine.mjs: 1 scale x fracs 0.15,0.4,0.8 x 12 seeds","stored":"0 built wrong","live":"0 rule violations; 8 builds differ from the stored solid, all follow the drawn branch of an ambiguous rule set (see defects)","match":true},
+  {"feature":"curved fixtures at own scales","command":"critic mine.mjs: 6 curved fixtures x scales 0.05,0.2,0.5,3,3000 x 2 seeds","stored":"curved bar 3e-4","live":"30 of 30 built right within 3e-4","match":true}
+ ],
+ "defects": [
+  {"severity":"minor","feature":"22 / 55 tangent circle-circle with no mode (gauntlet circle-circle-no-mode)","problem":"With no mode given, a 15% rough start (one seed) is built internal-tangent (volume 1225) where the stored fixture is external (2796). Both satisfy the rules and the drawing is ambiguous, but the guard builds without asking. Row evidence only covers 40 fixed seeds.","evidenceFile":"sketch-constraints-r5/out/sweeps.txt"},
+  {"severity":"minor","feature":"6/12/15 unsigned-length rule sets at 80% starts","problem":"Trapezoid with unsigned distance on a horizontal line (scale 10, 80% start) and an L-shape with an unsigned 12 mm edge (80% start) are built on the drawn branch, giving a different area from the stored fixture (5440 vs 4160; 6900 vs 7500). The rules hold exactly and the drawing points that way, so these are not wrong, but the evidence gives only 40 seeds and the sweeps' own oracle (mirror images only) would call them POSE.","evidenceFile":"sketch-constraints-r5/oracle.mjs"},
+  {"severity":"minor","feature":"136, 137","problem":"Per-run evidence lines contain the placeholder 'volume ?' for refused runs.","evidenceFile":"sketch-constraints.json"}
+ ],
+ "notMeasured": ["A full replay of the 77-case sweeps, perm-test, jitter, param-drags and probes jobs (my 600 s sweep over all fixtures x 6 scales x 4 amplitudes was killed by the timeout after one line; the smaller runs above replaced it).","Rows 62 and 133 (unsupported: SolveReport and profile list are not readable on this pkg) were not re-examined.","Independent verification of the 10% tie band in the oracle beyond the symmetric-slot mirror case."],
+ "criticAt": "2026-10-20"
+}
