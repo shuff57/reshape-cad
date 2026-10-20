@@ -1,0 +1,1 @@
+R5-frustum-wall-far-360                  PASS     occtV 55763.2696 | tr-occt dV 3.5e-5 dBb 1.3e-5 dCom 3.7e-8 F o/b/t 7/-/7 | brep-occt dV -     | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 750 cpu 994

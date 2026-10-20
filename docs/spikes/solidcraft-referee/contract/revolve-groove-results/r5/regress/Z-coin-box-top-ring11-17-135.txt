@@ -1,0 +1,1 @@
+Z-coin-box-top-ring11-17-135             PASS     occtV 30416.6373 | tr-occt dV 9.5e-6 dBb 0.0e+0 dCom 1.0e-6 F o/b/t 11/11/11 | brep-occt dV 7.8e-12      | ms 797 cpu 1134

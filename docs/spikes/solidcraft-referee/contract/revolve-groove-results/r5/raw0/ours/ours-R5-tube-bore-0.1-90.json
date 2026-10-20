@@ -1,0 +1,22 @@
+{
+ "id": "R5-tube-bore-0.1-90",
+ "outcome": "fail",
+ "volume": 73040.17498923738,
+ "faces": 8,
+ "bbox": [
+  -30,
+  -30,
+  0,
+  30.000000000000004,
+  30,
+  30.000000000037325
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,0],[30,0],[30,30],[10,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10.1,20],[20,20],[20,30],[10.1,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk2_1\",\"angle\":-90,\"operation\":\"cut\",\"targets\":[\"b_rev1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

@@ -1,0 +1,1 @@
+fzc2-26-boxC-front-flat-45               PASS     occtV 71995.5950 | tr-occt dV 1.2e-7 dBb 4.7e-16 dCom 4.6e-8 F o/b/t 8/8/8 | brep-occt dV 2.0e-16      | ms 272 cpu 444

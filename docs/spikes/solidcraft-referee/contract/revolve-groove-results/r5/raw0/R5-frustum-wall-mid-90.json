@@ -1,0 +1,159 @@
+[
+ {
+  "id": "R5-frustum-wall-mid-90",
+  "src": "const s = sketch('top'); s.polygon([[0,0],[30,0],[20,30],[0,30]]); const t = spin(s, 360); const r = sketch('top'); r.polygon([[10,14],[24.95,14],[24.95,20],[10,20]]); groove(r, t, 90);",
+  "translator": "raw0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R5-frustum-wall-mid-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "groove"
+   ],
+   "occt": {
+    "volume": 57378.35331601199,
+    "com": [
+     -0.46578750211895653,
+     -0.46578750027432714,
+     12.869807701290403
+    ],
+    "bbox": [
+     -30,
+     -30,
+     0,
+     30,
+     30,
+     30
+    ],
+    "faces": 9,
+    "area": 9927.811296021879,
+    "types": {
+     "plane": 6,
+     "cone": 1,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 6,
+     "cone": 1,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by rev1, or its surface pair is unsupported) -- groove1 is shown without it."
+   },
+   "ms": 883,
+   "load": [
+    2.4,
+    2.4
+   ],
+   "cpuMs": 1209,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): solidcraft refused it -- solid.revolve: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 4 curved faces (cylinder); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 4 curved faces (cylinder)"
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        30,
+        0
+       ],
+       [
+        20,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_rev1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): solidcraft refused it -- solid.revolve: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 4 curved faces (cylinder); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 4 curved faces (cylinder)",
+    "firstRefusal": "groove1 (groove): solidcraft refused it -- solid.revolve: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 4 curved faces (cylinder); nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone) and the tool has 4 curved faces (cylinder)"
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 958
+ }
+]

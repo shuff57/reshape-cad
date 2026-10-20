@@ -1,0 +1,1 @@
+R3-boxwall-flat-thin-270                 PASS     occtV 68506.8158 | tr-occt dV 2.2e-5 dBb 2.4e-15 dCom 4.2e-6 F o/b/t 15/15/15 | brep-occt dV 3.8e-11   | 2 BODIES   | ms 2166 cpu 2460

@@ -1,0 +1,1 @@
+R5-steppost-wall-0.3-90                  REFUSED  occtV 47435.6957 | tr-occt dV - dBb - dCom - F o/b/t 13/13/- | brep-occt dV 2.9e-13    | TRUCK REFUSED: groove1 (groove): the round wall of the ring touches a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.  | ms 320 cpu 566

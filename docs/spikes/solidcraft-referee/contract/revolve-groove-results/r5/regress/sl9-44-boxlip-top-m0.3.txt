@@ -1,0 +1,1 @@
+sl9-44-boxlip-top-m0.3                   PASS     occtV 69348.3592 | tr-occt dV 1.4e-6 dBb 0.0e+0 dCom 2.1e-7 F o/b/t 12/11/12 | brep-occt dV 4.6e-12      | ms 739 cpu 1003

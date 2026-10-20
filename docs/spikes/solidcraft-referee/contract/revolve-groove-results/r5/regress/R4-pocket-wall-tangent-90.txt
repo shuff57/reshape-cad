@@ -1,0 +1,1 @@
+R4-pocket-wall-tangent-90                REFUSED  occtV 70404.1162 | tr-occt dV - dBb - dCom - F o/b/t 17/17/- | brep-occt dV 2.4e-14    | TRUCK REFUSED: groove1 (groove): the round wall of the ring passes within 0.05 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.  | ms 34 cpu 126

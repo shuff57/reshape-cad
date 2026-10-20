@@ -1,0 +1,23 @@
+{
+ "id": "R5-steppost-wall-0.3-90",
+ "outcome": "built",
+ "volume": 47435.09371901102,
+ "faces": 13,
+ "bbox": [
+  -30,
+  -30.00000000000001,
+  0,
+  30,
+  30,
+  30.000000000000014
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "extrude",
+  "combine",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-30,-30],[30,-30],[30,30],[-30,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[0,0],\"diameter\":30}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_pull1\",\"tools\":[\"b_pull2\"],\"operation\":\"join\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk3_2\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[5,12],[14.7,12],[14.7,30],[5,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk3_2\",\"angle\":-90,\"operation\":\"cut\",\"targets\":[\"b_pull1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

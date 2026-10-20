@@ -1,0 +1,1 @@
+R5-post-offaxis-tangent-360              PASS     occtV 36921.5677 | tr-occt dV 6.9e-6 dBb 8.9e-16 dCom 1.2e-7 F o/b/t 7/7/7 | brep-occt dV 2.0e-16      | ms 4239 cpu 4584

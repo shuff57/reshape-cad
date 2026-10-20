@@ -1,0 +1,1 @@
+sl9-33-boxtan-top-p0.3                   PASS     occtV 68895.3003 | tr-occt dV 8.4e-6 dBb 7.1e-16 dCom 9.4e-7 F o/b/t 16/16/16 | brep-occt dV 6.3e-13      | ms 1587 cpu 1900

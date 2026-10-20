@@ -1,0 +1,1 @@
+R5-tube-bore-flush-360                   PASS     occtV 65973.4457 | tr-occt dV 1.1e-5 dBb 1.2e-16 dCom 1.9e-7 F o/b/t 8/8/8 | brep-occt dV 2.2e-16      | ms 7573 cpu 7929

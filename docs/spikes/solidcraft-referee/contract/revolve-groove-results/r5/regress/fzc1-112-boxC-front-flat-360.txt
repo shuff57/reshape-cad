@@ -1,0 +1,1 @@
+fzc1-112-boxC-front-flat-360             PASS     occtV 70875.3349 | tr-occt dV 1.7e-6 dBb 4.7e-16 dCom 9.5e-8 F o/b/t 17/16/16 | brep-occt dV 2.1e-15      | ms 1610 cpu 1844

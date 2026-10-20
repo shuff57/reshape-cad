@@ -333,11 +333,43 @@ export function grazing(p, fr, meas, s = GRAZE_MM, cmds = null) {
   if (sh.kind === 'any') {
     for (const f of candidatePlanes(cmds, a)) for (const t of [lo, hi]) { const d = Math.abs(t - f); if (d > 1e-9 && d <= s && f > b[a] + 1e-9 && f < b[a + 3] - 1e-9) return { kind: 'lip?', gap: d, what: 'the ring end' }; }
   }
-  // near-tangent round wall against a flat face parallel to the axis (box only)
-  if (sh.kind === 'box') {
+  // Round 5: the ring's round walls (rmin, rmax about the ring axis) against the part's own round walls and against flat faces parallel to the axis.
+  // A ring wall that stops 0 < gap <= s short of a round wall of the part leaves a thin cylindrical lip (measured: post d40, ring outer r 19.9 / 19.95: dVol 4.5e-3 / 1.8e-3, faces 5 not 7).
+  // Certified cylinder: exact circle against circle. Any other part with a round face: every radius its own commands name (and half of every number, and the box half extents) is a possible wall radius about the box centre, and about the ring axis; this can only over-refuse.
+  // Exact concentric coincidence (gap 0, the ring wall IS the part wall) is flush and fine; exact tangency of off-centre circles is refused.
+  const walls = [rmin, rmax].filter((r) => r > 0);
+  const circleGap = (off, R, rho) => Math.min(Math.abs(off - Math.abs(R - rho)), Math.abs(off - (R + rho)));
+  const axialTouch = hi >= b[a] - 1e-9 && lo <= b[a + 3] + 1e-9;
+  if (axialTouch && sh.kind === 'cylinder') {
+    const off = Math.hypot(o[k1] - sh.centre[k1], o[k2] - sh.centre[k2]);
+    for (const rho of walls) {
+      const g = circleGap(off, sh.R, rho);
+      if (off <= 1e-9 && rho > sh.R + 1e-9) continue;   // concentric ring wall OUTSIDE the post wall: nothing of the part is left on that side, so there is no thin wall
+      if (g <= s && !(off <= 1e-9 && Math.abs(sh.R - rho) <= 1e-9)) return { kind: 'tangent', gap: g, what: 'the ring wall', round: true };
+    }
+  }
+  if (axialTouch && sh.kind === 'any' && meas?.faceTypes && Object.keys(meas.faceTypes).some((k) => k !== 'plane' && meas.faceTypes[k] > 0)) {
+    const cx = [(b[k1] + b[k1 + 3]) / 2, (b[k2] + b[k2 + 3]) / 2];
+    const off = Math.hypot(o[k1] - cx[0], o[k2] - cx[1]);
+    const Rs = new Set([(b[k1 + 3] - b[k1]) / 2, (b[k2 + 3] - b[k2]) / 2]);
+    for (const n of candidatePlanes(cmds, a)) Rs.add(Math.abs(n));
+    for (const c of cmds ?? []) { const w = (v) => { if (typeof v === 'number' && Number.isFinite(v)) { Rs.add(Math.abs(v)); Rs.add(Math.abs(v) / 2); } else if (Array.isArray(v)) v.forEach(w); else if (v && typeof v === 'object') Object.values(v).forEach(w); }; w(c.params ?? {}); }
+    for (const R of Rs) {
+      if (!(R > 0)) continue;
+      for (const rho of walls) {
+        const g = circleGap(off, R, rho);
+        if (g <= s && !(off <= 1e-9 && Math.abs(R - rho) <= 1e-9)) return { kind: 'tangent', gap: g, what: 'the ring wall', round: true };
+      }
+    }
+  }
+  // near-tangent round wall against a flat face parallel to the axis (box; round 5: any part, with the faces its commands could have put there)
+  if (sh.kind === 'box' || sh.kind === 'any') {
     for (const k of [k1, k2]) {
       const kk = k === k1 ? k2 : k1;
-      for (const f of [b[k], b[k + 3]]) {
+      // inner flats from the part's own commands only when no spin built part of it (a spun part has no flat face parallel to its axis, and the numbers of its profile would only produce false alarms)
+      const spun = (cmds ?? []).some((c) => /revolve/i.test(c.command ?? ''));
+      const flats = sh.kind === 'any' && !spun ? [b[k], b[k + 3], ...candidatePlanes(cmds, k).filter((v) => v > b[k] + 1e-9 && v < b[k + 3] - 1e-9)] : [b[k], b[k + 3]];
+      for (const f of flats) {
         const pd = Math.abs(f - o[k]);
         const foot = o[kk] >= b[kk] - 1e-9 && o[kk] <= b[kk + 3] + 1e-9;
         const axial = hi >= b[a] - 1e-9 && lo <= b[a + 3] + 1e-9;
@@ -409,14 +441,16 @@ export function guardPlan(raw, f, st, ctx) {
     if (on('G9') && meas && fr && ringSealed(p, fr, meas)) return { refusal: `${L}the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part.`, guard };
     const gz = on('G10') && meas && fr ? grazing(p, fr, meas, GRAZE_MM, st.accepted) : null;
     if (gz) {
-      const what = gz.kind === 'lip'
+      const what = gz.round
+        ? (gz.gap < 5e-4 ? 'the round wall of the ring touches a round wall of the part without lying on it, which cannot be built reliably here' : `the round wall of the ring passes within ${num(gz.gap)} mm of a round wall of the part, which leaves a wall thinner than ${GRAZE_MM} mm that cannot be built reliably here`)
+        : gz.kind === 'lip'
         ? `the ring ends ${num(gz.gap)} mm short of a face of the part, which leaves a wall thinner than ${GRAZE_MM} mm that cannot be built reliably here`
         : gz.kind === 'lip?'
           ? `the ring ends ${num(gz.gap)} mm short of what may be a flat face inside the part, which could leave a wall thinner than ${GRAZE_MM} mm that cannot be built reliably here`
           : gz.gap < 5e-4
             ? 'the round wall of the ring touches a flat face of the part, which cannot be built reliably here'
             : `the round wall of the ring passes within ${num(gz.gap)} mm of a flat face of the part, which cannot be built reliably here`;
-      return { refusal: `${L}${what}; move the ring edge onto that face or at least ${GRAZE_MM} mm away from it.`, guard };
+      return { refusal: `${L}${what}; ${gz.round ? 'make the ring wall exactly flush with that wall or at least' : 'move the ring edge onto that face or at least'} ${GRAZE_MM} mm away from it.`, guard };
     }
     const g7 = on('G7') && meas && fr ? profilePlaneOnFlatFace(fr, meas.bbox, meas.faceTypes) : null;
     if (g7) {

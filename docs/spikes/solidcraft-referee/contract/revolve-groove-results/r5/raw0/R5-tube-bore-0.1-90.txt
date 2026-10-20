@@ -1,0 +1,1 @@
+R5-tube-bore-0.1-90                      FAIL     occtV 73057.8157 | tr-occt dV 2.4e-4 dBb 1.2e-12 dCom 2.5e-5 F o/b/t 9/9/8 | brep-occt dV 3.0e-13      | ms 4959 cpu 5437

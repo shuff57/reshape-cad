@@ -1,0 +1,1 @@
+sl9-81-boxlip-top-m1                     PASS     occtV 64244.4537 | tr-occt dV 7.2e-6 dBb 1.8e-16 dCom 1.2e-6 F o/b/t 12/11/11 | brep-occt dV 3.9e-12      | ms 758 cpu 1028

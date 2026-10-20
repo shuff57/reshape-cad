@@ -1,0 +1,1 @@
+R5-tube-outer-0.1-360                    FAIL     occtV 54380.6547 | tr-occt dV 3.5e-3 dBb 4.7e-16 dCom 1.3e-15 F o/b/t 8/8/8 | brep-occt dV 2.7e-16      | ms 5526 cpu 5779

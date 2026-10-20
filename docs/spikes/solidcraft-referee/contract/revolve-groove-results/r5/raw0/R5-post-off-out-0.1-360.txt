@@ -1,0 +1,1 @@
+R5-post-off-out-0.1-360                  PASS     occtV 31326.0023 | tr-occt dV 4.0e-5 dBb 8.9e-16 dCom 8.6e-7 F o/b/t 8/7/7 | brep-occt dV 6.6e-12      | ms 6249 cpu 6648

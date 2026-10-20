@@ -1,0 +1,1 @@
+R5-steppost-wall-0.05-360                FAIL     occtV 40782.9570 | tr-occt dV 1.7e-3 dBb 4.7e-16 dCom 3.2e-4 F o/b/t 12/12/10 | brep-occt dV 1.8e-16      | ms 1830 cpu 2180

@@ -1,0 +1,1 @@
+Z-groove-box-front-ring11-17-180         PASS     occtV 30917.4106 | tr-occt dV 3.1e-6 dBb 1.8e-16 dCom 3.0e-7 F o/b/t 16/16/17 | brep-occt dV 4.2e-15      | ms 700 cpu 930

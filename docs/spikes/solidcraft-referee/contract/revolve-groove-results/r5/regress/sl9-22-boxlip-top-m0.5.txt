@@ -1,0 +1,1 @@
+sl9-22-boxlip-top-m0.5                   PASS     occtV 67580.9155 | tr-occt dV 1.5e-6 dBb 1.8e-16 dCom 2.3e-7 F o/b/t 12/11/11 | brep-occt dV 2.8e-12      | ms 848 cpu 1090

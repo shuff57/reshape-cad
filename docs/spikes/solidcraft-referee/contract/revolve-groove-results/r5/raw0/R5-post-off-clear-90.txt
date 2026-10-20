@@ -1,0 +1,1 @@
+R5-post-off-clear-90                     PASS     occtV 36244.1617 | tr-occt dV 3.9e-5 dBb 8.9e-16 dCom 4.6e-7 F o/b/t 8/8/8 | brep-occt dV 4.4e-13      | ms 2798 cpu 3187

@@ -1,0 +1,1 @@
+R4-frustum-lip03-180                     PASS     occtV 50359.7302 | tr-occt dV 2.2e-5 dBb 1.3e-5 dCom 5.2e-7 F o/b/t 8/-/8 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by rev1, or its surface pair is unsupported) -- groove1 is shown without it. | ms 1846 cpu 2216

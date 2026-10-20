@@ -1,0 +1,127 @@
+[
+ {
+  "id": "R5-sphere-wall-0.05-90",
+  "src": "const t = sphere(60); const r = sketch('top'); r.polygon([[10,-5],[29.95,-5],[29.95,5],[10,5]]); groove(r, t, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sphere",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R5-sphere-wall-0.05-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sphere",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 106885.0346668218,
+    "com": [
+     -0.7982240237148679,
+     -0.7982240223349777,
+     -2.7740272945796487e-15
+    ],
+    "bbox": [
+     -30,
+     -30,
+     -30,
+     30,
+     30,
+     30
+    ],
+    "faces": 7,
+    "area": 12935.996955955554,
+    "types": {
+     "sphere": 1,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "components": {
+     "sphere": 1,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by ball1, or its surface pair is unsupported) -- groove1 is shown without it."
+   },
+   "ms": 2075,
+   "load": [
+    2.5,
+    2.5
+   ],
+   "cpuMs": 2383,
+   "truckFeatures": [
+    {
+     "id": "ball1",
+     "kind": "sphere",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): the round wall of the ring passes within 0.05 mm of a round wall of the part, which leaves a wall thinner than 0.25 mm that cannot be built reliably here; make the ring wall exactly flush with that wall or at least 0.25 mm away from it.",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": null,
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 1,
+       "headTypes": {
+        "sphere": 1
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": false,
+       "rOuter": 29.95,
+       "nearest": 30.000000000000004,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.sphere",
+     "params": {
+      "radius": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_ball1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): the round wall of the ring passes within 0.05 mm of a round wall of the part, which leaves a wall thinner than 0.25 mm that cannot be built reliably here; make the ring wall exactly flush with that wall or at least 0.25 mm away from it.",
+    "firstRefusal": "groove1 (groove): the round wall of the ring passes within 0.05 mm of a round wall of the part, which leaves a wall thinner than 0.25 mm that cannot be built reliably here; make the ring wall exactly flush with that wall or at least 0.25 mm away from it."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 2153
+ }
+]

@@ -1,0 +1,1 @@
+R5-post-off-tan-360                      PASS     occtV 31415.9265 | tr-occt dV 8.5e-6 dBb 3.5e-14 dCom 4.9e-8 F o/b/t 8/-/7 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- groove1 is shown without it. | ms 15747 cpu 16217

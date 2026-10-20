@@ -1,0 +1,1 @@
+R5-post-rim-0.05-360                     FAIL     occtV 36536.6440 | tr-occt dV 1.8e-3 dBb 8.9e-16 dCom 2.8e-4 F o/b/t 7/7/5 | brep-occt dV 0.0e+0      | ms 6084 cpu 6416

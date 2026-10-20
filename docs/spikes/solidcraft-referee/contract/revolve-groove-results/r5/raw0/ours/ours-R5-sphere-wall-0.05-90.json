@@ -1,0 +1,22 @@
+{
+ "id": "R5-sphere-wall-0.05-90",
+ "outcome": "fail",
+ "volume": 106871.86635637889,
+ "faces": 6,
+ "bbox": [
+  -30.000000000000004,
+  -30.000000000000004,
+  -30.000000000000004,
+  30,
+  30.000000000000007,
+  30.000000000000004
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sphere",
+  "sketch",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"solid.sphere\",\"params\":{\"radius\":30,\"center\":[0,0,0],\"body_name\":\"b_ball1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,-5],[29.95,-5],[29.95,5],[10,5]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-90,\"operation\":\"cut\",\"targets\":[\"b_ball1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

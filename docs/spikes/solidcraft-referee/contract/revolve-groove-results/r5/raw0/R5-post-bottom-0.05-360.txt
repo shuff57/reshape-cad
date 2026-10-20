@@ -1,0 +1,1 @@
+R5-post-bottom-0.05-360                  FAIL     occtV 30209.4921 | tr-occt dV 1.8e-3 dBb 8.9e-16 dCom 3.6e-4 F o/b/t 7/7/5 | brep-occt dV 3.6e-16      | ms 5849 cpu 6216

@@ -1,0 +1,1 @@
+R5-frustum-wall-low-360                  FAIL     occtV 58939.8085 | tr-occt dV 5.6e-5 dBb 3.3e-3 dCom 1.6e-6 F o/b/t 8/-/5 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by rev1, or its surface pair is unsupported) -- groove1 is shown without it. | ms 7567 cpu 7961

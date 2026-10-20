@@ -1,0 +1,28 @@
+{
+ "group": "revolve-groove",
+ "round": 2,
+ "changes": [
+  {"file": "revolve-groove.guard.mjs", "what": "grazing() (G10) extended: (1) round-wall rule: ring wall circle(s) against the part's round wall. Certified cylinder: exact circle/circle gap (concentric flush, or concentric ring wall outside the part wall, passes; any other gap <= 0.25 mm and any off-centre tangency refused). Any other part with a round face (tube, frustum, stepped part with a post, sphere, ...): every number in the part's own commands, half of each, and half the bbox extents are candidate wall radii about the ring axis and the box centre (can only over-refuse). (2) flat-wall rule no longer box-only: box sides for any part, plus command-derived plane positions for parts that were not spun. New plain sentences for the round-wall case (passes within X mm of a round wall / touches a round wall without lying on it) with a matching tail."},
+  {"file": "revolve-groove-rig/cases-r5-wall.mjs", "what": "new: 54+ probe cases (post, tube, frustum, stepped post, sphere, off-centre post, front-plane ring; gaps 0.05/0.1/0.2/0.3, flush, past the wall)."},
+  {"file": "revolve-groove-rig/rg5-batch.sh", "what": "copy of rg3-batch.sh with MemoryMax=1500M."},
+  {"file": "revolve-groove-rig/rg5-make-regress.mjs, cases-r5-regress.mjs", "what": "generator and generated case list: all 260 groove cases that built under the round-4 guard, replayed under the new guard."},
+  {"file": "revolve-groove-rig/make-rows-r3.mjs", "what": "loads r5 results; new refused row for round walls of any part (asserts every wrong-as-shipped case is refused, every built case PASS, sentence form); GL2 supported row no longer claims the pocket tangent cases and its 'not refused by any guard' sentence replaced; older graze row sentence updated; spin-fuzz bar disclosure made explicit (20 of 200 members would fail the plain 3e-4 bar)."},
+  {"file": "revolve-groove.json", "what": "rebuilt by make-rows-r3.mjs: 45 rows, lint 0 failures."},
+  {"file": "revolve-groove-results/r5/{g0,raw0,regress}, regress-before.json", "what": "round-5 evidence."}
+ ],
+ "defectsResolved": [
+  {"defect": "blocking: ring wall 0.05-0.1 mm short of a post's round wall builds silently wrong", "how": "Round-wall rule in G10. Without the guard 23 of the R5 probes build wrong (post, tube, stepped part, sphere, front-plane ring); with the guard none builds wrong, all builds PASS vs live OCCT. The critic's three cases are refused with a plain sentence. Neighbouring variants (tube bore/outer, stepped post, sphere, off-centre post, front-plane ring) probed."},
+  {"defect": "minor: row 32 said near-tangent round walls on non-box parts are unguarded", "how": "Flat-wall rule extended; row text replaced; the five pocket cases that used to PASS are now refused and no longer claimed supported."},
+  {"defect": "minor: curved bar fitted after the spin-fuzz data", "how": "Not tightened; disclosed in the spin row: 20 of 200 members exceed the plain 3e-4 bar (worst 7.6e-4), justified only by the exact Pappus oracle."}
+ ],
+ "defectsOpen": [
+  {"defect": "cone wall of a spun part not modelled", "why": "A ring wall near a frustum cone surface is caught only when profile numbers match; the 2 frustum probes wrong as shipped (0.2 mm from the bottom edge) are refused by the lip rule, and ring walls near the cone mid-surface are refused by the cost class in all probes, but there is no geometric guard. Stated in the row."},
+  {"defect": "over-refusal", "why": "Off-centre rings within 0.25 mm of a post circle and spurious command-number radii are refused although the kernel built 4 probes correctly; disclosed in the row."}
+ ],
+ "rowsDowngraded": ["R4 pocket-wall-tangent (3 cases) and pocket-floor-lip03 (2 cases): supported -> refused (no longer claimed)"],
+ "rigNotesForRIGmd": "Round 5: guard rg5 round-wall rule. Probes: bash revolve-groove-rig/rg5-batch.sh ./cases-r5-wall.mjs <g0|raw0> revolve-groove-results/r5/<g0|raw0> 150 <ids> (1500M cap). Regression: bun revolve-groove-rig/rg5-make-regress.mjs then rg5-batch.sh ./cases-r5-regress.mjs g0 revolve-groove-results/r5/regress 150 <ids>. Rows: bun revolve-groove-rig/make-rows-r3.mjs; bun revolve-groove-rig/lint-rows.mjs.",
+ "commands": {
+  "rebuildRows": "bun docs/spikes/solidcraft-referee/contract/revolve-groove-rig/make-rows-r3.mjs && bun docs/spikes/solidcraft-referee/contract/revolve-groove-rig/lint-rows.mjs",
+  "replay": "SOLIDCRAFT_REFEREE_PKG=<pkg> bash docs/spikes/solidcraft-referee/contract/revolve-groove-rig/rg5-batch.sh ./cases-r5-wall.mjs g0 <outdir> 150 R5-post-top-0.1-360"
+ }
+}

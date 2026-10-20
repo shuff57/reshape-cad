@@ -1,0 +1,1 @@
+R5-post-offaxis-tangent-90               PASS     occtV 37504.7258 | tr-occt dV 4.1e-5 dBb 8.9e-16 dCom 3.7e-8 F o/b/t 8/8/9 | brep-occt dV 9.8e-14      | ms 2103 cpu 2446

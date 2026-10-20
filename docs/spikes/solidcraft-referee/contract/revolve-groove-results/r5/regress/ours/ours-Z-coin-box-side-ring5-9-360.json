@@ -1,0 +1,22 @@
+{
+ "id": "Z-coin-box-side-ring5-9-360",
+ "outcome": "built",
+ "volume": 31296.35836930889,
+ "faces": 10,
+ "bbox": [
+  -20,
+  -20,
+  -1.697626750285508e-8,
+  20,
+  20,
+  20
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "sketch",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,10],\"body_name\":\"b_box1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[0,0.9563047559630354,0.29237170472273677],\"y_dir\":[1,0,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[5,-4],[9,-4],[9,4],[5,4]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

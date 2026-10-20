@@ -1,0 +1,1 @@
+R4-frustum-sealed-135                    PASS     occtV 57334.0659 | tr-occt dV 2.2e-5 dBb 1.3e-5 dCom 1.8e-7 F o/b/t 9/-/9 | brep-occt dV -     | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 961 cpu 1268

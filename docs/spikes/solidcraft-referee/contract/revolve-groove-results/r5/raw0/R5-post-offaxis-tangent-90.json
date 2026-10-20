@@ -1,0 +1,260 @@
+[
+ {
+  "id": "R5-post-offaxis-tangent-90",
+  "src": "const k = sketch('top'); k.circle(40, { at: [0, 0] }); const t = extrude(k, 30); const r = sketch('top'); r.polygon([[0.5,20],[5,20],[5,30],[0.5,30]]); groove(r, t, 90);",
+  "translator": "raw0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R5-post-offaxis-tangent-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "groove"
+   ],
+   "occt": {
+    "volume": 37504.725797640334,
+    "com": [
+     -0.011098601290331828,
+     -0.011098601108480837,
+     14.948170252867284
+    ],
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 8,
+    "area": 6459.579105153305,
+    "types": {
+     "cylinder": 3,
+     "plane": 5
+    },
+    "components": {
+     "cylinder": 3,
+     "plane": 5
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 37504.72579763665,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     30
+    ],
+    "faces": 8,
+    "dVol": 9.816455058600773e-14,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 2103,
+   "load": [
+    2.2,
+    2.2
+   ],
+   "cpuMs": 2446,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "built",
+     "pick": null
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.circle.center",
+     "params": {
+      "center": [
+       0,
+       0
+      ],
+      "diameter": 40
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk2_1",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0.5,
+        20
+       ],
+       [
+        5,
+        20
+       ],
+       [
+        5,
+        30
+       ],
+       [
+        0.5,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk2_1",
+      "angle": -90,
+      "operation": "cut",
+      "targets": [
+       "b_pull1"
+      ]
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": null,
+    "faceTypes": {
+     "cylinder": 4,
+     "plane": 5
+    },
+    "occtTypes": {
+     "cylinder": 3,
+     "plane": 5
+    },
+    "occtComponents": {
+     "cylinder": 3,
+     "plane": 5
+    },
+    "bigCylinderComponents": 1,
+    "faceKeys": {
+     "cylinder": "truck-splits-cylinder-patch-over-180deg",
+     "plane": "equal"
+    },
+    "volume": 37503.176987446845,
+    "bbox": [
+     -20,
+     -20.000000000000018,
+     0,
+     20,
+     20,
+     30.000000000000014
+    ],
+    "com": [
+     -0.01109738327165457,
+     -0.011097383271667175,
+     14.948172633157359
+    ],
+    "faces": 9,
+    "kernelFaces": 11,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000041296400934818114,
+    "dBbox": 8.881784197001252e-16,
+    "dCom": 3.7173885544034736e-8,
+    "tol": 0.0003,
+    "faceKey": "truck-splits-cylinder-patch-over-180deg",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "caseMs": 2164
+ }
+]

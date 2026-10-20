@@ -1,0 +1,1042 @@
+{
+ "X-groove-box-corner-ring-270": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "X-groove-box-corner-ring-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "X-groove-box-corner-ring-90": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "X-groove-box-front-ring-135": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "X-groove-box-side-ring-225": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "X-groove-box-top-slot-through-top-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "X-groove-box-top-slot-through-top-90": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "X-groove-from-axis-to-wall-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "X-groove-outer-overhang-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "X-groove-through-height-180": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "X-groove-through-height-360-splits": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "X-groove-through-height-90": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "X-groove-top-offset3-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Y-groove-negside-box-corner-270": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Y-groove-negside-box-corner-90": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-coin-box-front-ring11-17-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-coin-box-front-ring5-9-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-coin-box-side-ring11-17-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-coin-box-side-ring5-9-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-coin-box-top-ring11-17-135": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-coin-box-top-ring11-17-270": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-coin-box-top-ring11-17-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-coin-box-top-ring5-9-135": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-coin-box-top-ring5-9-270": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-coin-box-top-ring5-9-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-front0-180-liftn3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-front0-270-lift1": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-front0-270-lift3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-front0-270-liftn3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-front0-360-lift1": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-front0-360-lift3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-front0-360-liftn3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-front0-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-front0-90-liftn3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-front4-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side-4-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-180-lift1": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-180-lift3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-180-liftn3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-270-lift1": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-270-lift3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-270-liftn3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-360-lift1": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-360-lift3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-360-liftn3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-90-lift1": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-90-lift3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-box-side0-90-liftn3": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-straddle-outer-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-straddle-top-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-crit-through-ring-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-1": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-2": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-180-turn100": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-180-turn130": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-180-turn160": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-180-turn20": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-180-turn40": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-180-turn60": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-180-turn80": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-180": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-270": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-360-turn100": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-360-turn130": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-360-turn160": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-360-turn20": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-360-turn40": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-360-turn60": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-360-turn80": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-front-ring11-17-90": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-side-ring11-17-180": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-side-ring11-17-270": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-side-ring11-17-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-side-ring11-17-90": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-split-180": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "Z-groove-box-split-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "groove-coaxial-360": {
+  "dir": "r3/old-g0",
+  "outcome": "PASS"
+ },
+ "R3-boxwall-flat-180": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-boxwall-flat-270": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-boxwall-flat-360": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-boxwall-flat-45": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-boxwall-flat-90": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-boxwall-flat-thin-180": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-boxwall-flat-thin-270": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-boxwall-flat-thin-360": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-boxwall-flat-thin-45": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-boxwall-flat-thin-90": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-cost-post-coaxial-360-rep1": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-cost-post-coaxial-360-rep2": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-cost-post-coaxial-360-rep3": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-datum-groove-box-front-360": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-datum-groove-box-front-90": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-datum-groove-top-lift-360": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-ground-front-270-lift1": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-ground-front-360-lift1": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-ground-front-360-nudge-offset-3": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-ground-front-360": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-ground-hang-below-360": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-ground-side-180-lift1": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-ground-side-270-lift1": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-ground-side-360-lift1": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-ground-side-360": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-ground-side-90-lift1": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-sealed-bigring-180": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-sealed-bigring-270": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-sealed-bigring-360": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-sealed-bigring-90": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-tilt15-box-90": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-tilt30-box-90": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-tilt45-box-90": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-tilt90-post-360": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-tilt90-post-90": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-tiltwall15-box-90": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-tiltwall30-box-90": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "R3-tiltwall45-box-90": {
+  "dir": "r3/r3-g0",
+  "outcome": "PASS"
+ },
+ "fzc1-1-boxC-side-flat-135": {
+  "dir": "r3/fz1-g0",
+  "outcome": "PASS"
+ },
+ "fzc1-112-boxC-front-flat-360": {
+  "dir": "r3/fz1-g0",
+  "outcome": "PASS"
+ },
+ "fzc1-18-boxC-top-flat-180": {
+  "dir": "r3/fz1-g0",
+  "outcome": "PASS"
+ },
+ "fzc1-38-boxC-side-flat-135": {
+  "dir": "r3/fz1-g0",
+  "outcome": "PASS"
+ },
+ "fzc1-49-boxG-top-flat-360": {
+  "dir": "r3/fz1-g0",
+  "outcome": "PASS"
+ },
+ "fzc1-52-boxG-side-flat-360": {
+  "dir": "r3/fz1-g0",
+  "outcome": "PASS"
+ },
+ "fzc1-64-boxG-front-flat-360": {
+  "dir": "r3/fz1-g0",
+  "outcome": "PASS"
+ },
+ "fzc1-69-post-top-flat-360": {
+  "dir": "r3/fz1-g0",
+  "outcome": "PASS"
+ },
+ "fzc1-8-boxG-top-flat-360": {
+  "dir": "r3/fz1-g0",
+  "outcome": "PASS"
+ },
+ "fzc1-83-boxC-front-flat-180": {
+  "dir": "r3/fz1-g0",
+  "outcome": "PASS"
+ },
+ "fzc1-9-boxG-front-flat-360": {
+  "dir": "r3/fz1-g0",
+  "outcome": "PASS"
+ },
+ "fzc2-118-post-top-flat-45": {
+  "dir": "r3/fz2-g0",
+  "outcome": "PASS"
+ },
+ "fzc2-138-boxC-top-flat-270": {
+  "dir": "r3/fz2-g0",
+  "outcome": "PASS"
+ },
+ "fzc2-148-boxC-front-flat-135": {
+  "dir": "r3/fz2-g0",
+  "outcome": "PASS"
+ },
+ "fzc2-26-boxC-front-flat-45": {
+  "dir": "r3/fz2-g0",
+  "outcome": "PASS"
+ },
+ "fzc2-44-post-top-flat-45": {
+  "dir": "r3/fz2-g0",
+  "outcome": "PASS"
+ },
+ "fzc2-66-boxG-top-flat-135": {
+  "dir": "r3/fz2-g0",
+  "outcome": "PASS"
+ },
+ "fzc2-83-post-top-flat-360": {
+  "dir": "r3/fz2-g0",
+  "outcome": "PASS"
+ },
+ "fzc2-88-boxC-top-flat-270": {
+  "dir": "r3/fz2-g0",
+  "outcome": "PASS"
+ },
+ "fzc2-99-boxG-top-flat-360": {
+  "dir": "r3/fz2-g0",
+  "outcome": "PASS"
+ },
+ "fzc3-11-post-top-flat-135": {
+  "dir": "r3/fz3-g0",
+  "outcome": "PASS"
+ },
+ "fzc3-33-boxC-top-flat-270": {
+  "dir": "r3/fz3-g0",
+  "outcome": "PASS"
+ },
+ "fzc3-39-post-top-flat-360": {
+  "dir": "r3/fz3-g0",
+  "outcome": "PASS"
+ },
+ "sl9-10-postlip-p1": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-104-boxtan-side-m1": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-107-postlip-p0.3": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-112-boxtan-side-p0.3": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-115-boxlip-side-m1": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-12-boxlip-top-m0": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-14-boxlip-top-m0": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-18-boxlip-top-p0.3": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-22-boxlip-top-m0.5": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-23-boxlip-top-p0.3": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-25-postlip-p0.3": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-33-boxtan-top-p0.3": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-40-postlip-m0.5": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-43-boxlip-top-m0.3": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-44-boxlip-top-m0.3": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-49-postlip-m0.5": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-53-postlip-m0.5": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-58-boxtan-top-p0.5": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-75-boxlip-side-p0.3": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-77-boxtan-top-m1": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-81-boxlip-top-m1": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-82-boxlip-side-p0.3": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-89-boxlip-top-m0.3": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-9-boxlip-top-m0.5": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-92-boxlip-side-m0": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-96-postlip-p1": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "sl9-99-boxlip-top-m0": {
+  "dir": "r3/sl-g0",
+  "outcome": "PASS"
+ },
+ "R4-frustum-lip03-180": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-frustum-lip03-90": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-frustum-sealed-135": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-frustum-sealed-180": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-frustum-sealed-200": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-frustum-sealed-225": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-frustum-sealed-270": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-frustum-sealed-315": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-frustum-sealed-45": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-frustum-sealed-90": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-frustum-tangent-90": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-pocket-floor-lip03-360": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-pocket-floor-lip03-90": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-pocket-wall-tangent-360": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-pocket-wall-tangent-90": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-pocket-wall-tangent-exact-90": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-sphere-sealed-135": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-sphere-sealed-180": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-sphere-sealed-225": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-sphere-sealed-270": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-sphere-sealed-315": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-sphere-sealed-45": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-sphere-sealed-90": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-step-sealed-135": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-step-sealed-180": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-step-sealed-200": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-step-sealed-225": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-step-sealed-270": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-step-sealed-315": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-step-sealed-360": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-step-sealed-45": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "R4-step-sealed-90": {
+  "dir": "r4-graze",
+  "outcome": "PASS"
+ },
+ "fzc21-11-boxC-side-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-110-boxG-top-cone-135": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-116-boxC-top-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-120-boxG-top-cone-90": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-122-boxG-top-cone-90": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-130-post-top-cone-360": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-131-post-top-cone-360": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-133-boxG-top-cone-180": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-136-post-top-cone-360": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-138-boxG-top-cone-180": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-14-post-top-cone-360": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-146-boxG-top-cone-135": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-150-boxG-top-cone-90": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-158-boxG-top-cone-180": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-166-boxC-top-cone-180": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-167-boxG-top-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-168-boxC-side-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-17-boxC-top-cone-180": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-172-boxG-top-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-173-post-top-cone-90": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-177-post-top-cone-135": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-182-boxG-top-cone-90": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-183-boxG-top-cone-180": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-185-boxG-top-cone-180": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-192-boxC-front-cone-45": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-200-boxG-top-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-208-boxC-side-cone-180": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-212-boxG-top-cone-135": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-214-boxC-top-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-215-boxG-top-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-23-boxG-top-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-233-boxG-top-cone-45": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-234-post-top-cone-360": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-235-post-top-cone-360": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-237-boxG-top-cone-135": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-244-post-top-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-249-boxG-top-cone-45": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-25-boxG-top-cone-45": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-255-post-top-cone-45": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-259-boxC-front-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-269-boxG-top-cone-135": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-270-boxC-front-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-275-boxG-top-cone-135": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-284-boxG-top-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-289-boxG-top-cone-45": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-293-boxG-top-cone-180": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-30-boxG-top-cone-90": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-33-post-top-cone-360": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-4-boxC-front-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-44-boxG-top-cone-180": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-46-boxC-top-cone-180": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-53-boxC-top-cone-135": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-55-boxG-top-cone-135": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-58-post-top-cone-360": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-60-post-top-cone-360": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-64-boxG-top-cone-45": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-72-boxC-top-cone-90": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-73-boxG-top-cone-90": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-76-boxG-top-cone-90": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-86-boxC-front-cone-135": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ },
+ "fzc21-88-boxC-side-cone-270": {
+  "dir": "r3/cone-accuracy-g0",
+  "outcome": "PASS"
+ }
+}

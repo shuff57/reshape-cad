@@ -1,0 +1,1 @@
+R5-steppost-plate-0.05-360               FAIL     occtV 40768.8905 | tr-occt dV 1.1e-2 dBb 4.7e-16 dCom 6.4e-4 F o/b/t 12/12/15 | brep-occt dV 1.8e-16      | ms 1555 cpu 1861

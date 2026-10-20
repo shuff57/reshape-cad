@@ -1,0 +1,215 @@
+[
+ {
+  "id": "R5-sphere-wall-0.05-90",
+  "src": "const t = sphere(60); const r = sketch('top'); r.polygon([[10,-5],[29.95,-5],[29.95,5],[10,5]]); groove(r, t, 90);",
+  "translator": "raw0",
+  "amp": null,
+  "kinds": [
+   "sphere",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R5-sphere-wall-0.05-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sphere",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 106885.0346668218,
+    "com": [
+     -0.7982240237148679,
+     -0.7982240223349777,
+     -2.7740272945796487e-15
+    ],
+    "bbox": [
+     -30,
+     -30,
+     -30,
+     30,
+     30,
+     30
+    ],
+    "faces": 7,
+    "area": 12935.996955955554,
+    "types": {
+     "sphere": 1,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "components": {
+     "sphere": 1,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by ball1, or its surface pair is unsupported) -- groove1 is shown without it."
+   },
+   "ms": 7366,
+   "load": [
+    2.3,
+    2.2
+   ],
+   "cpuMs": 7749,
+   "truckFeatures": [
+    {
+     "id": "ball1",
+     "kind": "sphere",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "built",
+     "pick": null
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.sphere",
+     "params": {
+      "radius": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_ball1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        10,
+        -5
+       ],
+       [
+        29.95,
+        -5
+       ],
+       [
+        29.95,
+        5
+       ],
+       [
+        10,
+        5
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "angle": -90,
+      "operation": "cut",
+      "targets": [
+       "b_ball1"
+      ]
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": null,
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 4,
+     "sphere": 1
+    },
+    "occtTypes": {
+     "sphere": 1,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "occtComponents": {
+     "sphere": 1,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "UNEXPLAINED",
+     "plane": "equal",
+     "sphere": "equal"
+    },
+    "volume": 106871.86635637889,
+    "bbox": [
+     -30.000000000000004,
+     -30.000000000000004,
+     -30.000000000000004,
+     30,
+     30.000000000000007,
+     30.000000000000004
+    ],
+    "com": [
+     -0.7992313914356025,
+     -0.7992313650639604,
+     2.2816074961457854e-9
+    ],
+    "faces": 6,
+    "kernelFaces": 12,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0001232006939414679,
+    "dBbox": 2.3684757858670006e-16,
+    "dCom": 0.000009693400412317878,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "caseMs": 7438
+ }
+]

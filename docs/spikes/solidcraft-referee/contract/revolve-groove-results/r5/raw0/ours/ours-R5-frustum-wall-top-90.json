@@ -1,0 +1,22 @@
+{
+ "id": "R5-frustum-wall-top-90",
+ "outcome": "built",
+ "volume": 58224.166440922476,
+ "faces": 8,
+ "bbox": [
+  -30,
+  -29.999624314898618,
+  0,
+  29.999999999999996,
+  29.999624314898615,
+  30.000000000000004
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[30,0],[20,30],[0,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[5,25],[19.95,25],[19.95,30],[5,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk2_1\",\"angle\":-90,\"operation\":\"cut\",\"targets\":[\"b_rev1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

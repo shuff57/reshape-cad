@@ -1,0 +1,240 @@
+[
+ {
+  "id": "R4-sphere-sealed-180",
+  "src": "const t = sphere(60); const r = sketch('top'); r.polygon([[5,-5],[10,-5],[10,5],[5,5]]); groove(r, t, 180);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sphere",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R4-sphere-sealed-180",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sphere",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 111919.23828413643,
+    "com": [
+     -1.2810719665544466e-11,
+     -0.05212091705815346,
+     -4.3272804221964617e-16
+    ],
+    "bbox": [
+     -30,
+     -30,
+     -30,
+     30,
+     30,
+     30
+    ],
+    "faces": 7,
+    "area": 12116.591899980962,
+    "types": {
+     "sphere": 1,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "components": {
+     "sphere": 1,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it."
+   },
+   "ms": 5620,
+   "load": [
+    4.3,
+    4.2
+   ],
+   "cpuMs": 5995,
+   "truckFeatures": [
+    {
+     "id": "ball1",
+     "kind": "sphere",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": null,
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 1,
+       "headTypes": {
+        "sphere": 1
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": false,
+       "rOuter": 10,
+       "nearest": 30.000000000000004,
+       "bodies": 1
+      },
+      "side": 1,
+      "kernelAngle": -180,
+      "nudgeDeg": null
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.sphere",
+     "params": {
+      "radius": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_ball1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        5,
+        -5
+       ],
+       [
+        10,
+        -5
+       ],
+       [
+        10,
+        5
+       ],
+       [
+        5,
+        5
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "angle": -180,
+      "operation": "cut",
+      "targets": [
+       "b_ball1"
+      ]
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": 0.00003769647372600511,
+    "area": 12116.135147192756,
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 4,
+     "sphere": 1
+    },
+    "occtTypes": {
+     "sphere": 1,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "occtComponents": {
+     "sphere": 1,
+     "plane": 4,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal",
+     "sphere": "equal"
+    },
+    "volume": 111911.4245994329,
+    "bbox": [
+     -30.000000000000004,
+     -30.000000000000004,
+     -30.000000000000004,
+     30.000000000000004,
+     30.000000000000004,
+     30.000000000000004
+    ],
+    "com": [
+     4.4499637442460995e-13,
+     -0.052110894785128196,
+     8.682604119414243e-13
+    ],
+    "faces": 7,
+    "kernelFaces": 20,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.00006981538494479138,
+    "dBbox": 1.1842378929335003e-16,
+    "dCom": 9.643936715043499e-8,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "caseMs": 5693
+ }
+]

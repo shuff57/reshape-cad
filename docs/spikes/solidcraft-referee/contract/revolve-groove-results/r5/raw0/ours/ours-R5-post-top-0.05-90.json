@@ -1,0 +1,22 @@
+{
+ "id": "R5-post-top-0.05-90",
+ "outcome": "fail",
+ "volume": 35338.90604281564,
+ "faces": 7,
+ "bbox": [
+  -20.000000000000004,
+  -20.000000000000018,
+  0,
+  20.000000000000004,
+  20,
+  30.000000000000014
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "extrude",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[0,0],\"diameter\":40}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":30,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk2_1\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,20],[19.95,20],[19.95,30],[10,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk2_1\",\"angle\":-90,\"operation\":\"cut\",\"targets\":[\"b_pull1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

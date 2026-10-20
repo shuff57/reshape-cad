@@ -1,0 +1,1 @@
+Z-groove-box-split-360                   PASS     occtV 11169.1970 | tr-occt dV 6.7e-6 dBb 4.6e-15 dCom 6.7e-9 F o/b/t 20/18/18 | brep-occt dV 5.5e-15   | 3 BODIES   | ms 1513 cpu 1719

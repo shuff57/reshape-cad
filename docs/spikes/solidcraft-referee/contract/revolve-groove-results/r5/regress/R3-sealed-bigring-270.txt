@@ -1,0 +1,1 @@
+R3-sealed-bigring-270                    PASS     occtV 141172.5666 | tr-occt dV 1.6e-6 dBb 0.0e+0 dCom 3.0e-7 F o/b/t 11/11/11 | brep-occt dV 6.3e-13      | ms 844 cpu 1194

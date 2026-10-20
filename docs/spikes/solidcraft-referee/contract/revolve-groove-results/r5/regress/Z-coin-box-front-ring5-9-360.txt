@@ -1,0 +1,1 @@
+Z-coin-box-front-ring5-9-360             PASS     occtV 31296.2832 | tr-occt dV 1.4e-6 dBb 1.6e-15 dCom 1.3e-7 F o/b/t 10/10/10 | brep-occt dV 1.9e-12      | ms 483 cpu 701

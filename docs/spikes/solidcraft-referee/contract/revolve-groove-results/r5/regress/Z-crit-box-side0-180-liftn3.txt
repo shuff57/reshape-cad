@@ -1,0 +1,1 @@
+Z-crit-box-side0-180-liftn3              PASS     occtV 29009.2038 | tr-occt dV 1.7e-6 dBb 0.0e+0 dCom 3.0e-7 F o/b/t 12/-/12 | brep-occt dV -     | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 337 cpu 621

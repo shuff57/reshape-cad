@@ -1,0 +1,1 @@
+R4-pocket-floor-lip03-90                 REFUSED  occtV 68448.2679 | tr-occt dV - dBb - dCom - F o/b/t 17/17/- | brep-occt dV 4.1e-13    | TRUCK REFUSED: groove1 (groove): the round wall of the ring touches a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.  | ms 35 cpu 127

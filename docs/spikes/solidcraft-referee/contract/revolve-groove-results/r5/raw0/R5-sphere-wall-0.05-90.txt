@@ -1,0 +1,1 @@
+R5-sphere-wall-0.05-90                   FAIL     occtV 106885.0347 | tr-occt dV 1.2e-4 dBb 2.4e-16 dCom 9.7e-6 F o/b/t 7/-/6 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by ball1, or its surface pair is unsupported) -- groove1 is shown without it. | ms 7366 cpu 7749

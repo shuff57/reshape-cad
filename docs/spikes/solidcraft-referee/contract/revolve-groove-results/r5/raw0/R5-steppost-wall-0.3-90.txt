@@ -1,0 +1,1 @@
+R5-steppost-wall-0.3-90                  PASS     occtV 47435.6957 | tr-occt dV 1.3e-5 dBb 4.7e-16 dCom 1.6e-6 F o/b/t 13/13/13 | brep-occt dV 2.9e-13      | ms 1079 cpu 1428

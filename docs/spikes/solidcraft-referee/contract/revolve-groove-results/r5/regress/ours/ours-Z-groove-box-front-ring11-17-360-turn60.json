@@ -1,0 +1,22 @@
+{
+ "id": "Z-groove-box-front-ring11-17-360-turn60",
+ "outcome": "built",
+ "volume": 29834.958951767378,
+ "faces": 14,
+ "bbox": [
+  -18.66025403784439,
+  -20.000000000000007,
+  -22.32050807568877,
+  18.66025403784439,
+  20,
+  22.32050807568877
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "sketch",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}},{\"command\":\"solid.move\",\"params\":{\"bodies\":[\"b_box1\"],\"axis\":[0,1,0],\"angle\":60}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[11,-4],[17,-4],[17,4],[11,4]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}
