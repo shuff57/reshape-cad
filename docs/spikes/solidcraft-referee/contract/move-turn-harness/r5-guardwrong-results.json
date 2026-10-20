@@ -1,0 +1,119 @@
+{
+ "gw1": {
+  "script": "let a = cone(6, 12, { at: [12,-6,13] })\nmove(a, [-6,-39,-30])\nturn(a, [180,135,60])\nmove(a, [35,39,5])\nturn(a, [45,0,45])\nturn(a, [90,60,30])\nmove(a, [-27,15,9])\nturn(a, [60,135,90])",
+  "steps": [
+   {
+    "id": "turn4",
+    "shipped": {
+     "v": "PASS",
+     "vol": 113.07671590251925,
+     "occt": 113.09733552923254,
+     "dVol": 0.0001823175286738234,
+     "dCom": 0.00000626910644320232,
+     "dBbox": 0.000032888375512258875,
+     "bboxAbsMax": 0.0001502949645804108,
+     "faceOk": true
+    },
+    "guard": {
+     "v": "REFUSED",
+     "why": "Turn 4 is not built because Move 3, which it uses, was refused."
+    }
+   }
+  ]
+ },
+ "gw2": {
+  "script": "let a = cone(12, 18, { at: [3,3,-7] })\nturn(a, [0,135,45])\nmove(a, [-38,0,22])\nmove(a, [-14,22,24])\nturn(a, [45,30,180])\nmove(a, [-24,-4,8])",
+  "steps": [
+   {
+    "id": "move3",
+    "shipped": {
+     "v": "FAIL",
+     "vol": 678.4602954151452,
+     "occt": 678.5840131753953,
+     "dVol": 0.0001823175286301804,
+     "dCom": 0.000030158214299577952,
+     "dBbox": 0.00007947854684533731,
+     "bboxAbsMax": 0.0007629260226309498,
+     "faceOk": true
+    },
+    "guard": {
+     "v": "REFUSED",
+     "why": "Move 3 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+    }
+   }
+  ]
+ },
+ "gw3": {
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [26,-17,20], { copy: true })\nturn(c0, [135,60,45])\nlet c2 = move(c0, [-6,-25,4], { copy: true })\nlet c3 = move(c2, [3,-3,-17], { copy: true })\nturn(c3, [30,180,15])\nturn(c3, [135,-30,135])",
+  "steps": [
+   {
+    "id": "cone1",
+    "shipped": {
+     "v": "PASS",
+     "vol": 251.28159089448795,
+     "occt": 251.3274122871835,
+     "dVol": 0.00018231752867132287,
+     "dCom": 7.090945103258799e-17,
+     "dBbox": 0.00001252283671293597,
+     "bboxAbsMax": 0.00005009134685174388,
+     "faceOk": true
+    },
+    "guard": {
+     "v": "PASS",
+     "vol": 251.28159089448795,
+     "occt": 251.3274122871835,
+     "dVol": 0.00018231752867132287,
+     "dCom": 7.090945103258799e-17,
+     "dBbox": 0.00001252283671293597,
+     "bboxAbsMax": 0.00005009134685174388,
+     "faceOk": true
+    }
+   },
+   {
+    "id": "turn1",
+    "shipped": {
+     "v": "REFUSED",
+     "why": "turn1 (rotate): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))"
+    },
+    "guard": {
+     "v": "PASS",
+     "vol": 251.28159089449187,
+     "occt": 251.32741228718353,
+     "dVol": 0.00018231752865583,
+     "dCom": 6.166163156380559e-15,
+     "dBbox": 0.000020235892643440462,
+     "bboxAbsMax": 0.0005967283578485194,
+     "faceOk": true
+    }
+   },
+   {
+    "id": "move2",
+    "shipped": {
+     "v": "REFUSED",
+     "why": "move2 (move): its target turn1 was refused (turn1 (rotate): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)))"
+    },
+    "guard": {
+     "v": "PASS",
+     "vol": 251.2815908945322,
+     "occt": 251.3274122871835,
+     "dVol": 0.00018231752849524736,
+     "dCom": 7.943469007337307e-14,
+     "dBbox": 0.000025405008775727024,
+     "bboxAbsMax": 0.0005967283578485194,
+     "faceOk": true
+    }
+   },
+   {
+    "id": "turn3",
+    "shipped": {
+     "v": "REFUSED",
+     "why": "turn3 (rotate): its target turn2 was refused (turn2 (rotate): its target move3 was refused (move3 (move): its target move2 was refused (move2 (move): its target turn1 was refused (turn1 (rotate): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))))))"
+    },
+    "guard": {
+     "v": "REFUSED",
+     "why": "Turn 3 is not built because Turn 2, which it uses, was refused."
+    }
+   }
+  ]
+ }
+}

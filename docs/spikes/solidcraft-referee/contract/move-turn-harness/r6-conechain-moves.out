@@ -1,0 +1,4 @@
+moves    n 100 SHIPPED {"PASS":88,"FAIL":12} GUARD {"REFUSED":85,"PASS":15} repaired steps 47 {"folded":47} bbox-only artefact (counted PASS, both translators) 1 guard WRONG 0
+   refusal x85: Move # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x156: Move # is not built because Move #, which it uses, was refused.
+   shipped example: "let a = cone(14, 18, { at: [-4,3,11] })\nmove(a, [-31,-39,-18])\nmove(a, [35,7,19])\nmove(a, [15,19,-20])\nmove(a, [13,-22,-27])\nmove(a, [33,4,-8])\nmove(a, [29,26,4])" [{"id":"move6","v":"FAIL","dVol":0.23174219509944444,"dCom":0.25332195043344474}]

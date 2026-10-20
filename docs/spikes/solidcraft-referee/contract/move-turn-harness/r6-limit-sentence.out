@@ -1,0 +1,7 @@
+cone1   built 
+move1   built 
+move2   built 
+move3   built 
+move4   refused Move 4 is not built: Move 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+move5   refused Move 5 is not built because Move 4, which it uses, was refused.
+OK limit 3 sentence: Move 4 is not built: Move 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.

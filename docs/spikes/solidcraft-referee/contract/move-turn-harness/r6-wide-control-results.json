@@ -1,0 +1,859 @@
+[
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-16,15,-10])\nmove(a, [26,-9,-4])\nmove(a, [2,-4,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [7,-33,4])\nturn(a, [0,0,60])\nturn(a, [60,60,0])\nmove(a, [-17,0,24])\nmove(a, [-16,-3,17])\nturn(a, [45,-30,0])\nturn(a, [90,45,0])\nmove(a, [6,7,-2])\nmove(a, [-35,7,-14])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nturn(a, [0,0,180])\nmove(a, [-39,-23,-23])\nturn(a, [45,15,15])\nturn(a, [135,90,135])\nturn(a, [45,180,90])\nturn(a, [15,-30,90])\nturn(a, [0,90,30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [30,15,-3])\nturn(a, [90,0,90])\nturn(a, [15,0,30])\nmove(a, [-26,9,13])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [15,60,15])\nmove(a, [-21,1,27])\nturn(a, [30,60,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-12,-16,5])\nmove(a, [-20,-4,1])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [28,30,16])\nmove(a, [19,7,7])\nturn(a, [0,135,15])\nmove(a, [31,-36,-22])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [-19,-11,-30])\nturn(a, [90,90,30])\nmove(a, [32,32,-19])\nmove(a, [-18,-6,-24])\nturn(a, [90,15,0])\nmove(a, [-12,15,14])\nmove(a, [-33,17,-1])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nturn(a, [180,180,60])\nmove(a, [-31,-8,-26])\nturn(a, [-30,180,45])\nturn(a, [-30,135,0])\nturn(a, [135,180,0])\nmove(a, [-38,-8,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [30,0,135])\nturn(a, [60,0,0])\nmove(a, [28,-6,12])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [14,32,18])\nmove(a, [9,-36,26])\nmove(a, [-5,-28,-6])\nturn(a, [60,60,180])\nturn(a, [90,90,0])\nturn(a, [180,135,135])\nmove(a, [-36,-11,1])\nmove(a, [8,32,4])\nmove(a, [-33,6,1])\nmove(a, [-22,-11,-15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [6,-20,23])\nmove(a, [-21,26,2])\nmove(a, [6,-9,-1])\nturn(a, [15,15,0])\nmove(a, [22,-37,8])\nmove(a, [24,-12,27])\nmove(a, [-19,-39,-4])\nmove(a, [-39,36,22])\nturn(a, [60,30,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nturn(a, [45,0,45])\nturn(a, [90,60,30])\nmove(a, [-27,15,9])\nturn(a, [60,135,90])\nturn(a, [15,90,0])\nmove(a, [-18,-23,14])\nmove(a, [-33,17,23])\nturn(a, [135,30,180])\nmove(a, [-25,27,9])\nturn(a, [180,45,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [39,36,-25])\nturn(a, [135,15,0])\nmove(a, [-11,7,-13])\nmove(a, [5,-19,-23])\nmove(a, [-23,-30,-15])\nturn(a, [15,30,135])\nturn(a, [60,135,15])\nturn(a, [15,15,135])\nturn(a, [60,180,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [135,135,135])\nmove(a, [-5,11,-19])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nturn(a, [180,15,30])\nmove(a, [27,19,-6])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [-29,20,29])\nmove(a, [26,18,11])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [28,-8,29])\nmove(a, [-4,-29,-23])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [-25,-6,-29])\nmove(a, [27,0,21])\nmove(a, [1,22,30])\nmove(a, [-4,-6,-19])\nmove(a, [23,-34,24])\nmove(a, [15,-25,11])\nturn(a, [45,90,90])\nmove(a, [-21,-24,2])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [13,-33,4])\nmove(a, [10,31,13])\nmove(a, [27,-23,2])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [0,30,30])\nturn(a, [135,0,180])\nmove(a, [-24,26,-21])\nturn(a, [0,90,60])\nmove(a, [-13,14,10])\nturn(a, [30,30,60])\nturn(a, [180,90,135])\nturn(a, [15,90,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [32,2,-7])\nturn(a, [45,135,30])\nmove(a, [32,-27,-1])\nturn(a, [-30,15,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [90,135,0])\nturn(a, [180,180,135])\nturn(a, [90,-30,15])\nmove(a, [11,-15,1])\nturn(a, [180,90,180])\nturn(a, [15,0,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [30,30,0])\nturn(a, [15,45,45])\nmove(a, [25,-13,-21])\nmove(a, [-35,7,16])\nmove(a, [38,-12,-17])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [60,180,45])\nturn(a, [60,45,-30])\nturn(a, [15,15,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-1,29,-24])\nturn(a, [30,15,-30])\nturn(a, [15,135,60])\nturn(a, [180,60,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [37,-37,-2])\nmove(a, [34,-7,27])\nturn(a, [45,30,30])\nmove(a, [-33,20,17])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [-11,17,-25])\nmove(a, [-22,-14,6])\nturn(a, [15,60,60])\nmove(a, [-20,37,-16])\nmove(a, [1,-28,0])\nmove(a, [6,16,14])\nmove(a, [37,13,9])\nmove(a, [-38,-9,3])\nmove(a, [14,29,-14])\nmove(a, [-19,-17,-26])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nturn(a, [-30,0,135])\nturn(a, [90,45,0])\nmove(a, [-9,12,1])\nmove(a, [-16,20,16])\nturn(a, [45,30,0])\nturn(a, [30,60,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nturn(a, [180,0,45])\nturn(a, [60,60,180])\nmove(a, [39,36,-6])\nmove(a, [-38,-12,-29])\nmove(a, [19,-4,5])\nturn(a, [15,180,45])\nmove(a, [-8,-1,27])\nturn(a, [90,135,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [16,35,27])\nmove(a, [-1,-36,2])\nmove(a, [13,-30,22])\nmove(a, [36,14,4])\nturn(a, [60,90,15])\nmove(a, [-14,39,7])\nmove(a, [33,-10,-9])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [0,15,15])\nturn(a, [135,180,45])\nturn(a, [0,15,60])\nturn(a, [45,180,0])\nmove(a, [11,-15,2])\nturn(a, [90,90,60])\nturn(a, [-30,90,60])\nmove(a, [-22,-12,13])\nmove(a, [-10,15,-28])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [-12,-7,-22])\nmove(a, [-38,31,14])\nturn(a, [15,90,-30])\nmove(a, [-2,-28,5])\nturn(a, [15,180,60])\nturn(a, [0,135,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [30,-15,-10])\nturn(a, [180,60,45])\nmove(a, [33,-11,-18])\nmove(a, [10,-30,14])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [90,180,180])\nmove(a, [-20,24,-5])\nmove(a, [16,-13,-8])\nmove(a, [17,-2,18])\nturn(a, [180,180,30])\nturn(a, [60,180,60])\nmove(a, [-40,9,-19])\nturn(a, [-30,0,135])\nmove(a, [27,-17,18])\nturn(a, [0,0,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [-23,34,-27])\nmove(a, [15,-24,-25])\nturn(a, [45,0,30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [-12,16,1])\nturn(a, [90,15,180])\nmove(a, [-21,-4,-5])\nturn(a, [180,-30,60])\nturn(a, [15,45,45])\nturn(a, [45,0,45])\nturn(a, [45,-30,60])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [39,38,-24])\nmove(a, [27,9,-6])\nturn(a, [30,90,60])\nturn(a, [15,135,60])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [-19,36,0])\nturn(a, [135,0,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [180,60,0])\nturn(a, [0,0,0])\nturn(a, [45,45,30])\nturn(a, [180,45,135])\nturn(a, [30,180,180])\nmove(a, [6,-14,28])\nmove(a, [-39,35,6])\nmove(a, [2,18,-26])\nturn(a, [-30,0,135])\nturn(a, [180,0,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nturn(a, [135,-30,30])\nturn(a, [90,90,30])\nturn(a, [15,90,60])\nmove(a, [-17,-15,5])\nmove(a, [-23,-39,-12])\nmove(a, [31,14,-21])\nturn(a, [135,180,45])\nmove(a, [26,28,19])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [-34,26,-19])\nmove(a, [14,-16,-5])\nturn(a, [135,-30,15])\nmove(a, [35,-12,19])\nmove(a, [14,-23,-14])\nmove(a, [-28,-13,-26])\nmove(a, [34,-14,28])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [16,11,6])\nturn(a, [135,60,0])\nturn(a, [30,135,0])\nturn(a, [60,135,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [-26,32,-21])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [5,13,-17])\nmove(a, [-26,-32,2])\nmove(a, [15,27,22])\nmove(a, [-8,22,28])\nmove(a, [-6,-1,27])\nturn(a, [30,180,30])\nturn(a, [0,15,90])\nturn(a, [-30,-30,135])\nturn(a, [180,30,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [-19,-5,-29])\nturn(a, [0,45,45])\nmove(a, [-11,29,17])\nmove(a, [21,36,-15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [-3,-3,-17])\nmove(a, [3,-34,25])\nturn(a, [0,135,0])\nturn(a, [0,135,60])\nmove(a, [33,-7,-29])\nmove(a, [19,-36,20])\nturn(a, [30,15,135])\nmove(a, [-32,34,-5])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nturn(a, [45,180,15])\nturn(a, [180,45,30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [19,-38,-17])\nmove(a, [26,0,-7])\nmove(a, [8,22,3])\nmove(a, [1,-5,-24])\nmove(a, [8,-32,-13])\nmove(a, [23,-16,-24])\nturn(a, [135,30,30])\nmove(a, [-24,-17,10])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-28,-31,-7])\nturn(a, [45,30,135])\nturn(a, [15,30,90])\nturn(a, [60,90,45])\nmove(a, [31,-9,5])\nmove(a, [-10,-26,-4])\nmove(a, [14,-22,-28])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [32,14,-9])\nturn(a, [45,30,180])\nturn(a, [45,15,15])\nturn(a, [135,15,135])\nturn(a, [15,90,60])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [19,-22,22])\nturn(a, [90,90,180])\nmove(a, [-21,6,-24])\nturn(a, [180,45,0])\nturn(a, [45,135,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [-3,32,2])\nturn(a, [60,90,60])\nturn(a, [-30,135,-30])\nmove(a, [-23,-37,8])\nmove(a, [5,19,-18])\nmove(a, [0,15,19])\nmove(a, [1,2,2])\nmove(a, [-13,17,-24])\nmove(a, [-34,34,29])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nturn(a, [30,45,60])\nturn(a, [15,45,0])\nmove(a, [20,-24,0])\nturn(a, [0,45,30])\nmove(a, [-4,21,-18])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-20,-11,2])\nturn(a, [90,90,45])\nmove(a, [27,24,-3])\nmove(a, [-29,17,-27])\nmove(a, [-9,17,2])\nturn(a, [180,30,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [0,90,135])\nturn(a, [30,30,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [-27,11,18])\nmove(a, [21,29,-4])\nmove(a, [-29,35,-22])\nmove(a, [20,28,-21])\nmove(a, [7,-31,10])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [34,21,-17])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [0,60,60])\nmove(a, [29,-4,-28])\nturn(a, [0,45,-30])\nmove(a, [-16,-34,7])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [-13,-36,-19])\nmove(a, [10,-23,-8])\nturn(a, [60,135,45])\nmove(a, [26,24,-9])\nturn(a, [0,30,0])\nturn(a, [135,15,0])\nturn(a, [135,60,60])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nturn(a, [135,15,45])\nmove(a, [36,-7,23])\nturn(a, [90,15,60])\nmove(a, [29,35,18])\nmove(a, [-21,38,-13])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nturn(a, [60,60,15])\nturn(a, [90,15,0])\nmove(a, [37,27,8])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [180,15,0])\nturn(a, [180,15,45])\nturn(a, [135,15,45])\nturn(a, [60,135,0])\nturn(a, [180,30,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [2,31,-29])\nturn(a, [90,180,0])\nmove(a, [-5,-31,9])\nturn(a, [135,30,15])\nmove(a, [32,-26,-26])\nmove(a, [-22,-31,2])\nturn(a, [180,0,45])\nturn(a, [30,15,30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [-35,16,8])\nmove(a, [14,-31,24])\nmove(a, [14,-32,-12])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [16,24,-2])\nturn(a, [0,45,-30])\nmove(a, [39,26,-13])\nturn(a, [60,45,135])\nmove(a, [-26,5,24])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nturn(a, [135,180,30])\nturn(a, [0,30,135])\nmove(a, [-1,27,11])\nmove(a, [-34,12,-25])\nmove(a, [-37,-20,24])\nturn(a, [-30,180,0])\nmove(a, [-38,17,-22])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-9,21,-27])\nturn(a, [180,60,45])\nmove(a, [-32,37,-17])\nturn(a, [135,135,15])\nturn(a, [135,0,30])\nturn(a, [180,0,-30])\nmove(a, [9,-36,-27])\nmove(a, [-5,-18,23])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [4,-6,-6])\nmove(a, [7,-25,-16])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [36,27,-9])\nturn(a, [0,45,0])\nmove(a, [29,-5,-11])\nmove(a, [8,28,25])\nturn(a, [30,135,60])\nturn(a, [30,15,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [2,31,14])\nmove(a, [23,-39,-12])\nmove(a, [-26,-29,-29])\nturn(a, [60,90,0])\nmove(a, [31,38,-9])\nturn(a, [60,0,15])\nmove(a, [29,-17,-23])\nmove(a, [-39,-35,-10])\nmove(a, [-25,13,-23])\nmove(a, [-34,15,28])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-28,36,-28])\nturn(a, [135,135,0])\nturn(a, [0,-30,-30])\nturn(a, [60,45,90])\nmove(a, [10,22,-2])\nmove(a, [-24,-9,-18])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [180,0,15])\nmove(a, [16,-16,-12])\nturn(a, [135,0,15])\nturn(a, [30,45,60])\nmove(a, [39,-34,22])\nturn(a, [-30,135,60])\nmove(a, [-27,-36,27])\nmove(a, [29,39,-3])\nturn(a, [180,90,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [7,-38,22])\nturn(a, [135,45,30])\nturn(a, [90,15,45])\nturn(a, [90,0,180])\nturn(a, [180,0,45])\nturn(a, [15,90,15])\nturn(a, [60,60,60])\nturn(a, [60,-30,30])\nmove(a, [-1,23,1])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nturn(a, [135,45,15])\nmove(a, [-34,-10,12])\nturn(a, [90,0,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [30,90,180])\nturn(a, [60,30,45])\nmove(a, [5,-19,-22])\nturn(a, [135,45,60])\nturn(a, [30,90,-30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [15,-27,11])\nmove(a, [37,-37,27])\nturn(a, [135,30,0])\nmove(a, [-2,37,-14])\nturn(a, [0,30,135])\nturn(a, [0,90,90])\nmove(a, [-16,-29,2])\nmove(a, [39,-17,1])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [-4,1,2])\nturn(a, [30,0,135])\nmove(a, [39,-10,27])\nturn(a, [0,90,90])\nturn(a, [-30,45,0])\nturn(a, [60,-30,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nturn(a, [45,135,135])\nturn(a, [45,0,180])\nmove(a, [-14,24,16])\nturn(a, [45,135,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [0,30,180])\nturn(a, [90,30,135])\nturn(a, [15,180,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nturn(a, [-30,30,0])\nturn(a, [180,0,0])\nturn(a, [60,15,180])\nmove(a, [-11,-8,-7])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [90,-30,135])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [45,0,180])\nturn(a, [-30,90,-30])\nturn(a, [45,-30,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [-36,-20,-2])\nmove(a, [12,-37,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [135,180,60])\nmove(a, [18,32,23])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [25,-6,-22])\nturn(a, [0,135,180])\nmove(a, [8,24,-2])\nmove(a, [30,10,15])\nturn(a, [60,180,0])\nmove(a, [-5,-16,-10])\nmove(a, [-1,6,29])\nturn(a, [15,90,0])\nmove(a, [30,3,-27])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [23,-13,20])\nturn(a, [90,60,135])\nturn(a, [0,0,0])\nturn(a, [45,135,0])\nmove(a, [38,-38,-21])\nturn(a, [90,0,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [-28,-4,15])\nturn(a, [60,60,30])\nmove(a, [-32,5,3])\nmove(a, [-24,-6,9])\nturn(a, [60,0,15])\nturn(a, [15,15,0])\nturn(a, [180,0,0])\nturn(a, [45,45,0])\nmove(a, [-34,10,9])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [60,180,45])\nturn(a, [90,90,30])\nturn(a, [45,0,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [12,15,9])\nturn(a, [180,90,0])\nmove(a, [0,18,-29])\nmove(a, [-8,26,9])\nturn(a, [45,0,0])\nturn(a, [135,135,15])\nmove(a, [23,33,23])\nturn(a, [30,45,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [45,135,30])\nmove(a, [26,-14,-17])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [-23,-37,-25])\nturn(a, [60,90,15])\nmove(a, [33,-16,0])\nmove(a, [-40,-4,4])\nmove(a, [-13,23,-1])\nturn(a, [60,180,0])\nturn(a, [0,60,30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [36,-33,25])\nturn(a, [135,135,0])\nturn(a, [0,30,30])\nmove(a, [19,-31,7])\nmove(a, [-15,38,-1])\nmove(a, [11,23,25])\nmove(a, [-8,23,19])\nturn(a, [45,45,-30])\nmove(a, [-30,-13,-15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [-18,14,-13])\nmove(a, [-15,-35,-23])\nturn(a, [30,60,0])\nmove(a, [-11,16,-12])\nmove(a, [-38,-16,0])\nturn(a, [0,45,15])\nmove(a, [28,-18,-20])\nmove(a, [-18,37,-16])\nturn(a, [-30,60,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [135,0,180])\nmove(a, [-30,-21,29])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [15,15,180])\nturn(a, [15,0,30])\nmove(a, [-30,8,7])\nmove(a, [-8,17,24])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [15,-2,-27])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [0,15,135])\nturn(a, [90,0,30])\nmove(a, [-2,18,18])\nturn(a, [60,-30,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-20,4,-9])\nturn(a, [60,0,180])\nturn(a, [180,0,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [-39,-19,13])\nmove(a, [38,31,-1])\nturn(a, [15,45,15])\nmove(a, [38,-1,-25])\nturn(a, [45,0,0])\nmove(a, [-28,-37,-24])\nmove(a, [18,-37,3])\nturn(a, [135,180,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [16,37,27])\nmove(a, [4,-10,11])\nmove(a, [26,-18,-4])\nturn(a, [0,30,0])\nturn(a, [0,90,15])\nmove(a, [-22,25,-28])\nmove(a, [-38,-2,21])\nturn(a, [90,135,135])\nturn(a, [135,90,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-8,34,29])\nmove(a, [7,16,5])\nmove(a, [-33,6,14])\nmove(a, [-22,25,19])\nturn(a, [60,135,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [180,60,180])\nturn(a, [0,90,30])\nturn(a, [-30,15,90])\nmove(a, [23,-7,28])\nturn(a, [0,60,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nmove(a, [-21,11,-11])\nmove(a, [5,-35,24])\nturn(a, [30,-30,0])\nturn(a, [0,135,0])\nturn(a, [30,15,90])\nturn(a, [15,15,-30])\nturn(a, [180,135,0])\nturn(a, [15,0,60])\nturn(a, [60,15,60])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [-10,-35,19])\nturn(a, [0,15,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-34,26,25])\nmove(a, [6,5,-24])\nmove(a, [7,10,-25])\nmove(a, [-8,-25,-7])\nmove(a, [-39,-3,28])\nmove(a, [-34,30,16])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [90,0,0])\nmove(a, [34,-40,-16])\nturn(a, [90,0,90])\nmove(a, [-16,23,30])\nmove(a, [17,9,-13])\nturn(a, [30,60,45])\nturn(a, [15,180,0])\nmove(a, [27,2,11])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [30,11,5])\nturn(a, [90,45,0])\nmove(a, [38,19,-2])\nmove(a, [37,-6,-9])\nmove(a, [-32,36,22])\nmove(a, [-9,-32,5])\nmove(a, [-9,14,-24])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [30,0,45])\nmove(a, [12,-4,17])\nturn(a, [180,135,135])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nturn(a, [0,60,30])\nturn(a, [15,15,45])\nturn(a, [30,90,135])\nmove(a, [-16,9,14])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [17,-10,-1])\nturn(a, [60,45,0])\nturn(a, [15,135,60])\nturn(a, [135,0,0])\nmove(a, [-34,34,26])\nturn(a, [180,135,45])\nmove(a, [26,-17,2])\nturn(a, [90,60,180])\nturn(a, [15,180,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = sphere(9)\nmove(a, [-10,-17,18])\nturn(a, [180,30,30])\nmove(a, [38,20,18])\nmove(a, [29,-25,-15])\nmove(a, [37,-12,-4])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nturn(a, [45,60,15])\nturn(a, [30,135,180])\nturn(a, [60,45,0])\nmove(a, [7,-33,-6])\nturn(a, [30,60,0])\nturn(a, [135,0,60])\nturn(a, [90,135,60])\nmove(a, [10,16,19])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nmove(a, [-9,-6,3])\nturn(a, [135,0,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [0,-30,90])\nturn(a, [30,15,15])\nturn(a, [15,135,90])\nturn(a, [45,0,15])\nturn(a, [180,135,15])\nturn(a, [60,-30,-30])\nmove(a, [-15,-21,2])\nmove(a, [-18,-32,-24])\nmove(a, [-6,-3,8])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = prism(6, 8, 15)\nturn(a, [45,0,15])\nturn(a, [180,135,30])\nmove(a, [-14,39,-22])\nturn(a, [135,180,90])\nturn(a, [45,60,-30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nmove(a, [36,1,5])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = wedge(12, 8, 6)\nturn(a, [-30,180,45])\nturn(a, [0,15,-30])\nmove(a, [40,-32,-25])\nmove(a, [-4,-17,20])\nturn(a, [0,45,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = cylinder(8, 15)\nturn(a, [180,90,45])\nturn(a, [30,-30,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "script": "let a = box(10, 8, 6)\nmove(a, [25,-29,19])\nmove(a, [22,-28,-4])\nturn(a, [-30,30,90])\nturn(a, [60,15,135])\nturn(a, [15,180,180])\nmove(a, [37,8,-13])\nmove(a, [25,-34,-14])\nmove(a, [-18,-18,-16])\nmove(a, [34,-37,21])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "control",
+  "summary": {
+   "n": 120,
+   "shipped": {
+    "PASS": 120
+   },
+   "guard": {
+    "PASS": 120
+   },
+   "repairedSteps": 0,
+   "repairKinds": {},
+   "tessBboxArtefacts": 0,
+   "guardWrong": 0,
+   "refusals": {}
+  }
+ }
+]

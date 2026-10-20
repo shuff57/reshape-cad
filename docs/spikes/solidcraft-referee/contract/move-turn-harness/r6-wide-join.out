@@ -1,0 +1,10 @@
+join     n 60 SHIPPED {"PASS":42,"FAIL":18} GUARD {"PASS":16,"REFUSED":44} repaired steps 77 {"padded1":51,"folded":26} bbox-only artefact (counted PASS, both translators) 0 guard WRONG 0
+   refusal x12: Turn # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x16: Turn # is not built because Turn #, which it uses, was refused.
+   refusal x28: Move # is not built because Turn #, which it uses, was refused.
+   refusal x9: Move # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x19: Move # is not built because Move #, which it uses, was refused.
+   refusal x21: Turn # is not built because Move #, which it uses, was refused.
+   refusal x11: Move # is not built: Turn # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x12: Turn # is not built: Turn # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   shipped example: "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [180,45,60])\nmove(j, [5,10,-23])\nmove(j, [4,9,6])\nturn(j, [0,15,30])\nturn(j, [180,45,30])\nmove(j, [23,37,-1])" [{"id":"move3","v":"FAIL","dVol":0.000003880901531419479,"dCom":3.9280573587977936e-10}]

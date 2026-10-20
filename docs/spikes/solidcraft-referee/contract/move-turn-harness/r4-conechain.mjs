@@ -56,5 +56,5 @@ for (const sc of only) {
   for (const w of tally.wrongGuard.slice(0, 3)) console.log('   GUARD WRONG:', JSON.stringify(w).slice(0, 400));
   if (tally.shipped.examples) console.log('   shipped example:', JSON.stringify(tally.shipped.examples.script), JSON.stringify(tally.shipped.examples.shippedWorst));
   all.push({ scenario: sc, summary: { n: N, shipped: { ...tally.shipped, examples: undefined }, guard: tally.guard, repairedSteps: tally.repaired, repairKinds: tally.repairKinds, tessBboxArtefacts: tally.tessBbox, guardWrong: tally.wrongGuard.length, refusals: tally.refusals } });
+  writeFileSync(OUT, JSON.stringify(all, null, 1)); // round 6: partial results after every scenario
 }
-writeFileSync(OUT, JSON.stringify(all, null, 1));

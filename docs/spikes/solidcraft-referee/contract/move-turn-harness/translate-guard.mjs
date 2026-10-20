@@ -25,6 +25,10 @@
 //      (cone 141.37 mm3 reads 104.5 or 6.1; see move-turn-harness/r4-*.mjs). MT_NOINVARIANT=1 switches the check off (negative control).
 //  10. (round 4) CHAIN REPAIR. When the invariant fails, the same step is retried once with every pure translation of a body folded into the
 //      previous pure translation of that body (exact; fewer accumulated steps). If that passes the invariant it is used, otherwise the step is refused.
+//  12. (round 5) CONE CHAIN LIMIT. The invariant cannot see a cone chain that is off by tessellation scale only (centre of mass 3.0e-5 to 3.4e-5
+//      of the diagonal against a 3e-5 bar, measured: r5-guardwrong.mjs gw2/gw3 and r5-conechain-wide). A move or turn of a part that has a
+//      conical face and has already been through CONE_CHAIN_MAX move/turn steps (copies inherit the count) is REFUSED with a sentence.
+//      MT_NOCONELIMIT=1 switches it off (negative control); MT_CONE_CHAIN_MAX overrides the limit.
 //  11. (round 4) MAGNITUDE is split by what the part is made of: see MAX_COORD_PLANAR / MAX_COORD_CURVED.
 // Original header follows.
 //
@@ -49,6 +53,7 @@
 export const MAX_COORD = 3000; // curved parts (kept name for older harnesses)
 export const MAX_COORD_CURVED = Number(process.env.MT_MAX_CURVED || 3000);
 export const MAX_COORD_PLANAR = Number(process.env.MT_MAX_PLANAR || 3000);
+export const CONE_CHAIN_MAX = Number(process.env.MT_CONE_CHAIN_MAX || 3);
 export const TIME_NOTE = (Number(process.env.SC_BOX_MS) || 120000) / 1000;
 const FEATURE_KINDS = ['box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'sketch', 'datum', 'extrude', 'combine',
   'blend', 'revolve', 'groove', 'pocket', 'mirror', 'pattern', 'hole', 'shell', 'move', 'rotate', 'fillet', 'draft'];
@@ -550,7 +555,7 @@ export function simplifyChain(list) {
  */
 export function translateDoc(doc, ctx) {
   const names = ctx.mt && ctx.mt.nameMap ? ctx.mt.nameMap(doc) : {};
-  const st = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, names, taint: {}, kinds: {}, allBodies: [] };
+  const st = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, steps: {}, counter: 0, names, taint: {}, kinds: {}, allBodies: [] };
   doc.features.forEach((f) => { st.kinds[f.id] = f.kind; });
   const accepted = [];
   const out = [];
@@ -563,6 +568,19 @@ export function translateDoc(doc, ctx) {
     let plan;
     try { plan = planFeature(f, st, fctx); } catch (e) { plan = refuse(`${f.id} (${f.kind}): translator error: ${e.message}`); }
     if (plan.refusal) { st.refused[f.id] = plan.refusal; return note({ status: 'refused', refusal: plan.refusal, commands: [] }); }
+    // (round 5) cone chain limit: count the move/turn steps a part has been through; refuse a step past the limit when the part has a conical face
+    {
+      const srcs0 = [f.target, f.into, ...(f.targets ?? [])].filter(Boolean);
+      const prior = Math.max(0, ...srcs0.map((t) => st.steps[t] ?? 0));
+      const isStep = f.kind === 'move' || f.kind === 'rotate';
+      const coneTarget = isStep && ((st.measure[f.target]?.faceTypes?.cone ?? 0) > 0);
+      if (coneTarget && process.env.MT_NOCONELIMIT !== '1' && prior + 1 > CONE_CHAIN_MAX) {
+        const nm0 = st.names[f.id] ?? f.id; const tn0 = st.names[f.target] ?? f.target;
+        const sentence = `${nm0} is not built: ${tn0} has a cone-shaped face and has already been moved or turned ${prior} times, and a cone moved or turned more than ${CONE_CHAIN_MAX} times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.`;
+        st.refused[f.id] = sentence; return note({ status: 'refused', refusal: sentence, commands: [] });
+      }
+      st.steps[f.id] = prior + (isStep ? 1 : 0);
+    }
     if (plan.noop) return note({ status: 'noop', commands: [] });
     let invMsg = null;
     const finish = (variant, res, produces, tried, list) => {

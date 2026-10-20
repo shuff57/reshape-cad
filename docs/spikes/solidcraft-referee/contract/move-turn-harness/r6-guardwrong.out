@@ -1,0 +1,9 @@
+## gw1 "let a = cone(6, 12, { at: [12,-6,13] })\nmove(a, [-6,-39,-30])\nturn(a, [180,135,60])\nmove(a, [35,39,5])\nturn(a, [45,0,45])\nturn(a, [90,60,30])\nmove(a, [-27,15,9])\nturn(a, [60,135,90])"
+  turn4   shipped PASS dVol=1.82e-4 dCom=6.27e-6 dBbox=3.29e-5 (abs 1.50e-4) | guard REFUSED Turn 4 is not built because Move 3, which it uses, was refused.
+## gw2 "let a = cone(12, 18, { at: [3,3,-7] })\nturn(a, [0,135,45])\nmove(a, [-38,0,22])\nmove(a, [-14,22,24])\nturn(a, [45,30,180])\nmove(a, [-24,-4,8])"
+  move3   shipped FAIL dVol=1.82e-4 dCom=3.02e-5 dBbox=7.95e-5 (abs 7.63e-4) | guard REFUSED Move 3 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+## gw3 "let a = cone(8, 15)\nlet c0 = move(a, [26,-17,20], { copy: true })\nturn(c0, [135,60,45])\nlet c2 = move(c0, [-6,-25,4], { copy: true })\nlet c3 = move(c2, [3,-3,-17], { copy: true })\nturn(c3, [30,180,15])\nturn(c3, [135,-30,135])"
+  cone1   shipped PASS dVol=1.82e-4 dCom=7.09e-17 dBbox=1.25e-5 (abs 5.01e-5) | guard PASS dVol=1.82e-4 dCom=7.09e-17 dBbox=1.25e-5 (abs 5.01e-5) comBar=0.00003
+  turn1   shipped REFUSED  | guard PASS dVol=1.82e-4 dCom=6.17e-15 dBbox=2.02e-5 (abs 5.97e-4) comBar=0.00003
+  move2   shipped REFUSED  | guard PASS dVol=1.82e-4 dCom=7.94e-14 dBbox=2.54e-5 (abs 5.97e-4) comBar=0.00003
+  turn3   shipped REFUSED  | guard REFUSED Turn 3 is not built because Turn 2, which it uses, was refused.

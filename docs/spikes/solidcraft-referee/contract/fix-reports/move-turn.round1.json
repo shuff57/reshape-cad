@@ -1,0 +1,29 @@
+{
+ "group": "move-turn",
+ "round": 1,
+ "changes": [
+  {"file": "move-turn-harness/translate-guard.mjs", "what": "New guard 12, cone chain limit (CONE_CHAIN_MAX=3, env MT_CONE_CHAIN_MAX, negative control MT_NOCONELIMIT=1): a move/turn of a part that has a conical face and already went through 3 move/turn steps (copies inherit the count) is refused with one plain sentence. Limit chosen after seeing gw2 fail at its 4th step (said in the row)."},
+  {"file": "move-turn-harness/r4-conechain.mjs", "what": "Writes the results file after every scenario (partial results), nothing else changed."},
+  {"file": "move-turn-harness/r6-limit-sentence.mjs", "what": "New: runs cone + 5 moves through the guard, asserts steps 1-3 build, 4 is refused with the cone sentence, no engine word, one sentence."},
+  {"file": "move-turn-harness/run-r6.sh", "what": "New: replay of guardwrong, sentence, wide fuzz (seed 5150), moves fuzz (seed 7), fresh fuzz (seed 9001), negative control (limit off); each job separate, 1.5G cap, under 900 s."},
+  {"file": "move-turn-harness/r6-*.out, r6-*-results.json, r6-authored-text.json", "what": "Results of run-r6.sh; r6-authored-text.json holds verbatim the compose row and RE-VERIFIED paragraph that earlier rounds had hand-appended to move-turn.json, so the builder reproduces the file."},
+  {"file": "move-turn-harness/make-rows-r6.mjs", "what": "Supersedes make-rows-r3.mjs: reproduces all 28 stored rows (adds the compose row and the RE-VERIFIED paragraph it used to miss), adds the cone-chain evidence to rows 6,7,9,11,12, adds one new refused row (cone chain limit), asserts 29 rows, guard-wrong = 0 over all fuzz, control 0 wrong, negative control reproduces the wrongs, the sentence has no engine word. Two runs give identical bytes."},
+  {"file": "move-turn.json", "what": "Rebuilt by make-rows-r6.mjs: 29 rows (was 28)."}
+ ],
+ "defectsResolved": [
+  {"defect": "blocking: cone move/turn chains are a silent wrong solid, rows 5,6,8,10,11 'supported' with no condition", "how": "Rows now name the guard that must ship (rigid-motion invariant, chain repair, cone chain limit) and state the shipped-translator failure rate; a new refused row carries the sentence. Fuzz: 820 chains (cone, copies, join, moves, controls, two seeds), guard WRONG 0, shipped translator FAIL 93; limit off reproduces the 3 wrong chains."},
+  {"defect": "major: 3 of 360 chains fail the COM bar", "how": "gw1, gw2, gw3 now REFUSED by the limit (r6-guardwrong.out); negative control with the limit off gives 2 + 1 wrong again, proving the limit is what closes them. Tolerance not loosened."},
+  {"defect": "major: 27 vs 28 rows, hand-added row 11 and RE-VERIFIED text, r4/r5 evidence uncited", "how": "make-rows-r6.mjs builds all rows, deterministic; r4/r5/r6 evidence is cited in the cone rows."}
+ ],
+ "defectsOpen": [
+  {"defect": "minor: pick guard (rows 1-5) not yet in the page translator", "why": "Not changed; rows stay 'wrong'/'refused' as stored. The pick guard and the cone guard both live in the move-turn translate-guard.mjs which must be shipped with the page."},
+  {"defect": "cost of the cone limit", "why": "Legitimate long cone chains are refused: 75/120 cone, 84/120 copies, 85/100 moves, 80/120 join chains in random 1-10 step fuzz. Stated in the row."},
+  {"defect": "not replayed: k-pickguard 109-case sweep, torus 168-case sweep, 120 s time rows", "why": "Unchanged by this round, resource/time."}
+ ],
+ "rowsDowngraded": [],
+ "rigNotesForRIGmd": "Rows: cd docs/spikes/solidcraft-referee/contract/move-turn-harness && bun make-rows-r6.mjs (replaces make-rows-r3.mjs). Replay: SOLIDCRAFT_REFEREE_PKG=<pkg> sh run-r6.sh (about 25 min, one job at a time, cap 1500M per job). New negative control MT_NOCONELIMIT=1; MT_CONE_CHAIN_MAX=<n>.",
+ "commands": {
+  "rebuildRows": "cd docs/spikes/solidcraft-referee/contract/move-turn-harness && bun make-rows-r6.mjs",
+  "replay": "cd docs/spikes/solidcraft-referee/contract/move-turn-harness && SOLIDCRAFT_REFEREE_PKG=<pkg> sh run-r6.sh"
+ }
+}

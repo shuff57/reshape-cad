@@ -1,0 +1,650 @@
+[
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [180,180,15])\nturn(j, [0,180,45])\nturn(j, [135,135,30])\nmove(j, [-26,27,-15])\nmove(j, [35,5,30])\nturn(j, [0,90,90])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 4 is not built because Move 2, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [0,180,60])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "dVol": 0.000003880901531094114,
+    "dCom": 4.973182133474202e-10
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-28,1,15])\nmove(j, [11,-39,24])\nmove(j, [-2,10,-5])\nmove(j, [-34,-29,-6])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built: Move 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [13,-23,-3])\nturn(j, [-30,60,30])\nturn(j, [180,180,45])\nturn(j, [90,15,90])\nmove(j, [-27,-17,26])\nmove(j, [-39,30,-29])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 3 is not built because Move 2, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [180,15,90])\nmove(j, [-17,8,-5])\nturn(j, [135,90,15])\nmove(j, [-14,-11,-28])\nturn(j, [90,30,60])\nturn(j, [60,0,90])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-27,14,5])\nmove(j, [-3,-10,1])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [25,25,25])\nturn(j, [180,60,0])\nmove(j, [36,-14,27])\nmove(j, [-8,-20,21])\nmove(j, [17,27,5])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-34,-26,28])\nturn(j, [135,45,15])\nmove(j, [-30,-6,-11])\nmove(j, [-29,-14,-6])\nmove(j, [-5,-13,-5])\nmove(j, [31,-20,7])\nturn(j, [45,180,0])\nturn(j, [135,90,180])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 3 is not built because Turn 2, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [39,-39,-28])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move1",
+    "v": "FAIL",
+    "dVol": 0.004614082116481967,
+    "dCom": 0.0014535679444584125
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [3,-3,20])\nmove(j, [-24,13,-2])\nmove(j, [-23,-6,-25])\nmove(j, [20,-10,22])\nmove(j, [-34,-23,-28])\nmove(j, [-31,-14,0])\nturn(j, [-30,180,135])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "dVol": 0.008141826446406344,
+    "dCom": 0.0024045284895974376
+   }
+  ],
+  "guardRefusal": "Turn 1 is not built because Move 6, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [60,45,45])\nturn(j, [30,15,-30])\nmove(j, [-27,39,-12])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move1",
+    "v": "FAIL",
+    "dVol": 0.004784191901646083,
+    "dCom": 0.001053468328292918
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-20,-35,29])\nmove(j, [-19,-9,-6])\nmove(j, [-33,-1,-25])\nturn(j, [135,90,90])\nturn(j, [90,-30,60])\nturn(j, [30,45,0])\nturn(j, [60,0,15])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [90,45,180])\nturn(j, [45,90,90])\nmove(j, [-29,-4,18])\nmove(j, [21,-6,-14])\nmove(j, [23,40,28])\nturn(j, [135,60,0])\nturn(j, [90,60,0])\nmove(j, [-5,28,-26])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move4",
+    "v": "FAIL",
+    "dVol": 0.00000388090153076875,
+    "dCom": 4.157812175839497e-10
+   }
+  ],
+  "guardRefusal": "Move 4 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-38,39,6])\nturn(j, [135,30,45])\nmove(j, [35,-37,17])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [-30,45,45])\nmove(j, [6,18,28])\nturn(j, [90,0,60])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [-30,30,0])\nmove(j, [-7,-3,0])\nmove(j, [0,18,-12])\nturn(j, [45,15,45])\nturn(j, [30,15,135])\nmove(j, [-20,22,12])\nturn(j, [0,135,15])\nmove(j, [25,-12,-14])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move4",
+    "v": "FAIL",
+    "dVol": 0.000003880901531094114,
+    "dCom": 3.6563729471395436e-10
+   }
+  ],
+  "guardRefusal": "Move 4 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [0,180,15])\nmove(j, [-10,35,22])\nmove(j, [23,5,-19])\nmove(j, [-26,12,3])\nturn(j, [30,45,0])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "turn2",
+    "v": "FAIL",
+    "dVol": 0.00468771532239369,
+    "dCom": 0.0006592831709654245
+   }
+  ],
+  "guardRefusal": "Turn 2 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [135,30,45])\nturn(j, [0,-30,-30])\nmove(j, [-31,-26,1])\nturn(j, [60,45,90])\nturn(j, [135,180,0])\nturn(j, [90,180,45])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 5 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [15,60,0])\nturn(j, [-30,45,180])\nturn(j, [30,60,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [14,18,-23])\nmove(j, [-5,-17,2])\nmove(j, [23,19,-27])\nturn(j, [135,15,15])\nmove(j, [-11,34,-16])\nmove(j, [-12,24,26])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 5 is not built because Move 4, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [45,135,30])\nmove(j, [33,22,17])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move1",
+    "v": "FAIL",
+    "dVol": 0.003171657844570727,
+    "dCom": 0.000237007009052045
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [135,60,180])\nturn(j, [15,45,-30])\nmove(j, [31,-29,-27])\nturn(j, [60,0,180])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 3 is not built: Move 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-27,-39,-13])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move1",
+    "v": "FAIL",
+    "dVol": 0.0005394088652926895,
+    "dCom": 0.0005837950263138875
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-6,-19,14])\nmove(j, [11,36,14])\nturn(j, [180,45,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [135,15,30])\nturn(j, [60,0,0])\nmove(j, [18,27,-21])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [13,-16,19])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move1",
+    "v": "FAIL",
+    "dVol": 0.008153227403908997,
+    "dCom": 0.0005315303430029443
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [40,23,30])\nmove(j, [40,-39,-5])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-37,33,-3])\nmove(j, [-23,-22,-8])\nturn(j, [180,90,60])\nturn(j, [90,0,60])\nturn(j, [15,90,90])\nmove(j, [5,30,-16])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move3",
+    "v": "FAIL",
+    "dVol": 0.000003880901534022393,
+    "dCom": 4.648192591087883e-10
+   }
+  ],
+  "guardRefusal": "Move 3 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [45,60,0])\nturn(j, [180,15,15])\nmove(j, [-12,35,7])\nmove(j, [-3,5,29])\nturn(j, [15,135,0])\nturn(j, [0,-30,15])\nmove(j, [-23,-32,-8])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 3 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-19,-36,27])\nmove(j, [23,-38,-28])\nmove(j, [16,15,10])\nturn(j, [-30,60,60])\nturn(j, [180,90,15])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 2 is not built because Turn 1, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [0,180,180])\nmove(j, [31,-6,-8])\nturn(j, [90,60,15])\nmove(j, [16,2,-28])\nturn(j, [135,0,-30])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 3 is not built because Move 2, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-7,6,-4])\nmove(j, [13,4,-1])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-34,-1,26])\nmove(j, [8,-18,-20])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-39,33,28])\nmove(j, [24,20,2])\nmove(j, [39,-9,-26])\nturn(j, [15,180,45])\nmove(j, [-20,-30,4])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Turn 1, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [30,0,0])\nturn(j, [15,60,180])\nturn(j, [15,90,90])\nturn(j, [135,60,0])\nmove(j, [35,23,-27])\nturn(j, [135,60,135])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 5 is not built because Move 1, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [35,-4,-24])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move1",
+    "v": "FAIL",
+    "dVol": 0.0035275025828337483,
+    "dCom": 0.0010969530566365573
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-5,-29,-16])\nmove(j, [38,5,12])\nmove(j, [-8,13,-1])\nturn(j, [60,0,45])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built: Move 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [45,180,180])\nmove(j, [31,-17,-12])\nturn(j, [60,90,60])\nturn(j, [60,135,180])\nturn(j, [15,60,0])\nturn(j, [15,45,0])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 5 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [18,-7,0])\nturn(j, [90,30,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [0,90,-30])\nturn(j, [15,0,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [7,-17,1])\nmove(j, [28,32,-29])\nmove(j, [33,12,0])\nturn(j, [0,30,0])\nmove(j, [-8,-18,18])\nturn(j, [0,15,30])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "turn2",
+    "v": "FAIL",
+    "dVol": 0.005557598882236213,
+    "dCom": 0.0009599072381004815
+   }
+  ],
+  "guardRefusal": "Turn 2 is not built because Move 4, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [90,15,15])\nmove(j, [13,-19,18])\nturn(j, [60,60,45])\nturn(j, [-30,180,60])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "turn3",
+    "v": "FAIL",
+    "dVol": 0.0020482005131761557,
+    "dCom": 0.00014146309689113236
+   }
+  ],
+  "guardRefusal": "Turn 3 is not built: Turn 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [180,180,135])\nmove(j, [29,-21,15])\nmove(j, [20,40,5])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [38,-12,-20])\nmove(j, [-39,33,-20])\nturn(j, [180,180,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [90,45,45])\nturn(j, [0,90,90])\nmove(j, [14,12,26])\nturn(j, [45,135,0])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 3 is not built: Move 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-26,4,-19])\nmove(j, [32,23,0])\nturn(j, [45,0,180])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "dVol": 0.003130771130772954,
+    "dCom": 0.0003244959851870547
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [-30,60,0])\nturn(j, [90,60,45])\nturn(j, [30,180,45])\nmove(j, [-11,-34,17])\nmove(j, [15,22,19])\nmove(j, [32,1,17])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move3",
+    "v": "FAIL",
+    "dVol": 0.000003880901526050967,
+    "dCom": 5.521761551104772e-10
+   }
+  ],
+  "guardRefusal": "Move 3 is not built because Move 2, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [6,3,-4])\nturn(j, [180,30,0])\nturn(j, [0,0,90])\nturn(j, [90,15,135])\nturn(j, [90,0,30])\nturn(j, [0,60,0])\nmove(j, [20,34,25])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built because Turn 5, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [34,-22,-27])\nmove(j, [20,-38,10])\nturn(j, [0,45,60])\nturn(j, [0,0,180])\nmove(j, [-11,-15,-25])\nturn(j, [90,45,15])\nmove(j, [-30,-19,-6])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move4",
+    "v": "FAIL",
+    "dVol": 0.0060139630810775845,
+    "dCom": 0.0021723044635888213
+   }
+  ],
+  "guardRefusal": "Move 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-28,33,21])\nturn(j, [135,0,0])\nmove(j, [4,-35,6])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [60,45,90])\nturn(j, [0,30,135])\nmove(j, [-27,16,12])\nmove(j, [-6,33,-25])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move2",
+    "v": "FAIL",
+    "dVol": 0.008235986222090687,
+    "dCom": 0.001235861984662982
+   }
+  ],
+  "guardRefusal": "Move 2 is not built: Move 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [16,31,-22])\nmove(j, [-2,33,10])\nmove(j, [-20,36,-27])\nmove(j, [-7,23,9])\nmove(j, [13,5,29])\nmove(j, [23,-3,21])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move6",
+    "v": "FAIL",
+    "dVol": 0.006147405080124539,
+    "dCom": 0.0031608232014678638
+   }
+  ],
+  "guardRefusal": "Move 6 is not built because Move 5, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [8,27,6])\nturn(j, [60,135,0])\nmove(j, [-11,-5,12])\nmove(j, [38,-21,-26])\nturn(j, [60,0,180])\nmove(j, [16,31,1])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move4",
+    "v": "FAIL",
+    "dVol": 0.000003880901532232889,
+    "dCom": 4.405569169399726e-10
+   }
+  ],
+  "guardRefusal": "Move 4 is not built because Turn 2, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [180,45,15])\nmove(j, [-14,-2,20])\nmove(j, [35,-3,8])\nmove(j, [24,-32,-22])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 3 is not built: Move 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [30,180,0])\nmove(j, [14,-10,23])\nmove(j, [-11,19,-14])\nturn(j, [-30,30,180])\nturn(j, [180,-30,30])\nmove(j, [-35,6,-12])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move3",
+    "v": "FAIL",
+    "dVol": 0.000003880901530768749,
+    "dCom": 3.9660336366939567e-10
+   }
+  ],
+  "guardRefusal": "Move 3 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-3,-24,-30])\nmove(j, [12,13,28])\nturn(j, [180,30,45])\nmove(j, [-23,20,-23])\nmove(j, [38,-38,-13])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [33,-35,10])\nmove(j, [-30,-18,-13])\nturn(j, [15,45,135])\nmove(j, [30,-1,-13])\nmove(j, [-14,-37,16])\nmove(j, [13,39,-19])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 5 is not built because Move 4, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-1,-39,20])\nturn(j, [0,30,-30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nturn(j, [60,90,-30])\nturn(j, [0,60,30])\nmove(j, [-21,-8,-14])\nmove(j, [-19,36,13])\nmove(j, [-12,-18,21])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move3",
+    "v": "FAIL",
+    "dVol": 0.000003880901533046301,
+    "dCom": 4.189258999217164e-10
+   }
+  ],
+  "guardRefusal": "Move 3 is not built because Move 2, which it uses, was refused."
+ },
+ {
+  "scenario": "join",
+  "script": "let b = box(30, 30, 6)\nlet k = cone(10, 16, { at: [0, 0, 3] })\nlet j = join(b, k)\nmove(j, [-13,-12,3])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move1",
+    "v": "FAIL",
+    "dVol": 0.0038069092693076663,
+    "dCom": 0.0002991536933666862
+   }
+  ]
+ },
+ {
+  "scenario": "join",
+  "summary": {
+   "n": 60,
+   "shipped": {
+    "PASS": 37,
+    "FAIL": 23
+   },
+   "guard": {
+    "REFUSED": 36,
+    "PASS": 24
+   },
+   "repairedSteps": 67,
+   "repairKinds": {
+    "padded1": 50,
+    "folded": 17
+   },
+   "tessBboxArtefacts": 0,
+   "guardWrong": 0,
+   "refusals": {
+    "Move # is not built: Turn # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 6,
+    "Move # is not built because Move #, which it uses, was refused.": 17,
+    "Turn # is not built because Move #, which it uses, was refused.": 13,
+    "Move # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 12,
+    "Turn # is not built: Turn # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 7,
+    "Move # is not built because Turn #, which it uses, was refused.": 15,
+    "Turn # is not built because Turn #, which it uses, was refused.": 17,
+    "Turn # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 11
+   }
+  }
+ }
+]

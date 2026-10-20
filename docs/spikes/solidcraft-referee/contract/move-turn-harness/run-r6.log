@@ -1,0 +1,19 @@
+== r6-guardwrong
+exit 0
+== r6-limit-sentence
+exit 0
+== r6-wide-a
+exit 0
+== r6-wide-join
+exit 0
+== r6-wide-control
+exit 0
+== r6-conechain-moves
+exit 0
+== r6-fresh-a
+exit 0
+== r6-fresh-join
+exit 0
+== r6-control-nolimit
+exit 0
+ALLDONE

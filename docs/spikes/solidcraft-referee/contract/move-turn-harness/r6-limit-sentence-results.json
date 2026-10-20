@@ -1,0 +1,33 @@
+{
+ "script": "let a = cone(8, 15)\nmove(a, [10,0,0])\nmove(a, [0,10,0])\nmove(a, [0,0,10])\nmove(a, [5,5,5])\nmove(a, [1,2,3])",
+ "limit": 3,
+ "features": [
+  {
+   "id": "cone1",
+   "status": "built"
+  },
+  {
+   "id": "move1",
+   "status": "built"
+  },
+  {
+   "id": "move2",
+   "status": "built"
+  },
+  {
+   "id": "move3",
+   "status": "built"
+  },
+  {
+   "id": "move4",
+   "status": "refused",
+   "refusal": "Move 4 is not built: Move 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+  },
+  {
+   "id": "move5",
+   "status": "refused",
+   "refusal": "Move 5 is not built because Move 4, which it uses, was refused."
+  }
+ ],
+ "directSentence": "Move 4 is not built: Move 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+}

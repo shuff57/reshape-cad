@@ -1,0 +1,29 @@
+cone     n 120 SHIPPED {"PASS":103,"FAIL":17} GUARD {"REFUSED":80,"PASS":40} repaired steps 58 {"folded":57,"padded1":1} bbox-only artefact (counted PASS, both translators) 1 guard WRONG 0
+   refusal x22: Move # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x51: Turn # is not built because Move #, which it uses, was refused.
+   refusal x48: Turn # is not built because Turn #, which it uses, was refused.
+   refusal x59: Move # is not built because Turn #, which it uses, was refused.
+   refusal x44: Move # is not built because Move #, which it uses, was refused.
+   refusal x17: Turn # is not built: Turn # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x21: Turn # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x20: Move # is not built: Turn # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   shipped example: "let a = cone(8, 9, { at: [-9,0,-5] })\nturn(a, [90,30,60])\nturn(a, [60,0,90])\nmove(a, [-9,-27,10])\nturn(a, [45,45,30])\nturn(a, [60,0,135])\nturn(a, [180,180,180])\nturn(a, [0,0,-30])\nmove(a, [37,-35,-6])" [{"id":"move2","v":"FAIL","dVol":1.2639075156634823,"dCom":0.6375437953193426}]
+copies   n 120 SHIPPED {"REFUSED":114,"PASS":1,"FAIL":5} GUARD {"REFUSED":92,"PASS":28} repaired steps 31 {"padded1":23,"folded":8} bbox-only artefact (counted PASS, both translators) 0 guard WRONG 0
+   refusal x14: Copy # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x28: Move # is not built because Copy #, which it uses, was refused.
+   refusal x5: Turn # is not built because Move #, which it uses, was refused.
+   refusal x7: Copy # is not built: Turn # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x25: Copy # is not built because Move #, which it uses, was refused.
+   refusal x95: Copy # is not built because Copy #, which it uses, was refused.
+   refusal x54: Copy # is not built: Copy # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x26: Turn # is not built because Copy #, which it uses, was refused.
+   refusal x8: Move # is not built: Copy # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x10: Copy # is not built because Turn #, which it uses, was refused.
+   refusal x4: Move # is not built: Turn # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x3: Turn # is not built: Copy # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x3: Move # is not built because Turn #, which it uses, was refused.
+   refusal x6: Move # is not built because Move #, which it uses, was refused.
+   refusal x1: Move # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x1: Turn # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.
+   refusal x2: Turn # is not built because Turn #, which it uses, was refused.
+   shipped example: "let a = cone(8, 15)\nmove(a, [-34,8,-6])\nturn(a, [60,180,180])\nlet c2 = move(a, [23,13,-10], { copy: true })" [{"id":"turn1","v":"FAIL","dVol":0.1968662039243507,"dCom":0.014342056446920548}]

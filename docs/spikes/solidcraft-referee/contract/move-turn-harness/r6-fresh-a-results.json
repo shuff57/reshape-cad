@@ -1,0 +1,2087 @@
+[
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 22)\nmove(a, [21,-31,26])\nmove(a, [14,23,14])\nmove(a, [-24,-26,20])\nmove(a, [-30,35,3])\nturn(a, [60,0,90])\nturn(a, [0,60,0])\nturn(a, [60,30,30])\nmove(a, [1,20,-13])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 5 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 15, { at: [16,-5,-1] })\nmove(a, [-34,-29,-6])\nturn(a, [45,90,15])\nmove(a, [33,37,1])\nmove(a, [34,29,24])\nmove(a, [26,12,-18])\nturn(a, [15,15,30])\nturn(a, [30,0,180])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 3 is not built because Turn 2, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 9, { at: [15,17,-7] })\nmove(a, [8,-7,2])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 9, { at: [-9,0,-5] })\nturn(a, [90,30,60])\nturn(a, [60,0,90])\nmove(a, [-9,-27,10])\nturn(a, [45,45,30])\nturn(a, [60,0,135])\nturn(a, [180,180,180])\nturn(a, [0,0,-30])\nmove(a, [37,-35,-6])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move2",
+    "v": "FAIL",
+    "dVol": 1.2639075156634823,
+    "dCom": 0.6375437953193426
+   }
+  ],
+  "guardRefusal": "Move 2 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(9, 19)\nturn(a, [60,-30,30])\nmove(a, [-26,38,3])\nturn(a, [45,15,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 14, { at: [-8,-7,-11] })\nmove(a, [-5,-13,-5])\nmove(a, [31,-20,7])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 19, { at: [15,-19,2] })\nturn(a, [0,45,-30])\nmove(a, [-37,27,-18])\nturn(a, [45,135,0])\nmove(a, [13,-3,-1])\nmove(a, [-6,-34,-7])\nturn(a, [30,180,45])\nmove(a, [-23,-37,-25])\nmove(a, [-14,0,27])\nturn(a, [180,135,30])\nturn(a, [60,45,45])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 24, { at: [-9,18,-6] })\nmove(a, [32,-39,-15])\nmove(a, [38,-1,-15])\nmove(a, [-8,-18,-24])\nmove(a, [-33,36,19])\nturn(a, [90,135,90])\nturn(a, [60,180,30])\nmove(a, [-29,27,4])\nmove(a, [-21,37,12])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 6 is not built because Move 5, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 19, { at: [16,12,-1] })\nmove(a, [-29,-4,18])\nmove(a, [21,-6,-14])\nmove(a, [23,40,28])\nturn(a, [135,60,0])\nturn(a, [90,60,0])\nmove(a, [-5,28,-26])\nmove(a, [-1,-38,29])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 5 is not built because Move 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 14)\nmove(a, [-9,35,-28])\nturn(a, [30,135,-30])\nmove(a, [0,-32,5])\nturn(a, [-30,180,90])\nmove(a, [0,39,22])\nturn(a, [30,0,15])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 3 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 13, { at: [0,-9,0] })\nturn(a, [45,15,45])\nturn(a, [30,15,135])\nmove(a, [-20,22,12])\nturn(a, [0,135,15])\nmove(a, [25,-12,-14])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 22)\nmove(a, [-25,-10,26])\nturn(a, [30,135,60])\nmove(a, [-13,-26,9])\nturn(a, [-30,30,45])\nmove(a, [17,7,19])\nmove(a, [-5,31,-25])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 10)\nmove(a, [1,1,5])\nmove(a, [17,33,19])\nturn(a, [0,180,90])\nturn(a, [45,15,135])\nmove(a, [8,-31,17])\nturn(a, [45,180,180])\nmove(a, [4,35,12])\nmove(a, [14,18,-23])\nmove(a, [-5,-17,2])\nmove(a, [23,19,-27])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 7 is not built because Move 6, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 11)\nmove(a, [-11,34,-16])\nmove(a, [-12,24,26])\nmove(a, [38,-2,18])\nmove(a, [-36,33,16])\nturn(a, [45,90,135])\nturn(a, [180,90,15])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 2 is not built because Turn 1, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 22)\nmove(a, [-36,38,6])\nmove(a, [28,-35,-20])\nmove(a, [-39,-17,-16])\nmove(a, [-6,-19,14])\nmove(a, [11,36,14])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 5 is not built because Move 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 15)\nmove(a, [22,22,-17])\nmove(a, [11,8,-28])\nmove(a, [-36,18,20])\nmove(a, [-39,-36,10])\nmove(a, [25,-23,-22])\nturn(a, [135,-30,30])\nturn(a, [0,45,90])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 2 is not built because Turn 1, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 12, { at: [16,-2,-6] })\nmove(a, [15,29,12])\nturn(a, [180,90,0])\nturn(a, [60,15,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 21, { at: [3,15,-8] })\nmove(a, [2,-36,24])\nturn(a, [15,15,0])\nmove(a, [35,9,-26])\nmove(a, [5,39,0])\nmove(a, [23,-37,29])\nmove(a, [38,-19,-27])\nmove(a, [-32,-10,3])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 6 is not built because Move 5, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 8, { at: [-18,18,-9] })\nmove(a, [-36,16,11])\nturn(a, [60,-30,60])\nturn(a, [90,180,90])\nmove(a, [3,16,-21])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built: Turn 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(4, 22)\nmove(a, [-10,13,8])\nturn(a, [15,0,90])\nturn(a, [0,180,135])\nmove(a, [37,-27,-30])\nmove(a, [6,-5,-15])\nturn(a, [60,45,0])\nmove(a, [-34,-1,26])\nmove(a, [8,-18,-20])\nturn(a, [30,0,180])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 4 is not built because Move 5, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(9, 24, { at: [12,10,1] })\nmove(a, [-35,19,-19])\nturn(a, [45,15,15])\nmove(a, [5,19,15])\nmove(a, [-28,-30,16])\nmove(a, [7,29,22])\nmove(a, [16,17,11])\nturn(a, [60,0,45])\nturn(a, [135,0,90])\nturn(a, [60,135,0])\nmove(a, [35,-4,-24])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 6 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(9, 24, { at: [-2,-15,-8] })\nturn(a, [90,45,45])\nturn(a, [45,90,60])\nmove(a, [-4,20,22])\nmove(a, [28,28,-12])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move2",
+    "v": "FAIL",
+    "dVol": 0.29577476168032174,
+    "dCom": 0.05755966422083626
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 17, { at: [-8,5,3] })\nturn(a, [60,135,180])\nturn(a, [15,60,0])\nturn(a, [15,45,0])\nmove(a, [-32,18,-5])\nmove(a, [4,14,-8])\nmove(a, [-28,33,-27])\nturn(a, [-30,-30,15])\nmove(a, [-7,12,-20])\nturn(a, [30,60,45])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 2 is not built because Move 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(4, 14)\nturn(a, [90,45,60])\nmove(a, [-15,-37,-23])\nmove(a, [-18,24,19])\nmove(a, [-27,-11,-2])\nturn(a, [90,15,15])\nmove(a, [13,-19,18])\nturn(a, [60,60,45])\nturn(a, [-30,180,60])\nmove(a, [35,28,26])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 5 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 20, { at: [14,-10,8] })\nturn(a, [60,15,15])\nturn(a, [30,0,30])\nmove(a, [33,-26,20])\nturn(a, [180,90,30])\nturn(a, [90,45,45])\nturn(a, [0,90,90])\nmove(a, [14,12,26])\nturn(a, [45,135,0])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 4 is not built because Move 2, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 22, { at: [-13,2,-9] })\nturn(a, [60,180,45])\nmove(a, [33,18,19])\nturn(a, [60,0,60])\nturn(a, [60,45,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 11)\nmove(a, [-34,23,-6])\nturn(a, [135,135,0])\nturn(a, [60,135,135])\nmove(a, [6,3,-4])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built: Turn 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 9)\nturn(a, [0,0,90])\nturn(a, [90,15,135])\nturn(a, [90,0,30])\nturn(a, [0,60,0])\nmove(a, [20,34,25])\nturn(a, [0,180,15])\nmove(a, [-31,20,-29])\nturn(a, [-30,0,45])\nturn(a, [135,0,0])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "turn3",
+    "v": "FAIL",
+    "dVol": 0.0001823175286550884,
+    "dCom": 0.000022333547397380134
+   }
+  ],
+  "guardRefusal": "Turn 3 is not built because Turn 2, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 19, { at: [-6,-7,-12] })\nmove(a, [-24,-34,-22])\nmove(a, [-8,-22,-2])\nmove(a, [33,27,26])\nturn(a, [0,0,45])\nturn(a, [0,60,45])\nturn(a, [60,45,90])\nturn(a, [0,30,135])\nmove(a, [-27,16,12])\nmove(a, [-6,33,-25])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 5 is not built because Move 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 16, { at: [8,15,-11] })\nturn(a, [90,15,15])\nturn(a, [0,0,45])\nturn(a, [90,15,90])\nturn(a, [-30,45,135])\nmove(a, [28,20,-13])\nturn(a, [135,60,90])\nturn(a, [135,0,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 9, { at: [8,-3,14] })\nturn(a, [60,0,180])\nmove(a, [16,31,1])\nmove(a, [37,35,-5])\nmove(a, [-36,-14,-1])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move3",
+    "v": "FAIL",
+    "dVol": 0.8810263201695041,
+    "dCom": 6.145506011382344
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 21, { at: [18,-2,4] })\nmove(a, [-29,22,16])\nmove(a, [32,-29,-5])\nturn(a, [30,180,15])\nmove(a, [19,-19,28])\nturn(a, [30,180,60])\nturn(a, [-30,30,15])\nmove(a, [6,-17,7])\nmove(a, [-3,-24,-30])\nmove(a, [12,13,28])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 6 is not built because Move 5, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 15)\nmove(a, [-23,20,-23])\nmove(a, [38,-38,-13])\nturn(a, [30,180,0])\nturn(a, [0,0,30])\nmove(a, [17,-22,-7])\nturn(a, [0,180,45])\nmove(a, [-22,-14,-28])\nturn(a, [15,90,-30])\nmove(a, [-24,-27,0])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 5 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 11)\nmove(a, [38,1,12])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(9, 12, { at: [19,1,-14] })\nmove(a, [-21,-8,-14])\nmove(a, [-19,36,13])\nmove(a, [-12,-18,21])\nmove(a, [-13,-13,-9])\nturn(a, [0,30,45])\nturn(a, [0,30,135])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 2 is not built because Turn 1, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 17)\nmove(a, [-22,-22,-27])\nmove(a, [7,-35,17])\nmove(a, [-13,-9,3])\nmove(a, [27,-6,18])\nmove(a, [16,12,13])\nmove(a, [13,23,4])\nmove(a, [22,-33,-10])\nmove(a, [-12,34,-4])\nmove(a, [34,-30,-14])\nturn(a, [0,90,30])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built because Move 9, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 19, { at: [5,-13,-4] })\nmove(a, [32,7,-19])\nturn(a, [135,135,90])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "dVol": 0.24286625492270486,
+    "dCom": 0.045526904399410734
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 21, { at: [14,-11,10] })\nmove(a, [-29,-9,-17])\nturn(a, [180,0,90])\nmove(a, [-25,14,19])\nmove(a, [14,4,-8])\nturn(a, [0,90,45])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 2 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 12)\nturn(a, [0,45,15])\nmove(a, [-8,33,-8])\nmove(a, [-30,-21,-14])\nturn(a, [15,30,0])\nturn(a, [0,45,90])\nmove(a, [30,12,24])\nturn(a, [0,0,90])\nmove(a, [-27,3,18])\nturn(a, [60,135,60])\nturn(a, [180,180,180])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 5 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 14)\nturn(a, [60,30,135])\nturn(a, [45,135,60])\nturn(a, [15,45,30])\nmove(a, [3,-35,17])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 12, { at: [13,14,12] })\nturn(a, [180,0,135])\nturn(a, [0,90,-30])\nturn(a, [90,30,180])\nmove(a, [33,27,-17])\nturn(a, [60,-30,0])\nturn(a, [90,30,-30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 19, { at: [-13,4,12] })\nmove(a, [29,-35,27])\nturn(a, [0,135,-30])\nmove(a, [-31,-24,6])\nturn(a, [180,45,30])\nturn(a, [45,15,180])\nmove(a, [-39,-35,-29])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 3 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 16, { at: [-13,12,2] })\nmove(a, [2,33,21])\nturn(a, [135,60,45])\nturn(a, [30,90,180])\nmove(a, [-29,26,-1])\nturn(a, [135,90,15])\nturn(a, [180,30,180])\nmove(a, [-27,9,1])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 3 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 21, { at: [-13,12,10] })\nmove(a, [-36,34,4])\nturn(a, [-30,0,0])\nmove(a, [-16,-40,9])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 9)\nturn(a, [135,135,180])\nturn(a, [180,0,90])\nturn(a, [45,0,15])\nturn(a, [90,15,0])\nturn(a, [30,-30,0])\nmove(a, [-26,-4,30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 21, { at: [16,-3,0] })\nmove(a, [27,39,11])\nmove(a, [-7,-35,0])\nmove(a, [-39,25,-7])\nturn(a, [30,45,0])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built: Move 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 19, { at: [8,16,12] })\nturn(a, [0,180,180])\nmove(a, [-5,-15,14])\nturn(a, [135,60,0])\nmove(a, [19,-24,20])\nturn(a, [15,45,90])\nmove(a, [-1,-18,6])\nturn(a, [15,15,180])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 3 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 13, { at: [-6,6,-15] })\nturn(a, [15,30,30])\nmove(a, [-37,21,-7])\nmove(a, [-11,26,11])\nturn(a, [0,-30,30])\nturn(a, [0,60,135])\nmove(a, [9,31,-3])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move3",
+    "v": "FAIL",
+    "dVol": 0.9578736808083489,
+    "dCom": 22.58997458973891
+   }
+  ],
+  "guardRefusal": "Move 3 is not built because Turn 2, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 16, { at: [7,4,-12] })\nturn(a, [0,-30,0])\nmove(a, [26,30,-9])\nmove(a, [-22,32,3])\nmove(a, [5,-27,20])\nturn(a, [180,0,-30])\nmove(a, [-29,-36,-4])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Turn 1, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 14)\nturn(a, [0,135,60])\nmove(a, [31,-8,-23])\nturn(a, [45,60,30])\nturn(a, [15,-30,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(4, 10, { at: [-8,-15,-11] })\nmove(a, [22,9,-1])\nmove(a, [36,8,13])\nturn(a, [90,45,135])\nmove(a, [27,11,-13])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move3",
+    "v": "FAIL",
+    "dVol": 0.08955860814923759,
+    "dCom": 0.1334916674775784
+   }
+  ],
+  "guardRefusal": "Move 3 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 14)\nturn(a, [60,0,180])\nturn(a, [135,15,30])\nmove(a, [1,6,-20])\nmove(a, [40,17,0])\nmove(a, [-19,3,-1])\nmove(a, [38,-21,12])\nturn(a, [0,-30,0])\nmove(a, [-9,15,8])\nmove(a, [0,24,23])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 6 is not built because Move 5, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 23, { at: [-13,8,-6] })\nturn(a, [15,30,0])\nturn(a, [60,60,-30])\nmove(a, [15,20,-14])\nmove(a, [24,-1,9])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move2",
+    "v": "FAIL",
+    "dVol": 0.1511490628253321,
+    "dCom": 0.07307102386377741
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 16, { at: [7,-13,-1] })\nmove(a, [8,-11,15])\nmove(a, [35,-31,-2])\nturn(a, [60,60,15])\nmove(a, [32,25,5])\nturn(a, [60,30,90])\nmove(a, [-27,9,8])\nturn(a, [180,15,90])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 3 is not built because Move 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 23)\nturn(a, [90,0,0])\nturn(a, [15,0,60])\nmove(a, [26,6,5])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 21)\nmove(a, [13,4,-24])\nmove(a, [-9,-16,-27])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 18)\nturn(a, [180,60,60])\nturn(a, [180,90,45])\nturn(a, [180,-30,180])\nturn(a, [135,0,45])\nmove(a, [1,-5,-30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 13, { at: [-2,-7,10] })\nmove(a, [-21,39,21])\nturn(a, [-30,15,90])\nturn(a, [180,0,135])\nturn(a, [45,135,30])\nturn(a, [0,45,60])\nmove(a, [36,29,24])\nturn(a, [90,90,0])\nmove(a, [9,-12,-21])\nturn(a, [90,45,0])\nmove(a, [-30,3,25])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Turn 6, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(4, 13, { at: [2,-6,-2] })\nmove(a, [-20,13,2])\nmove(a, [-24,-16,20])\nmove(a, [-1,-32,-14])\nturn(a, [60,15,0])\nmove(a, [0,11,13])\nturn(a, [135,180,60])\nturn(a, [60,30,30])\nturn(a, [0,30,-30])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 14)\nturn(a, [60,90,15])\nmove(a, [-35,16,24])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 22)\nturn(a, [90,0,60])\nturn(a, [60,90,90])\nturn(a, [0,45,180])\nturn(a, [60,0,135])\nmove(a, [-20,-15,21])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 20, { at: [15,5,-10] })\nmove(a, [-12,-10,4])\nmove(a, [32,-33,-5])\nturn(a, [30,15,15])\nmove(a, [-11,40,6])\nturn(a, [30,180,0])\nmove(a, [20,-8,-8])\nturn(a, [90,-30,30])\nturn(a, [90,60,15])\nmove(a, [11,-35,-16])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move5",
+    "v": "FAIL",
+    "dVol": 0.3648865998068106,
+    "dCom": 0.2534029672288441
+   }
+  ],
+  "guardRefusal": "Move 5 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 23)\nturn(a, [0,30,0])\nturn(a, [0,0,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(9, 22, { at: [14,-17,-13] })\nturn(a, [-30,0,0])\nturn(a, [180,15,180])\nturn(a, [60,60,135])\nturn(a, [135,0,0])\nmove(a, [-7,-37,-15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 23)\nmove(a, [28,-15,12])\nturn(a, [45,135,-30])\nmove(a, [15,-24,-2])\nmove(a, [5,-28,10])\nturn(a, [90,0,0])\nturn(a, [90,-30,180])\nmove(a, [-1,-39,-26])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move4",
+    "v": "FAIL",
+    "dVol": 0.0629181221020603,
+    "dCom": 0.051952130309185614
+   }
+  ],
+  "guardRefusal": "Move 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 13, { at: [4,-2,9] })\nturn(a, [90,0,180])\nmove(a, [8,-12,4])\nturn(a, [90,180,15])\nturn(a, [30,60,15])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 12, { at: [14,-2,4] })\nturn(a, [45,180,45])\nturn(a, [0,-30,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 21)\nmove(a, [-36,-38,-24])\nturn(a, [60,0,0])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 12, { at: [-15,8,5] })\nturn(a, [90,180,0])\nmove(a, [18,-30,-19])\nmove(a, [3,-38,-26])\nmove(a, [-37,3,17])\nmove(a, [38,30,17])\nturn(a, [60,45,0])\nmove(a, [-27,7,8])\nturn(a, [135,15,15])\nmove(a, [24,-11,-4])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 6 is not built because Turn 2, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(4, 18, { at: [-7,17,8] })\nmove(a, [22,-12,9])\nturn(a, [60,180,15])\nmove(a, [22,27,-28])\nturn(a, [0,90,45])\nmove(a, [-36,-30,1])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 3 is not built because Turn 2, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 21)\nturn(a, [15,15,30])\nmove(a, [-21,30,-29])\nturn(a, [15,0,30])\nmove(a, [-4,-9,-2])\nturn(a, [15,60,90])\nmove(a, [-2,-3,27])\nmove(a, [16,21,11])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 24, { at: [-15,-19,-3] })\nturn(a, [0,15,15])\nturn(a, [-30,0,-30])\nmove(a, [2,-15,-16])\nmove(a, [-18,23,16])\nturn(a, [0,15,45])\nturn(a, [135,60,135])\nturn(a, [90,135,0])\nturn(a, [180,45,-30])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 23, { at: [-9,16,10] })\nturn(a, [-30,135,0])\nmove(a, [38,3,24])\nmove(a, [-21,-22,16])\nturn(a, [60,-30,90])\nturn(a, [135,45,90])\nturn(a, [90,135,0])\nmove(a, [-18,-36,2])\nmove(a, [36,-25,20])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 20, { at: [-6,19,12] })\nturn(a, [0,0,90])\nturn(a, [45,30,135])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 8)\nmove(a, [-2,7,-1])\nmove(a, [-6,18,-23])\nmove(a, [-25,-26,19])\nturn(a, [0,-30,60])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built: Move 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(4, 17, { at: [4,-14,-4] })\nturn(a, [30,180,0])\nturn(a, [180,30,180])\nmove(a, [-33,-32,-5])\nturn(a, [60,90,180])\nmove(a, [-12,-20,-22])\nturn(a, [0,0,135])\nturn(a, [60,90,60])\nmove(a, [12,-17,-12])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 3 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 16)\nturn(a, [180,45,90])\nturn(a, [30,30,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 16, { at: [0,7,10] })\nturn(a, [60,180,180])\nturn(a, [60,180,90])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 19, { at: [-7,6,-10] })\nturn(a, [90,15,180])\nmove(a, [16,10,8])\nmove(a, [35,-32,30])\nmove(a, [-12,-9,19])\nturn(a, [30,30,135])\nturn(a, [45,90,60])\nturn(a, [135,15,-30])\nmove(a, [-20,-15,6])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 8, { at: [-2,10,-10] })\nmove(a, [-33,-14,17])\nturn(a, [30,45,135])\nturn(a, [-30,30,30])\nmove(a, [3,-28,26])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built: Turn 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 23, { at: [-11,15,8] })\nturn(a, [60,15,30])\nturn(a, [30,60,-30])\nturn(a, [30,60,180])\nturn(a, [0,60,90])\nmove(a, [-21,-24,15])\nturn(a, [15,45,0])\nmove(a, [0,-33,13])\nmove(a, [9,28,23])\nmove(a, [1,-38,18])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 8)\nmove(a, [10,-9,11])\nmove(a, [12,-27,29])\nturn(a, [180,135,135])\nmove(a, [3,-6,-15])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 3 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(14, 20, { at: [-9,16,1] })\nturn(a, [60,0,60])\nturn(a, [0,45,135])\nturn(a, [180,90,180])\nmove(a, [-34,0,5])\nturn(a, [30,15,135])\nmove(a, [5,-26,15])\nmove(a, [2,-23,10])\nmove(a, [24,37,1])\nmove(a, [-15,26,-5])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 5 is not built because Move 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 13, { at: [-3,-8,-9] })\nmove(a, [-28,5,-11])\nturn(a, [90,60,30])\nturn(a, [180,90,30])\nmove(a, [-10,-33,6])\nturn(a, [0,15,30])\nturn(a, [90,30,30])\nturn(a, [60,30,30])\nmove(a, [18,5,25])\nturn(a, [135,15,45])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 6 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 16, { at: [4,0,0] })\nmove(a, [-40,-40,-5])\nturn(a, [15,30,180])\nturn(a, [135,30,0])\nturn(a, [-30,30,0])\nturn(a, [180,90,180])\nmove(a, [-2,-31,9])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 17, { at: [-20,14,9] })\nturn(a, [90,30,0])\nmove(a, [1,7,-30])\nmove(a, [22,12,-4])\nmove(a, [33,12,14])\nturn(a, [60,90,15])\nmove(a, [-38,-10,-13])\nmove(a, [-33,33,26])\nmove(a, [-23,31,2])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 6 is not built because Move 5, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 12)\nmove(a, [14,18,21])\nturn(a, [45,30,15])\nturn(a, [45,45,30])\nturn(a, [60,180,15])\nmove(a, [-38,24,-17])\nturn(a, [60,30,135])\nturn(a, [60,60,0])\nturn(a, [90,60,0])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 6 is not built because Turn 5, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 17)\nmove(a, [-30,15,-12])\nmove(a, [6,33,3])\nmove(a, [30,-27,-15])\nmove(a, [39,-11,24])\nmove(a, [-35,-8,-6])\nmove(a, [15,6,-23])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move6",
+    "v": "FAIL",
+    "dVol": 0.2039502811494391,
+    "dCom": 0.09492775461780978
+   }
+  ],
+  "guardRefusal": "Move 6 is not built because Move 5, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 18, { at: [18,17,-4] })\nturn(a, [135,90,15])\nmove(a, [14,-19,25])\nmove(a, [12,16,9])\nturn(a, [30,0,135])\nmove(a, [-10,-23,25])\nturn(a, [135,0,0])\nturn(a, [180,180,90])\nturn(a, [30,180,15])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "turn4",
+    "v": "FAIL",
+    "dVol": 0.32602909206844044,
+    "dCom": 0.12230537839646795
+   }
+  ],
+  "guardRefusal": "Turn 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(9, 13, { at: [8,4,-6] })\nmove(a, [-1,38,-8])\nmove(a, [33,-33,-23])\nturn(a, [60,180,15])\nturn(a, [-30,15,45])\nmove(a, [-22,-33,-4])\nturn(a, [0,0,135])\nmove(a, [11,-5,0])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 13, { at: [15,1,0] })\nmove(a, [1,9,16])\nturn(a, [15,90,45])\nturn(a, [0,-30,45])\nmove(a, [-26,2,-22])\nturn(a, [30,-30,0])\nmove(a, [-17,5,2])\nturn(a, [15,135,30])\nmove(a, [36,-18,2])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Turn 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 18, { at: [3,2,13] })\nturn(a, [45,180,-30])\nmove(a, [-7,27,9])\nturn(a, [180,15,45])\nturn(a, [0,0,30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 20, { at: [5,6,7] })\nturn(a, [30,180,15])\nmove(a, [13,38,-6])\nturn(a, [45,30,60])\nmove(a, [-33,2,18])\nturn(a, [90,180,60])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 2 is not built: Move 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 19, { at: [-4,19,4] })\nturn(a, [30,135,30])\nturn(a, [180,0,0])\nturn(a, [180,15,15])\nmove(a, [-2,-19,-17])\nturn(a, [0,180,60])\nmove(a, [-5,-11,8])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 22, { at: [-19,-5,0] })\nturn(a, [45,0,0])\nmove(a, [-12,37,13])\nmove(a, [13,-7,-14])\nmove(a, [11,7,-28])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 15, { at: [0,-6,0] })\nmove(a, [35,7,-9])\nmove(a, [-5,-38,6])\nturn(a, [135,180,135])\nmove(a, [37,16,5])\nmove(a, [18,23,10])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(4, 21, { at: [20,19,-2] })\nmove(a, [27,-22,11])\nturn(a, [135,180,180])\nturn(a, [45,45,0])\nturn(a, [0,45,15])\nmove(a, [-26,39,-9])\nturn(a, [90,60,0])\nmove(a, [-32,35,5])\nturn(a, [45,90,60])\nturn(a, [0,60,180])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 6 is not built because Turn 5, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 22, { at: [0,18,-5] })\nmove(a, [-6,30,9])\nturn(a, [15,180,0])\nturn(a, [180,60,0])\nmove(a, [-32,25,11])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built: Turn 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 17, { at: [-13,7,2] })\nturn(a, [135,60,60])\nmove(a, [-37,-9,22])\nmove(a, [2,32,-3])\nturn(a, [30,90,15])\nmove(a, [38,32,2])\nturn(a, [180,90,180])\nmove(a, [-30,-28,29])\nturn(a, [180,90,90])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 3 is not built because Move 4, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 21, { at: [-10,-17,-7] })\nmove(a, [16,-17,-11])\nturn(a, [90,90,0])\nmove(a, [-22,-36,-7])",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "move2",
+    "v": "FAIL",
+    "dVol": 0.6509024903625852,
+    "dCom": 1.1623806211372285
+   }
+  ]
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 10, { at: [-7,2,-6] })\nmove(a, [-7,-22,30])\nturn(a, [135,90,60])\nmove(a, [4,-7,-26])\nmove(a, [13,16,2])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 3 is not built: Move 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 12)\nmove(a, [26,1,12])\nmove(a, [-34,32,18])\nmove(a, [18,-10,-4])\nmove(a, [-22,8,3])\nmove(a, [-13,13,14])\nmove(a, [35,-19,25])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move6",
+    "v": "FAIL",
+    "dVol": 1.0440799156469283,
+    "dCom": 24.975947116906454
+   }
+  ],
+  "guardRefusal": "Move 6 is not built because Move 5, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 17, { at: [-15,-13,7] })\nturn(a, [180,180,90])\nmove(a, [-23,25,-13])\nmove(a, [10,40,19])\nturn(a, [60,30,-30])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(9, 14)\nmove(a, [-35,24,11])\nturn(a, [135,15,15])\nmove(a, [11,-17,18])\nturn(a, [-30,180,15])\nmove(a, [-32,-24,13])\nturn(a, [15,135,90])\nturn(a, [45,0,180])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 14, { at: [12,18,-1] })\nturn(a, [135,180,45])\nturn(a, [135,30,90])\nmove(a, [-29,-4,29])\nmove(a, [35,4,6])\nmove(a, [21,-23,19])\nmove(a, [17,-25,3])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built: Move 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 11, { at: [-3,-15,-4] })\nturn(a, [30,90,15])\nmove(a, [-6,35,20])\nmove(a, [14,-31,-10])\nturn(a, [15,90,90])\nmove(a, [-34,32,-21])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 3 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 14, { at: [-14,18,0] })\nturn(a, [-30,60,90])\nmove(a, [-6,35,0])\nmove(a, [-11,39,29])\nmove(a, [27,-7,15])\nturn(a, [45,0,15])\nturn(a, [45,0,60])\nmove(a, [30,34,-15])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Turn 2, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(6, 12, { at: [3,4,-9] })\nturn(a, [15,180,180])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 10)\nmove(a, [-17,13,-20])\nmove(a, [19,-32,18])\nmove(a, [-3,-24,-22])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(11, 23, { at: [-19,-3,-12] })\nturn(a, [60,135,0])\nmove(a, [-36,-30,-14])\nturn(a, [135,-30,180])\nmove(a, [-33,-15,-10])\nmove(a, [-6,10,-15])\nmove(a, [-19,36,-2])\nmove(a, [9,16,4])\nturn(a, [180,30,60])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "turn2",
+    "v": "FAIL",
+    "dVol": 0.00018231752866001882,
+    "dCom": 0.000032039096324523725
+   }
+  ],
+  "guardRefusal": "Turn 2 is not built because Move 5, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(14, 23, { at: [8,-5,11] })\nmove(a, [-16,24,-27])\nturn(a, [45,-30,30])\nturn(a, [180,0,90])\nmove(a, [-20,-25,0])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built: Turn 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(13, 22, { at: [18,-8,13] })\nmove(a, [36,-35,21])\nmove(a, [-7,22,-14])\nmove(a, [-5,-22,14])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 16)\nmove(a, [5,-33,-10])\nmove(a, [7,-8,-28])\nturn(a, [180,60,30])\nturn(a, [60,30,45])\nturn(a, [90,180,30])\nturn(a, [135,15,15])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(10, 23)\nmove(a, [25,25,-15])\nmove(a, [23,17,29])\nturn(a, [90,15,60])\nturn(a, [-30,15,45])\nturn(a, [90,180,180])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "turn3",
+    "v": "FAIL",
+    "dVol": 0.06242100397279716,
+    "dCom": 0.020384519114696433
+   }
+  ],
+  "guardRefusal": "Turn 3 is not built because Turn 2, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 16, { at: [-1,-2,-6] })\nmove(a, [35,13,-6])\nturn(a, [90,15,180])\nturn(a, [180,15,45])\nturn(a, [30,-30,15])\nturn(a, [45,30,135])\nmove(a, [40,13,17])\nturn(a, [90,15,0])\nturn(a, [135,135,135])\nmove(a, [-40,-21,-29])\nmove(a, [35,15,13])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move4",
+    "v": "FAIL",
+    "dVol": 0.2512814793535055,
+    "dCom": 0.20665054726408816
+   }
+  ],
+  "guardRefusal": "Move 4 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(5, 17, { at: [4,11,-7] })\nturn(a, [0,180,135])\nturn(a, [45,180,135])\nturn(a, [135,0,30])\nmove(a, [18,5,-29])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 23)\nturn(a, [90,60,60])\nturn(a, [30,180,0])\nturn(a, [90,30,0])\nturn(a, [90,90,90])\nturn(a, [45,0,0])\nmove(a, [-6,-4,-24])\nmove(a, [-4,-5,22])\nturn(a, [30,0,135])\nmove(a, [12,23,-13])",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move3",
+    "v": "FAIL",
+    "dVol": 0.02393961286312989,
+    "dCom": 0.0005642820748033745
+   }
+  ],
+  "guardRefusal": "Move 3 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(12, 22)\nmove(a, [-30,25,-7])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(8, 20, { at: [-14,-17,-12] })\nturn(a, [45,45,45])\nmove(a, [-36,-23,-2])\nmove(a, [3,38,-19])\nturn(a, [0,180,45])\nmove(a, [28,38,8])\nmove(a, [16,20,-4])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "script": "let a = cone(7, 19, { at: [16,-19,10] })\nmove(a, [-24,11,13])\nmove(a, [-23,-26,10])\nturn(a, [135,60,30])\nturn(a, [60,15,135])\nmove(a, [23,34,12])\nmove(a, [-8,-18,-22])\nmove(a, [10,-9,1])\nturn(a, [45,90,-30])\nturn(a, [0,0,0])",
+  "shipped": "PASS",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 4 is not built because Turn 3, which it uses, was refused."
+ },
+ {
+  "scenario": "cone",
+  "summary": {
+   "n": 120,
+   "shipped": {
+    "PASS": 103,
+    "FAIL": 17
+   },
+   "guard": {
+    "REFUSED": 80,
+    "PASS": 40
+   },
+   "repairedSteps": 58,
+   "repairKinds": {
+    "folded": 57,
+    "padded1": 1
+   },
+   "tessBboxArtefacts": 1,
+   "guardWrong": 0,
+   "refusals": {
+    "Move # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 22,
+    "Turn # is not built because Move #, which it uses, was refused.": 51,
+    "Turn # is not built because Turn #, which it uses, was refused.": 48,
+    "Move # is not built because Turn #, which it uses, was refused.": 59,
+    "Move # is not built because Move #, which it uses, was refused.": 44,
+    "Turn # is not built: Turn # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 17,
+    "Turn # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 21,
+    "Move # is not built: Turn # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 20
+   }
+  }
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-11,18,1], { copy: true })\nlet c1 = move(c0, [-4,14,-3], { copy: true })\nmove(c1, [-15,-39,-20])\nlet c3 = move(c1, [-15,1,6], { copy: true })\nmove(c3, [-21,22,-27])\nturn(c3, [15,45,30])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built because Move 2, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-8,-3,8], { copy: true })\nturn(c0, [180,-30,90])\nturn(c0, [90,60,135])\nlet c3 = move(c0, [1,9,8], { copy: true })\nmove(c3, [-25,-23,-26])\nlet c5 = move(c3, [-20,18,-2], { copy: true })\nlet c6 = move(c5, [24,-28,-18], { copy: true })\nlet c7 = move(c6, [13,-5,21], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 1 is not built because Copy 2, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [60,60,0])\nmove(a, [-20,34,13])\nlet c2 = move(a, [25,-5,12], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-10,6,-6], { copy: true })\nlet c1 = move(c0, [-26,-19,-20], { copy: true })\nlet c2 = move(c1, [-14,-27,-20], { copy: true })\nlet c3 = move(c2, [-13,6,8], { copy: true })\nlet c4 = move(c3, [-14,-19,13], { copy: true })\nlet c5 = move(c4, [11,20,0], { copy: true })\nlet c6 = move(c5, [-16,-1,8], { copy: true })\nlet c7 = move(c6, [5,26,9], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-9,26,-4], { copy: true })\nlet c1 = move(c0, [9,-20,1], { copy: true })\nlet c2 = move(c1, [-20,-30,-3], { copy: true })\nlet c3 = move(c2, [7,19,22], { copy: true })\nturn(c3, [180,45,0])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built because Copy 4, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-27,-4,6], { copy: true })\nmove(c0, [-17,26,19])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [5,30,4], { copy: true })\nlet c1 = move(c0, [2,23,-11], { copy: true })\nmove(c1, [4,35,-14])\nlet c3 = move(c1, [9,-3,-5], { copy: true })\nmove(c3, [1,-2,-6])\nlet c5 = move(c3, [-3,-20,14], { copy: true })\nlet c6 = move(c5, [-24,2,1], { copy: true })\nturn(c6, [180,0,0])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built because Copy 3, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [27,-39,29])\nlet c1 = move(a, [-23,-29,-9], { copy: true })\nlet c2 = move(c1, [2,-13,-6], { copy: true })\nmove(c2, [18,-10,21])\nlet c4 = move(c2, [0,15,15], { copy: true })\nlet c5 = move(c4, [-2,-8,-1], { copy: true })\nlet c6 = move(c5, [-10,-25,-16], { copy: true })\nturn(c6, [15,30,30])\nlet c8 = move(c6, [-18,-17,21], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [180,0,0])\nlet c1 = move(a, [23,4,14], { copy: true })\nlet c2 = move(c1, [-24,4,-12], { copy: true })\nlet c3 = move(c2, [-14,-17,9], { copy: true })\nlet c4 = move(c3, [-30,-22,-15], { copy: true })\nturn(c4, [135,-30,45])\nlet c6 = move(c4, [5,13,1], { copy: true })\nlet c7 = move(c6, [-7,-27,1], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built because Copy 4, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-13,26,10], { copy: true })\nmove(c0, [-23,-6,2])\nlet c2 = move(c0, [-14,28,21], { copy: true })\nlet c3 = move(c2, [30,14,-7], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-1,-19,-13], { copy: true })\nlet c1 = move(c0, [-7,11,-5], { copy: true })\nlet c2 = move(c1, [5,-7,-18], { copy: true })\nlet c3 = move(c2, [-18,21,8], { copy: true })\nlet c4 = move(c3, [15,-14,11], { copy: true })\nlet c5 = move(c4, [12,19,2], { copy: true })\nturn(c5, [0,60,45])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-11,22,-4], { copy: true })\nlet c1 = move(c0, [-11,-3,-5], { copy: true })\nlet c2 = move(c1, [16,18,-22], { copy: true })\nlet c3 = move(c2, [14,20,-6], { copy: true })\nlet c4 = move(c3, [-10,-15,-13], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-12,24,-7], { copy: true })\nmove(c0, [24,10,12])\nturn(c0, [60,180,30])\nmove(c0, [-30,25,2])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [29,29,-2], { copy: true })\nlet c1 = move(c0, [-24,3,0], { copy: true })\nlet c2 = move(c1, [2,13,1], { copy: true })\nlet c3 = move(c2, [-14,8,1], { copy: true })\nlet c4 = move(c3, [-13,4,2], { copy: true })\nturn(c4, [30,15,60])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-9,29,18], { copy: true })\nturn(c0, [30,180,180])\nturn(c0, [0,60,-30])\nlet c3 = move(c0, [7,-21,2], { copy: true })\nlet c4 = move(c3, [4,-28,-9], { copy: true })\nlet c5 = move(c4, [29,-28,0], { copy: true })\nlet c6 = move(c5, [11,11,16], { copy: true })\nlet c7 = move(c6, [-23,26,11], { copy: true })\nlet c8 = move(c7, [-20,-9,9], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 2 is not built: Turn 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [29,-19,-12], { copy: true })\nlet c1 = move(c0, [-16,-27,-7], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [23,-11,20])\nlet c1 = move(a, [14,-26,-18], { copy: true })\nmove(c1, [-29,-18,17])\nlet c3 = move(c1, [6,-4,-10], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 2 is not built: Move 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [0,135,0])\nlet c1 = move(a, [-23,-24,19], { copy: true })\nlet c2 = move(c1, [-5,0,21], { copy: true })\nlet c3 = move(c2, [8,28,9], { copy: true })\nlet c4 = move(c3, [-22,8,-3], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [6,-14,-1])\nlet c1 = move(a, [29,-3,-15], { copy: true })\nturn(c1, [90,180,30])\nlet c3 = move(c1, [10,26,13], { copy: true })\nlet c4 = move(c3, [17,16,-16], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 2 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [5,-15,1], { copy: true })\nlet c1 = move(c0, [8,-26,-15], { copy: true })\nlet c2 = move(c1, [1,-13,22], { copy: true })\nlet c3 = move(c2, [-8,-28,-4], { copy: true })\nturn(c3, [0,0,-30])\nlet c5 = move(c3, [17,0,15], { copy: true })\nturn(c5, [135,135,135])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built because Copy 4, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [26,-21,10], { copy: true })\nlet c1 = move(c0, [10,14,-5], { copy: true })\nlet c2 = move(c1, [-30,-4,2], { copy: true })\nmove(c2, [32,5,10])\nlet c4 = move(c2, [-27,13,-1], { copy: true })\nmove(c4, [-9,-4,-11])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 1 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [36,-27,-23])\nlet c1 = move(a, [-19,-3,21], { copy: true })\nturn(c1, [180,90,90])\nmove(c1, [-17,3,-22])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-10,21,22])\nturn(a, [15,30,0])\nlet c2 = move(a, [-6,1,8], { copy: true })\nlet c3 = move(c2, [10,4,3], { copy: true })\nturn(c3, [-30,90,0])\nlet c5 = move(c3, [10,-11,22], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 2 is not built because Copy 2, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [30,135,135])\nlet c1 = move(a, [22,-16,21], { copy: true })\nlet c2 = move(c1, [14,17,5], { copy: true })\nlet c3 = move(c2, [2,-13,-20], { copy: true })\nturn(c3, [0,135,90])\nmove(c3, [-20,5,-27])\nlet c6 = move(c3, [23,29,-2], { copy: true })\nlet c7 = move(c6, [27,-6,-4], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 1 is not built because Turn 1, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-19,-18,-22], { copy: true })\nturn(c0, [180,30,90])\nlet c2 = move(c0, [-3,-22,-3], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [29,13,20], { copy: true })\nturn(c0, [90,0,135])\nlet c2 = move(c0, [-2,-4,18], { copy: true })\nlet c3 = move(c2, [7,25,-11], { copy: true })\nlet c4 = move(c3, [7,11,15], { copy: true })\nmove(c4, [-26,-10,-24])\nmove(c4, [-31,29,17])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-10,14,-6], { copy: true })\nmove(c0, [11,-12,6])\nlet c2 = move(c0, [-10,6,13], { copy: true })\nlet c3 = move(c2, [-16,-4,5], { copy: true })\nlet c4 = move(c3, [12,9,2], { copy: true })\nturn(c4, [135,0,60])\nlet c6 = move(c4, [-26,-20,-15], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-26,22,-9], { copy: true })\nlet c1 = move(c0, [25,-14,20], { copy: true })\nlet c2 = move(c1, [-4,-22,-20], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [26,-25,8], { copy: true })\nlet c1 = move(c0, [-22,-15,11], { copy: true })\nlet c2 = move(c1, [-19,3,-12], { copy: true })\nlet c3 = move(c2, [25,-17,13], { copy: true })\nlet c4 = move(c3, [-1,-8,-15], { copy: true })\nlet c5 = move(c4, [-7,-26,4], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [25,29,13], { copy: true })\nturn(c0, [45,0,45])\nlet c2 = move(c0, [14,5,-11], { copy: true })\nmove(c2, [38,8,7])\nturn(c2, [135,45,0])\nlet c5 = move(c2, [-29,0,-4], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 2 is not built because Move 1, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [45,135,135])\nlet c1 = move(a, [-11,17,-20], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [15,-2,-14], { copy: true })\nlet c1 = move(c0, [-17,-17,-20], { copy: true })\nlet c2 = move(c1, [22,23,-18], { copy: true })\nlet c3 = move(c2, [-16,-17,21], { copy: true })\nlet c4 = move(c3, [24,15,-4], { copy: true })\nlet c5 = move(c4, [-28,12,19], { copy: true })\nlet c6 = move(c5, [1,8,-17], { copy: true })\nlet c7 = move(c6, [-26,-27,10], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [16,13,7], { copy: true })\nlet c1 = move(c0, [8,30,16], { copy: true })\nlet c2 = move(c1, [-21,9,-11], { copy: true })\nlet c3 = move(c2, [29,2,-8], { copy: true })\nmove(c3, [34,4,4])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 1 is not built because Copy 4, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-15,-5,-17], { copy: true })\nlet c1 = move(c0, [-11,23,-17], { copy: true })\nturn(c1, [-30,90,-30])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-23,13,10], { copy: true })\nlet c1 = move(c0, [16,-7,-8], { copy: true })\nmove(c1, [14,32,-30])\nlet c3 = move(c1, [20,0,6], { copy: true })\nlet c4 = move(c3, [18,-26,-8], { copy: true })\nlet c5 = move(c4, [5,-11,-19], { copy: true })\nmove(c5, [-29,13,-11])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Move 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-19,6,4])\nlet c1 = move(a, [-6,22,-6], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [5,2,21], { copy: true })\nlet c1 = move(c0, [22,-28,-9], { copy: true })\nlet c2 = move(c1, [21,2,-8], { copy: true })\nlet c3 = move(c2, [17,-27,-20], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [2,6,5], { copy: true })\nmove(c0, [28,20,-23])\nmove(c0, [36,-30,-24])\nlet c3 = move(c0, [-2,-20,-3], { copy: true })\nlet c4 = move(c3, [-29,14,8], { copy: true })\nmove(c4, [-7,14,29])\nlet c6 = move(c4, [19,25,13], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 2 is not built: Move 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [180,15,30])\nmove(a, [-22,-34,16])\nturn(a, [90,0,45])",
+  "shipped": "PASS",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [27,-24,-13], { copy: true })\nlet c1 = move(c0, [-13,-21,9], { copy: true })\nlet c2 = move(c1, [-16,-27,8], { copy: true })\nlet c3 = move(c2, [-16,21,4], { copy: true })\nturn(c3, [45,60,30])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built because Copy 4, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-7,-38,-12])\nmove(a, [38,38,9])\nlet c2 = move(a, [5,11,1], { copy: true })\nlet c3 = move(c2, [-20,21,-21], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 2 is not built: Copy 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [13,-25,5], { copy: true })\nlet c1 = move(c0, [-8,8,3], { copy: true })\nmove(c1, [32,14,-7])\nlet c3 = move(c1, [20,-14,-20], { copy: true })\nmove(c3, [4,40,0])\nlet c5 = move(c3, [3,27,20], { copy: true })\nlet c6 = move(c5, [8,28,-12], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built because Copy 3, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [2,-3,9], { copy: true })\nlet c1 = move(c0, [17,-27,4], { copy: true })\nmove(c1, [0,-28,-18])\nlet c3 = move(c1, [19,-8,22], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Move 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [17,-19,-2], { copy: true })\nlet c1 = move(c0, [14,26,16], { copy: true })\nlet c2 = move(c1, [11,23,12], { copy: true })\nmove(c2, [33,32,-28])\nmove(c2, [-32,-23,-14])\nlet c5 = move(c2, [22,-28,-19], { copy: true })\nlet c6 = move(c5, [-12,2,8], { copy: true })\nlet c7 = move(c6, [-10,-11,16], { copy: true })\nlet c8 = move(c7, [3,-22,6], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built because Move 1, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-5,-1,10], { copy: true })\nturn(c0, [60,90,180])\nlet c2 = move(c0, [-19,-28,20], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [39,-40,-21])\nlet c1 = move(a, [5,-1,0], { copy: true })\nlet c2 = move(c1, [5,-21,17], { copy: true })\nlet c3 = move(c2, [-12,0,22], { copy: true })\nlet c4 = move(c3, [-28,12,-6], { copy: true })\nlet c5 = move(c4, [0,-2,2], { copy: true })\nlet c6 = move(c5, [-7,7,3], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-28,-5,-17], { copy: true })\nlet c1 = move(c0, [0,10,15], { copy: true })\nlet c2 = move(c1, [4,6,-19], { copy: true })\nlet c3 = move(c2, [-6,7,1], { copy: true })\nlet c4 = move(c3, [-9,9,14], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [180,60,-30])\nlet c1 = move(a, [20,27,17], { copy: true })\nlet c2 = move(c1, [-19,-23,-15], { copy: true })\nlet c3 = move(c2, [-28,22,-1], { copy: true })\nlet c4 = move(c3, [22,15,13], { copy: true })\nturn(c4, [15,135,0])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built because Copy 4, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-14,24,12], { copy: true })\nlet c1 = move(c0, [10,14,19], { copy: true })\nlet c2 = move(c1, [-14,-17,-15], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-7,-22,6], { copy: true })\nturn(c0, [180,135,90])\nmove(c0, [-10,-24,9])\nlet c3 = move(c0, [-1,-13,9], { copy: true })\nlet c4 = move(c3, [2,-7,6], { copy: true })\nlet c5 = move(c4, [-16,-7,-9], { copy: true })\nturn(c5, [15,-30,15])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 2 is not built: Move 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [30,0,180])\nlet c1 = move(a, [12,-6,7], { copy: true })\nturn(c1, [15,-30,15])\nlet c3 = move(c1, [-9,-11,18], { copy: true })\nmove(c3, [-6,-25,-30])\nlet c5 = move(c3, [7,-22,-16], { copy: true })\nturn(c5, [135,180,0])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 1 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [10,1,11])\nmove(a, [31,-32,-23])\nlet c2 = move(a, [-15,-19,-11], { copy: true })\nlet c3 = move(c2, [2,4,6], { copy: true })\nlet c4 = move(c3, [13,-2,17], { copy: true })\nlet c5 = move(c4, [29,11,13], { copy: true })\nlet c6 = move(c5, [13,6,-8], { copy: true })\nlet c7 = move(c6, [-7,28,11], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 2 is not built: Copy 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [8,7,4])\nlet c1 = move(a, [-4,-25,-4], { copy: true })\nlet c2 = move(c1, [-19,13,21], { copy: true })\nturn(c2, [30,0,180])\nlet c4 = move(c2, [-1,21,-14], { copy: true })\nturn(c4, [45,90,180])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-18,-1,-18], { copy: true })\nturn(c0, [-30,45,135])\nlet c2 = move(c0, [20,-27,14], { copy: true })\nmove(c2, [-24,34,25])\nlet c4 = move(c2, [-20,-24,-11], { copy: true })\nmove(c4, [0,11,16])\nlet c6 = move(c4, [28,28,-20], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 1 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-23,-15,-19], { copy: true })\nturn(c0, [60,90,45])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [26,24,-19], { copy: true })\nlet c1 = move(c0, [-13,-23,4], { copy: true })\nlet c2 = move(c1, [-18,11,-18], { copy: true })\nlet c3 = move(c2, [-29,27,13], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [5,12,5], { copy: true })\nlet c1 = move(c0, [-29,16,-5], { copy: true })\nlet c2 = move(c1, [-18,18,7], { copy: true })\nlet c3 = move(c2, [-13,14,-17], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-16,-29,-19], { copy: true })\nlet c1 = move(c0, [14,14,-1], { copy: true })\nlet c2 = move(c1, [-9,-19,-16], { copy: true })\nlet c3 = move(c2, [-20,-8,13], { copy: true })\nlet c4 = move(c3, [28,-1,11], { copy: true })\nmove(c4, [16,27,-5])\nlet c6 = move(c4, [-6,28,15], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-1,-8,-17], { copy: true })\nmove(c0, [-6,-3,30])\nturn(c0, [45,45,0])\nmove(c0, [-30,-18,-6])\nturn(c0, [15,90,60])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 2 is not built because Move 2, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [14,13,2], { copy: true })\nlet c1 = move(c0, [-1,-16,19], { copy: true })\nlet c2 = move(c1, [-27,9,15], { copy: true })\nlet c3 = move(c2, [2,-16,9], { copy: true })\nlet c4 = move(c3, [-18,-7,-3], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [1,-8,-19], { copy: true })\nlet c1 = move(c0, [14,26,-6], { copy: true })\nlet c2 = move(c1, [-26,-14,5], { copy: true })\nmove(c2, [3,-14,-3])\nturn(c2, [90,0,135])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built because Move 1, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [19,13,-20], { copy: true })\nmove(c0, [10,8,27])\nlet c2 = move(c0, [-9,29,10], { copy: true })\nlet c3 = move(c2, [4,-6,18], { copy: true })\nlet c4 = move(c3, [29,-7,20], { copy: true })\nlet c5 = move(c4, [-20,2,13], { copy: true })\nmove(c5, [-4,10,-22])\nlet c7 = move(c5, [5,15,3], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [14,9,-14], { copy: true })\nlet c1 = move(c0, [1,16,-14], { copy: true })\nmove(c1, [24,12,30])\nlet c3 = move(c1, [21,10,-6], { copy: true })\nlet c4 = move(c3, [-8,3,-4], { copy: true })\nlet c5 = move(c4, [-12,11,7], { copy: true })\nmove(c5, [-5,-6,-30])\nlet c7 = move(c5, [27,9,1], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Move 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-10,-21,16], { copy: true })\nlet c1 = move(c0, [-1,6,-6], { copy: true })\nlet c2 = move(c1, [9,7,19], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-24,-28,-12], { copy: true })\nturn(c0, [135,180,0])\nlet c2 = move(c0, [4,26,-10], { copy: true })\nlet c3 = move(c2, [-7,-6,1], { copy: true })\nlet c4 = move(c3, [6,24,2], { copy: true })\nlet c5 = move(c4, [-6,26,15], { copy: true })\nturn(c5, [30,60,15])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [15,90,135])\nmove(a, [11,-15,22])\nlet c2 = move(a, [28,22,-17], { copy: true })\nlet c3 = move(c2, [12,-30,-11], { copy: true })\nlet c4 = move(c3, [20,8,-11], { copy: true })\nlet c5 = move(c4, [-26,21,0], { copy: true })\nmove(c5, [0,39,23])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [0,21,19], { copy: true })\nlet c1 = move(c0, [0,29,-8], { copy: true })\nlet c2 = move(c1, [13,-15,8], { copy: true })\nlet c3 = move(c2, [-19,-10,-21], { copy: true })\nmove(c3, [-15,-36,22])\nlet c5 = move(c3, [21,-6,11], { copy: true })\nlet c6 = move(c5, [-7,-2,14], { copy: true })\nlet c7 = move(c6, [0,-7,-20], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 1 is not built because Copy 4, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-34,8,-6])\nturn(a, [60,180,180])\nlet c2 = move(a, [23,13,-10], { copy: true })",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "dVol": 0.1968662039243507,
+    "dCom": 0.014342056446920548
+   }
+  ]
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-27,-28,-14], { copy: true })\nlet c1 = move(c0, [21,14,-21], { copy: true })\nlet c2 = move(c1, [-28,-2,3], { copy: true })\nlet c3 = move(c2, [-1,15,19], { copy: true })\nlet c4 = move(c3, [16,-24,3], { copy: true })\nlet c5 = move(c4, [23,8,-3], { copy: true })\nlet c6 = move(c5, [21,-28,-11], { copy: true })\nmove(c6, [22,-23,-3])\nmove(c6, [15,8,-20])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-26,-9,-27])\nlet c1 = move(a, [24,6,-15], { copy: true })\nturn(c1, [30,15,0])\nmove(c1, [29,-24,-1])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [24,-2,-18], { copy: true })\nlet c1 = move(c0, [10,-17,3], { copy: true })\nmove(c1, [14,34,-13])\nmove(c1, [-8,9,-25])\nlet c4 = move(c1, [28,29,-19], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built: Move 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-1,-12,-28])\nturn(a, [30,45,45])\nlet c2 = move(a, [16,-20,-15], { copy: true })\nlet c3 = move(c2, [-12,7,-12], { copy: true })\nlet c4 = move(c3, [-8,6,17], { copy: true })\nlet c5 = move(c4, [22,17,2], { copy: true })\nlet c6 = move(c5, [6,-20,15], { copy: true })",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "dVol": 0.12831872347806147,
+    "dCom": 0.07538918173597856
+   }
+  ],
+  "guardRefusal": "Copy 2 is not built: Copy 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-28,-25,20], { copy: true })\nturn(c0, [90,90,45])\nmove(c0, [4,-9,-14])\nlet c3 = move(c0, [11,6,0], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 2 is not built: Move 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-5,26,-14], { copy: true })\nlet c1 = move(c0, [24,23,-14], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [25,-2,-9], { copy: true })\nlet c1 = move(c0, [-10,-25,10], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-2,-7,-18], { copy: true })\nlet c1 = move(c0, [-14,19,-5], { copy: true })\nmove(c1, [-12,15,28])\nlet c3 = move(c1, [-25,-25,-4], { copy: true })\nlet c4 = move(c3, [16,-7,-19], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Move 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [15,180,0])\nlet c1 = move(a, [-8,22,9], { copy: true })\nlet c2 = move(c1, [21,-23,-17], { copy: true })\nlet c3 = move(c2, [29,26,-1], { copy: true })\nlet c4 = move(c3, [-15,-20,-17], { copy: true })\nmove(c4, [10,8,21])\nlet c6 = move(c4, [8,-18,0], { copy: true })\nmove(c6, [-5,-25,-10])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 1 is not built because Copy 4, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [29,-1,4], { copy: true })\nlet c1 = move(c0, [6,26,-10], { copy: true })\nlet c2 = move(c1, [14,-16,5], { copy: true })\nlet c3 = move(c2, [30,-13,15], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-22,9,-15])\nturn(a, [180,180,180])\nlet c2 = move(a, [-28,16,22], { copy: true })",
+  "shipped": "FAIL",
+  "guard": "PASS",
+  "shippedWorst": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "dVol": 0.08445802826470028,
+    "dCom": 0.06854271015817424
+   }
+  ]
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-4,5,21], { copy: true })\nlet c1 = move(c0, [15,-15,-7], { copy: true })\nmove(c1, [20,-5,7])\nturn(c1, [135,135,30])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built: Move 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [2,-30,22], { copy: true })\nturn(c0, [60,135,15])\nlet c2 = move(c0, [-15,-19,3], { copy: true })\nlet c3 = move(c2, [-12,-22,-13], { copy: true })\nlet c4 = move(c3, [-12,-4,-1], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-3,4,-6], { copy: true })\nmove(c0, [17,-34,9])\nturn(c0, [45,-30,45])\nlet c3 = move(c0, [-5,18,-15], { copy: true })\nlet c4 = move(c3, [29,21,-13], { copy: true })\nlet c5 = move(c4, [25,-7,-12], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 2 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [25,26,5], { copy: true })\nlet c1 = move(c0, [-24,-8,-15], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-2,3,0], { copy: true })\nturn(c0, [30,15,0])\nturn(c0, [60,45,-30])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [16,21,-27])\nlet c1 = move(a, [-1,16,0], { copy: true })\nlet c2 = move(c1, [-27,-2,-18], { copy: true })\nlet c3 = move(c2, [6,-4,-1], { copy: true })\nturn(c3, [60,180,135])\nturn(c3, [45,90,135])\nmove(c3, [22,-39,-11])\nlet c7 = move(c3, [-3,9,2], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built because Turn 2, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-34,-39,15])\nturn(a, [45,60,30])\nlet c2 = move(a, [-9,-6,13], { copy: true })\nlet c3 = move(c2, [9,-21,8], { copy: true })\nlet c4 = move(c3, [-25,20,-3], { copy: true })",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "turn1",
+    "v": "FAIL",
+    "dVol": 0.05971454996590881,
+    "dCom": 0.1143452239504346
+   }
+  ],
+  "guardRefusal": "Copy 2 is not built: Copy 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-17,-13,10], { copy: true })\nmove(c0, [-12,1,-12])\nlet c2 = move(c0, [27,-12,10], { copy: true })\nlet c3 = move(c2, [-5,28,-6], { copy: true })\nlet c4 = move(c3, [14,18,12], { copy: true })\nmove(c4, [34,-2,12])\nlet c6 = move(c4, [2,-14,-22], { copy: true })\nmove(c6, [-13,19,19])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [45,135,45])\nlet c1 = move(a, [-10,-18,-17], { copy: true })\nlet c2 = move(c1, [-7,20,-12], { copy: true })\nlet c3 = move(c2, [-15,-8,22], { copy: true })\nlet c4 = move(c3, [-27,-22,7], { copy: true })\nmove(c4, [-27,4,18])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 1 is not built because Copy 4, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-19,13,11], { copy: true })\nlet c1 = move(c0, [15,8,17], { copy: true })\nmove(c1, [-9,-24,-24])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-5,24,-18], { copy: true })\nlet c1 = move(c0, [-17,1,0], { copy: true })\nlet c2 = move(c1, [5,27,16], { copy: true })\nlet c3 = move(c2, [-1,1,-10], { copy: true })\nturn(c3, [90,45,180])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built because Copy 4, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [4,-24,19], { copy: true })\nlet c1 = move(c0, [-29,-4,-17], { copy: true })\nturn(c1, [60,180,90])\nlet c3 = move(c1, [11,-20,0], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [24,24,-12], { copy: true })\nlet c1 = move(c0, [-17,-4,0], { copy: true })\nlet c2 = move(c1, [19,-12,-21], { copy: true })\nlet c3 = move(c2, [6,23,-13], { copy: true })\nlet c4 = move(c3, [-17,3,-15], { copy: true })\nlet c5 = move(c4, [-19,14,-4], { copy: true })\nlet c6 = move(c5, [-19,-3,-11], { copy: true })\nlet c7 = move(c6, [8,7,-13], { copy: true })\nturn(c7, [135,45,180])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [24,-5,-10], { copy: true })\nlet c1 = move(c0, [8,2,-15], { copy: true })\nlet c2 = move(c1, [27,16,9], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [10,-26,7], { copy: true })\nturn(c0, [15,30,60])\nlet c2 = move(c0, [-14,-20,-6], { copy: true })\nlet c3 = move(c2, [-14,12,-5], { copy: true })\nlet c4 = move(c3, [-7,20,20], { copy: true })\nturn(c4, [45,0,45])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-19,-13,5], { copy: true })\nlet c1 = move(c0, [-22,7,-21], { copy: true })\nmove(c1, [2,-33,-26])\nlet c3 = move(c1, [18,17,-2], { copy: true })\nlet c4 = move(c3, [27,-9,20], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Move 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [22,5,13], { copy: true })\nlet c1 = move(c0, [12,-23,16], { copy: true })\nlet c2 = move(c1, [16,-27,2], { copy: true })\nlet c3 = move(c2, [6,22,-2], { copy: true })\nturn(c3, [60,45,180])\nlet c5 = move(c3, [-11,1,7], { copy: true })\nlet c6 = move(c5, [20,9,5], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built because Copy 4, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-8,12,19], { copy: true })\nlet c1 = move(c0, [-15,28,7], { copy: true })\nlet c2 = move(c1, [17,-25,17], { copy: true })\nturn(c2, [90,60,180])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-16,24,2], { copy: true })\nlet c1 = move(c0, [16,-4,18], { copy: true })\nlet c2 = move(c1, [17,8,20], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [16,-16,0])\nlet c1 = move(a, [22,-9,-17], { copy: true })\nlet c2 = move(c1, [-6,-1,-4], { copy: true })\nlet c3 = move(c2, [-18,12,11], { copy: true })\nmove(c3, [24,28,19])\nmove(c3, [7,1,28])\nmove(c3, [-24,-3,17])\nlet c7 = move(c3, [29,7,-18], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 4 is not built because Move 3, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [26,22,9], { copy: true })\nlet c1 = move(c0, [-16,-22,-18], { copy: true })\nlet c2 = move(c1, [16,17,11], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [6,-5,13], { copy: true })\nlet c1 = move(c0, [-17,-24,-1], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [27,27,-10], { copy: true })\nmove(c0, [-23,-6,12])\nlet c2 = move(c0, [17,-9,-8], { copy: true })\nmove(c2, [22,28,15])\nmove(c2, [-34,-2,-6])\nlet c5 = move(c2, [-11,-27,11], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 3 is not built because Move 2, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-10,28,-11], { copy: true })\nlet c1 = move(c0, [-1,-16,8], { copy: true })\nlet c2 = move(c1, [-14,-5,17], { copy: true })\nlet c3 = move(c2, [13,-26,14], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [11,-2,18], { copy: true })\nlet c1 = move(c0, [12,3,-4], { copy: true })\nlet c2 = move(c1, [25,-4,-18], { copy: true })\nlet c3 = move(c2, [-19,-25,8], { copy: true })\nlet c4 = move(c3, [-5,22,-10], { copy: true })\nmove(c4, [-25,-35,7])\nlet c6 = move(c4, [-16,30,4], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-27,-30,13], { copy: true })\nturn(c0, [90,0,30])\nlet c2 = move(c0, [-7,24,3], { copy: true })\nlet c3 = move(c2, [-23,-26,12], { copy: true })\nmove(c3, [39,38,-26])\nlet c5 = move(c3, [-23,-1,7], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 1 is not built because Copy 3, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-17,-2,-4])\nturn(a, [0,135,180])\nmove(a, [3,-22,6])\nlet c3 = move(a, [26,-22,20], { copy: true })\nturn(c3, [-30,15,45])\nlet c5 = move(c3, [-22,9,-6], { copy: true })\nlet c6 = move(c5, [-1,-16,3], { copy: true })",
+  "shipped": "FAIL",
+  "guard": "REFUSED",
+  "shippedWorst": [
+   {
+    "id": "move2",
+    "v": "FAIL",
+    "dVol": 0.18058228327797568,
+    "dCom": 0.003949370467249978
+   }
+  ],
+  "guardRefusal": "Turn 2 is not built because Copy 1, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [135,0,45])\nturn(a, [135,30,45])\nlet c2 = move(a, [19,8,-9], { copy: true })\nlet c3 = move(c2, [21,-14,12], { copy: true })\nturn(c3, [0,180,135])\nlet c5 = move(c3, [25,-7,-11], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Turn 1 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [6,-23,4], { copy: true })\nlet c1 = move(c0, [21,2,-6], { copy: true })\nlet c2 = move(c1, [-6,24,4], { copy: true })\nlet c3 = move(c2, [-25,30,4], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [20,16,1], { copy: true })\nlet c1 = move(c0, [-2,28,22], { copy: true })\nlet c2 = move(c1, [3,24,13], { copy: true })\nlet c3 = move(c2, [3,18,-15], { copy: true })\nlet c4 = move(c3, [23,25,16], { copy: true })\nlet c5 = move(c4, [-12,-27,11], { copy: true })\nlet c6 = move(c5, [-4,21,11], { copy: true })\nlet c7 = move(c6, [-19,8,18], { copy: true })\nmove(c7, [-37,31,21])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [30,135,15])\nlet c1 = move(a, [12,19,1], { copy: true })\nlet c2 = move(c1, [-22,10,12], { copy: true })\nturn(c2, [15,0,60])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [27,-20,-8], { copy: true })\nlet c1 = move(c0, [9,-13,-15], { copy: true })\nlet c2 = move(c1, [-11,21,-13], { copy: true })\nlet c3 = move(c2, [12,4,-7], { copy: true })\nlet c4 = move(c3, [-24,0,21], { copy: true })\nturn(c4, [60,0,60])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-11,-21,-18], { copy: true })\nlet c1 = move(c0, [-23,15,-22], { copy: true })\nlet c2 = move(c1, [-4,17,-4], { copy: true })\nlet c3 = move(c2, [-15,28,0], { copy: true })\nlet c4 = move(c3, [10,11,13], { copy: true })\nturn(c4, [135,30,0])\nmove(c4, [16,11,0])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [1,11,-10], { copy: true })\nlet c1 = move(c0, [-11,-11,-5], { copy: true })\nmove(c1, [35,-27,11])",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [19,16,1])\nlet c1 = move(a, [8,-13,12], { copy: true })\nmove(c1, [-21,-9,-1])\nlet c3 = move(c1, [-24,-12,22], { copy: true })\nmove(c3, [2,3,18])\nlet c5 = move(c3, [-4,28,1], { copy: true })\nlet c6 = move(c5, [4,-27,-10], { copy: true })\nturn(c6, [60,45,135])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 3 is not built because Copy 2, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-9,6,-16], { copy: true })\nlet c1 = move(c0, [14,-17,2], { copy: true })\nlet c2 = move(c1, [-26,-14,-15], { copy: true })\nlet c3 = move(c2, [16,5,-12], { copy: true })\nlet c4 = move(c3, [-17,-24,15], { copy: true })\nmove(c4, [-32,-1,-23])\nturn(c4, [-30,15,45])\nturn(c4, [180,60,0])",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 4 is not built: Copy 3 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [-11,-18,-7], { copy: true })\nlet c1 = move(c0, [19,10,-4], { copy: true })\nlet c2 = move(c1, [-9,19,-20], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nmove(a, [-38,22,23])\nlet c1 = move(a, [-15,-22,7], { copy: true })\nlet c2 = move(c1, [-6,-20,3], { copy: true })\nlet c3 = move(c2, [3,-26,-3], { copy: true })\nlet c4 = move(c3, [-21,-7,-21], { copy: true })\nlet c5 = move(c4, [-15,-7,-20], { copy: true })\nlet c6 = move(c5, [25,2,2], { copy: true })\nlet c7 = move(c6, [-22,21,-9], { copy: true })\nlet c8 = move(c7, [10,0,17], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Copy 3 is not built: Copy 2 has a cone-shaped face and has already been moved or turned 3 times, and a cone moved or turned more than 3 times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nturn(a, [0,180,60])\nlet c1 = move(a, [-24,-9,4], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "PASS",
+  "shippedWorst": []
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [25,6,-20], { copy: true })\nlet c1 = move(c0, [21,-19,-7], { copy: true })\nlet c2 = move(c1, [-16,-13,-12], { copy: true })\nlet c3 = move(c2, [14,1,-13], { copy: true })\nturn(c3, [60,0,135])\nlet c5 = move(c3, [-6,-3,-16], { copy: true })\nlet c6 = move(c5, [10,15,1], { copy: true })\nlet c7 = move(c6, [16,21,-15], { copy: true })\nlet c8 = move(c7, [-24,-18,-21], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Turn 1 is not built because Copy 4, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "script": "let a = cone(8, 15)\nlet c0 = move(a, [14,-8,-1], { copy: true })\nmove(c0, [4,-25,-22])\nturn(c0, [0,60,45])\nlet c3 = move(c0, [18,20,7], { copy: true })\nmove(c3, [-9,22,5])\nlet c5 = move(c3, [15,0,18], { copy: true })\nlet c6 = move(c5, [-5,-13,15], { copy: true })",
+  "shipped": "REFUSED",
+  "guard": "REFUSED",
+  "shippedWorst": [],
+  "guardRefusal": "Move 2 is not built because Copy 2, which it uses, was refused."
+ },
+ {
+  "scenario": "copies",
+  "summary": {
+   "n": 120,
+   "shipped": {
+    "REFUSED": 114,
+    "PASS": 1,
+    "FAIL": 5
+   },
+   "guard": {
+    "REFUSED": 92,
+    "PASS": 28
+   },
+   "repairedSteps": 31,
+   "repairKinds": {
+    "padded1": 23,
+    "folded": 8
+   },
+   "tessBboxArtefacts": 0,
+   "guardWrong": 0,
+   "refusals": {
+    "Copy # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 14,
+    "Move # is not built because Copy #, which it uses, was refused.": 28,
+    "Turn # is not built because Move #, which it uses, was refused.": 5,
+    "Copy # is not built: Turn # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 7,
+    "Copy # is not built because Move #, which it uses, was refused.": 25,
+    "Copy # is not built because Copy #, which it uses, was refused.": 95,
+    "Copy # is not built: Copy # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 54,
+    "Turn # is not built because Copy #, which it uses, was refused.": 26,
+    "Move # is not built: Copy # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 8,
+    "Copy # is not built because Turn #, which it uses, was refused.": 10,
+    "Move # is not built: Turn # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 4,
+    "Turn # is not built: Copy # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 3,
+    "Move # is not built because Turn #, which it uses, was refused.": 3,
+    "Move # is not built because Move #, which it uses, was refused.": 6,
+    "Move # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 1,
+    "Turn # is not built: Move # has a cone-shaped face and has already been moved or turned # times, and a cone moved or turned more than # times in a row cannot be placed accurately, so it is shown without it -- build the part where you want it, or use fewer moves and turns.": 1,
+    "Turn # is not built because Turn #, which it uses, was refused.": 2
+   }
+  }
+ }
+]
