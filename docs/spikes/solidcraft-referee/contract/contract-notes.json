@@ -1,0 +1,19 @@
+{
+  "_note": "Hand-written. 'comparison' lines are checked by build-contract.mjs: each cited row must have the stated status (after overrides) or the build fails, so this table cannot drift from the rows.",
+  "groupScope": {
+    "_shipping": "In every group the guards live in files under contract/ (spike grade). None is wired into the product page or the translator that ships; the page today shows the unguarded translator's output and, for refusals, kernel wording. A row marked refused or supported-with-guard describes the GUARDED route and is only true once that guard ships. The rows file of each group says per row which route a status describes."
+  },
+  "comparison": [
+    { "capability": "chamfer on a convex box edge", "group": "fillet-chamfer", "rows": [[20, "supported"]], "note": "size below the smaller of the two faces; larger sizes build a wrong solid today (row 21)." },
+    { "capability": "chamfer on a cylinder rim", "group": "fillet-chamfer", "rows": [[26, "supported"]] },
+    { "capability": "chamfer of every edge of a box at once (primitive-level style)", "group": "fillet-chamfer", "rows": [[12, "wrong"], [14, "refused"]], "note": "wrong as shipped; refused behind the guard." },
+    { "capability": "counterbore", "group": "holes", "rows": [[38, "supported"], [40, "refused"]], "note": "degenerate sizes refused." },
+    { "capability": "countersink", "group": "holes", "rows": [[45, "supported"], [46, "unsupported"], [48, "unsupported"]], "note": "a nearly flat cone and a cone breaking out of a side face are not supported." },
+    { "capability": "bore through a sphere", "group": "holes", "rows": [[22, "supported"]] },
+    { "capability": "blind bore into a sphere", "group": "holes", "rows": [[26, "refused"]] },
+    { "capability": "bore through a cone along its axis", "group": "holes", "rows": [[21, "supported"]] },
+    { "capability": "bore across a cone turned to lie along x", "group": "holes", "rows": [[71, "refused"]] },
+    { "capability": "groove into a plain post (full and partial turn)", "group": "revolve-groove", "rows": [[21, "supported"], [22, "supported"]] },
+    { "capability": "groove into a frustum", "group": "revolve-groove", "rows": [[33, "wrong"]], "note": "downgraded by the final critic; see overrides." }
+  ]
+}

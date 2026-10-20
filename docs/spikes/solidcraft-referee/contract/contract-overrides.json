@@ -1,0 +1,42 @@
+{
+  "_note": "Status changes and added rows that the final critic found AFTER the last fix round, so the group's own rows file could not carry them. A row listed here is shown with the overridden status and the reason; the group file is not edited. Each entry cites the critic verdict file it comes from.",
+  "overrides": [
+    {
+      "group": "revolve-groove",
+      "row": 33,
+      "status": "wrong",
+      "reason": "Grooves into a FRUSTUM: a 90 or 200 degree groove whose outer wall is 0.4 to 0.5 mm inside a shallow frustum wall builds with volume off by 5.9e-4 to 3.2e-3 and 8 faces instead of 9 (OCCT and an independent integral agree with each other). Walls 0.1 mm either side are refused only by chance. The cone surface has no geometric guard. The box, post, tube, stepped-plate and sphere parts in this row were not shown wrong.",
+      "source": "critic-verdicts/revolve-groove.round3.json"
+    },
+    {
+      "group": "sketch-dof-diagnosis",
+      "row": 5,
+      "status": "wrong",
+      "reason": "The overConstrained flag (absolute residual > 1e-3) is not a reliable report: its own evidence shows 5 false flags and 2 misses (residual up to 6e-4), and at scale 1e5, 28 of 40 satisfiable rectangles are flagged. Row 43 marks the same flag wrong, so the two rows contradicted each other.",
+      "source": "critic-verdicts/sketch-dof-diagnosis.json"
+    }
+  ],
+  "addedRows": [
+    {
+      "group": "booleans",
+      "status": "wrong",
+      "feature": "keep/cut/join where a pull() circle tool, a pull() plate or a join() plate is tangent to two or four sides of the target (the tangent-pinch guard G7 only reads box() targets with cylinder() tools)",
+      "evidence": "Guarded path builds 1 body and 9 faces where OCCT has 2 solids and 12 faces (two sides); four sides: volume 6869.80 against closed form 6867.26 (3.7e-4, bar 3e-4). No guard fires.",
+      "source": "critic-verdicts/booleans.round3.json"
+    },
+    {
+      "group": "patterns-mirror",
+      "status": "wrong",
+      "feature": "repeat/mirror of a pocket whose thin wall (0.15 mm or less) lies against the inner face of a notch, the underside of a notch edge, or the side of a joined boss (the thin-web guard compares walls with the part's bounding box only)",
+      "evidence": "Pocket 0.05 mm from an L-plate notch face: volume 1.2 mm3 too high (= 0.05 x 6 x 4); boss side: 0.9 mm3 too high (= 0.05 x 6 x 3). The wall is silently lost, no sentence.",
+      "source": "critic-verdicts/patterns-mirror.round3.json"
+    },
+    {
+      "group": "sketch-geometry",
+      "status": "wrong",
+      "feature": "a front-plane offset typed in the panel (slot sk2_offset) on a sketch created by repeat/mirror",
+      "evidence": "The guard judges only sketch ids the script returned from sketch(), so copy sketches are skipped; setting the offset to -12 or 6 builds with no sentence while the same offset on sk1 is refused. Contradicts the claim in row 3.",
+      "source": "critic-verdicts/sketch-geometry.round3.json"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "_note": "One entry per group. rebuild = rebuilds <group>.json from the committed raw results, no kernel (cwd = repo root). measure = re-measures with the live rig; each runs under the memory cap, one at a time (run-contract.sh --measure). Paths are relative to the repo root; <pkg> is $SOLIDCRAFT_REFEREE_PKG, <out> is the scratch results dir. Source of each command: RIG.md and contract/fix-reports/*.json.",
+  "groups": {
+    "blend-loft": {
+      "rebuild": null,
+      "measure": [
+        "bun docs/spikes/solidcraft-referee/contract/blend-loft.guard-check.mjs --quick --work=<out>/blend-loft"
+      ],
+      "rebuildNote": "NOT REPRODUCIBLE from the committed files: blend-loft.make-rows5.mjs needs blend-loft.r5-gate.json and the r5 fuzz files (blend-loft.r5-fuzz-fresh.json, blend-loft.r5-fuzz-refused.json), which were not committed and were lost with the stopped run. The committed blend-loft.json (round 5) is the last builder output; to regenerate it, re-run the gate: bun contract/blend-loft.guard-check.mjs (needs the rig) and the r5 fuzz commands in RIG.md."
+    },
+    "booleans": {
+      "rebuild": "cd docs/spikes/solidcraft-referee/contract && bun bool-fuzz-summary-r6.mjs && bun bool-build-rows-r6.mjs",
+      "measure": [
+        "bash docs/spikes/solidcraft-referee/contract/booleans-r6/replay-all.sh <out>/booleans"
+      ]
+    },
+    "extrude-pocket": {
+      "rebuild": "bun docs/spikes/solidcraft-referee/contract/extrude-pocket-synthesize.mjs",
+      "measure": [
+        "bun docs/spikes/solidcraft-referee/contract/extrude-pocket-measure.mjs",
+        "bun docs/spikes/solidcraft-referee/contract/extrude-pocket-taper-fuzz.mjs --n=500 --seed=1"
+      ]
+    },
+    "fillet-chamfer": {
+      "rebuild": "cd docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence && bun live/fc4-make-rows.mjs",
+      "measure": [
+        "cd docs/spikes/solidcraft-referee/contract/fillet-chamfer-evidence && bun guard-eval.mjs"
+      ]
+    },
+    "holes": {
+      "rebuild": "CTL=docs/spikes/solidcraft-referee/contract/holes3-results bun docs/spikes/solidcraft-referee/contract/holes3-rows.mjs docs/spikes/solidcraft-referee/contract/holes.json docs/spikes/solidcraft-referee/contract/holes3-results/run1-before-guards-tangent-torus.json docs/spikes/solidcraft-referee/contract/holes3-results/run2.json docs/spikes/solidcraft-referee/contract/holes3-results/cpu-repeat.json docs/spikes/solidcraft-referee/contract/holes3-results/final.json",
+      "measure": [
+        "bun docs/spikes/solidcraft-referee/contract/holes-drive.mjs --out=<out>/holes --timeout=900"
+      ]
+    },
+    "move-turn": {
+      "rebuild": "cd docs/spikes/solidcraft-referee/contract/move-turn-harness && bun make-rows-r6.mjs",
+      "measure": [
+        "cd docs/spikes/solidcraft-referee/contract/move-turn-harness && sh run-r6.sh"
+      ]
+    },
+    "patterns-mirror": {
+      "rebuild": "python3 docs/spikes/solidcraft-referee/contract/pm-make-rows.py",
+      "measure": [
+        "bun docs/spikes/solidcraft-referee/contract/pm-run.mjs --r6 --out=<out>/patterns-mirror"
+      ]
+    },
+    "picks-naming-params": {
+      "rebuild": "cd docs/spikes/solidcraft-referee/contract/picks-naming-params.evidence && bun r6-build-rows.mjs && bun r2-lint.mjs",
+      "measure": [
+        "cd docs/spikes/solidcraft-referee/contract/picks-naming-params.evidence && bun r3b-size-sweep.mjs --out=<out>/picks/r3b.json",
+        "cd docs/spikes/solidcraft-referee/contract/picks-naming-params.evidence && bun r6a-hollow-thin.mjs --out=<out>/picks/r6a.json"
+      ]
+    },
+    "primitives": {
+      "rebuild": "bun docs/spikes/solidcraft-referee/contract/primitives-build-rows-r5.mjs",
+      "measure": [
+        "bun docs/spikes/solidcraft-referee/contract/primitives.guard-check.mjs --json=<out>/primitives/guard-check.json"
+      ]
+    },
+    "revolve-groove": {
+      "rebuild": "bun docs/spikes/solidcraft-referee/contract/revolve-groove-rig/make-rows-r3.mjs && bun docs/spikes/solidcraft-referee/contract/revolve-groove-rig/lint-rows.mjs",
+      "measure": [
+        "bash docs/spikes/solidcraft-referee/contract/revolve-groove-rig/rg5-batch.sh ./cases-r5-wall.mjs g0 <out>/revolve-groove 150 R5-post-top-0.1-360"
+      ]
+    },
+    "shell-draft": {
+      "rebuild": "bun docs/spikes/solidcraft-referee/contract/shell-draft-make-rows.mjs",
+      "measure": [
+        "bun docs/spikes/solidcraft-referee/contract/shell-draft-runner.mjs --out=<out>/shell-draft"
+      ]
+    },
+    "sketch-constraints": {
+      "rebuild": "bun docs/spikes/solidcraft-referee/contract/sketch-constraints-r5/build-rows.mjs",
+      "measure": [
+        "sh docs/spikes/solidcraft-referee/contract/sketch-constraints-r5/run-all.sh"
+      ]
+    },
+    "sketch-dof-diagnosis": {
+      "rebuild": "bun docs/spikes/solidcraft-referee/contract/sketch-dof-diagnosis/rows-r4.mjs",
+      "measure": [
+        "bash docs/spikes/solidcraft-referee/contract/sketch-dof-diagnosis/run-r4.sh"
+      ]
+    },
+    "sketch-geometry": {
+      "rebuild": "bun docs/spikes/solidcraft-referee/contract/sketch-geometry-harness/build-rows.mjs",
+      "measure": [
+        "sh docs/spikes/solidcraft-referee/contract/sketch-geometry-harness/repro-guarded.sh"
+      ]
+    }
+  }
+}
