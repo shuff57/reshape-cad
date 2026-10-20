@@ -118,7 +118,7 @@
    "MATCH": 20
   },
   "sentences": {
-   "preflight: Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's ": 20
+   "preflight: Arc # has an end that is not on its circle (off by #) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's ": 20
   },
   "wrongPassed": [],
   "shippedWrong": [
@@ -242,7 +242,10 @@
     "volume": 1101.1387469849292,
     "bodies": 1
    }
-  ]
+  ],
+  "rawSentences": {
+   "preflight: Arc # has an end that is not on its circle (off by #) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's ": "Arc 1 has an end that is not on its circle (off by 0.025) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+  }
  },
  {
   "id": "oval-four-arcs-endpoint-tangent",
@@ -259,7 +262,7 @@
    "MATCH": 20
   },
   "sentences": {
-   "preflight: Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's ": 20
+   "preflight: Arc # has an end that is not on its circle (off by #) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's ": 20
   },
   "wrongPassed": [],
   "shippedWrong": [
@@ -377,7 +380,10 @@
     "volume": 1080.8212349806736,
     "bodies": 1
    }
-  ]
+  ],
+  "rawSentences": {
+   "preflight: Arc # has an end that is not on its circle (off by #) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's ": "Arc 1 has an end that is not on its circle (off by 0.26) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+  }
  },
  {
   "id": "oval-four-arcs-endpoint-tangent",
@@ -394,7 +400,7 @@
    "MATCH": 20
   },
   "sentences": {
-   "preflight: Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's ": 20
+   "preflight: Arc # has an end that is not on its circle (off by #) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's ": 20
   },
   "wrongPassed": [],
   "shippedWrong": [
@@ -500,6 +506,9 @@
     "volume": 906.8736926094836,
     "bodies": 1
    }
-  ]
+  ],
+  "rawSentences": {
+   "preflight: Arc # has an end that is not on its circle (off by #) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's ": "Arc 1 has an end that is not on its circle (off by 0.74) and a row pins its centre, so the pinned centre would not be where the row says; make the arc's centre, radius and ends agree, or pin one of its ends instead."
+  }
  }
 ]

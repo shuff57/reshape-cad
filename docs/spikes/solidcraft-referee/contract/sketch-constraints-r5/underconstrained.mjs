@@ -18,6 +18,11 @@ for (const cs of CASES.filter((c) => c.underconstrained)) {
   const rec = { id: cs.id, dof: { independent: ind.dof, freecad: cs.fc?.dof ?? null, brepRs: b0.diag?.dof ?? (b0.open ? 'open: ' + b0.open : null) }, closedVolume: cs.area ? cs.area * H : null, fcBbox: cs.fc?.bbox ?? null };
   const wantVol = cs.area ? cs.area * H : null, tol = cs.curved ? 3e-4 : 1e-9;
   const right = (body) => body && wantVol != null && rel(body.volume, wantVol) <= tol && body.bbox.slice(0, 2).every((v, i) => Math.abs(v - cs.bbox[i]) <= 2e-3) && Math.abs(body.bbox[3] - cs.bbox[2]) <= 2e-3 && Math.abs(body.bbox[4] - cs.bbox[3]) <= 2e-3;
+  // round 6 (critic): a circle with NO rules has nothing to solve, so building the circle AS DRAWN is the correct build of a rough start, not "a different solid" than the stored one.
+  // For that one fixture the measure is the drawn circle itself, closed form pi r^2 H and bbox c +- r, at the fixed curved bar 3e-4 (chosen before the run, not tuned).
+  const freeCircle = rules.length === 0 && cs.geoms.length === 1 && cs.geoms[0].k === 'circle';
+  const asDrawn = (start, body) => { if (!freeCircle || !body) return false; const c = start[0]; return rel(body.volume, Math.PI * c.r * c.r * H) <= 3e-4 && Math.abs(body.bbox[0] - (c.c[0] - c.r)) <= 2e-3 && Math.abs(body.bbox[1] - (c.c[1] - c.r)) <= 2e-3 && Math.abs(body.bbox[3] - (c.c[0] + c.r)) <= 2e-3 && Math.abs(body.bbox[4] - (c.c[1] + c.r)) <= 2e-3; };
+  const lab = (start, body) => (right(body) ? 'stored-solid' : asDrawn(start, body) ? 'built-as-drawn (free circle, no rules)' : 'different-solid');
   const stored = { shipped: null, guarded: null, brep: null };
   const u = lib.scSketch(cs.geoms, rules); stored.shipped = u.body ? { volume: u.body.volume, right: right(u.body) } : { refused: u.mapperRefused?.join(' | ') ?? u.firstRefusal?.error ?? u.extrudeError ?? 'no body' };
   const g = ladderSketch({ geoms: cs.geoms, rules }); stored.guarded = g.ok ? { volume: g.body.volume, right: right(g.body) } : { refused: g.sentence, stage: g.stage };
@@ -29,10 +34,10 @@ for (const cs of CASES.filter((c) => c.underconstrained)) {
     for (let k = 0; k < N; k++) {
       const start = roughen(cs.geoms, cs.rules, `${cs.id}#ucr#${k}#${frac}`, frac);
       const us = lib.scSketch(start, rules);
-      if (us.body) { sv.push(us.body.volume); st[right(us.body) ? 'stored-solid' : 'different-solid'] = (st[right(us.body) ? 'stored-solid' : 'different-solid'] ?? 0) + 1; } else st.REFUSED = (st.REFUSED ?? 0) + 1;
+      if (us.body) { sv.push(us.body.volume); const k0 = lab(start, us.body); st[k0] = (st[k0] ?? 0) + 1; } else st.REFUSED = (st.REFUSED ?? 0) + 1;
       const gg = ladderSketch({ geoms: start, rules });
-      if (gg.ok) { gv.push(gg.body.volume); const key = right(gg.body) ? 'stored-solid' : 'different-solid'; gt[key] = (gt[key] ?? 0) + 1; } else { gt.REFUSED = (gt.REFUSED ?? 0) + 1; const key = gg.stage; sent[key] = (sent[key] ?? { n: 0, sentence: gg.sentence }); sent[key].n++; }
-      try { const run = lib.runScript(soupScript(start, rules)); const b = lib.brepBuild(lib.modelCodegen.solveDoc(run.doc)); if (b.outcome === 'built') { bv.push(b.volume); bt[right({ volume: b.volume, bbox: b.bbox }) ? 'stored-solid' : 'different-solid'] = (bt[right({ volume: b.volume, bbox: b.bbox }) ? 'stored-solid' : 'different-solid'] ?? 0) + 1; } else bt.REFUSED = (bt.REFUSED ?? 0) + 1; } catch { bt.ERROR = (bt.ERROR ?? 0) + 1; }
+      if (gg.ok) { gv.push(gg.body.volume); const key = lab(start, gg.body); gt[key] = (gt[key] ?? 0) + 1; } else { gt.REFUSED = (gt.REFUSED ?? 0) + 1; const key = gg.stage; sent[key] = (sent[key] ?? { n: 0, sentence: gg.sentence }); sent[key].n++; }
+      try { const run = lib.runScript(soupScript(start, rules)); const b = lib.brepBuild(lib.modelCodegen.solveDoc(run.doc)); if (b.outcome === 'built') { bv.push(b.volume); { const k1 = lab(start, { volume: b.volume, bbox: b.bbox }); bt[k1] = (bt[k1] ?? 0) + 1; } } else bt.REFUSED = (bt.REFUSED ?? 0) + 1; } catch { bt.ERROR = (bt.ERROR ?? 0) + 1; }
     }
     rec.rough[frac] = { N, shipped: { tally: st, volumes: spread(sv) }, guarded: { tally: gt, volumes: spread(gv), sentences: sent }, brep: { tally: bt, volumes: spread(bv) } };
   }

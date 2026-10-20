@@ -47,7 +47,7 @@ export function imagesOf(cs) {
       const res = lib.ruleCheck.checkRules(R, rules, cs.geoms).filter((x) => x.driving && x.residual !== null);
       const tol = (x) => (x.unit === 'mm' ? 2e-3 : 1e-5);
       if (res.some((x) => x.residual > tol(x))) continue;
-      const bb = boxOf(R); const key = bb.map((v) => v.toFixed(3)).join(',');
+      const bb = boxOf(R); const key = bb.map((v) => v.toFixed(3)).join(',') + '|' + R.map((x) => JSON.stringify([x.id, x.p, x.a, x.b, x.c, x.r].map((v) => (typeof v === 'number' ? +v.toFixed(3) : Array.isArray(v) ? v.map((w) => +w.toFixed(3)) : v)))).join(';'); // round 6: images with the same bbox but different loops are kept apart (a mirror image of a symmetric shape is the SAME solid but a different distance from the drawing)
       if (seen.has(key)) continue; seen.add(key);
       out.push({ bbox: bb, geoms: R, how: `${sx === -1 ? 'x about ' + cx : ''}${sx === -1 && sy === -1 ? ' and ' : ''}${sy === -1 ? 'y about ' + cy : ''}` || 'as solved' });
     }
@@ -71,6 +71,12 @@ const rel = (a, b) => Math.abs(a - b) / Math.max(Math.abs(b), 1);
 export const COM_TOL = { planar: 1e-6, curved: 1e-3 };
 const comOf = (im) => { if (im.exp === undefined) { try { const e = im.geoms ? expectedSolid(im.geoms, H) : null; im.exp = e && e.ok ? e : null; } catch { im.exp = null; } } return im.exp; };
 export function classifyImg(cs, body, start = null) {
+  // round 6 (critic): a circle with NO rules has nothing to solve; building it as drawn is correct, so it is scored against the DRAWN circle (pi r^2 H, bbox c +- r, the curved bar 3e-4 / 2e-3 mm fixed beforehand), not against the stored circle of another radius.
+  if (start && start.length === 1 && start[0].k === 'circle' && plainRules(cs.rules ?? []).length === 0) {
+    const c = start[0], dv = rel(body.volume, Math.PI * c.r * c.r * H), e = [c.c[0] - c.r, c.c[1] - c.r, c.c[0] + c.r, c.c[1] + c.r], bb = [body.bbox[0], body.bbox[1], body.bbox[3], body.bbox[4]];
+    const db = Math.max(...e.map((v, i) => Math.abs(bb[i] - v)));
+    return dv <= 3e-4 && db <= 2e-3 ? { cls: 'MATCH', dv, db, image: 'free circle as drawn' } : { cls: 'VOLUME', dv, db };
+  }
   const t = cs.curved ? 3e-4 : 1e-9;
   const { nearest, all, dmin } = expectedImage(cs, start);
   const score = (im) => {
@@ -85,7 +91,7 @@ export function classifyImg(cs, body, start = null) {
   const bodiesOk = !cs.bodies || body.bodies === cs.bodies;
   const scored = all.map((im) => ({ im, s: score(im) }));
   // which valid image is it?
-  const hit = scored.filter((x) => x.s.dv <= t && x.s.db <= t && bodiesOk && shapeOk(x.s)).sort((p, q) => p.s.db - q.s.db)[0];
+  const hit = scored.filter((x) => x.s.dv <= t && x.s.db <= t && bodiesOk && shapeOk(x.s)).sort((p, q) => (p.im.d ?? 0) - (q.im.d ?? 0) || p.s.db - q.s.db)[0]; // round 6: the passing image NEAREST the drawing wins, so a build equal to the drawn side (also when a mirror image of a symmetric shape is the same solid) is MATCH, not MATCH-OTHER-SIDE
   if (hit) {
     // a tie band of 10% in key-point distance (the guard's own tolerance): inside it the two sides cannot be told apart by the drawing
     const tied = !start || hit.im.d <= dmin / 0.9 + 1e-9;

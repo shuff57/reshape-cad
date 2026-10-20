@@ -18,6 +18,7 @@ const brepOnStart = (cs, start, rules) => {
     const doc = lib.modelCodegen.solveDoc(run.doc);
     const b = lib.brepBuild(doc);
     if (b.outcome !== 'built') return { cls: 'REFUSED', sentence: b.refusal };
+    if (start.length === 1 && start[0].k === 'circle' && plainRules(cs.rules ?? []).length === 0) { const c = classify(cs, { volume: b.volume, bbox: b.bbox, bodies: 1 }, start); return { cls: c.cls === 'MATCH' ? 'MATCH' : 'WRONG', volume: b.volume }; } // round 6: a rule-free circle is scored as drawn (oracle.mjs)
     const t = cs.curved ? 3e-4 : 1e-9;
     const eb = expectedBox(cs, start);
     const want = [eb[0], eb[1], 0, eb[2], eb[3], H];

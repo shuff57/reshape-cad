@@ -8,7 +8,7 @@ import { classify } from './score.mjs';
 import { ladderSketch, ROW_CLASS } from './guard.mjs';
 const OUTF = (process.argv.find((a) => a.startsWith('--out=')) ?? '--out=out/perm.json').slice(6);
 const unguarded = (cs, st, rules) => { const r = lib.scSketch(st, rules); if (r.mapperRefused || r.firstRefusal || r.extrudeError || !r.body) return 'REFUSED'; const c = classify(cs, r.body, st).cls; return c === 'TOL-MISS' ? 'MATCH' : c; };
-const guarded = (cs, st, rules) => { const g = ladderSketch({ geoms: st, rules }); if (!g.ok) return 'REFUSED'; const c = classify(cs, g.body, st).cls; return c === 'MATCH' || c === 'TOL-MISS' ? 'MATCH' : 'WRONG'; };
+const guarded = (cs, st, rules) => { const g = ladderSketch({ geoms: st, rules }); if (!g.ok) return 'REFUSED'; const c = classify(cs, g.body, st).cls; return c === 'MATCH' || c === 'TOL-MISS' ? 'MATCH' : c === 'MATCH-OTHER-SIDE' ? 'OTHER-SIDE' : 'WRONG'; }; // round 6: OTHER-SIDE = a valid mirror image of the rules, counted apart from WRONG
 const add = (t, k) => { t[k] = (t[k] ?? 0) + 1; };
 const out = { named: [], random: [] };
 // (1) named orders
@@ -44,7 +44,7 @@ for (const id of FIX) {
       const rnd = mulberry(seedOf(`${id}/${s}/${p}`)); const rules = plainRules(cs.rules).map((r) => [r, rnd()]).sort((a, b) => a[1] - b[1]).map((x) => x[0]);
       add(tu, unguarded(cs, st, rules));
       const g = ladderSketch({ geoms: st, rules });
-      if (!g.ok) add(tg, 'REFUSED'); else { const c = classify(cs, g.body, st).cls; add(tg, c === 'MATCH' || c === 'TOL-MISS' ? 'MATCH' : 'WRONG'); gv.push(g.body.volume); }
+      if (!g.ok) add(tg, 'REFUSED'); else { const c = classify(cs, g.body, st).cls; add(tg, c === 'MATCH' || c === 'TOL-MISS' ? 'MATCH' : c === 'MATCH-OTHER-SIDE' ? 'OTHER-SIDE' : 'WRONG'); gv.push(g.body.volume); }
     }
     groups++; if (gv.length > 1 && Math.max(...gv) - Math.min(...gv) > 1e-6 * Math.max(...gv)) distinct++;
     vols.push(gv.length ? Math.max(...gv) - Math.min(...gv) : null);

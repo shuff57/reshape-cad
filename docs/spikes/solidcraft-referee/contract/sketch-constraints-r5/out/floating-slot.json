@@ -5,8 +5,8 @@
   {
    "frac": 0.035,
    "label": "critic start 0.035",
-   "unguarded": "RIGHT",
-   "unguardedVolume": 4730.763187541742,
+   "unguarded": "WRONG",
+   "unguardedVolume": 3634.801744926359,
    "guarded": "REFUSED",
    "guardedStage": "underconstrained",
    "guardedSentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
@@ -29,8 +29,8 @@
   {
    "frac": 0.15,
    "label": "critic start 0.15",
-   "unguarded": "WRONG",
-   "unguardedVolume": 1130.8457412193247,
+   "unguarded": "refused",
+   "unguardedVolume": null,
    "guarded": "REFUSED",
    "guardedStage": "underconstrained",
    "guardedSentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",

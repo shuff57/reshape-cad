@@ -1,0 +1,12 @@
+underconstrained:sk-rect-underconstrained__pinned-corner-only 0.8: unguarded {"VOLUME":40} | guarded {"REFUSED":40} stages {"underconstrained":40} caught 40 spurious 0 | brep-rs {"WRONG":35,"REFUSED":5}
+underconstrained:sk-rect-underconstrained__pinned-corner-only 0.4: unguarded {"VOLUME":40} | guarded {"REFUSED":40} stages {"underconstrained":40} caught 40 spurious 0 | brep-rs {"WRONG":40}
+underconstrained:sk-rect-underconstrained__pinned-corner-only 0.15: unguarded {"VOLUME":40} | guarded {"REFUSED":40} stages {"underconstrained":40} caught 40 spurious 0 | brep-rs {"WRONG":40}
+underconstrained:sk-rect-underconstrained__pinned-corner-only 0.035: unguarded {"VOLUME":40} | guarded {"REFUSED":40} stages {"underconstrained":40} caught 40 spurious 0 | brep-rs {"WRONG":40}
+underconstrained:sk-rect-underconstrained__triangle-joined 0.8: unguarded {"VOLUME":40} | guarded {"REFUSED":40} stages {"underconstrained":40} caught 40 spurious 0 | brep-rs {"REFUSED":8,"WRONG":32}
+underconstrained:sk-rect-underconstrained__triangle-joined 0.4: unguarded {"VOLUME":40} | guarded {"REFUSED":40} stages {"underconstrained":40} caught 40 spurious 0 | brep-rs {"WRONG":38,"REFUSED":2}
+underconstrained:sk-rect-underconstrained__triangle-joined 0.15: unguarded {"VOLUME":40} | guarded {"REFUSED":40} stages {"underconstrained":40} caught 40 spurious 0 | brep-rs {"WRONG":40}
+underconstrained:sk-rect-underconstrained__triangle-joined 0.035: unguarded {"VOLUME":40} | guarded {"REFUSED":40} stages {"underconstrained":40} caught 40 spurious 0 | brep-rs {"WRONG":40}
+underconstrained:sk-rect-underconstrained__free-circle 0.8: unguarded {"MATCH":40} | guarded {"BUILT-MATCH":40} stages {} caught 0 spurious 0 | brep-rs {"MATCH":40}
+underconstrained:sk-rect-underconstrained__free-circle 0.4: unguarded {"MATCH":40} | guarded {"BUILT-MATCH":40} stages {} caught 0 spurious 0 | brep-rs {"MATCH":40}
+underconstrained:sk-rect-underconstrained__free-circle 0.15: unguarded {"MATCH":40} | guarded {"BUILT-MATCH":40} stages {} caught 0 spurious 0 | brep-rs {"MATCH":40}
+underconstrained:sk-rect-underconstrained__free-circle 0.035: unguarded {"MATCH":40} | guarded {"BUILT-MATCH":40} stages {} caught 0 spurious 0 | brep-rs {"MATCH":40}

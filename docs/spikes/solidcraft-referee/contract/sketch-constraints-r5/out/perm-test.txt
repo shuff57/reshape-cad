@@ -1,14 +1,14 @@
-named slot-hand-rows-R10-L40 as written                                     unguarded {"MATCH":24} guarded {"WRONG":16,"MATCH":8}
-named slot-hand-rows-R10-L40 reversed                                       unguarded {"MATCH":17,"VOLUME":7} guarded {"WRONG":16,"MATCH":8}
-named slot-hand-rows-R10-L40 dimensions first                               unguarded {"MATCH":20,"VOLUME":4} guarded {"WRONG":16,"MATCH":8}
-named slot-hand-rows-R10-L40 tangents first                                 unguarded {"REFUSED":3,"VOLUME":14,"MATCH":7} guarded {"WRONG":16,"MATCH":8}
-named slot-hand-rows-R10-L40 interleaved (tangent after every other row)    unguarded {"MATCH":24} guarded {"WRONG":16,"MATCH":8}
+named slot-hand-rows-R10-L40 as written                                     unguarded {"MATCH":24} guarded {"MATCH":24}
+named slot-hand-rows-R10-L40 reversed                                       unguarded {"MATCH":17,"VOLUME":7} guarded {"MATCH":24}
+named slot-hand-rows-R10-L40 dimensions first                               unguarded {"MATCH":20,"VOLUME":4} guarded {"MATCH":24}
+named slot-hand-rows-R10-L40 tangents first                                 unguarded {"REFUSED":3,"VOLUME":14,"MATCH":7} guarded {"MATCH":24}
+named slot-hand-rows-R10-L40 interleaved (tangent after every other row)    unguarded {"MATCH":24} guarded {"MATCH":24}
 named slot-dims-from-points as written                                     unguarded {"MATCH":24} guarded {"MATCH":24}
 named slot-dims-from-points reversed                                       unguarded {"MATCH":20,"VOLUME":4} guarded {"MATCH":24}
 named slot-dims-from-points dimensions first                               unguarded {"MATCH":10,"VOLUME":10,"REFUSED":4} guarded {"MATCH":24}
 named slot-dims-from-points tangents first                                 unguarded {"MATCH":21,"REFUSED":2,"VOLUME":1} guarded {"MATCH":24}
 named slot-dims-from-points interleaved (tangent after every other row)    unguarded {"MATCH":24} guarded {"MATCH":24}
-random slot-hand-rows-R10-L40                   unguarded {"MATCH":59,"REFUSED":5,"VOLUME":8} guarded {"WRONG":48,"MATCH":24} starts whose built volume differs between permutations: 0/6
+random slot-hand-rows-R10-L40                   unguarded {"MATCH":59,"REFUSED":5,"VOLUME":8} guarded {"MATCH":72} starts whose built volume differs between permutations: 0/6
 random slot-dims-from-points                    unguarded {"MATCH":53,"REFUSED":5,"VOLUME":14} guarded {"MATCH":72} starts whose built volume differs between permutations: 0/6
 random oval-four-arcs-endpoint-tangent          unguarded {"MATCH":69,"VOLUME":1,"REFUSED":2} guarded {"MATCH":72} starts whose built volume differs between permutations: 0/6
 random hexagon-equal-pointOn-circle             unguarded {"MATCH":71,"VOLUME":1} guarded {"MATCH":72} starts whose built volume differs between permutations: 0/6

@@ -1,7 +1,7 @@
-slot-hand-rows-R10-L40                       eps 0.001  lockC Y guarded {"REFUSED":30} | shipped route {"POSE":14,"MATCH-OTHER-SIDE":6,"MATCH":10} | brep-rs {"MATCH-OTHER-SIDE":30}
-slot-hand-rows-R10-L40                       eps 0.05   lockC Y guarded {"REFUSED":30} | shipped route {"POSE":29,"MATCH":1} | brep-rs {"MATCH-OTHER-SIDE":30}
-slot-hand-rows-R10-L40                       eps 0.3    lockC Y guarded {"REFUSED":30} | shipped route {"POSE":30} | brep-rs {"MATCH-OTHER-SIDE":30}
-slot-hand-rows-R10-L40                       eps 1      lockC Y guarded {"REFUSED":30} | shipped route {"POSE":29,"VOLUME":1} | brep-rs {"MATCH-OTHER-SIDE":30}
+slot-hand-rows-R10-L40                       eps 0.001  lockC Y guarded {"REFUSED":30} | shipped route {"POSE":14,"MATCH":16} | brep-rs {"MATCH":30}
+slot-hand-rows-R10-L40                       eps 0.05   lockC Y guarded {"REFUSED":30} | shipped route {"POSE":29,"MATCH":1} | brep-rs {"MATCH":30}
+slot-hand-rows-R10-L40                       eps 0.3    lockC Y guarded {"REFUSED":30} | shipped route {"POSE":30} | brep-rs {"MATCH":30}
+slot-hand-rows-R10-L40                       eps 1      lockC Y guarded {"REFUSED":30} | shipped route {"POSE":29,"VOLUME":1} | brep-rs {"MATCH":30}
 slot-dims-from-points                        eps 0.001  lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"MATCH":30}
 slot-dims-from-points                        eps 0.05   lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"MATCH":30}
 slot-dims-from-points                        eps 0.3    lockC n guarded {"BUILT-MATCH":30} | shipped route {"MATCH":30} | brep-rs {"MATCH":30}

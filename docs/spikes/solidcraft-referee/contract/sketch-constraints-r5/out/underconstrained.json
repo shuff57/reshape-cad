@@ -679,7 +679,7 @@
     "N": 20,
     "shipped": {
      "tally": {
-      "different-solid": 20
+      "built-as-drawn (free circle, no rules)": 20
      },
      "volumes": {
       "n": 20,
@@ -700,7 +700,7 @@
     },
     "guarded": {
      "tally": {
-      "different-solid": 20
+      "built-as-drawn (free circle, no rules)": 20
      },
      "volumes": {
       "n": 20,
@@ -722,7 +722,7 @@
     },
     "brep": {
      "tally": {
-      "different-solid": 20
+      "built-as-drawn (free circle, no rules)": 20
      },
      "volumes": {
       "n": 20,
@@ -746,7 +746,7 @@
     "N": 20,
     "shipped": {
      "tally": {
-      "different-solid": 20
+      "built-as-drawn (free circle, no rules)": 20
      },
      "volumes": {
       "n": 20,
@@ -767,7 +767,7 @@
     },
     "guarded": {
      "tally": {
-      "different-solid": 20
+      "built-as-drawn (free circle, no rules)": 20
      },
      "volumes": {
       "n": 20,
@@ -789,7 +789,7 @@
     },
     "brep": {
      "tally": {
-      "different-solid": 20
+      "built-as-drawn (free circle, no rules)": 20
      },
      "volumes": {
       "n": 20,

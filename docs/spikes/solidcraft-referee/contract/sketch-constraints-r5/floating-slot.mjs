@@ -12,8 +12,9 @@ const { gauntletFixtures } = await import(pathToFileURL(path.join(lib.SPIKE, 'ph
 const fx = gauntletFixtures().find((g) => g.id === 'sk-circle-arc-tangent__slot-r6-L30-floating');
 const rules = plainRules(fx.rules), want = slotArea(30, 6) * H, SIZE = [42, 12];
 const clone = (o) => JSON.parse(JSON.stringify(o));
-function geomBox(gs) { const pts = []; for (const g of gs) { if (g.k === 'point') pts.push(g.p); else if (g.k === 'line') pts.push(g.a, g.b); else if (g.k === 'circle') pts.push([g.c[0] - g.r, g.c[1] - g.r], [g.c[0] + g.r, g.c[1] + g.r]); else if (g.k === 'arc') pts.push(g.a, g.b, [g.c[0] - g.r, g.c[1] - g.r], [g.c[0] + g.r, g.c[1] + g.r]); } return [Math.min(...pts.map((p) => p[0])), Math.min(...pts.map((p) => p[1])), Math.max(...pts.map((p) => p[0])), Math.max(...pts.map((p) => p[1]))]; }
-function criticRoughen(frac) { // the r4 remeasure-fixtures.mjs roughen(), verbatim apart from the helpers
+function geomBox(gs) { // verbatim from sketch-constraints-r4/remeasure-fixtures.mjs: arcs contribute their END points only (round-6 fix: the earlier copy added the circle box, which changed the amplitude by about 1.35x)
+  const pts = []; for (const g of gs) { if (g.k === 'point') pts.push(g.p); else if (g.k === 'line') pts.push(g.a, g.b); else if (g.k === 'circle') pts.push([g.c[0] - g.r, g.c[1] - g.r], [g.c[0] + g.r, g.c[1] + g.r]); else pts.push(g.a, g.b); } return [Math.min(...pts.map((p) => p[0])), Math.min(...pts.map((p) => p[1])), Math.max(...pts.map((p) => p[0])), Math.max(...pts.map((p) => p[1]))]; }
+function criticRoughen(frac) { // the r4 remeasure-fixtures.mjs roughen(), verbatim (geomBox included) apart from the helpers
   const rnd = mulberry(seedOf(fx.id)); const bb = geomBox(fx.geoms);
   const amp = frac * Math.max(Math.hypot(bb[2] - bb[0], bb[3] - bb[1]), 1);
   const locked = new Set(fx.rules.filter((r) => r.k === 'lock').map((r) => `${r.a}:${r.aEnd ?? ''}`));

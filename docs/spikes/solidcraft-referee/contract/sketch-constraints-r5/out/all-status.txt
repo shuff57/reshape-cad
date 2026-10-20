@@ -19,3 +19,9 @@ jitter exit 0
 underconstrained exit 0
 audit exit 0
 sweeps exit 0
+underconstrained exit 0
+probes exit 0
+stored-run exit 0
+arcs-fuzz exit 0
+jitter exit 0
+sweeps exit 0

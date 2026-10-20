@@ -1,3 +1,4 @@
+// ROUND 6 NOTE: this script no longer touches sketch-constraints.json (it writes sketch-constraints-recheck-r4.json); rebuilding the rows is `bun sketch-constraints-r5/build-rows.mjs` alone.
 // Round 4 of group 'sketch-constraints': appends the fresh re-measurement (sketch-constraints-r4/out) to the round-3 rows.
 //   bun docs/spikes/solidcraft-referee/contract/sketch-constraints-r3/build-rows.mjs      # rebuilds the round-3 rows from the committed raw data (asserts every status)
 //   bun docs/spikes/solidcraft-referee/contract/sketch-constraints-recheck.mjs            # then this: adds the "RE-CHECK r4" evidence and the top-level provenance
@@ -73,7 +74,8 @@ doc.recheck = {
   unguardedContradictions: contradictions,
 };
 if (!String(doc.rig).includes("ROUND 4 NOTE")) doc.rig = `${doc.rig} || ROUND 4 NOTE: the wrapper2 pkg above no longer exists (reboot). Round-4 re-measurements use the phase0 wrapper (docs/spikes/solidcraft-referee/demo/pkg, same referee crate without the sketch dump) through sketch-constraints-r4/pkg2shim; see "recheck".`;
-writeFileSync(F, JSON.stringify(doc, null, 1) + '\n');
+// round 6 fix: this script used to overwrite sketch-constraints.json with round-4 content after build-rows.mjs had written the current rows. It now READS the rows file and WRITES a separate file; the round-4 recheck is history, not part of the rebuild.
+writeFileSync(path.join(HERE, 'sketch-constraints-recheck-r4.json'), JSON.stringify(doc, null, 1) + '\n');
 console.log(`rows ${doc.rows.length}, rows with fresh evidence ${touched}`);
 console.log(JSON.stringify(fx));
 console.log('supported rows whose unguarded stored start builds a wrong volume:', JSON.stringify(contradictions));

@@ -9,11 +9,10 @@
   },
   "unguarded": {
    "POSE": 14,
-   "MATCH-OTHER-SIDE": 6,
-   "MATCH": 10
+   "MATCH": 16
   },
   "brep": {
-   "MATCH-OTHER-SIDE": 30
+   "MATCH": 30
   },
   "sentences": {
    "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
@@ -36,7 +35,7 @@
    "MATCH": 1
   },
   "brep": {
-   "MATCH-OTHER-SIDE": 30
+   "MATCH": 30
   },
   "sentences": {
    "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
@@ -58,7 +57,7 @@
    "POSE": 30
   },
   "brep": {
-   "MATCH-OTHER-SIDE": 30
+   "MATCH": 30
   },
   "sentences": {
    "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {
@@ -81,7 +80,7 @@
    "VOLUME": 1
   },
   "brep": {
-   "MATCH-OTHER-SIDE": 30
+   "MATCH": 30
   },
   "sentences": {
    "Arc # has an #nd that is not on its circl# (off by #) and a row pins its c#ntr#, so th# pinn#d c#ntr# would not b# wh#r# th# row says; mak# th# arc's c#ntr#, radius and #nds agr#, or pin on# of its #nds inst#ad#": {

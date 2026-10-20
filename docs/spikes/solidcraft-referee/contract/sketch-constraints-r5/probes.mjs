@@ -77,7 +77,7 @@ repro('conflicting equal + tangent (over-constrained circles)', () => {
       if (u.mapperRefused || u.firstRefusal || u.extrudeError || !u.body) { add(t.unguarded, 'REFUSED'); add(t.unguardedErrors, (u.firstRefusal?.error ?? u.extrudeError ?? u.mapperRefused?.join(' ') ?? '').replace(/[-0-9.]+(e-?[0-9]+)?/g, '#').replace(/k# \([A-Za-z]+\)(, )?/g, '').slice(0, 130)); }
       else { const c = classify(cs, u.body, st).cls; add(t.unguarded, c === 'TOL-MISS' ? 'MATCH' : c); }
       const g = ladderSketch({ geoms: st, rules });
-      if (!g.ok) { add(t.guarded, 'REFUSED'); note(g.sentence); } else { const c = classify(cs, g.body, st).cls; add(t.guarded, c === 'MATCH' || c === 'TOL-MISS' ? 'MATCH' : 'WRONG'); }
+      if (!g.ok) { add(t.guarded, 'REFUSED'); note(g.sentence); } else { const c = classify(cs, g.body, st).cls; add(t.guarded, c === 'MATCH' || c === 'TOL-MISS' ? 'MATCH' : c === 'MATCH-OTHER-SIDE' ? 'OTHER-SIDE' : 'WRONG'); }
     }
     out.slotRefusals.push({ id, order: oname, frac, ...t });
     console.log(`slot ${id} ${oname.padEnd(17)} ${frac}: unguarded ${JSON.stringify(t.unguarded)} guarded ${JSON.stringify(t.guarded)} unguarded SolidCraft error texts ${JSON.stringify(t.unguardedErrors)}`);

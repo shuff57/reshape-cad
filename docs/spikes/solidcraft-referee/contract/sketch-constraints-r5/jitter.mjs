@@ -43,7 +43,7 @@ for (const id of IDS) {
         const gc = c.cls === 'MATCH' || c.cls === 'TOL-MISS' ? 'BUILT-MATCH' : c.cls === 'MATCH-OTHER-SIDE' ? 'BUILT-OTHER-SIDE' : 'BUILT-WRONG';
         tally(t.guarded, gc);
         if (gc === 'BUILT-WRONG') t.wrongPassed.push({ k, cls: c.cls, dv: c.dv, db: c.db, volume: g.body.volume, bodies: g.body.bodies });
-      } else { tally(t.guarded, 'REFUSED'); const key = g.stage + ': ' + g.sentence.replace(/[-0-9.e+]+/g, '#').slice(0, 150); t.sentences[key] = (t.sentences[key] ?? 0) + 1; }
+      } else { tally(t.guarded, 'REFUSED'); const key = g.stage + ': ' + g.sentence.replace(/-?\d+(?:\.\d+)?(?:e[+-]?\d+)?/g, '#').slice(0, 150); t.sentences[key] = (t.sentences[key] ?? 0) + 1; (t.rawSentences ??= {})[key] ??= g.sentence; } // round-6 fix: the old mask /[-0-9.e+]+/ also replaced every letter e; the raw first sentence is kept
       try {
         const run = lib.runScript(soupScript(start, rules));
         const b = lib.brepBuild(lib.modelCodegen.solveDoc(run.doc));
