@@ -1,0 +1,39 @@
+{
+ "group": "booleans",
+ "round": 1,
+ "changes": [
+  {"file": "booleans.json", "what": "rebuilt by bool-build-rows-r4.mjs (113 rows: 52 supported, 52 refused, 9 wrong; all builder assertions hold) from freshly replayed results under the current guard"},
+  {"file": "booleans-r4/guarded/cases/*.json (371 non-fuzz + 107 r5 probe cases), booleans-r4/r3raw/cases, booleans-r4/phase0/cases (85 r4 cases + 2), booleans-r4/fuzz-guarded (seed 23, 150), booleans-r4/fuzz-guarded-old (seeds 7 11 13 17, 390), booleans-r4/fuzz-summary.json", "what": "the missing round-4 results, produced by running the cases (resumable, one case at a time under MemoryMax=1500M); no case was killed by the cap"},
+  {"file": "booleans-r4/run-r4.sh", "what": "new resumable runner under the 1500M cap"},
+  {"file": "run-booleans.mjs", "what": "removed the round-4 curved scale (volume over max(V, A*Rc/3), bbox over Rc): the bar is the plain relative one again (1e-9 planar, 3e-4 curved on volume and bbox); imports boolean-cases-r5.mjs; round() of a combine handle now gets a one-sentence rewrite (G.explainFront)"},
+  {"file": "bool-classify-lib.mjs", "what": "the centre-of-mass bar (curved 3e-5, planar 1e-6) now also counts inside the 'one body, several shells' exception (r3-tan-cyl-through-3 had dCom 4.5e-5 and was counted supported)"},
+  {"file": "booleans.guard.mjs", "what": "G7 refuses a cylinder through a box tangent to THREE sides (was four); G3 thin keep of a ball needs depth >= 0.1 R (not a flat 2 mm); new G3b refuses a keep that leaves a shallow ball cap wider than the other shape; explainFront (one-sentence round() refusal)"},
+  {"file": "make-bool-translate-r3.mjs + bool-translate-r3.mjs (regenerated)", "what": "the dependency glue of ANY feature kind ('shell1 (shell): its target op1 was refused (...)') becomes the one 'skipped' sentence, so no step ids leak"},
+  {"file": "boolean-cases-r5.mjs (new), boolean-cases-r2.mjs", "what": "r5 cases: the critic's thin curved keeps with closed forms (ball caps, side-cylinder segments), probe set A, held-out sets B and C, sweep set; hg-cyl-inside-perp gets its closed-form volume"},
+  {"file": "bool-build-rows-r4.mjs", "what": "rows for all 85 r4 cases (50a-50q, none existed), rows 44e-44k for the thin curved keeps, 36c (tangent to three sides), 35g (slant) and 27b now supported with a closed form; uncited-case check now covers rounds 4 and 5 and ids with underscores; fuzz row reads booleans-r4/fuzz-summary.json"},
+  {"file": "bool-fuzz-summary-r4.mjs", "what": "copy of the round-3 summariser that reads booleans-r4/fuzz-guarded + fuzz-guarded-old; adds a closed-form note for the three genuine survivors and a closed-form discount for fz23-050"}
+ ],
+ "defectsResolved": [
+  {"defect": "rows are the round-3 file; round-4 guard never rebuilt into rows; 453 assertion failures", "how": "produced booleans-r4/{guarded,r3raw,phase0} (all 85 r4 cases + every earlier case, plus fuzz seed 23 and a re-run of seeds 7 11 13 17 under the current guard); the r4 builder was missing every r4 row, wrote 50a-50q; it now exits 0 with all assertions holding"},
+  {"defect": "row 40 (small cylinder perpendicular inside a bigger one) says refused, live builds", "how": "row 27b is now supported, with the closed form 12566.3706 - 125.6637 = 12440.7069 as the second measure (SolidCraft 12440.2979, 3.3e-5)"},
+  {"defect": "row 63 (generic angle) says supported 5 of 5, live G16 refuses r3-rot-cyl-cut-skew", "how": "row 35f keeps the four that build; new row 35g is refused for that case, with the G16 sentence"},
+  {"defect": "rows 21, 34, 83 stale sentences", "how": "rows rebuilt from live results: row 21 now carries the 'faces lie exactly on top of each other' sentence, rows 34 and 83 the single 'skipped' sentence (the generated translator now rewrites the dependency glue)"},
+  {"defect": "volume denominator max(V, A*Rc/3) loosens the bar for thin keeps", "how": "removed from run-booleans.mjs; plain relative bar. The critic's crit-sph-keep-3 (ball r40, 3 mm) is now refused by G3 (6.6e-4 against the closed form 1102.699 on the raw kernel); side keeps 2.2e-4 to 2.6e-4 stay inside the bar and are rows 44j/44k"},
+  {"defect": "row 65 / r3-tan-cyl-through-3 counted supported though the harness failed it", "how": "classifier counts the COM bar in the shell exception; G7 now refuses tangent-to-three-sides; row 36c is refused"},
+  {"defect": "join then hollow leaks 'shell1 ... op1'", "how": "dependency glue rewritten in the generated translator; r4-touch-edge-join-hollow now gives the one skipped sentence"}
+ ],
+ "defectsOpen": [
+  {"defect": "row 112 fuzz coverage is wrong, not refused", "why": "three survivors of 540 random pairs/triples differ from OCCT under the plain bar: fz13-052-cyl-cyl-int (closed form 459.81526 = OCCT; SolidCraft 459.67533, 3.04e-4, marginal), fz17-023-con-sph-sub (0.84 mm3 shell, error 4.4e-4), fz23-087-sph-box-uni (a planar face split in two, geometry agrees). No guard was added for them. fz23-050 is discounted with a closed form (OCCT bbox loose, true y min -13.0767)"},
+  {"defect": "row 103 keep of a radius-200 ball through a thin plate: bbox 5.8e-3 off", "why": "volume and area agree; radius 60 and 120 with the same geometry are inside the bar, so no rule can be stated from the data; left as a wrong row"},
+  {"defect": "row 91 coaxial keep with the axis turned to y", "why": "topology-only wrong (four cylinder faces against two); G17 reads only a z axis; not extended"},
+  {"defect": "the 0.1 R ball keep rule and the G3b rule were chosen after seeing the probe data", "why": "stated in rows 44f/44g; held-out sets r5b- and r5c- were run after the choice; set B found a case (r120, 12 mm into a 100 mm box) the first rule missed, which is what G3b was added for, so the held-out claim applies to set C only"},
+  {"defect": "thin keeps of cone, torus and prism operands", "why": "not probed with closed forms; only the flat 2 mm rule and the earlier sl-* cases cover them"},
+  {"defect": "side-cylinder keep margin", "why": "2.2e-4 to 2.6e-4 against the 3e-4 bar at radius 10 to 100; a larger radius or other geometry may cross it; only vertical cylinders into a box side were measured"}
+ ],
+ "rowsDowngraded": ["row 27b (was refused, now supported with a closed form)", "row 35g (was inside the supported generic-angle row, now refused)", "row 36c (was inside the supported tangent row, now refused)", "row 112 (fuzz coverage: refused -> wrong)", "rows 1, 2, 3, 5 roll-ups follow the wrong children"],
+ "rigNotesForRIGmd": "booleans round 5 (fix round 1): replay = booleans-r4/run-r4.sh <guarded|r3raw|phase0> <ids or empty> <timeoutS> <absolute outdir> (resumable, MemoryMax=1500M; BOOL_FAST=1 for fuzz). Cases: boolean-cases.mjs + -r2 + -r3 + -r4 + -r5 (r5: thin curved keeps with closed forms). The curved bar is the plain relative 3e-4 again. bool-fuzz-summary-r4.mjs summarises booleans-r4/fuzz-guarded and fuzz-guarded-old. Rebuild: bun bool-build-rows-r4.mjs (exit 0 = all assertions hold).",
+ "commands": {
+  "rebuildRows": "cd docs/spikes/solidcraft-referee/contract && bun bool-fuzz-summary-r4.mjs && bun bool-build-rows-r4.mjs",
+  "replay": "SOLIDCRAFT_REFEREE_PKG=<pkg> docs/spikes/solidcraft-referee/contract/booleans-r4/run-r4.sh guarded <ids> 150 <absolute outdir>"
+ }
+}

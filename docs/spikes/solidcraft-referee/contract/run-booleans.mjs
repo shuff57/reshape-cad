@@ -17,6 +17,7 @@ import { CASES } from './boolean-cases.mjs';
 await import('./boolean-cases-r2.mjs');   // round 2: pushes its cases onto CASES
 await import('./boolean-cases-r3.mjs');   // round 3: pushes its cases onto CASES
 await import('./boolean-cases-r4.mjs');   // round 4 (critic round 2): pushes its cases onto CASES
+await import('./boolean-cases-r5.mjs');   // fix round 1 (critic round 3): thin curved keeps with closed forms
 // BOOL_TR=guarded runs the cases through bool-translate.mjs + booleans.guard.mjs (the contract); default = the pristine phase0 translator ("as shipped")
 // BOOL_TR=r3raw runs bool-translate-r3.mjs (pieces + n-ary keep executor) with NO guard
 const MODE = process.env.BOOL_TR ?? 'phase0';
@@ -166,7 +167,7 @@ if (C.script !== undefined) {
   row.frontEndErrors = r.errors.map((e) => e.message);
   if (r.errors.length) {
     // the interpreter (front end) refused: a plain sentence, no kernel involved
-    const raw = r.errors[0].message; const better = GUARDED ? G.explainCombineArgs(raw, C.script, r.errors[0].line) : null;   // G15: name the argument that is not a shape
+    const raw = r.errors[0].message; const better = GUARDED ? (G.explainCombineArgs(raw, C.script, r.errors[0].line) ?? G.explainFront(raw)) : null;   // G15: name the argument that is not a shape
     row.refusalSentence = better ?? raw; if (better) row.interpreterRaw = raw;
     done('REFUSED-FRONT', `interpreter: ${better ?? raw}`);
   }
@@ -279,19 +280,7 @@ const t = truck.curved ? TOL.curved : TOL.planar;
 truck.tol = t;
 truck.dVol = rel(truck.volume, occt.volume);
 truck.dBbox = worstArr(truck.bbox, occt.bbox);
-// ROUND 4 (critic round 2): the curved bar is anchored to the CURVED OPERAND, not to the (possibly tiny) result. Truck's volumes and bounding boxes of curved faces come from a mesh, and the mesh error of a
-// curved patch grows with its area times the radius, so: volume error over max(V, A*Rc/3), bbox miss over Rc (bars 3e-4 and 2e-3). Measured over 178 curved cases (booleans-r4/tol-stats.mjs): dV/Vscale <= 2.0e-4,
-// dB/Rc <= 9.1e-5 except one case at 1.0e-3. Planar results keep the 1e-9 bar on the plain relative numbers. The old numbers stay in the row as dVolResult / dBboxResult.
-if (truck.curved) {
-  const radiusOf = (f) => (f.kind === 'cylinder' || f.kind === 'sphere' || f.kind === 'cone' ? f.radius : f.kind === 'torus' ? f.ringRadius + f.tubeRadius : f.round ? f.round : 0);
-  let Rc = Math.max(0, ...doc.features.map(radiusOf));
-  if (!Rc) Rc = Math.max(occt.bbox[3] - occt.bbox[0], occt.bbox[4] - occt.bbox[1], occt.bbox[5] - occt.bbox[2]) / 2;
-  const Vs = Math.max(occt.volume, occt.area * Rc / 3);
-  truck.dVolResult = truck.dVol; truck.dBboxResult = truck.dBbox; truck.Rc = Rc; truck.Vscale = Vs;
-  truck.dVol = Math.abs(truck.volume - occt.volume) / Math.max(Vs, 1);
-  truck.dBbox = Math.max(...truck.bbox.map((v, i) => Math.abs(v - occt.bbox[i]))) / Math.max(Rc, 1);
-  truck.tolBbox = 2e-3;
-}
+// Round 5 (fix round 1): the round-4 curved scale (volume over max(V, A*Rc/3), bbox over Rc) is REMOVED. It loosened the bar for thin curved keeps (a ball 3 mm into a box read dVol 3.7e-5 for a true error 6.6e-4). The bar is the plain relative one again: 1e-9 planar, 3e-4 curved on volume and bbox.
 truck.dCom = Math.max(...truck.com.map((v, i) => Math.abs(v - occt.com[i]))) / diag;
 truck.dArea = truck.area == null ? null : rel(truck.area, occt.area);
 const fv = faceVerdict(truck.faceTypes, occt);
@@ -300,7 +289,7 @@ truck.facesOcct = occt.faces; truck.solidsOcct = occt.solids;
 if (typeof C.analytic === 'number') truck.dAnalytic = rel(truck.volume, C.analytic);
 const comTol = truck.curved ? 3e-5 : 1e-6;
 const areaTol = truck.curved ? 3e-4 : 1e-9;
-const geomOk = truck.dVol <= t && truck.dBbox <= (truck.tolBbox ?? t) && truck.dCom <= comTol && (truck.dArea == null || truck.dArea <= areaTol);
+const geomOk = Math.max(truck.dVol, truck.dBbox) <= t && truck.dCom <= comTol && (truck.dArea == null || truck.dArea <= areaTol);
 truck.geomOk = geomOk;
 const bodiesOk = truck.bodies === occt.solids || (C.allowBodyDiff === true);
 truck.bodiesOk = bodiesOk;

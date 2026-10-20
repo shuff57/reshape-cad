@@ -30,6 +30,8 @@ export function classify(r) {
   if (!((t.dVol <= t.tol && t.dBbox <= (t.tolBbox ?? t.tol)))) reasons.push(`vol beyond ${t.tol} or bbox beyond ${t.tolBbox ?? t.tol}`);
   if (t.dArea != null && t.dArea > (t.curved ? 3e-4 : 1e-9)) reasons.push('area');
   if (!shellsOk) reasons.push(`shells ${tshells} vs OCCT ${o.shells}`);
+  // round 5 (critic round 2): the centre-of-mass bar (curved 3e-5, planar 1e-6) counts in the 'one body, several shells' exception too; r3-tan-cyl-through-3 (dCom 4.5e-5) was counted supported although the harness had failed it on exactly that
+  if (t.dCom != null && t.dCom > (t.curved ? 3e-5 : 1e-6)) reasons.push(`centre of mass ${ex(t.dCom)} beyond the ${t.curved ? '3e-5' : '1e-6'} bar`);
   if (reasons.length === 0) return { ...base, status: 'supported', sentence: null, line: num + ` | OCCT lists ${o.solids} solids, SolidCraft keeps them as ${t.bodies} body with ${tshells} shells (same shells, same volume)`, flags: ['one body, several shells'] };
   // round 2: no 'marginal volume' exception any more. One bar for curved results (3e-4 volume), applied the same way to every case.
   // bodies dropped by the translator (kernel total matches)

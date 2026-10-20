@@ -88,7 +88,7 @@ CASES.push(
   // ---- time budget: round shapes crossing at an angle, a torus meeting a box (raw SolidCraft times; guarded they are refused before the call) ---
   { id: 'hg-cyl-perp-equal-cut', feature: F.hang, features: [cyl('c1', 10, 40), cyl('c2', 10, 40, [0, 0, 0], [90, 0, 0]), op('op1', 'subtract', ['c1', 'c2'])], note: 'equal radii, axes at right angles (the keep version is x-cyl-cross-cyl-equal-keep)' },
   { id: 'hg-cyl-tilt45-union', feature: F.hang, features: [cyl('c1', 10, 40), cyl('c2', 5, 40, [0, 0, 0], [45, 0, 0]), op('op1', 'union', ['c1', 'c2'])] },
-  { id: 'hg-cyl-inside-perp', feature: F.hang, features: [cyl('c1', 10, 40), cyl('c2', 2, 10, [0, 0, 0], [0, 90, 0]), op('op1', 'subtract', ['c1', 'c2'])], note: 'small cylinder with a perpendicular axis wholly inside the big one: no surface meets (the guard still refuses on bounding boxes)' },
+  { id: 'hg-cyl-inside-perp', feature: F.hang, features: [cyl('c1', 10, 40), cyl('c2', 2, 10, [0, 0, 0], [0, 90, 0]), op('op1', 'subtract', ['c1', 'c2'])], analytic: Math.PI * 100 * 40 - Math.PI * 4 * 10, note: 'small cylinder with a perpendicular axis wholly inside the big one: no surface meets (the guard still refuses on bounding boxes)' },
   { id: 'hg-tor-half-d0', feature: F.hang, script: `const t = ${R(14, 4)}; const b = ${B(80, 80, 80, [40, 0, 0])}; cut(t,b)`, note: 'cutting plane x=0 contains the torus axis' },
   { id: 'hg-tor-half-d2', feature: F.hang, script: `const t = ${R(14, 4)}; const b = ${B(80, 80, 80, [42, 0, 0])}; cut(t,b)`, note: 'cutting plane x=2: 2 mm off the axis' },
   { id: 'hg-tor-half-d14', feature: F.hang, script: `const t = ${R(14, 4)}; const b = ${B(80, 80, 80, [54, 0, 0])}; cut(t,b)`, note: 'cutting plane x=14 through the tube centre' },

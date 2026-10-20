@@ -408,6 +408,7 @@ export function translateDoc(doc, ctx) {
     let plan;
     try { plan = planFeature(f, st, fctx); } catch (e) { plan = refuse(`${f.id} (${f.kind}): translator error: ${e.message}`); }
     if (plan.refusal && ctx.plain && f.kind === 'combine') plan.refusal = ctx.plain(plan.refusal, f).sentence;   // BOOLEANS-GUARD (G9)
+    else if (plan.refusal && ctx.plain && /was refused \(.*\)$/.test(plan.refusal)) plan.refusal = ctx.plain(plan.refusal, f).sentence;   // BOOLEANS-GUARD (round 5): the dependency glue of ANY feature kind (shell1 (shell): its target op1 was refused ...) becomes the one 'skipped' sentence, no ids
     else if (plan.refusal && ctx.plainPieces) { const pp = ctx.plainPieces(plan.refusal); if (pp) plan.refusal = pp.sentence; }   // BOOLEANS-GUARD (G12): a step that needs ONE piece, handed the pieces of an earlier cut
     if (plan.refusal) { st.refused[f.id] = plan.refusal; return note({ status: 'refused', refusal: plan.refusal, commands: [] }); }
     if (plan.noop) return note({ status: 'noop', commands: [] });

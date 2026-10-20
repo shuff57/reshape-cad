@@ -10,11 +10,12 @@
 //   G2  time budget, hang class     -> refuse            (two cylinders with non-parallel axes; a cylinder whose axis misses a sphere's centre; a cone meeting a round shape other than a coaxial cylinder / cone; a torus meeting anything but a plain box around it or a coaxial cylinder)
 //   G13 round shapes tangent along a circle (torus and coaxial cylinder at the inner / outer equator) -> refuse
 //   G14 hollow ball                 -> refuse            (a ball with a smaller ball taken out of its inside)
+//   G3b keep of a shallow ball cap wider than the other shape -> refuse (round 5)
 //   G3  sliver overlap              -> refuse            (cut / keep whose overlap is thinner than SLIVER[class] mm: SolidCraft silently ignores it or returns no body)
 //   G4/G4b cut that removes nothing -> refuse  (POLICY: the engines agree on the result, the part unchanged)
 //   G5  keep that leaves nothing    -> refuse
 //   G6  pinch on join               -> refuse            (operands meet only along a line or at a point: not one solid)
-//   G7  pinch on cut                -> refuse            (a round tool wholly inside the part touching its surface, or a cylinder through the part tangent to all FOUR sides)
+//   G7  pinch on cut                -> refuse            (a round tool wholly inside the part touching its surface, or a cylinder through the part tangent to THREE or all FOUR sides)
 //   G8  tool reused later           -> not a refusal: the translator passes keep_tools so the tool survives (see reusedTools)
 //   G9  plainSentence(raw)          -> every raw SolidCraft / translator message becomes one student sentence (no ids, no engine words)
 //   G12 a handle that is several pieces used by a feature that needs ONE piece -> refuse (the sentence belongs to this group because the pieces come from a combine)
@@ -49,6 +50,7 @@ export const SENTENCES = {
   keepNothingKernel: () => 'Keeping the overlap of these shapes leaves nothing here: they do not overlap, or only by a sliver too thin to keep.',
   cutEverything: () => 'The cutting shapes would remove the whole shape, so nothing would be left.',
   pinchJoin: () => 'The two shapes only touch along a line or at a point, so they would not be one solid; overlap them a little.',
+  thinCap: () => 'The part this keep() would leave is a shallow cap of a ball that runs out past the edges of the other shape, which cannot be built reliably here, so nothing was changed; push the ball deeper into the shape or keep the cap inside the shape\'s edges.',
   pinchCut: () => "The cutting shape touches the part's surface along a line or at a point, which leaves a pinched solid that cannot be built correctly here, so nothing was changed; change its size or position a little so it clearly crosses that surface or stays clear of it.",
   tangentCircle: (op) => `The two round shapes only touch along a circle, which cannot be built as one clean solid here, so this ${FN[op]}() was not done; change one size a little so they clearly overlap or clearly miss each other.`,
   hollowBall: (op) => `A ball with a smaller ball taken out of its inside (a hollow ball) cannot be built here, so this ${FN[op]}() was not done.`,
@@ -198,7 +200,17 @@ function sliverClass(a, b, ax) {
   if (curvedOnAxis(a, k) || curvedOnAxis(b, k)) return 'curved';
   return 'rotated';
 }
-const sliverMm = (cls, op) => (cls === 'flat' ? SLIVER.flat : cls === 'rotated' ? SLIVER.rotated : op === 'intersect' ? SLIVER.curvedKeep : SLIVER.curvedCut);
+// round 5 (critic round 3): a thin KEEP of a BALL needs a depth that scales with the ball, not a flat 2 mm. Measured with closed-form caps (boolean-cases-r5.mjs, probe set A + the first run): the kernel's volume of a spherical cap
+// is 1.7e-4 off for caps at least 0.1 R thick and 6.5e-4 off (over the 3e-4 bar) for caps 0.05 R to 0.075 R thick (R 30 to 80); so a keep whose overlap with a ball is thinner than BALL_KEEP_FRAC * R is refused. THE 0.1 WAS CHOSEN
+// AFTER SEEING THAT DATA (it is the smallest round fraction that has no failing case at or above it); the held-out set B (r5b-) was run after the choice.
+export const BALL_KEEP_FRAC = 0.1;
+const sliverMm = (cls, op, a, b) => {
+  if (cls === 'flat') return SLIVER.flat;
+  if (cls === 'rotated') return SLIVER.rotated;
+  if (op !== 'intersect') return SLIVER.curvedCut;
+  const R = Math.max(...[a, b].map((x) => (x?.kind === 'sphere' && x.prim ? x.prim.radius : 0)));
+  return Math.max(SLIVER.curvedKeep, BALL_KEEP_FRAC * R);
+};
 
 // ---- oriented-box penetration depth (separating-axis test): the thickness of the overlap of two boxes turned by the SAME translator rotation (x, then y, then z about the origin), centres as given.
 // The bounding box of a turned body is far looser than the body, so a sliver overlap between two turned boxes is invisible to the bbox test (round 2: 'sl-esc-rot-*').
@@ -303,11 +315,28 @@ function guardCombine0(f, ops) {
       if (!ov.every((v) => v > tols[k])) continue;
       const ax = ov.indexOf(Math.min(...ov));
       const cls = sliverClass(pairs[k][0].d, pairs[k][1].d, ax);
-      const depth = sliverMm(cls, op);
+      const depth = sliverMm(cls, op, pairs[k][0].d, pairs[k][1].d);
       // two turned boxes: the bounding boxes are loose, so the real thickness of the overlap comes from the oriented-box test
       const obb = cls === 'rotated' ? obbDepth(pairs[k][0].d, pairs[k][1].d) : null;
       const thin = obb !== null ? obb : Math.min(...ov);
       if (thin < depth && thin > -tols[k]) return { code: 'G3', sentence: SENTENCES.sliver(op, depth), detail: { depth, thin, class: cls, obb: obb !== null } };
+    }
+    // G3b (round 5): a keep of a BALL that leaves a cap whose base is wider than the other shape, so the ball's face is trimmed by that shape's sides. Measured on the raw kernel (boolean-cases-r5.mjs, sweep set r5s-spill-*):
+    // r120 into a 100x100x20 box, 8 / 12 / 16 / 20 mm deep: volume 6.6e-4, 6.0e-4, 4.2e-4, 3.1e-4 off the closed form / OCCT against the 3e-4 bar; r60 at 15 / 20 / 30 mm (base 39 to 52 mm) 1.5e-4 to 1.8e-4. THE RULE (cap base wider than
+    // the other shape's narrower side, while the cap is below a hemisphere) WAS FITTED TO THAT DATA; held-out set r5c- was run after it. It over-refuses (r5s-spill-sph-keep-r120-d30 and r60-d30 built correctly).
+    if (op === 'intersect') {
+      for (const [k, ov] of ovs.entries()) {
+        if (!ov.every((v) => v > tols[k])) continue;
+        const [a, b] = pairs[k];
+        for (const [sph, oth] of [[a.d, b.d], [b.d, a.d]]) {
+          if (sph.kind !== 'sphere' || !sph.prim || oth.kind === 'sphere') continue;
+          const R = sph.prim.radius; const ax = ov.indexOf(Math.min(...ov)); const depth = ov[ax];
+          if (!(depth < R)) continue;
+          const base = Math.sqrt(Math.max(0, 2 * R * depth - depth * depth));
+          const narrow = Math.min(...[0, 1, 2].filter((i) => i !== ax).map((i) => oth.hi[i] - oth.lo[i]));
+          if (2 * base > narrow - tols[k]) return { code: 'G3b', sentence: SENTENCES.thinCap(), detail: { depth, base, narrow } };
+        }
+      }
     }
     const touching = ovs.map((ov, k) => ov.every((v) => v > tols[k]));
     if (op === 'subtract' && !touching.some(Boolean)) return { code: 'G4', sentence: SENTENCES.cutNothing() };
@@ -329,7 +358,8 @@ function guardCombine0(f, ops) {
         const sealed = within && !flatTouches;
         // MEASURED (r3-tan-cyl-through-*): a cylinder through the part tangent to ONE, TWO adjacent, TWO opposite or THREE sides builds and matches OCCT (the pieces it separates come back as one body with the same number of shells); tangent to all FOUR sides (inscribed in the square cross-section, four corner pieces) is wrong: volume 4.0e-4 against the 3e-4 bar and 13 faces against OCCT's 20. A ball through the part touching the four sides at points is one solid and matches (r3-tan-sph-big). Wholly inside the part, ANY tangent contact pinches the void into the shell (the kernel refuses it).
         const hasFlat = [0, 1, 2].some((i) => flatOnAxis(b.d, ax[i]) === true);
-        const pinch = (hasFlat && tangent >= 4) || (tangent >= 1 && sealed);
+        // round 5: THREE tangent sides now refuses too (r3-tan-cyl-through-3: three pieces come back as one body and the centre of mass is 4.5e-5 off against the 3e-5 bar; the volume is 1.5e-4 off)
+        const pinch = (hasFlat && tangent >= 3) || (tangent >= 1 && sealed);
         if (pinch) return { code: 'G7', sentence: SENTENCES.pinchCut() };
       }
     }
@@ -426,6 +456,10 @@ function splitArgs(text, open) {
     cur += ch;
   }
   return null;
+}
+/** round 5: the interpreter's own two-sentence refusal for round() / bevel() of a combine handle becomes ONE sentence (packages/script is read-only here, so the guard rewrites it) */
+export function explainFront(message) {
+  return /^Rounding works on a shape, not a combination\./.test(String(message ?? '')) ? 'Rounding works on a shape, not on a combination, so round the shapes before you join them.' : null;
 }
 export function explainCombineArgs(message, source, line) {
   const m = /^(join|cut|keep)\(\) needs two or more shapes/.exec(String(message ?? ''));
