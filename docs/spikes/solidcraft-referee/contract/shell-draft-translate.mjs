@@ -49,7 +49,7 @@ const fmt = (n) => (Number.isInteger(n) ? String(n) : String(+n.toFixed(4)));
 // Every refusal is ONE sentence: what was asked, why it cannot be built, that the feature is shown without it, and (after a dash) what to try.
 // shell-draft-runner.mjs checks that no sentence contains a second sentence.
 export const SENTENCE = {
-  closed: (f, what) => `${f.id} (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and ${what}, so ${f.id} is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.`,
+  closed: (f, what) => `${f.id} (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and ${what}, so ${f.id} is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.`,
   shellTwice: (f) => `${f.id} (hollow): ${f.target} is already hollow and a second hollow is not supported yet, so ${f.id} is shown without it -- give the first hollow the wall you want instead.`,
   afterClosedHollow: (f, what) => `${f.id} (${f.kind === 'shell' ? 'hollow' : f.kind}): ${what} has no open side, and nothing but a move or a turn can be added to a hollow like that yet, so ${f.id} is shown without it -- apply ${f.id} before the hollow, or open one side of the hollow.`,
   closedFail: (f) => `${f.id} (hollow): a hollow with no open side could not be built for ${f.target} with a wall of ${fmt(f.thickness)}, so ${f.id} is shown without it -- use a different wall, or add open:'top' to leave one side open.`,

@@ -111991,11 +111991,11 @@
    "measureId": "shell1",
    "occt": {
     "solids": 1,
-    "volume": 2821.6844005017297,
+    "volume": 2821.68440050173,
     "com": [
      -4.483412892180494,
-     -3.385469997004728,
-     8.058083157804688e-17
+     -3.3854699970047273,
+     1.9043516837780605e-17
     ],
     "bbox": [
      -15,
@@ -112034,10 +112034,10 @@
     "chainRefusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
    },
    "guard": {
-    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and wedge1 is made from a wedge, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
+    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and wedge1 is made from a wedge, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
     "status": "refused",
     "guard": "G-CLOSED",
-    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and wedge1 is made from a wedge, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
+    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and wedge1 is made from a wedge, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
    },
    "refKind": "occt",
    "rawVerdict": {
@@ -112098,10 +112098,10 @@
     "chainRefusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
    },
    "guard": {
-    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and cone1 is made from a cone, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
+    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and cone1 is made from a cone, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
     "status": "refused",
     "guard": "G-CLOSED",
-    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and cone1 is made from a cone, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
+    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and cone1 is made from a cone, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
    },
    "refKind": "brep",
    "rawVerdict": {
@@ -112163,8 +112163,8 @@
     "solids": 1,
     "volume": 6383.999999999998,
     "com": [
-     19.999999999999996,
-     14.999999999999995,
+     20,
+     14.999999999999993,
      4.999999999999999
     ],
     "bbox": [
@@ -112204,10 +112204,10 @@
     "chainRefusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
    },
    "guard": {
-    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and pull1 is made from an extruded outline, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
+    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and pull1 is made from an extruded outline, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
     "status": "refused",
     "guard": "G-CLOSED",
-    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and pull1 is made from an extruded outline, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
+    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and pull1 is made from an extruded outline, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
    },
    "refKind": "occt",
    "rawVerdict": {
@@ -112285,10 +112285,10 @@
     "chainRefusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
    },
    "guard": {
-    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and op1 has been changed by a join or cut, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
+    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and op1 has been changed by a join or cut, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
     "status": "refused",
     "guard": "G-CLOSED",
-    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and op1 has been changed by a join or cut, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
+    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and op1 has been changed by a join or cut, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
    },
    "refKind": null,
    "rawVerdict": {
@@ -112365,10 +112365,10 @@
     "chainRefusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
    },
    "guard": {
-    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and hole1 has been changed by a hole, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
+    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and hole1 has been changed by a hole, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
     "status": "refused",
     "guard": "G-CLOSED",
-    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and hole1 has been changed by a hole, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
+    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and hole1 has been changed by a hole, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
    },
    "refKind": "brep",
    "rawVerdict": {
@@ -112425,10 +112425,10 @@
     "chainRefusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
    },
    "guard": {
-    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and box1 has rounded or bevelled edges, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
+    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and box1 has rounded or bevelled edges, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
     "status": "refused",
     "guard": "G-CLOSED",
-    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and box1 has rounded or bevelled edges, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
+    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and box1 has rounded or bevelled edges, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
    },
    "refKind": null,
    "rawVerdict": {
@@ -175104,11 +175104,11 @@
    "measureId": "shell1",
    "occt": {
     "solids": 1,
-    "volume": 24897.834992744214,
+    "volume": 24897.834992744218,
     "com": [
-     -13.999999999999996,
-     -8.999999999999995,
-     3.000000000000001
+     -13.999999999999995,
+     -8.999999999999993,
+     3
     ],
     "bbox": [
      -31.500000000000004,
@@ -175155,10 +175155,10 @@
     "chainRefusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
    },
    "guard": {
-    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and move1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
+    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and move1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
     "status": "refused",
     "guard": "G-CLOSED",
-    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and move1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
+    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and move1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
    },
    "refKind": "closed",
    "rawVerdict": {
@@ -175171,7 +175171,7 @@
    },
    "occtVsRef": "agrees",
    "brepVsRef": "agrees",
-   "occtVsRefD": 2.922325421589389e-16,
+   "occtVsRefD": 4.3834881323840835e-16,
    "brepVsRefD": 1.4611627107946945e-16,
    "outcome": "REFUSED->REFUSED"
   },
@@ -178376,9 +178376,9 @@
     "solids": 1,
     "volume": 10539.817062093625,
     "com": [
-     -2.8476134814947915e-15,
-     -6.471848821579071e-16,
-     4.314565881052714e-17
+     -2.8162309684224977e-15,
+     -6.903305409684343e-16,
+     8.629131762105428e-17
     ],
     "bbox": [
      -16.180339887498953,
@@ -178425,10 +178425,10 @@
     "chainRefusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
    },
    "guard": {
-    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and turn1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
+    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and turn1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
     "status": "refused",
     "guard": "G-CLOSED",
-    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and turn1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
+    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and turn1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
    },
    "refKind": "closed",
    "rawVerdict": {
@@ -178895,11 +178895,11 @@
    "measureId": "shell1",
    "occt": {
     "solids": 1,
-    "volume": 6382.428659207687,
+    "volume": 6382.428659207688,
     "com": [
-     4.274993503268547e-16,
-     -1.7812472930285613e-15,
-     -1.9237470764708464e-15
+     5.024675122503463e-16,
+     0,
+     -2.2799965350765584e-15
     ],
     "bbox": [
      -16,
@@ -178946,10 +178946,10 @@
     "chainRefusal": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points"
    },
    "guard": {
-    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and turn1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
+    "refused": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and turn1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.",
     "status": "refused",
     "guard": "G-CLOSED",
-    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder, sphere or prism, and turn1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
+    "chainRefusal": "shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and turn1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open."
    },
    "refKind": "closed",
    "rawVerdict": {
@@ -178962,7 +178962,7 @@
    },
    "occtVsRef": "agrees",
    "brepVsRef": "agrees",
-   "occtVsRefD": 9.974984840959934e-16,
+   "occtVsRefD": 8.549987006537086e-16,
    "brepVsRefD": 5.699991337691391e-16,
    "outcome": "REFUSED->REFUSED"
   },
