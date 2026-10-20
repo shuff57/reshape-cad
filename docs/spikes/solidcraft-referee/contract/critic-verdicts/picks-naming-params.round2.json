@@ -1,0 +1,33 @@
+{
+ "group": "picks-naming-params",
+ "verdict": "accepted",
+ "summary": "Rows rebuild byte-identically from r6-build-rows.mjs, r2-lint reports 0 violations over 70 sentences, and every replay (secA, r3b 368-case sweep, r3c, r6a 63 hollow cases, plus my own near-limit probes of draft, hollow, round, bevel and pocket-wall edges) matched the stored numbers or an independent closed form. No supported row hid a silent wrong solid; the remaining weaknesses are disclosed (guards and plain sentences are not in the shipped page, 12 'wrong' rows reachable today, real page picking not measured) or minor.",
+ "rowsTotal": 76,
+ "rowsEvidenceChecked": 76,
+ "rowsReplayed": 20,
+ "replays": [
+  {"feature":"rows 0,1,5,26 hollow/draft/round/bevel on 12 box edges and 6 face words","command":"bun secA.mjs (copy of evidence dir, scratch)","stored":"hollow 7152/7152/7872/7872/8192/8192; round 23965.641..23982.821; bevel 23920/23940/23960","live":"identical to stored, all PASS vs OCCT and brep-rs","match":true},
+  {"feature":"rows 0,43,44,46 size sweep (368 cases)","command":"bun r3b-size-sweep.mjs","stored":"hollow-box EXACT 61, hollow-cyl EXACT 13, bevel EXACT 23, round EXACT 29, refused-ok 236, 6 bevel refused at equality; limit sentence == closed form 39/39","live":"identical tally","match":true},
+  {"feature":"rows 46,47 hollow wall at 0.5..1.1 of collapse limit, boxes and cylinders","command":"bun r6a-hollow-thin.mjs","stored":"cyl built 24 / refused-ok 18, box built 12 / refused-ok 9, over-refusals 0, silent wrong 0","live":"same; built volumes within 1.7e-4 (cylinder tessellation) of the closed form","match":true},
+  {"feature":"rows 54-75 param/validation/checkModel/handles","command":"bun r3c-misc.mjs","stored":"r3c-misc.json","live":"JSON identical (sorted keys)","match":true},
+  {"feature":"row 1/2 draft near feasibility limit (front, right; limit 71.565 / 75.964)","command":"own probe p2.mjs, page and guarded","stored":"limit atan(W/D); guarded refuses past it","live":"below limit builds V=24000 = OCCT (dVol<=6e-16); above limit page has no valid reference, guard refuses with a sentence","match":true},
+  {"feature":"row 42 round r<t then hollow, other rim edges","command":"own probe p1.mjs","stored":"closed form 24000-(1-pi/4)r^2*40-16848","live":"r=1.99 top|front 7117.984 vs closed 7118.006 (3e-6); top|left r=1.9 and top|right r=1.99 agree with brep-rs 2e-6; top|back r=1.5 honestly refused","match":true},
+  {"feature":"row 40 rounds at cylinder rim and two rounds on one face","command":"own probe p3/p4","stored":"closed form via Pappus","live":"cyl(20,5) r=5 closed 1271.349 vs SC 1271.252 (7.6e-5, correct); r=9.9 h30 closed 8395.468 vs SC 8395.323; overlap cases (r16+r16, bevel 16+16) guard-refused","match":true},
+  {"feature":"rows 28/30 pocket wall-edge rounds near plate edge (gap 0.5, 2, 10 mm; r 1 and 3)","command":"own probe p6.mjs","stored":"V 11597.8526 (r1), 11580.673 (r3) vs OCCT","live":"24 cases: 20 PASS vs OCCT (dVol<=1.1e-6), 4 honestly refused where r exceeds the strip","match":true},
+  {"feature":"rows builder","command":"bun r6-build-rows.mjs in a scratch copy; bun r2-lint.mjs","stored":"picks-naming-params.json","live":"rebuilt file identical to committed; lint 0 violations","match":true}
+ ],
+ "defects": [
+  {"severity":"minor","feature":"all 29 refused rows / routes","problem":"The plain refusal sentences exist only in the contract guard layer (r3-guard.mjs). The shipped page prints jargon for 26 of 29 refused rows (e.g. 'solidcraft refused it -- solid.fillet ...') and prints nothing for the 12 'wrong' rows, which are reachable today. Disclosed in routes/shippedVsSpecified, so the labels are honest, but the one-promise is not met by the page.","evidenceFile":"picks-naming-params.json (routes, shippedVsSpecified)"},
+  {"severity":"minor","feature":"supported rows 0,1,4,9,10,12,14,17,26,28,30,33,38,40,42","problem":"Every pick is an emulated pick-hit (lib.mjs pickEmu, native CLI topology); real page picking is unmeasured. Row 42 and the 'carried through round + open' sub-case rest on brep-rs plus a closed form only (OCCT refuses). Scope is stated in each row.","evidenceFile":"picks-naming-params.evidence/lib.mjs"},
+  {"severity":"minor","feature":"row 40 / r3-guard.mjs","problem":"Guard builds cylinder(20,5) round top|side r=5 (equal to the wall height, side face vanishes) with no sentence; no second oracle, but closed form agrees (7.6e-5). Row 28 excludes the equal-radius case for pockets, so the treatment is inconsistent. Also cylinder(20,30) r=9.9 scores FAIL in the harness (face-type UNEXPLAINED, sphere vs torus) while volume agrees to 1.7e-5; not mentioned.","evidenceFile":"critic probes p3/p4 (scratch)"},
+  {"severity":"minor","feature":"row 2 draft guard sentence","problem":"Sentence says 'the most it can tilt here is about 71.5 degrees' but 71.515 builds correctly (limit 71.565); the number is truncated, not rounded.","evidenceFile":"critic probe p2 (scratch)"},
+  {"severity":"minor","feature":"lib.mjs harness","problem":"S is hard-coded to another session's scratchpad (629fe046...) and CLI is read from $HOME/.cache; the harness writes cli-*.json there. Replay needs HOME override and the sibling files shell-draft-translate.mjs, outline-guard.mjs, phase0/; my replay wrote cli-*.json into that old scratch dir.","evidenceFile":"picks-naming-params.evidence/lib.mjs:12-14"}
+ ],
+ "notMeasured": [
+  "Real browser pick path (nearest_face on the display mesh)",
+  "r3a 624-case draft sweep and r3e slot sweep not re-run in full (resource budget); only spot probes of the draft limit",
+  "r4/r5 wrong-class scripts (rows 18, 21, 41, 45, 49-51) not re-run; relied on the committed regress summary",
+  "Rows evidence file existence checked by path scan; all named scripts/json exist (apparent misses were only path-prefix variants)"
+ ],
+ "criticAt": "2026-10-20"
+}
