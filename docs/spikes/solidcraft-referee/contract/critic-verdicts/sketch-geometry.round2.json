@@ -1,0 +1,72 @@
+{
+ "group": "sketch-geometry",
+ "verdict": "not-accepted",
+ "summary": "The four front-offset-to-0 moves hide nothing in kernel terms: offset only translates along y, no row cites those four cases, and a hostile sweep of 11 front-offset variants (param, negative, 1e-12, panel value, pocket, datum) was refused with the sentence while front 0 built and matched. But the new front-offset guard fires on offsets the student never wrote (internal repeat/move copies), refusing legitimate parts with a misleading sentence, and the unguarded 'before' data for the four moved cases was never regenerated.",
+ "rowsTotal": 84,
+ "rowsEvidenceChecked": 14,
+ "rowsReplayed": 14,
+ "replays": [
+  {
+   "feature": "plane-front-0 / plane-top-* / plane-side-* / datum / frame-* (17 cases)",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-planes.mjs (1500M cap)",
+   "stored": "results-guarded/planes.json all PASS, dVol vs closed form 0, front-7 and datum-front-3 refused",
+   "live": "identical, 17 PASS, 2 refused with the stored sentences",
+   "match": true
+  },
+  {
+   "feature": "rect-far-offset, sketch-offset-param",
+   "command": "cases-extra2.mjs --only",
+   "stored": "PASS vol 6000",
+   "live": "PASS vol 6000 dBbox 0",
+   "match": true
+  },
+  {
+   "feature": "round-over, poly-sliver",
+   "command": "cases-outline.mjs --only",
+   "stored": "PASS",
+   "live": "PASS: round-over dExact 1.6e-5, sliver exact 5",
+   "match": true
+  },
+  {
+   "feature": "round2 group (10 cases: hex/tri/L/cw rounds and chamfers)",
+   "command": "cases-round2.mjs",
+   "stored": "PASS",
+   "live": "10 PASS, curved dExact <= 1.8e-4, chamfers 0",
+   "match": true
+  },
+  {
+   "feature": "front-offset guard, 11 adversarial cases (scratch cases-adv.mjs)",
+   "command": "same runner",
+   "stored": "guard refuses all nonzero front offsets",
+   "live": "param, negative, 1e-12, panel value, pocket all refused; offset 0 and plane('front',0) build and match closed form",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "major",
+   "feature": "front-offset guard vs repeat/move copies (row 1, guardFrontOffset)",
+   "problem": "A sketch on front with offset 0 whose pocket is repeated along y (repeat(p,{count:2,step:[0,-10,0]})) makes the interpreter write an internal copy sketch sk2 with offset -10; guardFrontOffset then refuses the whole build with 'Sketch sk2 sits on the front plane with an offset of -10 ... would land 20 mm away', although the student wrote no offset and the copy is placed correctly (OCCT built 63434.5). Same with a front offset-20 pocket repeated in x. Honest refusal, but wrong cause in the sentence, over-refusal class not measured by any row.",
+   "evidenceFile": "critic-sketch-geometry/adv3.json (scratchpad)"
+  },
+  {
+   "severity": "minor",
+   "feature": "circle-front, slot-front, geom-front-plane, multi-shape-on-front",
+   "problem": "The four cases were edited to front offset 0 in cases-outline/soup, and results-guarded was rerun, but results/ (the unguarded 'before') still holds the old runs with offsets 4, 3, 2, 3. Before and after therefore compare different inputs; harmless numerically (same volumes) but the pairing is not like for like. geom-front-plane is also ALL-REFUSED by the pre-existing no-coincident-rule guard, so it no longer tests a front soup at all.",
+   "evidenceFile": "sketch-geometry-harness/results/outline.json, results/soup.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "tooling",
+   "problem": "cmp-guard.mjs regress crashes (TypeError: {} is not iterable) on a non-array results file, so the documented over-refusal listing cannot be produced; it is the one tool that would have surfaced the repeat/move over-refusal.",
+   "evidenceFile": "sketch-geometry-harness/cmp-guard.mjs"
+  }
+ ],
+ "notMeasured": [
+  "Only 14 of 84 rows had their evidence opened by me; the other rows were checked by rebuilding sketch-geometry.json with build-rows.mjs (byte-identical to the stored file, tracked file untouched) and the guard unit checks (33 of 33 pass), not by reading each cited file.",
+  "Heavy grid, far, micro and soup groups were not replayed.",
+  "Whether blend() or groove on front-plane sketches is over-refused: my two test scripts were refused by the interpreter itself (syntax), so unmeasured.",
+  "Curved-build tolerance (up to 1.8e-4 relative vs closed form) was accepted as written, not re-derived."
+ ],
+ "criticAt": "2026-10-20"
+}
