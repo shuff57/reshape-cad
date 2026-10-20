@@ -1,0 +1,93 @@
+{
+ "group": "patterns-mirror",
+ "verdict": "not-accepted",
+ "summary": "The new web guard measures the wall to the part's bounding box only, so a pocket 0.05 mm from an inner face of a non-box outline (L plate notch) or from the side of a boss on a plate is built with the wall silently lost, and rows 86/87 and the pocket supported rows cover this class. The guard works for flat rectangles, diamonds, mirrors and two-pocket cases, and 8 stored cases replay exactly. Ordinary row-of-holes and normal-spacing grids are not over-refused (only very large plates, 500x300, refuse a 3 mm wall).",
+ "rowsTotal": 89,
+ "rowsEvidenceChecked": 6,
+ "rowsReplayed": 8,
+ "replays": [
+  {
+   "feature": "r6-web-repeat-1",
+   "command": "bun pm-run.mjs --only=r6-web-repeat-1 (1500M cap)",
+   "stored": "OCCT 23520, truck dVol 1.5e-16",
+   "live": "PASS 23520 dVol 1.5e-16",
+   "match": true
+  },
+  {
+   "feature": "r6-web-edge-1",
+   "command": "bun pm-run.mjs --only=r6-web-edge-1 (1500M cap)",
+   "stored": "23760 dVol 0",
+   "live": "PASS 23760 dVol 0",
+   "match": true
+  },
+  {
+   "feature": "r6-web-circle-0.05",
+   "command": "bun pm-run.mjs --only=r6-web-circle-0.05 (1500M cap)",
+   "stored": "dVol 2.8e-6",
+   "live": "PASS dVol 2.8e-6",
+   "match": true
+  },
+  {
+   "feature": "r6-web-floor-0.05",
+   "command": "bun pm-run.mjs --only=r6-web-floor-0.05 (1500M cap)",
+   "stored": "23403 dVol 1.6e-16",
+   "live": "PASS 23403 dVol 1.6e-16",
+   "match": true
+  },
+  {
+   "feature": "r4-snap-b10-x-0.1",
+   "command": "bun pm-run.mjs --only=r4-snap-b10-x-0.1 (1500M cap)",
+   "stored": "refused",
+   "live": "REFUSED (0.15 mm smallest safe shift)",
+   "match": true
+  },
+  {
+   "feature": "r4-snap-b10-x-0.16",
+   "command": "bun pm-run.mjs --only=r4-snap-b10-x-0.16 (1500M cap)",
+   "stored": "built",
+   "live": "PASS dVol 3.4e-16",
+   "match": true
+  },
+  {
+   "feature": "r4-snap-b200-x-3.2",
+   "command": "bun pm-run.mjs --only=r4-snap-b200-x-3.2 (1500M cap)",
+   "stored": "built",
+   "live": "PASS dVol 1.1e-16",
+   "match": true
+  },
+  {
+   "feature": "r4-snap-mirror-pocket-far",
+   "command": "bun pm-run.mjs --only=r4-snap-mirror-pocket-far (1500M cap)",
+   "stored": "built",
+   "live": "PASS dVol 1.6e-6",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "blocking",
+   "feature": "row 86/87 + pocket rows (web guard 'side' wall)",
+   "problem": "Guard checks the wall against the bbox of the body only. L-plate 60x40x10 (polygon [[0,0],[60,0],[60,20],[30,20],[30,40],[0,40]]), 10x6 pocket depth 4 with 0.05 mm wall to the notch face x=30: guard ON builds, volume 17760 expected, got 1.2 mm3 too high (rel 6.8e-5, equals the lost wall 0.05*6*4); same for the wall under the notch edge y=20 (rel 1.1e-4). No refusal, silently wrong solid.",
+   "evidenceFile": "critic-patterns-mirror/probe.mjs cases V1a-L-notchx-0.05, V1b-L-notchy-0.05 (all1.txt)"
+  },
+  {
+   "severity": "blocking",
+   "feature": "row 86/87 (web guard, bosses)",
+   "problem": "Pocket cut into a joined boss (plate 60x40x10 + 20x20x5 boss, pocket 10x6x3 on the boss top) leaving 0.05 mm to the boss side: guard ON builds, closed form 25820, got +0.9 mm3 (rel 3.5e-5 = 0.05*6*3), the thin wall is lost. The guard only sees the plate bbox, not the boss sides.",
+   "evidenceFile": "critic-patterns-mirror/probe.mjs case V11-boss-pocket-0.05 (all1.txt)"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 86 (over-refusal)",
+   "problem": "1% of the diagonal scales with the part: a 500x300x10 plate refuses a pocket 3 mm from the edge (limit 5.8 mm) although loss was measured only below about 0.26% of the diagonal (1.5 mm there). Honest refusal, but over-wide on large parts.",
+   "evidenceFile": "probe case O4-pocket-3mm-from-edge-500plate"
+  }
+ ],
+ "notMeasured": [
+  "Tapered/slanted-wall pockets and repeatAround pockets with a thin wall between copies were not probed.",
+  "Triangle plate with a pocket 0.05 mm from the slanted edge was NOT lost (V2 exact), a slanted outer edge is not a confirmed hole.",
+  "repeat(r1) of a repeat result adds only ONE pocket (3 pockets, not 4) in the script layer; I did not check the language intent against OCCT, so my 2x2 grid cases V13/O2 are not scored.",
+  "Wall to non-box outlines with circular outer edges not probed (no closed form)."
+ ],
+ "criticAt": "2026-10-20T15:52:27.296265+00:00"
+}
