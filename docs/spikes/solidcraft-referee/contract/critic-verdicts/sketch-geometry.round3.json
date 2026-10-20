@@ -1,0 +1,121 @@
+{
+ "group": "sketch-geometry",
+ "verdict": "not-accepted",
+ "summary": "The round-8 front-offset guard judges only sketch ids the script's sketch() returned, and a panel/slider value written to an internal copy sketch (sk2_offset, a real slot from model-codegen generatedParams) escapes it: the offset is applied after the script and the part builds with no sentence. Repeat/mirror copy rows (left-right, top-bottom, repeat) and the authored-offset refusals replay exactly against closed forms, but this hole is the same refused class built silently.",
+ "rowsTotal": 86,
+ "rowsEvidenceChecked": 86,
+ "rowsReplayed": 12,
+ "replays": [
+  {
+   "feature": "copy-repeat-y-circle",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-copies.mjs (1500M cap)",
+   "stored": "63717.304 / bbox ok",
+   "live": "63717.304, closed form 63717.257 (dVol 7.4e-7)",
+   "match": true
+  },
+  {
+   "feature": "copy-repeat-y-circle-pos",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-copies.mjs (1500M cap)",
+   "stored": "63830.382",
+   "live": "63830.382, closed form 63830.354 (4.4e-7)",
+   "match": true
+  },
+  {
+   "feature": "copy-repeat-y-circle-xz",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-copies.mjs (1500M cap)",
+   "stored": "63874.357",
+   "live": "63874.357 (3.3e-7)",
+   "match": true
+  },
+  {
+   "feature": "copy-repeat-diag-rect",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-copies.mjs (1500M cap)",
+   "stored": "63640",
+   "live": "63640 exact",
+   "match": true
+  },
+  {
+   "feature": "copy-mirror-lr-pocket",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-copies.mjs (1500M cap)",
+   "stored": "63640",
+   "live": "63640 exact",
+   "match": true
+  },
+  {
+   "feature": "copy-mirror-tb-pocket",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-copies.mjs (1500M cap)",
+   "stored": "63640",
+   "live": "63640 exact",
+   "match": true
+  },
+  {
+   "feature": "copy-authored-offset-repeat",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-copies.mjs (1500M cap)",
+   "stored": "refused sk1 offset 5",
+   "live": "refused, same sentence",
+   "match": true
+  },
+  {
+   "feature": "copy-authored-param-slider",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-copies.mjs (1500M cap)",
+   "stored": "refused sk1 offset 6",
+   "live": "refused",
+   "match": true
+  },
+  {
+   "feature": "plane-front-7",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-planes.mjs (1500M cap)",
+   "stored": "refused",
+   "live": "refused",
+   "match": true
+  },
+  {
+   "feature": "fc-front-offset",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-fc.mjs (1500M cap)",
+   "stored": "refused",
+   "live": "refused",
+   "match": true
+  },
+  {
+   "feature": "plane-front-0",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-planes.mjs (1500M cap)",
+   "stored": "6000",
+   "live": "6000",
+   "match": true
+  },
+  {
+   "feature": "datum-plane-front-3",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-planes.mjs (1500M cap)",
+   "stored": "refused",
+   "live": "refused",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "blocking",
+   "feature": "row 2/3: repeat/mirror copy sketches vs guardFrontOffset ctx.authored",
+   "problem": "Student-typed front offset on a copy sketch is not judged. Repeat circle pocket (front 0, step [0,-10,0]) with RunOptions.values {sk2_offset:-12} builds: doc sk2 offset -12, vol 63717.304, no refusal; repeat along x (copy offset 0) with {sk2_offset:6} builds silently too (sk2 offset 6). The panel exposes offset slots for every sketch including copies, so a student can place a front offset the guard exists to refuse, uncaught (valuesVerdicts handles only across/r/g slots, not offset). Row 3 claims a slider moving a front sketch off 0 is refused, true only for sk1.",
+   "evidenceFile": "scratchpad/critic-sketch-geometry/r3/att.json (att-panel-copy-offset, att-panel-copy-x)"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 2/3 (no-script saved document)",
+   "problem": "With no script probe ctx.authored is undefined and every front sketch is judged, so a saved document with repeat copies at nonzero offset is refused (over-refusal, safe); not exercised by any stored case.",
+   "evidenceFile": "sketch-geometry.guard.mjs:672"
+  },
+  {
+   "severity": "minor",
+   "feature": "fc-tangent-outside-circles-one-sketch",
+   "problem": "Two circles tangent outside on one sketch build (2 bodies, vol 9423.714 vs closed form 9424.778, 1.1e-4) while row 66 lists touching-at-a-point shapes as refused; not checked which row covers this case.",
+   "evidenceFile": "results-guarded/fc.json"
+  }
+ ],
+ "notMeasured": [
+  "mirror front-back was refused by the interpreter for pockets (so its y-mirror copy offsets were measured only with a circle at -8: closed form matches, 7.4e-7)",
+  "pad (extrude) repeat does not create copy sketches in this interpreter; not a copy-sketch path",
+  "real host adoption of ctx.authored (guard not adopted, row 68)",
+  "hole/groove copies"
+ ],
+ "criticAt": "2026-10-20"
+}
