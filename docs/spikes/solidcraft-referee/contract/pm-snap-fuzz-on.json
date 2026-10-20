@@ -1,0 +1,7225 @@
+{
+ "summary": {
+  "n": 400,
+  "seed": 1,
+  "mode": "mixed",
+  "snapGuard": true,
+  "sliverGuard": true,
+  "tally": {
+   "ok": 269,
+   "WRONG": 0,
+   "refused": 131
+  },
+  "refusedBy": {
+   "sub-resolution gap/overlap": 106,
+   "pat1 (pattern): copies overlap or touch: copies 1 and 2 have": 12,
+   "near-coincident (snap guard)": 6,
+   "edge/point contact": 3,
+   "pat1 (pattern): sum check: the 2 copies are all apart (bbox ": 1,
+   "pat1 (pattern): copies overlap or touch: copies 3 and 4 have": 2,
+   "pat1 (pattern): copies overlap or touch: copies 2 and 3 have": 1
+  }
+ },
+ "trials": [
+  {
+   "t": 0,
+   "L": [
+    12.5,
+    19,
+    25.75
+   ],
+   "step": [
+    -12.4999,
+    19.000001,
+    -25.7499
+   ],
+   "count": 3,
+   "exact": 18346.875,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-6 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-6 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 1,
+   "L": [
+    42,
+    12.5,
+    49
+   ],
+   "step": [
+    -84,
+    -0.00125,
+    0
+   ],
+   "count": 2,
+   "exact": 51449.99999999999,
+   "truck": 51450,
+   "rel": 1.4141802943019295e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 2,
+   "L": [
+    7.25,
+    35.75,
+    29.5
+   ],
+   "step": [
+    -2.175,
+    -46.475,
+    -59
+   ],
+   "count": 3,
+   "exact": 22938.09375,
+   "truck": 22938.09375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 3,
+   "L": [
+    49.75,
+    44,
+    35.75
+   ],
+   "step": [
+    64.675,
+    0.044,
+    -1.7875
+   ],
+   "count": 4,
+   "exact": 313027.00000000006,
+   "truck": 313027.00000000006,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 4,
+   "L": [
+    17.25,
+    2,
+    47.5
+   ],
+   "step": [
+    17.25,
+    0,
+    -0.47500000000000003
+   ],
+   "count": 2,
+   "exact": 3277.5,
+   "truck": 3277.5,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 5,
+   "L": [
+    40.75,
+    21,
+    8.25
+   ],
+   "step": [
+    40.74,
+    0,
+    0
+   ],
+   "count": 4,
+   "exact": 28234.5525,
+   "truck": 28234.5525,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 6,
+   "L": [
+    40.5,
+    23.25,
+    20.25
+   ],
+   "step": [
+    40.499,
+    -0.02325,
+    40.5
+   ],
+   "count": 3,
+   "exact": 57203.71875,
+   "truck": 57203.71875,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 7,
+   "L": [
+    27.5,
+    3.5,
+    21.75
+   ],
+   "step": [
+    0.275,
+    -3.51,
+    -28.275000000000002
+   ],
+   "count": 3,
+   "exact": 6280.312500000001,
+   "truck": 6280.3125,
+   "rel": 1.4481679084805542e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 8,
+   "L": [
+    2,
+    33.5,
+    37.75
+   ],
+   "step": [
+    -1,
+    -33.5,
+    0.003775
+   ],
+   "count": 2,
+   "exact": 5058.499999999999,
+   "truck": 5058.5,
+   "rel": 1.797953349358364e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 9,
+   "L": [
+    11.5,
+    13,
+    38.75
+   ],
+   "step": [
+    0.5750000000000001,
+    -16.900000000000002,
+    77.5
+   ],
+   "count": 3,
+   "exact": 17379.374999999996,
+   "truck": 17379.375,
+   "rel": 2.093273668985055e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 10,
+   "L": [
+    30.5,
+    6.75,
+    47
+   ],
+   "step": [
+    -30.500001,
+    -0.3375,
+    -0.47000000000000003
+   ],
+   "count": 2,
+   "exact": 19352.249999999996,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 1 and 2 have bbox gap 1.0e-6 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 2 separate bodies would add their volumes"
+  },
+  {
+   "t": 11,
+   "L": [
+    34.25,
+    47.75,
+    37
+   ],
+   "step": [
+    0.3425,
+    47.7499,
+    37.001
+   ],
+   "count": 2,
+   "exact": 121022.375,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 12,
+   "L": [
+    2.25,
+    28.5,
+    42
+   ],
+   "step": [
+    0,
+    0,
+    -54.6
+   ],
+   "count": 2,
+   "exact": 5386.5,
+   "truck": 5386.499999999999,
+   "rel": 1.6884706242883657e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 13,
+   "L": [
+    22.25,
+    37.75,
+    17.25
+   ],
+   "step": [
+    -22.25,
+    37.749,
+    -0.0017250000000000002
+   ],
+   "count": 4,
+   "exact": 57955.68750000002,
+   "truck": 57955.68750000001,
+   "rel": 2.5108692271775476e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 14,
+   "L": [
+    5,
+    43.5,
+    32.75
+   ],
+   "step": [
+    -4.999,
+    43.5,
+    -1.6375000000000002
+   ],
+   "count": 4,
+   "exact": 28492.5,
+   "truck": 28492.50000000001,
+   "rel": 3.83045939151536e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 15,
+   "L": [
+    40,
+    49.25,
+    40.25
+   ],
+   "step": [
+    0.004,
+    -49.249999,
+    40.25
+   ],
+   "count": 2,
+   "exact": 158584.99999999997,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 16,
+   "L": [
+    33.75,
+    42.25,
+    21.5
+   ],
+   "step": [
+    -33.751,
+    0,
+    -0.301
+   ],
+   "count": 2,
+   "exact": 61315.31249999999,
+   "truck": 61315.3125,
+   "rel": 1.1866460950000748e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 17,
+   "L": [
+    1,
+    6.5,
+    45.25
+   ],
+   "step": [
+    0.014,
+    -4.55,
+    0
+   ],
+   "count": 2,
+   "exact": 501.24782500000003,
+   "truck": 501.247825,
+   "rel": 1.1340382147455306e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 18,
+   "L": [
+    39.5,
+    25,
+    24.5
+   ],
+   "step": [
+    39.4999,
+    -24.999,
+    0
+   ],
+   "count": 4,
+   "exact": 96774.99999265,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 19,
+   "L": [
+    18.5,
+    15.75,
+    13.5
+   ],
+   "step": [
+    0,
+    -15.75,
+    17.55
+   ],
+   "count": 4,
+   "exact": 15734.25,
+   "truck": 15734.25,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 20,
+   "L": [
+    32.25,
+    27.5,
+    18
+   ],
+   "step": [
+    -32.251,
+    -27.5,
+    0.18
+   ],
+   "count": 4,
+   "exact": 63854.99999999999,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 21,
+   "L": [
+    31.75,
+    31.5,
+    39
+   ],
+   "step": [
+    31.76,
+    -63,
+    -39
+   ],
+   "count": 3,
+   "exact": 117014.625,
+   "truck": 117014.62499999996,
+   "rel": 3.7307939657201445e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 22,
+   "L": [
+    20,
+    31.5,
+    28.25
+   ],
+   "step": [
+    20,
+    0,
+    -28.26
+   ],
+   "count": 3,
+   "exact": 53392.5,
+   "truck": 53392.5,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 23,
+   "L": [
+    8,
+    38.25,
+    18
+   ],
+   "step": [
+    8.0001,
+    19.125,
+    0
+   ],
+   "count": 4,
+   "exact": 22032,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 24,
+   "L": [
+    22.25,
+    43.25,
+    10
+   ],
+   "step": [
+    15.575,
+    43.249,
+    -10.001
+   ],
+   "count": 2,
+   "exact": 19246.25,
+   "truck": 19246.249999999996,
+   "rel": 1.8902273466736185e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 25,
+   "L": [
+    38.25,
+    40.5,
+    43.75
+   ],
+   "step": [
+    -11.475,
+    0,
+    0
+   ],
+   "count": 4,
+   "exact": 128771.015625,
+   "truck": 128771.015625,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 26,
+   "L": [
+    44.25,
+    12.25,
+    25
+   ],
+   "step": [
+    -44.249,
+    8.575,
+    -24.99
+   ],
+   "count": 4,
+   "exact": 54206.24988974999,
+   "truck": 54206.249889749946,
+   "rel": 8.053636946642115e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 27,
+   "L": [
+    19,
+    11,
+    7.5
+   ],
+   "step": [
+    5.7,
+    -0.55,
+    0
+   ],
+   "count": 4,
+   "exact": 3142.8374999999996,
+   "truck": 3142.8375,
+   "rel": 1.4469324325119075e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 28,
+   "L": [
+    42.5,
+    42.75,
+    18.5
+   ],
+   "step": [
+    -55.25,
+    42.75,
+    0
+   ],
+   "count": 2,
+   "exact": 67224.375,
+   "truck": 67224.37499999999,
+   "rel": 2.1646783965439399e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 29,
+   "L": [
+    43.25,
+    40.75,
+    39.5
+   ],
+   "step": [
+    43.24,
+    -2.0375,
+    0.0395
+   ],
+   "count": 4,
+   "exact": 278419.2965618127,
+   "truck": 278419.29656181246,
+   "rel": 8.362590040600085e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 30,
+   "L": [
+    29.75,
+    8.75,
+    19.5
+   ],
+   "step": [
+    29.749999,
+    0.4375,
+    39
+   ],
+   "count": 3,
+   "exact": 15228.281250000004,
+   "truck": 15228.281250000002,
+   "rel": 1.1944810932263652e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 31,
+   "L": [
+    9.5,
+    9.25,
+    37.75
+   ],
+   "step": [
+    -0.00095,
+    -18.5,
+    -49.075
+   ],
+   "count": 3,
+   "exact": 9951.84375,
+   "truck": 9951.843749999998,
+   "rel": 1.827791361320214e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 32,
+   "L": [
+    25.5,
+    13,
+    24.75
+   ],
+   "step": [
+    -25.499,
+    -13.0001,
+    24.75
+   ],
+   "count": 3,
+   "exact": 24613.874999999993,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 33,
+   "L": [
+    14.5,
+    46.75,
+    35.5
+   ],
+   "step": [
+    -14.499,
+    -32.725,
+    -35.49
+   ],
+   "count": 4,
+   "exact": 96258.24957925,
+   "truck": 96258.24957924995,
+   "rel": 4.535273171486306e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 34,
+   "L": [
+    29.25,
+    4.5,
+    47.25
+   ],
+   "step": [
+    29.25,
+    -4.499999,
+    0
+   ],
+   "count": 2,
+   "exact": 12438.562499999998,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 35,
+   "L": [
+    21.75,
+    22,
+    30.75
+   ],
+   "step": [
+    21.749999,
+    -44,
+    -1.5375
+   ],
+   "count": 4,
+   "exact": 58855.500000000015,
+   "truck": 58855.49999999999,
+   "rel": 3.7087226924501997e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 36,
+   "L": [
+    49.5,
+    37,
+    6.75
+   ],
+   "step": [
+    99,
+    0,
+    6.751
+   ],
+   "count": 2,
+   "exact": 24725.25,
+   "truck": 24725.25,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 37,
+   "L": [
+    16.5,
+    30.25,
+    37.75
+   ],
+   "step": [
+    16.5,
+    -30.251,
+    -75.5
+   ],
+   "count": 3,
+   "exact": 56525.90625,
+   "truck": 56525.90624999999,
+   "rel": 1.287189909349472e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 38,
+   "L": [
+    49.75,
+    36.25,
+    18.5
+   ],
+   "step": [
+    -64.675,
+    36.249,
+    -18.501
+   ],
+   "count": 4,
+   "exact": 133454.375,
+   "truck": 133454.37499999988,
+   "rel": 8.723230079713371e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 39,
+   "L": [
+    39.5,
+    44.5,
+    25.5
+   ],
+   "step": [
+    39.51,
+    0,
+    -1.2750000000000001
+   ],
+   "count": 3,
+   "exact": 134467.875,
+   "truck": 134467.87500000003,
+   "rel": 2.1643705202252733e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 40,
+   "L": [
+    36.75,
+    18.75,
+    4
+   ],
+   "step": [
+    -36.74,
+    -24.375,
+    0.2
+   ],
+   "count": 3,
+   "exact": 8268.750000000002,
+   "truck": 8268.749999999998,
+   "rel": 4.3996720267171124e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 41,
+   "L": [
+    43.75,
+    13.25,
+    49
+   ],
+   "step": [
+    43.749,
+    0.01325,
+    -49.01
+   ],
+   "count": 3,
+   "exact": 85214.0625,
+   "truck": 85214.0625,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 42,
+   "L": [
+    44.25,
+    41,
+    36
+   ],
+   "step": [
+    0,
+    2.0500000000000003,
+    25.2
+   ],
+   "count": 4,
+   "exact": 205409.38500000004,
+   "truck": 205409.385,
+   "rel": 1.4168695581622863e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 43,
+   "L": [
+    40,
+    47.75,
+    24.75
+   ],
+   "step": [
+    39.999,
+    -62.075,
+    0
+   ],
+   "count": 3,
+   "exact": 141817.5,
+   "truck": 141817.5,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 44,
+   "L": [
+    14.75,
+    40.5,
+    38
+   ],
+   "step": [
+    10.325,
+    -12.15,
+    -76
+   ],
+   "count": 4,
+   "exact": 90800.99999999997,
+   "truck": 90800.99999999996,
+   "rel": 1.602616185765229e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 45,
+   "L": [
+    2,
+    15.5,
+    49.25
+   ],
+   "step": [
+    -2.6,
+    -0.0465,
+    49.249
+   ],
+   "count": 2,
+   "exact": 3053.4999999999995,
+   "truck": 3053.5,
+   "rel": 1.4892659272522162e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 46,
+   "L": [
+    4.5,
+    5.25,
+    35.75
+   ],
+   "step": [
+    5.8500000000000005,
+    5.249,
+    35.7501
+   ],
+   "count": 2,
+   "exact": 1689.1875,
+   "truck": 1689.1875,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 47,
+   "L": [
+    44.5,
+    44.5,
+    40.5
+   ],
+   "step": [
+    -57.85,
+    -57.85,
+    -40.5
+   ],
+   "count": 2,
+   "exact": 160400.24999999997,
+   "truck": 160400.25000000003,
+   "rel": 3.6289008847222753e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 48,
+   "L": [
+    32,
+    45.25,
+    42
+   ],
+   "step": [
+    32.0001,
+    -45.249,
+    -41.999999
+   ],
+   "count": 2,
+   "exact": 121632,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 49,
+   "L": [
+    2.5,
+    7.25,
+    2.75
+   ],
+   "step": [
+    0.75,
+    -9.425,
+    2.76
+   ],
+   "count": 2,
+   "exact": 99.6875,
+   "truck": 99.68749999999999,
+   "rel": 1.425540284910546e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 50,
+   "L": [
+    29.75,
+    21.75,
+    37.75
+   ],
+   "step": [
+    0.029750000000000002,
+    0,
+    0
+   ],
+   "count": 2,
+   "exact": 24451.035984375005,
+   "verdict": "refused",
+   "student": "repeat(): the copies are shifted by only 0.03 mm, so each one lies almost exactly on the one before and the thin layer between them would be lost -- shift them by more than 0.33 mm, or by a whole part size.",
+   "raw": "pat1 (pattern): near-coincident copies: consecutive copies are shifted by only 0.03 mm (0.33 mm is the smallest safe shift: 1.5% of the part's smallest size 22 mm), so solid.combine join would drop the thin layer between them and report the original's volume"
+  },
+  {
+   "t": 51,
+   "L": [
+    10.75,
+    22.5,
+    22.25
+   ],
+   "step": [
+    10.749999,
+    0,
+    -22.2499
+   ],
+   "count": 4,
+   "exact": 21526.87499999325,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 2 and 3 overlap by only 1.0e-6 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 52,
+   "L": [
+    48.5,
+    45.25,
+    42
+   ],
+   "step": [
+    48.499,
+    45.249999,
+    0.42
+   ],
+   "count": 2,
+   "exact": 184348.4999999584,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 53,
+   "L": [
+    27.75,
+    28,
+    25.5
+   ],
+   "step": [
+    -27.75,
+    28,
+    0
+   ],
+   "count": 2,
+   "exact": 39627,
+   "verdict": "refused",
+   "student": "repeat(): two of the copies would meet only along an edge or at a point, so the result would not be one solid -- overlap them along a face or leave a gap.",
+   "raw": "pat1 (pattern): copies 1 and 2 meet only along an edge or at a point (bbox gap 3.6e-15,3.6e-15,-2.6e+1; joined pair keeps 2 shells, volume = sum; whole result 2 shells vs 1 bbox-connected groups)"
+  },
+  {
+   "t": 54,
+   "L": [
+    33.5,
+    12.75,
+    23.25
+   ],
+   "step": [
+    43.550000000000004,
+    12.76,
+    23.249
+   ],
+   "count": 2,
+   "exact": 19861.312499999996,
+   "truck": 19861.312500000004,
+   "rel": 3.6633820721482666e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 55,
+   "L": [
+    8.5,
+    47.75,
+    25.5
+   ],
+   "step": [
+    2.55,
+    -0.6685,
+    25.5
+   ],
+   "count": 2,
+   "exact": 20699.625,
+   "truck": 20699.625,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 56,
+   "L": [
+    49.75,
+    34.75,
+    3.75
+   ],
+   "step": [
+    49.749,
+    -34.75,
+    3.7499
+   ],
+   "count": 2,
+   "exact": 12966.093749999998,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 57,
+   "L": [
+    49.5,
+    17.5,
+    30
+   ],
+   "step": [
+    0,
+    -22.75,
+    0
+   ],
+   "count": 4,
+   "exact": 103950,
+   "truck": 103950,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 58,
+   "L": [
+    24,
+    27,
+    31.5
+   ],
+   "step": [
+    24.0001,
+    -0.081,
+    -31.5
+   ],
+   "count": 3,
+   "exact": 61236.000000000015,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 59,
+   "L": [
+    24,
+    11,
+    8.25
+   ],
+   "step": [
+    -31.200000000000003,
+    -11,
+    10.725
+   ],
+   "count": 3,
+   "exact": 6534,
+   "truck": 6533.999999999999,
+   "rel": 1.3919416923368966e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 60,
+   "L": [
+    28.75,
+    36.5,
+    20.5
+   ],
+   "step": [
+    -0.08625000000000001,
+    36.4999,
+    -6.1499999999999995
+   ],
+   "count": 3,
+   "exact": 64536.48023503746,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 61,
+   "L": [
+    15,
+    25.25,
+    36.75
+   ],
+   "step": [
+    -19.5,
+    25.249999,
+    11.025
+   ],
+   "count": 2,
+   "exact": 27838.125,
+   "truck": 27838.125,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 62,
+   "L": [
+    24.25,
+    33.75,
+    19.25
+   ],
+   "step": [
+    -24.25,
+    43.875,
+    -25.025000000000002
+   ],
+   "count": 4,
+   "exact": 63019.6875,
+   "truck": 63019.68749999996,
+   "rel": 5.772765545833138e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 63,
+   "L": [
+    1.25,
+    8,
+    9
+   ],
+   "step": [
+    -1.25,
+    -16,
+    0.027
+   ],
+   "count": 3,
+   "exact": 270,
+   "truck": 270.00000000000006,
+   "rel": 2.1053118096595562e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 64,
+   "L": [
+    36.5,
+    3,
+    20.5
+   ],
+   "step": [
+    -73,
+    -0.003,
+    -20.5
+   ],
+   "count": 4,
+   "exact": 8979,
+   "truck": 8979.000000000002,
+   "rel": 2.0258262652253663e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 65,
+   "L": [
+    46.25,
+    23,
+    23.5
+   ],
+   "step": [
+    -46.2499,
+    -23,
+    -23.5
+   ],
+   "count": 2,
+   "exact": 49996.25,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 66,
+   "L": [
+    47,
+    30.75,
+    38
+   ],
+   "step": [
+    47.000001,
+    -0.09225,
+    0
+   ],
+   "count": 2,
+   "exact": 109839,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-6 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-6 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 67,
+   "L": [
+    3.5,
+    4,
+    4.5
+   ],
+   "step": [
+    -3.499,
+    0,
+    -4.4999
+   ],
+   "count": 3,
+   "exact": 188.99999920000002,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 68,
+   "L": [
+    43.75,
+    25,
+    10
+   ],
+   "step": [
+    0.004375,
+    25.01,
+    -0.14
+   ],
+   "count": 2,
+   "exact": 21875,
+   "truck": 21875,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 69,
+   "L": [
+    2.75,
+    5.5,
+    43.75
+   ],
+   "step": [
+    2.749,
+    -7.15,
+    -43.75
+   ],
+   "count": 2,
+   "exact": 1323.4375,
+   "truck": 1323.4375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 70,
+   "L": [
+    28.75,
+    27.5,
+    16.75
+   ],
+   "step": [
+    28.75,
+    1.375,
+    0
+   ],
+   "count": 3,
+   "exact": 39728.90625,
+   "truck": 39728.90625,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 71,
+   "L": [
+    18.75,
+    21.25,
+    6
+   ],
+   "step": [
+    -37.5,
+    -42.5,
+    -1.7999999999999998
+   ],
+   "count": 3,
+   "exact": 7171.875,
+   "truck": 7171.874999999997,
+   "rel": 3.804422281925974e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 72,
+   "L": [
+    17.5,
+    14.5,
+    15
+   ],
+   "step": [
+    -17.499,
+    -0.0145,
+    0.045
+   ],
+   "count": 2,
+   "exact": 7612.2833693474995,
+   "truck": 7612.2833693475,
+   "rel": 1.1947725244112755e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 73,
+   "L": [
+    48.25,
+    41.25,
+    18.75
+   ],
+   "step": [
+    48.2499,
+    12.375,
+    18.76
+   ],
+   "count": 4,
+   "exact": 149273.43750000006,
+   "truck": 149273.43750000003,
+   "rel": 1.9496992193760992e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 74,
+   "L": [
+    20.25,
+    38,
+    33.5
+   ],
+   "step": [
+    20.2499,
+    -0.38,
+    -33.49
+   ],
+   "count": 3,
+   "exact": 77334.74992475999,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 75,
+   "L": [
+    48.5,
+    2.75,
+    36.25
+   ],
+   "step": [
+    24.25,
+    0.00825,
+    0.5075000000000001
+   ],
+   "count": 2,
+   "exact": 7293.26026515625,
+   "truck": 7293.260265156248,
+   "rel": 2.494068958756522e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 76,
+   "L": [
+    3.25,
+    14.25,
+    35.75
+   ],
+   "step": [
+    0.0032500000000000003,
+    -14.249,
+    35.75
+   ],
+   "count": 4,
+   "exact": 6622.687499999998,
+   "truck": 6622.6875,
+   "rel": 2.7466031026616567e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 77,
+   "L": [
+    49,
+    48.75,
+    5.25
+   ],
+   "step": [
+    -98,
+    24.375,
+    10.5
+   ],
+   "count": 3,
+   "exact": 37622.8125,
+   "truck": 37622.8125,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 78,
+   "L": [
+    18.25,
+    41,
+    32.25
+   ],
+   "step": [
+    -18.24,
+    -41.01,
+    32.249
+   ],
+   "count": 4,
+   "exact": 96524.24999999999,
+   "truck": 96524.25000000012,
+   "rel": 1.3568324753137339e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 79,
+   "L": [
+    48,
+    42,
+    4.75
+   ],
+   "step": [
+    0,
+    0,
+    -4.75
+   ],
+   "count": 3,
+   "exact": 28728,
+   "truck": 28728,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 80,
+   "L": [
+    35.25,
+    12.25,
+    25
+   ],
+   "step": [
+    0,
+    -0.6125,
+    -50
+   ],
+   "count": 2,
+   "exact": 21590.624999999996,
+   "truck": 21590.625,
+   "rel": 1.684980776189533e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 81,
+   "L": [
+    37.25,
+    2.5,
+    10.75
+   ],
+   "step": [
+    0,
+    -2.5,
+    0
+   ],
+   "count": 3,
+   "exact": 3003.28125,
+   "truck": 3003.28125,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 82,
+   "L": [
+    49.25,
+    44.5,
+    41.25
+   ],
+   "step": [
+    49.25,
+    0,
+    -41.25
+   ],
+   "count": 3,
+   "exact": 271213.59375,
+   "verdict": "refused",
+   "student": "repeat(): two of the copies would meet only along an edge or at a point, so the result would not be one solid -- overlap them along a face or leave a gap.",
+   "raw": "pat1 (pattern): copies 1 and 2 meet only along an edge or at a point (bbox gap 7.1e-15,-4.5e+1,3.6e-15; joined pair keeps 2 shells, volume = sum; whole result 3 shells vs 1 bbox-connected groups)"
+  },
+  {
+   "t": 83,
+   "L": [
+    11.75,
+    44.75,
+    37.25
+   ],
+   "step": [
+    0.11750000000000001,
+    -44.7501,
+    0.03725
+   ],
+   "count": 3,
+   "exact": 58759.546875000015,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 84,
+   "L": [
+    35.75,
+    32.25,
+    38.75
+   ],
+   "step": [
+    -71.5,
+    0.3225,
+    38.750001
+   ],
+   "count": 4,
+   "exact": 178705.3125,
+   "truck": 178705.3125,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 85,
+   "L": [
+    20.25,
+    30,
+    12.25
+   ],
+   "step": [
+    0,
+    29.99,
+    -0.001225
+   ],
+   "count": 4,
+   "exact": 29760.058869187502,
+   "truck": 29760.058869187502,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 86,
+   "L": [
+    49.25,
+    5.75,
+    29.25
+   ],
+   "step": [
+    49.25,
+    0,
+    -29.2499
+   ],
+   "count": 2,
+   "exact": 16566.468749999996,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 87,
+   "L": [
+    8.25,
+    10.25,
+    17.75
+   ],
+   "step": [
+    -5.7749999999999995,
+    20.5,
+    0.017750000000000002
+   ],
+   "count": 4,
+   "exact": 6003.937500000002,
+   "truck": 6003.937500000001,
+   "rel": 1.5148303955078278e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 88,
+   "L": [
+    31,
+    8.25,
+    47.75
+   ],
+   "step": [
+    40.300000000000004,
+    -0.0825,
+    -0.47750000000000004
+   ],
+   "count": 4,
+   "exact": 48848.249999999956,
+   "truck": 48848.25,
+   "rel": 8.937013236932867e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 89,
+   "L": [
+    9.25,
+    46.25,
+    8.75
+   ],
+   "step": [
+    -4.625,
+    0,
+    0
+   ],
+   "count": 2,
+   "exact": 5615.0390625,
+   "truck": 5615.0390625,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 90,
+   "L": [
+    49.5,
+    48.75,
+    36
+   ],
+   "step": [
+    -49.49,
+    0.6825,
+    35.99
+   ],
+   "count": 2,
+   "exact": 173744.99519325004,
+   "truck": 173744.99519324998,
+   "rel": 3.3501777043261135e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 91,
+   "L": [
+    36.75,
+    25.5,
+    32.5
+   ],
+   "step": [
+    0,
+    1.2750000000000001,
+    -1.625
+   ],
+   "count": 2,
+   "exact": 33426.07734375,
+   "truck": 33426.07734375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 92,
+   "L": [
+    29.5,
+    19.25,
+    46.75
+   ],
+   "step": [
+    29.500001,
+    0,
+    -0.4675
+   ],
+   "count": 2,
+   "exact": 53096.3125,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 1 and 2 have bbox gap 1.0e-6 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 2 separate bodies would add their volumes"
+  },
+  {
+   "t": 93,
+   "L": [
+    34,
+    3.75,
+    30
+   ],
+   "step": [
+    34.0001,
+    -3.76,
+    0
+   ],
+   "count": 4,
+   "exact": 15300,
+   "truck": 15300,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 94,
+   "L": [
+    34.75,
+    31.25,
+    40.5
+   ],
+   "step": [
+    24.325,
+    -31.249999,
+    0
+   ],
+   "count": 2,
+   "exact": 87960.93707778752,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 95,
+   "L": [
+    13.25,
+    33.25,
+    25
+   ],
+   "step": [
+    -17.225,
+    -43.225,
+    -24.9999
+   ],
+   "count": 2,
+   "exact": 22028.125,
+   "truck": 22028.125,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 96,
+   "L": [
+    43.25,
+    32.5,
+    25.5
+   ],
+   "step": [
+    0,
+    -32.499,
+    25.5
+   ],
+   "count": 3,
+   "exact": 107530.3125,
+   "truck": 107530.31249999996,
+   "rel": 4.0598548139716934e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 97,
+   "L": [
+    36.5,
+    45.25,
+    23.5
+   ],
+   "step": [
+    0,
+    45.2499,
+    23.5
+   ],
+   "count": 4,
+   "exact": 155252.75,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 98,
+   "L": [
+    9.75,
+    26.5,
+    38.5
+   ],
+   "step": [
+    19.5,
+    -26.5,
+    38.499
+   ],
+   "count": 3,
+   "exact": 29842.3125,
+   "truck": 29842.31249999999,
+   "rel": 3.657201974972663e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 99,
+   "L": [
+    13.25,
+    49.25,
+    8.5
+   ],
+   "step": [
+    0.001325,
+    -49.24,
+    -8.500001
+   ],
+   "count": 3,
+   "exact": 16640.343749999996,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-6 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-6 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 100,
+   "L": [
+    44.5,
+    15,
+    32.5
+   ],
+   "step": [
+    -57.85,
+    15.001,
+    -32.49
+   ],
+   "count": 2,
+   "exact": 43387.49999999999,
+   "truck": 43387.50000000001,
+   "rel": 3.353941856149088e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 101,
+   "L": [
+    49,
+    13.75,
+    3
+   ],
+   "step": [
+    0.147,
+    0,
+    -3
+   ],
+   "count": 2,
+   "exact": 4042.4999999999995,
+   "truck": 4042.5,
+   "rel": 1.1249161431947165e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 102,
+   "L": [
+    37.25,
+    48.75,
+    41.5
+   ],
+   "step": [
+    -37.24,
+    -48.74,
+    -41.4999
+   ],
+   "count": 4,
+   "exact": 301445.62499997014,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 103,
+   "L": [
+    48.75,
+    7.25,
+    25
+   ],
+   "step": [
+    97.5,
+    -9.425,
+    0
+   ],
+   "count": 2,
+   "exact": 17671.875,
+   "truck": 17671.875,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 104,
+   "L": [
+    9.25,
+    6.25,
+    37.5
+   ],
+   "step": [
+    0.0925,
+    -6.251,
+    0
+   ],
+   "count": 3,
+   "exact": 6503.90625,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 2 and 3 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 105,
+   "L": [
+    39.75,
+    13.75,
+    29.25
+   ],
+   "step": [
+    -0.3975,
+    -27.5,
+    29.25
+   ],
+   "count": 4,
+   "exact": 63947.81250000001,
+   "truck": 63947.81250000005,
+   "rel": 6.82677701994897e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 106,
+   "L": [
+    33.5,
+    14.25,
+    22
+   ],
+   "step": [
+    -0.335,
+    0,
+    0.22
+   ],
+   "count": 4,
+   "exact": 11129.234325000012,
+   "truck": 11129.234325,
+   "rel": 1.1440971995906809e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 107,
+   "L": [
+    40.25,
+    4,
+    38
+   ],
+   "step": [
+    0,
+    -4.001,
+    0.114
+   ],
+   "count": 3,
+   "exact": 18354,
+   "truck": 18354,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 108,
+   "L": [
+    12.25,
+    30,
+    15.75
+   ],
+   "step": [
+    24.5,
+    -29.9999,
+    0
+   ],
+   "count": 2,
+   "exact": 11576.25,
+   "truck": 11576.249999999995,
+   "rel": 4.713934314339764e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 109,
+   "L": [
+    46.75,
+    11.5,
+    34.5
+   ],
+   "step": [
+    -46.75,
+    0.115,
+    -10.35
+   ],
+   "count": 3,
+   "exact": 55644.18750000002,
+   "truck": 55644.18750000001,
+   "rel": 2.6151725601828306e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 110,
+   "L": [
+    38,
+    29.25,
+    16.25
+   ],
+   "step": [
+    38,
+    -58.5,
+    0
+   ],
+   "count": 4,
+   "exact": 72247.5,
+   "truck": 72247.50000000001,
+   "rel": 2.0141756086185477e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 111,
+   "L": [
+    41,
+    37.75,
+    11
+   ],
+   "step": [
+    0,
+    -1.8875000000000002,
+    0
+   ],
+   "count": 4,
+   "exact": 19579.037500000002,
+   "truck": 19579.037500000002,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 112,
+   "L": [
+    33.75,
+    29.25,
+    9.25
+   ],
+   "step": [
+    33.75,
+    29.249999,
+    9.25
+   ],
+   "count": 4,
+   "exact": 36525.93750000001,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 113,
+   "L": [
+    49,
+    41,
+    9.75
+   ],
+   "step": [
+    -49,
+    0.41000000000000003,
+    9.75
+   ],
+   "count": 4,
+   "exact": 78351,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 1 and 2 have bbox gap 0.0e+0 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 4 separate bodies would add their volumes"
+  },
+  {
+   "t": 114,
+   "L": [
+    47.25,
+    12.25,
+    23.75
+   ],
+   "step": [
+    47.25,
+    12.249999,
+    -23.75
+   ],
+   "count": 2,
+   "exact": 27493.593750000004,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 115,
+   "L": [
+    28.25,
+    32.5,
+    26.5
+   ],
+   "step": [
+    0,
+    32.500001,
+    0
+   ],
+   "count": 2,
+   "exact": 48660.625,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-6 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-6 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 116,
+   "L": [
+    22.5,
+    2.25,
+    20.5
+   ],
+   "step": [
+    0,
+    -2.26,
+    41
+   ],
+   "count": 3,
+   "exact": 3113.4375,
+   "truck": 3113.4375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 117,
+   "L": [
+    50,
+    34.5,
+    24.75
+   ],
+   "step": [
+    0,
+    34.5,
+    0
+   ],
+   "count": 4,
+   "exact": 170775,
+   "truck": 170775,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 118,
+   "L": [
+    44.25,
+    5.75,
+    9.75
+   ],
+   "step": [
+    0,
+    -7.4750000000000005,
+    0
+   ],
+   "count": 4,
+   "exact": 9923.062500000002,
+   "truck": 9923.0625,
+   "rel": 1.8330927609756123e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 119,
+   "L": [
+    2.5,
+    7.25,
+    2
+   ],
+   "step": [
+    -2.51,
+    14.5,
+    -2.01
+   ],
+   "count": 2,
+   "exact": 72.5,
+   "truck": 72.5,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 120,
+   "L": [
+    40,
+    42.5,
+    24.75
+   ],
+   "step": [
+    40.01,
+    -12.75,
+    24.75
+   ],
+   "count": 2,
+   "exact": 84150,
+   "truck": 84150,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 121,
+   "L": [
+    27.5,
+    26.5,
+    9
+   ],
+   "step": [
+    -27.5,
+    0,
+    -9
+   ],
+   "count": 3,
+   "exact": 19676.25,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 1 and 2 have bbox gap 0.0e+0 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 3 separate bodies would add their volumes"
+  },
+  {
+   "t": 122,
+   "L": [
+    4.5,
+    40.25,
+    24.75
+   ],
+   "step": [
+    -2.25,
+    -52.325,
+    -24.75
+   ],
+   "count": 4,
+   "exact": 17931.375,
+   "truck": 17931.374999999996,
+   "rel": 2.0288342679196174e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 123,
+   "L": [
+    43.5,
+    31,
+    25
+   ],
+   "step": [
+    43.499999,
+    1.55,
+    0
+   ],
+   "count": 4,
+   "exact": 134849.99779125003,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 124,
+   "L": [
+    42.75,
+    18.75,
+    36
+   ],
+   "step": [
+    29.924999999999997,
+    -18.75,
+    36.0001
+   ],
+   "count": 2,
+   "exact": 57712.5,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 125,
+   "L": [
+    30.25,
+    8.5,
+    38.25
+   ],
+   "step": [
+    60.5,
+    -0.0008500000000000001,
+    38.251
+   ],
+   "count": 3,
+   "exact": 29505.093750000007,
+   "truck": 29505.09375,
+   "rel": 2.466000506839069e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 126,
+   "L": [
+    19.5,
+    7.25,
+    43.75
+   ],
+   "step": [
+    -19.500001,
+    -7.26,
+    -21.875
+   ],
+   "count": 3,
+   "exact": 18555.46875,
+   "truck": 18555.46875,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 127,
+   "L": [
+    25.75,
+    18.25,
+    17.75
+   ],
+   "step": [
+    7.725,
+    12.774999999999999,
+    -17.7501
+   ],
+   "count": 3,
+   "exact": 25024.171874999993,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 128,
+   "L": [
+    43.5,
+    33.5,
+    8
+   ],
+   "step": [
+    87,
+    -0.0335,
+    -0.08
+   ],
+   "count": 3,
+   "exact": 34974,
+   "truck": 34974.00000000001,
+   "rel": 2.080390465541095e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 129,
+   "L": [
+    43.25,
+    12.25,
+    45.5
+   ],
+   "step": [
+    56.225,
+    -12.25,
+    -2.275
+   ],
+   "count": 2,
+   "exact": 48212.9375,
+   "truck": 48212.9375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 130,
+   "L": [
+    9,
+    20,
+    18.75
+   ],
+   "step": [
+    -4.5,
+    19.9999,
+    37.5
+   ],
+   "count": 2,
+   "exact": 6749.999999999999,
+   "truck": 6750,
+   "rel": 1.3473995581821161e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 131,
+   "L": [
+    37.5,
+    39.75,
+    13.25
+   ],
+   "step": [
+    18.75,
+    0,
+    -0.03975
+   ],
+   "count": 2,
+   "exact": 29655.798046875,
+   "truck": 29655.798046875003,
+   "rel": 1.22673441508517e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 132,
+   "L": [
+    34.25,
+    8.5,
+    5
+   ],
+   "step": [
+    -34.251,
+    8.49,
+    -5
+   ],
+   "count": 4,
+   "exact": 5822.5,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 133,
+   "L": [
+    37.75,
+    15.75,
+    29.75
+   ],
+   "step": [
+    -0.5285,
+    7.875,
+    -8.924999999999999
+   ],
+   "count": 2,
+   "exact": 29272.259067187493,
+   "truck": 29272.259067187497,
+   "rel": 1.2428076694530477e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 134,
+   "L": [
+    31.5,
+    23,
+    46.5
+   ],
+   "step": [
+    0.441,
+    22.999,
+    46.5001
+   ],
+   "count": 2,
+   "exact": 67378.5,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 135,
+   "L": [
+    31.25,
+    5.5,
+    4.25
+   ],
+   "step": [
+    62.5,
+    -5.500001,
+    -4.25
+   ],
+   "count": 4,
+   "exact": 2921.875,
+   "truck": 2921.8750000000036,
+   "rel": 1.2450836559030462e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 136,
+   "L": [
+    18,
+    5.25,
+    17
+   ],
+   "step": [
+    0.0018000000000000002,
+    -5.2499,
+    0
+   ],
+   "count": 3,
+   "exact": 4819.438806120002,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 137,
+   "L": [
+    22.75,
+    48.5,
+    8
+   ],
+   "step": [
+    22.75,
+    97,
+    7.99
+   ],
+   "count": 3,
+   "exact": 26481,
+   "truck": 26481.00000000001,
+   "rel": 4.121421555558755e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 138,
+   "L": [
+    17.75,
+    10.75,
+    6.75
+   ],
+   "step": [
+    -17.76,
+    0,
+    -6.7501
+   ],
+   "count": 2,
+   "exact": 2575.96875,
+   "truck": 2575.9687500000005,
+   "rel": 1.765344982878632e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 139,
+   "L": [
+    22.5,
+    36.75,
+    16.75
+   ],
+   "step": [
+    6.75,
+    0,
+    -8.375
+   ],
+   "count": 4,
+   "exact": 40857.9609375,
+   "truck": 40857.9609375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 140,
+   "L": [
+    5.25,
+    14.75,
+    19.5
+   ],
+   "step": [
+    0,
+    -19.175,
+    -0.0019500000000000001
+   ],
+   "count": 4,
+   "exact": 6040.124999999999,
+   "truck": 6040.125,
+   "rel": 1.5057547679442535e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 141,
+   "L": [
+    36.5,
+    29.75,
+    44.5
+   ],
+   "step": [
+    36.4999,
+    -59.5,
+    -44.501
+   ],
+   "count": 3,
+   "exact": 144964.31250000003,
+   "truck": 144964.3124999999,
+   "rel": 8.030619386197882e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 142,
+   "L": [
+    14.75,
+    30.5,
+    40
+   ],
+   "step": [
+    -4.425,
+    30.5,
+    0
+   ],
+   "count": 2,
+   "exact": 35990,
+   "truck": 35990,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 143,
+   "L": [
+    31.25,
+    18.5,
+    3.75
+   ],
+   "step": [
+    31.249,
+    18.5,
+    0
+   ],
+   "count": 2,
+   "exact": 4335.9375,
+   "truck": 4335.9375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 144,
+   "L": [
+    33.25,
+    15.5,
+    5.25
+   ],
+   "step": [
+    -66.5,
+    -0.0465,
+    0
+   ],
+   "count": 2,
+   "exact": 5411.4375,
+   "truck": 5411.4375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 145,
+   "L": [
+    46.25,
+    10.75,
+    23.25
+   ],
+   "step": [
+    -0.13875,
+    -10.7501,
+    0
+   ],
+   "count": 3,
+   "exact": 34678.82812499999,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 146,
+   "L": [
+    30,
+    10.75,
+    46.75
+   ],
+   "step": [
+    0,
+    -10.750001,
+    60.775
+   ],
+   "count": 4,
+   "exact": 60307.50000000001,
+   "truck": 60307.50000000001,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 147,
+   "L": [
+    15.25,
+    41.25,
+    30.75
+   ],
+   "step": [
+    15.25,
+    0.004125,
+    -30.749999
+   ],
+   "count": 2,
+   "exact": 38687.34375,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 148,
+   "L": [
+    9.25,
+    22.25,
+    37.5
+   ],
+   "step": [
+    0,
+    22.251,
+    26.25
+   ],
+   "count": 4,
+   "exact": 30871.875,
+   "truck": 30871.875,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 149,
+   "L": [
+    8,
+    8,
+    30.5
+   ],
+   "step": [
+    -8,
+    0.4,
+    -1.5250000000000001
+   ],
+   "count": 2,
+   "exact": 3904.0000000000005,
+   "truck": 3904,
+   "rel": 1.1648241569837706e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 150,
+   "L": [
+    1.75,
+    28,
+    17.75
+   ],
+   "step": [
+    -2.275,
+    -0.392,
+    0.05325
+   ],
+   "count": 4,
+   "exact": 3479.0000000000014,
+   "truck": 3479.0000000000014,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 151,
+   "L": [
+    14.5,
+    32,
+    4.25
+   ],
+   "step": [
+    -7.25,
+    41.6,
+    4.250001
+   ],
+   "count": 4,
+   "exact": 7888,
+   "truck": 7888,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 152,
+   "L": [
+    18.75,
+    27.75,
+    49
+   ],
+   "step": [
+    0,
+    -27.75,
+    -49
+   ],
+   "count": 4,
+   "exact": 101981.25,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 1 and 2 have bbox gap 0.0e+0 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 4 separate bodies would add their volumes"
+  },
+  {
+   "t": 153,
+   "L": [
+    15.75,
+    3.25,
+    35.25
+   ],
+   "step": [
+    15.75,
+    4.2250000000000005,
+    35.25
+   ],
+   "count": 4,
+   "exact": 7217.4375,
+   "truck": 7217.43749999999,
+   "rel": 1.3861487154550644e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 154,
+   "L": [
+    12,
+    9,
+    29.75
+   ],
+   "step": [
+    12,
+    8.99,
+    -8.924999999999999
+   ],
+   "count": 3,
+   "exact": 9638.999999999998,
+   "truck": 9638.999999999995,
+   "rel": 3.774228454291642e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 155,
+   "L": [
+    37.75,
+    39.75,
+    17.5
+   ],
+   "step": [
+    0.003775,
+    -39.751,
+    -22.75
+   ],
+   "count": 4,
+   "exact": 105039.37500000003,
+   "truck": 105039.37499999999,
+   "rel": 4.1561315159291975e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 156,
+   "L": [
+    11.25,
+    25,
+    47.25
+   ],
+   "step": [
+    0,
+    -24.99,
+    94.5
+   ],
+   "count": 2,
+   "exact": 26578.125,
+   "truck": 26578.125,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 157,
+   "L": [
+    1.25,
+    46.25,
+    34
+   ],
+   "step": [
+    -1.249999,
+    92.5,
+    -34
+   ],
+   "count": 4,
+   "exact": 7862.500000000002,
+   "truck": 7862.500000000023,
+   "rel": 2.6605250417522857e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 158,
+   "L": [
+    47,
+    43,
+    39
+   ],
+   "step": [
+    32.9,
+    -2.15,
+    -38.9999
+   ],
+   "count": 3,
+   "exact": 236456.88480299996,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 159,
+   "L": [
+    39.75,
+    49.75,
+    12.25
+   ],
+   "step": [
+    1.9875,
+    0,
+    -12.249999
+   ],
+   "count": 3,
+   "exact": 72675.41811763126,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 160,
+   "L": [
+    10.75,
+    30,
+    28.75
+   ],
+   "step": [
+    -10.75,
+    -39,
+    -28.74
+   ],
+   "count": 4,
+   "exact": 37087.5,
+   "truck": 37087.49999999999,
+   "rel": 1.9618355548859928e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 161,
+   "L": [
+    38.5,
+    3.25,
+    45
+   ],
+   "step": [
+    -38.499,
+    0.0032500000000000003,
+    45
+   ],
+   "count": 2,
+   "exact": 11261.250000000002,
+   "truck": 11261.25,
+   "rel": 1.615264205612926e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 162,
+   "L": [
+    17.25,
+    4.75,
+    6.75
+   ],
+   "step": [
+    -17.25,
+    -3.3249999999999997,
+    0
+   ],
+   "count": 4,
+   "exact": 2212.3125,
+   "truck": 2212.3124999999995,
+   "rel": 2.055529455655402e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 163,
+   "L": [
+    10,
+    26.75,
+    5.5
+   ],
+   "step": [
+    -9.999,
+    26.751,
+    0
+   ],
+   "count": 2,
+   "exact": 2942.5,
+   "truck": 2942.5,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 164,
+   "L": [
+    9.25,
+    37.25,
+    40
+   ],
+   "step": [
+    9.249,
+    -0.11175,
+    28
+   ],
+   "count": 4,
+   "exact": 55128.663022999994,
+   "truck": 55128.663023,
+   "rel": 1.3198139071770804e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 165,
+   "L": [
+    26.5,
+    46.25,
+    14
+   ],
+   "step": [
+    26.499,
+    -46.25,
+    14
+   ],
+   "count": 2,
+   "exact": 34317.499999999985,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 1 and 2 have bbox gap 0.0e+0 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 2 separate bodies would add their volumes"
+  },
+  {
+   "t": 166,
+   "L": [
+    21,
+    23,
+    11
+   ],
+   "step": [
+    -21,
+    22.999999,
+    -22
+   ],
+   "count": 4,
+   "exact": 21252.000000000004,
+   "truck": 21251.99999999999,
+   "rel": 6.847315654228708e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 167,
+   "L": [
+    18,
+    8.25,
+    26.75
+   ],
+   "step": [
+    -17.99,
+    0,
+    -0.2675
+   ],
+   "count": 3,
+   "exact": 11912.7553875,
+   "truck": 11912.755387499996,
+   "rel": 3.053851681458202e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 168,
+   "L": [
+    14.25,
+    27.75,
+    29
+   ],
+   "step": [
+    -14.25,
+    27.749,
+    0
+   ],
+   "count": 3,
+   "exact": 34403.06249999999,
+   "truck": 34403.0625,
+   "rel": 2.1149156747843094e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 169,
+   "L": [
+    36.75,
+    43,
+    4.5
+   ],
+   "step": [
+    -36.7501,
+    0.043000000000000003,
+    -0.063
+   ],
+   "count": 3,
+   "exact": 21333.375,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 170,
+   "L": [
+    18,
+    41.75,
+    39.75
+   ],
+   "step": [
+    18,
+    0,
+    0
+   ],
+   "count": 4,
+   "exact": 119488.5,
+   "truck": 119488.49999999999,
+   "rel": 1.2178506909340107e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 171,
+   "L": [
+    34.25,
+    49.25,
+    18
+   ],
+   "step": [
+    34.25,
+    -0.14775,
+    -36
+   ],
+   "count": 2,
+   "exact": 60725.24999999999,
+   "truck": 60725.25,
+   "rel": 1.1981766422012964e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 172,
+   "L": [
+    11.5,
+    4.5,
+    31.75
+   ],
+   "step": [
+    0.0345,
+    4.5,
+    -1.5875000000000001
+   ],
+   "count": 2,
+   "exact": 3286.1249999999995,
+   "truck": 3286.1249999999995,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 173,
+   "L": [
+    10.25,
+    29,
+    4.25
+   ],
+   "step": [
+    -0.03075,
+    -28.999,
+    -4.25
+   ],
+   "count": 2,
+   "exact": 2526.6249999999995,
+   "truck": 2526.6250000000005,
+   "rel": 3.5996426132604896e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 174,
+   "L": [
+    9.75,
+    1.75,
+    29.25
+   ],
+   "step": [
+    0,
+    -1.76,
+    -38.025
+   ],
+   "count": 3,
+   "exact": 1497.2343749999998,
+   "truck": 1497.234375,
+   "rel": 1.5186244668155718e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 175,
+   "L": [
+    26,
+    4.75,
+    17
+   ],
+   "step": [
+    -25.99,
+    0.0665,
+    34
+   ],
+   "count": 4,
+   "exact": 8397.999999999998,
+   "truck": 8398.000000000002,
+   "rel": 4.3319585700068036e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 176,
+   "L": [
+    10.25,
+    25.5,
+    4.25
+   ],
+   "step": [
+    0,
+    25.499999,
+    4.251
+   ],
+   "count": 3,
+   "exact": 3332.5312500000005,
+   "truck": 3332.5312499999986,
+   "rel": 5.458281609649891e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 177,
+   "L": [
+    40.5,
+    39.5,
+    22.75
+   ],
+   "step": [
+    40.501,
+    -39.51,
+    0.06825
+   ],
+   "count": 3,
+   "exact": 109182.9375,
+   "truck": 109182.9375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 178,
+   "L": [
+    42,
+    25.75,
+    13
+   ],
+   "step": [
+    0.042,
+    0.025750000000000002,
+    -13
+   ],
+   "count": 2,
+   "exact": 28119,
+   "truck": 28119,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 179,
+   "L": [
+    43.25,
+    25,
+    37.25
+   ],
+   "step": [
+    -43.249999,
+    1.25,
+    -37.249
+   ],
+   "count": 2,
+   "exact": 80553.12499997625,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 180,
+   "L": [
+    12.75,
+    23.5,
+    21.75
+   ],
+   "step": [
+    -0.1275,
+    -30.55,
+    0.06525
+   ],
+   "count": 2,
+   "exact": 13033.6875,
+   "truck": 13033.687499999998,
+   "rel": 1.3956061195619862e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 181,
+   "L": [
+    18.5,
+    4,
+    14.25
+   ],
+   "step": [
+    0.185,
+    0.0004,
+    14.25
+   ],
+   "count": 2,
+   "exact": 2108.9999999999995,
+   "truck": 2109,
+   "rel": 2.1562226215574406e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 182,
+   "L": [
+    19.25,
+    49.5,
+    28.25
+   ],
+   "step": [
+    5.7749999999999995,
+    49.5,
+    -28.2501
+   ],
+   "count": 4,
+   "exact": 107674.87500000003,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 183,
+   "L": [
+    26,
+    45.5,
+    33.5
+   ],
+   "step": [
+    13,
+    0,
+    0
+   ],
+   "count": 4,
+   "exact": 99076.25,
+   "truck": 99076.25,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 184,
+   "L": [
+    8.5,
+    33.25,
+    26.5
+   ],
+   "step": [
+    -2.55,
+    0,
+    -26.501
+   ],
+   "count": 4,
+   "exact": 29958.250000000007,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 2 and 3 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 185,
+   "L": [
+    1.75,
+    46.5,
+    43.75
+   ],
+   "step": [
+    -1.2249999999999999,
+    -46.5,
+    -2.1875
+   ],
+   "count": 3,
+   "exact": 10680.46875,
+   "truck": 10680.468749999998,
+   "rel": 1.7030988490517857e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 186,
+   "L": [
+    33.5,
+    11,
+    1.25
+   ],
+   "step": [
+    -43.550000000000004,
+    0.55,
+    0.0125
+   ],
+   "count": 3,
+   "exact": 1381.875,
+   "truck": 1381.875,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 187,
+   "L": [
+    24.5,
+    41.75,
+    13.5
+   ],
+   "step": [
+    49,
+    -0.004175,
+    -0.0405
+   ],
+   "count": 3,
+   "exact": 41426.4375,
+   "truck": 41426.437499999985,
+   "rel": 3.5127121969797313e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 188,
+   "L": [
+    31.5,
+    5.25,
+    31.25
+   ],
+   "step": [
+    -22.049999999999997,
+    0.01575,
+    31.25
+   ],
+   "count": 4,
+   "exact": 20671.87500000001,
+   "truck": 20671.874999999945,
+   "rel": 3.1677638592363197e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 189,
+   "L": [
+    35.75,
+    1.25,
+    23.5
+   ],
+   "step": [
+    35.75,
+    -1.26,
+    -47
+   ],
+   "count": 4,
+   "exact": 4200.625,
+   "truck": 4200.624999999998,
+   "rel": 4.330282763983589e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 190,
+   "L": [
+    25.5,
+    49,
+    23
+   ],
+   "step": [
+    -51,
+    49.0001,
+    -1.1500000000000001
+   ],
+   "count": 4,
+   "exact": 114954.00000000001,
+   "truck": 114954.00000000004,
+   "rel": 2.531780578034144e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 191,
+   "L": [
+    26.75,
+    26,
+    1.25
+   ],
+   "step": [
+    0.02675,
+    26.0001,
+    1.25
+   ],
+   "count": 4,
+   "exact": 3477.500000000002,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 192,
+   "L": [
+    19.75,
+    31,
+    43
+   ],
+   "step": [
+    -0.1975,
+    31.0001,
+    -55.9
+   ],
+   "count": 2,
+   "exact": 52653.500000000015,
+   "truck": 52653.50000000001,
+   "rel": 1.3818564035027917e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 193,
+   "L": [
+    6.75,
+    41.5,
+    41
+   ],
+   "step": [
+    -6.75,
+    41.499999,
+    0.41000000000000003
+   ],
+   "count": 2,
+   "exact": 22970.250000000004,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 194,
+   "L": [
+    20.25,
+    41.75,
+    29
+   ],
+   "step": [
+    -20.25,
+    -41.749999,
+    -29
+   ],
+   "count": 3,
+   "exact": 73553.0625,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 195,
+   "L": [
+    16.25,
+    7.5,
+    10.5
+   ],
+   "step": [
+    -16.2499,
+    0.00075,
+    0.0010500000000000002
+   ],
+   "count": 4,
+   "exact": 5118.726379724758,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 196,
+   "L": [
+    45.25,
+    21,
+    34.25
+   ],
+   "step": [
+    -45.249,
+    0.294,
+    17.125
+   ],
+   "count": 4,
+   "exact": 130183.18622924996,
+   "truck": 130183.18622924997,
+   "rel": 1.1178029705572903e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 197,
+   "L": [
+    8.25,
+    5.25,
+    25.75
+   ],
+   "step": [
+    4.125,
+    0.0005250000000000001,
+    -1.2875
+   ],
+   "count": 4,
+   "exact": 2872.0483829296845,
+   "truck": 2872.0483829296845,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 198,
+   "L": [
+    26.75,
+    4.25,
+    7.5
+   ],
+   "step": [
+    -26.749,
+    4.25,
+    -0.00075
+   ],
+   "count": 3,
+   "exact": 2557.96875,
+   "truck": 2557.968749999999,
+   "rel": 3.555534842921471e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 199,
+   "L": [
+    40.75,
+    19.25,
+    13.75
+   ],
+   "step": [
+    40.76,
+    19.249999,
+    13.749999
+   ],
+   "count": 2,
+   "exact": 21572.03125,
+   "verdict": "refused",
+   "student": "repeat(): the copies are apart, but the volume of the result does not add up to the volume of the copies, so it cannot be trusted -- move the copies clearly apart or clearly together, or line their faces up exactly.",
+   "raw": "pat1 (pattern): sum check: the 2 copies are all apart (bbox gap above 1e-3 mm) so the result must be the sum of their volumes 21572.0312500, but solid.combine join returned 21572.0304656 (relative difference 3.6e-8)"
+  },
+  {
+   "t": 200,
+   "L": [
+    21.75,
+    35.5,
+    26.5
+   ],
+   "step": [
+    10.875,
+    0,
+    -0.0795
+   ],
+   "count": 2,
+   "exact": 30722.660718750005,
+   "truck": 30722.66071875,
+   "rel": 1.1841353326769184e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 201,
+   "L": [
+    26.5,
+    19,
+    44
+   ],
+   "step": [
+    -0.0795,
+    -18.999,
+    -2.2
+   ],
+   "count": 4,
+   "exact": 88612.6868692998,
+   "truck": 88612.68686929999,
+   "rel": 2.1348511669417556e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 202,
+   "L": [
+    30.75,
+    28,
+    35.25
+   ],
+   "step": [
+    -30.75,
+    56,
+    35.25
+   ],
+   "count": 3,
+   "exact": 91050.75,
+   "truck": 91050.75,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 203,
+   "L": [
+    32,
+    13.25,
+    1.75
+   ],
+   "step": [
+    -32,
+    -0.01325,
+    1.749
+   ],
+   "count": 4,
+   "exact": 2967.999999999999,
+   "truck": 2968,
+   "rel": 3.06433524856108e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 204,
+   "L": [
+    45.25,
+    40,
+    7.5
+   ],
+   "step": [
+    2.2625,
+    -40.0001,
+    -9.75
+   ],
+   "count": 2,
+   "exact": 27150,
+   "truck": 27150,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 205,
+   "L": [
+    49,
+    39.5,
+    37.25
+   ],
+   "step": [
+    -49,
+    27.65,
+    0.003725
+   ],
+   "count": 4,
+   "exact": 288389.5000000001,
+   "truck": 288389.49999999994,
+   "rel": 6.055108897529285e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 206,
+   "L": [
+    10.75,
+    34.25,
+    16
+   ],
+   "step": [
+    0.03225,
+    -0.03425,
+    -8
+   ],
+   "count": 4,
+   "exact": 14762.81949049998,
+   "truck": 14762.81949049996,
+   "rel": 1.3553565057054539e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 207,
+   "L": [
+    29,
+    47,
+    11.25
+   ],
+   "step": [
+    0.406,
+    46.9999,
+    -0.1125
+   ],
+   "count": 2,
+   "exact": 30667.4681534325,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 208,
+   "L": [
+    14.5,
+    22,
+    6.5
+   ],
+   "step": [
+    14.499,
+    -44,
+    -0.0006500000000000001
+   ],
+   "count": 3,
+   "exact": 6220.500000000001,
+   "truck": 6220.5,
+   "rel": 1.462092599908252e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 209,
+   "L": [
+    21,
+    44,
+    13.5
+   ],
+   "step": [
+    -21,
+    0,
+    -13.499999
+   ],
+   "count": 4,
+   "exact": 49896,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 7.1e-15 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 3 and 4 overlap by only 7.1e-15 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 210,
+   "L": [
+    20,
+    15.75,
+    3.25
+   ],
+   "step": [
+    -40,
+    15.76,
+    -0.0455
+   ],
+   "count": 4,
+   "exact": 4095,
+   "truck": 4095,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 211,
+   "L": [
+    33.5,
+    26,
+    44.75
+   ],
+   "step": [
+    1.675,
+    -1.3,
+    -0.6265000000000001
+   ],
+   "count": 3,
+   "exact": 47562.76885749998,
+   "truck": 47562.7688575,
+   "rel": 4.589277152460886e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 212,
+   "L": [
+    2,
+    19.75,
+    21.25
+   ],
+   "step": [
+    0.028,
+    0.01975,
+    -21.250001
+   ],
+   "count": 4,
+   "exact": 3357.5000000000027,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 1 and 2 have bbox gap 1.0e-6 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 4 separate bodies would add their volumes"
+  },
+  {
+   "t": 213,
+   "L": [
+    45.25,
+    46.5,
+    43.25
+   ],
+   "step": [
+    0,
+    0,
+    -43.2499
+   ],
+   "count": 4,
+   "exact": 364012.9937625,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 214,
+   "L": [
+    22,
+    29.25,
+    22.75
+   ],
+   "step": [
+    21.999,
+    0.02925,
+    -22.7501
+   ],
+   "count": 3,
+   "exact": 43918.875,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 215,
+   "L": [
+    30,
+    48,
+    12.75
+   ],
+   "step": [
+    -0.09,
+    0.14400000000000002,
+    0
+   ],
+   "count": 3,
+   "exact": 18579.989519999996,
+   "verdict": "refused",
+   "student": "repeat(): the copies are shifted by only 0.17 mm, so each one lies almost exactly on the one before and the thin layer between them would be lost -- shift them by more than 0.19 mm, or by a whole part size.",
+   "raw": "pat1 (pattern): near-coincident copies: consecutive copies are shifted by only 0.17 mm (0.19 mm is the smallest safe shift: 1.5% of the part's smallest size 13 mm), so solid.combine join would drop the thin layer between them and report the original's volume"
+  },
+  {
+   "t": 216,
+   "L": [
+    18.75,
+    47,
+    32.25
+   ],
+   "step": [
+    -0.9375,
+    46.9999,
+    0
+   ],
+   "count": 2,
+   "exact": 56840.5675546875,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 217,
+   "L": [
+    34.25,
+    34.5,
+    18.5
+   ],
+   "step": [
+    -1.7125000000000001,
+    0,
+    -12.95
+   ],
+   "count": 2,
+   "exact": 37490.0071875,
+   "truck": 37490.00718749999,
+   "rel": 1.940772531142483e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 218,
+   "L": [
+    26.25,
+    45.75,
+    44
+   ],
+   "step": [
+    26.24,
+    -45.749999,
+    44
+   ],
+   "count": 4,
+   "exact": 211364.99999999997,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 1 and 2 have bbox gap 0.0e+0 and solid.combine could not join them (solid.combine: lumps: shell boundaries intersect or touch; cavity ownership is ambiguous); leaving them as 4 separate bodies would add their volumes"
+  },
+  {
+   "t": 219,
+   "L": [
+    10.75,
+    44,
+    15.25
+   ],
+   "step": [
+    -13.975,
+    -43.999,
+    -30.5
+   ],
+   "count": 3,
+   "exact": 21639.75,
+   "truck": 21639.750000000022,
+   "rel": 1.0086933926015909e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 220,
+   "L": [
+    46,
+    40.5,
+    32.5
+   ],
+   "step": [
+    -13.799999999999999,
+    0.0405,
+    0.325
+   ],
+   "count": 4,
+   "exact": 116437.62575250005,
+   "truck": 116437.62575250001,
+   "rel": 3.7492816778912393e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 221,
+   "L": [
+    27.5,
+    48.75,
+    17.5
+   ],
+   "step": [
+    35.75,
+    -63.375,
+    0.245
+   ],
+   "count": 3,
+   "exact": 70382.81249999999,
+   "truck": 70382.8125,
+   "rel": 2.067538183184546e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 222,
+   "L": [
+    42.75,
+    17.5,
+    10.5
+   ],
+   "step": [
+    0,
+    17.5,
+    -10.51
+   ],
+   "count": 2,
+   "exact": 15710.625,
+   "truck": 15710.624999999998,
+   "rel": 1.157808428083451e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 223,
+   "L": [
+    43,
+    45.75,
+    26.75
+   ],
+   "step": [
+    -42.99,
+    -45.75,
+    -13.375
+   ],
+   "count": 4,
+   "exact": 210495.74999999997,
+   "truck": 210495.75,
+   "rel": 1.3826326876781934e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 224,
+   "L": [
+    34.75,
+    44,
+    25.75
+   ],
+   "step": [
+    -24.325,
+    88,
+    25.74
+   ],
+   "count": 2,
+   "exact": 78743.5,
+   "truck": 78743.49999999999,
+   "rel": 1.848014785774934e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 225,
+   "L": [
+    40.25,
+    42.5,
+    47
+   ],
+   "step": [
+    -40.250001,
+    0,
+    -47
+   ],
+   "count": 4,
+   "exact": 321597.5,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-6 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-6 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 226,
+   "L": [
+    43.75,
+    12,
+    29.25
+   ],
+   "step": [
+    0,
+    0,
+    -29.2499
+   ],
+   "count": 4,
+   "exact": 61424.8425,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 227,
+   "L": [
+    46.5,
+    49,
+    4.75
+   ],
+   "step": [
+    0.465,
+    -48.9999,
+    -4.76
+   ],
+   "count": 3,
+   "exact": 32468.625000000007,
+   "truck": 32468.62499999999,
+   "rel": 5.602298845565084e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 228,
+   "L": [
+    18.75,
+    11.75,
+    27.75
+   ],
+   "step": [
+    -18.75,
+    8.225,
+    -27.75
+   ],
+   "count": 2,
+   "exact": 12227.34375,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 1 and 2 have bbox gap 0.0e+0 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 2 separate bodies would add their volumes"
+  },
+  {
+   "t": 229,
+   "L": [
+    5.75,
+    45,
+    11.25
+   ],
+   "step": [
+    0,
+    2.25,
+    -11.25
+   ],
+   "count": 2,
+   "exact": 5821.875,
+   "truck": 5821.875,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 230,
+   "L": [
+    35.25,
+    7.75,
+    38.75
+   ],
+   "step": [
+    24.674999999999997,
+    0.00775,
+    -0.5425
+   ],
+   "count": 4,
+   "exact": 32959.42626464064,
+   "truck": 32959.42626464062,
+   "rel": 6.622649516799248e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 231,
+   "L": [
+    33.25,
+    18.5,
+    28.5
+   ],
+   "step": [
+    0,
+    -9.25,
+    37.050000000000004
+   ],
+   "count": 2,
+   "exact": 35062.125,
+   "truck": 35062.125,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 232,
+   "L": [
+    35.25,
+    24.25,
+    33.25
+   ],
+   "step": [
+    70.5,
+    -0.02425,
+    9.975
+   ],
+   "count": 3,
+   "exact": 85267.546875,
+   "truck": 85267.54687500001,
+   "rel": 1.706618257670715e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 233,
+   "L": [
+    9.5,
+    23.75,
+    29.75
+   ],
+   "step": [
+    -9.4999,
+    0,
+    0.029750000000000002
+   ],
+   "count": 2,
+   "exact": 13424.616914406248,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 234,
+   "L": [
+    35.25,
+    22.25,
+    44.25
+   ],
+   "step": [
+    -45.825,
+    -22.249,
+    0
+   ],
+   "count": 3,
+   "exact": 104117.484375,
+   "truck": 104117.484375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 235,
+   "L": [
+    34,
+    9.75,
+    27.25
+   ],
+   "step": [
+    34.01,
+    -2.925,
+    27.25
+   ],
+   "count": 2,
+   "exact": 18066.75,
+   "truck": 18066.750000000004,
+   "rel": 2.0136321181682998e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 236,
+   "L": [
+    27,
+    41.5,
+    21
+   ],
+   "step": [
+    -1.35,
+    41.5,
+    -27.3
+   ],
+   "count": 3,
+   "exact": 70591.49999999997,
+   "truck": 70591.49999999999,
+   "rel": 2.0614259830669213e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 237,
+   "L": [
+    10,
+    3,
+    33.25
+   ],
+   "step": [
+    20,
+    2.99,
+    0
+   ],
+   "count": 2,
+   "exact": 1995,
+   "truck": 1995,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 238,
+   "L": [
+    34.25,
+    37.25,
+    41.5
+   ],
+   "step": [
+    -0.47950000000000004,
+    37.25,
+    41.499999
+   ],
+   "count": 4,
+   "exact": 211784.87499999994,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.4e-14 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 3 and 4 overlap by only 1.4e-14 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 239,
+   "L": [
+    6,
+    27.25,
+    46.5
+   ],
+   "step": [
+    -0.06,
+    27.2499,
+    -46.499
+   ],
+   "count": 2,
+   "exact": 15205.499999406,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 240,
+   "L": [
+    36.25,
+    11,
+    7.5
+   ],
+   "step": [
+    36.2499,
+    0.154,
+    0
+   ],
+   "count": 3,
+   "exact": 8971.858731,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 241,
+   "L": [
+    9.25,
+    4,
+    30.25
+   ],
+   "step": [
+    0,
+    -4,
+    -30.26
+   ],
+   "count": 3,
+   "exact": 3357.7500000000005,
+   "truck": 3357.75,
+   "rel": 1.3543216465980614e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 242,
+   "L": [
+    5.75,
+    26,
+    47.75
+   ],
+   "step": [
+    -0.000575,
+    -0.364,
+    47.75
+   ],
+   "count": 4,
+   "exact": 28554.5,
+   "truck": 28554.49999999998,
+   "rel": 6.370237277997712e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 243,
+   "L": [
+    5.75,
+    17.25,
+    15.75
+   ],
+   "step": [
+    0,
+    -12.075,
+    -0.001575
+   ],
+   "count": 3,
+   "exact": 3749.3812321874993,
+   "truck": 3749.3812321875,
+   "rel": 1.212859729980435e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 244,
+   "L": [
+    39.75,
+    45,
+    42
+   ],
+   "step": [
+    27.825,
+    90,
+    -41.999999
+   ],
+   "count": 4,
+   "exact": 300510.0000000001,
+   "truck": 300510.00000000023,
+   "rel": 3.8739250549710416e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 245,
+   "L": [
+    43.5,
+    17,
+    17.75
+   ],
+   "step": [
+    0,
+    17,
+    -17.7501
+   ],
+   "count": 2,
+   "exact": 26252.25,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 246,
+   "L": [
+    32,
+    15.25,
+    32.25
+   ],
+   "step": [
+    22.4,
+    30.5,
+    64.5
+   ],
+   "count": 2,
+   "exact": 31476,
+   "truck": 31475.99999999999,
+   "rel": 3.467383537067969e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 247,
+   "L": [
+    25.75,
+    16.25,
+    46.5
+   ],
+   "step": [
+    -12.875,
+    16.2499,
+    -0.651
+   ],
+   "count": 4,
+   "exact": 77829.1979082375,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 248,
+   "L": [
+    32.25,
+    42.5,
+    8.25
+   ],
+   "step": [
+    -0.03225,
+    42.5001,
+    0
+   ],
+   "count": 4,
+   "exact": 45230.624999999985,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 249,
+   "L": [
+    49.5,
+    38,
+    6.5
+   ],
+   "step": [
+    2.475,
+    -37.999999,
+    0
+   ],
+   "count": 2,
+   "exact": 24452.9996943375,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 250,
+   "L": [
+    5,
+    22,
+    22.25
+   ],
+   "step": [
+    0,
+    11,
+    22.24
+   ],
+   "count": 3,
+   "exact": 7341.4,
+   "truck": 7341.399999999999,
+   "rel": 1.2388573048368544e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 251,
+   "L": [
+    31.5,
+    39.25,
+    23.25
+   ],
+   "step": [
+    0,
+    0,
+    30.225
+   ],
+   "count": 2,
+   "exact": 57491.4375,
+   "truck": 57491.4375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 252,
+   "L": [
+    49.25,
+    34,
+    31.5
+   ],
+   "step": [
+    -49.25,
+    34,
+    31.4999
+   ],
+   "count": 4,
+   "exact": 210987,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 1 and 2 have bbox gap 0.0e+0 and solid.combine could not join them (solid.combine: boolean Union: the operation failed: no result; the operation failed: pushing a face: part of it lies over a hole or past the edge of the other body; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Union: planar fallback gave an implausible volume 105493.4650); leaving them as 4 separate bodies would add their volumes"
+  },
+  {
+   "t": 253,
+   "L": [
+    29.5,
+    11.5,
+    26.25
+   ],
+   "step": [
+    -38.35,
+    0,
+    -26.251
+   ],
+   "count": 2,
+   "exact": 17810.625,
+   "truck": 17810.625,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 254,
+   "L": [
+    20.5,
+    9.5,
+    25.75
+   ],
+   "step": [
+    0,
+    0,
+    25.75
+   ],
+   "count": 4,
+   "exact": 20059.25,
+   "truck": 20059.249999999996,
+   "rel": 1.8136165644736035e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 255,
+   "L": [
+    1.25,
+    20,
+    30.75
+   ],
+   "step": [
+    -0.00125,
+    -6,
+    30.7501
+   ],
+   "count": 3,
+   "exact": 2306.250000000001,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 256,
+   "L": [
+    15,
+    41.5,
+    7
+   ],
+   "step": [
+    4.5,
+    -41.49,
+    0
+   ],
+   "count": 3,
+   "exact": 13071.030000000002,
+   "truck": 13071.03,
+   "rel": 1.3916190258501863e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 257,
+   "L": [
+    15,
+    20,
+    42.5
+   ],
+   "step": [
+    -10.5,
+    20,
+    -42.499999
+   ],
+   "count": 4,
+   "exact": 51000.00000000001,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 1 and 2 have bbox gap 0.0e+0 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 4 separate bodies would add their volumes"
+  },
+  {
+   "t": 258,
+   "L": [
+    37.75,
+    35,
+    33.25
+   ],
+   "step": [
+    -37.749,
+    -0.035,
+    0
+   ],
+   "count": 4,
+   "exact": 175722.76224125005,
+   "truck": 175722.76224125005,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 259,
+   "L": [
+    3,
+    22.75,
+    36.5
+   ],
+   "step": [
+    -2.0999999999999996,
+    22.74,
+    36.499999
+   ],
+   "count": 3,
+   "exact": 7473.374999981999,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 260,
+   "L": [
+    7,
+    34.25,
+    45.25
+   ],
+   "step": [
+    -0.007,
+    0,
+    0
+   ],
+   "count": 3,
+   "exact": 10870.384875000002,
+   "verdict": "refused",
+   "student": "repeat(): the copies are shifted by only 0.007 mm, so each one lies almost exactly on the one before and the thin layer between them would be lost -- shift them by more than 0.1 mm, or by a whole part size.",
+   "raw": "pat1 (pattern): near-coincident copies: consecutive copies are shifted by only 0.007 mm (0.1 mm is the smallest safe shift: 1.5% of the part's smallest size 7 mm), so solid.combine join would drop the thin layer between them and report the original's volume"
+  },
+  {
+   "t": 261,
+   "L": [
+    4.5,
+    20.25,
+    21.5
+   ],
+   "step": [
+    -4.5001,
+    20.25,
+    -0.0645
+   ],
+   "count": 4,
+   "exact": 7836.75,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 262,
+   "L": [
+    6.25,
+    16,
+    20.75
+   ],
+   "step": [
+    -12.5,
+    -0.224,
+    -0.002075
+   ],
+   "count": 4,
+   "exact": 8299.999999999998,
+   "truck": 8300.000000000002,
+   "rel": 4.3831069964960405e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 263,
+   "L": [
+    2.25,
+    20.25,
+    4.75
+   ],
+   "step": [
+    -0.0022500000000000003,
+    -26.325,
+    -4.751
+   ],
+   "count": 4,
+   "exact": 865.6875000000002,
+   "truck": 865.6874999999999,
+   "rel": 3.939764790006186e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 264,
+   "L": [
+    30.5,
+    8.25,
+    23.75
+   ],
+   "step": [
+    -0.00305,
+    0,
+    23.7499
+   ],
+   "count": 2,
+   "exact": 11952.162340016246,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 265,
+   "L": [
+    39.25,
+    12.25,
+    47.75
+   ],
+   "step": [
+    -0.11775000000000001,
+    -24.5,
+    -95.5
+   ],
+   "count": 4,
+   "exact": 91835.18749999996,
+   "truck": 91835.1875,
+   "rel": 4.753705728003286e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 266,
+   "L": [
+    5,
+    38,
+    5.5
+   ],
+   "step": [
+    -0.25,
+    0,
+    0
+   ],
+   "count": 2,
+   "exact": 1097.25,
+   "truck": 1097.25,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 267,
+   "L": [
+    1.25,
+    39.25,
+    11
+   ],
+   "step": [
+    -1.249999,
+    1.9625000000000001,
+    0
+   ],
+   "count": 2,
+   "exact": 1079.3745898375,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 268,
+   "L": [
+    13.25,
+    17.5,
+    35.75
+   ],
+   "step": [
+    13.2499,
+    0,
+    1.7875
+   ],
+   "count": 3,
+   "exact": 24868.474881249997,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 269,
+   "L": [
+    40.25,
+    23.75,
+    9.25
+   ],
+   "step": [
+    0,
+    16.625,
+    -9.2499
+   ],
+   "count": 2,
+   "exact": 17684.815071875,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 270,
+   "L": [
+    18.75,
+    47,
+    40.25
+   ],
+   "step": [
+    0.05625,
+    -23.5,
+    0.5635
+   ],
+   "count": 3,
+   "exact": 71542.13055937504,
+   "truck": 71542.13055937497,
+   "rel": 1.0170171837620745e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 271,
+   "L": [
+    35.75,
+    49,
+    8
+   ],
+   "step": [
+    -0.10725,
+    -0.049,
+    -0.4
+   ],
+   "count": 4,
+   "exact": 16275.739780299959,
+   "truck": 16275.739780300004,
+   "rel": 2.7940195470370393e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 272,
+   "L": [
+    6,
+    15.5,
+    7.5
+   ],
+   "step": [
+    6,
+    -15.499,
+    7.5
+   ],
+   "count": 3,
+   "exact": 2092.5,
+   "verdict": "refused",
+   "student": "repeat(): two of the copies would meet only along an edge or at a point, so the result would not be one solid -- overlap them along a face or leave a gap.",
+   "raw": "pat1 (pattern): copies 1 and 2 meet only along an edge or at a point (bbox gap 0.0e+0,-1.0e-3,8.9e-16; joined pair keeps 2 shells, volume = sum; whole result 3 shells vs 1 bbox-connected groups)"
+  },
+  {
+   "t": 273,
+   "L": [
+    12.75,
+    38.75,
+    5.75
+   ],
+   "step": [
+    12.75,
+    38.76,
+    -5.749
+   ],
+   "count": 4,
+   "exact": 11363.4375,
+   "truck": 11363.437499999995,
+   "rel": 4.802216064142184e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 274,
+   "L": [
+    17.25,
+    12.25,
+    36.5
+   ],
+   "step": [
+    22.425,
+    12.2499,
+    36.500001
+   ],
+   "count": 4,
+   "exact": 30851.625,
+   "truck": 30851.62499999996,
+   "rel": 1.2971040221709178e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 275,
+   "L": [
+    23.75,
+    26,
+    21.75
+   ],
+   "step": [
+    -23.7499,
+    -1.3,
+    -43.5
+   ],
+   "count": 3,
+   "exact": 40291.875,
+   "truck": 40291.875,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 276,
+   "L": [
+    16.5,
+    15.5,
+    12.75
+   ],
+   "step": [
+    0.231,
+    -20.150000000000002,
+    -12.749999
+   ],
+   "count": 4,
+   "exact": 13043.25000000001,
+   "truck": 13043.25,
+   "rel": 6.972914739600388e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 277,
+   "L": [
+    17.75,
+    33.5,
+    5.25
+   ],
+   "step": [
+    17.75,
+    -33.5001,
+    0
+   ],
+   "count": 3,
+   "exact": 9365.34375,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 278,
+   "L": [
+    23.25,
+    8.75,
+    37.25
+   ],
+   "step": [
+    -0.06975,
+    -8.7499,
+    -37.249999
+   ],
+   "count": 4,
+   "exact": 30312.187499993048,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 279,
+   "L": [
+    31,
+    2,
+    21.75
+   ],
+   "step": [
+    -0.031,
+    4,
+    0.3045
+   ],
+   "count": 2,
+   "exact": 2697.0000000000005,
+   "truck": 2697,
+   "rel": 1.6861229176361291e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 280,
+   "L": [
+    10.5,
+    12.25,
+    18.5
+   ],
+   "step": [
+    0,
+    12.24,
+    -5.55
+   ],
+   "count": 4,
+   "exact": 9514.170750000003,
+   "truck": 9514.170750000003,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 281,
+   "L": [
+    6,
+    41.25,
+    46
+   ],
+   "step": [
+    -0.018000000000000002,
+    0,
+    92
+   ],
+   "count": 4,
+   "exact": 45540,
+   "truck": 45540.00000000001,
+   "rel": 1.5977069859866988e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 282,
+   "L": [
+    49,
+    22.25,
+    46.5
+   ],
+   "step": [
+    -48.9999,
+    -22.25,
+    13.95
+   ],
+   "count": 2,
+   "exact": 101393.25,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 283,
+   "L": [
+    9.5,
+    5.75,
+    7.5
+   ],
+   "step": [
+    9.499999,
+    -5.751,
+    0.00075
+   ],
+   "count": 2,
+   "exact": 819.375,
+   "truck": 819.375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 284,
+   "L": [
+    49.5,
+    17,
+    37
+   ],
+   "step": [
+    0,
+    -34,
+    37.001
+   ],
+   "count": 3,
+   "exact": 93406.5,
+   "truck": 93406.5,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 285,
+   "L": [
+    22.25,
+    9.5,
+    39
+   ],
+   "step": [
+    -0.002225,
+    -19,
+    -39.01
+   ],
+   "count": 2,
+   "exact": 16487.25,
+   "truck": 16487.250000000004,
+   "rel": 2.2065406948349259e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 286,
+   "L": [
+    8,
+    25.25,
+    3.75
+   ],
+   "step": [
+    0,
+    32.825,
+    7.5
+   ],
+   "count": 3,
+   "exact": 2272.5,
+   "truck": 2272.5000000000005,
+   "rel": 2.0010884527457166e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 287,
+   "L": [
+    41,
+    24.5,
+    13.75
+   ],
+   "step": [
+    0.0041,
+    -0.00245,
+    -17.875
+   ],
+   "count": 3,
+   "exact": 41435.624999999985,
+   "truck": 41435.625,
+   "rel": 3.5119333250957015e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 288,
+   "L": [
+    12.5,
+    32.5,
+    28.75
+   ],
+   "step": [
+    12.5,
+    0,
+    0.08625000000000001
+   ],
+   "count": 3,
+   "exact": 35039.0625,
+   "truck": 35039.0625,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 289,
+   "L": [
+    43,
+    47,
+    33.25
+   ],
+   "step": [
+    -43.0001,
+    2.35,
+    -16.625
+   ],
+   "count": 2,
+   "exact": 134396.5,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 290,
+   "L": [
+    47.5,
+    18,
+    17
+   ],
+   "step": [
+    -33.25,
+    0.9,
+    -11.899999999999999
+   ],
+   "count": 4,
+   "exact": 54411.77249999999,
+   "truck": 54411.77249999999,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 291,
+   "L": [
+    41.25,
+    21.25,
+    17.5
+   ],
+   "step": [
+    41.25,
+    21.249,
+    0
+   ],
+   "count": 3,
+   "exact": 46019.53124999999,
+   "truck": 46019.53124999999,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 292,
+   "L": [
+    1.25,
+    2.75,
+    4.25
+   ],
+   "step": [
+    0.0625,
+    -0.00275,
+    -4.25
+   ],
+   "count": 2,
+   "exact": 29.218750000000004,
+   "truck": 29.21875,
+   "rel": 1.2159020077178183e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 293,
+   "L": [
+    31.5,
+    45.75,
+    32
+   ],
+   "step": [
+    -31.5,
+    -45.750001,
+    -32.001
+   ],
+   "count": 4,
+   "exact": 184464,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 294,
+   "L": [
+    28.75,
+    37,
+    16
+   ],
+   "step": [
+    -28.75,
+    11.1,
+    -15.999999
+   ],
+   "count": 2,
+   "exact": 34040,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 295,
+   "L": [
+    33.5,
+    24.75,
+    20.5
+   ],
+   "step": [
+    0,
+    49.5,
+    -20.5
+   ],
+   "count": 4,
+   "exact": 67988.25,
+   "truck": 67988.24999999999,
+   "rel": 2.1403573747473794e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 296,
+   "L": [
+    11.5,
+    20.25,
+    11
+   ],
+   "step": [
+    0,
+    -20.25,
+    11.001
+   ],
+   "count": 2,
+   "exact": 5123.25,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 297,
+   "L": [
+    16.5,
+    1,
+    1.5
+   ],
+   "step": [
+    11.549999999999999,
+    -1,
+    0
+   ],
+   "count": 3,
+   "exact": 74.25,
+   "truck": 74.25000000000001,
+   "rel": 1.9139198269632327e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 298,
+   "L": [
+    11.75,
+    30.25,
+    34.75
+   ],
+   "step": [
+    3.525,
+    -30.249999,
+    -0.0034750000000000002
+   ],
+   "count": 4,
+   "exact": 49405.811642629524,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 299,
+   "L": [
+    20.75,
+    2.75,
+    5.75
+   ],
+   "step": [
+    -6.225,
+    -0.000275,
+    5.7499
+   ],
+   "count": 2,
+   "exact": 656.2147560244374,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 300,
+   "L": [
+    44.75,
+    11,
+    36.75
+   ],
+   "step": [
+    -44.75,
+    10.9999,
+    -36.751
+   ],
+   "count": 4,
+   "exact": 72360.75,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 301,
+   "L": [
+    46.75,
+    15.5,
+    48.5
+   ],
+   "step": [
+    -46.750001,
+    -4.6499999999999995,
+    -97
+   ],
+   "count": 4,
+   "exact": 140577.25,
+   "truck": 140577.24999999997,
+   "rel": 2.070308706190632e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 302,
+   "L": [
+    35.75,
+    10.5,
+    23.5
+   ],
+   "step": [
+    -71.5,
+    -10.499,
+    -0.329
+   ],
+   "count": 4,
+   "exact": 35285.25,
+   "truck": 35285.25000000002,
+   "rel": 6.18611823426227e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 303,
+   "L": [
+    8.75,
+    38.5,
+    32.5
+   ],
+   "step": [
+    0,
+    38.499999,
+    42.25
+   ],
+   "count": 3,
+   "exact": 32845.3125,
+   "truck": 32845.31249999999,
+   "rel": 2.2152194819834416e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 304,
+   "L": [
+    44.5,
+    1,
+    48.5
+   ],
+   "step": [
+    0.0445,
+    0.01,
+    0
+   ],
+   "count": 2,
+   "exact": 2181.9691675,
+   "truck": 2181.9691675,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 305,
+   "L": [
+    49.75,
+    31.75,
+    48.25
+   ],
+   "step": [
+    -99.5,
+    9.525,
+    48.2499
+   ],
+   "count": 3,
+   "exact": 228641.67187499997,
+   "truck": 228641.671875,
+   "rel": 1.2729014014840206e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 306,
+   "L": [
+    14.75,
+    17,
+    26.5
+   ],
+   "step": [
+    0.1475,
+    -0.017,
+    -7.949999999999999
+   ],
+   "count": 3,
+   "exact": 10734.038046749989,
+   "truck": 10734.038046749998,
+   "rel": 8.472996814542702e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 307,
+   "L": [
+    46,
+    24.5,
+    38
+   ],
+   "step": [
+    -59.800000000000004,
+    -24.5,
+    0
+   ],
+   "count": 4,
+   "exact": 171304.00000000003,
+   "truck": 171304.00000000003,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 308,
+   "L": [
+    13.25,
+    47.75,
+    47.5
+   ],
+   "step": [
+    0,
+    -0.04775,
+    0
+   ],
+   "count": 2,
+   "exact": 30082.708906250005,
+   "verdict": "refused",
+   "student": "repeat(): the copies are shifted by only 0.048 mm, so each one lies almost exactly on the one before and the thin layer between them would be lost -- shift them by more than 0.2 mm, or by a whole part size.",
+   "raw": "pat1 (pattern): near-coincident copies: consecutive copies are shifted by only 0.048 mm (0.2 mm is the smallest safe shift: 1.5% of the part's smallest size 13 mm), so solid.combine join would drop the thin layer between them and report the original's volume"
+  },
+  {
+   "t": 309,
+   "L": [
+    10.75,
+    22.5,
+    45.5
+   ],
+   "step": [
+    0.001075,
+    -29.25,
+    0
+   ],
+   "count": 2,
+   "exact": 22010.625000000004,
+   "truck": 22010.625,
+   "rel": 1.6528284894643894e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 310,
+   "L": [
+    4.5,
+    49,
+    18.5
+   ],
+   "step": [
+    9,
+    -14.7,
+    37
+   ],
+   "count": 2,
+   "exact": 8158.5,
+   "truck": 8158.500000000003,
+   "rel": 3.344345290578887e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 311,
+   "L": [
+    48.5,
+    30.25,
+    48
+   ],
+   "step": [
+    -48.49,
+    0,
+    62.400000000000006
+   ],
+   "count": 4,
+   "exact": 281688,
+   "truck": 281688,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 312,
+   "L": [
+    39.25,
+    9.5,
+    18.75
+   ],
+   "step": [
+    0.3925,
+    -9.500001,
+    -18.750001
+   ],
+   "count": 4,
+   "exact": 27965.625,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-6 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-6 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 313,
+   "L": [
+    12,
+    50,
+    20.5
+   ],
+   "step": [
+    -12.000001,
+    49.99,
+    -20.5
+   ],
+   "count": 3,
+   "exact": 36900,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-6 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-6 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 314,
+   "L": [
+    9.5,
+    37,
+    36.25
+   ],
+   "step": [
+    0,
+    -0.0037,
+    36.249
+   ],
+   "count": 4,
+   "exact": 50966.44560545,
+   "truck": 50966.44560545,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 315,
+   "L": [
+    19.25,
+    23.5,
+    48.25
+   ],
+   "step": [
+    0,
+    0.0235,
+    -62.725
+   ],
+   "count": 2,
+   "exact": 43654.1875,
+   "truck": 43654.18749999999,
+   "rel": 1.6667261563815443e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 316,
+   "L": [
+    35,
+    30.75,
+    30.5
+   ],
+   "step": [
+    0,
+    -30.75,
+    0.0915
+   ],
+   "count": 4,
+   "exact": 131302.49999999994,
+   "truck": 131302.50000000003,
+   "rel": 6.649644246697599e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 317,
+   "L": [
+    32.25,
+    26.75,
+    10.25
+   ],
+   "step": [
+    41.925000000000004,
+    26.76,
+    -0.001025
+   ],
+   "count": 3,
+   "exact": 26527.640625,
+   "truck": 26527.640625,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 318,
+   "L": [
+    1.25,
+    12,
+    19.25
+   ],
+   "step": [
+    1.625,
+    -11.999999,
+    -19.25
+   ],
+   "count": 2,
+   "exact": 577.5,
+   "truck": 577.5,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 319,
+   "L": [
+    5.25,
+    49.25,
+    8.75
+   ],
+   "step": [
+    -10.5,
+    -98.5,
+    0.1225
+   ],
+   "count": 3,
+   "exact": 6787.265625,
+   "truck": 6787.265624999997,
+   "rel": 4.0200048975080223e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 320,
+   "L": [
+    6,
+    10.5,
+    27.25
+   ],
+   "step": [
+    0,
+    -0.147,
+    0
+   ],
+   "count": 3,
+   "exact": 1764.8189999999997,
+   "truck": 1764.8190000000002,
+   "rel": 2.576736486214531e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 321,
+   "L": [
+    26.25,
+    4.75,
+    42
+   ],
+   "step": [
+    7.875,
+    -4.7501,
+    0
+   ],
+   "count": 3,
+   "exact": 15710.625,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 322,
+   "L": [
+    38.75,
+    26.75,
+    5
+   ],
+   "step": [
+    19.375,
+    26.749999,
+    4.999999
+   ],
+   "count": 2,
+   "exact": 10365.624999999982,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 323,
+   "L": [
+    43.25,
+    15.5,
+    48.25
+   ],
+   "step": [
+    43.2501,
+    0.775,
+    62.725
+   ],
+   "count": 3,
+   "exact": 97036.78125,
+   "truck": 97036.78124999999,
+   "rel": 1.4996288047597264e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 324,
+   "L": [
+    5.75,
+    4.25,
+    45.25
+   ],
+   "step": [
+    -5.76,
+    4.26,
+    0.6335000000000001
+   ],
+   "count": 4,
+   "exact": 4423.1875,
+   "truck": 4423.187499999999,
+   "rel": 2.0561974860277306e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 325,
+   "L": [
+    49.75,
+    42.5,
+    5
+   ],
+   "step": [
+    -49.7499,
+    -42.5,
+    0.25
+   ],
+   "count": 4,
+   "exact": 42287.49999999999,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 1 and 2 have bbox gap 0.0e+0 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 4 separate bodies would add their volumes"
+  },
+  {
+   "t": 326,
+   "L": [
+    6,
+    38,
+    3
+   ],
+   "step": [
+    0,
+    0,
+    -0.8999999999999999
+   ],
+   "count": 2,
+   "exact": 889.2,
+   "truck": 889.1999999999999,
+   "rel": 1.2785294390645077e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 327,
+   "L": [
+    2.75,
+    2.75,
+    44.25
+   ],
+   "step": [
+    2.749999,
+    -2.75,
+    -44.251
+   ],
+   "count": 4,
+   "exact": 1338.5625000000005,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 328,
+   "L": [
+    7.5,
+    20,
+    26.25
+   ],
+   "step": [
+    7.501,
+    -0.06,
+    -26.24
+   ],
+   "count": 2,
+   "exact": 7874.999999999999,
+   "truck": 7874.999999999999,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 329,
+   "L": [
+    31.75,
+    42.75,
+    33.25
+   ],
+   "step": [
+    -1.5875000000000001,
+    0,
+    -1.6625
+   ],
+   "count": 2,
+   "exact": 49530.8780859375,
+   "truck": 49530.878085937504,
+   "rel": 1.4689740814930498e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 330,
+   "L": [
+    44.25,
+    14.75,
+    42
+   ],
+   "step": [
+    44.251,
+    14.75,
+    42
+   ],
+   "count": 2,
+   "exact": 54825.75,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 331,
+   "L": [
+    16.75,
+    22,
+    41.5
+   ],
+   "step": [
+    16.76,
+    6.6,
+    0.41500000000000004
+   ],
+   "count": 3,
+   "exact": 45878.250000000015,
+   "truck": 45878.24999999999,
+   "rel": 4.757782357119173e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 332,
+   "L": [
+    17.75,
+    13.75,
+    37
+   ],
+   "step": [
+    17.75,
+    0,
+    0
+   ],
+   "count": 4,
+   "exact": 36121.25,
+   "truck": 36121.25000000001,
+   "rel": 2.0143150124050042e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 333,
+   "L": [
+    32,
+    2.25,
+    32.25
+   ],
+   "step": [
+    9.6,
+    -0.0022500000000000003,
+    0
+   ],
+   "count": 3,
+   "exact": 3718.4507999999996,
+   "truck": 3718.4508,
+   "rel": 1.222948414125754e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 334,
+   "L": [
+    26.75,
+    41.75,
+    12
+   ],
+   "step": [
+    -0.08025,
+    41.7501,
+    12
+   ],
+   "count": 2,
+   "exact": 26803.5,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 335,
+   "L": [
+    17,
+    36.5,
+    30.75
+   ],
+   "step": [
+    0.017,
+    -36.49,
+    -30.74
+   ],
+   "count": 4,
+   "exact": 76321.49490509993,
+   "truck": 76321.49490510001,
+   "rel": 1.143996084966187e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 336,
+   "L": [
+    21.5,
+    45.75,
+    31.5
+   ],
+   "step": [
+    -21.501,
+    59.475,
+    40.95
+   ],
+   "count": 3,
+   "exact": 92952.56249999999,
+   "truck": 92952.56249999984,
+   "rel": 1.5655206093287481e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 337,
+   "L": [
+    14.5,
+    24.5,
+    40.5
+   ],
+   "step": [
+    29,
+    -24.5,
+    52.65
+   ],
+   "count": 2,
+   "exact": 28775.25,
+   "truck": 28775.249999999985,
+   "rel": 5.057094283582888e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 338,
+   "L": [
+    44.5,
+    46,
+    35
+   ],
+   "step": [
+    -13.35,
+    0.46,
+    -35
+   ],
+   "count": 2,
+   "exact": 143290,
+   "truck": 143289.99999999997,
+   "rel": 2.0311138569846956e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 339,
+   "L": [
+    40.75,
+    32.25,
+    9.25
+   ],
+   "step": [
+    0,
+    1.6125,
+    -6.475
+   ],
+   "count": 3,
+   "exact": 29539.64953125,
+   "truck": 29539.649531250005,
+   "rel": 1.2315578772331386e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 340,
+   "L": [
+    27.75,
+    31.5,
+    41.75
+   ],
+   "step": [
+    0,
+    0,
+    -0.004175
+   ],
+   "count": 2,
+   "exact": 36498.368221875004,
+   "verdict": "refused",
+   "student": "repeat(): the copies are shifted by only 0.0042 mm, so each one lies almost exactly on the one before and the thin layer between them would be lost -- shift them by more than 0.42 mm, or by a whole part size.",
+   "raw": "pat1 (pattern): near-coincident copies: consecutive copies are shifted by only 0.0042 mm (0.42 mm is the smallest safe shift: 1.5% of the part's smallest size 28 mm), so solid.combine join would drop the thin layer between them and report the original's volume"
+  },
+  {
+   "t": 341,
+   "L": [
+    44,
+    41,
+    3.25
+   ],
+   "step": [
+    44,
+    -0.041,
+    -0.00032500000000000004
+   ],
+   "count": 2,
+   "exact": 11726,
+   "truck": 11726,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 342,
+   "L": [
+    48.25,
+    1.25,
+    33.5
+   ],
+   "step": [
+    -48.25,
+    -0.625,
+    33.5001
+   ],
+   "count": 2,
+   "exact": 4040.9375,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 343,
+   "L": [
+    17.25,
+    9,
+    41.75
+   ],
+   "step": [
+    0,
+    -18,
+    0
+   ],
+   "count": 3,
+   "exact": 19445.0625,
+   "truck": 19445.0625,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 344,
+   "L": [
+    26,
+    2.25,
+    22.25
+   ],
+   "step": [
+    -25.99,
+    2.249,
+    0
+   ],
+   "count": 4,
+   "exact": 5206.499332499999,
+   "truck": 5206.4993325000005,
+   "rel": 3.4936898813975927e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 345,
+   "L": [
+    28.25,
+    49.5,
+    47.5
+   ],
+   "step": [
+    28.2499,
+    49.5,
+    -23.75
+   ],
+   "count": 3,
+   "exact": 199268.4375,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 346,
+   "L": [
+    41.5,
+    32,
+    3.25
+   ],
+   "step": [
+    41.5,
+    -0.096,
+    -3.25
+   ],
+   "count": 4,
+   "exact": 17264.000000000004,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 3 and 4 have bbox gap 0.0e+0 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 4 separate bodies would add their volumes"
+  },
+  {
+   "t": 347,
+   "L": [
+    15.5,
+    50,
+    4.5
+   ],
+   "step": [
+    0.0465,
+    50.0001,
+    -4.5001
+   ],
+   "count": 2,
+   "exact": 6975,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 348,
+   "L": [
+    46.5,
+    20.75,
+    34.25
+   ],
+   "step": [
+    -46.499999,
+    -20.75,
+    34.26
+   ],
+   "count": 2,
+   "exact": 66093.9375,
+   "truck": 66093.9375,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 349,
+   "L": [
+    24.75,
+    28.5,
+    4
+   ],
+   "step": [
+    24.74,
+    28.5,
+    0
+   ],
+   "count": 3,
+   "exact": 8464.5,
+   "truck": 8464.499999999998,
+   "rel": 2.1489626127306475e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 350,
+   "L": [
+    20.25,
+    17.75,
+    42.25
+   ],
+   "step": [
+    -20.25,
+    5.325,
+    42.24
+   ],
+   "count": 3,
+   "exact": 45558.703125,
+   "truck": 45558.703125,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 351,
+   "L": [
+    32.5,
+    28.25,
+    16.5
+   ],
+   "step": [
+    -0.455,
+    -28.249,
+    -16.5001
+   ],
+   "count": 3,
+   "exact": 45447.18749999999,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 352,
+   "L": [
+    41.75,
+    47,
+    21
+   ],
+   "step": [
+    -41.749,
+    47,
+    0
+   ],
+   "count": 2,
+   "exact": 82414.50000000001,
+   "truck": 82414.5,
+   "rel": 1.7656984181626838e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 353,
+   "L": [
+    10,
+    18.5,
+    34.25
+   ],
+   "step": [
+    -10,
+    18.500001,
+    -0.10275000000000001
+   ],
+   "count": 2,
+   "exact": 12672.5,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-6 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-6 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 354,
+   "L": [
+    21.5,
+    3,
+    23.25
+   ],
+   "step": [
+    -21.5,
+    -0.00030000000000000003,
+    11.625
+   ],
+   "count": 3,
+   "exact": 4498.874999999999,
+   "truck": 4498.875,
+   "rel": 2.0216047384577886e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 355,
+   "L": [
+    20,
+    10.25,
+    1.75
+   ],
+   "step": [
+    -26,
+    -0.001025,
+    -1.749999
+   ],
+   "count": 3,
+   "exact": 1076.25,
+   "truck": 1076.2499999999998,
+   "rel": 2.112647390877882e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 356,
+   "L": [
+    13,
+    41,
+    27.75
+   ],
+   "step": [
+    -26,
+    0,
+    -27.75
+   ],
+   "count": 4,
+   "exact": 59163,
+   "truck": 59163,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 357,
+   "L": [
+    2.75,
+    49.25,
+    2.75
+   ],
+   "step": [
+    3.575,
+    -64.025,
+    2.75
+   ],
+   "count": 4,
+   "exact": 1489.8125,
+   "truck": 1489.8125,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 358,
+   "L": [
+    32.5,
+    22.25,
+    18.5
+   ],
+   "step": [
+    32.5,
+    22.24,
+    18.4999
+   ],
+   "count": 2,
+   "exact": 26755.625,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 359,
+   "L": [
+    22,
+    20.5,
+    2
+   ],
+   "step": [
+    21.999999,
+    -20.500001,
+    -0.6
+   ],
+   "count": 2,
+   "exact": 1804.0000000000002,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-6 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-6 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 360,
+   "L": [
+    9.5,
+    11,
+    6
+   ],
+   "step": [
+    9.51,
+    11,
+    6.0001
+   ],
+   "count": 2,
+   "exact": 1254,
+   "truck": 1254,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 361,
+   "L": [
+    47.75,
+    13,
+    46.75
+   ],
+   "step": [
+    0.004775000000000001,
+    0,
+    0
+   ],
+   "count": 4,
+   "exact": 29028.768518749996,
+   "verdict": "refused",
+   "student": "repeat(): the copies are shifted by only 0.0048 mm, so each one lies almost exactly on the one before and the thin layer between them would be lost -- shift them by more than 0.2 mm, or by a whole part size.",
+   "raw": "pat1 (pattern): near-coincident copies: consecutive copies are shifted by only 0.0048 mm (0.2 mm is the smallest safe shift: 1.5% of the part's smallest size 13 mm), so solid.combine join would drop the thin layer between them and report the original's volume"
+  },
+  {
+   "t": 362,
+   "L": [
+    25.5,
+    46,
+    43.25
+   ],
+   "step": [
+    0,
+    -46,
+    56.225
+   ],
+   "count": 3,
+   "exact": 152196.74999999997,
+   "truck": 152196.75,
+   "rel": 1.9122504558562328e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 363,
+   "L": [
+    46.5,
+    13,
+    6.25
+   ],
+   "step": [
+    -46.5,
+    12.999999,
+    6.250001
+   ],
+   "count": 4,
+   "exact": 15112.500000000004,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-6 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-6 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 364,
+   "L": [
+    17.25,
+    34.5,
+    20.25
+   ],
+   "step": [
+    12.075,
+    34.49,
+    20.251
+   ],
+   "count": 4,
+   "exact": 48205.12499999999,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 365,
+   "L": [
+    45,
+    39.5,
+    40
+   ],
+   "step": [
+    -45.000001,
+    39.5001,
+    0
+   ],
+   "count": 2,
+   "exact": 142200,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 366,
+   "L": [
+    40.25,
+    15.5,
+    23
+   ],
+   "step": [
+    -0.12075,
+    0,
+    -23
+   ],
+   "count": 3,
+   "exact": 43047.37500000001,
+   "truck": 43047.375,
+   "rel": 1.690220974956876e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 367,
+   "L": [
+    34.5,
+    19.75,
+    10.5
+   ],
+   "step": [
+    34.499,
+    -19.75,
+    -21
+   ],
+   "count": 3,
+   "exact": 21463.312500000004,
+   "truck": 21463.312500000015,
+   "rel": 5.084926393013724e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 368,
+   "L": [
+    24,
+    41,
+    29.75
+   ],
+   "step": [
+    -24.0001,
+    -41.0001,
+    8.924999999999999
+   ],
+   "count": 4,
+   "exact": 117096,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-4 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-4 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 369,
+   "L": [
+    11.75,
+    34.75,
+    33.75
+   ],
+   "step": [
+    -11.74,
+    -10.424999999999999,
+    43.875
+   ],
+   "count": 4,
+   "exact": 55122.18750000001,
+   "truck": 55122.18750000001,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 370,
+   "L": [
+    32.25,
+    41.5,
+    4.75
+   ],
+   "step": [
+    -41.925000000000004,
+    41.499,
+    -0.000475
+   ],
+   "count": 2,
+   "exact": 12714.562500000002,
+   "truck": 12714.562499999998,
+   "rel": 2.861269357157757e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 371,
+   "L": [
+    3.75,
+    8,
+    22.75
+   ],
+   "step": [
+    3.75,
+    5.6,
+    29.575
+   ],
+   "count": 3,
+   "exact": 2047.5000000000002,
+   "truck": 2047.4999999999993,
+   "rel": 4.441976565435547e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 372,
+   "L": [
+    12.25,
+    25.25,
+    38.5
+   ],
+   "step": [
+    0.1715,
+    0.2525,
+    77
+   ],
+   "count": 2,
+   "exact": 23817.0625,
+   "truck": 23817.062499999996,
+   "rel": 1.527467464592543e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 373,
+   "L": [
+    3.75,
+    37,
+    32.75
+   ],
+   "step": [
+    0,
+    37,
+    22.924999999999997
+   ],
+   "count": 2,
+   "exact": 9088.125,
+   "truck": 9088.125,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 374,
+   "L": [
+    44,
+    24.25,
+    27.5
+   ],
+   "step": [
+    -43.999999,
+    0,
+    -13.75
+   ],
+   "count": 4,
+   "exact": 117369.9989996875,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-6 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-6 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 375,
+   "L": [
+    42.25,
+    32.75,
+    42.25
+   ],
+   "step": [
+    -42.2499,
+    32.749,
+    -0.0042250000000000005
+   ],
+   "count": 4,
+   "exact": 233843.18748732636,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 376,
+   "L": [
+    20.5,
+    14.25,
+    1.5
+   ],
+   "step": [
+    -20.5,
+    18.525000000000002,
+    1.500001
+   ],
+   "count": 2,
+   "exact": 876.375,
+   "truck": 876.3750000000001,
+   "rel": 1.2972396259776468e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 377,
+   "L": [
+    37.25,
+    4.5,
+    36
+   ],
+   "step": [
+    -0.003725,
+    -0.045,
+    36.001
+   ],
+   "count": 2,
+   "exact": 12068.999999999998,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 378,
+   "L": [
+    26.5,
+    8.25,
+    39.5
+   ],
+   "step": [
+    0.265,
+    0,
+    -79
+   ],
+   "count": 3,
+   "exact": 25907.062499999996,
+   "truck": 25907.0625,
+   "rel": 1.4042421085338076e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 379,
+   "L": [
+    25.25,
+    39.5,
+    48.25
+   ],
+   "step": [
+    -32.825,
+    -39.5001,
+    -0.004825
+   ],
+   "count": 4,
+   "exact": 192493.37499999994,
+   "truck": 192493.375,
+   "rel": 3.0238786614587348e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 380,
+   "L": [
+    41.75,
+    31.25,
+    16.75
+   ],
+   "step": [
+    0,
+    -0.003125,
+    16.749
+   ],
+   "count": 4,
+   "exact": 87410.14882890624,
+   "truck": 87410.14882890624,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 381,
+   "L": [
+    28,
+    3,
+    9.25
+   ],
+   "step": [
+    28,
+    -3.001,
+    0.1295
+   ],
+   "count": 3,
+   "exact": 2331,
+   "verdict": "refused",
+   "student": "repeat(): the copies would be only 1.0e-3 mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.",
+   "raw": "pat1 (pattern): sub-resolution gap: copies 1 and 2 are apart by 1.0e-3 mm (bbox gap), below the 1e-3 mm the kernel can keep apart"
+  },
+  {
+   "t": 382,
+   "L": [
+    38,
+    32.25,
+    40.5
+   ],
+   "step": [
+    -1.9000000000000001,
+    0.03225,
+    -52.65
+   ],
+   "count": 3,
+   "exact": 148898.25000000003,
+   "truck": 148898.25,
+   "rel": 1.9546119888402784e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 383,
+   "L": [
+    11.5,
+    49.75,
+    24.5
+   ],
+   "step": [
+    -0.161,
+    49.75,
+    -0.0245
+   ],
+   "count": 3,
+   "exact": 42051.18750000003,
+   "truck": 42051.18749999999,
+   "rel": 8.651310517905613e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 384,
+   "L": [
+    42.75,
+    21.75,
+    38.5
+   ],
+   "step": [
+    -0.4275,
+    -21.75,
+    -38.5
+   ],
+   "count": 2,
+   "exact": 71595.56250000001,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.8e-15 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.8e-15 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 385,
+   "L": [
+    43.5,
+    36,
+    48.5
+   ],
+   "step": [
+    87,
+    35.99,
+    97
+   ],
+   "count": 4,
+   "exact": 303804,
+   "truck": 303804.00000000076,
+   "rel": 2.490749272146108e-15,
+   "verdict": "ok"
+  },
+  {
+   "t": 386,
+   "L": [
+    5.25,
+    22.25,
+    23.5
+   ],
+   "step": [
+    -5.249999,
+    -22.25,
+    23.5
+   ],
+   "count": 3,
+   "exact": 8235.28125,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.8e-15 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.8e-15 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 387,
+   "L": [
+    36.25,
+    11.75,
+    41.25
+   ],
+   "step": [
+    0,
+    0.01175,
+    53.625
+   ],
+   "count": 4,
+   "exact": 70279.68749999997,
+   "truck": 70279.6875,
+   "rel": 4.1411439765912043e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 388,
+   "L": [
+    36.25,
+    24.25,
+    23
+   ],
+   "step": [
+    36.25,
+    24.25,
+    0.069
+   ],
+   "count": 4,
+   "exact": 80873.75,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 3 and 4 have bbox gap 0.0e+0 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 4 separate bodies would add their volumes"
+  },
+  {
+   "t": 389,
+   "L": [
+    3.5,
+    2.25,
+    34.75
+   ],
+   "step": [
+    -0.0035,
+    -0.0225,
+    -34.74
+   ],
+   "count": 3,
+   "exact": 820.8129809249998,
+   "truck": 820.8129809249999,
+   "rel": 1.3850516544401964e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 390,
+   "L": [
+    40.25,
+    44.25,
+    44.25
+   ],
+   "step": [
+    -0.04025,
+    44.26,
+    44.24
+   ],
+   "count": 4,
+   "exact": 315248.0625000002,
+   "truck": 315248.0624999999,
+   "rel": 9.23204102379969e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 391,
+   "L": [
+    30.25,
+    41,
+    12.75
+   ],
+   "step": [
+    30.2499,
+    -41,
+    6.375
+   ],
+   "count": 3,
+   "exact": 47439.562499999985,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 392,
+   "L": [
+    10,
+    5.5,
+    13
+   ],
+   "step": [
+    10,
+    5.499999,
+    -13
+   ],
+   "count": 4,
+   "exact": 2860,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 3.6e-15 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 3 and 4 overlap by only 3.6e-15 mm and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap)"
+  },
+  {
+   "t": 393,
+   "L": [
+    23.25,
+    19.25,
+    41.75
+   ],
+   "step": [
+    1.1625,
+    0,
+    -83.5
+   ],
+   "count": 4,
+   "exact": 74742.93749999997,
+   "truck": 74742.93749999999,
+   "rel": 1.9469284610826082e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 394,
+   "L": [
+    38.75,
+    29.75,
+    38.25
+   ],
+   "step": [
+    38.75,
+    0,
+    0
+   ],
+   "count": 2,
+   "exact": 88190.15625,
+   "truck": 88190.15625,
+   "rel": 0,
+   "verdict": "ok"
+  },
+  {
+   "t": 395,
+   "L": [
+    22.25,
+    32.75,
+    6.25
+   ],
+   "step": [
+    11.125,
+    32.749999,
+    6.25
+   ],
+   "count": 4,
+   "exact": 18217.187500000004,
+   "verdict": "refused",
+   "student": "repeat(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.",
+   "raw": "pat1 (pattern): copies overlap or touch: copies 2 and 3 have bbox gap 1.8e-15 and solid.combine could not join them (solid.combine: invalid input: join cannot preserve the original faces; check for zero-thickness edge contact or add intentional overlap); leaving them as 4 separate bodies would add their volumes"
+  },
+  {
+   "t": 396,
+   "L": [
+    30.75,
+    42.5,
+    12.25
+   ],
+   "step": [
+    -30.75,
+    -85,
+    12.250001
+   ],
+   "count": 3,
+   "exact": 48027.65625,
+   "truck": 48027.65625000002,
+   "rel": 4.544854891300318e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 397,
+   "L": [
+    16,
+    28.5,
+    8
+   ],
+   "step": [
+    -11.2,
+    28.4999,
+    7.9999
+   ],
+   "count": 2,
+   "exact": 7295.999999951999,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  },
+  {
+   "t": 398,
+   "L": [
+    44.75,
+    1.25,
+    39.5
+   ],
+   "step": [
+    0.6265000000000001,
+    0,
+    -27.65
+   ],
+   "count": 3,
+   "exact": 5321.435062500002,
+   "truck": 5321.4350625,
+   "rel": 3.4182309512037873e-16,
+   "verdict": "ok"
+  },
+  {
+   "t": 399,
+   "L": [
+    10.25,
+    12,
+    22.75
+   ],
+   "step": [
+    0,
+    11.9999,
+    0.02275
+   ],
+   "count": 4,
+   "exact": 11192.93011370625,
+   "verdict": "refused",
+   "student": "repeat(): the copies overlap by only 1.0e-4 mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.",
+   "raw": "pat1 (pattern): sub-resolution overlap: copies 1 and 2 overlap by only 1.0e-4 mm along one direction (bbox overlap), below the 0.0005 mm solid.combine join fuses exactly"
+  }
+ ]
+}

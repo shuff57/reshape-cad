@@ -1,0 +1,2381 @@
+[
+ {
+  "id": "r3-cone2-step3",
+  "row": "rep-overlap-curved",
+  "src": "const c = cone(10, 20, { at: [0,0,0] }); repeat(c, { count: 2, step: [3,0,0] });",
+  "note": "critic repro 1",
+  "mapAngle": false,
+  "featureKinds": [
+   "cone",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "cone1",
+    "mode": "linear",
+    "count": 2,
+    "step": [
+     3,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-cone2-step3",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "cone",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 799.086451664999,
+    "com": [
+     1.4999999511643725,
+     -7.724567890149476e-8,
+     -4.612234200989091
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -10,
+     8,
+     5,
+     10
+    ],
+    "faces": 5,
+    "types": {
+     "plane": 3,
+     "cone": 2
+    },
+    "components": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 1
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 5300,
+   "truckFeatures": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "status": "built",
+     "pick": null,
+     "wallMs": 32
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 26
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cone": 2,
+     "plane": 2
+    },
+    "occtTypes": {
+     "plane": 3,
+     "cone": 2
+    },
+    "occtComponents": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cone": "equal",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 1047.0066287270336,
+    "bbox": [
+     -5,
+     -4.9999373858164375,
+     -10.000000000000002,
+     8.000000000000002,
+     4.9999373858164375,
+     10
+    ],
+    "com": [
+     1.5000000000000018,
+     3.671012136655867e-16,
+     -4.999999999999998
+    ],
+    "faces": 4,
+    "kernelFaces": 8,
+    "shells": 2,
+    "curved": true,
+    "bodies": 2,
+    "dVol": 0.3102545119435589,
+    "dBbox": 0.00001252283671249188,
+    "dCom": 0.014991891923363258,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-cone3-step6",
+  "row": "rep-overlap-curved",
+  "src": "const c = cone(10, 20, { at: [0,0,0] }); repeat(c, { count: 3, step: [6,0,0] });",
+  "note": "critic repro 2",
+  "mapAngle": false,
+  "featureKinds": [
+   "cone",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "cone1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     6,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-cone3-step6",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "cone",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 1434.3993451147937,
+    "com": [
+     5.999999931656583,
+     -9.500408537108982e-8,
+     -4.735779677578195
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -10.000000000000004,
+     17,
+     5,
+     10
+    ],
+    "faces": 8,
+    "types": {
+     "plane": 5,
+     "cone": 3
+    },
+    "components": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 2
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 56031,
+   "truckFeatures": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "status": "built",
+     "pick": null,
+     "wallMs": 13
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 31
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cone": 3,
+     "plane": 3
+    },
+    "occtTypes": {
+     "plane": 5,
+     "cone": 3
+    },
+    "occtComponents": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cone": "equal",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 1570.5099430905511,
+    "bbox": [
+     -5,
+     -4.9999373858164375,
+     -10.000000000000002,
+     17,
+     4.9999373858164375,
+     10
+    ],
+    "com": [
+     6.000000000000001,
+     1.1660509149650723e-15,
+     -4.999999999999997
+    ],
+    "faces": 6,
+    "kernelFaces": 12,
+    "shells": 3,
+    "curved": true,
+    "bodies": 3,
+    "dVol": 0.09489030961936516,
+    "dBbox": 0.00001252283671249188,
+    "dCom": 0.0084230362347114,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-cone-ra-overlap",
+  "row": "rep-overlap-curved",
+  "src": "const c = cone(10, 20, { at: [4,0,0] }); repeatAround(c, { count: 3 });",
+  "note": "critic repro 3",
+  "mapAngle": false,
+  "featureKinds": [
+   "cone",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "cone1",
+    "mode": "circular",
+    "count": 3,
+    "axis": "z",
+    "totalAngle": 360
+   }
+  ],
+  "fx": {
+   "id": "r3-cone-ra-overlap",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "cone",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 1468.094722664441,
+    "com": [
+     4.911212960856924e-13,
+     2.2180764316113265e-13,
+     -4.773430692737518
+    ],
+    "bbox": [
+     -7.000000000000002,
+     -8.464101615137753,
+     -10,
+     9,
+     8.464101615137755,
+     10
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 7,
+     "cone": 3
+    },
+    "components": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 4
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 63072,
+   "truckFeatures": [
+    {
+     "id": "cone1",
+     "kind": "cone",
+     "status": "built",
+     "pick": null,
+     "wallMs": 14
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 29
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cone": 3,
+     "plane": 3
+    },
+    "occtTypes": {
+     "plane": 7,
+     "cone": 3
+    },
+    "occtComponents": {
+     "plane": 1,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cone": "equal",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 1570.5099430905507,
+    "bbox": [
+     -7.000000000000003,
+     -8.464039000954191,
+     -10.000000000000002,
+     9.000000000000002,
+     8.464039000954193,
+     10
+    ],
+    "com": [
+     -2.8955394576591025e-16,
+     1.4477697288295513e-16,
+     -4.999999999999999
+    ],
+    "faces": 6,
+    "kernelFaces": 12,
+    "shells": 3,
+    "curved": true,
+    "bodies": 3,
+    "dVol": 0.06976063522674929,
+    "dBbox": 0.000007397617184849967,
+    "dCom": 0.007379817766428537,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-washer2-y6",
+  "row": "rep-overlap-curved",
+  "src": "const s = sketch('front'); s.polygon([[10,0],[20,0],[20,10],[10,10]]); const r = spin(s, 360); repeat(r, { count: 2, step: [0,6,0] });",
+  "note": "critic repro 4: washers stacked along their axis, overlapping",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "revolve",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "rev1",
+    "mode": "linear",
+    "count": 2,
+    "step": [
+     0,
+     6,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-washer2-y6",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 15079.644737231007,
+    "com": [
+     -3.618764437576268e-15,
+     8.000000000000002,
+     1.2558816678384297e-15
+    ],
+    "bbox": [
+     -20,
+     0,
+     -20,
+     20,
+     16,
+     20
+    ],
+    "faces": 8,
+    "types": {
+     "plane": 2,
+     "cylinder": 6
+    },
+    "components": {
+     "plane": 2,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 15079.644737230998,
+    "bbox": [
+     -20,
+     0,
+     -20,
+     20,
+     16,
+     20
+    ],
+    "faces": 8,
+    "dVol": 6.031274062627114e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     9.824012398357297e-16,
+     8.000000000000114,
+     4.517207236432763e-16
+    ]
+   },
+   "ms": 6149,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "wallMs": 334
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 562
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 4,
+     "plane": 4
+    },
+    "occtTypes": {
+     "plane": 2,
+     "cylinder": 6
+    },
+    "occtComponents": {
+     "plane": 2,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "truck-splits-cylinder-patch-over-180deg",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 18849.530780687015,
+    "bbox": [
+     -20,
+     0,
+     -20,
+     20.000000000000004,
+     16,
+     20
+    ],
+    "com": [
+     5.654930103459168e-14,
+     8.000000000000131,
+     3.2392005768961214e-14
+    ],
+    "faces": 8,
+    "kernelFaces": 24,
+    "shells": 2,
+    "curved": true,
+    "bodies": 2,
+    "dVol": 0.24999833279548814,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 2.2058003722726187e-15,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-washer3-z6",
+  "row": "rep-overlap-curved",
+  "src": "const s = sketch('front'); s.polygon([[10,0],[20,0],[20,10],[10,10]]); const r = spin(s, 360); repeat(r, { count: 3, step: [0,0,6] });",
+  "note": "critic repro 5: sideways, overlapping",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "revolve",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "rev1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     0,
+     0,
+     6
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-washer3-z6",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 16453.718935451157,
+    "com": [
+     5.042617704949808e-7,
+     5.000000000000001,
+     6.0000000000000036
+    ],
+    "bbox": [
+     -20,
+     0,
+     -20,
+     20,
+     10,
+     32
+    ],
+    "faces": 41,
+    "types": {
+     "plane": 32,
+     "cylinder": 9
+    },
+    "components": {
+     "plane": 2,
+     "cylinder": 6
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 8
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 16453.718934777145,
+    "bbox": [
+     -20.000000000000004,
+     0,
+     -20,
+     20.000000000000004,
+     10,
+     32
+    ],
+    "faces": 8,
+    "dVol": 4.0964111166167035e-11,
+    "dBbox": 1.7763568394002506e-16,
+    "pass": true,
+    "com": [
+     6.156358069098114e-17,
+     4.999999999999997,
+     5.9999999999999964
+    ]
+   },
+   "ms": 12098,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "wallMs": 286
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 776
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 6,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 32,
+     "cylinder": 9
+    },
+    "occtComponents": {
+     "plane": 2,
+     "cylinder": 6
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "truck-merges-edge-connected-same-surface-faces",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 28274.29617103069,
+    "bbox": [
+     -20,
+     0,
+     -20,
+     20.000000000000004,
+     10,
+     32
+    ],
+    "com": [
+     4.124860847176201e-14,
+     5.000000000000023,
+     6.000000000000086
+    ],
+    "faces": 12,
+    "kernelFaces": 36,
+    "shells": 3,
+    "curved": true,
+    "bodies": 3,
+    "dVol": 0.7184137082900411,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 7.598578485518008e-9,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-vase2-x10",
+  "row": "rep-overlap-curved",
+  "src": "const s = sketch('front'); s.polygon([[0,0],[20,0],[15,30],[0,30]]); const r = spin(s, 360); repeat(r, { count: 2, step: [10,0,0] });",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "revolve",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "rev1",
+    "mode": "linear",
+    "count": 2,
+    "step": [
+     10,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-vase2-x10",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 39414.00899824027,
+    "com": [
+     4.999999596758367,
+     13.760825629465655,
+     -3.4895251477243957e-9
+    ],
+    "bbox": [
+     -20,
+     -2.842170943040401e-14,
+     -20,
+     30,
+     30,
+     20
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 6,
+     "cone": 3
+    },
+    "components": {
+     "plane": 2,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 2
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 24148,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "wallMs": 126
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 239
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cone": 2,
+     "plane": 4
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cone": 3
+    },
+    "occtComponents": {
+     "plane": 2,
+     "cone": 1
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cone": "UNEXPLAINED",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 58114.25866159233,
+    "bbox": [
+     -20,
+     0,
+     -19.999749543265743,
+     30,
+     30,
+     19.999749543265743
+    ],
+    "com": [
+     5.000000000000022,
+     13.581064785464902,
+     -3.644066169248099e-15
+    ],
+    "faces": 6,
+    "kernelFaces": 10,
+    "shells": 2,
+    "curved": true,
+    "bodies": 2,
+    "dVol": 0.47445692885965934,
+    "dBbox": 0.000012522836712847151,
+    "dCom": 0.002542202235695,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-washer-y10-touch",
+  "row": "rep-overlap-curved",
+  "src": "const s = sketch('front'); s.polygon([[10,0],[20,0],[20,10],[10,10]]); const r = spin(s, 360); repeat(r, { count: 3, step: [0,10,0] });",
+  "note": "washers stacked flat on flat (face contact): the true volume is 3 x 9424.78 = 28274.33",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "revolve",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "rev1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     0,
+     10,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-washer-y10-touch",
+   "kind": "rep-overlap-curved",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 28274.33388230815,
+    "com": [
+     -2.557260202553895e-15,
+     15,
+     1.1697625402974243e-15
+    ],
+    "bbox": [
+     -20,
+     0,
+     -20,
+     20,
+     30,
+     20
+    ],
+    "faces": 8,
+    "types": {
+     "cylinder": 6,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 28274.333882308172,
+    "bbox": [
+     -20,
+     0,
+     -20,
+     20,
+     30,
+     20
+    ],
+    "faces": 12,
+    "dVol": 7.720030800162702e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     1.5798872402118437e-15,
+     15.000000000000252,
+     1.4420965096916967e-15
+    ]
+   },
+   "ms": 18971,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "wallMs": 267
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 777
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 6,
+     "plane": 6
+    },
+    "occtTypes": {
+     "cylinder": 6,
+     "plane": 2
+    },
+    "occtComponents": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 28274.296171030535,
+    "bbox": [
+     -20,
+     0,
+     -20,
+     20.000000000000004,
+     30,
+     20
+    ],
+    "com": [
+     1.0638645522662464e-13,
+     15.000000000000247,
+     7.175349308371015e-14
+    ],
+    "faces": 12,
+    "kernelFaces": 36,
+    "shells": 3,
+    "curved": true,
+    "bodies": 3,
+    "dVol": 0.000001333763609497933,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 3.8561425879131126e-15,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-sub-0.00001",
+  "row": "subgap",
+  "src": "const b = box(10,10,10, { at: [0,0,0] }); repeat(b, { count: 3, step: [10.00001,0,0] });",
+  "note": "step 10+0.00001",
+  "mapAngle": false,
+  "featureKinds": [
+   "box",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "box1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     10.00001,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-sub-0.00001",
+   "kind": "subgap",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 2999.9999999999995,
+    "com": [
+     10.000010000000001,
+     4.8849813083506894e-17,
+     0
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     25.00002,
+     5,
+     5
+    ],
+    "faces": 18,
+    "types": {
+     "plane": 18
+    },
+    "components": {
+     "plane": 18
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 2999.9999999999995,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     25.00002,
+     5,
+     5
+    ],
+    "faces": 18,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     10.000009999999996,
+     0,
+     0
+    ]
+   },
+   "ms": 38,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 35
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 18
+    },
+    "occtComponents": {
+     "plane": 18
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 3000.002,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     25.00002,
+     5,
+     5.000000000000001
+    ],
+    "com": [
+     10.000010000000001,
+     0,
+     3.7895587310147135e-17
+    ],
+    "faces": 6,
+    "kernelFaces": 6,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 6.666666668024846e-7,
+    "dBbox": 1.7763568394002506e-16,
+    "dCom": 1.47287647913084e-18,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-sub-0.000003",
+  "row": "subgap",
+  "src": "const b = box(10,10,10, { at: [0,0,0] }); repeat(b, { count: 3, step: [10.000003,0,0] });",
+  "note": "step 10+0.000003",
+  "mapAngle": false,
+  "featureKinds": [
+   "box",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "box1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     10.000003,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-sub-0.000003",
+   "kind": "subgap",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 2999.9999999999995,
+    "com": [
+     10.000003000000001,
+     4.8849813083506894e-17,
+     1.1368683772161603e-16
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     25.000006,
+     5,
+     5
+    ],
+    "faces": 18,
+    "types": {
+     "plane": 18
+    },
+    "components": {
+     "plane": 18
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 3000,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     25.000006,
+     5,
+     5
+    ],
+    "faces": 18,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     10.000003,
+     0,
+     0
+    ]
+   },
+   "ms": 32,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 29
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 18
+    },
+    "occtComponents": {
+     "plane": 18
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 3000.000599999998,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     25.000005999999985,
+     5,
+     5
+    ],
+    "com": [
+     10.000002999999992,
+     0,
+     -2.1474176163692254e-16
+    ],
+    "faces": 6,
+    "kernelFaces": 6,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 1.9999999949504858e-7,
+    "dBbox": 5.684340521839077e-16,
+    "dCom": 2.6779582572760215e-16,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-sub-0.000001",
+  "row": "subgap",
+  "src": "const b = box(10,10,10, { at: [0,0,0] }); repeat(b, { count: 3, step: [10.000001,0,0] });",
+  "note": "step 10+0.000001",
+  "mapAngle": false,
+  "featureKinds": [
+   "box",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "box1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     10.000001,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-sub-0.000001",
+   "kind": "subgap",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 3000,
+    "com": [
+     10.000000999999996,
+     1.6253665080512291e-16,
+     1.1368683772161603e-16
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     25.000002,
+     5,
+     5
+    ],
+    "faces": 18,
+    "types": {
+     "plane": 18
+    },
+    "components": {
+     "plane": 18
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 2999.9999999999995,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     25.000002,
+     5,
+     5
+    ],
+    "faces": 18,
+    "dVol": 1.5158245029548803e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     10.000000999999997,
+     0,
+     -3.7895612573871996e-17
+    ]
+   },
+   "ms": 13,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 8
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 18
+    },
+    "occtComponents": {
+     "plane": 18
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 3000.0002,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     25.000002,
+     5,
+     5
+    ],
+    "com": [
+     10.000001000000001,
+     0,
+     0
+    ],
+    "faces": 6,
+    "kernelFaces": 6,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 6.666666664993197e-8,
+    "dBbox": 0,
+    "dCom": 1.6067751296501478e-16,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-sub-1e-7",
+  "row": "subgap",
+  "src": "const b = box(10,10,10, { at: [0,0,0] }); repeat(b, { count: 3, step: [10.0000001,0,0] });",
+  "note": "step 10+1e-7",
+  "mapAngle": false,
+  "featureKinds": [
+   "box",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "box1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     10.0000001,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-sub-1e-7",
+   "kind": "subgap",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 3000.0000133333324,
+    "com": [
+     10.000000100000001,
+     6.676141091740872e-17,
+     3.789561240544708e-17
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     25.0000002,
+     5,
+     5
+    ],
+    "faces": 14,
+    "types": {
+     "plane": 14
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 3000,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     25.0000002,
+     5,
+     5
+    ],
+    "faces": 18,
+    "dVol": 4.444444110305316e-9,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     10.000000099999998,
+     0,
+     0
+    ]
+   },
+   "ms": 10,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null,
+     "wallMs": 0
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 8
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 14
+    },
+    "occtComponents": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "volume": 3000.0000199999995,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     25.0000002,
+     5,
+     5
+    ],
+    "com": [
+     10.000000100000001,
+     2.147418031536627e-16,
+     0
+    ],
+    "faces": 6,
+    "kernelFaces": 6,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 2.2222223583175576e-9,
+    "dBbox": 0,
+    "dCom": 4.461776679092816e-18,
+    "tol": 1e-9,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-sub--1e-8",
+  "row": "subgap",
+  "src": "const b = box(10,10,10, { at: [0,0,0] }); repeat(b, { count: 3, step: [9.99999999,0,0] });",
+  "note": "step 10-1e-8",
+  "mapAngle": false,
+  "featureKinds": [
+   "box",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "box1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     9.99999999,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-sub--1e-8",
+   "kind": "subgap",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 2999.999998666666,
+    "com": [
+     9.999999990000001,
+     2.8865798653083316e-17,
+     6.750155992721022e-17
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     24.99999998,
+     5,
+     5
+    ],
+    "faces": 14,
+    "types": {
+     "plane": 14
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 2999.9999979999993,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     24.99999998,
+     5,
+     5
+    ],
+    "faces": 6,
+    "dVol": 2.222222975511557e-10,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     9.99999999,
+     0,
+     0
+    ]
+   },
+   "ms": 15,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 18
+    },
+    "occtTypes": {
+     "plane": 14
+    },
+    "occtComponents": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 3000,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     24.99999998,
+     5,
+     5
+    ],
+    "com": [
+     9.99999999,
+     5.052748343182934e-17,
+     0
+    ],
+    "faces": 18,
+    "kernelFaces": 18,
+    "shells": 3,
+    "curved": false,
+    "bodies": 3,
+    "dVol": 4.444445951023114e-10,
+    "dBbox": 0,
+    "dCom": 5.355917393896169e-17,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-sub--1e-7",
+  "row": "subgap",
+  "src": "const b = box(10,10,10, { at: [0,0,0] }); repeat(b, { count: 3, step: [9.9999999,0,0] });",
+  "note": "step 10-1e-7",
+  "mapAngle": false,
+  "featureKinds": [
+   "box",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "box1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     9.9999999,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-sub--1e-7",
+   "kind": "subgap",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 2999.9999866666662,
+    "com": [
+     9.9999999,
+     5.1958437783383725e-17,
+     1.480297372745975e-17
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     24.9999998,
+     5,
+     5
+    ],
+    "faces": 14,
+    "types": {
+     "plane": 14
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 2999.9999800000005,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     24.9999998,
+     5,
+     5
+    ],
+    "faces": 6,
+    "dVol": 2.222221923323292e-9,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     9.999999900000002,
+     0,
+     0
+    ]
+   },
+   "ms": 16,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 2
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 18
+    },
+    "occtTypes": {
+     "plane": 14
+    },
+    "occtComponents": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 3000,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     24.9999998,
+     5,
+     5
+    ],
+    "com": [
+     9.9999999,
+     0,
+     0
+    ],
+    "faces": 18,
+    "kernelFaces": 18,
+    "shells": 3,
+    "curved": false,
+    "bodies": 3,
+    "dVol": 4.444444604558839e-9,
+    "dBbox": 0,
+    "dCom": 1.5666058523679331e-18,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-sub--0.000001",
+  "row": "subgap",
+  "src": "const b = box(10,10,10, { at: [0,0,0] }); repeat(b, { count: 3, step: [9.999999,0,0] });",
+  "note": "step 10-0.000001",
+  "mapAngle": false,
+  "featureKinds": [
+   "box",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "box1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     9.999999,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-sub--0.000001",
+   "kind": "subgap",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 2999.9997999999996,
+    "com": [
+     9.999998999999999,
+     3.789561510024635e-17,
+     1.3959204982545e-16
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     24.999998,
+     5,
+     5
+    ],
+    "faces": 22,
+    "types": {
+     "plane": 22
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 2999.9998,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     24.999998,
+     5,
+     5
+    ],
+    "faces": 6,
+    "dVol": 1.515824604009854e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     9.999999,
+     0,
+     0
+    ]
+   },
+   "ms": 13,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 18
+    },
+    "occtTypes": {
+     "plane": 22
+    },
+    "occtComponents": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 3000,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     24.999998,
+     5,
+     5
+    ],
+    "com": [
+     9.999998999999999,
+     -4.421154800285067e-17,
+     -2.526374171591467e-17
+    ],
+    "faces": 18,
+    "kernelFaces": 18,
+    "shells": 3,
+    "curved": false,
+    "bodies": 3,
+    "dVol": 6.666667124595917e-8,
+    "dBbox": 0,
+    "dCom": 4.970589408029894e-18,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-cyl-tangent-x2",
+  "row": "tangent",
+  "src": "const a = cylinder(10, 20, { at: [0,0,0] }); repeat(a, { count: 2, step: [10,0,0] });",
+  "mapAngle": false,
+  "featureKinds": [
+   "cylinder",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "cyl1",
+    "mode": "linear",
+    "count": 2,
+    "step": [
+     10,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-cyl-tangent-x2",
+   "kind": "tangent",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "cylinder",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 3141.5926536626043,
+    "com": [
+     4.999999958790045,
+     -4.96962151415271e-16,
+     0
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -10,
+     15,
+     5,
+     10
+    ],
+    "faces": 7,
+    "types": {
+     "cylinder": 3,
+     "plane": 4
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 3141.5926535897947,
+    "bbox": [
+     -5,
+     -5,
+     -10,
+     15,
+     5,
+     10
+    ],
+    "faces": 6,
+    "dVol": 2.317601496347631e-11,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     5.000000000000003,
+     -1.0714841805286861e-16,
+     -1.1429164592305986e-15
+    ]
+   },
+   "ms": 1301,
+   "truckFeatures": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "status": "built",
+     "pick": null,
+     "wallMs": 150
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 398
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "occtTypes": {
+     "cylinder": 3,
+     "plane": 4
+    },
+    "occtComponents": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "truck-merges-edge-connected-same-surface-faces",
+     "plane": "equal"
+    },
+    "volume": 3140.9330316130595,
+    "bbox": [
+     -4.999922781066209,
+     -4.999865668703222,
+     -10.00000000000053,
+     14.999922781066195,
+     4.999865668703213,
+     10.000000000000002
+    ],
+    "com": [
+     4.999999992994357,
+     -3.87900972262578e-9,
+     -9.681371943082187e-9
+    ],
+    "faces": 6,
+    "kernelFaces": 10,
+    "shells": 2,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0002099642195100739,
+    "dBbox": 0.0000268662593574831,
+    "dCom": 1.1401437127744884e-9,
+    "tol": 0.0003,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ }
+]

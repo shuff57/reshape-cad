@@ -1,0 +1,723 @@
+[
+ {
+  "id": "r2-torus-repeat-disjoint",
+  "row": "torus",
+  "src": "const t = ring(30, 6); repeat(t, { count: 3, step: [40, 0, 0] });",
+  "mapAngle": false,
+  "featureKinds": [
+   "torus",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "ring1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     40,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r2-torus-repeat-disjoint",
+   "kind": "torus",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "torus",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 6395.503651905902,
+    "com": [
+     40,
+     9.5422476867111e-16,
+     2.1806945471135795e-16
+    ],
+    "bbox": [
+     -15.0000001,
+     -15.0000001,
+     -3.0000001,
+     95.0000001,
+     15.0000001,
+     3.0000001
+    ],
+    "faces": 3,
+    "types": {
+     "other": 3
+    },
+    "components": {
+     "other": 3
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 6395.503651905907,
+    "bbox": [
+     -15,
+     -15,
+     -3,
+     95,
+     15,
+     3
+    ],
+    "faces": 3,
+    "dVol": 7.110422816363281e-16,
+    "dBbox": 3.3333332167669634e-8,
+    "pass": true,
+    "com": [
+     39.999999999999574,
+     1.3189283595049702e-14,
+     -4.14640408655657e-16
+    ]
+   },
+   "ms": 4016,
+   "truckFeatures": [
+    {
+     "id": "ring1",
+     "kind": "torus",
+     "status": "refused",
+     "refusal": "ring1 (torus): (budget): TIME BUDGET: exceeded 3000 ms",
+     "student": "torus(): building this was stopped after 3 seconds without finishing, so it was left out -- use fewer copies, space them apart, or use flat-sided shapes."
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "refused",
+     "refusal": "pat1 (pattern): its target ring1 was refused (ring1 (torus): (budget): TIME BUDGET: exceeded 3000 ms)",
+     "student": "repeat(): it needs torus() to be built first, and that was refused: building this was stopped after 3 seconds without finishing, so it was left out -- use fewer copies, space them apart, or use flat-sided shapes."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "pat1 (pattern): its target ring1 was refused (ring1 (torus): (budget): TIME BUDGET: exceeded 3000 ms)",
+    "student": "repeat(): it needs torus() to be built first, and that was refused: building this was stopped after 3 seconds without finishing, so it was left out -- use fewer copies, space them apart, or use flat-sided shapes.",
+    "firstRefusal": "ring1 (torus): (budget): TIME BUDGET: exceeded 3000 ms",
+    "firstStudent": "torus(): building this was stopped after 3 seconds without finishing, so it was left out -- use fewer copies, space them apart, or use flat-sided shapes."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "ring1",
+    "kind": "torus",
+    "status": "refused",
+    "refusal": "ring1 (torus): (budget): TIME BUDGET: exceeded 3000 ms",
+    "student": "torus(): building this was stopped after 3 seconds without finishing, so it was left out -- use fewer copies, space them apart, or use flat-sided shapes."
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "refused",
+    "refusal": "pat1 (pattern): its target ring1 was refused (ring1 (torus): (budget): TIME BUDGET: exceeded 3000 ms)",
+    "student": "repeat(): it needs torus() to be built first, and that was refused: building this was stopped after 3 seconds without finishing, so it was left out -- use fewer copies, space them apart, or use flat-sided shapes."
+   }
+  ],
+  "outcome": "REFUSED"
+ },
+ {
+  "id": "r2-sens-sphere-d2",
+  "row": "sens",
+  "src": "const a = sphere(2); repeat(a, { count: 3, step: [1.5, 0, 0] });",
+  "mapAngle": false,
+  "featureKinds": [
+   "sphere",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "ball1",
+    "mode": "linear",
+    "count": 3,
+    "step": [
+     1.5,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r2-sens-sphere-d2",
+   "kind": "sens",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "sphere",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 11.846422298023423,
+    "com": [
+     1.4999999873092476,
+     -1.7995673970715338e-8,
+     4.4017743502016284e-17
+    ],
+    "bbox": [
+     -1,
+     -1,
+     -1,
+     4,
+     1,
+     1
+    ],
+    "faces": 3,
+    "types": {
+     "sphere": 3
+    },
+    "components": {
+     "sphere": 3
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {
+    "pat1": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "brep": {
+    "refused": "pattern pat1: its copies overlap, and brep-rs cannot join them into one exact solid -- pat1 is shown without it."
+   },
+   "ms": 11011,
+   "truckFeatures": [
+    {
+     "id": "ball1",
+     "kind": "sphere",
+     "status": "built",
+     "pick": null,
+     "wallMs": 2332
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "refused",
+     "refusal": "pat1 (pattern): (budget): TIME BUDGET: exceeded 3000 ms",
+     "student": "repeat(): building this was stopped after 3 seconds without finishing, so it was left out -- use fewer copies, space them apart, or use flat-sided shapes."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "pat1 (pattern): (budget): TIME BUDGET: exceeded 3000 ms",
+    "student": "repeat(): building this was stopped after 3 seconds without finishing, so it was left out -- use fewer copies, space them apart, or use flat-sided shapes.",
+    "firstRefusal": "pat1 (pattern): (budget): TIME BUDGET: exceeded 3000 ms",
+    "firstStudent": "repeat(): building this was stopped after 3 seconds without finishing, so it was left out -- use fewer copies, space them apart, or use flat-sided shapes."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "refused",
+    "refusal": "pat1 (pattern): (budget): TIME BUDGET: exceeded 3000 ms",
+    "student": "repeat(): building this was stopped after 3 seconds without finishing, so it was left out -- use fewer copies, space them apart, or use flat-sided shapes."
+   }
+  ],
+  "outcome": "REFUSED"
+ },
+ {
+  "id": "r3-sph2-disjoint",
+  "row": "time",
+  "src": "const a = sphere(10, { at: [0,0,0] }); repeat(a, { count: 2, step: [12,0,0] });",
+  "mapAngle": false,
+  "featureKinds": [
+   "sphere",
+   "pattern"
+  ],
+  "doc": [
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "target": "ball1",
+    "mode": "linear",
+    "count": 2,
+    "step": [
+     12,
+     0,
+     0
+    ]
+   }
+  ],
+  "fx": {
+   "id": "r3-sph2-disjoint",
+   "kind": "time",
+   "tol": "approx",
+   "measureId": "pat1",
+   "control": false,
+   "featureKinds": [
+    "sphere",
+    "pattern"
+   ],
+   "occt": {
+    "volume": 1047.1975511965977,
+    "com": [
+     5.999999999999998,
+     -7.247535904753023e-16,
+     -9.059419880941278e-17
+    ],
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     17,
+     5,
+     5
+    ],
+    "faces": 2,
+    "types": {
+     "sphere": 2
+    },
+    "components": {
+     "sphere": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 1047.1975511965984,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     17,
+     5,
+     5
+    ],
+    "faces": 2,
+    "dVol": 6.513775987637282e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     6.000000000000073,
+     7.087680909081149e-16,
+     -4.0935133680365936e-17
+    ]
+   },
+   "ms": 8312,
+   "truckFeatures": [
+    {
+     "id": "ball1",
+     "kind": "sphere",
+     "status": "built",
+     "pick": null,
+     "wallMs": 2149
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1941
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "sphere": 2
+    },
+    "occtTypes": {
+     "sphere": 2
+    },
+    "occtComponents": {
+     "sphere": 2
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "sphere": "equal"
+    },
+    "volume": 1046.9012823159985,
+    "bbox": [
+     -5,
+     -5,
+     -5,
+     17,
+     5,
+     5
+    ],
+    "com": [
+     6.000000000000288,
+     -6.683437854138696e-15,
+     2.8730261590035476e-13
+    ],
+    "faces": 2,
+    "kernelFaces": 12,
+    "shells": 2,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.00028291594098999145,
+    "dBbox": 0,
+    "dCom": 1.107107431535017e-14,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r3-pocket-count-10",
+  "row": "count-pocket",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s = sketch('top', 10); s.circle(2, { at: [5, 15] }); const p = pocket(s, plate, 4); repeat(p, { count: 10, step: 3 });",
+  "note": "10 pockets d2 step 3 (overlapping slot)",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r3-pocket-count-10",
+   "kind": "count-pocket",
+   "tol": "approx",
+   "measureId": "pocket10",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 11874.336293856399,
+    "com": [
+     20.015874197475195,
+     15.000000000000016,
+     4.968251605049641
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 26,
+    "types": {
+     "plane": 16,
+     "cylinder": 10
+    },
+    "components": {
+     "plane": 16,
+     "cylinder": 10
+    },
+    "bigCylinderComponents": 10,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11874.33629385639,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 26,
+    "dVol": 7.6593308397664885e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     20.015675432954016,
+     14.999999999999934,
+     4.9686491340917724
+    ]
+   },
+   "ms": 13110,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 96
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 294
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 456
+    },
+    {
+     "id": "sk4",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket3",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 653
+    },
+    {
+     "id": "sk5",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket4",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 893
+    },
+    {
+     "id": "sk6",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket5",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1115
+    },
+    {
+     "id": "sk7",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket6",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1590
+    },
+    {
+     "id": "sk8",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket7",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1680
+    },
+    {
+     "id": "sk9",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket8",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1785
+    },
+    {
+     "id": "sk10",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket9",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 2073
+    },
+    {
+     "id": "sk11",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket10",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 2471
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 10,
+     "plane": 16
+    },
+    "occtTypes": {
+     "plane": 16,
+     "cylinder": 10
+    },
+    "occtComponents": {
+     "plane": 16,
+     "cylinder": 10
+    },
+    "bigCylinderComponents": 10,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 11874.357170335968,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30.000000000000014,
+     10
+    ],
+    "com": [
+     20.015871534948065,
+     14.999999998964268,
+     4.9682569346587115
+    ],
+    "faces": 26,
+    "kernelFaces": 36,
+    "shells": 1,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0000017581175952192013,
+    "dBbox": 4.736951571734001e-16,
+    "dCom": 1.045222332706734e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket3",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket4",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket5",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket6",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket7",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket8",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket9",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket10",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ }
+]

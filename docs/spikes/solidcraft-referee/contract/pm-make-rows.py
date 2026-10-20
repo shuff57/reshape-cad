@@ -15,9 +15,13 @@ TA = json.load(open(os.path.join(H, 'pm-torus-asis.json')))
 # ---- round 5 inputs (all produced by this round's runs; none may be missing)
 def _load(name): return json.load(open(os.path.join(H, name)))
 STAMP = _load('pm-results.stamp.json')                                   # which rig produced pm-results.json
+STORED_NR = set(STAMP['storedNotReplayed'])                              # cases whose live run was killed by the memory cap or the 900 s limit: the STORED round-3/4 record is kept and is never counted as a pass of this round
 SO = {x['id']: x for x in _load('pm-results-snapoff.json')}              # PM_OFF=snap negative control, r4-snap-* cases
 AO = {x['id']: x for x in _load('pm-results-asis-oracle.json')}          # PM_TR=asis, reversed / taper cases, scored with the new oracle rule
 FZ1 = _load('pm-snap-fuzz-on.json'); FZ0 = _load('pm-snap-fuzz-off.json')  # pm-snap-fuzz.mjs, guard on / off, closed-form oracle
+FZ2 = _load('pm-snap-fuzz-on-seed2.json')                                 # the mixed fuzz on a second seed (not used to pick any threshold), all guards on
+AL0 = _load('pm-aligned-fuzz-off.json'); AL1 = _load('pm-aligned-fuzz-on.json'); AL2 = _load('pm-aligned-fuzz-on-seed91.json')  # --mode=aligned, seed 78 guard off / on, seed 91 on
+SL1 = _load('pm-sliver-fuzz-on.json'); SL0 = _load('pm-sliver-fuzz-off.json'); SL2 = _load('pm-sliver-fuzz-on-seed23.json')  # pm-snap-fuzz.mjs --mode=sliver, seed 11 guard on / off, seed 23 guard on (a seed the threshold was NOT chosen on)
 BD = {x['id']: x for x in _load('pm-results-budget-demo.json')}          # PM_BUDGET_MS=3000: the safety net firing on purpose
 PROBE = json.load(open(os.path.join(H, 'pm-tie-probe.json')))  # pm-tie-probe.mjs: truck's measured box of the symmetric cylinders
 E = lambda v: ('%.1e' % v) if isinstance(v, (int, float)) else '-'
@@ -43,6 +47,7 @@ def stu(i, src=R):
     return s
 def sen(i, src=R):
     s = src[i].get('sentence'); assert s, i; return s
+SENTENCE_NOTE = 'What packages/script prints today (the "shipped" text, which names the retired engine and FreeCAD and is two clauses long): "%s". What the guard layer shows the student instead (pm-sentences.mjs, one plain sentence, asserted by this build): "%s". '
 def shipped(i, src=R):
     s = src[i].get('shipped'); assert s, i; return s
 import re as _re
@@ -62,9 +67,9 @@ def row(feature, status, evidence, sentence=None):
 
 SC = '<sc-referee-pkg>'
 RUN = 'cd /home/shuff57/Documents/GitHub/reshape-cad && '
-BASE = 'SOLIDCRAFT_REFEREE_PKG=%s systemd-run --user --scope -p MemoryMax=16G -p MemorySwapMax=0 bun docs/spikes/solidcraft-referee/contract/pm-run.mjs --variants --out=<scratch>' % SC
+BASE = 'SOLIDCRAFT_REFEREE_PKG=%s systemd-run --user --scope -q -p MemoryMax=1500M -p MemorySwapMax=0 timeout 900 bun docs/spikes/solidcraft-referee/contract/pm-run.mjs --out=<scratch> --only=<ids of the chunk> (the whole suite is run in chunks, see RIG notes; pm-merge-chunks.py merges them)' % SC
 BASE3 = BASE.replace('--variants', '--r3')
-CMD = RUN + BASE + ' [contract translator pm-translate.mjs, patches reversed/fresh/plane/count1/torus/contact/disjoint/subgap/budget/fused/spinbox/taper ON by default, 60 s limit per solidcraft run and 300 s per model; reSHape Script -> runScript -> ModelDoc -> OCCT buildDoc + brep-rs measure_doc + solidcraft in a killable child process; saved/own FreeCAD refs; %d cases; numbers in contract/pm-results.json]. ' % len(R)
+CMD = RUN + BASE + ' [contract translator pm-translate.mjs, patches reversed/fresh/plane/count1/torus/contact/disjoint/subgap/budget/fused/spinbox/taper/contact3/mircontact/snap/sliver ON by default, a 600 s safety net per solidcraft run and 3600 s per model; reSHape Script -> runScript -> ModelDoc -> OCCT buildDoc + brep-rs measure_doc + solidcraft in a killable child process; saved/own FreeCAD refs; %d cases; numbers in contract/pm-results.json]. ' % len(R)
 CMD3 = RUN + BASE3 + ' [same translator and patches, round-3 cases only; numbers in the r3-* entries of contract/pm-results.json]. '
 CMDR2 = RUN + 'PM_TR=r2 PM_BUDGET=off ' + BASE3 + " [the ROUND-2 contract translator: patches reversed/fresh/plane/count1/torus/contact only, no time limit; numbers in contract/pm3-results-r2translator.json]. "
 CMDA = RUN + 'PM_TR=asis ' + BASE + " --skip='r2-torus*' [phase0 translator behaviour, no patches; numbers in contract/pm-results-asis-translator.json]. "
@@ -74,7 +79,7 @@ def AS(s): return ' AS-IS (PM_TR=asis): ' + s
 lin = ['rl-disjoint-x3','rl-overlap-x4','rl-touch-x3','rl-y','rl-z','rl-diag-disjoint','rl-diag-overlap','rl-negative','rl-count2','rl-lextrude-overlap','rl-of-join','rl-of-moved','rl-of-turned','rl-alias-linearPattern','rl-count-40','rl-count-40-overlap']
 assert all(R[i]['outcome'] in ('PASS', 'FAIL') for i in lin) and mx(lin, 'dVol') < 1e-9 and mx(lin, 'dBbox') < 1e-9, 'row 0'
 assert R['rl-z']['outcome'] == 'FAIL' and tr('rl-z')['dVol'] < 1e-9 and tr('rl-z')['dBbox'] < 1e-9
-row('repeat(shape,{count,step:[x,y,z]}) / linearPattern on a solid body, count >= 2 (copies disjoint, overlapping, face-touching, x/y/z/diagonal/negative step, shape = box, extruded L, join, moved, turned; count up to 1000, see the count row). Copies that meet only along an edge or at a point, gaps or overlaps under a micron, and curved copies truck cannot fuse are separate rows (refused).', 'supported',
+row('repeat(shape,{count,step:[x,y,z]}) / linearPattern on a solid body, count >= 2 (copies disjoint, overlapping, face-touching, x/y/z/diagonal/negative step, shape = box, extruded L, join, moved, turned; count up to 1000, see the count row). Copies that meet only along an edge or at a point, gaps or overlaps under a micron, copies shifted by 1.5% of the smallest size of the part or less (near-coincident copies), overlaps thinner than 0.0005 mm (slivers), and curved copies truck cannot fuse are separate rows (refused).', 'supported',
     CMD + 'Command: solid.pattern.rectangular {bodies,dir1=step/|step|,count1,spacing1=|step|} then solid.combine join. ROUND 3: the unjoined fallback (the copies left as separate bodies) is accepted ONLY when every pair of copies is provably apart (bbox gap > 1e-3 mm along some axis, patch disjoint); in any other case where the join fails the pattern is REFUSED (see the overlapping-curved-copies rows: the round-2 contract returned the unjoined copies with their volumes SUMMED). Worst over %d cases: truck dVol %s, dBbox %s vs live OCCT (planar, bar 1e-9); brep-rs dVol <= 1.9e-15. %s | %s | %s | %s. Same numbers AS-IS (no patch is involved in this row). rl-z shows dCOM %s vs OCCT: OCCT is wrong, not truck (OCCT COM z = 22.5, closed form for boxes at z=0,25,50 is 25, truck 25; volume and bbox agree). Face counts: see the face-count row. count 40 disjoint: truck %d ms.' % (len(lin), E(mx(lin,'dVol')), E(mx(lin,'dBbox')), c('rl-disjoint-x3'), c('rl-overlap-x4'), c('rl-touch-x3'), c('rl-count-40-overlap'), E(tr('rl-z')['dCom']), R['rl-count-40']['fx']['ms']))
 assert all(A[i]['outcome'] == R[i]['outcome'] for i in lin)
 
@@ -96,6 +101,7 @@ assert refused('rl-zero-vector')
 def tmo(i, src=R):
     t = (src[i].get('fx') or {}).get('truck') or {}
     return src[i]['outcome'] == 'REFUSED' and 'TIME BUDGET' in ((t.get('refused') or '') + (t.get('firstRefusal') or ''))
+def tdur(i, src=R): return (src[i].get('fx') or {}).get('ms', 0) / 1000.0
 def pwall(i, src=R):
     for f in src[i]['fx']['truckFeatures']:
         if f['kind'] == 'pattern' and f.get('wallMs') is not None: return f['wallMs'] / 1000.0
@@ -104,13 +110,19 @@ cur = ['rl-cyl-disjoint','rl-cyl-overlap','rl-sphere-overlap','rl-sphere-disjoin
 sens = [i for i in R2 if i.startswith('r2-sens')]
 allcur = cur + sens + ['ra-z5-cyl','ra-z6-cyl-overlap','ra-z4-sphere']
 assert all(R2[i]['outcome'] == 'PASS' for i in allcur), [i for i in allcur if R2[i]['outcome'] != 'PASS']
-assert all(R[i]['outcome'] == 'PASS' or tmo(i) for i in allcur), [(i, R[i]['outcome']) for i in allcur if not (R[i]['outcome'] == 'PASS' or tmo(i))]
+# round 5 (live run, 600 s safety net): r2-sens-sphere-ring-d20-n12 is now refused by the contact guard, not the clock. Its 12 spheres (d20 on a ring of radius 40) are 0.70 mm apart
+# (chord 2*40*sin(15deg) = 20.70 > 20, OCCT volume 50265.48 = 12 x 4188.79, the plain sum), but their bounding boxes touch within 8.4e-5 mm, below the 1e-3 mm the guard needs to call a pair
+# provably apart, and the joined pair keeps 2 shells; so the guard refuses CONSERVATIVELY (a true gap, a refusal anyway). Counted separately, never as a pass.
+CONSERV = ['r2-sens-sphere-ring-d20-n12']
+for i in CONSERV:
+    assert R[i]['outcome'] == 'REFUSED' and 'only along an edge or at a point' in tr(i)['refused'] and abs(R[i]['fx']['occt']['volume'] - 12 * 4 / 3 * 3.141592653589793 * 1000) < 1e-2, i
+assert all(R[i]['outcome'] == 'PASS' or tmo(i) or i in CONSERV for i in allcur), [(i, R[i]['outcome']) for i in allcur if not (R[i]['outcome'] == 'PASS' or tmo(i) or i in CONSERV)]
 okc = [i for i in allcur if R[i]['outcome'] == 'PASS']; slowc = [i for i in allcur if tmo(i)]
 assert all(tr(i, R)['dVol'] <= 3e-4 for i in okc)
 worst = max(allcur, key=lambda i: tr(i, R2)['dVol'])
 r2 = lambda i: tr(i, R2)
-row('repeat on cylinder and sphere bodies (overlapping or disjoint copies) that build inside the 60 s limit. Tangent copies are a separate row (refused); copies that take longer than 60 s are the time-limit row (refused).', 'supported',
-    CMD + 'Worst over the original 4 cases: truck dVol %s (curved tessellation bar 3e-4), dBbox %s. %s | %s | %s. Run time of the pattern step in this run: %s. TIME: %d of the %d curved repeat/repeatAround cases (the original 4, the 33 sensitivity cases, 3 ring cases) finish inside the limit; %d are killed at 60 s and refused (listed in the time-limit row). MARGIN (round-2 run, NO time limit, so every case has a number): the original worst case is only %d%% under the bar (3e-4), so a sensitivity sweep was added (r2-sens-* and r2-sens2-*, %d cases: spheres d2..d200 repeated x3 or x2, sphere rings d6/d40/d20x12, cylinders d3..d200 repeated, cylinder rings d8x7/d30x9): dVol range %s .. %s over those, %d of %d curved repeat/repeatAround cases inside the bar; worst of all is %s at %s (%d%% under the bar). Cause is tessellation of the truck volume, not placement: dBbox stays <= %s. A curved delta of 2..3e-4 must not be read as an error, and one above 3e-4 on a sphere/cylinder deserves a look. brep-rs refuses the overlapping sphere row ("its copies overlap"), truck and OCCT agree there.' %
+row('repeat on cylinder and sphere bodies (overlapping or disjoint copies) that build (round 5: the run time limit is a 600 s safety net and no case of this suite reaches it; a case that would is refused in a plain sentence). Tangent copies, and the one ring of spheres whose bounding boxes touch within 1e-3 mm although the spheres are 0.70 mm apart (r2-sens-sphere-ring-d20-n12, refused conservatively), are separate refused cases.', 'supported',
+    CMD + 'Worst over the original 4 cases: truck dVol %s (curved tessellation bar 3e-4), dBbox %s. %s | %s | %s. Run time of the pattern step in this run: %s. RESULT (live run, round 5): %d of the %d curved repeat/repeatAround cases (the original 4, the 33 sensitivity cases, 3 ring cases) build and agree with OCCT within the bar; %d reach the time limit; the rest is refused by the contact guard (r2-sens-sphere-ring-d20-n12: the spheres are 0.70 mm apart by the closed form, 2*40*sin(15deg) = 20.70 > 20, and OCCT = 12 x 4188.79, but their bounding boxes touch within 8.4e-5 mm so the guard cannot call them provably apart; a refusal of a buildable case, never a wrong solid). MARGIN (round-2 run, NO time limit, so every case has a number): the original worst case is only %d%% under the bar (3e-4), so a sensitivity sweep was added (r2-sens-* and r2-sens2-*, %d cases: spheres d2..d200 repeated x3 or x2, sphere rings d6/d40/d20x12, cylinders d3..d200 repeated, cylinder rings d8x7/d30x9): dVol range %s .. %s over those, %d of %d curved repeat/repeatAround cases inside the bar; worst of all is %s at %s (%d%% under the bar). Cause is tessellation of the truck volume, not placement: dBbox stays <= %s. A curved delta of 2..3e-4 must not be read as an error, and one above 3e-4 on a sphere/cylinder deserves a look. brep-rs refuses the overlapping sphere row ("its copies overlap"), truck and OCCT agree there.' %
     (E(max(r2(i)['dVol'] for i in cur if i != 'rl-cyl-tangent')), E(max(r2(i)['dBbox'] for i in cur)), c('rl-cyl-overlap', R), c('rl-sphere-overlap', R), c('rl-sphere-disjoint', R),
      ', '.join('%s %.1f s' % (i, pwall(i)) for i in ['rl-cyl-overlap','rl-sphere-overlap','rl-sphere-disjoint','r3-sph2-step8','r3-sph2-step7.5','r3-sph3-step8'] if pwall(i) is not None),
      len(okc), len(allcur), len(slowc), round(100 * (1 - max(r2(i)['dVol'] for i in cur) / 3e-4)), len(sens), E(min(r2(i)['dVol'] for i in sens)), E(max(r2(i)['dVol'] for i in sens)), len([i for i in allcur if r2(i)['dVol'] <= 3e-4]), len(allcur), E(r2(worst)['dVol']), worst, round(100 * (1 - r2(worst)['dVol'] / 3e-4)), E(max(r2(i)['dBbox'] for i in allcur))))
@@ -130,10 +142,11 @@ row('repeatAround(shape,{count,axis,angle:360 or omitted}) on a solid body: full
 
 cu = ['ra-z5-cyl','ra-z6-cyl-overlap','ra-z4-sphere','r2-sens-sphere-ring-d6','r2-sens-sphere-ring-d40','r2-sens-sphere-ring-d20-n12','r2-sens-cyl-ring-d8-n7','r2-sens-cyl-ring-d30-n9']
 cu_ok = [i for i in cu if R[i]['outcome'] == 'PASS']; cu_slow = [i for i in cu if tmo(i)]
-assert len(cu_ok) + len(cu_slow) == len(cu) and cu_ok
-row('repeatAround on cylinder and sphere bodies (cylinder ring, overlapping cylinders, sphere ring) that build inside the 60 s limit; rings that take longer are the time-limit row (refused)', 'supported',
-    CMD + '%d of %d cases build inside the limit, worst truck dVol %s, dBbox %s (tessellation; bar 3e-4): %s | %s | sphere ring %s. Killed at 60 s and refused: %s (round-2 run without a limit built them: worst dVol %s). Margin note: see the curved-repeat row (the worst sphere ring is %d%% under the bar).' %
-    (len(cu_ok), len(cu), E(mx(cu_ok,'dVol')), E(mx(cu_ok,'dBbox')), c('ra-z5-cyl'), c('ra-z6-cyl-overlap'), c('ra-z4-sphere'), ', '.join(cu_slow) or 'none', E(max(tr(i, R2)['dVol'] for i in cu)), round(100 * (1 - max(tr(i, R2)['dVol'] for i in cu) / 3e-4))))
+cu_cons = [i for i in cu if i in CONSERV]
+assert len(cu_ok) + len(cu_slow) + len(cu_cons) == len(cu) and cu_ok
+row('repeatAround on cylinder and sphere bodies (cylinder ring, overlapping cylinders, sphere ring) that build; the ring of 12 spheres d20 whose bounding boxes touch is refused conservatively', 'supported',
+    CMD + '%d of %d cases build (none reaches the 600 s safety net), worst truck dVol %s, dBbox %s (tessellation; bar 3e-4): %s | %s | sphere ring %s. Not built: %s (refused by the contact guard although the spheres are 0.70 mm apart, see the curved-repeat row; round-2 run without a guard built them: worst dVol %s). Margin note: see the curved-repeat row (the worst sphere ring is %d%% under the bar).' %
+    (len(cu_ok), len(cu), E(mx(cu_ok,'dVol')), E(mx(cu_ok,'dBbox')), c('ra-z5-cyl'), c('ra-z6-cyl-overlap'), c('ra-z4-sphere'), ', '.join(cu_slow + cu_cons) or 'none', E(max(tr(i, R2)['dVol'] for i in cu)), round(100 * (1 - max(tr(i, R2)['dVol'] for i in cu) / 3e-4))))
 
 # ---- partial turns / beyond one turn
 pm = ['r2-partial-180-n3-MD','r2-partial-90-n4-MD','r2-partial-90-n2-MD','r2-partial-120-n3-x-MD','r2-neg90-n3-MD','r2-720-n4-MD','r2-neg360-n4-MD','r2-partial-cyl-n3-MD']
@@ -338,7 +351,10 @@ rev = ['mirrored__top-bottom-pocket','mirrored__top-bottom-rect-pocket','mirrore
 asis = '; '.join('%s FreeCAD %.4f vs as-is truck %.4f (dVol %s, %s/%s faces)' % (i.split('__')[1], A[i]['fcRef']['volume'], tr(i, A)['volume'], E(A[i]['vsFreecad']['truck']['dVol']), A[i]['vsFreecad']['truck']['faces'], A[i]['vsFreecad']['truck']['facesRef']) for i in rev)
 fixd = '; '.join('%s %s' % (i.split('__')[1][11:], E(R[i]['vsFreecad']['truck']['dVol'])) for i in rev)
 assert all(A[i]['vsFreecad']['truck']['dVol'] > 1e-3 and R[i]['vsFreecad']['truck']['dVol'] < 1e-4 for i in rev)
-assert all(A[i]['outcome'] == 'PASS' and R[i]['outcome'] == 'FAIL' for i in rev)  # AS-IS passes vs OCCT (referee hides it); patched disagrees with OCCT but agrees with FreeCAD
+# round 5 oracle rule (pm-run.mjs, see EXPECT4 in pm-cases-r4.mjs): OCCT's buildDoc never reads pocket {reversed} nor the taper of a pull, so OCCT builds the same wrong solid as the AS-IS translator and agrees with it.
+# Such a case is scored against the saved FreeCAD ref (else a closed form) and the OCCT verdict is kept beside it as outcomeVsOcct. Both runs below are live (AO = PM_TR=asis, R = contract translator).
+assert all(AO[i]['outcome'] == 'FAIL' and AO[i]['outcomeVsOcct'] == 'PASS' and AO[i]['oracle'] == 'FreeCAD ref' for i in rev), [(i, AO[i]['outcome'], AO[i].get('outcomeVsOcct')) for i in rev]  # AS-IS: wrong vs FreeCAD, hidden by OCCT
+assert all(R[i]['outcome'] == 'PASS' and R[i]['outcomeVsOcct'] == 'FAIL' and R[i]['oracle'] == 'FreeCAD ref' for i in rev)  # patched: agrees with FreeCAD, disagrees with the blind OCCT
 row("WRONG (AS-IS translator): mirror(pocket,'top-bottom',{at:n}) (a pocket reflected through a plane PARALLEL to its sketch: lowered to a pocket with reversed:true on the opposite face) and any pocket(...,{reversed:true})", 'wrong',
     CMDA + 'phase0 maps a pocket to solid.extrude direction:negative and never reads PocketFeature.reversed, so the reflected cut runs the wrong way (out of the part) and one of the two cuts is silently lost; no refusal. vs the saved FreeCAD refs: ' + asis + '. The OCCT referee HIDES it: occt-build.ts has no `reversed` handling for pockets either, so OCCT builds the same wrong solid and the AS-IS truck scores PASS against it (all 8 as-is rows PASS vs OCCT). Own check: pocket(s2,plate,3,{reversed:true}) on a sketch at z=0: OCCT %.4f (the cut is lost), brep-rs %.4f, as-is truck %.4f, patched truck %.4f (12000 - pi*9*3 = 11915.177; rl-pocket-reversed-own). Correct independent arbiters: FreeCAD refs and brep-rs, which agree with each other.' % (R['rl-pocket-reversed-own']['fx']['occt']['volume'], R['rl-pocket-reversed-own']['fx']['brep']['volume'], tr('rl-pocket-reversed-own', A)['volume'], tr('rl-pocket-reversed-own')['volume']))
 row("mirror(pocket,'top-bottom',{at:n}) and pocket(...,{reversed:true}) [contract translator patch: reversed -> solid.extrude direction:'positive']", 'supported',
@@ -400,10 +416,7 @@ row('mirror of a torus (ring()) [contract translator patch: torus guard]', 'refu
 
 
 # ============================ ROUND 3 (critic findings) ============================
-GB = {x['id']: x for x in json.load(open(os.path.join(H, 'pm3-results-generous-budget.json')))}  # PM_BUDGET_MS=400000, same translator logic
 NC = {x['id']: x for x in json.load(open(os.path.join(H, 'pm3-results-fusedoff.json')))} if os.path.exists(os.path.join(H, 'pm3-results-fusedoff.json')) else {}
-TIMEB = open(os.path.join(H, 'pm3-time-bare.txt')).read() if os.path.exists(os.path.join(H, 'pm3-time-bare.txt')) else 'LOST-DATA: pm3-time-bare.txt is not in this directory, bare-session timings not re-measured'
-TIMEC = open(os.path.join(H, 'pm3-time-curved.txt')).read() if os.path.exists(os.path.join(H, 'pm3-time-curved.txt')) else 'LOST-DATA: pm3-time-curved.txt is not in this directory, bare-session timings not re-measured'
 def cc(i, src=R):
     x = src[i]
     if x['outcome'] in ('REFUSED',): return '%s: REFUSED "%s"' % (i, stu(i, src))
@@ -420,19 +433,21 @@ sil = ['r3-cone2-step3','r3-cone3-step6','r3-cone-ra-overlap','r3-washer2-y6','r
 if A3:
     for i in sil:
         t = A3[i]['fx']['truck']
+        # r3-washer-y10-touch: the three washers only TOUCH (stacked along their own axis), so the summed volume is right (28274.33 = 3 x 9424.78, and the live OCCT of round 5
+        # agrees; round 4 had recorded an OCCT value of 20482 for it, which this build no longer finds). What the round-2 translator got wrong there is the 3 unfused bodies.
+        if i == 'r3-washer-y10-touch': assert t['bodies'] == 3 and abs(t['volume'] - 3 * 9424.777960769379) < 0.1 and A3[i]['fx']['occt']['volume'] > 28274, (t['volume'], A3[i]['fx']['occt']['volume']); continue
         assert A3[i]['outcome'] == 'FAIL' and t['bodies'] > 1 and t['dVol'] > 0.05 and t['volume'] > 0, (i, A3[i]['outcome'], t.get('bodies'), t.get('dVol'))
 if A3: row('WRONG (round-2 contract translator, the one that shipped): repeat / repeatAround of CONE or SPUN copies (washer, vase, pulley) that overlap or touch. solid.combine join fails, the translator falls back to the unjoined copies, and the result is N separate bodies whose volumes are SUMMED: no refusal, no sentence. Only the torus guard stood in the way.', 'wrong',
-    CMDR2 + ' | '.join(asis3(i) for i in sil[:5]) + ' | ' + asis3('r3-vase2-x10') + ' | ' + asis3('r3-washer-y10-touch', ' [here OCCT itself is wrong: three stacked washers must be 3 x 9424.78 = 28274.33; OCCT 20482 is its own boolean failure, and truck\'s total is right only because stacked copies do not overlap, but it is still 3 bodies, not one fused solid]') +
+    CMDR2 + ' | '.join(asis3(i) for i in sil[:5]) + ' | ' + asis3('r3-vase2-x10') + ' | ' + asis3('r3-washer-y10-touch', ' [three stacked washers only touch, so the summed volume 3 x 9424.78 = 28274.33 is right (live OCCT agrees; round 4 had recorded 20482 for OCCT, which this run does not reproduce), but the result is still 3 bodies, not one fused solid]') +
     '. Independent checks: washers stacked along their own axis (y step 6) overlap by 4 of 10, union height 16, volume 300*pi*16 = 15079.645 = OCCT = brep-rs, truck 18849.531 = 2 x 9424.78 (+25%); cone(10,20) x2 step 3: each cone is 523.60, truck 1047.007 = their SUM although the copies overlap by 7 mm, so the union must be smaller (OCCT 799.086). Cause (raw, repeated on every row): "solid.combine: boolean Union: the operation failed: no result; ... not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 3 curved faces (cone)". brep-rs refuses the cone rows ("its copies overlap") and builds the washer rows. The critic reproduced the first five with scratchpad/pm-critic/run.mjs --set=b5 / --set=b7 --tr=pm; the ids are ov-washer-stack-overlap, v-cone2-step3, v-cone-ra-overlap, v-washer2-y6 and the cone x3 step 6 case.')
 for i in sil:
     assert R[i]['outcome'] == 'REFUSED', (i, R[i]['outcome'])
 joinfail = [i for i in sil if 'copies overlap or touch' in (tr(i).get('refused') or '')]
 timed = [i for i in sil if tmo(i)]
-assert set(joinfail) | set(timed) == set(sil)
-for i in timed: assert GB[i]['outcome'] == 'REFUSED' and 'copies overlap or touch' in (GB[i]['fx']['truck'].get('refused') or ''), (i, GB[i]['outcome'])
+assert not timed and set(joinfail) == set(sil), (timed, [i for i in sil if i not in joinfail])   # round 5: all seven are refused by the join guard itself, none by the clock (round 4 recorded two as killed at a 60 s limit that no longer exists)
 row('repeat / repeatAround of cone or spun copies that overlap or touch and that truck cannot join [contract translator patch: disjoint, the unjoined fallback is accepted only when every pair of copies is provably apart]', 'refused',
-    CMD + 'ALL SEVEN rows of the wrong row above are now refused before any volume is reported: ' + ' | '.join('%s -> %s' % (i, 'killed at the 60 s limit' if i in timed else 'join failed') for i in sil) + '. The two killed at the limit would fail the join anyway: with a 400 s limit (pm3-results-generous-budget.json) %s both end in the same join refusal after %s s. Check made by the guard: after the join fails, the closest pair of copies must have a bbox gap above 1e-3 mm along some axis, else the pattern is refused (raw: "%s"). Copies that are provably apart keep the fallback (see the supported row). Student sentence (produced by this run): "%s"' %
-    (' and '.join(timed), ' and '.join('%d' % (GB[i]['fx']['ms'] / 1000) for i in timed), tr('r3-cone2-step3')['refused'][:150], stu('r3-cone2-step3')),
+    CMD + 'ALL SEVEN rows of the wrong row above are now refused before any volume is reported (live run, round 5): ' + ' | '.join('%s -> join failed, refused (%.0f s)' % (i, tdur(i)) for i in sil) + '. Check made by the guard: after the join fails, the closest pair of copies must have a bbox gap above 1e-3 mm along some axis, else the pattern is refused (raw: "%s"). Copies that are provably apart keep the fallback (see the supported row). Student sentence (produced by this run): "%s"' %
+    (tr('r3-cone2-step3')['refused'][:150], stu('r3-cone2-step3')),
     stu('r3-cone2-step3'))
 assert stu('r3-cone2-step3') == stu('r3-washer2-y6') == stu('r3-washer3-z6') == stu('r3-vase2-x10') == stu('r3-washer-y10-touch')
 
@@ -448,39 +463,62 @@ row('repeat / repeatAround of cone, spun (washer, vase) and drilled-cylinder cop
     (E(max(tr(i)['dVol'] for i in cs3)), E(max(tr(i)['dBbox'] for i in cs3)), len(cs3), ', '.join('%s %.1f s' % (i, pwall(i)) for i in ['r3-cone2-step8','r3-cone2-step6','r3-washer2-z3','r3-cone2-z12'] if pwall(i)), len(fails), '; '.join(ftxt(i) for i in fails[:3]), R['r3-washer2-z3']['fx']['occt']['faces'], R['r3-washer2-z3']['fx']['brep']['faces'], tr('r3-washer2-z3')['faces']))
 
 
-# ---- C. the time limit
-tl = [i for i in R if i.startswith('r3-') and tmo(i)]
-assert 'r3-sph2-step7' in tl and 'r3-cone3-step6' in tl
-def mkline(i):
-    return '%s: %s' % (i, ('built in %.1f s, dVol %s' % (pwall(i), E(tr(i)['dVol']))) if R[i]['outcome'] in ('PASS', 'FAIL') else 'killed at 60 s')
-tm_ok = ['r3-sph2-step8','r3-sph2-step7.5','r3-sph2-step6','r3-sph3-step8','r3-sph2-disjoint','r3-ring3-far','r3-cone2-step8','r3-cone2-step6','r3-cone2-y6','r3-washer2-z3']
-tm_ok = [i for i in tm_ok if R[i]['outcome'] in ('PASS', 'FAIL')]
-tm_ko = ['r3-sph2-step7','r3-cone3-step6','r3-cone-ra-overlap','r3-spin-ra-overlap','r3-around-count-360'] + [i for i in R if tmo(i) and not i.startswith('r3-')]
-tm_ko = [i for i in dict.fromkeys(tm_ko) if tmo(i)]
-assert 'r3-sph2-step7' in tm_ko
-row('repeat / repeatAround of ROUND copies (spheres, cones, spun parts, rings of them) that take longer than 60 s to build [contract translator patch: budget, each solidcraft run is a child process killed at the limit, 300 s for a whole model]', 'refused',
-    CMD + 'Round 2 had NO limit: the build ran as long as it ran (two spheres d10 in one bare session: step 8 = 9 s, step 7.5 = 8 s, step 7 = 174 s, step 6 = 11 s; the cliff is in the kernel boolean, not the pattern). Killed at 60 s and refused in this run: ' + ' | '.join(mkline(i) for i in tm_ko) + '. Built inside the limit (pattern run time): ' + ' | '.join(mkline(i) for i in tm_ok) + '. With a 400 s limit the killed ones end like this (pm3-results-generous-budget.json): ' + ' | '.join('%s %s%s' % (i, GB[i]['outcome'], (' after %d s' % pwall(i, GB)) if GB[i]['outcome'] in ('PASS', 'FAIL') else ' (join refusal)') for i in ['r3-sph2-step7','r3-cone3-step6','r3-cone-ra-overlap','r3-spin-ra-overlap']) + '. One bare session (pattern + join, no oracle, no replay; pm3-time-curved.mjs): ' + TIMEC.strip().replace('\n', ' | ') + ' || The limit is a policy number: cases within 2x of it (cone x2 step 6 and the y6 stack at 40-51 s) depend on machine load, so the row for a case near the limit may read supported on a quiet machine. The sentence names the cause and the way out. Student sentence (produced by this run): "%s"' % stu('r3-sph2-step7'),
-    stu('r3-sph2-step7'))
+# ---- C. the time limit (round 5: rewritten. The stored round-3 run used a 60 s limit; the translator has since had a 600 s safety net, and the live run shows what that does)
+import math
+slow_built = [i for i in ['r3-sph2-step7','r3-spin-ra-overlap','r3-cone2-y6'] if R[i]['outcome'] in ('PASS', 'FAIL')]
+assert 'r3-sph2-step7' in slow_built and 'r3-spin-ra-overlap' in slow_built, slow_built
+assert not [i for i in R if tmo(i) and i not in STORED_NR], [i for i in R if tmo(i) and i not in STORED_NR]   # no live case reaches the safety net
+# closed form for two spheres (lens): union = 2 V - pi (4r + d)(2r - d)^2 / 12 -- an independent second measure of the sphere pair
+def sph_union(r, d): return 2 * 4 / 3 * math.pi * r ** 3 - math.pi * (4 * r + d) * (2 * r - d) ** 2 / 12
+cf7 = sph_union(5, 7); assert abs(R['r3-sph2-step7']['fx']['occt']['volume'] - cf7) / cf7 < 1e-9, (R['r3-sph2-step7']['fx']['occt']['volume'], cf7)
+cf7t = abs(tr('r3-sph2-step7')['volume'] - cf7) / cf7; assert cf7t <= 3e-4, cf7t
+def mkline(i): return '%s: built in %.0f s (whole case %.0f s), dVol %s vs OCCT, %s' % (i, pwall(i) or 0, tdur(i), E(tr(i)['dVol']), 'rig FAIL on faces only' if R[i]['outcome'] == 'FAIL' else 'PASS')
+row('repeat / repeatAround of ROUND copies that are slow to build (two spheres overlapping by 3 mm, a ring of three overlapping spun parts, two cones overlapping by 14): they BUILD, in 30 to 180 s on this rig, and agree with OCCT within the curved bar', 'supported',
+    CMD + 'Round 4 and earlier rows called these REFUSED because the stored run used a 60 s limit; the translator\'s limit is now a 600 s safety net (translator header, patch budget) and this live run (round 5) built them: ' + ' | '.join(mkline(i) for i in slow_built) + '. Independent second measure for the sphere pair: closed form 2 x (4/3 pi 5^3) - pi (4 x 5 + 7)(2 x 5 - 7)^2 / 12 = %.4f; OCCT %.4f; truck %.4f (relative difference to the closed form %s, inside the curved bar 3e-4, which is tessellation of the sphere). r3-spin-ra-overlap has OCCT only (brep-rs refuses it: "its copies overlap"). The wait is real: the case runs a minute or more on this rig, and a student with this input waits for it; the next row is what happens when it does not finish at all.' % (cf7, R['r3-sph2-step7']['fx']['occt']['volume'], tr('r3-sph2-step7')['volume'], E(cf7t)))
 
-# ---- D. counts
-assert R['r3-box-count-200']['outcome'] == 'PASS' and R['r3-box-count-1000']['outcome'] == 'NO-ORACLE' and abs(tr('r3-box-count-1000')['volume'] - 16 * (3 * 1000 + 1)) < 1e-6
-row('repeat(box) with a large count (up to the SolidCraft cap of 1000): overlapping copies fuse into one bar', 'supported',
-    CMD3 + '%s | r3-box-count-1000: OCCT cannot build it (its wasm heap is corrupted: "%s"), so the oracle is the closed form 16 x (3 x 1000 + 1) = %d against truck %.4f (6 faces, one body); pattern run time %.1f s. Bare session (no replay): see the timing line below. In round 2 the claim was "up to 40"; the critic measured 47 s for count 200 and "no return in 200 s" for count 1000 on the replaying translator, i.e. the first run of each feature plus every later replay; the pattern run alone is seconds. Bare timings (pm3-time-curved.txt): %s' % (c('r3-box-count-200'), R['r3-box-count-1000']['occtInvalid'][:70], 16 * 3001, tr('r3-box-count-1000')['volume'], pwall('r3-box-count-1000'), ' | '.join(l for l in TIMEC.strip().splitlines() if l.startswith('box'))))
+# the safety net itself, fired on purpose (BD = PM_BUDGET_MS=3000 on cases that take longer than 3 s)
+BDK = [i for i in BD if BD[i]['outcome'] == 'REFUSED']; BDOK = [i for i in BD if i not in BDK]
+assert BDK and all('TIME BUDGET' in (tr(i, BD).get('refused') or '') for i in BDK), [(i, BD[i]['outcome']) for i in BD]
+assert all(BD[i]['outcome'] == 'PASS' for i in BDOK)   # the limit is per run and grows with the time the accepted steps took, so a fast case is not killed by it
+BDSENT = stu('r2-sens-sphere-d2', BD); assert is_plain(BDSENT) and 'stopped after 3 seconds' in BDSENT, BDSENT
+row('repeat / repeatAround (or any feature) whose solidcraft run does not finish inside the safety net (600 s per run, 3600 s per model) [contract translator patch: budget, each run is a child process killed at the limit]', 'refused',
+    CMD.replace(' --variants', '') + 'NO case of the suite reaches the net with its real limits (asserted by this build), so the net is demonstrated with a SHORT limit: PM_BUDGET_MS=3000 on %s (pm-results-budget-demo.json, wasm sha256 %s): %s; %s finished inside their own limit (the per-run limit is 3000 ms plus twice the time the accepted steps took, plus 1 s) and are not refused. The student sentence produced by the translator for the kill (direct kill, as shown): "%s". The sentence says the number of seconds of the limit that was in force (3 here, 600 in the product), names the cause and the way out; the kill leaves the earlier steps built and the later ones refused with the root-cause sentence.' %
+    (', '.join(BD), STAMP['wasmSha256'][:16], ' | '.join('%s killed after a 3000 ms limit (whole case %.1f s, sentence "%s")' % (i, tdur(i, BD), stu(i, BD)) for i in BDK), ', '.join(BDOK), BDSENT),
+    BDSENT)
+
+# ---- D. counts (round 5: the 1000 / 1001 / 100000 box cases and the ring of 360 run on SolidCraft ALONE, pm-count-truck.mjs, because the OCCT oracle build exceeds the 1500 MB cap)
+CT = {x['id']: x for x in json.load(open(os.path.join(H, 'pm-count-truck.json')))} if os.path.exists(os.path.join(H, 'pm-count-truck.json')) else {}
+CMDCT = RUN + 'SOLIDCRAFT_REFEREE_PKG=%s systemd-run --user --scope -p MemoryMax=1500M -p MemorySwapMax=0 timeout 900 bun docs/spikes/solidcraft-referee/contract/pm-count-truck.mjs --only=<id> --out=<scratch>/<id>.json [contract translator, truck alone, no OCCT, no brep-rs; numbers in contract/pm-count-truck.json]. ' % SC
+assert R['r3-box-count-200']['outcome'] == 'PASS' or 'r3-box-count-200' in STORED_NR
+if 'r3-box-count-1000' in CT:
+    ct = CT['r3-box-count-1000']; assert ct['verdict'] == 'ok' and ct['closedForm'] == 16 * 3001 and ct['rel'] <= 1e-9, ct
+    CT1000 = '%s: live truck-only run, truck volume %.6f vs closed form 16 x (3 x 1000 + 1) = %d (relative difference %s, planar bar 1e-9), %s faces, %s bodies, %.0f s.' % ('r3-box-count-1000', ct['truck']['volume'], ct['closedForm'], E(ct['rel']), ct['truck'].get('faces'), ct['truck'].get('bodies'), ct['ms'] / 1000)
+    st1000 = 'supported'
+else:
+    CT1000 = 'r3-box-count-1000: NOT replayed in round 5 (pm-count-truck.json missing or the run was killed); the stored round-3 record (truck volume 48016, one body) is the only evidence and is not counted.'
+    st1000 = 'unsupported'
+row('repeat(box) with a large count (up to the SolidCraft cap of 1000): overlapping copies fuse into one bar', st1000,
+    CMDCT + '%s | live oracle run for the smaller case: %s. OCCT cannot be the oracle for 1000 copies (its wasm heap is corrupted: "%s" in the stored round-3 run, and the OCCT oracle build exceeds the 1500 MB memory cap in round 5), so the oracle is the closed form of the union of 1000 boxes 4 x 4 x 4 stepped by 3 (16 x (3 x 1000 + 1)). In round 2 the claim was "up to 40"; the critic measured 47 s for count 200 and "no return in 200 s" for count 1000 on the replaying translator.' % (CT1000, c('r3-box-count-200') if 'r3-box-count-200' not in STORED_NR else 'r3-box-count-200 NOT replayed in round 5 (stored record only)', (R['r3-box-count-1000'].get('occtInvalid') or 'n/a')[:70]))
 cap = ['r3-box-count-1001','r3-box-count-1e5','r3-around-count-1001']
-assert all(R[i]['outcome'] == 'REFUSED' for i in cap)
+if all(i in CT and CT[i]['verdict'] == 'refused' for i in cap):
+    capline = ' || '.join('%s -> raw "%s"; student "%s"' % (i, CT[i]['raw'].split(' -- ')[-1], CT[i]['student']) for i in cap) + '. (live truck-only run, pm-count-truck.json)'
+    capsent = CT['r3-box-count-1001']['student']
+else:
+    capline = ' || '.join('%s -> STORED raw "%s"; student "%s"' % (i, tr(i)['refused'].split(' -- ')[-1], stu(i)) for i in cap) + '. NOT replayed in round 5 (the OCCT oracle build of these copies exceeded the memory cap, and pm-count-truck.json is missing): stored round-3 text, which pm-translate.mjs still produces by reading.'
+    capsent = stu('r3-box-count-1001')
+assert 'at most 1000' in capsent and is_plain(capsent)
 row('repeat / repeatAround with a count above 1000 (the script only requires a whole number of at least 1; SolidCraft rejects above 1000)', 'refused',
-    CMD3 + ' || '.join('%s -> raw "%s"; student "%s"' % (i, tr(i)['refused'].split(' -- ')[-1], stu(i)) for i in cap) + '. Before round 3 the student saw the generic "this shape could not be built reliably, so it was left out." for count 1001. The script layer has no upper bound (rl-count0 / rl-count-frac are its only count checks), so the refusal comes from the kernel and costs nothing (the engine answers in 9 ms).',
-    stu('r3-box-count-1001'))
-assert 'at most 1000' in stu('r3-box-count-1001')
+    CMDCT + capline + ' Before round 3 the student saw the generic "this shape could not be built reliably, so it was left out." for count 1001. The script layer has no upper bound (rl-count0 / rl-count-frac are its only count checks), so the refusal comes from the translator\'s own count check and costs nothing.',
+    capsent)
 pk_ok = ['r3-pocket-count-10','r3-pocket-count-20','r3-hole-count-20']
-assert all(R[i]['outcome'] == 'PASS' for i in pk_ok)
+assert all(R[i]['outcome'] == 'PASS' for i in pk_ok), [(i, R[i]['outcome']) for i in pk_ok]
 pk_ko = ['r3-pocket-count-40','r3-pocket-count-60','r3-hole-count-60']
-assert all(tmo(i) for i in pk_ko), [(i, R[i]['outcome']) for i in pk_ko]
+assert all(i in STORED_NR for i in pk_ko), 'a live result for a count >= 40 case exists: rewrite this row from it'
 row('repeat(pocket) / repeat(hole) with a count of 10 to 20 (the script lowers count N to N-1 more sketch+pocket pairs)', 'supported',
-    CMD3 + ' | '.join(c(i) for i in pk_ok) + '. Rig cost: %s. Bare single session of the whole lowered command list (pm3-time-bare.mjs): %s.' % (', '.join('%s %.0f s' % (i, R[i]['fx']['ms'] / 1000) for i in pk_ok), TIMEB.strip().replace('\n', ' | ')))
-row('repeat(pocket) / repeat(hole) with a count of about 40 or more: the per-feature check replays the accepted commands for every feature, so a long lowered chain costs quadratic time and hits the 300 s whole-model limit [contract translator patch: budget]', 'refused',
-    CMD3 + ' || '.join('%s -> %s, student "%s"' % (i, tr(i)['refused'][:140], stu(i)) for i in pk_ko[:1] + pk_ko[2:]) + '. Round 2 never returned for pocket count 60 within 200 s (the critic). The kernel is not the slow part: one bare session builds the same lowered plate in the times in the previous row (%s); the cost is the translator\'s per-feature replay. So this refusal is a limit of the rig\'s per-feature checking, and a product that keeps one session open would not have it. The sentence is truthful for the rig that exists.' % TIMEB.strip().replace('\n', ' | '),
-    stu('r3-pocket-count-40'))
+    CMD3 + ' | '.join(c(i) for i in pk_ok) + '. Rig cost in this run: %s.' % ', '.join('%s %.0f s' % (i, R[i]['fx']['ms'] / 1000) for i in pk_ok))
+row('repeat(pocket) / repeat(hole) with a count of about 40 or more (60 pockets, 60 holes): NOT MEASURED in round 5', 'unsupported',
+    CMD3 + 'The live replay did not finish: r3-pocket-count-60 was killed at the 900 s limit of this round (exit 124, the rig checks every feature by replaying the whole lowered chain, so the cost is quadratic); r3-pocket-count-40 and r3-hole-count-60 were stopped before the limit and are not replayed. The stored round-3 results (%s) were produced under a 60 s / 300 s limit that the translator no longer has (it has a 600 s per run, 3600 s per model safety net), so they are NOT evidence of what the product does now. No claim is made: the status is unsupported (not measured) until a run with a longer limit than this round\'s 900 s cap finishes. Round 2 never returned for pocket count 60 within 200 s (the critic); one bare session of the same lowered plate costs seconds (a rig limit, not a kernel limit, but unmeasured this round).' % ' | '.join('%s: %s' % (i, (tr(i).get('refused') or '')[:80]) for i in pk_ko),
+    None)
 
 # ---- E. sub-micron
 sub_gap_ids = ['r3-sub-0.00001','r3-sub-0.000003','r3-sub-0.000001','r3-sub-1e-7']
@@ -494,14 +532,15 @@ def sg(i, src):
     t = tr(i, src); o = src[i]['fx']['occt']; return '%s: OCCT %.6f/%d faces, truck %.6f/%d faces as %d body(ies), dVol %s' % (i, o['volume'], o['faces'], t['volume'], t['faces'], t['bodies'], E(t['dVol']))
 if A3: row('WRONG (round-2 contract translator): repeat of a 10 box with a step that leaves a gap of 1e-5 .. 1e-7 mm (step 10.00001 .. 10.0000001) is FUSED into one 6-face bar (truck closes the gap), and a step that overlaps by 1e-8 .. 1e-6 mm is NOT fused (3 separate bodies, 18 faces, the fallback). OCCT keeps the gap (18 faces) or fuses differently; the planar volume delta is above the 1e-9 bar. No sentence.', 'wrong',
     CMDR2 + ' | '.join(sg(i, A3) for i in sub_gap_ids) + ' || overlap: ' + ' | '.join(sg(i, A3) for i in sub_ov_ids) + '. Gaps of 1e-3 and 1e-4 were already refused by the contact guard (by accident: the pair test saw 2 shells), gaps of 1e-9 and below fuse like OCCT (dVol 2.2e-11) and overlaps of 3e-6 and more fuse correctly. The zone in between is where truck\'s kernel tolerance and the oracle disagree.')
-sub_ref = ['r3-sub-0.001','r3-sub-0.0001'] + sub_gap_ids + ['r3-sub-1e-8'] + sub_ov_ids
+sub_ov_ids2 = ['r3-sub--0.000003','r3-sub--0.00001','r3-sub--0.0001']   # round 5: refused by the sliver guard (they built right with the guard off, but 1e-4 and 1e-6 overlaps are where the fuzz found wrong solids)
+sub_ref = ['r3-sub-0.001','r3-sub-0.0001'] + sub_gap_ids + ['r3-sub-1e-8'] + sub_ov_ids + sub_ov_ids2
 assert all(R[i]['outcome'] == 'REFUSED' for i in sub_ref), [(i, R[i]['outcome']) for i in sub_ref if R[i]['outcome'] != 'REFUSED']
-row('repeat of PLANAR copies separated by a gap between 1e-8 and 1e-3 mm, or overlapping by 1e-8 .. 1e-6 mm [contract translator patch: subgap, and the disjoint fallback guard]', 'refused',
-    CMD3 + 'Gaps: ' + ' | '.join('%s -> %s' % (i, tr(i)['refused'][:100]) for i in ['r3-sub-0.001','r3-sub-1e-8']) + '. Overlaps: ' + ' | '.join('%s -> %s' % (i, tr(i)['refused'][:110]) for i in sub_ov_ids[:2]) + '. Student sentences (produced by this run): gap "%s"; overlap "%s". The gap check only judges planar copies (a curved copy\'s tessellated box cannot resolve 3e-4 mm).' % (stu('r3-sub-0.000001'), stu('r3-sub--1e-7')),
+row('repeat of PLANAR copies separated by a gap between 1e-8 and 1e-3 mm, or overlapping by 1e-8 .. 5e-4 mm [contract translator patch: subgap, the disjoint fallback guard and, from round 5, the sliver guard for overlaps up to 5e-4]', 'refused',
+    CMD3 + 'Gaps: ' + ' | '.join('%s -> %s' % (i, tr(i)['refused'][:100]) for i in ['r3-sub-0.001','r3-sub-1e-8']) + '. Overlaps: ' + ' | '.join('%s -> %s' % (i, tr(i)['refused'][:110]) for i in sub_ov_ids[:2] + sub_ov_ids2[:1]) + '. The overlaps of 3e-6 .. 1e-4 mm (%s) are refused by the round-5 sliver guard although this box pair built right with the guard off (dVol 0): the guard is a class rule (the fuzz found wrong solids at 1e-4 and 1e-6 on other boxes), not a verdict on that one case. Student sentences (produced by this run): gap "%s"; overlap "%s". The gap check only judges planar copies (a curved copy\'s tessellated box cannot resolve 3e-4 mm).' % (', '.join(sub_ov_ids2), stu('r3-sub-0.000001'), stu('r3-sub--1e-7')),
     stu('r3-sub-0.000001'))
-sub_ok = ['r3-sub-0.01','r3-sub-1e-9','r3-sub-0','r3-sub--1e-9','r3-sub--0.000003','r3-sub--0.00001','r3-sub--0.0001','r3-sub--0.001']
+sub_ok = ['r3-sub-0.01','r3-sub-1e-9','r3-sub-0','r3-sub--1e-9','r3-sub--0.001']
 assert all(R[i]['outcome'] == 'PASS' and tr(i)['dVol'] < 1e-9 for i in sub_ok), [(i, R[i]['outcome'], tr(i).get('dVol')) for i in sub_ok]
-row('repeat of PLANAR copies with a gap above 1e-3 mm (step 10.01), touching (step 10), a gap of 1e-9 or less, or an overlap of 3e-6 mm or more', 'supported',
+row('repeat of PLANAR copies with a gap above 1e-3 mm (step 10.01), touching (step 10), a gap of 1e-9 or less, an overlap of 1e-9 or less, or an overlap of 1e-3 mm or more (overlaps from 1e-8 to 5e-4 mm are the refused row above)', 'supported',
     CMD3 + ' | '.join(c(i) for i in sub_ok) + '. All planar dVol below 1e-9. Face counts follow the convention row (truck 6 for fused bars).')
 
 
@@ -532,12 +571,12 @@ def frustum(side, h, deg):
     a2 = (side + 2 * h * math.tan(math.radians(deg))) ** 2; a1 = side * side
     return h / 3 * (a1 + a2 + math.sqrt(a1 * a2))
 V_taper = frustum(20, 15, 5); V_tneg = frustum(20, 15, -5)
-assert abs(tr('r3-taper-alone')['volume'] / V_taper - 1) < 1e-9 and ok('r3-mir-taper-tb') is False
+assert abs(tr('r3-taper-alone')['volume'] / V_taper - 1) < 1e-9 and ok('r3-mir-taper-tb') and R['r3-mir-taper-tb']['oracle'] == 'closed form' and R['r3-mir-taper-tb']['outcomeVsOcct'] == 'FAIL'
 assert abs(tr('r3-mir-taper-tb')['volume'] / (2 * V_taper) - 1) < 1e-9 and abs(tr('r3-mir-taper-neg-tb')['volume'] / (2 * V_tneg) - 1) < 1e-9
 assert refused('r3-mir-taper-lr') and 'mirror contact is not a face' in tr('r3-mir-taper-lr')['refused']
 bt = R['r3-mir-taper-tb']['fx']['brep']['volume']
 row("mirror of a TAPERED pull across its flat end (pull(sketch,15,{taper:5}) moved up, mirror 'top-bottom'; also a negative taper) [contract translator patch: taper maps pull's taper option, same mapping and fold guard as the extrude-pocket group]", 'supported',
-    CMD3 + 'Oracles: closed form for a square frustum, OCCT unusable (occt-build.ts ignores the taper: OCCT %.1f for the bare pull, %.1f for the pair), brep-rs agrees with truck. Bare taper-5 pull side 20 height 15: closed form %.6f, truck %.6f. Mirror top-bottom: closed form 2V = %.6f, truck %.6f (dVol %s, 1 body 1 shell, 10 faces), brep-rs %.6f. Taper -5: closed form 2V = %.6f, truck %.6f. (The rig scores these FAIL only because the OCCT referee ignores the taper.)' %
+    CMD3 + 'Oracles: closed form for a square frustum, OCCT unusable (occt-build.ts ignores the taper: OCCT %.1f for the bare pull, %.1f for the pair), brep-rs agrees with truck. Bare taper-5 pull side 20 height 15: closed form %.6f, truck %.6f. Mirror top-bottom: closed form 2V = %.6f, truck %.6f (dVol %s, 1 body 1 shell, 10 faces), brep-rs %.6f. Taper -5: closed form 2V = %.6f, truck %.6f. (Round 5 scoring rule: the rig scores these cases against the closed form (outcome PASS, field oracle) and keeps the OCCT verdict beside it (outcomeVsOcct FAIL: the OCCT referee ignores the taper, so it is blind here).)' %
     (R['r3-taper-alone']['fx']['occt']['volume'], R['r3-mir-taper-tb']['fx']['occt']['volume'], V_taper, tr('r3-taper-alone')['volume'], 2 * V_taper, tr('r3-mir-taper-tb')['volume'], E(abs(tr('r3-mir-taper-tb')['volume'] / (2 * V_taper) - 1)), bt, 2 * V_tneg, tr('r3-mir-taper-neg-tb')['volume']))
 lr_ref = ['r3-mir-taper-lr','r3-mir-loft-lr']
 assert all(refused(i) and 'mirror contact is not a face' in tr(i)['refused'] for i in lr_ref)
@@ -578,6 +617,7 @@ row('WRONG (the shipped language): the SAME call repeatAround(x, {count:3, angle
 
 # ---- H. sentence census over every refused feature of this group
 import collections
+import re
 cens = collections.OrderedDict()
 for i, x in R.items():
     fx = x.get('fx')
@@ -585,14 +625,18 @@ for i, x in R.items():
     for f in fx['truckFeatures']:
         if f['status'] == 'refused':
             cens.setdefault(f['student'], []).append(i)
-generic = [(sn, ids) for sn, ids in cens.items() if 'the kernel could not build this (' in sn]
-named = [(sn, ids) for sn, ids in cens.items() if 'the kernel could not build this (' not in sn]
-import re
-leak = [sn for sn in cens if re.search(r'brep-rs|FreeCAD|OCCT|truck|solidcraft|solid\.', sn)]
-assert not leak, leak
-row('every refusal sentence the contract translator produces for this group is about the student\'s own call, names the cause, and never an engine or an internal id; the fallback "the kernel could not build this (<reason>)" is the only generic one', 'supported',
-    'Census over all %d cases of pm-results.json: %d distinct student sentences from %d refused features; %d are the generic fallback "the kernel could not build this (...)" (reasons: %s); none mentions brep-rs, FreeCAD, OCCT, truck or solidcraft. Before round 3 the fallback was the bare "this shape could not be built reliably, so it was left out." for: count 1001, mirror of a tapered pull (labelled extrude()), the spun-part mirror, and every unmapped option. Distinct sentences: %s' %
-    (len(R), len(cens), sum(len(v) for v in cens.values()), len(generic), '; '.join(sn.split('(', 1)[1][:70] for sn, ids in generic) or 'none', ' || '.join('[%d] %s' % (len(ids), sn) for sn, ids in named)))
+# round 5: the fallback no longer names the kernel. The ban is the group's own ENGINE lint (is_plain mirrors isPlainSentence() in pm-sentences.mjs): no engine word (kernel included), one sentence.
+generic = [(sn, ids) for sn, ids in cens.items() if 'this could not be built reliably, so it was left out' in sn]
+named = [(sn, ids) for sn, ids in cens.items() if 'this could not be built reliably, so it was left out' not in sn]
+script_sent = collections.OrderedDict()
+for i, x in R.items():
+    if x['outcome'] == 'SCRIPT-REFUSED': script_sent.setdefault(x['sentence'], []).append(i)
+bad = [sn for sn in list(cens) + list(script_sent) if not is_plain(sn)]
+assert not bad, bad   # any engine word (kernel, truck, brep-rs, FreeCAD, OCCT, solid.*), any internal id in backticks, any second sentence
+assert not any(re.search(r'\b(F\d+:|pat\d+|mir\d+|sk_)', sn) for sn in list(cens) + list(script_sent)), 'internal id in a student sentence'
+row('every refusal sentence this group shows (translator and script layer) is about the student\'s own call, names the cause, and never names an engine or an internal id (the words truck, solidcraft, brep-rs, FreeCAD, OCCT, kernel and solid.<name> are all banned and checked)', 'supported',
+    'Census over all %d cases of pm-results.json (live run, round 5): %d distinct translator sentences from %d refused features and %d distinct script-layer sentences from %d script-refused cases; every one passes is_plain (no engine word, no second sentence, no internal id); %d translator sentences are the generic fallback "this could not be built reliably, so it was left out" (the unmapped reasons: %s). Round 4 stored a fallback that said "the kernel could not build this (<reason>)" and a root-cause echo that repeated it (the dependent sentence of a refused draft); the translator now emits neither, and this build asserts it. Distinct translator sentences: %s' %
+    (len(R), len(cens), sum(len(v) for v in cens.values()), len(script_sent), sum(len(v) for v in script_sent.values()), len(generic), '; '.join(sorted({R[i]['fx']['truck']['refused'][:90] for sn, ids in generic for i in ids if R[i].get('fx') and R[i]['fx']['truck'].get('refused')})) or 'none', ' || '.join('[%d] %s' % (len(ids), sn) for sn, ids in named)))
 
 # ============================ face counts ============================
 fcs = [('rl-disjoint-x3','3 disjoint boxes (not fused)'),('rl-touch-x3','3 face-touching boxes'),('rl-overlap-x4','4 overlapping boxes'),('rl-count-40-overlap','40 overlapping boxes'),('mi-lr-offset-box','box mirrored (face contact)'),('mi-of-join','joined boxes mirrored'),('r2-tie-hexprism-tb','hex prism mirrored top-bottom'),('rl-cyl-disjoint','3 disjoint cylinders'),('rl-cyl-overlap','3 overlapping cylinders'),('r3-cyl-hole-overlap','2 overlapping drilled discs'),('ra-z6-cyl-overlap','ring of 6 overlapping cylinders'),('ra-count-36-overlap','36 overlapping boxes around z'),('r2-tie-cyl-tb','cylinder mirrored top-bottom (planar cap)'),('r2-tie-drilled-cyl-tb','drilled cylinder mirrored'),('mi-cone-tb','cone mirrored')]
@@ -625,20 +669,130 @@ assert 'rl-diag-overlap' not in dif  # the contact guard must not touch the over
 rows[0]['evidence'] += ' PATCH DEPENDENCE (full AS-IS run PM_TR=asis vs the round-3 contract run, %d cases present in both, torus cases excluded): %d differ and every one is explained by a named patch: %s. All other %d cases are identical AS-IS (same outcome, same volume to 1e-6, same refusal text), so no other row in this file depends on a patch except the r3-* rows (their round-2 behaviour is in pm3-results-r2translator.json) and the torus rows (their AS-IS runs are in pm-torus-asis.json). ROUND-2 vs ROUND-3 contract on the 299 round-2 cases (pm-results-round2.json vs pm-results.json): %s.' % (len(common), len(dif), '; '.join('%s: %s' % (k, ', '.join(v)) for k, v in grp.items() if v), len(common) - len(dif), RDIFF)
 
 assert 'UNEXPLAINED' not in rows[-1]['evidence'].split('Rule:')[0]
-# ---- ROUND 4 provenance: the truck side is STORED, not re-run (the referee pkg did not exist this round)
-RC = json.load(open(os.path.join(H, 'pm-oracle-recheck.json')))
-PROV = ('[PROVENANCE, round 4] SolidCraft (truck) numbers and refusal sentences in this row are STORED results from contract/pm-results.json (written 2026-10-18 09:19 by pm-run.mjs), NOT re-run in this round: the pre-built referee pkg named in the task (sc-referee-pkg) does not exist, and the rules forbid rebuilding the wasm. '
-        'Re-run live this round (pm-run.mjs against a stub pkg whose run() always fails, so script -> ModelDoc -> live OCCT -> live brep-rs executed fresh; compared by pm-oracle-recheck.py, numbers in pm-oracle-recheck.json): '
-        '%d of %d stored cases re-run (the 4 count 1000/1001/100000 cases were skipped because OCCT does not return on them); %d script-layer refusal sentences identical, %d different; '
-        'OCCT volume/bbox/face count identical to the stored values on %d cases (max relative delta %.1e), brep-rs on %d cases (max relative delta %.1e), %d OCCT-invalid cases invalid again; '
-        'stored truck dVol recomputed against the fresh OCCT volume on %d cases, max difference %.1e. '
-        'So the oracle side and the scoring are reproduced; whether the stored truck output was produced by the pinned fe3717f build is NOT attested (pm-results.json carries no pkg stamp). '
-        'Translator-level refusal sentences that need truck first (%d stored REFUSED cases) could not be reproduced without the rig. '
-        'Data from earlier rounds that is no longer in this directory (pm3-results-r2translator.json, pm3-results-fusedoff.json, pm3-time-bare.txt, pm3-time-curved.txt) is marked LOST-DATA where a number came from it; the two rows that were built only from it were dropped (their guards are the refused rows). Evidence follows. ') % (
-    RC['fresh_cases'], RC['stored_cases'], RC['script_refused']['same'], len(RC['script_refused']['different']), RC['occt']['compared'], RC['occt']['max_dVol'], RC['brep']['compared'], RC['brep']['max_dVol'], RC['occt']['invalid_both'],
-    RC['stored_truck_vs_fresh_occt']['compared'], RC['stored_truck_vs_fresh_occt']['max_abs_difference_in_dVol'], RC['translator_refusal_text']['needs_truck'])
-assert not RC['script_refused']['different'] and not RC['occt']['volume_differs'] and not RC['occt']['faces_differ'] and not RC['brep']['volume_differs'] and not RC['brep']['faces_differ'] and not RC['stored_truck_vs_fresh_occt']['cases_where_stored_dVol_does_not_match']
+# ============================ round 5: near-coincident copies, sliver overlaps, near-coincident cuts, hollow, round ============================
+def r4(i): return R[i]
+snapfam = {  # ladder family -> (smallest part extent mm, ids with their shift mm)
+    'box 10, shift along x': (10, [(i, float(i.split('-x-')[1])) for i in R if i.startswith('r4-snap-b10-x-') and i.count('-') == 4]),
+    'box 200, shift along x': (200, [(i, float(i.split('-x-')[1])) for i in R if i.startswith('r4-snap-b200-x-')]),
+    'box 1, shift along x': (1, [(i, float(i.split('-x-')[1])) for i in R if i.startswith('r4-snap-b1-x-')]),
+    'plate 40x40x10, shift along z': (10, [(i, float(i.split('-z-')[1])) for i in R if i.startswith('r4-snap-plate-z-')]),
+    'plate 40x40x10, shift along x': (10, [(i, float(i.split('-x-')[1])) for i in R if i.startswith('r4-snap-plate-x-')]),
+    'bar 100x2x2, shift along x': (2, [(i, float(i.split('-x-')[1])) for i in R if i.startswith('r4-snap-bar-x-')]),
+    'bar 100x2x2, shift along y': (2, [(i, float(i.split('-y-')[1])) for i in R if i.startswith('r4-snap-bar-y-')]),
+    'slab 100x100x1, shift along z': (1, [(i, float(i.split('-z-')[1])) for i in R if i.startswith('r4-snap-slab-z-')]),
+}
+tabs = []; margins = []
+for fam, (ext, ids) in snapfam.items():
+    assert ids, fam
+    ids = sorted(ids, key=lambda t: t[1]); tau = 0.015 * ext
+    for i, d in ids:
+        # guard ON: refused exactly when the shift is within tau, built (and right) above it
+        if d <= tau: assert R[i]['outcome'] == 'REFUSED' and 'near-coincident copies' in tr(i)['refused'], (i, R[i]['outcome'])
+        else: assert R[i]['outcome'] == 'PASS' and tr(i)['dVol'] <= 1e-9, (i, R[i]['outcome'])
+        assert i in SO, i
+    fail0 = [d for i, d in ids if SO[i]['outcome'] == 'FAIL']   # guard OFF: the silent wrong solid
+    assert fail0, fam
+    mxf = max(fail0); margins.append(tau / mxf)
+    tabs.append('%s: guard OFF is wrong (the thin layer is dropped) for shifts up to %s mm (%d of %d rungs), guard ON refuses up to %s mm (1.5%% of %s) and builds above' % (fam, ('%g' % mxf), len(fail0), len(ids), ('%g' % tau), ('%g' % ext)))
+assert min(margins) >= 2.99, margins   # 1.5% of the smallest extent against the largest failing shift of each family: 3x or more
+b10 = 'r4-snap-b10-x-0.01'
+assert SO[b10]['outcome'] == 'FAIL' and abs(SO[b10]['fx']['occt']['volume'] - 1001) < 1e-6 and abs(SO[b10]['fx']['truck']['volume'] - 1000) < 1e-6   # the critic's replay, reproduced live
+keep = ['r4-snap-touch-yoff-0.01', 'r4-snap-half-yoff-0.01', 'r4-snap-ybig-xtiny', 'r4-snap-edge-overlap']
+assert all(R[i]['outcome'] == 'PASS' and tr(i)['dVol'] <= 1e-9 for i in keep)
+multi = ['r4-snap-b10-x-0.02-n3', 'r4-snap-b10-x-0.02-n5']; assert all(refused(i) and SO[i]['outcome'] == 'FAIL' or SO[i]['outcome'] == 'PASS' for i in multi)
+diag = [i for i in R if i.startswith('r4-snap-b10-diag-')]
+rnd = [i for i in R if i.startswith(('r4-snap-cyl-', 'r4-snap-sph-'))]
+around = [i for i in R if i.startswith('r4-snap-around-')]
+def fz(F): return F['summary']['tally']
+assert FZ1['summary']['snapGuard'] and not FZ0['summary']['snapGuard'] and FZ1['summary']['sliverGuard'] and FZ0['summary']['sliverGuard'], (FZ1['summary'], FZ0['summary'])
+fz1w = [r for r in FZ1['trials'] if r['verdict'] == 'WRONG']; fz0w = [r for r in FZ0['trials'] if r['verdict'] == 'WRONG']
+assert not fz1w, fz1w          # the full guard set leaves no silently wrong solid in 400 random repeat() calls of a box (closed-form oracle)
+assert len(fz0w) >= 1 and max(r['rel'] for r in fz0w) >= 1e-4
+row('repeat(shape,{count,step}) where consecutive copies are shifted by almost nothing: 0 < shift <= 1.5% of the part\'s smallest size (box 10 stepped 0.01, a 100x2x2 bar stepped 0.005, a 100x100x1 slab stepped 0.003; a diagonal [d,d,d] step counts by its length; repeatAround counts by the travel of the far corner, NOT measured in round 5: the six r4-snap-around-* rings of 300 to 1000 boxes were killed by the memory cap in the OCCT oracle build and have no record) [contract translator patch: snap]', 'refused',
+    CMD.replace(' --variants', '') + 'WITHOUT the guard (PM_OFF=snap, pm-results-snapoff.json, same rig) solid.combine join silently DROPS the thin layer between a copy and the copy it almost lies on and reports the original\'s volume: box 10 stepped 0.01 gives truck %.4f against OCCT %.4f and the closed form 1000 + 10 x 10 x 0.01 = 1001 (relative difference %s, no error, no sentence) -- the critic\'s replay, reproduced live. Measured threshold tables (guard OFF vs ON, every rung is a live case, OCCT is the oracle): %s. The threshold 1.5%% was chosen in round 4 from the same kind of measurement (the worst failing shift was 0.0275 mm on a box 10 = 0.275%%) and is %.1fx or more above the largest failing shift of every family above (checked here), so it is a safety factor, not a fit to the rungs. Does not over-refuse the face-sharing shapes: %s are all built and exact (a whole face of one copy stays against the other). Diagonal shifts: %s. Round parts (guard ON refuses up to 0.05, builds 0.2 with the curved dVol %s): %s. More than two copies: %s. Fuzz, closed-form oracle (union of boxes by coordinate compression, no OCCT in the loop; pm-snap-fuzz.mjs --n=400 --seed=1): snap guard OFF (PM_OFF=snap, the sliver guard and the sum check stay on) %s of 400 trials silently wrong (worst relative error %s), all guards ON %s wrong, %s refused (sentences kept in pm-snap-fuzz-on.json); second seed 2 (not used to pick a threshold), all guards ON: %s wrong, %s refused. Student sentence (produced by this run): "%s"' %
+    (SO[b10]['fx']['truck']['volume'], SO[b10]['fx']['occt']['volume'], E(SO[b10]['fx']['truck']['dVol']), ' || '.join(tabs), min(margins), ', '.join(keep),
+     ' | '.join('%s %s' % (i.split('diag-')[1], R[i]['outcome']) for i in diag), E(max(tr(i)['dVol'] for i in rnd if R[i]['outcome'] == 'PASS')), ' | '.join('%s %s' % (i[8:], R[i]['outcome']) for i in rnd), ' | '.join('%s %s (guard OFF: %s)' % (i, R[i]['outcome'], SO[i]['outcome']) for i in multi),
+     fz(FZ0)['WRONG'], E(max(r['rel'] for r in fz0w)), fz(FZ1)['WRONG'], fz(FZ1)['refused'], fz(FZ2)['WRONG'], fz(FZ2)['refused'], stu('r4-snap-b10-x-0.02')),
+    stu('r4-snap-b10-x-0.02'))
+assert FZ0['summary']['n'] == FZ1['summary']['n'] == FZ2['summary']['n'] == 400 and not [r for r in FZ2['trials'] if r['verdict'] == 'WRONG'] and FZ2['summary']['seed'] == 2
+
+# sliver overlaps and near-corner pairs (found by the round-5 fuzz: 6 of 400 trials with every round-4 guard on)
+FOUND = _load('pm-fuzz-found-round4-guards-only.json')       # the round-5 first fuzz run: round-4 guards only (no sliver guard, no sum check)
+fnd = [r for r in FOUND['trials'] if r['verdict'] == 'WRONG']
+assert not FOUND['summary'].get('sliverGuard') and FOUND['summary']['snapGuard'] and len(fnd) == 6 and max(r['rel'] for r in fnd) < 5e-7 and min(r['rel'] for r in fnd) > 1e-9
+sl1w = [r for r in SL1['trials'] if r['verdict'] == 'WRONG']; sl0w = [r for r in SL0['trials'] if r['verdict'] == 'WRONG']; sl2w = [r for r in SL2['trials'] if r['verdict'] == 'WRONG']
+def depth(r): return min(r['L'][k] - abs(r['step'][k]) for k in range(3))
+assert SL1['summary']['sliverGuard'] and not SL0['summary']['sliverGuard'] and SL2['summary']['sliverGuard'] and SL1['summary']['mode'] == SL0['summary']['mode'] == SL2['summary']['mode'] == 'sliver'
+assert not sl1w and not sl2w and len(sl0w) >= 10, (len(sl1w), len(sl2w), len(sl0w))
+mxd = max(depth(r) for r in sl0w); assert mxd < 5e-4 / 3, mxd      # every wrong solid has a sliver at least 3x thinner than the threshold
+okabove = [r for r in SL1['trials'] + SL2['trials'] if r['verdict'] == 'ok' and depth(r) > 5e-4]; assert len(okabove) >= 20
+subs = [i for i in R if i.startswith('r3-sub--')]
+row('repeat(shape,{count,step}) of PLANAR copies whose bounding boxes overlap or touch and that overlap by a sliver (the thinnest overlap 1e-8 < d <= 5e-4 mm), e.g. box 49 stepped [-48.9999, -22.25, 13.95] (a sliver of 1e-4 on x, face contact on y) [contract translator patch: sliver, first half]', 'refused',
+    CMD.replace(' --variants', '') + 'FOUND BY THE ROUND-5 FUZZ (pm-fuzz-found-round4-guards-only.json, the 400-trial mixed fuzz with only the round-4 guards): %d trials were silently wrong, by a relative %s to %s: truck\'s join mis-fuses two copies that overlap by 1e-6 or 1e-4 mm along one axis (also when the copies only share a face on another axis) and returns a solid without a refusal. THRESHOLD, honestly: 5e-4 mm was chosen AFTER seeing that data (failures at overlap depths 1e-6 and 1e-4 mm, none at 1e-3 and above in the mixed fuzz); it is CHECKED on a dedicated fuzz (pm-snap-fuzz.mjs --mode=sliver: one axis overlaps by a log-uniform 1e-7 .. 2e-2 mm, the other two by 10..90%%): seed 11 with the guard OFF (PM_OFF=sliver): %d of 300 trials silently wrong (overlap depths %s .. %s mm, worst relative error %s); seed 11 guard ON: %d wrong, %d built and right, %d refused; seed 23 (not used to pick the threshold) guard ON: %d wrong, %d built and right, %d refused. Every wrong solid has a sliver at least %.1fx thinner than the threshold, and %d trials with a thicker sliver (above 5e-4 mm, up to 2e-2 mm) built right. Closed-form oracle: the exact union volume of the boxes (coordinate compression), no OCCT. Cases of the group that sit near the rule: %s. Student sentence (produced by this run for the smallest overlap): "%s"' %
+    (len(fnd), E(min(r['rel'] for r in fnd)), E(max(r['rel'] for r in fnd)), len(sl0w), E(min(depth(r) for r in sl0w)), E(mxd), E(max(r['rel'] for r in sl0w)), len(sl1w), SL1['summary']['tally']['ok'], SL1['summary']['tally']['refused'], len(sl2w), SL2['summary']['tally']['ok'], SL2['summary']['tally']['refused'], 5e-4 / mxd, len(okabove),
+     ' | '.join(cc(i) for i in subs), stu('r3-sub--1e-8')),
+    stu('r3-sub--1e-8'))
+
+# the sum check: copies that are provably apart must add up
+def al_ok(F): return F['summary']['tally']
+al0w = [r for r in AL0['trials'] if r['verdict'] == 'WRONG']; al1r = [r for r in AL1['trials'] if r['verdict'] == 'refused']
+assert AL0['summary']['mode'] == AL1['summary']['mode'] == AL2['summary']['mode'] == 'aligned' and not AL0['summary']['sliverGuard'] and AL1['summary']['sliverGuard'] and AL2['summary']['sliverGuard']
+assert AL0['summary']['n'] == AL1['summary']['n'] == 800 and AL0['summary']['seed'] == AL1['summary']['seed'] == 78 and AL2['summary']['seed'] == 91
+assert len(al0w) >= 50 and not [r for r in AL1['trials'] if r['verdict'] == 'WRONG'] and not [r for r in AL2['trials'] if r['verdict'] == 'WRONG']
+assert len(al1r) == len(al0w) and all('sum check' in (r.get('raw') or '') for r in al1r)    # the guard refuses exactly the trials that were wrong, and nothing else
+def algap(r): return max(abs(r['step'][k]) - r['L'][k] for k in range(3))
+assert max(algap(r) for r in al0w) < 1.0
+far = [r for r in AL0['trials'] if algap(r) >= 1.0]; assert len(far) >= 100 and not [r for r in far if r['verdict'] == 'WRONG']
+row('repeat(shape,{count,step}) of PLANAR copies that are a hair apart along one axis (gap 1e-3 .. 0.4 mm) and overlap by slivers along the other two (a copy placed almost corner to corner), e.g. box 35.5 x 39 x 28.75 stepped [35.49999981, -39.0507, 28.7499981] [contract translator patch: sliver, second half: the sum check]', 'refused',
+    CMD.replace(' --variants', '') + 'FOUND BY THE ROUND-5 FUZZ while the sliver threshold was being checked, so the sliver guard alone is NOT enough: with the guard off (PM_OFF=sliver, pm-snap-fuzz.mjs --mode=aligned: copies apart by a log-uniform 1e-3 .. 30 mm on one axis, overlapping by 1e-7 .. 1e-1 mm on the other two, seed 78, 800 trials) %d trials were silently wrong, by a relative %s at worst, ALL with the copies less than %.2f mm apart (none of the %d trials with a gap of 1 mm or more). The copies do NOT touch, so no overlap guard can see it; the cause is not established (probably the join snaps near-aligned planes), what is measured is that the volume comes back slightly off. The guard that catches it is an INDEPENDENT MEASURE, not a threshold: when every pair of planar copies is provably apart (bbox gap above 1e-3 mm) the union is exactly the sum of the copies\' own volumes (each measured before any join), and the result must equal that sum to 1e-9; a different result is refused. Guard ON, same seed: %d wrong, %d refused, %d built and right; the refused trials are exactly the %d that were wrong. Seed 91 (600 trials, not used for the design), guard ON: %d wrong, %d refused. The 5e-4 mm and 1e-8 mm numbers of the first half of the guard play no part here. Student sentence (produced by this run): "%s"' %
+    (len(al0w), E(max(r['rel'] for r in al0w)), max(algap(r) for r in al0w), len(far), len([r for r in AL1['trials'] if r['verdict'] == 'WRONG']), len(al1r), AL1['summary']['tally']['ok'], len(al0w), len([r for r in AL2['trials'] if r['verdict'] == 'WRONG']), AL2['summary']['tally']['refused'], al1r[0]['student']),
+    al1r[0]['student'])
+
+# near-coincident cuts
+cutk = ['r4-snap-pocket-x-0.01', 'r4-snap-pocket-x-0.05', 'r4-snap-pocket-z-0.01', 'r4-snap-two-pockets-by-hand-0.01', 'r4-snap-two-holes-by-hand-0.01', 'r4-snap-pocket-n5-0.01']
+assert all(refused(i) for i in cutk) and all(SO[i]['outcome'] == 'FAIL' for i in cutk if i != 'r4-snap-pocket-z-0.01')
+cutok = ['r4-snap-pocket-x-0.08', 'r4-snap-pocket-x-0.1', 'r4-snap-pocket-x-1', 'r4-snap-two-holes-by-hand-8', 'r4-snap-mirror-pocket-far']
+assert all(ok(i) for i in cutok)
+assert R['r4-snap-mirror-pocket-near-centre']['outcome'] == 'SCRIPT-REFUSED' and R['r4-snap-pocket-rect-x-0.01']['outcome'] == 'SCRIPT-REFUSED'
+row('repeat(pocket) / repeat(hole) / a hand-written second pocket or hole whose cut lies 0 < d <= 1.5% of the tool\'s smallest size from an earlier cut of the same size on the same part (a pocket repeated 0.01 mm along x, two holes 0.01 mm apart) [contract translator patch: snap, cut form]', 'refused',
+    CMD.replace(' --variants', '') + 'Guard OFF (PM_OFF=snap): %s -- the thin sliver of material between the two cuts is silently lost or the cut differs from OCCT by 1e-5 .. 2.7e-5 of the volume (relative differences 1e-6 .. 3e-5 of the volume, above the 1e-9 bar the rig scores it FAIL). Guard ON: %s. Built and exact above the threshold: %s. Script layer (before any engine): r4-snap-mirror-pocket-near-centre and r4-snap-pocket-rect-x-0.01 are refused by packages/script itself, in the plain sentences "%s" and "%s". Student sentence (produced by this run): "%s"' %
+    (' | '.join('%s truck %.4f vs OCCT %.4f' % (i, SO[i]['fx']['truck']['volume'], SO[i]['fx']['occt']['volume']) for i in cutk[:2] + cutk[3:5]), ' | '.join(cc(i) for i in cutk[:3]), ' | '.join(c(i) for i in cutok), R['r4-snap-mirror-pocket-near-centre']['sentence'], R['r4-snap-pocket-rect-x-0.01']['sentence'], stu('r4-snap-pocket-x-0.01')),
+    stu('r4-snap-pocket-x-0.01'))
+
+# hollow() and round() of a whole shape, repeated or mirrored
+hc = ['r4-hollow-repeat-disjoint', 'r4-hollow-repeat-overlap', 'r4-hollow-around', 'r4-hollow-mirror', 'r4-hollow-cyl-mirror']
+assert all(refused(i) for i in hc) and len({stu(i) for i in hc} - {stu(hc[0])}) >= 0
+ho = [i for i in R if i.startswith('r4-hollow-open-')]
+assert ho and all(ok(i) for i in ho) and max(tr(i)['dVol'] for i in ho) <= 3e-4
+row('repeat / repeatAround / mirror of a hollow() shape that has NO open side (a closed hollow box or cylinder)', 'refused',
+    CMD.replace(' --variants', '') + ' || '.join(cc(i) for i in hc) + '. The refusal comes from hollow() itself (a closed hollow cannot be built here), and the dependent call says so by name. The advice in the sentence works: the same calls on hollow(shape, {wall, open:\'top\'}) all build, see the next row.',
+    stu(hc[0]))
+row('repeat / repeatAround / mirror of a hollow() shape WITH an open side (open: "top"): disjoint, overlapping and stacked copies, ring of boxes, mirror left-right and top-bottom', 'supported',
+    CMD.replace(' --variants', '') + ' | '.join(c(i) for i in ho) + '. Worst truck dVol %s over %d cases (planar 1e-9, the cylinder case is curved: 3e-4 bar).' % (E(max(tr(i)['dVol'] for i in ho)), len(ho)))
+rd = ['r4-round-alone-box', 'r4-round-box-repeat', 'r4-round-box-mirror', 'r4-round-box-mirror-tb', 'r4-round-box-around', 'r4-round-cyl-repeat', 'r4-round-cyl-mirror', 'r4-round-cyl-around']
+assert all(ok(i) for i in rd) and max(tr(i)['dVol'] for i in rd) <= 3e-4
+# closed form of a box 20 with every edge rounded r 3: core + 6 face slabs + 12 quarter cylinders + 8 octant spheres
+rb = (20 - 6) ** 3 + 6 * (20 - 6) ** 2 * 3 + 12 * (20 - 6) * math.pi * 9 / 4 + 4 / 3 * math.pi * 27
+assert abs(tr('r4-round-alone-box')['volume'] - rb) / rb <= 3e-4, (tr('r4-round-alone-box')['volume'], rb)
+assert refused('r4-round-box-repeat-overlap') and R['r4-bevel-alone']['outcome'] == 'SCRIPT-REFUSED'
+row('repeat / repeatAround / mirror of a ROUNDED whole box or cylinder (round(shape, 3)): copies apart, mirror left-right and top-bottom, ring of 5', 'supported',
+    CMD.replace(' --variants', '') + ' | '.join(c(i) for i in rd) + '. Closed form for the rounded box 20 (edges rounded 3): 14^3 + 6 x 14^2 x 3 + 12 x 14 x pi x 9/4 + 4/3 pi 27 = %.4f against truck %.4f (relative difference %s, inside the curved bar 3e-4, tessellation). Overlapping rounded copies are refused: %s. bevel() of a whole shape is refused by the script layer before any engine: "%s".' % (rb, tr('r4-round-alone-box')['volume'], E(abs(tr('r4-round-alone-box')['volume'] - rb) / rb), cc('r4-round-box-repeat-overlap'), R['r4-bevel-alone']['sentence']))
+
+# ---- ROUND 5 provenance: every number comes from a live run of this round, with a rig stamp
+assert STAMP['cases'] == len(R) and STAMP['freshCases'] + len(STAMP['storedNotReplayed']) == len(R), (STAMP['cases'], len(R))
+assert STAMP['wasmSha256'] and 'sliver' in STAMP['patches'] and 'snap' in STAMP['patches']
+PROV = ('[PROVENANCE, round 5] Every number and every refusal sentence in this file comes from a LIVE run of this round (script -> ModelDoc -> live OCCT oracle -> live brep-rs -> SolidCraft through contract/pm-translate.mjs), '
+        'rig stamp contract/pm-results.stamp.json: SolidCraft wasm sha256 %s (%d bytes, git archive of the pinned commit fe3717f), patches %s, safety net %s ms per run / %s ms per model, run with %s under one memory cap (%s). '
+        '%d of %d cases were replayed live; %d were NOT (their live run was killed by the memory cap or by the 900 s limit, so the STORED round-3/4 record is kept in pm-results.json and is never counted as a pass of this round; rows that cite one say so): %s. '
+        'The large-count cases run on SolidCraft alone (pm-count-truck.json, closed-form oracle) because the OCCT oracle build of 1000+ copies does not fit the cap. Rows are rebuilt by contract/pm-make-rows.py, which asserts every status against the data it cites, so a stale JSON fails instead of being published. Evidence follows. ') % (
+    STAMP['wasmSha256'], STAMP['wasmBytes'], ','.join(STAMP['patches']), STAMP['budgets']['perRunMs'], STAMP['budgets']['perModelMs'], STAMP['runtime'], STAMP['cap'], STAMP['freshCases'], STAMP['cases'], len(STAMP['storedNotReplayed']), ', '.join(STAMP['storedNotReplayed']) or 'none')
 for r_ in rows: r_['evidence'] = PROV + r_['evidence']
+# the layer's own sentence lint over the finished rows: one plain sentence, no engine word (kernel included), no internal id, for every refused row and every refusalSentence
+for i_, r_ in enumerate(rows):
+    sn = r_.get('refusalSentence')
+    assert not (r_['status'] == 'refused' and not sn), ('refused row without a sentence', i_, r_['feature'][:80])
+    assert sn is None or is_plain(sn), ('refusalSentence is not plain', i_, sn)
+    assert sn is None or not _re.search(r'\b(F\d+:|pat\d+|mir\d+|sk_|solid\.)', sn), ('internal id in a sentence', i_, sn)
 out = {'group': 'patterns-mirror', 'rows': rows}
 json.dump(out, open(os.path.join(H, 'patterns-mirror.json'), 'w'), indent=1)
 print(len(rows), 'rows')

@@ -1,0 +1,57 @@
+[
+ {
+  "id": "r3-around-count-1001",
+  "src": "const b = box(4,4,4,{at:[30,0,0]}); repeatAround(b, { count: 1001 });",
+  "ms": 15,
+  "status": "refused",
+  "verdict": "refused",
+  "raw": "pat1 (pattern): solidcraft refused it -- solid.pattern.circular: pattern count must be 1\u20261000",
+  "student": "repeatAround(): a pattern can have at most 1000 copies, and this one asks for 1001 -- use a count of 1000 or fewer."
+ },
+ {
+  "id": "r3-box-count-1000",
+  "src": "const b = box(4,4,4,{at:[0,0,0]}); repeat(b, { count: 1000, step: [3,0,0] });",
+  "ms": 5477,
+  "status": "built",
+  "truck": {
+   "volume": 48016,
+   "faces": 6,
+   "bodies": 1
+  },
+  "closedForm": 48016,
+  "rel": 0,
+  "verdict": "ok"
+ },
+ {
+  "id": "r3-box-count-1001",
+  "src": "const b = box(4,4,4,{at:[0,0,0]}); repeat(b, { count: 1001, step: [3,0,0] });",
+  "ms": 19,
+  "status": "refused",
+  "verdict": "refused",
+  "raw": "pat1 (pattern): solidcraft refused it -- solid.pattern.rectangular: pattern count must be 1\u20261000",
+  "student": "repeat(): a pattern can have at most 1000 copies, and this one asks for 1001 -- use a count of 1000 or fewer."
+ },
+ {
+  "id": "r3-box-count-1e5",
+  "src": "const b = box(4,4,4,{at:[0,0,0]}); repeat(b, { count: 100000, step: [3,0,0] });",
+  "ms": 45,
+  "status": "refused",
+  "verdict": "refused",
+  "raw": "pat1 (pattern): solidcraft refused it -- solid.pattern.rectangular: pattern count must be 1\u20261000",
+  "student": "repeat(): a pattern can have at most 1000 copies, and this one asks for 100000 -- use a count of 1000 or fewer."
+ },
+ {
+  "id": "r3-box-count-200",
+  "src": "const b = box(4,4,4,{at:[0,0,0]}); repeat(b, { count: 200, step: [3,0,0] });",
+  "ms": 781,
+  "status": "built",
+  "truck": {
+   "volume": 9616,
+   "faces": 6,
+   "bodies": 1
+  },
+  "closedForm": 9616,
+  "rel": 0,
+  "verdict": "ok"
+ }
+]

@@ -62,7 +62,7 @@ function momentsCom(pos, idx) {
 const flat = (b) => [...b[0], ...b[1]];
 let MAP_ANGLE = process.env.PM_MAP_ANGLE === '1';
 // translator patches (see pm-translate.mjs header): PM_TR=asis -> none (phase0 behaviour); default all; PM_OFF=a,b switches single ones off
-const ALL_PATCHES = ['reversed', 'fresh', 'plane', 'count1', 'torus', 'contact', 'disjoint', 'subgap', 'budget', 'fused', 'spinbox', 'taper', 'contact3', 'mircontact', 'snap'];
+const ALL_PATCHES = ['reversed', 'fresh', 'plane', 'count1', 'torus', 'contact', 'disjoint', 'subgap', 'budget', 'fused', 'spinbox', 'taper', 'contact3', 'mircontact', 'snap', 'sliver'];
 // PM_TR=r2 -> the round-2 contract translator's patch set (no round-3 patches); used for the 'wrong before the fix' comparisons
 const R2_PATCHES = ['reversed', 'fresh', 'plane', 'count1', 'torus', 'contact'];
 const PATCHES = new Set(process.env.PM_TR === 'asis' ? [] : [...(process.env.PM_TR === 'r2' ? R2_PATCHES : ALL_PATCHES).filter((p) => !(process.env.PM_OFF ?? '').split(',').includes(p)), '__explicit']);

@@ -1,0 +1,883 @@
+{
+ "solidcraftPkg": "/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/sc-referee-pkg",
+ "wasmFile": "solidcraft_referee_bg.wasm",
+ "wasmSha256": "9f21ccfe1cbae65ac4b089ccd6a85f94cda4e28af630c2b8dd6d9690d78d9feb",
+ "wasmBytes": 23441815,
+ "solidcraftSource": "git archive of fe3717f (the pinned commit), built with the wrapper in the session scratchpad; see RIG.md",
+ "patches": [
+  "reversed",
+  "fresh",
+  "plane",
+  "count1",
+  "torus",
+  "contact",
+  "disjoint",
+  "subgap",
+  "budget",
+  "fused",
+  "spinbox",
+  "taper",
+  "contact3",
+  "mircontact",
+  "snap",
+  "sliver"
+ ],
+ "translator": "contract/pm-translate.mjs",
+ "budgets": {
+  "perRunMs": 600000,
+  "perModelMs": 3600000
+ },
+ "runtime": "bun 1.4.3",
+ "host": "huffplamer-pc2",
+ "resultsFile": "pm-results.json",
+ "merged": "2026-10-20T03:54:20.970789Z",
+ "chunks": 98,
+ "cases": 534,
+ "freshCases": 526,
+ "storedNotReplayed": [
+  "r3-box-count-1000",
+  "r3-box-count-1001",
+  "r3-box-count-1e5",
+  "r3-around-count-1001",
+  "r3-around-count-360",
+  "r3-pocket-count-40",
+  "r3-pocket-count-60",
+  "r3-hole-count-60"
+ ],
+ "cap": "systemd-run MemoryMax=1500M MemorySwapMax=0, timeout 900 per chunk",
+ "changedVsPrevious": [
+  "rl-step-bad",
+  "rl-unknown-option",
+  "ra-on-axis",
+  "ra-bad-axis",
+  "rh-hole-along-drill",
+  "rh-hole-overlap",
+  "rh-hole-offpart",
+  "rh-holes-corners",
+  "rah-hole-axis-mismatch",
+  "mi-bad-word",
+  "mi-no-word",
+  "mi-at-on-box",
+  "mi-at-on-cylinder",
+  "mi-at-on-pattern",
+  "mh-parallel-refused",
+  "mh-pad-parallel-refused",
+  "rp-pocket-copy-off-part",
+  "rap-pocket-bad-axis",
+  "rl-pocket-reversed-own",
+  "r3-cone2-y6",
+  "r3-spin-ra-overlap",
+  "r3-sph2-step7",
+  "r3-sub--0.000003",
+  "r3-sub--0.00001",
+  "r3-sub--0.0001",
+  "r3-mir-taper-tb",
+  "r3-mir-taper-neg-tb",
+  "r3-taper-alone",
+  "r3-mirhole-overlap",
+  "r3-mirhole-at200",
+  "r3-padj-round-overlap",
+  "r3-padj-round-tangent",
+  "r3-padj-round-z",
+  "r3-padj-rect-overlap",
+  "r3-padj-rect-touching",
+  "mirrored__top-bottom-pocket",
+  "mirrored__top-bottom-rect-pocket",
+  "mirrored__top-bottom-offcentre-plane",
+  "mirrored__top-bottom-breaks-bottom",
+  "mirrored__top-bottom-from-bottom-reversed",
+  "mirrored__top-bottom-on-disc",
+  "mirrored__top-bottom-in-boss",
+  "mirrored__top-bottom-tall-block",
+  "pm-mir-boss-straddle",
+  "pm-mir-boss-touching",
+  "pm-mir-boss-tangent-circles",
+  "pm-mir-boss-on-plane"
+ ],
+ "chunkRuns": [
+  {
+   "written": "2026-10-20T03:38:31.788Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/linear-pattern_blind",
+    "--only=linear-pattern__blind-pockets-x2"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:38:34.591Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/linear-pattern_boss",
+    "--only=linear-pattern__boss-x3"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:39:44.702Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/linear-pattern_copies",
+    "--only=linear-pattern__copies-run-off-the-part"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:39:47.074Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/linear-pattern_count",
+    "--only=linear-pattern__count-1"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:38:31.141Z",
+   "cases": 3,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/linear-pattern_holes",
+    "--only=linear-pattern__holes-x3,linear-pattern__holes-y4,linear-pattern__holes-x5-tight"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:39:46.434Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/linear-pattern_overlapping",
+    "--only=linear-pattern__overlapping-holes-slot"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:38:35.672Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/linear-pattern_two",
+    "--only=linear-pattern__two-holes-long-step"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:17:16.819Z",
+   "cases": 7,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/mh",
+    "--only=mh-lr-at0,mh-lr-at-offcentre,mh-fb,mh-along-x,mh-blind,mh-parallel-refused,mh-pad-parallel-refused"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:17:12.723Z",
+   "cases": 33,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/mi",
+    "--only=mi-lr-offset-box,mi-fb-offset-box,mi-tb-offset-box,mi-lr-straddle,mi-lr-centered,mi-lr-corner-at-origin,mi-lr-negative-side,mi-fb-straddle-tall,mi-tb-straddle,mi-lr-equidistant,mi-cyl-lr-tangent,mi-cyl-tb-stack,mi-sphere-lr-point,mi-sphere-tb-point,mi-cone-tb,mi-lextrude-lr,mi-lextrude-fb,mi-lextrude-tb,mi-hexprism-lr,mi-of-repeat,mi-of-join,mi-of-drilled,mi-of-mirror,mi-bad-word,mi-no-word,mi-at-on-box,mi-at-on-cylinder,mi-at-on-pattern,mi-at-nonfinite,mi-cyl-lr-tangent-big,mi-hexprism-fb-flat,mi-turned-cyl-lr-caps,mi-turned-box-vertex"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:39:33.287Z",
+   "cases": 2,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/mirrored_front",
+    "--only=mirrored__front-back-hole-at15,mirrored__front-back-blind"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:39:59.672Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/mirrored_hole",
+    "--only=mirrored__hole-on-its-own-plane"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:39:31.659Z",
+   "cases": 3,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/mirrored_left",
+    "--only=mirrored__left-right-hole-at20,mirrored__left-right-offset-plane,mirrored__left-right-boss"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:40:01.982Z",
+   "cases": 2,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/mirrored_rect",
+    "--only=mirrored__rect-overlap-inside,mirrored__rect-on-its-own-plane"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:40:01.192Z",
+   "cases": 4,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/mirrored_reflection",
+    "--only=mirrored__reflection-runs-off,mirrored__reflection-runs-off-front,mirrored__reflection-runs-off-through,mirrored__reflection-touches-rim"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:39:43.064Z",
+   "cases": 9,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/mirrored_top",
+    "--only=mirrored__top-bottom-pocket,mirrored__top-bottom-rect-pocket,mirrored__top-bottom-offcentre-plane,mirrored__top-bottom-breaks-bottom,mirrored__top-bottom-from-bottom-reversed,mirrored__top-bottom-through,mirrored__top-bottom-on-disc,mirrored__top-bottom-in-boss,mirrored__top-bottom-tall-block"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:40:51.019Z",
+   "cases": 29,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/pm",
+    "--only=pm-polar-boss-partial-90-x3,pm-polar-boss-partial-90-x3-MAPPED,pm-polar-boss-partial-180-x4,pm-polar-boss-partial-180-x4-MAPPED,pm-polar-boss-neg90-x3,pm-polar-boss-neg90-x3-MAPPED,pm-polar-boss-x4-around-x,pm-polar-holes-x4-around-x,pm-polar-holes-partial-90-x3-around-x,pm-polar-holes-partial-90-x3-around-x-MAPPED,pm-polar-holes-x4-around-y,pm-polar-holes-neg90-x3,pm-polar-holes-neg90-x3-MAPPED,pm-polar-holes-720-x4,pm-polar-holes-720-x4-MAPPED,pm-polar-holes-neg360-x4,pm-polar-holes-neg360-x4-MAPPED,pm-polar-holes-partial-90-x2,pm-polar-holes-partial-90-x2-MAPPED,pm-lin-holes-neg-step,pm-lin-boss-y3,pm-lin-boss-touching,pm-lin-boss-overlap,pm-mir-boss-front-back,pm-mir-boss-straddle,pm-mir-boss-touching,pm-mir-boss-tangent-circles,pm-mir-boss-on-plane,pm-mir-pocket-lr-through-plate"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:39:25.197Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/polar-pattern_blind",
+    "--only=polar-pattern__blind-x4"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:39:29.005Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/polar-pattern_bosses",
+    "--only=polar-pattern__bosses-x4"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:39:58.981Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/polar-pattern_count",
+    "--only=polar-pattern__count-2-opposite"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:39:18.259Z",
+   "cases": 6,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/polar-pattern_holes",
+    "--only=polar-pattern__holes-x6-disc,polar-pattern__holes-x3-disc,polar-pattern__holes-x5-partial-180,polar-pattern__holes-x3-partial-90,polar-pattern__holes-x8,polar-pattern__holes-x12-ring"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:39:57.294Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/polar-pattern_overlapping",
+    "--only=polar-pattern__overlapping-x6-blind"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:17:57.277Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-720",
+    "--only=r2-720-n4-MD"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:19:54.862Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-around",
+    "--only=r2-around-vertex-touch"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:17:53.061Z",
+   "cases": 4,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-count1",
+    "--only=r2-count1-box,r2-count1-cyl,r2-count1-around,r2-count1-then-join"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:19:54.164Z",
+   "cases": 2,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-edge",
+    "--only=r2-edge-join-hdiff-alone,r2-edge-join-alone"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:20:10.866Z",
+   "cases": 11,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-hand",
+    "--only=r2-hand-pocket-x3-edge,r2-hand-pocket-x4-wholly-off,r2-hand-hole-run-off-x3,r2-hand-hole-run-off-x4,r2-hand-hole-overlap-x3,r2-hand-hole-overlap-slot-x4,r2-hand-hole-offpart-edge,r2-hand-boss-straddle,r2-hand-boss-touching,r2-hand-boss-tangent-circles,r2-hand-boss-on-plane"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:19:49.264Z",
+   "cases": 4,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-hole",
+    "--only=r2-hole-cbore-repeat,r2-hole-csink-repeat,r2-hole-cbore-single,r2-hole-cbore-around"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:19:51.409Z",
+   "cases": 5,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-mirror",
+    "--only=r2-mirror-of-edge-join,r2-mirror-of-edge-join-hdiff,r2-mirror-of-repeat2,r2-mirror-of-disjoint-join,r2-mirror-of-around"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:17:50.823Z",
+   "cases": 4,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-neartie",
+    "--only=r2-neartie-cyl-pos,r2-neartie-cyl-neg,r2-neartie-cyl-neg-1mm,r2-neartie-box-neg"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:17:57.815Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-neg360",
+    "--only=r2-neg360-n4-MD"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:17:56.697Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-neg90",
+    "--only=r2-neg90-n3-MD"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:17:51.609Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-offorigin",
+    "--only=r2-offorigin-cyl-lr"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:17:56.146Z",
+   "cases": 5,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-partial",
+    "--only=r2-partial-180-n3-MD,r2-partial-90-n4-MD,r2-partial-90-n2-MD,r2-partial-120-n3-x-MD,r2-partial-cyl-n3-MD"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:19:53.407Z",
+   "cases": 5,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-repeat",
+    "--only=r2-repeat-of-edge-join,r2-repeat-edge-diff-z,r2-repeat-edge-touch-x2,r2-repeat-vertex-touch-x2,r2-repeat-then-pocket-edge-touch"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:22:26.271Z",
+   "cases": 11,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-sens",
+    "--only=r2-sens-sphere-d6,r2-sens-sphere-d20,r2-sens-sphere-d60,r2-sens-sphere-d200,r2-sens-sphere-ring-d6,r2-sens-sphere-ring-d40,r2-sens-cyl-d4,r2-sens-cyl-d40,r2-sens-cyl-d200,r2-sens-cyl-ring-d8-n7,r2-sens-cyl-ring-d30-n9"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:43:32.482Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-sens-sphere-d2",
+    "--only=r2-sens-sphere-d2"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:44:52.280Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-sens-sphere-ring-d20-n12",
+    "--only=r2-sens-sphere-ring-d20-n12"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:24:39.567Z",
+   "cases": 20,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-sens2",
+    "--only=r2-sens2-sphere-d3,r2-sens2-sphere-d5,r2-sens2-sphere-d8,r2-sens2-sphere-d12,r2-sens2-sphere-d16,r2-sens2-sphere-d25,r2-sens2-sphere-d30,r2-sens2-sphere-d50,r2-sens2-sphere-d80,r2-sens2-sphere-d100,r2-sens2-cyl-d3,r2-sens2-cyl-d5,r2-sens2-cyl-d8,r2-sens2-cyl-d12,r2-sens2-cyl-d16,r2-sens2-cyl-d25,r2-sens2-cyl-d30,r2-sens2-cyl-d50,r2-sens2-cyl-d80,r2-sens2-cyl-d100"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:17:47.991Z",
+   "cases": 13,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-tie",
+    "--only=r2-tie-cyl-tb,r2-tie-cyl-lr,r2-tie-cyl-fb,r2-tie-cyl-tb-big,r2-tie-cone-tb,r2-tie-sphere-tb,r2-tie-hexprism-tb,r2-tie-extruded-disc-tb,r2-tie-drilled-cyl-tb,r2-tie-box-tb,r2-tie-box-fb,r2-tie-turned-box-lr,r2-tie-turned-box-tb"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:19:46.767Z",
+   "cases": 8,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r2-torus",
+    "--only=r2-torus-repeat-disjoint,r2-torus-repeat-tangent,r2-torus-repeat-overlap,r2-torus-around-disjoint,r2-torus-around-overlap,r2-torus-mirror,r2-torus-mirror-lr-disjoint,r2-torus-mirror-tie"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:37:21.306Z",
+   "cases": 8,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-adv",
+    "--only=r3-adv-cyl-lr,r3-adv-cyl-turned-lr,r3-adv-cyl-tb,r3-adv-hex-lr,r3-adv-hex-turned-lr,r3-adv-pull-washer-tb,r3-adv-sphere-lr,r3-adv-sphere-flat-lr"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:38:24.599Z",
+   "cases": 2,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-ang",
+    "--only=r3-ang-solid-90-n3,r3-ang-pocket-90-n3"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:33:27.615Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-box-count-200",
+    "--only=r3-box-count-200"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:28:03.809Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-cone",
+    "--only=r3-cone-ra-overlap"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:26:05.687Z",
+   "cases": 7,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-cone2",
+    "--only=r3-cone2-step3,r3-cone2-step8,r3-cone2-step6,r3-cone2-y6,r3-cone2-z12,r3-cone2-disjoint,r3-cone2-gap-small"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:27:01.705Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-cone3",
+    "--only=r3-cone3-step6"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:30:54.095Z",
+   "cases": 5,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-cyl",
+    "--only=r3-cyl-hole-overlap,r3-cyl-tangent-x2,r3-cyl-tangent-x3,r3-cyl-tangent-diag,r3-cyl-tangent-mirror"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:41:29.300Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-hole-count-20",
+    "--only=r3-hole-count-20"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:37:07.355Z",
+   "cases": 22,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-mir",
+    "--only=r3-mir-washerT-tb,r3-mir-washerT-lr,r3-mir-washerT-tb-moved,r3-mir-washerF-fb,r3-mir-washerF-fb-moved,r3-mir-washerF-tb,r3-mir-washerF-tb-moved,r3-mir-vaseF-tb,r3-mir-vaseF-fb,r3-mir-vaseT-tb,r3-mir-spin-offset-lr,r3-mir-taper-tb,r3-mir-taper-lr,r3-mir-taper-neg-tb,r3-mir-loft-tb,r3-mir-loft-lr,r3-mir-draft-tb,r3-mir-draft-lr,r3-mir-turned45-lr,r3-mir-turned45-tb,r3-mir-x45-tb,r3-mir-turned90-lr"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:37:44.915Z",
+   "cases": 3,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-mirhole",
+    "--only=r3-mirhole-overlap,r3-mirhole-at200,r3-mirhole-ok"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:37:30.789Z",
+   "cases": 6,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-pad",
+    "--only=r3-pad-round-disjoint,r3-pad-round-overlap,r3-pad-round-tangent,r3-pad-round-z,r3-pad-rect-disjoint,r3-pad-rect-touching"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:38:20.738Z",
+   "cases": 9,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-padj",
+    "--only=r3-padj-round-overlap,r3-padj-round-tangent,r3-padj-round-disjoint,r3-padj-round-z,r3-padj-rect-overlap,r3-padj-rect-touching,r3-padj-rect-disjoint,r3-padj-around-overlap,r3-padj-around-ok"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:37:43.847Z",
+   "cases": 2,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-padra",
+    "--only=r3-padra-round-overlap,r3-padra-round-ok"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:36:10.829Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-pocket",
+    "--only=r3-pocket-count-10"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:42:23.274Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-pocket-count-20",
+    "--only=r3-pocket-count-20"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:42:58.671Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-ring3-far",
+    "--only=r3-ring3-far"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:32:48.788Z",
+   "cases": 5,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-sph2",
+    "--only=r3-sph2-step8,r3-sph2-step7.5,r3-sph2-step7,r3-sph2-step6,r3-sph2-disjoint"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:33:04.578Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-sph3",
+    "--only=r3-sph3-step8"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:36:27.154Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-sphere",
+    "--only=r3-sphere-tangent"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:30:20.987Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-spin",
+    "--only=r3-spin-ra-overlap"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:36:16.320Z",
+   "cases": 18,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-sub",
+    "--only=r3-sub-0.01,r3-sub-0.001,r3-sub-0.0001,r3-sub-0.00001,r3-sub-0.000003,r3-sub-0.000001,r3-sub-1e-7,r3-sub-1e-8,r3-sub-1e-9,r3-sub-0,r3-sub--1e-9,r3-sub--1e-8,r3-sub--1e-7,r3-sub--0.000001,r3-sub--0.000003,r3-sub--0.00001,r3-sub--0.0001,r3-sub--0.001"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:37:07.690Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-taper",
+    "--only=r3-taper-alone"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:29:04.205Z",
+   "cases": 3,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-vase2",
+    "--only=r3-vase2-x10,r3-vase2-y10,r3-vase2-disjoint"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:30:33.011Z",
+   "cases": 2,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-washer",
+    "--only=r3-washer-y10-touch,r3-washer-disjoint"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:28:20.896Z",
+   "cases": 2,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-washer2",
+    "--only=r3-washer2-y6,r3-washer2-z3"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:28:34.211Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-washer3",
+    "--only=r3-washer3-z6"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:30:43.997Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/r3-washerT",
+    "--only=r3-washerT-ra-overlap"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:16:31.542Z",
+   "cases": 33,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/ra",
+    "--only=ra-z4-default,ra-z6-overlap,ra-z4-explicit360,ra-x5,ra-y3,ra-x3-offz,ra-z5-cyl,ra-z6-cyl-overlap,ra-z4-sphere,ra-z5-tilted-box,ra-count1,ra-count2,ra-partial-180-n3,ra-partial-90-n4,ra-partial-90-n2,ra-partial-180-n3-MAPPED,ra-partial-90-n4-MAPPED,ra-partial-90-n2-MAPPED,ra-partial-120-n3-x-MAPPED,ra-720-n4-MAPPED,ra-neg90-n3-MAPPED,ra-neg360-n4-MAPPED,ra-720-n4,ra-neg360-n4,ra-on-axis,ra-bad-axis,ra-count0,ra-angle-bad,ra-alias-polarPattern,ra-count-36,ra-count-36-overlap,ra-ring-closed,ra-edge-touch"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:16:56.009Z",
+   "cases": 5,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/rah",
+    "--only=rah-hole-z6,rah-hole-z3-box,rah-hole-partial-120,rah-hole-axis-mismatch,rah-hole-blind"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:17:34.231Z",
+   "cases": 5,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/rap",
+    "--only=rap-pocket-count1,rap-pocket-on-axis,rap-pocket-bad-axis,rap-pocket-rect-turns,rap-pad-count1"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:16:37.875Z",
+   "cases": 9,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/rh",
+    "--only=rh-hole-x3,rh-hole-y3,rh-hole-along-x,rh-hole-blind,rh-hole-count1,rh-hole-along-drill,rh-hole-overlap,rh-hole-offpart,rh-holes-corners"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:16:01.879Z",
+   "cases": 34,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/rl",
+    "--only=rl-disjoint-x3,rl-overlap-x4,rl-touch-x3,rl-y,rl-z,rl-diag-disjoint,rl-diag-overlap,rl-negative,rl-bare-number,rl-bare-negative,rl-count1,rl-count2,rl-zero-step,rl-cyl-disjoint,rl-cyl-overlap,rl-cyl-tangent,rl-sphere-overlap,rl-sphere-disjoint,rl-lextrude-overlap,rl-of-join,rl-of-moved,rl-of-turned,rl-count0,rl-count-frac,rl-count-missing,rl-step-bad,rl-unknown-option,rl-alias-linearPattern,rl-edge-touch,rl-vertex-touch,rl-count-40,rl-count-40-overlap,rl-zero-vector,rl-pocket-reversed-own"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:17:21.152Z",
+   "cases": 5,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/ch/rp",
+    "--only=rp-pocket-diag-step,rp-pocket-step-z,rp-pocket-count1,rp-pocket-copy-off-part,rp-pocket-then-more"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:47:46.993Z",
+   "cases": 3,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-bevel",
+    "--only=r4-bevel*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:35.549Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-hollow-around",
+    "--only=r4-hollow-around"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:36.738Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-hollow-cyl",
+    "--only=r4-hollow-cyl*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:36.034Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-hollow-mirror",
+    "--only=r4-hollow-mirror"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:44.902Z",
+   "cases": 8,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-hollow-open-",
+    "--only=r4-hollow-open-*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:35.066Z",
+   "cases": 2,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-hollow-repeat",
+    "--only=r4-hollow-repeat*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:47:46.766Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-round-alone",
+    "--only=r4-round-alone*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:46:18.472Z",
+   "cases": 5,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-round-box",
+    "--only=r4-round-box*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:47:45.310Z",
+   "cases": 3,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-round-cyl",
+    "--only=r4-round-cyl*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:44:58.460Z",
+   "cases": 7,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-b1-",
+    "--only=r4-snap-b1-*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:44:55.882Z",
+   "cases": 22,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-b10",
+    "--only=r4-snap-b10*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:44:57.222Z",
+   "cases": 8,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-b200",
+    "--only=r4-snap-b200*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:02.875Z",
+   "cases": 13,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-bar",
+    "--only=r4-snap-bar*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:07.892Z",
+   "cases": 6,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-cyl",
+    "--only=r4-snap-cyl*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:04.246Z",
+   "cases": 0,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-diag",
+    "--only=r4-snap-diag*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:27.606Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-edge",
+    "--only=r4-snap-edge*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:26.572Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-half",
+    "--only=r4-snap-half*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:32.442Z",
+   "cases": 2,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-mirror",
+    "--only=r4-snap-mirror*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:00.572Z",
+   "cases": 13,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-plate",
+    "--only=r4-snap-plate*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:31.479Z",
+   "cases": 9,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-pocket",
+    "--only=r4-snap-pocket*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:04.016Z",
+   "cases": 6,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-slab",
+    "--only=r4-snap-slab*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:25.465Z",
+   "cases": 2,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-sph",
+    "--only=r4-snap-sph*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:26.017Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-touch",
+    "--only=r4-snap-touch*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:34.334Z",
+   "cases": 3,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-two",
+    "--only=r4-snap-two*"
+   ]
+  },
+  {
+   "written": "2026-10-20T03:45:27.088Z",
+   "cases": 1,
+   "argv": [
+    "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/ch4_r4-snap-ybig",
+    "--only=r4-snap-ybig*"
+   ]
+  }
+ ]
+}

@@ -50,6 +50,9 @@
 //              a cut whose tool box is the same size as an earlier cut on the same body and sits that close to it (this is how repeat(pocket) arrives).
 //   taper    : pull(..., {taper}) is mapped (solid.extrude {taper}) with the same fold guard as the extrude-pocket group, so a mirror/pattern of a
 //              tapered pull can be measured
+//   sliver   : (round 5) two planar copies within 0.02 mm of each other on every axis (bounding boxes) that are nearly aligned along some axis (|gap| in (1e-8, 5e-4] mm: a sliver
+//              overlap or sliver gap) are refused. The fuzz found the join mis-fusing such pairs by a relative 1e-9 .. 4e-7 without an error; both thresholds were chosen AFTER seeing that
+//              fuzz and are re-checked on fresh seeds.
 import { outlineSize, taperFold } from './outline-guard.mjs';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -93,7 +96,7 @@ const refuse = (sentence, student) => ({ refusal: sentence, student });
 // Round-3 patches are ON for any non-empty patch set that does not carry the marker '__explicit', so a harness that still passes the round-2
 // list ['reversed','fresh','plane','count1','torus','contact'] (the critic's truck-child.mjs does) gets the round-3 guards too. pm-run.mjs adds
 // '__explicit' to its set, which makes every patch name mean exactly itself (PM_OFF=disjoint,... negative controls; PM_TR=r2 = the round-2 set).
-const R3_PATCHES = new Set(['mircontact', 'disjoint', 'subgap', 'budget', 'fused', 'spinbox', 'taper', 'contact3', 'snap']);
+const R3_PATCHES = new Set(['mircontact', 'disjoint', 'subgap', 'budget', 'fused', 'spinbox', 'taper', 'contact3', 'snap', 'sliver']);
 const hasP = (ctx, n) => { const p = ctx.patches; if (!p) return false; if (p.has(n)) return true; return R3_PATCHES.has(n) && p.size > 0 && !p.has('__explicit'); };
 const CALL = { shell: 'hollow', extrude: 'pull', revolve: 'spin', blend: 'loft' };
 const fname = (f) => (f.kind === 'pattern' ? (f.mode === 'circular' ? 'repeatAround' : 'repeat') : f.kind === 'combine' ? (f.op === 'union' ? 'join' : f.op === 'subtract' ? 'subtract' : 'common') : f.kind === 'fillet' ? (f.style === 'chamfer' ? 'bevel' : 'round') : (CALL[f.kind] ?? f.kind));
@@ -114,7 +117,7 @@ export function studentSentence(f, raw) {
   if (/near-coincident cut/.test(raw)) { m = /by only ([\d.e+-]+) mm from an earlier cut of the same size \(([\d.e+-]+) mm is the smallest safe shift/.exec(raw); return `${n}(): this cut lies only ${m ? m[1] : 'a hair'} mm from an earlier cut of the same size, so the thin sliver between the two would be lost -- move it by more than ${m ? m[2] : 'a few hundredths of'} mm, or leave it out.`; }
   if (/mirror copy not fused/.test(raw) || (f.kind === 'mirror' && /boolean Union: the operation failed/.test(raw))) return `mirror(): the mirrored copy touches the original but the two could not be fused into one solid -- mirror in another direction, or build the part with pull() instead of spin().`;
   if (/sub-resolution gap/.test(raw)) { m = /apart by ([\d.e+-]+) mm/.exec(raw); return `${n}(): the copies would be only ${m ? m[1] : 'a hair'} mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.`; }
-  if (/sub-resolution overlap/.test(raw)) { m = /by only ([\d.e+-]+) mm/.exec(raw); return `${n}(): the copies overlap by only ${m ? m[1] : 'a hair'} mm, too little to fuse them reliably -- overlap them by more than 0.00001 mm (a visible overlap is better), or leave a clear gap.`; }
+  if (/sub-resolution overlap/.test(raw)) { m = /by only ([\d.e+-]+) mm/.exec(raw); return `${n}(): the copies overlap by only ${m ? m[1] : 'a hair'} mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.`; }
   if (/copies overlap or touch.*curved/.test(raw)) return `${n}(): these copies overlap or touch, and their curved faces cannot be fused into one solid yet -- space the copies so they clear each other, or build the shape from flat faces.`;
   if (/copies overlap or touch/.test(raw)) return `${n}(): these copies overlap or touch and could not be fused into one solid -- space the copies so they clear each other by a visible gap, or overlap them clearly.`;
   if (/mirror contact is not a face/.test(raw)) return `mirror(): on that side the part meets the mirror plane only along a line or at a point (its nearest side is curved, pointed or edge-on), so the copy cannot be fused to it -- mirror in a direction where the part has a flat face, or turn the part so a flat face points that way (a sphere has no flat face to turn).`;
@@ -133,6 +136,8 @@ export function studentSentence(f, raw) {
   if ((m = /the (\w+) option is not mapped/.exec(raw))) return `${n}(): the ${m[1]} option is not built yet -- leave ${m[1]} out.`;
   if (/taper closes the profile|fold over itself/.test(raw)) return `${n}(): the taper makes the outline fold over itself before the end of the pull, so nothing is built -- use a smaller taper or a shorter pull.`;
   if (/not a single body|needs a single/.test(raw)) return `${n}(): this works on one shape at a time, and what it was given is several separate shapes -- join them first.`;
+  if (f.kind === 'draft' && /solid\.draft|drafting faces/.test(raw)) return `draft(): a draft can only be put on a face that is parallel to the pull direction (the top face of a box is not) -- leave the draft out, or draft a side face.`;
+  if (/sum check/.test(raw)) return `${n}(): the copies are apart, but the volume of the result does not add up to the volume of the copies, so it cannot be trusted -- move the copies clearly apart or clearly together, or line their faces up exactly.`;
   if (/no measured bounding box/.test(raw)) return `${n}(): there is no built shape to ${n} -- an earlier step did not produce one.`;
   return `${n}(): this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.`;
 }
@@ -218,6 +223,7 @@ function roundPoints(f, base) {
 // 0.05 in x, a 100x2x2 bar up to 0.01 in x and 0.005 in y, a 100x100x1 slab up to 0.003 in z, a unit cube up to 0.00275; a diagonal shift [d,d,d] up to d = 0.001 x size.
 // In every case the result is ONE solid with volume = the original, no error. The guard refuses 0 < shift <= SNAP_REL x the part's smallest bbox extent.
 export const SNAP_REL = 0.015;
+export const SLIVER_MM = 5e-4; // round 5, see the 'sliver' guard in the pattern block
 const minExtent = (lo, hi) => { const e = [0, 1, 2].map((i) => hi[i] - lo[i]).filter((v) => v > 1e-9); return e.length ? Math.min(...e) : 0; };
 const fmtMm = (v) => String(+Number(v).toPrecision(2));
 /** World box of the tool a pocket or hole sweeps (for the near-coincident cut check). */
@@ -845,6 +851,16 @@ export function translateDoc(doc, ctx) {
         const nudge = [];
         for (let a = 0; a < cps.length; a++) for (let b = a + 1; b < cps.length; b++) {
           const gap = boxGap(bb(cps[a]), bb(cps[b]));
+          // ---- sliver guard (patch 'sliver', round 5): two PLANAR copies whose bounding boxes overlap or touch (every gap <= 1e-8 mm) and that overlap by a sliver along some axis:
+          // 1e-8 < depth <= SLIVER_MM. The round-4 fuzz (pm-snap-fuzz.mjs, closed-form union volume) found truck's join mis-fusing such pairs by a relative 1e-9 .. 4e-7 with no
+          // error, also when the copies only touch along a face and overlap by a sliver on a third axis. SLIVER_MM was chosen AFTER seeing that data (wrong solids at depths 1e-6 and
+          // 1e-4 mm, none at 1e-3 and above) and is re-checked on fresh seeds (--mode=sliver). Pairs that are APART (gap > 1e-3) are covered by the sum check below.
+          if (P('sliver') && !isCurved(cps[a]) && !isCurved(cps[b]) && gap.every((g) => g <= 1e-8)) {
+            const depth = Math.min(...gap.filter((g) => g < -1e-8).map((g) => -g));
+            if (depth <= SLIVER_MM) {
+              return refusedNote(`${f.id} (pattern): sub-resolution overlap: copies ${a + 1} and ${b + 1} overlap by only ${depth.toExponential(1)} mm along one direction (bbox overlap), below the ${SLIVER_MM} mm solid.combine join fuses exactly`, undefined, variant);
+            }
+          }
           if (!gap.every((g) => g <= TOLC)) continue;
           par[fnd(a)] = fnd(b);
           // ---- gap guard (patch 'subgap'): planar copies almost touching. truck closes a gap <= 1e-5 into one fused bar (OCCT keeps it), so the
@@ -887,6 +903,17 @@ export function translateDoc(doc, ctx) {
             if (nb && nb.kernel.shells === 1) {
               return refusedNote(`${f.id} (pattern): copies ${a + 1} and ${b + 1} meet only along an edge or at a point (curved copies with overlapping boxes, bbox gap ${gap.map((g) => g.toExponential(1)).join(',')}; pushed 2e-3 mm together they fuse into one shell, so they were touching; whole result ${S} shells vs ${K} bbox-connected groups)`, undefined, variant);
             }
+          }
+        }
+        // ---- sum check (patch 'sliver', round 5): when EVERY pair of planar copies is provably apart (bbox gap > 1e-3 mm) the union volume is exactly the sum of the copies' own
+        // volumes (measured separately, before any join: `sep`), so the result must equal that sum. The round-5 fuzz (--mode=aligned: copies 1e-3 .. 0.4 mm apart along one axis and
+        // overlapping by slivers along the other two) found truck's join returning a volume off by a relative 1e-8 .. 7e-6 without an error in about 1 trial in 8; this independent measure catches them.
+        if (P('sliver') && cps.length > 1 && cps.every((b) => !isCurved(b))) {
+          let allApart = true;
+          for (let a2 = 0; a2 < cps.length && allApart; a2++) for (let b2 = a2 + 1; b2 < cps.length; b2++) { if (!(Math.max(...boxGap(bb(cps[a2]), bb(cps[b2]))) > TOLC)) { allApart = false; break; } }
+          const sumV = cps.reduce((t2, b3) => t2 + b3.volume_mm3, 0);
+          if (allApart && Math.abs(m.volume - sumV) > 1e-9 * sumV) {
+            return refusedNote(`${f.id} (pattern): sum check: the ${cps.length} copies are all apart (bbox gap above 1e-3 mm) so the result must be the sum of their volumes ${sumV.toPrecision(12)}, but solid.combine join returned ${m.volume.toPrecision(12)} (relative difference ${(Math.abs(m.volume - sumV) / sumV).toExponential(1)})`, undefined, variant);
           }
         }
       }

@@ -1,0 +1,46 @@
+{
+ "resultsFile": "pm-results-budget-demo.json",
+ "written": "2026-10-20T03:50:23.718Z",
+ "cases": 4,
+ "solidcraftPkg": "/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/sc-referee-pkg",
+ "wasmFile": "solidcraft_referee_bg.wasm",
+ "wasmSha256": "9f21ccfe1cbae65ac4b089ccd6a85f94cda4e28af630c2b8dd6d9690d78d9feb",
+ "wasmBytes": 23441815,
+ "solidcraftSource": "git archive of fe3717f (the pinned commit), built with the wrapper in the session scratchpad; see RIG.md",
+ "patches": [
+  "reversed",
+  "fresh",
+  "plane",
+  "count1",
+  "torus",
+  "contact",
+  "disjoint",
+  "subgap",
+  "budget",
+  "fused",
+  "spinbox",
+  "taper",
+  "contact3",
+  "mircontact",
+  "snap",
+  "sliver"
+ ],
+ "translator": "contract/pm-translate.mjs",
+ "budgets": {
+  "perRunMs": 3000,
+  "perModelMs": 3600000
+ },
+ "runtime": "bun 1.4.3",
+ "host": "huffplamer-pc2",
+ "loadavgAtEnd": [
+  2.87,
+  2.96,
+  2.76
+ ],
+ "cpus": 32,
+ "argv": [
+  "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-patterns-mirror/x/budget",
+  "--name=pm-results-budget-demo.json",
+  "--only=r3-pocket-count-10,r2-sens-sphere-d2,r2-torus-repeat-disjoint,r3-sph2-disjoint"
+ ]
+}

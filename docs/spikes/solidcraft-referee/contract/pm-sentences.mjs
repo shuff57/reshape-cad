@@ -34,6 +34,9 @@ const RULES = [
   [/^repeat\(\) of a hole .* overlap each other, so brep-rs/s, () => 'repeat(): two copies of the hole overlap, which repeat() cannot drill yet -- drill the extra holes yourself, one hole(...) each.'],
   [/^repeatAround\(\) of a hole .* overlap each other, so brep-rs/s, () => 'repeatAround(): two copies of the hole overlap, which repeatAround() cannot drill yet -- drill the extra holes yourself, one hole(...) each.'],
   [/^mirror\(\) of a hole .* overlap each other, so brep-rs/s, () => 'mirror(): the hole and its reflection overlap, which mirror() cannot drill yet -- drill the second hole yourself with hole(...).'],
+  // ---- pockets that overlap each other (round 5: found by the make-rows lint, the two texts had no rule)
+  [/^(repeat|repeatAround)\(\) of a pocket .* overlap each other, so brep-rs/s, (m) => `${m[1]}(): copies of the pocket overlap, which ${m[1]}() cannot cut yet -- cut the extra pockets yourself, one sketch and pocket(...) each.`],
+  [/^mirror\(\) of a pocket .* overlap each other, so brep-rs/s, () => 'mirror(): the pocket and its reflection overlap, which mirror() cannot cut yet -- cut the second pocket yourself, one sketch and pocket(...).'],
   // ---- pads (bosses joined to a plate) that overlap, touch or sit on the mirror plane
   [/^(repeat|repeatAround)\(\) of a pad .* overlap each other, so brep-rs/s, (m) => `${m[1]}(): copies of the pad overlap or touch each other, which ${m[1]}() cannot add yet -- add the extra pads yourself, one sketch and join(shape, pull(...)) each.`],
   [/^mirror\(\) of a pad .* overlap each other, so brep-rs/s, () => 'mirror(): the pad and its reflection overlap, share a face or sit on the mirror plane, which mirror() cannot add yet -- add the second pad yourself, one sketch and join(shape, pull(...)).'],

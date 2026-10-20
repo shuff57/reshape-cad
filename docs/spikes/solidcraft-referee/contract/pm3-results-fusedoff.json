@@ -1,0 +1,630 @@
+[
+ {
+  "id": "r3-mir-washerT-tb",
+  "row": "mirror-spin",
+  "src": "const s = sketch('top'); s.polygon([[10,0],[20,0],[20,10],[10,10]]); const r = spin(s, 360); mirror(r, 'top-bottom');",
+  "note": "axis z: flat annulus ends face the mirror",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "revolve",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "rev1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r3-mir-washerT-tb",
+   "kind": "mirror-spin",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 18849.555921538762,
+    "com": [
+     -1.9058826037901675e-15,
+     -1.4452440472570218e-15,
+     2.412509625050845e-16
+    ],
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 6,
+    "types": {
+     "cylinder": 4,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 18849.55592153878,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "faces": 8,
+    "dVol": 9.65003850020338e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     7.957261481970811e-16,
+     -1.7544276652243968e-15,
+     -6.050535697475815e-15
+    ]
+   },
+   "ms": 7629,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "wallMs": 377
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "refused",
+     "refusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder)",
+     "student": "mirror(): the mirrored copy touches the original but the two could not be fused into one solid -- mirror in another direction, or build the part with pull() instead of spin()."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "mir1 (mirror): solidcraft refused it -- solid.mirror: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder)",
+    "student": "mirror(): the mirrored copy touches the original but the two could not be fused into one solid -- mirror in another direction, or build the part with pull() instead of spin().",
+    "firstRefusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder)",
+    "firstStudent": "mirror(): the mirrored copy touches the original but the two could not be fused into one solid -- mirror in another direction, or build the part with pull() instead of spin()."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "refused",
+    "refusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder)",
+    "student": "mirror(): the mirrored copy touches the original but the two could not be fused into one solid -- mirror in another direction, or build the part with pull() instead of spin()."
+   }
+  ],
+  "outcome": "REFUSED"
+ },
+ {
+  "id": "r3-mir-washerT-tb-moved",
+  "row": "mirror-spin",
+  "src": "const s = sketch('top'); s.polygon([[10,0],[20,0],[20,10],[10,10]]); const r = spin(s, 360); move(r, [0,0,30]); mirror(r, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "revolve",
+   "move",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "move1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r3-mir-washerT-tb-moved",
+   "kind": "mirror-spin",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "move",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 18849.555921538762,
+    "com": [
+     -1.9058826037901675e-15,
+     -1.4452440472570218e-15,
+     30.000000000000004
+    ],
+    "bbox": [
+     -20,
+     -20,
+     20,
+     20,
+     20,
+     40
+    ],
+    "faces": 6,
+    "types": {
+     "cylinder": 4,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 18849.555921538777,
+    "bbox": [
+     -20,
+     -20,
+     20,
+     20,
+     20,
+     40
+    ],
+    "faces": 8,
+    "dVol": 7.720030800162704e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     7.089882268296382e-17,
+     2.935289040362885e-15,
+     30.00000000000093
+    ]
+   },
+   "ms": 8127,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "wallMs": 355
+    },
+    {
+     "id": "move1",
+     "kind": "move",
+     "status": "built",
+     "pick": null,
+     "wallMs": 367
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "refused",
+     "refusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder)",
+     "student": "mirror(): the mirrored copy touches the original but the two could not be fused into one solid -- mirror in another direction, or build the part with pull() instead of spin()."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "mir1 (mirror): solidcraft refused it -- solid.mirror: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder)",
+    "student": "mirror(): the mirrored copy touches the original but the two could not be fused into one solid -- mirror in another direction, or build the part with pull() instead of spin().",
+    "firstRefusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder)",
+    "firstStudent": "mirror(): the mirrored copy touches the original but the two could not be fused into one solid -- mirror in another direction, or build the part with pull() instead of spin()."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "refused",
+    "refusal": "mir1 (mirror): solidcraft refused it -- solid.mirror: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder); nudged: the operation failed: boolean Union: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 6 curved faces (cylinder) and the tool has 6 curved faces (cylinder)",
+    "student": "mirror(): the mirrored copy touches the original but the two could not be fused into one solid -- mirror in another direction, or build the part with pull() instead of spin()."
+   }
+  ],
+  "outcome": "REFUSED"
+ },
+ {
+  "id": "r3-mir-washerF-fb",
+  "row": "mirror-spin",
+  "src": "const s = sketch('front'); s.polygon([[10,0],[20,0],[20,10],[10,10]]); const r = spin(s, 360); mirror(r, 'front-back');",
+  "note": "axis y: flat ends face front-back",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "revolve",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "rev1",
+    "plane": "xz"
+   }
+  ],
+  "fx": {
+   "id": "r3-mir-washerF-fb",
+   "kind": "mirror-spin",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 18849.555921538762,
+    "com": [
+     -1.9058826037901675e-15,
+     2.412509625050845e-16,
+     1.4452440472570218e-15
+    ],
+    "bbox": [
+     -20,
+     -10,
+     -20,
+     20,
+     10,
+     20
+    ],
+    "faces": 6,
+    "types": {
+     "cylinder": 4,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 18849.55592153878,
+    "bbox": [
+     -20,
+     -10,
+     -20,
+     20,
+     10,
+     20
+    ],
+    "faces": 8,
+    "dVol": 9.65003850020338e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     7.233188399251193e-16,
+     -6.1953503140197385e-15,
+     1.3682553544406001e-15
+    ]
+   },
+   "ms": 2925,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "wallMs": 467
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 1,
+      "at": 0,
+      "how": "analytic"
+     },
+     "wallMs": 2458
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 4,
+     "plane": 4
+    },
+    "occtTypes": {
+     "cylinder": 4,
+     "plane": 2
+    },
+    "occtComponents": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "truck-splits-cylinder-patch-over-180deg",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 18849.53078068713,
+    "bbox": [
+     -20,
+     -10.00005706636885,
+     -20,
+     20.000062118389046,
+     10,
+     20.000068626949314
+    ],
+    "com": [
+     0.000028611536141566013,
+     -0.000017354538314828216,
+     0.0000333019519003291
+    ],
+    "faces": 8,
+    "kernelFaces": 16,
+    "shells": 2,
+    "curved": true,
+    "bodies": 2,
+    "dVol": 0.0000013337636035149095,
+    "dBbox": 0.000005706636884994509,
+    "dCom": 5.550325316480643e-7,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 1,
+     "at": 0,
+     "how": "analytic"
+    }
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r3-mir-washerF-fb-moved",
+  "row": "mirror-spin",
+  "src": "const s = sketch('front'); s.polygon([[10,0],[20,0],[20,10],[10,10]]); const r = spin(s, 360); move(r, [0,30,0]); mirror(r, 'front-back');",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "revolve",
+   "move",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "move1",
+    "plane": "xz"
+   }
+  ],
+  "fx": {
+   "id": "r3-mir-washerF-fb-moved",
+   "kind": "mirror-spin",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "move",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 18849.555921538762,
+    "com": [
+     -1.9058826037901675e-15,
+     30.000000000000004,
+     1.4452440472570218e-15
+    ],
+    "bbox": [
+     -20,
+     20,
+     -20,
+     20,
+     40,
+     20
+    ],
+    "faces": 6,
+    "types": {
+     "cylinder": 4,
+     "plane": 2
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 18849.555921538777,
+    "bbox": [
+     -20,
+     20,
+     -20,
+     20,
+     40,
+     20
+    ],
+    "faces": 8,
+    "dVol": 7.720030800162704e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     -1.6744190037891454e-16,
+     30.00000000000093,
+     -2.838934523365559e-15
+    ]
+   },
+   "ms": 3126,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "wallMs": 376
+    },
+    {
+     "id": "move1",
+     "kind": "move",
+     "status": "built",
+     "pick": null,
+     "wallMs": 390
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "built",
+     "pick": null,
+     "mirrorAt": {
+      "axis": 1,
+      "at": 30,
+      "how": "analytic"
+     },
+     "wallMs": 2360
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 4,
+     "plane": 4
+    },
+    "occtTypes": {
+     "cylinder": 4,
+     "plane": 2
+    },
+    "occtComponents": {
+     "cylinder": 2,
+     "plane": 2
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "truck-splits-cylinder-patch-over-180deg",
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 18849.53078068724,
+    "bbox": [
+     -20,
+     19.99994293363115,
+     -20,
+     20.000062118389046,
+     40,
+     20.000068626949314
+    ],
+    "com": [
+     0.000028611536133218554,
+     29.99998264546178,
+     0.000033301951900747074
+    ],
+    "faces": 8,
+    "kernelFaces": 16,
+    "shells": 2,
+    "curved": true,
+    "bodies": 2,
+    "dVol": 0.0000013337635977248864,
+    "dBbox": 0.0000034313474657210463,
+    "dCom": 5.550325316550305e-7,
+    "tol": 0.0003,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built"
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built"
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "built",
+    "mirrorAt": {
+     "axis": 1,
+     "at": 30,
+     "how": "analytic"
+    }
+   }
+  ],
+  "outcome": "FAIL"
+ }
+]

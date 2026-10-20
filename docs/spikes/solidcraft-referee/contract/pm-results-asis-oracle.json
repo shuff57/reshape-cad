@@ -1,0 +1,2603 @@
+[
+ {
+  "id": "rl-pocket-reversed-own",
+  "row": "pocket-reversed",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 0); s2.circle(6, { at: [10, 15] }); pocket(s2, plate, 3, { reversed: true });",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "rl-pocket-reversed-own",
+   "kind": "pocket-reversed",
+   "tol": "approx",
+   "measureId": "pocket1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 11999.999999999998,
+    "com": [
+     20.000000000000004,
+     15.000000000000002,
+     5.000000000000001
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 7,
+    "types": {
+     "plane": 7
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11915.176998353076,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 8,
+    "dVol": 0.00706858347057687,
+    "dBbox": 0,
+    "pass": false,
+    "com": [
+     20.070879301183915,
+     14.99999999999998,
+     5.02480775541437
+    ]
+   },
+   "ms": 45,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 12
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 30
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 7
+    },
+    "occtComponents": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "volume": 12000,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "com": [
+     20,
+     15,
+     5
+    ],
+    "faces": 6,
+    "kernelFaces": 6,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 1.5158245029548806e-16,
+    "dBbox": 0,
+    "dCom": 6.96744475938914e-17,
+    "tol": 1e-9,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL",
+  "occtIgnores": [
+   "reversed"
+  ],
+  "outcomeVsOcct": "PASS",
+  "oracle": "closed form",
+  "oracleDelta": {
+   "expected": 11915.176998353076,
+   "dVol": 0.00711890403798857
+  }
+ },
+ {
+  "id": "r3-mir-taper-tb",
+  "row": "mirror-taper",
+  "src": "const s = sketch('top'); s.polygon([[0,0],[20,0],[20,20],[0,20]]); const b = pull(s, 15, { taper: 5 }); move(b, [0,0,10]); mirror(b, 'top-bottom');",
+  "note": "critic case x-taper-tb",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "move",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "move1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r3-mir-taper-tb",
+   "kind": "mirror-taper",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "move",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 11999.999999999998,
+    "com": [
+     9.999999999999998,
+     9.999999999999998,
+     10
+    ],
+    "bbox": [
+     0,
+     0,
+     -5,
+     20,
+     20,
+     25
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 13643.684339676603,
+    "bbox": [
+     -1.3123299528888601,
+     -1.3123299528888601,
+     -5,
+     21.31232995288886,
+     21.31232995288886,
+     25
+    ],
+    "faces": 12,
+    "dVol": 0.13697369497305045,
+    "dBbox": 1.3123299528888601,
+    "pass": false,
+    "com": [
+     10,
+     10,
+     10.000000000000002
+    ]
+   },
+   "ms": 0,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "refused",
+     "refusal": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+     "student": "pull(): the taper option is not built yet -- leave taper out."
+    },
+    {
+     "id": "move1",
+     "kind": "move",
+     "status": "refused",
+     "refusal": "move1 (move): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))",
+     "student": "move(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out."
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "refused",
+     "refusal": "mir1 (mirror): its target move1 was refused (move1 (move): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)))",
+     "student": "mirror(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "mir1 (mirror): its target move1 was refused (move1 (move): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)))",
+    "student": "mirror(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out.",
+    "firstRefusal": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+    "firstStudent": "pull(): the taper option is not built yet -- leave taper out."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+    "student": "pull(): the taper option is not built yet -- leave taper out."
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))",
+    "student": "move(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out."
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "refused",
+    "refusal": "mir1 (mirror): its target move1 was refused (move1 (move): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)))",
+    "student": "mirror(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out."
+   }
+  ],
+  "outcome": "REFUSED",
+  "occtIgnores": [
+   "taper"
+  ],
+  "outcomeVsOcct": "REFUSED"
+ },
+ {
+  "id": "r3-mir-taper-lr",
+  "row": "mirror-taper",
+  "src": "const s = sketch('top'); s.polygon([[20,0],[40,0],[40,20],[20,20]]); const b = pull(s, 15, { taper: 5 }); mirror(b, 'left-right');",
+  "note": "critic case x-taper-lr",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "pull1",
+    "plane": "yz"
+   }
+  ],
+  "fx": {
+   "id": "r3-mir-taper-lr",
+   "kind": "mirror-taper",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 11999.999999999998,
+    "com": [
+     20,
+     9.999999999999998,
+     7.5
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20,
+     15
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 13643.684339676603,
+    "bbox": [
+     -3.9369898586665784,
+     -1.3123299528888601,
+     0,
+     41.31232995288886,
+     21.31232995288886,
+     15
+    ],
+    "faces": 12,
+    "dVol": 0.13697369497305045,
+    "dBbox": 3.9369898586665784,
+    "pass": false,
+    "com": [
+     18.687670047111144,
+     10,
+     7.807491821124428
+    ]
+   },
+   "ms": 0,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "refused",
+     "refusal": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+     "student": "pull(): the taper option is not built yet -- leave taper out."
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "refused",
+     "refusal": "mir1 (mirror): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))",
+     "student": "mirror(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "mir1 (mirror): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))",
+    "student": "mirror(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out.",
+    "firstRefusal": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+    "firstStudent": "pull(): the taper option is not built yet -- leave taper out."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+    "student": "pull(): the taper option is not built yet -- leave taper out."
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "refused",
+    "refusal": "mir1 (mirror): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))",
+    "student": "mirror(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out."
+   }
+  ],
+  "outcome": "REFUSED",
+  "occtIgnores": [
+   "taper"
+  ],
+  "outcomeVsOcct": "REFUSED"
+ },
+ {
+  "id": "r3-mir-taper-neg-tb",
+  "row": "mirror-taper",
+  "src": "const s = sketch('top'); s.polygon([[0,0],[20,0],[20,20],[0,20]]); const b = pull(s, 15, { taper: -5 }); move(b, [0,0,10]); mirror(b, 'top-bottom');",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "move",
+   "mirror"
+  ],
+  "doc": [
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "target": "move1",
+    "plane": "xy"
+   }
+  ],
+  "fx": {
+   "id": "r3-mir-taper-neg-tb",
+   "kind": "mirror-taper",
+   "tol": "approx",
+   "measureId": "mir1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "move",
+    "mirror"
+   ],
+   "occt": {
+    "volume": 11999.999999999998,
+    "com": [
+     9.999999999999998,
+     9.999999999999998,
+     10
+    ],
+    "bbox": [
+     0,
+     0,
+     -5,
+     20,
+     20,
+     25
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 10
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 10494.092452743342,
+    "bbox": [
+     0,
+     0,
+     -5,
+     20,
+     20,
+     25
+    ],
+    "faces": 12,
+    "dVol": 0.1254922956047214,
+    "dBbox": 0,
+    "pass": false,
+    "com": [
+     10.000000000000005,
+     10.000000000000005,
+     10.000000000000002
+    ]
+   },
+   "ms": 0,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "refused",
+     "refusal": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+     "student": "pull(): the taper option is not built yet -- leave taper out."
+    },
+    {
+     "id": "move1",
+     "kind": "move",
+     "status": "refused",
+     "refusal": "move1 (move): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))",
+     "student": "move(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out."
+    },
+    {
+     "id": "mir1",
+     "kind": "mirror",
+     "status": "refused",
+     "refusal": "mir1 (mirror): its target move1 was refused (move1 (move): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)))",
+     "student": "mirror(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "mir1 (mirror): its target move1 was refused (move1 (move): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)))",
+    "student": "mirror(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out.",
+    "firstRefusal": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+    "firstStudent": "pull(): the taper option is not built yet -- leave taper out."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+    "student": "pull(): the taper option is not built yet -- leave taper out."
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "move1 (move): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is))",
+    "student": "move(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out."
+   },
+   {
+    "id": "mir1",
+    "kind": "mirror",
+    "status": "refused",
+    "refusal": "mir1 (mirror): its target move1 was refused (move1 (move): its target pull1 was refused (pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)))",
+    "student": "mirror(): it needs pull() to be built first, and that was refused: the taper option is not built yet -- leave taper out."
+   }
+  ],
+  "outcome": "REFUSED",
+  "occtIgnores": [
+   "taper"
+  ],
+  "outcomeVsOcct": "REFUSED"
+ },
+ {
+  "id": "r3-taper-alone",
+  "row": "mirror-taper",
+  "src": "const s = sketch('top'); s.polygon([[0,0],[20,0],[20,20],[0,20]]); const b = pull(s, 15, { taper: 5 });",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r3-taper-alone",
+   "kind": "mirror-taper",
+   "tol": "approx",
+   "measureId": "pull1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude"
+   ],
+   "occt": {
+    "volume": 5999.999999999999,
+    "com": [
+     10,
+     9.999999999999998,
+     7.499999999999999
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     20,
+     20,
+     15
+    ],
+    "faces": 6,
+    "types": {
+     "plane": 6
+    },
+    "components": {
+     "plane": 6
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 6821.842169838302,
+    "bbox": [
+     -1.3123299528888601,
+     -1.3123299528888601,
+     0,
+     21.31232995288886,
+     21.31232995288886,
+     15
+    ],
+    "faces": 6,
+    "dVol": 0.13697369497305045,
+    "dBbox": 1.3123299528888601,
+    "pass": false,
+    "com": [
+     10.000000000000004,
+     10,
+     7.807491821124428
+    ]
+   },
+   "ms": 0,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "refused",
+     "refusal": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+     "student": "pull(): the taper option is not built yet -- leave taper out."
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+    "student": "pull(): the taper option is not built yet -- leave taper out.",
+    "firstRefusal": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+    "firstStudent": "pull(): the taper option is not built yet -- leave taper out."
+   },
+   "outcome": "REFUSED"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "pull1 (extrude): the taper option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)",
+    "student": "pull(): the taper option is not built yet -- leave taper out."
+   }
+  ],
+  "outcome": "REFUSED",
+  "occtIgnores": [
+   "taper"
+  ],
+  "outcomeVsOcct": "REFUSED"
+ },
+ {
+  "id": "mirrored__top-bottom-pocket",
+  "row": "variant-mirrored",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(6, { at: [10, 15] }); const p = pocket(s2, plate, 3); mirror(p, 'top-bottom', { at: 5 });",
+  "note": "pocket mirrored across the horizontal plane z=5 (FreeCAD can; the script says a parallel plane is refused)",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "mirrored__top-bottom-pocket",
+   "kind": "variant-mirrored",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 11915.176998353074,
+    "com": [
+     20.07118904037989,
+     14.999999999999998,
+     4.975083835867039
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 8,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 7,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11830.35399670615,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 10,
+    "dVol": 0.007118904037988571,
+    "dBbox": 0,
+    "pass": false,
+    "com": [
+     20.142770550049537,
+     14.999999999999963,
+     4.999999999999986
+    ]
+   },
+   "ms": 220,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 4
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 109
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 107
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 7
+    },
+    "occtTypes": {
+     "plane": 8,
+     "cylinder": 1
+    },
+    "occtComponents": {
+     "plane": 7,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "volume": 11915.191087766254,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10.000000000000007
+    ],
+    "com": [
+     20.071177131452664,
+     15.000000000000012,
+     4.975088003991552
+    ],
+    "faces": 8,
+    "kernelFaces": 9,
+    "shells": 1,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0000011824761967021166,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 2.335532780795854e-7,
+    "tol": 0.0003,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "fcRef": {
+   "ok": true,
+   "volume": 11830.35399670615,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 10,
+   "com": [
+    20.14339892393844,
+    14.999999999999998,
+    5.000000000000001
+   ]
+  },
+  "vsFreecad": {
+   "truck": {
+    "dVol": 0.007171137151409411,
+    "dBbox": 7.105427357601002e-16,
+    "faces": 8,
+    "facesRef": 10
+   },
+   "occt": {
+    "dVol": 0.0071699461969219995,
+    "dBbox": 0,
+    "faces": 9,
+    "facesRef": 10
+   },
+   "brep": {
+    "dVol": 0,
+    "dBbox": 0,
+    "faces": 10,
+    "facesRef": 10
+   },
+   "comAbs": {
+    "truck": 0.07222179248577731,
+    "occt": 0.0722098835585534,
+    "brep": 0.0006283738889045765
+   }
+  },
+  "outcome": "FAIL",
+  "occtIgnores": [
+   "reversed"
+  ],
+  "outcomeVsOcct": "PASS",
+  "oracle": "FreeCAD ref",
+  "oracleDelta": {
+   "dVol": 0.007171137151409411,
+   "dBbox": 7.105427357601002e-16,
+   "faces": 8,
+   "facesRef": 10
+  }
+ },
+ {
+  "id": "mirrored__top-bottom-rect-pocket",
+  "row": "variant-mirrored",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.rect(15, 7, { at: [12.5, 8.5] }); const p = pocket(s2, plate, 4); mirror(p, 'top-bottom', { at: 5 });",
+  "note": "rect pocket 4 deep mirrored through the middle plane z=5 to the bottom face",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "mirrored__top-bottom-rect-pocket",
+   "kind": "variant-mirrored",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 11580,
+    "com": [
+     20.2720207253886,
+     15.235751295336788,
+     4.891191709844558
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 12
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11160,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 16,
+    "dVol": 0.03626943005181347,
+    "dBbox": 0,
+    "pass": false,
+    "com": [
+     20.564516129032256,
+     15.489247311827953,
+     4.999999999999999
+    ]
+   },
+   "ms": 26,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 3
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 6
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 16
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 12
+    },
+    "occtComponents": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "volume": 11580,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "com": [
+     20.2720207253886,
+     15.235751295336788,
+     4.891191709844559
+    ],
+    "faces": 11,
+    "kernelFaces": 11,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.741861189847285e-17,
+    "tol": 1e-9,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "fcRef": {
+   "ok": true,
+   "volume": 11160,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 16,
+   "com": [
+    20.56451612903226,
+    15.489247311827961,
+    5.000000000000001
+   ]
+  },
+  "vsFreecad": {
+   "truck": {
+    "dVol": 0.03763440860215054,
+    "dBbox": 0,
+    "faces": 11,
+    "facesRef": 16
+   },
+   "occt": {
+    "dVol": 0.03763440860215054,
+    "dBbox": 0,
+    "faces": 12,
+    "facesRef": 16
+   },
+   "brep": {
+    "dVol": 0,
+    "dBbox": 0,
+    "faces": 16,
+    "facesRef": 16
+   },
+   "comAbs": {
+    "truck": 0.29249540364365956,
+    "occt": 0.29249540364365956,
+    "brep": 8.881784197001252e-15
+   }
+  },
+  "outcome": "FAIL",
+  "occtIgnores": [
+   "reversed"
+  ],
+  "outcomeVsOcct": "PASS",
+  "oracle": "FreeCAD ref",
+  "oracleDelta": {
+   "dVol": 0.03763440860215054,
+   "dBbox": 0,
+   "faces": 11,
+   "facesRef": 16
+  }
+ },
+ {
+  "id": "mirrored__top-bottom-offcentre-plane",
+  "row": "variant-mirrored",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(6, { at: [10, 15] }); const p = pocket(s2, plate, 3); mirror(p, 'top-bottom', { at: 6 });",
+  "note": "circle pocket 3 deep mirrored through z=6: the copy is a sealed void (z 2 to 5) inside the plate",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "mirrored__top-bottom-offcentre-plane",
+   "kind": "variant-mirrored",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 11858.628330588459,
+    "com": [
+     20.11921418352145,
+     14.999999999999998,
+     4.994039290823927
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 8,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 8,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11830.35399670615,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 11,
+    "dVol": 0.0023842836704290435,
+    "dBbox": 0,
+    "pass": false,
+    "com": [
+     20.142770550049544,
+     14.999999999999961,
+     4.98572294499503
+    ]
+   },
+   "ms": 238,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 2
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 81
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 155
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 8
+    },
+    "occtTypes": {
+     "plane": 8,
+     "cylinder": 2
+    },
+    "occtComponents": {
+     "plane": 8,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 11858.651812943703,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10.000000000000005
+    ],
+    "com": [
+     20.119194145579037,
+     15.000000000000018,
+     4.994040292721051
+    ],
+    "faces": 10,
+    "kernelFaces": 12,
+    "shells": 1,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000001980191518703345,
+    "dBbox": 5.329070518200751e-16,
+    "dCom": 3.929763822139102e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "fcRef": {
+   "ok": true,
+   "volume": 11830.353996706152,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 11,
+   "com": [
+    20.14339892393844,
+    14.999999999999998,
+    4.985660107606155
+   ]
+  },
+  "vsFreecad": {
+   "truck": {
+    "dVol": 0.0023919669897815347,
+    "dBbox": 5.329070518200751e-16,
+    "faces": 10,
+    "facesRef": 11
+   },
+   "occt": {
+    "dVol": 0.002389982065640615,
+    "dBbox": 0,
+    "faces": 10,
+    "facesRef": 11
+   },
+   "brep": {
+    "dVol": 1.5375612632152054e-16,
+    "dBbox": 0,
+    "faces": 11,
+    "facesRef": 11
+   },
+   "comAbs": {
+    "truck": 0.0242047783594046,
+    "occt": 0.0241847404169917,
+    "brep": 0.000628373888897471
+   }
+  },
+  "outcome": "FAIL",
+  "occtIgnores": [
+   "reversed"
+  ],
+  "outcomeVsOcct": "PASS",
+  "oracle": "FreeCAD ref",
+  "oracleDelta": {
+   "dVol": 0.0023919669897815347,
+   "dBbox": 5.329070518200751e-16,
+   "faces": 10,
+   "facesRef": 11
+  }
+ },
+ {
+  "id": "mirrored__top-bottom-breaks-bottom",
+  "row": "variant-mirrored",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(6, { at: [10, 15] }); const p = pocket(s2, plate, 3); mirror(p, 'top-bottom', { at: 4 });",
+  "note": "circle pocket 3 deep mirrored through z=4: the copy starts below the part and opens the bottom face 1 deep",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "mirrored__top-bottom-breaks-bottom",
+   "kind": "variant-mirrored",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 11915.176998353074,
+    "com": [
+     20.07118904037989,
+     15,
+     4.97508383586704
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 8,
+    "types": {
+     "plane": 7,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 7,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11886.902664470765,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 10,
+    "dVol": 0.002372968012662959,
+    "dBbox": 0,
+    "pass": false,
+    "com": [
+     20.094729547048395,
+     14.999999999999956,
+     4.985790567942712
+    ]
+   },
+   "ms": 172,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 78
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 93
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 7
+    },
+    "occtTypes": {
+     "plane": 7,
+     "cylinder": 1
+    },
+    "occtComponents": {
+     "plane": 7,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 11915.191087766254,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10.000000000000007
+    ],
+    "com": [
+     20.071177131452664,
+     15.000000000000012,
+     4.975088003991552
+    ],
+    "faces": 8,
+    "kernelFaces": 9,
+    "shells": 1,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0000011824761967021166,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 2.335532780795854e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "fcRef": {
+   "ok": true,
+   "volume": 11886.902664470766,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 10,
+   "com": [
+    20.095144495350564,
+    14.999999999999996,
+    4.985728325697416
+   ]
+  },
+  "vsFreecad": {
+   "truck": {
+    "dVol": 0.002379797672613229,
+    "dBbox": 7.105427357601002e-16,
+    "faces": 8,
+    "facesRef": 10
+   },
+   "occt": {
+    "dVol": 0.002378612383764002,
+    "dBbox": 0,
+    "faces": 8,
+    "facesRef": 10
+   },
+   "brep": {
+    "dVol": 1.5302467386922463e-16,
+    "dBbox": 0,
+    "faces": 10,
+    "facesRef": 10
+   },
+   "comAbs": {
+    "truck": 0.02396736389789922,
+    "occt": 0.023955454970675305,
+    "brep": 0.000414948302168483
+   }
+  },
+  "outcome": "FAIL",
+  "occtIgnores": [
+   "reversed"
+  ],
+  "outcomeVsOcct": "PASS",
+  "oracle": "FreeCAD ref",
+  "oracleDelta": {
+   "dVol": 0.002379797672613229,
+   "dBbox": 7.105427357601002e-16,
+   "faces": 8,
+   "facesRef": 10
+  }
+ },
+ {
+  "id": "mirrored__top-bottom-from-bottom-reversed",
+  "row": "variant-mirrored",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 0); s2.circle(6, { at: [10, 15] }); const p = pocket(s2, plate, 3, { reversed: true }); mirror(p, 'top-bottom', { at: 5 });",
+  "note": "a pocket sketched on the bottom face and cut up (reversed), mirrored through z=5 onto the top face",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "mirrored__top-bottom-from-bottom-reversed",
+   "kind": "variant-mirrored",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 11915.176998353074,
+    "com": [
+     20.07118904037988,
+     14.999999999999998,
+     4.97508383586704
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 9,
+    "types": {
+     "plane": 8,
+     "cylinder": 1
+    },
+    "components": {
+     "plane": 7,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 11830.35399670615,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ],
+    "faces": 10,
+    "dVol": 0.007118904037988571,
+    "dBbox": 0,
+    "pass": false,
+    "com": [
+     20.142770550049537,
+     14.999999999999963,
+     4.999999999999986
+    ]
+   },
+   "ms": 100,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 10
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 88
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 1,
+     "plane": 7
+    },
+    "occtTypes": {
+     "plane": 8,
+     "cylinder": 1
+    },
+    "occtComponents": {
+     "plane": 7,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 1,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "volume": 11915.191087766254,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10.000000000000007
+    ],
+    "com": [
+     20.071177131452664,
+     15.000000000000012,
+     4.975088003991552
+    ],
+    "faces": 8,
+    "kernelFaces": 9,
+    "shells": 1,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0000011824761967021166,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 2.3355327794023648e-7,
+    "tol": 0.0003,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "fcRef": {
+   "ok": true,
+   "volume": 11830.35399670615,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 10,
+   "com": [
+    20.14339892393844,
+    14.999999999999998,
+    5.000000000000001
+   ]
+  },
+  "vsFreecad": {
+   "truck": {
+    "dVol": 0.007171137151409411,
+    "dBbox": 7.105427357601002e-16,
+    "faces": 8,
+    "facesRef": 10
+   },
+   "occt": {
+    "dVol": 0.0071699461969219995,
+    "dBbox": 0,
+    "faces": 9,
+    "facesRef": 10
+   },
+   "brep": {
+    "dVol": 0,
+    "dBbox": 0,
+    "faces": 10,
+    "facesRef": 10
+   },
+   "comAbs": {
+    "truck": 0.07222179248577731,
+    "occt": 0.0722098835585605,
+    "brep": 0.0006283738889045765
+   }
+  },
+  "outcome": "FAIL",
+  "occtIgnores": [
+   "reversed"
+  ],
+  "outcomeVsOcct": "PASS",
+  "oracle": "FreeCAD ref",
+  "oracleDelta": {
+   "dVol": 0.007171137151409411,
+   "dBbox": 7.105427357601002e-16,
+   "faces": 8,
+   "facesRef": 10
+  }
+ },
+ {
+  "id": "mirrored__top-bottom-on-disc",
+  "row": "variant-mirrored",
+  "src": "const sk1 = sketch('top'); sk1.circle(60); const plate = extrude(sk1, 10); const s2 = sketch('top', 10); s2.circle(8, { at: [10, 0] }); const p = pocket(s2, plate, 3); mirror(p, 'top-bottom', { at: 5 });",
+  "note": "pocket in a 60 across disc mirrored through z=5",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "mirrored__top-bottom-on-disc",
+   "kind": "variant-mirrored",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 28123.537434935828,
+    "com": [
+     -0.05361930294906517,
+     -2.7232571758772624e-15,
+     4.981233243967829
+    ],
+    "bbox": [
+     -30,
+     -30,
+     0,
+     30,
+     30,
+     10
+    ],
+    "faces": 6,
+    "types": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "components": {
+     "cylinder": 2,
+     "plane": 3
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 27972.740987563495,
+    "bbox": [
+     -30,
+     -30,
+     0,
+     30,
+     30,
+     10
+    ],
+    "faces": 7,
+    "dVol": 0.005361930294906989,
+    "dBbox": 0,
+    "pass": false,
+    "com": [
+     -0.10751099970223987,
+     1.2412671921912235e-15,
+     4.999999999999991
+    ]
+   },
+   "ms": 2697,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 96
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1255
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1346
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 3
+    },
+    "occtTypes": {
+     "cylinder": 2,
+     "plane": 4
+    },
+    "occtComponents": {
+     "cylinder": 2,
+     "plane": 3
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "volume": 28122.764850514253,
+    "bbox": [
+     -30.000000000000004,
+     -30.00000000000001,
+     0,
+     30.000000000000004,
+     30.000000000000007,
+     10.000000000000007
+    ],
+    "com": [
+     -0.05361186936211883,
+     6.902393171231772e-16,
+     4.981235845810831
+    ],
+    "faces": 5,
+    "kernelFaces": 7,
+    "shells": 1,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000027471096883246084,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 8.700355439818016e-8,
+    "tol": 0.0003,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "fcRef": {
+   "ok": true,
+   "volume": 27972.74098756352,
+   "bbox": [
+    -30,
+    -30,
+    0,
+    30,
+    30,
+    10
+   ],
+   "faces": 7,
+   "com": [
+    -0.10781671159030072,
+    -1.0076358735121353e-16,
+    5.000000000000001
+   ]
+  },
+  "vsFreecad": {
+   "truck": {
+    "dVol": 0.005363216390465008,
+    "dBbox": 7.105427357601002e-16,
+    "faces": 5,
+    "facesRef": 7
+   },
+   "occt": {
+    "dVol": 0.005390835579514741,
+    "dBbox": 0,
+    "faces": 6,
+    "facesRef": 7
+   },
+   "brep": {
+    "dVol": 9.103809905852246e-16,
+    "dBbox": 0,
+    "faces": 7,
+    "facesRef": 7
+   },
+   "comAbs": {
+    "truck": 0.05420484222818189,
+    "occt": 0.05419740864123555,
+    "brep": 0.00030571188806084726
+   }
+  },
+  "outcome": "FAIL",
+  "occtIgnores": [
+   "reversed"
+  ],
+  "outcomeVsOcct": "PASS",
+  "oracle": "FreeCAD ref",
+  "oracleDelta": {
+   "dVol": 0.005363216390465008,
+   "dBbox": 7.105427357601002e-16,
+   "faces": 5,
+   "facesRef": 7
+  }
+ },
+ {
+  "id": "mirrored__top-bottom-in-boss",
+  "row": "variant-mirrored",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const sb = sketch('top', 10); sb.circle(20, { at: [20, 15] }); const bs = extrude(sb, 6); const padded = join(plate, bs); const s2 = sketch('top', 16); s2.circle(8, { at: [20, 15] }); const p = pocket(s2, padded, 3); mirror(p, 'top-bottom', { at: 8 });",
+  "note": "pocket in the top of a joined boss (z 16) mirrored through z=8 onto the plate bottom",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "extrude",
+   "combine",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "mirrored__top-bottom-in-boss",
+   "kind": "variant-mirrored",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "combine",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 13734.159144781563,
+    "com": [
+     20.000000000000004,
+     15.000000000000002,
+     5.9936595566812985
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     16
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 9,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 8,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 13583.362697409255,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     16
+    ],
+    "faces": 12,
+    "dVol": 0.010979663609737945,
+    "dBbox": 0,
+    "pass": false,
+    "com": [
+     19.999999999999932,
+     14.999999999999922,
+     6.042427535839396
+    ]
+   },
+   "ms": 757,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 2
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull2",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 133
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "pick": null,
+     "wallMs": 110
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 243
+    },
+    {
+     "id": "sk4",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 268
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 8
+    },
+    "occtTypes": {
+     "plane": 9,
+     "cylinder": 2
+    },
+    "occtComponents": {
+     "plane": 8,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "volume": 13734.003162889829,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     16
+    ],
+    "com": [
+     19.99999999889844,
+     15.000000000413513,
+     5.993582719247684
+    ],
+    "faces": 10,
+    "kernelFaces": 12,
+    "shells": 1,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000011357221806566844,
+    "dBbox": 0,
+    "dCom": 0.000001463636543672402,
+    "tol": 0.0003,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pull2",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "fcRef": {
+   "ok": true,
+   "volume": 13583.362697409255,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    16
+   ],
+   "faces": 12,
+   "com": [
+    20.000000000000004,
+    15.000000000000002,
+    6.043546165170184
+   ]
+  },
+  "vsFreecad": {
+   "truck": {
+    "dVol": 0.011090071643990285,
+    "dBbox": 0,
+    "faces": 10,
+    "facesRef": 12
+   },
+   "occt": {
+    "dVol": 0.011101554948618801,
+    "dBbox": 0,
+    "faces": 11,
+    "facesRef": 12
+   },
+   "brep": {
+    "dVol": 0,
+    "dBbox": 0,
+    "faces": 12,
+    "facesRef": 12
+   },
+   "comAbs": {
+    "truck": 0.04996344592250068,
+    "occt": 0.04988660848888582,
+    "brep": 0.0011186293307883233
+   }
+  },
+  "outcome": "FAIL",
+  "occtIgnores": [
+   "reversed"
+  ],
+  "outcomeVsOcct": "PASS",
+  "oracle": "FreeCAD ref",
+  "oracleDelta": {
+   "dVol": 0.011090071643990285,
+   "dBbox": 0,
+   "faces": 10,
+   "facesRef": 12
+  }
+ },
+ {
+  "id": "mirrored__top-bottom-tall-block",
+  "row": "variant-mirrored",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 20); const s2 = sketch('top', 20); s2.rect(16, 12, { at: [16, 14] }); const p = pocket(s2, plate, 5); mirror(p, 'top-bottom', { at: 10 });",
+  "note": "pocket 5 deep in a 20 thick block, mirrored through z=10 onto its bottom face",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "mirrored__top-bottom-tall-block",
+   "kind": "variant-mirrored",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23040.000000000004,
+    "com": [
+     20.166666666666664,
+     15.041666666666666,
+     9.687499999999998
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     20
+    ],
+    "faces": 12,
+    "types": {
+     "plane": 12
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 22080,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     20
+    ],
+    "faces": 16,
+    "dVol": 0.04166666666666682,
+    "dBbox": 0,
+    "pass": false,
+    "com": [
+     20.347826086956523,
+     15.08695652173913,
+     10
+    ]
+   },
+   "ms": 22,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 1
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 6
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 15
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 12
+    },
+    "occtComponents": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "truck-merges-edge-connected-same-surface-faces"
+    },
+    "volume": 23040,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     20
+    ],
+    "com": [
+     20.166666666666668,
+     15.041666666666666,
+     9.6875
+    ],
+    "faces": 11,
+    "kernelFaces": 11,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 1.578983857244667e-16,
+    "dBbox": 0,
+    "dCom": 6.597223680310971e-17,
+    "tol": 1e-9,
+    "faceKey": "truck-merges-edge-connected-same-surface-faces",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "fcRef": {
+   "ok": true,
+   "volume": 22080,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    20
+   ],
+   "faces": 16,
+   "com": [
+    20.347826086956513,
+    15.086956521739136,
+    10
+   ]
+  },
+  "vsFreecad": {
+   "truck": {
+    "dVol": 0.043478260869565216,
+    "dBbox": 0,
+    "faces": 11,
+    "facesRef": 16
+   },
+   "occt": {
+    "dVol": 0.04347826086956538,
+    "dBbox": 0,
+    "faces": 12,
+    "facesRef": 16
+   },
+   "brep": {
+    "dVol": 0,
+    "dBbox": 0,
+    "faces": 16,
+    "facesRef": 16
+   },
+   "comAbs": {
+    "truck": 0.3125,
+    "occt": 0.3125000000000018,
+    "brep": 1.0658141036401503e-14
+   }
+  },
+  "outcome": "FAIL",
+  "occtIgnores": [
+   "reversed"
+  ],
+  "outcomeVsOcct": "PASS",
+  "oracle": "FreeCAD ref",
+  "oracleDelta": {
+   "dVol": 0.043478260869565216,
+   "dBbox": 0,
+   "faces": 11,
+   "facesRef": 16
+  }
+ }
+]
