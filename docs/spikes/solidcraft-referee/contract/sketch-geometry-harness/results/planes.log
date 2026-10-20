@@ -23,4 +23,4 @@ plane-bad-word                     SCRIPT-REFUSED      line 1: sketch() needs a 
 plane-offset-on-datum              SCRIPT-REFUSED      line 1: sketch(plane(...)) takes no offset: give the offset to plane(), like plane('top', 10). | occt undefined brep undefined
 plane-frame-offset                 SCRIPT-REFUSED      line 1: plane({ origin, u, v }) takes no offset: the origin already says where the plane sits. | occt undefined brep undefined
 datum-only: ["pl1:datum:noop","pl2:datum:noop"]
-wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/u4/planes.json 25
+wrote results/planes.json 25

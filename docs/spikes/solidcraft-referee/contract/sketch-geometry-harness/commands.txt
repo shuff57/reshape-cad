@@ -31,3 +31,10 @@ sh $H/repro-guarded.sh attacks far hazards                # guarded
 bun $H/solve-check.mjs                                    # independent solver vs the retired brep-rs session (comparison only) -> results-guarded/solve-check.json
 bun $H/pkg-probe.mjs                                      # the pre-built pkg has no @sketch command -> results-guarded/pkg-probe.json
 bun docs/spikes/solidcraft-referee/contract/sketch-geometry.guard-check.mjs   # unit checks of the guard pieces
+
+# ---- round 8 ----
+# new group: copies (repeat / mirror copies of front-plane pockets, controls). Run unguarded AND guarded (the 1500M cap: use systemd-run -p MemoryMax=1500M by hand; repro.sh uses 16G):
+sh $H/repro.sh copies ; sh $H/repro-guarded.sh copies
+bun $H/build-rows.mjs                 # also writes $H/audit/row-cases.json (row -> the cases it read)
+bun $H/audit-evidence.mjs             # opens the evidence of every row (86 of 86) against the stored results; exit 1 on a problem; writes $H/audit/audit-evidence.json
+bun $H/cmp-guard.mjs regress > $H/results-guarded/regress.txt   # over-refusals, with their sentences (fixed: it no longer reads the non-array result files)

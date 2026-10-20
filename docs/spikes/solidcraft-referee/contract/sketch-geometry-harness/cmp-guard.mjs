@@ -1,6 +1,6 @@
 // before (results/) vs after (results-guarded/), case by case. Usage: bun cmp-guard.mjs [changed|all|regress]
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-const load = (dir) => { const m = new Map(); const d = new URL(`./${dir}/`, import.meta.url).pathname; if (!existsSync(d)) return m; for (const f of readdirSync(d).filter((x) => x.endsWith('.json') && x !== 'solve-moves.json')) for (const r of JSON.parse(readFileSync(d + f, 'utf8'))) m.set(r.id, { file: f.replace('.json', ''), ...r }); return m; };
+const load = (dir) => { const m = new Map(); const d = new URL(`./${dir}/`, import.meta.url).pathname; if (!existsSync(d)) return m; for (const f of readdirSync(d).filter((x) => x.endsWith('.json'))) { const rows = JSON.parse(readFileSync(d + f, 'utf8')); if (!Array.isArray(rows)) continue; /* solve-moves, solve-check and pkg-probe are objects, not case rows */ for (const r of rows) if (r && typeof r.id === 'string') m.set(r.id, { file: f.replace('.json', ''), ...r }); } return m; };
 export const before = load('results');
 export const after = load('results-guarded');
 const kind = (r) => {

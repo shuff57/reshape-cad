@@ -1,0 +1,1065 @@
+{
+ "rows": 86,
+ "casesRead": 652,
+ "problems": [],
+ "report": [
+  {
+   "row": 0,
+   "status": "supported",
+   "cases": 12,
+   "kinds": {
+    "pass": 11,
+    "refused": 1
+   },
+   "cmds": [
+    "planes"
+   ]
+  },
+  {
+   "row": 1,
+   "status": "refused",
+   "cases": 3,
+   "kinds": {
+    "refused": 3
+   },
+   "cmds": [
+    "fc",
+    "planes"
+   ]
+  },
+  {
+   "row": 2,
+   "status": "supported",
+   "cases": 12,
+   "kinds": {
+    "pass": 9,
+    "refused": 3
+   },
+   "cmds": [
+    "copies"
+   ]
+  },
+  {
+   "row": 3,
+   "status": "refused",
+   "cases": 4,
+   "kinds": {
+    "refused": 3,
+    "pass": 1
+   },
+   "cmds": [
+    "copies"
+   ]
+  },
+  {
+   "row": 4,
+   "status": "supported",
+   "cases": 7,
+   "kinds": {
+    "pass": 6,
+    "refused": 1
+   },
+   "cmds": [
+    "planes",
+    "extra2"
+   ]
+  },
+  {
+   "row": 5,
+   "status": "supported",
+   "cases": 1,
+   "kinds": {
+    "pass": 1
+   },
+   "cmds": [
+    "planes"
+   ]
+  },
+  {
+   "row": 6,
+   "status": "refused",
+   "cases": 3,
+   "kinds": {
+    "refused": 3
+   },
+   "cmds": [
+    "planes"
+   ]
+  },
+  {
+   "row": 7,
+   "status": "supported",
+   "cases": 26,
+   "kinds": {
+    "pass": 26
+   },
+   "cmds": [
+    "planes",
+    "frames2"
+   ]
+  },
+  {
+   "row": 8,
+   "status": "refused",
+   "cases": 3,
+   "kinds": {
+    "refused": 3
+   },
+   "cmds": [
+    "planes"
+   ]
+  },
+  {
+   "row": 9,
+   "status": "supported",
+   "cases": 8,
+   "kinds": {
+    "pass": 8
+   },
+   "cmds": [
+    "outline",
+    "extra2",
+    "2d"
+   ]
+  },
+  {
+   "row": 10,
+   "status": "refused",
+   "cases": 9,
+   "kinds": {
+    "refused": 7,
+    "pass": 2
+   },
+   "cmds": [
+    "outline",
+    "extra2",
+    "guard"
+   ]
+  },
+  {
+   "row": 11,
+   "status": "refused",
+   "cases": 3,
+   "kinds": {
+    "refused": 3
+   },
+   "cmds": [
+    "outline",
+    "guard"
+   ]
+  },
+  {
+   "row": 12,
+   "status": "supported",
+   "cases": 4,
+   "kinds": {
+    "pass": 4
+   },
+   "cmds": [
+    "outline",
+    "micro"
+   ]
+  },
+  {
+   "row": 13,
+   "status": "refused",
+   "cases": 69,
+   "kinds": {
+    "refused": 49,
+    "pass": 20
+   },
+   "cmds": [
+    "micro",
+    "extra2",
+    "round3",
+    "round3b",
+    "guard",
+    "grid",
+    "holdout"
+   ]
+  },
+  {
+   "row": 14,
+   "status": "refused",
+   "cases": 3,
+   "kinds": {
+    "refused": 3
+   },
+   "cmds": [
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 15,
+   "status": "refused",
+   "cases": 3,
+   "kinds": {
+    "refused": 3
+   },
+   "cmds": [
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 16,
+   "status": "supported",
+   "cases": 10,
+   "kinds": {
+    "pass": 10
+   },
+   "cmds": [
+    "outline",
+    "extra2",
+    "fc"
+   ]
+  },
+  {
+   "row": 17,
+   "status": "refused",
+   "cases": 7,
+   "kinds": {
+    "refused": 7
+   },
+   "cmds": [
+    "outline",
+    "extra",
+    "extra2"
+   ]
+  },
+  {
+   "row": 18,
+   "status": "refused",
+   "cases": 1,
+   "kinds": {
+    "refused": 1
+   },
+   "cmds": [
+    "outline",
+    "guard"
+   ]
+  },
+  {
+   "row": 19,
+   "status": "refused",
+   "cases": 4,
+   "kinds": {
+    "refused": 4
+   },
+   "cmds": [
+    "outline",
+    "guard"
+   ]
+  },
+  {
+   "row": 20,
+   "status": "supported",
+   "cases": 21,
+   "kinds": {
+    "pass": 21
+   },
+   "cmds": [
+    "outline",
+    "round2"
+   ]
+  },
+  {
+   "row": 21,
+   "status": "supported",
+   "cases": 4,
+   "kinds": {
+    "pass": 4
+   },
+   "cmds": [
+    "outline",
+    "round3"
+   ]
+  },
+  {
+   "row": 22,
+   "status": "supported",
+   "cases": 5,
+   "kinds": {
+    "pass": 5
+   },
+   "cmds": [
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 23,
+   "status": "refused",
+   "cases": 6,
+   "kinds": {
+    "refused": 4,
+    "pass": 2
+   },
+   "cmds": [
+    "outline",
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 24,
+   "status": "supported",
+   "cases": 1,
+   "kinds": {
+    "pass": 1
+   },
+   "cmds": [
+    "outline"
+   ]
+  },
+  {
+   "row": 25,
+   "status": "refused",
+   "cases": 3,
+   "kinds": {
+    "refused": 3
+   },
+   "cmds": [
+    "outline"
+   ]
+  },
+  {
+   "row": 26,
+   "status": "supported",
+   "cases": 6,
+   "kinds": {
+    "pass": 6
+   },
+   "cmds": [
+    "outline",
+    "round2"
+   ]
+  },
+  {
+   "row": 27,
+   "status": "refused",
+   "cases": 2,
+   "kinds": {
+    "refused": 2
+   },
+   "cmds": [
+    "outline",
+    "attacks",
+    "guard"
+   ]
+  },
+  {
+   "row": 28,
+   "status": "supported",
+   "cases": 15,
+   "kinds": {
+    "pass": 8,
+    "refused": 7
+   },
+   "cmds": [
+    "outline",
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 29,
+   "status": "refused",
+   "cases": 11,
+   "kinds": {
+    "pass": 3,
+    "refused": 8
+   },
+   "cmds": [
+    "round3",
+    "round3b",
+    "guard"
+   ]
+  },
+  {
+   "row": 30,
+   "status": "refused",
+   "cases": 3,
+   "kinds": {
+    "refused": 2,
+    "pass": 1
+   },
+   "cmds": [
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 31,
+   "status": "supported",
+   "cases": 12,
+   "kinds": {
+    "pass": 12
+   },
+   "cmds": [
+    "outline",
+    "frames2"
+   ]
+  },
+  {
+   "row": 32,
+   "status": "refused",
+   "cases": 5,
+   "kinds": {
+    "refused": 3,
+    "pass": 2
+   },
+   "cmds": [
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 33,
+   "status": "supported",
+   "cases": 18,
+   "kinds": {
+    "pass": 17,
+    "refused": 1
+   },
+   "cmds": [
+    "outline",
+    "extra2",
+    "frames2",
+    "2d",
+    "guard"
+   ]
+  },
+  {
+   "row": 34,
+   "status": "refused",
+   "cases": 14,
+   "kinds": {
+    "refused": 11,
+    "pass": 3
+   },
+   "cmds": [
+    "round3",
+    "round3b",
+    "guard"
+   ]
+  },
+  {
+   "row": 35,
+   "status": "refused",
+   "cases": 2,
+   "kinds": {
+    "refused": 2
+   },
+   "cmds": [
+    "outline"
+   ]
+  },
+  {
+   "row": 36,
+   "status": "supported",
+   "cases": 17,
+   "kinds": {
+    "pass": 17
+   },
+   "cmds": [
+    "soup",
+    "round3"
+   ]
+  },
+  {
+   "row": 37,
+   "status": "refused",
+   "cases": 14,
+   "kinds": {
+    "refused": 12,
+    "pass": 2
+   },
+   "cmds": [
+    "round3",
+    "friendly",
+    "soup",
+    "guard"
+   ]
+  },
+  {
+   "row": 38,
+   "status": "refused",
+   "cases": 7,
+   "kinds": {
+    "refused": 7
+   },
+   "cmds": [
+    "soup",
+    "guard"
+   ]
+  },
+  {
+   "row": 39,
+   "status": "refused",
+   "cases": 7,
+   "kinds": {
+    "refused": 7
+   },
+   "cmds": [
+    "soup",
+    "extra2",
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 40,
+   "status": "refused",
+   "cases": 7,
+   "kinds": {
+    "refused": 6,
+    "pass": 1
+   },
+   "cmds": [
+    "extra2",
+    "soup",
+    "guard"
+   ]
+  },
+  {
+   "row": 41,
+   "status": "refused",
+   "cases": 3,
+   "kinds": {
+    "refused": 3
+   },
+   "cmds": [
+    "extra2",
+    "guard"
+   ]
+  },
+  {
+   "row": 42,
+   "status": "supported",
+   "cases": 40,
+   "kinds": {
+    "pass": 36,
+    "other": 4
+   },
+   "cmds": [
+    "soup",
+    "fc",
+    "guard"
+   ]
+  },
+  {
+   "row": 43,
+   "status": "supported",
+   "cases": 7,
+   "kinds": {
+    "pass": 4,
+    "other": 3
+   },
+   "cmds": [
+    "soup",
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 44,
+   "status": "refused",
+   "cases": 16,
+   "kinds": {
+    "other": 12,
+    "refused": 1,
+    "pass": 3
+   },
+   "cmds": [
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 45,
+   "status": "refused",
+   "cases": 4,
+   "kinds": {
+    "other": 4
+   },
+   "cmds": [
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 46,
+   "status": "refused",
+   "cases": 5,
+   "kinds": {
+    "refused": 5
+   },
+   "cmds": [
+    "fc",
+    "soup",
+    "guard"
+   ]
+  },
+  {
+   "row": 47,
+   "status": "refused",
+   "cases": 4,
+   "kinds": {
+    "refused": 4
+   },
+   "cmds": [
+    "fc",
+    "soup",
+    "guard"
+   ]
+  },
+  {
+   "row": 48,
+   "status": "refused",
+   "cases": 4,
+   "kinds": {
+    "refused": 4
+   },
+   "cmds": [
+    "soup",
+    "guard"
+   ]
+  },
+  {
+   "row": 49,
+   "status": "supported",
+   "cases": 5,
+   "kinds": {
+    "pass": 5
+   },
+   "cmds": [
+    "round3"
+   ]
+  },
+  {
+   "row": 50,
+   "status": "supported",
+   "cases": 4,
+   "kinds": {
+    "pass": 4
+   },
+   "cmds": [
+    "soup",
+    "friendly"
+   ]
+  },
+  {
+   "row": 51,
+   "status": "supported",
+   "cases": 6,
+   "kinds": {
+    "pass": 6
+   },
+   "cmds": [
+    "soup",
+    "extra",
+    "extra2"
+   ]
+  },
+  {
+   "row": 52,
+   "status": "refused",
+   "cases": 1,
+   "kinds": {
+    "refused": 1
+   },
+   "cmds": [
+    "extra",
+    "guard"
+   ]
+  },
+  {
+   "row": 53,
+   "status": "supported",
+   "cases": 8,
+   "kinds": {
+    "pass": 8
+   },
+   "cmds": [
+    "2d",
+    "outline"
+   ]
+  },
+  {
+   "row": 54,
+   "status": "supported",
+   "cases": 0,
+   "kinds": {},
+   "cmds": [
+    "2d"
+   ]
+  },
+  {
+   "row": 55,
+   "status": "wrong",
+   "cases": 4,
+   "kinds": {
+    "other": 4
+   },
+   "cmds": [
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 56,
+   "status": "supported",
+   "cases": 9,
+   "kinds": {
+    "pass": 9
+   },
+   "cmds": [
+    "friendly"
+   ]
+  },
+  {
+   "row": 57,
+   "status": "supported",
+   "cases": 9,
+   "kinds": {
+    "pass": 8,
+    "refused": 1
+   },
+   "cmds": [
+    "friendly",
+    "round3"
+   ]
+  },
+  {
+   "row": 58,
+   "status": "refused",
+   "cases": 2,
+   "kinds": {
+    "refused": 1,
+    "pass": 1
+   },
+   "cmds": [
+    "round3",
+    "guard"
+   ]
+  },
+  {
+   "row": 59,
+   "status": "supported",
+   "cases": 7,
+   "kinds": {
+    "pass": 7
+   },
+   "cmds": [
+    "friendly"
+   ]
+  },
+  {
+   "row": 60,
+   "status": "refused",
+   "cases": 6,
+   "kinds": {
+    "refused": 6
+   },
+   "cmds": [
+    "friendly",
+    "guard"
+   ]
+  },
+  {
+   "row": 61,
+   "status": "supported",
+   "cases": 2,
+   "kinds": {
+    "pass": 2
+   },
+   "cmds": [
+    "friendly"
+   ]
+  },
+  {
+   "row": 62,
+   "status": "refused",
+   "cases": 1,
+   "kinds": {
+    "refused": 1
+   },
+   "cmds": [
+    "friendly",
+    "guard"
+   ]
+  },
+  {
+   "row": 63,
+   "status": "refused",
+   "cases": 6,
+   "kinds": {
+    "refused": 6
+   },
+   "cmds": [
+    "guard"
+   ]
+  },
+  {
+   "row": 64,
+   "status": "refused",
+   "cases": 2,
+   "kinds": {
+    "refused": 2
+   },
+   "cmds": [
+    "guard"
+   ]
+  },
+  {
+   "row": 65,
+   "status": "refused",
+   "cases": 3,
+   "kinds": {
+    "refused": 2,
+    "pass": 1
+   },
+   "cmds": [
+    "guard"
+   ]
+  },
+  {
+   "row": 66,
+   "status": "refused",
+   "cases": 7,
+   "kinds": {
+    "refused": 3,
+    "pass": 4
+   },
+   "cmds": [
+    "guard"
+   ]
+  },
+  {
+   "row": 67,
+   "status": "refused",
+   "cases": 86,
+   "kinds": {
+    "refused": 38,
+    "pass": 48
+   },
+   "cmds": [
+    "grid",
+    "holdout",
+    "guard"
+   ]
+  },
+  {
+   "row": 68,
+   "status": "unsupported",
+   "cases": 0,
+   "kinds": {},
+   "cmds": []
+  },
+  {
+   "row": 69,
+   "status": "unsupported",
+   "cases": 0,
+   "kinds": {},
+   "cmds": []
+  },
+  {
+   "row": 70,
+   "status": "wrong",
+   "cases": 4,
+   "kinds": {
+    "other": 4
+   },
+   "cmds": [
+    "control-noprofiles"
+   ]
+  },
+  {
+   "row": 71,
+   "status": "wrong",
+   "cases": 5,
+   "kinds": {
+    "pass": 5
+   },
+   "cmds": [
+    "attacks"
+   ]
+  },
+  {
+   "row": 72,
+   "status": "wrong",
+   "cases": 8,
+   "kinds": {
+    "refused": 8
+   },
+   "cmds": [
+    "outline",
+    "extra",
+    "attacks",
+    "guard"
+   ]
+  },
+  {
+   "row": 73,
+   "status": "wrong",
+   "cases": 8,
+   "kinds": {
+    "refused": 8
+   },
+   "cmds": [
+    "soup",
+    "fc",
+    "attacks",
+    "guard"
+   ]
+  },
+  {
+   "row": 74,
+   "status": "wrong",
+   "cases": 5,
+   "kinds": {
+    "refused": 5
+   },
+   "cmds": [
+    "soup",
+    "extra2"
+   ]
+  },
+  {
+   "row": 75,
+   "status": "wrong",
+   "cases": 7,
+   "kinds": {
+    "refused": 6,
+    "pass": 1
+   },
+   "cmds": [
+    "far"
+   ]
+  },
+  {
+   "row": 76,
+   "status": "wrong",
+   "cases": 3,
+   "kinds": {
+    "refused": 3
+   },
+   "cmds": [
+    "attacks"
+   ]
+  },
+  {
+   "row": 77,
+   "status": "wrong",
+   "cases": 2,
+   "kinds": {
+    "refused": 2
+   },
+   "cmds": [
+    "attacks"
+   ]
+  },
+  {
+   "row": 78,
+   "status": "unsupported",
+   "cases": 5,
+   "kinds": {
+    "pass": 2,
+    "refused": 3
+   },
+   "cmds": [
+    "attacks",
+    "round3"
+   ]
+  },
+  {
+   "row": 79,
+   "status": "refused",
+   "cases": 82,
+   "kinds": {
+    "pass": 52,
+    "refused": 30
+   },
+   "cmds": [
+    "far",
+    "attacks"
+   ]
+  },
+  {
+   "row": 80,
+   "status": "refused",
+   "cases": 13,
+   "kinds": {
+    "refused": 11,
+    "pass": 2
+   },
+   "cmds": [
+    "attacks"
+   ]
+  },
+  {
+   "row": 81,
+   "status": "refused",
+   "cases": 14,
+   "kinds": {
+    "refused": 8,
+    "pass": 6
+   },
+   "cmds": [
+    "attacks",
+    "friendly"
+   ]
+  },
+  {
+   "row": 82,
+   "status": "refused",
+   "cases": 4,
+   "kinds": {
+    "refused": 3,
+    "pass": 1
+   },
+   "cmds": [
+    "hazards"
+   ]
+  },
+  {
+   "row": 83,
+   "status": "refused",
+   "cases": 8,
+   "kinds": {
+    "pass": 6,
+    "refused": 2
+   },
+   "cmds": [
+    "tinypull"
+   ]
+  },
+  {
+   "row": 84,
+   "status": "wrong",
+   "cases": 1,
+   "kinds": {
+    "other": 1
+   },
+   "cmds": [
+    "hazards",
+    "extra"
+   ]
+  },
+  {
+   "row": 85,
+   "status": "supported",
+   "cases": 2,
+   "kinds": {
+    "pass": 2
+   },
+   "cmds": [
+    "attacks",
+    "far",
+    "outline"
+   ]
+  }
+ ]
+}

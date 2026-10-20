@@ -59,7 +59,7 @@ export async function guardedTruckBuild(doc0, id, opts = {}) {
   // ---- before: the guard on every sketch
   const solvedCache = new Map();
   const solved = (sk) => { if (!solvedCache.has(sk.id)) solvedCache.set(sk.id, solvedGeoms({ geoms: sk.geoms, rules: sk.rules })); return solvedCache.get(sk.id); };
-  const verdicts = G.guardDoc(doc, { arc, solvedGeoms: solved });
+  const verdicts = G.guardDoc(doc, { arc, solvedGeoms: solved, authored: opts.authoredSketches ? new Set(opts.authoredSketches) : undefined });
   for (const f0 of doc0.features) { if (f0.kind !== 'sketch') continue; const tv = G.guardTypedCorners(f0); if (tv) verdicts.set(f0.id, tv); } // typed corners, before the rule solve
   const notices = [...frameNotices];
   for (const sk of sketches.values()) for (const n of G.noticesOf(sk, arc)) notices.push({ sketch: sk.id, ...n });

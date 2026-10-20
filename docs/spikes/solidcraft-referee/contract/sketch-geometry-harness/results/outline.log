@@ -71,4 +71,4 @@ slot-front                         PASS               vol 1298.070632 occt undef
 slot-same                          SCRIPT-REFUSED      line 1: .slot() needs two different end centres -- a and b are both [3, 3], which holds no slot. | occt undefined brep undefined
 slot-r0                            SCRIPT-REFUSED      line 1: .slot()(): a size has to be a positive number -- got 0 for radius. | occt undefined brep undefined
 slot-rneg                          SCRIPT-REFUSED      line 1: .slot()(): a size has to be a positive number -- got -2 for radius. | occt undefined brep undefined
-wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/u4/outline.json 73
+wrote results/outline.json 73

@@ -1,0 +1,1309 @@
+[
+ {
+  "row": 0,
+  "status": "supported",
+  "ids": [
+   "plane-front-0",
+   "plane-side-0",
+   "frame-swapped",
+   "frame-yz",
+   "plane-top-0",
+   "plane-top-12.5",
+   "plane-top--4",
+   "plane-side--4",
+   "plane-front-7",
+   "fc-front-plane",
+   "fc-side-plane-L",
+   "fc-sketch-offset-top"
+  ]
+ },
+ {
+  "row": 1,
+  "status": "refused",
+  "ids": [
+   "fc-front-offset",
+   "plane-front-7",
+   "datum-plane-front-3"
+  ]
+ },
+ {
+  "row": 2,
+  "status": "supported",
+  "ids": [
+   "copy-repeat-y-circle",
+   "copy-repeat-y-circle-pos",
+   "copy-repeat-y-circle-xz",
+   "copy-repeat-diag-rect",
+   "copy-repeat-x-pocket",
+   "copy-repeat-z-pocket",
+   "copy-mirror-lr-pocket",
+   "copy-mirror-tb-pocket",
+   "copy-authored-param-zero",
+   "copy-authored-offset-repeat",
+   "copy-authored-after-copy",
+   "copy-authored-param-slider"
+  ]
+ },
+ {
+  "row": 3,
+  "status": "refused",
+  "ids": [
+   "copy-authored-offset-repeat",
+   "copy-authored-after-copy",
+   "copy-authored-param-slider",
+   "copy-authored-param-zero"
+  ]
+ },
+ {
+  "row": 4,
+  "status": "supported",
+  "ids": [
+   "datum-plane-top-5",
+   "datum-plane-side-2",
+   "datum-plane-default-offset",
+   "datum-frame",
+   "datum-plane-front-3",
+   "datum-param-follow",
+   "sketch-offset-param"
+  ]
+ },
+ {
+  "row": 5,
+  "status": "supported",
+  "ids": [
+   "datum-frame"
+  ]
+ },
+ {
+  "row": 6,
+  "status": "refused",
+  "ids": [
+   "plane-frame-offset",
+   "plane-offset-on-datum",
+   "plane-bad-word"
+  ]
+ },
+ {
+  "row": 7,
+  "status": "supported",
+  "ids": [
+   "frame-yz",
+   "frame-swapped",
+   "frame-xy-origin",
+   "frame-tilt45",
+   "frame-neg-u",
+   "frame-swapped-round",
+   "frame-swapped-circle",
+   "frame-swapped-slot",
+   "frame-swapped-dshape-cw",
+   "frame-swapped-plate-hole",
+   "frame-swapped-bulge",
+   "frame-yzFrame-round",
+   "frame-yzFrame-circle",
+   "frame-yzFrame-slot",
+   "frame-yzFrame-dshape-cw",
+   "frame-yzFrame-plate-hole",
+   "frame-tilt-round",
+   "frame-tilt-circle",
+   "frame-tilt-slot",
+   "frame-tilt-dshape-cw",
+   "frame-tilt-plate-hole",
+   "frame-negU-round",
+   "frame-negU-circle",
+   "frame-negU-slot",
+   "frame-negU-dshape-cw",
+   "frame-negU-plate-hole"
+  ]
+ },
+ {
+  "row": 8,
+  "status": "refused",
+  "ids": [
+   "frame-nonunit-u",
+   "frame-nonorth2",
+   "frame-parallel"
+  ]
+ },
+ {
+  "row": 9,
+  "status": "supported",
+  "ids": [
+   "rect-origin",
+   "rect-at-neg",
+   "rect-tiny",
+   "rect-large",
+   "rect-micro",
+   "rect-far-offset",
+   "rect-far-in-plane",
+   "dof-rect-outline"
+  ]
+ },
+ {
+  "row": 10,
+  "status": "refused",
+  "ids": [
+   "rect-zero",
+   "rect-nano",
+   "rect-bad-opt",
+   "rect-bad-at",
+   "rect-text",
+   "rect-one-arg",
+   "floor-rect-0.0001",
+   "floor-rect-0.00001",
+   "floor-rect-0.000001"
+  ]
+ },
+ {
+  "row": 11,
+  "status": "refused",
+  "ids": [
+   "rect-neg",
+   "rect-neg-height",
+   "rect-neg-second"
+  ]
+ },
+ {
+  "row": 12,
+  "status": "supported",
+  "ids": [
+   "circle-10",
+   "circle-at",
+   "circle-big",
+   "circle-front"
+  ]
+ },
+ {
+  "row": 13,
+  "status": "refused",
+  "ids": [
+   "grid-circle-d0.1-h1",
+   "grid-circle-d0.1-h10",
+   "grid-circle-d0.1-h100",
+   "grid-circle-d0.1-h1000",
+   "grid-circle-d0.2-h1",
+   "grid-circle-d0.2-h10",
+   "grid-circle-d0.2-h100",
+   "grid-circle-d0.2-h1000",
+   "grid-circle-d0.5-h1",
+   "grid-circle-d0.5-h10",
+   "grid-circle-d0.5-h100",
+   "grid-circle-d0.5-h1000",
+   "grid-circle-d1-h1",
+   "grid-circle-d1-h10",
+   "grid-circle-d1-h100",
+   "grid-circle-d1-h1000",
+   "grid-circle-d2-h1",
+   "grid-circle-d2-h10",
+   "grid-circle-d2-h100",
+   "grid-circle-d2-h1000",
+   "grid-circle-d5-h1",
+   "grid-circle-d5-h10",
+   "grid-circle-d5-h100",
+   "grid-circle-d5-h1000",
+   "grid-circle-d10-h1",
+   "grid-circle-d10-h10",
+   "grid-circle-d10-h100",
+   "grid-circle-d10-h1000",
+   "grid-circle-d20-h1",
+   "grid-circle-d20-h10",
+   "grid-circle-d20-h100",
+   "grid-circle-d20-h1000",
+   "holdout-circle-d0.3-h3",
+   "holdout-circle-d0.3-h30",
+   "holdout-circle-d0.3-h300",
+   "holdout-circle-d0.3-h3000",
+   "holdout-circle-d0.7-h3",
+   "holdout-circle-d0.7-h30",
+   "holdout-circle-d0.7-h300",
+   "holdout-circle-d0.7-h3000",
+   "holdout-circle-d1.5-h3",
+   "holdout-circle-d1.5-h30",
+   "holdout-circle-d1.5-h300",
+   "holdout-circle-d1.5-h3000",
+   "holdout-circle-d3-h3",
+   "holdout-circle-d3-h30",
+   "holdout-circle-d3-h300",
+   "holdout-circle-d3-h3000",
+   "holdout-circle-d7-h3",
+   "holdout-circle-d7-h30",
+   "holdout-circle-d7-h300",
+   "holdout-circle-d7-h3000",
+   "holdout-circle-d15-h3",
+   "holdout-circle-d15-h30",
+   "holdout-circle-d15-h300",
+   "holdout-circle-d15-h3000",
+   "circle-across-0.5",
+   "circle-across-0.1",
+   "circle-across-0.005",
+   "circle-across-0.002",
+   "floor-circle-0.4",
+   "floor-circle-0.4-h100",
+   "floor-circle-0.6",
+   "floor-circle-1",
+   "floor-circle-0.5",
+   "floor-circle-0.25",
+   "floor-circle-0.1",
+   "circle-across-0.001",
+   "floor-slot-long-r0.001"
+  ]
+ },
+ {
+  "row": 14,
+  "status": "refused",
+  "ids": [
+   "circle-zero-first",
+   "circle-zero",
+   "circle-zero-second"
+  ]
+ },
+ {
+  "row": 15,
+  "status": "refused",
+  "ids": [
+   "circle-neg-3",
+   "circle-neg-4",
+   "circle-neg-second"
+  ]
+ },
+ {
+  "row": 16,
+  "status": "supported",
+  "ids": [
+   "poly-triangle",
+   "poly-square-ccw",
+   "poly-square-cw",
+   "poly-L",
+   "poly-hex",
+   "poly-pent-offcentre",
+   "poly-collinear-mid",
+   "poly-sliver",
+   "poly-200gon",
+   "fc-hexagon"
+  ]
+ },
+ {
+  "row": 17,
+  "status": "refused",
+  "ids": [
+   "poly-bowtie",
+   "selfx-pentagram",
+   "selfx-unequal-bowtie",
+   "selfx-overlap-edges",
+   "selfx-pinch",
+   "geom-cross-lines",
+   "poly-spike-fold"
+  ]
+ },
+ {
+  "row": 18,
+  "status": "refused",
+  "ids": [
+   "poly-dup-vertex"
+  ]
+ },
+ {
+  "row": 19,
+  "status": "refused",
+  "ids": [
+   "poly-all-collinear",
+   "poly-two-points",
+   "poly-bad-point",
+   "poly-not-array"
+  ]
+ },
+ {
+  "row": 20,
+  "status": "supported",
+  "ids": [
+   "round-1",
+   "round-all4",
+   "round-over",
+   "round-tiny",
+   "round-and-chamfer",
+   "round-adjacent-sum",
+   "round-triangle-acute",
+   "round-triangle-over",
+   "round-reflex",
+   "round-param",
+   "round-corner1-is-first-point",
+   "round-hex-all6-r6",
+   "round-hex-all6-limit",
+   "round-tri-all3-r2",
+   "round-L-all6-r2",
+   "round-concave-q",
+   "round-cw-polygon",
+   "round-all-cw-L",
+   "outline-round-contact",
+   "limits-and-whys",
+   "param-values-round"
+  ]
+ },
+ {
+  "row": 21,
+  "status": "supported",
+  "ids": [
+   "round-over-10x20",
+   "chamfer-over-10x20",
+   "host-warn-round-over",
+   "round-triangle-over"
+  ]
+ },
+ {
+  "row": 22,
+  "status": "supported",
+  "ids": [
+   "round-over-10x20",
+   "chamfer-over-10x20",
+   "round-triangle-over",
+   "host-warn-round-over",
+   "host-warn-chamfer-over"
+  ]
+ },
+ {
+  "row": 23,
+  "status": "refused",
+  "ids": [
+   "round-neg",
+   "round-on-circle",
+   "round-straight-corner",
+   "bulge-with-round",
+   "host-warn-round-neg",
+   "host-warn-round-circle"
+  ]
+ },
+ {
+  "row": 24,
+  "status": "supported",
+  "ids": [
+   "round-zero"
+  ]
+ },
+ {
+  "row": 25,
+  "status": "refused",
+  "ids": [
+   "round-corner-0",
+   "round-corner-5",
+   "round-corner-frac"
+  ]
+ },
+ {
+  "row": 26,
+  "status": "supported",
+  "ids": [
+   "chamfer-2",
+   "chamfer-all4",
+   "round-and-chamfer",
+   "chamfer-hex-all6-d3",
+   "chamfer-reflex",
+   "chamfer-cw-polygon"
+  ]
+ },
+ {
+  "row": 27,
+  "status": "refused",
+  "ids": [
+   "round-wins-same-corner",
+   "a5-E-chamfer-round-same-corner"
+  ]
+ },
+ {
+  "row": 28,
+  "status": "supported",
+  "ids": [
+   "round-max15",
+   "chamfer-over",
+   "chamfer-all4-over",
+   "chamfer-over-10x20",
+   "crit-round-pair-10x10",
+   "crit-round4-r10-40x20",
+   "crit-chamfer-25-40x20",
+   "floor-round-pair-flat-0",
+   "fuzz-002",
+   "fuzz-083",
+   "fuzz-101",
+   "fuzz-102",
+   "fuzz-116",
+   "fuzz-121",
+   "fuzz-143"
+  ]
+ },
+ {
+  "row": 29,
+  "status": "refused",
+  "ids": [
+   "round-pair-r4.9999",
+   "round-pair-r4.99999",
+   "round-pair-r4.999999",
+   "round-single-r0.0001",
+   "round-single-r0.00001",
+   "round-single-r0.000001",
+   "chamfer-single-d0.00001",
+   "chamfer-single-d0.000001",
+   "chamfer-near-ceiling-d29.999999",
+   "floor-chamfer-0.0001",
+   "band-round-pair-flat0.00001"
+  ]
+ },
+ {
+  "row": 30,
+  "status": "refused",
+  "ids": [
+   "round-crosses-spike",
+   "chamfer-crosses-spike",
+   "round-ok-spike"
+  ]
+ },
+ {
+  "row": 31,
+  "status": "supported",
+  "ids": [
+   "bulge-0-pos",
+   "bulge-1-neg",
+   "bulge-semi",
+   "bulge-major",
+   "bulge-all4",
+   "bulge-triangle",
+   "bulge-cw-poly",
+   "bulge-zero",
+   "frame-swapped-bulge",
+   "bulge-cross-rect-pos5",
+   "bow-bulge-sagitta",
+   "limits-and-whys"
+  ]
+ },
+ {
+  "row": 32,
+  "status": "refused",
+  "ids": [
+   "bulge-cross-tri-neg4",
+   "bulge-cross-rect-neg5",
+   "bulge-ok-tri-neg1",
+   "bulge-ok-rect-neg0.5",
+   "bulge-cross-rect-pos5"
+  ]
+ },
+ {
+  "row": 33,
+  "status": "supported",
+  "ids": [
+   "slot-h",
+   "slot-v",
+   "slot-diag",
+   "slot-fat",
+   "slot-front",
+   "slot-short",
+   "frame-swapped-slot",
+   "frame-yzFrame-slot",
+   "frame-tilt-slot",
+   "frame-negU-slot",
+   "grid-slot-r0.25-h10",
+   "grid-slot-r0.25-h100",
+   "grid-slot-r1-h10",
+   "grid-slot-r1-h100",
+   "floor-slot-r0.1",
+   "floor-slot-r0.25",
+   "floor-slot-r0.5",
+   "floor-slot-r1"
+  ]
+ },
+ {
+  "row": 34,
+  "status": "refused",
+  "ids": [
+   "slot-micro-r0.002",
+   "slot-micro-r0.001",
+   "slot-short-micro-r0.001",
+   "circle-across-0.0005",
+   "circle-across-0.001",
+   "floor-slot-long-r0.001",
+   "slot-micro-r0.5",
+   "slot-micro-r0.1",
+   "slot-micro-r0.01",
+   "slot-micro-r0.005",
+   "band-slot-r0.004",
+   "band-slot-r0.003",
+   "floor-slot-long-r0.002",
+   "floor-slot-long-r0.0005"
+  ]
+ },
+ {
+  "row": 35,
+  "status": "refused",
+  "ids": [
+   "slot-same",
+   "slot-r0"
+  ]
+ },
+ {
+  "row": 36,
+  "status": "supported",
+  "ids": [
+   "geom-triangle-joined",
+   "geom-square-withrules",
+   "geom-rect-hv",
+   "geom-D-cw",
+   "geom-D-ccw",
+   "geom-pie-ccw90",
+   "geom-pie-cw270",
+   "geom-circle-only",
+   "geom-circle-hole",
+   "geom-construction-line",
+   "geom-construction-circle-inside",
+   "geom-side-circle",
+   "geom-front-plane-joined",
+   "geom-front-plane-circle-hole",
+   "dof-rect-rows",
+   "dof-circle-row",
+   "dof-D-shape"
+  ]
+ },
+ {
+  "row": 37,
+  "status": "refused",
+  "ids": [
+   "geom-square-norules",
+   "fr-lines-coords-square",
+   "fr-line-not-joined",
+   "geom-triangle-norules",
+   "geom-front-plane",
+   "fr-lines-handles-square",
+   "geom-square-withrules",
+   "geom-no-rules-gap-1e-9",
+   "geom-no-rules-gap-1e-7",
+   "geom-no-rules-gap-0.000001",
+   "geom-no-rules-gap-0.00001",
+   "geom-no-rules-gap-0.0001",
+   "geom-no-rules-gap-0.001",
+   "geom-no-rules-gap-0.01"
+  ]
+ },
+ {
+  "row": 38,
+  "status": "refused",
+  "ids": [
+   "rules-bad-ref",
+   "geom-id-gap",
+   "geom-id-zero",
+   "geom-bad-kind",
+   "geom-circle-r0",
+   "geom-arc-bad-sense",
+   "geom-after-rect"
+  ]
+ },
+ {
+  "row": 39,
+  "status": "refused",
+  "ids": [
+   "geom-open-3-lines",
+   "geom-points-only",
+   "geom-construction-only",
+   "geom-line-zero",
+   "geom-no-rules-gap",
+   "geom-no-rules-gap-0.00001",
+   "geom-no-rules-gap-0.0001"
+  ]
+ },
+ {
+  "row": 40,
+  "status": "refused",
+  "ids": [
+   "geom-arc-r-mismatch",
+   "dshape-r9.9",
+   "dshape-r10.5",
+   "dshape-r10.0001",
+   "geom-arc-off-circle",
+   "geom-arc-off-circle-b",
+   "dshape-r10-control"
+  ]
+ },
+ {
+  "row": 41,
+  "status": "refused",
+  "ids": [
+   "geom-T-junction",
+   "geom-vertex-on-edge",
+   "geom-chord-pointonobject"
+  ]
+ },
+ {
+  "row": 42,
+  "status": "supported",
+  "ids": [
+   "multi-plate-hole",
+   "multi-island",
+   "multi-concentric3",
+   "multi-concentric4",
+   "multi-apart-rects",
+   "multi-apart-circles",
+   "multi-rect-circle-apart",
+   "multi-ring-and-far-rect",
+   "multi-rect-in-rect",
+   "multi-rect-off-hole",
+   "multi-poly-with-rect-hole",
+   "multi-slot-hole",
+   "multi-two-slots",
+   "multi-slot-then-circle",
+   "multi-shape-on-front",
+   "multi-circle-then-rect",
+   "multi-polygon-then-circle",
+   "fc-ring-with-hole",
+   "fc-two-circle-calls-one-sketch",
+   "fc-rect-and-rect-one-sketch",
+   "fc-rect-with-round-hole-geom",
+   "fc-circle-in-rect-one-sketch",
+   "fc-rect-in-circle-one-sketch",
+   "fc-two-holes-one-sketch",
+   "fc-polygon-with-rect-hole-one-sketch",
+   "fc-rect-off-centre-hole-one-sketch",
+   "fc-two-disjoint-rects-one-sketch",
+   "fc-two-disjoint-circles-one-sketch",
+   "fc-rect-and-circle-apart-one-sketch",
+   "fc-three-deep-circles-one-sketch",
+   "fc-three-deep-rects-one-sketch",
+   "fc-four-deep-circles-one-sketch",
+   "fc-island-and-far-disc-one-sketch",
+   "fc-holed-plate-and-far-rect-one-sketch",
+   "fc-tangent-inside-circles-one-sketch",
+   "fc-tangent-outside-circles-one-sketch",
+   "ctl-noprofiles-plate-hole",
+   "ctl-noprofiles-ring",
+   "ctl-noprofiles-island",
+   "ctl-noprofiles-slot-hole"
+  ]
+ },
+ {
+  "row": 43,
+  "status": "supported",
+  "ids": [
+   "multi-apart-rects",
+   "multi-island",
+   "multi-ring-and-far-rect",
+   "ds-split-pocket-alone",
+   "ds-pocket-piece2",
+   "ds-pocket-island",
+   "ds-repeat-two-rects"
+  ]
+ },
+ {
+  "row": 44,
+  "status": "refused",
+  "ids": [
+   "ds-pocket-piece1",
+   "ds-pocket-piece2",
+   "ds-pocket-island",
+   "ds-hole-piece1",
+   "ds-hole-piece2",
+   "ds-hole-between",
+   "ds-hole-island",
+   "ds-groove-island",
+   "ds-groove-two-rects",
+   "ds-repeat-two-rects",
+   "ds-repeat-ring",
+   "ds-mirror-two-rects",
+   "ds-split-then-hole",
+   "ds-control-single-pocket",
+   "ds-control-single-hole",
+   "ds-split-pocket-alone"
+  ]
+ },
+ {
+  "row": 45,
+  "status": "refused",
+  "ids": [
+   "ds-hollow-open-top",
+   "ds-hollow-closed",
+   "ds-round-edge",
+   "ds-draft-face"
+  ]
+ },
+ {
+  "row": 46,
+  "status": "refused",
+  "ids": [
+   "fc-crossing-rects-one-sketch",
+   "fc-crossing-circles-one-sketch",
+   "multi-overlap-rects",
+   "multi-overlap-circles",
+   "contact-circle-crosses-rect"
+  ]
+ },
+ {
+  "row": 47,
+  "status": "refused",
+  "ids": [
+   "fc-shared-edge-rects-one-sketch",
+   "multi-touch-share-edge",
+   "contact-shared-edge-rects",
+   "contact-partial-shared-edge"
+  ]
+ },
+ {
+  "row": 48,
+  "status": "refused",
+  "ids": [
+   "multi-param-first",
+   "multi-param-second",
+   "multi-round-then-shape",
+   "multi-shape-then-round"
+  ]
+ },
+ {
+  "row": 49,
+  "status": "supported",
+  "ids": [
+   "perf-1-holes",
+   "perf-5-holes",
+   "perf-10-holes",
+   "perf-25-holes",
+   "perf-25-holes-then-pocket"
+  ]
+ },
+ {
+  "row": 50,
+  "status": "supported",
+  "ids": [
+   "geom-construction-line",
+   "geom-construction-circle-inside",
+   "fr-circle-construction",
+   "fr-point"
+  ]
+ },
+ {
+  "row": 51,
+  "status": "supported",
+  "ids": [
+   "param-circle-across",
+   "param-geom-circle-r",
+   "param-values-circle-across",
+   "param-values-geom-r",
+   "param-arc-rule-default",
+   "param-values-arc-rule"
+  ]
+ },
+ {
+  "row": 52,
+  "status": "refused",
+  "ids": [
+   "param-values-arc-r"
+  ]
+ },
+ {
+  "row": 53,
+  "status": "supported",
+  "ids": [
+   "tess-circle",
+   "tess-rounded-rect",
+   "tess-bulge-semi",
+   "round-1",
+   "round-all4",
+   "bulge-0-pos",
+   "bulge-semi",
+   "outline-round-contact"
+  ]
+ },
+ {
+  "row": 54,
+  "status": "supported",
+  "ids": []
+ },
+ {
+  "row": 55,
+  "status": "wrong",
+  "ids": [
+   "frame-shear-1e-7",
+   "frame-shear-5e-7",
+   "frame-shear-9e-7",
+   "frame-u-length-9e-7"
+  ]
+ },
+ {
+  "row": 56,
+  "status": "supported",
+  "ids": [
+   "gallery-fr-rect-dims",
+   "gallery-fr-plate-hole-dims",
+   "gallery-fr-slot-tangent",
+   "gallery-fr-triangle-angle",
+   "gallery-fr-hexagon",
+   "gallery-fr-untouched-default",
+   "gallery-fr-bracket-rounded",
+   "gallery-fr-symmetric-profile",
+   "gallery-fr-symmetric-axis"
+  ]
+ },
+ {
+  "row": 57,
+  "status": "supported",
+  "ids": [
+   "fr-line-triangle",
+   "fr-lines-closed",
+   "fr-rectangle",
+   "fr-point",
+   "fr-remove",
+   "fr-equal-parallel",
+   "fr-lines-handles-square",
+   "fr-remove-point",
+   "fr-rectangle-handles"
+  ]
+ },
+ {
+  "row": 58,
+  "status": "refused",
+  "ids": [
+   "fr-remove-rectangle",
+   "fr-remove-rectangle-sides"
+  ]
+ },
+ {
+  "row": 59,
+  "status": "supported",
+  "ids": [
+   "fr-circle-r",
+   "fr-circle-across",
+   "fr-arc-cw-D",
+   "fr-arc-ccw-D",
+   "fr-arc-pie-ccw",
+   "fr-arc-pie-cw",
+   "fr-handles-abc"
+  ]
+ },
+ {
+  "row": 60,
+  "status": "refused",
+  "ids": [
+   "fr-circle-both",
+   "fr-arc-no-dir",
+   "fr-arc-not-on-circle",
+   "fr-bad-handle",
+   "fr-remove-all",
+   "fr-lines-open"
+  ]
+ },
+ {
+  "row": 61,
+  "status": "supported",
+  "ids": [
+   "fr-axes-triangle",
+   "fr-symmetric"
+  ]
+ },
+ {
+  "row": 62,
+  "status": "refused",
+  "ids": [
+   "fr-dimensions-rect"
+  ]
+ },
+ {
+  "row": 63,
+  "status": "refused",
+  "ids": [
+   "dup-circle",
+   "dup-circle-x3",
+   "dup-rect",
+   "dup-slot",
+   "dup-rect-polygon",
+   "dup-hole-same-as-outer-circle"
+  ]
+ },
+ {
+  "row": 64,
+  "status": "refused",
+  "ids": [
+   "geom-arc-full-circle",
+   "geom-arc-full-circle-norule"
+  ]
+ },
+ {
+  "row": 65,
+  "status": "refused",
+  "ids": [
+   "slot-radius-slider-6",
+   "slot-radius-both-6",
+   "slot-radius-slider-4"
+  ]
+ },
+ {
+  "row": 66,
+  "status": "refused",
+  "ids": [
+   "contact-corner-corner",
+   "contact-corner-on-edge",
+   "contact-circle-on-edge",
+   "contact-ring-tangent-in",
+   "contact-two-tangent-out",
+   "contact-nested-ok",
+   "contact-side-by-side-ok"
+  ]
+ },
+ {
+  "row": 67,
+  "status": "refused",
+  "ids": [
+   "grid-circle-d0.1-h1",
+   "grid-circle-d0.1-h10",
+   "grid-circle-d0.1-h100",
+   "grid-circle-d0.1-h1000",
+   "grid-circle-d0.2-h1",
+   "grid-circle-d0.2-h10",
+   "grid-circle-d0.2-h100",
+   "grid-circle-d0.2-h1000",
+   "grid-circle-d0.5-h1",
+   "grid-circle-d0.5-h10",
+   "grid-circle-d0.5-h100",
+   "grid-circle-d0.5-h1000",
+   "grid-circle-d1-h1",
+   "grid-circle-d1-h10",
+   "grid-circle-d1-h100",
+   "grid-circle-d1-h1000",
+   "grid-circle-d2-h1",
+   "grid-circle-d2-h10",
+   "grid-circle-d2-h100",
+   "grid-circle-d2-h1000",
+   "grid-circle-d5-h1",
+   "grid-circle-d5-h10",
+   "grid-circle-d5-h100",
+   "grid-circle-d5-h1000",
+   "grid-circle-d10-h1",
+   "grid-circle-d10-h10",
+   "grid-circle-d10-h100",
+   "grid-circle-d10-h1000",
+   "grid-circle-d20-h1",
+   "grid-circle-d20-h10",
+   "grid-circle-d20-h100",
+   "grid-circle-d20-h1000",
+   "grid-hole-d0.2-h10",
+   "grid-hole-d0.2-h100",
+   "grid-hole-d0.5-h10",
+   "grid-hole-d0.5-h100",
+   "grid-hole-d1-h10",
+   "grid-hole-d1-h100",
+   "grid-hole-d2-h10",
+   "grid-hole-d2-h100",
+   "grid-hole-d5-h10",
+   "grid-hole-d5-h100",
+   "grid-round-r0.1-h10",
+   "grid-round-r0.1-h100",
+   "grid-round-r0.5-h10",
+   "grid-round-r0.5-h100",
+   "grid-round-r1-h10",
+   "grid-round-r1-h100",
+   "grid-round-r5-h10",
+   "grid-round-r5-h100",
+   "grid-slot-r0.25-h10",
+   "grid-slot-r0.25-h100",
+   "grid-slot-r1-h10",
+   "grid-slot-r1-h100",
+   "holdout-circle-d0.3-h3",
+   "holdout-circle-d0.3-h30",
+   "holdout-circle-d0.3-h300",
+   "holdout-circle-d0.3-h3000",
+   "holdout-circle-d0.7-h3",
+   "holdout-circle-d0.7-h30",
+   "holdout-circle-d0.7-h300",
+   "holdout-circle-d0.7-h3000",
+   "holdout-circle-d1.5-h3",
+   "holdout-circle-d1.5-h30",
+   "holdout-circle-d1.5-h300",
+   "holdout-circle-d1.5-h3000",
+   "holdout-circle-d3-h3",
+   "holdout-circle-d3-h30",
+   "holdout-circle-d3-h300",
+   "holdout-circle-d3-h3000",
+   "holdout-circle-d7-h3",
+   "holdout-circle-d7-h30",
+   "holdout-circle-d7-h300",
+   "holdout-circle-d7-h3000",
+   "holdout-circle-d15-h3",
+   "holdout-circle-d15-h30",
+   "holdout-circle-d15-h300",
+   "holdout-circle-d15-h3000",
+   "holdout-slot-r3-h50",
+   "holdout-slot-r3-h500",
+   "holdout-slot-r8-h50",
+   "holdout-slot-r8-h500",
+   "holdout-round-r0.3-h30",
+   "holdout-round-r0.3-h300",
+   "holdout-round-r2-h30",
+   "holdout-round-r2-h300"
+  ]
+ },
+ {
+  "row": 68,
+  "status": "unsupported",
+  "ids": []
+ },
+ {
+  "row": 69,
+  "status": "unsupported",
+  "ids": []
+ },
+ {
+  "row": 70,
+  "status": "wrong",
+  "ids": [
+   "ctl-noprofiles-plate-hole",
+   "ctl-noprofiles-ring",
+   "ctl-noprofiles-island",
+   "ctl-noprofiles-slot-hole"
+  ]
+ },
+ {
+  "row": 71,
+  "status": "wrong",
+  "ids": [
+   "a5-A-two-squares-apart",
+   "a5-A-ring-disc",
+   "a5-D-3level-polys",
+   "a5-D-slot-in-hole-in-plate",
+   "a5-D-tilted-frame-two-pieces"
+  ]
+ },
+ {
+  "row": 72,
+  "status": "wrong",
+  "ids": [
+   "a5-A-bowtie",
+   "a5-A-bowtie2",
+   "a5-A-tri-bulge-0.9",
+   "a5-param-poly-bowtie",
+   "a5-slide-rect-bowtie",
+   "a5-touch-top-gap-0",
+   "a5-touch-top-gap-1e-7",
+   "a5-touch-top-gap-0.000001"
+  ]
+ },
+ {
+  "row": 73,
+  "status": "wrong",
+  "ids": [
+   "a5-A-crossing",
+   "fc-crossing-rects-one-sketch",
+   "fc-crossing-circles-one-sketch",
+   "fc-shared-edge-rects-one-sketch",
+   "dup-circle",
+   "dup-circle-x3",
+   "dup-rect",
+   "dup-slot"
+  ]
+ },
+ {
+  "row": 74,
+  "status": "wrong",
+  "ids": [
+   "param-values-arc-r",
+   "geom-arc-r-mismatch",
+   "dshape-r9.9",
+   "dshape-r10.5",
+   "dshape-r10.0001"
+  ]
+ },
+ {
+  "row": 75,
+  "status": "wrong",
+  "ids": [
+   "far-grid-rr-s1-at-1e4",
+   "far-grid-rr-s1-at-1e5",
+   "far-grid-rr-s0.25-at-3000",
+   "far-grid-rr-s1-at-30000",
+   "far-grid-rr-s4-at-1e6",
+   "far-grid-rr-s1-at-1e6",
+   "far-rect-at-1e6"
+  ]
+ },
+ {
+  "row": 76,
+  "status": "wrong",
+  "ids": [
+   "a5-slide-rect-pdup",
+   "a5-slide-r0-neg2",
+   "a5-slide-across-neg6"
+  ]
+ },
+ {
+  "row": 77,
+  "status": "wrong",
+  "ids": [
+   "a5-uc-two-circles-equal-radius",
+   "a5-uc-grow-hole"
+  ]
+ },
+ {
+  "row": 78,
+  "status": "unsupported",
+  "ids": [
+   "a5-A-stadium",
+   "a5-A-chamfer99",
+   "a5-A-arc-mismatch",
+   "a5-C-far-rect-round",
+   "a5-slide-slot-g1r-6"
+  ]
+ },
+ {
+  "row": 79,
+  "status": "refused",
+  "ids": [
+   "far-rrect-at-0",
+   "far-rrect-at-1e2",
+   "far-rrect-at-1e3",
+   "far-rrect-at-1e4",
+   "far-rrect-at-1e5",
+   "far-rrect-at-1e6",
+   "far-circle-at-0",
+   "far-circle-at-1e2",
+   "far-circle-at-1e3",
+   "far-circle-at-1e4",
+   "far-circle-at-1e5",
+   "far-circle-at-1e6",
+   "far-slot-at-0",
+   "far-slot-at-1e2",
+   "far-slot-at-1e3",
+   "far-slot-at-1e4",
+   "far-slot-at-1e5",
+   "far-slot-at-1e6",
+   "far-plate-hole-at-0",
+   "far-plate-hole-at-1e2",
+   "far-plate-hole-at-1e3",
+   "far-plate-hole-at-1e4",
+   "far-plate-hole-at-1e5",
+   "far-plate-hole-at-1e6",
+   "far-rect-at-0",
+   "far-rect-at-1e2",
+   "far-rect-at-1e3",
+   "far-rect-at-1e4",
+   "far-rect-at-1e5",
+   "far-rect-at-1e6",
+   "far-rrect-plane-1e3",
+   "far-circle-plane-1e3",
+   "far-rrect-plane-1e4",
+   "far-circle-plane-1e4",
+   "far-rrect-plane-1e5",
+   "far-circle-plane-1e5",
+   "far-rrect-plane-1e6",
+   "far-circle-plane-1e6",
+   "far-grid-rr-s0.25-at-1e3",
+   "far-grid-ci-s0.25-at-1e3",
+   "far-grid-rr-s0.25-at-3000",
+   "far-grid-ci-s0.25-at-3000",
+   "far-grid-rr-s0.25-at-1e4",
+   "far-grid-ci-s0.25-at-1e4",
+   "far-grid-rr-s0.25-at-30000",
+   "far-grid-ci-s0.25-at-30000",
+   "far-grid-rr-s0.25-at-1e5",
+   "far-grid-ci-s0.25-at-1e5",
+   "far-grid-rr-s0.25-at-300000",
+   "far-grid-ci-s0.25-at-300000",
+   "far-grid-rr-s0.25-at-1e6",
+   "far-grid-ci-s0.25-at-1e6",
+   "far-grid-rr-s1-at-1e3",
+   "far-grid-ci-s1-at-1e3",
+   "far-grid-rr-s1-at-3000",
+   "far-grid-ci-s1-at-3000",
+   "far-grid-rr-s1-at-1e4",
+   "far-grid-ci-s1-at-1e4",
+   "far-grid-rr-s1-at-30000",
+   "far-grid-ci-s1-at-30000",
+   "far-grid-rr-s1-at-1e5",
+   "far-grid-ci-s1-at-1e5",
+   "far-grid-rr-s1-at-300000",
+   "far-grid-ci-s1-at-300000",
+   "far-grid-rr-s1-at-1e6",
+   "far-grid-ci-s1-at-1e6",
+   "far-grid-rr-s4-at-1e3",
+   "far-grid-ci-s4-at-1e3",
+   "far-grid-rr-s4-at-3000",
+   "far-grid-ci-s4-at-3000",
+   "far-grid-rr-s4-at-1e4",
+   "far-grid-ci-s4-at-1e4",
+   "far-grid-rr-s4-at-30000",
+   "far-grid-ci-s4-at-30000",
+   "far-grid-rr-s4-at-1e5",
+   "far-grid-ci-s4-at-1e5",
+   "far-grid-rr-s4-at-300000",
+   "far-grid-ci-s4-at-300000",
+   "far-grid-rr-s4-at-1e6",
+   "far-grid-ci-s4-at-1e6",
+   "a5-C-far-rect-round",
+   "a5-C-far-hole"
+  ]
+ },
+ {
+  "row": 80,
+  "status": "refused",
+  "ids": [
+   "a5-slide-r0-neg2",
+   "a5-slide-across-neg6",
+   "a5-slide-across-0",
+   "a5-slide-slot-g1r-0",
+   "a5-slide-rect-pdup",
+   "a5-slide-rect-collapse",
+   "a5-slide-rect-collinear",
+   "a5-slide-rect-bowtie",
+   "a5-param-r-neg",
+   "a5-param-d-neg",
+   "a5-param-w-neg",
+   "a5-slide-r0-0",
+   "a5-slide-r0-400"
+  ]
+ },
+ {
+  "row": 81,
+  "status": "refused",
+  "ids": [
+   "a5-uc-two-circles-equal-radius",
+   "a5-uc-grow-hole",
+   "a5-uc-shrink-hole-edge",
+   "a5-uc-shrink-hole-outside",
+   "a5-uc-hole-radius-rule-big",
+   "a5-uc-hole-diam-eq-width",
+   "a5-uc-equal-big-overlap",
+   "a5-uc-hole-pointon-edge",
+   "gallery-fr-rect-dims",
+   "gallery-fr-hexagon",
+   "gallery-fr-symmetric-profile",
+   "param-values-arc-rule",
+   "gallery-fr-plate-hole-dims",
+   "gallery-fr-triangle-angle"
+  ]
+ },
+ {
+  "row": 82,
+  "status": "refused",
+  "ids": [
+   "hz-pull-0-rect",
+   "hz-pull-0-circle",
+   "hz-pull-nan",
+   "hz-pull-neg-control"
+  ]
+ },
+ {
+  "row": 83,
+  "status": "refused",
+  "ids": [
+   "tiny-pull-0.01",
+   "tiny-pull-0.001",
+   "tiny-pull-0.0001",
+   "tiny-pull-0.00001",
+   "tiny-pull-0.000003",
+   "tiny-pull-0.000001",
+   "tiny-pull-1e-7",
+   "tiny-pull-1e-9"
+  ]
+ },
+ {
+  "row": 84,
+  "status": "wrong",
+  "ids": [
+   "hz-bulge-roundtrip-volume"
+  ]
+ },
+ {
+  "row": 85,
+  "status": "supported",
+  "ids": [
+   "a5-A-stadium",
+   "far-rrect-at-0"
+  ]
+ }
+]

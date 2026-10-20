@@ -127,6 +127,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -342,6 +343,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -557,6 +559,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -772,6 +775,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -987,6 +991,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1202,6 +1207,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1417,6 +1423,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1640,6 +1647,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 4.7475133497774e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1863,6 +1871,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -2086,6 +2095,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -2309,6 +2319,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -2564,6 +2575,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 4.7475133497774e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -2796,6 +2808,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 4.7475133497774e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -3028,6 +3041,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 1.18687833744435e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -3260,6 +3274,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 4.7475133497774e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -3492,6 +3507,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548803e-16,
    "dBboxOcct": 2.184476464255687e-16,
+   "dBboxDiagOcct": 8.373826446313467e-17,
    "dComOcct": 4.1869132231567334e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -3724,6 +3740,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {

@@ -281,7 +281,7 @@ export async function measureCase(c) {
   const ext = c.measure ?? [...doc.features].reverse().find((f) => f.kind === 'extrude' || f.kind === 'pocket' || f.kind === 'revolve')?.id;
   rec.measureId = ext;
   const vv = GUARDED && c.values ? G.valuesVerdicts(c.values) : null; if (vv?.size) rec.valueVerdicts = [...vv].map(([k, v]) => ({ sketch: k, code: v.code, sentence: v.sentence }));
-  const o = c.noOcct ? { refused: 'OCCT not run: it does not return on this input (see cases-hazards)' } : buildOCCT(doc, ext), b = buildBrep(doc, ext), t = await truckBuild(doc, ext, GUARDED ? { ...(rec.probe ? { scriptVerdict: rec.probe } : {}), ...(vv?.size ? { valueVerdicts: vv } : {}) } : undefined);
+  const o = c.noOcct ? { refused: 'OCCT not run: it does not return on this input (see cases-hazards)' } : buildOCCT(doc, ext), b = buildBrep(doc, ext), t = await truckBuild(doc, ext, GUARDED ? { ...(rec.probe ? { scriptVerdict: rec.probe } : {}), ...(c.script !== undefined && globalThis.__SGPROBE__?.authored ? { authoredSketches: [...globalThis.__SGPROBE__.authored] } : {}), ...(vv?.size ? { valueVerdicts: vv } : {}) } : undefined);
   rec.occt = o.m ? { volume: o.m.volume, bbox: o.m.bbox, com: o.m.com, faces: o.m.faces, types: o.m.types } : { refused: o.refused };
   rec.brep = b.m ?? { refused: b.refused };
   if (c.exact) rec.exact = c.exact;

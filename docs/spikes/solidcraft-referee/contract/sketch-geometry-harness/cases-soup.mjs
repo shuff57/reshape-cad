@@ -27,6 +27,9 @@ export const cases = [
   g('geom-points-only', '.geom', [{ k: 'point', id: 1, p: [1, 1] }, { k: 'point', id: 2, p: [4, 5] }], null, 'only points: nothing to extrude'),
   g('geom-open-3-lines', '.geom', rectRows.slice(0, 3), rectJoin.slice(0, 2), 'U shape: open profile'),
   g('geom-front-plane', '.geom', [line(1, [0, 0], [20, 0]), line(2, [20, 0], [0, 15]), line(3, [0, 15], [0, 0])], null, 'rows on the front plane (offset 0; round 7: a front offset is refused)', { plane: "'front'", exact: { volume: 150 * H, bbox: [0, -10, 0, 20, 0, 15] } }),
+  // round 8: geom-front-plane above carries no coincident rows and is refused by the loose-end guard, so it no longer exercises a soup on the front plane; this one does
+  g('geom-front-plane-joined', '.geom', [line(1, [0, 0], [20, 0]), line(2, [20, 0], [0, 15]), line(3, [0, 15], [0, 0])], [coin(1, 'b', 2, 'a'), coin(2, 'b', 3, 'a'), coin(3, 'b', 1, 'a')], 'rows WITH coincident rows on the front plane (offset 0): triangle 20 x 15, pull 10 toward -y', { plane: "'front'", exact: { volume: 150 * H, bbox: [0, -10, 0, 20, 0, 15] } }),
+  g('geom-front-plane-circle-hole', '.geom', [{ k: 'circle', id: 1, c: [0, 0], r: 10 }, { k: 'circle', id: 2, c: [0, 0], r: 4 }], null, 'two circle rows on the front plane (offset 0): ring by even-odd, pull 10 toward -y', { plane: "'front'", exact: { volume: P * 84 * H, bbox: [-10, -10, -10, 10, 0, 10] }, curved: true }),
   g('geom-side-circle', '.geom', [{ k: 'circle', id: 1, c: [5, 6], r: 3 }], null, 'circle row on the side plane', { plane: "'side'", exact: { volume: P * 9 * H, bbox: [0, 2, 3, 10, 8, 9] }, curved: true }),
   // refusals at the script layer
   g('geom-id-gap', '.geom', [line(1, [0, 0], [5, 0]), line(3, [5, 0], [5, 5])], null, 'ids 1,3: not dense'),

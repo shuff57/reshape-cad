@@ -664,8 +664,12 @@ function soupVerdict(geoms, rules, rawGeoms, info) {
  * disagree with FreeCAD). That is a language convention, not a kernel error, and it cannot be told apart from a mistake, so the layer refuses it; a sketch on an explicit frame
  * { origin, u, v } says where the plane is and is not touched. Top and side offsets agree with FreeCAD and are not touched.
  */
-export function guardFrontOffset(sk) {
+export function guardFrontOffset(sk, ctx) {
   if (sk.frame || sk.plane !== 'xz') return null;
+  // Round 8: repeat / mirror / move / copy write an internal copy sketch whose offset is the original's plus the shift (a pocket repeated 10 mm along y gives a copy at -10). The student wrote
+  // no offset there and the copy lands where the original's placement says (measured against closed forms, cases-copies.mjs), so only a sketch the SCRIPT created is judged: ctx.authored is
+  // the set of sketch ids the script probe saw sketch() return (PROBE_PREAMBLE records them). With no probe (a document with no script) every sketch is judged, as before.
+  if (ctx?.authored && !ctx.authored.has(sk.id)) return null;
   const o = sk.offset;
   if (typeof o !== 'number' || o === 0) return null;
   return verdict('front-offset', `${sk.id ? `Sketch ${sk.id}` : 'A sketch'} sits on the front plane with an offset of ${fmt(o)}, and on that plane the offset and the pull run in opposite directions, so the part would land ${fmt(2 * Math.abs(o))} mm away from where other CAD programs put it; sketch on the top or side plane, or give the sketch an explicit frame { origin, u, v } to place it exactly.`);
@@ -676,7 +680,7 @@ export function guardFrontOffset(sk) {
  */
 export function guardSketch(sk, ctx) {
   const f = guardFrame(sk); if (f) return f;
-  const fo = guardFrontOffset(sk); if (fo) return fo;
+  const fo = guardFrontOffset(sk, ctx); if (fo) return fo;
   if (isSoup(sk)) {
     const rawArc = rawArcVerdict(sk.geoms, sk.rules ?? []); if (rawArc) return rawArc;
     const S = solvedOf(sk, ctx);
@@ -882,7 +886,7 @@ export function guardFar(info, height, lengthTwo = 0) {
 // script level: a probe of the arguments of the sketch methods, and the sentence rewrites
 // ======================================================================================================================
 /** Prepend to a script text: records every sketch method call and its numeric arguments into globalThis.__SGPROBE__ (a list). Changes nothing else (doc identical, measured). */
-export const PROBE_PREAMBLE = "(function (s) { if (!s || typeof s.sketch !== 'function') return; const orig = s.sketch; Object.defineProperty(s, 'sketch', { value: function (...a) { const h = orig(...a); const log = (globalThis.__SGPROBE__ = globalThis.__SGPROBE__ || []); const sid = (log.sketches = (log.sketches || 0) + 1); return new Proxy(h, { get(t, k, r) { const v = Reflect.get(t, k, r); if (typeof v !== 'function' || typeof k !== 'string') return v; return function (...args) { log.push({ sid, m: k, args: args.map((x) => (x instanceof Number ? Number(x) : x)) }); const out = v.apply(t, args); return out === t ? r : out; }; } }); }, writable: true, configurable: true, enumerable: true }); })(typeof __RESHAPE_SCOPE__ === 'undefined' ? undefined : __RESHAPE_SCOPE__);";
+export const PROBE_PREAMBLE = "(function (s) { if (!s || typeof s.sketch !== 'function') return; const orig = s.sketch; Object.defineProperty(s, 'sketch', { value: function (...a) { const h = orig(...a); const log = (globalThis.__SGPROBE__ = globalThis.__SGPROBE__ || []); if (h && typeof h.id === 'string') (log.authored = log.authored || []).push(h.id); const sid = (log.sketches = (log.sketches || 0) + 1); return new Proxy(h, { get(t, k, r) { const v = Reflect.get(t, k, r); if (typeof v !== 'function' || typeof k !== 'string') return v; return function (...args) { log.push({ sid, m: k, args: args.map((x) => (x instanceof Number ? Number(x) : x)) }); const out = v.apply(t, args); return out === t ? r : out; }; } }); }, writable: true, configurable: true, enumerable: true }); })(typeof __RESHAPE_SCOPE__ === 'undefined' ? undefined : __RESHAPE_SCOPE__);";
 export const withProbe = (src) => `${PROBE_PREAMBLE} ${src}`;
 
 /** Verdict on the recorded calls: circle across <= 0, rect with a 0 side, a negative or non-finite round / chamfer, a treatment on a circle. */
