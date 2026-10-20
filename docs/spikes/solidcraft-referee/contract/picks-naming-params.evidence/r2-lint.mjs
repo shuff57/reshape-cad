@@ -36,16 +36,23 @@ for (const r of doc.rows) {
   // Round 5: refusalSentence is what the UNMODIFIED page shows (often jargon); specifiedSentence is the contract guard layer's plain sentence and is what is linted.
   if (r.status === 'refused') {
     check('specified: ' + r.feature, r.specifiedSentence);
-    if (r.refusalSentence !== r.shippedSentence) { bad++; console.log('FAIL refusalSentence != shippedSentence', r.feature.slice(0, 80)); }
+    // Round 6: refusalSentence is the guarded route's plain sentence; the raw page text is pageSentenceRaw (== shippedSentence).
+    if (r.refusalSentence !== r.specifiedSentence) { bad++; console.log('FAIL refusalSentence != specifiedSentence', r.feature.slice(0, 80)); }
+    check('refusalSentence: ' + r.feature, r.refusalSentence);
+    if (r.pageSentenceRaw !== r.shippedSentence) { bad++; console.log('FAIL pageSentenceRaw != shippedSentence', r.feature.slice(0, 80)); }
+    if (r.route !== 'guarded' || !r.shipsToday) { bad++; console.log('FAIL refused row does not name its route', r.feature.slice(0, 80)); }
     if (r.shippedSentencePlain !== isPlain(r.shippedSentence)) { bad++; console.log('FAIL shippedSentencePlain flag wrong', r.feature.slice(0, 80)); }
     if (!/\[SHIPPING PAGE TODAY\]/.test(r.evidence) && !/TEXT THE PAGE SHOWS/.test(r.evidence)) { bad++; console.log('FAIL refused row does not say what ships', r.feature.slice(0, 80)); }
     if (r.shippedSentencePlain) plainShipped++; else jargonShipped++;
-  } else if (r.refusalSentence) { bad++; console.log('FAIL sentence on a non-refused row', r.status, r.feature.slice(0, 80)); }
+  } else if (r.refusalSentence && !(r.status === 'wrong' && r.route === 'guarded' && r.refusalSentence === r.specifiedSentence)) { bad++; console.log('FAIL sentence on a non-refused row', r.status, r.feature.slice(0, 80)); }
   if (r.status === 'wrong' && !lib) {
     check('guard for ' + r.feature, r.specifiedSentence);
+    if (r.pageSentenceRaw !== null || !/^NO/.test(r.shipsToday ?? '')) { bad++; console.log('FAIL wrong row must say the page ships no sentence', r.feature.slice(0, 80)); }
     if (r.guardInPage !== false) { bad++; console.log('FAIL wrong row must say guardInPage:false', r.feature.slice(0, 80)); }
     if (!/WRONG SOLID, NO SENTENCE/.test(r.evidence)) { bad++; console.log('FAIL wrong row not loud', r.feature.slice(0, 80)); }
   }
+  if (r.realPagePicking !== 'not measured') { bad++; console.log('FAIL realPagePicking not marked', r.feature.slice(0, 80)); }
+  if (r.status === 'supported' && !/ROUND 6 PICK PATH/.test(r.evidence)) { bad++; console.log('FAIL supported row without pick-path statement', r.feature.slice(0, 80)); }
   if (r.libraryStatus !== undefined && !ST.has(r.libraryStatus)) { bad++; console.log('FAIL bad libraryStatus', r.feature.slice(0, 80)); }
 }
 console.log(`refused rows: ${plainShipped} ship a plain sentence today, ${jargonShipped} ship jargon`);

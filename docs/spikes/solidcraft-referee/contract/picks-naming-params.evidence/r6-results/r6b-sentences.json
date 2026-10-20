@@ -1,0 +1,48 @@
+[
+ {
+  "row": 18,
+  "status": "refused",
+  "sentence": "draft1 is not built: tilting the front face by 7 degrees would cut through the 1.5 mm wall of the hollow -- the most it can tilt here is about 6.5 degrees.",
+  "specified": "draft1 is not built: tilting the front face by 7 degrees would cut through the 1.5 mm wall of the hollow -- the most it can tilt here is about 6.5 degrees.",
+  "same": true,
+  "sameMasked": true,
+  "raw": "draft1 (draft): solidcraft refused it -- solid.draft: @@G-DRAFTWALL@@"
+ },
+ {
+  "row": 21,
+  "status": "refused",
+  "sentence": "round1 is not built: pull1 was already cut by pocket1, so this round would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.",
+  "specified": "round1 is not built: pull1 was already cut by pocket1, so this round would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.",
+  "same": true,
+  "sameMasked": true,
+  "raw": "(built by the page without a sentence)",
+  "guard": "G-STALE"
+ },
+ {
+  "row": 22,
+  "status": "refused",
+  "sentence": "round1 is not built: the edge between the bottom and front faces came out of the cut in 3 pieces and joining them back into one edge is not supported yet -- round the edge before the cut instead.",
+  "specified": "round1 is not built: the edge between the bottom and front faces came out of the cut in 3 pieces and joining them back into one edge is not supported yet -- round the edge before the cut instead.",
+  "same": true,
+  "sameMasked": true,
+  "raw": "round1 (fillet): op1.edge[op1.face[-z] ^ op1.face[-y]] matches 3 separate edges on b_box1 (F1:-y|F1:-z~1, F1:-y|F1:-z~2, F1:-y|F1:-z~3) that do not form one clo"
+ },
+ {
+  "row": 41,
+  "status": "refused",
+  "sentence": "shell1 is not built: the open edge of the part was rounded with a radius of 3, which is as large as or larger than the 2 mm wall, so the rim would have no thickness -- make the round smaller than the wall.",
+  "specified": "shell1 is not built: the open edge of the part was rounded with a radius of 3, which is as large as or larger than the 2 mm wall, so the rim would have no thickness -- make the round smaller than the wall.",
+  "same": true,
+  "sameMasked": true,
+  "raw": "shell1 (shell): solidcraft refused it -- solid.shell: @@G-RIMFIRST@@"
+ },
+ {
+  "row": 45,
+  "status": "refused",
+  "sentence": "bevel1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.",
+  "specified": "bevel1 is not built: a bevel of 1 cannot be cut cleanly on this inside corner where it reaches the end of the cut or of the part -- use round() on the edge instead, or leave the bevel out.",
+  "same": true,
+  "sameMasked": true,
+  "raw": "bevel1 (fillet): solidcraft refused it -- solid.chamfer: @@G-BEVEL@@"
+ }
+]

@@ -1,0 +1,32 @@
+{
+ "group": "picks-naming-params",
+ "round": 1,
+ "changes": [
+  {"file": "picks-naming-params.evidence/r3-guard.mjs", "what": "G-HOLLOW now decided by hollowBad(): closed-form collapse limit min(depth, lateral/2) for a plain box/cylinder with a found open face, plus a closed-form volume check (3e-4 bar) for a plain cylinder; other shapes keep the old volume-must-drop rule. Fixes the false refusal of cylinder(20,30) wall 9.9."},
+  {"file": "picks-naming-params.evidence/r6a-hollow-thin.mjs (+ r6-results/r6a-hollow-thin.json)", "what": "New probe: 42 cylinder + 21 box walls at 0.5..1.1 of the collapse limit, guarded vs page vs closed form vs OCCT."},
+  {"file": "picks-naming-params.evidence/r6b-sentences.mjs (+ r6-results/r6b-sentences.json)", "what": "Replays the guard for the 5 rows (18, 21, 22, 41, 45) whose evidence did not show the cited guard emitting the sentence; all 5 identical. Rows 15 and 35 are in r5-results/guarded logs."},
+  {"file": "picks-naming-params.evidence/r6-build-rows.mjs", "what": "Rows builder: from r6-results/picks-naming-params.before-r6.json, idempotent. refusalSentence = guarded route plain sentence on 29 refused + 12 wrong rows; raw page text kept in pageSentenceRaw; route/shipsToday on each row; realPagePicking 'not measured' on all rows; pick-path caveat + statusScope on 16 supported rows; rows 46/47/28/29/40/33 corrected."},
+  {"file": "picks-naming-params.evidence/r2-lint.mjs", "what": "Lint updated for the route fields (refusalSentence == specifiedSentence, pageSentenceRaw == shippedSentence, wrong rows say the page ships no sentence, realPagePicking marked, supported rows carry the pick-path statement). 0 violations."},
+  {"file": "picks-naming-params.json", "what": "Rebuilt by r6-build-rows.mjs."},
+  {"file": "picks-naming-params.evidence/r6-results/*", "what": "before-r6 rows copy, r6a, r6b, r6c reruns of r3b-size-sweep and r3e-slot-sweep with the new guard (hollow: 74/74 feasible not refused, 126/126 infeasible refused; slot sweep tally unchanged)."}
+ ],
+ "defectsResolved": [
+  {"defect": "26 of 29 refused rows ship jargon", "how": "refusalSentence is now the plain guarded-route sentence (lint 0 violations); raw page text kept in pageSentenceRaw. Route stated plainly in j.routes and on each row: the plain sentences ship only through the guarded route (r3-guard.mjs, not wired into the page); the unmodified page still shows the raw text (26 jargon, 3 plain) and no sentence on the 12 wrong rows. Not integrated into the page: that is outside this group's remit."},
+  {"defect": "cylinder(20,30) hollow wall 9.9 falsely refused", "how": "Guard fixed (hollowBad). Page 9424.053, OCCT 9424.147, closed 9424.147; guarded now builds it. 63-case r6a probe: 0 over-refusal, 0 silent wrong; r3b rerun 0/74 feasible refused, 126/126 infeasible refused. Row 46 old '0/74' claim withdrawn and restated; row 47 claim re-measured (r3e rerun unchanged)."},
+  {"defect": "supported pick rows use emulated pick-hit", "how": "realPagePicking: 'not measured' on all 76 rows; statusScope + pickPathStatus + PICK PATH text on the 16 supported rows. Status kept 'supported' for the built solid given the picked face/edge only."},
+  {"defect": "row 28/29 r = wall height", "how": "r=4 degenerate case excluded from the supported claim (face vanishes 12 -> 11, only closed form agrees); row 29 sentence corrected; feature text says strictly below."},
+  {"defect": "row 40 round count", "how": "Corrected to round 29 EXACT, bevel 23 strictly inside (29 on the page incl. 6 at equality)."},
+  {"defect": "row 33 partial", "how": "Feature prefixed '[PARTIAL BUILD: first rim edge only]', partial:true."}
+ ],
+ "defectsOpen": [
+  {"defect": "Guard layer not in the page", "why": "The plain sentences and guards ship only through r3-guard.mjs; integrating into the page is outside the group (shared translator/page). Rows say so."},
+  {"defect": "Real page picking", "why": "Not measurable: no browser on this box. Marked not measured."},
+  {"defect": "G-HOLLOW on non-plain shapes", "why": "Shapes other than a plain box or cylinder keep the volume-must-drop rule; a thin curved cavity on such a shape could still be falsely refused. Not probed."}
+ ],
+ "rowsDowngraded": [],
+ "rigNotesForRIGmd": "Native cli: reused the critic's solidcraft-cli build (copied, same pinned fe3717f, not rebuilt) into <scratch>/home/.cache/solidcraft-bridge/target-native/release/ and ran with HOME=<scratch>/home. New: bun r6a-hollow-thin.mjs --out=f; bun r6b-sentences.mjs --out=f; bun r6-build-rows.mjs; bun r2-lint.mjs. Always pass --out to a scratch dir to keep tracked res*.json untouched.",
+ "commands": {
+  "rebuildRows": "cd contract/picks-naming-params.evidence && bun r6-build-rows.mjs && bun r2-lint.mjs",
+  "replay": "SOLIDCRAFT_REFEREE_PKG=<pkg> HOME=<dir with native cli> systemd-run --user --scope -q -p MemoryMax=1500M -p MemorySwapMax=0 bun r6a-hollow-thin.mjs --out=<scratch>/r6a.json (also r6b-sentences.mjs, r3b-size-sweep.mjs --out=, r3e-slot-sweep.mjs --out=)"
+ }
+}

@@ -40,6 +40,36 @@ const agg = (res, name) => {
   if (!b) return null;
   return { volume: b.volume_mm3, faces: b.faces, curved: Object.keys(b.face_types ?? {}).some((k) => k !== 'plane'), bbox: [...b.bbox.min, ...b.bbox.max], faceTypes: b.face_types ?? {} };
 };
+/**
+ * G-HOLLOW test (round 6). Round 3 used one rule: a hollow must lose volume and gain faces. On a curved part that is wrong: SolidCraft's volume of a
+ * cylinder is derived from its tessellation, so the volume of a VALID thin-walled cylinder hollow (cylinder(20,30), wall 9.9, open top: built 9424.053)
+ * is above the un-hollowed volume (9423.69) and the rule refused a good build with the sentence "wall of 9.9 ... has to be under 10".
+ * For a plain box or a plain cylinder whose open face is found, the decision is now the closed-form collapse limit min(depth, narrowest lateral / 2),
+ * the same limit the sentence states, so a wall under the limit is never refused and one at or past it always is. For a plain cylinder the
+ * built volume is also checked against the closed form pi*(R^2 h - (R-t)^2 (h-t)) with the 3e-4 curved bar the sweeps already used
+ * (fixed before this run, not fitted). Everything else keeps the round-3 rule (volume must drop, faces must rise).
+ * Returns true when the hollow must be refused. `last.params.faces[0]` is a point on the open face.
+ */
+export function hollowBad(last, before, after) {
+  const q = last.params.faces?.[0]; const t = last.params.thickness;
+  const types = Object.keys(before.faceTypes ?? {});
+  const planarBox = before.faces === 6 && types.every((k) => k === 'plane');
+  const cyl = before.faces === 3 && before.faceTypes.cylinder === 1 && before.faceTypes.plane === 2 && types.length === 2;
+  const ext = [0, 1, 2].map((i) => before.bbox[i + 3] - before.bbox[i]);
+  const a = q && (planarBox || cyl) ? [0, 1, 2].find((i) => Math.abs(q[i] - before.bbox[i]) < 1e-6 || Math.abs(q[i] - before.bbox[i + 3]) < 1e-6) : undefined;
+  if (a === undefined) return !(after.volume < before.volume * (1 - 1e-9) && after.faces > before.faces);
+  const lat = Math.min(...ext.filter((_, i) => i !== a)) / 2;
+  if (t >= Math.min(ext[a], lat) * (1 - 1e-9)) return true; // at or past the collapse point
+  if (!(after.faces > before.faces)) return true;
+  if (planarBox) return !(after.volume < before.volume * (1 - 1e-9));
+  const o = [0, 1, 2].filter((i) => i !== a);
+  if (Math.abs(ext[o[0]] - ext[o[1]]) < 1e-6 * ext[o[0]]) { // a cylinder whose axis is the open axis
+    const R = ext[o[0]] / 2; const h = ext[a];
+    const want = Math.PI * (R * R * h - (R - t) ** 2 * (h - t));
+    return !(Math.abs(after.volume - want) <= 3e-4 * want);
+  }
+  return !(after.faces > before.faces);
+}
 export const guardLog = new Map(); // JSON(last command) -> {guard, before, after}
 export function guardedRunSC(base = L.runSC) {
   return (cmds) => {
@@ -98,7 +128,7 @@ export function guardedRunSC(base = L.runSC) {
     if (!before || !after) return res;
     let guard = null;
     if (last.command === 'solid.draft' && after.faces !== before.faces) guard = 'G-DRAFT';
-    else if (last.command === 'solid.shell' && !(after.volume < before.volume * (1 - 1e-9) && after.faces > before.faces)) guard = 'G-HOLLOW';
+    else if (last.command === 'solid.shell' && hollowBad(last, before, after)) guard = 'G-HOLLOW';
     else if (last.command === 'solid.chamfer' && after.faces !== before.faces + 1) guard = 'G-BEVEL';
     if (!guard) return res;
     guardLog.set(JSON.stringify(last), { guard, before, after });

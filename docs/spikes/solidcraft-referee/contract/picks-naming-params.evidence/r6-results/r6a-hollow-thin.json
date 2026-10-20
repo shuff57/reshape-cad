@@ -1,0 +1,1237 @@
+[
+ {
+  "kind": "cyl",
+  "label": "cylinder(20,30) open top wall 5 (0.5 of limit 10)",
+  "t": 5,
+  "limit": 10,
+  "feasible": true,
+  "closedV": 7461.2825522757585,
+  "page": {
+   "status": "built",
+   "V": 7460.545229407081,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 7460.545229407081
+  },
+  "occtV": 7461.282552275759,
+  "verdict": "BUILT",
+  "dClosed": 0.00009881985617238797,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(20,30) open top wall 9 (0.9 of limit 10)",
+  "t": 9,
+  "limit": 10,
+  "feasible": true,
+  "closedV": 9358.804515043994,
+  "page": {
+   "status": "built",
+   "V": 9358.589179099257,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 9358.589179099257
+  },
+  "occtV": 9358.804515043994,
+  "verdict": "BUILT",
+  "dClosed": 0.0000230089157638066,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(20,30) open top wall 9.9 (0.99 of limit 10)",
+  "t": 9.9,
+  "limit": 10,
+  "feasible": true,
+  "closedV": 9424.146500646008,
+  "page": {
+   "status": "built",
+   "V": 9424.05250399982,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 9424.05250399982
+  },
+  "occtV": 9424.146500646006,
+  "verdict": "BUILT",
+  "dClosed": 0.000009974022176106095,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(20,30) open top wall 9.99 (0.999 of limit 10)",
+  "t": 9.99,
+  "limit": 10,
+  "feasible": true,
+  "closedV": 9424.77167444248,
+  "page": {
+   "status": "built",
+   "V": 9423.684912373867,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 9423.684912373867
+  },
+  "occtV": 9424.77167444248,
+  "verdict": "BUILT",
+  "dClosed": 0.00011530911370087752,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(20,30) open top wall 10 (1 of limit 10)",
+  "t": 10,
+  "limit": 10,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(20,30) open top wall 10.01 (1.001 of limit 10)",
+  "t": 10.01,
+  "limit": 10,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(20,30) open top wall 11 (1.1 of limit 10)",
+  "t": 11,
+  "limit": 10,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,20) open top wall 6 (0.5 of limit 12)",
+  "t": 6,
+  "limit": 12,
+  "feasible": true,
+  "closedV": 7464.424144929349,
+  "page": {
+   "status": "built",
+   "V": 7463.635980242954,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 7463.635980242954
+  },
+  "occtV": 7464.424144929346,
+  "verdict": "BUILT",
+  "dClosed": 0.00010558948300516207,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,20) open top wall 10.8 (0.9 of limit 12)",
+  "t": 10.8,
+  "limit": 12,
+  "feasible": true,
+  "closedV": 9006.167022863847,
+  "page": {
+   "status": "built",
+   "V": 9005.956692901083,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 9005.956692901083
+  },
+  "occtV": 9047.786842338604,
+  "verdict": "BUILT",
+  "dClosed": 0.000023353993128196615,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,20) open top wall 11.88 (0.99 of limit 12)",
+  "t": 11.88,
+  "limit": 12,
+  "feasible": true,
+  "closedV": 9047.419502192806,
+  "page": {
+   "status": "built",
+   "V": 9047.349294747406,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 9047.349294747406
+  },
+  "occtV": 9047.786842338604,
+  "verdict": "BUILT",
+  "dClosed": 0.000007759941426747434,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,20) open top wall 11.988 (0.999 of limit 12)",
+  "t": 11.988,
+  "limit": 12,
+  "feasible": true,
+  "closedV": 9047.783217795195,
+  "page": {
+   "status": "built",
+   "V": 9046.762683878795,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 9046.762683878795
+  },
+  "occtV": 9047.786842338604,
+  "verdict": "BUILT",
+  "dClosed": 0.00011279380726023518,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,20) open top wall 12 (1 of limit 12)",
+  "t": 12,
+  "limit": 12,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,20) open top wall 12.012 (1.001 of limit 12)",
+  "t": 12.012,
+  "limit": 12,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,20) open top wall 13.2 (1.1 of limit 12)",
+  "t": 13.2,
+  "limit": 12,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,3) open top wall 1.5 (0.5 of limit 3)",
+  "t": 1.5,
+  "limit": 3,
+  "feasible": true,
+  "closedV": 837.6271412633786,
+  "page": {
+   "status": "built",
+   "V": 837.5864501131728,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 837.5864501131728
+  },
+  "occtV": 1357.1680263507906,
+  "verdict": "BUILT",
+  "dClosed": 0.000048579073195315426,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,3) open top wall 2.7 (0.9 of limit 3)",
+  "t": 2.7,
+  "limit": 3,
+  "feasible": true,
+  "closedV": 1275.6531217680963,
+  "page": {
+   "status": "built",
+   "V": 1275.5791087250684,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 1275.5791087250684
+  },
+  "occtV": 1357.1680263507906,
+  "verdict": "BUILT",
+  "dClosed": 0.00005801972477071598,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,3) open top wall 2.97 (0.99 of limit 3)",
+  "t": 2.97,
+  "limit": 3,
+  "feasible": true,
+  "closedV": 1349.4829775785777,
+  "page": {
+   "status": "built",
+   "V": 1349.4004252386958,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 1349.4004252386958
+  },
+  "occtV": 1357.1680263507906,
+  "verdict": "BUILT",
+  "dClosed": 0.00006117330952185284,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,3) open top wall 2.997 (0.999 of limit 3)",
+  "t": 2.997,
+  "limit": 3,
+  "feasible": true,
+  "closedV": 1356.4041103131356,
+  "page": {
+   "status": "built",
+   "V": 1356.320637780472,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 1356.320637780472
+  },
+  "occtV": 1357.1680263507906,
+  "verdict": "BUILT",
+  "dClosed": 0.00006153957513759911,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,3) open top wall 3 (1 of limit 3)",
+  "t": 3,
+  "limit": 3,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "built",
+   "V": 1357.0844665310972,
+   "faces": 3
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: a wall of 3 would collapse cyl1 -- the wall has to be under 3."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,3) open top wall 3.003 (1.001 of limit 3)",
+  "t": 3.003,
+  "limit": 3,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "built",
+   "V": 1357.0844665310972,
+   "faces": 3
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: a wall of 3.003 would collapse cyl1 -- the wall has to be under 3."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(24,3) open top wall 3.3 (1.1 of limit 3)",
+  "t": 3.3,
+  "limit": 3,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "built",
+   "V": 1357.0844665310972,
+   "faces": 3
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: a wall of 3.3 would collapse cyl1 -- the wall has to be under 3."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(5,30) open top wall 1.25 (0.5 of limit 2.5)",
+  "t": 1.25,
+  "limit": 2.5,
+  "feasible": true,
+  "closedV": 447.92239006260723,
+  "page": {
+   "status": "built",
+   "V": 447.8793686594285,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 447.8793686594285
+  },
+  "occtV": 447.9223900626073,
+  "verdict": "BUILT",
+  "dClosed": 0.00009604655657582569,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(5,30) open top wall 2.25 (0.9 of limit 2.5)",
+  "t": 2.25,
+  "limit": 2.5,
+  "feasible": true,
+  "closedV": 583.5999227895164,
+  "page": {
+   "status": "built",
+   "V": 583.5818818962522,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 583.5818818962522
+  },
+  "occtV": 583.5999227895164,
+  "verdict": "BUILT",
+  "dClosed": 0.000030913117976454717,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(5,30) open top wall 2.475 (0.99 of limit 2.5)",
+  "t": 2.475,
+  "limit": 2.5,
+  "feasible": true,
+  "closedV": 588.9945773369674,
+  "page": {
+   "status": "built",
+   "V": 588.8977732277548,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 588.8977732277548
+  },
+  "occtV": 588.9945773369673,
+  "verdict": "BUILT",
+  "dClosed": 0.000164354839479645,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(5,30) open top wall 2.4975 (0.999 of limit 2.5)",
+  "t": 2.4975,
+  "limit": 2.5,
+  "feasible": true,
+  "closedV": 589.0480825377615,
+  "page": {
+   "status": "built",
+   "V": 588.950575599817,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 588.950575599817
+  },
+  "occtV": 589.0480825377614,
+  "verdict": "BUILT",
+  "dClosed": 0.00016553307078850864,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(5,30) open top wall 2.5 (1 of limit 2.5)",
+  "t": 2.5,
+  "limit": 2.5,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(5,30) open top wall 2.5025 (1.001 of limit 2.5)",
+  "t": 2.5025,
+  "limit": 2.5,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(5,30) open top wall 2.75 (1.1 of limit 2.5)",
+  "t": 2.75,
+  "limit": 2.5,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(40,8) open top wall 4 (0.5 of limit 8)",
+  "t": 4,
+  "limit": 8,
+  "feasible": true,
+  "closedV": 6836.10561421139,
+  "page": {
+   "status": "built",
+   "V": 6835.832956000403,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 6835.832956000403
+  },
+  "occtV": 10053.096491487338,
+  "verdict": "BUILT",
+  "dClosed": 0.00003988502026948686,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(40,8) open top wall 7.2 (0.9 of limit 8)",
+  "t": 7.2,
+  "limit": 8,
+  "feasible": true,
+  "closedV": 9641.321659196015,
+  "page": {
+   "status": "built",
+   "V": 9640.732429028023,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 9640.732429028023
+  },
+  "occtV": 10053.096491487338,
+  "verdict": "BUILT",
+  "dClosed": 0.00006111508243585458,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(40,8) open top wall 7.92 (0.99 of limit 8)",
+  "t": 7.92,
+  "limit": 8,
+  "feasible": true,
+  "closedV": 10016.421186990952,
+  "page": {
+   "status": "built",
+   "V": 10015.7886585432,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 10015.7886585432
+  },
+  "occtV": 10053.096491487338,
+  "verdict": "BUILT",
+  "dClosed": 0.00006314914638105683,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(40,8) open top wall 7.992 (0.999 of limit 8)",
+  "t": 7.992,
+  "limit": 8,
+  "feasible": true,
+  "closedV": 10049.472549655591,
+  "page": {
+   "status": "built",
+   "V": 10048.837301174057,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 10048.837301174057
+  },
+  "occtV": 10053.096491487338,
+  "verdict": "BUILT",
+  "dClosed": 0.00006321212167061059,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(40,8) open top wall 8 (1 of limit 8)",
+  "t": 8,
+  "limit": 8,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "built",
+   "V": 10052.46082602308,
+   "faces": 3
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: a wall of 8 would collapse cyl1 -- the wall has to be under 8."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(40,8) open top wall 8.008 (1.001 of limit 8)",
+  "t": 8.008,
+  "limit": 8,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "built",
+   "V": 10052.46082602308,
+   "faces": 3
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: a wall of 8.008 would collapse cyl1 -- the wall has to be under 8."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(40,8) open top wall 8.8 (1.1 of limit 8)",
+  "t": 8.8,
+  "limit": 8,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "built",
+   "V": 10052.46082602308,
+   "faces": 3
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: a wall of 8.8 would collapse cyl1 -- the wall has to be under 8."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(10,100) open top wall 2.5 (0.5 of limit 5)",
+  "t": 2.5,
+  "limit": 5,
+  "feasible": true,
+  "closedV": 5939.573610693203,
+  "page": {
+   "status": "built",
+   "V": 5939.0050901443165,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 5939.0050901443165
+  },
+  "occtV": 5939.573610693202,
+  "verdict": "BUILT",
+  "dClosed": 0.00009571740097011359,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(10,100) open top wall 4.5 (0.9 of limit 5)",
+  "t": 4.5,
+  "limit": 5,
+  "feasible": true,
+  "closedV": 7778.976109370026,
+  "page": {
+   "status": "built",
+   "V": 7778.535042870397,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 7778.535042870397
+  },
+  "occtV": 7778.976109370026,
+  "verdict": "BUILT",
+  "dClosed": 0.000056699814143680905,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(10,100) open top wall 4.95 (0.99 of limit 5)",
+  "t": 4.95,
+  "limit": 5,
+  "feasible": true,
+  "closedV": 7853.235113020173,
+  "page": {
+   "status": "built",
+   "V": 7851.944889849426,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 7851.944889849426
+  },
+  "occtV": 7853.235113020172,
+  "verdict": "BUILT",
+  "dClosed": 0.0001642919322010983,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(10,100) open top wall 4.995 (0.999 of limit 5)",
+  "t": 4.995,
+  "limit": 5,
+  "feasible": true,
+  "closedV": 7853.974172299231,
+  "page": {
+   "status": "built",
+   "V": 7852.674217425741,
+   "faces": 5
+  },
+  "guarded": {
+   "status": "built",
+   "V": 7852.674217425741
+  },
+  "occtV": 7853.974172299231,
+  "verdict": "BUILT",
+  "dClosed": 0.00016551555237799402,
+  "exact": true
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(10,100) open top wall 5 (1 of limit 5)",
+  "t": 5,
+  "limit": 5,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(10,100) open top wall 5.005 (1.001 of limit 5)",
+  "t": 5.005,
+  "limit": 5,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "cyl",
+  "label": "cylinder(10,100) open top wall 5.5 (1.1 of limit 5)",
+  "t": 5.5,
+  "limit": 5,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,20) open top wall 7.5 (0.5 of limit 15)",
+  "t": 7.5,
+  "limit": 15,
+  "feasible": true,
+  "closedV": 19312.5,
+  "page": {
+   "status": "built",
+   "V": 19312.5,
+   "faces": 11
+  },
+  "guarded": {
+   "status": "built",
+   "V": 19312.5
+  },
+  "occtV": 19312.499999999993,
+  "verdict": "BUILT",
+  "dClosed": 0,
+  "exact": true
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,20) open top wall 13.5 (0.9 of limit 15)",
+  "t": 13.5,
+  "limit": 15,
+  "feasible": true,
+  "closedV": 23746.5,
+  "page": {
+   "status": "built",
+   "V": 23746.5,
+   "faces": 11
+  },
+  "guarded": {
+   "status": "built",
+   "V": 23746.5
+  },
+  "occtV": 23999.999999999996,
+  "verdict": "BUILT",
+  "dClosed": 0,
+  "exact": true
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,20) open top wall 14.85 (0.99 of limit 15)",
+  "t": 14.85,
+  "limit": 15,
+  "feasible": true,
+  "closedV": 23984.0865,
+  "page": {
+   "status": "built",
+   "V": 23984.0865,
+   "faces": 11
+  },
+  "guarded": {
+   "status": "built",
+   "V": 23984.0865
+  },
+  "occtV": 23999.999999999996,
+  "verdict": "BUILT",
+  "dClosed": 0,
+  "exact": true
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,20) open top wall 14.985 (0.999 of limit 15)",
+  "t": 14.985,
+  "limit": 15,
+  "feasible": true,
+  "closedV": 23998.4909865,
+  "page": {
+   "status": "built",
+   "V": 23998.490986499994,
+   "faces": 11
+  },
+  "guarded": {
+   "status": "built",
+   "V": 23998.490986499994
+  },
+  "occtV": 23999.999999999996,
+  "verdict": "BUILT",
+  "dClosed": 3.031839634532192e-16,
+  "exact": true
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,20) open top wall 15 (1 of limit 15)",
+  "t": 15,
+  "limit": 15,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "built",
+   "V": 24000,
+   "faces": 8
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: a wall of 15 would collapse box1 -- the wall has to be under 15."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,20) open top wall 15.015 (1.001 of limit 15)",
+  "t": 15.015,
+  "limit": 15,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,20) open top wall 16.5 (1.1 of limit 15)",
+  "t": 16.5,
+  "limit": 15,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,3) open top wall 1.5 (0.5 of limit 3)",
+  "t": 1.5,
+  "limit": 3,
+  "feasible": true,
+  "closedV": 2101.5,
+  "page": {
+   "status": "built",
+   "V": 2101.5,
+   "faces": 11
+  },
+  "guarded": {
+   "status": "built",
+   "V": 2101.5
+  },
+  "occtV": 3600,
+  "verdict": "BUILT",
+  "dClosed": 0,
+  "exact": true
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,3) open top wall 2.7 (0.9 of limit 3)",
+  "t": 2.7,
+  "limit": 3,
+  "feasible": true,
+  "closedV": 3344.652,
+  "page": {
+   "status": "built",
+   "V": 3344.652,
+   "faces": 11
+  },
+  "guarded": {
+   "status": "built",
+   "V": 3344.652
+  },
+  "occtV": 3600,
+  "verdict": "BUILT",
+  "dClosed": 0,
+  "exact": true
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,3) open top wall 2.97 (0.99 of limit 3)",
+  "t": 2.97,
+  "limit": 3,
+  "feasible": true,
+  "closedV": 3575.415492,
+  "page": {
+   "status": "built",
+   "V": 3575.415492,
+   "faces": 11
+  },
+  "guarded": {
+   "status": "built",
+   "V": 3575.415492
+  },
+  "occtV": 3600,
+  "verdict": "BUILT",
+  "dClosed": 0,
+  "exact": true
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,3) open top wall 2.997 (0.999 of limit 3)",
+  "t": 2.997,
+  "limit": 3,
+  "feasible": true,
+  "closedV": 3597.550955892,
+  "page": {
+   "status": "built",
+   "V": 3597.5509558920003,
+   "faces": 11
+  },
+  "guarded": {
+   "status": "built",
+   "V": 3597.5509558920003
+  },
+  "occtV": 3600,
+  "verdict": "BUILT",
+  "dClosed": 1.2640470043702582e-16,
+  "exact": true
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,3) open top wall 3 (1 of limit 3)",
+  "t": 3,
+  "limit": 3,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "built",
+   "V": 3600,
+   "faces": 6
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: a wall of 3 would collapse box1 -- the wall has to be under 3."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,3) open top wall 3.003 (1.001 of limit 3)",
+  "t": 3.003,
+  "limit": 3,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "built",
+   "V": 3600,
+   "faces": 6
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: a wall of 3.003 would collapse box1 -- the wall has to be under 3."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "box",
+  "label": "box(40,30,3) open top wall 3.3 (1.1 of limit 3)",
+  "t": 3.3,
+  "limit": 3,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "built",
+   "V": 3600,
+   "faces": 6
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: a wall of 3.3 would collapse box1 -- the wall has to be under 3."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "box",
+  "label": "box(10,10,30) open top wall 2.5 (0.5 of limit 5)",
+  "t": 2.5,
+  "limit": 5,
+  "feasible": true,
+  "closedV": 2312.5,
+  "page": {
+   "status": "built",
+   "V": 2312.5,
+   "faces": 11
+  },
+  "guarded": {
+   "status": "built",
+   "V": 2312.5
+  },
+  "occtV": 2312.499999999999,
+  "verdict": "BUILT",
+  "dClosed": 0,
+  "exact": true
+ },
+ {
+  "kind": "box",
+  "label": "box(10,10,30) open top wall 4.5 (0.9 of limit 5)",
+  "t": 4.5,
+  "limit": 5,
+  "feasible": true,
+  "closedV": 2974.5,
+  "page": {
+   "status": "built",
+   "V": 2974.5,
+   "faces": 11
+  },
+  "guarded": {
+   "status": "built",
+   "V": 2974.5
+  },
+  "occtV": 2974.4999999999995,
+  "verdict": "BUILT",
+  "dClosed": 0,
+  "exact": true
+ },
+ {
+  "kind": "box",
+  "label": "box(10,10,30) open top wall 4.95 (0.99 of limit 5)",
+  "t": 4.95,
+  "limit": 5,
+  "feasible": true,
+  "closedV": 2999.7495,
+  "page": {
+   "status": "built",
+   "V": 2999.7495000000004,
+   "faces": 11
+  },
+  "guarded": {
+   "status": "built",
+   "V": 2999.7495000000004
+  },
+  "occtV": 2999.7495,
+  "verdict": "BUILT",
+  "dClosed": 1.515951084870467e-16,
+  "exact": true
+ },
+ {
+  "kind": "box",
+  "label": "box(10,10,30) open top wall 4.995 (0.999 of limit 5)",
+  "t": 4.995,
+  "limit": 5,
+  "feasible": true,
+  "closedV": 2999.9974995,
+  "page": {
+   "status": "built",
+   "V": 2999.9974994999993,
+   "faces": 11
+  },
+  "guarded": {
+   "status": "built",
+   "V": 2999.9974994999993
+  },
+  "occtV": 2999.997499499999,
+  "verdict": "BUILT",
+  "dClosed": 1.515825766395657e-16,
+  "exact": true
+ },
+ {
+  "kind": "box",
+  "label": "box(10,10,30) open top wall 5 (1 of limit 5)",
+  "t": 5,
+  "limit": 5,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "box",
+  "label": "box(10,10,30) open top wall 5.005 (1.001 of limit 5)",
+  "t": 5.005,
+  "limit": 5,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ },
+ {
+  "kind": "box",
+  "label": "box(10,10,30) open top wall 5.5 (1.1 of limit 5)",
+  "t": 5.5,
+  "limit": 5,
+  "feasible": false,
+  "closedV": null,
+  "page": {
+   "status": "refused"
+  },
+  "guarded": {
+   "status": "refused",
+   "sentence": "shell1 is not built: the wall is too thick for this part, so no hollow is left -- use a thinner wall."
+  },
+  "occtV": null,
+  "verdict": "REFUSED-OK"
+ }
+]
