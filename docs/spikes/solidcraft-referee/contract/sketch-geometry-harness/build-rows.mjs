@@ -6,7 +6,7 @@
 import { writeFileSync, readFileSync, readdirSync, existsSync } from 'node:fs';
 import { lintSentence } from '../sketch-geometry.guard.mjs';
 
-const OUT = '/home/shuff57/Documents/GitHub/reshape-cad/docs/spikes/solidcraft-referee/contract';
+const OUT = new URL('..', import.meta.url).pathname.replace(/\/$/, '');   // the contract dir, derived (was a hardcoded absolute path)
 const HERE = new URL('.', import.meta.url).pathname;
 const loadDir = (d) => { const m = new Map(); const dir = HERE + d + '/'; if (existsSync(dir)) for (const f of readdirSync(dir).filter((x) => x.endsWith('.json') && !x.startsWith('solve-') && !x.startsWith('pkg-'))) { const rs = JSON.parse(readFileSync(dir + f, 'utf8')); if (Array.isArray(rs)) for (const r of rs) m.set(r.id, { file: f.replace('.json', ''), ...r }); } return m; };
 const GM = loadDir('results-guarded'); const BM = loadDir('results');
