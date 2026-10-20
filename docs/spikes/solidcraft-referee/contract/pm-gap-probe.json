@@ -1,0 +1,184 @@
+[
+ {
+  "shape": "sphere",
+  "gap": 0.000001,
+  "src": "const a = sphere(10); repeat(a, { count: 2, step: [10.000001, 0, 0] });",
+  "status": "refused",
+  "sentence": "repeat(): two of the curved copies lie so close together (the boxes around them are only about 1.0e-6 mm apart) that it cannot be told whether they touch, and curved copies that close cannot be fused or kept apart reliably -- leave a clear gap between them, or overlap them clearly.",
+  "raw": "pat1 (pattern): copies 1 and 2 meet only along an edge or at a point [curved-near gap=1.0e-6] (bbox gap 1.0e-6,-1.0e+1,-1.0e+1; joined pair keeps 2 shells, volume = sum within the curved tolerance; whole result 2 shells vs 1 bbox-connected groups)"
+ },
+ {
+  "shape": "sphere",
+  "gap": 0.00001,
+  "src": "const a = sphere(10); repeat(a, { count: 2, step: [10.00001, 0, 0] });",
+  "status": "refused",
+  "sentence": "repeat(): two of the curved copies lie so close together (the boxes around them are only about 1.0e-5 mm apart) that it cannot be told whether they touch, and curved copies that close cannot be fused or kept apart reliably -- leave a clear gap between them, or overlap them clearly.",
+  "raw": "pat1 (pattern): copies 1 and 2 meet only along an edge or at a point [curved-near gap=1.0e-5] (bbox gap 1.0e-5,-1.0e+1,-1.0e+1; joined pair keeps 2 shells, volume = sum within the curved tolerance; whole result 2 shells vs 1 bbox-connected groups)"
+ },
+ {
+  "shape": "sphere",
+  "gap": 0.0001,
+  "src": "const a = sphere(10); repeat(a, { count: 2, step: [10.0001, 0, 0] });",
+  "status": "refused",
+  "sentence": "repeat(): two of the curved copies lie so close together (the boxes around them are only about 1.0e-4 mm apart) that it cannot be told whether they touch, and curved copies that close cannot be fused or kept apart reliably -- leave a clear gap between them, or overlap them clearly.",
+  "raw": "pat1 (pattern): copies 1 and 2 meet only along an edge or at a point [curved-near gap=1.0e-4] (bbox gap 1.0e-4,-1.0e+1,-1.0e+1; joined pair keeps 2 shells, volume = sum within the curved tolerance; whole result 2 shells vs 1 bbox-connected groups)"
+ },
+ {
+  "shape": "sphere",
+  "gap": 0.0003,
+  "src": "const a = sphere(10); repeat(a, { count: 2, step: [10.0003, 0, 0] });",
+  "status": "refused",
+  "sentence": "repeat(): two of the curved copies lie so close together (the boxes around them are only about 3.0e-4 mm apart) that it cannot be told whether they touch, and curved copies that close cannot be fused or kept apart reliably -- leave a clear gap between them, or overlap them clearly.",
+  "raw": "pat1 (pattern): copies 1 and 2 meet only along an edge or at a point [curved-near gap=3.0e-4] (bbox gap 3.0e-4,-1.0e+1,-1.0e+1; joined pair keeps 2 shells, volume = sum within the curved tolerance; whole result 2 shells vs 1 bbox-connected groups)"
+ },
+ {
+  "shape": "sphere",
+  "gap": 0.001,
+  "src": "const a = sphere(10); repeat(a, { count: 2, step: [10.001, 0, 0] });",
+  "status": "refused",
+  "sentence": "repeat(): two of the curved copies lie so close together (the boxes around them are only about 1.0e-3 mm apart) that it cannot be told whether they touch, and curved copies that close cannot be fused or kept apart reliably -- leave a clear gap between them, or overlap them clearly.",
+  "raw": "pat1 (pattern): copies 1 and 2 meet only along an edge or at a point [curved-near gap=1.0e-3] (bbox gap 1.0e-3,-1.0e+1,-1.0e+1; joined pair keeps 2 shells, volume = sum within the curved tolerance; whole result 2 shells vs 1 bbox-connected groups)"
+ },
+ {
+  "shape": "sphere",
+  "gap": 0.003,
+  "src": "const a = sphere(10); repeat(a, { count: 2, step: [10.003, 0, 0] });",
+  "status": "built",
+  "volume": 1046.903859183001,
+  "exact": 1047.1975511965977,
+  "rel": 0.00028045521426314535,
+  "within3e4": true
+ },
+ {
+  "shape": "sphere",
+  "gap": 0.01,
+  "src": "const a = sphere(10); repeat(a, { count: 2, step: [10.01, 0, 0] });",
+  "status": "built",
+  "volume": 1046.9038591830051,
+  "exact": 1047.1975511965977,
+  "rel": 0.0002804552142592371,
+  "within3e4": true
+ },
+ {
+  "shape": "sphere",
+  "gap": 0.1,
+  "src": "const a = sphere(10); repeat(a, { count: 2, step: [10.1, 0, 0] });",
+  "status": "built",
+  "volume": 1046.903618572781,
+  "exact": 1047.1975511965977,
+  "rel": 0.00028068498009845927,
+  "within3e4": true
+ },
+ {
+  "shape": "sphere",
+  "gap": 0.5,
+  "src": "const a = sphere(10); repeat(a, { count: 2, step: [10.5, 0, 0] });",
+  "status": "built",
+  "volume": 1046.903444991549,
+  "exact": 1047.1975511965977,
+  "rel": 0.0002808507379651094,
+  "within3e4": true
+ },
+ {
+  "shape": "sphere",
+  "gap": 5,
+  "src": "const a = sphere(10); repeat(a, { count: 2, step: [15, 0, 0] });",
+  "status": "built",
+  "volume": 1046.8993306176199,
+  "exact": 1047.1975511965977,
+  "rel": 0.00028477967565632205,
+  "within3e4": true
+ },
+ {
+  "shape": "cylinder",
+  "gap": 0.000001,
+  "src": "const a = cylinder(10, 10); repeat(a, { count: 2, step: [10.000001, 0, 0] });",
+  "status": "refused",
+  "sentence": "repeat(): two of the curved copies lie so close together (the boxes around them are only about 1.6e-4 mm apart) that it cannot be told whether they touch, and curved copies that close cannot be fused or kept apart reliably -- leave a clear gap between them, or overlap them clearly.",
+  "raw": "pat1 (pattern): copies 1 and 2 meet only along an edge or at a point [curved-near gap=1.6e-4] (bbox gap 1.6e-4,-1.0e+1,-1.0e+1; joined pair keeps 2 shells, volume = sum within the curved tolerance; whole result 2 shells vs 1 bbox-connected groups)"
+ },
+ {
+  "shape": "cylinder",
+  "gap": 0.00001,
+  "src": "const a = cylinder(10, 10); repeat(a, { count: 2, step: [10.00001, 0, 0] });",
+  "status": "refused",
+  "sentence": "repeat(): two of the curved copies lie so close together (the boxes around them are only about 1.6e-4 mm apart) that it cannot be told whether they touch, and curved copies that close cannot be fused or kept apart reliably -- leave a clear gap between them, or overlap them clearly.",
+  "raw": "pat1 (pattern): copies 1 and 2 meet only along an edge or at a point [curved-near gap=1.6e-4] (bbox gap 1.6e-4,-1.0e+1,-1.0e+1; joined pair keeps 2 shells, volume = sum within the curved tolerance; whole result 2 shells vs 1 bbox-connected groups)"
+ },
+ {
+  "shape": "cylinder",
+  "gap": 0.0001,
+  "src": "const a = cylinder(10, 10); repeat(a, { count: 2, step: [10.0001, 0, 0] });",
+  "status": "refused",
+  "sentence": "repeat(): two of the curved copies lie so close together (the boxes around them are only about 2.5e-4 mm apart) that it cannot be told whether they touch, and curved copies that close cannot be fused or kept apart reliably -- leave a clear gap between them, or overlap them clearly.",
+  "raw": "pat1 (pattern): copies 1 and 2 meet only along an edge or at a point [curved-near gap=2.5e-4] (bbox gap 2.5e-4,-1.0e+1,-1.0e+1; joined pair keeps 2 shells, volume = sum within the curved tolerance; whole result 2 shells vs 1 bbox-connected groups)"
+ },
+ {
+  "shape": "cylinder",
+  "gap": 0.0003,
+  "src": "const a = cylinder(10, 10); repeat(a, { count: 2, step: [10.0003, 0, 0] });",
+  "status": "refused",
+  "sentence": "repeat(): two of the curved copies lie so close together (the boxes around them are only about 4.5e-4 mm apart) that it cannot be told whether they touch, and curved copies that close cannot be fused or kept apart reliably -- leave a clear gap between them, or overlap them clearly.",
+  "raw": "pat1 (pattern): copies 1 and 2 meet only along an edge or at a point [curved-near gap=4.5e-4] (bbox gap 4.5e-4,-1.0e+1,-1.0e+1; joined pair keeps 2 shells, volume = sum within the curved tolerance; whole result 2 shells vs 1 bbox-connected groups)"
+ },
+ {
+  "shape": "cylinder",
+  "gap": 0.001,
+  "src": "const a = cylinder(10, 10); repeat(a, { count: 2, step: [10.001, 0, 0] });",
+  "status": "built",
+  "volume": 1570.5947748065767,
+  "exact": 1570.7963267948967,
+  "rel": 0.0001283119809245335,
+  "within3e4": true
+ },
+ {
+  "shape": "cylinder",
+  "gap": 0.003,
+  "src": "const a = cylinder(10, 10); repeat(a, { count: 2, step: [10.003, 0, 0] });",
+  "status": "built",
+  "volume": 1570.594774806569,
+  "exact": 1570.7963267948967,
+  "rel": 0.00012831198092945503,
+  "within3e4": true
+ },
+ {
+  "shape": "cylinder",
+  "gap": 0.01,
+  "src": "const a = cylinder(10, 10); repeat(a, { count: 2, step: [10.01, 0, 0] });",
+  "status": "built",
+  "volume": 1570.5947748065757,
+  "exact": 1570.7963267948967,
+  "rel": 0.0001283119809251125,
+  "within3e4": true
+ },
+ {
+  "shape": "cylinder",
+  "gap": 0.1,
+  "src": "const a = cylinder(10, 10); repeat(a, { count: 2, step: [10.1, 0, 0] });",
+  "status": "built",
+  "volume": 1570.594774806571,
+  "exact": 1570.7963267948967,
+  "rel": 0.00012831198092815228,
+  "within3e4": true
+ },
+ {
+  "shape": "cylinder",
+  "gap": 0.5,
+  "src": "const a = cylinder(10, 10); repeat(a, { count: 2, step: [10.5, 0, 0] });",
+  "status": "built",
+  "volume": 1570.5947748065767,
+  "exact": 1570.7963267948967,
+  "rel": 0.0001283119809245335,
+  "within3e4": true
+ },
+ {
+  "shape": "cylinder",
+  "gap": 5,
+  "src": "const a = cylinder(10, 10); repeat(a, { count: 2, step: [15, 0, 0] });",
+  "status": "built",
+  "volume": 1570.5654107882408,
+  "exact": 1570.7963267948967,
+  "rel": 0.00014700569559330284,
+  "within3e4": true
+ }
+]

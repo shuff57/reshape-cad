@@ -1,0 +1,47 @@
+{
+ "resultsFile": "pm-results-weboff.json",
+ "written": "2026-10-20T06:58:15.618Z",
+ "cases": 20,
+ "solidcraftPkg": "/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/sc-referee-pkg",
+ "wasmFile": "solidcraft_referee_bg.wasm",
+ "wasmSha256": "9f21ccfe1cbae65ac4b089ccd6a85f94cda4e28af630c2b8dd6d9690d78d9feb",
+ "wasmBytes": 23441815,
+ "solidcraftSource": "git archive of fe3717f (the pinned commit), built with the wrapper in the session scratchpad; see RIG.md",
+ "patches": [
+  "reversed",
+  "fresh",
+  "plane",
+  "count1",
+  "torus",
+  "contact",
+  "disjoint",
+  "subgap",
+  "budget",
+  "fused",
+  "spinbox",
+  "taper",
+  "contact3",
+  "mircontact",
+  "snap",
+  "sliver"
+ ],
+ "translator": "contract/pm-translate.mjs",
+ "budgets": {
+  "perRunMs": 600000,
+  "perModelMs": 3600000
+ },
+ "runtime": "bun 1.4.3",
+ "host": "huffplamer-pc2",
+ "loadavgAtEnd": [
+  7.51,
+  4.35,
+  3.44
+ ],
+ "cpus": 32,
+ "argv": [
+  "--r6",
+  "--out=/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/builder-pm2/run6/x2/weboff",
+  "--name=pm-results-weboff.json",
+  "--only=r6-web-*"
+ ]
+}

@@ -1,0 +1,3506 @@
+[
+ {
+  "id": "r6-web-repeat-0.05",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [15, 20] }); const pk = pocket(p1, plate, 4); repeat(pk, { count: 2, step: [10.05, 0, 0] });",
+  "note": "repeat(pocket) leaving a 0.05 mm wall",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-repeat-0.05",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23520,
+    "com": [
+     30.203571428571422,
+     20,
+     4.9387755102040805
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.203571428571422,
+     20,
+     4.938775510204081
+    ]
+   },
+   "ms": 348,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 87
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 126
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 132
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 16
+    },
+    "occtComponents": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 23518.800000000003,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.204090769937242,
+     19.999999999999996,
+     4.938619317312107
+    ],
+    "faces": 11,
+    "kernelFaces": 11,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.00005102040816314157,
+    "dBbox": 0,
+    "dCom": 0.0000071337022890886,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r6-web-repeat-0.15",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [15, 20] }); const pk = pocket(p1, plate, 4); repeat(pk, { count: 2, step: [10.15, 0, 0] });",
+  "note": "repeat(pocket) leaving a 0.15 mm wall",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-repeat-0.15",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23519.999999999996,
+    "com": [
+     30.20255102040816,
+     19.999999999999996,
+     4.938775510204081
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "dVol": 1.5467596968927352e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.202551020408162,
+     20,
+     4.938775510204081
+    ]
+   },
+   "ms": 319,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 89
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 102
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 127
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 16
+    },
+    "occtComponents": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 23516.399999999994,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.204101393070374,
+     20.000000000000004,
+     4.938306883706692
+    ],
+    "faces": 11,
+    "kernelFaces": 11,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.00015306122448988875,
+    "dBbox": 0,
+    "dCom": 0.000021296006321257798,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r6-web-repeat-0.2",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [15, 20] }); const pk = pocket(p1, plate, 4); repeat(pk, { count: 2, step: [10.2, 0, 0] });",
+  "note": "repeat(pocket) leaving a 0.2 mm wall",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-repeat-0.2",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23520,
+    "com": [
+     30.20204081632654,
+     20.000000000000004,
+     4.938775510204082
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.202040816326527,
+     20,
+     4.938775510204081
+    ]
+   },
+   "ms": 324,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 99
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 102
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 122
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 16
+    },
+    "occtTypes": {
+     "plane": 16
+    },
+    "occtComponents": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.20204081632653,
+     20,
+     4.938775510204081
+    ],
+    "faces": 16,
+    "kernelFaces": 16,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 1.4640082634047754e-16,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r6-web-repeat-0.5",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [15, 20] }); const pk = pocket(p1, plate, 4); repeat(pk, { count: 2, step: [10.5, 0, 0] });",
+  "note": "repeat(pocket) leaving a 0.5 mm wall",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-repeat-0.5",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23520,
+    "com": [
+     30.19897959183673,
+     20.000000000000004,
+     4.938775510204082
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.198979591836736,
+     20,
+     4.938775510204081
+    ]
+   },
+   "ms": 328,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 86
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 109
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 133
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 16
+    },
+    "occtTypes": {
+     "plane": 16
+    },
+    "occtComponents": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.198979591836736,
+     20,
+     4.938775510204081
+    ],
+    "faces": 16,
+    "kernelFaces": 16,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 9.760055089365168e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r6-web-repeat-0.7",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [15, 20] }); const pk = pocket(p1, plate, 4); repeat(pk, { count: 2, step: [10.7, 0, 0] });",
+  "note": "repeat(pocket) leaving a 0.7 mm wall",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-repeat-0.7",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23520,
+    "com": [
+     30.196938775510205,
+     20.000000000000004,
+     4.938775510204082
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.196938775510215,
+     20.000000000000004,
+     4.938775510204082
+    ]
+   },
+   "ms": 304,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 81
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 106
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 117
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 16
+    },
+    "occtTypes": {
+     "plane": 16
+    },
+    "occtComponents": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.196938775510205,
+     20,
+     4.938775510204081
+    ],
+    "faces": 16,
+    "kernelFaces": 16,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 4.880027544682584e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r6-web-repeat-1",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [15, 20] }); const pk = pocket(p1, plate, 4); repeat(pk, { count: 2, step: [11, 0, 0] });",
+  "note": "repeat(pocket) leaving a 1 mm wall",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-repeat-1",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23519.999999999996,
+    "com": [
+     30.193877551020407,
+     19.999999999999996,
+     4.938775510204081
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "dVol": 1.5467596968927352e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.193877551020414,
+     20.000000000000004,
+     4.938775510204082
+    ]
+   },
+   "ms": 305,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 83
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 102
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 120
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 16
+    },
+    "occtTypes": {
+     "plane": 16
+    },
+    "occtComponents": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.193877551020407,
+     20,
+     4.938775510204081
+    ],
+    "faces": 16,
+    "kernelFaces": 16,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 1.5467596968927352e-16,
+    "dBbox": 0,
+    "dCom": 4.880027544682584e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r6-web-repeat-count3-0.15",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [10, 20] }); const pk = pocket(p1, plate, 4); repeat(pk, { count: 3, step: [10.15, 0, 0] });",
+  "note": "three copies, 0.15 mm walls",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-repeat-count3-0.15",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket3",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23280,
+    "com": [
+     30.304639175257734,
+     20,
+     4.907216494845364
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 21,
+    "types": {
+     "plane": 21
+    },
+    "components": {
+     "plane": 21
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23280,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 21,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.304639175257748,
+     20.000000000000004,
+     4.907216494845361
+    ]
+   },
+   "ms": 447,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 80
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 101
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 128
+    },
+    {
+     "id": "sk4",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket3",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 136
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 21
+    },
+    "occtComponents": {
+     "plane": 21
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 23272.800000000003,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.307780756935127,
+     19.999999999999996,
+     4.906259667938537
+    ],
+    "faces": 11,
+    "kernelFaces": 11,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.0003092783505153389,
+    "dBbox": 0,
+    "dCom": 0.00004315294308976596,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket3",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r6-web-mirror-0.05",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [15, 20] }); const pk = pocket(p1, plate, 4); mirror(pk, 'left-right', { at: 20.025 });",
+  "note": "mirror(pocket,{at}) leaving a 0.05 mm wall",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-mirror-0.05",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23520,
+    "com": [
+     30.203571428571422,
+     20,
+     4.938775510204079
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.203571428571422,
+     20,
+     4.938775510204081
+    ]
+   },
+   "ms": 338,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 79
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 131
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 128
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 16
+    },
+    "occtComponents": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 23518.800000000003,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.204090769937242,
+     19.999999999999996,
+     4.938619317312107
+    ],
+    "faces": 11,
+    "kernelFaces": 11,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.00005102040816314157,
+    "dBbox": 0,
+    "dCom": 0.0000071337022890886,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r6-web-mirror-0.15",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [15, 20] }); const pk = pocket(p1, plate, 4); mirror(pk, 'left-right', { at: 20.075 });",
+  "note": "mirror(pocket,{at}) leaving a 0.15 mm wall",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-mirror-0.15",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23519.999999999996,
+    "com": [
+     30.20255102040816,
+     19.999999999999996,
+     4.938775510204081
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "dVol": 1.5467596968927352e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.202551020408162,
+     20,
+     4.938775510204081
+    ]
+   },
+   "ms": 311,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 84
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 101
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 125
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 16
+    },
+    "occtComponents": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 23516.399999999994,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.204101393070374,
+     20.000000000000004,
+     4.938306883706692
+    ],
+    "faces": 11,
+    "kernelFaces": 11,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.00015306122448988875,
+    "dBbox": 0,
+    "dCom": 0.000021296006321257798,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r6-web-mirror-1",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [15, 20] }); const pk = pocket(p1, plate, 4); mirror(pk, 'left-right', { at: 20.5 });",
+  "note": "mirror(pocket,{at}) leaving a 1 mm wall (built)",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-mirror-1",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23519.999999999996,
+    "com": [
+     30.193877551020407,
+     19.999999999999996,
+     4.938775510204081
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "dVol": 1.5467596968927352e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.193877551020414,
+     20.000000000000004,
+     4.938775510204082
+    ]
+   },
+   "ms": 312,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 84
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 104
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 124
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 16
+    },
+    "occtTypes": {
+     "plane": 16
+    },
+    "occtComponents": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.193877551020407,
+     20,
+     4.938775510204081
+    ],
+    "faces": 16,
+    "kernelFaces": 16,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 1.5467596968927352e-16,
+    "dBbox": 0,
+    "dCom": 4.880027544682584e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r6-web-hand-mixed-0.15",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [15, 20] }); const a = pocket(p1, plate, 4); const p2 = sketch('top', 10); p2.rect(4, 3, { at: [22.15, 20] }); pocket(p2, a, 4);",
+  "note": "a second pocket of another size, 0.15 mm wall",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-hand-mixed-0.15",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23712,
+    "com": [
+     30.167712550607284,
+     20,
+     4.963562753036438
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23712,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.167712550607284,
+     20.000000000000004,
+     4.963562753036438
+    ]
+   },
+   "ms": 312,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 85
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 101
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 126
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 15
+    },
+    "occtTypes": {
+     "plane": 16
+    },
+    "occtComponents": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 23710.199999999997,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.168478755978448,
+     20.000000000000004,
+     4.9633322367588635
+    ],
+    "faces": 15,
+    "kernelFaces": 15,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.0000759109311742118,
+    "dBbox": 0,
+    "dCom": 0.000010524640188361801,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r6-web-hand-depth-0.15",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [15, 20] }); const a = pocket(p1, plate, 4); const p2 = sketch('top', 10); p2.rect(10, 6, { at: [25.15, 20] }); pocket(p2, a, 2);",
+  "note": "a second pocket of another depth, 0.15 mm wall",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-hand-depth-0.15",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23639.999999999993,
+    "com": [
+     30.176903553299507,
+     20,
+     4.949238578680202
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23640,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "dVol": 3.0778162496545805e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.176903553299493,
+     20,
+     4.949238578680203
+    ]
+   },
+   "ms": 299,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 84
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 95
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 119
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 13
+    },
+    "occtTypes": {
+     "plane": 16
+    },
+    "occtComponents": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 23638.199999999997,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.1776727923446,
+     20.000000000000004,
+     4.948930121582862
+    ],
+    "faces": 13,
+    "kernelFaces": 13,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.00007614213197951078,
+    "dBbox": 0,
+    "dCom": 0.000010566310904557955,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r6-web-two-axis-0.05",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [15, 10] }); const pk = pocket(p1, plate, 4); const r1 = repeat(pk, { count: 2, step: [10.05, 0, 0] }); repeat(r1, { count: 2, step: [0, 6.05, 0] });",
+  "note": "copies along two axes",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-two-axis-0.05",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket3",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23279.999999999996,
+    "com": [
+     30.256701030927836,
+     20.246907216494847,
+     4.907216494845361
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 21,
+    "types": {
+     "plane": 21
+    },
+    "components": {
+     "plane": 21
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23280,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 21,
+    "dVol": 1.5627056731493616e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.25670103092784,
+     20.246907216494847,
+     4.907216494845361
+    ]
+   },
+   "ms": 434,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 76
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 98
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 122
+    },
+    {
+     "id": "sk4",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket3",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 138
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 13
+    },
+    "occtTypes": {
+     "plane": 21
+    },
+    "occtComponents": {
+     "plane": 21
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 23276.800000000003,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.25767588328292,
+     20.248056004261752,
+     4.906791311520482
+    ],
+    "faces": 13,
+    "kernelFaces": 13,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.00013745704467325827,
+    "dBbox": 0,
+    "dCom": 0.000015779813551939106,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket3",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r6-web-diagonal-0.05",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [20, 15] }); const pk = pocket(p1, plate, 4); repeat(pk, { count: 2, step: [10.05, 6.05, 0] });",
+  "note": "diagonal step, the copies meet corner to corner (not lost by the kernel, refused anyway)",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-diagonal-0.05",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23520,
+    "com": [
+     30.101530612244893,
+     20.04030612244897,
+     4.9387755102040805
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "types": {
+     "plane": 16
+    },
+    "components": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 16,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.101530612244897,
+     20.04030612244898,
+     4.938775510204081
+    ]
+   },
+   "ms": 300,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 81
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 97
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 122
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 16
+    },
+    "occtTypes": {
+     "plane": 16
+    },
+    "occtComponents": {
+     "plane": 16
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 23520,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.101530612244897,
+     20.04030612244898,
+     4.938775510204081
+    ],
+    "faces": 16,
+    "kernelFaces": 16,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 9.760055089365168e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r6-web-triangle-0.05",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.polygon([[10,10],[20,10],[10,20]]); const a = pocket(p1, plate, 4); const p2 = sketch('top', 10); p2.polygon([[20.0707,10.0707],[20.0707,20.0707],[10.0707,20.0707]]); pocket(p2, a, 4);",
+  "note": "triangles with parallel slanted walls 0.1 mm apart",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-triangle-0.05",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23599.999999999996,
+    "com": [
+     30.253638135593228,
+     20.0841466101695,
+     4.949152542372882
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 14,
+    "types": {
+     "plane": 14
+    },
+    "components": {
+     "plane": 14
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 2
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23600.000000000004,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 14,
+    "dVol": 3.083032887365859e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.25363813559321,
+     20.08414661016949,
+     4.949152542372881
+    ]
+   },
+   "ms": 292,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 83
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 97
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 112
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 13
+    },
+    "occtTypes": {
+     "plane": 14
+    },
+    "occtComponents": {
+     "plane": 14
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 23593.53517250039,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.257813023998516,
+     20.085534972181442,
+     4.948316584454876
+    ],
+    "faces": 13,
+    "kernelFaces": 13,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.00027393336862741757,
+    "dBbox": 0,
+    "dCom": 0.000057346502577318916,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r6-web-edge-0.15",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [5.15, 20] }); pocket(p1, plate, 4);",
+  "note": "pocket 0.15 mm from the side of the part",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-edge-0.15",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23760,
+    "com": [
+     30.251010101010095,
+     20,
+     4.96969696969697
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23760,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 11,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.25101010101011,
+     20.000000000000004,
+     4.969696969696971
+    ]
+   },
+   "ms": 189,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 88
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 101
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 10
+    },
+    "occtTypes": {
+     "plane": 11
+    },
+    "occtComponents": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "UNEXPLAINED"
+    },
+    "volume": 23756.399999999998,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.25558291660353,
+     20,
+     4.969237763297469
+    ],
+    "faces": 10,
+    "kernelFaces": 10,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0.00015151515151524337,
+    "dBbox": 0,
+    "dCom": 0.00006281245287474729,
+    "tol": 1e-9,
+    "faceKey": null,
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": false,
+    "faceNote": "unexplained face-count mismatch"
+   },
+   "outcome": "FAIL"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "FAIL"
+ },
+ {
+  "id": "r6-web-edge-1",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [6, 20] }); pocket(p1, plate, 4);",
+  "note": "pocket 1 mm from the side of the part (built)",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-edge-1",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23760,
+    "com": [
+     30.242424242424242,
+     20,
+     4.96969696969697
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23760,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 11,
+    "dVol": 0,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.242424242424242,
+     20,
+     4.96969696969697
+    ]
+   },
+   "ms": 174,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 78
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 96
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 11
+    },
+    "occtComponents": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 23760,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30.242424242424242,
+     20,
+     4.96969696969697
+    ],
+    "faces": 11,
+    "kernelFaces": 11,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 0,
+    "dBbox": 0,
+    "dCom": 0,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r6-web-circle-0.05",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.circle(8, { at: [15, 20] }); const pk = pocket(p1, plate, 4); repeat(pk, { count: 2, step: [8.05, 0, 0] });",
+  "note": "circle pockets 0.05 mm apart (the kernel keeps this wall: built)",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-circle-0.05",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket2",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23597.8761403405,
+    "com": [
+     30.187021464707943,
+     20,
+     4.948877959533138
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 10,
+    "types": {
+     "plane": 8,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 8,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23597.87614034051,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 10,
+    "dVol": 4.624965550445363e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30.186404065788523,
+     20.00000000000002,
+     4.949046724613629
+    ]
+   },
+   "ms": 601,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 80
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 210
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket2",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 309
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 8
+    },
+    "occtTypes": {
+     "plane": 8,
+     "cylinder": 2
+    },
+    "occtComponents": {
+     "plane": 8,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 23597.942934595558,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10.000000000000004
+    ],
+    "com": [
+     30.186989870474914,
+     20.000000000000043,
+     4.948886595769935
+    ],
+    "faces": 10,
+    "kernelFaces": 12,
+    "shells": 1,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.0000028305197747432276,
+    "dBbox": 3.552713678800501e-16,
+    "dCom": 4.339801666375676e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   },
+   {
+    "id": "pocket2",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r6-web-hole-0.05",
+  "row": "web",
+  "src": "const b = box(60, 40, 10); const h = hole(b, { across: 6, deep: 10, at: [-3, 0] }); repeat(h, { count: 2, step: [6.05, 0, 0] });",
+  "note": "holes 0.05 mm apart (built)",
+  "mapAngle": false,
+  "featureKinds": [
+   "box",
+   "hole",
+   "hole"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-hole-0.05",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "hole2",
+   "control": false,
+   "featureKinds": [
+    "box",
+    "hole"
+   ],
+   "occt": {
+    "volume": 23434.51332235383,
+    "com": [
+     -0.0006032626642017232,
+     8.142339727398089e-17,
+     1.548375194086573e-16
+    ],
+    "bbox": [
+     -30,
+     -20,
+     -5,
+     30,
+     20,
+     5
+    ],
+    "faces": 8,
+    "types": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23434.51332235384,
+    "bbox": [
+     -30,
+     -20,
+     -5,
+     30,
+     20,
+     5
+    ],
+    "faces": 8,
+    "dVol": 4.657206348238732e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     -0.0006005937653550472,
+     -1.1368947456949256e-19,
+     5.85121829117655e-17
+    ]
+   },
+   "ms": 801,
+   "truckFeatures": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "pick": null,
+     "wallMs": 101
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "built",
+     "pick": null,
+     "wallMs": 264
+    },
+    {
+     "id": "hole2",
+     "kind": "hole",
+     "status": "built",
+     "pick": null,
+     "wallMs": 436
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "cylinder": 2,
+     "plane": 6
+    },
+    "occtTypes": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "occtComponents": {
+     "plane": 6,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "faceKeys": {
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 23434.60725177566,
+    "bbox": [
+     -30,
+     -20,
+     -5.0000000000000036,
+     30,
+     20,
+     5.0000000000000036
+    ],
+    "com": [
+     -0.0006031600424866884,
+     -5.752948243390462e-18,
+     -8.279444767034583e-16
+    ],
+    "faces": 8,
+    "kernelFaces": 10,
+    "shells": 1,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000004008166098336382,
+    "dBbox": 7.105427357601002e-16,
+    "dCom": 1.4096176650560987e-9,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built"
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ },
+ {
+  "id": "r6-web-floor-0.05",
+  "row": "web",
+  "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,40],[0,40]]); const plate = extrude(s1, 10); const p1 = sketch('top', 10); p1.rect(10, 6, { at: [30, 20] }); pocket(p1, plate, 9.95);",
+  "note": "a pocket leaving a 0.05 mm floor (the kernel keeps it: built)",
+  "mapAngle": false,
+  "featureKinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket"
+  ],
+  "doc": [],
+  "fx": {
+   "id": "r6-web-floor-0.05",
+   "kind": "web",
+   "tol": "approx",
+   "measureId": "pocket1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket"
+   ],
+   "occt": {
+    "volume": 23402.999999999996,
+    "com": [
+     30,
+     20.000000000000007,
+     4.999362261248559
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 11,
+    "types": {
+     "plane": 11
+    },
+    "components": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "occtRefusals": {},
+   "brepRefusals": {},
+   "brep": {
+    "volume": 23403,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "faces": 11,
+    "dVol": 1.5544925039916734e-16,
+    "dBbox": 0,
+    "pass": true,
+    "com": [
+     30,
+     20,
+     4.9993622612485575
+    ]
+   },
+   "ms": 176,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null,
+     "wallMs": 78
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null,
+     "wallMs": 97
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "faceTypes": {
+     "plane": 11
+    },
+    "occtTypes": {
+     "plane": 11
+    },
+    "occtComponents": {
+     "plane": 11
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "plane": "equal"
+    },
+    "volume": 23403,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     10
+    ],
+    "com": [
+     30,
+     20,
+     4.9993622612485575
+    ],
+    "faces": 11,
+    "kernelFaces": 11,
+    "shells": 1,
+    "curved": false,
+    "bodies": 1,
+    "dVol": 1.5544925039916734e-16,
+    "dBbox": 0,
+    "dCom": 9.760055089365168e-17,
+    "tol": 1e-9,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.000001,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "commands": [
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built"
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built"
+   }
+  ],
+  "outcome": "PASS"
+ }
+]

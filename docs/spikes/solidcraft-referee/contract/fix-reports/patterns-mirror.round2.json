@@ -1,20 +1,72 @@
 {
  "group": "patterns-mirror",
  "round": 2,
- "status": "DRAFT, written early; updated at the end of the round",
  "changes": [
-  {"file": "pm-translate.mjs", "what": "New guard 'web' (thin wall between flat-sided cuts, and between a flat-sided cut and the side of the part): webCut(), polyDist(), WEB_REL = 1% of the part's bounding-box diagonal; toolBoxOf() now returns the footprint polygon; new student sentence. Curved-contact refusals now carry a [curved-near gap=...] tag and a sentence that no longer says 'meet only along an edge or at a point' for copies that are apart."},
-  {"file": "pm-preflight.mjs", "what": "NEW. Source-level front door: repeatAround/polarPattern with |angle| >= 360 other than 360, a non-numeric angle, or options not written inline are refused in one plain sentence."},
-  {"file": "pm-run.mjs", "what": "'web' in ALL_PATCHES; records the preflight verdict beside each case (rec.preflight); --r6 flag for the new cases."},
-  {"file": "pm-cases-r6.mjs", "what": "NEW. r6-web-*, r6-gap-*, r6-pf-* cases."},
-  {"file": "pm-web-probe.mjs", "what": "NEW. Wall sweep, every case built guard OFF and ON, closed form / differential oracle."},
-  {"file": "pm-web-fuzz.mjs", "what": "NEW. Fuzz of the wall guard against a closed form."},
-  {"file": "pm-snap-fuzz.mjs", "what": "'web' added to the patch list."},
-  {"file": "pm-make-rows.py", "what": "Rows rebuilt; rows 25 (now refused), 76 (still wrong, text updated), three new rows."}
+  {
+   "file": "pm-translate.mjs",
+   "what": "New guard 'web' (WEB_REL = 1% of the part's bounding-box diagonal): refuses a flat wall left between two flat-sided cuts, or a cut and the side of the part. New plain sentence. Curved-contact refusals now carry a [curved-near gap=] tag and a sentence that no longer claims 'meet only along an edge or at a point'."
+  },
+  {
+   "file": "pm-preflight.mjs",
+   "what": "NEW source-level front door: repeatAround/polarPattern with |angle|>=360 (not 360), a non-numeric angle, or options not inline are refused in one sentence."
+  },
+  {
+   "file": "pm-run.mjs, pm-snap-fuzz.mjs, pm-count-truck.mjs",
+   "what": "'web' patch added; --r6 case set; preflight verdict recorded per case; count-truck handles r3-pocket-count-60 with a closed form."
+  },
+  {
+   "file": "pm-cases-r6.mjs, pm-web-probe.mjs, pm-web-fuzz.mjs, pm-gap-probe.mjs",
+   "what": "NEW cases, wall sweep (178 cases, guard off and on), wall fuzz (closed form), curved near-gap probe."
+  },
+  {
+   "file": "pm-make-rows.py, patterns-mirror.json",
+   "what": "Rows rebuilt: 89 rows (was 86). Row 25 now refused; row 76 still wrong (text updated); new rows for thin walls (refused), wide walls/circles/holes/floors (supported), near-touching curved copies (refused with a true sentence); count rows rewritten from the replays."
+  },
+  {
+   "file": "pm-results*.json, pm-web-probe.json, pm-web-fuzz-*.json, pm-gap-probe.json, pm-count-truck.json",
+   "what": "Live evidence from this round (560 of 566 cases fresh)."
+  }
  ],
- "defectsResolved": [],
- "defectsOpen": [],
+ "defectsResolved": [
+  {
+   "defect": "BLOCKING thin web silently dropped (repeat/mirror of pocket, 0.15 mm or less)",
+   "how": "Probe: 178 cases, 57 lost with guard off, largest lost wall 0.24% of the diagonal (60x40x10 plate: up to 0.17 mm), 0 lost or wrong with guard on. Kernel loss scales with the part, not a fixed length. Guard refuses up to 1% of the diagonal (0.73 mm on that plate), 4x margin, chosen after seeing the probe (said in the row). Fuzz (closed form, 700 trials x seeds 1,2,3; mirror, repeat, hand-written pockets of other sizes/depths, plate-edge walls, two-axis repeats): guard off 407 wrong (largest wall 0.249% of diagonal), guard on 0 wrong on all three seeds; every trial wrong with guard off is refused with it on. Circles, holes, floors and corner-to-corner pairs were not lost by the kernel (corner pairs refused anyway)."
+  },
+  {
+   "defect": "Row 25 (angle 720 / -360) unrefused wrong",
+   "how": "Guarded at the source level (packages/script untouched): refused with one sentence, row now 'refused'; 360 and omitted angle unaffected."
+  },
+  {
+   "defect": "False sentence 'meet only along an edge or at a point' for curved copies a hair apart",
+   "how": "New sentence says the copies lie too close to tell whether they touch; pm-gap-probe.json (20 pairs, gaps 1e-6..5 mm) shows spheres refused up to 1e-3 mm, cylinders up to 3e-4, the rest built within the curved bar."
+  },
+  {
+   "defect": "8 stored-not-replayed cases",
+   "how": "Replayed one at a time under the 1500M cap: r3-pocket-count-40 and r3-hole-count-60 fully with OCCT (pass); r3-box-count-1000, r3-box-count-1001, r3-box-count-1e5, r3-around-count-1001, r3-pocket-count-60, r3-around-count-360 truck-alone (OCCT oracle does not fit the cap) with closed forms/sentences. The pocket-count row moved from unsupported to supported; around-360 is a refusal after ~490 s."
+  }
+ ],
+ "defectsOpen": [
+  {
+   "defect": "Row 76 (partial angle spaced angle/(count-1) for pocket/hole but angle/count for whole shapes)",
+   "why": "Language defect in packages/script, which may not be edited. A source guard would also refuse partial pocket/hole turns that match FreeCAD, losing a measured feature. Kept WRONG and labelled; the whole-shape side is already refused by the translator."
+  },
+  {
+   "defect": "Minor: curved bar 3e-4 cannot see a lost lens/sliver on curved copies",
+   "why": "Oracle limit (tessellated volume). Not changed; no tolerance was loosened."
+  },
+  {
+   "defect": "Minor: row 58 time-budget sentence shown with a 3 s demo limit",
+   "why": "No suite case reaches 600 s; r3-around-count-360 takes ~490 s and is refused for another reason."
+  },
+  {
+   "defect": "Thin-wall guard scope",
+   "why": "Walls to non-box part outlines, between cuts from different axes (slanted), or to bosses/join seams are not covered or not measured; stated in the row."
+  }
+ ],
  "rowsDowngraded": [],
- "rigNotesForRIGmd": "see the end of the round",
- "commands": {}
+ "rigNotesForRIGmd": "New: pm-run.mjs --r6 (cases pm-cases-r6.mjs); PM_OFF=web negative control (pm-results-weboff.json); bun pm-web-probe.mjs --out=pm-web-probe.json; bun pm-web-fuzz.mjs --n=700 --seed=N [PM_OFF=web]; bun pm-gap-probe.mjs; pm-count-truck.mjs now also takes r3-pocket-count-60 and r3-around-count-360. All under systemd-run --user --scope -p MemoryMax=1500M -p MemorySwapMax=0 timeout 900.",
+ "commands": {
+  "rebuildRows": "python3 docs/spikes/solidcraft-referee/contract/pm-make-rows.py",
+  "replay": "SOLIDCRAFT_REFEREE_PKG=<pkg> systemd-run --user --scope -q -p MemoryMax=1500M -p MemorySwapMax=0 timeout 900 bun docs/spikes/solidcraft-referee/contract/pm-run.mjs --r6 --out=<scratch>"
+ }
 }
