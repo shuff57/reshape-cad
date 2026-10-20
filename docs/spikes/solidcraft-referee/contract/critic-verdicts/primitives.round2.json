@@ -1,0 +1,127 @@
+{
+ "group": "primitives",
+ "verdict": "accepted",
+ "summary": "Builder assert script passes and leaves primitives.json byte-identical; guard-check 7653 recorded cases: 0 wrong-and-accepted, 0 sentence-lint problems; a fresh seed-77 fuzz of 300 inputs the current guard accepts came out 300/300 correct vs live OCCT. 11 stored g1 cases replayed bit-identically. Only minor/one major row-status inconsistency found; the guard is still an unwired prototype, which the rows state.",
+ "rowsTotal": 62,
+ "rowsEvidenceChecked": 62,
+ "rowsReplayed": 11,
+ "replays": [
+  {
+   "feature": "box turn",
+   "command": "primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-box-turn-r1",
+   "stored": "dV 3.79e-16, 6 faces",
+   "live": "dV 3.79e-16, 6 faces",
+   "match": true
+  },
+  {
+   "feature": "box corner near X",
+   "command": "primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-box-corner-nearX-r1",
+   "stored": "1.4e-4, 26",
+   "live": "1.4e-4, 26",
+   "match": true
+  },
+  {
+   "feature": "cyl corner near H",
+   "command": "primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-cyl-corner-nearH-r1",
+   "stored": "4.25e-5, 5",
+   "live": "4.25e-5, 5",
+   "match": true
+  },
+  {
+   "feature": "cyl chamfer near H",
+   "command": "primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-cyl-chamfer-nearH-r1",
+   "stored": "3.24e-5, 5",
+   "live": "3.24e-5, 5",
+   "match": true
+  },
+  {
+   "feature": "sphere min",
+   "command": "primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-sph-min-r1",
+   "stored": "2.84e-4, 1",
+   "live": "2.84e-4, 1",
+   "match": true
+  },
+  {
+   "feature": "cone turn",
+   "command": "primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-cone-turn-r1",
+   "stored": "1.82e-4, 2",
+   "live": "1.82e-4, 2",
+   "match": true
+  },
+  {
+   "feature": "cone slender",
+   "command": "primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-cone-slender-r1",
+   "stored": "1.82e-4, 2",
+   "live": "1.82e-4, 2",
+   "match": true
+  },
+  {
+   "feature": "prism7",
+   "command": "primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-prism7-r1",
+   "stored": "0, 9",
+   "live": "0, 9",
+   "match": true
+  },
+  {
+   "feature": "wedge docrot",
+   "command": "primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-wedge-docrot-r1",
+   "stored": "3.8e-16, 5",
+   "live": "3.8e-16, 5",
+   "match": true
+  },
+  {
+   "feature": "sphere far ok",
+   "command": "primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-sph-far-ok-r1",
+   "stored": "7.1e-5, 1",
+   "live": "7.1e-5, 1",
+   "match": true
+  },
+  {
+   "feature": "big cone",
+   "command": "primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-big-cone-r1",
+   "stored": "1.18e-4, 2",
+   "live": "1.18e-4, 2",
+   "match": true
+  },
+  {
+   "feature": "fresh fuzz seed 77 (300 guard-accepted inputs, planar+curved)",
+   "command": "fuzz-gen --seed=77 --guard=current; primitives-sweep fuzz-spec",
+   "stored": "n/a (new)",
+   "live": "300/300 good vs OCCT",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "major",
+   "feature": "rows 19, 27, 43 (refused: sphere corner/rotate, cone 3rd value, unknown option names)",
+   "problem": "Status 'refused' but the sentence quoted in refusalSentence comes from the unwired call-lint; what fires today is the interpreter text (two sentences for 19 and 43, a misleading one for 27). Rows say so in evidence, yet the status rule (a plain sentence is shown today) is not met; row 44 with the same wiring state is marked wrong.",
+   "evidenceFile": "primitives.json; primitives.call-lint.mjs"
+  },
+  {
+   "severity": "minor",
+   "feature": "curved volume bar 3e-4",
+   "problem": "Empirical mesh allowance; sphere(1) is 2.84e-4, within 6% of the bar. Disclosed in rows; no second tighter oracle exists.",
+   "evidenceFile": "primitives-r4/results/e17-sliders.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 58/59 wedge orientation and prism phase",
+   "problem": "Closed form agrees with the project's own definition only; external reference exists for n=6 only. Honestly marked unsupported for the convention.",
+   "evidenceFile": "primitives-r4/results/e28-orientation.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "guard envelope",
+   "problem": "Constants are fits to measurements; guard refuses 2550 of 6128 recorded correct builds (e.g. too-far-planar 850, too-small 771), an over-refusal cost, not a safety hole.",
+   "evidenceFile": "gc.json (scratch)"
+  }
+ ],
+ "notMeasured": [
+  "move(copy:true) of a primitive is not folded by guardDoc (delegated to patterns/move-turn groups)",
+  "external orientation reference for wedge and prism n!=6",
+  "build time acceptable only with an unwired Worker/budget",
+  "ring builds take up to 69 s"
+ ],
+ "criticAt": "2026-10-19"
+}
