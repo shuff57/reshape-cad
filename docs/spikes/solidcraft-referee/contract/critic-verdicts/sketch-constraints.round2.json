@@ -1,0 +1,138 @@
+{
+ "group": "sketch-constraints",
+ "verdict": "not-accepted",
+ "summary": "Live replays of the guard reproduce the stored outputs byte for byte (stored-run 116 cases, probes, axes, redundant) and I found no silently wrong solid passing the guard, including the floating slot (refused at 2/3.5/6/15%). But the rows misreport the guard: rows 57/66/67/123 label guarded builds WRONG when the oracle scores an identical (symmetric) solid or a correctly built unruled circle as wrong, and row 138 claims the critic's 3.5% start could not be reproduced when it reproduces exactly (3634.8, unguarded wrong).",
+ "rowsTotal": 139,
+ "rowsEvidenceChecked": 139,
+ "rowsReplayed": 11,
+ "replays": [
+  {
+   "feature": "slot-r6-L30-floating critic 3.5% start (r4 geomBox)",
+   "command": "scSketch with r4-style roughen (arc ends only in geomBox), supplied pkg",
+   "stored": "row 138: unguarded builds 4730.76 RIGHT, 'could not be reproduced'",
+   "live": "unguarded 3634.80, bbox y -11.48..12.52 (WRONG, matches the critic's 3634.8); ladderSketch REFUSED stage underconstrained",
+   "match": false
+  },
+  {
+   "feature": "floating slot 3.5%/15%",
+   "command": "bun floating-slot.mjs --out=<scratch>",
+   "stored": "3.5%: 40 RIGHT unguarded/40 REFUSED; 15%: 31 RIGHT, 8 WRONG, 1 refused / 40 REFUSED",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "floating slot, 60 starts r4-style (2/3.5/6%)",
+   "command": "scratch fs5.mjs",
+   "stored": "n/a",
+   "live": "unguarded 59 right 1 wrong (6%); guarded 60 REFUSED",
+   "match": true
+  },
+  {
+   "feature": "stored-run (116 stored+rough cases)",
+   "command": "bun stored-run.mjs --out=<scratch>",
+   "stored": "out/stored.json",
+   "live": "byte-identical",
+   "match": true
+  },
+  {
+   "feature": "probes (refusal sentences)",
+   "command": "bun probes.mjs --out=<scratch>",
+   "stored": "out/probes.json",
+   "live": "byte-identical",
+   "match": true
+  },
+  {
+   "feature": "axes rows",
+   "command": "bun axes.mjs --out=<scratch>",
+   "stored": "out/axes.json",
+   "live": "byte-identical",
+   "match": true
+  },
+  {
+   "feature": "redundant/conflicting (192 shuffled runs)",
+   "command": "bun redundant.mjs --out=<scratch>",
+   "stored": "out/redundant.json",
+   "live": "byte-identical",
+   "match": true
+  },
+  {
+   "feature": "sweeps rounded-rect-4-lines-4-arcs, tangent-line-circle, symmetric-about-construction-line @15%,40%",
+   "command": "bun run-sweeps.mjs --n=20",
+   "stored": "N=40 tallies",
+   "live": "consistent (rounded-rect 15%: guarded 18 built right/2 refused, 0 wrong; unguarded 8 wrong volumes)",
+   "match": true
+  },
+  {
+   "feature": "scale sweep curved fixtures 1e-3..1e3",
+   "command": "out/scale.txt vs guard code (not re-run, file untouched)",
+   "stored": "tiny curved refused, >=0.1 built dv ~1e-4",
+   "live": "not replayed (read stored only)",
+   "match": "not replayed (resource)"
+  },
+  {
+   "feature": "adversarial: hole d 10..0.001 in plate (also x100, x1000)",
+   "command": "ladderSketch scratch adv1.mjs",
+   "stored": "n/a",
+   "live": "all built with hole present (faces 7), dv <=1.4e-5",
+   "match": true
+  },
+  {
+   "feature": "adversarial: overlapping holes, hole touching edge, gap 1e-4, coincident circles, island in hole, two disjoint rects",
+   "command": "scratch adv2.mjs",
+   "stored": "n/a",
+   "live": "first four refused with one sentence; island built bodies 2 vol 48221 vs closed 48219 (4e-5); disjoint rects bodies 2 vol 2000",
+   "match": true
+  },
+  {
+   "feature": "build-rows.mjs",
+   "command": "bun sketch-constraints-r5/build-rows.mjs",
+   "stored": "139 rows",
+   "live": "passes (no ROW CHECK FAILED). Running sketch-constraints-recheck.mjs after it (per RIG round-4 note) rewrites round to 4 and appends stale 'guarded route could not be re-run' notes; file restored with git checkout",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "major",
+   "feature": "rows 57, 66, 67 (guarded route) and 51/12/15 totals",
+   "problem": "The rows say the guarded route builds WRONG (slot-hand-rows-R10-L40: 23/40 at 3.5%, 26/40 at 15%; perm-test 'WRONG':16 per order; probes '188 wrong'). Every one of these is classify()==MATCH-OTHER-SIDE ('image y about 10', dv 3.7e-5, bbox identical to the stored build): the slot is symmetric about y=10, so the mirror image is the same solid. perm-test.mjs line 11/47 and the sweep count fold MATCH-OTHER-SIDE into WRONG. Status 'wrong' for guarded-route rows is not supported by the evidence, and the !!WRONG-PASSED flags in sweeps.txt are false alarms; a gate reading these rows would think the guard is unsafe.",
+   "evidenceFile": "sketch-constraints-r5/out/sweeps.txt, perm-test.mjs, out/probes.json"
+  },
+  {
+   "severity": "major",
+   "feature": "row 138 / floating-slot.mjs",
+   "problem": "Row text says the critic's 3.5% start 'builds 4730.76 (RIGHT) ... could not be reproduced'. floating-slot.mjs's criticRoughen is not verbatim: its local geomBox adds arc circle boxes, whereas r4 remeasure-fixtures.mjs geomBox uses only ends (amp changes about 1.35x). With the r4 geomBox I reproduced exactly 3634.80 / bbox y -11.48 (unguarded WRONG), and the guard REFUSES it (underconstrained). The guard behaviour is right but the row's evidence statement and the replay script are wrong.",
+   "evidenceFile": "sketch-constraints-r5/floating-slot.mjs, out/floating-slot.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 123 (under-constrained, guarded) status wrong",
+   "problem": "The 40 'different-solid' guarded builds are free-circle (no rules) from a rough start; building the circle as drawn is correct, the oracle compares with the stored circle. Status 'wrong' is an oracle artifact (BUILT-WRONG 40 per amplitude in sweeps.json).",
+   "evidenceFile": "sketch-constraints-r5/out/underconstrained.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 120 refusalSentence",
+   "problem": "Stored sentence is garbled: every letter e replaced by '#' ('Arc # has an #nd that is not on its circl#...'), a masking bug. Row 81's sentence is fine.",
+   "evidenceFile": "sketch-constraints.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "guard tolerances",
+   "problem": "Planar build accepted at 1e-6 relative (CMP_TOL.planar) though status bar says 1e-9; curved shape (bbox/COM) at 2e-3 and no face-count check for curved outlines, so a feature whose area is below 3e-4 of the part is not detectable by volume. Not shown to hide a real error in any run.",
+   "evidenceFile": "sketch-constraints-r5/guard.mjs:257"
+  },
+  {
+   "severity": "minor",
+   "feature": "RIG.md round-4 recipe",
+   "problem": "Running build-rows.mjs and then sketch-constraints-recheck.mjs (RIG round-4 instructions) overwrites the round-6 file with round 4 and stale notes.",
+   "evidenceFile": "RIG.md, sketch-constraints-recheck.mjs"
+  }
+ ],
+ "notMeasured": [
+  "wrapper2 / @sketch dump (told not needed)",
+  "full run-all chain (placement, param-drags, jitter, arcs-fuzz, extras, legacy-run not re-run; scale.txt read only)",
+  "OCCT/brep-rs second oracle for built-in-axis and construction rows (cannot referee), those rows rest on the closed form only"
+ ],
+ "criticAt": "2026-10-20T06:38:35Z"
+}
