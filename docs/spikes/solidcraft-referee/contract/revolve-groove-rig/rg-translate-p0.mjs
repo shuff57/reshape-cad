@@ -394,7 +394,7 @@ function aggregate(res, names) {
  */
 export function translateDoc(doc, ctx) {
   const st = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0 };
-  const accepted = [];
+  const accepted = []; st.accepted = accepted;  // G10: the guard reads the commands already accepted
   const out = [];
   doc.features.forEach((f, idx) => {
     const prefix = doc.features.slice(0, idx);

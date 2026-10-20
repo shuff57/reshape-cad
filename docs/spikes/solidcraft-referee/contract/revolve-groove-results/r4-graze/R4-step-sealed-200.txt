@@ -1,0 +1,1 @@
+R4-step-sealed-200                       PASS     occtV 38289.5773 | tr-occt dV 1.0e-5 dBb 0.0e+0 dCom 1.3e-6 F o/b/t 17/-/17 | brep-occt dV -     | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 201 cpu 495

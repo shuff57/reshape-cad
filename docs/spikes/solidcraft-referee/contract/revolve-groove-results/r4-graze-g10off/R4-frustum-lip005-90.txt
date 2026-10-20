@@ -1,0 +1,1 @@
+R4-frustum-lip005-90                     FAIL     occtV 54985.7254 | tr-occt dV 1.6e-4 dBb 1.3e-5 dCom 2.7e-5 F o/b/t 8/-/7 | brep-occt dV -     | BREP REFUSED: groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by rev1, or its surface pair is unsupported) -- groove1 is shown without it. | ms 1635 cpu 2016

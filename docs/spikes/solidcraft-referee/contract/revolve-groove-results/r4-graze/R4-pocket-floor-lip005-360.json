@@ -1,0 +1,268 @@
+[
+ {
+  "id": "R4-pocket-floor-lip005-360",
+  "src": "const k = sketch('top'); k.rect(60, 40, { at: [0, 0] }); const b = extrude(k, 30); const q = sketch('top', 30); q.rect(10, 10, { at: [20, 0] }); const t = pocket(q, b, 10); const r = sketch('top'); r.polygon([[15,10],[25,10],[25,19.95],[15,19.95]]); groove(r, t, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "extrude",
+   "sketch",
+   "pocket",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R4-pocket-floor-lip005-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "extrude",
+    "pocket",
+    "groove"
+   ],
+   "occt": {
+    "volume": 60530.00627908343,
+    "com": [
+     -0.3304145989314989,
+     -1.5879287351987607e-16,
+     14.839116980886239
+    ],
+    "bbox": [
+     -30,
+     -20.000000000000004,
+     0,
+     30,
+     20.000000000000004,
+     30
+    ],
+    "faces": 17,
+    "area": 14567.94549989678,
+    "types": {
+     "plane": 13,
+     "cylinder": 4
+    },
+    "components": {
+     "plane": 13,
+     "cylinder": 3
+    },
+    "bigCylinderComponents": 1,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 60530.0062793291,
+    "bbox": [
+     -30,
+     -20.000000000000004,
+     0,
+     30,
+     20.000000000000004,
+     30
+    ],
+    "faces": 16,
+    "dVol": 4.058692935041002e-12,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 39,
+   "load": [
+    5.9,
+    5.9
+   ],
+   "cpuMs": 138,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "pocket1",
+     "kind": "pocket",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): the ring ends 0.05 mm short of what may be a flat face inside the part, which could leave a wall thinner than 0.25 mm that cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": null,
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": false,
+       "curved": 0,
+       "headTypes": {
+        "plane": 11
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 25,
+       "nearest": 20,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        -30,
+        -20
+       ],
+       [
+        30,
+        -20
+       ],
+       [
+        30,
+        20
+       ],
+       [
+        -30,
+        20
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 30,
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_pull1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk2_1",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        30
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        1,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        15,
+        -5
+       ],
+       [
+        25,
+        -5
+       ],
+       [
+        25,
+        5
+       ],
+       [
+        15,
+        5
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.extrude",
+     "params": {
+      "distance": 10,
+      "direction": "negative",
+      "sketch": "sk_sk2_1",
+      "operation": "cut",
+      "targets": [
+       "b_pull1"
+      ]
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): the ring ends 0.05 mm short of what may be a flat face inside the part, which could leave a wall thinner than 0.25 mm that cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
+    "firstRefusal": "groove1 (groove): the ring ends 0.05 mm short of what may be a flat face inside the part, which could leave a wall thinner than 0.25 mm that cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 214
+ }
+]

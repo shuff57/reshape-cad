@@ -1,0 +1,1 @@
+R4-pocket-wall-tangent-360               PASS     occtV 68615.9745 | tr-occt dV 4.9e-6 dBb 0.0e+0 dCom 6.5e-7 F o/b/t 15/15/15 | brep-occt dV 2.5e-12      | ms 519 cpu 962

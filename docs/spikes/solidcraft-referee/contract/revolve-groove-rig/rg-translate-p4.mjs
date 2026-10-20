@@ -489,7 +489,7 @@ function makeEnv(st, accepted, prefix, ctx, shapeCache) {
 export async function translateDoc(doc, ctx) {
   const st = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} };
   const shapeCache = new Map();
-  const accepted = [];
+  const accepted = []; st.accepted = accepted;  // G10: the guard reads the commands already accepted
   const out = [];
   for (let idx = 0; idx < doc.features.length; idx++) {
     const f = doc.features[idx];

@@ -55,12 +55,12 @@
    "brep": {
     "refused": "groove groove1: brep-rs supports only profiles parallel or perpendicular to the axis yet -- groove1 is shown without it."
    },
-   "ms": 47,
+   "ms": 15,
    "load": [
-    63.1,
-    63.1
+    7.4,
+    7.4
    ],
-   "cpuMs": 157,
+   "cpuMs": 70,
    "truckFeatures": [
     {
      "id": "sk1",
@@ -82,7 +82,7 @@
      "id": "groove1",
      "kind": "groove",
      "status": "refused",
-     "refusal": "groove1 (groove): the round wall of the ring touches or passes within 0 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
+     "refusal": "groove1 (groove): the round wall of the ring touches a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
      "guard": {
       "cost": {
        "tool": "cone",
@@ -172,11 +172,11 @@
    ],
    "usesBrepPick": false,
    "truck": {
-    "refused": "groove1 (groove): the round wall of the ring touches or passes within 0 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
-    "firstRefusal": "groove1 (groove): the round wall of the ring touches or passes within 0 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it."
+    "refused": "groove1 (groove): the round wall of the ring touches a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
+    "firstRefusal": "groove1 (groove): the round wall of the ring touches a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it."
    },
    "outcome": "REFUSED"
   },
-  "caseMs": 234
+  "caseMs": 65
  }
 ]

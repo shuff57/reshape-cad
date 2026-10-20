@@ -1,0 +1,300 @@
+[
+ {
+  "id": "R4-frustum-lip03-180",
+  "src": "const s = sketch('top'); s.polygon([[0,0],[30,0],[20,30],[0,30]]); const t = spin(s, 360); const r = sketch('top'); r.polygon([[5,0],[15,0],[15,29.7],[5,29.7]]); groove(r, t, 180);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R4-frustum-lip03-180",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "groove"
+   ],
+   "occt": {
+    "volume": 50359.73023736878,
+    "com": [
+     -4.652557652412419e-8,
+     -1.2778066064407871,
+     12.68842794761222
+    ],
+    "bbox": [
+     -30,
+     -30,
+     0,
+     30,
+     30,
+     30
+    ],
+    "faces": 8,
+    "area": 11511.47061879712,
+    "types": {
+     "plane": 5,
+     "cone": 1,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 5,
+     "cone": 1,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by rev1, or its surface pair is unsupported) -- groove1 is shown without it."
+   },
+   "ms": 1667,
+   "load": [
+    3.6,
+    3.6
+   ],
+   "cpuMs": 2038,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "side": 1,
+      "kernelAngle": null,
+      "nudgeDeg": null
+     }
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": null,
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 1,
+       "headTypes": {
+        "cone": 1,
+        "plane": 2
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": false,
+       "rOuter": 15,
+       "nearest": 29.999624314898615,
+       "bodies": 1
+      },
+      "side": 1,
+      "kernelAngle": -180,
+      "nudgeDeg": null
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        30,
+        0
+       ],
+       [
+        20,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_rev1"
+     }
+    },
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk2_1",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        5,
+        0
+       ],
+       [
+        15,
+        0
+       ],
+       [
+        15,
+        29.7
+       ],
+       [
+        5,
+        29.7
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk2_1",
+      "angle": -180,
+      "operation": "cut",
+      "targets": [
+       "b_rev1"
+      ]
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "dArea": 0.000023909612213490126,
+    "area": 11511.195383998618,
+    "faceTypes": {
+     "cone": 1,
+     "cylinder": 2,
+     "plane": 5
+    },
+    "occtTypes": {
+     "plane": 5,
+     "cone": 1,
+     "cylinder": 2
+    },
+    "occtComponents": {
+     "plane": 5,
+     "cone": 1,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 0,
+    "faceKeys": {
+     "cone": "equal",
+     "cylinder": "equal",
+     "plane": "equal"
+    },
+    "volume": 50358.62834298866,
+    "bbox": [
+     -30,
+     -29.999624314898618,
+     -1.1102230246251564e-16,
+     29.999999999999996,
+     29.999624314898615,
+     30.000000000000004
+    ],
+    "com": [
+     -9.525518121219829e-15,
+     -1.2777599430277384,
+     12.688432152516247
+    ],
+    "faces": 8,
+    "kernelFaces": 14,
+    "curved": true,
+    "bodies": 1,
+    "dVol": 0.000021880466295660467,
+    "dBbox": 0.000012522836712847151,
+    "dCom": 5.184823672078744e-7,
+    "tol": 0.0003,
+    "faceKey": "equal",
+    "pick": null,
+    "comTol": 0.00003,
+    "geomOk": true
+   },
+   "outcome": "PASS"
+  },
+  "caseMs": 1729
+ }
+]

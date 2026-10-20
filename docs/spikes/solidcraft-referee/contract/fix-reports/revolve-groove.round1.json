@@ -1,0 +1,30 @@
+{
+ "group": "revolve-groove",
+ "round": 1,
+ "changes": [
+  {"file": "revolve-groove.guard.mjs", "what": "grazing() (G10) now runs for ANY part: uncertified parts use the bbox end planes along the ring axis (widest radial extent) plus candidatePlanes(), a generous list of inner-face plane positions taken from the accepted kernel commands (st.accepted); new refusal kind 'lip?' with its own sentence ('what may be a flat face inside the part'); tangent sentence no longer says 'within 0 mm' (exact touch reads 'touches a flat face')."},
+  {"file": "revolve-groove-rig/make-translators.mjs", "what": "eleventh asserted patch: translateDoc exposes st.accepted so the guard can read the commands already accepted; regenerated rg-translate-p0.mjs / rg-translate-p4.mjs."},
+  {"file": "revolve-groove-rig/cases-r4-graze.mjs", "what": "new: 63 probe cases on frustum, tube, pocket box, stepped plate, sphere (lips 0.01/0.05/0.3 mm, sealed rings by angle, tangent walls)."},
+  {"file": "revolve-groove-rig/make-rows-r3.mjs", "what": "loads r4-graze and r4-graze-g10off; new rows (lip on any part: refused; clear grooves / sealed rings / pocket-wall tangents on other parts: supported); graze regexes follow the new sentence; fitted-amplification disclosure added to the status rules; limit sentence of the old graze row updated."},
+  {"file": "revolve-groove.json", "what": "rebuilt by make-rows-r3.mjs: 44 rows (was 42); lint 0 failures."},
+  {"file": "revolve-groove-results/r4-graze, r4-graze-g10off", "what": "new result dirs (63 guarded cases, 17 guard-off controls)."},
+  {"file": "revolve-groove-results/r3/{r3-g0,fz3-g0,sl-g0} (14 ids)", "what": "re-run the 14 exact-tangent refusals so the stored sentence is the current one."}
+ ],
+ "defectsResolved": [
+  {"defect": "blocking: G10 only for certified box/cylinder; frustum lip 0.05 mm built silently", "how": "G10 now covers every part. Frustum lips (0.01, 0.05 mm; 90/180/360, mid and bottom lips) refused; with G10 off 11 of 13 built lips on frustum/step/pocket are wrong vs OCCT (dVol up to 1.9e-3, faces missing), with G10 on none builds wrong. Also probed tube, pocket box, stepped plate (inner and outer faces), sphere. Previously unprobed internal-face case (step plate, ring 0.05 under the base top, dVol 1.9e-3) found and covered by candidatePlanes()."},
+  {"defect": "minor: row 30 sentence 'within 0 mm'", "how": "exact tangent now reads 'touches a flat face'; stored sentences of the 14 affected cases regenerated."},
+  {"defect": "minor: amplification bar chosen after seeing data", "how": "disclosed in the status rules of the first row (fitted after the data, worst sf5-27-top--90 dVol 7.6e-4, oracle is exact Pappus); bar not changed."},
+  {"defect": "notMeasured: other uncertified targets for sealed rings and tangent walls", "how": "28 sealed-ring runs on frustum/step plate/sphere (all correct vs OCCT, 4 cost-refused), tube sealed refused by cost class, pocket-wall tangent 3 PASS, frustum wall 1 PASS."}
+ ],
+ "defectsOpen": [
+  {"defect": "inner flat faces that no kernel command names (made by hole, shell, draft) are not in candidatePlanes()", "why": "the measure gives bbox, volume and face counts only, no face list; stated as a limit in the row"},
+  {"defect": "near-tangent ROUND wall check is still certified-box only", "why": "no face geometry for other parts; probed pocket-wall and frustum-wall cases PASS but are not a sweep"},
+  {"defect": "cost claims of 12-25 s not re-timed", "why": "machine loaded; unchanged"}
+ ],
+ "rowsDowngraded": [],
+ "rigNotesForRIGmd": "Round 4 of revolve-groove: bun revolve-groove-rig/make-translators.mjs (eleven patches); probes: bash-loop one process per case: SOLIDCRAFT_REFEREE_PKG=<pkg> systemd-run --user --scope -p MemoryMax=1500M -p MemorySwapMax=0 bun revolve-groove-rig/rg-run.mjs --cases=./cases-r4-graze.mjs --translator=g0 --only=<id> --out=<dir> --res=<id>.json (RG_OFF=G10 for controls); results revolve-groove-results/r4-graze and r4-graze-g10off; rows: bun revolve-groove-rig/make-rows-r3.mjs then lint-rows.mjs.",
+ "commands": {
+  "rebuildRows": "bun docs/spikes/solidcraft-referee/contract/revolve-groove-rig/make-rows-r3.mjs && bun docs/spikes/solidcraft-referee/contract/revolve-groove-rig/lint-rows.mjs",
+  "replay": "SOLIDCRAFT_REFEREE_PKG=<pkg> systemd-run --user --scope -q -p MemoryMax=1500M -p MemorySwapMax=0 bun docs/spikes/solidcraft-referee/contract/revolve-groove-rig/rg-run.mjs --cases=./cases-r4-graze.mjs --translator=g0 --only=R4-frustum-lip005-90 --out=<dir> --res=<id>.json"
+ }
+}

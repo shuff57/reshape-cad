@@ -1,0 +1,1 @@
+R4-step-top-lip005-90                    FAIL     occtV 39625.3651 | tr-occt dV 5.9e-5 dBb 0.0e+0 dCom 9.6e-6 F o/b/t 17/-/16 | brep-occt dV -     | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 396 cpu 671

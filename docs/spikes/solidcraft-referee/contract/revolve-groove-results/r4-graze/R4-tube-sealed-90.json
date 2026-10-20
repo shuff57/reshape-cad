@@ -1,0 +1,197 @@
+[
+ {
+  "id": "R4-tube-sealed-90",
+  "src": "const s = sketch('top'); s.polygon([[10,0],[30,0],[30,30],[10,30]]); const t = spin(s, 360); const r = sketch('top'); r.polygon([[15,10],[25,10],[25,20],[15,20]]); groove(r, t, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R4-tube-sealed-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "groove"
+   ],
+   "occt": {
+    "volume": 72256.63103259164,
+    "com": [
+     -0.565115375116674,
+     -0.565115372573463,
+     14.999999999999993
+    ],
+    "bbox": [
+     -30,
+     -30,
+     0,
+     30,
+     30,
+     30
+    ],
+    "faces": 10,
+    "area": 14023.007675795092,
+    "types": {
+     "plane": 6,
+     "cylinder": 4
+    },
+    "components": {
+     "plane": 6,
+     "cylinder": 4
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "brep": {
+    "volume": 72256.63103256527,
+    "bbox": [
+     -30,
+     -30,
+     0,
+     30,
+     30,
+     30
+    ],
+    "faces": 10,
+    "dVol": 3.649224993884272e-13,
+    "dBbox": 0,
+    "pass": true
+   },
+   "ms": 582,
+   "load": [
+    7.7,
+    7.7
+   ],
+   "cpuMs": 824,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "side": 1,
+      "kernelAngle": null,
+      "nudgeDeg": null
+     }
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall.",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": null,
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 2,
+       "headTypes": {
+        "cylinder": 2,
+        "plane": 2
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": false,
+       "rOuter": 25,
+       "nearest": 30,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        10,
+        0
+       ],
+       [
+        30,
+        0
+       ],
+       [
+        30,
+        30
+       ],
+       [
+        10,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_rev1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall.",
+    "firstRefusal": "groove1 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 688
+ }
+]

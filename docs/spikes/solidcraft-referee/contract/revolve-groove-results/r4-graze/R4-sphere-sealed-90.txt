@@ -1,0 +1,1 @@
+R4-sphere-sealed-90                      PASS     occtV 112508.2869 | tr-occt dV 7.1e-5 dBb 1.2e-16 dCom 1.9e-8 F o/b/t 7/-/7 | brep-occt dV -     | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 6239 cpu 6600

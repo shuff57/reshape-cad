@@ -65,12 +65,12 @@
     "dBbox": 0,
     "pass": true
    },
-   "ms": 46,
+   "ms": 15,
    "load": [
-    61.6,
-    61.6
+    7.4,
+    7.4
    ],
-   "cpuMs": 152,
+   "cpuMs": 74,
    "truckFeatures": [
     {
      "id": "sk1",
@@ -92,7 +92,7 @@
      "id": "groove1",
      "kind": "groove",
      "status": "refused",
-     "refusal": "groove1 (groove): the round wall of the ring touches or passes within 0 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
+     "refusal": "groove1 (groove): the round wall of the ring touches a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
      "guard": {
       "cost": {
        "tool": "flat",
@@ -181,11 +181,11 @@
    ],
    "usesBrepPick": false,
    "truck": {
-    "refused": "groove1 (groove): the round wall of the ring touches or passes within 0 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
-    "firstRefusal": "groove1 (groove): the round wall of the ring touches or passes within 0 mm of a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it."
+    "refused": "groove1 (groove): the round wall of the ring touches a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it.",
+    "firstRefusal": "groove1 (groove): the round wall of the ring touches a flat face of the part, which cannot be built reliably here; move the ring edge onto that face or at least 0.25 mm away from it."
    },
    "outcome": "REFUSED"
   },
-  "caseMs": 336
+  "caseMs": 118
  }
 ]

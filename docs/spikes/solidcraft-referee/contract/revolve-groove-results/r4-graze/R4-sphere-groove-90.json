@@ -1,0 +1,127 @@
+[
+ {
+  "id": "R4-sphere-groove-90",
+  "src": "const t = sphere(60); const r = sketch('top'); r.polygon([[20,-5],[40,-5],[40,5],[20,5]]); groove(r, t, 90);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sphere",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R4-sphere-groove-90",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sphere",
+    "sketch",
+    "groove"
+   ],
+   "occt": {
+    "volume": 109235.79455922349,
+    "com": [
+     -0.5683902327749336,
+     -0.568390232163255,
+     -1.172145487878278e-15
+    ],
+    "bbox": [
+     -30,
+     -30,
+     -30,
+     30,
+     30,
+     30
+    ],
+    "faces": 6,
+    "area": 12095.992707221767,
+    "types": {
+     "sphere": 1,
+     "plane": 4,
+     "cylinder": 1
+    },
+    "components": {
+     "sphere": 1,
+     "plane": 4,
+     "cylinder": 1
+    },
+    "bigCylinderComponents": 0,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by ball1, or its surface pair is unsupported) -- groove1 is shown without it."
+   },
+   "ms": 2146,
+   "load": [
+    7.1,
+    7.1
+   ],
+   "cpuMs": 2440,
+   "truckFeatures": [
+    {
+     "id": "ball1",
+     "kind": "sphere",
+     "status": "built",
+     "pick": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall.",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": null,
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": true,
+       "curved": 1,
+       "headTypes": {
+        "sphere": 1
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": true,
+       "rOuter": 40,
+       "nearest": 30.000000000000004,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "solid.sphere",
+     "params": {
+      "radius": 30,
+      "center": [
+       0,
+       0,
+       0
+      ],
+      "body_name": "b_ball1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall.",
+    "firstRefusal": "groove1 (groove): a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part's own axis, or keep it clear of the round outside wall."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 2211
+ }
+]

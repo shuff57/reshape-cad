@@ -1,0 +1,1 @@
+R4-pocket-top-lip005-360                 FAIL     occtV 60142.4107 | tr-occt dV 4.6e-4 dBb 1.2e-15 dCom 9.1e-5 F o/b/t 21/24/19 | brep-occt dV 2.6e-11      | ms 3079 cpu 3502

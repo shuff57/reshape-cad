@@ -1,0 +1,1 @@
+R4-pocket-floor-lip005-360               PASS     occtV 60530.0063 | tr-occt dV 5.0e-6 dBb 1.8e-16 dCom 5.1e-8 F o/b/t 17/16/16 | brep-occt dV 4.1e-12      | ms 1042 cpu 1305

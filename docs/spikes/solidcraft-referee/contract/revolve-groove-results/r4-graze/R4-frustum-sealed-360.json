@@ -1,0 +1,187 @@
+[
+ {
+  "id": "R4-frustum-sealed-360",
+  "src": "const s = sketch('top'); s.polygon([[0,0],[30,0],[20,30],[0,30]]); const t = spin(s, 360); const r = sketch('top'); r.polygon([[5,10],[15,10],[15,20],[5,20]]); groove(r, t, 360);",
+  "translator": "g0",
+  "amp": null,
+  "kinds": [
+   "sketch",
+   "revolve",
+   "sketch",
+   "groove"
+  ],
+  "measureId": "groove1",
+  "fixture": {
+   "id": "R4-frustum-sealed-360",
+   "kind": "groove",
+   "tol": "approx",
+   "measureId": "groove1",
+   "control": false,
+   "featureKinds": [
+    "sketch",
+    "revolve",
+    "groove"
+   ],
+   "occt": {
+    "volume": 53407.07511102648,
+    "com": [
+     -6.556349686902886e-15,
+     -1.2156281347974479e-15,
+     12.79411764705882
+    ],
+    "bbox": [
+     -30,
+     -30,
+     0,
+     30,
+     30,
+     30
+    ],
+    "faces": 7,
+    "area": 11564.63870543662,
+    "types": {
+     "plane": 4,
+     "cone": 1,
+     "cylinder": 2
+    },
+    "components": {
+     "plane": 4,
+     "cone": 1,
+     "cylinder": 2
+    },
+    "bigCylinderComponents": 2,
+    "triangles": 0
+   },
+   "brep": {
+    "refused": "groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it."
+   },
+   "ms": 183,
+   "load": [
+    3.8,
+    3.8
+   ],
+   "cpuMs": 338,
+   "truckFeatures": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "pick": null,
+     "guard": {
+      "side": 1,
+      "kernelAngle": null,
+      "nudgeDeg": null
+     }
+    },
+    {
+     "id": "sk2",
+     "kind": "sketch",
+     "status": "noop"
+    },
+    {
+     "id": "groove1",
+     "kind": "groove",
+     "status": "refused",
+     "refusal": "groove1 (groove): a full-turn ring cut into a round part takes a minute or more here unless its axis is the part's own axis, so it is not built; centre the ring on the axis of the round part.",
+     "guard": {
+      "cost": {
+       "tool": "flat",
+       "shape": null,
+       "coaxial": false,
+       "kinds": [
+        "annulus",
+        "cylinder"
+       ],
+       "partial": false,
+       "curved": 1,
+       "headTypes": {
+        "cone": 1,
+        "plane": 2
+       },
+       "touchesAxis": false,
+       "worldAxis": true,
+       "reachesWall": false,
+       "rOuter": 15,
+       "nearest": 29.999624314898615,
+       "bodies": 1
+      }
+     }
+    }
+   ],
+   "commands": [
+    {
+     "command": "sketch.create",
+     "params": {
+      "name": "sk_sk1_0",
+      "plane": {
+       "origin": [
+        0,
+        0,
+        0
+       ],
+       "x_dir": [
+        1,
+        0,
+        0
+       ],
+       "y_dir": [
+        0,
+        0,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "command": "sketch.line",
+     "params": {
+      "points": [
+       [
+        0,
+        0
+       ],
+       [
+        30,
+        0
+       ],
+       [
+        20,
+        30
+       ],
+       [
+        0,
+        30
+       ]
+      ],
+      "closed": true
+     }
+    },
+    {
+     "command": "sketch.finish",
+     "params": {}
+    },
+    {
+     "command": "solid.revolve",
+     "params": {
+      "axis": "y",
+      "sketch": "sk_sk1_0",
+      "operation": "new",
+      "body_name": "b_rev1"
+     }
+    }
+   ],
+   "usesBrepPick": false,
+   "truck": {
+    "refused": "groove1 (groove): a full-turn ring cut into a round part takes a minute or more here unless its axis is the part's own axis, so it is not built; centre the ring on the axis of the round part.",
+    "firstRefusal": "groove1 (groove): a full-turn ring cut into a round part takes a minute or more here unless its axis is the part's own axis, so it is not built; centre the ring on the axis of the round part."
+   },
+   "outcome": "REFUSED"
+  },
+  "caseMs": 362
+ }
+]

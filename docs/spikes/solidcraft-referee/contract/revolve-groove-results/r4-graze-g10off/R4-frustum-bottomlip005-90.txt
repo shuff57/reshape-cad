@@ -1,0 +1,1 @@
+R4-frustum-bottomlip005-90               FAIL     occtV 58127.3181 | tr-occt dV 1.6e-4 dBb 1.3e-5 dCom 2.0e-5 F o/b/t 9/-/8 | brep-occt dV -     | BREP REFUSED: groove groove1 would leave a sealed cavity inside the part instead of opening onto a face -- groove1 is shown without it. | ms 1136 cpu 1485

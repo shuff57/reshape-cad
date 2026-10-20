@@ -278,8 +278,36 @@ export const GRAZE_MM = 0.25;     // mm. Measured (revolve-groove-results/r3/gra
  * faces 5 instead of 7, dVol up to 7.8e-4; near-tangent top face: dVol 1.2e-3, area 8e-3), silently. Checked only for a part the guard can prove is a plain box or cylinder.
  * Returns {kind, gap, what} or null. Exact coincidence of a ring PLANE with a part plane (d = 0) is fine and is not flagged.
  */
-export function grazing(p, fr, meas, s = GRAZE_MM) {
-  const sh = certifiedShape(meas);
+/**
+ * Positions along world axis `a` where a part built by `cmds` (the kernel commands already accepted, in order) MAY have a flat face perpendicular to that axis.
+ * The measure of a built part (bbox, volume, face counts) does not say where its inner flat faces are (a step, a pocket floor, the end of an earlier groove), so this is
+ * a deliberately generous superset taken from the commands that made the part: every scalar in them, the a-component of every 3-vector, and every origin/centre
+ * a-component combined with every scalar (sum and difference, and half of it for sizes). Over-listing only means a ring end near a spurious number is refused too.
+ */
+export function candidatePlanes(cmds, a) {
+  const nums = new Set(); const origins = new Set(); const scal = new Set();
+  const walk = (v, key) => {
+    if (typeof v === 'number' && Number.isFinite(v)) { nums.add(v); scal.add(Math.abs(v)); return; }
+    if (Array.isArray(v)) {
+      if (v.length === 3 && v.every((x) => typeof x === 'number')) { nums.add(v[a]); if (/origin|center|centre|at|position/i.test(key ?? '')) origins.add(v[a]); else scal.add(Math.abs(v[a])); }
+      for (const x of v) walk(x, key); return;
+    }
+    if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) walk(x, k);
+  };
+  for (const c of cmds ?? []) walk(c.params ?? {}, '');
+  const out = new Set(nums);
+  for (const o of origins) if (o !== 0) for (const n of scal) { for (const m of [1, 0.5]) { out.add(o + m * n); out.add(o - m * n); } }
+  for (const n of scal) { out.add(n / 2); }
+  return [...out].filter(Number.isFinite);
+}
+
+export function grazing(p, fr, meas, s = GRAZE_MM, cmds = null) {
+  // Round 4: any part, not only a certified box or cylinder. A part the guard cannot classify (frustum, tube, L-shape, box with a hole, ...) is treated by its bounding box:
+  // the two end planes of the box along the ring axis are the end faces the lip check looks at, and the radial extent of those faces is taken as the widest the box allows,
+  // so the rule can only over-refuse, never under-refuse, a ring end that stops 0 < d <= 0.25 mm short of an outer end face. (Faces inside the part are not visible to a
+  // measure of bbox + volume + face counts; that limit is stated in the rows.)
+  let sh = certifiedShape(meas);
+  if (!sh && meas?.bbox && fr) sh = { kind: 'any', bbox: meas.bbox };
   if (!sh || !fr) return null;
   const nl = Math.hypot(...fr.n) || 1; const nn = fr.n.map((x) => x / nl);
   const a = nn.findIndex((x) => Math.abs(Math.abs(x) - 1) < 1e-9);
@@ -298,8 +326,12 @@ export function grazing(p, fr, meas, s = GRAZE_MM) {
   const [fr0, fr1] = faceRadial();
   const radialOverlap = rmax >= fr0 - 1e-9 && rmin <= fr1 + 1e-9;
   // lips: a ring end plane just short of a part end face (perpendicular to the ring axis)
-  if (radialOverlap && (sh.kind === 'box' || sh.axis === a)) {
+  if (radialOverlap && (sh.kind === 'box' || sh.kind === 'any' || sh.axis === a)) {
     for (const f of [b[a], b[a + 3]]) for (const t of [lo, hi]) { const d = Math.abs(t - f); if (d > 1e-9 && d <= s) return { kind: 'lip', gap: d, what: 'the ring end' }; }
+  }
+  // a part the guard cannot classify may have flat faces inside its bounding box too (a step, a pocket floor, the end of an earlier groove): check the ring end against every plane position the part's own commands could have put there
+  if (sh.kind === 'any') {
+    for (const f of candidatePlanes(cmds, a)) for (const t of [lo, hi]) { const d = Math.abs(t - f); if (d > 1e-9 && d <= s && f > b[a] + 1e-9 && f < b[a + 3] - 1e-9) return { kind: 'lip?', gap: d, what: 'the ring end' }; }
   }
   // near-tangent round wall against a flat face parallel to the axis (box only)
   if (sh.kind === 'box') {
@@ -375,8 +407,17 @@ export function guardPlan(raw, f, st, ctx) {
     guard = { cost };
     if (meas && fr && ringMisses(p, fr, meas.bbox)) return { refusal: `${L}the ring does not reach the part, so it would cut nothing.`, guard };
     if (on('G9') && meas && fr && ringSealed(p, fr, meas)) return { refusal: `${L}the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part.`, guard };
-    const gz = on('G10') && meas && fr ? grazing(p, fr, meas) : null;
-    if (gz) return { refusal: `${L}${gz.kind === 'lip' ? `the ring ends ${num(gz.gap)} mm short of a face of the part, which leaves a wall thinner than ${GRAZE_MM} mm that cannot be built reliably here` : `the round wall of the ring touches or passes within ${num(gz.gap)} mm of a flat face of the part, which cannot be built reliably here`}; move the ring edge onto that face or at least ${GRAZE_MM} mm away from it.`, guard };
+    const gz = on('G10') && meas && fr ? grazing(p, fr, meas, GRAZE_MM, st.accepted) : null;
+    if (gz) {
+      const what = gz.kind === 'lip'
+        ? `the ring ends ${num(gz.gap)} mm short of a face of the part, which leaves a wall thinner than ${GRAZE_MM} mm that cannot be built reliably here`
+        : gz.kind === 'lip?'
+          ? `the ring ends ${num(gz.gap)} mm short of what may be a flat face inside the part, which could leave a wall thinner than ${GRAZE_MM} mm that cannot be built reliably here`
+          : gz.gap < 5e-4
+            ? 'the round wall of the ring touches a flat face of the part, which cannot be built reliably here'
+            : `the round wall of the ring passes within ${num(gz.gap)} mm of a flat face of the part, which cannot be built reliably here`;
+      return { refusal: `${L}${what}; move the ring edge onto that face or at least ${GRAZE_MM} mm away from it.`, guard };
+    }
     const g7 = on('G7') && meas && fr ? profilePlaneOnFlatFace(fr, meas.bbox, meas.faceTypes) : null;
     if (g7) {
       if (Math.abs(a) < 360) return { refusal: `${L}the ring starts in the flat plane ${g7.axis} = ${num(g7.at)}, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.`, guard };
