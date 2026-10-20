@@ -16,4 +16,4 @@ band-circle-across-0.002           TRUCK-REFUSED      This circle is 0.002 mm ac
 band-circle-across-0.003           TRUCK-REFUSED      This circle is 0.003 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger.  | occt 0.00007068583470577034 brep 0.0000706858347057704
 band-circle-across-0.005           TRUCK-REFUSED      This circle is 0.005 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger.  | occt 0.00019634954084936203 brep 0.0001963495408493621
 slot-short-micro-r0.001            TRUCK-REFUSED      Arc 1 has a radius of 0.001 mm; arcs under 0.003 mm cannot be built exactly here; make it larger.  | occt sk1: Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied brep 0.00009141592653589795
-wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/g5/round3b.json 18
+wrote results-guarded/round3b.json 18

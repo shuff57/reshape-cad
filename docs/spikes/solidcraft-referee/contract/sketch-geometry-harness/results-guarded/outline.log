@@ -41,7 +41,7 @@ chamfer-all4                       PASS               vol 10000.000000 occt 1000
 chamfer-over                       PASS               vol 7500.000000 occt undefined brep 7500.000000 exact 7500 dOcct - dBbox - dCom - dExact 0.0e+0 dBbxEx - faces o/b/t undefined/7/6  bodies 1
 chamfer-all4-over                  PASS               vol 7500.000000 occt undefined brep 7500.000000 exact 7500 dOcct - dBbox - dCom - dExact 0.0e+0 dBbxEx - faces o/b/t undefined/10/8  bodies 1
 round-and-chamfer                  PASS               vol 11785.641191 occt 11785.663706 brep 11785.663706 exact 11785.66370614359 dOcct 1.9e-6 dBbox 8.9e-16 dCom 6.8e-7 dExact 1.9e-6 dBbxEx - faces o/b/t 8/8/8  bodies 1
-round-wins-same-corner             PASS               vol 11922.692679 occt 11922.743339 brep 11922.743339 exact 11922.743338823082 dOcct 4.2e-6 dBbox 5.3e-16 dCom 1.5e-6 dExact 4.2e-6 dBbxEx - faces o/b/t 7/7/7  bodies 1
+round-wins-same-corner             TRUCK-REFUSED      corner 2 was given both a round (radius 6) and a chamfer (distance 6), but a corner can take only one of them and the build would silently drop the chamfer; keep the .round() or the .chamfer() for this corner and remove the other.  | occt 11922.74333883764 brep 11922.74333882308
 round-adjacent-sum                 PASS               vol 11381.718125 occt 11381.946711 brep 11381.946711 exact 11381.94671058465 dOcct 2.0e-5 dBbox 5.3e-16 dCom 4.5e-6 dExact 2.0e-5 dBbxEx - faces o/b/t 8/8/8  bodies 1
 round-triangle-acute               PASS               vol 884.102579 occt 884.116182 brep 884.116182 exact 884.1161817917882 dOcct 1.5e-5 dBbox 7.6e-6 dCom 5.9e-6 dExact 1.5e-5 dBbxEx - faces o/b/t 6/6/6  bodies 1
 round-triangle-over                PASS               vol 838.531453 occt 838.550404 brep 838.550404 exact 838.547637297278 dOcct 2.3e-5 dBbox 9.8e-6 dCom 7.9e-6 dExact 1.9e-5 dBbxEx - faces o/b/t 6/6/6  bodies 1
@@ -71,4 +71,4 @@ slot-front                         PASS               vol 1298.070632 occt undef
 slot-same                          SCRIPT-REFUSED      line 1: .slot() needs two different end centres -- a and b are both [3, 3], which holds no slot. | occt undefined brep undefined
 slot-r0                            SCRIPT-REFUSED      line 1: .slot()(): a size has to be a positive number -- got 0 for radius. | occt undefined brep undefined
 slot-rneg                          SCRIPT-REFUSED      line 1: .slot()(): a size has to be a positive number -- got -2 for radius. | occt undefined brep undefined
-wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/g5/outline.json 73
+wrote results-guarded/outline.json 73

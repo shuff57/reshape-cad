@@ -1,0 +1,9 @@
+tiny-pull-0.01                     PASS               vol 1.000000 occt undefined brep 1.000000 exact 1 dOcct - dBbox - dCom - dExact 0.0e+0 dBbxEx - faces o/b/t undefined/6/6  bodies 1
+tiny-pull-0.001                    PASS               vol 0.100000 occt undefined brep 0.100000 exact 0.1 dOcct - dBbox - dCom - dExact 1.4e-17 dBbxEx - faces o/b/t undefined/6/6  bodies 1
+tiny-pull-0.0001                   PASS               vol 0.010000 occt undefined brep 0.010000 exact 0.01 dOcct - dBbox - dCom - dExact 0.0e+0 dBbxEx - faces o/b/t undefined/6/6  bodies 1
+tiny-pull-0.00001                  PASS               vol 0.001000 occt undefined brep 0.001000 exact 0.001 dOcct - dBbox - dCom - dExact 0.0e+0 dBbxEx - faces o/b/t undefined/6/6  bodies 1
+tiny-pull-0.000003                 PASS               vol 0.000300 occt undefined brep 0.000300 exact 0.00030000000000000003 dOcct - dBbox - dCom - dExact 0.0e+0 dBbxEx - faces o/b/t undefined/6/6  bodies 1
+tiny-pull-0.000001                 PASS               vol 0.000100 occt undefined brep 0.000100 exact 0.00009999999999999999 dOcct - dBbox - dCom - dExact 0.0e+0 dBbxEx - faces o/b/t undefined/6/6  bodies 1
+tiny-pull-1e-7                     TRUCK-REFUSED      A pull of 1e-7 mm is thinner than the 0.000001 mm that can be built as a solid; pull the sketch further.  | occt OCCT not run: it does not return on this input (see cases-hazards) brep 0.00001
+tiny-pull-1e-9                     TRUCK-REFUSED      A pull of 1e-9 mm is thinner than the 0.000001 mm that can be built as a solid; pull the sketch further.  | occt OCCT not run: it does not return on this input (see cases-hazards) brep 1e-7
+wrote results-guarded/tinypull.json 8

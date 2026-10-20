@@ -275,6 +275,7 @@
    "tol": 1e-9,
    "dVolOcct": 2.273736754432321e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 1.036208156316813e-18,
    "comTol": 0.000001,
    "faceKeys": {

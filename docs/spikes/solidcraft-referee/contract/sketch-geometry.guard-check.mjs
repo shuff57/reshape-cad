@@ -56,5 +56,16 @@ ok('rows that obey the rules are not touched', sat.moved === 0 && G.solveVerdict
 const bad2 = solveSoup({ geoms: rect(20, 25), rules: [...RR, { k: 'distance', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 30 }, { k: 'distance', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 40 }] });
 ok('conflicting rules do not converge', !bad2.converged && G.solveVerdict(bad2)?.code === 'rules-conflict');
 
+// ---- round 7: front-plane offset, thin pull, picker noise
+ok('front offset refused', G.guardFrontOffset({ id: 'sk1', plane: 'xz', offset: 5 })?.code === 'front-offset');
+ok('front offset 0, top and side offsets, and explicit frames pass', ['xz|0', 'xy|5', 'yz|-4'].every((k) => { const [pl, o] = k.split('|'); return G.guardFrontOffset({ plane: pl, offset: Number(o) }) === null; }) && G.guardFrontOffset({ plane: 'xz', offset: 5, frame: { origin: [0, 5, 0], u: [1, 0, 0], v: [0, 0, 1] } }) === null);
+ok('front offset sentence is one sentence', (() => { const v = G.guardFrontOffset({ id: 'sk1', plane: 'xz', offset: 5 }); return G.oneSentence(v.sentence) === v.sentence && !G.lintSentence(v.sentence); })());
+ok('pull of 1e-7 refused, 1e-6 builds', G.guardPull({ curved: false }, 1e-7)?.code === 'pull-too-thin' && G.guardPull({ curved: false }, 1e-6)?.code !== 'pull-too-thin');
+{ // 40 x 25 plate with a hole, corners off by ~1e-14 as the solver leaves them: the point must be interior, not on the top edge
+  const e = 1e-14; const L = (id, a, b) => ({ k: 'line', id, a, b });
+  const pts = G.regionPoints([L(1, [0, 0], [40, e]), L(2, [40, 2 * e], [40, 25]), L(3, [40, 25 + e], [0, 25 + 2 * e]), L(4, [0, 25 + 3 * e], [0, e]), { k: 'circle', id: 5, c: [20, 12.5], r: 5 }]);
+  ok('one point, clear of every edge', pts.length === 1 && pts[0][1] > 1 && pts[0][1] < 24 && Math.hypot(pts[0][0] - 20, pts[0][1] - 12.5) > 5, JSON.stringify(pts));
+}
+
 console.log(`${n - bad} of ${n} checks pass`);
 process.exit(bad ? 1 : 0);

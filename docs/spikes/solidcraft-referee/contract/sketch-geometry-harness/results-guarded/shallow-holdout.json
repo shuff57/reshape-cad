@@ -111,6 +111,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00000902579959888773,
    "dBboxOcct": 5.34863819900977e-13,
+   "dBboxDiagOcct": 2.1519387204086012e-14,
    "dComOcct": 0.00002344374551307072,
    "comTol": 0.00003,
    "faceKeys": {
@@ -341,6 +342,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00002249736841655966,
    "dBboxOcct": 1.2517193778223284e-14,
+   "dBboxDiagOcct": 7.965995049671647e-15,
    "dComOcct": 0.000007157451399763106,
    "comTol": 0.00003,
    "faceKeys": {
@@ -664,6 +666,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00011549642878305711,
    "dBboxOcct": 4.09042244520208e-12,
+   "dBboxDiagOcct": 3.9328594301897784e-14,
    "dComOcct": 0.000012756086301512895,
    "comTol": 0.00003,
    "faceKeys": {
@@ -895,6 +898,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00000615282950608896,
    "dBboxOcct": 4.0171420543216196e-8,
+   "dBboxDiagOcct": 6.266198636686497e-9,
    "dComOcct": 0.0000013700794896724769,
    "comTol": 0.00003,
    "faceKeys": {
@@ -1123,6 +1127,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00003548641279443987,
    "dBboxOcct": 1.3715576997613009e-11,
+   "dBboxDiagOcct": 1.3807893913752794e-12,
    "dComOcct": 0.000008179654877688367,
    "comTol": 0.00003,
    "faceKeys": {
@@ -1351,6 +1356,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000041199587123251516,
    "dBboxOcct": 3.4446463425630804e-14,
+   "dBboxDiagOcct": 1.000442512680184e-14,
    "dComOcct": 0.0000059788904639236855,
    "comTol": 0.00003,
    "faceKeys": {
@@ -1581,6 +1587,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00003122750198801652,
    "dBboxOcct": 7.643518911821117e-9,
+   "dBboxDiagOcct": 2.7778276481827874e-9,
    "dComOcct": 0.000004863267583492093,
    "comTol": 0.00003,
    "faceKeys": {
@@ -1805,6 +1812,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00002201832222538435,
    "dBboxOcct": 0.000010062697233641275,
+   "dBboxDiagOcct": 0.00000634608905369712,
    "dComOcct": 0.000004990080792850951,
    "comTol": 0.00003,
    "faceKeys": {
@@ -2036,6 +2044,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000051147287626978065,
    "dBboxOcct": 4.1311854078276717e-11,
+   "dBboxDiagOcct": 3.064766110743402e-11,
    "dComOcct": 0.00002529815427827212,
    "comTol": 0.00003,
    "faceKeys": {
@@ -2362,6 +2371,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000024194546036296442,
    "dBboxOcct": 5.973827597634577e-16,
+   "dBboxDiagOcct": 4.42797074155226e-16,
    "dComOcct": 0.000008959947706711574,
    "comTol": 0.00003,
    "faceKeys": {
@@ -2685,6 +2695,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00010529195206564505,
    "dBboxOcct": 3.893384853480001e-16,
+   "dBboxDiagOcct": 1.8288994716202646e-16,
    "dComOcct": 0.000014984368134055914,
    "comTol": 0.00003,
    "faceKeys": {
@@ -2915,6 +2926,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00005384100175554497,
    "dBboxOcct": 1.785463289302066e-12,
+   "dBboxDiagOcct": 6.527750686470473e-13,
    "dComOcct": 0.000009360089639643083,
    "comTol": 0.00003,
    "faceKeys": {
@@ -3133,6 +3145,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000062386370910845685,
    "dBboxOcct": 0.000009400630134627728,
+   "dBboxDiagOcct": 0.0000023827109759942407,
    "dComOcct": 7.92434098484963e-7,
    "comTol": 0.00003,
    "faceKeys": {
@@ -3546,6 +3559,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00003907043074658286,
    "dBboxOcct": 4.061599960626194e-11,
+   "dBboxDiagOcct": 7.04610351594704e-12,
    "dComOcct": 0.000005956137065748153,
    "comTol": 0.00003,
    "faceKeys": {
@@ -3773,6 +3787,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000040860626641587905,
    "dBboxOcct": 0.000006129214079782067,
+   "dBboxDiagOcct": 0.0000030197735956686126,
    "dComOcct": 0.000001006581221959568,
    "comTol": 0.00003,
    "faceKeys": {
@@ -4001,6 +4016,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000070765722675536,
    "dBboxOcct": 0.003071949744480662,
+   "dBboxDiagOcct": 0.000029936261495389042,
    "dComOcct": 0.000009978387537917342,
    "comTol": 0.00003,
    "faceKeys": {
@@ -4116,9 +4132,9 @@
    }
   ],
   "refBasis": "OCCT+brep-rs",
-  "geomOk": false,
+  "geomOk": true,
   "exactOk": null,
-  "outcome": "FAIL"
+  "outcome": "PASS-FACES-DIFFER"
  },
  {
   "id": "shh-021",
@@ -4222,6 +4238,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000016228546698933698,
    "dBboxOcct": 0.000008913085425173472,
+   "dBboxDiagOcct": 0.000004019873547561194,
    "dComOcct": 0.0000013695710919023925,
    "comTol": 0.00003,
    "faceKeys": {
@@ -4452,6 +4469,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000029502193872336635,
    "dBboxOcct": 1.483114746840021e-10,
+   "dBboxDiagOcct": 6.813846753493433e-11,
    "dComOcct": 0.000013302105472070111,
    "comTol": 0.00003,
    "faceKeys": {
@@ -4684,6 +4702,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00002388164600593254,
    "dBboxOcct": 2.8564757848899628e-11,
+   "dBboxDiagOcct": 7.884175567673054e-12,
    "dComOcct": 0.0000047151707138628624,
    "comTol": 0.00003,
    "faceKeys": {
@@ -4911,6 +4930,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000032050352326309295,
    "dBboxOcct": 0.0013413498949562436,
+   "dBboxDiagOcct": 0.000010334988316200375,
    "dComOcct": 0.0000034450190621314963,
    "comTol": 0.00003,
    "faceKeys": {
@@ -5024,9 +5044,9 @@
    }
   ],
   "refBasis": "OCCT+brep-rs",
-  "geomOk": false,
+  "geomOk": true,
   "exactOk": null,
-  "outcome": "FAIL"
+  "outcome": "PASS-FACES-DIFFER"
  },
  {
   "id": "shh-025",
@@ -5230,6 +5250,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000029011252852878284,
    "dBboxOcct": 1.5154576195452693e-14,
+   "dBboxDiagOcct": 1.4016635657023955e-16,
    "dComOcct": 0.000008223260272261416,
    "comTol": 0.00003,
    "faceKeys": {
@@ -5739,6 +5760,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00001860538473036535,
    "dBboxOcct": 0.0016953300510030482,
+   "dBboxDiagOcct": 0.000012599869825127608,
    "dComOcct": 0.000013381085469279392,
    "comTol": 0.00003,
    "faceKeys": {
@@ -5856,9 +5878,9 @@
    }
   ],
   "refBasis": "OCCT+brep-rs",
-  "geomOk": false,
+  "geomOk": true,
   "exactOk": null,
-  "outcome": "FAIL"
+  "outcome": "PASS-FACES-DIFFER"
  },
  {
   "id": "shh-031",
@@ -5963,6 +5985,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00010014262833565459,
    "dBboxOcct": 0.0000010980486982687328,
+   "dBboxDiagOcct": 3.658359398739521e-7,
    "dComOcct": 0.000015251160253263002,
    "comTol": 0.00003,
    "faceKeys": {
@@ -6286,6 +6309,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00007629486479254003,
    "dBboxOcct": 7.105427357601002e-15,
+   "dBboxDiagOcct": 3.7187654303323785e-16,
    "dComOcct": 0.000006657602424084681,
    "comTol": 0.00003,
    "faceKeys": {
@@ -6513,6 +6537,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000052226121963298435,
    "dBboxOcct": 5.284093895542251e-12,
+   "dBboxDiagOcct": 1.5736236003776758e-12,
    "dComOcct": 7.786111969378404e-7,
    "comTol": 0.00003,
    "faceKeys": {
@@ -6732,6 +6757,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00005324176024191808,
    "dBboxOcct": 0.00007059548360546773,
+   "dBboxDiagOcct": 0.000029139337801015364,
    "dComOcct": 0.00000971444793588931,
    "comTol": 0.00003,
    "faceKeys": {
@@ -6962,6 +6988,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00007737166025677921,
    "dBboxOcct": 2.668566707245431e-12,
+   "dBboxDiagOcct": 1.5005637110900728e-12,
    "dComOcct": 0.000015534610181294852,
    "comTol": 0.00003,
    "faceKeys": {
@@ -7195,6 +7222,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00008281460488621612,
    "dBboxOcct": 3.1650767076674136e-12,
+   "dBboxDiagOcct": 4.7776236937386717e-14,
    "dComOcct": 0.000013932512917977209,
    "comTol": 0.00003,
    "faceKeys": {
@@ -7427,6 +7455,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000043022422325091865,
    "dBboxOcct": 3.6833713306241556e-13,
+   "dBboxDiagOcct": 9.432568121197437e-14,
    "dComOcct": 0.00001191551653939594,
    "comTol": 0.00003,
    "faceKeys": {
@@ -7747,6 +7776,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000030561163536466176,
    "dBboxOcct": 0.000008825014153330237,
+   "dBboxDiagOcct": 0.000004674895635740546,
    "dComOcct": 0.000018170770166032085,
    "comTol": 0.00003,
    "faceKeys": {
@@ -7979,6 +8009,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00002167082827404245,
    "dBboxOcct": 1.149459990180594e-14,
+   "dBboxDiagOcct": 5.366918498160771e-16,
    "dComOcct": 0.000008247448403828392,
    "comTol": 0.00003,
    "faceKeys": {
@@ -8198,6 +8229,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00006135419241875046,
    "dBboxOcct": 3.9360921935985205e-10,
+   "dBboxDiagOcct": 3.481634559162728e-12,
    "dComOcct": 0.000004652329183315824,
    "comTol": 0.00003,
    "faceKeys": {
@@ -8606,6 +8638,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000005184199423096391,
    "dBboxOcct": 0.00005243908366115491,
+   "dBboxDiagOcct": 0.000015059844321025087,
    "dComOcct": 0.000007796429863293345,
    "comTol": 0.00003,
    "faceKeys": {
@@ -8932,6 +8965,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00002951402031750064,
    "dBboxOcct": 9.450684144512562e-9,
+   "dBboxDiagOcct": 7.397798984810546e-9,
    "dComOcct": 0.000004489264704904086,
    "comTol": 0.00003,
    "faceKeys": {
@@ -9436,6 +9470,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00007451637374790197,
    "dBboxOcct": 1.5993690032487123e-11,
+   "dBboxDiagOcct": 6.920298014497263e-12,
    "dComOcct": 0.0000068614821447300694,
    "comTol": 0.00003,
    "faceKeys": {
@@ -9762,6 +9797,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00013202873936261943,
    "dBboxOcct": 4.722410906765617e-9,
+   "dBboxDiagOcct": 6.00354224628172e-11,
    "dComOcct": 0.000016218006849605057,
    "comTol": 0.00003,
    "faceKeys": {
@@ -9992,6 +10028,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00003495751251358498,
    "dBboxOcct": 1.7763568394002505e-15,
+   "dBboxDiagOcct": 3.4685280868125106e-16,
    "dComOcct": 0.000007777419567510736,
    "comTol": 0.00003,
    "faceKeys": {
@@ -10313,6 +10350,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00001827190219886527,
    "dBboxOcct": 6.8006722331528795e-15,
+   "dBboxDiagOcct": 3.966120576467643e-15,
    "dComOcct": 0.000005315611305085733,
    "comTol": 0.00003,
    "faceKeys": {
@@ -10541,6 +10579,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00004231938246339975,
    "dBboxOcct": 4.263256414560601e-14,
+   "dBboxDiagOcct": 4.184814616288688e-16,
    "dComOcct": 0.000010684182308028941,
    "comTol": 0.00003,
    "faceKeys": {
@@ -10857,6 +10896,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000009257055267701224,
    "dBboxOcct": 7.58440164755013e-12,
+   "dBboxDiagOcct": 3.439405708081456e-12,
    "dComOcct": 0.0000169443519966773,
    "comTol": 0.00003,
    "faceKeys": {
@@ -11186,6 +11226,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000007363753496917126,
    "dBboxOcct": 0.0024331197828683774,
+   "dBboxDiagOcct": 0.00003725247546531233,
    "dComOcct": 0.0000048273534073357145,
    "comTol": 0.00003,
    "faceKeys": {
@@ -11305,9 +11346,9 @@
    }
   ],
   "refBasis": "OCCT+brep-rs",
-  "geomOk": false,
+  "geomOk": true,
   "exactOk": null,
-  "outcome": "FAIL"
+  "outcome": "PASS-FACES-DIFFER"
  },
  {
   "id": "shh-062",
@@ -11412,6 +11453,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000022662276697826995,
    "dBboxOcct": 0.0001418764867793243,
+   "dBboxDiagOcct": 0.0000015381275330818242,
    "dComOcct": 0.000007074076750684531,
    "comTol": 0.00003,
    "faceKeys": {
@@ -11639,6 +11681,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000015127711899123968,
    "dBboxOcct": 3.637978807091713e-12,
+   "dBboxDiagOcct": 4.677510625694151e-14,
    "dComOcct": 0.000005085025458436203,
    "comTol": 0.00003,
    "faceKeys": {
@@ -11868,6 +11911,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000830707687245675,
    "dBboxOcct": 8.406608742461685e-13,
+   "dBboxDiagOcct": 4.9996427023151644e-15,
    "dComOcct": 0.000010576582553799689,
    "comTol": 0.00003,
    "faceKeys": {
@@ -12097,6 +12141,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00009798443248432995,
    "dBboxOcct": 0.00014696909368542112,
+   "dBboxDiagOcct": 0.00003292694516585829,
    "dComOcct": 0.000010975876889836026,
    "comTol": 0.00003,
    "faceKeys": {
@@ -12507,6 +12552,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000041275866828587534,
    "dBboxOcct": 0.005893399997045634,
+   "dBboxDiagOcct": 0.00003890473109814462,
    "dComOcct": 0.000014214224208144363,
    "comTol": 0.00003,
    "faceKeys": {
@@ -12622,9 +12668,9 @@
    }
   ],
   "refBasis": "OCCT",
-  "geomOk": false,
+  "geomOk": true,
   "exactOk": null,
-  "outcome": "FAIL"
+  "outcome": "PASS-FACES-DIFFER"
  },
  {
   "id": "shh-069",
@@ -12740,6 +12786,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000006251806478365651,
    "dBboxOcct": 2.2827835066194402e-11,
+   "dBboxDiagOcct": 7.738551332552747e-13,
    "dComOcct": 0.000003555770967368612,
    "comTol": 0.00003,
    "faceKeys": {
@@ -12967,6 +13014,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00003051461832906706,
    "dBboxOcct": 0.000012522577698815232,
+   "dBboxDiagOcct": 0.00000768991929072978,
    "dComOcct": 0.0000035551300901980572,
    "comTol": 0.00003,
    "faceKeys": {
@@ -13197,6 +13245,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00002164849385751536,
    "dBboxOcct": 2.3169024484218894e-13,
+   "dBboxDiagOcct": 2.005282547217589e-15,
    "dComOcct": 0.000006305537055375138,
    "comTol": 0.00003,
    "faceKeys": {
@@ -13519,6 +13568,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00006672311462270342,
    "dBboxOcct": 0.000008509035335890758,
+   "dBboxDiagOcct": 8.128694883035663e-8,
    "dComOcct": 0.000011392085562864198,
    "comTol": 0.00003,
    "faceKeys": {
@@ -13748,6 +13798,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000007137455174778887,
    "dBboxOcct": 0.0006669999605098589,
+   "dBboxDiagOcct": 0.000005439520473594524,
    "dComOcct": 0.0000018131760877433502,
    "comTol": 0.00003,
    "faceKeys": {
@@ -13861,9 +13912,9 @@
    }
   ],
   "refBasis": "OCCT+brep-rs",
-  "geomOk": false,
+  "geomOk": true,
   "exactOk": null,
-  "outcome": "FAIL"
+  "outcome": "PASS-FACES-DIFFER"
  },
  {
   "id": "shh-075",
@@ -13975,6 +14026,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000932180841153536,
    "dBboxOcct": 1.9548917974121976e-12,
+   "dBboxDiagOcct": 1.494636828060949e-14,
    "dComOcct": 0.000014723234713586994,
    "comTol": 0.00003,
    "faceKeys": {
@@ -14202,6 +14254,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00001809735979913278,
    "dBboxOcct": 7.275954075014693e-12,
+   "dBboxDiagOcct": 4.891508509839889e-14,
    "dComOcct": 0.000004464791055648725,
    "comTol": 0.00003,
    "faceKeys": {
@@ -14432,6 +14485,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00012509970422509056,
    "dBboxOcct": 2.4291679778798425e-13,
+   "dBboxDiagOcct": 5.111248786928254e-15,
    "dComOcct": 0.000020992547461335364,
    "comTol": 0.00003,
    "faceKeys": {
@@ -14656,6 +14710,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000051605982305711244,
    "dBboxOcct": 1.0367946513384147e-12,
+   "dBboxDiagOcct": 3.761458101864266e-13,
    "dComOcct": 0.000012480334214890256,
    "comTol": 0.00003,
    "faceKeys": {
@@ -14980,6 +15035,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000017273292586875493,
    "dBboxOcct": 0.000159599897547962,
+   "dBboxDiagOcct": 0.000002251444900255718,
    "dComOcct": 0.000011185584684251695,
    "comTol": 0.00003,
    "faceKeys": {
@@ -15208,6 +15264,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000027831772444814663,
    "dBboxOcct": 0.0016976099868770689,
+   "dBboxDiagOcct": 0.000019525798125308604,
    "dComOcct": 0.000014602683004542235,
    "comTol": 0.00003,
    "faceKeys": {
@@ -15325,9 +15382,9 @@
    }
   ],
   "refBasis": "OCCT",
-  "geomOk": false,
+  "geomOk": true,
   "exactOk": null,
-  "outcome": "FAIL"
+  "outcome": "PASS-FACES-DIFFER"
  },
  {
   "id": "shh-082",
@@ -15619,6 +15676,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000027437540416288114,
    "dBboxOcct": 0.003252592776885166,
+   "dBboxDiagOcct": 0.000024516102458409318,
    "dComOcct": 0.000015165998194751062,
    "comTol": 0.00003,
    "faceKeys": {
@@ -15736,9 +15794,9 @@
    }
   ],
   "refBasis": "OCCT",
-  "geomOk": false,
+  "geomOk": true,
   "exactOk": null,
-  "outcome": "FAIL"
+  "outcome": "PASS-FACES-DIFFER"
  },
  {
   "id": "shh-085",
@@ -15852,6 +15910,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00008308499160831657,
    "dBboxOcct": 0.00258816999848932,
+   "dBboxDiagOcct": 0.000013827658083055333,
    "dComOcct": 0.000004766310447556928,
    "comTol": 0.00003,
    "faceKeys": {
@@ -15967,9 +16026,9 @@
    }
   ],
   "refBasis": "OCCT+brep-rs",
-  "geomOk": false,
+  "geomOk": true,
   "exactOk": null,
-  "outcome": "FAIL"
+  "outcome": "PASS-FACES-DIFFER"
  },
  {
   "id": "shh-086",
@@ -16171,6 +16230,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00007239111663394554,
    "dBboxOcct": 0.0000640821590707219,
+   "dBboxDiagOcct": 6.720290974625539e-7,
    "dComOcct": 0.0000045223999390397055,
    "comTol": 0.00003,
    "faceKeys": {
@@ -16403,6 +16463,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00008287029178990673,
    "dBboxOcct": 6.461732573062141e-14,
+   "dBboxDiagOcct": 6.370941792320165e-16,
    "dComOcct": 0.000012852265262747242,
    "comTol": 0.00003,
    "faceKeys": {
@@ -16631,6 +16692,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00003317121330983738,
    "dBboxOcct": 1.287741999308737e-13,
+   "dBboxDiagOcct": 1.2594952803802685e-15,
    "dComOcct": 0.000010797915783335077,
    "comTol": 0.00003,
    "faceKeys": {
@@ -16851,6 +16913,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00005873708146310573,
    "dBboxOcct": 2.7381327220007415e-8,
+   "dBboxDiagOcct": 2.0772009835284566e-8,
    "dComOcct": 0.000005332366279055148,
    "comTol": 0.00003,
    "faceKeys": {
@@ -17081,6 +17144,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00006606203614827424,
    "dBboxOcct": 1.4284182725532446e-9,
+   "dBboxDiagOcct": 1.3443749850677303e-11,
    "dComOcct": 0.000025622583138713786,
    "comTol": 0.00003,
    "faceKeys": {
@@ -17315,6 +17379,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00008118498478458222,
    "dBboxOcct": 1.983952673043832e-8,
+   "dBboxDiagOcct": 6.830603397513657e-9,
    "dComOcct": 0.00001647005137842797,
    "comTol": 0.00003,
    "faceKeys": {
@@ -18007,6 +18072,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00002901417516362529,
    "dBboxOcct": 4.85743854028442e-8,
+   "dBboxDiagOcct": 5.295551818601291e-10,
    "dComOcct": 0.000003953748397244532,
    "comTol": 0.00003,
    "faceKeys": {
@@ -18238,6 +18304,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00006417278103047301,
    "dBboxOcct": 2.0987909822776727e-11,
+   "dBboxDiagOcct": 1.5639584179023358e-11,
    "dComOcct": 0.000010675100939223583,
    "comTol": 0.00003,
    "faceKeys": {
@@ -18473,6 +18540,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000625583430484135,
    "dBboxOcct": 1.0338396805309458e-12,
+   "dBboxDiagOcct": 1.895275179639908e-14,
    "dComOcct": 0.000012242728175662521,
    "comTol": 0.00003,
    "faceKeys": {
@@ -18703,6 +18771,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00004262000695207928,
    "dBboxOcct": 1.7763568394002505e-14,
+   "dBboxDiagOcct": 4.696280749168937e-15,
    "dComOcct": 0.00001258488105022482,
    "comTol": 0.00003,
    "faceKeys": {
@@ -18930,6 +18999,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000046644849817359396,
    "dBboxOcct": 9.70764908458932e-8,
+   "dBboxDiagOcct": 6.595508033220668e-10,
    "dComOcct": 0.000006163582038555193,
    "comTol": 0.00003,
    "faceKeys": {
@@ -19158,6 +19228,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00004143025814067224,
    "dBboxOcct": 4.1390838976316517e-16,
+   "dBboxDiagOcct": 3.0358916976795087e-16,
    "dComOcct": 0.00001060164069206688,
    "comTol": 0.00003,
    "faceKeys": {
@@ -19738,6 +19809,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000023432974416534808,
    "dBboxOcct": 1.2806466997972166e-10,
+   "dBboxDiagOcct": 1.2969373304203057e-12,
    "dComOcct": 0.000007311941049414371,
    "comTol": 0.00003,
    "faceKeys": {
@@ -19966,6 +20038,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000025786407447594913,
    "dBboxOcct": 7.993605777301127e-15,
+   "dBboxDiagOcct": 5.184830310586311e-16,
    "dComOcct": 0.000004393376368722399,
    "comTol": 0.00003,
    "faceKeys": {
@@ -20194,6 +20267,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000038368833108192536,
    "dBboxOcct": 2.0000737177561234e-12,
+   "dBboxDiagOcct": 1.5522162655152284e-14,
    "dComOcct": 0.000004841814862327366,
    "comTol": 0.00003,
    "faceKeys": {
@@ -20425,6 +20499,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000025981275584211727,
    "dBboxOcct": 0.004054499987003861,
+   "dBboxDiagOcct": 0.00004126322888598025,
    "dComOcct": 0.000020682461077782192,
    "comTol": 0.00003,
    "faceKeys": {
@@ -20544,9 +20619,9 @@
    }
   ],
   "refBasis": "OCCT+brep-rs",
-  "geomOk": false,
+  "geomOk": true,
   "exactOk": null,
-  "outcome": "FAIL"
+  "outcome": "PASS-FACES-DIFFER"
  },
  {
   "id": "shh-112",
@@ -20754,6 +20829,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000499950640694696,
    "dBboxOcct": 1.8634988730312062e-14,
+   "dBboxDiagOcct": 1.6221929059780428e-14,
    "dComOcct": 0.000011570446115873132,
    "comTol": 0.00003,
    "faceKeys": {
@@ -21070,6 +21146,7 @@
    "tol": 0.0003,
    "dVolOcct": 5.545796299421109e-7,
    "dBboxOcct": 0.00001043416361830265,
+   "dBboxDiagOcct": 0.000004272530524410086,
    "dComOcct": 0.0000014888526048835988,
    "comTol": 0.00003,
    "faceKeys": {
@@ -21291,6 +21368,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00006312261148712936,
    "dBboxOcct": 0.00105787452775985,
+   "dBboxDiagOcct": 0.000008896530605037856,
    "dComOcct": 0.000013437629108407758,
    "comTol": 0.00003,
    "faceKeys": {
@@ -21406,9 +21484,9 @@
    }
   ],
   "refBasis": "OCCT",
-  "geomOk": false,
+  "geomOk": true,
   "exactOk": null,
-  "outcome": "FAIL"
+  "outcome": "PASS-FACES-DIFFER"
  },
  {
   "id": "shh-117",
@@ -21523,6 +21601,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000011546407721305656,
    "dBboxOcct": 0.00017946017466899972,
+   "dBboxDiagOcct": 0.0000365071155691157,
    "dComOcct": 0.000019186462790585624,
    "comTol": 0.00003,
    "faceKeys": {
@@ -21757,6 +21836,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000040319867193236055,
    "dBboxOcct": 1.3900999278016635e-11,
+   "dBboxDiagOcct": 1.1488754412398812e-13,
    "dComOcct": 0.00001283065640774571,
    "comTol": 0.00003,
    "faceKeys": {

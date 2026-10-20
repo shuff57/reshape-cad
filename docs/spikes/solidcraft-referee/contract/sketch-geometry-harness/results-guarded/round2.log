@@ -8,4 +8,4 @@ round-concave-q                    PASS               vol 2502.387336 occt 2502.
 round-cw-polygon                   PASS               vol 11946.314351 occt 11946.349541 brep 11946.349541 exact 11946.349540849362 dOcct 2.9e-6 dBbox 3.6e-15 dCom 1.0e-6 dExact 2.9e-6 dBbxEx - faces o/b/t 7/7/7  bodies 1
 chamfer-cw-polygon                 PASS               vol 11820.000000 occt 11820.000000 brep 11820.000000 exact 11820 dOcct 0.0e+0 dBbox 0.0e+0 dCom 7.0e-17 dExact 0.0e+0 dBbxEx - faces o/b/t 7/7/7  bodies 1
 round-all-cw-L                     PASS               vol 4465.641172 occt 4465.663706 brep 4465.663706 exact 4465.663706143592 dOcct 5.0e-6 dBbox 7.1e-16 dCom 3.7e-7 dExact 5.0e-6 dBbxEx - faces o/b/t 14/14/14  bodies 1
-wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/g5/round2.json 10
+wrote results-guarded/round2.json 10

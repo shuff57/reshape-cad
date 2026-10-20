@@ -1,0 +1,1240 @@
+[
+ {
+  "id": "tiny-pull-0.01",
+  "feature": "pull distance",
+  "what": "rect 10 x 10 pulled 0.01",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.01
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "OCCT not run: it does not return on this input (see cases-hazards)"
+  },
+  "brep": {
+   "volume": 1.0000000000000002,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    0.01
+   ],
+   "faces": 6
+  },
+  "exact": {
+   "volume": 1
+  },
+  "curved": false,
+  "truck": {
+   "volume": 1,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    0.01
+   ],
+   "com": [
+    7.401486830834377e-17,
+    3.700743415417188e-17,
+    0.005
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolBrep": 2.2204460492503126e-16,
+   "dBboxBrep": 0,
+   "dVolExact": 0,
+   "brepVolExact": 2.220446049250313e-16
+  },
+  "translatorReported": {
+   "volume": 1,
+   "bodies": 1,
+   "faces": 6
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.01,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "tiny-pull-0.001",
+  "feature": "pull distance",
+  "what": "rect 10 x 10 pulled 0.001",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.001
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "OCCT not run: it does not return on this input (see cases-hazards)"
+  },
+  "brep": {
+   "volume": 0.10000000000000002,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    0.001
+   ],
+   "faces": 6
+  },
+  "exact": {
+   "volume": 0.1
+  },
+  "curved": false,
+  "truck": {
+   "volume": 0.10000000000000002,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    0.001
+   ],
+   "com": [
+    0,
+    0,
+    0.0005
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolBrep": 0,
+   "dBboxBrep": 0,
+   "dVolExact": 1.3877787807814457e-17,
+   "brepVolExact": 1.3877787807814457e-17
+  },
+  "translatorReported": {
+   "volume": 0.10000000000000002,
+   "bodies": 1,
+   "faces": 6
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.001,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "tiny-pull-0.0001",
+  "feature": "pull distance",
+  "what": "rect 10 x 10 pulled 0.0001",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.0001
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "OCCT not run: it does not return on this input (see cases-hazards)"
+  },
+  "brep": {
+   "volume": 0.01,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    0.0001
+   ],
+   "faces": 6
+  },
+  "exact": {
+   "volume": 0.01
+  },
+  "curved": false,
+  "truck": {
+   "volume": 0.01,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    0.0001
+   ],
+   "com": [
+    0,
+    0,
+    0.00005000000000000001
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolBrep": 0,
+   "dBboxBrep": 0,
+   "dVolExact": 0,
+   "brepVolExact": 0
+  },
+  "translatorReported": {
+   "volume": 0.01,
+   "bodies": 1,
+   "faces": 6
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.0001,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "tiny-pull-0.00001",
+  "feature": "pull distance",
+  "what": "rect 10 x 10 pulled 0.00001",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.00001
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "OCCT not run: it does not return on this input (see cases-hazards)"
+  },
+  "brep": {
+   "volume": 0.0010000000000000002,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    0.00001
+   ],
+   "faces": 6
+  },
+  "exact": {
+   "volume": 0.001
+  },
+  "curved": false,
+  "truck": {
+   "volume": 0.001,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    0.00001
+   ],
+   "com": [
+    0,
+    0,
+    0.000005
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolBrep": 2.168404344971009e-19,
+   "dBboxBrep": 0,
+   "dVolExact": 0,
+   "brepVolExact": 2.168404344971009e-19
+  },
+  "translatorReported": {
+   "volume": 0.001,
+   "bodies": 1,
+   "faces": 6
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.00001,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "tiny-pull-0.000003",
+  "feature": "pull distance",
+  "what": "rect 10 x 10 pulled 0.000003",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.000003
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "OCCT not run: it does not return on this input (see cases-hazards)"
+  },
+  "brep": {
+   "volume": 0.0003,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    0.000003
+   ],
+   "faces": 6
+  },
+  "exact": {
+   "volume": 0.00030000000000000003
+  },
+  "curved": false,
+  "truck": {
+   "volume": 0.00030000000000000003,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    0.000003
+   ],
+   "com": [
+    0,
+    0,
+    0.0000015
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolBrep": 5.421010862427522e-20,
+   "dBboxBrep": 0,
+   "dVolExact": 0,
+   "brepVolExact": 5.421010862427522e-20
+  },
+  "translatorReported": {
+   "volume": 0.00030000000000000003,
+   "bodies": 1,
+   "faces": 6
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.000003,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "tiny-pull-0.000001",
+  "feature": "pull distance",
+  "what": "rect 10 x 10 pulled 0.000001",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 0.000001
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "OCCT not run: it does not return on this input (see cases-hazards)"
+  },
+  "brep": {
+   "volume": 0.00009999999999999998,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    0.000001
+   ],
+   "faces": 6
+  },
+  "exact": {
+   "volume": 0.00009999999999999999
+  },
+  "curved": false,
+  "truck": {
+   "volume": 0.00009999999999999999,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    0.000001
+   ],
+   "com": [
+    0,
+    0,
+    5.000000000000001e-7
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolBrep": 1.3552527156068805e-20,
+   "dBboxBrep": 0,
+   "dVolExact": 0,
+   "brepVolExact": 1.3552527156068805e-20
+  },
+  "translatorReported": {
+   "volume": 0.00009999999999999999,
+   "bodies": 1,
+   "faces": 6
+  },
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 0.000001,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "brep-rs+closed form",
+  "geomOk": true,
+  "exactOk": true,
+  "outcome": "PASS"
+ },
+ {
+  "id": "tiny-pull-1e-7",
+  "feature": "pull distance",
+  "what": "rect 10 x 10 pulled 1e-7",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 1e-7
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "OCCT not run: it does not return on this input (see cases-hazards)"
+  },
+  "brep": {
+   "volume": 0.00001,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    1e-7
+   ],
+   "faces": 6
+  },
+  "exact": {
+   "volume": 0.000009999999999999999
+  },
+  "curved": false,
+  "truck": {
+   "refused": "pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: extrude distance is zero",
+   "guard": null
+  },
+  "outcome": "TRUCK-REFUSED"
+ },
+ {
+  "id": "tiny-pull-1e-9",
+  "feature": "pull distance",
+  "what": "rect 10 x 10 pulled 1e-9",
+  "scriptErrors": [],
+  "warnings": [],
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       -5,
+       -5
+      ],
+      [
+       5,
+       -5
+      ],
+      [
+       5,
+       5
+      ],
+      [
+       -5,
+       5
+      ]
+     ],
+     "constraints": [
+      {
+       "kind": "horizontal",
+       "edge": 0
+      },
+      {
+       "kind": "vertical",
+       "edge": 1
+      },
+      {
+       "kind": "horizontal",
+       "edge": 2
+      },
+      {
+       "kind": "vertical",
+       "edge": 3
+      }
+     ]
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "target": "sk1",
+     "height": 1e-9
+    }
+   ]
+  },
+  "measureId": "pull1",
+  "occt": {
+   "refused": "OCCT not run: it does not return on this input (see cases-hazards)"
+  },
+  "brep": {
+   "volume": 1e-7,
+   "bbox": [
+    -5,
+    -5,
+    0,
+    5,
+    5,
+    1e-9
+   ],
+   "faces": 6
+  },
+  "exact": {
+   "volume": 1.0000000000000001e-7
+  },
+  "curved": false,
+  "truck": {
+   "refused": "pull1 (extrude): solidcraft refused it -- solid.extrude: invalid input: extrude distance is zero",
+   "guard": null
+  },
+  "outcome": "TRUCK-REFUSED"
+ }
+]

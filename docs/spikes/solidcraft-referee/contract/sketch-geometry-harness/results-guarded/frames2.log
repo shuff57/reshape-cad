@@ -19,4 +19,4 @@ frame-negU-slot                    PASS               vol 2102.571332 occt undef
 frame-negU-dshape-cw               PASS               vol 1570.676564 occt 1570.796327 brep 1570.796327 exact - dOcct 7.6e-5 dBbox 5.3e-16 dCom 6.7e-6 dExact - dBbxEx - faces o/b/t 4/4/4  bodies 1
 frame-negU-plate-hole              PASS               vol 5497.428668 occt 5497.345175 brep 5497.345175 exact - dOcct 1.5e-5 dBbox 3.6e-16 dCom 1.3e-6 dExact - dBbxEx - faces o/b/t 7/7/7  bodies 1
 frame-swapped-bulge                PASS               vol 4698.734599 occt 4698.898778 brep 4698.898778 exact - dOcct 3.5e-5 dBbox 1.0e-15 dCom 1.2e-5 dExact - dBbxEx - faces o/b/t 6/6/6  bodies 1
-wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/g5/frames2.json 21
+wrote results-guarded/frames2.json 21

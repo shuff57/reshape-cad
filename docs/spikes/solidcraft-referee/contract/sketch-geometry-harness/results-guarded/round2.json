@@ -126,6 +126,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00008143171920902087,
    "dBboxOcct": 7.832436658319005e-16,
+   "dBboxDiagOcct": 2.631296909955825e-16,
    "dComOcct": 4.962089845431283e-11,
    "comTol": 0.00003,
    "faceKeys": {
@@ -503,6 +504,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00017869336537268204,
    "dBboxOcct": 6.1534526723729e-16,
+   "dBboxDiagOcct": 2.0141954127573522e-16,
    "dComOcct": 7.699355961050907e-11,
    "comTol": 0.00003,
    "faceKeys": {
@@ -878,6 +880,7 @@
    "tol": 1e-9,
    "dVolOcct": 0,
    "dBboxOcct": 1.7763568394002506e-16,
+   "dBboxDiagOcct": 6.767380591549882e-17,
    "dComOcct": 3.383690295774941e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1103,6 +1106,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000030786824206453446,
    "dBboxOcct": 0.000011052752698369048,
+   "dBboxDiagOcct": 0.000005430756820904844,
    "dComOcct": 0.0000024205429665953364,
    "comTol": 0.00003,
    "faceKeys": {
@@ -1384,6 +1388,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000050460983690386825,
    "dBboxOcct": 1.3322676295501878e-15,
+   "dBboxDiagOcct": 1.7626395928858818e-16,
    "dComOcct": 3.7052214376672025e-7,
    "comTol": 0.00003,
    "faceKeys": {
@@ -1754,6 +1759,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.9857962920806296e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 4.4065989822147046e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1958,6 +1964,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000016446773773844163,
    "dBboxOcct": 3.552713678800501e-16,
+   "dBboxDiagOcct": 8.150484158540001e-17,
    "dComOcct": 4.274350179349375e-8,
    "comTol": 0.00003,
    "faceKeys": {
@@ -2204,6 +2211,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000029456452044718404,
    "dBboxOcct": 3.55271367880052e-15,
+   "dBboxDiagOcct": 6.967444759389177e-17,
    "dComOcct": 0.0000010458550246269066,
    "comTol": 0.00003,
    "faceKeys": {
@@ -2451,6 +2459,7 @@
    "tol": 1e-9,
    "dVolOcct": 0,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 6.96744475938914e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -2663,6 +2672,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000005046098368631356,
    "dBboxOcct": 7.105427357601002e-16,
+   "dBboxDiagOcct": 1.7626395928858818e-16,
    "dComOcct": 3.705221439429842e-7,
    "comTol": 0.00003,
    "faceKeys": {

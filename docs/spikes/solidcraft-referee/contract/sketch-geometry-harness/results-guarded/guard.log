@@ -174,7 +174,7 @@ fuzz-093                           PASS               vol 2061.263631 occt undef
 fuzz-094                           PASS               vol 1879.996128 occt undefined brep 1880.048530 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/9/8  bodies 1
 fuzz-096                           PASS               vol 5541.277781 occt 5541.409076 brep 5541.409076 exact - dOcct 2.4e-5 dBbox 1.1e-5 dCom 2.8e-6 dExact - dBbxEx - faces o/b/t 10/10/10  bodies 1
 fuzz-097                           PASS               vol 2623.978642 occt undefined brep 2624.016320 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/15/13  bodies 1
-fuzz-098                           FAIL               vol 2576.263656 occt 2576.364535 brep 2576.364535 exact - dOcct 3.9e-5 dBbox 6.0e-4 dCom 8.7e-6 dExact - dBbxEx - faces o/b/t 7/7/7  bodies 1
+fuzz-098                           PASS               vol 2576.263656 occt 2576.364535 brep 2576.364535 exact - dOcct 3.9e-5 dBbox 6.0e-4 dCom 8.7e-6 dExact - dBbxEx - faces o/b/t 7/7/7  bodies 1
 fuzz-099                           PASS               vol 3021.496206 occt undefined brep 3021.523737 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/10/9  bodies 1
 fuzz-100                           PASS               vol 9463.095525 occt undefined brep 9463.095525 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/11/10  bodies 1
 fuzz-101                           ALL-REFUSED        Two edges of this outline cross each other (edges 2 and 6), so it does not enclose one area; redraw it without crossing, or shrink the round / chamfer / bow that makes it fold back.  | occt OCCT threw: undefined brep extrude pull1: this sketch's outline cannot be pulled: two of its edges cross each other, so it does not enclose one area -- move a corner so no edge crosses another.
@@ -230,4 +230,4 @@ fuzz-152                           PASS               vol 2075.779973 occt 2075.
 fuzz-153                           PASS               vol 9959.174078 occt undefined brep 9959.202017 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/14/13  bodies 1
 fuzz-154                           PASS               vol 2961.475889 occt 2961.475889 brep 2961.475889 exact - dOcct 3.1e-16 dBbox 2.4e-16 dCom 3.7e-17 dExact - dBbxEx - faces o/b/t 8/8/8  bodies 1
 fuzz-155                           PASS               vol 8904.085756 occt undefined brep 8904.413036 exact - dOcct - dBbox - dCom - dExact - dBbxEx - faces o/b/t undefined/10/9  bodies 1
-wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/g5/guard.json 232
+wrote results-guarded/guard.json 232

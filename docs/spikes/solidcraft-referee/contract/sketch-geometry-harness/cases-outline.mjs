@@ -27,7 +27,7 @@ export const cases = [
   { id: 'circle-at', feature: '.circle', what: 'circle across 18 at (10,-20)', script: "const sk = sketch('top'); sk.circle(18, { at: [10, -20] }); extrude(sk, 25)", exact: { volume: Math.PI * 81 * 25, bbox: [1, -29, 0, 19, -11, 25] }, curved: true },
   { id: 'circle-tiny', feature: '.circle', what: 'circle across 0.2', script: "const sk = sketch('top'); sk.circle(0.2); extrude(sk, 10)", exact: { volume: Math.PI * 0.01 * 10 }, curved: true },
   { id: 'circle-big', feature: '.circle', what: 'circle across 200', script: "const sk = sketch('top'); sk.circle(200); extrude(sk, 10)", exact: { volume: Math.PI * 10000 * 10 }, curved: true },
-  { id: 'circle-front', feature: '.circle', what: 'circle on front plane off 4', script: "const sk = sketch('front', 4); sk.circle(10, { at: [3, 6] }); extrude(sk, 10)", exact: { volume: Math.PI * 250, bbox: [-2, -6, 1, 8, 4, 11] }, curved: true },
+  { id: 'circle-front', feature: '.circle', what: 'circle on the front plane (offset 0; round 7: a front offset is refused, see fc-front-offset)', script: "const sk = sketch('front'); sk.circle(10, { at: [3, 6] }); extrude(sk, 10)", exact: { volume: Math.PI * 250, bbox: [-2, -10, 1, 8, 0, 11] }, curved: true },
   { id: 'circle-zero', feature: '.circle', what: 'across 0 refused', script: "const sk = sketch('top'); sk.circle(0); extrude(sk, 10)" },
   { id: 'circle-neg', feature: '.circle', what: 'negative across refused', script: "const sk = sketch('top'); sk.circle(-4); extrude(sk, 10)" },
   // ---- polygon
@@ -86,7 +86,7 @@ export const cases = [
   { id: 'slot-v', feature: '.slot', what: 'vertical slot (0,0)-(0,30) r4', script: "const sk = sketch('top'); sk.slot([0,0],[0,30],4); extrude(sk, 10)", exact: { volume: (2 * 4 * 30 + Math.PI * 16) * 10, bbox: [-4, -4, 0, 4, 34, 10] }, curved: true },
   { id: 'slot-diag', feature: '.slot', what: 'diagonal slot (0,0)-(12,16) r3', script: "const sk = sketch('top'); sk.slot([0,0],[12,16],3); extrude(sk, 10)", exact: { volume: (2 * 3 * 20 + Math.PI * 9) * 10 }, curved: true },
   { id: 'slot-fat', feature: '.slot', what: 'r larger than the centre distance: (0,0)-(4,0) r10', script: "const sk = sketch('top'); sk.slot([0,0],[4,0],10); extrude(sk, 10)", exact: { volume: (2 * 10 * 4 + Math.PI * 100) * 10, bbox: [-10, -10, 0, 14, 10, 10] }, curved: true },
-  { id: 'slot-front', feature: '.slot', what: 'slot on front plane off 3', script: "const sk = sketch('front', 3); sk.slot([1,2],[15,2],4); extrude(sk, 8)", exact: { volume: (2 * 4 * 14 + Math.PI * 16) * 8 }, curved: true },
+  { id: 'slot-front', feature: '.slot', what: 'slot on the front plane (offset 0; round 7: a front offset is refused)', script: "const sk = sketch('front'); sk.slot([1,2],[15,2],4); extrude(sk, 8)", exact: { volume: (2 * 4 * 14 + Math.PI * 16) * 8 }, curved: true },
   { id: 'slot-same', feature: '.slot', what: 'a == b refused', script: "const sk = sketch('top'); sk.slot([3,3],[3,3],5); extrude(sk, 10)" },
   { id: 'slot-r0', feature: '.slot', what: 'r = 0 refused', script: "const sk = sketch('top'); sk.slot([0,0],[10,0],0); extrude(sk, 10)" },
   { id: 'slot-rneg', feature: '.slot', what: 'r < 0 refused', script: "const sk = sketch('top'); sk.slot([0,0],[10,0],-2); extrude(sk, 10)" },

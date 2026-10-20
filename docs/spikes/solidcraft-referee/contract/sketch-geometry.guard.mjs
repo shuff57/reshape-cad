@@ -35,6 +35,7 @@ export const LIMITS = {
   curvedError: 3e-4,    // relative volume error the curve-size rule allows (the curved bar). See tessError().
   safety: 1.5,          // the estimate is multiplied by this before it is compared (the estimate was 18% low for a 0.003 mm slot: 2.8e-4 estimated, 3.3e-4 measured)
   curvedFloor: 20,      // mm. The mesh tolerance of a part never gets finer than that of a 20 mm part (measured: a 0.1 mm circle is 1.8e-3 off pulled 1 AND pulled 10)
+  minPull: 1e-6,        // mm. Smallest pull distance measured to build exact (rect 10 x 10 pulled 1e-6: closed form; 1e-7 is refused by the engine). Round 7.
   minFlat: 1e-5,        // mm. Smallest across of a straight-edged outline measured exact (rect 0.00001 x 5 pulled 10: 0 error vs OCCT and brep-rs; 1e-6 is refused by the interpreter)
   minArea: 4e-6,        // mm2. Smallest area of a straight-edged outline measured exact (rect 0.002 x 0.002); 1e-5 x 1e-5 is refused by the engine
   minEdge: 1e-4,        // mm. A remaining edge shorter than this (but not zero) is refused (chamfer / round leaving 1e-4 of an edge builds exactly; 1e-5 and below is refused by the engine)
@@ -494,7 +495,10 @@ export function regionPoints(rows) {
   loops.forEach((l, li) => {
     if (l.depth % 2 !== 0) return;
     const ys = [...new Set(l.poly.map((q) => q[1]))].sort((a, b) => a - b);
-    const bands = []; for (let k = 0; k + 1 < ys.length; k++) if (ys[k + 1] - ys[k] > 0) bands.push((ys[k] + ys[k + 1]) / 2);
+    // round 7: the solver leaves ~1e-14 of noise on rows that are meant to share a y (plate-hole-dims: 25.000000000000053 ... 25.00000000000007), and the scan line through such a
+    // sliver of a band lies ON the edge, where the widest stretch used to be picked and the engine found no clean area. A band thinner than 1e-9 of the loop's height is noise.
+    const minBand = 1e-9 * Math.max(1e-12, ys[ys.length - 1] - ys[0]);
+    const bands = []; for (let k = 0; k + 1 < ys.length; k++) if (ys[k + 1] - ys[k] > minBand) bands.push((ys[k] + ys[k + 1]) / 2);
     const step = Math.max(1, Math.ceil(bands.length / 120));
     let best = null;
     for (let b = 0; b < bands.length; b += step) {
@@ -655,11 +659,24 @@ function soupVerdict(geoms, rules, rawGeoms, info) {
 // one sketch / one doc
 // ======================================================================================================================
 /**
+ * Round 7. A named front plane (xz) with an offset: the language puts the plane at y = +offset and sweeps toward -y, FreeCAD's XZ plane has one direction for both (plane at
+ * y = -offset, pull on to -y), so the part lands 2 x offset away from where the oracle puts it (measured, case fc-front-offset: all three of our engines agree with each other and
+ * disagree with FreeCAD). That is a language convention, not a kernel error, and it cannot be told apart from a mistake, so the layer refuses it; a sketch on an explicit frame
+ * { origin, u, v } says where the plane is and is not touched. Top and side offsets agree with FreeCAD and are not touched.
+ */
+export function guardFrontOffset(sk) {
+  if (sk.frame || sk.plane !== 'xz') return null;
+  const o = sk.offset;
+  if (typeof o !== 'number' || o === 0) return null;
+  return verdict('front-offset', `${sk.id ? `Sketch ${sk.id}` : 'A sketch'} sits on the front plane with an offset of ${fmt(o)}, and on that plane the offset and the pull run in opposite directions, so the part would land ${fmt(2 * Math.abs(o))} mm away from where other CAD programs put it; sketch on the top or side plane, or give the sketch an explicit frame { origin, u, v } to place it exactly.`);
+}
+/**
  * Verdict for one sketch feature of a SOLVED doc: null (build it) or {code, sentence}. `ctx`: { arc, solvedGeoms?(sk) } where solvedGeoms
  * returns the solved rows of a soup (default: the rows as stored).
  */
 export function guardSketch(sk, ctx) {
   const f = guardFrame(sk); if (f) return f;
+  const fo = guardFrontOffset(sk); if (fo) return fo;
   if (isSoup(sk)) {
     const rawArc = rawArcVerdict(sk.geoms, sk.rules ?? []); if (rawArc) return rawArc;
     const S = solvedOf(sk, ctx);
@@ -811,6 +828,8 @@ export function estimateCurveError(info, height, lengthTwo = 0) {
 export function guardPull(info, height, lengthTwo = 0) {
   if (typeof height === 'number' && height === 0 && !(lengthTwo > 0)) return verdict('pull-zero', 'pull() needs a distance other than 0; a pull of 0 has no thickness, so there is no solid to build.');
   if (typeof height === 'number' && !Number.isFinite(height)) return verdict('pull-not-number', 'pull() needs a distance that is a number; the distance given is not one.');
+  // round 7: 10 x 10 rect pulled 1e-6 builds exact (cases-tinypull, closed form 100 x h), 1e-7 and 1e-9 are refused by the engine with a sentence that blamed the sketch; nothing between is measured, so the bar is the smallest pull measured to build
+  if (typeof height === 'number' && Math.abs(height) + Math.abs(lengthTwo || 0) < LIMITS.minPull) return verdict('pull-too-thin', `A pull of ${fmt(height)} mm is thinner than the ${LIMITS.minPull} mm that can be built as a solid; pull the sketch further.`);
   const far = guardFar(info, height, lengthTwo); if (far) return far;
   const { err, worst, diag } = estimateCurveError(info, height, lengthTwo);
   if (!worst || err * LIMITS.safety <= LIMITS.curvedError) return null;

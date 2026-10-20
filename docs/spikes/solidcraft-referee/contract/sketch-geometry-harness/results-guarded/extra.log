@@ -15,4 +15,4 @@ roundtrip-multi: {"text":"const sk1 = sketch('top')\nsk1.geom([{ k:'line', id:1,
 roundtrip-frame: {"text":"const sk1 = sketch({ origin: [1, 2, 3], u: [0, 1, 0], v: [0, 0, 1] })\nsk1.rect(10, 10)\nconst pull1 = extrude(sk1, 5)\n","errors":[],"equal":true}
 roundtrip-datum: {"text":"const pl1 = plane('side', 4)\nconst sk1 = sketch(pl1)\nsk1.rect(10, 10)\nconst pull1 = extrude(sk1, 5)\n","errors":[],"equal":true}
 roundtrip-bulge-doc: {"text":"const sk1 = sketch('top')\nsk1.polygon([[0, 0], [20, 0], [20, 20], [0, 20]])\nconst pull1 = extrude(sk1, 10)\n","errors":[],"bulges":null}
-wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/g5/extra.json 17
+wrote results-guarded/extra.json 17

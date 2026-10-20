@@ -46,4 +46,4 @@ misuse-misuse-remove-all           SCRIPT-REFUSED      line 3: sk.remove() would
 misuse-misuse-reassign-sketch      SCRIPT-REFUSED      line 5: "sketch" is already a reSHape tool here (you call it like sketch(...)) -- you can't assign to it directly with "sketch = ...". If you want your own value with that name, declare it first: "const sketch = ...". | occt undefined brep undefined
 misuse-misuse-line-over-line       SCRIPT-REFUSED      line 5: sk.line() would draw a second line exactly on top of an existing line (same two ends). Use the line you already have, or move one end. | occt undefined brep undefined
 misuse-misuse-nan                  SCRIPT-REFUSED      line 5: sk.length() needs the length as a finite number, but got NaN. | occt undefined brep undefined
-wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/g5/friendly.json 48
+wrote results-guarded/friendly.json 48

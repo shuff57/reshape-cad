@@ -30,4 +30,4 @@ holdout-round-r0.3-h30             PASS               vol 71997.672784 occt 7199
 holdout-round-r0.3-h300            PASS               vol 719974.649299 occt 719976.823002 brep 719976.823002 exact 719976.823001647 dOcct 3.0e-6 dBbox 3.8e-16 dCom 1.4e-11 dExact 3.0e-6 dBbxEx - faces o/b/t 10/10/10  bodies 1
 holdout-round-r2-h30               PASS               vol 71896.923497 occt 71896.991119 brep 71896.991118 exact 71896.99111843077 dOcct 9.4e-7 dBbox 5.9e-16 dCom 5.0e-11 dExact 9.4e-7 dBbxEx - faces o/b/t 10/10/10  bodies 1
 holdout-round-r2-h300              PASS               vol 718968.386715 occt 718969.911186 brep 718969.911184 exact 718969.9111843078 dOcct 2.1e-6 dBbox 5.7e-16 dCom 1.3e-10 dExact 2.1e-6 dBbxEx - faces o/b/t 10/10/10  bodies 1
-wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/g5/holdout.json 32
+wrote results-guarded/holdout.json 32

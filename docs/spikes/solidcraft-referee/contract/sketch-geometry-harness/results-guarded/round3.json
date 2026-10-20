@@ -1279,6 +1279,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 3.2986118401554854e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1433,8 +1434,8 @@
      "profiles": [
       {
        "point": [
-        2,
-        0.025
+        10,
+        7.5
        ]
       }
      ]
@@ -3215,6 +3216,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 3.2986118401554854e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -3369,8 +3371,8 @@
      "profiles": [
       {
        "point": [
-        2,
-        0.025
+        10,
+        7.5
        ]
       }
      ]
@@ -3622,6 +3624,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 3.2986118401554854e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -3750,8 +3753,8 @@
      "profiles": [
       {
        "point": [
-        2,
-        0.025
+        5,
+        7.5
        ]
       }
      ]
@@ -3812,17 +3815,23 @@
  {
   "id": "bulge-ok-tri-neg1",
   "what": "CONTROL: the same triangle bowed inward by only 1 (does not cross)",
-  "outcome": "TRUCK-REFUSED",
+  "outcome": "BUILT",
   "summary": {
    "bow": -1,
    "bulge": -0.1,
    "arcCrossesOtherEdges": 0,
-   "truck": "refused: The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 50.5 mm on a part about 26.9 mm across, so the 3D build could be off by about 0.043% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller, or make the thin wall thicker.",
+   "truck": {
+    "volume": 1366.5318916690192,
+    "bodies": 1,
+    "lastBodies": [
+     "b_pull1=1366.532"
+    ]
+   },
    "occt": 1366.40037968828,
    "brep": 1366.4003796882807
   },
   "truck": {
-   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 50.5 mm on a part about 26.9 mm across, so the 3D build could be off by about 0.043% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller, or make the thin wall thicker."
+   "volume": 1366.5318916690192
   },
   "occt": {
    "volume": 1366.40037968828
@@ -3840,12 +3849,12 @@
    "bow": -0.5,
    "bulge": -0.1,
    "arcCrossesOtherEdges": 0,
-   "truck": "refused: The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 25.25 mm on a part about 20 mm across, so the 3D build could be off by about 0.088% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller, or make the thin wall thicker.",
+   "truck": "refused: The curved edge that matters most bows out only 0.5 mm over a length of 10 mm on a part about 20 mm across, which the 3D build draws as a few straight facets, so its volume could be off by about 0.06% of its volume, more than the 0.03% allowed; make the bow larger or the part smaller, or make the thin wall thicker.",
    "occt": 166.60009492206999,
    "brep": 166.60009492207007
   },
   "truck": {
-   "refused": "The curves in this sketch are too small for the size of this part: the curve that matters most has a radius of 25.25 mm on a part about 20 mm across, so the 3D build could be off by about 0.088% of its volume, more than the 0.03% allowed; make the curves larger or the part smaller, or make the thin wall thicker."
+   "refused": "The curved edge that matters most bows out only 0.5 mm over a length of 10 mm on a part about 20 mm across, which the 3D build draws as a few straight facets, so its volume could be off by about 0.06% of its volume, more than the 0.03% allowed; make the bow larger or the part smaller, or make the thin wall thicker."
   },
   "occt": {
    "volume": 166.60009492206999
@@ -4108,6 +4117,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0000014729760697407225,
    "dBboxOcct": 5.329070518200751e-16,
+   "dBboxDiagOcct": 3.076740298213703e-16,
    "dComOcct": 4.0695716149072876e-7,
    "comTol": 0.00003,
    "faceKeys": {
@@ -4500,6 +4510,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000023327108853809805,
    "dBboxOcct": 5.329070518200751e-16,
+   "dBboxDiagOcct": 1.606775217292428e-16,
    "dComOcct": 0.000009532960266005693,
    "comTol": 0.00003,
    "faceKeys": {
@@ -4767,6 +4778,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00002422381786352681,
    "dBboxOcct": 8.881784197001252e-16,
+   "dBboxDiagOcct": 2.1423669563899038e-16,
    "dComOcct": 0.000009886725584155203,
    "comTol": 0.00003,
    "faceKeys": {
@@ -5034,6 +5046,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000024314518052309836,
    "dBboxOcct": 5.329070518200751e-16,
+   "dBboxDiagOcct": 1.606775217292428e-16,
    "dComOcct": 0.000009922484260997355,
    "comTol": 0.00003,
    "faceKeys": {
@@ -5301,6 +5314,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000024323598392356893,
    "dBboxOcct": 8.881784197001252e-16,
+   "dBboxDiagOcct": 2.1423669563899038e-16,
    "dComOcct": 0.000009926063961493885,
    "comTol": 0.00003,
    "faceKeys": {
@@ -5773,6 +5787,7 @@
    "tol": 0.0003,
    "dVolOcct": 1.6771787776211127e-7,
    "dBboxOcct": 3.552713678800501e-16,
+   "dBboxDiagOcct": 6.96744475938914e-17,
    "dComOcct": 6.566525787938115e-8,
    "comTol": 0.00003,
    "faceKeys": {
@@ -6022,6 +6037,7 @@
    "tol": 0.0003,
    "dVolOcct": 1.8030143584105777e-8,
    "dBboxOcct": 1.7763568394002506e-16,
+   "dBboxDiagOcct": 3.48372237969457e-17,
    "dComOcct": 7.070428679167585e-9,
    "comTol": 0.00003,
    "faceKeys": {
@@ -6271,6 +6287,7 @@
    "tol": 0.0003,
    "dVolOcct": 2.378315003141006e-10,
    "dBboxOcct": 2.1684043428812714e-19,
+   "dBboxDiagOcct": 4.2525907914272856e-21,
    "dComOcct": 9.328328578884353e-11,
    "comTol": 0.00003,
    "faceKeys": {
@@ -6520,6 +6537,7 @@
    "tol": 0.0003,
    "dVolOcct": 2.3783286451404606e-12,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 9.32871178834612e-13,
    "comTol": 0.00003,
    "faceKeys": {
@@ -6969,6 +6987,7 @@
    "tol": 1e-9,
    "dVolOcct": 0,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 1.393488951877828e-16,
    "comTol": 0.000001,
    "faceKeys": {
@@ -7166,6 +7185,7 @@
    "tol": 1e-9,
    "dVolOcct": 0,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 6.96744475938914e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -7363,6 +7383,7 @@
    "tol": 1e-9,
    "dVolOcct": 2.4243496265005167e-16,
    "dBboxOcct": 1.7763568394002506e-16,
+   "dBboxDiagOcct": 3.48372237969457e-17,
    "dComOcct": 6.96744475938914e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -7560,6 +7581,7 @@
    "tol": 1e-9,
    "dVolOcct": 2.4253095035059636e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 1.393488951877828e-16,
    "comTol": 0.000001,
    "faceKeys": {
@@ -7858,6 +7880,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245035864742e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 6.96744475938914e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -8609,8 +8632,8 @@
      "profiles": [
       {
        "point": [
-        -0.07173472534107744,
-        -0.48359623670239
+        5,
+        0.002181633874593428
        ]
       }
      ]
@@ -9088,8 +9111,8 @@
      "profiles": [
       {
        "point": [
-        -0.013174144762122832,
-        -0.08881286989589826
+        5,
+        0.00043632677491868565
        ]
       }
      ]
@@ -9567,8 +9590,8 @@
      "profiles": [
       {
        "point": [
-        0.00000313395471863466,
-        0.00002112740657610017
+        5,
+        0.00004363267749186857
        ]
       }
      ]
@@ -10693,21 +10716,124 @@
   },
   "curved": false,
   "guarded": true,
-  "notices": [],
-  "guardVerdicts": [
+  "notices": [
    {
     "sketch": "sk1",
-    "code": "frame-not-square",
-    "sentence": "The sketch frame's u and v are not exactly at right angles (their dot product is 1.000e-7), so the part would come out slightly sheared; make them exactly perpendicular."
+    "code": "frame-straightened",
+    "sentence": "The frame of sketch sk1 was off exact unit length and right angles by 1.0e-7 (script text keeps only six decimals of a frame), so it was straightened and the part moves by less than 0.000001 mm per 10 mm of size."
    }
   ],
+  "guardVerdicts": [],
   "pieceNote": null,
-  "guardCode": "frame-not-square",
+  "guardCode": null,
   "truck": {
-   "refused": "The sketch frame's u and v are not exactly at right angles (their dot product is 1.000e-7), so the part would come out slightly sheared; make them exactly perpendicular.",
-   "guard": "frame-not-square"
+   "volume": 6000,
+   "bbox": [
+    -15,
+    -10,
+    0,
+    15,
+    10,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    5
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolOcct": 1.5158245029548806e-16,
+   "dBboxOcct": 6.666666217232916e-8,
+   "dBboxDiagOcct": 2.672612302583531e-8,
+   "dComOcct": 2.3737565731562738e-17,
+   "comTol": 0.000001,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "outlineFaces": 6,
+   "outlineFacesOk": true,
+   "dVolBrep": 4.850638409455641e-15,
+   "dBboxBrep": 6.666666217232916e-8,
+   "dVolExact": 0,
+   "dBboxExact": 6.666666217232916e-8,
+   "occtBboxExact": 0,
+   "brepBboxExact": 4.973799150320701e-15,
+   "occtVolExact": 1.5158245029548803e-16,
+   "brepVolExact": 4.850638409455617e-15
   },
-  "outcome": "TRUCK-REFUSED"
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -15,
+       -10
+      ],
+      [
+       15,
+       -10
+      ],
+      [
+       15,
+       10
+      ],
+      [
+       -15,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": false,
+  "exactOk": false,
+  "outcome": "FAIL"
  },
  {
   "id": "frame-shear-5e-7",
@@ -10833,21 +10959,124 @@
   },
   "curved": false,
   "guarded": true,
-  "notices": [],
-  "guardVerdicts": [
+  "notices": [
    {
     "sketch": "sk1",
-    "code": "frame-not-square",
-    "sentence": "The sketch frame's u and v are not exactly at right angles (their dot product is 5.000e-7), so the part would come out slightly sheared; make them exactly perpendicular."
+    "code": "frame-straightened",
+    "sentence": "The frame of sketch sk1 was off exact unit length and right angles by 5.0e-7 (script text keeps only six decimals of a frame), so it was straightened and the part moves by less than 0.000005 mm per 10 mm of size."
    }
   ],
+  "guardVerdicts": [],
   "pieceNote": null,
-  "guardCode": "frame-not-square",
+  "guardCode": null,
   "truck": {
-   "refused": "The sketch frame's u and v are not exactly at right angles (their dot product is 5.000e-7), so the part would come out slightly sheared; make them exactly perpendicular.",
-   "guard": "frame-not-square"
+   "volume": 6000,
+   "bbox": [
+    -15,
+    -10,
+    0,
+    15,
+    10,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    5
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolOcct": 1.5158245029548806e-16,
+   "dBboxOcct": 3.3333322220964004e-7,
+   "dBboxDiagOcct": 1.3363059231602462e-7,
+   "dComOcct": 3.090479335407375e-18,
+   "comTol": 0.000001,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "outlineFaces": 6,
+   "outlineFacesOk": true,
+   "dVolBrep": 1.2505552149379327e-13,
+   "dBboxBrep": 3.3333322220964004e-7,
+   "dVolExact": 0,
+   "dBboxExact": 3.3333322220964004e-7,
+   "occtBboxExact": 0,
+   "brepBboxExact": 1.2505552149377764e-13,
+   "occtVolExact": 1.5158245029548803e-16,
+   "brepVolExact": 1.2505552149377764e-13
   },
-  "outcome": "TRUCK-REFUSED"
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -15,
+       -10
+      ],
+      [
+       15,
+       -10
+      ],
+      [
+       15,
+       10
+      ],
+      [
+       -15,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": false,
+  "exactOk": false,
+  "outcome": "FAIL"
  },
  {
   "id": "frame-shear-9e-7",
@@ -10973,21 +11202,124 @@
   },
   "curved": false,
   "guarded": true,
-  "notices": [],
-  "guardVerdicts": [
+  "notices": [
    {
     "sketch": "sk1",
-    "code": "frame-not-square",
-    "sentence": "The sketch frame's u and v are not exactly at right angles (their dot product is 9.000e-7), so the part would come out slightly sheared; make them exactly perpendicular."
+    "code": "frame-straightened",
+    "sentence": "The frame of sketch sk1 was off exact unit length and right angles by 9.0e-7 (script text keeps only six decimals of a frame), so it was straightened and the part moves by less than 0.000009 mm per 10 mm of size."
    }
   ],
+  "guardVerdicts": [],
   "pieceNote": null,
-  "guardCode": "frame-not-square",
+  "guardCode": null,
   "truck": {
-   "refused": "The sketch frame's u and v are not exactly at right angles (their dot product is 9.000e-7), so the part would come out slightly sheared; make them exactly perpendicular.",
-   "guard": "frame-not-square"
+   "volume": 6000,
+   "bbox": [
+    -15,
+    -10,
+    0,
+    15,
+    10,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    5
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolOcct": 1.5158245029548806e-16,
+   "dBboxOcct": 5.999996400248708e-7,
+   "dBboxDiagOcct": 2.4053502495326063e-7,
+   "dComOcct": 2.3737557592970944e-17,
+   "comTol": 0.000001,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "outlineFaces": 6,
+   "outlineFacesOk": true,
+   "dVolBrep": 4.050283071897081e-13,
+   "dBboxBrep": 5.999996400248708e-7,
+   "dVolExact": 0,
+   "dBboxExact": 5.999996400248708e-7,
+   "occtBboxExact": 0,
+   "brepBboxExact": 4.050093593832571e-13,
+   "occtVolExact": 1.5158245029548803e-16,
+   "brepVolExact": 4.0502830718954407e-13
   },
-  "outcome": "TRUCK-REFUSED"
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -15,
+       -10
+      ],
+      [
+       15,
+       -10
+      ],
+      [
+       15,
+       10
+      ],
+      [
+       -15,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": false,
+  "exactOk": false,
+  "outcome": "FAIL"
  },
  {
   "id": "frame-u-length-9e-7",
@@ -11113,21 +11445,124 @@
   },
   "curved": false,
   "guarded": true,
-  "notices": [],
-  "guardVerdicts": [
+  "notices": [
    {
     "sketch": "sk1",
-    "code": "frame-not-unit",
-    "sentence": "The sketch frame's u has length 1.000000900, not exactly 1, so the part would come out slightly scaled; divide u by its length."
+    "code": "frame-straightened",
+    "sentence": "The frame of sketch sk1 was off exact unit length and right angles by 9.0e-7 (script text keeps only six decimals of a frame), so it was straightened and the part moves by less than 0.000009 mm per 10 mm of size."
    }
   ],
+  "guardVerdicts": [],
   "pieceNote": null,
-  "guardCode": "frame-not-unit",
+  "guardCode": null,
   "truck": {
-   "refused": "The sketch frame's u has length 1.000000900, not exactly 1, so the part would come out slightly scaled; divide u by its length.",
-   "guard": "frame-not-unit"
+   "volume": 6000,
+   "bbox": [
+    -15,
+    -10,
+    0,
+    15,
+    10,
+    10
+   ],
+   "com": [
+    0,
+    0,
+    5
+   ],
+   "faces": 6,
+   "kernelFaces": 6,
+   "faceTypes": {
+    "plane": 6
+   },
+   "bodies": 1,
+   "tol": 1e-9,
+   "dVolOcct": 8.999991900021842e-7,
+   "dBboxOcct": 8.99999190096923e-7,
+   "dBboxDiagOcct": 3.608024678703036e-7,
+   "dComOcct": 4.114505486214301e-18,
+   "comTol": 0.000001,
+   "faceKeys": {
+    "plane": "equal"
+   },
+   "faceOk": true,
+   "outlineFaces": 6,
+   "outlineFacesOk": true,
+   "dVolBrep": 0,
+   "dBboxBrep": 0,
+   "dVolExact": 8.999991901537663e-7,
+   "dBboxExact": 8.999991899784994e-7,
+   "occtBboxExact": 1.184236827120356e-16,
+   "brepBboxExact": 8.999991899784994e-7,
+   "occtVolExact": 1.5158231387140554e-16,
+   "brepVolExact": 8.999991901537663e-7
   },
-  "outcome": "TRUCK-REFUSED"
+  "truckCommands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       -15,
+       -10
+      ],
+      [
+       15,
+       -10
+      ],
+      [
+       15,
+       10
+      ],
+      [
+       -15,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 10,
+     "sketch": "sk_sk1_0",
+     "operation": "new",
+     "body_name": "b_pull1"
+    }
+   }
+  ],
+  "refBasis": "OCCT+brep-rs+closed form",
+  "geomOk": false,
+  "exactOk": false,
+  "outcome": "FAIL"
  },
  {
   "id": "host-warn-round-over",
@@ -11348,6 +11783,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000010194639906086969,
    "dBboxOcct": 2.6645352591003757e-15,
+   "dBboxDiagOcct": 2.1755839288168295e-16,
    "dComOcct": 0.000003519460525128997,
    "comTol": 0.00003,
    "faceKeys": {
@@ -11669,11 +12105,11 @@
    "features": [
     "extrude"
    ],
-   "wallMsTranslateAndBuild": 601,
-   "msInsideSolidcraftWasm": 596,
+   "wallMsTranslateAndBuild": 245,
+   "msInsideSolidcraftWasm": 242,
    "commandListsSent": 2,
    "commandsSentTotal": 32,
-   "msPerHoleWasm": 596,
+   "msPerHoleWasm": 242,
    "refused": null,
    "volume": 7937.178583530625,
    "expectedPlateVolume": 7937.168146928205,
@@ -11689,11 +12125,11 @@
    "features": [
     "extrude"
    ],
-   "wallMsTranslateAndBuild": 3360,
-   "msInsideSolidcraftWasm": 3347,
+   "wallMsTranslateAndBuild": 1270,
+   "msInsideSolidcraftWasm": 1263,
    "commandListsSent": 2,
    "commandsSentTotal": 40,
-   "msPerHoleWasm": 669,
+   "msPerHoleWasm": 253,
    "refused": null,
    "volume": 31685.892917653127,
    "expectedPlateVolume": 31685.84073464102,
@@ -11709,11 +12145,11 @@
    "features": [
     "extrude"
    ],
-   "wallMsTranslateAndBuild": 7523,
-   "msInsideSolidcraftWasm": 7454,
+   "wallMsTranslateAndBuild": 2280,
+   "msInsideSolidcraftWasm": 2270,
    "commandListsSent": 2,
    "commandsSentTotal": 50,
-   "msPerHoleWasm": 745,
+   "msPerHoleWasm": 227,
    "refused": null,
    "volume": 49371.80729005471,
    "expectedPlateVolume": 49371.68146928204,
@@ -11729,11 +12165,11 @@
    "features": [
     "extrude"
    ],
-   "wallMsTranslateAndBuild": 14917,
-   "msInsideSolidcraftWasm": 14464,
+   "wallMsTranslateAndBuild": 4268,
+   "msInsideSolidcraftWasm": 4239,
    "commandListsSent": 2,
    "commandsSentTotal": 80,
-   "msPerHoleWasm": 579,
+   "msPerHoleWasm": 170,
    "refused": null,
    "volume": 70429.63408805133,
    "expectedPlateVolume": 70429.2036732051,
@@ -11750,11 +12186,11 @@
     "extrude",
     "pocket"
    ],
-   "wallMsTranslateAndBuild": 35480,
-   "msInsideSolidcraftWasm": 35047,
+   "wallMsTranslateAndBuild": 9411,
+   "msInsideSolidcraftWasm": 9385,
    "commandListsSent": 4,
    "commandsSentTotal": 168,
-   "msPerHoleWasm": 1402,
+   "msPerHoleWasm": 375,
    "refused": null,
    "volume": 70422.5686945567,
    "expectedPlateVolume": null,

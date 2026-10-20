@@ -26,7 +26,7 @@ export const cases = [
   g('geom-construction-only', '.geom', [{ k: 'circle', id: 1, c: [0, 0], r: 5, construction: true }], null, 'only construction geometry: nothing to extrude'),
   g('geom-points-only', '.geom', [{ k: 'point', id: 1, p: [1, 1] }, { k: 'point', id: 2, p: [4, 5] }], null, 'only points: nothing to extrude'),
   g('geom-open-3-lines', '.geom', rectRows.slice(0, 3), rectJoin.slice(0, 2), 'U shape: open profile'),
-  g('geom-front-plane', '.geom', [line(1, [0, 0], [20, 0]), line(2, [20, 0], [0, 15]), line(3, [0, 15], [0, 0])], null, 'rows on the front plane (offset 2)', { plane: "'front', 2", exact: { volume: 150 * H, bbox: [0, -8, 0, 20, 2, 15] } }),
+  g('geom-front-plane', '.geom', [line(1, [0, 0], [20, 0]), line(2, [20, 0], [0, 15]), line(3, [0, 15], [0, 0])], null, 'rows on the front plane (offset 0; round 7: a front offset is refused)', { plane: "'front'", exact: { volume: 150 * H, bbox: [0, -10, 0, 20, 0, 15] } }),
   g('geom-side-circle', '.geom', [{ k: 'circle', id: 1, c: [5, 6], r: 3 }], null, 'circle row on the side plane', { plane: "'side'", exact: { volume: P * 9 * H, bbox: [0, 2, 3, 10, 8, 9] }, curved: true }),
   // refusals at the script layer
   g('geom-id-gap', '.geom', [line(1, [0, 0], [5, 0]), line(3, [5, 0], [5, 5])], null, 'ids 1,3: not dense'),
@@ -62,7 +62,7 @@ export const cases = [
   sc('multi-overlap-circles', 'several shapes', 'sk.circle(20, { at: [-6, 0] }); sk.circle(20, { at: [6, 0] })', 'two overlapping circles', {}),
   sc('multi-tangent-ext-circles', 'several shapes', 'sk.circle(10, { at: [-5, 0] }); sk.circle(10, { at: [5, 0] })', 'externally tangent circles', {}),
   sc('multi-tangent-int-circles', 'several shapes', 'sk.circle(20, { at: [0, 0] }); sk.circle(10, { at: [5, 0] })', 'internally tangent hole', {}),
-  sc('multi-shape-on-front', 'several shapes', 'sk.rect(30, 20); sk.circle(8)', 'plate-with-hole on the front plane offset 3', { script: `const sk = sketch('front', 3); sk.rect(30, 20); sk.circle(8); extrude(sk, ${H})`, exact: { volume: (600 - P * 16) * H, bbox: [-15, -7, -10, 15, 3, 10] }, curved: true }),
+  sc('multi-shape-on-front', 'several shapes', 'sk.rect(30, 20); sk.circle(8)', 'plate-with-hole on the front plane (offset 0; round 7: a front offset is refused)', { script: `const sk = sketch('front'); sk.rect(30, 20); sk.circle(8); extrude(sk, ${H})`, exact: { volume: (600 - P * 16) * H, bbox: [-15, -10, -10, 15, 0, 10] }, curved: true }),
   sc('multi-circle-then-rect', 'several shapes', 'sk.circle(10); sk.rect(30, 20)', 'circle first, then rect around it (order reversed)', { exact: { volume: (600 - P * 25) * H }, curved: true }),
   sc('multi-polygon-then-circle', 'several shapes', 'sk.polygon([[-15,-10],[15,-10],[15,10],[-15,10]]); sk.circle(10)', 'polygon first then circle', { exact: { volume: (600 - P * 25) * H }, curved: true }),
   // sentences for combinations the language refuses

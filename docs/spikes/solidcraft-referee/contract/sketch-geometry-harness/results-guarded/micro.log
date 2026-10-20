@@ -12,4 +12,4 @@ circle-across-0.005                TRUCK-REFUSED      This circle is 0.005 mm ac
 circle-across-0.005-h1             TRUCK-REFUSED      This circle is 0.005 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger.  | occt 9.817477042468103e-8 brep 9.817477042468105e-8
 circle-across-0.002                TRUCK-REFUSED      This circle is 0.002 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger.  | occt 0.00003141592653589794 brep 0.00003141592653589795
 circle-across-0.002-h1             TRUCK-REFUSED      This circle is 0.002 mm across; arcs with a radius under 0.003 mm cannot be built exactly here; make it larger.  | occt 6.283185307179588e-9 brep 6.283185307179586e-9
-wrote /tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/629fe046-ebe6-436d-b818-4dfd8e729365/scratchpad/sg5/g5/micro.json 14
+wrote results-guarded/micro.json 14

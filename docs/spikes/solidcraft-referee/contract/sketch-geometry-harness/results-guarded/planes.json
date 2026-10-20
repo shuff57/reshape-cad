@@ -134,6 +134,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -353,6 +354,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -572,6 +574,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -791,6 +794,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -983,116 +987,20 @@
   "curved": false,
   "guarded": true,
   "notices": [],
-  "guardVerdicts": [],
-  "pieceNote": null,
-  "guardCode": null,
-  "truck": {
-   "volume": 6000,
-   "bbox": [
-    -10,
-    -3,
-    -7,
-    20,
-    7,
-    13
-   ],
-   "com": [
-    5,
-    2,
-    3
-   ],
-   "faces": 6,
-   "kernelFaces": 6,
-   "faceTypes": {
-    "plane": 6
-   },
-   "bodies": 1,
-   "tol": 1e-9,
-   "dVolOcct": 1.5158245029548806e-16,
-   "dBboxOcct": 0,
-   "dComOcct": 2.3737566748887e-17,
-   "comTol": 0.000001,
-   "faceKeys": {
-    "plane": "equal"
-   },
-   "faceOk": true,
-   "outlineFaces": 6,
-   "outlineFacesOk": true,
-   "dVolBrep": 0,
-   "dBboxBrep": 0,
-   "dVolExact": 0,
-   "dBboxExact": 0,
-   "occtBboxExact": 0,
-   "brepBboxExact": 0,
-   "occtVolExact": 1.5158245029548803e-16,
-   "brepVolExact": 0
-  },
-  "truckCommands": [
+  "guardVerdicts": [
    {
-    "command": "sketch.create",
-    "params": {
-     "name": "sk_sk1_0",
-     "plane": {
-      "origin": [
-       0,
-       7,
-       0
-      ],
-      "x_dir": [
-       1,
-       0,
-       0
-      ],
-      "y_dir": [
-       0,
-       0,
-       1
-      ]
-     }
-    }
-   },
-   {
-    "command": "sketch.line",
-    "params": {
-     "points": [
-      [
-       -10,
-       -7
-      ],
-      [
-       20,
-       -7
-      ],
-      [
-       20,
-       13
-      ],
-      [
-       -10,
-       13
-      ]
-     ],
-     "closed": true
-    }
-   },
-   {
-    "command": "sketch.finish",
-    "params": {}
-   },
-   {
-    "command": "solid.extrude",
-    "params": {
-     "distance": 10,
-     "sketch": "sk_sk1_0",
-     "operation": "new",
-     "body_name": "b_pull1"
-    }
+    "sketch": "sk1",
+    "code": "front-offset",
+    "sentence": "Sketch sk1 sits on the front plane with an offset of 7, and on that plane the offset and the pull run in opposite directions, so the part would land 14 mm away from where other CAD programs put it; sketch on the top or side plane, or give the sketch an explicit frame { origin, u, v } to place it exactly."
    }
   ],
-  "refBasis": "OCCT+brep-rs+closed form",
-  "geomOk": true,
-  "exactOk": true,
-  "outcome": "PASS"
+  "pieceNote": null,
+  "guardCode": "front-offset",
+  "truck": {
+   "refused": "Sketch sk1 sits on the front plane with an offset of 7, and on that plane the offset and the pull run in opposite directions, so the part would land 14 mm away from where other CAD programs put it; sketch on the top or side plane, or give the sketch an explicit frame { origin, u, v } to place it exactly.",
+   "guard": "front-offset"
+  },
+  "outcome": "TRUCK-REFUSED"
  },
  {
   "id": "plane-side-0",
@@ -1229,6 +1137,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1448,6 +1357,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1675,6 +1585,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 4.7475133497774e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1875,116 +1786,20 @@
   "curved": false,
   "guarded": true,
   "notices": [],
-  "guardVerdicts": [],
-  "pieceNote": null,
-  "guardCode": null,
-  "truck": {
-   "volume": 6000,
-   "bbox": [
-    -10,
-    -7,
-    -7,
-    20,
-    3,
-    13
-   ],
-   "com": [
-    5,
-    -2,
-    3
-   ],
-   "faces": 6,
-   "kernelFaces": 6,
-   "faceTypes": {
-    "plane": 6
-   },
-   "bodies": 1,
-   "tol": 1e-9,
-   "dVolOcct": 1.5158245029548806e-16,
-   "dBboxOcct": 0,
-   "dComOcct": 2.3737566748887e-17,
-   "comTol": 0.000001,
-   "faceKeys": {
-    "plane": "equal"
-   },
-   "faceOk": true,
-   "outlineFaces": 6,
-   "outlineFacesOk": true,
-   "dVolBrep": 0,
-   "dBboxBrep": 0,
-   "dVolExact": 0,
-   "dBboxExact": 0,
-   "occtBboxExact": 0,
-   "brepBboxExact": 0,
-   "occtVolExact": 1.5158245029548803e-16,
-   "brepVolExact": 0
-  },
-  "truckCommands": [
+  "guardVerdicts": [
    {
-    "command": "sketch.create",
-    "params": {
-     "name": "sk_sk1_0",
-     "plane": {
-      "origin": [
-       0,
-       3,
-       0
-      ],
-      "x_dir": [
-       1,
-       0,
-       0
-      ],
-      "y_dir": [
-       0,
-       0,
-       1
-      ]
-     }
-    }
-   },
-   {
-    "command": "sketch.line",
-    "params": {
-     "points": [
-      [
-       -10,
-       -7
-      ],
-      [
-       20,
-       -7
-      ],
-      [
-       20,
-       13
-      ],
-      [
-       -10,
-       13
-      ]
-     ],
-     "closed": true
-    }
-   },
-   {
-    "command": "sketch.finish",
-    "params": {}
-   },
-   {
-    "command": "solid.extrude",
-    "params": {
-     "distance": 10,
-     "sketch": "sk_sk1_0",
-     "operation": "new",
-     "body_name": "b_pull1"
-    }
+    "sketch": "sk1",
+    "code": "front-offset",
+    "sentence": "Sketch sk1 sits on the front plane with an offset of 3, and on that plane the offset and the pull run in opposite directions, so the part would land 6 mm away from where other CAD programs put it; sketch on the top or side plane, or give the sketch an explicit frame { origin, u, v } to place it exactly."
    }
   ],
-  "refBasis": "OCCT+brep-rs+closed form",
-  "geomOk": true,
-  "exactOk": true,
-  "outcome": "PASS"
+  "pieceNote": null,
+  "guardCode": "front-offset",
+  "truck": {
+   "refused": "Sketch sk1 sits on the front plane with an offset of 3, and on that plane the offset and the pull run in opposite directions, so the part would land 6 mm away from where other CAD programs put it; sketch on the top or side plane, or give the sketch an explicit frame { origin, u, v } to place it exactly.",
+   "guard": "front-offset"
+  },
+  "outcome": "TRUCK-REFUSED"
  },
  {
   "id": "datum-plane-side-2",
@@ -2129,6 +1944,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -2356,6 +2172,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -2615,6 +2432,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 4.7475133497774e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -2851,6 +2669,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 4.7475133497774e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -3087,6 +2906,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 1.18687833744435e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -3323,6 +3143,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 4.7475133497774e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -3559,6 +3380,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548803e-16,
    "dBboxOcct": 2.184476464255687e-16,
+   "dBboxDiagOcct": 8.373826446313467e-17,
    "dComOcct": 4.1869132231567334e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -3795,6 +3617,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 2.3737566748887e-17,
    "comTol": 0.000001,
    "faceKeys": {

@@ -149,6 +149,7 @@
    "tol": 1e-9,
    "dVolOcct": 2.0210993372731742e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 4.393533638635932e-18,
    "comTol": 0.000001,
    "faceKeys": {
@@ -383,6 +384,7 @@
    "tol": 1e-9,
    "dVolOcct": 0,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 0,
    "comTol": 0.000001,
    "faceKeys": {
@@ -594,6 +596,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.0001128381235571086,
    "dBboxOcct": 4.263256414560601e-16,
+   "dBboxDiagOcct": 2.9872203626511e-16,
    "dComOcct": 2.2512349841418472e-10,
    "comTol": 0.00003,
    "faceKeys": {
@@ -815,6 +818,7 @@
    "tol": 1e-9,
    "dVolOcct": 1.5158245029548806e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 1.741861189847285e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1039,6 +1043,7 @@
    "tol": 1e-9,
    "dVolOcct": 0,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 0,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1281,6 +1286,7 @@
    "tol": 1e-9,
    "dVolOcct": 2.0210993372731742e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 5.967787514679265e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -1488,116 +1494,20 @@
   "curved": false,
   "guarded": true,
   "notices": [],
-  "guardVerdicts": [],
-  "pieceNote": null,
-  "guardCode": null,
-  "truck": {
-   "volume": 12000,
-   "bbox": [
-    0,
-    -5,
-    0,
-    40,
-    5,
-    30
-   ],
-   "com": [
-    20,
-    0,
-    15
-   ],
-   "faces": 6,
-   "kernelFaces": 6,
-   "faceTypes": {
-    "plane": 6
-   },
-   "bodies": 1,
-   "tol": 1e-9,
-   "dVolOcct": 1.5158245029548806e-16,
-   "dBboxOcct": 0,
-   "dComOcct": 2.9727764306727e-18,
-   "comTol": 0.000001,
-   "faceKeys": {
-    "plane": "equal"
-   },
-   "faceOk": true,
-   "outlineFaces": 6,
-   "outlineFacesOk": true,
-   "dVolBrep": 0,
-   "dBboxBrep": 0,
-   "dVolExact": 0,
-   "dBboxExact": 2.0000000000000013,
-   "occtBboxExact": 2.0000000000000013,
-   "brepBboxExact": 2.0000000000000013,
-   "occtVolExact": 1.5158245029548803e-16,
-   "brepVolExact": 0
-  },
-  "truckCommands": [
+  "guardVerdicts": [
    {
-    "command": "sketch.create",
-    "params": {
-     "name": "sk_sk1_0",
-     "plane": {
-      "origin": [
-       0,
-       5,
-       0
-      ],
-      "x_dir": [
-       1,
-       0,
-       0
-      ],
-      "y_dir": [
-       0,
-       0,
-       1
-      ]
-     }
-    }
-   },
-   {
-    "command": "sketch.line",
-    "params": {
-     "points": [
-      [
-       0,
-       0
-      ],
-      [
-       40,
-       0
-      ],
-      [
-       40,
-       30
-      ],
-      [
-       0,
-       30
-      ]
-     ],
-     "closed": true
-    }
-   },
-   {
-    "command": "sketch.finish",
-    "params": {}
-   },
-   {
-    "command": "solid.extrude",
-    "params": {
-     "distance": 10,
-     "sketch": "sk_sk1_0",
-     "operation": "new",
-     "body_name": "b_pull1"
-    }
+    "sketch": "sk1",
+    "code": "front-offset",
+    "sentence": "Sketch sk1 sits on the front plane with an offset of 5, and on that plane the offset and the pull run in opposite directions, so the part would land 10 mm away from where other CAD programs put it; sketch on the top or side plane, or give the sketch an explicit frame { origin, u, v } to place it exactly."
    }
   ],
-  "refBasis": "OCCT+brep-rs+closed form",
-  "geomOk": true,
-  "exactOk": false,
-  "outcome": "FAIL"
+  "pieceNote": null,
+  "guardCode": "front-offset",
+  "truck": {
+   "refused": "Sketch sk1 sits on the front plane with an offset of 5, and on that plane the offset and the pull run in opposite directions, so the part would land 10 mm away from where other CAD programs put it; sketch on the top or side plane, or give the sketch an explicit frame { origin, u, v } to place it exactly.",
+   "guard": "front-offset"
+  },
+  "outcome": "TRUCK-REFUSED"
  },
  {
   "id": "fc-ring-with-hole",
@@ -1791,6 +1701,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000048584211702181435,
    "dBboxOcct": 4.736951571734001e-16,
+   "dBboxDiagOcct": 1.2141152548633172e-16,
    "dComOcct": 6.856189279348787e-11,
    "comTol": 0.00003,
    "faceKeys": {
@@ -1869,8 +1780,8 @@
      "profiles": [
       {
        "point": [
-        19.074426837794764,
-        5.786164122955929
+        0,
+        10.03773977045526
        ]
       }
      ]
@@ -2075,6 +1986,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000048584211702181435,
    "dBboxOcct": 4.736951571734001e-16,
+   "dBboxDiagOcct": 1.2141152548633172e-16,
    "dComOcct": 6.856189279348787e-11,
    "comTol": 0.00003,
    "faceKeys": {
@@ -2153,8 +2065,8 @@
      "profiles": [
       {
        "point": [
-        19.074426837794764,
-        5.786164122955929
+        0,
+        10.03773977045526
        ]
       }
      ]
@@ -2602,6 +2514,7 @@
    "tol": 1e-9,
    "dVolOcct": 2.2048356406616447e-16,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 1.7014412727099273e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -2919,8 +2832,8 @@
      "profiles": [
       {
        "point": [
-        -16,
-        -14.95
+        -12.5,
+        0
        ]
       }
      ]
@@ -3232,6 +3145,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000011632827641846518,
    "dBboxOcct": 4.440892098500626e-16,
+   "dBboxDiagOcct": 1.0363841006514293e-16,
    "dComOcct": 0.0000019365864534199425,
    "comTol": 0.00003,
    "faceKeys": {
@@ -3402,8 +3316,8 @@
      "profiles": [
       {
        "point": [
-        4,
-        0.05
+        28.5,
+        15
        ]
       }
      ]
@@ -3555,6 +3469,7 @@
    "tol": 1e-9,
    "dVolOcct": 0,
    "dBboxOcct": 0,
+   "dBboxDiagOcct": 0,
    "dComOcct": 1.6226666571230955e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -3963,6 +3878,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000011632827647253125,
    "dBboxOcct": 4.736951571734001e-16,
+   "dBboxDiagOcct": 1.3611530181679418e-16,
    "dComOcct": 2.1097871781603097e-15,
    "comTol": 0.00003,
    "faceKeys": {
@@ -4161,8 +4077,8 @@
      "profiles": [
       {
        "point": [
-        -16,
-        -14.95
+        -12.5,
+        0
        ]
       }
      ]
@@ -4490,6 +4406,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.00008066006376363827,
    "dBboxOcct": 4.736951571734001e-16,
+   "dBboxDiagOcct": 1.2141152548633172e-16,
    "dComOcct": 5.586890968507863e-11,
    "comTol": 0.00003,
    "faceKeys": {
@@ -4688,8 +4605,8 @@
      "profiles": [
       {
        "point": [
-        19.074426837794764,
-        5.786164122955929
+        0,
+        -5.134209933080481
        ]
       }
      ]
@@ -5035,6 +4952,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000017283869998008006,
    "dBboxOcct": 3.552713678800501e-16,
+   "dBboxDiagOcct": 7.235217580281954e-17,
    "dComOcct": 2.327328321657362e-15,
    "comTol": 0.00003,
    "faceKeys": {
@@ -5245,8 +5163,8 @@
      "profiles": [
       {
        "point": [
-        -24,
-        -19.92788897449072
+        0,
+        0
        ]
       }
      ]
@@ -5647,6 +5565,7 @@
    "tol": 1e-9,
    "dVolOcct": 0,
    "dBboxOcct": 2.3684757858670006e-16,
+   "dBboxDiagOcct": 6.070576274316586e-17,
    "dComOcct": 7.588220342895732e-17,
    "comTol": 0.000001,
    "faceKeys": {
@@ -5910,8 +5829,8 @@
      "profiles": [
       {
        "point": [
-        -16,
-        -19.943431457505078
+        0,
+        0
        ]
       }
      ]
@@ -6239,6 +6158,7 @@
    "tol": 0.0003,
    "dVolOcct": 0.000005759179931716774,
    "dBboxOcct": 4.440892098500626e-16,
+   "dBboxDiagOcct": 8.951681272018897e-17,
    "dComOcct": 0.0000015014308254780002,
    "comTol": 0.00003,
    "faceKeys": {
@@ -6437,8 +6357,8 @@
      "profiles": [
       {
        "point": [
-        5,
-        0.05830951894845301
+        25,
+        15
        ]
       }
      ]
@@ -7176,14 +7096,14 @@
      "profiles": [
       {
        "point": [
-        -28,
-        -9.936754446796632
+        -20,
+        0
        ]
       },
       {
        "point": [
-        12,
-        -9.936754446796632
+        20,
+        0
        ]
       }
      ]
@@ -7437,14 +7357,14 @@
      "profiles": [
       {
        "point": [
-        -12.404309223276227,
-        2.304127606826035
+        -20,
+        0.017453237138986177
        ]
       },
       {
        "point": [
-        27.59569077672377,
-        2.304127606826035
+        20,
+        0.017453237138986177
        ]
       }
      ]
@@ -7941,14 +7861,14 @@
      "profiles": [
       {
        "point": [
-        -28,
-        -9.938648553399288
+        -20,
+        0
        ]
       },
       {
        "point": [
-        27.592714149228954,
-        2.3032246567471475
+        20,
+        0.017453237138986177
        ]
       }
      ]
@@ -8232,14 +8152,14 @@
      "profiles": [
       {
        "point": [
-        28.611640256692148,
-        8.679246184433895
+        -1.7763568394002505e-15,
+        -20.02518408539539
        ]
       },
       {
        "point": [
-        9.483080698850408,
-        2.8766610803770702
+        8.881784197001252e-16,
+        0.02181654642373272
        ]
       }
      ]
@@ -9249,14 +9169,14 @@
      "profiles": [
       {
        "point": [
-        -24,
-        -29.915147186257613
+        -25,
+        0
        ]
       },
       {
        "point": [
-        -8,
-        -9.915147186257615
+        0,
+        0
        ]
       }
      ]
@@ -9570,14 +9490,14 @@
      "profiles": [
       {
        "point": [
-        38.14885367558953,
-        11.572328245911859
+        1.7763568394002505e-15,
+        -30.359418999681605
        ]
       },
       {
        "point": [
-        19.02029411774779,
-        5.7697431418550345
+        0,
+        10.03773977045526
        ]
       }
      ]
@@ -9891,20 +9811,20 @@
      "profiles": [
       {
        "point": [
-        28.585316539516352,
-        8.6712609721284
+        -1.7763568394002505e-15,
+        -20.02518408539539
        ]
       },
       {
        "point": [
-        9.456756981674612,
-        2.8686758680715747
+        8.881784197001252e-16,
+        0.02181654642373272
        ]
       },
       {
        "point": [
-        64.67461709221418,
-        1.4180295920573696
+        60,
+        0.01090827321186636
        ]
       }
      ]
@@ -10673,14 +10593,14 @@
      "profiles": [
       {
        "point": [
-        -16,
-        -14.928410894683617
+        -12.5,
+        0
        ]
       },
       {
        "point": [
-        36,
-        -4.928410894683618
+        40,
+        0
        ]
       }
      ]
@@ -11472,8 +11392,8 @@
      "profiles": [
       {
        "point": [
-        19.074426837794764,
-        5.786164122955929
+        0,
+        10.03773977045526
        ]
       }
      ]
@@ -11714,14 +11634,14 @@
      "profiles": [
       {
        "point": [
-        -0.4785158939013038,
-        2.8883106266050604
+        -10,
+        0.02181654642373272
        ]
       },
       {
        "point": [
-        19.521484106098697,
-        2.8883106266050604
+        10,
+        0.02181654642373272
        ]
       }
      ]
