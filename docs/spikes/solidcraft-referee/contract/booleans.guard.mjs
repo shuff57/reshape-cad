@@ -15,7 +15,10 @@
 //   G4/G4b cut that removes nothing -> refuse  (POLICY: the engines agree on the result, the part unchanged)
 //   G5  keep that leaves nothing    -> refuse
 //   G6  pinch on join               -> refuse            (operands meet only along a line or at a point: not one solid)
-//   G7  pinch on cut                -> refuse            (a round tool wholly inside the part touching its surface, or a cylinder through the part tangent to THREE or all FOUR sides)
+//   G7  pinch on cut                -> refuse            (a round tool wholly inside the part touching its surface, or a cylinder through the part tangent to TWO or more sides (round 6; THREE and FOUR since round 5))
+//   G19 (after the build) the result sticks out of the box of an operand it must lie in -> refuse (round 6, afterCombine)
+//   G20 keep of two parallel cylinders that cross (a lens)    -> refuse (round 6)
+//   G21 (after the build) a cut that leaves a curved remainder under 3e-2 of the target's volume -> refuse (round 6, afterCombine)
 //   G8  tool reused later           -> not a refusal: the translator passes keep_tools so the tool survives (see reusedTools)
 //   G9  plainSentence(raw)          -> every raw SolidCraft / translator message becomes one student sentence (no ids, no engine words)
 //   G12 a handle that is several pieces used by a feature that needs ONE piece -> refuse (the sentence belongs to this group because the pieces come from a combine)
@@ -57,6 +60,9 @@ export const SENTENCES = {
   tubeTool: (op) => `A tube-shaped tool (a spin() of a ring-shaped outline) that is not wholly inside the part cannot be built correctly here, so this ${FN[op]}() was not done; cut with a solid shape instead, or keep the tube wholly inside the part.`,
   slant: (op) => `A cylinder or cone that meets a flat face at a slant (neither square to it nor parallel to it) takes minutes to calculate here, so this ${FN[op]}() is not built; turn the shapes together, or keep the round shape square to the flat faces.`,
   roundBand: (op) => `A cylinder or ball that reaches the rounded edges or corners of a rounded box takes minutes to calculate here, so this ${FN[op]}() is not built; keep the round shape clear of the rounded edges, or use a box-shaped tool.`,
+  lens: (op) => `The overlap of two cylinders with parallel axes that cross each other (a lens shape) cannot be built reliably here, so this ${FN[op]}() was not done; put the two cylinders on one axis, let one contain the other, or cut with a box-shaped tool.`,
+  outsideShapes: (op) => `The part this ${FN[op]}() would leave came out bigger than the shapes it was made from, so its size cannot be trusted here and nothing was changed; use a smaller round shape, or make the overlap deeper.`,
+  tinyRemainder: () => 'This cut() would leave only a very thin sliver of the part (under 3 percent of its volume), which cannot be calculated reliably here, so nothing was changed; cut less away, or remove the sliver on purpose with a different cut.',
   sameWall: (op) => `Two cylinders on the same axis with the same radius share their curved wall, and keeping only their overlap cannot be built here, so this ${FN[op]}() was not done; give one of them a clearly different radius, or let one contain the other.`,
   costly: (op) => `This ${FN[op]}() of round shapes would take longer than ${BUDGET_S} seconds on this computer, so it is not built; use fewer or simpler round shapes, or cut with a box-shaped tool.`,
   coincident: (op) => `This ${FN[op]}() could not be calculated here because faces of the two shapes lie exactly on top of each other, so nothing was changed; move one shape a little so they clearly cross, or build the part in simpler steps.`,
@@ -142,6 +148,18 @@ function sharedWall(A, B) {
   const aInB = along - b.h / 2 <= -a.h / 2 + tol && along + b.h / 2 >= a.h / 2 - tol; const bInA = -a.h / 2 <= along - b.h / 2 + tol && a.h / 2 >= along + b.h / 2 - tol;
   return !aInB && !bInA;                                                 // containment builds (measured: coax-probe.txt)
 }
+/** two parallel cylinders whose walls cross (a lens) and whose heights overlap in volume */
+function crossLens(A, B) {
+  const a = cylFacts(A); const b = cylFacts(B); if (!a || !b) return false;
+  const tol = 1e-6 * Math.max(1, a.r, b.r, a.h, b.h);
+  const par = Math.abs(Math.abs(a.a[0] * b.a[0] + a.a[1] * b.a[1] + a.a[2] * b.a[2]) - 1) < 1e-9;
+  if (!par) return false;
+  const dc = [0, 1, 2].map((i) => b.c[i] - a.c[i]); const along = dc[0] * a.a[0] + dc[1] * a.a[1] + dc[2] * a.a[2];
+  const off = Math.hypot(dc[0] - along * a.a[0], dc[1] - along * a.a[1], dc[2] - along * a.a[2]);
+  if (off <= tol) return false;                                           // one axis: coaxial (sharedWall / containment)
+  if (off >= a.r + b.r - tol || off <= Math.abs(a.r - b.r) + tol) return false;   // apart, tangent, or one inside the other: the walls do not cross
+  return Math.min(a.h / 2, along + b.h / 2) - Math.max(-a.h / 2, along - b.h / 2) > tol;
+}
 /** hang class: returns 'cross' | 'cone' | 'torus' | null for one pair of operands whose bboxes are not apart */
 function hangOf(A, B) {
   const ov = overlapOf(A, B); const tol = tolPair(A, B);
@@ -204,12 +222,19 @@ function sliverClass(a, b, ax) {
 // is 1.7e-4 off for caps at least 0.1 R thick and 6.5e-4 off (over the 3e-4 bar) for caps 0.05 R to 0.075 R thick (R 30 to 80); so a keep whose overlap with a ball is thinner than BALL_KEEP_FRAC * R is refused. THE 0.1 WAS CHOSEN
 // AFTER SEEING THAT DATA (it is the smallest round fraction that has no failing case at or above it); the held-out set B (r5b-) was run after the choice.
 export const BALL_KEEP_FRAC = 0.1;
-const sliverMm = (cls, op, a, b) => {
+// round 6 (critic round 4): the same for a keep where a CYLINDER enters on its curved side. Measured with closed-form circular segments (boolean-cases-r6.mjs, booleans-r6/): the kernel's volume is 2.5e-4 off (inside the bar) once the dip is deep
+// enough, and jumps to 9.8e-4 off (3.3 times the bar) for a shallower dip; the jump sits at a dip of about 2.2 to 3 % of the radius at r120..r300 and at 1.6 to 2.4 % of the radius at r500 (r100, d2.5 is already 3.4e-4). THE 0.035 R WAS CHOSEN AFTER SEEING THAT DATA
+// (the smallest round figure above every failing dip: r135 d3 is 2.2 %, r100 d2.5 is 2.5 %, r120 d3 is 2.5 % and passes); the held-out set r6h- was run after the choice. A keep that dips less than max(2 mm, 0.035 R, 0.1 R_ball) is refused.
+export const CYL_KEEP_FRAC = 0.035;
+export const TINY_FRAC = 3e-2;
+const sliverMm = (cls, op, a, b, ax = -1) => {
   if (cls === 'flat') return SLIVER.flat;
   if (cls === 'rotated') return SLIVER.rotated;
   if (op !== 'intersect') return SLIVER.curvedCut;
   const R = Math.max(...[a, b].map((x) => (x?.kind === 'sphere' && x.prim ? x.prim.radius : 0)));
-  return Math.max(SLIVER.curvedKeep, BALL_KEEP_FRAC * R);
+  // a cylinder that enters on its curved side (its axis is NOT the thin axis); a plain primitive, or a round pull / spin that reads as one cylinder (cylFacts)
+  const Rc = Math.max(...[a, b].map((x) => { const c = cylFacts(x); return c && Math.abs(c.a[ax]) < 0.999 ? c.r : 0; }));
+  return Math.max(SLIVER.curvedKeep, BALL_KEEP_FRAC * R, CYL_KEEP_FRAC * Rc);
 };
 
 // ---- oriented-box penetration depth (separating-axis test): the thickness of the overlap of two boxes turned by the SAME translator rotation (x, then y, then z about the origin), centres as given.
@@ -288,6 +313,13 @@ function guardCombine0(f, ops) {
       if (sharedWall(a.d, b.d)) return { code: 'G17', sentence: SENTENCES.sameWall(op) };
     }
   }
+  // G20 (round 6): keep() of two PARALLEL cylinders that cross each other (a lens: neither contains the other, axes apart by less than the radii sum and more than their difference, heights overlap in volume).
+  // MEASURED (booleans-r6/guarded, 14 lens cases with closed forms): 6 inside the bars, 8 outside them (volume 3.0e-4, bounding box 3.1e-4 to 2.0e-3, or a cylinder wall split in more faces than the true shape has), with no size rule that separates them.
+  if (op === 'intersect') {
+    for (const [a, b] of ops.flatMap((x, i) => ops.slice(i + 1).map((y) => [x, y]))) {
+      if (crossLens(a.d, b.d)) return { code: 'G20', sentence: SENTENCES.lens(op) };
+    }
+  }
   // G13 torus and a coaxial cylinder that meet only along a circle at the INNER equator (cylinder radius = ring radius - tube radius): join gives one body with two shells (OCCT two solids), cut removes nothing, keep leaves nothing. The OUTER equator (cylinder radius = ring radius + tube radius, the ring inside the cylinder) was measured fine for join and keep (r3-tor-cyl-outer-join/keep) and is refused for cut only
   for (const [a, b] of pairs) {
     for (const [t, c] of [[a.d, b.d], [b.d, a.d]]) {
@@ -315,7 +347,7 @@ function guardCombine0(f, ops) {
       if (!ov.every((v) => v > tols[k])) continue;
       const ax = ov.indexOf(Math.min(...ov));
       const cls = sliverClass(pairs[k][0].d, pairs[k][1].d, ax);
-      const depth = sliverMm(cls, op, pairs[k][0].d, pairs[k][1].d);
+      const depth = sliverMm(cls, op, pairs[k][0].d, pairs[k][1].d, ax);
       // two turned boxes: the bounding boxes are loose, so the real thickness of the overlap comes from the oriented-box test
       const obb = cls === 'rotated' ? obbDepth(pairs[k][0].d, pairs[k][1].d) : null;
       const thin = obb !== null ? obb : Math.min(...ov);
@@ -359,7 +391,8 @@ function guardCombine0(f, ops) {
         // MEASURED (r3-tan-cyl-through-*): a cylinder through the part tangent to ONE, TWO adjacent, TWO opposite or THREE sides builds and matches OCCT (the pieces it separates come back as one body with the same number of shells); tangent to all FOUR sides (inscribed in the square cross-section, four corner pieces) is wrong: volume 4.0e-4 against the 3e-4 bar and 13 faces against OCCT's 20. A ball through the part touching the four sides at points is one solid and matches (r3-tan-sph-big). Wholly inside the part, ANY tangent contact pinches the void into the shell (the kernel refuses it).
         const hasFlat = [0, 1, 2].some((i) => flatOnAxis(b.d, ax[i]) === true);
         // round 5: THREE tangent sides now refuses too (r3-tan-cyl-through-3: three pieces come back as one body and the centre of mass is 4.5e-5 off against the 3e-5 bar; the volume is 1.5e-4 off)
-        const pinch = (hasFlat && tangent >= 3) || (tangent >= 1 && sealed);
+        // round 6: TWO tangent sides refuse too (r3-tan-cyl-through-2 and -opp: OCCT 2 solids, the kernel one body with 2 shells; a later join onto the part then leaves the contact interface as two unfused faces, area +200 mm2 against OCCT, and the volume bar cannot see it: r6-tan2-then-join-big, r6-tanopp-then-join)
+        const pinch = (hasFlat && tangent >= 2) || (tangent >= 1 && sealed);
         if (pinch) return { code: 'G7', sentence: SENTENCES.pinchCut() };
       }
     }
@@ -380,10 +413,23 @@ function guardCombine0(f, ops) {
 }
 
 /** G4b, after a successful run: a cut that left the target's volume exactly as it was removed nothing (a sliver SolidCraft ignored, or a near miss the bounding boxes could not rule out) */
-export function afterCombine(f, m, before) { const r = afterCombine0(f, m, before); if (r) PLAIN.add(r.sentence); return r; }
-function afterCombine0(f, m, before) {
-  if (f.op !== 'subtract' || !before || !m) return null;
-  if (Math.abs(m.volume - before.volume) <= 1e-12 * Math.max(before.volume, 1)) return { code: 'G4b', sentence: SENTENCES.cutNothingThin() };
+export function afterCombine(f, m, before, boxes) { const r = afterCombine0(f, m, before, boxes); if (r) PLAIN.add(r.sentence); return r; }
+function afterCombine0(f, m, before, boxes) {
+  if (!m) return null;
+  if (f.op === 'subtract' && before && Math.abs(m.volume - before.volume) <= 1e-12 * Math.max(before.volume, 1)) return { code: 'G4b', sentence: SENTENCES.cutNothingThin() };
+  // G19 (round 6): the result of a keep lies inside EVERY operand's box, of a cut inside the target's box, of a join inside the hull of all. A kernel bounding box that sticks out of that box by more than the bar (curved 3e-4, planar 1e-9, relative to max(|bound|, 1)
+  // like the harness) is a wrong body: the operand boxes are the independent measure (an axis-aligned box operand is exact). Measured: r6-ball-keep-r200 sticks out 5.8e-3 (z min -10.058 below the plate's -10), r6-ball-keep-r140-f0.2 1.8e-3.
+  if (Array.isArray(boxes) && boxes.every((b) => Array.isArray(b) && b.length === 6) && Array.isArray(m.bbox)) {
+    const bar = m.curved ? 3e-4 : 1e-9;
+    const lo = [0, 1, 2].map((i) => (f.op === 'union' ? Math.min(...boxes.map((b) => b[i])) : f.op === 'subtract' ? boxes[0][i] : Math.max(...boxes.map((b) => b[i]))));
+    const hi = [0, 1, 2].map((i) => (f.op === 'union' ? Math.max(...boxes.map((b) => b[i + 3])) : f.op === 'subtract' ? boxes[0][i + 3] : Math.min(...boxes.map((b) => b[i + 3]))));
+    const out = [0, 1, 2].some((i) => (lo[i] - m.bbox[i]) / Math.max(Math.abs(lo[i]), 1) > bar || (m.bbox[i + 3] - hi[i]) / Math.max(Math.abs(hi[i]), 1) > bar);
+    if (out) return { code: 'G19', sentence: SENTENCES.outsideShapes(f.op) };
+  }
+  // G21 (round 6): a cut that leaves a curved remainder under TINY_FRAC of the target's volume. MEASURED (booleans-r6/r3raw, 19 closed-form cuts of a cone by a ball on its axis that the kernel builds, the rim left behind from 0.3 to 415 mm3 of a 262 / 2094 / 16755 mm3 cone):
+  // 9 of the 19 are outside the 3e-4 bar (6.0e-4 to 7.0e-4 for the remainders under 1.2e-3 of the cone, 4.1e-4 and 4.4e-4 for two more, and 3.1e-4 to 3.4e-4 for four between 2.3e-3 and 1.7e-2); the other 10 are 1.0e-4 to 2.8e-4 off. THE 3e-2 WAS CHOSEN AFTER SEEING THAT DATA (the smallest round figure above the largest
+  // failing ratio, 1.7e-2): it catches all 9 failures and also refuses 8 of the 10 that were inside the bar (over-refusal, on purpose). Its collateral over every stored case is listed in the rows.
+  if (f.op === 'subtract' && before && m.curved && m.volume > 0 && m.volume < TINY_FRAC * before.volume) return { code: 'G21', sentence: SENTENCES.tinyRemainder() };
   return null;
 }
 

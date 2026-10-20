@@ -1,0 +1,11 @@
+{
+ "group": "booleans",
+ "round": 2,
+ "status": "IN PROGRESS (placeholder written early; replaced when the replay and rows rebuild finish)",
+ "changes": [
+  {"file": "booleans.guard.mjs", "what": "G3 cylinder keep rule (max(2 mm, 0.035 R)); G7 two tangent sides; G19 box containment after the build; G20 lens keep; G21 thin remainder"},
+  {"file": "boolean-cases-r6.mjs, booleans-r6/", "what": "new cases with closed forms and the replay of every case under the round-6 guard"}
+ ],
+ "defectsResolved": [],
+ "defectsOpen": []
+}

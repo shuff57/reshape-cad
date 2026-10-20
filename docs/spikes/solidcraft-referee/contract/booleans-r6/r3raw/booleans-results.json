@@ -1,0 +1,5169 @@
+[
+ {
+  "id": "r6-tiny-cone-minus-ball",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "fz17-023 as a script: cone (r10, h20) minus a ball r14 leaves a 0.84 mm3 rim",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(28,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 0.8408869963135999,
+   "area": 33.748344789181225,
+   "com": [
+    1.2319982509895677e-11,
+    2.1457159769348063e-14,
+    -9.955347788071357
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10.000000000000012,
+    10,
+    10,
+    -9.86591757935297
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 0.8408869963213969,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.865917579353061
+   ],
+   "faces": 3,
+   "dVol": 7.796985279640012e-12,
+   "dBbox": 9.18254162177525e-15
+  },
+  "analytic": 0.8408869814823025,
+  "occtVsAnalytic": 1.4831297412420952e-8,
+  "translateMs": 21425,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 14,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 20638,
+   "cpuMs": 20652,
+   "load1": 3.2
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 33.756600297341414,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.0010853143007634486,
+    "vertices": 3,
+    "volume_mm3": 0.8413289153205028
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 0.8413289153205028,
+     "area": 33.756600297341414,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 0.8413289153205028,
+   "area": 33.756600297341414,
+   "bbox": [
+    -10.000000000000002,
+    -9.999874771632873,
+    -10.000000003821306,
+    10.000000000000004,
+    9.999874771632872,
+    -9.865917444073325
+   ],
+   "com": [
+    0.002464777468349106,
+    -0.00004503641542705736,
+    -9.955355260076486
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.0004419190069029355,
+   "dBbox": 0.000012522836712847151,
+   "dCom": 0.00008714206351398311,
+   "dArea": 0.00024461964614146326,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.00044193383820034793,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=0.8409 T=0.8413 dVol 4.4e-4 dBbox 1.3e-5 dCom 8.7e-5 dArea 2.4e-4 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 42303
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r13.9",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "cone r10 h20 minus a ball r13.9",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(27.8,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 2.429400801127862,
+   "area": 57.249172900229695,
+   "com": [
+    -7.361634461789431e-12,
+    8.687640803503703e-15,
+    -9.923952753603203
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10.000000000000004,
+    10,
+    10,
+    -9.771490984577952
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 2.4294008011165147,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.771490984577953
+   ],
+   "faces": 3,
+   "dVol": 4.670850312069019e-12,
+   "dBbox": 3.5527136788004996e-16
+  },
+  "analytic": 2.429400796611013,
+  "occtVsAnalytic": 1.8592441079521893e-9,
+  "translateMs": 8776,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 13.9,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 6075,
+   "cpuMs": 6104,
+   "load1": 3
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 57.257621637085364,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.0031361163331672442,
+    "vertices": 3,
+    "volume_mm3": 2.4310979326877864
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 2.4310979326877864,
+     "area": 57.257621637085364,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 2.4310979326877864,
+   "area": 57.257621637085364,
+   "bbox": [
+    -10,
+    -9.999874771632873,
+    -10.000000010599909,
+    10.000000000000002,
+    9.999874771632873,
+    -9.771490920766487
+   ],
+   "com": [
+    0.0016243197015677088,
+    0.00004763264502331957,
+    -9.92391192179619
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.0006985803080069972,
+   "dBbox": 0.000012522836712669517,
+   "dCom": 0.00005742649995341469,
+   "dArea": 0.00014757832170594526,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0006985821685499364,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=2.4294 T=2.4311 dVol 7.0e-4 dBbox 1.3e-5 dCom 5.7e-5 dArea 1.5e-4 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 15160
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r14.05",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "cone r10 h20 minus a ball r14.05",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(28.1,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 0.3541267053543251,
+   "area": 21.922691097056763,
+   "com": [
+    -2.9655548355288755e-11,
+    2.7448852716156336e-14,
+    -9.971051574875569
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10.000000000000005,
+    10,
+    10,
+    -9.913102030957347
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 0.35412670534728835,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.913102030957345
+   ],
+   "faces": 3,
+   "dVol": 7.036760063527936e-12,
+   "dBbox": 5.329070518200748e-16
+  },
+  "analytic": 0.3541267048692116,
+  "occtVsAnalytic": 4.851135049221966e-10,
+  "translateMs": 20982,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 14.05,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 18476,
+   "cpuMs": 18503,
+   "load1": 2.7
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 21.93204177278677,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.00045735830904710696,
+    "vertices": 3,
+    "volume_mm3": 0.35454132484271855
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 0.35454132484271855,
+     "area": 21.93204177278677,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 0.35454132484271855,
+   "area": 21.93204177278677,
+   "bbox": [
+    -10.000000000000002,
+    -9.999874771632872,
+    -10.000000089994334,
+    10.000000000000004,
+    9.999874771632873,
+    -9.913101617236016
+   ],
+   "com": [
+    0.003796565625392157,
+    -0.001338379540588273,
+    -9.970861758256733
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00041461948839344176,
+   "dBbox": 0.000012522836712847151,
+   "dCom": 0.0001342282325017767,
+   "dArea": 0.0004265295573709808,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0004146199735069467,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=0.3541 T=0.3545 dVol 4.1e-4 dBbox 1.3e-5 dCom 1.3e-4 dArea 4.3e-4 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 39731
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r14.1",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "cone r10 h20 minus a ball r14.1",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(28.2,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 0.0742287246348976,
+   "area": 10.046866397468804,
+   "com": [
+    1.4746192795609848e-10,
+    4.7734616052362086e-14,
+    -9.986759514254302
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10.000000000000004,
+    10,
+    10,
+    -9.960267555535562
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 0.07422872464402985,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.960267555535705
+   ],
+   "faces": 3,
+   "dVol": 9.132250511356688e-12,
+   "dBbox": 1.4267543151794268e-14
+  },
+  "analytic": 0.07422867507300694,
+  "occtVsAnalytic": 4.956189066096517e-8,
+  "translateMs": 71531,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cone1 came back"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 14.1,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cone1 came back"
+  },
+  "refusalSentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cone1 came back",
+  "outcome": "REFUSED",
+  "summary": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cone1 came back",
+  "wallMs": 71819
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r13.5",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "cone r10 h20 minus a ball r13.5",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(27,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 16.778309849181852,
+   "area": 149.2473992073679,
+   "com": [
+    -1.1535836622452727e-12,
+    2.6139084619834446e-15,
+    -9.798542812945477
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.392980294900891
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 16.77830984917269,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.392980294900891
+   ],
+   "faces": 3,
+   "dVol": 5.4608888857022e-13,
+   "dBbox": 0
+  },
+  "analytic": 16.77830982981366,
+  "occtVsAnalytic": 1.1543588599411577e-9,
+  "translateMs": 8340,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 13.5,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 6262,
+   "cpuMs": 6296,
+   "load1": 3.2
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 149.25044612323794,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.021650140584324688,
+    "vertices": 3,
+    "volume_mm3": 16.783054716530767
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 16.783054716530767,
+     "area": 149.25044612323794,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 16.783054716530767,
+   "area": 149.25044612323794,
+   "bbox": [
+    -10,
+    -9.999874771632872,
+    -10.002840192291949,
+    10.000000000000002,
+    9.999874771632872,
+    -9.392980218493808
+   ],
+   "com": [
+    0.0000012075683629068537,
+    -5.277302674993468e-7,
+    -9.79852194633106
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.000282797694855204,
+   "dBbox": 0.000284019229194854,
+   "dCom": 7.375763867017245e-7,
+   "dArea": 0.000020415202450601324,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.000282798849540514,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=16.7783 T=16.7831 dVol 2.8e-4 dBbox 2.8e-4 dCom 7.4e-7 dArea 2.0e-5 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 14894
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r12",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "cone r10 h20 minus a ball r12",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(24,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 173.89770937985026,
+   "area": 465.75029119803116,
+   "com": [
+    -1.539597639262684e-13,
+    5.852634411702978e-16,
+    -9.330838798040263
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -7.959919678390985
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 173.89770937984835,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -7.959919678390986
+   ],
+   "faces": 3,
+   "dVol": 1.09504290690658e-14,
+   "dBbox": 1.1158132940854765e-16
+  },
+  "analytic": 173.89770935802719,
+  "occtVsAnalytic": 1.2549371497888094e-10,
+  "translateMs": 7378,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 12,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 5195,
+   "cpuMs": 5231,
+   "load1": 3.2
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 465.73597225224125,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.22435144557121436,
+    "vertices": 3,
+    "volume_mm3": 173.91584928001112
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 173.91584928001112,
+     "area": 465.73597225224125,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 173.91584928001112,
+   "area": 465.73597225224125,
+   "bbox": [
+    -10.000000000000002,
+    -9.999874771632875,
+    -10.000214642364936,
+    10.000000000000004,
+    9.999874771632872,
+    -7.959919625047406
+   ],
+   "com": [
+    -0.0000021209129666276354,
+    0.000001635693593098152,
+    -9.330794330003284
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00010431362336830747,
+   "dBbox": 0.000021464236493606846,
+   "dCom": 0.0000015681088437681755,
+   "dArea": 0.00003074382573777402,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.00010431374887511316,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=173.8977 T=173.9158 dVol 1.0e-4 dBbox 2.1e-5 dCom 1.6e-6 dArea 3.1e-5 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 12877
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r12.5",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "cone r10 h20 minus a ball r12.5",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(25,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 104.70250115573413,
+   "area": 365.236079076115,
+   "com": [
+    2.8936789396985097e-13,
+    5.964852903823116e-16,
+    -9.486267514407146
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10.000000000000002,
+    10,
+    10,
+    -8.44030650891024
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 104.7025011557389,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -8.440306508910549
+   ],
+   "faces": 3,
+   "dVol": 4.5603945766355504e-14,
+   "dBbox": 3.6620244742219775e-14
+  },
+  "analytic": 104.7025011488981,
+  "occtVsAnalytic": 6.529005620451562e-11,
+  "translateMs": 21458,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 12.5,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 18310,
+   "cpuMs": 18338,
+   "load1": 2.9
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 365.229888691674,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.1350835261040326,
+    "vertices": 3,
+    "volume_mm3": 104.71591170855238
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 104.71591170855238,
+     "area": 365.229888691674,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 104.71591170855238,
+   "area": 365.229888691674,
+   "bbox": [
+    -10.000000000000004,
+    -9.999874771632873,
+    -10.000000006015195,
+    10.000000000000002,
+    9.999874771632872,
+    -8.440306211851642
+   ],
+   "com": [
+    -0.000006356711258885817,
+    9.082117116573428e-9,
+    -9.486236843449811
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.0001280824495138899,
+   "dBbox": 0.000012522836712847151,
+   "dCom": 0.0000010827371492625112,
+   "dArea": 0.000016948994898547895,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.00012808251481230863,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=104.7025 T=104.7159 dVol 1.3e-4 dBbox 1.3e-5 dCom 1.1e-6 dArea 1.7e-5 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 40093
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r13",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "cone r10 h20 minus a ball r13",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(26,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 51.86436969849049,
+   "area": 259.7396012908649,
+   "com": [
+    -4.833365924110697e-13,
+    1.0903105364966777e-15,
+    -9.642175765950313
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10.000000000000002,
+    10,
+    10,
+    -8.917875251164944
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 51.86436969848213,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -8.917875251164945
+   ],
+   "faces": 3,
+   "dVol": 1.6124919763827355e-13,
+   "dBbox": 1.9919059073720556e-16
+  },
+  "analytic": 51.86436966868018,
+  "occtVsAnalytic": 5.747743408139226e-10,
+  "translateMs": 8064,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 13,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 5998,
+   "cpuMs": 6024,
+   "load1": 3.1
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 259.73896872038824,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.06692221148585636,
+    "vertices": 3,
+    "volume_mm3": 51.87768332236927
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 51.87768332236927,
+     "area": 259.73896872038824,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 51.87768332236927,
+   "area": 259.73896872038824,
+   "bbox": [
+    -10.000000000000002,
+    -9.999874771632875,
+    -10.002164470082338,
+    10.000000000000004,
+    9.999874771632875,
+    -8.917875136101253
+   ],
+   "com": [
+    -0.00005529328622105465,
+    -0.0000033251382577867326,
+    -9.642127596431045
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.0002567007746585489,
+   "dBbox": 0.00021644700823362224,
+   "dCom": 0.0000019534836892409873,
+   "dArea": 0.000002435402509045706,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0002567013495804347,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=51.8644 T=51.8777 dVol 2.6e-4 dBbox 2.2e-4 dCom 2.0e-6 dArea 2.4e-6 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 14353
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r13.2",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "cone r10 h20 minus a ball r13.2",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(26.4,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 35.62152106402172,
+   "area": 216.14287681543993,
+   "com": [
+    1.1537348942090402e-12,
+    1.8603119748964396e-15,
+    -9.704668700133091
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.108195172933799
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 35.6215210640363,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.10819517293426
+   ],
+   "faces": 3,
+   "dVol": 4.093125869496802e-13,
+   "dBbox": 5.051235866923916e-14
+  },
+  "analytic": 35.62152106010155,
+  "occtVsAnalytic": 1.100506305720248e-10,
+  "translateMs": 7983,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 13.2,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 5849,
+   "cpuMs": 5878,
+   "load1": 2.8
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 216.14418457325027,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.04596584220304536,
+    "vertices": 3,
+    "volume_mm3": 35.63243581631423
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 35.63243581631423,
+     "area": 216.14418457325027,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 35.63243581631423,
+   "area": 216.14418457325027,
+   "bbox": [
+    -10,
+    -9.999874771632873,
+    -10.000000011753027,
+    10.000000000000004,
+    9.999874771632873,
+    -9.108195155917217
+   ],
+   "com": [
+    -0.00013674754468094452,
+    0.000027028345024498774,
+    -9.70461219548999
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00030640893388270027,
+   "dBbox": 0.000012522836712669517,
+   "dCom": 0.0000048323544151751325,
+   "dArea": 0.000006050432147502275,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.00030640904396705135,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=35.6215 T=35.6324 dVol 3.1e-4 dBbox 1.3e-5 dCom 4.8e-6 dArea 6.1e-6 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 14148
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r13.4",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "cone r10 h20 minus a ball r13.4",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(26.8,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 22.308340899045675,
+   "area": 171.74606090835664,
+   "com": [
+    8.26851692100567e-13,
+    4.0523528927447744e-15,
+    -9.767233703448541
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10.000000000000002,
+    10,
+    10,
+    -9.298141440077435
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 22.30834089905477,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.298141440077655
+   ],
+   "faces": 3,
+   "dVol": 4.0769266790782965e-13,
+   "dBbox": 2.368949208884014e-14
+  },
+  "analytic": 22.308340820565576,
+  "occtVsAnalytic": 3.5179711254756726e-9,
+  "translateMs": 8222,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 13.4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 6199,
+   "cpuMs": 6237,
+   "load1": 3
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 171.750155154887,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.028787060213645983,
+    "vertices": 3,
+    "volume_mm3": 22.31555055321394
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 22.31555055321394,
+     "area": 171.750155154887,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 22.31555055321394,
+   "area": 171.750155154887,
+   "bbox": [
+    -10,
+    -9.999874771632872,
+    -10.000000000079833,
+    10.000000000000002,
+    9.999874771632873,
+    -9.298141436077131
+   ],
+   "com": [
+    -0.00025958037959842445,
+    -0.000013267740096778874,
+    -9.767189656021788
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00032318199730274177,
+   "dBbox": 0.000012522836712847151,
+   "dCom": 0.000009174728097186838,
+   "dArea": 0.000023838954493146567,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0003231855164108122,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=22.3083 T=22.3156 dVol 3.2e-4 dBbox 1.3e-5 dCom 9.2e-6 dArea 2.4e-5 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 14707
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r13.6",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "cone r10 h20 minus a ball r13.6",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(27.2,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 12.01422024945576,
+   "area": 126.54845757477852,
+   "com": [
+    1.218321293662077e-12,
+    3.4780789533712043e-15,
+    -9.829869438626467
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10.000000000000002,
+    10,
+    10,
+    -9.48773258741673
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 12.014220249462406,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.487732587416891
+   ],
+   "faces": 3,
+   "dVol": 5.531237815036202e-13,
+   "dBbox": 1.703762947533027e-14
+  },
+  "analytic": 12.014220199880473,
+  "occtVsAnalytic": 4.12638415561521e-9,
+  "translateMs": 8405,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 13.6,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 6168,
+   "cpuMs": 6199,
+   "load1": 2.8
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 126.55480013135269,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.015503618203175865,
+    "vertices": 3,
+    "volume_mm3": 12.018308684632453
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 12.018308684632453,
+     "area": 126.55480013135269,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 12.018308684632453,
+   "area": 126.55480013135269,
+   "bbox": [
+    -10,
+    -9.999874771632873,
+    -10.000165826709683,
+    10.000000000000002,
+    9.999874771632873,
+    -9.487732105646247
+   ],
+   "com": [
+    0.0005924501164099039,
+    0.00000764613419323836,
+    -9.829831772774913
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00034029966920887214,
+   "dBbox": 0.00001658267096811272,
+   "dCom": 0.000020942840119863722,
+   "dArea": 0.00005011958814606877,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.00034030379699723494,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=12.0142 T=12.0183 dVol 3.4e-4 dBbox 1.7e-5 dCom 2.1e-5 dArea 5.0e-5 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 14882
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r13.7",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "cone r10 h20 minus a ball r13.7",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(27.4,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 8.027251207545234,
+   "area": 103.6491566120751,
+   "com": [
+    2.1066884134876616e-13,
+    6.155312914239368e-15,
+    -9.861213414277943
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.58240044204998
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 8.027251207546689,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.582400442049998
+   ],
+   "faces": 3,
+   "dVol": 1.81237164983865e-13,
+   "dBbox": 1.8537702010501988e-15
+  },
+  "analytic": 8.027251206171071,
+  "occtVsAnalytic": 1.7118724334315515e-10,
+  "translateMs": 8733,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 13.7,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 6691,
+   "cpuMs": 6719,
+   "load1": 2.9
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 103.6559115328977,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.01035760847489442,
+    "vertices": 3,
+    "volume_mm3": 8.029153856507302
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 8.029153856507302,
+     "area": 103.6559115328977,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 8.029153856507302,
+   "area": 103.6559115328977,
+   "bbox": [
+    -10.000000000000004,
+    -9.999874771632873,
+    -10.00065114774088,
+    10.000000000000004,
+    9.999874771632875,
+    -9.582400206807868
+   ],
+   "com": [
+    0.0008294018682850148,
+    0.000022349695162871713,
+    -9.861378033007359
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00023702372242681138,
+   "dBbox": 0.00006511477408803757,
+   "dCom": 0.000029320588686597452,
+   "dArea": 0.00006517101579400849,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.00023702389365463017,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=8.0273 T=8.0292 dVol 2.4e-4 dBbox 6.5e-5 dCom 2.9e-5 dArea 6.5e-5 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 15722
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r13.8",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "cone r10 h20 minus a ball r13.8",
+  "source": "const a = cone(20,20,{at:[0,0,0]}); const b = sphere(27.6,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 4.82858376128425,
+   "area": 80.54941970497974,
+   "com": [
+    -3.478707443795329e-12,
+    8.998633386908368e-15,
+    -9.892574574261916
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.676985912469021
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 4.828583761273914,
+   "bbox": [
+    -10,
+    -10,
+    -10,
+    10,
+    10,
+    -9.676985912469023
+   ],
+   "faces": 3,
+   "dVol": 2.1405308017896703e-12,
+   "dBbox": 1.8356509510997358e-16
+  },
+  "analytic": 4.828583751116721,
+  "occtVsAnalytic": 2.1056959069159924e-9,
+  "translateMs": 9148,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -10
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ],
+      [
+       0,
+       20
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 13.8,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 6750,
+   "cpuMs": 6785,
+   "load1": 3
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 80.5578432835941,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.006230917375981571,
+    "vertices": 3,
+    "volume_mm3": 4.830168508512846
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 4.830168508512846,
+     "area": 80.5578432835941,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 4.830168508512846,
+   "area": 80.5578432835941,
+   "bbox": [
+    -10,
+    -9.999874771632872,
+    -10.000000049461889,
+    10.000000000000002,
+    9.999874771632875,
+    -9.676985725263823
+   ],
+   "com": [
+    0.0007759767426468474,
+    0.000012053074489972694,
+    -9.892556459707329
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00032820125049962953,
+   "dBbox": 0.000012522836712847151,
+   "dCom": 0.000027433132069187732,
+   "dArea": 0.00010457652761754659,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.00032820335688662843,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=4.8286 T=4.8302 dVol 3.3e-4 dBbox 1.3e-5 dCom 2.7e-5 dArea 1.0e-4 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 16199
+ },
+ {
+  "id": "r6-tiny-cone-x2-minus-ball-r28",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "the cone scaled by 2 minus a ball r28",
+  "source": "const a = cone(40,40,{at:[0,0,0]}); const b = sphere(56,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 6.727095970585907,
+   "area": 134.99337915662713,
+   "com": [
+    -7.689426669325487e-12,
+    3.329107165265923e-14,
+    -19.91069557614122
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -20.000000000000025,
+    20,
+    20,
+    -19.73183515870612
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 6.727095970571175,
+   "bbox": [
+    -20,
+    -20,
+    -20,
+    20,
+    20,
+    -19.731835158706122
+   ],
+   "faces": 3,
+   "dVol": 2.1899814588616388e-12,
+   "dBbox": 1.2434497875801739e-15
+  },
+  "analytic": 6.72709585185842,
+  "occtVsAnalytic": 1.764914459547247e-8,
+  "translateMs": 22271,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -20
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       20,
+       0
+      ],
+      [
+       0,
+       40
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 28,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 19956,
+   "cpuMs": 19983,
+   "load1": 3.1
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 135.02646090539943,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.008683127994427003,
+    "vertices": 3,
+    "volume_mm3": 6.731106972424034
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 6.731106972424034,
+     "area": 135.02646090539943,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 6.731106972424034,
+   "area": 135.02646090539943,
+   "bbox": [
+    -20,
+    -19.999749543265747,
+    -20.000000106284777,
+    20.000000000000004,
+    19.999749543265747,
+    -19.731834888773562
+   ],
+   "com": [
+    0.0050647693397669795,
+    0.00010419233901707454,
+    -19.910710172942125
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.0005962456691067317,
+   "dBbox": 0.000012522836712669517,
+   "dCom": 0.0000895323127611619,
+   "dArea": 0.0002450620095517462,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0005962633287745532,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=6.7271 T=6.7311 dVol 6.0e-4 dBbox 1.3e-5 dCom 9.0e-5 dArea 2.5e-4 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 42516
+ },
+ {
+  "id": "r6-tiny-cone-x2-minus-ball-r27.8",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "the cone scaled by 2 minus a ball r27.8",
+  "source": "const a = cone(40,40,{at:[0,0,0]}); const b = sphere(55.6,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 19.435206408989302,
+   "area": 228.99669160095672,
+   "com": [
+    -9.528885608482885e-12,
+    1.5664150473913948e-14,
+    -19.847905507206786
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -20.000000000000007,
+    20,
+    20,
+    -19.542981969155903
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 19.435206408932117,
+   "bbox": [
+    -20,
+    -20,
+    -20,
+    20,
+    20,
+    -19.542981969155907
+   ],
+   "faces": 3,
+   "dVol": 2.942313972416754e-12,
+   "dBbox": 3.5527136788004996e-16
+  },
+  "analytic": 19.435206372888103,
+  "occtVsAnalytic": 1.8575155716093183e-9,
+  "translateMs": 8687,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -20
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       20,
+       0
+      ],
+      [
+       0,
+       40
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 27.8,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 6363,
+   "cpuMs": 6399,
+   "load1": 3.1
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 229.03037980464086,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.025088540134994924,
+    "vertices": 3,
+    "volume_mm3": 19.448480724802266
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 19.448480724802266,
+     "area": 229.03037980464086,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 19.448480724802266,
+   "area": 229.03037980464086,
+   "bbox": [
+    -20.000000000000007,
+    -19.999749543265747,
+    -20.000000005010016,
+    20.000000000000007,
+    19.99974954326574,
+    -19.54298184696437
+   ],
+   "com": [
+    0.0034438120874267027,
+    -0.0003098484718447174,
+    -19.84782331637428
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.0006830035932535559,
+   "dBbox": 0.000012522836713024788,
+   "dCom": 0.000060876585483206646,
+   "dArea": 0.00014711218510894501,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0006830054520378173,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=19.4352 T=19.4485 dVol 6.8e-4 dBbox 1.3e-5 dCom 6.1e-5 dArea 1.5e-4 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 15363
+ },
+ {
+  "id": "r6-tiny-cone-x2-minus-ball-r27.4",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "the cone scaled by 2 minus a ball r27.4",
+  "source": "const a = cone(40,40,{at:[0,0,0]}); const b = sphere(54.8,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 64.21800966023443,
+   "area": 414.59662644850687,
+   "com": [
+    7.665513302873678e-12,
+    1.3560951475998336e-14,
+    -19.722426828556873
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -20,
+    20,
+    20,
+    -19.164800884099215
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 64.21800966037351,
+   "bbox": [
+    -20,
+    -20,
+    -20,
+    20,
+    20,
+    -19.164800884099996
+   ],
+   "faces": 3,
+   "dVol": 2.165773057021498e-12,
+   "dBbox": 4.078294442310596e-14
+  },
+  "analytic": 64.21800964936857,
+  "occtVsAnalytic": 1.692027074507821e-10,
+  "translateMs": 8525,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -20
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       20,
+       0
+      ],
+      [
+       0,
+       40
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 27.4,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 6313,
+   "cpuMs": 6349,
+   "load1": 3.1
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 414.6238235260921,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.08286207214514868,
+    "vertices": 3,
+    "volume_mm3": 64.23416445360363
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 64.23416445360363,
+     "area": 414.6238235260921,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 64.23416445360363,
+   "area": 414.6238235260921,
+   "bbox": [
+    -20.000000000000007,
+    -19.999749543265747,
+    -20.00130229548176,
+    20.000000000000007,
+    19.999749543265743,
+    -19.1648004333177
+   ],
+   "com": [
+    0.001112551038667259,
+    0.0002558773298464888,
+    -19.722656959345425
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.0002515617262924895,
+   "dBbox": 0.00006511477408803757,
+   "dCom": 0.00001966516620500791,
+   "dArea": 0.00006559888781106679,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.00025156189553776187,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=64.2180 T=64.2342 dVol 2.5e-4 dBbox 6.5e-5 dCom 2.0e-5 dArea 6.6e-5 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 15133
+ },
+ {
+  "id": "r6-tiny-cone-x2-minus-ball-r27",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "the cone scaled by 2 minus a ball r27",
+  "source": "const a = cone(40,40,{at:[0,0,0]}); const b = sphere(54,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 134.22647879331032,
+   "area": 596.9895968297144,
+   "com": [
+    2.073401472231621e-12,
+    4.5778954798188426e-15,
+    -19.597085625891616
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -20,
+    20,
+    20,
+    -18.785960589801356
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 134.22647879338152,
+   "bbox": [
+    -20,
+    -20,
+    -20,
+    20,
+    20,
+    -18.785960589801782
+   ],
+   "faces": 3,
+   "dVol": 5.304198006474888e-13,
+   "dBbox": 2.2693843065310515e-14
+  },
+  "analytic": 134.2264786385093,
+  "occtVsAnalytic": 1.1532823512506978e-9,
+  "translateMs": 8453,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -20
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       20,
+       0
+      ],
+      [
+       0,
+       40
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 27,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 6108,
+   "cpuMs": 6142,
+   "load1": 3.1
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 597.0018027513206,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.17320051770904166,
+    "vertices": 3,
+    "volume_mm3": 134.26396721631136
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 134.26396721631136,
+     "area": 597.0018027513206,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 134.26396721631136,
+   "area": 597.0018027513206,
+   "bbox": [
+    -20,
+    -19.999749543265747,
+    -20.005680384583897,
+    20.000000000000004,
+    19.999749543265747,
+    -18.785960458614568
+   ],
+   "com": [
+    -0.00001240406656278389,
+    0.000005128664947543707,
+    -19.597042696340164
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.0002792923075838371,
+   "dBbox": 0.000284019229194854,
+   "dCom": 7.587197139368953e-7,
+   "dArea": 0.000020445786109219984,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0002792934611882912,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=134.2265 T=134.2640 dVol 2.8e-4 dBbox 2.8e-4 dCom 7.6e-7 dArea 2.0e-5 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 14871
+ },
+ {
+  "id": "r6-tiny-cone-x2-minus-ball-r26",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "the cone scaled by 2 minus a ball r26",
+  "source": "const a = cone(40,40,{at:[0,0,0]}); const b = sphere(52,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 414.9149575878414,
+   "area": 1038.9584051636555,
+   "com": [
+    2.8824835329736196e-13,
+    3.286522858074686e-15,
+    -19.28435153190085
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -20.000000000000004,
+    20,
+    20,
+    -17.835750502329727
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 414.91495758785703,
+   "bbox": [
+    -20,
+    -20,
+    -20,
+    20,
+    20,
+    -17.83575050232989
+   ],
+   "faces": 3,
+   "dVol": 3.7675046177174214e-14,
+   "dBbox": 9.162767173911538e-15
+  },
+  "analytic": 414.91495734944147,
+  "occtVsAnalytic": 5.745754165699929e-10,
+  "translateMs": 8348,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -20
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       20,
+       0
+      ],
+      [
+       0,
+       40
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 26,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 6177,
+   "cpuMs": 6211,
+   "load1": 3.8
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 1038.9588654354152,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.535377665076853,
+    "vertices": 3,
+    "volume_mm3": 415.0214457960101
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 415.0214457960101,
+     "area": 1038.9588654354152,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 415.0214457960101,
+   "area": 1038.9588654354152,
+   "bbox": [
+    -20.000000000000004,
+    -19.99974954326575,
+    -20.004328935604242,
+    20.000000000000007,
+    19.99974954326574,
+    -17.835750272202507
+   ],
+   "com": [
+    -0.0000753881066711734,
+    0.000005694048639549849,
+    -19.284259669964175
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.0002566506852097278,
+   "dBbox": 0.00021644678021193184,
+   "dCom": 0.0000016227177727020226,
+   "dArea": 4.4301269178177776e-7,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.00025665125993260955,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=414.9150 T=415.0214 dVol 2.6e-4 dBbox 2.2e-4 dCom 1.6e-6 dArea 4.4e-7 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 14832
+ },
+ {
+  "id": "r6-tiny-cone-x0.5-minus-ball-r7",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "the cone scaled by 0.5 minus a ball r7",
+  "source": "const a = cone(10,10,{at:[0,0,0]}); const b = sphere(14,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 0.10511087453854984,
+   "area": 8.437086197299365,
+   "com": [
+    1.05581743115294e-11,
+    1.005266113589805e-14,
+    -4.9776738940358785
+   ],
+   "bbox": [
+    -5,
+    -5,
+    -5.000000000000006,
+    5,
+    5,
+    -4.9329587896764275
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 0.1051108745401746,
+   "bbox": [
+    -5,
+    -5,
+    -5,
+    5,
+    5,
+    -4.932958789676531
+   ],
+   "faces": 3,
+   "dVol": 1.6247697631754932e-12,
+   "dBbox": 2.0885780943645912e-14
+  },
+  "analytic": 0.1051108726852878,
+  "occtVsAnalytic": 1.8532620299493985e-9,
+  "translateMs": 11057,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cone1 came back"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       5,
+       0
+      ],
+      [
+       0,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 7,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cone1 came back"
+  },
+  "refusalSentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cone1 came back",
+  "outcome": "REFUSED",
+  "summary": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cone1 came back",
+  "wallMs": 11367
+ },
+ {
+  "id": "r6-tiny-cone-x0.5-minus-ball-r6.95",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "the cone scaled by 0.5 minus a ball r6.95",
+  "source": "const a = cone(10,10,{at:[0,0,0]}); const b = sphere(13.9,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 0.30367510014145527,
+   "area": 14.312293225055013,
+   "com": [
+    -4.910681073232111e-12,
+    4.020923139709896e-15,
+    -4.961976376801473
+   ],
+   "bbox": [
+    -5,
+    -5,
+    -5.000000000000002,
+    5,
+    5,
+    -4.885745492288976
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 0.30367510013956434,
+   "bbox": [
+    -5,
+    -5,
+    -5,
+    5,
+    5,
+    -4.885745492288977
+   ],
+   "faces": 3,
+   "dVol": 1.8909318555415666e-12,
+   "dBbox": 3.5527136788004996e-16
+  },
+  "analytic": 0.3036750995763766,
+  "occtVsAnalytic": 5.650786505384531e-10,
+  "translateMs": 19709,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       5,
+       0
+      ],
+      [
+       0,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 6.95,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 17276,
+   "cpuMs": 17304,
+   "load1": 3.5
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 14.314320996931293,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.0003920106588377729,
+    "vertices": 3,
+    "volume_mm3": 0.3038842316571883
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 0.3038842316571883,
+     "area": 14.314320996931293,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 0.3038842316571883,
+   "area": 14.314320996931293,
+   "bbox": [
+    -5.000000000000002,
+    -4.9999373858164375,
+    -5.000000000000011,
+    5.000000000000002,
+    4.999937385816437,
+    -4.885745315770182
+   ],
+   "com": [
+    0.0008524717240828615,
+    -0.000003761297448957345,
+    -4.961965019044813
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.0002091315157330409,
+   "dBbox": 0.000012522836712669517,
+   "dCom": 0.00006027688691606523,
+   "dArea": 0.0001416804312484614,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.00020913208081169143,
+   "geomOk": false,
+   "bodiesOk": true
+  },
+  "outcome": "FAIL",
+  "summary": "FAIL vol O=0.3037 T=0.3039 dVol 2.1e-4 dBbox 1.3e-5 dCom 6.0e-5 dArea 1.4e-4 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 37287
+ },
+ {
+  "id": "r6-tiny-cone-x0.5-minus-ball-r6.85",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "the cone scaled by 0.5 minus a ball r6.85",
+  "source": "const a = cone(10,10,{at:[0,0,0]}); const b = sphere(13.7,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 1.0034064009442059,
+   "area": 25.912289153013212,
+   "com": [
+    -7.833694310649691e-13,
+    2.572552698205349e-15,
+    -4.930606707138889
+   ],
+   "bbox": [
+    -5,
+    -5,
+    -5,
+    5,
+    5,
+    -4.791200221024999
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 1.003406400943336,
+   "bbox": [
+    -5,
+    -5,
+    -5,
+    5,
+    5,
+    -4.791200221024999
+   ],
+   "faces": 3,
+   "dVol": 8.667960625653909e-13,
+   "dBbox": 0
+  },
+  "analytic": 1.0034064007713839,
+  "occtVsAnalytic": 1.7223527657088473e-10,
+  "translateMs": 9093,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cone1 came back"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       5,
+       0
+      ],
+      [
+       0,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 6.85,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   }
+  ],
+  "truck": {
+   "refused": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cone1 came back"
+  },
+  "refusalSentence": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cone1 came back",
+  "outcome": "REFUSED",
+  "summary": "op1 (combine): solidcraft refused it -- solidcraft ran the commands but no body named b_cone1 came back",
+  "wallMs": 9499
+ },
+ {
+  "id": "r6-tiny-cone-x0.5-minus-ball-r6.5",
+  "feature": "a cut that leaves a very thin remainder",
+  "note": "the cone scaled by 0.5 minus a ball r6.5",
+  "source": "const a = cone(10,10,{at:[0,0,0]}); const b = sphere(13,{at:[0,0,0]}); cut(a,b)",
+  "frontEndErrors": [],
+  "featureKinds": [
+   "cone1:cone",
+   "ball1:sphere",
+   "op1:combine/subtract"
+  ],
+  "occt": {
+   "volume": 6.483046212311503,
+   "area": 64.934900322714,
+   "com": [
+    -3.079763774773392e-13,
+    5.448579801404056e-16,
+    -4.82108788297515
+   ],
+   "bbox": [
+    -5,
+    -5,
+    -5.000000000000001,
+    5,
+    5,
+    -4.458937625582472
+   ],
+   "faces": 3,
+   "solids": 1,
+   "shells": 1,
+   "valid": true,
+   "types": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "components": {
+    "plane": 1,
+    "cone": 1,
+    "sphere": 1
+   },
+   "bigCylinderComponents": 0
+  },
+  "occtNote": null,
+  "brep": {
+   "volume": 6.483046212310266,
+   "bbox": [
+    -5,
+    -5,
+    -5,
+    5,
+    5,
+    -4.458937625582473
+   ],
+   "faces": 3,
+   "dVol": 1.908412339083334e-13,
+   "dBbox": 1.9919059073720556e-16
+  },
+  "analytic": 6.483046208585023,
+  "occtVsAnalytic": 5.748039328502097e-10,
+  "translateMs": 7896,
+  "translator": "r3raw",
+  "truckFeatures": [
+   {
+    "id": "cone1",
+    "kind": "cone",
+    "status": "built"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built"
+   }
+  ],
+  "commands": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_cone1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -5
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       0,
+       1
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       5,
+       0
+      ],
+      [
+       0,
+       10
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.revolve",
+    "params": {
+     "axis": "y",
+     "sketch": "sk_cone1_0",
+     "operation": "new",
+     "body_name": "b_cone1"
+    }
+   },
+   {
+    "command": "solid.sphere",
+    "params": {
+     "radius": 6.5,
+     "center": [
+      0,
+      0,
+      0
+     ],
+     "body_name": "b_ball1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b_cone1",
+     "tools": [
+      "b_ball1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "finalRun": {
+   "wallMs": 5516,
+   "cpuMs": 5544,
+   "load1": 3.3
+  },
+  "truckAll": {
+   "body_count": 1,
+   "total": {
+    "area_mm2": 64.93481500496554,
+    "edges": 3,
+    "faces": 3,
+    "mass_g": 0.008365259120825839,
+    "vertices": 3,
+    "volume_mm3": 6.484696992888246
+   },
+   "bodies": [
+    {
+     "name": "b_cone1",
+     "volume": 6.484696992888246,
+     "area": 64.93481500496554,
+     "faces": 3,
+     "kernel": {
+      "edges": 23,
+      "faces": 9,
+      "shells": 1,
+      "vertices": 16
+     }
+    }
+   ]
+  },
+  "truckBodiesInSession": [
+   "b_cone1"
+  ],
+  "truck": {
+   "volume": 6.484696992888246,
+   "area": 64.93481500496554,
+   "bbox": [
+    -5.000000000000002,
+    -4.999937385816436,
+    -5.001082235041172,
+    5.000000000000001,
+    4.999937385816436,
+    -4.458937568564456
+   ],
+   "com": [
+    -0.000028851549916141648,
+    0.000003163945835262637,
+    -4.821066024005795
+   ],
+   "faces": 3,
+   "kernelFaces": 9,
+   "faceTypes": {
+    "cone": 1,
+    "plane": 1,
+    "sphere": 1
+   },
+   "curved": true,
+   "bodies": 1,
+   "bodyNames": [
+    "b_cone1"
+   ],
+   "euler": [
+    2
+   ],
+   "shells": [
+    1
+   ],
+   "tol": 0.0003,
+   "dVol": 0.00025463038866013673,
+   "dBbox": 0.00021644700823415515,
+   "dCom": 0.000002038621174955122,
+   "dArea": 0.0000013138966570088111,
+   "faceKeys": {
+    "cone": "equal",
+    "plane": "equal",
+    "sphere": "equal"
+   },
+   "faceOk": true,
+   "facesOcct": 3,
+   "solidsOcct": 1,
+   "dAnalytic": 0.0002546309636104321,
+   "geomOk": true,
+   "bodiesOk": true
+  },
+  "outcome": "PASS",
+  "summary": "PASS vol O=6.4830 T=6.4847 dVol 2.5e-4 dBbox 2.2e-4 dCom 2.0e-6 dArea 1.3e-6 faces O/B/T 3/3/3 solids O/T 1/1",
+  "wallMs": 13697
+ }
+]

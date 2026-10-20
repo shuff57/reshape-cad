@@ -53,6 +53,12 @@
 //   sliver   : (round 5) two planar copies within 0.02 mm of each other on every axis (bounding boxes) that are nearly aligned along some axis (|gap| in (1e-8, 5e-4] mm: a sliver
 //              overlap or sliver gap) are refused. The fuzz found the join mis-fusing such pairs by a relative 1e-9 .. 4e-7 without an error; both thresholds were chosen AFTER seeing that
 //              fuzz and are re-checked on fresh seeds.
+//   web      : (round 6) a thin wall of material left between two flat-sided cuts on one body, or between a flat-sided cut and the part's own side, is lost by the cut with no error.
+//              MEASURED (contract/pm-web-probe: 35 plate/pocket sizes, 6 plates, rect/triangle/hole/circle/diamond/edge): the wall is removed when it is <= about 0.26% of the part's bounding-box
+//              DIAGONAL (largest wall lost 0.247% of the diagonal, smallest wall kept 0.28%; 60x40x10 plate: lost up to 0.18 mm, kept from 0.2 mm), whatever the cut size; circles and hole walls are NOT
+//              lost, a rectangle's corner-to-corner web is not lost, a floor under a pocket is not lost. The guard refuses a wall in (0, WEB_REL x diagonal] = 1% of the diagonal (3.6x margin on the measured edge)
+//              for every pair of flat-sided cuts (true polygon distance when both cut from the same axis, box gap otherwise) and for a flat-sided cut and a side of the part's box.
+//              The 1% was chosen from the probe, AFTER seeing it, and is re-checked by pm-web-fuzz.mjs on fresh seeds.
 import { outlineSize, taperFold } from './outline-guard.mjs';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -92,11 +98,13 @@ function frameOf(s, mt) {
   return { origin: a.n.map((c) => c * o), ...a };
 }
 
+/** Round 6: for curved copies the 'touching' verdict is a join test, which cannot tell touching from a hair apart; the tag carries the box gap so the sentence stays true. */
+const nearTag = (gap) => { const g = Math.max(...gap); return g > 1e-8 ? ` gap=${g.toExponential(1)}` : ''; };
 const refuse = (sentence, student) => ({ refusal: sentence, student });
 // Round-3 patches are ON for any non-empty patch set that does not carry the marker '__explicit', so a harness that still passes the round-2
 // list ['reversed','fresh','plane','count1','torus','contact'] (the critic's truck-child.mjs does) gets the round-3 guards too. pm-run.mjs adds
 // '__explicit' to its set, which makes every patch name mean exactly itself (PM_OFF=disjoint,... negative controls; PM_TR=r2 = the round-2 set).
-const R3_PATCHES = new Set(['mircontact', 'disjoint', 'subgap', 'budget', 'fused', 'spinbox', 'taper', 'contact3', 'snap', 'sliver']);
+const R3_PATCHES = new Set(['mircontact', 'disjoint', 'subgap', 'budget', 'fused', 'spinbox', 'taper', 'contact3', 'snap', 'sliver', 'web']);
 const hasP = (ctx, n) => { const p = ctx.patches; if (!p) return false; if (p.has(n)) return true; return R3_PATCHES.has(n) && p.size > 0 && !p.has('__explicit'); };
 const CALL = { shell: 'hollow', extrude: 'pull', revolve: 'spin', blend: 'loft' };
 const fname = (f) => (f.kind === 'pattern' ? (f.mode === 'circular' ? 'repeatAround' : 'repeat') : f.kind === 'combine' ? (f.op === 'union' ? 'join' : f.op === 'subtract' ? 'subtract' : 'common') : f.kind === 'fillet' ? (f.style === 'chamfer' ? 'bevel' : 'round') : (CALL[f.kind] ?? f.kind));
@@ -114,7 +122,9 @@ export function studentSentence(f, raw) {
   if (/TIME BUDGET/.test(raw)) { m = /exceeded (\d+) ms/.exec(raw); return `${n}(): building this was stopped after ${m ? Math.round(+m[1] / 1000) : 600} seconds without finishing, so it was left out -- use fewer copies, space them apart, or use flat-sided shapes.`; }
   if (/pattern count must be/.test(raw)) return `${n}(): a pattern can have at most 1000 copies, and this one asks for ${f.count} -- use a count of 1000 or fewer.`;
   if (/near-coincident copies/.test(raw)) { m = /shifted by only ([\d.e+-]+) mm \(([\d.e+-]+) mm is the smallest safe shift/.exec(raw); return `${n}(): the copies are shifted by only ${m ? m[1] : 'a hair'} mm, so each one lies almost exactly on the one before and the thin layer between them would be lost -- shift them by more than ${m ? m[2] : 'a few hundredths of'} mm, or by a whole part size.`; }
+  if (/thin wall/.test(raw)) { m = /wall of only ([\d.e+-]+) mm .* ([\d.e+-]+) mm is the smallest safe wall (between two cuts|between a cut and the side of the part)/.exec(raw); const side = m && /side of the part/.test(m[3]); return `${n}(): this cut leaves a wall of only ${m ? m[1] : 'a hair'} mm ${side ? 'between it and the side of the part' : 'between it and an earlier cut'}, and a wall that thin is lost without any error -- leave more than ${m ? m[2] : 'a few tenths of'} mm of material there, or make it one wider cut.`; }
   if (/near-coincident cut/.test(raw)) { m = /by only ([\d.e+-]+) mm from an earlier cut of the same size \(([\d.e+-]+) mm is the smallest safe shift/.exec(raw); return `${n}(): this cut lies only ${m ? m[1] : 'a hair'} mm from an earlier cut of the same size, so the thin sliver between the two would be lost -- move it by more than ${m ? m[2] : 'a few hundredths of'} mm, or leave it out.`; }
+  if (/\[curved-near/.test(raw)) { m = /gap=([\d.e+-]+)/.exec(raw); return `${n}(): two of the curved copies lie so close together${m ? ` (the boxes around them are only about ${m[1].replace(/e([+-])0*(\d)/, 'e$1$2')} mm apart)` : ''} that it cannot be told whether they touch, and curved copies that close cannot be fused or kept apart reliably -- leave a clear gap between them, or overlap them clearly.`; }
   if (/mirror copy not fused/.test(raw) || (f.kind === 'mirror' && /boolean Union: the operation failed/.test(raw))) return `mirror(): the mirrored copy touches the original but the two could not be fused into one solid -- mirror in another direction, or build the part with pull() instead of spin().`;
   if (/sub-resolution gap/.test(raw)) { m = /apart by ([\d.e+-]+) mm/.exec(raw); return `${n}(): the copies would be only ${m ? m[1] : 'a hair'} mm apart, a gap too small to keep apart reliably -- make the gap larger than 0.001 mm, or let the copies touch exactly.`; }
   if (/sub-resolution overlap/.test(raw)) { m = /by only ([\d.e+-]+) mm/.exec(raw); return `${n}(): the copies overlap by only ${m ? m[1] : 'a hair'} mm, too little to fuse them reliably -- overlap them by more than 0.0005 mm (a visible overlap is better), or leave a clear gap.`; }
@@ -235,10 +245,12 @@ function toolBoxOf(f, st, ctx) {
     let pts;
     if (sk.shape === 'circle') { const [a, b] = o.points; const c = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; const r = Math.hypot(b[0] - a[0], b[1] - a[1]) / 2; pts = [[c[0] - r, c[1] - r], [c[0] + r, c[1] - r], [c[0] - r, c[1] + r], [c[0] + r, c[1] + r]].map(W); }
     else pts = o.points.map(W);
+    const circle = sk.shape === 'circle'; const poly = circle ? null : pts;
     const nl = Math.hypot(...fr.n) || 1; const sgn = f.reversed ? 1 : -1;
     const lo = [Infinity, Infinity, Infinity]; const hi = [-Infinity, -Infinity, -Infinity];
     for (const q of pts) for (const t of [0, sgn * f.depth]) for (let i = 0; i < 3; i++) { const v = q[i] + (fr.n[i] / nl) * t; lo[i] = Math.min(lo[i], v); hi[i] = Math.max(hi[i], v); }
-    return { lo, hi };
+    const ai = [0, 1, 2].find((i) => Math.abs(Math.abs(fr.n[i]) / nl - 1) < 1e-9) ?? -1;
+    return { lo, hi, circle, poly, ai };
   }
   if (f.kind === 'hole') {
     const m = st.measure[f.target]; if (!m) return null;
@@ -249,7 +261,7 @@ function toolBoxOf(f, st, ctx) {
       const c = [bc[0] + f.center[0] + (f.corners ? ox : 0), bc[1] + f.center[1] + (f.corners ? oy : 0), bc[2] + f.center[2]];
       for (let i = 0; i < 3; i++) { const h = i === ai ? f.depth / 2 : f.diameter / 2; lo[i] = Math.min(lo[i], c[i] - h); hi[i] = Math.max(hi[i], c[i] + h); }
     }
-    return { lo, hi };
+    return { lo, hi, circle: true, poly: null, ai };
   }
   return null;
 }
@@ -263,6 +275,50 @@ function snapCut(tb, prior) {
     if (d > 1e-9 && d <= tau) return { d, tau };
   }
   return null;
+}
+
+
+// ---- patch 'web' (round 6) ----------------------------------------------------------------------------------------
+export const WEB_REL = 0.01; // of the part's bounding-box diagonal; truck loses a flat wall <= ~0.0026 x diagonal (see the header)
+const segDist = (p, q, r, s) => { // min distance between 2D segments pq and rs (0 if they cross)
+  const cr = (a, b, c) => (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
+  const d1 = cr(r, s, p), d2 = cr(r, s, q), d3 = cr(p, q, r), d4 = cr(p, q, s);
+  if (((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0)) && ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0))) return 0;
+  const pt = (a, b, c) => { const dx = c[0] - b[0], dy = c[1] - b[1]; const L2 = dx * dx + dy * dy; const t = L2 ? Math.max(0, Math.min(1, ((a[0] - b[0]) * dx + (a[1] - b[1]) * dy) / L2)) : 0; return Math.hypot(a[0] - b[0] - t * dx, a[1] - b[1] - t * dy); };
+  return Math.min(pt(p, r, s), pt(q, r, s), pt(r, p, q), pt(s, p, q));
+};
+const inPoly = (pt, poly) => { let c = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const a = poly[i], b = poly[j]; if ((a[1] > pt[1]) !== (b[1] > pt[1]) && pt[0] < ((b[0] - a[0]) * (pt[1] - a[1])) / (b[1] - a[1]) + a[0]) c = !c; } return c; };
+/** Distance between two 2D polygons (0 when they overlap or touch). */
+export function polyDist(A, B) {
+  if (inPoly(A[0], B) || inPoly(B[0], A)) return 0;
+  let d = Infinity;
+  for (let i = 0; i < A.length; i++) for (let j = 0; j < B.length; j++) d = Math.min(d, segDist(A[i], A[(i + 1) % A.length], B[j], B[(j + 1) % B.length]));
+  return d;
+}
+/** Thin-wall check for a new cut tool `tb` against the earlier cuts `prior` on the same body and the part's own box `bb` ([lo3, hi3] flattened). */
+export function webCut(tb, prior, bb) {
+  if (!tb || tb.circle || !tb.poly || !bb) return null; // circles / hole walls are not lost (measured)
+  const diag = Math.hypot(bb[3] - bb[0], bb[4] - bb[1], bb[5] - bb[2]); const tau = WEB_REL * diag;
+  if (!(tau > 0)) return null;
+  const proj = (pts, ai) => pts.map((p) => [0, 1, 2].filter((i) => i !== ai).map((i) => p[i]));
+  let best = null; const upd = (d, kind) => { if (d > 1e-9 && d <= tau && (!best || d < best.d)) best = { d, tau, kind }; };
+  for (const pb of prior ?? []) {
+    if (pb.circle || !pb.poly) continue;
+    if (tb.ai >= 0 && tb.ai === pb.ai) {
+      const ov = Math.min(tb.hi[tb.ai], pb.hi[tb.ai]) - Math.max(tb.lo[tb.ai], pb.lo[tb.ai]);
+      if (!(ov > 1e-9)) continue;
+      upd(polyDist(proj(tb.poly, tb.ai), proj(pb.poly, tb.ai)), 'cut');
+    } else { // other directions: the gap between the two boxes, along one axis, while they overlap on the other two
+      const g = [0, 1, 2].map((i) => Math.max(tb.lo[i] - pb.hi[i], pb.lo[i] - tb.hi[i]));
+      const apart = g.filter((v) => v > 0);
+      if (apart.length === 1) upd(apart[0], 'cut');
+    }
+  }
+  for (let i = 0; i < 3; i++) {
+    if (i === tb.ai) continue;
+    upd(tb.lo[i] - bb[i], 'side'); upd(bb[i + 3] - tb.hi[i], 'side');
+  }
+  return best;
 }
 
 /** Plan one feature. Returns {refusal} | {variants:[cmds...], produces:[names], consumes:[ids]} | {noop:true}. */
@@ -735,6 +791,11 @@ export function translateDoc(doc, ctx) {
       const hit = snapCut(plan.toolBox, st.tools?.[plan.produces[0]]);
       if (hit) return refusedNote(`${f.id} (${f.kind}): near-coincident cut: this cut lies by only ${fmtMm(hit.d)} mm from an earlier cut of the same size (${fmtMm(hit.tau)} mm is the smallest safe shift: ${SNAP_REL * 100}% of the tool's smallest size), so the thin sliver between the two would be dropped`, undefined, []);
     }
+    if (P('web') && plan.toolBox && plan.produces?.[0]) {
+      const wm = st.measure[plan.consumes?.[0]];
+      const hit = webCut(plan.toolBox, st.tools?.[plan.produces[0]], wm?.bbox);
+      if (hit) return refusedNote(`${f.id} (${f.kind}): thin wall: this cut leaves a wall of only ${fmtMm(hit.d)} mm ${hit.kind === 'side' ? 'between it and the side of the part' : 'between it and an earlier cut'}; ${fmtMm(hit.tau)} mm is the smallest safe wall ${hit.kind === 'side' ? 'between a cut and the side of the part' : 'between two cuts'} (${WEB_REL * 100}% of the part's diagonal), because a flat wall thinner than that is dropped by the cut`, undefined, []);
+    }
     // ---- torus guard (patch 'torus'): truck did not return from a pattern of touching tori in 150 s (measured), and a
     // mirror always lands the copy ON the original (it reflects through the part's own extreme), so a torus mirror always touches.
     if (P('torus') && (f.kind === 'pattern' || f.kind === 'mirror') && !plan.identity) {
@@ -881,12 +942,12 @@ export function translateDoc(doc, ctx) {
             const tb = two.ok ? two.measure.bodies.find((x) => x.name === cps[a].name) : null;
             const gs = gap.map((g) => g.toExponential(1)).join(',');
             if (!two.ok && /join cannot preserve the original faces/.test(two.failed?.error ?? '')) {
-              return refusedNote(`${f.id} (pattern): copies ${a + 1} and ${b + 1} meet only along an edge or at a point (bbox gap ${gs}; solid.combine: ${two.failed.error})`, undefined, variant);
+              return refusedNote(`${f.id} (pattern): copies ${a + 1} and ${b + 1} meet only along an edge or at a point${curvedPair ? ` [curved-near${nearTag(gap)}]` : ''} (bbox gap ${gs}; solid.combine: ${two.failed.error})`, undefined, variant);
             }
             // round 3: curved copies get the curved volume tolerance (3e-4): a joined pair of tangent cylinders is 5e-5 off the sum of its parts
             const volTol = (curvedPair && P('contact3') ? 3e-4 : 1e-6) * tb?.volume_mm3;
             if (tb && tb.kernel.shells >= 2 && Math.abs(tb.volume_mm3 - cps[a].volume_mm3 - cps[b].volume_mm3) <= volTol) {
-              return refusedNote(`${f.id} (pattern): copies ${a + 1} and ${b + 1} meet only along an edge or at a point (bbox gap ${gs}; joined pair keeps ${tb.kernel.shells} shells, volume = sum${curvedPair ? ' within the curved tolerance' : ''}; whole result ${S} shells vs ${K} bbox-connected groups)`, undefined, variant);
+              return refusedNote(`${f.id} (pattern): copies ${a + 1} and ${b + 1} meet only along an edge or at a point${curvedPair ? ` [curved-near${nearTag(gap)}]` : ''} (bbox gap ${gs}; joined pair keeps ${tb.kernel.shells} shells, volume = sum${curvedPair ? ' within the curved tolerance' : ''}; whole result ${S} shells vs ${K} bbox-connected groups)`, undefined, variant);
             }
           }
           // round 3 NUDGE TEST (curved pairs with deeply overlapping boxes, e.g. cylinders tangent along a line and stepped diagonally): push copy b 2e-3 mm
@@ -901,7 +962,7 @@ export function translateDoc(doc, ctx) {
             if (nu.timedOut) return refusedNote(`${f.id} (${f.kind}): ${nu.failed.error}`, undefined, variant);
             const nb = nu.ok ? nu.measure.bodies.find((x) => x.name === cps[a].name) : null;
             if (nb && nb.kernel.shells === 1) {
-              return refusedNote(`${f.id} (pattern): copies ${a + 1} and ${b + 1} meet only along an edge or at a point (curved copies with overlapping boxes, bbox gap ${gap.map((g) => g.toExponential(1)).join(',')}; pushed 2e-3 mm together they fuse into one shell, so they were touching; whole result ${S} shells vs ${K} bbox-connected groups)`, undefined, variant);
+              return refusedNote(`${f.id} (pattern): copies ${a + 1} and ${b + 1} meet only along an edge or at a point [curved-near${nearTag(gap)}] (curved copies with overlapping boxes, bbox gap ${gap.map((g) => g.toExponential(1)).join(',')}; pushed 2e-3 mm together they fuse into one shell, so they were touching; whole result ${S} shells vs ${K} bbox-connected groups)`, undefined, variant);
             }
           }
         }

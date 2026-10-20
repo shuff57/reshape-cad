@@ -1,0 +1,1 @@
+{"id":"arity-cut-one","feature":"two-or-more-shapes rule (join, cut, keep)","note":null,"source":"const a = box(40,40,20,{at:[0,0,0]}); cut(a)","frontEndErrors":["cut() needs two or more shapes: cut(a, b)."],"refusalSentence":"cut() needs two or more shapes: cut(a, b).","outcome":"REFUSED-FRONT","summary":"interpreter: cut() needs two or more shapes: cut(a, b).","wallMs":230}

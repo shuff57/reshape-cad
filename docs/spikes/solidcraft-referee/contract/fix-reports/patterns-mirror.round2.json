@@ -1,0 +1,20 @@
+{
+ "group": "patterns-mirror",
+ "round": 2,
+ "status": "DRAFT, written early; updated at the end of the round",
+ "changes": [
+  {"file": "pm-translate.mjs", "what": "New guard 'web' (thin wall between flat-sided cuts, and between a flat-sided cut and the side of the part): webCut(), polyDist(), WEB_REL = 1% of the part's bounding-box diagonal; toolBoxOf() now returns the footprint polygon; new student sentence. Curved-contact refusals now carry a [curved-near gap=...] tag and a sentence that no longer says 'meet only along an edge or at a point' for copies that are apart."},
+  {"file": "pm-preflight.mjs", "what": "NEW. Source-level front door: repeatAround/polarPattern with |angle| >= 360 other than 360, a non-numeric angle, or options not written inline are refused in one plain sentence."},
+  {"file": "pm-run.mjs", "what": "'web' in ALL_PATCHES; records the preflight verdict beside each case (rec.preflight); --r6 flag for the new cases."},
+  {"file": "pm-cases-r6.mjs", "what": "NEW. r6-web-*, r6-gap-*, r6-pf-* cases."},
+  {"file": "pm-web-probe.mjs", "what": "NEW. Wall sweep, every case built guard OFF and ON, closed form / differential oracle."},
+  {"file": "pm-web-fuzz.mjs", "what": "NEW. Fuzz of the wall guard against a closed form."},
+  {"file": "pm-snap-fuzz.mjs", "what": "'web' added to the patch list."},
+  {"file": "pm-make-rows.py", "what": "Rows rebuilt; rows 25 (now refused), 76 (still wrong, text updated), three new rows."}
+ ],
+ "defectsResolved": [],
+ "defectsOpen": [],
+ "rowsDowngraded": [],
+ "rigNotesForRIGmd": "see the end of the round",
+ "commands": {}
+}

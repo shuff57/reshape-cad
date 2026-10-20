@@ -18,6 +18,7 @@ await import('./boolean-cases-r2.mjs');   // round 2: pushes its cases onto CASE
 await import('./boolean-cases-r3.mjs');   // round 3: pushes its cases onto CASES
 await import('./boolean-cases-r4.mjs');   // round 4 (critic round 2): pushes its cases onto CASES
 await import('./boolean-cases-r5.mjs');   // fix round 1 (critic round 3): thin curved keeps with closed forms
+await import('./boolean-cases-r6.mjs');   // fix round 2 (critic round 4)
 // BOOL_TR=guarded runs the cases through bool-translate.mjs + booleans.guard.mjs (the contract); default = the pristine phase0 translator ("as shipped")
 // BOOL_TR=r3raw runs bool-translate-r3.mjs (pieces + n-ary keep executor) with NO guard
 const MODE = process.env.BOOL_TR ?? 'phase0';
@@ -207,7 +208,7 @@ const sketchInfo = (skId) => {
   } catch { return null; }
 };
 const affects = {}; for (const g of doc.features) if (['hole', 'pocket', 'groove', 'shell', 'fillet', 'draft'].includes(g.kind)) { const t = g.kind === 'pocket' || g.kind === 'groove' ? g.into : g.target; if (t) (affects[t] ??= []).push(g.id); }
-const gctx = GUARDED ? { guard: (f, ops) => G.guardCombine(f, ops.map((o) => ({ id: o.id, d: G.describe(o.measure, o.feat, { ring: ringOf(o.feat), pieces: o.pieces, info: SL.orient(o.id, featById, sketchInfo, affects) }) }))), reusedTools: (f) => G.reusedTools(f, doc.features), plain: (t, f) => G.plainSentence(t, f), plainPieces: (t) => G.plainPieces(t), after: (f, m, before) => G.afterCombine(f, m, before), featById } : {};
+const gctx = GUARDED ? { guard: (f, ops) => G.guardCombine(f, ops.map((o) => ({ id: o.id, d: G.describe(o.measure, o.feat, { ring: ringOf(o.feat), pieces: o.pieces, info: SL.orient(o.id, featById, sketchInfo, affects) }) }))), reusedTools: (f) => G.reusedTools(f, doc.features), plain: (t, f) => G.plainSentence(t, f), plainPieces: (t) => G.plainPieces(t), after: (f, m, before, boxes) => G.afterCombine(f, m, before, boxes), featById } : {};
 const t0sc = Date.now();
 // round 4: edge / face names (bevel of one edge, hollow with an open face) are resolved by brep-rs exactly as the fillet-chamfer group does
 const resolveAt = (prefix, name) => { try { return JSON.parse(brep.resolve(JSON.stringify({ version: 1, features: prefix }), JSON.stringify(name))); } catch { return null; } };
@@ -287,6 +288,7 @@ const fv = faceVerdict(truck.faceTypes, occt);
 truck.faceKeys = fv.keys; truck.faceOk = fv.ok;
 truck.facesOcct = occt.faces; truck.solidsOcct = occt.solids;
 if (typeof C.analytic === 'number') truck.dAnalytic = rel(truck.volume, C.analytic);
+if (Array.isArray(C.bboxAnalytic)) { truck.dBboxAnalytic = worstArr(truck.bbox, C.bboxAnalytic); row.occtBboxVsAnalytic = worstArr(occt.bbox, C.bboxAnalytic); }   // fix round 2: closed-form bounding box (second measure for a bbox disagreement)
 const comTol = truck.curved ? 3e-5 : 1e-6;
 const areaTol = truck.curved ? 3e-4 : 1e-9;
 const geomOk = Math.max(truck.dVol, truck.dBbox) <= t && truck.dCom <= comTol && (truck.dArea == null || truck.dArea <= areaTol);

@@ -21,17 +21,19 @@ const mt = await load('packages/script/dist/model-types.js');
 const { solveDoc } = await load('packages/script/dist/model-codegen.js');
 const { runScript } = await load('packages/script/dist/reshape-script.js');
 const runSC = (cmds) => { try { return JSON.parse(sc.run(JSON.stringify({ commands: cmds }))); } catch (e) { return { ok: false, failed: { command: '(wasm)', error: `WASM TRAP: ${e.message}` } }; } };
-const ALL = ['reversed', 'fresh', 'plane', 'count1', 'torus', 'contact', 'disjoint', 'subgap', 'budget', 'fused', 'spinbox', 'taper', 'contact3', 'mircontact', 'snap', 'sliver'];
+const ALL = ['reversed', 'fresh', 'plane', 'count1', 'torus', 'contact', 'disjoint', 'subgap', 'budget', 'fused', 'spinbox', 'taper', 'contact3', 'mircontact', 'snap', 'sliver', 'web'];
 const PATCHES = new Set([...ALL, '__explicit']);
-const CLOSED = { 'r3-box-count-200': 16 * (3 * 200 + 1), 'r3-box-count-1000': 16 * (3 * 1000 + 1) };
+// round 6: r3-pocket-count-60 (60 disjoint round pockets d2, 4 deep, in a 190x30x10 plate) has a closed form, judged with the CURVED bar 3e-4 (truck's cylinder volume is tessellated); r3-around-count-360 has none
+const CLOSED = { 'r3-box-count-200': 16 * (3 * 200 + 1), 'r3-box-count-1000': 16 * (3 * 1000 + 1), 'r3-pocket-count-60': 190 * 30 * 10 - 60 * Math.PI * 4 };
+const CURVED = new Set(['r3-pocket-count-60']);
 const res = [];
-for (const c of CASES3.filter((x) => x.row === 'count' && (!only.length || only.includes(x.id)))) {
+for (const c of CASES3.filter((x) => (x.row === 'count' || x.id === 'r3-pocket-count-60') && (!only.length || only.includes(x.id)))) {
   const run = runScript(c.src); const rec = { id: c.id, src: c.src };
   if (run.errors?.length) { rec.verdict = 'script-refused'; rec.sentence = run.errors.map((e) => e.message).join(' | '); res.push(rec); console.log(c.id, rec.verdict); continue; }
   const t0 = Date.now();
   const tr = translateDoc(solveDoc(run.doc), { arc, mt, runSC, resolveAt: () => null, patches: PATCHES, inProcess: true });
   const last = tr.features.at(-1); rec.ms = Date.now() - t0; rec.status = last.status;
-  if (last.status === 'built') { rec.truck = { volume: last.measure.volume, faces: last.measure.faces, bodies: last.measure.bodies?.length }; if (CLOSED[c.id]) { rec.closedForm = CLOSED[c.id]; rec.rel = Math.abs(rec.truck.volume - rec.closedForm) / rec.closedForm; } rec.verdict = rec.rel === undefined ? 'built (no closed form)' : rec.rel <= 1e-9 ? 'ok' : 'WRONG'; }
+  if (last.status === 'built') { rec.truck = { volume: last.measure.volume, faces: last.measure.faces, bodies: last.measure.bodies?.length }; if (CLOSED[c.id]) { rec.closedForm = CLOSED[c.id]; rec.rel = Math.abs(rec.truck.volume - rec.closedForm) / rec.closedForm; } rec.verdict = rec.rel === undefined ? 'built (no closed form)' : rec.rel <= (CURVED.has(c.id) ? 3e-4 : 1e-9) ? 'ok' : 'WRONG'; }
   else { rec.verdict = 'refused'; rec.raw = last.refusal; rec.student = last.student; }
   res.push(rec); console.log(c.id, rec.verdict, rec.ms + ' ms', rec.rel ?? '', (rec.student ?? '').slice(0, 160));
 }

@@ -28,7 +28,7 @@ const mt = await load('packages/script/dist/model-types.js');
 const { solveDoc } = await load('packages/script/dist/model-codegen.js');
 const { runScript } = await load('packages/script/dist/reshape-script.js');
 const runSC = (cmds) => { try { return JSON.parse(sc.run(JSON.stringify({ commands: cmds }))); } catch (e) { return { ok: false, failed: { command: '(wasm)', error: `WASM TRAP: ${e.message}` } }; } };
-const ALL = ['reversed', 'fresh', 'plane', 'count1', 'torus', 'contact', 'disjoint', 'subgap', 'budget', 'fused', 'spinbox', 'taper', 'contact3', 'mircontact', 'snap', 'sliver'];
+const ALL = ['reversed', 'fresh', 'plane', 'count1', 'torus', 'contact', 'disjoint', 'subgap', 'budget', 'fused', 'spinbox', 'taper', 'contact3', 'mircontact', 'snap', 'sliver', 'web'];
 const PATCHES = new Set([...ALL.filter((p) => !(process.env.PM_OFF ?? '').split(',').includes(p)), '__explicit']);
 
 const rnd = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };

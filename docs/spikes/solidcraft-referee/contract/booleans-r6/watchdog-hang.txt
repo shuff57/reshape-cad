@@ -1,0 +1,3 @@
+case x-cyl-cross-cyl-cut: 4 commands (pristine phase0 translator), budget 45 s
+combine    : {"outcome":"finished","messages":[{"phase":"first","ok":true,"ms":39795,"bodies":["b_c1=10410.432"]},{"phase":"same-instance-after","ok":true,"ms":2,"bodies":["b=1000.000"]}],"waitedMs":39857,"terminateMs":11} | the page's own 100 ms timer ticked 397 times meanwhile (waited 399 expected)
+next call  : {"outcome":"finished","messages":[{"phase":"first","ok":true,"ms":7,"bodies":["b=1000.000"]}],"waitedMs":71,"terminateMs":10} (a FRESH worker after the kill / trap)

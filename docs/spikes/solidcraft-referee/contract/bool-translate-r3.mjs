@@ -252,7 +252,8 @@ export function planFeature(f, st, ctx) {
       const keepIds = ctx.reusedTools ? ctx.reusedTools(f) : [];
       return {
         r3: { op: f.op, groups: all, keep: f.targets.map((t, i) => i > 0 && keepIds.includes(t)) },
-        produces: all[0], before: st.measure[headOf(f.targets[0])] ?? st.measure[f.targets[0]], consumes: f.targets.filter((t, i) => i === 0 || !keepIds.includes(t)),
+        produces: all[0], before: st.measure[headOf(f.targets[0])] ?? st.measure[f.targets[0]], boxes: f.targets.map((t) => (st.measure[headOf(t)] ?? st.measure[t])?.bbox),   // BOOLEANS-GUARD (G19)
+        consumes: f.targets.filter((t, i) => i === 0 || !keepIds.includes(t)),
       };
     }
     case 'move': {
@@ -423,7 +424,7 @@ export function translateDoc(doc, ctx) {
       if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
       const m = aggregate(res, plan.produces);
       if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
-      if (ctx.after && f.kind === 'combine') { const bad = ctx.after(f, m, plan.before); if (bad) { lastErr = bad.sentence; continue; } }   // BOOLEANS-GUARD (G4b): after-check
+      if (ctx.after && f.kind === 'combine') { const bad = ctx.after(f, m, plan.before, plan.boxes); if (bad) { lastErr = bad.sentence; continue; } }   // BOOLEANS-GUARD (G4b): after-check
       accepted.push(...variant);
       st.lastNames = res.measure.bodies.map((b) => b.name);   // BOOLEANS-R3: the live body list, to find the pieces a combine creates
       st.bodies[f.id] = m.bodies;

@@ -16,6 +16,7 @@ import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { translateDoc } from './pm-translate.mjs';
+import { preflightScript } from './pm-preflight.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.join(HERE, '..', '..', '..', '..');
@@ -62,7 +63,7 @@ function momentsCom(pos, idx) {
 const flat = (b) => [...b[0], ...b[1]];
 let MAP_ANGLE = process.env.PM_MAP_ANGLE === '1';
 // translator patches (see pm-translate.mjs header): PM_TR=asis -> none (phase0 behaviour); default all; PM_OFF=a,b switches single ones off
-const ALL_PATCHES = ['reversed', 'fresh', 'plane', 'count1', 'torus', 'contact', 'disjoint', 'subgap', 'budget', 'fused', 'spinbox', 'taper', 'contact3', 'mircontact', 'snap', 'sliver'];
+const ALL_PATCHES = ['reversed', 'fresh', 'plane', 'count1', 'torus', 'contact', 'disjoint', 'subgap', 'budget', 'fused', 'spinbox', 'taper', 'contact3', 'mircontact', 'snap', 'sliver', 'web'];
 // PM_TR=r2 -> the round-2 contract translator's patch set (no round-3 patches); used for the 'wrong before the fix' comparisons
 const R2_PATCHES = ['reversed', 'fresh', 'plane', 'count1', 'torus', 'contact'];
 const PATCHES = new Set(process.env.PM_TR === 'asis' ? [] : [...(process.env.PM_TR === 'r2' ? R2_PATCHES : ALL_PATCHES).filter((p) => !(process.env.PM_OFF ?? '').split(',').includes(p)), '__explicit']);
@@ -324,6 +325,7 @@ import { CASES } from './pm-cases.mjs';
 import { CASES2 } from './pm-cases-r2.mjs';
 import { CASES3 } from './pm-cases-r3.mjs';
 import { CASES4, EXPECT4 } from './pm-cases-r4.mjs';
+import { CASES6 } from './pm-cases-r6.mjs';
 import { plainScriptSentence } from './pm-sentences.mjs';
 const { runScript } = await load('packages/script/dist/reshape-script.js');
 const REFDIR = path.join(REPO, 'docs', 'replica', 'freecad', 'gauntlet', 'variants', 'refs');
@@ -331,12 +333,13 @@ const REFDIR2 = path.join(HERE, 'pm-fc-refs');
 const readRef = (id) => { for (const d of [REFDIR2, REFDIR]) { const f = path.join(d, `ref-${id}.json`); if (existsSync(f)) return JSON.parse(rf(f, 'utf8')); } return null; };
 const R3ONLY = process.argv.includes('--r3');
 const R4ONLY = process.argv.includes('--r4');
-const allCases = R4ONLY ? [...CASES4] : R3ONLY ? [...CASES3] : [...CASES, ...CASES2, ...CASES3, ...CASES4];
-if (!R3ONLY && !R4ONLY && (process.argv.includes('--variants') || only.some((o) => /^(linear-pattern|polar-pattern|mirrored)/.test(o)))) {
+const R6ONLY = process.argv.includes('--r6');
+const allCases = R6ONLY ? [...CASES6] : R4ONLY ? [...CASES4] : R3ONLY ? [...CASES3] : [...CASES, ...CASES2, ...CASES3, ...CASES4, ...CASES6];
+if (!R3ONLY && !R4ONLY && !R6ONLY && (process.argv.includes('--variants') || only.some((o) => /^(linear-pattern|polar-pattern|mirrored)/.test(o)))) {
   const { VARIANTS } = await import(pathToFileURL(path.join(REPO, 'docs/replica/freecad/gauntlet/variants/defs.mjs')).href);
   for (const v of VARIANTS) if (['linear-pattern', 'polar-pattern', 'mirrored'].includes(v.piece)) allCases.push({ id: v.id, row: `variant-${v.piece}`, src: v.ours, ref: v.id, note: v.desc });
 }
-if (!R3ONLY && !R4ONLY && (process.argv.includes('--variants') || only.some((o) => o.startsWith('pm-')))) {
+if (!R3ONLY && !R4ONLY && !R6ONLY && (process.argv.includes('--variants') || only.some((o) => o.startsWith('pm-')))) {
   const { FC_VARIANTS } = await import('./pm-fc-variants.mjs');
   for (const v of FC_VARIANTS) {
     allCases.push({ id: v.id, row: 'variant-pm-fc', src: v.ours, ref: v.id, note: v.desc });
@@ -357,6 +360,8 @@ for (const c of allCases) {
     rec.sentence = pl.sentence; rec.sentenceMapped = pl.mapped; if (pl.unmapped) rec.sentenceUnmapped = true;
     out.push(rec); console.log(c.id.padEnd(34), rec.outcome, rec.sentence.slice(0, 160), pl.unmapped ? '[UNMAPPED]' : ''); continue;
   }
+  // round 6: the source-level front door (pm-preflight.mjs). The oracle runs below still happen (they are the evidence of what the call would build without it); the verdict is kept beside them.
+  if (!c.mapAngle && process.env.PM_PREFLIGHT !== 'off') { const pf = preflightScript(c.src); if (pf) rec.preflight = pf; }
   const doc = run.doc;
   rec.featureKinds = doc.features.map((f) => f.kind);
   rec.doc = doc.features.filter((f) => f.kind === 'pattern' || f.kind === 'mirror');
