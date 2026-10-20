@@ -1,4 +1,3 @@
-Running as unit: run-p2034737-i2077137.scope; invocation ID: 808d967d05ac47f4b844b48286ba5f55
 slot-line-pinned-R10-L40           amp 0.05  shipped {"MATCH":20} | guarded {"BUILT-MATCH":20} | brep-rs {"MATCH":20}
 slot-line-pinned-R10-L40           amp 0.3   shipped {"MATCH":20} | guarded {"BUILT-MATCH":20} | brep-rs {"MATCH":20}
 slot-line-pinned-R10-L40           amp 0.8   shipped {"MATCH":20} | guarded {"BUILT-MATCH":20} | brep-rs {"MATCH":20}

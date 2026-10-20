@@ -9,6 +9,7 @@ import * as lib from './lib.mjs';
 import { ladderSketch } from './guard.mjs';
 import { plainRules, geomBox, H } from './cases.mjs';
 import { arcPoints } from './geom.mjs';
+import { expectedSolid } from './expect.mjs';
 
 const cache = new Map();
 const refl = (g, sx, sy, cx, cy) => {
@@ -63,22 +64,36 @@ export function expectedImage(cs, start) {
   return { nearest: sorted[0], all: imgs, dmin: sorted[0].d };
 }
 const rel = (a, b) => Math.abs(a - b) / Math.max(Math.abs(b), 1);
+// ROUND 6 (critic: the sweep oracle was volume + bbox only): a build is MATCH only if, besides volume and bbox, its CENTRE OF MASS (a first moment: a different outline with the same
+// area and bbox moves it) and, for straight-line outlines, its FACE COUNT agree with the exact solid of the image (expect.mjs: exact loop areas and centroids, arithmetic, no kernel).
+// Every image was already filtered by the independent rule checker (phase2/rule-check.mjs) so it is a valid solution of the rules whoever solved it. Tolerances fixed BEFORE the
+// run: centre of mass 1e-6 of the sketch size (planar) / 1e-3 (curved: tessellated volumes), no tolerance was changed after seeing data.
+export const COM_TOL = { planar: 1e-6, curved: 1e-3 };
+const comOf = (im) => { if (im.exp === undefined) { try { const e = im.geoms ? expectedSolid(im.geoms, H) : null; im.exp = e && e.ok ? e : null; } catch { im.exp = null; } } return im.exp; };
 export function classifyImg(cs, body, start = null) {
   const t = cs.curved ? 3e-4 : 1e-9;
   const { nearest, all, dmin } = expectedImage(cs, start);
   const score = (im) => {
     const want = [im.bbox[0], im.bbox[1], 0, im.bbox[2], im.bbox[3], H];
-    return { dv: rel(body.volume, cs.area * H), db: Math.max(...want.map((w, i) => rel(body.bbox[i], w))) };
+    const e = comOf(im);
+    let dc = null, faces = null;
+    if (e && body.com) { const size = Math.max(1, ...im.bbox.map(Math.abs)); dc = Math.max(...[0, 1, 2].map((i) => Math.abs(body.com[i] - e.com[i]))) / size; }
+    if (e && e.faces != null && body.faces != null) faces = [body.faces, e.faces];
+    return { dv: rel(body.volume, cs.area * H), db: Math.max(...want.map((w, i) => rel(body.bbox[i], w))), dc, faces };
   };
+  const shapeOk = (s) => (s.dc === null || s.dc <= (cs.curved ? COM_TOL.curved : COM_TOL.planar)) && (!s.faces || s.faces[0] === s.faces[1]);
   const bodiesOk = !cs.bodies || body.bodies === cs.bodies;
+  const scored = all.map((im) => ({ im, s: score(im) }));
   // which valid image is it?
-  const hit = all.map((im) => ({ im, s: score(im) })).filter((x) => x.s.dv <= t && x.s.db <= t && bodiesOk).sort((p, q) => p.s.db - q.s.db)[0];
+  const hit = scored.filter((x) => x.s.dv <= t && x.s.db <= t && bodiesOk && shapeOk(x.s)).sort((p, q) => p.s.db - q.s.db)[0];
   if (hit) {
     // a tie band of 10% in key-point distance (the guard's own tolerance): inside it the two sides cannot be told apart by the drawing
     const tied = !start || hit.im.d <= dmin / 0.9 + 1e-9;
-    return { cls: tied ? 'MATCH' : 'MATCH-OTHER-SIDE', dv: hit.s.dv, db: hit.s.db, image: hit.im.how, d: hit.im.d, dmin };
+    return { cls: tied ? 'MATCH' : 'MATCH-OTHER-SIDE', dv: hit.s.dv, db: hit.s.db, dc: hit.s.dc, image: hit.im.how, d: hit.im.d, dmin };
   }
   const sN = score(nearest);
-  if (sN.dv <= 1e-6 && sN.db <= 1e-6 && bodiesOk && !cs.curved) return { cls: 'TOL-MISS', dv: sN.dv, db: sN.db };
+  if (sN.dv <= 1e-6 && sN.db <= 1e-6 && bodiesOk && !cs.curved && shapeOk(sN)) return { cls: 'TOL-MISS', dv: sN.dv, db: sN.db };
+  // same volume and bbox as an image but a different centre of mass or face count: the outline is a different shape
+  if (scored.some((x) => x.s.dv <= t && x.s.db <= t && bodiesOk)) return { cls: 'SHAPE', dv: sN.dv, db: sN.db, dc: sN.dc };
   return { cls: sN.dv <= t && bodiesOk ? 'POSE' : 'VOLUME', dv: sN.dv, db: sN.db };
 }

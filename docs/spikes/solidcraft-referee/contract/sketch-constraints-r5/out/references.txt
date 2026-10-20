@@ -1,4 +1,3 @@
-Running as unit: run-p2004409-i1969299.scope; invocation ID: ef49d1c7a5ff419b9672b8c489478b3c
 reference diagonal, correct value                                                        RIGHT measured [36.055513] stale=[false] brep-rs refs [36.055513] brep vs guarded vol 9.8e-12 | shipped mapper: built
 reference diagonal, STALE value 99                                                       RIGHT measured [36.055513] stale=[true] brep-rs refs [36.055513] brep vs guarded vol 9.8e-12 | shipped mapper: built
 reference width 35 on a 30 wide rectangle (would conflict if driving)                    RIGHT measured [30] stale=[true] brep-rs refs [30] brep vs guarded vol 9.8e-12 | shipped mapper: built

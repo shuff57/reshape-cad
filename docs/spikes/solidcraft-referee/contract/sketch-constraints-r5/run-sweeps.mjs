@@ -36,7 +36,7 @@ const results = [];
 for (const id of SWEEP_IDS) {
   const cs = CASES.find((c) => c.id === id);
   for (const frac of FR) {
-    const rec = { id, frac, N, feats: cs.feats, unguarded: {}, guarded: {}, brep: {}, wrongPassed: [], caught: 0, spurious: 0, stages: {}, rungs: {}, sentences: {}, tolMissMax: 0, perSeed: [] };
+    const rec = { id, frac, N, feats: cs.feats, unguarded: {}, guarded: {}, brep: {}, wrongPassed: [], caught: 0, spurious: 0, stages: {}, rungs: {}, sentences: {}, tolMissMax: 0, comChecked: 0, comMax: 0, perSeed: [] };
     for (let k = 0; k < N; k++) {
       const start = roughen(cs.geoms, cs.rules, `${id}#${k}#${frac}`, frac);
       const rules = plainRules(cs.rules);
@@ -44,7 +44,7 @@ for (const id of SWEEP_IDS) {
       rec.unguarded[u.out] = (rec.unguarded[u.out] ?? 0) + 1;
       const g = ladderSketch({ geoms: start, rules });
       let gc;
-      if (g.ok) { const c = classify(cs, g.body, start); gc = c.cls === 'MATCH' || c.cls === 'TOL-MISS' ? 'BUILT-MATCH' : c.cls === 'MATCH-OTHER-SIDE' ? 'BUILT-OTHER-SIDE' : 'BUILT-WRONG'; if (c.cls === 'TOL-MISS') rec.tolMissMax = Math.max(rec.tolMissMax, c.dv, c.db); if (gc !== 'BUILT-MATCH') rec.wrongPassed.push({ k, gc, cls: c.cls, image: c.image, dv: c.dv, db: c.db, volume: g.body.volume, bbox: g.body.bbox, rung: g.rung }); rec.rungs[g.rung] = (rec.rungs[g.rung] ?? 0) + 1; }
+      if (g.ok) { const c = classify(cs, g.body, start); if (typeof c.dc === 'number') { rec.comChecked++; rec.comMax = Math.max(rec.comMax, c.dc); } gc = c.cls === 'MATCH' || c.cls === 'TOL-MISS' ? 'BUILT-MATCH' : c.cls === 'MATCH-OTHER-SIDE' ? 'BUILT-OTHER-SIDE' : 'BUILT-WRONG'; if (c.cls === 'TOL-MISS') rec.tolMissMax = Math.max(rec.tolMissMax, c.dv, c.db); if (gc !== 'BUILT-MATCH') rec.wrongPassed.push({ k, gc, cls: c.cls, image: c.image, dv: c.dv, db: c.db, volume: g.body.volume, bbox: g.body.bbox, rung: g.rung }); rec.rungs[g.rung] = (rec.rungs[g.rung] ?? 0) + 1; }
       else { gc = 'REFUSED'; rec.stages[g.stage] = (rec.stages[g.stage] ?? 0) + 1; const key = g.sentence.replace(/[-0-9.]+(e-?[0-9]+)?/g, '#').slice(0, 160); const cur = rec.sentences[key]; rec.sentences[key] = { n: (cur?.n ?? 0) + 1, raw: cur?.raw ?? g.sentence }; }
       rec.guarded[gc] = (rec.guarded[gc] ?? 0) + 1;
       if (!g.ok && ['POSE', 'VOLUME', 'MATCH-OTHER-SIDE'].includes(u.out)) rec.caught++;

@@ -825,35 +825,35 @@
        "v": -5,
        "cls": "REFUSED-TOUCHING",
        "valid": "touching",
-       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
        "stage": "branch"
       },
       {
        "v": -5.5,
        "cls": "REFUSED-VALID",
        "valid": true,
-       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
        "stage": "branch"
       },
       {
        "v": -6,
        "cls": "REFUSED-VALID",
        "valid": true,
-       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
        "stage": "branch"
       },
       {
        "v": -8,
        "cls": "REFUSED-VALID",
        "valid": true,
-       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
        "stage": "branch"
       },
       {
        "v": -12,
        "cls": "REFUSED-VALID",
        "valid": true,
-       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
        "stage": "branch"
       }
      ]
@@ -961,7 +961,7 @@
        "v": 46,
        "cls": "REFUSED-VALID",
        "valid": true,
-       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
        "stage": "branch"
       }
      ]
@@ -1141,7 +1141,7 @@
      "v": -5,
      "cls": "REFUSED-TOUCHING",
      "valid": "touching",
-     "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+     "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
      "stage": "branch",
      "brep": "REFUSED"
     },
@@ -1149,7 +1149,7 @@
      "v": -5.5,
      "cls": "REFUSED-VALID",
      "valid": true,
-     "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+     "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
      "stage": "branch",
      "brep": "RIGHT"
     },
@@ -1157,7 +1157,7 @@
      "v": -6,
      "cls": "REFUSED-VALID",
      "valid": true,
-     "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+     "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
      "stage": "branch",
      "brep": "RIGHT"
     },
@@ -1165,7 +1165,7 @@
      "v": -8,
      "cls": "REFUSED-VALID",
      "valid": true,
-     "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+     "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
      "stage": "branch",
      "brep": "RIGHT"
     },
@@ -1173,7 +1173,7 @@
      "v": -12,
      "cls": "REFUSED-VALID",
      "valid": true,
-     "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+     "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
      "stage": "branch",
      "brep": "RIGHT"
     },
@@ -1274,7 +1274,7 @@
      "v": 46,
      "cls": "REFUSED-VALID",
      "valid": true,
-     "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+     "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would go from being around the outline through geometry 5 to being apart from the outline through geometry 5), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
      "stage": "branch",
      "brep": "RIGHT"
     }
@@ -1635,28 +1635,28 @@
        "v": 8.1,
        "cls": "REFUSED-VALID",
        "valid": true,
-       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1 would go from being around the outline through geometry 2 to being inside the outline through geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1 would go from being around the outline through geometry 2 to being inside the outline through geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
        "stage": "branch"
       },
       {
        "v": 9,
        "cls": "REFUSED-VALID",
        "valid": true,
-       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1 would go from being around the outline through geometry 2 to being inside the outline through geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1 would go from being around the outline through geometry 2 to being inside the outline through geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
        "stage": "branch"
       },
       {
        "v": 10,
        "cls": "REFUSED-VALID",
        "valid": true,
-       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1 would go from being around the outline through geometry 2 to being inside the outline through geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1 would go from being around the outline through geometry 2 to being inside the outline through geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
        "stage": "branch"
       },
       {
        "v": 12,
        "cls": "REFUSED-VALID",
        "valid": true,
-       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1 would go from being around the outline through geometry 2 to being inside the outline through geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1 would go from being around the outline through geometry 2 to being inside the outline through geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
        "stage": "branch"
       }
      ]
@@ -2554,7 +2554,7 @@
        "v": 10,
        "cls": "REFUSED-VALID",
        "valid": true,
-       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (geometry 2 would fold straight back on geometry 3), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (geometry 2 would fold straight back on geometry 3), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
        "stage": "branch"
       }
      ]
@@ -2629,7 +2629,7 @@
        "v": 175,
        "cls": "REFUSED-VALID",
        "valid": true,
-       "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (geometry 1 would fold straight back on geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+       "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (geometry 1 would fold straight back on geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
        "stage": "branch"
       }
      ]
@@ -2760,7 +2760,7 @@
      "v": 30,
      "cls": "REFUSED-VALID",
      "valid": true,
-     "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the angle rule on geometry 1 and geometry 2 could be met by turning the line either way, and the drawing does not say which), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+     "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the angle rule on geometry 1 and geometry 2 could be met by turning the line either way, and the drawing does not say which), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
      "stage": "branch",
      "brep": "RIGHT"
     },
@@ -2768,7 +2768,7 @@
      "v": 20,
      "cls": "REFUSED-VALID",
      "valid": true,
-     "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+     "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
      "stage": "branch",
      "brep": "RIGHT"
     },
@@ -2776,7 +2776,7 @@
      "v": 10,
      "cls": "REFUSED-VALID",
      "valid": true,
-     "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+     "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
      "stage": "branch",
      "brep": "REFUSED"
     },
@@ -2844,7 +2844,7 @@
      "v": 175,
      "cls": "REFUSED-VALID",
      "valid": true,
-     "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (geometry 1 would fold straight back on geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+     "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (geometry 1 would fold straight back on geometry 2), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
      "stage": "branch",
      "brep": "REFUSED"
     }

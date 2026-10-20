@@ -1,0 +1,45 @@
+circle-diameter-origin-c s=0.001 REFUSED(mismatch) This curved shape is too small to be built accurately (its volume is 0.000004491 where the exact size is 0.000
+circle-diameter-origin-c s=0.01 REFUSED(mismatch) This curved shape is too small to be built accurately (its volume is 0.004522 where the exact size is 0.004524
+circle-diameter-origin-c s=0.03 BUILT dv=1.53e-4 vol=0.122126
+circle-diameter-origin-c s=0.1 BUILT dv=7.23e-5 vol=4.52357
+circle-diameter-origin-c s=0.3 BUILT dv=7.23e-5 vol=122.136
+circle-diameter-origin-c s=1 BUILT dv=7.23e-5 vol=4523.57
+circle-diameter-origin-c s=10 BUILT dv=7.23e-5 vol=4.52357e+6
+circle-diameter-origin-c s=100 BUILT dv=7.23e-5 vol=4.52357e+9
+circle-diameter-origin-c s=1000 BUILT dv=7.23e-5 vol=4.52357e+12
+circle-radius-dx-dy s=0.001 REFUSED(mismatch) This curved shape is too small to be built accurately (its volume is 0.000001526 where the exact size is 0.000
+circle-radius-dx-dy s=0.01 REFUSED(mismatch) This curved shape is too small to be built accurately (its volume is 0.001538 where the exact size is 0.001539
+circle-radius-dx-dy s=0.03 REFUSED(mismatch) This curved shape is too small to be built accurately (its volume is 0.04155 where the exact size is 0.04156),
+circle-radius-dx-dy s=0.1 BUILT dv=1.13e-4 vol=1.53921
+circle-radius-dx-dy s=0.3 BUILT dv=1.13e-4 vol=41.5586
+circle-radius-dx-dy s=1 BUILT dv=1.13e-4 vol=1539.21
+circle-radius-dx-dy s=10 BUILT dv=1.13e-4 vol=1.53921e+6
+circle-radius-dx-dy s=100 BUILT dv=1.13e-4 vol=1.53921e+9
+circle-radius-dx-dy s=1000 BUILT dv=1.13e-4 vol=1.53921e+12
+slot-dims-from-points s=0.001 REFUSED(mismatch) This curved shape is too small to be built accurately (its volume is 0.000003275 where the exact size is 0.000
+slot-dims-from-points s=0.01 REFUSED(mismatch) This curved shape is too small to be built accurately (its volume is 0.003284 where the exact size is 0.003285
+slot-dims-from-points s=0.03 BUILT dv=1.08e-4 vol=0.0886962
+slot-dims-from-points s=0.1 BUILT dv=3.81e-5 vol=3.28527
+slot-dims-from-points s=0.3 BUILT dv=3.81e-5 vol=88.7024
+slot-dims-from-points s=1 BUILT dv=3.81e-5 vol=3285.27
+slot-dims-from-points s=10 BUILT dv=3.81e-5 vol=3.28527e+6
+slot-dims-from-points s=100 BUILT dv=3.81e-5 vol=3.28527e+9
+slot-dims-from-points s=1000 BUILT dv=3.81e-5 vol=3.28527e+12
+slot-hand-rows-R10-L40 s=0.001 REFUSED(mismatch) This curved shape is too small to be built accurately (its volume is 0.00001112 where the exact size is 0.0000
+slot-hand-rows-R10-L40 s=0.01 BUILT dv=1.60e-4 vol=0.0111398
+slot-hand-rows-R10-L40 s=0.03 BUILT dv=5.38e-5 vol=0.300807
+slot-hand-rows-R10-L40 s=0.1 BUILT dv=3.73e-5 vol=11.1412
+slot-hand-rows-R10-L40 s=0.3 BUILT dv=3.73e-5 vol=300.812
+slot-hand-rows-R10-L40 s=1 BUILT dv=3.73e-5 vol=11141.2
+slot-hand-rows-R10-L40 s=10 BUILT dv=3.73e-5 vol=1.11412e+7
+slot-hand-rows-R10-L40 s=100 BUILT dv=3.73e-5 vol=1.11412e+10
+slot-hand-rows-R10-L40 s=1000 BUILT dv=3.73e-5 vol=1.11412e+13
+tangent-line-circle s=0.001 REFUSED(mismatch) This curved shape is too small to be built accurately (its volume is 0.000001121 where the exact size is 0.000
+tangent-line-circle s=0.01 REFUSED(mismatch) This curved shape is too small to be built accurately (its volume is 0.00113 where the exact size is 0.001131)
+tangent-line-circle s=0.03 REFUSED(mismatch) This curved shape is too small to be built accurately (its volume is 0.03052 where the exact size is 0.03054),
+tangent-line-circle s=0.1 BUILT dv=1.13e-4 vol=1.13085
+tangent-line-circle s=0.3 BUILT dv=1.13e-4 vol=30.5328
+tangent-line-circle s=1 BUILT dv=1.13e-4 vol=1130.85
+tangent-line-circle s=10 BUILT dv=1.13e-4 vol=1.13085e+6
+tangent-line-circle s=100 BUILT dv=1.13e-4 vol=1.13085e+9
+tangent-line-circle s=1000 BUILT dv=1.13e-4 vol=1.13085e+12

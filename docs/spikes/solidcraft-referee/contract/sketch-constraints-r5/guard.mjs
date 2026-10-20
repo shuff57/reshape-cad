@@ -67,9 +67,9 @@ let RULES_FOR_TXT = [];
 const rowTxt = (i, rules = RULES_FOR_TXT) => (rules?.[i] ? `The rule that ${nameOfRule(rules[i])}` : 'One of the rules');
 const CONFLICT = (i, rules) => `${rowTxt(i, rules)} cannot be met together with the other rules from this drawing, so nothing was built; resolve the conflict, or redraw closer to the shape you mean.`;
 const CROSSING = (what) => `With these values ${what}, which is not a valid outline, so nothing was built; change a value so the shapes stay clear of each other or fully inside one another.`;
-const BRANCH = (what) => `The rules can be met by more than one shape and the solver would pick a different one from the one drawn (${what}), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.`;
-const MISMATCH = (what) => `The solid the solver produced does not match the shape these rules describe (${what}), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.`;
-const UNDER = `The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.`;
+const BRANCH = (what) => `The rules can be met by more than one shape, and the one they lead to is not the one drawn (${what}), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.`;
+const MISMATCH = (what) => `The solid that was produced does not match the shape these rules describe (${what}), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.`;
+const UNDER = `The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.`;
 
 /** mapper refusal -> plain sentence (the mapper's own text names solver internals) */
 export function plainMapper(rf, rules, geoms = []) {
@@ -103,12 +103,12 @@ export function plainMapper(rf, rules, geoms = []) {
     let drawn = '';
     if (ga && gb) { const da = sub(ga.b, ga.a), db = sub(gb.b, gb.a); drawn = ` but the lines are drawn at about ${Math.round((Math.atan2(cross(da, db), dot(da, db)) * 180) / Math.PI)} degrees`; }
     const flipped = ga && gb && Math.sign(cross(sub(ga.b, ga.a), sub(gb.b, gb.a))) !== Math.sign(+mm?.[1]) ? ' (they turn the other way round)' : '';
-    return `${row} asks for ${mm?.[1]} degrees from line ${mm?.[2]} to line ${mm?.[3]},${drawn || ' but the lines are drawn the other way round'}${flipped}; the solver cannot swing a line across that far, so redraw the lines near ${mm?.[1]} degrees first.`;
+    return `${row} asks for ${mm?.[1]} degrees from line ${mm?.[2]} to line ${mm?.[3]},${drawn || ' but the lines are drawn the other way round'}${flipped}; that is too far from how the lines are drawn, so redraw the lines near ${mm?.[1]} degrees first.`;
   }
   if (/a lock cannot be a reference/.test(s)) return `${row} pins a point, which cannot be a reference (driving: false) row.`;
   if (/reference .* of 0|has no reference form/.test(s)) return `${row} cannot be shown as a reference measurement.`;
   if (/kind '(\w+)' is not in the soup vocabulary/.test(s)) return `${row} is a '${s.match(/kind '(\w+)'/)[1]}' rule, which the sketch does not know.`;
-  return `${row} has no counterpart in the sketch solver, so the sketch was not built.`;
+  return `${row} is not a rule the sketch can use, so the sketch was not built.`;
 }
 /** a refused SolidCraft command / extrude -> plain sentence */
 export function plainSc(error, rIndex, rules) {
@@ -254,7 +254,9 @@ import { indepSolve } from './lib.mjs';
 import { expectedSolid } from './expect.mjs';
 const OVER = /already determined|over-constrain|neither entity can move|conflicts with the sketch|redundant/i;
 /** per-class tolerances of the build-vs-expected comparison (refusal thresholds, far looser than the 1e-9 / 3e-4 status bars: they only have to catch a WRONG solid) */
-export const CMP_TOL = { planar: 1e-6, curved: 2e-3 };
+export const CMP_TOL = { planar: 1e-6, curved: 2e-3, curvedVolume: 3e-4 };
+/** ROUND 6: a curved build is accepted only when its VOLUME is within the 3e-4 status bar of the exact area x height. The kernel's curved volume is tessellation-derived and its relative error grows as the sketch shrinks (circle d=0.14: 8e-4, d=0.014: 9e-3), so a tiny curved sketch is refused instead of reported 0.1-1% off. bbox / centre of mass keep CMP_TOL.curved (they are measured against the sketch size). */
+export const SMALL_CURVED = (what) => `This curved shape is too small to be built accurately (${what}), so nothing was built; make the part larger, or scale the whole sketch up.`;
 const crossingKind = (sentence) => (/cross or touch/.test(sentence) ? 'two of the shapes cross or touch each other' : /crosses itself/.test(sentence) ? 'a shape crosses itself' : null);
 /** SolidCraft's arc.three_point ignores `construction`; sketch.construction applied afterwards works (measured, construction.mjs). Inserted just before sketch.finish, so no rule index moves. */
 export function markConstructionArcs(cmds, geoms) {
@@ -279,7 +281,7 @@ function guardedSketchInner(sk, { height = 10, order = 'GTJD', plane = undefined
   }
   // ---- independent solve (no SolidCraft) ----
   const ind = indepSolve(geoms, rules);
-  if (ind.unsupported) return fail('preflight', `The sketch uses a rule the solver cannot check (${ind.unsupported}), so nothing was built.`);
+  if (ind.unsupported) return fail('preflight', `The sketch uses a rule the sketch cannot check (${ind.unsupported}), so nothing was built.`);
   let T = ind.solved;
   const size = sizeOf(geoms);
   // a rule set met by several mirror images of one shape: the independent solve may land on any of them (a big first step overshoots), so the image NEAREST the drawing is the one meant
@@ -352,9 +354,14 @@ function guardedSketchInner(sk, { height = 10, order = 'GTJD', plane = undefined
     const tol = exp.planar ? CMP_TOL.planar : CMP_TOL.curved;
     const why = [];
     if (cmp.bodies[0] !== cmp.bodies[1]) why.push(`${body.bodies} separate solids were built where ${exp.bodies} were expected`);
-    if (cmp.dv > tol) why.push(`its volume is ${+body.volume.toPrecision(6)} where the rules give ${+exp.volume.toPrecision(6)}`);
     if (cmp.db > tol || cmp.dc > tol) why.push('it sits or is shaped differently from the solved outline');
     if (cmp.faces && cmp.faces[0] !== cmp.faces[1]) why.push(`it has ${cmp.faces[0]} faces where ${cmp.faces[1]} were expected`);
+    if (!exp.planar && cmp.dv > CMP_TOL.curvedVolume) {
+      // a small curved sketch: only the (tessellation-derived) volume is off, by under 1 %, and a curve radius is under 5 mm
+      const rmin = Math.min(...T.filter((x) => !x.construction && (x.k === 'circle' || x.k === 'arc')).map((x) => x.r));
+      if (!why.length && cmp.dv <= 1e-2 && rmin < 5) return fail('mismatch', SMALL_CURVED(`its volume is ${+body.volume.toPrecision(4)} where the exact size is ${+exp.volume.toPrecision(4)}`), { cmp, why: ['small curved'], demoted, small: true, rmin });
+      why.unshift(`its volume is ${+body.volume.toPrecision(6)} where the rules give ${+exp.volume.toPrecision(6)}`);
+    } else if (cmp.dv > tol) why.unshift(`its volume is ${+body.volume.toPrecision(6)} where the rules give ${+exp.volume.toPrecision(6)}`);
     if (why.length) return fail('mismatch', MISMATCH(why[0]), { cmp, why, demoted });
   }
   if (!noPlacement) {

@@ -225,7 +225,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -273,7 +273,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -321,7 +321,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -369,7 +369,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -417,7 +417,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -465,7 +465,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -513,7 +513,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -561,7 +561,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -609,14 +609,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -649,14 +649,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -689,14 +689,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -729,14 +729,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -769,14 +769,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -809,14 +809,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -849,14 +849,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -889,14 +889,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -929,14 +929,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -969,14 +969,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -1009,14 +1009,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -1049,14 +1049,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -1089,14 +1089,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -1129,14 +1129,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -1169,14 +1169,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -1209,14 +1209,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -1249,14 +1249,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -1289,14 +1289,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -1329,14 +1329,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -1369,14 +1369,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -1409,7 +1409,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -1457,7 +1457,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -1505,7 +1505,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -1553,7 +1553,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -1601,7 +1601,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -1649,7 +1649,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -1697,7 +1697,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -1745,7 +1745,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -1848,7 +1848,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -1888,7 +1888,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -1928,7 +1928,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -1968,7 +1968,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2008,7 +2008,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2048,14 +2048,14 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -2080,14 +2080,14 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -2112,14 +2112,14 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -2144,14 +2144,14 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -2176,14 +2176,14 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -2208,14 +2208,14 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -2240,14 +2240,14 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -2272,14 +2272,14 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -2304,14 +2304,14 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -2336,14 +2336,14 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -2368,14 +2368,14 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -2400,14 +2400,14 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -2432,7 +2432,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2472,7 +2472,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2512,7 +2512,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2552,7 +2552,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2592,7 +2592,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2632,7 +2632,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2672,7 +2672,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2712,7 +2712,7 @@
     "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2834,7 +2834,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2882,7 +2882,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2930,7 +2930,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -2978,7 +2978,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -3026,14 +3026,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -3066,14 +3066,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -3106,14 +3106,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -3146,14 +3146,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -3186,14 +3186,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -3226,14 +3226,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -3266,14 +3266,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -3306,14 +3306,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -3346,14 +3346,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -3386,14 +3386,14 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "round2RouteWithPlacementCheck": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    }
   },
@@ -3426,7 +3426,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -3474,7 +3474,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -3522,7 +3522,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {
@@ -3570,7 +3570,7 @@
     ]
    },
    "guarded": {
-    "refused": "The solid the solver produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "refused": "The solid that was produced does not match the shape these rules describe (it sits or is shaped differently from the solved outline), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "stage": "mismatch"
    },
    "round2Route": {

@@ -39,7 +39,7 @@
    "controlGuardWithoutMarkingConstruction": {
     "out": "REFUSED",
     "stage": "mismatch",
-    "sentence": "The solid the solver produced does not match the shape these rules describe (its volume is 4237.22 where the rules give 3000), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "sentence": "The solid that was produced does not match the shape these rules describe (its volume is 4237.22 where the rules give 3000), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "verdict": "REFUSED"
    },
    "guardedAlwaysPickProfiles": {
@@ -150,7 +150,7 @@
    "controlAlwaysPickWithoutMarking": {
     "out": "REFUSED",
     "stage": "mismatch",
-    "sentence": "The solid the solver produced does not match the shape these rules describe (its volume is 1762.78 where the rules give 3000), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "sentence": "The solid that was produced does not match the shape these rules describe (its volume is 1762.78 where the rules give 3000), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "verdict": "REFUSED"
    }
   },
@@ -895,7 +895,7 @@
    "guarded": {
     "out": "REFUSED",
     "stage": "branch",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "verdict": "REFUSED"
    },
    "brep": {
@@ -923,7 +923,7 @@
    "guarded": {
     "out": "REFUSED",
     "stage": "mismatch",
-    "sentence": "The solid the solver produced does not match the shape these rules describe (it has 4 faces where 6 were expected), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "sentence": "The solid that was produced does not match the shape these rules describe (it has 4 faces where 6 were expected), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "verdict": "REFUSED"
    },
    "brep": {
@@ -1203,7 +1203,7 @@
    "guarded": {
     "out": "REFUSED",
     "stage": "branch",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
     "verdict": "REFUSED"
    }
   }
@@ -1314,7 +1314,7 @@
    "guarded": {
     "out": "REFUSED",
     "stage": "branch",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3, 4 crosses itself as drawn, so the shape it means is not clear), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3, 4 crosses itself as drawn, so the shape it means is not clear), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    "brep": {
     "refused": "extrude pull1: edge 1 crosses edge 3. An outline cannot cross itself."

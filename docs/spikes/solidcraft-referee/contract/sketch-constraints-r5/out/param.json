@@ -39,7 +39,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "MATCH",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (line 2 would end up pointing the opposite way (or turned more than a quarter turn)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (line 2 would end up pointing the opposite way (or turned more than a quarter turn)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 20,
@@ -47,7 +47,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "WRONG",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 20,
@@ -55,7 +55,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "WRONG",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 30,
@@ -103,7 +103,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "WRONG",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 30,
@@ -111,7 +111,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "WRONG",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 40,
@@ -159,7 +159,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "MATCH",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (line 2 would end up pointing the opposite way (or turned more than a quarter turn)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (line 2 would end up pointing the opposite way (or turned more than a quarter turn)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 40,
@@ -167,7 +167,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "WRONG",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 50,
@@ -223,7 +223,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "WRONG",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 60,
@@ -279,7 +279,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "WRONG",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (line 2 would end up pointing the opposite way (or turned more than a quarter turn)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (line 2 would end up pointing the opposite way (or turned more than a quarter turn)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 70,
@@ -567,7 +567,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "WRONG",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 125,
@@ -623,7 +623,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "WRONG",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 135,
@@ -679,7 +679,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "WRONG",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 150,
@@ -687,7 +687,7 @@
     "unguarded": "MAPPER-REFUSED",
     "guarded": "REFUSED",
     "brep": "WRONG",
-    "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
+    "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the outline through geometry 1, 2, 3 would be turned inside out (mirrored)), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this."
    },
    {
     "stored": 150,

@@ -1,4 +1,3 @@
-Running as unit: run-p1644790-i1652189.scope; invocation ID: 56bbd2f1d48f48528ead20d5a250e6ef
 rect-corner-dx-dy-negative 0.8: unguarded {"MAPPER-REFUSED":22,"POSE":11,"MATCH":7} | guarded {"REFUSED":34,"BUILT-MATCH":6} stages {"branch":34} caught 9 spurious 4 | brep-rs {"MATCH":31,"WRONG":9}
 rect-corner-dx-dy-negative 0.4: unguarded {"MATCH":22,"MAPPER-REFUSED":13,"POSE":5} | guarded {"REFUSED":13,"BUILT-MATCH":27} stages {"branch":13} caught 2 spurious 7 | brep-rs {"WRONG":3,"MATCH":37}
 rect-corner-dx-dy-negative 0.15: unguarded {"MATCH":40} | guarded {"BUILT-MATCH":40} stages {} caught 0 spurious 0 | brep-rs {"MATCH":40}
@@ -127,3 +126,4 @@ rect-reference-dim-correct 0.8: unguarded {"MATCH":35,"MATCH-OTHER-SIDE":5} | gu
 rect-reference-dim-correct 0.4: unguarded {"MATCH":40} | guarded {"REFUSED":8,"BUILT-MATCH":32} stages {"branch":8} caught 0 spurious 8 | brep-rs {"WRONG":19,"MATCH":21}
 rect-reference-dim-correct 0.15: unguarded {"MATCH":40} | guarded {"BUILT-MATCH":40} stages {} caught 0 spurious 0 | brep-rs {"MATCH":37,"WRONG":3}
 rect-reference-dim-correct 0.035: unguarded {"MATCH":40} | guarded {"BUILT-MATCH":40} stages {} caught 0 spurious 0 | brep-rs {"MATCH":40}
+128 sweep records

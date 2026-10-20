@@ -2506,7 +2506,7 @@
   "expect": "refuse",
   "curved": true,
   "sc": {
-   "refused": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the tangent rule on geometry 1 and geometry 2 asks for external tangency but the solved circles are tangent internally), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+   "refused": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the tangent rule on geometry 1 and geometry 2 asks for external tangency but the solved circles are tangent internally), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
    "stage": "branch"
   }
  },
@@ -2520,7 +2520,7 @@
   "expect": "refuse",
   "curved": true,
   "sc": {
-   "refused": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the tangent rule on geometry 1 and geometry 2 asks for internal tangency but the solved circles are tangent externally), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+   "refused": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the tangent rule on geometry 1 and geometry 2 asks for internal tangency but the solved circles are tangent externally), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
    "stage": "branch"
   }
  },

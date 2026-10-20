@@ -338,7 +338,7 @@
    }
   },
   "B": {
-   "refused": "The solid the solver produced does not match the shape these rules describe (it has 6 faces where 7 were expected), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+   "refused": "The solid that was produced does not match the shape these rules describe (it has 6 faces where 7 were expected), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
    "stage": "mismatch"
   }
  },
@@ -544,7 +544,7 @@
    }
   },
   "B": {
-   "refused": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
+   "refused": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
    "stage": "underconstrained"
   }
  },
@@ -582,7 +582,7 @@
    }
   },
   "B": {
-   "refused": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
+   "refused": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
    "stage": "underconstrained"
   }
  },
@@ -666,7 +666,7 @@
    }
   },
   "B": {
-   "refused": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
+   "refused": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
    "stage": "underconstrained"
   }
  }

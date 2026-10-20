@@ -1,4 +1,3 @@
-Running as unit: run-p2032846-i2035133.scope; invocation ID: e7261917d38d49e18153ffa245d0441f
 slot-R10-L40 ends off by 0.00001 mm, lock on c                                                  offBy 1.0e-5 | brep-rs vol rel 1.2e-11 bboxΔ 9.7e-10 | strict RIGHT vol rel 3.7e-5 bboxΔ 1.1e-14 | off RIGHT vol rel 3.7e-5 bboxΔ 1.1e-14
 slot-R10-L40 ends off by 0.00001 mm, lock on a line end (not on c)                              offBy 1.0e-5 | brep-rs vol rel 7.3e-12 bboxΔ 1.4e-10 | strict RIGHT vol rel 3.7e-5 bboxΔ 1.8e-14 | off RIGHT vol rel 3.7e-5 bboxΔ 1.8e-14
 slot-R10-L40 ends off by 0.0001 mm, lock on c                                                   offBy 1.0e-4 | brep-rs vol rel 1.2e-11 bboxΔ 9.7e-10 | strict REFUSED[preflight] | off RIGHT vol rel 3.7e-5 bboxΔ 1.1e-14

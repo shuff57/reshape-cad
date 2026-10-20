@@ -1,0 +1,56 @@
+{
+ "id": "sk-circle-arc-tangent__slot-r6-L30-floating",
+ "closedVolume": 4730.973355292325,
+ "runs": [
+  {
+   "frac": 0.035,
+   "label": "critic start 0.035",
+   "unguarded": "RIGHT",
+   "unguardedVolume": 4730.763187541742,
+   "guarded": "REFUSED",
+   "guardedStage": "underconstrained",
+   "guardedSentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
+   "guardedVolume": null
+  },
+  {
+   "frac": 0.035,
+   "seeded40": {
+    "unguarded": {
+     "RIGHT": 40
+    },
+    "guarded": {
+     "REFUSED": 40
+    },
+    "sentences": {
+     "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.": 40
+    }
+   }
+  },
+  {
+   "frac": 0.15,
+   "label": "critic start 0.15",
+   "unguarded": "WRONG",
+   "unguardedVolume": 1130.8457412193247,
+   "guarded": "REFUSED",
+   "guardedStage": "underconstrained",
+   "guardedSentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
+   "guardedVolume": null
+  },
+  {
+   "frac": 0.15,
+   "seeded40": {
+    "unguarded": {
+     "RIGHT": 31,
+     "refused": 1,
+     "WRONG": 8
+    },
+    "guarded": {
+     "REFUSED": 40
+    },
+    "sentences": {
+     "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.": 40
+    }
+   }
+  }
+ ]
+}

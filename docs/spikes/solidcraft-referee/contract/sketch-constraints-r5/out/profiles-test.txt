@@ -1,4 +1,3 @@
-Running as unit: run-p1954894-i1920839.scope; invocation ID: b038b9ade9a84911a23455410b6a703f
 2 discs r10@(0,3) r5@(30,-2)                   default-all ok guarded ok want 3927.0/2
 2 discs r10@(0,0) r5@(30,0)                    default-all ok guarded ok want 3927.0/2
 2 discs r10@(0,0.1) r5@(30,0.1)                default-all ok guarded ok want 3927.0/2

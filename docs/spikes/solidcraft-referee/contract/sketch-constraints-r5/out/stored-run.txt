@@ -1,4 +1,3 @@
-Running as unit: run-p1965518-i2007387.scope; invocation ID: 676586bd83e6438dbe2e3a07008a0fb4
 rect-origin-dims                                         stored MATCH dv 6.1e-15 db 1.5e-13 brep 9.8e-12 occt 9.0e-12  r1Δ 1.0e-14
 rect-origin-dims                                         rough  MATCH dv 5.3e-15 db 1.5e-13 brep 7.9e-12 occt 7.3e-12  r1Δ -
 rect-corner-dx-dy-positive                               stored MATCH dv 9.2e-15 db 7.8e-14 brep 1.5e-11 occt 1.5e-11  r1Δ 1.3e-14
@@ -41,8 +40,8 @@ circle-circle-internal-mode                              stored MATCH dv 7.1e-5 
 circle-circle-internal-mode                              rough  MATCH dv 7.1e-5 db 1.4e-13 brep extrude pull1: the sketch's ru occt Sketch 1: rule 3 (radius) is o  r1Δ -
 circle-circle-internal-no-mode                           stored MATCH dv 7.1e-5 db 2.7e-14 brep extrude pull1: the sketch's ru occt Sketch 1: rule 4 names geometr  r1Δ 7.4e-16
 circle-circle-internal-no-mode                           rough  MATCH dv 7.1e-5 db 1.0e-13 brep extrude pull1: the sketch's ru occt Sketch 1: rule 3 (radius) is o  r1Δ -
-circle-circle-mode-request-external-start-internal       stored REFUSED[branch] The rules can be met by more than one shape and the solver would pick a differen
-circle-circle-mode-request-internal-start-external       stored REFUSED[branch] The rules can be met by more than one shape and the solver would pick a differen
+circle-circle-mode-request-external-start-internal       stored REFUSED[branch] The rules can be met by more than one shape, and the one they lead to is not the
+circle-circle-mode-request-internal-start-external       stored REFUSED[branch] The rules can be met by more than one shape, and the one they lead to is not the
 slot-hand-rows-R10-L40                                   stored MATCH dv 3.7e-5 db 7.1e-16 brep 3.7e-5 occt Sketch 1: rule 2 is a tangent   r1Δ 5.6e-6
 slot-hand-rows-R10-L40                                   rough  MATCH-OTHER-SIDE dv 3.7e-5 db 1.2e-14 brep 3.7e-5 occt Sketch 1: rule 2 is a tangent   r1Δ -
 slot-dims-from-points                                    stored MATCH dv 3.8e-5 db 1.6e-15 brep 3.8e-5 occt Sketch 1: rule 2 is a tangent   r1Δ 1.3e-9

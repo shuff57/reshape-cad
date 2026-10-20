@@ -1,4 +1,3 @@
-Running as unit: run-p2028590-i2034790.scope; invocation ID: 9bacce2f027246d09e9d3f365bf4b4d2
 
 == rect width param 30 -> 5..120
   drag : 40:ok 50:ok 60:ok 80:ok 100:ok 120:ok

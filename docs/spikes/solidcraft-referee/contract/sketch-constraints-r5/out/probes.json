@@ -13,7 +13,7 @@
    "expect": "refuse",
    "guardedOk": false,
    "stage": "branch",
-   "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the tangent rule on geometry 1 and geometry 2 asks for external tangency but the solved circles are tangent internally), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+   "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the tangent rule on geometry 1 and geometry 2 asks for external tangency but the solved circles are tangent internally), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
    "unguarded": "mapper: asks for external tangency but the circles start internally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested"
   },
   {
@@ -21,7 +21,7 @@
    "expect": "refuse",
    "guardedOk": false,
    "stage": "branch",
-   "sentence": "The rules can be met by more than one shape and the solver would pick a different one from the one drawn (the tangent rule on geometry 1 and geometry 2 asks for internal tangency but the solved circles are tangent externally), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
+   "sentence": "The rules can be met by more than one shape, and the one they lead to is not the one drawn (the tangent rule on geometry 1 and geometry 2 asks for internal tangency but the solved circles are tangent externally), so nothing was built; redraw the sketch closer to the shape you want, or add a rule that fixes this.",
    "unguarded": "mapper: asks for internal tangency but the circles start externally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested"
   },
   {
@@ -58,7 +58,7 @@
    "expect": "refuse",
    "guardedOk": false,
    "stage": "underconstrained",
-   "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
+   "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
    "unguarded": "mapper: geometry 5 is a circle and has no point 'a'"
   },
   {
@@ -66,7 +66,7 @@
    "expect": "refuse",
    "guardedOk": false,
    "stage": "underconstrained",
-   "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
+   "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
    "unguarded": "mapper: equal across a line and a circle/arc is refused by brep-rs too (a radius is not a length)"
   },
   {
@@ -90,7 +90,7 @@
    "expect": "refuse",
    "guardedOk": false,
    "stage": "underconstrained",
-   "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
+   "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it.",
    "unguarded": "mapper: is the endpoint tangent form with no coincident row joining those two ends before it; solidcraft's tangent is between curves, and it only treats it as tangent-at-the-joint when the ends are tied"
   },
   {
@@ -194,7 +194,7 @@
    "expect": "refuse",
    "guardedOk": false,
    "stage": "underconstrained",
-   "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the solver would have to guess and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
+   "sentence": "The rules leave the size or position of this shape open and the drawn lines do not already obey them, so the shape would have to be guessed and nothing was built; add a dimension or a pin, or draw the shape exactly as you want it."
   },
   {
    "id": "kind-probe: pointOnObject on a missing curve",
@@ -208,7 +208,7 @@
    "expect": "refuse",
    "guardedOk": false,
    "stage": "preflight",
-   "sentence": "The sketch uses a rule the solver cannot check (rule kind collinear), so nothing was built."
+   "sentence": "The sketch uses a rule the sketch cannot check (rule kind collinear), so nothing was built."
   },
   {
    "id": "kind-probe: distance with no value",

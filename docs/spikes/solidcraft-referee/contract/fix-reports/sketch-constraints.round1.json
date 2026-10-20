@@ -1,0 +1,88 @@
+{
+ "group": "sketch-constraints",
+ "round": 1,
+ "changes": [
+  {
+   "file": "sketch-constraints-r5/guard.mjs",
+   "what": "CMP_TOL.curvedVolume = 3e-4: a curved build is accepted only within the status bar of the exact area x height (kernel-free, expect.mjs); a tiny curved sketch failing only on that gets its own one-sentence refusal (SMALL_CURVED). Reworded BRANCH, the angle sentence and two others without 'solver'."
+  },
+  {
+   "file": "sketch-constraints-r5/oracle.mjs",
+   "what": "classifyImg also compares centre of mass and (straight-line outlines) face count against the exact solid of each valid image (expect.mjs); new class SHAPE (same volume and bbox, different shape) counts as built-wrong."
+  },
+  {
+   "file": "sketch-constraints-r5/run-sweeps.mjs",
+   "what": "records comChecked / comMax per sweep record"
+  },
+  {
+   "file": "sketch-constraints-r5/scale.mjs (new)",
+   "what": "6 curved fixtures x scales 1e-3..1e3 through the guard -> out/scale.json"
+  },
+  {
+   "file": "sketch-constraints-r5/floating-slot.mjs (new)",
+   "what": "replay of the 23% wrong rough-start slot, unguarded vs guarded, critic's start + 40 seeds at 3.5% and 15%"
+  },
+  {
+   "file": "sketch-constraints-r5/rows-r6.mjs (new), build-rows.mjs",
+   "what": "four new rows (curved fit, tiny curved refused, sweep-oracle COM/faces, floating slot), round 6 header/fixes, legacy rows no longer crash on refused route-B rows (the stopped round-5 build-rows crashed there), full-path evidence strings"
+  },
+  {
+   "file": "sketch-constraints-r5/run-all.sh",
+   "what": "MEM (default 1500M) and TMO (900 s) per job, SOLIDCRAFT_REFEREE_PKG required, sweeps run in chunks of 3 fixtures and merged, scale + floating-slot jobs added, JOBS=x no longer wipes all-status/sentences"
+  },
+  {
+   "file": "sketch-constraints.json",
+   "what": "rebuilt by build-rows.mjs (round 6, 139 rows: 81 supported, 30 refused, 26 wrong, 2 unsupported). It replaces the round-4 file (rows from the r3 chain); the stopped round-5 work already in the tree was finished, not discarded"
+  },
+  {
+   "file": "sketch-constraints-r5/out/*",
+   "what": "whole chain re-run live (21 jobs, all exit 0, MemoryMax=1500M)"
+  }
+ ],
+ "defectsResolved": [
+  {
+   "defect": "curved volume bar fails at small sketch scale",
+   "how": "guard now refuses a curved build whose volume is >3e-4 off the exact area; scale.mjs shows built at scale>=0.03..0.1 (worst 1.5e-4) and refused with a plain sentence below; tolerance tightened (2e-3 -> 3e-4 for volume), 5 mm / 1% wording limit fixed before the run"
+  },
+  {
+   "defect": "guarded route never replayed live",
+   "how": "r5 guard needs no wrapper2 pkg (independent solve + kernel-free expectation); the entire chain was re-run on the live pkg, sweeps run twice with identical guarded totals (2744 match, 93 other-side, 160 'wrong' = underconstrained free-circle rows, 2123 refused)"
+  },
+  {
+   "defect": "rough-start slot builds wrong",
+   "how": "floating-slot.mjs: unguarded builds wrong at 15% starts (8 of 40 + the critic start); guard refuses 80 of 80 plus both critic starts (underconstrained). The critic's 3.5% 3634.8 figure was NOT reproduced (unguarded builds 4730.76 there)."
+  },
+  {
+   "defect": "sweep oracle weak",
+   "how": "centre of mass + face count added against exact images (2571 comparisons, max COM diff 3.6e-6 of size, no SHAPE cases); images validated by the independent rule checker"
+  },
+  {
+   "defect": "evidence paths / solver talk",
+   "how": "full paths; sentences reworded; audit 315 sentences, 0 multi-sentence"
+  }
+ ],
+ "defectsOpen": [
+  {
+   "defect": "second kernel for sweep cells brep-rs refuses (circle-circle, symmetric trapezoid, symmetric about construction line)",
+   "why": "brep-rs and OCCT cannot build them; those cells rest on closed form + exact image + COM, and the images still come from the guard's solver (filtered by the independent rule checker)"
+  },
+  {
+   "defect": "critic's exact 23% start",
+   "why": "not reproducible from the repo's roughen seed; stated in the row"
+  },
+  {
+   "defect": "wrapper2 pkg",
+   "why": "built (sc-target .../solidcraft_referee_p2.wasm, 8G cap) but not wasm-bindgen'd or used: the round-3 guard it served is superseded by round 5; SolidCraft SolveReport/dof rows stay unsupported"
+  },
+  {
+   "defect": "26 rows with status wrong",
+   "why": "these describe the shipped (unguarded) route or known mirror/underconstrained classes; unchanged by this round"
+  }
+ ],
+ "rowsDowngraded": [],
+ "rigNotesForRIGmd": "sketch-constraints round 6: export SOLIDCRAFT_REFEREE_PKG=<pkg>; sh docs/spikes/solidcraft-referee/contract/sketch-constraints-r5/run-all.sh (MEM=1500M TMO=900 per job; JOBS='a b' reruns named jobs; new jobs scale, floating-slot); then bun docs/spikes/solidcraft-referee/contract/sketch-constraints-r5/build-rows.mjs rewrites sketch-constraints.json. sketch-constraints-recheck.mjs (r4) is obsolete and must not be run after it. wrapper2 is not needed.",
+ "commands": {
+  "rebuildRows": "bun docs/spikes/solidcraft-referee/contract/sketch-constraints-r5/build-rows.mjs",
+  "replay": "SOLIDCRAFT_REFEREE_PKG=<pkg> sh docs/spikes/solidcraft-referee/contract/sketch-constraints-r5/run-all.sh"
+ }
+}

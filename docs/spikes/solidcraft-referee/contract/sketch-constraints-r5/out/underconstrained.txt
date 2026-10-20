@@ -1,4 +1,3 @@
-Running as unit: run-p2040535-i2077522.scope; invocation ID: a7a2c35a32e34b07b1f6100750f150ae
 hv-only-30x15            dof ind/fc/brep {"independent":4,"freecad":4,"brepRs":4} | stored shipped {"volume":4500,"right":true} guarded {"volume":4500,"right":true} brep {"volume":4500,"right":true}
     rough 0.035 shipped {"different-solid":20} [4239.13,4330.7,4379.83,4410.11,4444.99,4452.49,4493.26,4531.09] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [4236.26,4269.11,4272.7,4334.45,4338.47,4432.64,4474.31,4512.59]
     rough 0.15 shipped {"different-solid":20} [2435.6,2442.52,2502.32,3431.47,3489.64,4095.01,4121.79,4156.1] | guarded {"REFUSED":20} | brep-rs {"different-solid":20} [3189.65,3328.64,3368.54,3646.91,3719.16,3764.47,3784.33,3907.81]
