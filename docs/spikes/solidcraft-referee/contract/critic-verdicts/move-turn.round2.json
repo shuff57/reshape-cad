@@ -1,0 +1,27 @@
+{
+ "group": "move-turn",
+ "verdict": "accepted",
+ "summary": "The builder script reproduces move-turn.json byte-identically, the stored cone-chain numbers replay exactly, and my own probes (sphere, cylinder, hole-box, spin-built, ring chains of 6-24 steps) found no silent wrong solid through the guard translator. Remaining gaps are one major interpreter silent-accept row (honestly marked unsupported) and un-fuzzed non-cone chain classes.",
+ "rowsTotal": 29,
+ "rowsEvidenceChecked": 29,
+ "rowsReplayed": 9,
+ "replays": [
+  {"feature":"cone chain gw1 (guard)","command":"bun move-turn-harness/r5-guardwrong.mjs","stored":"guard REFUSED turn4 (Move 3 refused)","live":"same","match":true},
+  {"feature":"cone chain gw2 (guard)","command":"r5-guardwrong.mjs","stored":"shipped FAIL dCom 3.02e-5; guard refused Move 3 by limit","live":"same","match":true},
+  {"feature":"cone copy chain gw3","command":"r5-guardwrong.mjs","stored":"guard PASS turn1/move2, refused turn3","live":"same","match":true},
+  {"feature":"cone-chain refusal sentence","command":"bun r6-limit-sentence.mjs","stored":"steps 1-3 build, 4-5 refused","live":"same, OK limit 3","match":true},
+  {"feature":"fork consumed part (n-fork)","command":"bun n-fork.mjs","stored":"guard PASS control, shipped refuses copy","live":"same","match":true},
+  {"feature":"rows rebuild","command":"bun make-rows-r6.mjs (scratch copy)","stored":"move-turn.json","live":"byte-identical, 29 rows, asserts pass","match":true},
+  {"feature":"cylinder/hole-box/sphere 12-step chain (own probe)","command":"probe1.mjs","stored":"not stored","live":"PASS, dCom<=1e-11, dVol<=1.5e-4","match":true},
+  {"feature":"spin-built cylinder 24-step chain (own probe)","command":"probe1.mjs spinrect 2","stored":"not stored","live":"PASS dCom 1.1e-5","match":true},
+  {"feature":"spin/ring fuzz seed 77 n 10 (own probe)","command":"probe2.mjs 77 10","stored":"not stored","live":"9 PASS, 1 flagged by relative bbox metric only (abs 2.07e-3 mm on 44 mm part, dCom 1.5e-5, dVol 1.6e-4): tessellation, not wrong","match":true}
+ ],
+ "defects": [
+  {"severity":"major","feature":"move() argument misuse (copy:\"yes\" / copy:1)","problem":"Builds a plain consuming move with no sentence, so the student asked for a copy and the original silently vanishes. Row is honestly 'unsupported' but no refusal fires; interpreter in packages/script is not fixed.","evidenceFile":"move-turn-harness/q-interp-results.json"},
+  {"severity":"minor","feature":"supported rows 5,6,11,12 (cone chains)","problem":"Support depends on guard in move-turn-harness/translate-guard.mjs (invariant, repair, 3-step cone limit) which is not in the shipped translator; the limit 3 was fitted after seeing failures. Rows state this.","evidenceFile":"move-turn-harness/translate-guard.mjs"},
+  {"severity":"minor","feature":"chains of spin-built parts and rings","problem":"Cone-chain fuzz covers cone/copies/join/control (box, cylinder, prism, wedge, sphere) only; spin-built non-cone parts and rings are not in the stored fuzz. My 10-chain probe saw no wrong solid but dBbox relative metric reached 8.2e-4 (abs 2 um), above the 3e-4 bar by the relative metric.","evidenceFile":"move-turn-harness/r4-conechain.mjs"},
+  {"severity":"minor","feature":"cone-chain limit","problem":"Over-refuses: 496 of 820 fuzz chains refused; gw1 turn4 refused though shipped was fine. Honest but costly.","evidenceFile":"move-turn-harness/r6-guardwrong.out"}
+ ],
+ "notMeasured": ["k-pickguard 109-case sweep, r3-lumps, r3-magnitude, r3-slow not re-run (resource/time)", "ring chains longer than ~12 steps", "full 820-chain fuzz not re-run"],
+ "criticAt": "2026-10-19"
+}
