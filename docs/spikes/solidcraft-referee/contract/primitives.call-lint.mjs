@@ -105,7 +105,38 @@ export function lintConeSecondRadius(text) {
   return out;
 }
 
+/**
+ * An option the primitive does not take, e.g. sphere(10, { corner: 1 }). The interpreter does refuse it, but with TWO sentences ('sphere has no option called
+ * "corner". It takes at.'); this is the one-sentence form the integrated layer shows. Keys are read from the top-level of the last { } argument only.
+ */
+const OPTIONS = { box: ['at', 'corner'], cuboid: ['at', 'corner'], cylinder: ['at', 'corner'], sphere: ['at'], cone: ['at'], ring: ['at'], torus: ['at'], prism: ['at'], wedge: ['at'] };
+export function lintUnknownOption(text) {
+  const out = [];
+  const m = mask(text);
+  for (const c of primitiveCalls(text)) {
+    if (c.args.length <= ARITY[c.name]) continue;
+    const a = c.args[ARITY[c.name]];
+    if (!a.text.startsWith('{')) continue;
+    // top-level keys of the object literal, from the masked copy (strings and comments blanked)
+    const body = m.slice(a.start, a.end); let depth = 0; let key = null;
+    for (let i = 0; i < body.length && !key; i++) {
+      const ch = body[i];
+      if ('([{'.includes(ch)) depth++;
+      else if (')]}'.includes(ch)) depth--;
+      else if (depth === 1 && /[A-Za-z_$]/.test(ch) && /[{,\s]/.test(body[i - 1] ?? '{')) {
+        const mm = /^([A-Za-z_$][\w$]*)\s*:/.exec(body.slice(i));
+        if (mm) { if (!OPTIONS[c.name].includes(mm[1])) key = mm[1]; i += mm[1].length; }
+      }
+    }
+    if (key) {
+      const ok = OPTIONS[c.name];
+      out.push({ code: 'unknown-option', call: c.name, sentence: `${c.name}(): "${key}" is not an option -- ${c.name} takes only ${ok.length > 1 ? 'the options ' + ok.join(' and ') : 'the option ' + ok[0]}, so take "${key}" out.` });
+    }
+  }
+  return out;
+}
+
 /** every script-text refusal, in the order a student should fix them */
 export function lintScript(text, runSides) {
-  return [...lintConeSecondRadius(text), ...lintSurplusArgs(text), ...(runSides ? lintPrismSides(text, runSides) : [])];
+  return [...lintUnknownOption(text), ...lintConeSecondRadius(text), ...lintSurplusArgs(text), ...(runSides ? lintPrismSides(text, runSides) : [])];
 }

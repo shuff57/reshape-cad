@@ -39,7 +39,7 @@ window.benchWorker = async (name, budgetMs = 0) => {
   return { name, mode: 'worker', budgetMs, fresh, wallMs: Math.round(wall), ...(res.timedOut ? { timedOut: true } : { initMs: Math.round(res.initMs), callMs: Math.round(res.ms), ok: res.ok, err: res.err }), hb };
 };
 // UI contract demonstrated by the harness: what the student reads when the budget runs out
-window.sentenceFor = (call, seconds) => `${call}: building this took more than ${seconds} seconds, so it was stopped and is not shown -- try a bigger corner, a thicker tube, or fewer rounded edges.`;
+window.sentenceFor = (call, seconds) => `${call}: building this took more than ${seconds} seconds, so it was stopped and is not shown -- try a smaller or simpler shape.`;
 window.names = Object.keys(cmds);
 document.getElementById('out').textContent = 'ready: ' + window.names.join(', ');
 window.__ready = true;

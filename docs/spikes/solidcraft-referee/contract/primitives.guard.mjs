@@ -58,7 +58,7 @@ export function num(v) {
   if (!Number.isFinite(v)) return String(v);
   if (Number.isInteger(v) && Math.abs(v) < 1e15) return String(v);
   const a = Math.abs(v);
-  if (a >= 1e-3 && a < 1e15) return String(+v.toPrecision(4));
+  if (a >= 1e-6 && a < 1e15) return String(+v.toPrecision(4));
   return v.toExponential(2).replace('e+', ' x 10^').replace('e-', ' x 10^-');
 }
 const down = (v, d = 3) => { if (!(v > 0)) return 0; const k = 10 ** Math.max(d, Math.ceil(-Math.log10(v)) + 2); return Math.floor(v * k) / k; };
@@ -175,7 +175,7 @@ export function guardFeature(f) {
     const rLim = R - LIM.cylLeftoverSizeFrac * Math.max(across, f.height);
     const cFloor = Math.max(LIM.cylCornerMin, LIM.cylCornerMinRel * Math.max(across, f.height));
     if (f.round < cFloor) return refuse('cyl-corner-too-small', `cylinder(${num(across)}, ${num(f.height)}, { corner: ${num(f.round)} }): the ${what} is too small -- it would be left out of the part, so it has to be at least ${num(up(cFloor))}.`);
-    if (f.round > rLim) return refuse('cyl-corner-vs-radius', `cylinder(${num(across)}, ${num(f.height)}, { corner: ${num(f.round)} }): the ${what} is too big for the width -- the flat top that is left would be too narrow to be built correctly (the mesh cannot resolve it), so it has to be ${num(down(Math.max(rLim, 0)))} or less (the radius is ${num(R)}, and the flat top must stay at least one hundredth of ${num(Math.max(across, f.height))}).`);
+    if (f.round > rLim) return refuse('cyl-corner-vs-radius', `cylinder(${num(across)}, ${num(f.height)}, { corner: ${num(f.round)} }): the ${what} is too big for the width -- the flat top that is left would be too narrow to be built correctly, so it has to be ${num(down(Math.max(rLim, 0)))} or less (the radius is ${num(R)}, and the flat top must stay at least one hundredth of ${num(Math.max(across, f.height))}).`);
     if (f.round > hLim) return refuse('cyl-corner-vs-height', `cylinder(${num(across)}, ${num(f.height)}, { corner: ${num(f.round)} }): the ${what} is too big for the height -- the two rims would run into each other and the part would be built wrongly, so it has to be ${num(down(hLim))} or less, a little under half of tall (${num(f.height)}).`);
   }
 
@@ -250,8 +250,18 @@ export function sentenceProblems(s) {
   const bad = [];
   if (!/^(box|cylinder|sphere|cone|ring|prism|wedge)\(/.test(s)) bad.push('does-not-start-with-the-call');
   if (/\b(box|cyl|ball|cone|ring|prism|wedge)\d+\b/.test(s)) bad.push('internal-id');
-  if (/solid\.|solidcraft|truck|brep|occt|kernel|invalid input|major|minor|torus|fillet|body|feature/i.test(s)) bad.push('kernel-word');
+  if (/solid\.|solidcraft|truck|brep|occt|kernel|invalid input|major|minor|torus|fillet|body|feature|mesh|tessell|wasm|face id|\bF\d+:/i.test(s)) bad.push('kernel-word');
   if (!/[.]$/.test(s) || /[.] [A-Z]/.test(s)) bad.push('not-one-sentence');
   if (s.length > 330) bad.push('too-long');
   return bad;
+}
+
+/**
+ * The sentence for a build that ran past its time budget (a requirement on the page: Web Worker + budget; nothing in the product does this today, so it is
+ * not produced by guardFeature). Generic on purpose: it does not say which parameter to change, because a long build has no single cause (a ring, a rounded
+ * cylinder and a huge sphere are all slow for different reasons). primitives-r4/browser/bench.html carries the same template and primitives.sentence-check.mjs
+ * asserts that the two are identical.
+ */
+export function budgetSentence(call, seconds) {
+  return `${call}: building this took more than ${seconds} seconds, so it was stopped and is not shown -- try a smaller or simpler shape.`;
 }

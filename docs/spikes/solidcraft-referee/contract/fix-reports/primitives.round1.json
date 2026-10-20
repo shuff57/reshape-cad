@@ -1,0 +1,36 @@
+{
+ "group": "primitives",
+ "round": 1,
+ "changes": [
+  {"file": "primitives-build-rows-r5.mjs", "what": "New rows builder (r4 copy). Every refusal sentence now comes from primitives.sentences.mjs (S(key)); adds the e28 rows; adds computed notes for round 3 timings and the curved 3e-4 bar. primitives.json is its output (deterministic, two runs identical)."},
+  {"file": "primitives.json", "what": "Rebuilt by r5: 62 rows (was 61). Seeds 4 and 5 held-out proof (635 / 501 inputs, accepted-and-wrong 0) and 1335 planar inputs are now what the rows say."},
+  {"file": "primitives.sentences.mjs", "what": "New. One real input per quoted sentence, run through its producer (interpreter, call-lint, guard, budgetSentence); lints each for engine words and for being one sentence; checks bench.html template equals budgetSentence. Run: bun primitives.sentences.mjs"},
+  {"file": "primitives.guard.mjs", "what": "Wording only: removed '(the mesh cannot resolve it)'; num() prints 1e-4 as 0.0001 (was 1.00 x 10^-4 above 1e-6); sentenceProblems also flags mesh/tessell/wasm/face ids; new export budgetSentence(call, seconds). No limit and no rule changed."},
+  {"file": "primitives.call-lint.mjs", "what": "New lintUnknownOption (one-sentence form of the interpreter's two-sentence 'has no option called'), added first in lintScript."},
+  {"file": "primitives-r4/browser/bench.html", "what": "sentenceFor template changed to the same generic budget sentence (old one advised a bigger corner for a ring)."},
+  {"file": "primitives-r4/e28-orientation.mjs", "what": "New spec: 11 wedge and 13 prism cases (n 3..12, at, single-axis turns)."},
+  {"file": "primitives-r4/e28-closed-form.mjs", "what": "New checker: truck bbox/COM/volume vs a kernel-free closed form (bar 1e-9 of diagonal written before the run). 24 of 24 pass, worst bbox 2.2e-16."},
+  {"file": "primitives-r4/results/e28-orientation.json, e28-closed-form.json", "what": "Results of the above (truck, cap 1500M)."}
+ ],
+ "defectsResolved": [
+  {"defect": "primitives.json stale against evidence / seeds 4 and 5 'not run'", "how": "Rows are now the output of primitives-build-rows-r5.mjs from the on-disk evidence; row 62 reports seeds 1..5 (seeds 4/5: 635 and 501 inputs, accepted and wrong 0), planar count 1335."},
+  {"defect": "wedge orientation / prism phase single-oracle but supported", "how": "Added a kernel-free closed-form second check (e28, 24 cases, all within 1e-9); the supported claim is now 'SolidCraft builds what the stated definition says' (new row 59). The external anchor of the definition (FreeCAD/drawing; only the hexagon has one) is a separate unsupported row 60 with the reason, including why the FreeCAD census wedge does not pin orientation."},
+  {"defect": "refusal sentences rows 19, 43 (1-based 20, 44)", "how": "Two interpreter sentences replaced in the contract by the one-sentence lintUnknownOption text; evidence states the interpreter's current two-sentence message; status stays refused (the interpreter does refuse)."},
+  {"defect": "rows 12, 46 (1-based 13, 47) engine word 'mesh'", "how": "Sentence changed in the guard; sentence lint now rejects 'mesh'."},
+  {"defect": "row 55 (1-based 56) cited input fires a different sentence", "how": "The sentence is now produced from box(100000, 1, 1); evidence notes box(1000, 0.001, 0.001) is caught first by the 'too small' rule."},
+  {"defect": "rows 56, 57 (1-based 57, 58) sentence produced by no code, wrong advice for a ring", "how": "budgetSentence() in the guard, generic wording, identical to the bench.html template, tested in primitives.sentences.mjs."},
+  {"defect": "minor: rows 10, 33 round-3 guarded timings for inputs now refused", "how": "Computed note on every row citing guarded runs lists the 5+ ids the current guard now refuses (all replicas) and says those timings belong to outside-envelope inputs."},
+  {"defect": "minor: curved 3e-4 bar", "how": "Computed note on curved supported rows: bar is an empirical tessellation allowance fixed in round 3, never loosened, worst accepted case and cases within 10% of it listed; no independent way to tighten."}
+ ],
+ "defectsOpen": [
+  {"defect": "guard not wired (31 rows 'wrong' in the product today)", "why": "Needs packages/script integration (plan phase 2), outside this group's files. Rows are labelled honestly."},
+  {"defect": "external reference for wedge orientation convention and prism phase n != 6", "why": "No FreeCAD in this session and none in the repo; row 60 unsupported."},
+  {"defect": "browser-bench.json holds the old budget wording", "why": "Needs the wasm-bindgen web build and playwright; only the sentence text differs. Noted in the budget rows."}
+ ],
+ "rowsDowngraded": ["Row 'independent (non-OCCT) check' split: build-fidelity part now supported (closed form), external-reference part stays unsupported (not a downgrade of a supported row)."],
+ "rigNotesForRIGmd": "Rebuild rows: bun contract/primitives-build-rows-r5.mjs (replaces r4). Sentences: bun contract/primitives.sentences.mjs (exit 1 on a bad sentence). E28: SOLIDCRAFT_REFEREE_PKG=<pkg> systemd-run --user --scope -q -p MemoryMax=1500M -p MemorySwapMax=0 bun primitives-sweep.mjs --spec=primitives-r4/e28-orientation.mjs --out=primitives-r4/results/e28-orientation.json ; bun primitives-r4/e28-closed-form.mjs primitives-r4/results/e28-orientation.json --out=primitives-r4/results/e28-closed-form.json. Guard proof: bun contract/primitives.guard-check.mjs (0 accepted wrong of 1282 wrong, 7653 cases).",
+ "commands": {
+  "rebuildRows": "SOLIDCRAFT_REFEREE_PKG=<pkg> bun docs/spikes/solidcraft-referee/contract/primitives-build-rows-r5.mjs",
+  "replay": "bun primitives.sentences.mjs; bun primitives.guard-check.mjs; sweep + e28-closed-form.mjs as in rigNotesForRIGmd"
+ }
+}
