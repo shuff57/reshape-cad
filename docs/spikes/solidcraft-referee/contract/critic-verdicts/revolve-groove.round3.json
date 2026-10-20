@@ -1,1 +1,107 @@
-{"verdict":"incomplete"}
+{
+ "group": "revolve-groove",
+ "verdict": "not-accepted",
+ "summary": "The round-wall guard (grazing) has a hole for spun parts with a shallow cone: a 90 or 200 degree groove whose outer wall lies 0.4-0.5 mm inside a 29-to-30 mm frustum wall builds silently wrong (dVol 5.9e-4 to 3.2e-3 against OCCT and a closed form, 8 faces instead of 9). Row 33 states the cone is not modelled, but row 32 still calls frustum grooves supported, so this is a silent wrong solid. Stored evidence replays and lints clean, and offset plates, lugs and holes were refused (often for the wrong number).",
+ "rowsTotal": 45,
+ "rowsEvidenceChecked": 45,
+ "rowsReplayed": 10,
+ "replays": [
+  {
+   "feature": "R5-post-top-0.1-90 (row 33)",
+   "command": "rg3-batch.sh ./cases-r5-wall.mjs g0",
+   "stored": "refused, round wall",
+   "live": "refused, round wall",
+   "match": true
+  },
+  {
+   "feature": "R5-post-top-0.05-360 (row 33)",
+   "command": "same",
+   "stored": "refused",
+   "live": "refused",
+   "match": true
+  },
+  {
+   "feature": "R5-post-top-0.3-90 (row 33 control)",
+   "command": "same",
+   "stored": "PASS dVol 1.1e-4 faces 8/8/8",
+   "live": "PASS dVol 1.1e-4 faces 8/8/8",
+   "match": true
+  },
+  {
+   "feature": "R5-post-flush-360",
+   "command": "same",
+   "stored": "PASS dVol 1.2e-4",
+   "live": "PASS dVol 1.2e-4",
+   "match": true
+  },
+  {
+   "feature": "R5-steppost-wall-0.05-90",
+   "command": "same",
+   "stored": "refused",
+   "live": "refused",
+   "match": true
+  },
+  {
+   "feature": "R5-tube-bore-0.05-90",
+   "command": "same",
+   "stored": "refused",
+   "live": "refused",
+   "match": true
+  },
+  {
+   "feature": "R5-frustum-wall-mid-90",
+   "command": "same",
+   "stored": "refused (cost/engine)",
+   "live": "refused",
+   "match": true
+  },
+  {
+   "feature": "R4-frustum-lip005-90 (row 31)",
+   "command": "cases-r4-graze.mjs g0",
+   "stored": "refused, lip",
+   "live": "refused, lip",
+   "match": true
+  },
+  {
+   "feature": "R4-step-lip005-90 (row 31)",
+   "command": "same",
+   "stored": "refused, inner face",
+   "live": "refused, inner face",
+   "match": true
+  },
+  {
+   "feature": "R4-frustum-lip03-90 (row 32)",
+   "command": "same",
+   "stored": "PASS dVol 1.6e-5 faces 8/-/8",
+   "live": "PASS dVol 1.6e-5 faces 8/-/8",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "blocking",
+   "feature": "row 32 (frustum groove supported) / row 33 (round-wall rule, cone not modelled)",
+   "problem": "frustum = spin [[0,0],[30,0],[29,30],[0,30]]; ring [[10,5],[29.5,5],[29.5,25],[10,25]] groove 90: guard lets it build, truck volume off OCCT by 1.2e-3 (OCCT equals a closed-form integral 70004.8654), faces 8 vs 9. Same at 200 deg (dVol 3.2e-3, dCOM 7.7e-4) and with outer wall 29.6 (5.9e-4 at 90, 1.6e-3 at 200). Walls 29.1 and 29.9 are refused, only by chance (spurious profile numbers 29 and 30 within 0.25). Passes the cost rule (one curved face, part turn, ring clear of the bbox side). Cases C3C-steepfr-m295-90/-200, m296-90/-200, scratch cases-c3c.mjs.",
+   "evidenceFile": "/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/critic-revolve-groove/r3/g0c/C3C-steepfr-m295-90.txt"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 33 sentence",
+   "problem": "For parts with a spurious radius match the sentence quotes a wrong number: boxhole-03 (true gap 0.3) says 'passes within 0.083 mm', postplate-005 says 0.1658 mm, postplate-03 says 0.0842 mm, postlug-03 says 0.25 mm. The refusal is honest but the figure in it is false.",
+   "evidenceFile": "/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/critic-revolve-groove/r3/g0b/C3B-boxhole-03-90.txt"
+  },
+  {
+   "severity": "minor",
+   "feature": "over-refusal",
+   "problem": "Every off-axis variant with a 0.3 mm gap (box with off-centre hole, post with side lug, post on off-centre plate) is refused, as is a coaxial full-turn groove into a spun tube (a plain bushing groove, C3-ok-tube-groove-360, cost rule). Disclosed in part (the tube); the others show the candidate-radius set is wide enough to refuse clear grooves, and a student gets no way to tell why.",
+   "evidenceFile": "/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/ea02bb64-e811-42fa-b89a-a3582ccc5812/scratchpad/critic-revolve-groove/r3/g0/C3-ok-tube-groove-360.txt"
+  }
+ ],
+ "notMeasured": [
+  "sphere ring near wall at other heights beyond one off-axis case (C3-sph-off-90 passed)",
+  "shelled/hollow parts (cost rule refuses curved>=2 first)",
+  "raw0 behaviour of the new frustum cases (not run, g0 failure is enough)",
+  "truck tessellation of the C3 flare frustum with walls closer than 0.25 mm to the cone (two flare cases passed at wide gaps only)"
+ ],
+ "criticAt": "2026-10-20"
+}
