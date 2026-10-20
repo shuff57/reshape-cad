@@ -1,0 +1,24 @@
+{
+ "group":"revolve-groove","verdict":"not-accepted",
+ "summary":"Builder reproduces the rows byte for byte (44 rows, 0 lint failures) and 5 stored cases replay to the stored numbers, but the guard has a hole: a groove ring whose outer wall stops 0.1 mm short of a post's round outer wall is built and reported, with the wrong volume (4.5e-3 against OCCT, 1e-3 and 1.8e-3 in the other cases) and wrong faces (5 against 7). Neither the lip guard (ring ends only) nor the box-only wall check covers a cylinder radial wall, and no row discloses it.",
+ "rowsTotal":44,"rowsEvidenceChecked":44,"rowsReplayed":13,
+ "replays":[
+ {"feature":"post-radial-lip-360 (post d40 h30, ring u10..19.9 z20..30)","command":"rg-run --cases=critic-revolve-groove/cases-c.mjs --translator=g0 --only=C-post-radial-lip-360","stored":"none (not covered by any row)","live":"BUILT, FAIL dV 4.5e-3 dCOM 9.2e-4 faces OCCT 7 / truck 5","match":false},
+ {"feature":"post-radial-lip-90","command":"same, C-post-radial-lip-90","stored":"none","live":"BUILT, FAIL dV 1.0e-3 faces 8 vs 7","match":false},
+ {"feature":"post-radial-lip-bottom-360 (u10..19.95 z0..8)","command":"same","stored":"none","live":"BUILT, FAIL dV 1.8e-3 dCOM 3.6e-4 faces 7 vs 5","match":false},
+ {"feature":"post-flush-wall-360 (ring outer = post wall)","command":"same","stored":"none","live":"PASS dV 1.2e-4","match":true},
+ {"feature":"box-wall-near-90 (ring wall 0.1 mm from box side)","command":"same","stored":"refusal sentence per row 30","live":"REFUSED with the plain sentence","match":true},
+ {"feature":"spin r1000 3 deg","command":"same","stored":"none","live":"PASS dV 1.8e-6","match":true},
+ {"feature":"spin neg side -300","command":"same","stored":"none","live":"PASS dV 1.1e-4","match":true},
+ {"feature":"Z-spin-r105-2deg","command":"rg-run --only=Z-spin-r105-2deg","stored":"dVol 1.3e-5 dCOM 2.1e-5 faces 6/6/8","live":"identical","match":true},
+ {"feature":"Z-spin-over360-neg400","command":"rg-run --only=Z-spin-over360-neg400","stored":"truck dVol 1.6e-4 vs closed form, 4 faces","live":"identical (OCCT wraps the angle, as the row says)","match":true},
+ {"feature":"R4-frustum-sealed-180","command":"rg-run --cases=./cases-r4-graze.mjs --only=R4-frustum-sealed-180","stored":"dVol 2.3e-5 dCOM 1.5e-7 faces 9/-/9","live":"identical","match":true}
+ ],
+ "defects":[
+ {"severity":"blocking","feature":"rows 20/21 (groove on a plain post) and the guard G10 (grazing)","problem":"A ring whose outer round wall ends 0.05 to 0.1 mm short of the post's own round wall leaves a thin cylindrical lip. It is built and reported with dVol 4.5e-3 / 1.0e-3 / 1.8e-3 against OCCT (bar 3e-4) and the wrong face count; grazing() checks ring ENDS for cylinders and a tangent round wall only for boxes. Silent wrong solid, not disclosed.","evidenceFile":"critic-revolve-groove/out/C-post-radial-lip-*.json (scratchpad)"},
+ {"severity":"minor","feature":"row 32","problem":"The row itself says a near-tangent round wall against a flat face of a non-box part is not refused by any guard, backed by only 3 probes; same family of hole as the blocking one.","evidenceFile":"revolve-groove.json row 32"},
+ {"severity":"minor","feature":"row 0 evidence","problem":"The curved-volume bar 1.5e-4 x amplification was fitted after seeing the spin-fuzz data (disclosed by the row); the wider bar is only justified by an exact Pappus oracle.","evidenceFile":"revolve-groove.json row 0"}
+ ],
+ "notMeasured":["the remaining stored supported cases beyond the 5 replayed","X-groove-through-height-180 replay (case id not found in the default list)","radial lip on frustum, tube, sphere","time claims (box heavily loaded)"],
+ "criticAt":"2026-10-19"
+}
