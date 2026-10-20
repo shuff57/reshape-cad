@@ -1,0 +1,155 @@
+{
+ "group": "booleans",
+ "verdict": "not-accepted",
+ "summary": "Builder asserts pass (113 rows, exit 0, no diff) and 13 stored cases replay exactly, but two silent wrong solids were found in neighbours of supported rows. A keep of a cylinder dipping 3 mm into a box side is built 9.8e-4 off the closed form (3x the bar) for radius 150-300 because G3 has no radius bound (row 104 only evidences r10-100); and the row 66 'one body, several shells' exception lets a pinched cut through, after which a join onto it leaves unfused interface faces (area +200 mm2).",
+ "rowsTotal": 113,
+ "rowsEvidenceChecked": 113,
+ "rowsReplayed": 13,
+ "replays": [
+  {
+   "feature": "104 r5-side-keep-r40-d5",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=r5-side-keep-r40-d5",
+   "stored": "PASS dVol 2.6e-4",
+   "live": "PASS vol T=2615.4217 dVol 2.6e-4",
+   "match": true
+  },
+  {
+   "feature": "104 r5a-side-keep-r80-d8",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=r5a-side-keep-r80-d8",
+   "stored": "d 3e-4 (2.5e-4)",
+   "live": "PASS dVol 2.5e-4",
+   "match": true
+  },
+  {
+   "feature": "99 r5s-sph-keep-r120-f0.1",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=r5s-sph-keep-r120-f0.1",
+   "stored": "supported vol 52468.35 d 2e-4",
+   "live": "PASS T=52468.3505 dVol 1.7e-4",
+   "match": true
+  },
+  {
+   "feature": "80 r3-sl-keep-sph-2",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=r3-sl-keep-sph-2",
+   "stored": "SC 117.26572",
+   "live": "PASS T=117.2657",
+   "match": true
+  },
+  {
+   "feature": "79 r3-sl-cut-4.5e-3",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=r3-sl-cut-4.5e-3",
+   "stored": "vol 31999.55 exact",
+   "live": "PASS exact",
+   "match": true
+  },
+  {
+   "feature": "107 r3-sl-cut-rot-0.2",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=r3-sl-cut-rot-0.2",
+   "stored": "31980 exact",
+   "live": "PASS exact",
+   "match": true
+  },
+  {
+   "feature": "63 r3-rot-box-keep-cyl",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=r3-rot-box-keep-cyl",
+   "stored": "SC 1570.5563",
+   "live": "PASS T=1570.5563",
+   "match": true
+  },
+  {
+   "feature": "67 r3-tan-cyl-through-3",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=r3-tan-cyl-through-3",
+   "stored": "refused G7",
+   "live": "REFUSED same sentence",
+   "match": true
+  },
+  {
+   "feature": "106 sl-esc-rot-cut-1e-2",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=sl-esc-rot-cut-1e-2",
+   "stored": "refused G3 0.1 mm",
+   "live": "REFUSED same",
+   "match": true
+  },
+  {
+   "feature": "81 r3-sl-cut-sph-0.15",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=r3-sl-cut-sph-0.15",
+   "stored": "refused G3 0.2 mm",
+   "live": "REFUSED same",
+   "match": true
+  },
+  {
+   "feature": "101 r5b-sph-keep-r120-d12",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=r5b-sph-keep-r120-d12",
+   "stored": "refused thinCap",
+   "live": "REFUSED same",
+   "match": true
+  },
+  {
+   "feature": "66 r3-tan-cyl-through-2",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=r3-tan-cyl-through-2",
+   "stored": "supported via one-body-several-shells exception (harness FAIL, solids O/T 2/1)",
+   "live": "harness FAIL, solids O/T 2/1, vol 25718.2316 vs 25716.8147 (same as stored)",
+   "match": true
+  },
+  {
+   "feature": "91 r4-coax-keep-partial-turned",
+   "command": "BOOL_TR=guarded run-booleans.mjs --case=r4-coax-keep-partial-turned",
+   "stored": "wrong topology-only",
+   "live": "FAIL faces 4/4/6 dVol 1.6e-4 (same)",
+   "match": true
+  },
+  {
+   "feature": "NEW my-side-keep-r150-d3 (critic case, scratch run-mine.mjs)",
+   "command": "keep(box 100x100x20, cylinder r150 h40 dipping 3 mm into x=50 side)",
+   "stored": "(row 104 covers r10..100 only)",
+   "live": "BUILT, FAIL dVol 9.8e-4 vs closed form 2392.7871 (SC 2390.4315); no refusal",
+   "match": false
+  },
+  {
+   "feature": "NEW my-side-r300-d3 / r300-d2.5 / r200-d2.1",
+   "command": "same geometry",
+   "stored": "-",
+   "live": "BUILT, dVol 9.8e-4 each vs closed form; r200-d2 and r150-d2 refused by G3 (2 mm)",
+   "match": false
+  },
+  {
+   "feature": "NEW my-tan2-then-join",
+   "command": "cut(box40x40x20, cylinder r10 at 10,10 tangent to two sides) then join(u, box 10 at -15,-15,15)",
+   "stored": "-",
+   "live": "BUILT, area 7628.39 vs OCCT 7428.32 (+200 = two interface faces kept), 3 shells vs OCCT 2 solids; control without tangency and join on the middle both fuse correctly",
+   "match": false
+  }
+ ],
+ "defects": [
+  {
+   "severity": "blocking",
+   "feature": "104 keep of a vertical cylinder dipping 3-10 mm into a box side (guard G3 curvedKeep 2 mm, absolute)",
+   "problem": "Guarded path BUILDS keep(box 100x100x20, cylinder r150 d3) with volume 2390.4315 vs closed form 2392.7871 (dVol 9.8e-4); same 9.8e-4 at r300 d2.5, r300 d3, r200 d2.1 (r120 d3 is 2.5e-4, r100 is 2e-4). The error is the kernel's cylinder facet error and grows with radius; the bar is 3e-4. No radius limit in G3, and no wrong or refused row covers radius >100 (row 104 states r10-100 only, row 103 admits the same threshold crossing for the r200 ball and adds no guard).",
+   "evidenceFile": "booleans-r4/guarded/cases/r5-side-keep-r*.json (max r100); live scratch cases critic-booleans/rp/my-side-keep-r150-d3.json, my-side-r300-d3.json"
+  },
+  {
+   "severity": "blocking",
+   "feature": "66 tangent contact leaving one solid: r3-tan-cyl-through-1/2/opp 'one body, several shells' exception (bool-classify-lib.mjs, shells equal)",
+   "problem": "OCCT returns 2 solids, SolidCraft 1 body with 2 shells, and the row calls it supported, so G12 (pieces) does not fire for the pinched part. A follow-on join(u, box on the big lump) then builds with 3 shells and area 7628.39 vs OCCT 7428.32 (+200 = the contact interface kept as two faces; volume equal so the volume bar would not see it). A hole() on the same part also passes without the one-piece sentence.",
+   "evidenceFile": "booleans-r4/guarded/cases/r3-tan-cyl-through-2.json; live critic-booleans/rp/my-tan2-then-join.json"
+  },
+  {
+   "severity": "major",
+   "feature": "103 / 91 / 42 / 33 / 112 wrong rows",
+   "problem": "Nine rows remain status wrong with no guard (r200 ball keep bbox 5.8e-3 off; turned coaxial keep face census; fuzz survivors fz13-052 3.04e-4, fz17-023 4.4e-4, fz23-087 face split). Honest, but they are open silent-wrong classes; the row 112 fuzz also discounts 4 survivors as 'oracle artifact' on a bbox argument (second oracle is a closed form only for fz23-050).",
+   "evidenceFile": "booleans.json rows 103, 112"
+  },
+  {
+   "severity": "minor",
+   "feature": "booleans.guard.mjs freshness",
+   "problem": "booleans.guard.mjs was last written 20:32:59 while 477 of 478 guarded case files date from 18:30-19:43; I replayed 13 guard-sensitive cases live and all matched, so no mismatch found, but the stored guarded runs were not regenerated after the last guard edit.",
+   "evidenceFile": "booleans-r4/guarded/cases"
+  }
+ ],
+ "notMeasured": [
+  "fuzz seeds 7/11/13/17/23 not re-run (540 cases); only the three seed-13/17/23 WRONG survivors were read from the stored text",
+  "timing and Worker-budget rows 111/113 not replayed",
+  "torus/cone hang-class refusals (rows 47-59) verified only by reading the guard and stored sentences, not re-run",
+  "other large-radius neighbours (cut/join of r150-300 cylinders were fine: dVol 1.7e-5, 8.6e-5) and keep of a ball r160 d16 (1.7e-4, fine)"
+ ],
+ "criticAt": "2026-10-19"
+}
