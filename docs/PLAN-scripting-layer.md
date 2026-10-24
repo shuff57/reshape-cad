@@ -86,8 +86,8 @@ Never a silently wrong solid. A feature the layer cannot build correctly is refu
 
 ### 3. Student experience
 - Reviewable script, plain-sentence refusals, DoF and redundancy report.
-- Bridge authentication (today the token is only a switch).
-- Decide how the bridge attaches to SolidCraft so it does not break on upstream drift: keep the patch pinned to one commit, rebase it on a schedule, or move to our own front end (open decision 1).
+- Embedding (decided 2026-10-24, see open decision 1): shCode serves the pinned SolidCraft web build and a small same-origin host page of ours that calls upstream `window.solidcraft` (present from 0.21.0; browser-api.md). Student script stays sandboxed and posts JSON to the host page, which applies its own allowlist. The spike bridge and its token are dropped; the spike patch stays under `docs/spikes/`, unapplied.
+- Modelling lock: a teacher can turn the ribbon off while students model and back on later. 0.21.0 has no `ui.set` field for this, and shortcuts and the command palette still start tools. Interim: a host-page overlay over the ribbon plus refusing tool-starting commands at the allowlist. It is a classroom control, not a safety feature; script is the only guarded building path. Upstream request drafted in `docs/DRAFT-upstream-ribbon-request.md` (not filed).
 - Replace/Restore round and revolve of a constrained sketch.
 - Sketch contact gap: distance-pinned and Symmetric contacts solve with 6e-5 to 1.3e-4 mm error the residual cannot see. Keep documented; add a post-solve contact check later.
 - Exit: a walkthrough of 3 to 5 real student tasks.
@@ -120,7 +120,7 @@ Truck patching from `LOOP-PLAN.md` (shell patch rebuilds, upstream bisect B1, sk
 
 ## Open decisions
 
-1. Front end: SolidCraft-web (egui) with our bridge, or our React studio on the SolidCraft engine. Recommendation: SolidCraft-web first, pinned to one upstream commit. Trade-off: quickest now, but the bridge is a patch against upstream and drifts. Our own studio removes that coupling at a much higher maintenance cost.
+1. Front end: DECIDED 2026-10-24 by the owner. SolidCraft-web's UI, driven through upstream `window.solidcraft` from a same-origin host page inside shCode. Our React studio is a proof of concept and is not the student front end. No patch against upstream. Open: the ribbon toggle (phase 3) needs an upstream field or the interim overlay.
 2. Gates: keep `scripts/brep-*` runnable by symlink to the archive, or archive them with brep-rs.
 3. Approve phase 0a (changes what `npm test` covers) and the message text for 0c.
 4. SolidCore swap thresholds (phase 5).
