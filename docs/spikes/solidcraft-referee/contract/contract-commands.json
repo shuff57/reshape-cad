@@ -46,10 +46,10 @@
       ]
     },
     "picks-naming-params": {
-      "rebuild": "cd docs/spikes/solidcraft-referee/contract/picks-naming-params.evidence && bun r6-build-rows.mjs && bun r2-lint.mjs",
+      "rebuild": "mkdir -p <out>/picks && cd docs/spikes/solidcraft-referee/contract/picks-naming-params.evidence && bun r6-build-rows.mjs && bun r2-lint.mjs",
       "measure": [
-        "cd docs/spikes/solidcraft-referee/contract/picks-naming-params.evidence && bun r3b-size-sweep.mjs --out=<out>/picks/r3b.json",
-        "cd docs/spikes/solidcraft-referee/contract/picks-naming-params.evidence && bun r6a-hollow-thin.mjs --out=<out>/picks/r6a.json"
+        "mkdir -p <out>/picks && cd docs/spikes/solidcraft-referee/contract/picks-naming-params.evidence && bun r3b-size-sweep.mjs --out=<out>/picks/r3b.json",
+        "mkdir -p <out>/picks && cd docs/spikes/solidcraft-referee/contract/picks-naming-params.evidence && bun r6a-hollow-thin.mjs --out=<out>/picks/r6a.json"
       ]
     },
     "primitives": {
