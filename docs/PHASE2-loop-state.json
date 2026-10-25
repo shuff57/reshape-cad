@@ -1,0 +1,19 @@
+{
+  "target": "SolidCraft v0.21.0 (65d28822)",
+  "language": "TypeScript",
+  "stopRule": "stop on any row change",
+  "groups": {
+    "extrude-pocket": {
+      "state": "baseline-done",
+      "baselineFile": "docs/spikes/solidcraft-referee/contract/measured-0.21.0/extrude-pocket.json",
+      "diffVs0_9_0": "101 rows vs 104. By feature name: 4 'thin walls and slivers' rows that were refused on 0.9.0 are gone and one 'wrong' row with the same title appears; 1 'pocket options: direction with a ROUND shape that stays inside the part' went supported to refused. Taper fuzz (2 seeds x 500) identical to 0.9.0: 553 built right, 0 built wrong, 434 refused right, 13 oracle failed. NOT yet explained: the thin-wall change may come from a missing optional input (the slender results file) rather than the kernel.",
+      "next": "explain the thin-wall change, then fold"
+    },
+    "holes": { "state": "todo" },
+    "shell-draft": { "state": "todo" },
+    "patterns-mirror": { "state": "todo" },
+    "booleans": { "state": "todo" },
+    "revolve-groove": { "state": "todo" },
+    "rest": { "state": "todo" }
+  }
+}
