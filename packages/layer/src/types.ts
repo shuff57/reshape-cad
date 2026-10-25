@@ -31,6 +31,10 @@ export interface RunResult {
   measure?: { bodies: BodyMeasure[] };
   sketches?: unknown[];
   failed?: { index?: number; command?: string | null; error?: string; params?: unknown } | null;
+  /** holes set only: set by a bridge that ran the commands under an execution budget (opts.budgetS) and ran out of it. */
+  timedOut?: boolean;
+  /** holes set only: CPU milliseconds the run used, when the bridge measures it. */
+  cpuMs?: number;
   rejected?: unknown;
   error?: unknown;
   sketch_at_failure?: unknown;
@@ -104,7 +108,7 @@ export interface SoupInfo {
 
 /** What the caller hands translateDoc. */
 export interface TranslateCtx {
-  runSC(cmds: Cmd[]): RunResult | Promise<RunResult>;
+  runSC(cmds: Cmd[], opts?: { budgetS: number }): RunResult | Promise<RunResult>;
   topologyOf?(cmds: Cmd[]): TopologyReply | Promise<TopologyReply>;
   arc: ArcApi;
   mt?: MtApi;
@@ -112,6 +116,8 @@ export interface TranslateCtx {
   /** extrude-pocket profile only: measuring switches of the group's own harness (skip the after-the-build checks / the slanted-round-cut guard). */
   skipVerify?: boolean;
   unguardedSlant?: boolean;
+  /** holes profile only: names of guards to switch OFF (the group's negative controls; ALL_GUARDS lists them). Never set in production. */
+  guardsOff?: string[];
 }
 
 export type { Feature, SketchFeature };

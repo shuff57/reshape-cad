@@ -61,6 +61,14 @@ export interface TranslateState {
   /** extrude-pocket profile only: the bodies of the scene after the last accepted feature, and the bodies made from a slanted round pull. */
   scene?: SceneEntry[];
   curvedSlant?: Set<string>;
+  /** holes profile only: the guard bookkeeping of the holes group (hole chains, body count, CPU seconds spent). See holes.ts. */
+  holes?: HolesState;
+}
+export interface HolesState {
+  chain: Record<string, { baseIdx: number; baseMeasure: Aggregate | undefined }>;
+  allCount: number;
+  spentS: number;
+  lastRunS: number;
 }
 export interface SceneEntry { name: string; vol: number; bbox: number[]; shells: number }
 export interface Aggregate {
@@ -111,6 +119,67 @@ export interface Profile {
   noOutline(sk: SketchFeature, o: { points?: number[][]; notes?: string[] }): string;
   plannerError(f: Feature, e: unknown): { refusal: string; internal: string | null };
   kernelRefusal(f: Feature, raw: string | null): string;
+  /**
+   * Optional: bookkeeping that every accepted feature triggers, whichever profile owns its kind (the extrude-pocket scene, the holes body
+   * count). `plan` is the plan of a feature run by the generic loop, null when a profile's own step accepted it.
+   */
+  onAccepted?(st: TranslateState, res: RunResult, m: Aggregate, plan: Plan | null): void;
+  /** Optional: extra fields of the translateDoc result (the holes set reports the CPU seconds it spent as `spentS`). */
+  result?(st: TranslateState): Partial<TranslateResult>;
+  /**
+   * Optional: a profile that runs the whole per-feature step itself (plan, run, post-check, note) instead of the generic loop. The holes set
+   * does: its loop differs from the generic one in the budget, the post-checks, the note fields and the sentence for an engine failure.
+   */
+  step?(f: Feature, idx: number, env: LoopEnv): Promise<void>;
+  /** Composition (composeProfiles): the member profiles in order, and the owner of a feature kind. Absent on a single profile. */
+  members?: Profile[];
+  owner?(kind: string): Profile;
+}
+/** What a profile's own step gets: the loop's mutable state. */
+export interface LoopEnv {
+  doc: { features: Feature[] };
+  ctx: TranslateCtx;
+  st: TranslateState;
+  accepted: Cmd[];
+  out: FeatureResult[];
+  shapeCache: ShapeCache;
+  /** the whole profile (the composition, when there is one) */
+  profile: Profile;
+}
+/** The member profiles of a profile (itself, when it is not a composition). */
+export const membersOf = (p: Profile): Profile[] => p.members ?? [p];
+/** The profile that decides everything about a feature of this kind. */
+export const ownerOf = (p: Profile, kind: string): Profile => (p.owner ? p.owner(kind) : p);
+
+/**
+ * Compose planner sets. Later entries override earlier ones per feature KIND: the owner of a kind is the last profile that lists a planner
+ * for it; every kind no profile lists belongs to the FIRST profile. Everything that decides a feature's own result (its planner, dependency
+ * sentence, planner-error and kernel-refusal wording, how its measure is aggregated, whether it is verified, its note, and a profile's own
+ * step) is taken from the owner of the feature's kind. Bookkeeping hooks (initState, onAccepted) run for EVERY member on every accepted
+ * feature, so the extrude-pocket scene stays current when a hole was accepted and the holes body count stays current when a pocket was.
+ * The sketch 'no usable outline' sentence is decided by the owner of the feature that maps the sketch.
+ */
+export function composeProfiles(list: Profile[]): Profile {
+  if (!list.length) throw new Error('composeProfiles needs at least one planner set');
+  if (list.length === 1) return list[0];
+  const first = list[0];
+  const owners = new Map<string, Profile>();
+  for (const p of list) for (const k of Object.keys(p.planners)) owners.set(k, p);
+  const owner = (kind: string): Profile => owners.get(kind) ?? first;
+  return {
+    name: list.map((p) => p.name).join('+'),
+    planners: Object.assign({}, ...list.map((p) => p.planners)) as Profile['planners'],
+    verifies: first.verifies,
+    initState: (st) => { for (const p of list) p.initState(st); },
+    depSentence: (f, role, id, st) => owner(f.kind).depSentence(f, role, id, st),
+    noOutline: (sk, o) => first.noOutline(sk, o),
+    plannerError: (f, e) => owner(f.kind).plannerError(f, e),
+    kernelRefusal: (f, raw) => owner(f.kind).kernelRefusal(f, raw),
+    onAccepted: (st, res, m, plan) => { for (const p of list) p.onAccepted?.(st, res, m, plan); },
+    result: (st) => Object.assign({}, ...list.map((p) => p.result?.(st) ?? {})) as Partial<TranslateResult>,
+    members: list,
+    owner,
+  };
 }
 export const BASE_PROFILE: Profile = {
   name: 'base',
@@ -226,7 +295,8 @@ function roundPoints(f: PrimView, base: V3): V3[] {
 }
 
 /** Plan one feature. Returns {refusal} | {variants:[cmds...], produces:[names], consumes:[ids]} | {noop:true}. */
-export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx, profile: Profile = BASE_PROFILE): Plan {
+export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx, profileIn: Profile = BASE_PROFILE): Plan {
+  const profile = ownerOf(profileIn, f.kind); // a composition: the profile that owns this kind decides
   const name = bname(f.id);
   const needBody = (id: string): string[] | null => {
     const bs = st.bodies[headOf(id)];
@@ -551,7 +621,7 @@ async function confirmOnTarget(rr: Resolved, { st, accepted, ctx, targetId }: Co
   return fr;
 }
 
-type ShapeCache = Map<string, { cmds: Cmd[]; r: TopologyReply }>;
+export type ShapeCache = Map<string, { cmds: Cmd[]; r: TopologyReply }>;
 
 /** The name-resolution environment: how to read the own shape of a feature that was built (see resolve-names). */
 function makeEnv(st: TranslateState, accepted: Cmd[], prefix: Feature[], ctx: TranslateCtx, shapeCache: ShapeCache): ResolveEnv {
@@ -598,10 +668,18 @@ export interface FeatureResult {
   /** extrude-pocket profile only. */
   checks?: unknown[];
   internalError?: string;
+  /** holes profile only. */
+  guard?: string;
+  raw?: string | null;
+  probe?: unknown;
+  unguarded?: unknown;
+  cpuMs?: number;
 }
 export interface TranslateResult {
   features: FeatureResult[];
   commands: Cmd[];
+  /** holes profile only: CPU seconds the engine runs of this translation used (the sum of the replies' cpuMs). */
+  spentS?: number;
   _state: { st: TranslateState; accepted: Cmd[]; shapeCache: ShapeCache };
 }
 
@@ -609,27 +687,43 @@ export interface TranslateResult {
  * Translate and execute a ModelDoc feature by feature.
  * ctx: { arc, mt, runSC(cmds)->parsed result, topologyOf(cmds)->topology reply, soups? }
  */
-export async function translateDoc(doc: { features: Feature[] }, ctx: TranslateCtx, profile: Profile = BASE_PROFILE): Promise<TranslateResult> {
+/**
+ * phase 4: resolve the one name this feature needs (a shell's open face, a fillet's edge, a draft's face) from the engine's own topology,
+ * before planning it. Returns what the planner's `ctx.resolve` reads. Nothing is resolved without `ctx.topologyOf`.
+ */
+export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: TranslateState; accepted: Cmd[]; ctx: TranslateCtx; shapeCache: ShapeCache }): Promise<Map<unknown, Resolved>> {
+  const { st, accepted, ctx, shapeCache } = env;
+  const resolved = new Map<unknown, Resolved>();
+  const nameField = f.kind === 'shell' ? 'open' : f.kind === 'fillet' ? 'edge' : f.kind === 'draft' ? 'face' : null;
+  const nameVal: TopoName | undefined = f.kind === 'shell' ? f.open : f.kind === 'fillet' ? f.edge : f.kind === 'draft' ? f.face : undefined;
+  if (nameField && nameVal && typeof nameVal === 'object' && ctx.topologyOf) {
+    const menv = makeEnv(st, accepted, prefix, ctx, shapeCache);
+    let rr = await resolveName(nameVal, menv, nameField === 'edge' ? 'edge' : 'face');
+    rr = await confirmOnTarget(rr, { st, accepted, ctx, targetId: (f as { target: string }).target });
+    if (rr.ok && rr.kind === 'faceset') resolved.set(nameVal, { ok: false, sentence: `${rr.evidence.name} is ${rr.faces.length} faces in solidcraft (${rr.evidence.engineFaces.join(', ')}; a cylinder's wall is split at its seam); a face pick of it would choose one half silently, so nothing is picked` });
+    else resolved.set(nameVal, rr);
+  }
+  return resolved;
+}
+
+/**
+ * Translate and execute a ModelDoc feature by feature.
+ * ctx: { arc, mt, runSC(cmds)->parsed result, topologyOf(cmds)->topology reply, soups? }
+ * A feature whose kind is owned by a profile with its own `step` (the holes set) is run by that step; every other feature runs the loop below.
+ */
+export async function translateDoc(doc: { features: Feature[] }, ctx: TranslateCtx, profileIn: Profile = BASE_PROFILE): Promise<TranslateResult> {
   const st: TranslateState = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} };
-  profile.initState(st);
+  profileIn.initState(st);
   const shapeCache: ShapeCache = new Map();
   const accepted: Cmd[] = [];
   const out: FeatureResult[] = [];
   for (let idx = 0; idx < doc.features.length; idx++) {
     const f = doc.features[idx];
+    const profile = ownerOf(profileIn, f.kind); // a composition: the profile that owns this kind decides everything about the feature
+    if (profile.step) { await profile.step(f, idx, { doc, ctx, st, accepted, out, shapeCache, profile: profileIn }); continue; }
     const prefix = doc.features.slice(0, idx);
-    const resolved = new Map<unknown, Resolved>();
+    const resolved = await resolveNamesFor(f, prefix, { st, accepted, ctx, shapeCache });
     const fctx: PlanCtx = { ...ctx, resolve: (name) => resolved.get(name) ?? null };
-    // phase 4: resolve the one name this feature needs, from the engine's own topology, before planning it.
-    const nameField = f.kind === 'shell' ? 'open' : f.kind === 'fillet' ? 'edge' : f.kind === 'draft' ? 'face' : null;
-    const nameVal: TopoName | undefined = f.kind === 'shell' ? f.open : f.kind === 'fillet' ? f.edge : f.kind === 'draft' ? f.face : undefined;
-    if (nameField && nameVal && typeof nameVal === 'object' && ctx.topologyOf) {
-      const env = makeEnv(st, accepted, prefix, ctx, shapeCache);
-      let rr = await resolveName(nameVal, env, nameField === 'edge' ? 'edge' : 'face');
-      rr = await confirmOnTarget(rr, { st, accepted, ctx, targetId: (f as { target: string }).target });
-      if (rr.ok && rr.kind === 'faceset') resolved.set(nameVal, { ok: false, sentence: `${rr.evidence.name} is ${rr.faces.length} faces in solidcraft (${rr.evidence.engineFaces.join(', ')}; a cylinder's wall is split at its seam); a face pick of it would choose one half silently, so nothing is picked` });
-      else resolved.set(nameVal, rr);
-    }
     const note = (o: Omit<FeatureResult, 'id' | 'kind'>) => out.push({ id: f.id, kind: f.kind, ...o });
     if (f.kind === 'sketch') st.sketches[f.id] = f;
     let plan: Plan;
@@ -653,10 +747,7 @@ export async function translateDoc(doc: { features: Feature[] }, ctx: TranslateC
         if (bad) { verifyRefusal = bad; lastErr = null; continue; }
       }
       accepted.push(...variant);
-      if (profile.verifies) {
-        if (plan.flagCurvedSlant) for (const b of m.bodies) st.curvedSlant!.add(b);
-        st.scene = res.measure!.bodies.map((b) => ({ name: b.name, vol: b.volume_mm3, bbox: [...b.bbox.min, ...b.bbox.max], shells: b.kernel?.shells ?? 1 }));
-      }
+      for (const mp of membersOf(profileIn)) mp.onAccepted?.(st, res, m, plan);
       st.accLen[f.id] = accepted.length;
       st.bodies[f.id] = m.bodies;
       st.measure[f.id] = m;
@@ -673,7 +764,8 @@ export async function translateDoc(doc: { features: Feature[] }, ctx: TranslateC
     st.refused[f.id] = sentence;
     note({ status: 'refused', refusal: sentence, commands: plan.variants[0], failed: lastFail?.failed ?? null, sketchAtFailure: lastFail?.sketch_at_failure ?? null });
   }
-  return { features: out, commands: accepted, _state: { st, accepted, shapeCache } };
+  const extras: Partial<TranslateResult> = profileIn.result ? profileIn.result(st) : {};
+  return { features: out, commands: accepted, ...extras, _state: { st, accepted, shapeCache } };
 }
 
 /** Resolve one name against the shapes a finished translateDoc left behind (same code path as translateDoc). */

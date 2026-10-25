@@ -609,6 +609,11 @@ export const EXTRUDE_POCKET_PROFILE: Profile = {
   planners: { extrude: planExtrude, pocket: planPocket, combine: planCombine },
   verifies: true,
   initState(st) { st.scene = []; st.curvedSlant = new Set(); },
+  // the bookkeeping the generic loop used to do inline after an accepted feature: the scene after the last accepted feature, and the bodies made by a slanted round pull
+  onAccepted(st, res, m, plan) {
+    if (plan && 'flagCurvedSlant' in plan && plan.flagCurvedSlant) for (const b of m.bodies) st.curvedSlant!.add(b);
+    st.scene = res.measure!.bodies.map((b) => ({ name: b.name, vol: b.volume_mm3, bbox: [...b.bbox.min, ...b.bbox.max], shells: b.kernel?.shells ?? 1 }));
+  },
   depSentence(f, role, id, st) {
     const lbl = f.kind === 'extrude' || f.kind === 'pocket' || f.kind === 'combine' ? f.id : `${f.id} (${f.kind})`;
     if (st.refused[id]) return `${lbl}: its ${role} ${id} was refused, so there is nothing to build on (${String(st.refused[id]).replace(/^[^:]*: /, '')})`;
