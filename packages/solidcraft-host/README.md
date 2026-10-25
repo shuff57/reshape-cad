@@ -21,3 +21,10 @@ Same-origin host page for the pinned SolidCraft web build. The embedding app (sh
 - **18 do not pass, and all 18 are refusals, none a built wrong solid.** 17 of them are named edge or face picks (`box1.face[+z]`, a named fillet edge, a named shell opening): the adapter reports no topology, so the pick is refused in a sentence. The 18th is a counterbore, which the spike translator never mapped. Six of the 18 are the old shell-stub family; with no topology they are refused before the kernel is asked, so **this run says nothing about whether 0.21.0 still builds a stub shell wrong.**
 - Did **not** check: whether any of the 38 would still pass with the guards of Phase 2 in place, or any script outside these 56.
 - Upstream does have the data needed for named picks (`model.faces`, `model.edges` through `engine.execute`: index, name, area, centroid, normal, point, cylinder; edge midpoint, length, ends). The spike's resolver also reads a nearest-face check (`centroid_hit`) and edge names that upstream does not give directly, so supplying topology needs its own checked effort (a wrong pick is a wrong solid).
+
+## With the layer wired in (2026-10-25, `test/examples-0.21.0-with-layer.json`)
+
+The pane's translator is now `packages/layer` with the extrude-pocket planner set (Phase 2 fold 1), not the spike's `translate-p4.mjs`. The same 56 examples: **36 pass (was 38), 20 do not (was 18)**. Two results changed, both for the worse in wording only:
+
+- `diag-conflict` (an over-constrained sketch) and `diag-redundant` (a redundant rule): both are still refused, nothing is built, but the sentence is now the generic "this pull cannot be built from the sketch as drawn (the solid it makes does not close up cleanly)…" instead of the sketch diagnosis ("over-constrain", "already determined"). The group's translator replaces the kernel-refusal wording for every pull; it does not carry the sketch diagnosis through. Not fixed: that is a behaviour change beyond the port, for the owner to decide.
+- The other 54 results are unchanged (same pass/fail, same refusals, same volumes to 1e-6).
