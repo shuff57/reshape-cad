@@ -111,3 +111,32 @@ Original `translate-ep.mjs` against the port in 'extrude-pocket' mode, same fake
 - Equivalence is shown only for the inputs fed in; line coverage was not measured. Refusal sentences in the group paths of the real kernel (raw kernel text, `plainKernelSentence` branches that need real failures) are reached only through the fake's own failure rules.
 - The 7 case scripts that do not run, the host page, the bundle and the other groups are out of scope.
 - The 'extrude-pocket' set is not wired to any caller yet; the default stays 'base'.
+
+## Fold 2: holes (`createTranslator({ planners: 'holes' })`) and composable sets
+
+Source: `docs/spikes/solidcraft-referee/contract/holes4-translate.mjs` (ROUND 4, the final round) with `holes4-volume.mjs` (originals untouched). Port: `src/holes.ts` (sentences, the G-* guards, the hole planner, the group's loop as the set's own `step`, `plainScriptError`, `lintSentence`, `ALL_GUARDS`) and `src/holes-volume.ts` (the closed-form removed-volume integral).
+
+**It is not "base plus a hole case".** The group's translator is `phase0/translate.mjs` with the hole planner replaced, running its own synchronous loop; the layer's base is the phase 4 translator. The 'holes' set is the phase 4 planners for every kind but hole, plus the guarded hole planner, plus the group's loop semantics (engine runs under a CPU budget, post-checks, one fixed sentence for any engine failure). It equals the group's translator only where phase0 and phase 4 plan every non-hole feature identically (not: a shell with an opened face, a fillet, a draft by face name, a constrained-sketch pull/spin/blend). The kind-by-kind table, and what the committed rows actually used (round 3, not round 4), are in `NOTES.md`.
+
+**Composable sets.** `planners: ['extrude-pocket', 'holes']` (later entries override earlier ones per feature kind; unlisted kinds follow the first entry; bookkeeping runs for every member; merge rule and its consequences in `NOTES.md`). The default stays 'base'. `planFeature` cannot plan a hole under 'holes' (the guards cut probe pieces on the engine, so planning is asynchronous): it throws instead of silently using the unguarded base planner; use `translateDoc`.
+
+### The holes differential (`test/holes.differential.test.mjs`, about one minute)
+
+Original `holes4-translate.mjs` (`translateDocGuarded`, synchronous) against the port in 'holes' mode, through the same fake engine (`test/fake-engine.mjs`, extended opt-in only: `sync`, `cpuMs` + `{ budgetS }` time-outs, `holeModel` = a box/cylinder drilling model with faces, sealed shells, split pieces and `solid.hole` recesses; the default model is unchanged), `deepStrictEqual` on the result (features, commands, `spentS`; `_state` removed), the ordered engine calls (probe cuts and `{ budgetS }` included) and thrown errors:
+
+- (a) every case of `holes4-cases.mjs` (a superset of `holes3-cases.mjs` and `holes-cases.mjs`): 407 cases, 357 become ModelDocs with runScript + solveDoc, 50 do not run;
+- (b) 300 generated hole docs (`test/holes-docs.mjs`: through, blind, sealed, counterbore, countersink, holes() corners on every axis, near and across edges, wider than the part, tangent to the side / a sibling / an earlier hole, several bodies, after shell / fillet / combine / pocket / move / mirror / rotate / pattern, curved hosts and cross-bores, hole sequences, malformed input);
+- the 59 base hand docs through the group translator;
+- 4 engine configurations (hole model + box booleans; default fake; every 5th call failing without `mt`; a CPU-cost model that triggers time-outs and the document budget), each guard switched off one at a time, and an asynchronous engine against the synchronous one;
+- the pure parts: every `SENTENCE` builder, `lintSentence`, `engineSentence`, `plainScriptError` (case script errors plus constructed messages), `cbRem`/`csRem`/`csToolDepth`/`csConeDepth`, `holeProfile`/`sectionArea`/`removedVolume`, `curvedAxis`, `aggregateOf`;
+- three composition tests and negative controls (a different engine, a 1e-9 tamper, base mode and extrude-pocket mode over the hole corpus, a 1e-12 mutation, one guard off on one side, a changed closed form) that must be, and are, detected.
+
+The run prints its counts (comparisons identical, docs excluded and why). Docs outside the equality set are counted by cause and shown to differ.
+
+### What this fold does NOT cover
+
+- **It does not show the built solids are right.** The fake has no kernel: its hole model decides which guards accept or refuse on boxes and cylinders, nothing more. Whether truck's volumes are right is what the group's rows measured against OCCT, brep-rs and the closed forms, and round 4 has no committed rows (NOTES.md).
+- **The real-kernel replay was written (`test/live-replay-holes.mjs`, `--only=id,id` works) and not run.** It needs the SolidCraft wasm rig; the owner runs it. It compares the original and the layer on the same kernel for the in-set cases only.
+- Equality holds only for the inputs fed in; line coverage was not measured. Docs with a named shell/fillet/draft, or a soup pull, are not compared (phase 4 resolves names from the engine's own topology, phase0 asked brep-rs): in those the 'holes' set behaves as the pane does, not as the group measured.
+- **G-BUDGET depends on the host.** The layer passes `{ budgetS }` and honours `timedOut`; a bridge that ignores the option leaves every engine run unbounded. The pane's bridge does not implement it.
+- The 'holes' set is not wired to any caller yet; the default stays 'base'. The 0.21.0 baseline of the holes group has not been measured.
