@@ -1,8 +1,8 @@
 # @shuff57/reshape-layer
 
 The guard layer, step 1 of Phase 2 (`docs/PHASE2-guard-layer-work-plan.md`, `docs/PHASE2-loop.md`): a behaviour-preserving
-TypeScript port of the phase 4 base translator and its helpers. Nothing is folded in yet (no group fork, no guard); this is the
-base every later fold starts from.
+TypeScript port of the phase 4 base translator and its helpers, plus (fold 1) the extrude-pocket group. `createTranslator()` / `translateDoc`
+stay on the 'base' planner set by default.
 
 ## What is ported
 
@@ -80,3 +80,34 @@ Corpus (counts are printed by the test run):
 
 Listed in `NOTES.md`, none changed. The one that matters for the layer's promise: a `move` whose target has no body can make
 `translateDoc` reject for the whole document if the engine accepts the command (NOTES.md item 1).
+
+## Fold 1: extrude-pocket (`createTranslator({ planners: 'extrude-pocket' })`)
+
+Source: `docs/spikes/solidcraft-referee/contract/translate-ep.mjs` with `outline-guard.mjs` and `soup-regions.mjs` (originals untouched).
+
+| Port | What it is |
+|---|---|
+| `src/translate.ts` | the seam: a `Profile` (per-kind planner registry that falls through to the base switch, plus the wording and bookkeeping hooks a group changes). `BASE_PROFILE` is the old behaviour, the default of `translateDoc` / `planFeature`. |
+| `src/translator.ts` | `createTranslator({ planners: 'base' \| 'extrude-pocket' })`, default `'base'` |
+| `src/extrude-pocket.ts` | the extrude, pocket and combine planners, option mapping, slanted loft, after-the-build checks, `plainKernelSentence` |
+| `src/outline-guard.ts`, `src/soup-regions.ts` | the pure 2-D guards (bow-tie / self-touch, folding taper, even-odd picks) |
+
+The fork is more than the extrude and pocket cases (NOTES.md items 12 to 19: dependency wording of every kind, the no-outline sentence, combine, the measure, checks). Optional context fields `skipVerify` and `unguardedSlant` exist for the group's own measuring harness.
+
+### The extrude-pocket differential (`test/extrude-pocket.differential.test.mjs`, about 5 minutes)
+
+Original `translate-ep.mjs` against the port in 'extrude-pocket' mode, same fake engine (`test/fake-engine.mjs`; extended only with opt-in `boxBool` and with handling of `through_all`, `distance2`, `symmetric` that only the group emits; the default model is unchanged), `deepStrictEqual` on the full result, `ctx.soups`, the ordered engine calls (scratch sessions of the checks included) and thrown errors:
+
+- (a) 466 of the 473 cases of `ep-results.json`, turned into ModelDocs with runScript + solveDoc as `extrude-pocket-measure.mjs` does (the other 7 scripts do not run);
+- (b) 240 generated outline docs (`test/ep-docs.mjs`: bow-tie, self-touching, near-touching sliver, folding tapers, tiny and flat sizes, repeated points, arcs, rounds, chamfers, circles, holed and multi-loop soups, more than 24 shapes, slants, through, length2, combine);
+- the 59 base-kind hand docs through the group translator;
+- 4 engine configurations (box-model fake with mt; default fake; every 5th call failing without mt; skipVerify + unguardedSlant): 3001 `translateDoc` cases, all identical (25 end in the same thrown error), 6648 engine calls compared;
+- `planFeature` called directly (state mutation included), the pure guards (`outline-guard` on 1441 outlines x 13 taper distances, `taperFoldLoops`, `soup-regions` on 234 soups) original `.mjs` against the port, including thrown errors;
+- negative controls: a different engine, a 1e-9 tamper, base mode over the group corpus, a 1e-12 mutation, a halved taper distance are all detected.
+
+### What this fold does NOT cover
+
+- **It does not show the built solids are right.** The fake has no geometry (a box model for volumes at best). That needs the real kernel replay (later step: replay the group's rows through the layer on SolidCraft 0.21.0 and compare status and sentence to the baseline).
+- Equivalence is shown only for the inputs fed in; line coverage was not measured. Refusal sentences in the group paths of the real kernel (raw kernel text, `plainKernelSentence` branches that need real failures) are reached only through the fake's own failure rules.
+- The 7 case scripts that do not run, the host page, the bundle and the other groups are out of scope.
+- The 'extrude-pocket' set is not wired to any caller yet; the default stays 'base'.

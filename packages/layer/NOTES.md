@@ -33,3 +33,19 @@ They are written down so that a later pass can decide, with the owner, whether t
     refuses. This is intentional in the original ("keep them as separate bodies") but it means `built` does not imply one solid.
 11. **`docProfileIndices` and `checkRules` index rows by id with no existence check**, so a rule naming a missing id throws a TypeError to
     the caller (the pane wraps them). Preserved; the differential test compares the thrown message.
+
+# Oddities noticed in the extrude-pocket fork (contract/translate-ep.mjs) while porting (NOT fixed; the port preserves each one)
+
+12. **The fork is not only the 'extrude' and 'pocket' cases.** Its header says so, the diff against phase7 translate-p4.mjs says otherwise. It also changes:
+    the dependency sentences of EVERY kind ("was refused, so there is nothing to build on", "already used up by"), the "no usable outline" sentence
+    (inSketch/profileCmds, so revolve, groove, blend, cone and prism sketches too), the whole 'combine' planner (pieces, join-contact guards, `verify`),
+    the measure of a feature (split-off pieces "name (2)" count; `shells` added), the planner-error wording (+ `internalError`), the kernel-refusal wording
+    (`plainKernelSentence`), `checks` on built notes, and `st.scene` / `st.curvedSlant` in the state. All of that rides in the 'extrude-pocket' Profile; base is untouched.
+13. **Not a pure planner swap.** Because of 12, the seam is a `Profile` (planners + wording + bookkeeping hooks), not only a kind -> planner map.
+14. **`ctx.skipVerify` and `ctx.unguardedSlant`** are measuring switches of the group's own harness living in the production translator. Ported as optional context fields.
+15. **`optionPlan` for a pocket with `through` needs `before.bbox`**; with no measured target it refuses with "a through-all pocket needs the part it cuts, and it was not measured"
+    (unreachable through planFeature's own flow except via an unmeasured body).
+16. **`verify: undefined` is an own key** on every non-join combine plan, and the pull plan carries `flagCurvedSlant: false` as an own key; the port keeps both so plans compare deep-equal.
+17. **Verification closures re-enter the engine** (`env.runSC`), so a doc with N material regions in a pocket costs N scratch sessions per piece; the differential test compares those calls too.
+18. **`ep-results.json` lists 473 cases; 7 scripts do not run** under runScript (pl-both-midplane, pl-zero-length2, pt-90, pd-alongnormal-alone, pd-zero-vector, fc-pocket-depth-negative, fc-pocket-depth-zero): they are refusal cases the language itself rejects, so no ModelDoc exists for them.
+19. **`soup-regions` `evenOddPicks` samples at 0.25 degree**, so a circle of any size becomes 1440 points; a doc with 24 circles is slow in pure JS (this is most of the test run time).

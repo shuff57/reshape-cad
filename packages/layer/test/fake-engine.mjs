@@ -29,7 +29,14 @@ function bboxOf(pts) {
 }
 const vol = (b) => (b.max[0] - b.min[0]) * (b.max[1] - b.min[1]) * (b.max[2] - b.min[2]);
 
-function simulate(commands) {
+// boxBool (opt-in, default false): an axis-aligned-box model of the booleans, so that a cut removes exactly what an intersect with the same tool
+// measures, a join is a union of boxes, and a tool strictly inside the target leaves a sealed void (one more shell). It exists so that the
+// extrude-pocket group's after-the-build checks can ACCEPT as well as refuse in the fake. The default model below is unchanged.
+const overlapVol = (a, b) => [0, 1, 2].reduce((v, i) => v * Math.max(0, Math.min(a.max[i], b.max[i]) - Math.max(a.min[i], b.min[i])), 1);
+const fill = (b) => (vol(b.bbox) > 0 ? b.volume / vol(b.bbox) : 0);
+const strictlyInside = (t, o) => [0, 1, 2].every((i) => t.min[i] > o.min[i] && t.max[i] < o.max[i]);
+
+function simulate(commands, boxBool = false) {
   const bodies = new Map();
   const sketches = new Map();
   let active = null;
@@ -40,7 +47,14 @@ function simulate(commands) {
   };
   const make = (name, bbox, extra = {}) => {
     if (typeof name === 'string' && name.includes('ghost')) return; // accepted, but no body ever appears
-    bodies.set(name, { name, bbox, volume: extra.volume ?? vol(bbox), kind: extra.kind ?? 'solid', curved: !!extra.curved, feature: extra.feature });
+    bodies.set(name, { name, bbox, shells: 1, volume: extra.volume ?? vol(bbox), kind: extra.kind ?? 'solid', curved: !!extra.curved, feature: extra.feature });
+  };
+  const cutBoxes = (targets, tool) => {
+    for (const t of targets) {
+      const b = bodies.get(t);
+      b.volume = Math.max(0, b.volume - overlapVol(b.bbox, tool) * fill(b));
+      if (strictlyInside(tool, b.bbox)) b.shells = (b.shells ?? 1) + 1;
+    }
   };
   for (let i = 0; i < commands.length; i++) {
     const c = commands[i];
@@ -87,19 +101,28 @@ function simulate(commands) {
       let bb = bboxOf(wp);
       if (k === 'solid.extrude') {
         const n = cross3(sk.u, sk.v);
-        const d = (p.direction === 'negative' ? -1 : 1) * p.distance;
-        bb = bboxOf([...wp, ...wp.map((q) => [q[0] + n[0] * d, q[1] + n[1] * d, q[2] + n[2] * d])]);
+        const dist = p.through_all ? 1e4 : p.distance;
+        const d = (p.direction === 'negative' ? -1 : 1) * dist;
+        const moves = p.direction === 'symmetric' ? [dist, -dist] : p.distance2 ? [d, -Math.sign(d || 1) * p.distance2] : [d];
+        bb = bboxOf([...wp, ...moves.flatMap((dd) => wp.map((q) => [q[0] + n[0] * dd, q[1] + n[1] * dd, q[2] + n[2] * dd]))]);
       } else {
         const R = Math.max(...[0, 1, 2].map((a) => bb.max[a] - bb.min[a]));
         bb = { min: bb.min.map((v) => v - R), max: bb.max.map((v) => v + R) };
       }
       if (p.operation === 'cut') {
         const m = need(p.targets); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
-        for (const t of p.targets) bodies.get(t).volume *= 0.8;
+        if (boxBool) cutBoxes(p.targets, bb);
+        else for (const t of p.targets) bodies.get(t).volume *= 0.8;
       } else make(p.body_name, bb, { kind: k === 'solid.extrude' ? 'extrude' : 'revolve', curved: k === 'solid.revolve', feature: i + 1 });
     } else if (k === 'solid.loft') {
       if (p.sections.length === 3) return { bodies, sketches, active, ...f(FAIL_ERR.loft) };
       const pts = [];
+      if (boxBool && p.operation === 'cut') {
+        for (const s of p.sections) { const sk = sketches.get(s.sketch); if (sk) pts.push(...worldPts(sk)); }
+        const m = need(p.targets); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
+        cutBoxes(p.targets, bboxOf(pts));
+        continue;
+      }
       for (const s of p.sections) { const sk = sketches.get(s.sketch); if (sk) pts.push(...worldPts(sk)); }
       if (!pts.length) return { bodies, sketches, active, ...f(FAIL_ERR.noProfile) };
       make(p.body_name, bboxOf(pts), { kind: 'loft', curved: true, feature: i + 1 });
@@ -109,7 +132,10 @@ function simulate(commands) {
       const t = bodies.get(p.target);
       for (const n of p.tools) {
         const o = bodies.get(n);
-        if (p.operation === 'join') { t.volume += o.volume; t.bbox = bboxOf([t.bbox.min, t.bbox.max, o.bbox.min, o.bbox.max]); }
+        if (boxBool && p.operation === 'join') { t.volume = t.volume + o.volume - overlapVol(t.bbox, o.bbox) * Math.min(fill(t), fill(o)); t.bbox = bboxOf([t.bbox.min, t.bbox.max, o.bbox.min, o.bbox.max]); }
+        else if (boxBool && p.operation === 'cut') t.volume = Math.max(0, t.volume - overlapVol(t.bbox, o.bbox) * fill(t));
+        else if (boxBool) { const ov = overlapVol(t.bbox, o.bbox) * fill(t); t.volume = ov; t.bbox = { min: t.bbox.min.map((v, a) => Math.max(v, o.bbox.min[a])), max: t.bbox.max.map((v, a) => Math.min(v, o.bbox.max[a])) }; }
+        else if (p.operation === 'join') { t.volume += o.volume; t.bbox = bboxOf([t.bbox.min, t.bbox.max, o.bbox.min, o.bbox.max]); }
         else if (p.operation === 'cut') t.volume = Math.max(1, t.volume - 0.3 * o.volume);
         else t.volume = Math.min(t.volume, o.volume) * 0.5;
         bodies.delete(n);
@@ -145,12 +171,12 @@ function simulate(commands) {
   return { bodies, sketches, active, failed: null };
 }
 
-function bodyRows(bodies) {
+function bodyRows(bodies, boxBool = false) {
   return [...bodies.values()].map((b) => {
     const c = [0, 1, 2].map((a) => (b.bbox.min[a] + b.bbox.max[a]) / 2);
     const cyl = b.kind === 'cylinder';
     return {
-      name: b.name, bbox: { min: b.bbox.min, max: b.bbox.max }, volume_mm3: b.volume, faces: cyl ? 4 : 6, kernel: { faces: cyl ? 4 : 6 },
+      name: b.name, bbox: { min: b.bbox.min, max: b.bbox.max }, volume_mm3: b.volume, faces: cyl ? 4 : 6, kernel: { faces: cyl ? 4 : 6, ...(boxBool ? { shells: b.shells ?? 1 } : {}) },
       face_types: b.curved ? { plane: cyl ? 2 : 4, cylinder: cyl ? 2 : 2 } : { plane: 6 }, center_of_mass: c,
     };
   });
@@ -200,11 +226,11 @@ function topologyOfBody(b) {
 }
 
 /**
- * makeFake({ failEvery }) -> { runSC, topologyOf, log }
+ * makeFake({ failEvery, boxBool }) -> { runSC, topologyOf, log }   (boxBool: see the note above simulate)
  *   failEvery N: every Nth runSC call that simulates cleanly is reported as failing at its last command.
  *   a body_name containing 'ghost' is accepted but never appears; one containing 'boom' makes runSC throw.
  */
-export function makeFake({ failEvery = 0 } = {}) {
+export function makeFake({ failEvery = 0, boxBool = false } = {}) {
   let calls = 0;
   const log = [];
   return {
@@ -213,8 +239,8 @@ export function makeFake({ failEvery = 0 } = {}) {
       calls++;
       log.push(['runSC', JSON.stringify(commands)]);
       if (commands.some((c) => typeof c.params?.body_name === 'string' && c.params.body_name.includes('boom'))) throw new Error('fake: bridge down');
-      const sim = simulate(commands);
-      const snap = { measure: { bodies: bodyRows(sim.bodies) }, sketches: sketchRows(sim.sketches), dirty: false, active_sketch: sim.active ? sim.active.name : null };
+      const sim = simulate(commands, boxBool);
+      const snap = { measure: { bodies: bodyRows(sim.bodies, boxBool) }, sketches: sketchRows(sim.sketches), dirty: false, active_sketch: sim.active ? sim.active.name : null };
       let failed = sim.failed;
       if (!failed && failEvery && calls % failEvery === 0 && commands.length) {
         const i = commands.length - 1;
@@ -225,7 +251,7 @@ export function makeFake({ failEvery = 0 } = {}) {
     },
     async topologyOf(commands) {
       log.push(['topologyOf', JSON.stringify(commands)]);
-      const sim = simulate(commands);
+      const sim = simulate(commands, boxBool);
       if (sim.failed) return { ok: false, failed: sim.failed };
       return { ok: true, topology: { bodies: [...sim.bodies.values()].map(topologyOfBody) }, results: commands.map((_, i) => ({ feature: i + 1 })) };
     },
