@@ -15,7 +15,11 @@
       "wired": "Pane uses createTranslator({planners:'extrude-pocket'}); 56 examples on 0.21.0: 38 pass, unchanged from before the wiring (packages/solidcraft-host/test/examples-0.21.0-with-layer.json)."
     },
     "holes": {
-      "state": "next"
+      "state": "folded-replay-pending",
+      "fold": "packages/layer: createTranslator({planners:'holes'}) from contract/holes4-translate.mjs (round 4) + holes4-volume.mjs; composable sets ['extrude-pocket','holes']; strict TypeScript. Differential test test/holes.differential.test.mjs (original vs port through the deterministic fake engine). NOT the same base as fold 1: the group's translator is phase0 + hole planner with its own synchronous loop; the layer's base is phase 4; equality holds only where phase0 and phase 4 agree on every non-hole feature (see packages/layer/NOTES.md).",
+      "baseline": "NOT measured. The committed holes.json rows are ROUND 3 (holes3-translate, holes3-results/final.json); contract-commands.json 'measure' runs the round-1 runner (holes-drive -> holes-run -> plain phase0 translateDoc, no guards). Round 4 has holes4-drive.mjs and holes4-rows.mjs but no committed results or rows. A 0.21.0 baseline has to be made with holes4-drive.mjs and compared with the round-3 rows by feature name (loop steps 1 and 2).",
+      "replay": "packages/layer/test/live-replay-holes.mjs written, node --check only, NOT RUN (needs the SolidCraft wasm rig). Owner runs it.",
+      "next": "measure the round-4 baseline on 0.21.0, run the live replay, then mark done; do not mark done before both."
     },
     "shell-draft": {
       "state": "todo"

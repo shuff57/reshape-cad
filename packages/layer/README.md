@@ -1,7 +1,7 @@
 # @shuff57/reshape-layer
 
 The guard layer, step 1 of Phase 2 (`docs/PHASE2-guard-layer-work-plan.md`, `docs/PHASE2-loop.md`): a behaviour-preserving
-TypeScript port of the phase 4 base translator and its helpers, plus (fold 1) the extrude-pocket group. `createTranslator()` / `translateDoc`
+TypeScript port of the phase 4 base translator and its helpers, plus (fold 1) the extrude-pocket group and (fold 2) the holes group, which compose. `createTranslator()` / `translateDoc`
 stay on the 'base' planner set by default.
 
 ## What is ported
