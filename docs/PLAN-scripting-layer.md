@@ -99,7 +99,7 @@ Never a silently wrong solid. A feature the layer cannot build correctly is refu
 
 ### 5. Kernel watch
 - Re-check the SolidCore progress site periodically.
-- Re-check weekly; open a swap spike only when ALL of these hold (PROPOSED 2026-10-25, owner to approve, see open decision 4):
+- Re-check weekly; open a swap spike only when ALL of these hold (APPROVED by the owner 2026-10-25, open decision 4):
   1. The primitive, boolean, offset and blend units are all green on the progress site, not just ported. "Ported" counts partial units and overstates it.
   2. A release newer than 0.0.x exists (today only `solidcore-v0.0.1`, 2026-10-13, tagged "early work in progress"), or the owner accepts pinning a commit.
   3. A wasm build exists that a browser can load: either a JS-callable API (today only `solidcore-ffi`, an `extern "C"` binding to the C++, and no wasm-bindgen was found) or a thin wrapper we write on our side of the seam, which is part of the spike's cost.
