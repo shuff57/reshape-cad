@@ -129,4 +129,4 @@ Truck patching from `LOOP-PLAN.md` (shell patch rebuilds, upstream bisect B1, sk
 1. Front end: DECIDED 2026-10-24 by the owner. SolidCraft-web's UI, driven through upstream `window.solidcraft` from a same-origin host page inside shCode. Our React studio is a proof of concept and is not the student front end. No patch against upstream. Open: the ribbon toggle (phase 3) needs an upstream field or the interim overlay.
 2. Gates: keep `scripts/brep-*` runnable by symlink to the archive, or archive them with brep-rs.
 3. Approve phase 0a (changes what `npm test` covers) and the message text for 0c.
-4. SolidCore swap thresholds (phase 5): proposed 2026-10-25 in phase 5; owner approval pending.
+4. SolidCore swap thresholds (phase 5): DECIDED 2026-10-25 by the owner, as written in phase 5.
