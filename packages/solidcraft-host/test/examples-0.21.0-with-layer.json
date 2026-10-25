@@ -246,20 +246,20 @@
  {
   "id": "diag-conflict",
   "group": "diag",
-  "pass": false,
-  "verdict": "FAIL: pull1 was refused with a different sentence (wanted it to contain \"over-constrain\")",
+  "pass": true,
+  "verdict": "EXPECTED REFUSAL matched: pull1 refused with the expected sentence; built 0 feature(s), volume 0.000 = reference 0.000",
   "refusals": [
-   "pull1: this pull cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so nothing is added; change the sketch, the length or the options"
+   "pull1: a rule or dimension in this sketch conflicts with the others (it would over-constrain the sketch), so nothing is added; remove or change one of the conflicting rules"
   ],
   "volume": 0
  },
  {
   "id": "diag-redundant",
   "group": "diag",
-  "pass": false,
-  "verdict": "FAIL: pull1 was refused with a different sentence (wanted it to contain \"already determined\")",
+  "pass": true,
+  "verdict": "EXPECTED REFUSAL matched: pull1 refused with the expected sentence; built 0 feature(s), volume 0.000 = reference 0.000",
   "refusals": [
-   "pull1: this pull cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so nothing is added; change the sketch, the length or the options"
+   "pull1: a dimension in this sketch is already determined by the other rules, so adding it again would be redundant and nothing is added; remove it, or make it a reference dimension"
   ],
   "volume": 0
  },

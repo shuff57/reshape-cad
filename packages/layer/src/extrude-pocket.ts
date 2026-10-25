@@ -586,6 +586,13 @@ export function plainKernelSentence(f: Feature, raw: unknown): string {
   const r = String(raw ?? '');
   if (f.kind === 'combine' && /join cannot preserve the original faces|zero-thickness edge contact/.test(r)) return JOIN_TOUCH_SENTENCE(f.id);
   if (/profile loop is not closed/.test(r)) return `${f.id}: the outline does not close: two ends that should meet are a hair apart (less than 0.00001 mm); add a coincident rule between them or make them meet exactly`;
+  // DELIBERATE DEVIATION from translate-ep.mjs (owner chose option A, 2026-10-25): the group's translator hides the sketch solver's diagnosis behind
+  // the generic sentence below. These two diagnoses were measured on SolidCraft 0.21.0 (diag-conflict, diag-redundant) and are told in plain words,
+  // without the kernel's command ids, constraint ids or option names.
+  if (f.kind === 'extrude' || f.kind === 'pocket') {
+    if (/over-constrain/.test(r)) return `${f.id}: a rule or dimension in this sketch conflicts with the others (it would over-constrain the sketch), so nothing is ${what === 'pull' ? 'added' : 'cut'}; remove or change one of the conflicting rules`;
+    if (/already determined/.test(r)) return `${f.id}: a dimension in this sketch is already determined by the other rules, so adding it again would be redundant and nothing is ${what === 'pull' ? 'added' : 'cut'}; remove it, or make it a reference dimension`;
+  }
   if (f.kind === 'combine') return `${f.id}: this ${what} cannot be built from these parts (the solid it makes does not close up cleanly), so nothing is combined; change the sizes or positions so the parts overlap by a clear amount`;
   if (/taper closes the profile/.test(r)) return `${f.id}: the taper makes the outline fold over itself or close up before the end of the ${what}, so nothing is built; use a smaller taper or a shorter length`;
   if (/extrude distance is zero/.test(r)) return `${f.id}: the length is too small to build; make it at least ${MIN_LEN} mm`;
