@@ -1,0 +1,32 @@
+{
+  "name": "@shuff57/reshape-layer",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./translate": "./dist/translate.js",
+    "./sketch-map": "./dist/sketch-map.js",
+    "./resolve-names": "./dist/resolve-names.js",
+    "./rule-check": "./dist/rule-check.js",
+    "./types": "./dist/types.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": ["dist/*"]
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test \"test/*.test.mjs\""
+  },
+  "dependencies": {
+    "@shuff57/reshape-script": "file:../script"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/node": "^24.3.0"
+  }
+}
