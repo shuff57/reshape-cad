@@ -1,0 +1,553 @@
+// SPIKE, referee only. PHASE 4 COPY of ../../phase3/host/translate-p3.mjs. Differences from it, and only these:
+//   1. a shell's open face, a fillet/chamfer's edge and a draft's face are NOT looked up in brep-rs. translateDoc asks
+//      resolve-names.mjs, which reads solidcraft's own topology (bridge `topology` snapshot of the feature's own shape) and
+//      returns a pick point or a plain refusal sentence; planFeature turns a refusal into the feature's refusal;
+//   2. translateDoc remembers how many accepted commands each built feature needed (st.accLen), so a name can be read
+//      from the shape solidcraft held right after the feature it names was built;
+//   3. a built feature record carries the resolution evidence (candidate counts, persistent names, cross-checks).
+// planFeature's per-kind logic is otherwise untouched. Not an engine, not an EngineAdapter, not in npm test.
+
+//
+// ModelDoc -> solidcraft command JSON, executed PER FEATURE on fresh sessions (prefix 1..k).
+//
+// Refusal contract (AGENTS.md): a feature that cannot be mapped, or that solidcraft refuses, is refused in a plain
+// sentence alongside whatever DID build; a feature that depends on a refused or already-consumed feature is refused
+// with a pointer to it. Nothing here falls back to another engine.
+//
+// ModelDoc semantics were read off packages/brep-adapter/src/occt-build.ts (the same file the parity gate trusts):
+//   - a sketch lies in (u, v); an extrude sweeps along u x v (xy +Z, xz -Y, yz +X); a revolve lays the outline in
+//     (u, n) and spins about n through the frame origin; a pocket/groove cuts against / around the same frame.
+//   - primitives are built centred at the origin, rotated about the ORIGIN, then translated by `center`.
+//   - a hole is a cylinder cut, centred on target-bbox-centre + center, `depth` long, along `axis`.
+//   - a mirror reflects through the part's nearer bbox face on the plane's axis and fuses with the original.
+//
+// Picks: solidcraft picks faces/edges by a 3D point. In phase 0-3 the point for a `between`/`swept`/`cap`/`carried` name came
+// from brep-rs `resolve`. PHASE 4: it comes from solidcraft's own topology (resolve-names.mjs); brep-rs is not used at run time.
+
+const FEATURE_KINDS = ['box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'sketch', 'datum', 'extrude', 'combine',
+  'blend', 'revolve', 'groove', 'pocket', 'mirror', 'pattern', 'hole', 'shell', 'move', 'rotate', 'fillet', 'draft'];
+export { FEATURE_KINDS };
+
+const AX = { x: [1, 0, 0], y: [0, 1, 0], z: [0, 0, 1] };
+const AXN = { x: 'X', y: 'Y', z: 'Z' };
+const add = (a, b) => a.map((v, i) => v + b[i]);
+const len = (a) => Math.hypot(...a);
+const isZero3 = (v) => !v || (v[0] === 0 && v[1] === 0 && v[2] === 0);
+const bname = (id) => `b_${id}`;
+
+/** named-plane frame, identical to model-types.ts NAMED_PLANE_FRAMES / sketchFrameOf (copied, with a check in run-phase0). */
+const NAMED = {
+  xy: { u: [1, 0, 0], v: [0, 1, 0], n: [0, 0, 1] },
+  xz: { u: [1, 0, 0], v: [0, 0, 1], n: [0, 1, 0] },
+  yz: { u: [0, 1, 0], v: [0, 0, 1], n: [1, 0, 0] },
+};
+function frameOf(s, mt) {
+  if (mt && mt.sketchFrameOf) return mt.sketchFrameOf(s);
+  if (s.frame) {
+    const { origin, u, v } = s.frame;
+    return { origin, u, v, n: [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]] };
+  }
+  const a = NAMED[s.plane ?? 'xy'] ?? NAMED.xy;
+  const o = s.offset ?? 0;
+  return { origin: a.n.map((c) => c * o), ...a };
+}
+
+import { mapSketch } from './sketch-map.mjs';
+import { resolveName, pickPoint } from './resolve-names.mjs';
+const refuse = (sentence) => ({ refusal: sentence });
+
+/** Sketch outline -> sketch.* commands (inside an open sketch). Returns {cmds} or {refusal}. */
+const isSoup = (sk) => sk.shape !== 'circle' && Array.isArray(sk.geoms) && sk.geoms.length > 0;
+function profileCmds(sk, ctx) {
+  if (isSoup(sk)) return refuse(`sketch ${sk.id} is drawn as rows and rules (a soup); it is mapped by inSketch, not here`);
+  const o = ctx.arc.outlineOf(sk);
+  if (!o.ok) return refuse(`sketch ${sk.id} has no usable outline (${(o.notes ?? []).join('; ') || 'outlineOf refused it'})`);
+  if (sk.shape === 'circle') {
+    const [a, b] = o.points;
+    const c = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    return { cmds: [{ command: 'sketch.circle.center', params: { center: c, diameter: Math.hypot(b[0] - a[0], b[1] - a[1]) } }] };
+  }
+  const pts = o.points;
+  const bulges = o.bulges ?? {};
+  if (!Object.values(bulges).some((g) => g)) {
+    return { cmds: [{ command: 'sketch.line', params: { points: pts.map((p) => [p[0], p[1]]), closed: true } }] };
+  }
+  const cmds = [];
+  const n = pts.length;
+  for (let i = 0; i < n; i++) {
+    const a = pts[i];
+    const b = pts[(i + 1) % n];
+    const g = bulges[i];
+    if (!g) { cmds.push({ command: 'sketch.line', params: { points: [a, b] } }); continue; }
+    // same arc construction as occt-build.ts sketchWire: a point on the arc halfway round
+    const { center, radius, startAngle, endAngle } = ctx.arc.arcFromBulge(a, b, g);
+    let sweep = endAngle - startAngle;
+    if (g > 0 && sweep < 0) sweep += Math.PI * 2;
+    if (g < 0 && sweep > 0) sweep -= Math.PI * 2;
+    const mid = startAngle + sweep / 2;
+    cmds.push({ command: 'sketch.arc.three_point', params: { start: a, end: b, through: [center[0] + radius * Math.cos(mid), center[1] + radius * Math.sin(mid)] } });
+  }
+  return { cmds };
+}
+
+function inSketch(sk, ctx, st, { revolve = false, allowSoup = true } = {}) {
+  if (isSoup(sk)) {
+    if (revolve || !allowSoup) return refuse(`sketch ${sk.id} is a constrained sketch (rows and rules); this demo maps those for extrude and pocket only, not for revolve, groove or blend`);
+    const name = `sk_${sk.id}_${st.counter++}`;
+    const m = mapSketch(sk, { name });
+    if (!m.ok) return refuse(`sketch ${sk.id} cannot be handed to solidcraft's solver: ${m.refusals.map((r) => `rule ${r.rule + 1}${r.kind ? ` (${r.kind})` : ''}: ${r.sentence}`).join('; ')}`);
+    if (ctx.soups) ctx.soups[name] = { sketchId: sk.id, geoms: sk.geoms, rules: sk.rules ?? [], names: m.names, notes: m.notes ?? [], ruleMap: m.ruleMap };
+    return { name, soup: true, cmds: [...m.commands, { command: 'sketch.finish', params: {} }] };
+  }
+  const fr = frameOf(sk, ctx.mt);
+  const prof = profileCmds(sk, ctx);
+  if (prof.refusal) return prof;
+  const name = `sk_${sk.id}_${st.counter++}`;
+  return {
+    name,
+    cmds: [
+      { command: 'sketch.create', params: { name, plane: { origin: fr.origin, x_dir: fr.u, y_dir: revolve ? fr.n : fr.v } } },
+      ...prof.cmds,
+      { command: 'sketch.finish', params: {} },
+    ],
+  };
+}
+
+const rotCmds = (name, rotate) => {
+  const out = [];
+  if (isZero3(rotate)) return out;
+  ['x', 'y', 'z'].forEach((a, i) => { if (rotate[i]) out.push({ command: 'solid.move', params: { bodies: [name], axis: AX[a], angle: rotate[i] } }); });
+  return out;
+};
+const moveCmd = (name, t) => ({ command: 'solid.move', params: { bodies: [name], translate: t } });
+
+/** Edge points for a primitive's whole-shape `round`: box = 12 edge midpoints, cylinder = the two rim circles. */
+function roundPoints(f, base) {
+  if (f.kind === 'box') {
+    const [w, d, h] = f.size.map((v) => v / 2);
+    const c = base;
+    const p = [];
+    for (const sy of [-1, 1]) for (const sz of [-1, 1]) p.push([c[0], c[1] + sy * d, c[2] + sz * h]);
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) p.push([c[0] + sx * w, c[1], c[2] + sz * h]);
+    for (const sx of [-1, 1]) for (const sy of [-1, 1]) p.push([c[0] + sx * w, c[1] + sy * d, c[2]]);
+    return p;
+  }
+  return [[base[0] + f.radius, base[1], base[2] + f.height / 2], [base[0] + f.radius, base[1], base[2] - f.height / 2]];
+}
+
+/** Plan one feature. Returns {refusal} | {variants:[cmds...], produces:[names], consumes:[ids]} | {noop:true}. */
+export function planFeature(f, st, ctx) {
+  const name = bname(f.id);
+  const needBody = (id) => {
+    const bs = st.bodies[headOf(id)];
+    return bs && bs.length ? bs : null;
+  };
+  // occt-build advanceHead: a hole / pocket / groove leaves its target's id pointing at the NEWEST cut, so a second bore
+  // on the same target stacks on the first instead of starting over.
+  const headOf = (id) => { let h = id; const seen = new Set(); while (st.head[h] && !seen.has(h)) { seen.add(h); h = st.head[h]; } return h; };
+  const dep = (id, role = 'target') => {
+    id = headOf(id);
+    if (st.refused[id]) return `${f.id} (${f.kind}): its ${role} ${id} was refused (${st.refused[id]})`;
+    if (st.stale[id]) return `${f.id} (${f.kind}): its ${role} ${id} was already changed in place by ${st.stale[id]}, and a solidcraft command list has no second copy of it`;
+    return null;
+  };
+  switch (f.kind) {
+    case 'box': case 'cylinder': case 'sphere': case 'torus': case 'cone': case 'prism': case 'wedge': {
+      const rot = !isZero3(f.rotate);
+      const c = f.center ?? [0, 0, 0];
+      const at = rot ? [0, 0, 0] : c; // rotation is about the ORIGIN, so a rotated primitive is built at the origin first
+      let cmds = [];
+      if (f.kind === 'box') {
+        cmds.push({ command: 'solid.box', params: { length: f.size[0], width: f.size[1], height: f.size[2], center: at, body_name: name } });
+      } else if (f.kind === 'cylinder') {
+        cmds.push({ command: 'solid.cylinder', params: { radius: f.radius, height: f.height, base: [at[0], at[1], at[2] - f.height / 2], axis: 'Z', body_name: name } });
+      } else if (f.kind === 'sphere') {
+        cmds.push({ command: 'solid.sphere', params: { radius: f.radius, center: at, body_name: name } });
+      } else if (f.kind === 'torus') {
+        cmds.push({ command: 'solid.torus', params: { major: f.ringRadius, minor: f.tubeRadius, center: at, body_name: name } });
+      } else if (f.kind === 'cone') {
+        // no solid.cone: spin the right triangle (0,0)-(r,0)-(0,h) about the sketch y axis, as occt-build coneOf does
+        const nm = `sk_${f.id}_${st.counter++}`;
+        cmds.push(
+          { command: 'sketch.create', params: { name: nm, plane: { origin: [at[0], at[1], at[2] - f.height / 2], x_dir: [1, 0, 0], y_dir: [0, 0, 1] } } },
+          { command: 'sketch.line', params: { points: [[0, 0], [f.radius, 0], [0, f.height]], closed: true } },
+          { command: 'sketch.finish', params: {} },
+          { command: 'solid.revolve', params: { axis: 'y', sketch: nm, operation: 'new', body_name: name } },
+        );
+      } else {
+        const poly = f.kind === 'prism'
+          ? (() => { const n = Math.max(3, Math.min(12, Math.round(f.sides))); return Array.from({ length: n }, (_, i) => [f.radius * Math.cos(2 * Math.PI * i / n), f.radius * Math.sin(2 * Math.PI * i / n)]); })()
+          : [[-f.width / 2, -f.depth / 2], [f.width / 2, -f.depth / 2], [-f.width / 2, f.depth / 2]];
+        const nm = `sk_${f.id}_${st.counter++}`;
+        cmds.push(
+          { command: 'sketch.create', params: { name: nm, plane: { origin: [at[0], at[1], at[2] - f.height / 2], x_dir: [1, 0, 0], y_dir: [0, 1, 0] } } },
+          { command: 'sketch.line', params: { points: poly, closed: true } },
+          { command: 'sketch.finish', params: {} },
+          { command: 'solid.extrude', params: { distance: f.height, sketch: nm, operation: 'new', body_name: name } },
+        );
+      }
+      if (f.round) {
+        if (f.kind !== 'box' && f.kind !== 'cylinder') return refuse(`${f.id} (${f.kind}): a whole-shape round is only mapped for box and cylinder`);
+        const pts = roundPoints(f, at);
+        cmds.push(f.roundStyle === 'chamfer'
+          ? { command: 'solid.chamfer', params: { edges: pts, distance: f.round, body: name } }
+          : { command: 'solid.fillet', params: { edges: pts, radius: f.round, body: name } });
+      }
+      if (rot) { cmds.push(...rotCmds(name, f.rotate)); if (!isZero3(c)) cmds.push(moveCmd(name, c)); }
+      return { variants: [cmds], produces: [name], consumes: [] };
+    }
+    case 'datum':
+      return { noop: true };
+    case 'sketch':
+      return { noop: true, stage: true };
+    case 'extrude': {
+      const d = dep(f.target, 'sketch');
+      if (d) return refuse(d);
+      for (const k of ['midplane', 'length2', 'reversed', 'taper', 'direction', 'alongNormal']) {
+        if (f[k]) return refuse(`${f.id} (extrude): the ${k} option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)`);
+      }
+      const sk = st.sketches[f.target];
+      if (!sk) return refuse(`${f.id} (extrude): ${f.target} is not a sketch`);
+      const s = inSketch(sk, ctx, st);
+      if (s.refusal) return refuse(`${f.id} (extrude): ${s.refusal}`);
+      return { variants: [[...s.cmds, { command: 'solid.extrude', params: { distance: f.height, sketch: s.name, operation: 'new', body_name: name } }]], produces: [name], consumes: [] };
+    }
+    case 'revolve': case 'groove': {
+      const d = dep(f.target, 'sketch') || (f.kind === 'groove' ? dep(f.into, 'solid') : null);
+      if (d) return refuse(d);
+      const sk = st.sketches[f.target];
+      if (!sk) return refuse(`${f.id} (${f.kind}): ${f.target} is not a sketch`);
+      const s = inSketch(sk, ctx, st, { revolve: true });
+      if (s.refusal) return refuse(`${f.id} (${f.kind}): ${s.refusal}`);
+      const params = { axis: 'y', sketch: s.name };
+      if (f.angle !== 360) params.angle = -f.angle;
+      if (f.kind === 'revolve') return { variants: [[...s.cmds, { command: 'solid.revolve', params: { ...params, operation: 'new', body_name: name } }]], produces: [name], consumes: [] };
+      const bs = needBody(f.into);
+      if (!bs || bs.length !== 1) return refuse(`${f.id} (groove): ${f.into} is not a single body`);
+      return { variants: [[...s.cmds, { command: 'solid.revolve', params: { ...params, operation: 'cut', targets: bs } }]], produces: bs, consumes: [f.into] };
+    }
+    case 'pocket': {
+      const d = dep(f.target, 'sketch') || dep(f.into, 'solid');
+      if (d) return refuse(d);
+      const sk = st.sketches[f.target];
+      const bs = needBody(f.into);
+      if (!sk || !bs || bs.length !== 1) return refuse(`${f.id} (pocket): needs a sketch and a single body`);
+      const s = inSketch(sk, ctx, st);
+      if (s.refusal) return refuse(`${f.id} (pocket): ${s.refusal}`);
+      // pocket pushes OPPOSITE the sweep direction (occt-build: h = -depth * dir), i.e. direction negative on a u x v frame
+      return { variants: [[...s.cmds, { command: 'solid.extrude', params: { distance: f.depth, direction: 'negative', sketch: s.name, operation: 'cut', targets: bs } }]], produces: bs, consumes: [f.into] };
+    }
+    case 'blend': {
+      const ds = f.targets.map((t) => dep(t, 'sketch')).find(Boolean);
+      if (ds) return refuse(ds);
+      if (f.targets.length < 2) return refuse(`${f.id} (blend): needs two or more sketches`);
+      const cmds = []; const names = [];
+      for (const t of f.targets) {
+        const sk = st.sketches[t];
+        if (!sk) return refuse(`${f.id} (blend): ${t} is not a sketch`);
+        const s = inSketch(sk, ctx, st, { allowSoup: false });
+        if (s.refusal) return refuse(`${f.id} (blend): ${s.refusal}`);
+        cmds.push(...s.cmds); names.push(s.name);
+      }
+      cmds.push({ command: 'solid.loft', params: { sections: names.map((n) => ({ sketch: n })), operation: 'new', body_name: name } });
+      return { variants: [cmds], produces: [name], consumes: [] };
+    }
+    case 'combine': {
+      const ds = f.targets.map((t) => dep(t)).find(Boolean);
+      if (ds) return refuse(ds);
+      if (f.targets.length < 2) return refuse(`${f.id} (combine): needs two or more targets`);
+      const all = f.targets.map((t) => needBody(t));
+      if (all.some((b) => !b || b.length !== 1)) return refuse(`${f.id} (combine): every target must be a single body`);
+      const op = f.op === 'union' ? 'join' : f.op === 'subtract' ? 'cut' : 'intersect';
+      const names = all.map((b) => b[0]);
+      return {
+        variants: [[{ command: 'solid.combine', params: { target: names[0], tools: names.slice(1), operation: op } }]],
+        produces: [names[0]], consumes: f.targets,
+      };
+    }
+    case 'move': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      if (f.copy) return refuse(`${f.id} (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)`);
+      const bs = needBody(f.target);
+      return { variants: [[{ command: 'solid.move', params: { bodies: bs, translate: f.offset } }]], produces: bs, consumes: [f.target] };
+    }
+    case 'rotate': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      const bs = needBody(f.target);
+      const m = st.measure[f.target];
+      if (!m) return refuse(`${f.id} (rotate): no measured bounding box for ${f.target}`);
+      const c = [0, 1, 2].map((i) => (m.bbox[i] + m.bbox[i + 3]) / 2);
+      const cmds = [];
+      if (!isZero3(c)) cmds.push({ command: 'solid.move', params: { bodies: bs, translate: c.map((v) => -v) } });
+      ['x', 'y', 'z'].forEach((a, i) => { if (f.angles[i]) cmds.push({ command: 'solid.move', params: { bodies: bs, axis: AX[a], angle: f.angles[i] } }); });
+      if (!isZero3(c)) cmds.push({ command: 'solid.move', params: { bodies: bs, translate: c } });
+      return { variants: [cmds], produces: bs, consumes: [f.target] };
+    }
+    case 'mirror': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      const bs = needBody(f.target);
+      const m = st.measure[f.target];
+      if (!m) return refuse(`${f.id} (mirror): no measured bounding box for ${f.target}`);
+      const axis = f.plane === 'yz' ? 0 : f.plane === 'xz' ? 1 : 2;
+      const lo = m.bbox[axis]; const hi = m.bbox[axis + 3];
+      const at = Math.abs(lo) <= Math.abs(hi) ? lo : hi; // occt-build: through the part's nearer face on this axis
+      const origin = [0, 0, 0]; origin[axis] = at;
+      const normal = [0, 0, 0]; normal[axis] = 1;
+      return { variants: [[{ command: 'solid.mirror', params: { bodies: bs, plane: { origin, normal }, combine: true } }]], produces: bs, consumes: [f.target] };
+    }
+    case 'pattern': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      const bs = needBody(f.target);
+      if (!bs || bs.length !== 1) return refuse(`${f.id} (pattern): needs a single target body`);
+      if (f.count < 2) return refuse(`${f.id} (pattern): a count under 2 is the original alone; not mapped`);
+      const copies = [bs[0], ...Array.from({ length: f.count - 1 }, (_, i) => `${bs[0]} (${i + 2})`)];
+      let pat;
+      if (f.mode === 'circular') {
+        if ((f.totalAngle ?? 360) !== 360) return refuse(`${f.id} (pattern): a circular pattern over less than 360 degrees is not mapped (solidcraft's angle semantics were not verified)`);
+        pat = { command: 'solid.pattern.circular', params: { bodies: bs, axis: AXN[f.axis ?? 'z'], count: f.count } };
+      } else {
+        const s = f.step ?? [0, 0, 0];
+        if (isZero3(s)) return refuse(`${f.id} (pattern): a zero step puts every copy on the original`);
+        const L = len(s);
+        pat = { command: 'solid.pattern.rectangular', params: { bodies: bs, dir1: s.map((v) => v / L), count1: f.count, spacing1: L } };
+      }
+      // OCCT fuses the instances. Try to join them; if solidcraft cannot (disjoint copies), keep them as separate bodies.
+      const join = { command: 'solid.combine', params: { target: copies[0], tools: copies.slice(1), operation: 'join' } };
+      return { variants: [[pat, join], [pat]], produces: copies, consumes: [f.target] };
+    }
+    case 'hole': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      if (f.counterbore || f.countersink) return refuse(`${f.id} (hole): counterbore and countersink are not mapped in phase 0`);
+      const bs = needBody(f.target);
+      const m = st.measure[f.target];
+      if (!bs || bs.length !== 1 || !m) return refuse(`${f.id} (hole): needs a single measured target body`);
+      const bc = [0, 1, 2].map((i) => (m.bbox[i] + m.bbox[i + 3]) / 2);
+      const cx = bc[0] + f.center[0]; const cy = bc[1] + f.center[1]; const cz = bc[2] + f.center[2];
+      const centers = f.corners
+        ? [[cx - f.corners.dx, cy - f.corners.dy, cz], [cx + f.corners.dx, cy - f.corners.dy, cz], [cx - f.corners.dx, cy + f.corners.dy, cz], [cx + f.corners.dx, cy + f.corners.dy, cz]]
+        : [[cx, cy, cz]];
+      const dir = AX[f.axis ?? 'z'];
+      const cmds = centers.map((c) => ({
+        command: 'solid.cylinder',
+        params: { radius: f.diameter / 2, height: f.depth, base: c.map((v, i) => v - dir[i] * f.depth / 2), axis: AXN[f.axis ?? 'z'], operation: 'cut', targets: bs },
+      }));
+      return { variants: [cmds], produces: bs, consumes: [f.target] };
+    }
+    case 'shell': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      const bs = needBody(f.target);
+      if (!bs || bs.length !== 1) return refuse(`${f.id} (shell): needs a single target body`);
+      if (!f.open) return refuse(`${f.id} (shell): this spike's shell needs a face to remove; a closed hollow box is not mapped`);
+      const r = ctx.resolve(f.open);
+      if (r && r.ok === false) return refuse(`${f.id} (shell): ${r.sentence}`);
+      if (!r || r.kind !== 'face') return refuse(`${f.id} (shell): the opened face could not be resolved to a single face (${r ? `it names ${r.kind}` : 'no resolution'})`);
+      return { variants: [[{ command: 'solid.shell', params: { faces: [r.point], thickness: f.thickness, body: bs[0] } }]], produces: bs, consumes: [f.target], pickedFrom: 'solidcraft topology (browser)', evidence: r.evidence };
+    }
+    case 'fillet': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      const bs = needBody(f.target);
+      if (!bs || bs.length !== 1) return refuse(`${f.id} (fillet): needs a single target body`);
+      const r = ctx.resolve(f.edge);
+      if (r && r.ok === false) return refuse(`${f.id} (${f.kind}): ${r.sentence}`);
+      if (!r || r.kind !== 'edge') return refuse(`${f.id} (fillet): the edge could not be resolved to a single edge (${r ? `it names ${r.kind}` : 'no resolution'})`);
+      // phase 4: the resolved point is ON the edge (solidcraft's own edge midpoint), so there is exactly one candidate.
+      const cands = [r.point];
+      const mk = (p) => (f.style === 'chamfer'
+        ? { command: 'solid.chamfer', params: { edges: [p], distance: f.size, body: bs[0] } }
+        : { command: 'solid.fillet', params: { edges: [p], radius: f.size, body: bs[0] } });
+      return { variants: cands.map((p) => [mk(p)]), produces: bs, consumes: [f.target], pickedFrom: 'solidcraft topology (browser)', evidence: r.evidence };
+    }
+    case 'draft': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      if (f.whole || !f.face) return refuse(`${f.id} (draft): a whole-body draft is not mapped (needs a face pick per face)`);
+      const bs = needBody(f.target);
+      if (!bs || bs.length !== 1) return refuse(`${f.id} (draft): needs a single target body`);
+      const r = ctx.resolve(f.face);
+      if (r && r.ok === false) return refuse(`${f.id} (draft): ${r.sentence}`);
+      if (!r || r.kind !== 'face') return refuse(`${f.id} (draft): the face could not be resolved to a single face (${r ? `it names ${r.kind}` : 'no resolution'})`);
+      const ax = AX[f.pull ?? 'z'];
+      return {
+        variants: [[{ command: 'solid.draft', params: { faces: [r.point], angle: f.angle, neutral: { origin: ax.map((v) => v * f.neutral), normal: ax }, pull: ax, body: bs[0] } }]],
+        produces: bs, consumes: [f.target], pickedFrom: 'solidcraft topology (browser)', evidence: r.evidence,
+      };
+    }
+    default:
+      return refuse(`${f.id}: feature kind '${f.kind}' is not in the ModelDoc vocabulary this translator knows`);
+  }
+}
+
+/** Aggregate the named bodies of a successful run into one measure (sum volume/faces, union bbox). */
+function aggregate(res, names) {
+  const bs = res.measure.bodies.filter((b) => names.includes(b.name));
+  if (!bs.length) return null;
+  const lo = [Infinity, Infinity, Infinity]; const hi = [-Infinity, -Infinity, -Infinity];
+  for (const b of bs) for (let i = 0; i < 3; i++) { lo[i] = Math.min(lo[i], b.bbox.min[i]); hi[i] = Math.max(hi[i], b.bbox.max[i]); }
+  return {
+    volume: bs.reduce((s, b) => s + b.volume_mm3, 0),
+    faces: bs.reduce((s, b) => s + b.faces, 0),
+    kernelFaces: bs.reduce((s, b) => s + b.kernel.faces, 0),
+    curved: bs.some((b) => Object.keys(b.face_types ?? {}).some((k) => k !== 'plane')),
+    bbox: [...lo, ...hi],
+    faceTypes: bs.reduce((a, b) => { for (const [k, v] of Object.entries(b.face_types ?? {})) a[k] = (a[k] ?? 0) + v; return a; }, {}),
+    com: [0, 1, 2].map((i) => bs.reduce((a, b) => a + b.volume_mm3 * b.center_of_mass[i], 0) / bs.reduce((a, b) => a + b.volume_mm3, 0)),
+    bodies: bs.map((b) => b.name),
+  };
+}
+
+/**
+ * The name was resolved on the own shape of the feature it names; the pick lands on the TARGET body as it is now. Redo, ON THE
+ * TARGET: the candidate count (every face coplanar with the named plane, or every edge matching), solidcraft's own pick-hit
+ * test and the choice of an interior point. More than one candidate, or no safe point, is a refusal with the count.
+ */
+async function confirmOnTarget(rr, { st, accepted, ctx, targetId }) {
+  if (!rr.ok || rr.kind === 'faceset') return rr;
+  const headId = (id) => { let h = id; const seen = new Set(); while (st.head[h] && !seen.has(h)) { seen.add(h); h = st.head[h]; } return h; };
+  const tb = st.bodies[headId(targetId)];
+  const nm = rr.evidence.name;
+  if (!tb || tb.length !== 1) return { ok: false, sentence: `${nm} resolved on ${rr.shape.featureId}, but the target ${targetId} is ${tb ? tb.length : 0} bodies; a pick is made on a single body, so nothing is picked` };
+  let cur;
+  try { cur = await ctx.topologyOf(accepted); } catch (e) { cur = { ok: false, error: e.message }; }
+  const body = cur.ok && cur.topology ? cur.topology.bodies.find((b) => b.name === tb[0]) : null;
+  if (!body || body.error) return { ok: false, sentence: `${nm} resolved, but solidcraft returned no topology for the target ${tb[0]}; nothing is picked` };
+  let sc = 1;
+  for (const e of body.edges) for (const q of [e.start, e.mid, e.end]) for (const v of q) sc = Math.max(sc, Math.abs(v));
+  for (const x of body.faces) for (const v of x.centroid) sc = Math.max(sc, Math.abs(v));
+  const tol = 1e-6 * sc * 10;
+  const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+  const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+  if (rr.kind === 'edge') {
+    const per = rr.edges.map((e) => body.edges.filter((q) => dist(q.mid, e.mid) <= tol && Math.abs(q.length - e.length) <= tol));
+    const miss = per.filter((m) => m.length === 0).length;
+    if (miss) return { ok: false, sentence: `${nm} resolves to ${rr.evidence.engineEdges.join(', ')} on ${rr.shape.featureId}, but ${miss === rr.edges.length ? 'that edge is' : 'part of that edge is'} no longer present whole on ${tb[0]} (an operation after ${rr.shape.featureId} changed or removed it); nothing is picked` };
+    if (per.some((m) => m.length > 1)) return { ok: false, sentence: `${nm} matches more than one edge on ${tb[0]} (${per.flat().map((q) => q.name).join(', ')}); nothing is picked` };
+    rr.evidence.target = { body: tb[0], candidates: rr.edges.length, edges: per.flat().map((q) => q.name), point: rr.point };
+    return rr;
+  }
+  if (!rr.plane) return { ok: false, sentence: `${nm} resolves to a curved face; a pick of a curved face on the target is not resolved in the browser demo` };
+  const { n, d } = rr.plane;
+  // same geometric plane. The OPPOSITE orientation counts only when the name's shape is not the target itself (a subtracted
+  // tool's wall is a wall of the cavity with its normal flipped); on the target's own shape a face on the far side of a
+  // slab with the opposite normal (the bottom of the part) is a different face.
+  const allowFlip = rr.shape.featureId !== targetId && rr.shape.featureId !== headId(targetId);
+  const on = body.faces.filter((x) => x.plane_normal && Math.abs(dot(x.centroid, n) - d) <= tol
+    && (dot(x.plane_normal, n) >= 1 - 1e-6 || (allowFlip && dot(x.plane_normal, n) <= -1 + 1e-6)));
+  if (on.length === 0) return { ok: false, sentence: `${nm} resolves on ${rr.shape.featureId}, but no face of ${tb[0]} lies on that plane any more; nothing is picked` };
+  if (on.length > 1) return { ok: false, sentence: `${nm} matches ${on.length} faces on ${tb[0]} (${on.map((x) => x.name).join(', ')}; all on the named plane); a name must pick exactly one, so nothing is picked` };
+  const p = pickPoint(on[0], Math.max(tol, 1e-4));
+  if (!p.ok) return { ok: false, sentence: `${nm} resolves to ${on[0].name} on ${tb[0]} but there is no safe pick point: ${p.why}` };
+  rr.point = p.point;
+  rr.evidence.pickPoint = `target ${tb[0]}: ${p.source}`;
+  rr.evidence.target = { body: tb[0], candidates: 1, face: on[0].name, faceIndex: on[0].index, point: p.point, pickSource: p.source, centroidHit: on[0].centroid_hit ?? null, innerHit: on[0].inner_hit ?? null };
+  return rr;
+}
+
+/** The name-resolution environment: how to read the own shape of a feature that was built (see resolve-names.mjs). */
+function makeEnv(st, accepted, prefix, ctx, shapeCache) {
+  return {
+    features: prefix,
+    sketchFrame: (sk) => frameOf(sk, ctx.mt),
+    outline: (sk) => ctx.arc.outlineOf(sk),
+    shapeOf: async (fid) => {
+      if (st.accLen[fid] === undefined) return { ok: false, sentence: `feature ${fid} was not built (it is a sketch, was refused, or comes later), so there is no shape of it to read the name from` };
+      const bodies = st.bodies[fid];
+      if (!bodies || bodies.length !== 1) return { ok: false, sentence: `feature ${fid} produced ${bodies ? bodies.length : 0} bodies; a name is resolved on a single body` };
+      if (!shapeCache.has(fid)) {
+        const cmds = accepted.slice(0, st.accLen[fid]);
+        let r;
+        try { r = await ctx.topologyOf(cmds); } catch (e) { r = { ok: false, error: e.message }; }
+        shapeCache.set(fid, { cmds, r });
+      }
+      const { cmds, r } = shapeCache.get(fid);
+      if (!r.ok || !r.topology) return { ok: false, sentence: `solidcraft could not report the topology of ${fid} (${r.error ?? r.rejected ?? (r.failed && r.failed.error) ?? 'no topology in the reply'})` };
+      if (r.topology.truncated) return { ok: false, sentence: `the topology of ${fid} is larger than the bridge's snapshot limit; not resolved` };
+      const body = r.topology.bodies.find((b) => b.name === bodies[0]);
+      if (!body || body.error) return { ok: false, sentence: `solidcraft returned no topology for body ${bodies[0]}${body?.error ? ' (' + body.error + ')' : ''}` };
+      let k = -1;
+      cmds.forEach((c, i) => { if (c.params?.body_name === bodies[0] && /^solid\.(box|cylinder|extrude|revolve|loft|sphere|torus)$/.test(c.command)) k = i; });
+      const featureNumber = k >= 0 ? (r.results?.[k]?.feature ?? null) : null;
+      return { ok: true, bodyName: bodies[0], featureId: fid, featureNumber, faces: body.faces, edges: body.edges };
+    },
+  };
+}
+
+/**
+ * Translate and execute a ModelDoc feature by feature.
+ * ctx: { arc, mt, runSC(cmds)->parsed result, resolveAt(prefixFeatures, nameJson)->{kind,centroid,length|area}|null }
+ * Returns { features: [{id, kind, status: 'built'|'refused'|'noop', commands, refusal?, measure?, pickedFrom?}], commands }.
+ */
+export async function translateDoc(doc, ctx) {
+  const st = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} };
+  const shapeCache = new Map();
+  const accepted = [];
+  const out = [];
+  for (let idx = 0; idx < doc.features.length; idx++) {
+    const f = doc.features[idx];
+    const prefix = doc.features.slice(0, idx);
+    const resolved = new Map();
+    const fctx = { ...ctx, resolve: (name) => resolved.get(name) ?? null };
+    // phase 4: resolve the one name this feature needs, from solidcraft's own topology, before planning it.
+    const nameField = f.kind === 'shell' ? 'open' : f.kind === 'fillet' ? 'edge' : f.kind === 'draft' ? 'face' : null;
+    if (nameField && f[nameField] && typeof f[nameField] === 'object' && ctx.topologyOf) {
+      const env = makeEnv(st, accepted, prefix, ctx, shapeCache);
+      let rr = await resolveName(f[nameField], env, nameField === 'edge' ? 'edge' : 'face');
+      rr = await confirmOnTarget(rr, { st, accepted, ctx, targetId: f.target });
+      if (rr.ok && rr.kind === 'faceset') resolved.set(f[nameField], { ok: false, sentence: `${rr.evidence.name} is ${rr.faces.length} faces in solidcraft (${rr.evidence.engineFaces.join(', ')}; a cylinder's wall is split at its seam); a face pick of it would choose one half silently, so nothing is picked` });
+      else resolved.set(f[nameField], rr);
+    }
+    const note = (o) => out.push({ id: f.id, kind: f.kind, ...o });
+    if (f.kind === 'sketch') st.sketches[f.id] = f;
+    let plan;
+    try { plan = planFeature(f, st, fctx); } catch (e) { plan = refuse(`${f.id} (${f.kind}): translator error: ${e.message}`); }
+    if (plan.refusal) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, commands: [] }); continue; }
+    if (plan.noop) { note({ status: 'noop', commands: [] }); continue; }
+    let lastErr = null;
+    let lastFail = null;
+    let built = false;
+    for (const variant of plan.variants) {
+      let res;
+      try { res = await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `bridge error: ${e.message}` } }; }
+      if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; continue; }
+      const m = aggregate(res, plan.produces);
+      if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
+      accepted.push(...variant);
+      st.accLen[f.id] = accepted.length;
+      st.bodies[f.id] = m.bodies;
+      st.measure[f.id] = m;
+      for (const c of plan.consumes) {
+        if (c === f.id) continue;
+        if (f.kind === 'hole' || f.kind === 'pocket' || f.kind === 'groove') { if (c === (f.kind === 'hole' ? f.target : f.into)) st.head[c] = f.id; } else st.stale[c] = f.id;
+      }
+      note({ status: 'built', commands: variant, measure: m, pickedFrom: plan.pickedFrom, evidence: plan.evidence ?? null, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, variantsTried: plan.variants.indexOf(variant) + 1 });
+      built = true;
+      break;
+    }
+    if (built) continue;
+    const sentence = `${f.id} (${f.kind}): solidcraft refused it -- ${lastErr}`;
+    st.refused[f.id] = sentence;
+    note({ status: 'refused', refusal: sentence, commands: plan.variants[0], failed: lastFail?.failed ?? null, sketchAtFailure: lastFail?.sketch_at_failure ?? null });
+  }
+  return { features: out, commands: accepted, _state: { st, accepted, shapeCache } };
+}
+
+/** Resolve one name against the shapes a finished translateDoc left behind (used by verify-picks; same code path). */
+export async function resolveAfter(tr, doc, name, ctx, want, targetId = null, beforeId = null) {
+  const { st, accepted: all, shapeCache } = tr._state;
+  // the target as it stood BEFORE the feature that uses the name (after it, a rounded edge is gone by construction)
+  let accepted = all;
+  if (beforeId) {
+    const i = doc.features.findIndex((x) => x.id === beforeId);
+    let len = 0;
+    for (let k = 0; k < i; k++) if (st.accLen[doc.features[k].id] !== undefined) len = Math.max(len, st.accLen[doc.features[k].id]);
+    accepted = all.slice(0, len);
+  }
+  const rr = await resolveName(name, makeEnv(st, accepted, doc.features, ctx, shapeCache), want);
+  return targetId ? confirmOnTarget(rr, { st, accepted, ctx, targetId }) : rr;
+}

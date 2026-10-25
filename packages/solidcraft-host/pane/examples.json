@@ -1,0 +1,2304 @@
+[
+ {
+  "id": "fr-rect-dims",
+  "group": "friendly",
+  "equivOf": "2d-rect-dims",
+  "title": "Rectangle with width and height dimensions (hand-drawn start)",
+  "script": "// a sloppy 28.2 x 17 rectangle near (4,2), dimensioned 30 x 20 with its corner 5 right and 3 up of the origin\nconst sk = sketch('top')\nconst r = sk.rectangle([4.2, 2.1], [32.4, 19.1])   // 4 lines, joined, level and plumb\nsk.at(r.bottom.a, [5, 3])\nsk.length(r.bottom, 30)\nsk.length(r.right, 20)\nconst part = extrude(sk, 10)",
+  "expect": "FRIENDLY re-expression of 2d-rect-dims: the same soup rows, so the same part. One body, 30 x 20 x 10 = 6000 mm3, bbox [5,3,0, 35,23,10]. dof 0.",
+  "closed": 6000,
+  "dof": 0,
+  "bbox": [
+   5,
+   3,
+   0,
+   35,
+   23,
+   10
+  ],
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 6000,
+   "brep": {
+    "volume": 5999.99999991092,
+    "faces": 6
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 9 names geometry -1, which this sketch does not have"
+   },
+   "volume": 5999.99999991092,
+   "source": "brep-rs",
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ],
+   "agree": {
+    "refVsClosed": 1.4846591511741282e-11
+   }
+  }
+ },
+ {
+  "id": "fr-plate-hole-dims",
+  "group": "friendly",
+  "equivOf": "2d-plate-hole-dims",
+  "title": "Plate with a dimensioned hole (two loops)",
+  "script": "// a 40 x 25 plate on the origin, with a hole of diameter 10 centred 20 right and 12.5 up of the plate corner\nconst sk = sketch('top')\nconst plate = sk.rectangle([0.3, 0.2], [39, 25.6])\nconst hole = sk.circle([19, 13.5], { r: 4.4 })\nsk.at(plate.bottom.a, [0, 0])\nsk.length(plate.bottom, 40)\nsk.length(plate.right, 25)\nsk.diameter(hole, 10)\nsk.dx(plate.bottom.a, hole.c, 20)\nsk.dy(plate.bottom.a, hole.c, 12.5)\nconst part = extrude(sk, 10)",
+  "expect": "FRIENDLY re-expression of 2d-plate-hole-dims: 40*25*10 - pi*5^2*10 = 9214.60 mm3. dof 0.",
+  "closed": 9214.601836602551,
+  "curved": true,
+  "dof": 0,
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 9214.601836602551,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 9 names geometry -1, which this sketch does not have"
+   },
+   "volume": 9214.601836621781,
+   "source": "brep-rs",
+   "agree": {
+    "refVsClosed": 2.086943778503736e-12
+   }
+  }
+ },
+ {
+  "id": "fr-slot-tangent",
+  "group": "friendly",
+  "equivOf": "2d-slot-tangent",
+  "title": "Slot: two lines and two tangent arcs",
+  "script": "// a slot: lines 40 long, 20 apart, closed by two R10 arcs tangent to them\nconst sk = sketch('top')\nconst left = sk.arc([0, 10], [0, 0], [0, 20], 'cw')\nconst right = sk.arc([40, 10], [40, 20], [40, 0], 'cw')\nconst top = sk.line([0, 20], [40, 20])\nconst bottom = sk.line([40, 0], [0, 0])\nsk.tangent(top.a, left.b)       // the two ends meet smoothly\nsk.tangent(top.b, right.a)\nsk.tangent(bottom.a, right.b)\nsk.tangent(bottom.b, left.a)\nsk.radius(left, 10)\nsk.equal(left, right)\nsk.horizontal(top)\nsk.length(top, 40)\nsk.fix(left.c)\nconst part = extrude(sk, 10)",
+  "expect": "FRIENDLY re-expression of 2d-slot-tangent: (40*20 + pi*10^2)*10 = 11141.59 mm3, bbox [-10,0,0, 50,20,10]. dof 0, nothing redundant (sketch-solver fix; phase 6 reported dof 4).",
+  "closed": 11141.592653589794,
+  "curved": true,
+  "dof": 0,
+  "bbox": [
+   -10,
+   0,
+   0,
+   50,
+   20,
+   10
+  ],
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 11141.592653589794,
+   "brep": {
+    "volume": 11141.592653589794,
+    "faces": 6
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "volume": 11141.592653589794,
+   "source": "brep-rs",
+   "bbox": [
+    -10,
+    0,
+    0,
+    50,
+    20,
+    10
+   ],
+   "agree": {
+    "refVsClosed": 0
+   }
+  }
+ },
+ {
+  "id": "fr-triangle-angle",
+  "group": "friendly",
+  "equivOf": "2d-triangle-angle",
+  "title": "Triangle with two lengths and an angle dimension",
+  "script": "// base 40 on the X axis from the origin, side 30, and 120 deg between side 1 and side 2 (exterior angle; interior is 60)\nconst sk = sketch('top')\nconst base = sk.line([0.5, 0.4], [39, 1])\nconst side = sk.line(base.b, [25, 26.5])   // starts on base.b: joined\nconst back = sk.line(side.b, base.a)       // starts on side.b, ends on base.a: joined both ends\nsk.horizontal(base)\nsk.at(base.a, [0, 0])\nsk.length(base, 40)\nsk.length(side, 30)\nsk.angle(base, side, 120)\nconst part = extrude(sk, 10)",
+  "expect": "FRIENDLY re-expression of 2d-triangle-angle: area 0.5*40*30*sin(60 deg), volume 5196.15 mm3. dof 0. Reusing endpoints writes each join with the existing end first, so two join rows read in the other order than the hand-written soup (equal as an unordered pair; see VERIFY.md).",
+  "closed": 5196.152422706632,
+  "dof": 0,
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 5196.152422706632,
+   "brep": {
+    "volume": 5196.152422707686,
+    "faces": 5
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 4 (horizontal) is off by 6.00e-1 mm: edge 1 does not lie along the axis. These rows have not been solved, and this reference reads them rather than solving them"
+   },
+   "volume": 5196.152422707686,
+   "source": "brep-rs",
+   "agree": {
+    "refVsClosed": 2.0286247854248851e-13
+   }
+  }
+ },
+ {
+  "id": "fr-hexagon",
+  "group": "friendly",
+  "equivOf": "2d-hexagon",
+  "title": "Regular hexagon from equal sides and a construction circle",
+  "script": "// six lines, equal sides, every vertex on a construction circle of radius 20 centred on the origin, one vertical side\nconst sk = sketch('top')\nconst side = sk.lines([[17.320508,-10],[17.320508,10],[0,20],[-17.320508,10],[-17.320508,-10],[0,-20]], { closed: true })\nconst ring = sk.circle([0.3, -0.2], { r: 19.4, construction: true })\nfor (let i = 0; i < 5; i++) sk.equal(side[i], side[i + 1])\nfor (const s of side) sk.pointOn(s.a, ring)\nsk.join(ring.c, sk.origin)\nsk.radius(ring, 20)\nsk.vertical(side[0])\nconst part = extrude(sk, 10)",
+  "expect": "FRIENDLY re-expression of 2d-hexagon: area (3*sqrt(3)/2)*20^2, volume 10392.3 mm3. dof 0.",
+  "closed": 10392.304845413264,
+  "dof": 0,
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 10392.304845413264,
+   "brep": {
+    "volume": 10392.304845406437,
+    "faces": 8
+   },
+   "occt": {
+    "refused": "Sketch 1: circle 7 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+   },
+   "volume": 10392.304845406437,
+   "source": "brep-rs",
+   "agree": {
+    "refVsClosed": 6.568963606298183e-13
+   }
+  }
+ },
+ {
+  "id": "fr-untouched-default",
+  "group": "friendly",
+  "title": "A sketch nothing is drawn on: the interpreter's DEFAULT 40 x 25 rectangle (documented, not a friendly feature)",
+  "script": "// nothing is drawn on this sketch. The interpreter's own default is a 40 x 25 rectangle, and extrude pulls THAT.\n// (This is not an error; an emptied sketch via sk.remove() IS refused, see misuse-remove-all.)\nconst sk = sketch('top')\nconst part = extrude(sk, 10)",
+  "expect": "DOCUMENTED INTERPRETER DEFAULT, not a friendly-syntax feature. One body 40 x 25 x 10 = 10000 mm3. A student who forgets to draw gets this plate, silently: the shim cannot see extrude().",
+  "closed": 10000,
+  "bbox": [
+   0,
+   0,
+   0,
+   40,
+   25,
+   10
+  ],
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 10000,
+   "brep": {
+    "volume": 10000,
+    "faces": 6
+   },
+   "occt": {
+    "volume": 9999.999999999998,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     10
+    ]
+   },
+   "volume": 9999.999999999998,
+   "source": "OCCT",
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    10
+   ],
+   "agree": {
+    "occtVsBrep": 1.8189894035458566e-16,
+    "refVsClosed": 1.8189894035458566e-16
+   }
+  }
+ },
+ {
+  "id": "fr-bracket-rounded",
+  "group": "friendly",
+  "title": "Rounded-corner bracket outline with two holes",
+  "script": "// a 60 x 40 bracket plate, 8 thick, corners rounded R6 (each arc tangent to both lines), two 6 mm holes\nconst sk = sketch('top')\nconst bottom = sk.line([6, 0], [54, 0])\nconst br = sk.arc([54, 6], bottom.b, [60, 6], 'ccw')     // starts on bottom.b: joined\nconst right = sk.line(br.b, [60, 34])\nconst tr = sk.arc([54, 34], right.b, [54, 40], 'ccw')\nconst top = sk.line(tr.b, [6, 40])\nconst tl = sk.arc([6, 34], top.b, [0, 34], 'ccw')\nconst left = sk.line(tl.b, [0, 6])\nconst bl = sk.arc([6, 6], left.b, bottom.a, 'ccw')       // closes the loop on bottom.a\n// smooth joints: each line and arc that share an end are tangent there\nsk.tangent(bottom, br); sk.tangent(br, right); sk.tangent(right, tr); sk.tangent(tr, top)\nsk.tangent(top, tl); sk.tangent(tl, left); sk.tangent(left, bl); sk.tangent(bl, bottom)\nsk.horizontal(bottom); sk.vertical(right); sk.horizontal(top); sk.vertical(left)\nsk.radius(br, 6)\nsk.equal(br, tr); sk.equal(tr, tl); sk.equal(tl, bl)\nsk.length(bottom, 48)\nsk.length(right, 28)\nsk.at(bl.c, [6, 6])\nconst h1 = sk.circle([10, 20], { r: 3 })\nconst h2 = sk.circle([50, 20], { r: 3 })\nsk.at(h1.c, [10, 20])\nsk.at(h2.c, [50, 20])\nsk.diameter(h1, 6)\nsk.equal(h1, h2)\nconst part = extrude(sk, 8)",
+  "expect": "NEW. One body with two holes: (60*40 - (4 - pi)*6^2 - 2*pi*3^2) * 8 = 18500.39 mm3 (curved). Closed form written out in examples.mjs; brep-rs and OCCT measured by make-reference.mjs. Sketch report: dof 0, no redundant rules with the sketch-solver fix (phase 6 reported dof 8 and 8 redundant tangents).",
+  "closed": 18500.38934211693,
+  "curved": true,
+  "dof": 0,
+  "bbox": [
+   0,
+   0,
+   0,
+   60,
+   40,
+   8
+  ],
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 18500.38934211693,
+   "brep": {
+    "volume": 18500.38934211693,
+    "faces": 12
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 9 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "volume": 18500.38934211693,
+   "source": "brep-rs",
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    40,
+    8
+   ],
+   "agree": {
+    "refVsClosed": 0
+   }
+  }
+ },
+ {
+  "id": "fr-symmetric-profile",
+  "group": "friendly",
+  "title": "Symmetric T profile (mirrored about a construction line)",
+  "script": "// a T: stem 10 wide x 30 tall, cap 40 wide x 10 tall, mirrored about a vertical construction line (the mirror axis)\nconst sk = sketch('top')\nconst t = sk.lines([[-4.5, 0.4], [5.3, 0.2], [5.1, 29], [19, 30.5], [20.4, 39], [-21, 40.2], [-19.5, 31], [-5.4, 29.5]], { closed: true })\n// t[0] bottom, t[1] stem right, t[2] cap underside right, t[3] cap end right, t[4] cap top, t[5] cap end left, t[6] cap underside left, t[7] stem left\nconst mirror = sk.line([0, -10], [0, 50], { construction: true })\nsk.vertical(mirror)\nsk.fix(mirror.a)\nsk.length(mirror, 60)\nsk.symmetric(t[0].a, t[0].b, mirror)\nsk.symmetric(t[1].b, t[7].a, mirror)\nsk.symmetric(t[2].b, t[6].a, mirror)\nsk.symmetric(t[4].a, t[4].b, mirror)\nsk.vertical(t[1]); sk.horizontal(t[2]); sk.vertical(t[3])\nsk.length(t[0], 10); sk.length(t[4], 40)\nsk.length(t[1], 30); sk.length(t[3], 10)\nsk.dy(mirror.a, t[0].a, 10)\nconst part = extrude(sk, 10)",
+  "expect": "NEW. One body, area 10*30 + 40*10 = 700, volume 7000 mm3 (planar, exact), bbox [-20,0,0, 20,40,10]. dof 0. The mirror axis is a drawn construction line, which brep-rs solves; see fr-symmetric-axis for the sketch axis.",
+  "closed": 7000,
+  "dof": 0,
+  "bbox": [
+   -20,
+   0,
+   0,
+   20,
+   40,
+   10
+  ],
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 7000,
+   "brep": {
+    "volume": 6999.999999942348,
+    "faces": 10
+   },
+   "occt": {
+    "refused": "Sketch 1: line 9 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+   },
+   "volume": 6999.999999942348,
+   "source": "brep-rs",
+   "bbox": [
+    -20,
+    0,
+    0,
+    20,
+    40,
+    10
+   ],
+   "agree": {
+    "refVsClosed": 8.23599423581202e-12
+   }
+  }
+ },
+ {
+  "id": "fr-symmetric-axis",
+  "group": "friendly",
+  "title": "Same T, mirrored about sk.yAxis (solidcraft builds; brep-rs refuses an axis mirror)",
+  "script": "// the same T, but the mirror line is the sketch's own Y axis (sk.yAxis)\nconst sk = sketch('top')\nconst t = sk.lines([[-4.5, 0.4], [5.3, 0.2], [5.1, 29], [19, 30.5], [20.4, 39], [-21, 40.2], [-19.5, 31], [-5.4, 29.5]], { closed: true })\nsk.symmetric(t[0].a, t[0].b, sk.yAxis)\nsk.symmetric(t[1].b, t[7].a, sk.yAxis)\nsk.symmetric(t[2].b, t[6].a, sk.yAxis)\nsk.symmetric(t[4].a, t[4].b, sk.yAxis)\nsk.vertical(t[1]); sk.horizontal(t[2]); sk.vertical(t[3])\nsk.length(t[0], 10); sk.length(t[4], 40)\nsk.length(t[1], 30); sk.length(t[3], 10)\nsk.pointOn(t[0].a, sk.xAxis)\nconst part = extrude(sk, 10)",
+  "expect": "NEW. solidcraft maps symmetric-about-axis and point-on-axis (phase 2) and builds 7000 mm3 = the closed form (area 700 * 10). brep-rs REFUSES this sketch (\"line -3 has zero length; a mirror line has no direction\"; phase 2 recorded the same), so the independent reference here is the closed form only.",
+  "closed": 7000,
+  "dof": 0,
+  "bbox": [
+   -20,
+   0,
+   0,
+   20,
+   40,
+   10
+  ],
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 7000,
+   "brep": {
+    "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 9 names geometry -3, which this sketch does not have"
+   },
+   "volume": 7000,
+   "source": "closed form",
+   "bbox": [
+    -20,
+    0,
+    0,
+    20,
+    40,
+    10
+   ],
+   "agree": {
+    "refVsClosed": 0
+   }
+  }
+ },
+ {
+  "id": "misuse-unknown-handle",
+  "group": "misuse",
+  "title": "Unknown handle: a line has no .mid",
+  "script": "const sk = sketch('top')\nconst a = sk.line([0, 0], [40, 0])\nconst b = sk.line(a.b, [40, 20])\nconst ring = sk.circle([10, 10], { r: 4 })\nsk.horizontal(a.mid)\nconst part = extrude(sk, 10)",
+  "expect": "EXPECTED SCRIPT ERROR on line 5: the sentence contains \"has no .mid\". Nothing is sent to solidcraft; the viewport keeps the previous run.",
+  "expectError": {
+   "line": 5,
+   "contains": "has no .mid"
+  }
+ },
+ {
+  "id": "misuse-dimension-non-line",
+  "group": "misuse",
+  "title": "Dimension a non-line: a length on a circle",
+  "script": "const sk = sketch('top')\nconst a = sk.line([0, 0], [40, 0])\nconst b = sk.line(a.b, [40, 20])\nconst ring = sk.circle([10, 10], { r: 4 })\nsk.length(ring, 12)\nconst part = extrude(sk, 10)",
+  "expect": "EXPECTED SCRIPT ERROR on line 5: the sentence contains \"needs the first argument to be a line\". Nothing is sent to solidcraft; the viewport keeps the previous run.",
+  "expectError": {
+   "line": 5,
+   "contains": "needs the first argument to be a line"
+  }
+ },
+ {
+  "id": "misuse-tangent-two-lines",
+  "group": "misuse",
+  "title": "Tangent between two lines",
+  "script": "const sk = sketch('top')\nconst a = sk.line([0, 0], [40, 0])\nconst b = sk.line(a.b, [40, 20])\nconst ring = sk.circle([10, 10], { r: 4 })\nsk.tangent(a, b)\nconst part = extrude(sk, 10)",
+  "expect": "EXPECTED SCRIPT ERROR on line 5: the sentence contains \"two straight lines\". Nothing is sent to solidcraft; the viewport keeps the previous run.",
+  "expectError": {
+   "line": 5,
+   "contains": "two straight lines"
+  }
+ },
+ {
+  "id": "misuse-other-sketch",
+  "group": "misuse",
+  "title": "A handle from another sketch",
+  "script": "const sk = sketch('top')\nconst a = sk.line([0, 0], [40, 0])\nconst b = sk.line(a.b, [40, 20])\nconst ring = sk.circle([10, 10], { r: 4 })\nconst sk2 = sketch('front')\nconst c = sk2.line([0, 0], [10, 0])\nsk.parallel(a, c)\nconst part = extrude(sk, 10)",
+  "expect": "EXPECTED SCRIPT ERROR on line 7: the sentence contains \"belongs to a different sketch()\". Nothing is sent to solidcraft; the viewport keeps the previous run.",
+  "expectError": {
+   "line": 7,
+   "contains": "belongs to a different sketch()"
+  }
+ },
+ {
+  "id": "misuse-removed-entity",
+  "group": "misuse",
+  "title": "A constraint on a removed entity",
+  "script": "const sk = sketch('top')\nconst a = sk.line([0, 0], [40, 0])\nconst b = sk.line(a.b, [40, 20])\nconst ring = sk.circle([10, 10], { r: 4 })\nsk.remove(b)\nsk.vertical(b)\nconst part = extrude(sk, 10)",
+  "expect": "EXPECTED SCRIPT ERROR on line 6: the sentence contains \"was removed with sk.remove()\". Nothing is sent to solidcraft; the viewport keeps the previous run.",
+  "expectError": {
+   "line": 6,
+   "contains": "was removed with sk.remove()"
+  }
+ },
+ {
+  "id": "misuse-undefined-entity",
+  "group": "misuse",
+  "title": "A constraint on a name never drawn",
+  "script": "const sk = sketch('top')\nconst a = sk.line([0, 0], [40, 0])\nconst b = sk.line(a.b, [40, 20])\nconst ring = sk.circle([10, 10], { r: 4 })\nsk.vertical(rigth)\nconst part = extrude(sk, 10)",
+  "expect": "EXPECTED SCRIPT ERROR on line 5: the sentence contains \"rigth\". Nothing is sent to solidcraft; the viewport keeps the previous run.",
+  "expectError": {
+   "line": 5,
+   "contains": "rigth"
+  }
+ },
+ {
+  "id": "misuse-arity",
+  "group": "misuse",
+  "title": "Wrong arity: sk.length with no value",
+  "script": "const sk = sketch('top')\nconst a = sk.line([0, 0], [40, 0])\nconst b = sk.line(a.b, [40, 20])\nconst ring = sk.circle([10, 10], { r: 4 })\nsk.length(a)\nconst part = extrude(sk, 10)",
+  "expect": "EXPECTED SCRIPT ERROR on line 5: the sentence contains \"takes 2 arguments\". Nothing is sent to solidcraft; the viewport keeps the previous run.",
+  "expectError": {
+   "line": 5,
+   "contains": "takes 2 arguments"
+  }
+ },
+ {
+  "id": "misuse-negative-radius",
+  "group": "misuse",
+  "title": "Negative radius",
+  "script": "const sk = sketch('top')\nconst a = sk.line([0, 0], [40, 0])\nconst b = sk.line(a.b, [40, 20])\nconst ring = sk.circle([10, 10], { r: 4 })\nsk.radius(ring, -3)\nconst part = extrude(sk, 10)",
+  "expect": "EXPECTED SCRIPT ERROR on line 5: the sentence contains \"above 0, but got -3\". Nothing is sent to solidcraft; the viewport keeps the previous run.",
+  "expectError": {
+   "line": 5,
+   "contains": "above 0, but got -3"
+  }
+ },
+ {
+  "id": "misuse-remove-all",
+  "group": "misuse",
+  "title": "Remove the only shape (would silently draw the default 40 x 25 plate)",
+  "script": "const sk = sketch('top')\nconst a = sk.line([0, 0], [40, 0])\nsk.remove(a)\nconst part = extrude(sk, 10)",
+  "expect": "EXPECTED SCRIPT ERROR on line 3: the sentence contains \"would leave this sketch with no shapes\". Nothing is sent to solidcraft; the viewport keeps the previous run.",
+  "expectError": {
+   "line": 3,
+   "contains": "would leave this sketch with no shapes"
+  }
+ },
+ {
+  "id": "misuse-reassign-sketch",
+  "group": "misuse",
+  "title": "Assign to the sketch tool",
+  "script": "const sk = sketch('top')\nconst a = sk.line([0, 0], [40, 0])\nconst b = sk.line(a.b, [40, 20])\nconst ring = sk.circle([10, 10], { r: 4 })\nsketch = null\nconst part = extrude(sk, 10)",
+  "expect": "EXPECTED SCRIPT ERROR on line 5: the sentence contains \"is already a reSHape tool here\". Nothing is sent to solidcraft; the viewport keeps the previous run.",
+  "expectError": {
+   "line": 5,
+   "contains": "is already a reSHape tool here"
+  }
+ },
+ {
+  "id": "misuse-line-over-line",
+  "group": "misuse",
+  "title": "A second line exactly on top of one",
+  "script": "const sk = sketch('top')\nconst a = sk.line([0, 0], [40, 0])\nconst b = sk.line(a.b, [40, 20])\nconst ring = sk.circle([10, 10], { r: 4 })\nsk.line(a.a, a.b)\nconst part = extrude(sk, 10)",
+  "expect": "EXPECTED SCRIPT ERROR on line 5: the sentence contains \"exactly on top of an existing line\". Nothing is sent to solidcraft; the viewport keeps the previous run.",
+  "expectError": {
+   "line": 5,
+   "contains": "exactly on top of an existing line"
+  }
+ },
+ {
+  "id": "misuse-nan",
+  "group": "misuse",
+  "title": "NaN as a dimension",
+  "script": "const sk = sketch('top')\nconst a = sk.line([0, 0], [40, 0])\nconst b = sk.line(a.b, [40, 20])\nconst ring = sk.circle([10, 10], { r: 4 })\nsk.length(a, 40 / 0 - 40 / 0)\nconst part = extrude(sk, 10)",
+  "expect": "EXPECTED SCRIPT ERROR on line 5: the sentence contains \"finite number, but got NaN\". Nothing is sent to solidcraft; the viewport keeps the previous run.",
+  "expectError": {
+   "line": 5,
+   "contains": "finite number, but got NaN"
+  }
+ },
+ {
+  "id": "3d-box-hole",
+  "group": "3d",
+  "title": "Box with a through hole",
+  "script": "// a 40 x 30 x 10 plate with a 6 mm hole drilled through its middle\nconst b = cuboid(40, 30, 10)\nhole(b, { across: 6 })",
+  "expect": "One body. Volume 40*30*10 - pi*3^2*10 = 11717.257 mm3 (curved, so within 3e-4 of OCCT).",
+  "closed": 11717.256661176918,
+  "curved": true,
+  "ref": {
+   "finalFeature": "hole1",
+   "closed": 11717.256661176918,
+   "brep": {
+    "volume": 11717.256661176916,
+    "faces": 7
+   },
+   "occt": {
+    "volume": 11717.256661176918,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ]
+   },
+   "volume": 11717.256661176918,
+   "source": "OCCT",
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    5
+   ],
+   "agree": {
+    "occtVsBrep": 1.552402116079577e-16,
+    "refVsClosed": 0
+   }
+  }
+ },
+ {
+  "id": "3d-extrude-sketch",
+  "group": "3d",
+  "title": "Extruded L-shaped sketch",
+  "script": "// an L-shaped polygon sketched on the top plane, pulled up 12 mm\nconst sk = sketch('top')\nsk.polygon([[0, 0], [40, 0], [40, 15], [15, 15], [15, 30], [0, 30]])\nconst shape = extrude(sk, 12)",
+  "expect": "One body. Area 40*15 + 15*15 = 825, volume 825*12 = 9900 mm3. bbox 0..40 x 0..30 x 0..12.",
+  "closed": 9900,
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 9900,
+   "brep": {
+    "volume": 9900,
+    "faces": 8
+   },
+   "occt": {
+    "volume": 9899.999999999998,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     12
+    ]
+   },
+   "volume": 9899.999999999998,
+   "source": "OCCT",
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    12
+   ],
+   "agree": {
+    "occtVsBrep": 1.8373630338847035e-16,
+    "refVsClosed": 1.8373630338847035e-16
+   }
+  }
+ },
+ {
+  "id": "3d-revolve",
+  "group": "3d",
+  "title": "Revolve: a ring",
+  "script": "// a 30 x 10 rectangle 25..55 mm from the axis, spun a full turn\nconst sk = sketch('front', 0)\nsk.rect(30, 10, { at: [40, 0] })\nconst shape = revolve(sk, 360)",
+  "expect": "One body. Volume pi*(55^2 - 25^2)*10 = 75398.2 mm3 (curved).",
+  "closed": 75398.22368615503,
+  "curved": true,
+  "ref": {
+   "finalFeature": "rev1",
+   "closed": 75398.22368615503,
+   "brep": {
+    "volume": 75398.22368615506,
+    "faces": 4
+   },
+   "occt": {
+    "volume": 75398.22368615502,
+    "bbox": [
+     -55,
+     -5,
+     -55,
+     55,
+     5,
+     55
+    ]
+   },
+   "volume": 75398.22368615502,
+   "source": "OCCT",
+   "bbox": [
+    -55,
+    -5,
+    -55,
+    55,
+    5,
+    55
+   ],
+   "agree": {
+    "occtVsBrep": 5.790023100122027e-16,
+    "refVsClosed": 1.9300077000406763e-16
+   }
+  }
+ },
+ {
+  "id": "3d-union",
+  "group": "3d",
+  "title": "Boolean union: base plus post",
+  "script": "// a 40 x 40 x 10 base fused with a 6 mm post 20 mm tall\nconst base = cuboid(40, 40, 10, { at: [0, 0, 5] })\nconst post = cylinder(6, 20, { at: [0, 0, 10] })\nunion(base, post)",
+  "expect": "One body (union). Volume = base 16000 + the part of the post above the base. Compare with the OCCT number in the badge.",
+  "curved": true,
+  "ref": {
+   "finalFeature": "op1",
+   "closed": null,
+   "brep": {
+    "volume": 16282.74333882308,
+    "faces": 8
+   },
+   "occt": {
+    "volume": 16282.743338823077,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     20
+    ]
+   },
+   "volume": 16282.743338823077,
+   "source": "OCCT",
+   "bbox": [
+    -20,
+    -20,
+    0,
+    20,
+    20,
+    20
+   ],
+   "agree": {
+    "occtVsBrep": 2.2342542232534304e-16
+   }
+  }
+ },
+ {
+  "id": "3d-subtract",
+  "group": "3d",
+  "title": "Boolean subtract: a square pocket through",
+  "script": "// a 40 x 40 x 20 block with a 20 x 20 square cutter that goes all the way through\nconst b = cuboid(40, 40, 20, { at: [0, 0, 10] })\nconst cutter = cuboid(20, 20, 30, { at: [0, 0, 15] })\nsubtract(b, cutter)",
+  "expect": "One body. Volume 40*40*20 - 20*20*20 = 24000 mm3 (planar, exact).",
+  "closed": 24000,
+  "ref": {
+   "finalFeature": "op1",
+   "closed": 24000,
+   "brep": {
+    "volume": 23999.999999999996,
+    "faces": 10
+   },
+   "occt": {
+    "volume": 24000,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     20
+    ]
+   },
+   "volume": 24000,
+   "source": "OCCT",
+   "bbox": [
+    -20,
+    -20,
+    0,
+    20,
+    20,
+    20
+   ],
+   "agree": {
+    "occtVsBrep": 1.5158245029548806e-16,
+    "refVsClosed": 0
+   }
+  }
+ },
+ {
+  "id": "3d-linear-pattern",
+  "group": "3d",
+  "title": "Linear pattern: three copies",
+  "script": "// a 20 x 20 x 10 block copied 3 times, 60 mm apart\nconst b = cuboid(20, 20, 10)\nlinearPattern(b, { count: 3, step: 60 })",
+  "expect": "Three bodies. Total volume 3 * 4000 = 12000 mm3.",
+  "closed": 12000,
+  "ref": {
+   "finalFeature": "pat1",
+   "closed": 12000,
+   "brep": {
+    "volume": 12000,
+    "faces": 18
+   },
+   "occt": {
+    "volume": 11999.999999999996,
+    "bbox": [
+     -10,
+     -10,
+     -5,
+     130,
+     10,
+     5
+    ]
+   },
+   "volume": 11999.999999999996,
+   "source": "OCCT",
+   "bbox": [
+    -10,
+    -10,
+    -5,
+    130,
+    10,
+    5
+   ],
+   "agree": {
+    "occtVsBrep": 3.0316490059097607e-16,
+    "refVsClosed": 3.0316490059097607e-16
+   }
+  }
+ },
+ {
+  "id": "3d-polar-pattern",
+  "group": "3d",
+  "title": "Polar pattern: four copies round Z",
+  "script": "// a 10 x 30 x 10 block, 25 mm from the axis, copied 4 times round Z\nconst b = cuboid(10, 30, 10, { at: [25, 0, 0] })\npolarPattern(b, { count: 4, axis: 'z' })",
+  "expect": "Four bodies. Total volume 4 * 3000 = 12000 mm3.",
+  "closed": 12000,
+  "ref": {
+   "finalFeature": "pat1",
+   "closed": 12000,
+   "brep": {
+    "volume": 12000,
+    "faces": 24
+   },
+   "occt": {
+    "volume": 11999.999999999996,
+    "bbox": [
+     -30.000000000000004,
+     -30.000000000000004,
+     -5,
+     30,
+     30.000000000000004,
+     5
+    ]
+   },
+   "volume": 11999.999999999996,
+   "source": "OCCT",
+   "bbox": [
+    -30.000000000000004,
+    -30.000000000000004,
+    -5,
+    30,
+    30.000000000000004,
+    5
+   ],
+   "agree": {
+    "occtVsBrep": 3.0316490059097607e-16,
+    "refVsClosed": 3.0316490059097607e-16
+   }
+  }
+ },
+ {
+  "id": "2d-rect-dims",
+  "group": "2d",
+  "title": "Rectangle with width and height dimensions (hand-drawn start)",
+  "script": "// a sloppy 28.2 x 17 rectangle near (4,2): the rules dimension it 30 x 20 with its corner 5 right and 3 up of the origin\n// solidcraft solves the dimensions, brep-rs and a closed form agree on the result\nconst sk = sketch('top')\nsk.geom([\n  { k: 'line', id: 1, a: [4.2, 2.1], b: [32.4, 2.1] },\n  { k: 'line', id: 2, a: [32.4, 2.1], b: [32.4, 19.1] },\n  { k: 'line', id: 3, a: [32.4, 19.1], b: [4.2, 19.1] },\n  { k: 'line', id: 4, a: [4.2, 19.1], b: [4.2, 2.1] }\n])\nsk.rules([\n  { k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' },\n  { k: 'coincident', a: 2, aEnd: 'b', b: 3, bEnd: 'a' },\n  { k: 'coincident', a: 3, aEnd: 'b', b: 4, bEnd: 'a' },\n  { k: 'coincident', a: 4, aEnd: 'b', b: 1, bEnd: 'a' },\n  { k: 'horizontal', a: 1 },\n  { k: 'vertical', a: 2 },\n  { k: 'horizontal', a: 3 },\n  { k: 'vertical', a: 4 },\n  { k: 'distanceX', a: -1, aEnd: 'a', b: 1, bEnd: 'a', value: 5 },\n  { k: 'distanceY', a: -1, aEnd: 'a', b: 1, bEnd: 'a', value: 3 },\n  { k: 'distance', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 30 },\n  { k: 'distance', a: 2, aEnd: 'a', b: 2, bEnd: 'b', value: 20 }\n])\nconst part = extrude(sk, 10)",
+  "expect": "One body, 30 x 20 x 10 = 6000 mm3, bbox [5,3,0, 35,23,10]. Sketch report: dof 0, failing none.",
+  "closed": 6000,
+  "dof": 0,
+  "bbox": [
+   5,
+   3,
+   0,
+   35,
+   23,
+   10
+  ],
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 6000,
+   "brep": {
+    "volume": 5999.99999991092,
+    "faces": 6
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 9 names geometry -1, which this sketch does not have"
+   },
+   "volume": 5999.99999991092,
+   "source": "brep-rs",
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ],
+   "agree": {
+    "refVsClosed": 1.4846591511741282e-11
+   }
+  }
+ },
+ {
+  "id": "2d-plate-hole-dims",
+  "group": "2d",
+  "title": "Plate with a dimensioned hole (two loops)",
+  "script": "// a 40 x 25 plate; a hole of diameter 10 whose centre is 20 right and 12.5 up of the plate corner\n// the corner sits on the origin; the outer loop is the plate, the inner circle is a hole (even-odd fill)\nconst sk = sketch('top')\nsk.geom([\n  { k: 'line', id: 1, a: [0.3, 0.2], b: [39, 0.2] },\n  { k: 'line', id: 2, a: [39, 0.2], b: [39, 25.6] },\n  { k: 'line', id: 3, a: [39, 25.6], b: [0.3, 25.6] },\n  { k: 'line', id: 4, a: [0.3, 25.6], b: [0.3, 0.2] },\n  { k: 'circle', id: 5, c: [19, 13.5], r: 4.4 }\n])\nsk.rules([\n  { k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' },\n  { k: 'coincident', a: 2, aEnd: 'b', b: 3, bEnd: 'a' },\n  { k: 'coincident', a: 3, aEnd: 'b', b: 4, bEnd: 'a' },\n  { k: 'coincident', a: 4, aEnd: 'b', b: 1, bEnd: 'a' },\n  { k: 'horizontal', a: 1 },\n  { k: 'vertical', a: 2 },\n  { k: 'horizontal', a: 3 },\n  { k: 'vertical', a: 4 },\n  { k: 'coincident', a: 1, aEnd: 'a', b: -1, bEnd: 'a' },\n  { k: 'distance', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 40 },\n  { k: 'distance', a: 2, aEnd: 'a', b: 2, bEnd: 'b', value: 25 },\n  { k: 'diameter', a: 5, value: 10 },\n  { k: 'distanceX', a: 1, aEnd: 'a', b: 5, bEnd: 'c', value: 20 },\n  { k: 'distanceY', a: 1, aEnd: 'a', b: 5, bEnd: 'c', value: 12.5 }\n])\nconst part = extrude(sk, 10)",
+  "expect": "One body with a hole: 40*25*10 - pi*5^2*10 = 9214.60 mm3. If the hole were filled it would read 10000. dof 0.",
+  "closed": 9214.601836602551,
+  "curved": true,
+  "dof": 0,
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 9214.601836602551,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 9 names geometry -1, which this sketch does not have"
+   },
+   "volume": 9214.601836621781,
+   "source": "brep-rs",
+   "agree": {
+    "refVsClosed": 2.086943778503736e-12
+   }
+  }
+ },
+ {
+  "id": "2d-slot-tangent",
+  "group": "2d",
+  "title": "Slot: two lines and two tangent arcs",
+  "script": "// a slot: lines 40 mm long, 20 apart, closed by two R10 arcs that are tangent to them\n// radius dimension + equal arcs + horizontal + length + one pinned centre\nconst sk = sketch('top')\nsk.geom([\n  { k: 'arc', id: 1, c: [0, 10], r: 10, a: [0, 0], b: [0, 20], sense: 'cw' },\n  { k: 'arc', id: 2, c: [40, 10], r: 10, a: [40, 20], b: [40, 0], sense: 'cw' },\n  { k: 'line', id: 3, a: [0, 20], b: [40, 20] },\n  { k: 'line', id: 4, a: [40, 0], b: [0, 0] }\n])\nsk.rules([\n  { k: 'coincident', a: 3, aEnd: 'a', b: 1, bEnd: 'b' },\n  { k: 'tangent', a: 3, aEnd: 'a', b: 1, bEnd: 'b' },\n  { k: 'coincident', a: 3, aEnd: 'b', b: 2, bEnd: 'a' },\n  { k: 'tangent', a: 3, aEnd: 'b', b: 2, bEnd: 'a' },\n  { k: 'coincident', a: 4, aEnd: 'a', b: 2, bEnd: 'b' },\n  { k: 'tangent', a: 4, aEnd: 'a', b: 2, bEnd: 'b' },\n  { k: 'coincident', a: 4, aEnd: 'b', b: 1, bEnd: 'a' },\n  { k: 'tangent', a: 4, aEnd: 'b', b: 1, bEnd: 'a' },\n  { k: 'radius', a: 1, value: 10 },\n  { k: 'equal', a: 1, b: 2 },\n  { k: 'horizontal', a: 3 },\n  { k: 'distance', a: 3, aEnd: 'a', b: 3, bEnd: 'b', value: 40 },\n  { k: 'lock', a: 1, aEnd: 'c' }\n])\nconst part = extrude(sk, 10)",
+  "expect": "One body, (40*20 + pi*10^2)*10 = 11141.59 mm3 (polygon-faceted arcs, inside the 3e-4 bar), bbox [-10,0,0, 50,20,10]. With the sketch-solver fix the sketch reports dof 0 and no redundant rules, like brep-rs and FreeCAD (phase 6 reported dof 4 with 4 redundant tangents: a misreport on an already-tangent start) and the tangent joints hold to ~1e-15 mm.",
+  "closed": 11141.592653589794,
+  "curved": true,
+  "dof": 0,
+  "bbox": [
+   -10,
+   0,
+   0,
+   50,
+   20,
+   10
+  ],
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 11141.592653589794,
+   "brep": {
+    "volume": 11141.592653589794,
+    "faces": 6
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "volume": 11141.592653589794,
+   "source": "brep-rs",
+   "bbox": [
+    -10,
+    0,
+    0,
+    50,
+    20,
+    10
+   ],
+   "agree": {
+    "refVsClosed": 0
+   }
+  }
+ },
+ {
+  "id": "2d-triangle-angle",
+  "group": "2d",
+  "title": "Triangle with two lengths and an angle dimension",
+  "script": "// a triangle: base 40 on the X axis from the origin, side 30, and 120 deg between side 1 and side 2\n// (120 deg is the exterior angle: the interior corner is 60 deg)\nconst sk = sketch('top')\nsk.geom([\n  { k: 'line', id: 1, a: [0.5, 0.4], b: [39, 1] },\n  { k: 'line', id: 2, a: [39, 1], b: [25, 26.5] },\n  { k: 'line', id: 3, a: [25, 26.5], b: [0.5, 0.4] }\n])\nsk.rules([\n  { k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' },\n  { k: 'coincident', a: 2, aEnd: 'b', b: 3, bEnd: 'a' },\n  { k: 'coincident', a: 3, aEnd: 'b', b: 1, bEnd: 'a' },\n  { k: 'horizontal', a: 1 },\n  { k: 'coincident', a: 1, aEnd: 'a', b: -1, bEnd: 'a' },\n  { k: 'distance', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 40 },\n  { k: 'distance', a: 2, aEnd: 'a', b: 2, bEnd: 'b', value: 30 },\n  { k: 'angle', a: 1, b: 2, value: 120 }\n])\nconst part = extrude(sk, 10)",
+  "expect": "One body. Area 0.5*40*30*sin(60 deg) = 519.615, volume 5196.15 mm3. dof 0.",
+  "closed": 5196.152422706632,
+  "dof": 0,
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 5196.152422706632,
+   "brep": {
+    "volume": 5196.152422707686,
+    "faces": 5
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 4 (horizontal) is off by 6.00e-1 mm: edge 1 does not lie along the axis. These rows have not been solved, and this reference reads them rather than solving them"
+   },
+   "volume": 5196.152422707686,
+   "source": "brep-rs",
+   "agree": {
+    "refVsClosed": 2.0286247854248851e-13
+   }
+  }
+ },
+ {
+  "id": "2d-hexagon",
+  "group": "2d",
+  "title": "Regular hexagon from equal sides and a construction circle",
+  "script": "// six lines, five equal-length rules, six vertices on a construction circle of radius 20 centred on the origin, one vertical side\nconst sk = sketch('top')\nsk.geom([\n  { k: 'line', id: 1, a: [17.320508, -10], b: [17.320508, 10] },\n  { k: 'line', id: 2, a: [17.320508, 10], b: [0, 20] },\n  { k: 'line', id: 3, a: [0, 20], b: [-17.320508, 10] },\n  { k: 'line', id: 4, a: [-17.320508, 10], b: [-17.320508, -10] },\n  { k: 'line', id: 5, a: [-17.320508, -10], b: [0, -20] },\n  { k: 'line', id: 6, a: [0, -20], b: [17.320508, -10] },\n  { k: 'circle', id: 7, c: [0.3, -0.2], r: 19.4, construction: true }\n])\nsk.rules([\n  { k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' },\n  { k: 'coincident', a: 2, aEnd: 'b', b: 3, bEnd: 'a' },\n  { k: 'coincident', a: 3, aEnd: 'b', b: 4, bEnd: 'a' },\n  { k: 'coincident', a: 4, aEnd: 'b', b: 5, bEnd: 'a' },\n  { k: 'coincident', a: 5, aEnd: 'b', b: 6, bEnd: 'a' },\n  { k: 'coincident', a: 6, aEnd: 'b', b: 1, bEnd: 'a' },\n  { k: 'equal', a: 1, b: 2 },\n  { k: 'equal', a: 2, b: 3 },\n  { k: 'equal', a: 3, b: 4 },\n  { k: 'equal', a: 4, b: 5 },\n  { k: 'equal', a: 5, b: 6 },\n  { k: 'pointOnObject', a: 1, aEnd: 'a', b: 7 },\n  { k: 'pointOnObject', a: 2, aEnd: 'a', b: 7 },\n  { k: 'pointOnObject', a: 3, aEnd: 'a', b: 7 },\n  { k: 'pointOnObject', a: 4, aEnd: 'a', b: 7 },\n  { k: 'pointOnObject', a: 5, aEnd: 'a', b: 7 },\n  { k: 'pointOnObject', a: 6, aEnd: 'a', b: 7 },\n  { k: 'coincident', a: 7, aEnd: 'c', b: -1, bEnd: 'a' },\n  { k: 'radius', a: 7, value: 20 },\n  { k: 'vertical', a: 1 }\n])\nconst part = extrude(sk, 10)",
+  "expect": "One body. Area (3*sqrt(3)/2)*20^2 = 1039.23, volume 10392.3 mm3. dof 0 (solidcraft may misreport on an already-regular start).",
+  "closed": 10392.304845413264,
+  "dof": 0,
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 10392.304845413264,
+   "brep": {
+    "volume": 10392.304845406437,
+    "faces": 8
+   },
+   "occt": {
+    "refused": "Sketch 1: circle 7 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+   },
+   "volume": 10392.304845406437,
+   "source": "brep-rs",
+   "agree": {
+    "refVsClosed": 6.568963606298183e-13
+   }
+  }
+ },
+ {
+  "id": "2d-handle-api",
+  "group": "2d",
+  "title": "Handle API: rect + length/across/up (reSHape solver, not solidcraft)",
+  "script": "// the same kind of dimensions through the handle API (sk.length, sk.across, sk.up)\n// NOTE: these are solved by reSHape's own TS solver in solveDoc; solidcraft only sees the solved outline,\n// so there is no solidcraft solver report for this sketch\nconst sk = sketch('top')\nsk.polygon([[0, 0], [40, 0], [40, 25], [0, 25]])\nsk.across(1)\nsk.up(2)\nsk.length(1, 40)\nconst shape = extrude(sk, 12)",
+  "expect": "One body, 40*25*12 = 12000 mm3. No solidcraft sketch report (labelled: solved by reSHape).",
+  "closed": 12000,
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 12000,
+   "brep": {
+    "volume": 12000,
+    "faces": 6
+   },
+   "occt": {
+    "volume": 12000,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ]
+   },
+   "volume": 12000,
+   "source": "OCCT",
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    12
+   ],
+   "agree": {
+    "occtVsBrep": 0,
+    "refVsClosed": 0
+   }
+  }
+ },
+ {
+  "id": "diag-under",
+  "group": "diag",
+  "title": "Under-constrained: only the width is dimensioned",
+  "script": "// a rectangle with joins, horizontal/vertical and ONE length (40). Height and position are free.\n// solidcraft keeps the drawn start (height 20) and reports the freedom\nconst sk = sketch('top')\nsk.geom([\n  { k: 'line', id: 1, a: [0, 0], b: [40, 0] },\n  { k: 'line', id: 2, a: [40, 0], b: [40, 20] },\n  { k: 'line', id: 3, a: [40, 20], b: [0, 20] },\n  { k: 'line', id: 4, a: [0, 20], b: [0, 0] }\n])\nsk.rules([\n  { k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' },\n  { k: 'coincident', a: 2, aEnd: 'b', b: 3, bEnd: 'a' },\n  { k: 'coincident', a: 3, aEnd: 'b', b: 4, bEnd: 'a' },\n  { k: 'coincident', a: 4, aEnd: 'b', b: 1, bEnd: 'a' },\n  { k: 'horizontal', a: 1 },\n  { k: 'vertical', a: 2 },\n  { k: 'horizontal', a: 3 },\n  { k: 'vertical', a: 4 },\n  { k: 'distance', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 40 }\n])\nconst part = extrude(sk, 10)",
+  "expect": "One body, 40*20*10 = 8000 mm3 (as drawn). Sketch report: dof 3 (16 - 8 joins - 4 h/v - 1 length), failing none. The part is built; the diagnostic says what is still free.",
+  "closed": 8000,
+  "dof": 3,
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 8000,
+   "brep": {
+    "volume": 7999.999999999999,
+    "faces": 6
+   },
+   "occt": {
+    "volume": 7999.999999999998,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20,
+     10
+    ]
+   },
+   "volume": 7999.999999999998,
+   "source": "OCCT",
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    20,
+    10
+   ],
+   "agree": {
+    "occtVsBrep": 1.1368683772161603e-16,
+    "refVsClosed": 2.2737367544323206e-16
+   }
+  }
+ },
+ {
+  "id": "diag-conflict",
+  "group": "diag",
+  "title": "Conflicting: width dimensioned 40 and 50",
+  "script": "// the same rectangle with width 40, height 20, and a second, contradictory width of 50\n// solidcraft refuses the second dimension at command time; nothing is extruded\nconst sk = sketch('top')\nsk.geom([\n  { k: 'line', id: 1, a: [0, 0], b: [40, 0] },\n  { k: 'line', id: 2, a: [40, 0], b: [40, 20] },\n  { k: 'line', id: 3, a: [40, 20], b: [0, 20] },\n  { k: 'line', id: 4, a: [0, 20], b: [0, 0] }\n])\nsk.rules([\n  { k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' },\n  { k: 'coincident', a: 2, aEnd: 'b', b: 3, bEnd: 'a' },\n  { k: 'coincident', a: 3, aEnd: 'b', b: 4, bEnd: 'a' },\n  { k: 'coincident', a: 4, aEnd: 'b', b: 1, bEnd: 'a' },\n  { k: 'horizontal', a: 1 },\n  { k: 'vertical', a: 2 },\n  { k: 'horizontal', a: 3 },\n  { k: 'vertical', a: 4 },\n  { k: 'lock', a: 1, aEnd: 'a' },\n  { k: 'distanceX', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 40 },\n  { k: 'distanceY', a: 2, aEnd: 'a', b: 2, bEnd: 'b', value: 20 },\n  { k: 'distanceX', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 50 }\n])\nconst part = extrude(sk, 10)",
+  "expect": "REFUSAL. The extrude is refused with solidcraft's own sentence about the dimension conflicting; the viewport shows no body, and the document is restored (earlier accepted features stay). No part is built from half the rules.",
+  "refusal": true,
+  "expectRefused": [
+   {
+    "id": "pull1",
+    "contains": "over-constrain"
+   }
+  ],
+  "expectBuilt": [],
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": null,
+   "brep": {
+    "refused": "extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 12 (distanceX) is off by 1.00e+1 mm: (0.0, 0.0) mm to (40.0, 0.0) mm measures 40 where the rule says 50. These rows have not been solved, and this reference reads them rather than solving them"
+   },
+   "builtVolume": 0,
+   "builtFeatures": [],
+   "volume": null,
+   "source": null,
+   "agree": {}
+  }
+ },
+ {
+  "id": "diag-redundant",
+  "group": "diag",
+  "title": "Redundant: width dimensioned 40 twice",
+  "script": "// the same rectangle with width 40 stated twice. brep-rs and FreeCAD accept this (redundant, builds); solidcraft is stricter\nconst sk = sketch('top')\nsk.geom([\n  { k: 'line', id: 1, a: [0, 0], b: [40, 0] },\n  { k: 'line', id: 2, a: [40, 0], b: [40, 20] },\n  { k: 'line', id: 3, a: [40, 20], b: [0, 20] },\n  { k: 'line', id: 4, a: [0, 20], b: [0, 0] }\n])\nsk.rules([\n  { k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' },\n  { k: 'coincident', a: 2, aEnd: 'b', b: 3, bEnd: 'a' },\n  { k: 'coincident', a: 3, aEnd: 'b', b: 4, bEnd: 'a' },\n  { k: 'coincident', a: 4, aEnd: 'b', b: 1, bEnd: 'a' },\n  { k: 'horizontal', a: 1 },\n  { k: 'vertical', a: 2 },\n  { k: 'horizontal', a: 3 },\n  { k: 'vertical', a: 4 },\n  { k: 'lock', a: 1, aEnd: 'a' },\n  { k: 'distanceX', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 40 },\n  { k: 'distanceY', a: 2, aEnd: 'a', b: 2, bEnd: 'b', value: 20 },\n  { k: 'distanceX', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 40 }\n])\nconst part = extrude(sk, 10)",
+  "expect": "REFUSAL by solidcraft, though brep-rs builds 8000 mm3 (volume 40*20*10). This is a documented difference (phase 2: SOLIDCRAFT-STRICTER), not a wrong solid.",
+  "refusal": true,
+  "brepBuilds": true,
+  "closed": 8000,
+  "expectRefused": [
+   {
+    "id": "pull1",
+    "contains": "already determined"
+   }
+  ],
+  "expectBuilt": [],
+  "ref": {
+   "finalFeature": "pull1",
+   "closed": 8000,
+   "brep": {
+    "volume": 7999.999999999999,
+    "faces": 6
+   },
+   "occt": {
+    "volume": 7999.999999999998,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20,
+     10
+    ]
+   },
+   "builtVolume": 0,
+   "builtFeatures": [],
+   "volume": 7999.999999999998,
+   "source": "OCCT",
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    20,
+    10
+   ],
+   "agree": {
+    "occtVsBrep": 1.1368683772161603e-16,
+    "refVsClosed": 2.2737367544323206e-16
+   }
+  }
+ },
+ {
+  "id": "named-fillet-edge",
+  "group": "3d",
+  "title": "Fillet on a named edge (top / front)",
+  "script": "// round the edge where the top face meets the front face of a 40 x 40 x 20 block, radius 3\nconst b = cuboid(40, 40, 20)\nround(b.edge('top', 'front'), 3)",
+  "expect": "PASS. One body, curved, volume = OCCT's (31922.7). The edge is found by solidcraft's own topology: the one edge on both the +z and -y planes, whose persistent name is F1:+z|F1:-y. Phase 3 refused this.",
+  "curved": true,
+  "ref": {
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 31922.743338823082,
+    "faces": 7
+   },
+   "occt": {
+    "volume": 31922.743338853463,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ]
+   },
+   "volume": 31922.743338853463,
+   "source": "OCCT",
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "agree": {
+    "occtVsBrep": 9.516964345941755e-13
+   }
+  }
+ },
+ {
+  "id": "named-bevel-edge",
+  "group": "3d",
+  "title": "Chamfer on a named edge (top / right)",
+  "script": "// bevel the top-right edge of a 40 x 40 x 20 block by 3\nconst b = cuboid(40, 40, 20)\nchamfer(b.edge('top', 'right'), 3)",
+  "expect": "PASS. Volume 32000 - 0.5*3*3*40 = 31820 (planar, exact).",
+  "closed": 31820,
+  "ref": {
+   "finalFeature": "bevel1",
+   "closed": 31820,
+   "brep": {
+    "volume": 31820,
+    "faces": 7
+   },
+   "occt": {
+    "volume": 31819.999999999993,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ]
+   },
+   "volume": 31819.999999999993,
+   "source": "OCCT",
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "agree": {
+    "occtVsBrep": 2.2865988730934713e-16,
+    "refVsClosed": 2.2865988730934713e-16
+   }
+  }
+ },
+ {
+  "id": "named-shell-open-top",
+  "group": "3d",
+  "title": "Shell with an open face (top)",
+  "script": "// hollow a 40 x 40 x 20 block, 2 mm walls, open at the top\nconst b = cuboid(40, 40, 20)\nshell(b, { wall: 2, open: 'top' })",
+  "expect": "PASS. Volume = OCCT's (8672 = 32000 - 36*36*18). The open face is the one planar face with outward normal +z; the pick point is its centroid (its own nearest-face lookup returns the same face). Phase 3 refused this.",
+  "closed": 8672,
+  "ref": {
+   "finalFeature": "shell1",
+   "closed": 8672,
+   "brep": {
+    "volume": 8671.999999999995,
+    "faces": 11
+   },
+   "occt": {
+    "volume": 8671.999999999993,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ]
+   },
+   "volume": 8671.999999999993,
+   "source": "OCCT",
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "agree": {
+    "occtVsBrep": 2.097543131395131e-16,
+    "refVsClosed": 8.390172525580519e-16
+   }
+  }
+ },
+ {
+  "id": "named-draft-face",
+  "group": "3d",
+  "title": "Draft one face (right) by 8 degrees",
+  "script": "// tilt the right face of a 40 x 40 x 20 block by 8 degrees, pulled along z, neutral plane at the bottom (z = -10)\nconst b = cuboid(40, 40, 20)\ndraft(b.face('right'), 8, { neutral: -10 })",
+  "expect": "PASS, curved bar. Volume = OCCT's draft of the +x face (neutral plane z = -10, the bottom).",
+  "curved": true,
+  "ref": {
+   "finalFeature": "draft1",
+   "closed": null,
+   "brep": {
+    "volume": 30875.67332238087,
+    "faces": 6
+   },
+   "occt": {
+    "volume": 30875.673322380862,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20.000000000000004,
+     10
+    ]
+   },
+   "volume": 30875.673322380862,
+   "source": "OCCT",
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20.000000000000004,
+    10
+   ],
+   "agree": {
+    "occtVsBrep": 2.3565340707596155e-16
+   }
+  }
+ },
+ {
+  "id": "named-cylinder-rim",
+  "group": "3d",
+  "title": "Round the top rim of a cylinder (edge between top and side)",
+  "script": "// the rim of a 12 mm radius, 30 mm tall cylinder; solidcraft splits the wall into 2 halves and the rim into 2 half circles\nconst c = cylinder(12, 30)\nround(c.edge('top', 'side'), 3)",
+  "expect": "PASS, curved. The name resolves to ONE closed loop of 2 engine half-edges (F1:side#1|F1:top + F1:side#2|F1:top); picking one point rounds the whole rim. Volume = OCCT's.",
+  "curved": true,
+  "ref": {
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 3328.239388115527,
+    "faces": 4
+   },
+   "occt": {
+    "volume": 3328.2393881155253,
+    "bbox": [
+     -6,
+     -6,
+     -15,
+     6,
+     6,
+     15
+    ]
+   },
+   "volume": 3328.2393881155253,
+   "source": "OCCT",
+   "bbox": [
+    -6,
+    -6,
+    -15,
+    6,
+    6,
+    15
+   ],
+   "agree": {
+    "occtVsBrep": 5.465320223181966e-16
+   }
+  }
+ },
+ {
+  "id": "named-edge-after-cut",
+  "group": "3d",
+  "title": "Round an edge of a block that has had a hole cut through it",
+  "script": "// a 40 x 40 x 20 block with a 8 mm hole through the middle, then the top-right edge rounded 2\nconst b = cuboid(40, 40, 20)\nconst c = cylinder(4, 40, { at: [0, 0, 0] })\nconst d = subtract(b, c)\nround(d.edge('top', 'right'), 2)",
+  "expect": "PASS. The name is primitive(op1, +z / +x) on the cut result, resolved on op1's own shape (7 faces; the top face has a hole but its edge to +x is whole).",
+  "curved": true,
+  "ref": {
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 31714.33629385641,
+    "faces": 8
+   },
+   "occt": {
+    "volume": 31714.33629387892,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ]
+   },
+   "volume": 31714.33629387892,
+   "source": "OCCT",
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "agree": {
+    "occtVsBrep": 7.098308048983017e-13
+   }
+  }
+ },
+ {
+  "id": "named-hole-then-round",
+  "group": "3d",
+  "title": "Name an edge of the box, round it on the holed body",
+  "script": "// the box edge is named against box1, the round is applied to the body after hole1 drilled it\nconst b = cuboid(40, 30, 10)\nhole(b, { across: 6 })\nround(b.edge('top', 'right'), 2)",
+  "expect": "PASS. The name belongs to box1 (resolved on box1's own shape), the pick is then checked to be whole on the holed target before it is used.",
+  "curved": true,
+  "ref": {
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 11691.504440784613,
+    "faces": 8
+   },
+   "occt": {
+    "volume": 11691.504440798064,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ]
+   },
+   "volume": 11691.504440798064,
+   "source": "OCCT",
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    5
+   ],
+   "agree": {
+    "occtVsBrep": 1.150530002990692e-12
+   }
+  }
+ },
+ {
+  "id": "named-hole-then-shell",
+  "group": "3d",
+  "title": "Shell open at the top of a plate that has a hole (annular face)",
+  "script": "// a 40 x 30 x 10 plate with a 10 mm hole through it, then hollowed 1 mm, open at the top (the top face is an annulus)\nconst b = cuboid(40, 30, 10)\nhole(b, { across: 10 })\nshell(b, { wall: 1, open: 'top' })",
+  "expect": "PASS. Volume = OCCT's and brep-rs's 2656.478. The top face's centroid is IN the hole, so the pick is an interior point of the face, chosen on the target body and verified with solidcraft's own pick test (phase 4 first version over-refused or mis-picked here).",
+  "curved": true,
+  "ref": {
+   "finalFeature": "shell1",
+   "closed": null,
+   "brep": {
+    "volume": 2656.477856365644,
+    "faces": 14
+   },
+   "occt": {
+    "volume": 2656.4778563656455,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ]
+   },
+   "volume": 2656.4778563656455,
+   "source": "OCCT",
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    5
+   ],
+   "agree": {
+    "occtVsBrep": 5.135529548610002e-16
+   }
+  }
+ },
+ {
+  "id": "named-pocket-wall-round",
+  "group": "3d",
+  "title": "Round the rim of a pocket wall (carried + swept + between)",
+  "script": "// a 60 x 40 x 12 plate, a 20 x 10 pocket 4 deep, and the rim edge along pocket wall 1 rounded 1\nconst plate = cuboid(60, 40, 12)\nconst sk2 = sketch('top', 6)\nsk2.rect(20, 10, { at: [0, 0] })\nconst part = pocket(sk2, plate, 4)\nround(part.edge('top', part.wall(sk2, 1)), 1)",
+  "expect": "PASS. The edge is between carried(plate top) and swept(pocket tool, edge 0); the wall is read off the tool's own shape and lifted onto the pocketed plate with its normal flipped, and solidcraft's persistent names agree.",
+  "curved": true,
+  "ref": {
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 27995.707963267952,
+    "faces": 12
+   },
+   "occt": {
+    "volume": 27995.707963267254,
+    "bbox": [
+     -30,
+     -20,
+     -6,
+     30,
+     20,
+     6
+    ]
+   },
+   "volume": 27995.707963267254,
+   "source": "OCCT",
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "agree": {
+    "occtVsBrep": 2.4949964897407567e-14
+   }
+  }
+ },
+ {
+  "id": "named-counterbore-round",
+  "group": "3d",
+  "title": "Counterbore (refused) and a named-edge round (built)",
+  "script": "const base = cuboid(40, 30, 10)\nconst post = extrude(sketch('top', 5).rect(10, 10), 20)\nhole(base, { across: 6, at: [12, 0], counterbore: { across: 10, deep: 3 } })\nconst other = cuboid(10, 10, 10, { at: [30, 0, 0] })\nround(other.edge('top', 'right'), 1)",
+  "expect": "Mixed: base, post and other build, the NAMED round now builds too (phase 3 refused it); only the counterbored hole is refused, with its sentence. Built volume = base 12000 + post 2000 + rounded box.",
+  "partial": true,
+  "curved": true,
+  "expectRefused": [
+   {
+    "id": "hole1",
+    "contains": "counterbore"
+   }
+  ],
+  "expectBuilt": [
+   "box1",
+   "pull1",
+   "round1"
+  ],
+  "ref": {
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 997.8539816339749,
+    "faces": 7
+   },
+   "occt": {
+    "volume": 997.8539816348185,
+    "bbox": [
+     25,
+     -5,
+     -5,
+     35,
+     5,
+     5
+    ]
+   },
+   "builtVolume": 14997.853981634817,
+   "builtFeatures": [
+    "box1",
+    "pull1",
+    "round1"
+   ],
+   "volume": 997.8539816348185,
+   "source": "OCCT",
+   "bbox": [
+    25,
+    -5,
+    -5,
+    35,
+    5,
+    5
+   ],
+   "agree": {
+    "occtVsBrep": 8.454844478854634e-13
+   }
+  }
+ },
+ {
+  "id": "refuse-shell-closed",
+  "group": "refusal",
+  "title": "Shell: a closed hollow box (no open face)",
+  "script": "// a closed hollow box, 2 mm walls: no face is opened\nconst b = cuboid(40, 40, 20)\nshell(b, { wall: 2 })",
+  "expect": "REFUSAL by this spike's translator: a shell needs a face to remove and a closed hollow box is not mapped. brep-rs builds it (40*40*20 - 36*36*16 = 11264 mm3). The box itself still builds (32000).",
+  "refusal": true,
+  "partial": true,
+  "closed": 11264,
+  "expectRefused": [
+   {
+    "id": "shell1",
+    "contains": "closed hollow box is not mapped"
+   }
+  ],
+  "expectBuilt": [
+   "box1"
+  ],
+  "ref": {
+   "finalFeature": "shell1",
+   "closed": 11264,
+   "brep": {
+    "volume": 11263.999999999995,
+    "faces": 12
+   },
+   "occt": {
+    "volume": 11263.999999999993,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ]
+   },
+   "builtVolume": 31999.999999999993,
+   "builtFeatures": [
+    "box1"
+   ],
+   "volume": 11263.999999999993,
+   "source": "OCCT",
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "agree": {
+    "occtVsBrep": 1.6148698540002285e-16,
+    "refVsClosed": 6.459479416000911e-16
+   }
+  }
+ },
+ {
+  "id": "refuse-name-two-faces",
+  "group": "refusal",
+  "title": "Ambiguous name: the top face is split in two",
+  "script": "// a channel 5 deep cut right across a block splits its top face into two coplanar pieces; \"the top face\" is then 2 faces\nconst b = cuboid(60, 40, 20)\nconst slot = cuboid(10, 50, 10, { at: [0, 0, 10] })\nconst d = subtract(b, slot)\nshell(d, { wall: 2, open: 'top' })",
+  "expect": "EXPECTED REFUSAL: the shell is refused with a sentence that names the name and says it matches 2 faces. The channelled block (60*40*20 - 10*40*5 = 46000) stays. Measured on brep-rs for the same block: this shell is refused there too (for its own reason, a blind cut), round(top/left) resolves by picking ONE of the two pieces (centroid -30,0,10) and round(top/right) resolves to null. This demo refuses every spelling with the count instead of choosing a piece.",
+  "refusal": true,
+  "partial": true,
+  "expectRefused": [
+   {
+    "id": "shell1",
+    "contains": "matches 2 faces"
+   }
+  ],
+  "expectBuilt": [
+   "op1"
+  ],
+  "ref": {
+   "finalFeature": "shell1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   },
+   "occt": {
+    "volume": 14690.194671058522,
+    "bbox": [
+     -30,
+     -20,
+     -10,
+     30,
+     20,
+     10
+    ]
+   },
+   "builtVolume": 45999.99999999999,
+   "builtFeatures": [
+    "op1"
+   ],
+   "volume": 14690.194671058522,
+   "source": "OCCT",
+   "bbox": [
+    -30,
+    -20,
+    -10,
+    30,
+    20,
+    10
+   ],
+   "agree": {}
+  }
+ },
+ {
+  "id": "refuse-name-swept-arc",
+  "group": "refusal",
+  "title": "Unsupported name: a swept wall of a circular pocket",
+  "script": "// the wall of a round pocket is swept from an ARC; this demo resolves swept names over straight sketch edges only\nconst plate = cuboid(60, 40, 12)\nconst sk = sketch('top', 6)\nsk.circle(8, { at: [0, 0] })\nconst part = pocket(sk, plate, 4)\nround(part.edge('top', part.wall(sk, 1)), 1)",
+  "expect": "EXPECTED REFUSAL: the round is refused with the sentence that a swept name over a circle sketch is not resolved in the browser demo. The plate and pocket stay.",
+  "refusal": true,
+  "partial": true,
+  "curved": true,
+  "expectRefused": [
+   {
+    "id": "round1",
+    "contains": "swept name over it is not resolved"
+   }
+  ],
+  "expectBuilt": [
+   "pocket1"
+  ],
+  "ref": {
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 28593.243352188274,
+    "faces": 9
+   },
+   "occt": {
+    "volume": 28593.243352188278,
+    "bbox": [
+     -30,
+     -20,
+     -6,
+     30,
+     20,
+     6
+    ]
+   },
+   "builtVolume": 28598.93807017025,
+   "builtFeatures": [
+    "pocket1"
+   ],
+   "volume": 28593.243352188278,
+   "source": "OCCT",
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6
+   ],
+   "agree": {
+    "occtVsBrep": 1.2723211432442464e-16
+   }
+  }
+ },
+ {
+  "id": "stub-centre",
+  "group": "stub",
+  "title": "Shell open at b1's top, stub centre unioned on it (fixed: refused)",
+  "script": "// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = [10,10,8] at [0,0,9], union, shell 1 mm, open = b1.+z\n{\"version\":1,\"features\":[{\"id\":\"b1\",\"kind\":\"box\",\"size\":[40,30,10],\"center\":[0,0,0]},{\"id\":\"b2\",\"kind\":\"box\",\"size\":[10,10,8],\"center\":[0,0,9]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"b1\",\"b2\"]},{\"id\":\"s1\",\"kind\":\"shell\",\"target\":\"op1\",\"thickness\":1,\"open\":{\"cause\":\"primitive\",\"feature\":\"b1\",\"kind\":\"face\",\"part\":\"+z\"}}]}",
+  "expect": "EXPECTED REFUSAL (shell-stub fix). The stub stands free of every wall, so the plane-offset shell (reference P = 2776.000) would leave it as a floating piece; solidcraft now refuses s1 in a plain sentence instead of building a truncated tube (phase 6 built 2644.346, red DIVERGES). The union b1+b2 still builds: 12800.000.",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      10
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "size": [
+      10,
+      10,
+      8
+     ],
+     "center": [
+      0,
+      0,
+      9
+     ]
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "op": "union",
+     "targets": [
+      "b1",
+      "b2"
+     ]
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "target": "op1",
+     "thickness": 1,
+     "open": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     }
+    }
+   ]
+  },
+  "ref": {
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12800.000000000002,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     13
+    ]
+   },
+   "volume": 12800.000000000002,
+   "source": "independent box composition (OCCT booleans); builtVolume = the union that must still build",
+   "occtShellNoOp": 12800.000000000002,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "agree": {},
+   "builtVolume": 12800.000000000002,
+   "builtFeatures": [
+    "b1",
+    "b2",
+    "op1"
+   ]
+  },
+  "refusal": true,
+  "partial": true,
+  "expectRefused": [
+   {
+    "id": "s1",
+    "contains": "something stands on the open face"
+   }
+  ],
+  "expectBuilt": [
+   "b1",
+   "b2",
+   "op1"
+  ]
+ },
+ {
+  "id": "stub-offset-x",
+  "group": "stub",
+  "title": "Shell open at b1's top, stub offset-x unioned on it (fixed: refused)",
+  "script": "// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = [10,10,8] at [10,0,9], union, shell 1 mm, open = b1.+z\n{\"version\":1,\"features\":[{\"id\":\"b1\",\"kind\":\"box\",\"size\":[40,30,10],\"center\":[0,0,0]},{\"id\":\"b2\",\"kind\":\"box\",\"size\":[10,10,8],\"center\":[10,0,9]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"b1\",\"b2\"]},{\"id\":\"s1\",\"kind\":\"shell\",\"target\":\"op1\",\"thickness\":1,\"open\":{\"cause\":\"primitive\",\"feature\":\"b1\",\"kind\":\"face\",\"part\":\"+z\"}}]}",
+  "expect": "EXPECTED REFUSAL (shell-stub fix). The stub stands free of every wall, so the plane-offset shell (reference P = 2776.000) would leave it as a floating piece; solidcraft now refuses s1 in a plain sentence instead of building a truncated tube (phase 6 built 2644.346, red DIVERGES). The union b1+b2 still builds: 12800.000.",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      10
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "size": [
+      10,
+      10,
+      8
+     ],
+     "center": [
+      10,
+      0,
+      9
+     ]
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "op": "union",
+     "targets": [
+      "b1",
+      "b2"
+     ]
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "target": "op1",
+     "thickness": 1,
+     "open": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     }
+    }
+   ]
+  },
+  "ref": {
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12800,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     13
+    ]
+   },
+   "volume": 12800,
+   "source": "independent box composition (OCCT booleans); builtVolume = the union that must still build",
+   "occtShellNoOp": 12800,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "agree": {},
+   "builtVolume": 12800,
+   "builtFeatures": [
+    "b1",
+    "b2",
+    "op1"
+   ]
+  },
+  "refusal": true,
+  "partial": true,
+  "expectRefused": [
+   {
+    "id": "s1",
+    "contains": "something stands on the open face"
+   }
+  ],
+  "expectBuilt": [
+   "b1",
+   "b2",
+   "op1"
+  ]
+ },
+ {
+  "id": "stub-corner",
+  "group": "stub",
+  "title": "Shell open at b1's top, stub corner unioned on it (fixed: built = plane-offset reference)",
+  "script": "// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = [10,10,8] at [15,10,9], union, shell 1 mm, open = b1.+z\n{\"version\":1,\"features\":[{\"id\":\"b1\",\"kind\":\"box\",\"size\":[40,30,10],\"center\":[0,0,0]},{\"id\":\"b2\",\"kind\":\"box\",\"size\":[10,10,8],\"center\":[15,10,9]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"b1\",\"b2\"]},{\"id\":\"s1\",\"kind\":\"shell\",\"target\":\"op1\",\"thickness\":1,\"open\":{\"cause\":\"primitive\",\"feature\":\"b1\",\"kind\":\"face\",\"part\":\"+z\"}}]}",
+  "expect": "BUILT, VERIFIED AGAINST P ONLY (shell-stub fix; P is the plane-offset convention, the connected-erosion figure L differs: corner 2812, edge-flush 2832). The stub touches a wall, so the plane-offset shell is one connected part. Reference P (independent OCCT box composition, live in phase4/stub-reference-results.json, voxel cross-checked) = 2776.000. Phase 6 built a truncated tube (2713.830, red DIVERGES); the combined build must equal P within the planar bar. The distance-erosion alternative (2812) is not the semantics solidcraft's own shell tests imply.",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      10
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "size": [
+      10,
+      10,
+      8
+     ],
+     "center": [
+      15,
+      10,
+      9
+     ]
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "op": "union",
+     "targets": [
+      "b1",
+      "b2"
+     ]
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "target": "op1",
+     "thickness": 1,
+     "open": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     }
+    }
+   ]
+  },
+  "ref": {
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12800.000000000002,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     13
+    ]
+   },
+   "volume": 2776,
+   "source": "independent box composition (OCCT booleans); builtVolume = the union that must still build",
+   "occtShellNoOp": 12800.000000000002,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "agree": {}
+  },
+  "divergence": {
+   "status": "diverges",
+   "refs": [
+    {
+     "label": "plane-offset box composition (OCCT, voxel-checked)",
+     "volume": 2776
+    }
+   ]
+  }
+ },
+ {
+  "id": "stub-edge-flush",
+  "group": "stub",
+  "title": "Shell open at b1's top, stub edge-flush unioned on it (fixed: built = plane-offset reference)",
+  "script": "// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = [10,10,8] at [15,0,9], union, shell 1 mm, open = b1.+z\n{\"version\":1,\"features\":[{\"id\":\"b1\",\"kind\":\"box\",\"size\":[40,30,10],\"center\":[0,0,0]},{\"id\":\"b2\",\"kind\":\"box\",\"size\":[10,10,8],\"center\":[15,0,9]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"b1\",\"b2\"]},{\"id\":\"s1\",\"kind\":\"shell\",\"target\":\"op1\",\"thickness\":1,\"open\":{\"cause\":\"primitive\",\"feature\":\"b1\",\"kind\":\"face\",\"part\":\"+z\"}}]}",
+  "expect": "BUILT, VERIFIED AGAINST P ONLY (shell-stub fix; P is the plane-offset convention, the connected-erosion figure L differs: corner 2812, edge-flush 2832). The stub touches a wall, so the plane-offset shell is one connected part. Reference P (independent OCCT box composition, live in phase4/stub-reference-results.json, voxel cross-checked) = 2776.000. Phase 6 built a truncated tube (2680.916, red DIVERGES); the combined build must equal P within the planar bar. The distance-erosion alternative (2832) is not the semantics solidcraft's own shell tests imply.",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      10
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "size": [
+      10,
+      10,
+      8
+     ],
+     "center": [
+      15,
+      0,
+      9
+     ]
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "op": "union",
+     "targets": [
+      "b1",
+      "b2"
+     ]
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "target": "op1",
+     "thickness": 1,
+     "open": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     }
+    }
+   ]
+  },
+  "ref": {
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12800,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     13
+    ]
+   },
+   "volume": 2776.000000000001,
+   "source": "independent box composition (OCCT booleans); builtVolume = the union that must still build",
+   "occtShellNoOp": 12800,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "agree": {}
+  },
+  "divergence": {
+   "status": "diverges",
+   "refs": [
+    {
+     "label": "plane-offset box composition (OCCT, voxel-checked)",
+     "volume": 2776.000000000001
+    }
+   ]
+  }
+ },
+ {
+  "id": "stub-tall",
+  "group": "stub",
+  "title": "Shell open at b1's top, stub tall unioned on it (fixed: refused)",
+  "script": "// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = [8,8,30] at [-8,5,20], union, shell 1 mm, open = b1.+z\n{\"version\":1,\"features\":[{\"id\":\"b1\",\"kind\":\"box\",\"size\":[40,30,10],\"center\":[0,0,0]},{\"id\":\"b2\",\"kind\":\"box\",\"size\":[8,8,30],\"center\":[-8,5,20]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"b1\",\"b2\"]},{\"id\":\"s1\",\"kind\":\"shell\",\"target\":\"op1\",\"thickness\":1,\"open\":{\"cause\":\"primitive\",\"feature\":\"b1\",\"kind\":\"face\",\"part\":\"+z\"}}]}",
+  "expect": "EXPECTED REFUSAL (shell-stub fix). The stub stands free of every wall, so the plane-offset shell (reference P = 3300.000) would leave it as a floating piece; solidcraft now refuses s1 in a plain sentence instead of building a truncated tube (phase 6 built 3182.356, red DIVERGES). The union b1+b2 still builds: 13920.000.",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      10
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "size": [
+      8,
+      8,
+      30
+     ],
+     "center": [
+      -8,
+      5,
+      20
+     ]
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "op": "union",
+     "targets": [
+      "b1",
+      "b2"
+     ]
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "target": "op1",
+     "thickness": 1,
+     "open": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     }
+    }
+   ]
+  },
+  "ref": {
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 13919.999999999998,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     35
+    ]
+   },
+   "volume": 13919.999999999998,
+   "source": "independent box composition (OCCT booleans); builtVolume = the union that must still build",
+   "occtShellNoOp": 13919.999999999998,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    35
+   ],
+   "agree": {},
+   "builtVolume": 13919.999999999998,
+   "builtFeatures": [
+    "b1",
+    "b2",
+    "op1"
+   ]
+  },
+  "refusal": true,
+  "partial": true,
+  "expectRefused": [
+   {
+    "id": "s1",
+    "contains": "something stands on the open face"
+   }
+  ],
+  "expectBuilt": [
+   "b1",
+   "b2",
+   "op1"
+  ]
+ },
+ {
+  "id": "stub-low",
+  "group": "stub",
+  "title": "Shell open at b1's top, stub low unioned on it (fixed: refused)",
+  "script": "// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = [12,12,2] at [5,-5,6], union, shell 1 mm, open = b1.+z\n{\"version\":1,\"features\":[{\"id\":\"b1\",\"kind\":\"box\",\"size\":[40,30,10],\"center\":[0,0,0]},{\"id\":\"b2\",\"kind\":\"box\",\"size\":[12,12,2],\"center\":[5,-5,6]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"b1\",\"b2\"]},{\"id\":\"s1\",\"kind\":\"shell\",\"target\":\"op1\",\"thickness\":1,\"open\":{\"cause\":\"primitive\",\"feature\":\"b1\",\"kind\":\"face\",\"part\":\"+z\"}}]}",
+  "expect": "EXPECTED REFUSAL (shell-stub fix). The stub stands free of every wall, so the plane-offset shell (reference P = 2612.000) would leave it as a floating piece; solidcraft now refuses s1 in a plain sentence instead of building a truncated tube (phase 6 built 2524.000, red DIVERGES). The union b1+b2 still builds: 12288.000.",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      10
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "size": [
+      12,
+      12,
+      2
+     ],
+     "center": [
+      5,
+      -5,
+      6
+     ]
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "op": "union",
+     "targets": [
+      "b1",
+      "b2"
+     ]
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "target": "op1",
+     "thickness": 1,
+     "open": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     }
+    }
+   ]
+  },
+  "ref": {
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12287.999999999998,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     7
+    ]
+   },
+   "volume": 12287.999999999998,
+   "source": "independent box composition (OCCT booleans); builtVolume = the union that must still build",
+   "occtShellNoOp": 12287.999999999998,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    7
+   ],
+   "agree": {},
+   "builtVolume": 12287.999999999998,
+   "builtFeatures": [
+    "b1",
+    "b2",
+    "op1"
+   ]
+  },
+  "refusal": true,
+  "partial": true,
+  "expectRefused": [
+   {
+    "id": "s1",
+    "contains": "something stands on the open face"
+   }
+  ],
+  "expectBuilt": [
+   "b1",
+   "b2",
+   "op1"
+  ]
+ }
+]
