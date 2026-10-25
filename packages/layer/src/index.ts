@@ -11,3 +11,8 @@ export type { MapResult, RuleRow, SketchInput } from './sketch-map.js';
 export { resolveName, pickPoint, nameText } from './resolve-names.js';
 export type { Resolved, ResolveEnv } from './resolve-names.js';
 export { checkRules, pointOf } from './rule-check.js';
+export { HOLES_PROFILE, planHole, holesStep, SENTENCE as HOLES_SENTENCE, ALL_GUARDS, plainScriptError, lintSentence, engineSentence, curvedAxis, aggregateOf, MIN_ACROSS, CS_MAX_ANGLE, CB_MIN, CS_MIN, BUDGET_S, DOC_BUDGET_S, CS_MARGIN, COVER_TOL, RECESS_TOL, cbRem, csRem, csToolDepth, csConeDepth } from './holes.js';
+export type { HoleView, RootView, HolePlan, HoleG, PostFn, PostEnv } from './holes.js';
+export { removedVolume, sectionArea, holeProfile } from './holes-volume.js';
+export { composeProfiles, membersOf, ownerOf, resolveNamesFor } from './translate.js';
+export type { LoopEnv, HolesState } from './translate.js';

@@ -10,6 +10,8 @@
     "./translate": "./dist/translate.js",
     "./translator": "./dist/translator.js",
     "./extrude-pocket": "./dist/extrude-pocket.js",
+    "./holes": "./dist/holes.js",
+    "./holes-volume": "./dist/holes-volume.js",
     "./outline-guard": "./dist/outline-guard.js",
     "./soup-regions": "./dist/soup-regions.js",
     "./sketch-map": "./dist/sketch-map.js",
