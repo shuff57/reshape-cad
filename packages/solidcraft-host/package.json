@@ -1,0 +1,10 @@
+{
+  "name": "@shuff57/solidcraft-host",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Same-origin host page for the pinned SolidCraft web build: validates JSON requests from the embedding app and calls upstream window.solidcraft. No patch against upstream.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

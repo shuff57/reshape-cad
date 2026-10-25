@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SolidCraft host</title>
+<style>
+  :root { --ribbon-h: 0px; }  /* set to the measured ribbon height once the web build is looked at */
+  html, body { margin: 0; height: 100%; background: #111; }
+  #sc { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  #lock { position: absolute; left: 0; right: 0; top: 0; height: var(--ribbon-h); background: rgba(17,17,17,.96); z-index: 2; display: flex; align-items: center; justify-content: center; color: #ddd; font: 14px system-ui, sans-serif; }
+  #lock[hidden] { display: none; }
+</style>
+</head>
+<body>
+<!-- ./solidcraft/ is the pinned SolidCraft web build (trunk build --release, dist/web). Same origin as this page, so the page can reach window.solidcraft. -->
+<iframe id="sc" src="./solidcraft/index.html" title="SolidCraft"></iframe>
+<div id="lock" hidden><span id="note"></span></div>
+<script type="module" src="./src/host.mjs"></script>
+</body>
+</html>
