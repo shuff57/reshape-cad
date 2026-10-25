@@ -99,7 +99,13 @@ Never a silently wrong solid. A feature the layer cannot build correctly is refu
 
 ### 5. Kernel watch
 - Re-check the SolidCore progress site periodically.
-- Re-evaluate the swap when boolean, primitive and blend are all above 80% and a first end-to-end release exists. These thresholds are a proposal.
+- Re-check weekly; open a swap spike only when ALL of these hold (PROPOSED 2026-10-25, owner to approve, see open decision 4):
+  1. The primitive, boolean, offset and blend units are all green on the progress site, not just ported. "Ported" counts partial units and overstates it.
+  2. A release newer than 0.0.x exists (today only `solidcore-v0.0.1`, 2026-10-13, tagged "early work in progress"), or the owner accepts pinning a commit.
+  3. A wasm build exists that a browser can load: either a JS-callable API (today only `solidcore-ffi`, an `extern "C"` binding to the C++, and no wasm-bindgen was found) or a thin wrapper we write on our side of the seam, which is part of the spike's cost.
+  4. Whole-solid checks pass for more than the 9 primitives: a boolean, a fillet and a shell, each against the independent oracle.
+- A spike is the layer contract re-run on SolidCore (phase 1 doubling back), touching the adapter only.
+- Probe 2026-10-25 (commit 216cd66d): 250 of 262 units green, 94.0% of lines green. The 12 partial units hold 4,186 deferred cases that reach stubbed calls between ported units (topology.face_p2/p4, topology.edge, intersect.curve_class_p4), 7 known Rust-vs-C++ mismatches and 0 failures, as of CI on 2026-10-23. Primitive construction is the only thing exercised end to end. The README calls the API experimental (0.0.x) and says integration is still in progress. wasm needs `-zstack-size=8388608` (no guard page). Conditions 1 to 4 are not met.
 - Double back on phase 1 whenever SolidCraft or SolidCore moves (a new pinned commit, or a SolidCore milestone): re-run the layer contract on the new kernel and diff it against the last one.
   - A row that was refused and now builds and matches the oracle: promote it to supported and remove its guard, but only after the guard-layer fuzz and the saved FreeCAD results agree.
   - A row that was supported and now disagrees: mark it wrong, loudly, and add or restore a guard before anything ships.
@@ -123,4 +129,4 @@ Truck patching from `LOOP-PLAN.md` (shell patch rebuilds, upstream bisect B1, sk
 1. Front end: DECIDED 2026-10-24 by the owner. SolidCraft-web's UI, driven through upstream `window.solidcraft` from a same-origin host page inside shCode. Our React studio is a proof of concept and is not the student front end. No patch against upstream. Open: the ribbon toggle (phase 3) needs an upstream field or the interim overlay.
 2. Gates: keep `scripts/brep-*` runnable by symlink to the archive, or archive them with brep-rs.
 3. Approve phase 0a (changes what `npm test` covers) and the message text for 0c.
-4. SolidCore swap thresholds (phase 5).
+4. SolidCore swap thresholds (phase 5): proposed 2026-10-25 in phase 5; owner approval pending.
