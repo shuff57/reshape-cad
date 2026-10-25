@@ -4,16 +4,29 @@
   "stopRule": "stop on any row change",
   "groups": {
     "extrude-pocket": {
-      "state": "baseline-done",
+      "state": "baseline-explained",
       "baselineFile": "docs/spikes/solidcraft-referee/contract/measured-0.21.0/extrude-pocket.json",
       "diffVs0_9_0": "101 rows vs 104. By feature name: 4 'thin walls and slivers' rows that were refused on 0.9.0 are gone and one 'wrong' row with the same title appears; 1 'pocket options: direction with a ROUND shape that stays inside the part' went supported to refused. Taper fuzz (2 seeds x 500) identical to 0.9.0: 553 built right, 0 built wrong, 434 refused right, 13 oracle failed. NOT yet explained: the thin-wall change may come from a missing optional input (the slender results file) rather than the kernel.",
-      "next": "explain the thin-wall change, then fold"
+      "next": "Do not promote the 9 thin-wall rows yet: plan phase 5 needs the guard-layer fuzz and the saved FreeCAD results to agree first. Fix the row builder so 'built and matches the oracle' is not labelled wrong, then fold extrude-pocket with the thin-wall guard kept (it still protects 0.9.0 and the 9 other cases).",
+      "explained": "Thin-wall change is the KERNEL, not the rebuild. Of 473 cases, 43 differ in status, refusal, volume (4 digits) or faces; the rest are floating-point noise (~1e-11). Of 18 thin-wall/sliver cases the 0.9.0 contract expects refused, 9 now BUILD on 0.21.0 and match OCCT to 1e-16 (dg-wall-0.1: 10010 vs 10010, dg-wall-thru-0.1: 8020, nf-wall-0.0002: 10000.02). So truck's 'boolean drops the thin wall' bug looks fixed for those. The rebuilt row says 'wrong' only because the row builder labels expect=refuse + built as wrong; those cases are built correctly. Two new 0.21.0 refusals: sx-plain-block and sx-straight-after-slant (built on 0.9.0, now 'does not close up cleanly'). Taper fuzz identical to 0.9.0 (1000 outlines, 0 built wrong)."
     },
-    "holes": { "state": "todo" },
-    "shell-draft": { "state": "todo" },
-    "patterns-mirror": { "state": "todo" },
-    "booleans": { "state": "todo" },
-    "revolve-groove": { "state": "todo" },
-    "rest": { "state": "todo" }
+    "holes": {
+      "state": "todo"
+    },
+    "shell-draft": {
+      "state": "todo"
+    },
+    "patterns-mirror": {
+      "state": "todo"
+    },
+    "booleans": {
+      "state": "todo"
+    },
+    "revolve-groove": {
+      "state": "todo"
+    },
+    "rest": {
+      "state": "todo"
+    }
   }
 }
