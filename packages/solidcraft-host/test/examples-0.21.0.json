@@ -1,0 +1,457 @@
+[
+ {
+  "id": "fr-rect-dims",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 6000.000000 vs brep-rs 6000.000000 (rel delta 1.48e-11, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 5999.999999999956
+ },
+ {
+  "id": "fr-plate-hole-dims",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 9214.732294 vs brep-rs 9214.601837 (rel delta 1.42e-5, bar 0.0003)",
+  "refusals": [],
+  "volume": 9214.732294132635
+ },
+ {
+  "id": "fr-slot-tangent",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 11141.176810 vs brep-rs 11141.592654 (rel delta 3.73e-5, bar 0.0003); bbox delta 5.33e-16",
+  "refusals": [],
+  "volume": 11141.176810322648
+ },
+ {
+  "id": "fr-triangle-angle",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 5196.152423 vs brep-rs 5196.152423 (rel delta 2.03e-13, bar 1e-9)",
+  "refusals": [],
+  "volume": 5196.152422706632
+ },
+ {
+  "id": "fr-hexagon",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 10392.304845 vs brep-rs 10392.304845 (rel delta 6.79e-13, bar 1e-9)",
+  "refusals": [],
+  "volume": 10392.304845413491
+ },
+ {
+  "id": "fr-untouched-default",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 10000.000000 vs OCCT 10000.000000 (rel delta 1.82e-16, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 10000
+ },
+ {
+  "id": "fr-bracket-rounded",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 18500.373049 vs brep-rs 18500.389342 (rel delta 8.81e-7, bar 0.0003); bbox delta 1.78e-15",
+  "refusals": [],
+  "volume": 18500.373048627964
+ },
+ {
+  "id": "fr-symmetric-profile",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 7000.000000 vs brep-rs 7000.000000 (rel delta 8.05e-12, bar 1e-9); bbox delta 4.10e-12",
+  "refusals": [],
+  "volume": 6999.999999998711
+ },
+ {
+  "id": "fr-symmetric-axis",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 7000.000000 vs closed form 7000.000000 (rel delta 1.80e-13, bar 1e-9); bbox delta 3.99e-12",
+  "refusals": [],
+  "volume": 6999.99999999874
+ },
+ {
+  "id": "misuse-unknown-handle",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-dimension-non-line",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-tangent-two-lines",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-other-sketch",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-removed-entity",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-undefined-entity",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-arity",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-negative-radius",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-remove-all",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-reassign-sketch",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-line-over-line",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-nan",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "3d-box-hole",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 11717.303626 vs OCCT 11717.256661 (rel delta 4.01e-6, bar 0.0003); bbox delta 7.11e-16",
+  "refusals": [],
+  "volume": 11717.30362588783
+ },
+ {
+  "id": "3d-extrude-sketch",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 9900.000000 vs OCCT 9900.000000 (rel delta 1.84e-16, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 9900
+ },
+ {
+  "id": "3d-revolve",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 75397.450849 vs OCCT 75398.223686 (rel delta 1.03e-5, bar 0.0003); bbox delta 1.29e-16",
+  "refusals": [],
+  "volume": 75397.45084917496
+ },
+ {
+  "id": "3d-union",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 16282.696374 vs OCCT 16282.743339 (rel delta 2.88e-6, bar 0.0003); bbox delta 5.33e-16",
+  "refusals": [],
+  "volume": 16282.696374112165
+ },
+ {
+  "id": "3d-subtract",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 24000.000000 vs OCCT 24000.000000 (rel delta 0.00e+0, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 24000
+ },
+ {
+  "id": "3d-linear-pattern",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 12000.000000 vs OCCT 12000.000000 (rel delta 3.03e-16, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 12000
+ },
+ {
+  "id": "3d-polar-pattern",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 12000.000000 vs OCCT 12000.000000 (rel delta 3.03e-16, bar 1e-9); bbox delta 1.18e-16",
+  "refusals": [],
+  "volume": 12000
+ },
+ {
+  "id": "2d-rect-dims",
+  "group": "2d",
+  "pass": true,
+  "verdict": "PASS: volume 6000.000000 vs brep-rs 6000.000000 (rel delta 1.48e-11, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 5999.999999999956
+ },
+ {
+  "id": "2d-plate-hole-dims",
+  "group": "2d",
+  "pass": true,
+  "verdict": "PASS: volume 9214.732294 vs brep-rs 9214.601837 (rel delta 1.42e-5, bar 0.0003)",
+  "refusals": [],
+  "volume": 9214.732294132635
+ },
+ {
+  "id": "2d-slot-tangent",
+  "group": "2d",
+  "pass": true,
+  "verdict": "PASS: volume 11141.176810 vs brep-rs 11141.592654 (rel delta 3.73e-5, bar 0.0003); bbox delta 5.33e-16",
+  "refusals": [],
+  "volume": 11141.176810322648
+ },
+ {
+  "id": "2d-triangle-angle",
+  "group": "2d",
+  "pass": true,
+  "verdict": "PASS: volume 5196.152423 vs brep-rs 5196.152423 (rel delta 2.03e-13, bar 1e-9)",
+  "refusals": [],
+  "volume": 5196.152422706632
+ },
+ {
+  "id": "2d-hexagon",
+  "group": "2d",
+  "pass": true,
+  "verdict": "PASS: volume 10392.304845 vs brep-rs 10392.304845 (rel delta 6.79e-13, bar 1e-9)",
+  "refusals": [],
+  "volume": 10392.304845413491
+ },
+ {
+  "id": "2d-handle-api",
+  "group": "2d",
+  "pass": true,
+  "verdict": "PASS: volume 12000.000000 vs OCCT 12000.000000 (rel delta 0.00e+0, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 12000
+ },
+ {
+  "id": "diag-under",
+  "group": "diag",
+  "pass": true,
+  "verdict": "PASS: volume 8000.000000 vs OCCT 8000.000000 (rel delta 2.27e-16, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 8000
+ },
+ {
+  "id": "diag-conflict",
+  "group": "diag",
+  "pass": true,
+  "verdict": "EXPECTED REFUSAL matched: pull1 refused with the expected sentence; built 0 feature(s), volume 0.000 = reference 0.000",
+  "refusals": [
+   "pull1 (extrude): solidcraft refused it -- sketch.dimension: that would over-constrain the sketch (conflicts with k10, k12)"
+  ],
+  "volume": 0
+ },
+ {
+  "id": "diag-redundant",
+  "group": "diag",
+  "pass": true,
+  "verdict": "EXPECTED REFUSAL matched: pull1 refused with the expected sentence; built 0 feature(s), volume 0.000 = reference 0.000",
+  "refusals": [
+   "pull1 (extrude): solidcraft refused it -- sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+  ],
+  "volume": 0
+ },
+ {
+  "id": "named-fillet-edge",
+  "group": "3d",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)",
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[-y]] cannot be resolved: box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 32000
+ },
+ {
+  "id": "named-bevel-edge",
+  "group": "3d",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] cannot be resolved: box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)",
+  "refusals": [
+   "bevel1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] cannot be resolved: box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 32000
+ },
+ {
+  "id": "named-shell-open-top",
+  "group": "3d",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: shell1 (shell): box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)",
+  "refusals": [
+   "shell1 (shell): box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 32000
+ },
+ {
+  "id": "named-draft-face",
+  "group": "3d",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: draft1 (draft): box1.face[+x]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)",
+  "refusals": [
+   "draft1 (draft): box1.face[+x]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 32000
+ },
+ {
+  "id": "named-cylinder-rim",
+  "group": "3d",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: solidcraft could not report the topology of cyl1 (this build cannot report topology, so named edges and faces cannot be picked)",
+  "refusals": [
+   "round1 (fillet): cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]] cannot be resolved: cyl1.face[+z]: solidcraft could not report the topology of cyl1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 3392.4015372378103
+ },
+ {
+  "id": "named-edge-after-cut",
+  "group": "3d",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[+x]] cannot be resolved: op1.face[+z]: solidcraft could not report the topology of op1 (this build cannot report topology, so named edges and faces cannot be picked)",
+  "refusals": [
+   "round1 (fillet): op1.edge[op1.face[+z] ^ op1.face[+x]] cannot be resolved: op1.face[+z]: solidcraft could not report the topology of op1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 31748.714334122516
+ },
+ {
+  "id": "named-hole-then-round",
+  "group": "3d",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] cannot be resolved: box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)",
+  "refusals": [
+   "round1 (fillet): box1.edge[box1.face[+z] ^ box1.face[+x]] cannot be resolved: box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 11717.30362588783
+ },
+ {
+  "id": "named-hole-then-shell",
+  "group": "3d",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: shell1 (shell): box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)",
+  "refusals": [
+   "shell1 (shell): box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 11214.732294132637
+ },
+ {
+  "id": "named-pocket-wall-round",
+  "group": "3d",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: round1 (fillet): pocket1.edge[pocket1.same[box1.face[+z]] ^ pull1.face[sk1.edge0]] cannot be resolved: pocket1.same[box1.face[+z]]: its parent box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)",
+  "refusals": [
+   "round1 (fillet): pocket1.edge[pocket1.same[box1.face[+z]] ^ pull1.face[sk1.edge0]] cannot be resolved: pocket1.same[box1.face[+z]]: its parent box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 28000
+ },
+ {
+  "id": "named-counterbore-round",
+  "group": "3d",
+  "pass": false,
+  "verdict": "FAIL: round1 was refused but is not in the expected list",
+  "refusals": [
+   "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+   "round1 (fillet): box2.edge[box2.face[+z] ^ box2.face[+x]] cannot be resolved: box2.face[+z]: solidcraft could not report the topology of box2 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 15000
+ },
+ {
+  "id": "refuse-shell-closed",
+  "group": "refusal",
+  "pass": true,
+  "verdict": "EXPECTED REFUSAL matched: shell1 refused with the expected sentence; built 1 feature(s), volume 32000.000 = reference 32000.000",
+  "refusals": [
+   "shell1 (shell): this spike's shell needs a face to remove; a closed hollow box is not mapped"
+  ],
+  "volume": 32000
+ },
+ {
+  "id": "refuse-name-two-faces",
+  "group": "refusal",
+  "pass": false,
+  "verdict": "FAIL: shell1 was refused with a different sentence (wanted it to contain \"matches 2 faces\")",
+  "refusals": [
+   "shell1 (shell): op1.face[+z]: solidcraft could not report the topology of op1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 46000
+ },
+ {
+  "id": "refuse-name-swept-arc",
+  "group": "refusal",
+  "pass": false,
+  "verdict": "FAIL: round1 was refused with a different sentence (wanted it to contain \"swept name over it is not resolved\")",
+  "refusals": [
+   "round1 (fillet): pocket1.edge[pocket1.same[box1.face[+z]] ^ pull1.face[sk1.edge0]] cannot be resolved: pocket1.same[box1.face[+z]]: its parent box1.face[+z]: solidcraft could not report the topology of box1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 28598.971467297783
+ },
+ {
+  "id": "stub-centre",
+  "group": "stub",
+  "pass": false,
+  "verdict": "FAIL: s1 was refused with a different sentence (wanted it to contain \"something stands on the open face\")",
+  "refusals": [
+   "s1 (shell): b1.face[+z]: solidcraft could not report the topology of b1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 12800
+ },
+ {
+  "id": "stub-offset-x",
+  "group": "stub",
+  "pass": false,
+  "verdict": "FAIL: s1 was refused with a different sentence (wanted it to contain \"something stands on the open face\")",
+  "refusals": [
+   "s1 (shell): b1.face[+z]: solidcraft could not report the topology of b1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 12800
+ },
+ {
+  "id": "stub-corner",
+  "group": "stub",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: s1 (shell): b1.face[+z]: solidcraft could not report the topology of b1 (this build cannot report topology, so named edges and faces cannot be picked)",
+  "refusals": [
+   "s1 (shell): b1.face[+z]: solidcraft could not report the topology of b1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 12800
+ },
+ {
+  "id": "stub-edge-flush",
+  "group": "stub",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: s1 (shell): b1.face[+z]: solidcraft could not report the topology of b1 (this build cannot report topology, so named edges and faces cannot be picked)",
+  "refusals": [
+   "s1 (shell): b1.face[+z]: solidcraft could not report the topology of b1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 12800
+ },
+ {
+  "id": "stub-tall",
+  "group": "stub",
+  "pass": false,
+  "verdict": "FAIL: s1 was refused with a different sentence (wanted it to contain \"something stands on the open face\")",
+  "refusals": [
+   "s1 (shell): b1.face[+z]: solidcraft could not report the topology of b1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 13920
+ },
+ {
+  "id": "stub-low",
+  "group": "stub",
+  "pass": false,
+  "verdict": "FAIL: s1 was refused with a different sentence (wanted it to contain \"something stands on the open face\")",
+  "refusals": [
+   "s1 (shell): b1.face[+z]: solidcraft could not report the topology of b1 (this build cannot report topology, so named edges and faces cannot be picked)"
+  ],
+  "volume": 12288
+ }
+]

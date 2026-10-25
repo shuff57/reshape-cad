@@ -12,3 +12,12 @@ Same-origin host page for the pinned SolidCraft web build. The embedding app (sh
   - no guards: the pane still uses the 0.9.0 spike translator, so it is not covered by the never-a-wrong-solid promise until Phase 2 is folded in;
   - the sketch-solver and shell fixes of the spike were patches against 0.9.0 and are not in 0.21.0;
   - the ribbon height for the lock overlay (`--ribbon-h`) is unmeasured; of the spike's 56 example scripts only one has been run on 0.21.0.
+
+## Example scripts on SolidCraft 0.21.0 (2026-10-25, `test/examples-0.21.0.json`)
+
+56 example scripts from the spike, each run through the pane in headless Chrome and compared with an independent reference (closed form, brep-rs, OCCT; the references are the spike's, stored in `pane/examples.json`).
+
+- **38 pass** (all 3D primitives and booleans tried, every constrained or friendly sketch, 12 misuse scripts).
+- **18 do not pass, and all 18 are refusals, none a built wrong solid.** 17 of them are named edge or face picks (`box1.face[+z]`, a named fillet edge, a named shell opening): the adapter reports no topology, so the pick is refused in a sentence. The 18th is a counterbore, which the spike translator never mapped. Six of the 18 are the old shell-stub family; with no topology they are refused before the kernel is asked, so **this run says nothing about whether 0.21.0 still builds a stub shell wrong.**
+- Did **not** check: whether any of the 38 would still pass with the guards of Phase 2 in place, or any script outside these 56.
+- Upstream does have the data needed for named picks (`model.faces`, `model.edges` through `engine.execute`: index, name, area, centroid, normal, point, cylinder; edge midpoint, length, ends). The spike's resolver also reads a nearest-face check (`centroid_hit`) and edge names that upstream does not give directly, so supplying topology needs its own checked effort (a wrong pick is a wrong solid).
