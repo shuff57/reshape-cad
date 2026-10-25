@@ -8,6 +8,10 @@
   "exports": {
     ".": "./dist/index.js",
     "./translate": "./dist/translate.js",
+    "./translator": "./dist/translator.js",
+    "./extrude-pocket": "./dist/extrude-pocket.js",
+    "./outline-guard": "./dist/outline-guard.js",
+    "./soup-regions": "./dist/soup-regions.js",
     "./sketch-map": "./dist/sketch-map.js",
     "./resolve-names": "./dist/resolve-names.js",
     "./rule-check": "./dist/rule-check.js",

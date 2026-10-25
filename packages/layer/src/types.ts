@@ -19,7 +19,7 @@ export interface BodyMeasure {
   bbox: { min: V3; max: V3 };
   volume_mm3: number;
   faces: number;
-  kernel: { faces: number };
+  kernel: { faces: number; shells?: number };
   face_types?: Record<string, number>;
   center_of_mass: V3;
 }
@@ -109,6 +109,9 @@ export interface TranslateCtx {
   arc: ArcApi;
   mt?: MtApi;
   soups?: Record<string, SoupInfo>;
+  /** extrude-pocket profile only: measuring switches of the group's own harness (skip the after-the-build checks / the slanted-round-cut guard). */
+  skipVerify?: boolean;
+  unguardedSlant?: boolean;
 }
 
 export type { Feature, SketchFeature };

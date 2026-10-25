@@ -44,8 +44,9 @@ function frameOf(s: SketchFeature, mt?: MtApi): Frame {
   return { origin: a.n.map((c) => c * o), ...a };
 }
 
-interface Refusal { refusal: string }
-const refuse = (sentence: string): Refusal => ({ refusal: sentence });
+export interface Refusal { refusal: string }
+export const refuse = (sentence: string): Refusal => ({ refusal: sentence });
+export { frameOf as frameWithMt, isZero3 };
 
 // ---- planner types -------------------------------------------------------------------------------------------------
 export interface TranslateState {
@@ -57,11 +58,17 @@ export interface TranslateState {
   measure: Record<string, Aggregate>;
   counter: number;
   accLen: Record<string, number>;
+  /** extrude-pocket profile only: the bodies of the scene after the last accepted feature, and the bodies made from a slanted round pull. */
+  scene?: SceneEntry[];
+  curvedSlant?: Set<string>;
 }
+export interface SceneEntry { name: string; vol: number; bbox: number[]; shells: number }
 export interface Aggregate {
   volume: number;
   faces: number;
   kernelFaces: number;
+  /** extrude-pocket profile only. */
+  shells?: number;
   curved: boolean;
   bbox: number[];
   faceTypes: Record<string, number>;
@@ -71,10 +78,54 @@ export interface Aggregate {
 export interface PlanCtx extends TranslateCtx {
   resolve(name: unknown): Resolved | null;
 }
+/** What a feature's after-the-build check gets: the measure of what it built, the accepted commands so far and a way to re-run them. */
+export interface VerifyEnv { accepted: Cmd[]; variant: Cmd[]; runSC: TranslateCtx['runSC']; checks: unknown[]; scene: SceneEntry[] }
+export type Verify = (m: Aggregate, env: VerifyEnv) => Promise<string | null>;
 export type Plan =
   | Refusal
   | { noop: true; stage?: true }
-  | { variants: Cmd[][]; produces: string[]; consumes: string[]; pickedFrom?: string; evidence?: Evidence };
+  | { variants: Cmd[][]; produces: string[]; consumes: string[]; pickedFrom?: string; evidence?: Evidence; flagCurvedSlant?: boolean; verify?: Verify };
+
+/** What a per-kind planner is handed besides the feature, the state and the context. */
+export interface PlanHelpers {
+  name: string;
+  needBody(id: string): string[] | null;
+  headOf(id: string): string;
+  dep(id: string, role?: string): string | null;
+  inSketch(sk: SketchFeature, opts?: { revolve?: boolean; allowSoup?: boolean }): InSketch;
+}
+export type Planner = (f: Feature, st: TranslateState, ctx: PlanCtx, h: PlanHelpers) => Plan;
+
+/**
+ * The planner seam. A profile is the set of planners (a registry from feature kind to planner; a kind it does not list falls through
+ * to the base planner in planFeature's switch) plus the few wordings and bookkeeping hooks a group changes. BASE_PROFILE reproduces the
+ * phase 4 base translator exactly; groups add their own in their own file (extrude-pocket.ts) and are selected by createTranslator.
+ */
+export interface Profile {
+  name: string;
+  planners: Partial<Record<string, Planner>>;
+  /** true: split-off pieces and shells are counted in the measure, scene is tracked, plan.verify runs, notes carry `checks`. */
+  verifies: boolean;
+  initState(st: TranslateState): void;
+  depSentence(f: Feature, role: string, headId: string, st: TranslateState): string | null;
+  noOutline(sk: SketchFeature, o: { points?: number[][]; notes?: string[] }): string;
+  plannerError(f: Feature, e: unknown): { refusal: string; internal: string | null };
+  kernelRefusal(f: Feature, raw: string | null): string;
+}
+export const BASE_PROFILE: Profile = {
+  name: 'base',
+  planners: {},
+  verifies: false,
+  initState: () => {},
+  depSentence(f, role, id, st) {
+    if (st.refused[id]) return `${f.id} (${f.kind}): its ${role} ${id} was refused (${st.refused[id]})`;
+    if (st.stale[id]) return `${f.id} (${f.kind}): its ${role} ${id} was already changed in place by ${st.stale[id]}, and a solidcraft command list has no second copy of it`;
+    return null;
+  },
+  noOutline: (sk, o) => `sketch ${sk.id} has no usable outline (${(o.notes ?? []).join('; ') || 'outlineOf refused it'})`,
+  plannerError: (f, e) => ({ refusal: `${f.id} (${f.kind}): translator error: ${(e as Error).message}`, internal: null }),
+  kernelRefusal: (f, raw) => `${f.id} (${f.kind}): solidcraft refused it -- ${raw}`,
+};
 
 /** Primitive fields as the original reads them (loose: a stray field on any kind reads as in the original). */
 interface PrimView {
@@ -95,11 +146,11 @@ interface PrimView {
 }
 
 /** Sketch outline -> sketch.* commands (inside an open sketch). Returns {cmds} or {refusal}. */
-const isSoup = (sk: SketchFeature) => sk.shape !== 'circle' && Array.isArray(sk.geoms) && sk.geoms.length > 0;
-function profileCmds(sk: SketchFeature, ctx: TranslateCtx): Refusal | { cmds: Cmd[] } {
+export const isSoup = (sk: SketchFeature) => sk.shape !== 'circle' && Array.isArray(sk.geoms) && sk.geoms.length > 0;
+function profileCmds(sk: SketchFeature, ctx: TranslateCtx, profile: Profile): Refusal | { cmds: Cmd[] } {
   if (isSoup(sk)) return refuse(`sketch ${sk.id} is drawn as rows and rules (a soup); it is mapped by inSketch, not here`);
   const o = ctx.arc.outlineOf(sk);
-  if (!o.ok) return refuse(`sketch ${sk.id} has no usable outline (${(o.notes ?? []).join('; ') || 'outlineOf refused it'})`);
+  if (!o.ok) return refuse(profile.noOutline(sk, o));
   if (sk.shape === 'circle') {
     const [a, b] = o.points;
     const c = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
@@ -128,8 +179,8 @@ function profileCmds(sk: SketchFeature, ctx: TranslateCtx): Refusal | { cmds: Cm
   return { cmds };
 }
 
-type InSketch = Refusal | { name: string; soup?: true; cmds: Cmd[] };
-function inSketch(sk: SketchFeature, ctx: TranslateCtx, st: TranslateState, { revolve = false, allowSoup = true } = {}): InSketch {
+export type InSketch = Refusal | { name: string; soup?: true; cmds: Cmd[] };
+export function inSketch(sk: SketchFeature, ctx: TranslateCtx, st: TranslateState, { revolve = false, allowSoup = true } = {}, profile: Profile = BASE_PROFILE): InSketch {
   if (isSoup(sk)) {
     if (revolve || !allowSoup) return refuse(`sketch ${sk.id} is a constrained sketch (rows and rules); this demo maps those for extrude and pocket only, not for revolve, groove or blend`);
     const name = `sk_${sk.id}_${st.counter++}`;
@@ -139,7 +190,7 @@ function inSketch(sk: SketchFeature, ctx: TranslateCtx, st: TranslateState, { re
     return { name, soup: true, cmds: [...m.commands, { command: 'sketch.finish', params: {} }] };
   }
   const fr = frameOf(sk, ctx.mt);
-  const prof = profileCmds(sk, ctx);
+  const prof = profileCmds(sk, ctx, profile);
   if ('refusal' in prof) return prof;
   const name = `sk_${sk.id}_${st.counter++}`;
   return {
@@ -175,7 +226,7 @@ function roundPoints(f: PrimView, base: V3): V3[] {
 }
 
 /** Plan one feature. Returns {refusal} | {variants:[cmds...], produces:[names], consumes:[ids]} | {noop:true}. */
-export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx): Plan {
+export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx, profile: Profile = BASE_PROFILE): Plan {
   const name = bname(f.id);
   const needBody = (id: string): string[] | null => {
     const bs = st.bodies[headOf(id)];
@@ -186,10 +237,10 @@ export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx): Plan 
   const headOf = (id: string): string => { let h = id; const seen = new Set<string>(); while (st.head[h] && !seen.has(h)) { seen.add(h); h = st.head[h]; } return h; };
   const dep = (id: string, role = 'target'): string | null => {
     id = headOf(id);
-    if (st.refused[id]) return `${f.id} (${f.kind}): its ${role} ${id} was refused (${st.refused[id]})`;
-    if (st.stale[id]) return `${f.id} (${f.kind}): its ${role} ${id} was already changed in place by ${st.stale[id]}, and a solidcraft command list has no second copy of it`;
-    return null;
+    return profile.depSentence(f, role, id, st);
   };
+  const planner = profile.planners[f.kind];
+  if (planner) return planner(f, st, ctx, { name, needBody, headOf, dep, inSketch: (sk, opts) => inSketch(sk, ctx, st, opts, profile) });
   switch (f.kind) {
     case 'box': case 'cylinder': case 'sphere': case 'torus': case 'cone': case 'prism': case 'wedge': {
       const p = f as unknown as PrimView;
@@ -248,7 +299,7 @@ export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx): Plan 
       }
       const sk = st.sketches[f.target];
       if (!sk) return refuse(`${f.id} (extrude): ${f.target} is not a sketch`);
-      const s = inSketch(sk, ctx, st);
+      const s = inSketch(sk, ctx, st, undefined, profile);
       if ('refusal' in s) return refuse(`${f.id} (extrude): ${s.refusal}`);
       return { variants: [[...s.cmds, { command: 'solid.extrude', params: { distance: f.height, sketch: s.name, operation: 'new', body_name: name } }]], produces: [name], consumes: [] };
     }
@@ -257,7 +308,7 @@ export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx): Plan 
       if (d) return refuse(d);
       const sk = st.sketches[f.target];
       if (!sk) return refuse(`${f.id} (${f.kind}): ${f.target} is not a sketch`);
-      const s = inSketch(sk, ctx, st, { revolve: true });
+      const s = inSketch(sk, ctx, st, { revolve: true }, profile);
       if ('refusal' in s) return refuse(`${f.id} (${f.kind}): ${s.refusal}`);
       const params: Record<string, unknown> = { axis: 'y', sketch: s.name };
       if (f.angle !== 360) params.angle = -f.angle;
@@ -272,7 +323,7 @@ export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx): Plan 
       const sk = st.sketches[f.target];
       const bs = needBody(f.into);
       if (!sk || !bs || bs.length !== 1) return refuse(`${f.id} (pocket): needs a sketch and a single body`);
-      const s = inSketch(sk, ctx, st);
+      const s = inSketch(sk, ctx, st, undefined, profile);
       if ('refusal' in s) return refuse(`${f.id} (pocket): ${s.refusal}`);
       // pocket pushes OPPOSITE the sweep direction (occt-build: h = -depth * dir), i.e. direction negative on a u x v frame
       return { variants: [[...s.cmds, { command: 'solid.extrude', params: { distance: f.depth, direction: 'negative', sketch: s.name, operation: 'cut', targets: bs } }]], produces: bs, consumes: [f.into] };
@@ -285,7 +336,7 @@ export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx): Plan 
       for (const t of f.targets) {
         const sk = st.sketches[t];
         if (!sk) return refuse(`${f.id} (blend): ${t} is not a sketch`);
-        const s = inSketch(sk, ctx, st, { allowSoup: false });
+        const s = inSketch(sk, ctx, st, { allowSoup: false }, profile);
         if ('refusal' in s) return refuse(`${f.id} (blend): ${s.refusal}`);
         cmds.push(...s.cmds); names.push(s.name);
       }
@@ -426,9 +477,12 @@ export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx): Plan 
   }
 }
 
-/** Aggregate the named bodies of a successful run into one measure (sum volume/faces, union bbox). */
-function aggregate(res: RunResult, names: string[]): Aggregate | null {
-  const bs = res.measure!.bodies.filter((b) => names.includes(b.name));
+/** A body belongs to a feature when it is one of the names it produced or a piece solidcraft split off one of them ("name (2)"). (extrude-pocket profile) */
+const isPiece = (bodyName: string, names: string[]) => names.some((n) => bodyName === n || (bodyName.startsWith(`${n} (`) && /^ \(\d+\)$/.test(bodyName.slice(n.length))));
+
+/** Aggregate the named bodies of a successful run into one measure (sum volume/faces, union bbox). With `pieces`, split-off pieces count and the shells are summed. */
+function aggregate(res: RunResult, names: string[], pieces = false): Aggregate | null {
+  const bs = res.measure!.bodies.filter((b) => (pieces ? isPiece(b.name, names) : names.includes(b.name)));
   if (!bs.length) return null;
   const lo = [Infinity, Infinity, Infinity]; const hi = [-Infinity, -Infinity, -Infinity];
   for (const b of bs) for (let i = 0; i < 3; i++) { lo[i] = Math.min(lo[i], b.bbox.min[i]); hi[i] = Math.max(hi[i], b.bbox.max[i]); }
@@ -436,6 +490,7 @@ function aggregate(res: RunResult, names: string[]): Aggregate | null {
     volume: bs.reduce((s, b) => s + b.volume_mm3, 0),
     faces: bs.reduce((s, b) => s + b.faces, 0),
     kernelFaces: bs.reduce((s, b) => s + b.kernel.faces, 0),
+    ...(pieces ? { shells: bs.reduce((s, b) => s + (b.kernel.shells ?? 1), 0) } : {}),
     curved: bs.some((b) => Object.keys(b.face_types ?? {}).some((k) => k !== 'plane')),
     bbox: [...lo, ...hi],
     faceTypes: bs.reduce((a: Record<string, number>, b) => { for (const [k, v] of Object.entries(b.face_types ?? {})) a[k] = (a[k] ?? 0) + v; return a; }, {}),
@@ -540,6 +595,9 @@ export interface FeatureResult {
   variantsTried?: number;
   failed?: RunResult['failed'];
   sketchAtFailure?: unknown;
+  /** extrude-pocket profile only. */
+  checks?: unknown[];
+  internalError?: string;
 }
 export interface TranslateResult {
   features: FeatureResult[];
@@ -551,8 +609,9 @@ export interface TranslateResult {
  * Translate and execute a ModelDoc feature by feature.
  * ctx: { arc, mt, runSC(cmds)->parsed result, topologyOf(cmds)->topology reply, soups? }
  */
-export async function translateDoc(doc: { features: Feature[] }, ctx: TranslateCtx): Promise<TranslateResult> {
+export async function translateDoc(doc: { features: Feature[] }, ctx: TranslateCtx, profile: Profile = BASE_PROFILE): Promise<TranslateResult> {
   const st: TranslateState = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} };
+  profile.initState(st);
   const shapeCache: ShapeCache = new Map();
   const accepted: Cmd[] = [];
   const out: FeatureResult[] = [];
@@ -574,19 +633,30 @@ export async function translateDoc(doc: { features: Feature[] }, ctx: TranslateC
     const note = (o: Omit<FeatureResult, 'id' | 'kind'>) => out.push({ id: f.id, kind: f.kind, ...o });
     if (f.kind === 'sketch') st.sketches[f.id] = f;
     let plan: Plan;
-    try { plan = planFeature(f, st, fctx); } catch (e) { plan = refuse(`${f.id} (${f.kind}): translator error: ${(e as Error).message}`); }
-    if ('refusal' in plan) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, commands: [] }); continue; }
+    let internal: string | null = null;
+    try { plan = planFeature(f, st, fctx, profile); } catch (e) { const pe = profile.plannerError(f, e); internal = pe.internal; plan = refuse(pe.refusal); }
+    if ('refusal' in plan) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, commands: [], ...(internal ? { internalError: internal } : {}) }); continue; }
     if ('noop' in plan) { note({ status: 'noop', commands: [] }); continue; }
     let lastErr: string | null = null;
     let lastFail: RunResult | null = null;
+    let verifyRefusal: string | null = null;
+    const checks: unknown[] = [];
     let built = false;
     for (const variant of plan.variants) {
       let res: RunResult;
       try { res = await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `bridge error: ${(e as Error).message}` } }; }
       if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; continue; }
-      const m = aggregate(res, plan.produces);
+      const m = aggregate(res, plan.produces, profile.verifies);
       if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
+      if (profile.verifies) {
+        const bad = plan.verify && !ctx.skipVerify ? await plan.verify(m, { accepted: accepted.slice(), variant, runSC: ctx.runSC, checks, scene: st.scene! }) : null;
+        if (bad) { verifyRefusal = bad; lastErr = null; continue; }
+      }
       accepted.push(...variant);
+      if (profile.verifies) {
+        if (plan.flagCurvedSlant) for (const b of m.bodies) st.curvedSlant!.add(b);
+        st.scene = res.measure!.bodies.map((b) => ({ name: b.name, vol: b.volume_mm3, bbox: [...b.bbox.min, ...b.bbox.max], shells: b.kernel?.shells ?? 1 }));
+      }
       st.accLen[f.id] = accepted.length;
       st.bodies[f.id] = m.bodies;
       st.measure[f.id] = m;
@@ -594,12 +664,12 @@ export async function translateDoc(doc: { features: Feature[] }, ctx: TranslateC
         if (c === f.id) continue;
         if (f.kind === 'hole' || f.kind === 'pocket' || f.kind === 'groove') { if (c === (f.kind === 'hole' ? f.target : f.into)) st.head[c] = f.id; } else st.stale[c] = f.id;
       }
-      note({ status: 'built', commands: variant, measure: m, pickedFrom: plan.pickedFrom, evidence: plan.evidence ?? null, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, variantsTried: plan.variants.indexOf(variant) + 1 });
+      note({ status: 'built', ...(profile.verifies ? { checks } : {}), commands: variant, measure: m, pickedFrom: plan.pickedFrom, evidence: plan.evidence ?? null, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, variantsTried: plan.variants.indexOf(variant) + 1 });
       built = true;
       break;
     }
     if (built) continue;
-    const sentence = `${f.id} (${f.kind}): solidcraft refused it -- ${lastErr}`;
+    const sentence = verifyRefusal ?? profile.kernelRefusal(f, lastErr);
     st.refused[f.id] = sentence;
     note({ status: 'refused', refusal: sentence, commands: plan.variants[0], failed: lastFail?.failed ?? null, sketchAtFailure: lastFail?.sketch_at_failure ?? null });
   }

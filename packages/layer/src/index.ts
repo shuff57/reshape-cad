@@ -1,6 +1,11 @@
 export * from './types.js';
-export { translateDoc, planFeature, resolveAfter, FEATURE_KINDS } from './translate.js';
-export type { TranslateState, TranslateResult, FeatureResult, Plan, PlanCtx, Aggregate } from './translate.js';
+export { translateDoc, planFeature, resolveAfter, FEATURE_KINDS, BASE_PROFILE } from './translate.js';
+export type { TranslateState, TranslateResult, FeatureResult, Plan, PlanCtx, Aggregate, Profile, Planner, PlanHelpers, VerifyEnv, SceneEntry } from './translate.js';
+export { createTranslator, PROFILES } from './translator.js';
+export type { Translator, TranslatorOptions, PlannerSet } from './translator.js';
+export { EXTRUDE_POCKET_PROFILE, plainKernelSentence, boxContact, JOIN_TOUCH_SENTENCE } from './extrude-pocket.js';
+export * as outlineGuard from './outline-guard.js';
+export * as soupRegions from './soup-regions.js';
 export { mapSketch, docProfileIndices, extrudeCommands, frameOf } from './sketch-map.js';
 export type { MapResult, RuleRow, SketchInput } from './sketch-map.js';
 export { resolveName, pickPoint, nameText } from './resolve-names.js';
