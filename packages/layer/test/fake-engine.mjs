@@ -36,7 +36,66 @@ const overlapVol = (a, b) => [0, 1, 2].reduce((v, i) => v * Math.max(0, Math.min
 const fill = (b) => (vol(b.bbox) > 0 ? b.volume / vol(b.bbox) : 0);
 const strictlyInside = (t, o) => [0, 1, 2].every((i) => t.min[i] > o.min[i] && t.max[i] < o.max[i]);
 
-function simulate(commands, boxBool = false) {
+
+// holeModel (opt-in, default false): a geometric model of drilling for the holes group, on the axis-aligned boxes the fake already tracks. A cylinder cut
+// (and solid.hole, drilled down -Z from `position`) removes (circle ∩ box section) x (axial overlap); it adds the faces a wall / floor / recess adds;
+// a blind cut that opens on no face, or a through cut whose circle touches the box side along a line, adds a SHELL; a through cut that leaves several
+// separate corner pieces splits the body into 'name (2)' ...; a cut that removes everything deletes the body (the group's G-BODIES / G-SHELLS / G-NOOP /
+// G-TOP guards can therefore both accept and refuse). It models no real kernel: the default model above is unchanged.
+function circleRectArea(cp, cq, r, lo, hi, p, q) {
+  const N = 400; const a = Math.max(lo[p], cp - r); const b = Math.min(hi[p], cp + r);
+  if (!(b > a)) return 0;
+  let area = 0; const dx = (b - a) / N;
+  for (let i = 0; i < N; i++) {
+    const x = a + (i + 0.5) * dx; const h = Math.sqrt(Math.max(0, r * r - (x - cp) ** 2));
+    area += Math.max(0, Math.min(hi[q], cq + h) - Math.max(lo[q], cq - h)) * dx;
+  }
+  return area;
+}
+function pieces(cp, cq, r, lo, hi, p, q) {
+  const G = 20; const grid = []; let count = 0;
+  for (let i = 0; i < G; i++) { grid.push([]); for (let j = 0; j < G; j++) { const x = lo[p] + (i + 0.5) * (hi[p] - lo[p]) / G; const y = lo[q] + (j + 0.5) * (hi[q] - lo[q]) / G; const solid = Math.hypot(x - cp, y - cq) > r; grid[i].push(solid ? 0 : -1); } }
+  const sizes = [];
+  for (let i = 0; i < G; i++) for (let j = 0; j < G; j++) if (grid[i][j] === 0) {
+    count++; let n = 0; const st = [[i, j]]; grid[i][j] = count;
+    while (st.length) { const [a, b] = st.pop(); n++; for (const [da, db] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const x = a + da, y = b + db; if (x >= 0 && y >= 0 && x < G && y < G && grid[x][y] === 0) { grid[x][y] = count; st.push([x, y]); } } }
+    sizes.push(n);
+  }
+  return sizes;
+}
+/** tool: { ax, cp, cq, r, z0, z1, inner?: radius already removed by the bore, extraFaces? } */
+function cutTool(bodies, name, tool) {
+  const b = bodies.get(name); if (!b) return;
+  const { ax, cp, cq, r, z0, z1 } = tool; const [p, q] = [0, 1, 2].filter((k) => k !== ax);
+  const lo = b.bbox.min, hi = b.bbox.max;
+  const L = Math.max(0, Math.min(z1, hi[ax]) - Math.max(z0, lo[ax]));
+  if (L <= 1e-12) return;
+  let A = circleRectArea(cp, cq, r, lo, hi, p, q);
+  if (tool.inner) A -= circleRectArea(cp, cq, tool.inner, lo, hi, p, q);
+  if (A <= 1e-12) return;
+  const bv = vol(b.bbox); const fillB = bv > 0 ? b.volume / bv : 0;
+  const fullAxial = z0 <= lo[ax] + 1e-9 && z1 >= hi[ax] - 1e-9;
+  const reachesTop = z1 >= hi[ax] - 1e-9; const reachesBot = z0 <= lo[ax] + 1e-9;
+  const inside = cp - r > lo[p] + 1e-9 && cp + r < hi[p] - 1e-9 && cq - r > lo[q] + 1e-9 && cq + r < hi[q] - 1e-9;
+  const touching = !inside && cp - r >= lo[p] - 1e-9 && cp + r <= hi[p] + 1e-9 && cq - r >= lo[q] - 1e-9 && cq + r <= hi[q] + 1e-9;
+  const before = b.volume;
+  b.volume = Math.max(0, b.volume - A * L * fillB);
+  const baseFaces = b.nf ?? (b.kind === 'cylinder' ? 4 : 6);
+  b.nf = baseFaces + (tool.inner ? tool.extraFaces ?? 0 : (fullAxial ? 1 : 2));
+  if (!reachesTop && !reachesBot && !tool.inner) b.shells = (b.shells ?? 1) + 1;
+  if (touching && fullAxial) b.shells = (b.shells ?? 1) + 1;
+  if (b.volume <= 1e-9 * Math.max(1, before)) { bodies.delete(name); return; }
+  if (fullAxial && !inside && !tool.inner) {
+    const sizes = pieces(cp, cq, r, lo, hi, p, q);
+    if (sizes.length > 1) {
+      const total = sizes.reduce((x, y) => x + y, 0); const v = b.volume;
+      b.volume = v * sizes[0] / total;
+      sizes.slice(1).forEach((n, k) => bodies.set(`${name} (${k + 2})`, { ...b, name: `${name} (${k + 2})`, volume: v * n / total, bbox: { min: lo.slice(), max: hi.slice() } }));
+    }
+  }
+}
+
+function simulate(commands, boxBool = false, holeModel = false) {
   const bodies = new Map();
   const sketches = new Map();
   let active = null;
@@ -87,8 +146,19 @@ function simulate(commands, boxBool = false) {
       min[ax] = p.base[ax]; max[ax] = p.base[ax] + p.height;
       if (p.operation === 'cut') {
         const m = need(p.targets); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
-        for (const t of p.targets) { const b = bodies.get(t); b.volume *= 0.9; }
+        if (holeModel) { const [pp, qq] = [0, 1, 2].filter((k) => k !== ax); for (const t of p.targets) cutTool(bodies, t, { ax, cp: p.base[pp], cq: p.base[qq], r: p.radius, z0: p.base[ax], z1: p.base[ax] + p.height }); }
+        else for (const t of p.targets) { const b = bodies.get(t); b.volume *= 0.9; }
       } else make(p.body_name, { min, max }, { kind: ax === 2 ? 'cylinder' : 'solid', curved: true, feature: i + 1 });
+    } else if (k === 'solid.hole' && holeModel) {
+      const m = need([p.body]); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
+      const b0 = bodies.get(p.body);
+      const z1 = p.position[2]; const z0 = p.depth ? z1 - p.depth : b0.bbox.min[2] - 1; const r = p.diameter / 2;
+      cutTool(bodies, p.body, { ax: 2, cp: p.position[0], cq: p.position[1], r, z0, z1 });
+      if (bodies.has(p.body) && p.type === 'counterbore') cutTool(bodies, p.body, { ax: 2, cp: p.position[0], cq: p.position[1], r: p.cb_diameter / 2, inner: r, z0: z1 - p.cb_depth, z1, extraFaces: 2 });
+      if (bodies.has(p.body) && p.type === 'countersink') {
+        const R = p.cs_diameter / 2; const tn = Math.tan((parseFloat(p.cs_angle) * Math.PI) / 360); const dc = (R - r) / tn;
+        cutTool(bodies, p.body, { ax: 2, cp: p.position[0], cq: p.position[1], r: Math.sqrt((R * R + R * r + r * r) / 3), inner: r, z0: z1 - dc, z1, extraFaces: 1 });
+      }
     } else if (k === 'solid.sphere') {
       make(p.body_name, { min: p.center.map((v) => v - p.radius), max: p.center.map((v) => v + p.radius) }, { curved: true, feature: i + 1, volume: 4.18879 * p.radius ** 3 });
     } else if (k === 'solid.torus') {
@@ -171,12 +241,12 @@ function simulate(commands, boxBool = false) {
   return { bodies, sketches, active, failed: null };
 }
 
-function bodyRows(bodies, boxBool = false) {
+function bodyRows(bodies, boxBool = false, holeModel = false) {
   return [...bodies.values()].map((b) => {
     const c = [0, 1, 2].map((a) => (b.bbox.min[a] + b.bbox.max[a]) / 2);
     const cyl = b.kind === 'cylinder';
     return {
-      name: b.name, bbox: { min: b.bbox.min, max: b.bbox.max }, volume_mm3: b.volume, faces: cyl ? 4 : 6, kernel: { faces: cyl ? 4 : 6, ...(boxBool ? { shells: b.shells ?? 1 } : {}) },
+      name: b.name, bbox: { min: b.bbox.min, max: b.bbox.max }, volume_mm3: b.volume, faces: b.nf ?? (cyl ? 4 : 6), kernel: { faces: b.nf ?? (cyl ? 4 : 6), ...(boxBool || holeModel ? { shells: b.shells ?? 1 } : {}) },
       face_types: b.curved ? { plane: cyl ? 2 : 4, cylinder: cyl ? 2 : 2 } : { plane: 6 }, center_of_mass: c,
     };
   });
@@ -226,34 +296,45 @@ function topologyOfBody(b) {
 }
 
 /**
- * makeFake({ failEvery, boxBool }) -> { runSC, topologyOf, log }   (boxBool: see the note above simulate)
+ * makeFake({ failEvery, boxBool, holeModel, sync, cpuMs }) -> { runSC, topologyOf, log }   (boxBool, holeModel: see the notes above simulate)
  *   failEvery N: every Nth runSC call that simulates cleanly is reported as failing at its last command.
  *   a body_name containing 'ghost' is accepted but never appears; one containing 'boom' makes runSC throw.
+ *   sync (opt-in): runSC and topologyOf return their result directly instead of a promise (the holes group's ORIGINAL translator is synchronous).
+ *   cpuMs (opt-in): (commands, callNumber) => CPU milliseconds the run is reported to have used (result.cpuMs). When runSC is given { budgetS } and the
+ *     cost exceeds it, the run is reported as { ok: false, timedOut: true, cpuMs } (the group's execution budget).
+ *   When runSC is called with a second argument it is logged as a third log element; calls without one log exactly as before.
  */
-export function makeFake({ failEvery = 0, boxBool = false } = {}) {
+export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, sync = false, cpuMs = null } = {}) {
   let calls = 0;
   const log = [];
+  const runOnce = (commands, opts) => {
+    calls++;
+    log.push(opts === undefined ? ['runSC', JSON.stringify(commands)] : ['runSC', JSON.stringify(commands), JSON.stringify(opts)]);
+    if (commands.some((c) => typeof c.params?.body_name === 'string' && c.params.body_name.includes('boom'))) throw new Error('fake: bridge down');
+    const cost = cpuMs ? cpuMs(commands, calls) : undefined;
+    if (cost !== undefined && opts && typeof opts.budgetS === 'number' && cost > opts.budgetS * 1000) {
+      return { ok: false, timedOut: true, cpuMs: opts.budgetS * 1000, failed: { command: '(budget)', error: `TIME BUDGET: exceeded ${opts.budgetS} s of CPU` } };
+    }
+    const sim = simulate(commands, boxBool, holeModel);
+    const snap = { measure: { bodies: bodyRows(sim.bodies, boxBool, holeModel) }, sketches: sketchRows(sim.sketches), dirty: false, active_sketch: sim.active ? sim.active.name : null };
+    let failed = sim.failed;
+    if (!failed && failEvery && calls % failEvery === 0 && commands.length) {
+      const i = commands.length - 1;
+      failed = { index: i, command: commands[i].command, error: `fake: injected failure on call ${calls}`, params: commands[i].params ?? {} };
+    }
+    const extra = cost !== undefined ? { cpuMs: cost } : {};
+    if (failed) return { ok: false, failed, ...snap, sketch_at_failure: sim.active ? sketchRows(new Map([[sim.active.name, sim.active]]))[0] : null, ...extra };
+    return { ok: true, completed: commands.length, ...snap, ...extra };
+  };
+  const topo = (commands) => {
+    log.push(['topologyOf', JSON.stringify(commands)]);
+    const sim = simulate(commands, boxBool, holeModel);
+    if (sim.failed) return { ok: false, failed: sim.failed };
+    return { ok: true, topology: { bodies: [...sim.bodies.values()].map(topologyOfBody) }, results: commands.map((_, i) => ({ feature: i + 1 })) };
+  };
   return {
     log,
-    async runSC(commands) {
-      calls++;
-      log.push(['runSC', JSON.stringify(commands)]);
-      if (commands.some((c) => typeof c.params?.body_name === 'string' && c.params.body_name.includes('boom'))) throw new Error('fake: bridge down');
-      const sim = simulate(commands, boxBool);
-      const snap = { measure: { bodies: bodyRows(sim.bodies, boxBool) }, sketches: sketchRows(sim.sketches), dirty: false, active_sketch: sim.active ? sim.active.name : null };
-      let failed = sim.failed;
-      if (!failed && failEvery && calls % failEvery === 0 && commands.length) {
-        const i = commands.length - 1;
-        failed = { index: i, command: commands[i].command, error: `fake: injected failure on call ${calls}`, params: commands[i].params ?? {} };
-      }
-      if (failed) return { ok: false, failed, ...snap, sketch_at_failure: sim.active ? sketchRows(new Map([[sim.active.name, sim.active]]))[0] : null };
-      return { ok: true, completed: commands.length, ...snap };
-    },
-    async topologyOf(commands) {
-      log.push(['topologyOf', JSON.stringify(commands)]);
-      const sim = simulate(commands, boxBool);
-      if (sim.failed) return { ok: false, failed: sim.failed };
-      return { ok: true, topology: { bodies: [...sim.bodies.values()].map(topologyOfBody) }, results: commands.map((_, i) => ({ feature: i + 1 })) };
-    },
+    runSC: sync ? runOnce : async (commands, opts) => runOnce(commands, opts),
+    topologyOf: sync ? topo : async (commands) => topo(commands),
   };
 }
