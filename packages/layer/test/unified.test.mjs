@@ -86,6 +86,35 @@ test('the shell count a guard reads is on every measure of a mixed document, whi
   assert.equal(statusOf(await runSet('unified', doc, CONFIGS[0]), 'pk6').status, 'refused');
 });
 
+test('revolve-groove: a spin and a groove are guarded in the one loop, in a document of any other group, and a refused groove refuses what follows on its part (RG-CHAIN)', async () => {
+  const R = (u0, u1, v0, v1) => [[u0, v0], [u1, v0], [u1, v1], [u0, v1]];
+  const sk = (id, points, extra = {}) => ({ id, kind: 'sketch', plane: 'xy', offset: 0, points, ...extra });
+  // G9 (a ring completely inside the part) in a document that also drills, hollows and pockets: the groove is refused with the group's guard and sentence, unified and the group's own set agree
+  for (const head of [[], [hole('h0', 'b1', { diameter: 2, depth: 4, center: [15, 15, 0] })], [shell('s0', 'b1', prim('b1', '+z'), 2)]]) {
+    const feats = [box('b1', [40, 40, 40], [0, 0, 0]), ...head, sk('s1', R(5, 10, -5, 5)), { id: 'g1', kind: 'groove', target: 's1', into: head.length ? head[0].id : 'b1', angle: 360 }];
+    const u = await runDoc('unified', feats); const g = await runDoc('revolve-groove', feats);
+    if (!head.length) { assert.equal(statusOf(u, 'g1').guard, 'G9'); assert.equal(statusOf(u, 'g1').refusal, statusOf(g, 'g1').refusal); assert.deepStrictEqual(u.result.features, g.result.features); }
+    else assert.notEqual(statusOf(u, 'g1').status, 'built', `the groove into ${head[0].kind} builds`);
+  }
+  // the sign of a part turn (G1): a profile on the -u side is handed to the engine with the angle as given, one on the +u side negated, through unified as through the group's set
+  for (const [u0, u1, want] of [[-12, -4, 90], [4, 12, -90]]) {
+    const feats = [sk('s1', R(u0, u1, 0, 10)), { id: 'v1', kind: 'revolve', target: 's1', angle: 90 }];
+    const r = await runDoc('unified', feats);
+    assert.equal(statusOf(r, 'v1').commands.find((c) => c.command === 'solid.revolve').params.angle, want);
+  }
+  // the chain: a refused groove refuses a later groove, pocket, hole, shell, move on the same part with a pointer, in unified (every step shares the handle)
+  const bad = [box('b1', [40, 40, 20], [0, 0, 0]), sk('s1', R(200, 210, 0, 5)), { id: 'g1', kind: 'groove', target: 's1', into: 'b1', angle: 360 }];
+  for (const [label, tail, id] of [['groove', [sk('s2', R(8, 12, -4, 4)), { id: 'g2', kind: 'groove', target: 's2', into: 'b1', angle: 360 }], 'g2'], ['pocket', [rect('sk9', 5, 5), pocket('pk1', 'sk9', 'b1', 3)], 'pk1'], ['hole', [hole('h1', 'b1', {})], 'h1'], ['move', [move('m1', 'b1', [3, 0, 0])], 'm1'], ['shell', [shell('sh1', 'b1', undefined, 2)], 'sh1']]) {
+    const r = await runDoc('unified', [...bad, ...tail]);
+    assert.equal(statusOf(r, 'g1').status, 'refused'); assert.equal(statusOf(r, 'g1').guard, 'G4');
+    assert.equal(statusOf(r, id).status, 'refused', label);
+    assert.match(statusOf(r, id).refusal, /g1/, `${label}: the sentence points at the refused groove`);
+    // the group's own set tags the refusal of a later feature
+    if (label !== 'groove') assert.equal(statusOf(await runDoc('revolve-groove', [...bad, ...tail]), id).guard, 'RG-CHAIN');
+  }
+  assert.ok(lib.un.domainOf({ features: bad }).rg && lib.un.routeOf({ id: 'g1', kind: 'groove', target: 's1', into: 'b1', angle: 90 }, { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {}, shellDraft: { voided: {} }, unified: { domain: lib.un.domainOf({ features: bad }) } }) === 'revolve-groove');
+});
+
 // ---- the two invariants over every corpus -------------------------------------------------------------------------------------------------------------------------------
 const T = {
   docs: items.length, byCorpus: {}, runs: 0,
