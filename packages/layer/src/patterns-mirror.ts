@@ -632,18 +632,23 @@ export async function pmStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     if (f.kind === 'mirror' && plan.mirrorAt && !m.curved && st.measure[g.target!]?.shells === 1 && st.measure[g.target!]?.volume > 0) {
       const V0 = st.measure[g.target!].volume; const bb = st.measure[g.target!].bbox; const ax = plan.mirrorAt.axis;
       const side = (bb[ax] + bb[ax + 3]) / 2 > plan.mirrorAt.at ? 1 : -1;
+      let probeFailed: string | null = null;
       const ovAt = async (d: number): Promise<{ timedOut: RunResult } | number | null> => {
         const cmd = variant[0]; const plane = cmd.params.plane as { origin: number[]; normal: number[] }; const o = [...plane.origin]; o[ax] += side * d / 2;
         const r = await callSC([...accepted, { ...cmd, params: { ...cmd.params, plane: { ...plane, origin: o } } }]);
         if (r.timedOut) return { timedOut: r };
-        if (!r.ok) return null;
+        if (!r.ok) { probeFailed = `${r.failed ? `${r.failed.command}: ${r.failed.error}` : String(r.error ?? 'unknown')}`; return null; }
         const mm = aggregatePM(r, [...plan.produces, ...r.measure!.bodies.map((b) => b.name).filter((n) => !known.has(n))]);
+        if (!mm) probeFailed = 'no body came back';
         return mm ? 2 * V0 - mm.volume : null;
       };
       const o1 = await ovAt(1e-2);
       if (o1 !== null && typeof o1 === 'object') { refusedNote(`${f.id} (${f.kind}): ${o1.timedOut.failed!.error}`, undefined, variant, 'G-BUDGET'); return; }
       const o2 = await ovAt(1e-3);
       if (o2 !== null && typeof o2 === 'object') { refusedNote(`${f.id} (${f.kind}): ${o2.timedOut.failed!.error}`, undefined, variant, 'G-BUDGET'); return; }
+      // DELIBERATE DEVIATION from pm-translate.mjs (owner decision (b), 2026-10-26): the original SKIPS this check when a probe run fails (o1 or o2 is null), so a part whose mirror contact
+      // is an edge or a point is built whenever the engine fails on a probe: the guard fails open. A check that could not run is a refusal here, with the same guard name.
+      if (probeFailed !== null) { refusedNote(`${f.id} (mirror): mirror contact check could not run: a probe run failed (${probeFailed})`, 'mirror(): the check that the mirrored copy meets the part along a face could not be completed, so this mirror is left out -- try again, or mirror in a direction where the part has a flat face.', variant, 'PM-MIRCONTACT'); return; }
       if (o1 != null && o2 != null) {
         const k = o2 > 0 && o1 > 0 ? Math.log10(o1 / o2) : Infinity;
         if (!(o1 > 1e-9 * V0) || k > 1.5) { refusedNote(`${f.id} (mirror): mirror contact is not a face: the overlap of the copy pushed in by 1e-2 and 1e-3 mm is ${o1.toExponential(2)} and ${o2.toExponential(2)} mm3 (growth exponent ${Number.isFinite(k) ? k.toFixed(2) : 'inf'}; a face contact grows like 1, an edge like 2, a point like 3)`, undefined, variant, 'PM-MIRCONTACT'); return; }

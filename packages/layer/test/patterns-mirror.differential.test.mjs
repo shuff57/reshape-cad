@@ -178,6 +178,18 @@ async function compareDoc(name, item, cfg, extra = {}, pextra = extra) {
   const a = runOrig(item, cfg, extra);
   const b = await runPort(PM, item, cfg, pextra);
   tally.cases++;
+  // NAMED EXCEPTION (owner decision (b), NOTES Fold 5): the original SKIPS the mirror contact check when one of its probe runs fails; the port refuses (PM-MIRCONTACT, 'mirror contact check could not run').
+  // It may differ ONLY there: the first differing feature is a mirror the port refuses with that text and the original did not refuse for that reason, the commands before it are equal, and the config must
+  // be one in which the engine fails runs. Everything after that feature can differ (it depends on it) and is not compared.
+  const same = (x, y) => { try { assert.deepStrictEqual(x, y); return true; } catch { return false; } };
+  if (!a.error && !b.error && !same(a.result, b.result)) {
+    const k = b.result.features.findIndex((x, j) => !same(x, a.result.features[j]));
+    const pf = b.result.features[k]; const of = a.result.features[k];
+    if (k >= 0 && pf.kind === 'mirror' && pf.status === 'refused' && /mirror contact check could not run: a probe run failed/.test(pf.raw ?? '') && !/mirror contact is not a face/.test(of?.raw ?? '') && cfg.fake.failEvery) {
+      tally.mirrorProbeException = (tally.mirrorProbeException ?? 0) + 1;
+      return { a, b };
+    }
+  }
   assert.deepStrictEqual(b.error, a.error, `${name} [${cfg.name}]: thrown error differs`);
   assert.deepStrictEqual(b.result, a.result, `${name} [${cfg.name}]: translateDoc result differs`);
   assert.deepStrictEqual(b.log, a.log, `${name} [${cfg.name}]: engine call sequence differs`);
@@ -307,7 +319,9 @@ test('summary', () => {
 # guards NOT reached by any doc under the fake: ${JSON.stringify(missing)}
 # distinct refusal sentences (numbers and ids folded): ${tally.sentences.size}
 # excluded docs (phase0 and phase 4 differ on a feature other than pattern / mirror): ${tally.excluded.docs} ${JSON.stringify(tally.excluded.kinds)}; of them the port differs from the original on ${tally.excluded.differ}, agrees on ${tally.excluded.agree}`);
-  assert.ok(tally.identical === tally.cases);
+  console.log(`# patterns-mirror: named exception (mirror contact probe failed): ${tally.mirrorProbeException ?? 0} runs`);
+  assert.ok(tally.identical + (tally.mirrorProbeException ?? 0) === tally.cases);
+  assert.ok((tally.mirrorProbeException ?? 0) > 0, 'the named exception never fired: it is untested');
   assert.ok(inSet > 600, `the equality set shrank: ${inSet}`);
   assert.ok(tally.excluded.differ > 0, 'no excluded doc really differs: the exclusion rule is vacuous');
   assert.ok(N_THEMES > 0);
