@@ -264,3 +264,67 @@ brep-rs as second oracle: agrees with the built result on 172 and disagrees on 3
 - `inner_hit` rests on upstream's statement about `point`; `centroid_hit` is missing. A host that wants the centroid path needs a wrapper that reports the pick test.
 - The rig for the real-kernel test is a second wasm build (wrapper2); the stock pkg cannot be used for topology. Hollows with the wall near the shell families A and B (a wall or ligament between t and 2t) were not generated (walls are at most a third of the smallest relevant dimension), so the test says nothing about those guards.
 - 254 cases, one seed (20261025, `--seed=N`); not exhaustive.
+
+# Unified: `createTranslator({ planners: 'unified' })` (base + every group's planners, ONE loop). What it is, the two invariants, whose wording wins, what is not compared
+
+Source: `src/unified.ts` (about 130 lines), `genericStep` extracted from `translateDoc` in `src/translate.ts` (behaviour-neutral: the base and the single sets pass their suites unchanged), `voidedDep` exported from `src/shell-draft.ts`. Decision (owner): unify into one translator now, instead of composing sets in an array (fold 3 lists what composing loses).
+
+## What it does, step by step
+
+Nothing is re-implemented. A feature goes through exactly ONE of the existing steps, chosen by `routeOf` (`unified.ts`), in this order:
+
+1. a `shell` or a `draft`, a box with every edge bevelled (G-CHAMFER), or ANY feature that reads a closed hollow (`voidedDep`: G-VOID for every kind but shell / move / rotate; the move or turn that carries the mark to the next feature, and the refusal of a copy) -> the shell-draft step (`shellDraftStep`);
+2. a `hole` -> the holes step (`holesStep`, with its budget, post-checks and note fields);
+3. an `extrude`, a `pocket` or a `combine` -> the extrude-pocket loop (`genericStep` with the extrude-pocket profile: verification, scene, piece-counting measure);
+4. every other kind (box, move, rotate, mirror, pattern, fillet, revolve ...) -> the loop of the group the document uses (`domainOf`): extrude-pocket if the doc has an extrude / pocket / combine, else holes if it drills, else shell-draft if it has a shell / draft / bevelled box; a doc that uses no group takes the extrude-pocket loop (it words every refusal plainly; the base loop prints the engine's own text, "solidcraft refused it -- solid.loft: ...").
+
+Two things are added around the step, only where they matter:
+
+- **The holes budget everywhere in a document that drills.** Every engine run of such a document carries `{ budgetS }` (45 s plus 1.5x the last replay; `timedOut` is refused), also in the steps that have no budget of their own; CPU the runs report is added to the holes' account (`spentS`, only on a doc with a hole).
+- **Two measures side by side in a document that uses two or more groups.** The extrude-pocket group's measure counts the pieces the engine splits off a body and sums the shells; the holes group's counts exact names and sums the shells; the shell-draft group's counts exact names and has NO shell count. A guard reads the kind it was written for whatever step built the feature it reads: the extrude-pocket after-the-build check "sealed cavity" compares shell counts, the holes guard G-SHELLS compares the host's shells, and with the old composition both silently passed on a host built by the shell-draft step (`undefined` compares false). `unifiedStep` swaps `st.measure` and `st.bodies` to the maps of the kind the step reads and converts what the step accepted (from the reply of the very run that built it, found by command identity) for the other kind. Found by the first run of the property test (combined seed 57: a pocket into a hollowed join was built; the extrude-pocket set refuses it).
+
+`PROFILES` (the four single sets) is unchanged and `'unified'` cannot be listed with others (it throws). `UNIFIED_PROFILE.initState` takes the doc (`Profile.initState(st, doc?)`), which is how the domain and `spentS` are decided per document.
+
+## Invariant 1 (safety), how it is defined, and what does not bind
+
+`test/unified.test.mjs`, `bindingRefusals` / `unifiedCovers` in `test/unified-harness.mjs`. For every doc, engine configuration and single set S: if S refuses feature f and the refusal binds, unified must refuse f or a feature f depends on (everything f mentions and what those mention, plus the earlier features that use the same inputs; for G-BODIES, which counts every body, any earlier feature).
+
+A refusal does NOT bind when:
+
+- **stand-in**: S refuses a kind ANOTHER set owns (the owners: extrude-pocket = extrude, pocket, combine; holes = hole; shell-draft = shell, draft), unless the refusal is one of S's cross-kind guards (G-VOID, G-CHAMFER, G-BUDGET). S has no guard for that kind; what it does is the base planner or a placeholder sentence. This is the one place the literal wording of the brief cannot hold, and it is the owner's decision, not a silent one: read literally ("any single set refuses, unified refuses"), unified would have to refuse every closed hollow, because the holes set refuses all of them with a placeholder (G-CLOSED, whose sentence ends "and undefined, so ..."; the extrude-pocket set refuses them with the base "needs a face to remove"), every whole-body draft (the base says "not mapped"), and everything the base planner cannot map that extrude-pocket maps (a constrained-sketch pull). That would remove the shell-draft group's closed hollow and whole-body draft, and the extrude-pocket group's constrained sketches, from the unified set altogether. Counted: 21702 stand-in refusals over the corpora, 3290 of which unified builds. The biggest: holes / extrude-pocket refuse a closed hollow 1273 / 1236 times (321 each built by unified), a whole-body draft 1318 / 1305 times (178 built), shell-draft / holes refuse an extrude 1830 / 1826 times (837 built, the group's planner maps what the base cannot). **If the owner wants the literal reading instead, the test needs the `OWNS` check taken out of `bindingRefusals` and unified needs a refusal of exactly those kinds.**
+- **downstream**: S refuses a feature that reads a stand-in refusal, directly or through others (11476): it may be refused only because of that.
+- **injected**: the fake failed on a call NUMBER (`failEvery`, 453): which feature meets it depends on how many runs the set made before, so it is not a decision of a guard.
+
+Result over 3699 docs x 4 configurations (59184 runs): **20977 binding refusals compared, 0 violations** (by set: extrude-pocket 5808, holes 4750, shell-draft 10419; by guard: G-PICK 1725, G-TOP 1140, G-CLOSED 793, G-THICK 528, G-BODIES 474, G-CONVEX 443, G-TANGENT 306, G-FLAT 244, G-RECESS-VOL 227, G-VOID 125, G-CURVED 120, G-RECESSMIN 102 ... and 10403 with no guard name, which are the extrude-pocket group's checks, dependencies and kernel refusals). 20960 were refused by unified itself; 13 through a refused dependency (a stricter planner of one group refused an earlier feature of the chain the other set built on, for example the extrude-pocket planner refusing the pockets a hole's host had in the holes set; 4 through G-BODIES, whose count is the whole scene). Runs rejected as a whole (a thrown error, NOTES fold 1 item 1): 56 unified, 112 single-set; **0 rejected by unified where no single set rejected the same doc**.
+
+The test is able to fail: with the G-VOID / G-CHAMFER routing switched off in `dist/` it reports violations on the combined docs (combined seed 150: the bevelled box built); before the two-measure fix it reported the sealed cavity of seed 57; before the dependency clause it reported 17 violations that were all a stricter planner refusing an earlier feature.
+
+## Invariant 2 (no needless capability loss)
+
+A doc is in a group's domain when it uses that group's kinds and no other group's: extrude-pocket (extrude, pocket, combine), holes (hole), shell-draft (shell, draft, or a box with every edge bevelled). Unified must equal that group's set exactly: the result (notes, commands, sentences, guard names, `spentS`), the ordered engine calls with their options, and a thrown error. **9748 runs equal (extrude-pocket 3064, holes 1704, shell-draft 4868, no group = extrude-pocket 112), 0 differ.** The exclusions are the docs that use two or more groups (1262 of 3699, listed by corpus: ep-cases 1, ep-generated 18, holes-cases 202, holes-generated 38, sd-cases 343, sd-generated 84, hand 8, base-generated 84, combined 484); in those another group's guard legitimately has its say (a hole in a hollowed part is checked by the holes guards and the hollow by the shell-draft ones; a pocket in a closed hollow is G-VOID). They are checked for invariant 1, not for equality, and no doc was excluded for any other reason. Nothing needed the "more than a handful" stop.
+
+A doc that uses no group (27 docs) is equal to the extrude-pocket set (112 runs, the loop whose wording it takes); against the holes and shell-draft sets its refused / built vector is the same too (108 of 108 runs of docs without an injected failure), the sentences differ (the base loop prints the engine's text, the holes loop says "could not be built cleanly", the shell-draft loop "could not be built on the parts before it"): wording only.
+
+## Whose wording wins
+
+| Decision / guard | Wording in unified | Why |
+|---|---|---|
+| G-VOID, G-CHAMFER (any kind) | shell-draft (`SENTENCE.afterClosedHollow`, `chamferBox`) | the step that runs them; in the old composition not worded at all for a pocket / join / hole |
+| pull, pocket, join guards: outline guard, options, curved accuracy, sealed cavity, cut / join consistency, join touch, slanted round | extrude-pocket | owner of the kind; its notes keep `checks` |
+| hole guards (G-TOP, G-CORNERS, G-CROSS, G-TORUS, G-TANGENT, G-RECESS, G-RECESS-VOL, G-CS*, G-TINY, G-WIDE, G-NEST, G-BODIES, G-SHELLS, G-NOOP, G-CURVED, G-REVOLVE, G-RECESSMIN, G-BUDGET) | holes | owner; the note keeps `guard`, `raw`, `probe`, `unguarded` |
+| shell / draft guards (G-CONVEX, G-BLIND, G-THICK, G-PICK, G-TIE, G-FROM, G-CAP, G-FLAT, G-SWEEP, G-REACH ...) | shell-draft | owner |
+| closed hollow (no `open`) | shell-draft's planner and sentence | the holes set's G-CLOSED is a stand-in (and prints "undefined" where the reason belongs, fold 3 item on `SENTENCE.closed`); the extrude-pocket set has none |
+| whole-body draft | shell-draft | the other two refuse with the base's "not mapped" |
+| dependency sentence, kernel-refusal, planner-error and "no usable outline" wording, note fields of the kinds no group lists | the loop of the doc's style: extrude-pocket if the doc has an extrude / pocket / combine, else holes if it drills, else shell-draft, none = extrude-pocket | same rule as "unlisted kinds follow the first entry" of the composition, by what the doc uses |
+| an engine refusal in a step that has no hole budget, in a doc that drills | that step's own wording; a timed-out run is an engine failure there (`G-BUDGET` is named only by the holes step) | the three loops treat `timedOut` differently; every one of them refuses |
+
+Lint (`lintSentence` of the holes group: one sentence, full stop, no engine jargon, no emoji): 21400 unified refusals, **0 worse than every single set's sentence for the same feature** (2517 have a problem that a single set has too: 2339 "no full stop", mostly the extrude-pocket group's own sentences, and 329 "engine jargon", the word "SolidCraft" in the extrude-pocket group's sentences; kept, they are the group's wording). In the run with an engine that fails on a call number a missing full stop is not held against unified, because the single set may not have refused that feature.
+
+## What unified does NOT do, oddities
+
+- **It does not prove built solids are right**: the fake has no kernel. Invariant 1 shows no refusal of a single set is lost; the real-kernel replay (`test/live-replay-unified.mjs`, written, NOT run, `--only` and `--out` work) is the check against the real engine; even that scores nothing against an oracle for the combined docs.
+- The two measures rest on finding the run that built the accepted feature by command identity; a loop that clones its commands would fall back to the step's own measure (the shell count would be missing again). None does today.
+- In a document that uses two or more groups the notes of the shell-draft step's features carry `shells` (the other loops' measure), which they do not in a shell-draft-only document.
+- The old composition `['extrude-pocket', 'holes', 'shell-draft']` is unchanged and still loses what fold 3 lists; use 'unified'.
+- The budget of a document that drills is only advice to the bridge (as in fold 2): a host whose `runSC` ignores `{ budgetS }` leaves every run unbounded.
+- The test's dependency clause is generous on purpose (the earlier features that use the same inputs count as dependencies); the strict number is the 20960 refused by unified itself.
