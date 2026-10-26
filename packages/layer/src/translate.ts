@@ -17,6 +17,7 @@ import type { Cmd, Frame, MtApi, RunResult, TopologyReply, TranslateCtx, TopoBod
 import { mapSketch } from './sketch-map.js';
 import { resolveName, pickPoint } from './resolve-names.js';
 import { followMoves } from './follow-moves.js';
+import type { UnifiedDomain } from './unified.js';
 import type { Evidence, Resolved, ResolveEnv, ShapeResult, FaceRes, EdgeRes } from './resolve-names.js';
 
 export const FEATURE_KINDS = ['box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'sketch', 'datum', 'extrude', 'combine',
@@ -66,6 +67,8 @@ export interface TranslateState {
   holes?: HolesState;
   /** shell-draft profile only: the closed hollows of the shell-draft group. See shell-draft.ts. */
   shellDraft?: { voided: Record<string, true> };
+  /** unified set only: which groups the document uses (decides the style of the loop). See unified.ts. */
+  unified?: { domain: UnifiedDomain; maps: { E: { measure: Record<string, Aggregate>; bodies: Record<string, string[]> }; P: { measure: Record<string, Aggregate>; bodies: Record<string, string[]> } } };
 }
 export interface HolesState {
   chain: Record<string, { baseIdx: number; baseMeasure: Aggregate | undefined }>;
@@ -117,7 +120,7 @@ export interface Profile {
   planners: Partial<Record<string, Planner>>;
   /** true: split-off pieces and shells are counted in the measure, scene is tracked, plan.verify runs, notes carry `checks`. */
   verifies: boolean;
-  initState(st: TranslateState): void;
+  initState(st: TranslateState, doc?: { features: Feature[] }): void;
   depSentence(f: Feature, role: string, headId: string, st: TranslateState): string | null;
   noOutline(sk: SketchFeature, o: { points?: number[][]; notes?: string[] }): string;
   plannerError(f: Feature, e: unknown): { refusal: string; internal: string | null };
@@ -173,7 +176,7 @@ export function composeProfiles(list: Profile[]): Profile {
     name: list.map((p) => p.name).join('+'),
     planners: Object.assign({}, ...list.map((p) => p.planners)) as Profile['planners'],
     verifies: first.verifies,
-    initState: (st) => { for (const p of list) p.initState(st); },
+    initState: (st, doc) => { for (const p of list) p.initState(st, doc); },
     depSentence: (f, role, id, st) => owner(f.kind).depSentence(f, role, id, st),
     noOutline: (sk, o) => first.noOutline(sk, o),
     plannerError: (f, e) => owner(f.kind).plannerError(f, e),
@@ -554,7 +557,7 @@ export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx, profil
 const isPiece = (bodyName: string, names: string[]) => names.some((n) => bodyName === n || (bodyName.startsWith(`${n} (`) && /^ \(\d+\)$/.test(bodyName.slice(n.length))));
 
 /** Aggregate the named bodies of a successful run into one measure (sum volume/faces, union bbox). With `pieces`, split-off pieces count and the shells are summed. */
-function aggregate(res: RunResult, names: string[], pieces = false): Aggregate | null {
+export function aggregate(res: RunResult, names: string[], pieces = false): Aggregate | null {
   const bs = res.measure!.bodies.filter((b) => (pieces ? isPiece(b.name, names) : names.includes(b.name)));
   if (!bs.length) return null;
   const lo = [Infinity, Infinity, Infinity]; const hi = [-Infinity, -Infinity, -Infinity];
@@ -719,59 +722,68 @@ export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: 
  */
 export async function translateDoc(doc: { features: Feature[] }, ctx: TranslateCtx, profileIn: Profile = BASE_PROFILE): Promise<TranslateResult> {
   const st: TranslateState = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} };
-  profileIn.initState(st);
+  profileIn.initState(st, doc);
   const shapeCache: ShapeCache = new Map();
   const accepted: Cmd[] = [];
   const out: FeatureResult[] = [];
   for (let idx = 0; idx < doc.features.length; idx++) {
     const f = doc.features[idx];
     const profile = ownerOf(profileIn, f.kind); // a composition: the profile that owns this kind decides everything about the feature
-    if (profile.step) { await profile.step(f, idx, { doc, ctx, st, accepted, out, shapeCache, profile: profileIn }); continue; }
-    const prefix = doc.features.slice(0, idx);
-    const resolved = await resolveNamesFor(f, prefix, { st, accepted, ctx, shapeCache });
-    const fctx: PlanCtx = { ...ctx, resolve: (name) => resolved.get(name) ?? null };
-    const note = (o: Omit<FeatureResult, 'id' | 'kind'>) => out.push({ id: f.id, kind: f.kind, ...o });
-    if (f.kind === 'sketch') st.sketches[f.id] = f;
-    let plan: Plan;
-    let internal: string | null = null;
-    try { plan = planFeature(f, st, fctx, profile); } catch (e) { const pe = profile.plannerError(f, e); internal = pe.internal; plan = refuse(pe.refusal); }
-    if ('refusal' in plan) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, commands: [], ...(internal ? { internalError: internal } : {}) }); continue; }
-    if ('noop' in plan) { note({ status: 'noop', commands: [] }); continue; }
-    let lastErr: string | null = null;
-    let lastFail: RunResult | null = null;
-    let verifyRefusal: string | null = null;
-    const checks: unknown[] = [];
-    let built = false;
-    for (const variant of plan.variants) {
-      let res: RunResult;
-      try { res = await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `bridge error: ${(e as Error).message}` } }; }
-      if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; continue; }
-      const m = aggregate(res, plan.produces, profile.verifies);
-      if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
-      if (profile.verifies) {
-        const bad = plan.verify && !ctx.skipVerify ? await plan.verify(m, { accepted: accepted.slice(), variant, runSC: ctx.runSC, checks, scene: st.scene! }) : null;
-        if (bad) { verifyRefusal = bad; lastErr = null; continue; }
-      }
-      accepted.push(...variant);
-      for (const mp of membersOf(profileIn)) mp.onAccepted?.(st, res, m, plan);
-      st.accLen[f.id] = accepted.length;
-      st.bodies[f.id] = m.bodies;
-      st.measure[f.id] = m;
-      for (const c of plan.consumes) {
-        if (c === f.id) continue;
-        if (f.kind === 'hole' || f.kind === 'pocket' || f.kind === 'groove') { if (c === (f.kind === 'hole' ? f.target : f.into)) st.head[c] = f.id; } else st.stale[c] = f.id;
-      }
-      note({ status: 'built', ...(profile.verifies ? { checks } : {}), commands: variant, measure: m, pickedFrom: plan.pickedFrom, evidence: plan.evidence ?? null, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, variantsTried: plan.variants.indexOf(variant) + 1 });
-      built = true;
-      break;
-    }
-    if (built) continue;
-    const sentence = verifyRefusal ?? profile.kernelRefusal(f, lastErr);
-    st.refused[f.id] = sentence;
-    note({ status: 'refused', refusal: sentence, commands: plan.variants[0], failed: lastFail?.failed ?? null, sketchAtFailure: lastFail?.sketch_at_failure ?? null });
+    const env: LoopEnv = { doc, ctx, st, accepted, out, shapeCache, profile: profileIn };
+    if (profile.step) { await profile.step(f, idx, env); continue; }
+    await genericStep(f, idx, env, profile);
   }
   const extras: Partial<TranslateResult> = profileIn.result ? profileIn.result(st) : {};
   return { features: out, commands: accepted, ...extras, _state: { st, accepted, shapeCache } };
+}
+
+/**
+ * The generic per-feature step (plan, run every variant, check, note), with the wording and checks of `profile` (the owner of the feature's kind).
+ * `env.profile` is the whole profile (the composition, when there is one): its bookkeeping hooks run on an accepted feature. translateDoc runs this for every
+ * feature whose owner has no step of its own; the 'unified' set (unified.ts) also calls it for the features it routes to the base / extrude-pocket loop.
+ */
+export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile: Profile): Promise<void> {
+  const { doc, ctx, st, accepted, out, shapeCache } = env;
+  const profileIn = env.profile;
+  const prefix = doc.features.slice(0, idx);
+  const resolved = await resolveNamesFor(f, prefix, { st, accepted, ctx, shapeCache });
+  const fctx: PlanCtx = { ...ctx, resolve: (name) => resolved.get(name) ?? null };
+  const note = (o: Omit<FeatureResult, 'id' | 'kind'>) => out.push({ id: f.id, kind: f.kind, ...o });
+  if (f.kind === 'sketch') st.sketches[f.id] = f;
+  let plan: Plan;
+  let internal: string | null = null;
+  try { plan = planFeature(f, st, fctx, profile); } catch (e) { const pe = profile.plannerError(f, e); internal = pe.internal; plan = refuse(pe.refusal); }
+  if ('refusal' in plan) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, commands: [], ...(internal ? { internalError: internal } : {}) }); return; }
+  if ('noop' in plan) { note({ status: 'noop', commands: [] }); return; }
+  let lastErr: string | null = null;
+  let lastFail: RunResult | null = null;
+  let verifyRefusal: string | null = null;
+  const checks: unknown[] = [];
+  for (const variant of plan.variants) {
+    let res: RunResult;
+    try { res = await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `bridge error: ${(e as Error).message}` } }; }
+    if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; continue; }
+    const m = aggregate(res, plan.produces, profile.verifies);
+    if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
+    if (profile.verifies) {
+      const bad = plan.verify && !ctx.skipVerify ? await plan.verify(m, { accepted: accepted.slice(), variant, runSC: ctx.runSC, checks, scene: st.scene! }) : null;
+      if (bad) { verifyRefusal = bad; lastErr = null; continue; }
+    }
+    accepted.push(...variant);
+    for (const mp of membersOf(profileIn)) mp.onAccepted?.(st, res, m, plan);
+    st.accLen[f.id] = accepted.length;
+    st.bodies[f.id] = m.bodies;
+    st.measure[f.id] = m;
+    for (const c of plan.consumes) {
+      if (c === f.id) continue;
+      if (f.kind === 'hole' || f.kind === 'pocket' || f.kind === 'groove') { if (c === (f.kind === 'hole' ? f.target : f.into)) st.head[c] = f.id; } else st.stale[c] = f.id;
+    }
+    note({ status: 'built', ...(profile.verifies ? { checks } : {}), commands: variant, measure: m, pickedFrom: plan.pickedFrom, evidence: plan.evidence ?? null, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, variantsTried: plan.variants.indexOf(variant) + 1 });
+    return;
+  }
+  const sentence = verifyRefusal ?? profile.kernelRefusal(f, lastErr);
+  st.refused[f.id] = sentence;
+  note({ status: 'refused', refusal: sentence, commands: plan.variants[0], failed: lastFail?.failed ?? null, sketchAtFailure: lastFail?.sketch_at_failure ?? null });
 }
 
 /** Resolve one name against the shapes a finished translateDoc left behind (same code path as translateDoc). */

@@ -342,7 +342,7 @@ export function draftFromUsage(script: string): FromUse[] {
 export interface ShellDraftState { voided: Record<string, true> }
 
 /** Does feature f read a solid that is hollow with no open side (a closed hollow)? Returns a phrase naming it, else null. */
-function voidedDep(f: FView, st: TranslateState): string | null {
+export function voidedDep(f: FView, st: TranslateState): string | null {
   const ids = new Set(Object.keys(st.shellDraft!.voided));
   if (!ids.size) return null;
   let hit: string | null = null;
