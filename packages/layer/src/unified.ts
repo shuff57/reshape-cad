@@ -24,12 +24,13 @@ import type { Aggregate, LoopEnv, Profile, TranslateState } from './translate.js
 import { EXTRUDE_POCKET_PROFILE } from './extrude-pocket.js';
 import { BUDGET_S, HOLES_PROFILE, aggregateOf, holesStep } from './holes.js';
 import { SHELL_DRAFT_PROFILE, shellDraftStep, voidedDep } from './shell-draft.js';
+import { PM_PROFILE, PM_KINDS, cutGuard, pmStep } from './patterns-mirror.js';
 import type { FView } from './shell-draft.js';
 
 /** The kinds the extrude-pocket group owns. */
 export const EP_KINDS = ['extrude', 'pocket', 'combine'];
 /** Which loop runs the kinds no group lists. */
-export type UnifiedStyle = 'extrude-pocket' | 'holes' | 'shell-draft';
+export type UnifiedStyle = 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror';
 export type Route = UnifiedStyle;
 export interface UnifiedDomain {
   /** the document has an extrude, a pocket or a combine */
@@ -38,6 +39,8 @@ export interface UnifiedDomain {
   holes: boolean;
   /** the document has a shell or a draft, or a box with every edge bevelled (G-CHAMFER) */
   sd: boolean;
+  /** the document has a pattern or a mirror */
+  pm: boolean;
   style: UnifiedStyle;
 }
 
@@ -47,24 +50,32 @@ export const isChamferBox = (f: Feature): boolean => f.kind === 'box' && !!FV(f)
 
 /** Which groups a document uses, and so which loop words the kinds no group lists. */
 export function domainOf(doc: { features: Feature[] }): UnifiedDomain {
-  let ep = false; let holes = false; let sd = false;
+  let ep = false; let holes = false; let sd = false; let pm = false;
   for (const f of doc.features) {
     if (EP_KINDS.includes(f.kind)) ep = true;
     else if (f.kind === 'hole') holes = true;
     else if (f.kind === 'shell' || f.kind === 'draft' || isChamferBox(f)) sd = true;
+    else if (PM_KINDS.includes(f.kind)) pm = true;
   }
   // no group at all: the extrude-pocket loop too (it words every refusal plainly; the base loop prints the engine's own text)
-  const style: UnifiedStyle = ep ? 'extrude-pocket' : holes ? 'holes' : sd ? 'shell-draft' : 'extrude-pocket';
-  return { ep, holes, sd, style };
+  const style: UnifiedStyle = ep ? 'extrude-pocket' : holes ? 'holes' : sd ? 'shell-draft' : pm ? 'patterns-mirror' : 'extrude-pocket';
+  return { ep, holes, sd, pm, style };
 }
 
 /**
  * Which step runs a feature. The shell-draft guards that apply to every kind come first; then the kind's owner; then the document's style.
  * Exported for the tests.
  */
-export function routeOf(f: Feature, st: TranslateState): Route {
+export function routeOf(f: Feature, st: TranslateState, ctx?: Pick<TranslateCtx, 'arc' | 'mt'>): Route {
   if (f.kind === 'shell' || f.kind === 'draft') return 'shell-draft';
   if (isChamferBox(f) || voidedDep(FV(f), st)) return 'shell-draft'; // G-CHAMFER, G-VOID (and the voided move / turn, which also carries the mark on)
+  if (PM_KINDS.includes(f.kind)) return 'patterns-mirror';
+  // the patterns-mirror group's cut guards (a tool almost on an earlier cut, a wall thinner than 1% of the diagonal) look at a pocket and a hole: the group's step refuses them
+  if (ctx && (f.kind === 'pocket' || f.kind === 'hole')) {
+    let hit = false;
+    try { hit = !!cutGuard(f, st, ctx); } catch { hit = false; } // a malformed pocket / hole is the owner's to refuse, in its own words
+    if (hit) return 'patterns-mirror';
+  }
   if (f.kind === 'hole') return 'holes';
   if (EP_KINDS.includes(f.kind)) return 'extrude-pocket';
   return st.unified!.domain.style;
@@ -77,12 +88,12 @@ type Seen = Array<{ cmds: Cmd[]; res: RunResult }>;
  * The engine as a step sees it. A document that drills a hole runs EVERY step under { budgetS } like the holes loop (a step with no budget of its own gets
  * BUDGET_S plus 1.5x the last replay), and the CPU the runs report is added to the holes' account. Every run is remembered in `seen`.
  */
-function wrapped(ctx: TranslateCtx, st: TranslateState, seen: Seen, budget: boolean): TranslateCtx {
+function wrapped(ctx: TranslateCtx, st: TranslateState, seen: Seen, budget: boolean, pmBudget: boolean): TranslateCtx {
   const hs = st.holes!;
   return {
     ...ctx,
     runSC: async (cmds: Cmd[], opts?: { budgetS: number }) => {
-      const o = opts ?? (budget ? { budgetS: BUDGET_S + 1.5 * hs.lastRunS } : undefined);
+      const o = opts ?? (budget ? { budgetS: BUDGET_S + 1.5 * hs.lastRunS } : pmBudget ? { budgetS: ((ctx.pmBudgetMs ?? 600000) + 2 * st.pm!.accMs + 1000) / 1000 } : undefined);
       const res = o === undefined ? await ctx.runSC(cmds) : await ctx.runSC(cmds, o);
       if (!opts && budget) hs.spentS += (res?.cpuMs ?? 0) / 1000;
       if (res?.ok) seen.push({ cmds, res });
@@ -107,12 +118,12 @@ const toP = (m: Aggregate, r: RunResult | undefined): Aggregate => (r?.measure ?
 
 export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promise<void> {
   const { st, accepted } = env;
-  const route = routeOf(f, st);
+  const route = routeOf(f, st, env.ctx);
   const dom = st.unified!.domain;
-  const mixed = Number(dom.ep) + Number(dom.holes) + Number(dom.sd) >= 2;
+  const mixed = Number(dom.ep) + Number(dom.holes) + Number(dom.sd) + Number(dom.pm) >= 2;
   const wrap = mixed || (dom.holes && route !== 'holes');
   const seen: Seen = [];
-  const env2: LoopEnv = wrap ? { ...env, ctx: wrapped(env.ctx, st, seen, dom.holes) } : env;
+  const env2: LoopEnv = wrap ? { ...env, ctx: wrapped(env.ctx, st, seen, dom.holes, dom.pm) } : env;
   // the measure of the kind this step reads
   const kind: 'E' | 'P' = route === 'extrude-pocket' ? 'E' : 'P';
   const maps = st.unified!.maps;
@@ -120,6 +131,7 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
   const before = st.accLen[f.id];
   if (route === 'holes') await holesStep(f, idx, env2);
   else if (route === 'shell-draft') await shellDraftStep(f, idx, env2);
+  else if (route === 'patterns-mirror') await pmStep(f, idx, env2);
   else await genericStep(f, idx, env2, EXTRUDE_POCKET_PROFILE);
   if (!mixed) return;
   const m = st.measure[f.id];
@@ -135,12 +147,13 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
 export const UNIFIED_PROFILE: Profile = {
   name: 'unified',
   // claiming every kind a group lists keeps planFeature honest about what this set plans (a hole, a shell and a draft are planned asynchronously by the step)
-  planners: { ...EXTRUDE_POCKET_PROFILE.planners, ...HOLES_PROFILE.planners, ...SHELL_DRAFT_PROFILE.planners },
+  planners: { ...EXTRUDE_POCKET_PROFILE.planners, ...HOLES_PROFILE.planners, ...SHELL_DRAFT_PROFILE.planners, ...PM_PROFILE.planners },
   verifies: true,
   initState(st, doc) {
     EXTRUDE_POCKET_PROFILE.initState(st);
     HOLES_PROFILE.initState(st);
     SHELL_DRAFT_PROFILE.initState(st);
+    PM_PROFILE.initState(st);
     st.unified = { domain: domainOf(doc ?? { features: [] }), maps: { E: { measure: {}, bodies: {} }, P: { measure: {}, bodies: {} } } };
   },
   // wording of the synchronous planFeature only (the step chooses the wording of a run by the document's style): the extrude-pocket group's, the first entry
@@ -148,9 +161,10 @@ export const UNIFIED_PROFILE: Profile = {
   noOutline: EXTRUDE_POCKET_PROFILE.noOutline,
   plannerError: EXTRUDE_POCKET_PROFILE.plannerError,
   kernelRefusal: EXTRUDE_POCKET_PROFILE.kernelRefusal,
-  onAccepted(st, res, m, plan) {
+  onAccepted(st, res, m, plan, acc) {
     EXTRUDE_POCKET_PROFILE.onAccepted!(st, res, m, plan);
     HOLES_PROFILE.onAccepted!(st, res, m, plan);
+    PM_PROFILE.onAccepted!(st, res, m, plan, acc);
   },
   result: (st) => (st.unified!.domain.holes ? { spentS: st.holes!.spentS } : {}),
   step: unifiedStep,

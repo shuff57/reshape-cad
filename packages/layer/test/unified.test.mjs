@@ -17,7 +17,7 @@ import { loadCorpora, runSet, CONFIGS, SETS, TR, lib, bindingRefusals, unifiedCo
 import { combinedDoc } from './unified-docs.mjs';
 import { box, shell, move, rotate, hole, pocket, rect, combine, prim } from './docs.mjs';
 
-const GROUP = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft' };
+const GROUP = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror' };
 const items = await loadCorpora({ combined: 600 });
 const bump = (o, k, n = 1) => { o[k] = (o[k] ?? 0) + n; };
 
@@ -25,7 +25,7 @@ test('createTranslator: unified exists, is not a member of a composition, the de
   const U = lib.tr.createTranslator({ planners: 'unified' });
   assert.equal(U.planners, 'unified');
   assert.equal(lib.tr.createTranslator().planners, 'base');
-  assert.deepStrictEqual(Object.keys(lib.tr.PROFILES), ['base', 'extrude-pocket', 'holes', 'shell-draft']);
+  assert.deepStrictEqual(Object.keys(lib.tr.PROFILES), ['base', 'extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror']);
   assert.throws(() => lib.tr.createTranslator({ planners: ['unified', 'holes'] }), /not composed/);
   assert.throws(() => lib.tr.createTranslator({ planners: ['holes', 'unified'] }), /not composed/);
   // a hole, a shell and a draft are planned asynchronously by the loop: planFeature cannot do it synchronously and must not fall back to the unguarded planner
@@ -88,24 +88,24 @@ test('the shell count a guard reads is on every measure of a mixed document, whi
 const T = {
   docs: items.length, byCorpus: {}, runs: 0,
   inv1: { compared: 0, itself: 0, dependency: 0, scene: 0, standIn: 0, downstream: 0, injected: 0, violations: [], bySet: {}, byGuard: {} },
-  inv2: { inDomain: {}, equal: 0, differ: [], noGroup: 0, mixedDocs: 0, byCorpusMixed: {} },
+  inv2: { inDomain: {}, equal: 0, differ: [], noGroup: 0, mixedDocs: 0, byCorpusMixed: {}, cutGuard: { runs: 0, docs: new Set(), byGuard: {} } },
   thrown: { unified: 0, unifiedOnly: [], sets: 0 },
-  lint: { refusals: 0, worse: [] },
-  pureBase: { docs: 0, sameDecisionAs: { holes: 0, 'shell-draft': 0, base: 0, 'extrude-pocket': 0 } },
+  lint: { refusals: 0, worse: [], epWording: 0 },
+  pureBase: { docs: 0, sameDecisionAs: { holes: 0, 'shell-draft': 0, base: 0, 'extrude-pocket': 0, 'patterns-mirror': 0 } },
 };
 for (const it of items) bump(T.byCorpus, it.corpus);
 
 test('invariants 1 and 2, and the sentence lint: every corpus x four engine configurations, unified against each single set', { timeout: 3_000_000 }, async () => {
   for (const it of items) {
     const d = lib.un.domainOf(it.doc);
-    const present = ['ep', 'holes', 'sd'].filter((k) => d[k]);
+    const present = ['ep', 'holes', 'sd', 'pm'].filter((k) => d[k]);
     const zone = present.length === 1 ? present[0] : present.length === 0 ? 'none' : 'mixed';
     if (zone === 'mixed') { T.inv2.mixedDocs++; bump(T.inv2.byCorpusMixed, it.corpus); }
     for (const cfg of CONFIGS) {
       const u = await runSet('unified', it.doc, cfg, it.fromUsage);
       const singles = {};
       for (const s of SETS) singles[s] = await runSet(s, it.doc, cfg, it.fromUsage);
-      T.runs += 4;
+      T.runs += 1 + SETS.length;
       if (u.error) { T.thrown.unified++; if (SETS.every((s) => !singles[s].error)) T.thrown.unifiedOnly.push(`${it.corpus} ${it.name} [${cfg.name}]: ${u.error}`); }
       for (const s of SETS) if (singles[s].error) T.thrown.sets++;
 
@@ -114,7 +114,14 @@ test('invariants 1 and 2, and the sentence lint: every corpus x four engine conf
         const ref = zone === 'none' ? 'extrude-pocket' : GROUP[zone];
         const refRun = zone === 'none' ? singles['extrude-pocket'] : singles[ref];
         if (zone === 'none') T.inv2.noGroup++;
-        try { assert.deepStrictEqual(u, refRun); T.inv2.equal++; bump(T.inv2.inDomain, zone === 'none' ? 'no group (= extrude-pocket)' : ref); } catch (e) { T.inv2.differ.push(`${it.corpus} ${it.name} [${cfg.name}] vs ${ref}: ${String(e.message).split('\n').slice(0, 6).join(' / ')}`); }
+        try { assert.deepStrictEqual(u, refRun); T.inv2.equal++; bump(T.inv2.inDomain, zone === 'none' ? 'no group (= extrude-pocket)' : ref); } catch (e) {
+          // the one cause that is by definition a difference: the patterns-mirror group's cut guards (a tool almost on an earlier cut, a wall thinner than 1% of the diagonal) bind
+          // on every pocket and hole, in any document, so a document inside another group's domain can be refused where that group's own set builds it. Anything else is a failure.
+          const uf = u.result?.features ?? []; const rf = refRun.result?.features ?? [];
+          const k = uf.findIndex((x, j) => JSON.stringify(x) !== JSON.stringify(rf[j]));
+          if (!u.error && !refRun.error && k >= 0 && ['PM-SNAPCUT', 'PM-WEB'].includes(uf[k].guard)) { T.inv2.cutGuard.runs++; T.inv2.cutGuard.docs.add(`${it.corpus} ${it.name}`); bump(T.inv2.cutGuard.byGuard, `${ref}: ${uf[k].guard}, the group's set ${rf[k].status}`); }
+          else T.inv2.differ.push(`${it.corpus} ${it.name} [${cfg.name}] vs ${ref}: ${String(e.message).split('\n').slice(0, 6).join(' / ')}`);
+        }
         if (zone === 'none' && !u.error) {
           T.pureBase.docs++;
           for (const s of SETS) if (!singles[s].error && singles[s].result.features.every((f, i) => (f.status === 'refused') === (u.result.features[i].status === 'refused'))) T.pureBase.sameDecisionAs[s]++;
@@ -147,6 +154,9 @@ test('invariants 1 and 2, and the sentence lint: every corpus x four engine conf
         // an engine that fails on a call NUMBER fails other features in each run: the extrude-pocket group's own sentences have no full stop, whoever refused the feature
         if (cfg.fake.failEvery) allowed.add('no full stop');
         const extra = P.filter((p) => !allowed.has(p));
+        // the extrude-pocket group's own sentences have no full stop (kept: they are the group's wording); when its loop refuses a pull / pocket / join that the single set did not refuse
+        // (an earlier difference in the chain, for example a pattern in front of it), no single set's sentence for that feature has the problem to compare with
+        if (['extrude', 'pocket', 'combine'].includes(it.doc.features[i].kind) && extra.length && extra.every((p) => p === 'no full stop')) { T.lint.epWording++; return; }
         if (extra.length) T.lint.worse.push(`${it.corpus} ${it.name} ${f.id}: ${extra.join(', ')}: ${f.refusal.slice(0, 160)}`);
       });
     }
@@ -170,9 +180,10 @@ test('summary', () => {
 #   by guard: ${JSON.stringify(T.inv1.byGuard)}
 #   not binding: ${T.inv1.standIn} refusals of a kind the set does not own (no guard of its own for it), ${T.inv1.downstream} downstream of one, ${T.inv1.injected} injected by call number
 # unified: INVARIANT 2 (equal to the group's set on a doc inside its domain): ${T.inv2.equal} runs equal (${JSON.stringify(T.inv2.inDomain)}), ${T.inv2.differ.length} differ
+#   EXCEPTIONS, cause = the patterns-mirror cut guards on a pocket / hole in a doc of another group: ${T.inv2.cutGuard.runs} runs of ${T.inv2.cutGuard.docs.size} docs ${JSON.stringify(T.inv2.cutGuard.byGuard)}
 #   docs not in one group's domain (use two or more groups): ${T.inv2.mixedDocs} (${JSON.stringify(T.inv2.byCorpusMixed)})
 # unified: thrown: ${T.thrown.unified} unified runs rejected, ${T.thrown.sets} single-set runs rejected, ${T.thrown.unifiedOnly.length} rejected by unified and by no single set
-# unified: sentence lint: ${T.lint.refusals} unified refusals, ${T.lint.worse.length} worse than every single set's sentence for the same feature
+# unified: sentence lint: ${T.lint.refusals} unified refusals, ${T.lint.worse.length} worse than every single set's sentence for the same feature (not counted: ${T.lint.epWording} extrude-pocket sentences without a full stop for a feature the single set did not refuse)
 # unified: docs that use no group: ${T.pureBase.docs / CONFIGS.length} (x configs); same refused/built vector as holes ${T.pureBase.sameDecisionAs.holes}, shell-draft ${T.pureBase.sameDecisionAs['shell-draft']}, extrude-pocket ${T.pureBase.sameDecisionAs['extrude-pocket']} of ${T.pureBase.docs} runs`);
   assert.ok(true);
 });

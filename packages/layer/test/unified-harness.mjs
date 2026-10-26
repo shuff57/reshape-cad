@@ -10,6 +10,7 @@ import { epDoc } from './ep-docs.mjs';
 import { holeDoc } from './holes-docs.mjs';
 import { sdDoc, sdFromUsage } from './sd-docs.mjs';
 import { combinedDoc } from './unified-docs.mjs';
+import { pmDoc } from './pm-docs.mjs';
 
 export const here = path.dirname(fileURLToPath(import.meta.url));
 export const root = path.resolve(here, '../../..');
@@ -30,7 +31,7 @@ export const lib = {
 const { runScript } = lib.script;
 const { solveDoc } = lib.codegen;
 
-export const SETS = ['extrude-pocket', 'holes', 'shell-draft'];
+export const SETS = ['extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror'];
 export const TR = Object.fromEntries([...SETS, 'unified', 'base'].map((p) => [p, lib.tr.createTranslator({ planners: p })]));
 
 // ---- the four engine configurations (as the earlier differentials: the models on, the default fake, a failing engine, a CPU budget) -------------------------------
@@ -40,6 +41,9 @@ export const CONFIGS = [
   { name: 'default fake, mt, no resolver', fake: {}, useMt: true, resolver: null },
   { name: 'all models, every 5th call fails, no mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, failEvery: 5 }, useMt: false, resolver: fakeResolveAt },
   { name: 'all models, cpu budget (20 s per cut command), mt, resolver down', fake: { holeModel: true, boxBool: true, shellDraft: true, cpuMs: (cmds) => 50 + 20000 * cutCount(cmds) }, useMt: true, resolver: () => null },
+  // the patterns-mirror group's fusing model on top of the others (copies that touch along an edge, a gap that closes, an aligned sliver), and a pattern of five or more copies that runs past its time limit
+  { name: 'all models + pmModel, mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, pmModel: true }, useMt: true, resolver: fakeResolveAt },
+  { name: 'all models + pmModel, a pattern of 5 or more copies runs past the time limit, no mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, pmModel: true, cpuMs: (cmds) => (cmds.some((c) => c.command.startsWith('solid.pattern') && (c.params.count ?? c.params.count1) >= 5) ? 700000 : 10) }, useMt: false, resolver: fakeResolveAt },
 ];
 
 const errOf = (e) => `${e?.constructor?.name}: ${e?.message}`;
@@ -48,7 +52,9 @@ export async function runSet(set, doc, cfg, fromUsage, extra = {}) {
   const fake = makeFake({ ...cfg.fake });
   const ctx = { arc: lib.arc, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt: lib.mt } : {}), ...(cfg.resolver ? { resolveAt: cfg.resolver } : {}), ...(fromUsage ? { fromUsage } : {}), ...extra };
   let result; let error = null;
-  try { const { _state, ...rest } = await TR[set].translateDoc(structuredClone(doc), ctx); result = rest; } catch (e) { error = errOf(e); }
+  // the patterns-mirror set notes the wall milliseconds of the run that built a feature; a fixed clock keeps two runs of the same doc comparable
+  const realNow = Date.now; Date.now = () => 0;
+  try { const { _state, ...rest } = await TR[set].translateDoc(structuredClone(doc), ctx); result = rest; } catch (e) { error = errOf(e); } finally { Date.now = realNow; }
   return { result, error, log: fake.log };
 }
 
@@ -86,6 +92,16 @@ export async function loadCorpora({ combined = 600, only = null } = {}) {
     add('sd-cases', `case ${c.id}`, solveDoc(doc0), lib.sd.draftFromUsage(c.script));
   }
   for (let i = 0; i < 420; i++) { const doc = sdDoc(i); add('sd-generated', `sd seed ${i}`, doc, sdFromUsage(i, doc)); }
+  // patterns-mirror: its case scripts (those that run and have at most 40 copies: a repeat of hundreds is a real-engine case), 400 generated docs
+  const pmc = await Promise.all(['pm-cases.mjs', 'pm-cases-r2.mjs', 'pm-cases-r3.mjs', 'pm-cases-r4.mjs', 'pm-cases-r6.mjs'].map((f) => imp(path.join(contract, f))));
+  const pmSeen = new Set();
+  for (const c of pmc.flatMap((m) => Object.values(m).filter(Array.isArray).flat()).filter((c) => c && typeof c.src === 'string')) {
+    const key = `${c.id}\u0000${c.src}`; if (pmSeen.has(key)) continue; pmSeen.add(key);
+    const r = runScript(c.src); if (r.errors.length) continue;
+    const doc = solveDoc(r.doc); if (doc.features.some((f) => f.kind === 'pattern' && f.count > 40)) continue;
+    add('pm-cases', `case ${c.id}`, doc);
+  }
+  for (let i = 0; i < 400; i++) add('pm-generated', `pm seed ${i}`, pmDoc(i));
   // the shared hand docs, the base generator
   for (const [name, doc] of handDocs()) add('hand', `hand ${name}`, doc);
   for (let i = 0; i < 160; i++) add('base-generated', `generated seed ${1000 + i}`, generatedDoc(1000 + i));
@@ -96,11 +112,12 @@ export async function loadCorpora({ combined = 600, only = null } = {}) {
 
 // ---- the two invariants -------------------------------------------------------------------------------------------------------------------------------------
 /** Which kinds each set OWNS (has a planner of its own for). A kind no set owns is a base kind. */
-export const OWNS = { 'extrude-pocket': ['extrude', 'pocket', 'combine'], holes: ['hole'], 'shell-draft': ['shell', 'draft'] };
+export const OWNS = { 'extrude-pocket': ['extrude', 'pocket', 'combine'], holes: ['hole'], 'shell-draft': ['shell', 'draft'], 'patterns-mirror': ['pattern', 'mirror'] };
 const ALL_OWNED = Object.values(OWNS).flat();
-/** The guards that look at kinds their set does not own (the shell-draft loop's G-VOID and G-CHAMFER, the holes loop's execution budget). */
-export const CROSS_KIND_GUARDS = ['G-VOID', 'G-CHAMFER', 'G-BUDGET'];
+/** The guards that look at kinds their set does not own (the shell-draft loop's G-VOID and G-CHAMFER, the execution budget of the holes and patterns-mirror loops, the patterns-mirror cut guards on a pocket / hole). */
+export const CROSS_KIND_GUARDS = ['G-VOID', 'G-CHAMFER', 'G-BUDGET', 'PM-SNAPCUT', 'PM-WEB'];
 
+// the failure can also sit in a guard's probe (the holes group's G-TOP probe re-runs the engine and refuses when the re-run fails)
 const INJECTED = /injected failure on call/;
 /** Every string a feature mentions except its own id (what it reads). */
 function mentions(f) {
@@ -127,7 +144,7 @@ export function bindingRefusals(set, doc, notes) {
     const reads = mentions(f);
     const dep = [...reads].some((s) => taint.has(s));
     const own = OWNS[set].includes(f.kind) || !ALL_OWNED.includes(f.kind);
-    if (INJECTED.test(JSON.stringify([n.failed ?? null, n.raw ?? null]))) { taint.add(f.id); injected.push(i); return; }
+    if (INJECTED.test(JSON.stringify([n.failed ?? null, n.raw ?? null, n.probe ?? null]))) { taint.add(f.id); injected.push(i); return; }
     if (dep) { taint.add(f.id); downstream.push(i); return; }
     if (!own && !CROSS_KIND_GUARDS.includes(n.guard)) { taint.add(f.id); standIn.push(i); return; }
     binding.push(i);
