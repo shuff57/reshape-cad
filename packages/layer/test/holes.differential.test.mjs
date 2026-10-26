@@ -129,10 +129,22 @@ function note(a) {
   for (const l of a.log) if (l.length === 3) tally.budgetOpts++;
 }
 
+// Named exception (owner-approved): the original's closed-hollow sentence prints "undefined"; the port words it without a reason. Everything else about the row (guard, status) must still match.
+const closedText = (id) => `${id} (hollow): a hollow with no open side is not built here, so ${id} is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.`;
+function closedHollowException(a) {
+  for (const f of a.result?.features ?? []) {
+    if (f.guard !== 'G-CLOSED') continue;
+    assert.ok(/and undefined, so/.test(f.refusal), 'G-CLOSED original sentence changed shape');
+    f.refusal = closedText(f.id);
+    tally.closedExceptions = (tally.closedExceptions ?? 0) + 1;
+  }
+}
+
 async function compareDoc(name, doc, cfg, off = []) {
   const a = await runOrig(doc, cfg, off);
   const b = await runPort(HOLES, doc, cfg, off);
   tally.cases++;
+  closedHollowException(a);
   assert.deepStrictEqual(b.error, a.error, `${name} [${cfg.name}]: thrown error differs`);
   assert.deepStrictEqual(b.result, a.result, `${name} [${cfg.name}]: translateDoc result differs`);
   assert.deepStrictEqual(b.log, a.log, `${name} [${cfg.name}]: engine call sequence differs`);

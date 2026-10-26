@@ -239,8 +239,8 @@ export interface HoleG {
   runB(cmds: Cmd[], o?: { replay?: boolean }): Promise<RunResult>;
 }
 
-/** The sentence a closed hollow() gets (shell-draft-translate.mjs SENTENCE.closed, which the group calls with ONE argument: the original prints the word "undefined" where the reason should be; kept). */
-const SHELL_CLOSED = (f: { id: string }, what?: string) => `${f.id} (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and ${what}, so ${f.id} is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.`;
+/** The sentence a closed hollow() gets. Deliberate deviation from holes4-translate.mjs, whose sentence prints the word "undefined" where a reason belongs (the holes set plans no closed hollow, so it has no reason to give); owner-approved. holes.differential.test.mjs lists it as a named exception. */
+const SHELL_CLOSED = (f: { id: string }) => `${f.id} (hollow): a hollow with no open side is not built here, so ${f.id} is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.`;
 
 /**
  * One feature of translateDocGuarded's forEach, ported (docs/spikes/solidcraft-referee/contract/holes4-translate.mjs). The differences from the original, and only these:
