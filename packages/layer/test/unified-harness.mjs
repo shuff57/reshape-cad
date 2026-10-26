@@ -1,0 +1,164 @@
+// Shared by unified.test.mjs and live-replay-unified.mjs: the corpora of the three groups and the combined docs, the four engine
+// configurations, and how a set is run on a doc through the fake engine. No kernel, no wasm.
+import path from 'node:path';
+import fs from 'node:fs';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { makeFake } from './fake-engine.mjs';
+import { fakeResolveAt } from './fake-resolve-at.mjs';
+import { handDocs, generatedDoc } from './docs.mjs';
+import { epDoc } from './ep-docs.mjs';
+import { holeDoc } from './holes-docs.mjs';
+import { sdDoc, sdFromUsage } from './sd-docs.mjs';
+import { combinedDoc } from './unified-docs.mjs';
+
+export const here = path.dirname(fileURLToPath(import.meta.url));
+export const root = path.resolve(here, '../../..');
+export const contract = path.join(root, 'docs/spikes/solidcraft-referee/contract');
+export const imp = (p) => import(pathToFileURL(p).href);
+const dist = (f) => imp(path.join(here, '../dist', f));
+
+export const lib = {
+  tr: await dist('translator.js'),
+  un: await dist('unified.js'),
+  sd: await dist('shell-draft.js'),
+  h: await dist('holes.js'),
+  arc: await imp(path.join(root, 'packages/sketch/dist/sketch-arc.js')),
+  mt: await imp(path.join(root, 'packages/script/dist/model-types.js')),
+  script: await imp(path.join(root, 'packages/script/dist/reshape-script.js')),
+  codegen: await imp(path.join(root, 'packages/script/dist/model-codegen.js')),
+};
+const { runScript } = lib.script;
+const { solveDoc } = lib.codegen;
+
+export const SETS = ['extrude-pocket', 'holes', 'shell-draft'];
+export const TR = Object.fromEntries([...SETS, 'unified', 'base'].map((p) => [p, lib.tr.createTranslator({ planners: p })]));
+
+// ---- the four engine configurations (as the earlier differentials: the models on, the default fake, a failing engine, a CPU budget) -------------------------------
+const cutCount = (cmds) => cmds.filter((c) => c.command === 'solid.hole' || (c.command === 'solid.cylinder' && c.params?.operation === 'cut')).length;
+export const CONFIGS = [
+  { name: 'all models, mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true }, useMt: true, resolver: fakeResolveAt },
+  { name: 'default fake, mt, no resolver', fake: {}, useMt: true, resolver: null },
+  { name: 'all models, every 5th call fails, no mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, failEvery: 5 }, useMt: false, resolver: fakeResolveAt },
+  { name: 'all models, cpu budget (20 s per cut command), mt, resolver down', fake: { holeModel: true, boxBool: true, shellDraft: true, cpuMs: (cmds) => 50 + 20000 * cutCount(cmds) }, useMt: true, resolver: () => null },
+];
+
+const errOf = (e) => `${e?.constructor?.name}: ${e?.message}`;
+/** One run of one set on one doc on a fresh fake engine: { result (no _state), error, log }. */
+export async function runSet(set, doc, cfg, fromUsage, extra = {}) {
+  const fake = makeFake({ ...cfg.fake });
+  const ctx = { arc: lib.arc, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt: lib.mt } : {}), ...(cfg.resolver ? { resolveAt: cfg.resolver } : {}), ...(fromUsage ? { fromUsage } : {}), ...extra };
+  let result; let error = null;
+  try { const { _state, ...rest } = await TR[set].translateDoc(structuredClone(doc), ctx); result = rest; } catch (e) { error = errOf(e); }
+  return { result, error, log: fake.log };
+}
+
+// ---- corpora -----------------------------------------------------------------------------------------------------------------------------------------------------
+/** [{ corpus, name, doc, fromUsage }] for every corpus of the three groups (as their differential tests select them) and the combined docs. */
+export async function loadCorpora({ combined = 600, only = null } = {}) {
+  const out = [];
+  const add = (corpus, name, doc, fromUsage) => { if (!only || only.has(`${corpus}:${name}`) || only.has(name)) out.push({ corpus, name, doc, fromUsage }); };
+  // extrude-pocket: its cases (ep-results.json), 240 generated outlines, the hand docs
+  for (const c of JSON.parse(fs.readFileSync(path.join(contract, 'ep-results.json'), 'utf8'))) {
+    const r = runScript(c.script); if (r.errors.length) continue;
+    add('ep-cases', `case ${c.id}`, solveDoc(r.doc));
+  }
+  for (let i = 0; i < 240; i++) add('ep-generated', `ep seed ${5000 + i}`, epDoc(5000 + i));
+  // holes: round 4 / 3 / 1 cases, 300 generated hole docs
+  const seen = new Set();
+  for (const file of ['holes4-cases.mjs', 'holes3-cases.mjs', 'holes-cases.mjs']) {
+    const { CASES } = await imp(path.join(contract, file));
+    for (const c of CASES) {
+      const key = `${c.id}\u0000${c.script}`; if (seen.has(key)) continue; seen.add(key);
+      const r = runScript(c.script); if (r.errors.length) continue;
+      add('holes-cases', `case ${c.id}`, solveDoc(r.doc));
+    }
+  }
+  for (let i = 0; i < 300; i++) add('holes-generated', `hole seed ${i}`, holeDoc(i));
+  // shell-draft: its three case files, 420 generated docs
+  const poly = await imp(path.join(contract, 'shell-draft-polytope.mjs'));
+  const { CASES_FN } = await imp(path.join(contract, 'shell-draft-cases.mjs'));
+  const { STEEP_FN } = await imp(path.join(contract, 'shell-draft-cases-steep.mjs'));
+  const { R2_FN } = await imp(path.join(contract, 'shell-draft-cases-r2.mjs'));
+  const env = { P: poly, sigma: -1, rel: (a, b) => Math.abs(a - b) / Math.max(Math.abs(b), 1) };
+  for (const c of [...CASES_FN(env), ...STEEP_FN(env), ...R2_FN(env)]) {
+    const r = runScript(c.script); if (r.errors.length) continue;
+    const doc0 = r.doc; if (c.patch) c.patch(doc0);
+    add('sd-cases', `case ${c.id}`, solveDoc(doc0), lib.sd.draftFromUsage(c.script));
+  }
+  for (let i = 0; i < 420; i++) { const doc = sdDoc(i); add('sd-generated', `sd seed ${i}`, doc, sdFromUsage(i, doc)); }
+  // the shared hand docs, the base generator
+  for (const [name, doc] of handDocs()) add('hand', `hand ${name}`, doc);
+  for (let i = 0; i < 160; i++) add('base-generated', `generated seed ${1000 + i}`, generatedDoc(1000 + i));
+  // combined
+  for (let i = 0; i < combined; i++) add('combined', `combined seed ${i}`, combinedDoc(i));
+  return out;
+}
+
+// ---- the two invariants -------------------------------------------------------------------------------------------------------------------------------------
+/** Which kinds each set OWNS (has a planner of its own for). A kind no set owns is a base kind. */
+export const OWNS = { 'extrude-pocket': ['extrude', 'pocket', 'combine'], holes: ['hole'], 'shell-draft': ['shell', 'draft'] };
+const ALL_OWNED = Object.values(OWNS).flat();
+/** The guards that look at kinds their set does not own (the shell-draft loop's G-VOID and G-CHAMFER, the holes loop's execution budget). */
+export const CROSS_KIND_GUARDS = ['G-VOID', 'G-CHAMFER', 'G-BUDGET'];
+
+const INJECTED = /injected failure on call/;
+/** Every string a feature mentions except its own id (what it reads). */
+function mentions(f) {
+  const out = new Set();
+  const walk = (v, key) => { if (typeof v === 'string') { if (key !== 'id') out.add(v); } else if (Array.isArray(v)) v.forEach((x) => walk(x, key)); else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) walk(x, k); };
+  walk(f, '');
+  return out;
+}
+
+/**
+ * Invariant 1 for one set S on one doc. Returns the refusals of S that BIND unified, and those that do not, and why:
+ *   binding     S refuses a feature of a kind S owns, or of a kind no set owns, or any feature through one of S's cross-kind guards (CROSS_KIND_GUARDS).
+ *   stand-in    S refuses a kind ANOTHER set owns, through the base planner or a stand-in sentence (the holes set refuses every closed hollow with G-CLOSED, the
+ *               extrude-pocket and holes sets refuse a whole-body draft the base does not map): S has no guard for that kind, so there is nothing to lose.
+ *   injected    S refuses because the fake engine failed on a call NUMBER (failEvery: every 5th call fails). Which call that is depends on how many runs the set made before, so it
+ *               is not a decision of a guard; unified makes other calls and meets other failures.
+ *   downstream  S refuses a feature that reads a stand-in refusal (directly or through others): it may be refused only because of it.
+ */
+export function bindingRefusals(set, doc, notes) {
+  const taint = new Set(); const binding = []; const standIn = []; const downstream = []; const injected = [];
+  doc.features.forEach((f, i) => {
+    const n = notes[i];
+    if (!n || n.status !== 'refused') return;
+    const reads = mentions(f);
+    const dep = [...reads].some((s) => taint.has(s));
+    const own = OWNS[set].includes(f.kind) || !ALL_OWNED.includes(f.kind);
+    if (INJECTED.test(JSON.stringify([n.failed ?? null, n.raw ?? null]))) { taint.add(f.id); injected.push(i); return; }
+    if (dep) { taint.add(f.id); downstream.push(i); return; }
+    if (!own && !CROSS_KIND_GUARDS.includes(n.guard)) { taint.add(f.id); standIn.push(i); return; }
+    binding.push(i);
+  });
+  return { binding, standIn, downstream, injected };
+}
+
+/**
+ * The features feature i depends on: everything it mentions and what those mention, in turn (the ancestors); and the earlier features that use the same
+ * inputs as it or as an ancestor (a pocket, a hole or a hollow of the same part changes it in place or uses it up: the refusal of one may be the reason the other
+ * is refused or built). The co-users are not followed further.
+ */
+export function dependencies(doc, i) {
+  const fs = doc.features; const idx = new Map(fs.map((f, k) => [f.id, k]));
+  const anc = new Set([i]); const todo = [i];
+  while (todo.length) {
+    const k = todo.pop();
+    for (const s of mentions(fs[k])) { const j = idx.get(s); if (j !== undefined && j < k && !anc.has(j)) { anc.add(j); todo.push(j); } }
+  }
+  const out = new Set([...anc].filter((k) => k !== i));
+  for (const k of anc) for (const s of mentions(fs[k])) if (idx.has(s)) for (let q = 0; q < k; q++) if (q !== i && mentions(fs[q]).has(s)) out.add(q);
+  return out;
+}
+
+/**
+ * Invariant 1 for one binding refusal of S at feature i (a note with its guard): does unified refuse it ('itself'), or a feature it depends on ('dependency'), or
+ * (G-BODIES counts every body of the scene) any earlier feature ('scene')? null = a violation.
+ */
+export function unifiedCovers(doc, i, uniNotes, guard) {
+  if (uniNotes[i]?.status === 'refused') return 'itself';
+  for (const j of dependencies(doc, i)) if (uniNotes[j]?.status === 'refused') return 'dependency';
+  if (guard === 'G-BODIES') for (let j = 0; j < i; j++) if (uniNotes[j]?.status === 'refused') return 'scene';
+  return null;
+}
