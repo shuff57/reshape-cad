@@ -135,6 +135,12 @@ export interface TranslateCtx {
   /** patterns-mirror set only: the time limit of one engine run (ms of NEW work; the replay of what was already accepted gets 2x its own time on top; default 600000) and of the whole model (default 3600000). Safety nets, not status criteria. */
   pmBudgetMs?: number;
   pmDocBudgetMs?: number;
+  /**
+   * unified set only: which of the extrude-pocket group's join checks are applied to every combine (booleans.ts). 'cheap' (the default): the ones that need no further engine run (a slanted round pull run
+   * into another part, two blocks that only touch, a flush step a hair thick, curved parts in contact with no shell merged); 'full': also the inclusion-exclusion consistency check (V(join) against the
+   * sum of its parts, measured in scratch sessions: one or more engine runs per join); 'off': the combine is left to the booleans group's own guards.
+   */
+  unifiedEpJoinChecks?: 'off' | 'cheap' | 'full';
   /** shell-draft set only: which `draft(` calls of the script used `from:` and no `neutral:` (draftFromUsage(script)), in order; the original's `opts.fromUsage`. */
   fromUsage?: Array<{ from: string | null; neutral: boolean }>;
 }

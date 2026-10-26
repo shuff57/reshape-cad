@@ -14,6 +14,9 @@
 //     a document, not only to the holes' own;
 //   * the shells count the holes guard G-SHELLS reads from the host's measure is present on every measure of such a document, whichever step built it.
 //
+//   * the booleans group's combine (join / cut / keep) goes to its step, which ALSO applies the extrude-pocket group's join checks to it (booleans.ts; the booleans group took the kind over from the
+//     extrude-pocket group, whose combine was a by-product of its fork); the booleans group's time limit applies to the runs of a combine;
+//
 //   * the patterns-mirror group's pattern, mirror and the cut guards on a pocket / hole (a tool almost on an earlier cut, a thin wall) go to its step (`routeOf`); its time limit
 //     applies to every run of a document that has a pattern or a mirror and does not drill;
 //
@@ -28,12 +31,25 @@ import { EXTRUDE_POCKET_PROFILE } from './extrude-pocket.js';
 import { BUDGET_S, HOLES_PROFILE, aggregateOf, holesStep } from './holes.js';
 import { SHELL_DRAFT_PROFILE, shellDraftStep, voidedDep } from './shell-draft.js';
 import { PM_PROFILE, PM_KINDS, cutGuard, pmStep } from './patterns-mirror.js';
+import { BOOL_PROFILE, BOOL_KINDS, boolStep } from './booleans.js';
 import type { FView } from './shell-draft.js';
 
-/** The kinds the extrude-pocket group owns. */
-export const EP_KINDS = ['extrude', 'pocket', 'combine'];
+/** The kinds the extrude-pocket group owns here. (Its fork also planned `combine`; in this set the booleans group owns that kind, and the extrude-pocket group's join checks are kept as guards on it.) */
+export const EP_KINDS = ['extrude', 'pocket'];
+/**
+ * The extrude-pocket group's refusals of a combine that are SAFETY checks (they bind unified, see booleans.ts): the join-contact sentence, a flush step a hair thick, a join that does not add up,
+ * a slanted round pull run into another part. Everything else the extrude-pocket loop says about a combine (a dependency, "needs two or more parts", "nothing built", a subtract or intersect of several
+ * pieces "is not built yet", the kernel's refusal of its command) is the planner's capability or the engine's reply, which the booleans group's executor decides differently. Exported for the tests.
+ */
+export const EP_COMBINE_SAFETY = [
+  /^\S+: the parts of this join only touch along a line or at a point/,
+  /^\S+: two faces of the joined parts are .* mm apart/,
+  /^\S+ a slanted round pull that runs into the other part cannot be joined yet/,
+];
+/** The same, for the extrude-pocket group's inclusion-exclusion consistency check of a join: it binds only when ctx.unifiedEpJoinChecks is 'full'. */
+export const EP_COMBINE_CONSISTENCY = [/^\S+: the joined part and the sum of its pieces do not add up/];
 /** Which loop runs the kinds no group lists. */
-export type UnifiedStyle = 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror';
+export type UnifiedStyle = 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror' | 'booleans';
 export type Route = UnifiedStyle;
 export interface UnifiedDomain {
   /** the document has an extrude, a pocket or a combine */
@@ -44,6 +60,8 @@ export interface UnifiedDomain {
   sd: boolean;
   /** the document has a pattern or a mirror */
   pm: boolean;
+  /** the document has a join, a cut or a keep */
+  bool: boolean;
   style: UnifiedStyle;
 }
 
@@ -53,16 +71,17 @@ export const isChamferBox = (f: Feature): boolean => f.kind === 'box' && !!FV(f)
 
 /** Which groups a document uses, and so which loop words the kinds no group lists. */
 export function domainOf(doc: { features: Feature[] }): UnifiedDomain {
-  let ep = false; let holes = false; let sd = false; let pm = false;
+  let ep = false; let holes = false; let sd = false; let pm = false; let bool = false;
   for (const f of doc.features) {
     if (EP_KINDS.includes(f.kind)) ep = true;
     else if (f.kind === 'hole') holes = true;
     else if (f.kind === 'shell' || f.kind === 'draft' || isChamferBox(f)) sd = true;
     else if (PM_KINDS.includes(f.kind)) pm = true;
+    else if (BOOL_KINDS.includes(f.kind)) bool = true;
   }
   // no group at all: the extrude-pocket loop too (it words every refusal plainly; the base loop prints the engine's own text)
-  const style: UnifiedStyle = ep ? 'extrude-pocket' : holes ? 'holes' : sd ? 'shell-draft' : pm ? 'patterns-mirror' : 'extrude-pocket';
-  return { ep, holes, sd, pm, style };
+  const style: UnifiedStyle = ep ? 'extrude-pocket' : holes ? 'holes' : sd ? 'shell-draft' : pm ? 'patterns-mirror' : bool ? 'booleans' : 'extrude-pocket';
+  return { ep, holes, sd, pm, bool, style };
 }
 
 /**
@@ -81,6 +100,7 @@ export function routeOf(f: Feature, st: TranslateState, ctx?: Pick<TranslateCtx,
   }
   if (f.kind === 'hole') return 'holes';
   if (EP_KINDS.includes(f.kind)) return 'extrude-pocket';
+  if (BOOL_KINDS.includes(f.kind)) return 'booleans';
   return st.unified!.domain.style;
 }
 
@@ -123,7 +143,7 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
   const { st, accepted } = env;
   const route = routeOf(f, st, env.ctx);
   const dom = st.unified!.domain;
-  const mixed = Number(dom.ep) + Number(dom.holes) + Number(dom.sd) + Number(dom.pm) >= 2;
+  const mixed = Number(dom.ep) + Number(dom.holes) + Number(dom.sd) + Number(dom.pm) + Number(dom.bool) >= 2;
   const wrap = mixed || (dom.holes && route !== 'holes');
   const seen: Seen = [];
   const env2: LoopEnv = wrap ? { ...env, ctx: wrapped(env.ctx, st, seen, dom.holes, dom.pm) } : env;
@@ -135,6 +155,7 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
   if (route === 'holes') await holesStep(f, idx, env2);
   else if (route === 'shell-draft') await shellDraftStep(f, idx, env2);
   else if (route === 'patterns-mirror') await pmStep(f, idx, env2);
+  else if (route === 'booleans') await boolStep(f, idx, env2);
   else await genericStep(f, idx, env2, EXTRUDE_POCKET_PROFILE);
   if (!mixed) return;
   const m = st.measure[f.id];
@@ -150,13 +171,14 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
 export const UNIFIED_PROFILE: Profile = {
   name: 'unified',
   // claiming every kind a group lists keeps planFeature honest about what this set plans (a hole, a shell and a draft are planned asynchronously by the step)
-  planners: { ...EXTRUDE_POCKET_PROFILE.planners, ...HOLES_PROFILE.planners, ...SHELL_DRAFT_PROFILE.planners, ...PM_PROFILE.planners },
+  planners: { ...EXTRUDE_POCKET_PROFILE.planners, ...HOLES_PROFILE.planners, ...SHELL_DRAFT_PROFILE.planners, ...PM_PROFILE.planners, ...BOOL_PROFILE.planners },
   verifies: true,
   initState(st, doc) {
     EXTRUDE_POCKET_PROFILE.initState(st);
     HOLES_PROFILE.initState(st);
     SHELL_DRAFT_PROFILE.initState(st);
     PM_PROFILE.initState(st);
+    BOOL_PROFILE.initState(st, doc);
     st.unified = { domain: domainOf(doc ?? { features: [] }), maps: { E: { measure: {}, bodies: {} }, P: { measure: {}, bodies: {} } } };
   },
   // wording of the synchronous planFeature only (the step chooses the wording of a run by the document's style): the extrude-pocket group's, the first entry
@@ -168,6 +190,7 @@ export const UNIFIED_PROFILE: Profile = {
     EXTRUDE_POCKET_PROFILE.onAccepted!(st, res, m, plan);
     HOLES_PROFILE.onAccepted!(st, res, m, plan);
     PM_PROFILE.onAccepted!(st, res, m, plan, acc);
+    BOOL_PROFILE.onAccepted!(st, res, m, plan, acc);
   },
   result: (st) => (st.unified!.domain.holes ? { spentS: st.holes!.spentS } : {}),
   step: unifiedStep,

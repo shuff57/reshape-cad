@@ -11,6 +11,7 @@ import { holeDoc } from './holes-docs.mjs';
 import { sdDoc, sdFromUsage } from './sd-docs.mjs';
 import { combinedDoc } from './unified-docs.mjs';
 import { pmDoc } from './pm-docs.mjs';
+import { boolDoc } from './bool-docs.mjs';
 
 export const here = path.dirname(fileURLToPath(import.meta.url));
 export const root = path.resolve(here, '../../..');
@@ -31,7 +32,7 @@ export const lib = {
 const { runScript } = lib.script;
 const { solveDoc } = lib.codegen;
 
-export const SETS = ['extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror'];
+export const SETS = ['extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans'];
 export const TR = Object.fromEntries([...SETS, 'unified', 'base'].map((p) => [p, lib.tr.createTranslator({ planners: p })]));
 
 // ---- the four engine configurations (as the earlier differentials: the models on, the default fake, a failing engine, a CPU budget) -------------------------------
@@ -44,13 +45,18 @@ export const CONFIGS = [
   // the patterns-mirror group's fusing model on top of the others (copies that touch along an edge, a gap that closes, an aligned sliver), and a pattern of five or more copies that runs past its time limit
   { name: 'all models + pmModel, mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, pmModel: true }, useMt: true, resolver: fakeResolveAt },
   { name: 'all models + pmModel, a pattern of 5 or more copies runs past the time limit, no mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, pmModel: true, cpuMs: (cmds) => (cmds.some((c) => c.command.startsWith('solid.pattern') && (c.params.count ?? c.params.count1) >= 5) ? 700000 : 10) }, useMt: false, resolver: fakeResolveAt },
+  // the booleans group's model on top (pieces, keep_tools, coincident faces, a sliver the engine ignores, a keep that overshoots), and a bridge that dies on every 7th call (the executor's WASM TRAP path)
+  { name: 'all models + pmModel + boolModel, mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, pmModel: true, boolModel: true }, useMt: true, resolver: fakeResolveAt },
+  { name: 'all models + boolModel, the bridge dies on every 7th call, no mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, boolModel: true, throwWhen: (cmds, k) => k % 7 === 0 }, useMt: false, resolver: fakeResolveAt },
 ];
 
+/** which of the extrude-pocket group's join checks unified applies to a combine ('cheap' is the default of the set; UNIFIED_EP_JOIN=full|off measures the other readings) */
+export const EP_JOIN_LEVEL = process.env.UNIFIED_EP_JOIN ?? 'cheap';
 const errOf = (e) => `${e?.constructor?.name}: ${e?.message}`;
 /** One run of one set on one doc on a fresh fake engine: { result (no _state), error, log }. */
 export async function runSet(set, doc, cfg, fromUsage, extra = {}) {
   const fake = makeFake({ ...cfg.fake });
-  const ctx = { arc: lib.arc, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt: lib.mt } : {}), ...(cfg.resolver ? { resolveAt: cfg.resolver } : {}), ...(fromUsage ? { fromUsage } : {}), ...extra };
+  const ctx = { arc: lib.arc, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt: lib.mt } : {}), ...(cfg.resolver ? { resolveAt: cfg.resolver } : {}), ...(fromUsage ? { fromUsage } : {}), ...(set === 'unified' ? { unifiedEpJoinChecks: EP_JOIN_LEVEL } : {}), ...extra };
   let result; let error = null;
   // the patterns-mirror set notes the wall milliseconds of the run that built a feature; a fixed clock keeps two runs of the same doc comparable
   const realNow = Date.now; Date.now = () => 0;
@@ -102,6 +108,17 @@ export async function loadCorpora({ combined = 600, only = null } = {}) {
     add('pm-cases', `case ${c.id}`, doc);
   }
   for (let i = 0; i < 400; i++) add('pm-generated', `pm seed ${i}`, pmDoc(i));
+  // booleans: its case scripts (all rounds), 720 generated docs
+  const { CASES: BCASES } = await imp(path.join(contract, 'boolean-cases.mjs'));
+  for (const f of ['boolean-cases-r2.mjs', 'boolean-cases-r3.mjs', 'boolean-cases-r4.mjs', 'boolean-cases-r5.mjs', 'boolean-cases-r6.mjs']) await imp(path.join(contract, f));
+  const bSeen = new Set();
+  for (const c of BCASES) {
+    const key = `${c.id}\u0000${c.script ?? JSON.stringify(c.features)}`; if (bSeen.has(key)) continue; bSeen.add(key);
+    if (c.script === undefined) { add('bool-cases', `case ${c.id}`, solveDoc({ version: 1, features: c.features })); continue; }
+    const r = runScript(c.script); if (r.errors.length) continue;
+    add('bool-cases', `case ${c.id}`, solveDoc(r.doc));
+  }
+  for (let i = 0; i < 720; i++) add('bool-generated', `bool seed ${i}`, boolDoc(i));
   // the shared hand docs, the base generator
   for (const [name, doc] of handDocs()) add('hand', `hand ${name}`, doc);
   for (let i = 0; i < 160; i++) add('base-generated', `generated seed ${1000 + i}`, generatedDoc(1000 + i));
@@ -112,13 +129,13 @@ export async function loadCorpora({ combined = 600, only = null } = {}) {
 
 // ---- the two invariants -------------------------------------------------------------------------------------------------------------------------------------
 /** Which kinds each set OWNS (has a planner of its own for). A kind no set owns is a base kind. */
-export const OWNS = { 'extrude-pocket': ['extrude', 'pocket', 'combine'], holes: ['hole'], 'shell-draft': ['shell', 'draft'], 'patterns-mirror': ['pattern', 'mirror'] };
+export const OWNS = { 'extrude-pocket': ['extrude', 'pocket'], holes: ['hole'], 'shell-draft': ['shell', 'draft'], 'patterns-mirror': ['pattern', 'mirror'], booleans: ['combine'] };
 const ALL_OWNED = Object.values(OWNS).flat();
 /** The guards that look at kinds their set does not own (the shell-draft loop's G-VOID and G-CHAMFER, the execution budget of the holes and patterns-mirror loops, the patterns-mirror cut guards on a pocket / hole). */
 export const CROSS_KIND_GUARDS = ['G-VOID', 'G-CHAMFER', 'G-BUDGET', 'PM-SNAPCUT', 'PM-WEB'];
 
 // the failure can also sit in a guard's probe (the holes group's G-TOP probe re-runs the engine and refuses when the re-run fails)
-const INJECTED = /injected failure on call/;
+const INJECTED = /injected failure on call|fake: unreachable executed/;
 /** Every string a feature mentions except its own id (what it reads). */
 function mentions(f) {
   const out = new Set();
@@ -143,7 +160,11 @@ export function bindingRefusals(set, doc, notes) {
     if (!n || n.status !== 'refused') return;
     const reads = mentions(f);
     const dep = [...reads].some((s) => taint.has(s));
-    const own = OWNS[set].includes(f.kind) || !ALL_OWNED.includes(f.kind);
+    // the extrude-pocket group's fork also planned `combine`; there its SAFETY checks (join contact, a flush step, a join that does not add up, a slanted round pull) are kept as guards on the booleans group's
+    // kind (unified.ts EP_COMBINE_SAFETY) and bind; the rest of what it says about a combine is capability and engine reply, which the booleans executor decides differently
+    const epJoin = set === 'extrude-pocket' && f.kind === 'combine' && EP_JOIN_LEVEL !== 'off'
+      && (lib.un.EP_COMBINE_SAFETY.some((re) => re.test(n.refusal ?? '')) || (EP_JOIN_LEVEL === 'full' && lib.un.EP_COMBINE_CONSISTENCY.some((re) => re.test(n.refusal ?? ''))));
+    const own = OWNS[set].includes(f.kind) || !ALL_OWNED.includes(f.kind) || epJoin;
     if (INJECTED.test(JSON.stringify([n.failed ?? null, n.raw ?? null, n.probe ?? null]))) { taint.add(f.id); injected.push(i); return; }
     if (dep) { taint.add(f.id); downstream.push(i); return; }
     if (!own && !CROSS_KIND_GUARDS.includes(n.guard)) { taint.add(f.id); standIn.push(i); return; }

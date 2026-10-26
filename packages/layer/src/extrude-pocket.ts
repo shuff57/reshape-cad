@@ -458,7 +458,7 @@ function curvedTouches(names: string[], scene: SceneEntry[], m: Aggregate): Arra
  * A join: V(A union B ...) must equal what inclusion-exclusion gives: union = op0 + (op1 minus op0) + (op2 minus (op0 + op1)) + ...,
  * each "minus" measured in its own scratch session. Catches a thin protrusion or sliver the union drops.
  */
-async function verifyUnion(f: Feature, m: Aggregate, ops: string[], env: VerifyEnv): Promise<string | null> {
+export async function verifyUnion(f: Feature, m: Aggregate, ops: string[], env: VerifyEnv, consistency = true): Promise<string | null> {
   const ct = curvedTouches(ops, env.scene, m);
   env.checks.push({ check: 'join-contact', blockPairsTouching: 0, otherPairsSuspect: ct.length });
   if (ct.length) return JOIN_TOUCH_SENTENCE(f.id);
@@ -478,6 +478,7 @@ async function verifyUnion(f: Feature, m: Aggregate, ops: string[], env: VerifyE
       if (overlapOthers && gap > FLUSH_NOISE && gap <= near * (1 + 1e-9)) return `${f.id}: two faces of the joined parts are ${+gap.toPrecision(2)} mm apart, closer than the ${+near.toPrecision(2)} mm this app can check reliably on a part this size (SolidCraft can silently lose a step that thin), so it is refused; make them flush or at least ${+(near * 1.5).toPrecision(2)} mm apart`;
     }
   }
+  if (!consistency) return null; // the unified set can ask for the checks that need no further engine run only (booleans.ts)
   let expected = sceneExact(ops[0]);
   let inconclusive = false;
   for (let i = 1; i < ops.length; i++) {
@@ -548,6 +549,23 @@ function planPocket(fe: Feature, st: TranslateState, ctx: PlanCtx, h: PlanHelper
   return { variants: [[...built.cmds]], produces: bs, consumes: [f.into], verify: (m, env) => verifyPocket(f, m, before, sk, ctx, env, tool) };
 }
 
+/**
+ * The two refusals of a join that are decided BEFORE the engine is called: a slanted round pull that runs into another part (it would have to be cut against its faces: hangs or traps), and two
+ * plain blocks that only touch. Taken out of planCombine unchanged, so the unified set can apply them to every combine (they are safety checks of this group that look at a kind the booleans
+ * group owns there). null = fine.
+ */
+export function joinPreflight(f: Feature, flat: string[], st: TranslateState): string | null {
+  if (flat.some((n) => st.curvedSlant!.has(n))) {
+    // a slanted round pull that overlaps another operand's box would have to be cut against its faces: hangs or traps (see the pocket case)
+    const sc = new Map(st.scene!.map((b) => [b.name, b.bbox] as const));
+    const vol = (a: number[], b: number[]) => [0, 1, 2].reduce((v, i) => v * Math.max(0, Math.min(a[i + 3], b[i + 3]) - Math.max(a[i], b[i]) - 1e-6), 1);
+    for (const n of flat.filter((x) => st.curvedSlant!.has(x))) for (const m2 of flat) if (m2 !== n && sc.get(n) && sc.get(m2) && vol(sc.get(n)!, sc.get(m2)!) > 0) return `${f.id} a slanted round pull that runs into the other part cannot be joined yet (it can freeze or crash SolidCraft); join it where it only touches, or pull it with straight sides`;
+  }
+  const bt = blockTouches(flat, st.scene!);
+  if (bt.length) return JOIN_TOUCH_SENTENCE(f.id);
+  return null;
+}
+
 function planCombine(fe: Feature, st: TranslateState, _ctx: PlanCtx, h: PlanHelpers): Plan {
   const f = fe as CombineFeature;
   const ds = f.targets.map((t) => h.dep(t)).find(Boolean);
@@ -560,15 +578,9 @@ function planCombine(fe: Feature, st: TranslateState, _ctx: PlanCtx, h: PlanHelp
   // a target can be several pieces. A join takes every piece of every target; a subtract or intersect of pieces is not mapped.
   if (op !== 'join' && parts.some((b) => b.length !== 1)) return refuse(`${f.id}: a ${f.op === 'subtract' ? 'subtract' : 'intersect'} is not built yet when one of its parts is ${parts.find((b) => b.length !== 1)!.length} separate pieces; make every part one piece`);
   const flat = parts.flat();
-  if (op === 'join' && flat.some((n) => st.curvedSlant!.has(n))) {
-    // a slanted round pull that overlaps another operand's box would have to be cut against its faces: hangs or traps (see the pocket case)
-    const sc = new Map(st.scene!.map((b) => [b.name, b.bbox] as const));
-    const vol = (a: number[], b: number[]) => [0, 1, 2].reduce((v, i) => v * Math.max(0, Math.min(a[i + 3], b[i + 3]) - Math.max(a[i], b[i]) - 1e-6), 1);
-    for (const n of flat.filter((x) => st.curvedSlant!.has(x))) for (const m2 of flat) if (m2 !== n && sc.get(n) && sc.get(m2) && vol(sc.get(n)!, sc.get(m2)!) > 0) return refuse(`${f.id} a slanted round pull that runs into the other part cannot be joined yet (it can freeze or crash SolidCraft); join it where it only touches, or pull it with straight sides`);
-  }
   if (op === 'join') {
-    const bt = blockTouches(flat, st.scene!);
-    if (bt.length) return refuse(JOIN_TOUCH_SENTENCE(f.id));
+    const bad = joinPreflight(f, flat, st);
+    if (bad) return refuse(bad);
   }
   return {
     variants: [[{ command: 'solid.combine', params: { target: flat[0], tools: flat.slice(1), operation: op } }]],

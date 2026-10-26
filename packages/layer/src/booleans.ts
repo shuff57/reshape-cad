@@ -20,6 +20,12 @@
 //     { ok: false, timedOut: true } refuses the combine with SENTENCES.budget ("took longer than 45 seconds ... nothing was changed"), guard G-BUDGET. THIS IS ADVICE: a host whose runSC ignores
 //     the option leaves the run unbounded, and nothing in this package can stop it.
 //
+// IN THE UNIFIED SET (unified.ts) this step owns every combine, and ALSO applies the extrude-pocket group's join checks to it (they are safety checks of that group that look at a kind this
+// group owns there; without them a join that the extrude-pocket set refuses would be built): before the build, a slanted round pull that runs into another part and two plain blocks that only touch
+// (extrude-pocket.ts joinPreflight); after it, the contact and flush-step checks (verifyUnion; no further engine run), and, only when ctx.unifiedEpJoinChecks is 'full', its inclusion-exclusion
+// consistency check (V(join) against the sum of its parts, measured in scratch sessions: further engine runs on every join). They run only when st.unified is set and ctx.unifiedEpJoinChecks is not
+// 'off'; the 'booleans' set alone never runs them. Their sentences are the extrude-pocket group's own, and guard 'EP-JOIN' names them. WHY 'cheap' IS THE DEFAULT: see NOTES.md, Fold 5 / Unified.
+//
 // The group is NOT accepted in Phase 1 (LAYER-CONTRACT.md, "booleans: unresolved"). The known holes are in this port on purpose: see NOTES.md, Fold 5.
 //
 // No kernel is named: everything that touches an engine comes in through the context object (ctx.runSC, ctx.topologyOf, ctx.arc, ctx.mt).
@@ -29,6 +35,7 @@ import type { Feature } from '@shuff57/reshape-script/model-types';
 import type { Cmd, RunResult, TranslateCtx } from './types.js';
 import { BASE_PROFILE, aggregate, frameWithMt, planFeature, refuse, resolveNamesFor } from './translate.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
+import { joinPreflight, verifyUnion } from './extrude-pocket.js';
 import { sampleOutline } from './outline-guard.js';
 import type { GuardOutline } from './outline-guard.js';
 import { orient } from './booleans-slow.js';
@@ -144,7 +151,7 @@ function sketchInfoOf(st: TranslateState, ctx: Pick<TranslateCtx, 'arc' | 'mt'>)
 
 // ---- the combine planner (the patched case 'combine' of the original) ------------------------------------------------------------------------
 /** A refusal with the code of the guard that made it. */
-interface BoolRefusal { refusal: string; guard?: string }
+interface BoolRefusal { refusal: string; guard?: string; final?: true }
 /** The plan of a combine: the operands' body names, which tools a later feature uses again, and what the after-the-build check needs. (The original's plan.r3.) */
 interface BoolPlan {
   r3: { op: string; groups: string[][]; keep: boolean[] };
@@ -153,6 +160,8 @@ interface BoolPlan {
   boxes: Array<number[] | undefined>;
   consumes: string[];
 }
+/** The unified set applies the extrude-pocket group's join checks to every combine (see the header); the flag lets a test measure what that costs. */
+const epJoinLevel = (st: TranslateState, ctx: Pick<TranslateCtx, 'unifiedEpJoinChecks'>): 'off' | 'cheap' | 'full' => (st.unified ? (ctx.unifiedEpJoinChecks ?? 'cheap') : 'off');
 const boolCombine: Planner = (fe, st, ctx, h) => {
   const f = BFV(fe);
   const ds = f.targets!.map((t) => h.dep(t)).find(Boolean);
@@ -167,6 +176,11 @@ const boolCombine: Planner = (fe, st, ctx, h) => {
     const sketchInfo = sketchInfoOf(st, ctx);
     const g = guardCombine(f as unknown as CombineView, ops.map((o) => ({ id: o.id, d: describe(o.measure, o.feat, { ring: ringOf(o.feat, st, ctx), pieces: o.pieces, info: orient(o.id, st.bool!.featById as unknown as Record<string, SlowFeat>, sketchInfo, st.bool!.affects) }) })));
     if (g) return { refusal: g.sentence, guard: g.code } as BoolRefusal;
+  }
+  // the extrude-pocket group's join checks that are decided before the engine is called (unified set only; its own sentence, not mapped by plainSentence)
+  if (epJoinLevel(st, ctx) !== 'off' && f.op === 'union') {
+    const bad = joinPreflight(fe, parts.flat(), st);
+    if (bad) return { refusal: bad, guard: 'EP-JOIN', final: true } as BoolRefusal;
   }
   // BOOLEANS-GUARD (G8): a tool that a LATER feature uses again survives (keep_tools)
   const keepIds = reusedTools(f as unknown as CombineView, st.bool!.docFeatures as never);
@@ -269,7 +283,8 @@ export async function boolStep(f: Feature, idx: number, env: LoopEnv): Promise<v
     const raw = planned.refusal;
     let sentence = raw;
     // BOOLEANS-GUARD (G9): a refused plan of a combine is turned into one student sentence; (round 5) so is the dependency glue of ANY kind; (G12) a step that needs ONE piece, handed the pieces of an earlier cut
-    if (f.kind === 'combine') { const p = plainSentence(raw, f as unknown as { op?: string }); sentence = p.sentence; guard ??= p.code; }
+    if ((planned as BoolRefusal).final) { /* a sentence of the extrude-pocket group's, kept as it is */ }
+    else if (f.kind === 'combine') { const p = plainSentence(raw, f as unknown as { op?: string }); sentence = p.sentence; guard ??= p.code; }
     else if (/was refused \(.*\)$/.test(raw)) { const p = plainSentence(raw, f as unknown as { op?: string }); sentence = p.sentence; guard ??= p.code; }
     else { const pp = plainPieces(raw); if (pp) { sentence = pp.sentence; guard ??= pp.code; } }
     st.refused[f.id] = sentence;
@@ -292,6 +307,7 @@ export async function boolStep(f: Feature, idx: number, env: LoopEnv): Promise<v
     if ('err' in ex) { lastErr = ex.err; timedOut = !!ex.timedOut; plan.variants = []; } else { plan.variants = [ex.cmds]; plan.produces = ex.produces; plan.__res = ex.res; }
   }
   let afterGuard: string | undefined;
+  let epFinal = false;
   for (const variant of plan.variants!) {
     let res: RunResult;
     try { res = plan.__res ?? await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `WASM TRAP: ${(e as Error).message}` } }; }
@@ -299,6 +315,13 @@ export async function boolStep(f: Feature, idx: number, env: LoopEnv): Promise<v
     const m = aggregate(res, plan.produces);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
     if (combine) { const bad = afterCombine(f as unknown as CombineView, m, plan.before, plan.boxes); if (bad) { lastErr = bad.sentence; afterGuard = bad.code; continue; } } // BOOLEANS-GUARD (G4b, G19, G21): after-check
+    if (combine && BFV(f).op === 'union' && epJoinLevel(st, ctx) !== 'off') { // the extrude-pocket group's join checks after the build (unified set only)
+      const mE = aggregate(res, plan.produces, true) ?? m;
+      let bad: string | null;
+      // the extrude-pocket loop lets an engine that throws inside this check reject the whole translation; here it is a failed run of this combine (the same as a throw anywhere else in this step)
+      try { bad = await verifyUnion(f, mE, plan.r3!.groups.flat(), { accepted: accepted.slice(), variant, runSC: ctx.runSC, checks: [], scene: st.scene! }, epJoinLevel(st, ctx) === 'full'); } catch (e) { lastErr = `undefined: WASM TRAP: ${(e as Error).message}`; afterGuard = 'EP-JOIN'; continue; }
+      if (bad) { lastErr = bad; afterGuard = 'EP-JOIN'; epFinal = true; continue; }
+    }
     accepted.push(...variant);
     for (const mp of (env.profile.members ?? [env.profile])) mp.onAccepted?.(st, res, m, null, { f, ctx });
     st.accLen[f.id] = accepted.length;
@@ -314,6 +337,7 @@ export async function boolStep(f: Feature, idx: number, env: LoopEnv): Promise<v
   let sentence: string;
   let code: string | undefined;
   if (timedOut && combine) { sentence = SENTENCES.budget(BFV(f).op!); code = 'G-BUDGET'; }
+  else if (combine && epFinal) { sentence = lastErr!; code = afterGuard; }
   else if (combine) { const p: GuardHit = plainSentence(lastErr, f as unknown as { op?: string }); sentence = p.sentence; code = afterGuard ?? p.code; } // BOOLEANS-GUARD (G9)
   else sentence = `${f.id} (${f.kind}): solidcraft refused it -- ${lastErr}`;
   st.refused[f.id] = sentence;

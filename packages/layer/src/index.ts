@@ -20,7 +20,7 @@ export { SHELL_DRAFT_PROFILE, shellDraftStep, SENTENCE as SHELL_DRAFT_SENTENCE, 
 export type { FView, SDName, SDPlan, SDG, SDBad, SDPost, SDPostEnv, ShellDraftState, Convex, Tie, FromUse, PickBase } from './shell-draft.js';
 export { followMoves, quarterTurns } from './follow-moves.js';
 export type { FollowEnv } from './follow-moves.js';
-export { UNIFIED_PROFILE, unifiedStep, domainOf, routeOf, isChamferBox, EP_KINDS } from './unified.js';
+export { UNIFIED_PROFILE, unifiedStep, domainOf, routeOf, isChamferBox, EP_KINDS, EP_COMBINE_SAFETY, EP_COMBINE_CONSISTENCY } from './unified.js';
 export type { UnifiedDomain, UnifiedStyle, Route } from './unified.js';
 export { PM_PROFILE, PM_KINDS, PM_CROSS_KIND_GUARDS, pmStep, cutGuard, toolBoxOf, snapCut, webCut, polyDist, analyticBox, aggregatePM, studentSentence as patternsMirrorSentence, SNAP_REL, SLIVER_MM, WEB_REL } from './patterns-mirror.js';
 export type { PMState, ToolBox, Box3, MirrorAt, CutHit } from './patterns-mirror.js';
