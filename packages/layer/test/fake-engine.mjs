@@ -95,7 +95,71 @@ function cutTool(bodies, name, tool) {
   }
 }
 
-function simulate(commands, boxBool = false, holeModel = false) {
+
+// shellDraft (opt-in, default false): a deliberately CRUDE model of hollowing and drafting for the shell-draft group, on the axis-aligned boxes the fake already
+// tracks (a body's volume is its bounding-box volume times a fill ratio). It has no geometry kernel and no offset surface:
+//   solid.shell {faces:[p], thickness, body}   the point must lie on one of the six bounding-box faces (else "no face at the given point"); a wall at or beyond the
+//     depth (or half the narrowest width) returns the body UNCHANGED with ok:true (the silent "unhollowed block" the group's G-THICK post-check exists for);
+//     otherwise the cavity (L1-2t)(L2-2t)(depth-t) leaves and the face count becomes 2n-1 (an open box: 6 -> 11).
+//   solid.draft {faces:[p,...], angle, neutral, pull, body}   each point picks a bounding-box face (else "no face at"); a face square to the pull direction is refused
+//     ("parallel to the pull"); |angle| > 89 is refused ("angle must be between"). The face tilts by out(z) = -tan(angle)(z - neutral) (SIGMA = -1), which changes the volume
+//     LINEARLY in tan(angle) (so the group's quadratic fit holds for a plain part) and grows the bbox on an outward tilt. When the inward sweep reaches the opposite
+//     face the volume is clipped and the face count drops by one (the group's G-VANISH); on a body that has been through a combine (a "compound": no notch is modelled)
+//     an inward sweep of half the width or more returns a volume OFF the line with the same face count (the group's G-SWEEP 'off-curve').
+//   solid.combine cut   adds the tool's face count to the target's (a closed hollow: 12 faces from two boxes), on top of boxBool's volume model.
+// The default model above is unchanged; with shellDraft false none of this runs.
+const facesOfBody = (b) => b.nf ?? (b.kind === 'cylinder' ? 4 : 6);
+function boxFaceAt(b, pt) {
+  const lo = b.bbox.min, hi = b.bbox.max;
+  for (let a = 0; a < 3; a++) for (const [s, ext] of [[1, hi[a]], [-1, lo[a]]]) {
+    const tol = 1e-6 * Math.max(1, Math.abs(ext));
+    if (Math.abs(pt[a] - ext) > tol) continue;
+    if ([0, 1, 2].filter((k) => k !== a).every((k) => pt[k] >= lo[k] - 1e-6 && pt[k] <= hi[k] + 1e-6)) return { a, s };
+  }
+  return null;
+}
+function shellModel(b, p) {
+  const face = boxFaceAt(b, p.faces[0]);
+  if (!face) return { error: 'fake: no face at the given point' };
+  const lo = b.bbox.min, hi = b.bbox.max, t = p.thickness;
+  const dims = [0, 1, 2].map((k) => hi[k] - lo[k]);
+  const lat = [0, 1, 2].filter((k) => k !== face.a);
+  const depth = dims[face.a];
+  if (t >= depth - 1e-9 || 2 * t >= Math.min(dims[lat[0]], dims[lat[1]]) - 1e-9) return {}; // the unhollowed block, ok:true
+  const bv = vol(b.bbox); const fillB = bv > 0 ? b.volume / bv : 0;
+  b.volume = Math.max(0, b.volume - (dims[lat[0]] - 2 * t) * (dims[lat[1]] - 2 * t) * (depth - t) * fillB);
+  b.nf = 2 * facesOfBody(b) - 1;
+  return {};
+}
+function draftModel(b, p) {
+  if (Math.abs(p.angle) > 89) return { error: 'fake: draft angle must be between -89 and 89 degrees' };
+  const pa = p.pull ? p.pull.findIndex((v) => v !== 0) : 2;
+  const tanA = Math.tan(p.angle * Math.PI / 180);
+  const sigma = -1;
+  let dv = 0; let clipped = false; let offLine = false;
+  const lo = b.bbox.min.slice(), hi = b.bbox.max.slice();
+  const dims = [0, 1, 2].map((k) => hi[k] - lo[k]);
+  const n = p.neutral.origin[pa];
+  for (const pt of p.faces) {
+    const face = boxFaceAt(b, pt);
+    if (!face) return { error: 'fake: no face at the given point' };
+    if (face.a === pa) return { error: 'fake: that face is parallel to the pull direction' };
+    const third = 3 - face.a - pa;
+    const za = lo[pa] - n, zb = hi[pa] - n;
+    dv += dims[third] * sigma * tanA * (zb * zb - za * za) / 2;
+    const outMax = Math.max(0, sigma * tanA * za, sigma * tanA * zb);
+    const inMax = Math.max(0, -sigma * tanA * za, -sigma * tanA * zb);
+    if (inMax >= dims[face.a] - 1e-9) clipped = true;
+    else if (b.compound && inMax >= dims[face.a] / 2) offLine = true;
+    if (outMax > 0) { if (face.s > 0) hi[face.a] += outMax; else lo[face.a] -= outMax; }
+  }
+  if (clipped) { b.volume = Math.max(1e-6, b.volume * 0.7); b.nf = Math.max(1, facesOfBody(b) - 1); }
+  else { b.volume = Math.max(1e-6, b.volume + dv * (vol(b.bbox) > 0 ? b.volume / vol(b.bbox) : 0) + (offLine ? 0.01 * b.volume : 0)); }
+  b.bbox = { min: lo, max: hi };
+  return {};
+}
+
+function simulate(commands, boxBool = false, holeModel = false, shellDraft = false) {
   const bodies = new Map();
   const sketches = new Map();
   let active = null;
@@ -208,6 +272,7 @@ function simulate(commands, boxBool = false, holeModel = false) {
         else if (p.operation === 'join') { t.volume += o.volume; t.bbox = bboxOf([t.bbox.min, t.bbox.max, o.bbox.min, o.bbox.max]); }
         else if (p.operation === 'cut') t.volume = Math.max(1, t.volume - 0.3 * o.volume);
         else t.volume = Math.min(t.volume, o.volume) * 0.5;
+        if (shellDraft) { if (p.operation === 'cut') t.nf = facesOfBody(t) + facesOfBody(o); t.compound = true; }
         bodies.delete(n);
       }
     } else if (k === 'solid.move') {
@@ -215,7 +280,7 @@ function simulate(commands, boxBool = false, holeModel = false) {
       if (p.translate && p.bodies) for (const n of p.bodies) { const b = bodies.get(n); b.bbox = { min: b.bbox.min.map((v, a) => v + p.translate[a]), max: b.bbox.max.map((v, a) => v + p.translate[a]) }; }
     } else if (k === 'solid.mirror') {
       const m = need(p.bodies); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
-      for (const n of p.bodies) { const b = bodies.get(n); b.volume *= 2; const a = p.plane.normal.findIndex((v) => v); const at = p.plane.origin[a]; b.bbox = { min: b.bbox.min.map((v, x) => (x === a ? Math.min(v, 2 * at - b.bbox.max[a]) : v)), max: b.bbox.max.map((v, x) => (x === a ? Math.max(v, 2 * at - b.bbox.min[a]) : v)) }; }
+      for (const n of p.bodies) { const b = bodies.get(n); if (shellDraft) b.compound = true; b.volume *= 2; const a = p.plane.normal.findIndex((v) => v); const at = p.plane.origin[a]; b.bbox = { min: b.bbox.min.map((v, x) => (x === a ? Math.min(v, 2 * at - b.bbox.max[a]) : v)), max: b.bbox.max.map((v, x) => (x === a ? Math.max(v, 2 * at - b.bbox.min[a]) : v)) }; }
     } else if (k === 'solid.pattern.circular' || k === 'solid.pattern.rectangular') {
       const m = need(p.bodies); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
       const n = p.bodies[0]; const b = bodies.get(n);
@@ -228,6 +293,14 @@ function simulate(commands, boxBool = false, holeModel = false) {
       const m = need([p.body]); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
       if ((p.radius ?? p.distance) > 4) return { bodies, sketches, active, ...f(FAIL_ERR.blend) };
       bodies.get(p.body).volume *= 0.99; bodies.get(p.body).curved = true;
+    } else if (k === 'solid.shell' && shellDraft) {
+      const m = need([p.body]); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
+      if (!Array.isArray(p.faces)) return { bodies, sketches, active, ...f('fake: invalid parameters for `solid.shell`: `faces` must be a list of points') };
+      if (p.thickness > 5) return { bodies, sketches, active, ...f(FAIL_ERR.shell) };
+      const sm = shellModel(bodies.get(p.body), p); if (sm.error) return { bodies, sketches, active, ...f(sm.error) };
+    } else if (k === 'solid.draft' && shellDraft) {
+      const m = need([p.body]); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
+      const dm = draftModel(bodies.get(p.body), p); if (dm.error) return { bodies, sketches, active, ...f(dm.error) };
     } else if (k === 'solid.shell') {
       const m = need([p.body]); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
       if (p.thickness > 5) return { bodies, sketches, active, ...f(FAIL_ERR.shell) };
@@ -296,7 +369,7 @@ function topologyOfBody(b) {
 }
 
 /**
- * makeFake({ failEvery, boxBool, holeModel, sync, cpuMs }) -> { runSC, topologyOf, log }   (boxBool, holeModel: see the notes above simulate)
+ * makeFake({ failEvery, boxBool, holeModel, shellDraft, sync, cpuMs }) -> { runSC, topologyOf, log }   (boxBool, holeModel, shellDraft: see the notes above simulate)
  *   failEvery N: every Nth runSC call that simulates cleanly is reported as failing at its last command.
  *   a body_name containing 'ghost' is accepted but never appears; one containing 'boom' makes runSC throw.
  *   sync (opt-in): runSC and topologyOf return their result directly instead of a promise (the holes group's ORIGINAL translator is synchronous).
@@ -304,7 +377,7 @@ function topologyOfBody(b) {
  *     cost exceeds it, the run is reported as { ok: false, timedOut: true, cpuMs } (the group's execution budget).
  *   When runSC is called with a second argument it is logged as a third log element; calls without one log exactly as before.
  */
-export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, sync = false, cpuMs = null } = {}) {
+export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, shellDraft = false, sync = false, cpuMs = null } = {}) {
   let calls = 0;
   const log = [];
   const runOnce = (commands, opts) => {
@@ -315,7 +388,7 @@ export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, sy
     if (cost !== undefined && opts && typeof opts.budgetS === 'number' && cost > opts.budgetS * 1000) {
       return { ok: false, timedOut: true, cpuMs: opts.budgetS * 1000, failed: { command: '(budget)', error: `TIME BUDGET: exceeded ${opts.budgetS} s of CPU` } };
     }
-    const sim = simulate(commands, boxBool, holeModel);
+    const sim = simulate(commands, boxBool, holeModel, shellDraft);
     const snap = { measure: { bodies: bodyRows(sim.bodies, boxBool, holeModel) }, sketches: sketchRows(sim.sketches), dirty: false, active_sketch: sim.active ? sim.active.name : null };
     let failed = sim.failed;
     if (!failed && failEvery && calls % failEvery === 0 && commands.length) {
@@ -328,7 +401,7 @@ export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, sy
   };
   const topo = (commands) => {
     log.push(['topologyOf', JSON.stringify(commands)]);
-    const sim = simulate(commands, boxBool, holeModel);
+    const sim = simulate(commands, boxBool, holeModel, shellDraft);
     if (sim.failed) return { ok: false, failed: sim.failed };
     return { ok: true, topology: { bodies: [...sim.bodies.values()].map(topologyOfBody) }, results: commands.map((_, i) => ({ feature: i + 1 })) };
   };
