@@ -20,6 +20,8 @@ import { followMoves } from './follow-moves.js';
 import type { UnifiedDomain } from './unified.js';
 import type { PMState } from './patterns-mirror.js';
 import type { BoolState } from './booleans.js';
+import type { RGState } from './revolve-groove.js';
+import type { RGInfo } from './revolve-groove-guard.js';
 import type { Evidence, Resolved, ResolveEnv, ShapeResult, FaceRes, EdgeRes } from './resolve-names.js';
 
 export const FEATURE_KINDS = ['box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'sketch', 'datum', 'extrude', 'combine',
@@ -73,6 +75,10 @@ export interface TranslateState {
   pm?: PMState;
   /** booleans set only: the group's bookkeeping (every feature by id, what changes an id in place, the live body list, the last run's CPU). See booleans.ts. */
   bool?: BoolState;
+  /** revolve-groove set only: the group's bookkeeping (the grooves that were refused and re-pointed their part's handle). See revolve-groove.ts. */
+  rg?: RGState;
+  /** revolve-groove set only: the commands accepted so far (the guard G10 reads them); the same array as the loop's. */
+  accepted?: Cmd[];
   /** unified set only: which groups the document uses (decides the style of the loop). See unified.ts. */
   unified?: { domain: UnifiedDomain; maps: { E: { measure: Record<string, Aggregate>; bodies: Record<string, string[]> }; P: { measure: Record<string, Aggregate>; bodies: Record<string, string[]> } } };
 }
@@ -89,6 +95,8 @@ export interface Aggregate {
   kernelFaces: number;
   /** extrude-pocket profile only. */
   shells?: number;
+  /** revolve-groove set only: the summed surface area of the bodies. */
+  area?: number;
   curved: boolean;
   bbox: number[];
   faceTypes: Record<string, number>;
@@ -692,6 +700,8 @@ export interface FeatureResult {
   /** patterns-mirror set only: where the mirror plane went, and the wall time of the run that built the feature. */
   mirrorAt?: { axis: number; at: number; how: string };
   wallMs?: number;
+  /** revolve-groove set only: what the original logs as `guard` on a spin / groove (the cost features and the engine angle); `guard` above is the code. */
+  rg?: RGInfo;
 }
 export interface TranslateResult {
   features: FeatureResult[];

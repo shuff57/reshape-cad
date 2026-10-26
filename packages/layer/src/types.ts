@@ -18,6 +18,7 @@ export interface BodyMeasure {
   name: string;
   bbox: { min: V3; max: V3 };
   volume_mm3: number;
+  area_mm2?: number;
   faces: number;
   kernel: { faces: number; shells?: number };
   face_types?: Record<string, number>;

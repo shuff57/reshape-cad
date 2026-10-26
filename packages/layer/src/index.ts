@@ -28,3 +28,7 @@ export { preflightScript, PREFLIGHT_SENTENCE, PREFLIGHT_SENTENCE_VAR } from './p
 export type { PreflightHit } from './pm-preflight.js';
 export { BOOL_PROFILE, BOOL_KINDS, BOOL_CROSS_KIND_GUARDS, boolStep, execCombine, initBool, BOOLEANS_BUDGET_S, BOOLEANS_SENTENCES, BOOLEANS_SLIVER, guardCombine, afterCombine, plainSentence as booleansPlainSentence, plainPieces, reusedTools, booleansLintSentence, explainCombineArgs, explainFront, describeOperand, obbDepth, booleansSlow } from './booleans.js';
 export type { BoolState, Desc as BooleansDesc, GuardOp as BooleansGuardOp, GuardHit as BooleansGuardHit, CombineView } from './booleans.js';
+export { RG_PROFILE, RG_KINDS, RG_CROSS_KIND_GUARDS, RG_BUDGET_S, rgStep, aggregateRG, rgBudgetSentence, revolveGrooveGuard } from './revolve-groove.js';
+export type { RGState } from './revolve-groove.js';
+export { guardPlan as revolveGrooveGuardPlan, profileInfo as revolveGrooveProfileInfo, scriptSentence as revolveGrooveScriptSentence } from './revolve-groove-guard.js';
+export type { RGInfo, RGRefusal, RGPlan, CostFeatures, ProfileInfo as RGProfileInfo } from './revolve-groove-guard.js';

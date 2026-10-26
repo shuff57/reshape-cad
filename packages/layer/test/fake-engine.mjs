@@ -244,7 +244,69 @@ function boolCombineModel(bodies, tname, oname, op) {
   return null;
 }
 
-function simulate(commands, boxBool = false, holeModel = false, shellDraft = false, pmModel = false, boolModel = false) {
+// rgModel (opt-in, default false): a crude model of the revolve-groove group's world, on the axis-aligned boxes the fake already tracks (it needs boxBool for nothing: it replaces the revolve cut by itself).
+//   a circle sketch that is pulled makes a CYLINDER of volume pi r^2 d (so a plain post is a certified cylinder); a solid.cylinder has volume pi r^2 h; a spin ('new') has volume |A| x 2 pi x |u centroid| x angle / 360 (Pappus on the
+//   sketch's points) and is curved. A revolve CUT removes the part of the target's volume that lies inside the swept profile: the target's bounding box is sampled on a 14 x 14 x 14 grid, a sample is inside the ring when its
+//   (distance from the axis, position along the axis) lies in the profile polygon and its angle about the axis lies in the sector the kernel angle sweeps (the profile starts on its own side of the axis; a kernel angle `a` turns
+//   counter-clockwise by -a for a profile on the +u side and by +a for one on the -u side; no angle = a full turn). Nothing inside = the cut changes nothing (ok:true; the group's G5). A full turn whose ring spans the part's axial
+//   extent leaves an inner and an outer piece: the inner one is named '<target> (k)'. The part gains 3 faces and becomes curved when something was cut. It models no real kernel.
+const RG_N = 14;
+function inPoly(poly, x, y) {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i]; const [xj, yj] = poly[j];
+    if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+function rgCut(bodies, name, sk, kernelAngle) {
+  const b = bodies.get(name); if (!b) return;
+  const pts = sk.pts; if (pts.length < 3) return;
+  const us = pts.map((q) => q[0]);
+  const side = Math.max(...us) > 1e-9 ? 1 : -1;
+  const full = kernelAngle === undefined || Math.abs(kernelAngle) >= 360;
+  const ccw = full ? 360 : (side > 0 ? -kernelAngle : kernelAngle);
+  const nl = Math.hypot(...sk.v) || 1; const ax = sk.v.map((x) => x / nl);
+  const e1 = sk.u.map((x) => x * side); const e2 = [ax[1] * e1[2] - ax[2] * e1[1], ax[2] * e1[0] - ax[0] * e1[2], ax[0] * e1[1] - ax[1] * e1[0]];
+  const poly = pts.map((q) => [q[0] * side, q[1]]);
+  const vmin = Math.min(...pts.map((q) => q[1])); const vmax = Math.max(...pts.map((q) => q[1]));
+  const rmin = Math.min(...poly.map((q) => q[0])); const rmax = Math.max(...poly.map((q) => q[0]));
+  const lo = b.bbox.min; const hi = b.bbox.max;
+  let total = 0; let cut = 0; const inner = []; let outer = 0;
+  for (let i = 0; i < RG_N; i++) for (let j = 0; j < RG_N; j++) for (let k = 0; k < RG_N; k++) {
+    const q = [lo[0] + (i + 0.5) * (hi[0] - lo[0]) / RG_N, lo[1] + (j + 0.5) * (hi[1] - lo[1]) / RG_N, lo[2] + (k + 0.5) * (hi[2] - lo[2]) / RG_N];
+    total++;
+    const w = [q[0] - sk.origin[0], q[1] - sk.origin[1], q[2] - sk.origin[2]];
+    const sPos = w[0] * ax[0] + w[1] * ax[1] + w[2] * ax[2];
+    const rad = Math.hypot(w[0] - sPos * ax[0], w[1] - sPos * ax[1], w[2] - sPos * ax[2]);
+    let hit = inPoly(poly, rad, sPos);
+    if (hit && !full) {
+      const th = Math.atan2(w[0] * e2[0] + w[1] * e2[1] + w[2] * e2[2], w[0] * e1[0] + w[1] * e1[1] + w[2] * e1[2]);
+      const m = ccw > 0 ? (th + 2 * Math.PI) % (2 * Math.PI) : (-th + 2 * Math.PI) % (2 * Math.PI);
+      hit = m <= (Math.abs(ccw) * Math.PI) / 180;
+    }
+    if (hit) cut++;
+    else if (full && sPos >= vmin && sPos <= vmax) { if (rad < rmin) inner.push(q); else if (rad > rmax) outer++; }
+  }
+  if (cut === 0) return; // the engine accepts a ring that misses the part and returns it unchanged
+  const bv = vol(b.bbox); const fillB = bv > 0 ? b.volume / bv : 0;
+  const removed = (cut / total) * bv * fillB;
+  b.curved = true; b.nf = (b.nf ?? (b.kind === 'cylinder' ? 4 : 6)) + 3;
+  const before = b.volume;
+  b.volume = Math.max(0, b.volume - removed);
+  if (b.volume <= 1e-9 * Math.max(1, before)) { bodies.delete(name); return; }
+  const spans = (() => { let tl = Infinity; let th2 = -Infinity; for (const x of [lo[0], hi[0]]) for (const y of [lo[1], hi[1]]) for (const z of [lo[2], hi[2]]) { const s2 = (x - sk.origin[0]) * ax[0] + (y - sk.origin[1]) * ax[1] + (z - sk.origin[2]) * ax[2]; tl = Math.min(tl, s2); th2 = Math.max(th2, s2); } return tl >= vmin - 1e-9 && th2 <= vmax + 1e-9; })();
+  if (full && spans && inner.length && outer) {
+    const v = b.volume; const share = inner.length / (inner.length + outer);
+    const ilo = [0, 1, 2].map((a) => Math.min(...inner.map((q) => q[a]))); const ihi = [0, 1, 2].map((a) => Math.max(...inner.map((q) => q[a])));
+    let k = 1; while (bodies.has(`${name} (${k})`)) k++;
+    b.volume = v * (1 - share);
+    bodies.set(`${name} (${k})`, { ...b, name: `${name} (${k})`, volume: v * share, bbox: { min: ilo, max: ihi }, shells: 1 });
+  }
+}
+function polyArea(P) { let a = 0; let cu = 0; for (let i = 0; i < P.length; i++) { const [x0, y0] = P[i]; const [x1, y1] = P[(i + 1) % P.length]; const c = x0 * y1 - x1 * y0; a += c; cu += (x0 + x1) * c; } a /= 2; return { A: Math.abs(a), cu: a === 0 ? 0 : Math.abs(cu / (6 * a)) }; }
+
+function simulate(commands, boxBool = false, holeModel = false, shellDraft = false, pmModel = false, boolModel = false, rgModel = false) {
   const bodies = new Map();
   const sketches = new Map();
   let active = null;
@@ -278,6 +340,7 @@ function simulate(commands, boxBool = false, holeModel = false, shellDraft = fal
       if (active && isNum2(p.point)) active.pts.push(p.point);
     } else if (k === 'sketch.circle.center') {
       const r = typeof p.radius === 'number' ? p.radius : (p.diameter ?? 0) / 2;
+      if (active && rgModel) active.circle = true;
       if (active && isNum2(p.center)) active.pts.push([p.center[0] - r, p.center[1] - r], [p.center[0] + r, p.center[1] + r]);
     } else if (k === 'sketch.arc.three_point') {
       if (active) for (const q of [p.start, p.end, p.through]) if (isNum2(q)) active.pts.push(q);
@@ -297,7 +360,7 @@ function simulate(commands, boxBool = false, holeModel = false, shellDraft = fal
         const m = need(p.targets); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
         if (holeModel) { const [pp, qq] = [0, 1, 2].filter((k) => k !== ax); for (const t of p.targets) cutTool(bodies, t, { ax, cp: p.base[pp], cq: p.base[qq], r: p.radius, z0: p.base[ax], z1: p.base[ax] + p.height }); }
         else for (const t of p.targets) { const b = bodies.get(t); b.volume *= 0.9; }
-      } else make(p.body_name, { min, max }, { kind: ax === 2 ? 'cylinder' : 'solid', curved: true, feature: i + 1 });
+      } else make(p.body_name, { min, max }, { kind: ax === 2 ? 'cylinder' : 'solid', curved: true, feature: i + 1, ...(rgModel ? { volume: Math.PI * p.radius * p.radius * p.height } : {}) });
     } else if (k === 'solid.hole' && holeModel) {
       const m = need([p.body]); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
       const b0 = bodies.get(p.body);
@@ -330,8 +393,16 @@ function simulate(commands, boxBool = false, holeModel = false, shellDraft = fal
       }
       if (p.operation === 'cut') {
         const m = need(p.targets); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
-        if (boxBool) cutBoxes(p.targets, bb);
+        if (rgModel && k === 'solid.revolve') for (const t of p.targets) rgCut(bodies, t, sk, p.angle);
+        else if (boxBool) cutBoxes(p.targets, bb);
         else for (const t of p.targets) bodies.get(t).volume *= 0.8;
+      } else if (rgModel && k === 'solid.extrude' && sk.circle && sk.pts.length === 2 && !p.taper && !p.distance2 && p.direction !== 'symmetric' && !p.through_all) {
+        const r = Math.abs(sk.pts[1][0] - sk.pts[0][0]) / 2; const zUp = Math.abs(cross3(sk.u, sk.v)[2]) > 0.5;
+        make(p.body_name, bb, { kind: zUp ? 'cylinder' : 'solid', curved: true, feature: i + 1, volume: Math.PI * r * r * Math.abs(p.distance) });
+      } else if (rgModel && k === 'solid.revolve') {
+        const { A, cu } = polyArea(sk.pts.length === 2 && sk.circle ? [[sk.pts[0][0], sk.pts[0][1]], [sk.pts[1][0], sk.pts[0][1]], [sk.pts[1][0], sk.pts[1][1]], [sk.pts[0][0], sk.pts[1][1]]] : sk.pts);
+        const ang = typeof p.angle === 'number' ? Math.abs(p.angle) : 360;
+        make(p.body_name, bb, { kind: 'revolve', curved: true, feature: i + 1, volume: Math.max(1e-6, A * 2 * Math.PI * cu * ang / 360) });
       } else make(p.body_name, bb, { kind: k === 'solid.extrude' ? 'extrude' : 'revolve', curved: k === 'solid.revolve', feature: i + 1, tapered: !!p.taper });
     } else if (k === 'solid.loft') {
       if (p.sections.length === 3) return { bodies, sketches, active, ...f(FAIL_ERR.loft) };
@@ -476,7 +547,7 @@ function topologyOfBody(b) {
 }
 
 /**
- * makeFake({ failEvery, boxBool, holeModel, shellDraft, pmModel, boolModel, sync, cpuMs }) -> { runSC, topologyOf, log }   (boxBool, holeModel, shellDraft: see the notes above simulate)
+ * makeFake({ failEvery, boxBool, holeModel, shellDraft, pmModel, boolModel, rgModel, sync, cpuMs }) -> { runSC, topologyOf, log }   (boxBool, holeModel, shellDraft: see the notes above simulate)
  *   failEvery N: every Nth runSC call that simulates cleanly is reported as failing at its last command.
  *   a body_name containing 'ghost' is accepted but never appears; one containing 'boom' makes runSC throw.
  *   sync (opt-in): runSC and topologyOf return their result directly instead of a promise (the holes group's ORIGINAL translator is synchronous).
@@ -485,7 +556,7 @@ function topologyOfBody(b) {
  *     cost exceeds it, the run is reported as { ok: false, timedOut: true, cpuMs } (the group's execution budget).
  *   When runSC is called with a second argument it is logged as a third log element; calls without one log exactly as before.
  */
-export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, shellDraft = false, pmModel = false, boolModel = false, sync = false, cpuMs = null, throwWhen = null } = {}) {
+export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, shellDraft = false, pmModel = false, boolModel = false, rgModel = false, sync = false, cpuMs = null, throwWhen = null } = {}) {
   let calls = 0;
   const log = [];
   const runOnce = (commands, opts) => {
@@ -497,7 +568,7 @@ export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, sh
     if (cost !== undefined && opts && typeof opts.budgetS === 'number' && cost > opts.budgetS * 1000) {
       return { ok: false, timedOut: true, cpuMs: opts.budgetS * 1000, failed: { command: '(budget)', error: `TIME BUDGET: exceeded ${opts.budgetS} s of CPU` } };
     }
-    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel, boolModel);
+    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel, boolModel, rgModel);
     const snap = { measure: { bodies: bodyRows(sim.bodies, boxBool, holeModel) }, sketches: sketchRows(sim.sketches), dirty: false, active_sketch: sim.active ? sim.active.name : null };
     let failed = sim.failed;
     if (!failed && failEvery && calls % failEvery === 0 && commands.length) {
@@ -510,7 +581,7 @@ export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, sh
   };
   const topo = (commands) => {
     log.push(['topologyOf', JSON.stringify(commands)]);
-    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel, boolModel);
+    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel, boolModel, rgModel);
     if (sim.failed) return { ok: false, failed: sim.failed };
     return { ok: true, topology: { bodies: [...sim.bodies.values()].map(topologyOfBody) }, results: commands.map((_, i) => ({ feature: i + 1 })) };
   };

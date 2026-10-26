@@ -1,0 +1,550 @@
+// TypeScript port of docs/spikes/solidcraft-referee/contract/revolve-groove.guard.mjs (revolve-groove group, round 5): the pure half of the group.
+// No kernel is named or called. Behaviour-preserving: same thresholds, same order of checks, same sentences, same numbers. The group is NOT accepted in Phase 1
+// (LAYER-CONTRACT.md, "revolve-groove: unresolved"); its known holes are in this port on purpose (NOTES.md, Fold 6).
+//
+//   G1 SIGN   a PARTIAL turn is handed to the engine negated only for a profile on the +u side of the axis (the engine turns toward the sketch normal per profile).
+//   G2 SPLIT  a cut that splits the target returns 'body', 'body (1)', ...: every piece is aggregated (in revolve-groove.ts aggregateRG).
+//   G3 CLAMP  |spin angle| in [360, 720] is the full ring (no angle parameter).
+//   G4 REFUSE one plain sentence, before the engine runs: a sketch with several shapes / a hole, the undrawn 40 x 25 starter rectangle, a profile with no area / a repeated corner / that
+//             crosses or touches itself, a profile that crosses the axis, a turn under MIN_TURN degrees, a ring that cannot touch the part, a groove into a part left in several pieces.
+//   G5 AFTER  a groove that built but left the part unchanged is refused with the same sentence (postCheck).
+//   G6 WORDS  an engine failure of a spin / groove becomes one plain sentence (plainRefusal).
+//   G7 PLANE  a groove whose profile plane holds a flat face of an all-flat part: PART turn refused, FULL turn built with the sketch plane turned 17 degrees about the axis.
+//   G8 COST   static tool/cost rule (costRefusal).
+//   G9 SEALED a ring completely inside a plain box / cylinder is refused at every angle.
+//   G10 GRAZE a ring edge 0 < d <= 0.25 mm short of a part face, or a round wall tangent to / within 0.25 mm of a wall, is refused.
+//   chain     a refused groove leaves its target handle pointing at itself (onRefused), so a later feature on the same part is refused with a pointer.
+//
+// The original reads the negative controls (RG_OFF=G1,G3,...) from the environment; here they come from `ctx.guardsOff` (never set in production).
+import type { SketchFeature } from '@shuff57/reshape-script/model-types';
+import type { Feature } from '@shuff57/reshape-script/model-types';
+import type { ArcApi, Cmd, Frame, V2 } from './types.js';
+import { sampleOutline, selfTouch } from './outline-guard.js';
+import type { GuardOutline } from './outline-guard.js';
+import type { Aggregate, Plan, PlanCtx, Refusal, TranslateState } from './translate.js';
+
+export const MIN_TURN = 1; // degrees. Measured: 0.55 degree and under comes back as flat faces (any radius); 0.6 and over is a cylinder.
+export const MAX_SPIN = 720; // degrees, the script layer's MAX_SPIN_DEGREES
+export const AXIS_TOL = 1e-9; // mm. A profile point this far (relative to scale) on both sides of the axis crosses it.
+export const STARTER: V2[] = [[0, 0], [40, 0], [40, 25], [0, 25]];
+const SAME = 1e-9; // relative: two corners closer than this are "the same place"
+const NOTHING = 1e-9; // relative volume change below which a groove "cut nothing"
+/** The guards the negative controls can switch off (`ctx.guardsOff`). */
+export const RG_ALL_GUARDS = ['G1', 'G3', 'G4', 'G5', 'G7', 'G8', 'G9', 'G10'];
+
+const num = (v: number): string => (Number.isInteger(v) ? String(v) : String(+Number(v).toFixed(4)));
+/** The fields of a revolve / groove feature this module reads. */
+export interface RGFeature { id: string; kind: string; target: string; into?: string; angle: number }
+const verbOf = (f: RGFeature): string => (f.kind === 'revolve' ? 'spin' : 'groove');
+const lead = (f: RGFeature): string => `${f.id} (${f.kind}): `;
+export const rgView = (f: Feature): RGFeature => f as unknown as RGFeature;
+
+/** Walk the groove/hole/pocket head chain the way the translators do (a cut leaves its target id pointing at the newest cut). */
+export const headOf = (st: Pick<TranslateState, 'head'>, id: string): string => { let h = id; const seen = new Set<string>(); while (st.head[h] && !seen.has(h)) { seen.add(h); h = st.head[h]; } return h; };
+
+/** What the guard reads of a sketch beyond the SketchFeature type (the original reads them unguarded). */
+interface SK { id?: string; shape?: string; points?: number[][]; geoms?: unknown[]; constraints?: unknown[]; rounds?: unknown; chamfers?: unknown }
+const skView = (sk: SketchFeature): SK => sk as unknown as SK;
+
+/** Everything the guard needs to know about a sketch's outline, in the sketch's own (u, v). */
+export interface ProfileInfo {
+  ok: boolean;
+  why?: string;
+  circle: boolean;
+  scale: number;
+  umin: number; umax: number; vmin: number; vmax: number;
+  r?: number;
+  o?: GuardOutline;
+  area2?: number;
+  dup?: boolean;
+  collinear?: boolean;
+  n?: number;
+  pts?: V2[];
+}
+type OutlineApi = Pick<ArcApi, 'outlineOf' | 'arcFromBulge'>;
+
+export function profileInfo(sk: SketchFeature, arc: OutlineApi): ProfileInfo {
+  const o = arc.outlineOf(sk);
+  if (!o.ok) return { ok: false, why: 'unreadable', circle: false, scale: 0, umin: 0, umax: 0, vmin: 0, vmax: 0 };
+  if (skView(sk).shape === 'circle') {
+    const [a, b] = o.points;
+    const c = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    const r = Math.hypot(b[0] - a[0], b[1] - a[1]) / 2;
+    return { ok: true, circle: true, scale: Math.max(1e-12, Math.abs(c[0]) + r, Math.abs(c[1]) + r), umin: c[0] - r, umax: c[0] + r, vmin: c[1] - r, vmax: c[1] + r, r };
+  }
+  const go = o as unknown as GuardOutline;
+  const { pts } = sampleOutline(go, arc);
+  const us = pts.map((p) => p[0]); const vs = pts.map((p) => p[1]);
+  const scale = Math.max(1e-12, ...pts.flat().map(Math.abs));
+  let a2 = 0;
+  pts.forEach((p, i) => { const q = pts[(i + 1) % pts.length]; a2 += p[0] * q[1] - q[0] * p[1]; });
+  const dup = o.points.some((p, i) => { const q = o.points[(i + 1) % o.points.length]; return Math.hypot(p[0] - q[0], p[1] - q[1]) <= SAME * scale; });
+  // every corner on one line? (a bow-tie has signed area 0 too, so the area alone cannot tell the two apart)
+  const P = o.points; let far: V2[] = [P[0], P[0]]; let best = -1;
+  for (const a of P) for (const b of P) { const d = Math.hypot(a[0] - b[0], a[1] - b[1]); if (d > best) { best = d; far = [a, b]; } }
+  const collinear = best <= SAME * scale || P.every((q) => Math.abs((far[1][0] - far[0][0]) * (q[1] - far[0][1]) - (far[1][1] - far[0][1]) * (q[0] - far[0][0])) / best <= 1e-9 * scale)
+    && !(o.bulges && Object.values(o.bulges).some((g) => g));
+  return { ok: true, circle: false, o: go, scale, umin: Math.min(...us), umax: Math.max(...us), vmin: Math.min(...vs), vmax: Math.max(...vs), area2: a2, dup, collinear, n: o.points.length, pts };
+}
+
+const isStarter = (sk: SK): boolean => sk.shape !== 'circle' && sk.points?.length === 4 && sk.points.every((p, k) => p[0] === STARTER[k][0] && p[1] === STARTER[k][1])
+  && (sk.constraints?.length ?? 0) === 4 && !sk.rounds && !sk.chamfers;
+
+/** The preflight: null when the sketch is fine, else the plain sentence. Pure arithmetic on the outline. */
+export function profileProblem(f: RGFeature, sk: SketchFeature | undefined, arc: OutlineApi): string | null {
+  const verb = verbOf(f);
+  const L = lead(f);
+  if (!sk) return `${L}${f.target} is not a sketch, so there is nothing to ${verb}.`;
+  const s = skView(sk);
+  if (s.shape !== 'circle' && Array.isArray(s.geoms) && s.geoms.length > 0) {
+    return `${L}the sketch holds more than one shape (or a hole, geom() or slot()), and a ${verb} takes one plain outline, so draw one rect, circle or polygon per sketch.`;
+  }
+  if (isStarter(s)) return `${L}the sketch is exactly the default 40 by 25 rectangle at the corner (an undrawn sketch looks the same), so the ${verb} is not built; draw your outline, for example with rect(10, 30, { at: [15, 15] }), or move this rectangle by a fraction of a millimetre if it is the one you want.`;
+  if (s.shape !== 'circle' && Array.isArray(s.points) && s.points.length > 1) {
+    const pts = s.points;
+    const sc = Math.max(1e-12, ...pts.flat().map(Math.abs));
+    if (pts.some((q, i) => { const r = pts[(i + 1) % pts.length]; return Math.hypot(q[0] - r[0], q[1] - r[1]) <= SAME * sc; })) return `${L}two corners of the sketch are in the same place, so delete one of them.`;
+  }
+  const p = profileInfo(sk, arc);
+  if (!p.ok) return `${L}the sketch has no usable outline, so there is nothing to ${verb}; redraw it as a closed shape.`;
+  if (p.circle) {
+    if (!(p.r! > SAME * p.scale)) return `${L}the circle has no size, so there is nothing to ${verb}; give it a diameter.`;
+  } else {
+    if (p.dup) return `${L}two corners of the sketch are in the same place, so delete one of them.`;
+    if (p.n! < 3 || p.collinear) return `${L}the sketch has no area (all its corners lie on one line), so give it at least three corners that are not in a row.`;
+    const t = selfTouch(p.o!, arc);
+    if (t) return `${L}the sketch ${t === 'cross' ? 'crosses' : 'touches'} itself, so it is not one closed shape; reorder its corners so that no two sides ${t === 'cross' ? 'cross' : 'meet'}.`;
+  }
+  const tol = AXIS_TOL * Math.max(1, p.scale);
+  if (p.umin < -tol && p.umax > tol) return `${L}the outline crosses the line it ${verb === 'spin' ? 'spins' : 'is turned'} about, so one side would overlap the other; draw the whole outline on one side of that line.`;
+  return null;
+}
+
+/** Which side of the axis the profile is on: +1 (u > 0) or -1 (u < 0). Only meaningful once profileProblem() passed. */
+export const sideOf = (p: Pick<ProfileInfo, 'umax' | 'scale'>): number => (p.umax > AXIS_TOL * Math.max(1, p.scale) ? 1 : -1);
+
+/** The angle the translators must hand to solid.revolve for this feature, or null for a full turn (no angle parameter). */
+export function kernelAngle(f: Pick<RGFeature, 'angle'>, side: number): number | null {
+  const a = f.angle;
+  if (Math.abs(a) >= 360) return null;
+  return side < 0 ? a : -a;
+}
+
+/** World-space sufficient test that a groove's ring cannot touch the target: ring envelope vs the target's bbox. Returns a reason or null. */
+export function ringMisses(p: Pick<ProfileInfo, 'umin' | 'umax' | 'vmin' | 'vmax'>, fr: Frame | null, bbox: number[] | undefined, eps = 1e-6): 'axial' | 'radial' | null {
+  if (!bbox || !fr) return null;
+  const dot = (a: number[], b: number[]): number => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+  const o = fr.origin; const n = fr.n;
+  const nl = Math.hypot(...n) || 1; const nn = n.map((x) => x / nl);
+  let tmin = Infinity; let tmax = -Infinity; let rmax = 0;
+  for (const x of [bbox[0], bbox[3]]) for (const y of [bbox[1], bbox[4]]) for (const z of [bbox[2], bbox[5]]) {
+    const d = [x - o[0], y - o[1], z - o[2]];
+    const t = dot(d, nn);
+    const rad = Math.hypot(d[0] - t * nn[0], d[1] - t * nn[1], d[2] - t * nn[2]);
+    tmin = Math.min(tmin, t); tmax = Math.max(tmax, t); rmax = Math.max(rmax, rad);
+  }
+  // the profile's v coordinate IS the distance along n (the translators lay it in (u, n)); its |u| is the distance from the axis
+  const rmin = p.umin >= 0 ? p.umin : (p.umax <= 0 ? -p.umax : 0);
+  if (p.vmax < tmin - eps || p.vmin > tmax + eps) return 'axial';
+  if (rmin > rmax + eps) return 'radial';
+  return null;
+}
+
+/**
+ * G7 (measured, 24 box configurations): the groove's profile lies in the plane through the revolve axis spanned by u and n, so the revolve seam and the end caps of a part turn sit IN that plane.
+ * When that plane holds a flat face of a part that has only flat faces (a box), a ring about the world X or Y axis comes back with extra planar faces or is refused by the kernel with a long
+ * text. A ring about the world Z axis was exact. A PART turn is refused; a FULL turn is built with the sketch plane turned 17 degrees about the axis. Returns {axis, at}, false or null.
+ */
+export function profilePlaneOnFlatFace(fr: Frame | null, bbox: number[] | undefined, faceTypes: Record<string, number> | undefined): { axis: string; at: number } | false | null {
+  if (!fr || !bbox || !faceTypes) return false;
+  const kinds = Object.keys(faceTypes).filter((k) => faceTypes[k] > 0);
+  if (kinds.length !== 1 || kinds[0] !== 'plane') return false;
+  const v = fr.v; const n = fr.n;
+  const vl = Math.hypot(...v) || 1; const nl = Math.hypot(...n) || 1;
+  const vv = v.map((x) => x / vl); const nn = n.map((x) => x / nl);
+  if (Math.abs(nn[2]) > 0.5) return false; // ring about world Z: exact in the sample
+  const ax = vv.findIndex((x) => Math.abs(Math.abs(x) - 1) < 1e-9);
+  if (ax < 0) return false; // profile plane not axis-aligned: the bbox says nothing about the part's faces
+  const c = fr.origin[0] * vv[0] + fr.origin[1] * vv[1] + fr.origin[2] * vv[2];
+  const c1 = c * Math.sign(vv[ax]); // plane position along +axis
+  const scale = Math.max(1, ...bbox.map(Math.abs));
+  if (Math.abs(bbox[ax] - c1) <= 1e-6 * scale || Math.abs(bbox[ax + 3] - c1) <= 1e-6 * scale) return { axis: 'xyz'[ax], at: c1 };
+  return null;
+}
+export const NUDGE_DEG = 17; // degrees. A full turn about a horizontal axis whose seam plane lies in a flat face of the part is built with the sketch plane turned by this much about the axis.
+export const COST_BUDGET_S = 45; // seconds. The page runs every groove in a Worker and stops it at this budget (the same 45 s as the booleans and holes groups).
+export const COST_SUPPORT_S = 30; // seconds of CPU. A class of groove is 'supported' only if EVERY measured run of it stays at or under this.
+const S_TOOL = 'a ring with a slanted or curved side (a triangle, a circle, a rounded corner) is not built, because in the measurements the engine cut such rings wrongly or took minutes and the two cannot be told apart in advance; give the ring straight sides that are parallel and square to its axis';
+const S_TILT = 'a full-turn ring about a tilted axis took from 19 to 42 seconds here and is not reliable, so it is not built; sketch the ring on the top, front or side plane, or turn it less than 360 degrees';
+const S_PART = 'a part turn of a ring that reaches the curved outside of a round part, or of a part with several round surfaces, takes a minute or more to cut here, so it is not built; turn the ring a full 360 degrees on the part\'s own axis, or keep it clear of the round outside wall';
+const S_FULL = 'a full-turn ring cut into a round part takes a minute or more here unless its axis is the part\'s own axis, so it is not built; centre the ring on the axis of the round part';
+
+/** The cost features of a groove (what the static cost rule reads), logged on the note of every groove the translator plans. */
+export interface CostFeatures {
+  tool: 'unknown' | 'torus' | 'cone' | 'flat';
+  shape: string | null;
+  coaxial: boolean;
+  kinds: string[] | null;
+  partial: boolean;
+  curved: number;
+  headTypes: Record<string, number>;
+  touchesAxis: boolean;
+  worldAxis: boolean;
+  reachesWall: boolean;
+  rOuter: number;
+  nearest: number | null;
+  bodies: number | null;
+}
+
+/**
+ * G8 (tool and cost), the static half of the cost rule. Returns a plain sentence (without the "groove1 (groove): " lead) or null.
+ * Measured classes: a tool with an arc / circle / slanted side is refused; flat tool into a part with no curved face is fine; a PART turn into a part with a curved face when the ring reaches
+ * the nearest outer side (or two or more curved faces, or a tilted axis) is refused; a FULL turn into a curved part that is not a plain cylinder with the ring on its own axis is refused; a FULL
+ * turn about a tilted axis is refused. Backstop for anything this rule lets through: the page's 45 s Worker budget (COST_BUDGET_S).
+ */
+export function costRefusal(c: CostFeatures | null | undefined): string | null {
+  if (!c) return null;
+  if (c.tool !== 'flat') return S_TOOL;
+  if (!c.worldAxis && !c.partial) return S_TILT;
+  if (c.curved === 0) return null;
+  if (c.partial) return (c.reachesWall || c.curved >= 2 || !c.worldAxis) ? S_PART : null;
+  return c.coaxial ? null : S_FULL;
+}
+
+/** Surfaces the ring tool is made of, from the profile's edges (profile coordinates: u = distance from the axis, v = along the axis). */
+export function toolSurfaces(sk: SketchFeature, arc: OutlineApi): { kinds: string[] } | null {
+  const o = arc.outlineOf(sk);
+  if (!o.ok) return null;
+  if (skView(sk).shape === 'circle') return { kinds: ['torus'] };
+  const P = o.points; const n = P.length;
+  const sc = Math.max(1e-12, ...P.flat().map(Math.abs));
+  const kinds = new Set<string>();
+  for (let i = 0; i < n; i++) {
+    const a = P[i]; const b = P[(i + 1) % n]; const g = o.bulges?.[i];
+    if (g) { const { center } = arc.arcFromBulge(a, b, g); kinds.add(Math.abs(center[0]) <= AXIS_TOL * Math.max(1, sc) ? 'sphere' : 'torus'); continue; }
+    const du = b[0] - a[0]; const dv = b[1] - a[1]; const len = Math.hypot(du, dv);
+    if (len <= SAME * sc) continue;
+    if (Math.abs(dv) <= 1e-9 * len) kinds.add('annulus'); // a flat ring face (plane perpendicular to the axis)
+    else if (Math.abs(du) <= 1e-9 * len) kinds.add(Math.abs(a[0]) <= AXIS_TOL * Math.max(1, sc) ? 'axis' : 'cylinder');
+    else kinds.add('cone');
+  }
+  return { kinds: [...kinds] };
+}
+
+/** A part the guard can PROVE is a plain box or a plain cylinder, from its measure alone (volume equals the bounding box's, or the cylinder's closed form). */
+export type Certified = { kind: 'box'; bbox: number[] } | { kind: 'cylinder'; axis: number; R: number; centre: number[]; bbox: number[] };
+export function certifiedShape(meas: Aggregate | undefined): Certified | null {
+  if (!meas || !meas.bbox || !meas.faceTypes || (meas.bodies?.length ?? 1) !== 1) return null;
+  const b = meas.bbox; const d = [b[3] - b[0], b[4] - b[1], b[5] - b[2]]; const V = meas.volume;
+  const kinds = Object.keys(meas.faceTypes).filter((k) => meas.faceTypes[k] > 0);
+  if (kinds.every((k) => k === 'plane') && Math.abs(V - d[0] * d[1] * d[2]) <= 1e-9 * V) return { kind: 'box', bbox: b };
+  if (kinds.every((k) => k === 'plane' || k === 'cylinder') && kinds.includes('cylinder')) {
+    for (let k = 0; k < 3; k++) {
+      const o1 = (k + 1) % 3; const o2 = (k + 2) % 3;
+      const R = d[o1] / 2;
+      if (Math.abs(d[o1] - d[o2]) <= 1e-6 * d[o1] && Math.abs(V - Math.PI * R * R * d[k]) <= 3e-4 * V) return { kind: 'cylinder', axis: k, R, centre: [(b[0] + b[3]) / 2, (b[1] + b[4]) / 2, (b[2] + b[5]) / 2], bbox: b };
+    }
+  }
+  return null;
+}
+
+/**
+ * The cost features of a groove, logged for every groove the translator plans (the cost rule reads them). Pure arithmetic on the profile, the frame and the head body's measure.
+ * `a` is the groove's angle (an angle under 360 is a PART turn).
+ */
+export function costFeatures(p: ProfileInfo, sk: SketchFeature, arc: OutlineApi, fr: Frame | null, meas: Aggregate | undefined, a: number): CostFeatures {
+  const ts = toolSurfaces(sk, arc);
+  const tool = !ts ? 'unknown' : ts.kinds.some((k) => k === 'torus' || k === 'sphere') ? 'torus' : ts.kinds.includes('cone') ? 'cone' : 'flat';
+  const ft = meas?.faceTypes ?? {};
+  const curved = Object.entries(ft).reduce((n, [k, v]) => n + (k !== 'plane' ? v : 0), 0);
+  const tol = AXIS_TOL * Math.max(1, p.scale ?? 1);
+  const touchesAxis = !(p.umin > tol || p.umax < -tol);
+  let axis = -1; let nearest: number | null = null;
+  if (fr) {
+    const nl = Math.hypot(...fr.n) || 1; const nn = fr.n.map((x) => x / nl);
+    axis = nn.findIndex((x) => Math.abs(Math.abs(x) - 1) < 1e-9);
+    if (axis >= 0 && meas?.bbox) { nearest = Infinity; for (const k of [0, 1, 2]) if (k !== axis) nearest = Math.min(nearest, Math.abs(meas.bbox[k] - fr.origin[k]), Math.abs(meas.bbox[k + 3] - fr.origin[k])); }
+  }
+  const rOuter = Math.max(Math.abs(p.umin), Math.abs(p.umax));
+  const sh = certifiedShape(meas);
+  const coaxial = !!(sh && sh.kind === 'cylinder' && fr && axis === sh.axis && [0, 1, 2].filter((k) => k !== axis).every((k) => Math.abs(fr.origin[k] - sh.centre[k]) <= 1e-6 * Math.max(1, Math.abs(sh.R))));
+  return { tool, shape: sh?.kind ?? null, coaxial, kinds: ts?.kinds ?? null, partial: a < 360, curved, headTypes: ft, touchesAxis, worldAxis: axis >= 0, reachesWall: nearest !== null && rOuter >= nearest - 1e-6, rOuter, nearest, bodies: meas?.bodies?.length ?? null };
+}
+
+/**
+ * G9 (sealed ring). True when the ring lies completely inside a part the guard can prove is a plain box or cylinder, so cutting it would leave a hollow with no opening. Measured: the engine builds
+ * some turns of such a ring and fails others with no pattern in the angle, so one geometry is refused at EVERY angle.
+ */
+export function ringSealed(p: Pick<ProfileInfo, 'umin' | 'umax' | 'vmin' | 'vmax'>, fr: Frame | null, meas: Aggregate | undefined, eps = 1e-6): boolean {
+  const sh = certifiedShape(meas);
+  if (!sh || !fr) return false;
+  const nl = Math.hypot(...fr.n) || 1; const nn = fr.n.map((x) => x / nl);
+  const a = nn.findIndex((x) => Math.abs(Math.abs(x) - 1) < 1e-9);
+  if (a < 0) return false;
+  const o = fr.origin; const rmax = Math.max(Math.abs(p.umin), Math.abs(p.umax));
+  const t0 = o[a] + nn[a] * p.vmin; const t1 = o[a] + nn[a] * p.vmax;
+  const lo = Math.min(t0, t1); const hi = Math.max(t0, t1);
+  const b = sh.bbox;
+  if (!(lo > b[a] + eps && hi < b[a + 3] - eps)) return false;
+  if (sh.kind === 'box') return [0, 1, 2].filter((k) => k !== a).every((k) => o[k] - rmax > b[k] + eps && o[k] + rmax < b[k + 3] - eps);
+  if (sh.axis !== a) return false;
+  const [k1, k2] = [0, 1, 2].filter((k) => k !== a);
+  return Math.hypot(o[k1] - sh.centre[k1], o[k2] - sh.centre[k2]) + rmax < sh.R - eps;
+}
+
+export const GRAZE_MM = 0.25; // mm. Measured: a ring face 0.01 to 0.1 mm short of a part face leaves a lip that comes back with wrong faces/area/volume; 0.2 mm and more is exact.
+
+/**
+ * Positions along world axis `a` where a part built by `cmds` (the kernel commands already accepted, in order) MAY have a flat face perpendicular to that axis. A deliberately generous superset taken from
+ * the commands that made the part: every scalar in them, the a-component of every 3-vector, and every origin/centre a-component combined with every scalar (sum and difference, and half of it for sizes).
+ */
+export function candidatePlanes(cmds: Cmd[] | null | undefined, a: number): number[] {
+  const nums = new Set<number>(); const origins = new Set<number>(); const scal = new Set<number>();
+  const walk = (v: unknown, key: string | undefined): void => {
+    if (typeof v === 'number' && Number.isFinite(v)) { nums.add(v); scal.add(Math.abs(v)); return; }
+    if (Array.isArray(v)) {
+      if (v.length === 3 && v.every((x) => typeof x === 'number')) { nums.add(v[a]); if (/origin|center|centre|at|position/i.test(key ?? '')) origins.add(v[a]); else scal.add(Math.abs(v[a])); }
+      for (const x of v) walk(x, key);
+      return;
+    }
+    if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) walk(x, k);
+  };
+  for (const c of cmds ?? []) walk(c.params ?? {}, '');
+  const out = new Set(nums);
+  for (const o of origins) if (o !== 0) for (const n of scal) { for (const m of [1, 0.5]) { out.add(o + m * n); out.add(o - m * n); } }
+  for (const n of scal) { out.add(n / 2); }
+  return [...out].filter(Number.isFinite);
+}
+
+export interface Graze { kind: 'lip' | 'lip?' | 'tangent'; gap: number; what: string; round?: true }
+/**
+ * G10 (graze). A groove ring whose end plane stops 0 < d <= 0.25 mm short of a face of the part (a thin lip), or whose round wall is tangent to / within 0.25 mm of a round or flat wall of the part, comes
+ * back from the engine with wrong area and wrong volume, silently. Round 4/5: any part, not only a certified box or cylinder; a part the guard cannot classify is treated by its bounding box and by
+ * the numbers its own commands name (this can only over-refuse). Exact coincidence of a ring PLANE with a part plane (d = 0) is fine and is not flagged.
+ */
+export function grazing(p: Pick<ProfileInfo, 'umin' | 'umax' | 'vmin' | 'vmax'>, fr: Frame | null, meas: Aggregate | undefined, s: number = GRAZE_MM, cmds: Cmd[] | null = null): Graze | null {
+  type Sh = Certified | { kind: 'any'; bbox: number[] };
+  let sh: Sh | null = certifiedShape(meas);
+  if (!sh && meas?.bbox && fr) sh = { kind: 'any', bbox: meas.bbox };
+  if (!sh || !fr) return null;
+  const nl = Math.hypot(...fr.n) || 1; const nn = fr.n.map((x) => x / nl);
+  const a = nn.findIndex((x) => Math.abs(Math.abs(x) - 1) < 1e-9);
+  if (a < 0) return null;
+  const o = fr.origin; const b = sh.bbox;
+  const t0 = o[a] + nn[a] * p.vmin; const t1 = o[a] + nn[a] * p.vmax; const lo = Math.min(t0, t1); const hi = Math.max(t0, t1);
+  const rmax = Math.max(Math.abs(p.umin), Math.abs(p.umax)); const rmin = p.umin >= 0 ? p.umin : (p.umax <= 0 ? -p.umax : 0);
+  const [k1, k2] = [0, 1, 2].filter((k) => k !== a);
+  // radial range of a part end face as seen from the ring axis
+  const faceRadial = (): number[] => {
+    if (sh.kind === 'cylinder') { const off = Math.hypot(o[k1] - sh.centre[k1], o[k2] - sh.centre[k2]); return [Math.max(0, off - sh.R), off + sh.R]; }
+    const dx = [b[k1] - o[k1], b[k1 + 3] - o[k1]]; const dy = [b[k2] - o[k2], b[k2 + 3] - o[k2]];
+    const nearx = dx[0] <= 0 && dx[1] >= 0 ? 0 : Math.min(Math.abs(dx[0]), Math.abs(dx[1])); const neary = dy[0] <= 0 && dy[1] >= 0 ? 0 : Math.min(Math.abs(dy[0]), Math.abs(dy[1]));
+    return [Math.hypot(nearx, neary), Math.hypot(Math.max(Math.abs(dx[0]), Math.abs(dx[1])), Math.max(Math.abs(dy[0]), Math.abs(dy[1])))];
+  };
+  const [fr0, fr1] = faceRadial();
+  const radialOverlap = rmax >= fr0 - 1e-9 && rmin <= fr1 + 1e-9;
+  // lips: a ring end plane just short of a part end face (perpendicular to the ring axis)
+  if (radialOverlap && (sh.kind === 'box' || sh.kind === 'any' || sh.axis === a)) {
+    for (const f of [b[a], b[a + 3]]) for (const t of [lo, hi]) { const d = Math.abs(t - f); if (d > 1e-9 && d <= s) return { kind: 'lip', gap: d, what: 'the ring end' }; }
+  }
+  // a part the guard cannot classify may have flat faces inside its bounding box too: check the ring end against every plane position the part's own commands could have put there
+  if (sh.kind === 'any') {
+    for (const f of candidatePlanes(cmds, a)) for (const t of [lo, hi]) { const d = Math.abs(t - f); if (d > 1e-9 && d <= s && f > b[a] + 1e-9 && f < b[a + 3] - 1e-9) return { kind: 'lip?', gap: d, what: 'the ring end' }; }
+  }
+  // the ring's round walls (rmin, rmax about the ring axis) against the part's own round walls and against flat faces parallel to the axis.
+  const walls = [rmin, rmax].filter((r) => r > 0);
+  const circleGap = (off: number, R: number, rho: number): number => Math.min(Math.abs(off - Math.abs(R - rho)), Math.abs(off - (R + rho)));
+  const axialTouch = hi >= b[a] - 1e-9 && lo <= b[a + 3] + 1e-9;
+  if (axialTouch && sh.kind === 'cylinder') {
+    const off = Math.hypot(o[k1] - sh.centre[k1], o[k2] - sh.centre[k2]);
+    for (const rho of walls) {
+      const g = circleGap(off, sh.R, rho);
+      if (off <= 1e-9 && rho > sh.R + 1e-9) continue; // concentric ring wall OUTSIDE the post wall: nothing of the part is left on that side, so there is no thin wall
+      if (g <= s && !(off <= 1e-9 && Math.abs(sh.R - rho) <= 1e-9)) return { kind: 'tangent', gap: g, what: 'the ring wall', round: true };
+    }
+  }
+  if (axialTouch && sh.kind === 'any' && meas?.faceTypes && Object.keys(meas.faceTypes).some((k) => k !== 'plane' && meas.faceTypes[k] > 0)) {
+    const cx = [(b[k1] + b[k1 + 3]) / 2, (b[k2] + b[k2 + 3]) / 2];
+    const off = Math.hypot(o[k1] - cx[0], o[k2] - cx[1]);
+    const Rs = new Set<number>([(b[k1 + 3] - b[k1]) / 2, (b[k2 + 3] - b[k2]) / 2]);
+    for (const n of candidatePlanes(cmds, a)) Rs.add(Math.abs(n));
+    for (const c of cmds ?? []) { const w = (v: unknown): void => { if (typeof v === 'number' && Number.isFinite(v)) { Rs.add(Math.abs(v)); Rs.add(Math.abs(v) / 2); } else if (Array.isArray(v)) v.forEach(w); else if (v && typeof v === 'object') Object.values(v).forEach(w); }; w(c.params ?? {}); }
+    for (const R of Rs) {
+      if (!(R > 0)) continue;
+      for (const rho of walls) {
+        const g = circleGap(off, R, rho);
+        if (g <= s && !(off <= 1e-9 && Math.abs(R - rho) <= 1e-9)) return { kind: 'tangent', gap: g, what: 'the ring wall', round: true };
+      }
+    }
+  }
+  // near-tangent round wall against a flat face parallel to the axis (box; round 5: any part, with the faces its commands could have put there)
+  if (sh.kind === 'box' || sh.kind === 'any') {
+    for (const k of [k1, k2]) {
+      const kk = k === k1 ? k2 : k1;
+      // inner flats from the part's own commands only when no spin built part of it (a spun part has no flat face parallel to its axis, and the numbers of its profile would only produce false alarms)
+      const spun = (cmds ?? []).some((c) => /revolve/i.test(c.command ?? ''));
+      const flats = sh.kind === 'any' && !spun ? [b[k], b[k + 3], ...candidatePlanes(cmds, k).filter((v) => v > b[k] + 1e-9 && v < b[k + 3] - 1e-9)] : [b[k], b[k + 3]];
+      for (const f of flats) {
+        const pd = Math.abs(f - o[k]);
+        const foot = o[kk] >= b[kk] - 1e-9 && o[kk] <= b[kk + 3] + 1e-9;
+        const axial = hi >= b[a] - 1e-9 && lo <= b[a + 3] + 1e-9;
+        if (!foot || !axial) continue;
+        for (const rho of [rmin, rmax]) if (rho > 0 && Math.abs(rho - pd) <= s) return { kind: 'tangent', gap: Math.abs(rho - pd), what: 'the ring wall' };
+      }
+    }
+  }
+  return null;
+}
+
+/** Rotate vector `v` about the unit-ish axis `k` by `deg` degrees (right-hand). */
+export function rotateAbout(v: number[], k: number[], deg: number): number[] {
+  const kl = Math.hypot(...k) || 1; const u = k.map((x) => x / kl); const c = Math.cos(deg * Math.PI / 180); const s = Math.sin(deg * Math.PI / 180);
+  const cr = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]];
+  const d = u[0] * v[0] + u[1] * v[1] + u[2] * v[2];
+  return v.map((x, i) => x * c + cr[i] * s + u[i] * d * (1 - c));
+}
+
+/** The sentence for a script-layer error of spin()/groove() (the page maps the three families whose wording fails the one-sentence / no-engine-word bar). null = keep the script's own sentence. Host-side, like preflightScript. */
+export function scriptSentence(msg: unknown): string | null {
+  const m = String(msg);
+  if (/^spin\(\): the angle is how far the sketch turns, and 0 degrees turns it nowhere/.test(m)) return 'spin(): a spin turns the sketch by an angle other than 0 degrees, so use 1 to 360 degrees, or a negative angle to turn the other way.';
+  let x = /^spin\(\): the angle is how far the sketch turns, and (\S+) degrees is more than 720/.exec(m);
+  if (x) return `spin(): a spin turns at most two full turns (720 degrees) either way, and ${x[1]} is more; use 360 for one full turn.`;
+  x = /^groove\(\): the angle is how far the sketch turns, more than 0 and at most 360 degrees -- got (.+?)\. (?=A negative)/.exec(m);
+  if (x) return `groove(): a groove turns the ring more than 0 and at most 360 degrees, and ${x[1]} is not in that range; use 360 for a full turn.`;
+  return null;
+}
+
+/** A refusal sentence must be ONE sentence: no sentence break (". " + capital), no " -- " splice. */
+export const oneSentence = (s: unknown): boolean => !/[.!?]\s+[A-Z]/.test(String(s)) && !/ -- /.test(String(s));
+/** Words that must never reach a student (engine or internal names). */
+export const JARGON = /solidcraft|solid\.|truck|kernel|brep|occt|opencascade|outlineOf|wasm|\bCut:|nudged|fallback|\bsoup\b|b_pull|b_rev|sk_|canonical|tessellat|body_name|rows and rules|\bdemo\b|translator|spike/i;
+
+/** Called when a groove is refused: later features that name the same part must not silently build on the un-grooved part. Returns true when it re-pointed the handle. */
+export function onRefused(f: Pick<RGFeature, 'id' | 'kind' | 'into'>, st: Pick<TranslateState, 'head'>): boolean {
+  if (f.kind !== 'groove' || !f.into) return false;
+  st.head[headOf(st, f.into)] = f.id;
+  return true;
+}
+
+// ---- guardPlan -------------------------------------------------------------------------------------------------------------------------------------
+/** What the original logs as `guard` on a note: the cost features of a groove and, once the plan passed, the side, the engine angle and the sketch-plane nudge. */
+export interface RGInfo { cost?: CostFeatures; side?: number; kernelAngle?: number | null; nudgeDeg?: number | null }
+/** A refusal of the group's pre-checks: the sentence, the original's `guard` object (cost features, when it had been computed) and the code of the guard. */
+export interface RGRefusal extends Refusal { rg?: RGInfo; code: string }
+/** The plan the guard hands back for a revolve / groove: the base plan, with the group's guard info. */
+export type RGPlan = Plan & { rg?: RGInfo };
+export type RawPlan = (f: Feature, st: TranslateState, ctx: PlanCtx) => Plan;
+
+const refusal = (sentence: string, code: string, rg?: RGInfo): RGRefusal => ({ refusal: sentence, code, ...(rg ? { rg } : {}) });
+
+/**
+ * Wrap the base planner of a revolve / groove. `raw` is the base planFeature for that kind. Refuses (G4 ...), then lets the base plan, then rewrites the angle (G1, G3) of its solid.revolve command.
+ * Any other kind goes straight to `raw`.
+ */
+export function guardPlan(raw: RawPlan, fe: Feature, st: TranslateState, ctx: PlanCtx): RGPlan | RGRefusal {
+  if (fe.kind !== 'revolve' && fe.kind !== 'groove') return raw(fe, st, ctx);
+  const f = rgView(fe);
+  const off = new Set(ctx.guardsOff ?? []);
+  const on = (g: string): boolean => !off.has(g);
+  const verb = verbOf(f);
+  const L = lead(f);
+  const sk = st.sketches[f.target];
+  const prob = on('G4') ? profileProblem(f, sk, ctx.arc) : null;
+  if (prob) return refusal(prob, 'G4');
+  const p = profileInfo(sk, ctx.arc);
+  const a = f.angle;
+  if (typeof a !== 'number' || !Number.isFinite(a)) return refusal(`${L}the angle has to be a number of degrees.`, 'G4');
+  if (f.kind === 'groove' && (a <= 0 || a > 360)) return refusal(`${L}a groove turns the ring more than 0 and at most 360 degrees, and ${num(a)} is not in that range; use 360 for a full turn.`, 'G4');
+  if (f.kind === 'revolve' && Math.abs(a) > MAX_SPIN) return refusal(`${L}a spin turns at most two full turns (720 degrees) either way, and ${num(a)} is more; use 360 for one full turn.`, 'G4');
+  if (a === 0) return refusal(`${L}a ${verb} needs an angle other than 0 degrees.`, 'G4');
+  if (Math.abs(a) < MIN_TURN) return refusal(`${L}a turn of ${num(a)} degrees is too thin to build as a curved part here; use a turn of 1 degree or more.`, 'G4');
+  let guard: RGInfo | null = null; let nudge: number | null = null;
+  if (f.kind === 'groove') {
+    const head = headOf(st, f.into!);
+    if (st.refused[head]) return refusal(`${L}${head} was not built, so this groove has no finished part to cut; fix ${head} first.`, 'RG-CHAIN');
+    const bodies = st.bodies[head];
+    if (bodies && bodies.length > 1) return refusal(`${L}${f.into} was left in ${bodies.length} separate pieces, and a groove cuts one piece, so cut before the part is split.`, 'G4');
+    const meas = st.measure[head];
+    const fr = ctx.mt?.sketchFrameOf ? ctx.mt.sketchFrameOf(sk) : null;
+    const cost = costFeatures(p, sk, ctx.arc, fr, meas, a);
+    guard = { cost };
+    if (meas && fr && ringMisses(p, fr, meas.bbox)) return refusal(`${L}the ring does not reach the part, so it would cut nothing.`, 'G4', guard);
+    if (on('G9') && meas && fr && ringSealed(p, fr, meas)) return refusal(`${L}the ring lies completely inside the part, so cutting it would leave a sealed hollow with no opening, which cannot be built reliably here; let the ring reach the outside of the part.`, 'G9', guard);
+    const gz = on('G10') && meas && fr ? grazing(p, fr, meas, GRAZE_MM, st.accepted ?? null) : null;
+    if (gz) {
+      const what = gz.round
+        ? (gz.gap < 5e-4 ? 'the round wall of the ring touches a round wall of the part without lying on it, which cannot be built reliably here' : `the round wall of the ring passes within ${num(gz.gap)} mm of a round wall of the part, which leaves a wall thinner than ${GRAZE_MM} mm that cannot be built reliably here`)
+        : gz.kind === 'lip'
+          ? `the ring ends ${num(gz.gap)} mm short of a face of the part, which leaves a wall thinner than ${GRAZE_MM} mm that cannot be built reliably here`
+          : gz.kind === 'lip?'
+            ? `the ring ends ${num(gz.gap)} mm short of what may be a flat face inside the part, which could leave a wall thinner than ${GRAZE_MM} mm that cannot be built reliably here`
+            : gz.gap < 5e-4
+              ? 'the round wall of the ring touches a flat face of the part, which cannot be built reliably here'
+              : `the round wall of the ring passes within ${num(gz.gap)} mm of a flat face of the part, which cannot be built reliably here`;
+      return refusal(`${L}${what}; ${gz.round ? 'make the ring wall exactly flush with that wall or at least' : 'move the ring edge onto that face or at least'} ${GRAZE_MM} mm away from it.`, 'G10', guard);
+    }
+    const g7 = on('G7') && meas && fr ? profilePlaneOnFlatFace(fr, meas.bbox, meas.faceTypes) : null;
+    if (g7) {
+      if (Math.abs(a) < 360) return refusal(`${L}the ring starts in the flat plane ${g7.axis} = ${num(g7.at)}, which is also a flat face of the part, and a part turn cut from there does not come out reliably; lift the part off that plane by 1 mm or more, or turn the ring a full 360 degrees.`, 'G7', guard);
+      nudge = NUDGE_DEG;
+    }
+    if (on('G8') && meas && fr) { const c = costRefusal(cost); if (c) return refusal(`${L}${c}.`, 'G8', guard); }
+  }
+  const plan = raw(fe, st, ctx);
+  if ('refusal' in plan) return plan;
+  const side = on('G1') ? sideOf(p) : 1;
+  const want = on('G3') ? kernelAngle(f, side) : (f.angle === 360 ? null : (side < 0 ? f.angle : -f.angle));
+  if ('variants' in plan) {
+    for (const v of plan.variants) for (const c of v) {
+      if (c.command === 'solid.revolve') { if (want === null) delete c.params.angle; else c.params.angle = want; }
+      if (nudge && c.command === 'sketch.create' && (c.params.plane as { x_dir: number[]; y_dir: number[] } | undefined)) {
+        const plane = c.params.plane as { x_dir: number[]; y_dir: number[] };
+        plane.x_dir = rotateAbout(plane.x_dir, plane.y_dir, nudge);
+      }
+    }
+  }
+  return { ...plan, rg: { ...(guard ?? {}), side, kernelAngle: want, nudgeDeg: nudge } };
+}
+
+/** G5: a groove that built but changed nothing. Returns {plain} or null. `m` is the aggregate measure of the produced bodies. */
+export function postCheck(fe: Feature, st: TranslateState, m: Aggregate | null, off: ReadonlySet<string> = new Set()): { plain: string } | null {
+  if (fe.kind !== 'groove' || off.has('G5')) return null;
+  const f = rgView(fe);
+  const before = st.measure[headOf(st, f.into!)];
+  if (!before || !m) return null;
+  const same = Math.abs(m.volume - before.volume) <= NOTHING * Math.max(1, Math.abs(before.volume)) && m.faces === before.faces && m.bodies.length === before.bodies.length;
+  return same ? { plain: `${lead(f)}the ring does not cut the part (it misses it, or turns away from it), so there is nothing to remove.` } : null;
+}
+
+/**
+ * G6: the sentence for a feature the engine refused. `err` is the loop's lastErr (a string) or a {plain} from postCheck.
+ * Returns a plain one-sentence refusal for revolve/groove, null for every other feature (the loop keeps its own wording).
+ */
+export function plainRefusal(fe: Feature, err: string | { plain: string } | null): string | null {
+  if (fe.kind !== 'revolve' && fe.kind !== 'groove') return null;
+  const f = rgView(fe);
+  if (err && typeof err === 'object' && err.plain) return err.plain;
+  const t = String(err ?? '');
+  const L = lead(f);
+  if (/no body named/i.test(t)) {
+    return f.kind === 'groove'
+      ? `${L}the ring covers the whole part, so nothing would be left; make the ring smaller than the part.`
+      : `${L}nothing came out of this spin; check that the outline has an area.`;
+  }
+  if (/crosses the revolve axis/i.test(t)) return `${L}the outline crosses the line it spins about, so one side would overlap the other; draw the whole outline on one side of that line.`;
+  if (/came out empty/i.test(t)) return `${L}the ring does not reach the part, so it would cut nothing.`;
+  if (/more than 0 and at most 360/i.test(t)) return `${L}a turn has to be more than 0 and at most 360 degrees here.`;
+  if (/Cut|fallback|implausible|coincident|no result|reliabl/i.test(t)) {
+    return f.kind === 'groove'
+      ? `${L}this ring cannot be cut out of the part reliably, so the part is shown without it.`
+      : `${L}this spin cannot be built reliably here, so it is not built.`;
+  }
+  if (/WASM TRAP|trap|unreachable|out of memory/i.test(t)) return `${L}this ${verbOf(f)} is too much for the engine, so it is not built.`;
+  return `${L}this ${verbOf(f)} cannot be built here, so it is not built.`;
+}
+/** The guard code of the sentence plainRefusal made (the original has none): which branch fired. */
+export function plainRefusalCode(fe: Feature, err: string | { plain: string } | null): string {
+  if (err && typeof err === 'object' && err.plain) return 'G5';
+  return fe.kind === 'revolve' || fe.kind === 'groove' ? 'G6' : '';
+}
