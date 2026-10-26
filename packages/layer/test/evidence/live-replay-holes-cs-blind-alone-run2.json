@@ -1,0 +1,19 @@
+{
+ "pkg": "/home/shuff57/.cache/solidcraft-0.21.0-rig/sc-referee-pkg",
+ "cases": 1,
+ "same": 1,
+ "differ": 0,
+ "timingRetried": 0,
+ "noDoc": 0,
+ "excluded": 0,
+ "rows": [
+  {
+   "id": "holes-cs-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31363.385240058717
+  }
+ ]
+}

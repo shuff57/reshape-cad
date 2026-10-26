@@ -1,0 +1,3519 @@
+{
+ "pkg": "/home/shuff57/.cache/solidcraft-0.21.0-rig/sc-referee-pkg",
+ "cases": 353,
+ "same": 352,
+ "differ": 1,
+ "timingRetried": 0,
+ "noDoc": 50,
+ "excluded": 4,
+ "rows": [
+  {
+   "id": "g:hole-simple__offcentre-through",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11717.30362588783
+  },
+  {
+   "id": "g:hole-simple__blind-4",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11886.921450355052
+  },
+  {
+   "id": "g:hole-simple__along-x",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11497.428668245024
+  },
+  {
+   "id": "g:hole-simple__along-y",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11787.977724942086
+  },
+  {
+   "id": "g:hole-simple__big-and-thick",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 42147.32294132781
+  },
+  {
+   "id": "g:hole-simple__tiny-deep",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11976.44417522144
+  },
+  {
+   "id": "g:hole-counterbore__through-offset",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11462.858816605347
+  },
+  {
+   "id": "g:hole-counterbore__deep-recess",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 22555.05002402786
+  },
+  {
+   "id": "g:hole-counterbore__blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11651.329187474768
+  },
+  {
+   "id": "g:hole-counterbore__wide-thin",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 13416.726596803426
+  },
+  {
+   "id": "g:hole-countersink__angle-90-offset",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11604.20445624448
+  },
+  {
+   "id": "g:hole-countersink__angle-120",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11656.767453203027
+  },
+  {
+   "id": "g:hole-countersink__angle-60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11727.441613804966
+  },
+  {
+   "id": "g:hole-countersink__thick-block",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 34224.19948107392
+  },
+  {
+   "id": "g:hole-countersink__blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11717.282987921886
+  },
+  {
+   "id": "g:hole-simple__breaks-out-of-the-side",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11326.527810116735
+  },
+  {
+   "id": "g:hole-simple__in-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13571.29059556471
+  },
+  {
+   "id": "g:hole-countersink__cone-deeper-than-plate",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "g:hole-countersink__cone-deeper-than-plate-roomy",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 12596.780942758336
+  },
+  {
+   "id": "g:hole-countersink__cone-deeper-than-plate-angle-60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 7593.976600323777
+  },
+  {
+   "id": "g:hole-simple__hexagon-prism",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11867.680216614033
+  },
+  {
+   "id": "g:hole-counterbore__in-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13232.030849855611
+  },
+  {
+   "id": "g:hole-countersink__in-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13458.191521895455
+  },
+  {
+   "id": "g:hole-simple__two-holes-sequential",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,built",
+   "guards": [],
+   "volume": 11591.648109641528
+  },
+  {
+   "id": "core-centred-through",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11717.30362588783
+  },
+  {
+   "id": "core-at-xy",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11717.30362588783
+  },
+  {
+   "id": "core-5-digit-precision",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11683.360429301725
+  },
+  {
+   "id": "core-widest-that-fits",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 4979.254176573036
+  },
+  {
+   "id": "wider-than-plate-35",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-BODIES"
+   ],
+   "volume": null
+  },
+  {
+   "id": "wider-than-plate-30-exact",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "wider-than-plate-31",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-BODIES"
+   ],
+   "volume": null
+  },
+  {
+   "id": "wider-than-plate-30p5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-BODIES"
+   ],
+   "volume": null
+  },
+  {
+   "id": "wider-than-everything-60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-ENGINE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "bore-tangent-to-edge",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "size-M3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11909.223055568085
+  },
+  {
+   "id": "size-M4",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11840.983289561904
+  },
+  {
+   "id": "size-M5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11762.456518975194
+  },
+  {
+   "id": "size-M6",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11657.937387324271
+  },
+  {
+   "id": "size-M8",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11363.933158247504
+  },
+  {
+   "id": "size-M10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11049.82607590044
+  },
+  {
+   "id": "size-M12",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 10568.84960605631
+  },
+  {
+   "id": "size-lowercase-m6",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11657.93738732428
+  },
+  {
+   "id": "size-padded-M6",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11657.93738732428
+  },
+  {
+   "id": "size-M7",
+   "skipped": "script error: hole() does not know the size the text \"M7\". Sizes are M3, M4, M5, M6, M8, M10, M12 (clearance holes), or give { across: <number> }."
+  },
+  {
+   "id": "size-number",
+   "skipped": "script error: hole() does not know the size 6. Sizes are M3, M4, M5, M6, M8, M10, M12 (clearance holes), or give { across: <number> }."
+  },
+  {
+   "id": "size-M2",
+   "skipped": "script error: hole() does not know the size the text \"M2\". Sizes are M3, M4, M5, M6, M8, M10, M12 (clearance holes), or give { across: <number> }."
+  },
+  {
+   "id": "across-and-size",
+   "skipped": "script error: hole() takes { size: 'M6' } OR { across: 6.6 }, not both -- size is a name for an across."
+  },
+  {
+   "id": "no-across-no-size",
+   "skipped": "script error: hole() needs { across: <number> } for the bit's diameter."
+  },
+  {
+   "id": "no-options",
+   "skipped": "script error: hole() needs { across: <number> } for the bit's diameter."
+  },
+  {
+   "id": "across-zero",
+   "skipped": "script error: hole(): a size has to be a positive number -- got 0 for across."
+  },
+  {
+   "id": "across-negative",
+   "skipped": "script error: hole(): a size has to be a positive number -- got -4 for across."
+  },
+  {
+   "id": "across-string",
+   "skipped": "script error: hole's across has to be a number, and you gave it the text \"abc\"."
+  },
+  {
+   "id": "unknown-option",
+   "skipped": "script error: hole has no option called \"radius\". It takes across, size, deep, at, along, counterbore, countersink."
+  },
+  {
+   "id": "hole-no-shape",
+   "skipped": "script error: hole() needs a shape to drill into: hole(shape, { across: 6 })."
+  },
+  {
+   "id": "through-thick-60",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 52822.09844119928
+  },
+  {
+   "id": "through-sphere",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4126.0385882083365
+  },
+  {
+   "id": "through-cone",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 3053.6149174105753
+  },
+  {
+   "id": "through-cylinder-axis",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13571.290595564717
+  },
+  {
+   "id": "through-ring-misses",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TORUS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "through-ring-offset-hits",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TORUS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "through-unknown-intersect",
+   "skipped": "script error: hole() cannot find how thick this combine is along z yet, so it cannot drill all the way through. Give it a depth: hole(shape, { across: 4, deep: 20 })."
+  },
+  {
+   "id": "through-unknown-polar-wedge",
+   "skipped": "script error: hole() cannot find how thick this wedge is along z yet, so it cannot drill all the way through. Give it a depth: hole(shape, { across: 4, deep: 20 })."
+  },
+  {
+   "id": "through-unknown-after-turn-step",
+   "skipped": "script error: hole() cannot find how thick this extrude is along z yet, so it cannot drill all the way through. Give it a depth: hole(shape, { across: 4, deep: 20 })."
+  },
+  {
+   "id": "holes-unknown-intersect",
+   "skipped": "script error: holes() cannot find how thick this combine is along z yet, so it cannot drill all the way through. Give it a depth: holes(shape, { across: 4, deep: 20 })."
+  },
+  {
+   "id": "blind-deep-8-of-20",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31773.842900710253
+  },
+  {
+   "id": "blind-offset-at",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31886.921450355057
+  },
+  {
+   "id": "blind-equals-thickness",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31434.60725177566
+  },
+  {
+   "id": "blind-beyond-thickness",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31434.60725177566
+  },
+  {
+   "id": "blind-tiny-0p5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31985.865181294284
+  },
+  {
+   "id": "blind-just-short-19p9",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31437.43421551678
+  },
+  {
+   "id": "blind-on-pulled-sketch",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 7717.303625887831
+  },
+  {
+   "id": "blind-in-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13910.526244499297
+  },
+  {
+   "id": "blind-in-sphere",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-BUDGET"
+   ],
+   "volume": null
+  },
+  {
+   "id": "blind-in-hex-prism",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 12407.944398026537
+  },
+  {
+   "id": "blind-on-pocket-result",
+   "skipped": "script error: hole() cannot find where the top of this pocket is along z exactly, so a hole that stops short of the other side cannot start at the top. Make it go all the way through (leave out deep:, or give a deep: at least 10), or drill the shape before it is cut."
+  },
+  {
+   "id": "blind-on-subtract-result",
+   "skipped": "script error: hole() cannot find where the top of this combine is along z exactly, so a hole that stops short of the other side cannot start at the top. Make it go all the way through (leave out deep:, or give a deep: at least 10), or drill the shape before it is cut."
+  },
+  {
+   "id": "blind-deep-ge-bound-on-pocket",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built",
+   "guards": [],
+   "volume": 11477.303625887822
+  },
+  {
+   "id": "blind-unknown-intersect-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "blind-unknown-intersect-deep-30",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 5434.607251775666
+  },
+  {
+   "id": "blind-wedge-turned",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "along-x-default-at",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11497.428668245035
+  },
+  {
+   "id": "along-y-default-at",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11623.071501183775
+  },
+  {
+   "id": "along-z-explicit",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11874.357167061256
+  },
+  {
+   "id": "along-x-blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11811.535750591887
+  },
+  {
+   "id": "along-y-blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11849.228600473507
+  },
+  {
+   "id": "along-bad-axis",
+   "skipped": "script error: hole's \"along\" has to be 'x', 'y' or 'z'. You gave it the text \"w\"."
+  },
+  {
+   "id": "along-upper-case",
+   "skipped": "script error: hole's \"along\" has to be 'x', 'y' or 'z'. You gave it the text \"Z\"."
+  },
+  {
+   "id": "at-wrong-length",
+   "skipped": "script error: hole needs at as [u, v], got a list of 1."
+  },
+  {
+   "id": "at-three-values",
+   "skipped": "script error: hole needs at as [u, v], got a list of 3."
+  },
+  {
+   "id": "at-off-the-part",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-NOOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "at-half-off-edge",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11858.6543281646
+  },
+  {
+   "id": "cb-through-simple",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11566.52027524117
+  },
+  {
+   "id": "cb-size-M6",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11262.633703047184
+  },
+  {
+   "id": "cb-along-x",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11308.95103174052
+  },
+  {
+   "id": "cb-narrower-than-bore",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-equal-to-bore",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-deeper-than-blind-hole",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-deeper-than-plate",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-as-wide-as-plate",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-missing-across",
+   "skipped": "script error: hole(): counterbore needs { across: <number> } for the recess's diameter."
+  },
+  {
+   "id": "cb-missing-deep",
+   "skipped": "script error: hole(): counterbore needs { deep: <number> } for how far the recess is cut."
+  },
+  {
+   "id": "cb-zero-deep",
+   "skipped": "script error: hole(): a size has to be a positive number -- got 0 for counterbore deep."
+  },
+  {
+   "id": "cs-90-simple",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11604.204446747843
+  },
+  {
+   "id": "cs-120",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11746.548096925122
+  },
+  {
+   "id": "cs-size-M5-along-y",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-angle-180",
+   "skipped": "script error: hole(): a countersink's angle is its INCLUDED cone angle, so it has to be under 180 (90 and 120 are the usual choices) -- got 180."
+  },
+  {
+   "id": "cs-angle-200",
+   "skipped": "script error: hole(): a countersink's angle is its INCLUDED cone angle, so it has to be under 180 (90 and 120 are the usual choices) -- got 200."
+  },
+  {
+   "id": "cs-angle-179",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CSFLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-angle-0",
+   "skipped": "script error: hole(): a size has to be a positive number -- got 0 for countersink angle."
+  },
+  {
+   "id": "cs-angle-negative",
+   "skipped": "script error: hole(): a size has to be a positive number -- got -90 for countersink angle."
+  },
+  {
+   "id": "cs-missing-angle",
+   "skipped": "script error: hole(): countersink needs { angle: <number> } for the included cone angle (90 is the usual choice)."
+  },
+  {
+   "id": "cs-missing-across",
+   "skipped": "script error: hole(): countersink needs { across: <number> } for its width at the mouth."
+  },
+  {
+   "id": "cs-narrower-than-bore",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-equal-to-bore",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-and-cs",
+   "skipped": "script error: hole(): a hole takes a counterbore OR a countersink, not both -- one mouth, one shape."
+  },
+  {
+   "id": "holes-corners-simple",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 10869.214503551324
+  },
+  {
+   "id": "holes-corners-at",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11497.428668245024
+  },
+  {
+   "id": "holes-corners-size-M4",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11363.93315824762
+  },
+  {
+   "id": "holes-corners-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31095.371602840987
+  },
+  {
+   "id": "holes-corners-blind-5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11748.71433412249
+  },
+  {
+   "id": "holes-corners-in-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 32986.35715125183
+  },
+  {
+   "id": "holes-overlapping-columns",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 10993.053840627877
+  },
+  {
+   "id": "holes-break-out-side",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11199.222418913154
+  },
+  {
+   "id": "holes-all-outside",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-NOOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "holes-two-outside",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-NOOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "holes-zero-spacing",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11717.30362588783
+  },
+  {
+   "id": "holes-no-apart",
+   "skipped": "script error: holes() needs { apart: [across, up] } for the corner-to-corner spacing."
+  },
+  {
+   "id": "holes-no-across",
+   "skipped": "script error: holes() needs { across: <number> } for the bit's diameter."
+  },
+  {
+   "id": "holes-along-x",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CORNERS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "holes-along-y",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CORNERS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "holes-along-x-at",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CORNERS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "holes-along-x-blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CORNERS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "holes-counterbore",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11045.082340633213
+  },
+  {
+   "id": "holes-countersink",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-BUDGET"
+   ],
+   "volume": null
+  },
+  {
+   "id": "pocket-hole-clear",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built",
+   "guards": [],
+   "volume": 11477.303625887822
+  },
+  {
+   "id": "pocket-hole-through-floor",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built",
+   "guards": [],
+   "volume": 11684.614300236755
+  },
+  {
+   "id": "pocket-hole-half-in-wall",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built",
+   "guards": [],
+   "volume": 11533.84692761432
+  },
+  {
+   "id": "pocket-through-hole-at-pocket-centre-deep-bound",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built",
+   "guards": [],
+   "volume": 11684.614300236755
+  },
+  {
+   "id": "pocket-then-two-holes",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,built",
+   "guards": [],
+   "volume": 11563.67883590135
+  },
+  {
+   "id": "pad-L-hole-in-notch",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-NOOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "pad-L-hole-in-leg",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 4374.357167061258
+  },
+  {
+   "id": "pad-L-blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 4449.742866824486
+  },
+  {
+   "id": "pad-circle-sketch",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11171.968850973062
+  },
+  {
+   "id": "pad-side-plane",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 7137.178583530622
+  },
+  {
+   "id": "pad-front-plane-offset",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 7049.228600473507
+  },
+  {
+   "id": "rot-box-z30",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11717.303625887833
+  },
+  {
+   "id": "rot-box-z30-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11886.921450355052
+  },
+  {
+   "id": "rot-box-x90-hole-z",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11151.910877663488
+  },
+  {
+   "id": "rot-box-y45-hole-z",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11600.190421060179
+  },
+  {
+   "id": "rot-box-y45-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rot-cylinder-x90-hole-z",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CURVED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rot-cone-turned-through",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CURVED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rot-prism-turned",
+   "skipped": "script error: hole() cannot find how thick this prism is along z yet, so it cannot drill all the way through. Give it a depth: hole(shape, { across: 4, deep: 20 })."
+  },
+  {
+   "id": "cut-hole-through",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 11089.03443335407
+  },
+  {
+   "id": "cut-hole-into-cut-edge",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 11146.488394196947
+  },
+  {
+   "id": "union-hole-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 17949.742866824487
+  },
+  {
+   "id": "moved-box",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 11717.303625887827
+  },
+  {
+   "id": "moved-box-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11886.921450355054
+  },
+  {
+   "id": "cross-bore-through-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CURVED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "bores-blind-stacked",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 30812.675228728855
+  },
+  {
+   "id": "bore-overlapping-second",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,built",
+   "guards": [],
+   "volume": 11496.526920313947
+  },
+  {
+   "id": "bore-into-previous-bore-floor",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 31434.580477583415
+  },
+  {
+   "id": "holes-then-hole",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,built",
+   "guards": [],
+   "volume": 11301.105990310452
+  },
+  {
+   "id": "wide-box40-tangent",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "wide-box41",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-BODIES"
+   ],
+   "volume": null
+  },
+  {
+   "id": "wide-box38-control",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9320.260469097351
+  },
+  {
+   "id": "wide-cyl30",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-WIDE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "wide-cyl40",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-WIDE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "wide-cyl29-control",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 926.9027348029387
+  },
+  {
+   "id": "through-ring-misses-4",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TORUS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "pat-disjoint-hole",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-BODIES"
+   ],
+   "volume": null
+  },
+  {
+   "id": "pat-disjoint-hole-first-copy",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-BODIES"
+   ],
+   "volume": null
+  },
+  {
+   "id": "pat-touching-hole",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 11874.357167061256
+  },
+  {
+   "id": "hollow-open-top-hole",
+   "excluded": [
+    "shell with an open face"
+   ]
+  },
+  {
+   "id": "round-box-hole-through",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31101.724908419386
+  },
+  {
+   "id": "round-box-hole-37",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10163.884942450688
+  },
+  {
+   "id": "revolve-hole-wall",
+   "skipped": "script error: hole() cannot find how thick this revolve is along z yet, so it cannot drill all the way through. Give it a depth: hole(shape, { across: 4, deep: 20 })."
+  },
+  {
+   "id": "revolve-hole-wall-blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REVOLVE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "mirror-hole-seam",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "dependency"
+   ],
+   "volume": null
+  },
+  {
+   "id": "at-nan",
+   "skipped": "script error: hole needs at as [u, v], got a list of 2."
+  },
+  {
+   "id": "at-infinity",
+   "skipped": "script error: hole needs at as [u, v], got a list of 2."
+  },
+  {
+   "id": "across-nan",
+   "skipped": "script error: hole's across has to be a number, and you gave it NaN."
+  },
+  {
+   "id": "mirror-hole-seam-var",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 7874.357167061257
+  },
+  {
+   "id": "mirror-hole-seam-var-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 7949.7428668244875
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b1",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b2",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b2.5",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b3",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b3.1",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b3.2",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b3.3",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b3.34",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b3.36",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31791.914782988515
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b3.5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31787.95705926284
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b4",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31773.822270933826
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31717.28299610614
+  },
+  {
+   "id": "cs-blind-d6-D12-a90-b10",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31604.2044525318
+  },
+  {
+   "id": "cs-blind-d6-D12-a120-b1.5",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d6-D12-a120-b1.8",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d6-D12-a120-b1.9",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d6-D12-a120-b1.95",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d6-D12-a120-b1.96",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31879.293508935036
+  },
+  {
+   "id": "cs-blind-d6-D12-a120-b2",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31878.162739715364
+  },
+  {
+   "id": "cs-blind-d6-D12-a120-b3",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31849.8931208001
+  },
+  {
+   "id": "cs-blind-d10-D20-a90-b5",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d10-D20-a90-b5.4",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d10-D20-a90-b5.5",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d10-D20-a90-b5.56",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31039.783612420444
+  },
+  {
+   "id": "cs-blind-d10-D20-a90-b6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31005.231776240613
+  },
+  {
+   "id": "cs-blind-d10-D20-a90-b9",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 30769.651536793757
+  },
+  {
+   "id": "cs-blind-d3-D6-a60-b2.7",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d3-D6-a60-b2.9",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-blind-d3-D6-a60-b2.95",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31954.664698508426
+  },
+  {
+   "id": "cs-blind-d3-D6-a60-b3.5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31950.77762112005
+  },
+  {
+   "id": "cs-thin-plate-T2",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 3040.8364390680654
+  },
+  {
+   "id": "cs-thin-plate-T3",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4602.091610543598
+  },
+  {
+   "id": "cs-thin-plate-T3.2",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4916.43792872261
+  },
+  {
+   "id": "cs-thin-plate-T3.3",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5073.6110051285
+  },
+  {
+   "id": "cs-thin-plate-T3.4",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5230.784001663255
+  },
+  {
+   "id": "cs-thin-plate-T5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 7745.552629978855
+  },
+  {
+   "id": "cb-blind-10-of-20",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31378.043880178684
+  },
+  {
+   "id": "cb-deep-equals-thickness",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 29738.42900710265
+  },
+  {
+   "id": "cb-deep-beyond-thickness-21",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-RECESS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-deep-beyond-thickness-30",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-RECESS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-blind-deep-equals-hole",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-RECESS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-blind-deep-beyond-hole",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-RECESS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-along-y-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31489.55925731535
+  },
+  {
+   "id": "cb-in-cylinder-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 55705.47020614555
+  },
+  {
+   "id": "cb-hex-prism-through",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 45571.723893457645
+  },
+  {
+   "id": "cb-ring-breaks-out-side",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11500.015754085105
+  },
+  {
+   "id": "cb-ring-tangent-side",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-ring-near-tangent-side",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11462.858816605336
+  },
+  {
+   "id": "cb-wide-as-plate",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-wider-than-plate",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 8991.617274969774
+  },
+  {
+   "id": "cb-revolve-wall",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REVOLVE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-pocket-floor-9x7",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-pocket-floor-9x3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-straddles-pocket-wall",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built",
+   "guards": [],
+   "volume": 11501.732857669022
+  },
+  {
+   "id": "cb-step-join-low",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-step-join-high",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 23635.627752219527
+  },
+  {
+   "id": "cb-tilted-slab",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-open-hollow",
+   "excluded": [
+    "shell with an open face"
+   ]
+  },
+  {
+   "id": "cb-twice",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-NEST"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-in-cylinder-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 56208.0537151873
+  },
+  {
+   "id": "cs-pocket-floor-8x90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-wide-mouth-wider-than-plate",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CSEDGE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-ring-breaks-out-side",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CSEDGE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-step-join-low",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-size-M5-along-y-mouth8",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11271.823839809176
+  },
+  {
+   "id": "holes-cb-touching",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "holes-cb-near-tangent",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 10291.115601243264
+  },
+  {
+   "id": "holes-cb-overlap",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 10345.112549984855
+  },
+  {
+   "id": "holes-cb-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31045.08234063318
+  },
+  {
+   "id": "holes-cs-blind",
+   "same": false,
+   "retried": true,
+   "original": {
+    "feats": [
+     {
+      "id": "box1",
+      "kind": "box",
+      "status": "built",
+      "refusal": null,
+      "guard": null
+     },
+     {
+      "id": "hole1",
+      "kind": "hole",
+      "status": "built",
+      "refusal": null,
+      "guard": null
+     }
+    ],
+    "commands": [
+     {
+      "command": "solid.box",
+      "params": {
+       "length": 40,
+       "width": 40,
+       "height": 20,
+       "center": [
+        0,
+        0,
+        0
+       ],
+       "body_name": "b_box1"
+      }
+     },
+     {
+      "command": "solid.hole",
+      "params": {
+       "position": [
+        -10,
+        -10,
+        10
+       ],
+       "diameter": 4,
+       "body": "b_box1",
+       "depth": 10,
+       "type": "countersink",
+       "cs_diameter": 8,
+       "cs_angle": "90 deg"
+      }
+     },
+     {
+      "command": "solid.hole",
+      "params": {
+       "position": [
+        10,
+        -10,
+        10
+       ],
+       "diameter": 4,
+       "body": "b_box1",
+       "depth": 10,
+       "type": "countersink",
+       "cs_diameter": 8,
+       "cs_angle": "90 deg"
+      }
+     },
+     {
+      "command": "solid.hole",
+      "params": {
+       "position": [
+        -10,
+        10,
+        10
+       ],
+       "diameter": 4,
+       "body": "b_box1",
+       "depth": 10,
+       "type": "countersink",
+       "cs_diameter": 8,
+       "cs_angle": "90 deg"
+      }
+     },
+     {
+      "command": "solid.hole",
+      "params": {
+       "position": [
+        10,
+        10,
+        10
+       ],
+       "diameter": 4,
+       "body": "b_box1",
+       "depth": 10,
+       "type": "countersink",
+       "cs_diameter": 8,
+       "cs_angle": "90 deg"
+      }
+     }
+    ],
+    "scene": {
+     "ok": true,
+     "volume": 31363.385240058717,
+     "faces": 18,
+     "bodies": 1,
+     "bbox": [
+      [
+       [
+        -20,
+        -20,
+        -10
+       ],
+       [
+        20,
+        20,
+        10.000000000000004
+       ]
+      ]
+     ]
+    }
+   },
+   "layer": {
+    "feats": [
+     {
+      "id": "box1",
+      "kind": "box",
+      "status": "built",
+      "refusal": null,
+      "guard": null
+     },
+     {
+      "id": "hole1",
+      "kind": "hole",
+      "status": "refused",
+      "refusal": "hole1 (hole): cutting this hole took longer than 45 seconds of computing, so it was stopped and hole1 is shown without it -- try a flat-sided part, a smaller hole, or drill the plain shape before it is turned or rounded.",
+      "guard": "G-BUDGET"
+     }
+    ],
+    "commands": [
+     {
+      "command": "solid.box",
+      "params": {
+       "length": 40,
+       "width": 40,
+       "height": 20,
+       "center": [
+        0,
+        0,
+        0
+       ],
+       "body_name": "b_box1"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "holes-cs-blind-band",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CSBAND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "holes-cb-along-x",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CORNERS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cross-z-through-then-x-through",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CROSS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cross-z-blind-then-x-through",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CROSS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cross-both-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CROSS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cross-apart-no-touch",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 30932.01055340559
+  },
+  {
+   "id": "holes-tangent-to-wall",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "holes-tangent-to-each-other",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "holes-near-tangent-control",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 10869.214503551322
+  },
+  {
+   "id": "deep-zero",
+   "skipped": "script error: hole(): a size has to be a positive number -- got 0 for deep."
+  },
+  {
+   "id": "deep-negative",
+   "skipped": "script error: hole(): a size has to be a positive number -- got -3 for deep."
+  },
+  {
+   "id": "deep-string",
+   "skipped": "script error: hole's deep has to be a number, and you gave it the text \"abc\"."
+  },
+  {
+   "id": "deep-nan",
+   "skipped": "script error: hole's deep has to be a number, and you gave it NaN."
+  },
+  {
+   "id": "apart-one",
+   "skipped": "script error: holes needs apart as [u, v], got a list of 1."
+  },
+  {
+   "id": "apart-three",
+   "skipped": "script error: holes needs apart as [u, v], got a list of 3."
+  },
+  {
+   "id": "apart-string",
+   "skipped": "script error: holes needs apart as [u, v], got the text \"wide\"."
+  },
+  {
+   "id": "apart-nan",
+   "skipped": "script error: holes needs apart as [u, v], got a list of 2."
+  },
+  {
+   "id": "apart-negative",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 10869.214503551322
+  },
+  {
+   "id": "apart-zero-one-axis",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11434.60725177566
+  },
+  {
+   "id": "hole-twice-identical",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,refused",
+   "guards": [
+    "G-NOOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hole-twice-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-NOOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hole-inside-earlier-bore",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-NOOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "step-join-blind-low",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "step-join-blind-low-deep12",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "step-join-blind-high",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 23949.742866824487
+  },
+  {
+   "id": "step-join-through-low",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 23874.357167061262
+  },
+  {
+   "id": "step-join-blind-on-seam",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "tilt-x30-blind-8",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "tilt-x30-through",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11673.564296251992
+  },
+  {
+   "id": "tilt-y20-blind-3",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "closed-hollow-hole",
+   "same": true,
+   "retried": false,
+   "status": "built,refused,refused",
+   "guards": [
+    "G-CLOSED",
+    "dependency"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-open-top-blind",
+   "excluded": [
+    "shell with an open face"
+   ]
+  },
+  {
+   "id": "hollow-open-top-side-wall",
+   "excluded": [
+    "shell with an open face"
+   ]
+  },
+  {
+   "id": "bore-on-wall-of-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 31020.853304971082
+  },
+  {
+   "id": "bore-on-wall-of-blind-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 31083.670850341015
+  },
+  {
+   "id": "faces-notch-r0.5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 31202.77788946599
+  },
+  {
+   "id": "faces-notch-r9",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 26854.990372416432
+  },
+  {
+   "id": "faces-notch-r2-far",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 30963.391600415325
+  },
+  {
+   "id": "tangent-pocket-wall-through",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built",
+   "guards": [],
+   "volume": 11634.363513299124
+  },
+  {
+   "id": "tangent-pocket-wall-blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built",
+   "guards": [],
+   "volume": 11634.363513299124
+  },
+  {
+   "id": "tangent-notch-wall",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 4374.363512385823
+  },
+  {
+   "id": "cs-overlap-holes-10x14",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CSOVERLAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-holes-apart-14x16",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-BUDGET"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-holes-mouth-touch",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-seq-overlap",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CSOVERLAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-seq-apart",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 31162.331201262594
+  },
+  {
+   "id": "cs-over-earlier-bore",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CSOVERLAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-over-earlier-cb",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CSOVERLAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-over-earlier-cs",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CSOVERLAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "bore-over-earlier-cs",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CSOVERLAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-seq-overlap",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 30729.21792273851
+  },
+  {
+   "id": "cb-seq-overlap-deeper",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 30619.690451223505
+  },
+  {
+   "id": "cb-seq-overlap-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 30980.50358861599
+  },
+  {
+   "id": "cb-seq-apart",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 30693.219956911304
+  },
+  {
+   "id": "cb-seq-bore-inside-recess",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-NEST"
+   ],
+   "volume": null
+  },
+  {
+   "id": "spin-tube-along-x",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REVOLVE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "spin-cup-along-x",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REVOLVE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "spin-cup-along-y-blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REVOLVE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "spin-tube-along-z-blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REVOLVE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "spin-tube-along-z-through",
+   "skipped": "script error: hole() cannot find how thick this revolve is along z yet, so it cannot drill all the way through. Give it a depth: hole(shape, { across: 4, deep: 20 })."
+  },
+  {
+   "id": "cross-bore-dowel-y",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CURVED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cross-bore-dowel-x-offset",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CURVED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cross-bore-round-pad",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CURVED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-along-x-on-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CURVED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cyl-turned-axial-bore",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13571.290595564695
+  },
+  {
+   "id": "cone-axial-bore-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hex-prism-along-x",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11980.499570227084
+  },
+  {
+   "id": "hex-prism-along-y",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 12035.526273982325
+  },
+  {
+   "id": "octagon-prism-along-x",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13082.706908289374
+  },
+  {
+   "id": "tiny-across-0p01",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11999.999833333335
+  },
+  {
+   "id": "tiny-across-0p003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 12000
+  },
+  {
+   "id": "tiny-across-0p001",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 12000.000000444366
+  },
+  {
+   "id": "tiny-across-0p0005",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TINY"
+   ],
+   "volume": null
+  },
+  {
+   "id": "tiny-across-0p0003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TINY"
+   ],
+   "volume": null
+  },
+  {
+   "id": "tiny-across-0p0002",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TINY"
+   ],
+   "volume": null
+  },
+  {
+   "id": "tiny-across-0p0001",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TINY"
+   ],
+   "volume": null
+  },
+  {
+   "id": "tiny-0p001-blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "tiny-0p01-blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-tiny-0p04",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-tiny-0p04",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "big-plate-600",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11717303625.888136
+  },
+  {
+   "id": "big-plate-600-blind",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "far-100000",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11717.303625885235
+  },
+  {
+   "id": "far-100000-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11886.92145035455
+  },
+  {
+   "id": "far-100000-cb",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11462.858816604565
+  },
+  {
+   "id": "cs-angle-150",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11686.998816444828
+  },
+  {
+   "id": "cs-angle-160",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11697.361256704544
+  },
+  {
+   "id": "cs-angle-165",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11702.413925306777
+  },
+  {
+   "id": "cs-angle-170",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11707.408839765858
+  },
+  {
+   "id": "cs-angle-171",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CSFLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-angle-172",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CSFLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-angle-173",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CSFLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-angle-174",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CSFLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-angle-175",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CSFLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-angle-178",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CSFLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "tangent-earlier-bore-ext",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "tangent-earlier-bore-int",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-TANGENT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "blind-in-cone",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cb-not-object",
+   "skipped": "script error: counterbore's extras go in a { } object at the end, like counterbore(..., { across: ... }). You gave it 12."
+  },
+  {
+   "id": "cs-not-object",
+   "skipped": "script error: countersink's extras go in a { } object at the end, like countersink(..., { across: ... }). You gave it 90."
+  },
+  {
+   "id": "cb-negative-across",
+   "skipped": "script error: hole(): a size has to be a positive number -- got -12 for counterbore across."
+  },
+  {
+   "id": "pat-polar-disjoint-hole",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-BODIES"
+   ],
+   "volume": null
+  },
+  {
+   "id": "pat-repeat-disjoint-hole",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-BODIES"
+   ],
+   "volume": null
+  },
+  {
+   "id": "wall-r7-at5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 28663.717024741112
+  },
+  {
+   "id": "wall-r6-at4",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 29466.340319790845
+  },
+  {
+   "id": "wall-r5-at5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 29951.372184573014
+  },
+  {
+   "id": "wall-r9-at5-blind",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 28127.161747911825
+  },
+  {
+   "id": "wall-r9-both-through",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 26798.666247942947
+  },
+  {
+   "id": "wall-r7-at12p8-clear",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 28136.366535512643
+  },
+  {
+   "id": "wall-r7-at11p5-overlap",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 28147.74984305562
+  },
+  {
+   "id": "rs-cb-0.02-0.04-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cb-0.02-0.1-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cb-0.02-0.3-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cb-0.02-1-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cb-0.2-0.4-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cb-0.5-1-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11997.448811507755
+  },
+  {
+   "id": "rs-cb-1-2-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11989.793459034629
+  },
+  {
+   "id": "rs-cb-6-12-0.001",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESSMIN"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cb-6-12-0.01",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11716.455476521654
+  },
+  {
+   "id": "rs-cb-6-12-0.05",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11713.062879057305
+  },
+  {
+   "id": "rs-cb-6-12-0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11700.340638602333
+  },
+  {
+   "id": "rs-cb-6-6.001-3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESSMIN"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cb-6-6.01-3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11717.02069393328
+  },
+  {
+   "id": "rs-cb-6-6.1-3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11714.453104115404
+  },
+  {
+   "id": "rs-cb-6-6.5-3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11702.578534684972
+  },
+  {
+   "id": "rs-cs-0.02-0.04-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cs-0.02-0.1-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cs-0.02-0.3-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cs-0.2-0.4-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cs-1-2-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11991.625824471572
+  },
+  {
+   "id": "rs-cs-6-6.001-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESSMIN"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cs-6-6.01-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESSMIN"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cs-6-6.1-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11717.280046342208
+  },
+  {
+   "id": "rs-cs-6-6.5-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11716.697914056482
+  },
+  {
+   "id": "rs-cb-0.02-0.2-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cb-0.02-0.15-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cb-0.05-0.3-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cb-0.1-0.3-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-TOP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cb-6-6.005-3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESSMIN"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cb-6-6.02-3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11716.737290818235
+  },
+  {
+   "id": "rs-cb-6-12-0.005",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11716.879551204698
+  },
+  {
+   "id": "rs-cb-6-12-0.02",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11715.607327155567
+  },
+  {
+   "id": "rs-cs-0.5-1-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESSMIN"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cs-0.3-0.6-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESSMIN"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cs-1-1.05-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESSMIN"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cs-1-1.1-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11992.145442876079
+  },
+  {
+   "id": "rs-cs-6-6.05-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-RECESSMIN"
+   ],
+   "volume": null
+  },
+  {
+   "id": "rs-cs-6-6.2-60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11717.13871981824
+  },
+  {
+   "id": "rs-cs-6-6.1-120",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11717.290110509612
+  },
+  {
+   "id": "rs-cs-6-6.08-120",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11717.29504192926
+  },
+  {
+   "id": "rs-cs-0.7-1.4-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11995.973748993456
+  },
+  {
+   "id": "cb-nest-cyl",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-NEST"
+   ],
+   "volume": null
+  },
+  {
+   "id": "cs-nest-box",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CSOVERLAP"
+   ],
+   "volume": null
+  }
+ ]
+}

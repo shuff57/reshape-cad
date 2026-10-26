@@ -15,11 +15,16 @@
       "wired": "Pane uses createTranslator({planners:'extrude-pocket'}); 56 examples on 0.21.0: 38 pass, unchanged from before the wiring (packages/solidcraft-host/test/examples-0.21.0-with-layer.json)."
     },
     "holes": {
-      "state": "folded-replay-pending",
+      "state": "replayed-with-caveats",
       "fold": "packages/layer: createTranslator({planners:'holes'}) from contract/holes4-translate.mjs (round 4) + holes4-volume.mjs; composable sets ['extrude-pocket','holes']; strict TypeScript. Differential test test/holes.differential.test.mjs (original vs port through the deterministic fake engine). NOT the same base as fold 1: the group's translator is phase0 + hole planner with its own synchronous loop; the layer's base is phase 4; equality holds only where phase0 and phase 4 agree on every non-hole feature (see packages/layer/NOTES.md).",
       "baseline": "NOT measured. The committed holes.json rows are ROUND 3 (holes3-translate, holes3-results/final.json); contract-commands.json 'measure' runs the round-1 runner (holes-drive -> holes-run -> plain phase0 translateDoc, no guards). Round 4 has holes4-drive.mjs and holes4-rows.mjs but no committed results or rows. A 0.21.0 baseline has to be made with holes4-drive.mjs and compared with the round-3 rows by feature name (loop steps 1 and 2).",
-      "replay": "packages/layer/test/live-replay-holes.mjs written, node --check only, NOT RUN (needs the SolidCraft wasm rig). Owner runs it.",
-      "next": "measure the round-4 baseline on 0.21.0, run the live replay, then mark done; do not mark done before both."
+      "replay": "2026-10-25, SolidCraft v0.21.0 wasm rig, same kernel and same ModelDoc, original holes4-translate.mjs vs packages/layer 'holes' set: 353 cases replayed, 352 identical, 1 differs (holes-cs-blind: the layer's run hit the 45 s CPU budget under load and refused with G-BUDGET while the original built it). Run alone twice, holes-cs-blind is identical both times, so the difference is timing near the budget, not logic; the case is slow enough to be refused for time on a loaded box. 50 scripts do not run (no ModelDoc); 4 docs not compared (shell/fillet/draft names resolve differently in the pane base by design). Evidence: packages/layer/test/evidence/live-replay-holes-*.json.",
+      "next": "owner: decide whether to (1) measure a fresh 0.21.0 baseline for round-4 holes against OCCT/closed form before calling the group done, and (2) add budgetS enforcement to the pane bridge. Then fold shell-draft.",
+      "caveats": [
+        "holes.json (91 rows, committed) is ROUND 3 (holes3-translate); the 'measure' command in contract-commands.json runs holes-drive/holes-run (plain phase0 translator, no guards) and does NOT reproduce those rows. Round 4 (the translator that was ported) has no committed rows or results, and no 0.21.0 baseline of the rows was measured.",
+        "the pane's bridge has no budgetS, so G-BUDGET is not enforced in the pane: runs there are unbounded.",
+        "docs with named shell/fillet/draft or a soup pull were not covered by the equality proof (phase0 and p4 plan them differently)."
+      ]
     },
     "shell-draft": {
       "state": "todo"
