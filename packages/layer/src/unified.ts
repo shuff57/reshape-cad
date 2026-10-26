@@ -14,6 +14,9 @@
 //     a document, not only to the holes' own;
 //   * the shells count the holes guard G-SHELLS reads from the host's measure is present on every measure of such a document, whichever step built it.
 //
+//   * the patterns-mirror group's pattern, mirror and the cut guards on a pocket / hole (a tool almost on an earlier cut, a thin wall) go to its step (`routeOf`); its time limit
+//     applies to every run of a document that has a pattern or a mirror and does not drill;
+//
 // The style of a document (the wording of the kinds no group lists, whether the engine runs carry { budgetS }, the shape of the note) is decided by
 // the groups the document uses (`domainOf`): one group present = that group's loop for everything it does not own, exactly as the single set; several =
 // the first of extrude-pocket, holes, shell-draft; none = the extrude-pocket loop's (it words every refusal plainly; the base loop prints the engine's text). See NOTES.md ("Unified") for the table.
