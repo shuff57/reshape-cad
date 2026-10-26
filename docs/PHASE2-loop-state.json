@@ -27,7 +27,17 @@
       ]
     },
     "shell-draft": {
-      "state": "todo"
+      "state": "replayed-with-caveats",
+      "fold": "packages/layer: createTranslator({planners:'shell-draft'}) (commits 03f9ea91, 0932b69e, fe9a8c56); strict TypeScript; 20 fake-engine differential tests (8190 comparisons identical, 1540 of 1576 docs in the equality set).",
+      "replay": "2026-10-25, SolidCraft v0.21.0 wasm rig, same kernel and same ModelDoc, original shell-draft-translate.mjs vs the layer: 1089 cases replayed, 1089 identical (translated commands, per-feature status and sentence, scene measure); 3 scripts do not run; 8 docs not compared (a fillet or a constrained sketch: planned differently by phase0 and phase 4). Covers pick PATH A only (host supplies ctx.resolveAt). Evidence: packages/layer/test/evidence/live-replay-shell-draft-0.21.0.json.",
+      "baseline": "NOT measured: no 0.21.0 measurement of the shell-draft rows against an independent reference. The 100 committed rows are 0.9.0.",
+      "caveats": [
+        "PICK PATH B IS UNPROVEN: without ctx.resolveAt the layer takes the shell open-face / draft face from the base's name resolution (kernel topology), unshifted. On the fakes it equals the original on 716 of 1127 named-pick docs and DIFFERS on 411 (the base resolver does not carry a name through a move). Not run on a real kernel. The pane on upstream has no brep-rs, so it would use path B: a shell/draft whose part was moved can pick the wrong face.",
+        "COMPOSITION LOSES GUARDS: in ['extrude-pocket','holes','shell-draft'] G-VOID (closed hollow) and G-CHAMFER no longer protect some chains. After a closed hollow, case hc2-then-join op1 (combine) and sd seed 353 pk1 (pocket) go refused -> built; hb2-box-c1-w2 and hb2-box-c3-w2 box1 go refused -> built. A move or turn of a closed hollow does not carry the 'closed hollow' mark (structural). Correctness of those built parts not measured. Do not wire the combined set into the pane until resolved.",
+        "G-FROM works only if the host passes ctx.fromUsage (draftFromUsage(script)); a ModelDoc does not record from:.",
+        "the group's translator has no execution budget; G-RIM only reached on excluded docs (needs a fillet)."
+      ],
+      "next": "owner decision: (1) pick path B for the pane: host-supplied primitive-frame resolver, or teach the base resolver to follow a move; (2) composition guard loss: make guards composable (run every set's guards, not only the owner's) before wiring combined sets; then fold the remaining groups."
     },
     "patterns-mirror": {
       "state": "todo"

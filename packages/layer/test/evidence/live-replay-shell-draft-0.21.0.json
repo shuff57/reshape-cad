@@ -1,0 +1,9528 @@
+{
+ "pkg": "/home/shuff57/.cache/solidcraft-0.21.0-rig/sc-referee-pkg",
+ "brep": "/home/shuff57/Documents/GitHub/reshape-cad/archive/brep-rs/pkg",
+ "cases": 1089,
+ "same": 1089,
+ "differ": 0,
+ "flakyRetried": 0,
+ "noDoc": 3,
+ "excluded": 8,
+ "rows": [
+  {
+   "id": "hollow-closed-box",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9024
+  },
+  {
+   "id": "hollow-closed-box-offcentre",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6912
+  },
+  {
+   "id": "hollow-closed-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5402.973244177137
+  },
+  {
+   "id": "hollow-closed-sphere",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4934.12648336568
+  },
+  {
+   "id": "hollow-closed-prism6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4996.566086849164
+  },
+  {
+   "id": "hollow-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5040
+  },
+  {
+   "id": "hollow-open-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5040
+  },
+  {
+   "id": "hollow-open-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6336
+  },
+  {
+   "id": "hollow-open-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6336
+  },
+  {
+   "id": "hollow-open-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6496
+  },
+  {
+   "id": "hollow-open-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6496
+  },
+  {
+   "id": "hollow-open-top-thin-3x",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 7725.347999999911
+  },
+  {
+   "id": "hollow-open-right-thin-3x",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9978.227999999965
+  },
+  {
+   "id": "hollow-open-top-scale-1e-2",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 0.005040000000000004
+  },
+  {
+   "id": "hollow-open-top-scale-1e0",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5040
+  },
+  {
+   "id": "hollow-open-top-scale-1e2",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5040000000
+  },
+  {
+   "id": "hollow-open-top-scale-2.5e3",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 78750000000000
+  },
+  {
+   "id": "hollow-open-top-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4774.728965992665
+  },
+  {
+   "id": "hollow-open-bottom-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4774.72896599266
+  },
+  {
+   "id": "hollow-open-side-cylinder",
+   "skipped": "script error: hollow: \"side\" is the curved wall of a cylinder, not a flat face here."
+  },
+  {
+   "id": "hollow-open-left-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-FLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-open-top-sphere",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-FLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-open-bottom-cone",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2713.303803207599
+  },
+  {
+   "id": "hollow-open-top-cone",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-FLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-closed-ring",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-5-box-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10200
+  },
+  {
+   "id": "hollow-wall-5.9-box-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11269.235999999997
+  },
+  {
+   "id": "hollow-wall-6-box-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11376
+  },
+  {
+   "id": "hollow-wall-7-box-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 12320
+  },
+  {
+   "id": "hollow-wall-11.9-box-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14389.955999999998
+  },
+  {
+   "id": "hollow-wall-12-box-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-12.5-box-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-13-box-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-14.9-box-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-15-box-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-16-box-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-14.9-tall-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 59928.39600000001
+  },
+  {
+   "id": "hollow-wall-15-tall-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-15.5-tall-open-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-5.9-box-open-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14275.876000000004
+  },
+  {
+   "id": "hollow-wall-6-box-open-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-6.5-box-open-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-8-box-open-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-5.9-box-12-wide",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9520.476
+  },
+  {
+   "id": "hollow-wall-6-box-12-wide",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-11-disc60x12",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 32793.06836568445
+  },
+  {
+   "id": "hollow-wall-11.9-disc60x12",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 33824.14523863326
+  },
+  {
+   "id": "hollow-wall-12-disc60x12",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-13-disc60x12",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-11.9-cyl24x30",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13570.990085499789
+  },
+  {
+   "id": "hollow-wall-12-cyl24x30",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-13-cyl24x30",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-11-hex60x12",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 27281.798196966152
+  },
+  {
+   "id": "hollow-wall-11.9-hex60x12",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 27990.54108062205
+  },
+  {
+   "id": "hollow-wall-12-hex60x12",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-13-hex60x12",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-14.9-hex60x12",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-2-cone",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2713.303803207599
+  },
+  {
+   "id": "hollow-wall-10-cone",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6951.565911060102
+  },
+  {
+   "id": "hollow-wall-14-cone",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-20-cone",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-2-wedge",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2516.5361096838647
+  },
+  {
+   "id": "hollow-wall-5-wedge",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4259.952455343664
+  },
+  {
+   "id": "hollow-wall-14-wedge",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wall-15-wedge",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism3-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 3016.3664813811956
+  },
+  {
+   "id": "hollow-prism3-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 3016.366481381197
+  },
+  {
+   "id": "hollow-prism3-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2684.1014014625675
+  },
+  {
+   "id": "hollow-prism3-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2684.1014014625725
+  },
+  {
+   "id": "hollow-prism3-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2684.101401462573
+  },
+  {
+   "id": "hollow-prism3-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism4-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 3666.7012947258845
+  },
+  {
+   "id": "hollow-prism4-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 3666.7012947258822
+  },
+  {
+   "id": "hollow-prism4-front",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism4-back",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism4-left",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism4-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism5-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 3982.423633129467
+  },
+  {
+   "id": "hollow-prism5-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 3982.4236331294674
+  },
+  {
+   "id": "hollow-prism5-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4278.271225649065
+  },
+  {
+   "id": "hollow-prism5-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4278.271225649063
+  },
+  {
+   "id": "hollow-prism5-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4278.271225649067
+  },
+  {
+   "id": "hollow-prism5-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism6-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4159.718978819069
+  },
+  {
+   "id": "hollow-prism6-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4159.71897881907
+  },
+  {
+   "id": "hollow-prism6-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4627.417338533569
+  },
+  {
+   "id": "hollow-prism6-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4627.417338533568
+  },
+  {
+   "id": "hollow-prism6-left",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism6-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism7-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4268.832044736887
+  },
+  {
+   "id": "hollow-prism7-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4268.8320447368815
+  },
+  {
+   "id": "hollow-prism7-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4858.873925961471
+  },
+  {
+   "id": "hollow-prism7-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4858.873925961508
+  },
+  {
+   "id": "hollow-prism7-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4858.873925961498
+  },
+  {
+   "id": "hollow-prism7-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism8-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4340.590049843252
+  },
+  {
+   "id": "hollow-prism8-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4340.590049843253
+  },
+  {
+   "id": "hollow-prism8-front",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism8-back",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism8-left",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism8-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism10-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4425.958175619798
+  },
+  {
+   "id": "hollow-prism10-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4425.958175619807
+  },
+  {
+   "id": "hollow-prism10-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5236.670025154578
+  },
+  {
+   "id": "hollow-prism10-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5236.6700251545735
+  },
+  {
+   "id": "hollow-prism10-left",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism10-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism12-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4472.786722268174
+  },
+  {
+   "id": "hollow-prism12-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4472.786722268169
+  },
+  {
+   "id": "hollow-prism12-front",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism12-back",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism12-left",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-prism12-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wedge-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2516.5361096838647
+  },
+  {
+   "id": "hollow-wedge-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2516.536109683864
+  },
+  {
+   "id": "hollow-wedge-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2318.0065285619385
+  },
+  {
+   "id": "hollow-wedge-back",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wedge-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2493.232485875203
+  },
+  {
+   "id": "hollow-wedge-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-extrude-rect-top",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 4512
+  },
+  {
+   "id": "hollow-extrude-rect-bottom",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 4512
+  },
+  {
+   "id": "hollow-extrude-rect-right",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 6072
+  },
+  {
+   "id": "hollow-extrude-rect-left",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 6072
+  },
+  {
+   "id": "hollow-extrude-front-top",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 5952
+  },
+  {
+   "id": "hollow-extrude-front-front",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 4512
+  },
+  {
+   "id": "hollow-extrude-front-back",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 4512
+  },
+  {
+   "id": "hollow-extrude-tri-top",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 1625.9999999999982
+  },
+  {
+   "id": "hollow-extrude-tri-bottom",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 1625.999999999998
+  },
+  {
+   "id": "hollow-extrude-circle-top",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 1526.7763870139152
+  },
+  {
+   "id": "hollow-extrude-L-top",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-extrude-L-bottom",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-notch-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-notch-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-join-L-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-join-boss-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-join-boss-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-join-pillar",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-join-cylinder-boss",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-slot-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-slot-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-pocket-top",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-mirror",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9040
+  },
+  {
+   "id": "hollow-repeat-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-twice",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-TWICE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-blind-hole",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-BLIND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-move-dz12-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5040
+  },
+  {
+   "id": "hollow-move-dz-12-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5040
+  },
+  {
+   "id": "hollow-move-dx-40-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6496
+  },
+  {
+   "id": "hollow-move-dy-30-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6336
+  },
+  {
+   "id": "hollow-move-small-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5040
+  },
+  {
+   "id": "hollow-move-dx5-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5040
+  },
+  {
+   "id": "hollow-move-far-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5040
+  },
+  {
+   "id": "hollow-move-left-dx-40",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6496
+  },
+  {
+   "id": "hollow-turn-z30-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5039.999999999994
+  },
+  {
+   "id": "hollow-turn-z30-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6495.9999999999845
+  },
+  {
+   "id": "hollow-turn-z90-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6336
+  },
+  {
+   "id": "hollow-turn-y45-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6495.999999999952
+  },
+  {
+   "id": "hollow-turn-y45-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6495.999999999701
+  },
+  {
+   "id": "hollow-turn-x90-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5040
+  },
+  {
+   "id": "hollow-move-cylinder-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4774.728965992673
+  },
+  {
+   "id": "hollow-move-extrude-top",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,built",
+   "guards": [],
+   "volume": 4512
+  },
+  {
+   "id": "hollow-move-hex-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4159.718978819066
+  },
+  {
+   "id": "hollow-turn-z45-square-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-turn-z45-square-left",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-turn-z45-square-front",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-turn-z45-square-back",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-turn-z45-square-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6239.999999999993
+  },
+  {
+   "id": "hollow-then-turn",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5040.000000000004
+  },
+  {
+   "id": "hollow-after-move-then-move",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5040
+  },
+  {
+   "id": "hollow-hole-offcentre-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9520.160829051734
+  },
+  {
+   "id": "hollow-hole-offcentre-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9520.160829051738
+  },
+  {
+   "id": "hollow-hole-centred-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9520.160829051754
+  },
+  {
+   "id": "hollow-hole-x-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 10368.321658103503
+  },
+  {
+   "id": "hollow-hole-x-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 11965.383166689704
+  },
+  {
+   "id": "hollow-holes-corner-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 18165.5636993097
+  },
+  {
+   "id": "hollow-round-r1-wall2",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 8587.44433742849
+  },
+  {
+   "id": "hollow-round-r1.5-wall2",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 8483.258862362083
+  },
+  {
+   "id": "hollow-round-r2-wall2",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-ROUND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-round-r3-wall2",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-ROUND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-round-edge-vertical-r1",
+   "excluded": [
+    "fillet"
+   ]
+  },
+  {
+   "id": "hollow-round-edge-vertical-r3",
+   "excluded": [
+    "fillet"
+   ]
+  },
+  {
+   "id": "hollow-round-edge-top-r1",
+   "excluded": [
+    "fillet"
+   ]
+  },
+  {
+   "id": "hollow-round-edge-top-r2",
+   "excluded": [
+    "fillet"
+   ]
+  },
+  {
+   "id": "hollow-bevel-edge-top-1",
+   "excluded": [
+    "fillet"
+   ]
+  },
+  {
+   "id": "hollow-bevel-edge-top-2",
+   "excluded": [
+    "fillet"
+   ]
+  },
+  {
+   "id": "hollow-bevel-edge-vertical",
+   "excluded": [
+    "fillet"
+   ]
+  },
+  {
+   "id": "hollow-after-draft",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5038.486768981506
+  },
+  {
+   "id": "hollow-after-draft-from-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4996.481151720546
+  },
+  {
+   "id": "hollow-after-draft-open-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-after-hollow",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4945.5122433920005
+  },
+  {
+   "id": "draft-after-closed-hollow",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-VOID"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-wrong-script-word",
+   "skipped": "script error: hollow: \"side\" is the curved wall of a cylinder, not a flat face here."
+  },
+  {
+   "id": "draft-right-default",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14248.21589852142
+  },
+  {
+   "id": "draft-left-default",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14248.21589852142
+  },
+  {
+   "id": "draft-front-default",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14197.621198028553
+  },
+  {
+   "id": "draft-back-default",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14197.621198028553
+  },
+  {
+   "id": "draft-top-default-parallel-to-pull",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-bottom-default-parallel-to-pull",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-right-angle-0",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14400
+  },
+  {
+   "id": "draft-right-angle-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14381.148529877517
+  },
+  {
+   "id": "draft-right-angle-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14248.21589852142
+  },
+  {
+   "id": "draft-right-angle-30",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13776.461709275203
+  },
+  {
+   "id": "draft-right-angle-45",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13320
+  },
+  {
+   "id": "draft-right-angle-60",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 12529.385127825613
+  },
+  {
+   "id": "draft-right-angle-70",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11432.724386989008
+  },
+  {
+   "id": "draft-right-angle-77",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9722.006055773109
+  },
+  {
+   "id": "draft-right-angle--8",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14551.78410147858
+  },
+  {
+   "id": "draft-right-angle--45",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 15480
+  },
+  {
+   "id": "draft-right-angle--60",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 16270.614872174381
+  },
+  {
+   "id": "draft-right-angle--80",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 20524.984365187123
+  },
+  {
+   "id": "draft-right-angle--85",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 26744.45648698225
+  },
+  {
+   "id": "draft-right-angle-78-steep",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-right-angle-80-steep",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-right-angle-85-steep",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-right-angle-89-steep",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-right-angle--86-steep",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-right-angle--89-steep",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-right-angle-90-limit",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-ANGLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-right-angle-95-limit",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-ANGLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-right-angle-89.99-limit",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-ANGLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-right-angle-89.5-limit",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-ANGLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-right-angle--90-limit",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-ANGLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-right-1deg-3x",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 387782.0206133863
+  },
+  {
+   "id": "draft-right-neutral--3",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14096.431797042833
+  },
+  {
+   "id": "draft-right-neutral-0",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14248.21589852142
+  },
+  {
+   "id": "draft-right-neutral-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14501.189400985719
+  },
+  {
+   "id": "draft-right-neutral-9",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14703.568202957162
+  },
+  {
+   "id": "draft-right-neutral-12",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14855.352304435743
+  },
+  {
+   "id": "draft-right-neutral--10",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13742.268893592807
+  },
+  {
+   "id": "draft-right-neutral-50",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 16777.950923164462
+  },
+  {
+   "id": "draft-right-neutral--50",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11718.480873878374
+  },
+  {
+   "id": "draft-right-from-bottom-neutral-override",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14450.594700492855
+  },
+  {
+   "id": "draft-right-from-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14096.431797042833
+  },
+  {
+   "id": "draft-right-from-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14703.568202957162
+  },
+  {
+   "id": "draft-right-from-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13641.079492607087
+  },
+  {
+   "id": "draft-right-from-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 15158.920507392904
+  },
+  {
+   "id": "draft-top-from-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11027.019967142603
+  },
+  {
+   "id": "draft-top-from-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 17772.980032857387
+  },
+  {
+   "id": "draft-front-from-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13050.80798685704
+  },
+  {
+   "id": "draft-left-from-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14096.431797042833
+  },
+  {
+   "id": "draft-front-from-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13995.242396057105
+  },
+  {
+   "id": "draft-back-from-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14804.757603942884
+  },
+  {
+   "id": "draft-right-from-right-parallel",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-top-from-top-parallel",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-bad-from",
+   "skipped": "script error: draft()'s \"from\" needs a face word (top, bottom, front, back, left, right). You gave it the text \"up\"."
+  },
+  {
+   "id": "draft-two-sides",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 14211.024486784001
+  },
+  {
+   "id": "draft-four-sides",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built,built",
+   "guards": [],
+   "volume": 13966.77263620484
+  },
+  {
+   "id": "draft-adjacent-two",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 14181.457443008541
+  },
+  {
+   "id": "draft-same-face-twice",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-TWICE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-opposite-30",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 22762.395692966
+  },
+  {
+   "id": "draft-opposite-50",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-opposite-60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-whole-arg",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13966.772636204856
+  },
+  {
+   "id": "draft-whole-option",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13966.772636204856
+  },
+  {
+   "id": "draft-whole-from-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13535.749701088433
+  },
+  {
+   "id": "draft-whole-neutral",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14404.408857357434
+  },
+  {
+   "id": "draft-whole-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13624.44685473536
+  },
+  {
+   "id": "draft-whole-sphere",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-FLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-cylinder-side",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [],
+   "volume": null
+  },
+  {
+   "id": "draft-cylinder-top-default",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-sphere-face",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-FLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism3-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism3-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5402.851558411548
+  },
+  {
+   "id": "draft-prism3-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5402.851558411546
+  },
+  {
+   "id": "draft-prism3-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5402.851558411548
+  },
+  {
+   "id": "draft-prism4-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism4-left",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism4-front",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism4-back",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism5-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism5-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10384.206473038203
+  },
+  {
+   "id": "draft-prism5-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10384.206473038206
+  },
+  {
+   "id": "draft-prism5-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10384.206473038204
+  },
+  {
+   "id": "draft-prism6-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism6-left",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism6-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11417.092446705965
+  },
+  {
+   "id": "draft-prism6-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11417.092446705965
+  },
+  {
+   "id": "draft-prism7-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism7-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 12069.808868392645
+  },
+  {
+   "id": "draft-prism7-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 12069.808868392645
+  },
+  {
+   "id": "draft-prism7-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 12069.808868392645
+  },
+  {
+   "id": "draft-prism8-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism8-left",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism8-front",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism8-back",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism10-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism10-left",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism10-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13034.861423713066
+  },
+  {
+   "id": "draft-prism10-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13034.86142371306
+  },
+  {
+   "id": "draft-prism12-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism12-left",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism12-front",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-prism12-back",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-wedge-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-wedge-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4306.020856908753
+  },
+  {
+   "id": "draft-wedge-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4211.18404774469
+  },
+  {
+   "id": "draft-wedge-back",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-TIE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-extrude-rect-right",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11868.767004711108
+  },
+  {
+   "id": "draft-extrude-rect-left",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11868.767004711115
+  },
+  {
+   "id": "draft-extrude-rect-front",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11825.022672948151
+  },
+  {
+   "id": "draft-extrude-rect-back",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11825.02267294815
+  },
+  {
+   "id": "draft-extrude-circle-top",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-L-right",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 6956.255668237038
+  },
+  {
+   "id": "draft-L-left",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 6825.022672948151
+  },
+  {
+   "id": "draft-L-back",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 6956.255668237038
+  },
+  {
+   "id": "draft-L-front",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 6825.022672948151
+  },
+  {
+   "id": "draft-U-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 26500.090691792608
+  },
+  {
+   "id": "draft-join-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 11825.022672948151
+  },
+  {
+   "id": "draft-hole-z-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 30734.697943568262
+  },
+  {
+   "id": "draft-hole-x-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-hole-x-right-offcentre",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-round-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-notch-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 30597.55214778075
+  },
+  {
+   "id": "draft-notch-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 30300.090691792604
+  },
+  {
+   "id": "draft-boss-base-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 16825.02267294815
+  },
+  {
+   "id": "draft-blind-hole-z-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 31017.394317680442
+  },
+  {
+   "id": "draft-move-dx40-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 14305.512243392002
+  },
+  {
+   "id": "draft-move-dx-40-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 14305.512243391999
+  },
+  {
+   "id": "draft-move-dy30-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 14274.016324522663
+  },
+  {
+   "id": "draft-move-dz12-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 13927.561216960008
+  },
+  {
+   "id": "draft-turn-z30-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14399.99999999999
+  },
+  {
+   "id": "draft-turn-z90-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14399.999999999995
+  },
+  {
+   "id": "draft-turn-after-draft",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 14400
+  },
+  {
+   "id": "draft-turn-then-draft-feature",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-PICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-from-bottom-unmoved-box",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31300.090691792615
+  },
+  {
+   "id": "draft-from-bottom-after-move",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-FROM"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-from-bottom-after-turn",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-FROM"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-from-bottom-after-join",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-FROM"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-from-bottom-prism-offset",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-FROM"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-from-bottom-prism-origin",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-FROM"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-from-bottom-wedge-origin",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-FROM"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-from-bottom-extrude-lifted",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-FROM"
+   ],
+   "volume": null
+  },
+  {
+   "id": "draft-from-top-after-hollow",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9371.909308207383
+  },
+  {
+   "id": "draft-neutral-explicit-after-move",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 31300.090691792622
+  },
+  {
+   "id": "draft-tiny-0.001",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31999.86037365984
+  },
+  {
+   "id": "draft-tiny-0.000001",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31999.99986037368
+  },
+  {
+   "id": "draft-then-hollow-40x40x20",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 8600.660394861565
+  },
+  {
+   "id": "hollow-hole-pos-0_0",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9520.160829051754
+  },
+  {
+   "id": "hollow-hole-pos-8_5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9520.160829051734
+  },
+  {
+   "id": "hollow-hole-pos-12_12",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9520.160829051736
+  },
+  {
+   "id": "hollow-hole-pos-14_0",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos-15_-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos-16_16",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos-17_0",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos-18_6",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos--19_0",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos-20_0",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos--12_17",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos-10_-16",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos-6_6",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9520.160829051734
+  },
+  {
+   "id": "hollow-hole-pos--15_15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos-3.5_-7.2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9520.160829051752
+  },
+  {
+   "id": "hollow-hole-pos-1.5_17.5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos-6.2_1.1",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9520.160829051727
+  },
+  {
+   "id": "hollow-hole-pos-13.3_15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos--15.3_17.9",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-HOLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-hole-pos--10.5_-11",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9520.160829051732
+  },
+  {
+   "id": "fuzz-hollow-00",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 69277.978024
+  },
+  {
+   "id": "fuzz-hollow-01",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 42139.65643199996
+  },
+  {
+   "id": "fuzz-hollow-02",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 47252.82661199998
+  },
+  {
+   "id": "fuzz-hollow-03",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 23328.89606799999
+  },
+  {
+   "id": "fuzz-hollow-04",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 23373.440327999997
+  },
+  {
+   "id": "fuzz-hollow-05",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 92694.52018399998
+  },
+  {
+   "id": "fuzz-hollow-06",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 49345.31135199982
+  },
+  {
+   "id": "fuzz-hollow-07",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 91832.331404
+  },
+  {
+   "id": "fuzz-hollow-08",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 19069.79011199999
+  },
+  {
+   "id": "fuzz-hollow-09",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 32984.489376000005
+  },
+  {
+   "id": "fuzz-hollow-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 52167.893987999996
+  },
+  {
+   "id": "fuzz-hollow-11",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 19431.891752
+  },
+  {
+   "id": "fuzz-hollow-12",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 51838.27286399998
+  },
+  {
+   "id": "fuzz-hollow-13",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 7790.638115999998
+  },
+  {
+   "id": "fuzz-hollow-14",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 36290.22146399995
+  },
+  {
+   "id": "fuzz-hollow-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 33782.63133600002
+  },
+  {
+   "id": "fuzz-hollow-16",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 29799.710016
+  },
+  {
+   "id": "fuzz-hollow-17",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 15096.715087999974
+  },
+  {
+   "id": "fuzz-hollow-18",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 78200.37746399776
+  },
+  {
+   "id": "fuzz-hollow-19",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 41516.55458400001
+  },
+  {
+   "id": "fuzz-hollow-20",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 25924.68198399999
+  },
+  {
+   "id": "fuzz-hollow-21",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4733.325792000001
+  },
+  {
+   "id": "fuzz-hollow-22",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 22600.11829600003
+  },
+  {
+   "id": "fuzz-hollow-23",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 16315.229216000002
+  },
+  {
+   "id": "fuzz-hollow-24",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 7877.954303999965
+  },
+  {
+   "id": "fuzz-hollow-25",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14038.124999999995
+  },
+  {
+   "id": "fuzz-hollow-26",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 44206.55439199742
+  },
+  {
+   "id": "fuzz-hollow-27",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 48697.25075599779
+  },
+  {
+   "id": "fuzz-hollow-28",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 30567.675047999957
+  },
+  {
+   "id": "fuzz-hollow-29",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 55453.464791999984
+  },
+  {
+   "id": "fuzz-hollow-30",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 44110.59196799999
+  },
+  {
+   "id": "fuzz-hollow-31",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 23643.897331999982
+  },
+  {
+   "id": "fuzz-hollow-32",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 74322.97548799997
+  },
+  {
+   "id": "fuzz-hollow-33",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 15311.947376000004
+  },
+  {
+   "id": "fuzz-hollow-34",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10785.105000000001
+  },
+  {
+   "id": "fuzz-hollow-35",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 37974.95923199997
+  },
+  {
+   "id": "fuzz-hollow-36",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 16476.37351199999
+  },
+  {
+   "id": "fuzz-hollow-37",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 56687.60652799951
+  },
+  {
+   "id": "fuzz-hollow-38",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 65425.56673599998
+  },
+  {
+   "id": "fuzz-hollow-39",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 13723.100999999993
+  },
+  {
+   "id": "fuzz-draft-00",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 30527.893724569043
+  },
+  {
+   "id": "fuzz-draft-01",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 44970.73141013695
+  },
+  {
+   "id": "fuzz-draft-02",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 50610.54228190288
+  },
+  {
+   "id": "fuzz-draft-03",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 104904.8115870789
+  },
+  {
+   "id": "fuzz-draft-04",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 126538.28161382976
+  },
+  {
+   "id": "fuzz-draft-05",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 32031.767717777577
+  },
+  {
+   "id": "fuzz-draft-06",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 89222.93848275271
+  },
+  {
+   "id": "fuzz-draft-07",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 49470.68236887715
+  },
+  {
+   "id": "fuzz-draft-08",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 124966.22510502541
+  },
+  {
+   "id": "fuzz-draft-09",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 50520.686318955966
+  },
+  {
+   "id": "fuzz-draft-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 40540.89156476502
+  },
+  {
+   "id": "fuzz-draft-11",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 19352.75020407222
+  },
+  {
+   "id": "fuzz-draft-12",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 101908.15366275069
+  },
+  {
+   "id": "fuzz-draft-13",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 81817.36314846153
+  },
+  {
+   "id": "fuzz-draft-14",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 59815.83194991171
+  },
+  {
+   "id": "fuzz-draft-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 41324.90059563124
+  },
+  {
+   "id": "fuzz-draft-16",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 26329.091885851714
+  },
+  {
+   "id": "fuzz-draft-17",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 57372.28442405632
+  },
+  {
+   "id": "fuzz-draft-18",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 56149.58482797306
+  },
+  {
+   "id": "fuzz-draft-19",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 43452.79216305792
+  },
+  {
+   "id": "fuzz-draft-20",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 63235.10208768869
+  },
+  {
+   "id": "fuzz-draft-21",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 33090.76645454627
+  },
+  {
+   "id": "fuzz-draft-22",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 28617.173821481512
+  },
+  {
+   "id": "fuzz-draft-23",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 106073.88940670021
+  },
+  {
+   "id": "fuzz-draft-24",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 84994.14522762682
+  },
+  {
+   "id": "fuzz-draft-25",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 49335.34051804421
+  },
+  {
+   "id": "fuzz-draft-26",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 82287.59218106115
+  },
+  {
+   "id": "fuzz-draft-27",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 93219.3826357624
+  },
+  {
+   "id": "fuzz-draft-28",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 103203.42240870449
+  },
+  {
+   "id": "fuzz-draft-29",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 16586.674531890963
+  },
+  {
+   "id": "fuzz-draft-30",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9111.827335664057
+  },
+  {
+   "id": "fuzz-draft-31",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 87128.94468705646
+  },
+  {
+   "id": "fuzz-draft-32",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 54658.689565870794
+  },
+  {
+   "id": "fuzz-draft-33",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 44458.169803229626
+  },
+  {
+   "id": "fuzz-draft-34",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 119264.23341432396
+  },
+  {
+   "id": "fuzz-draft-35",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 57058.335581758874
+  },
+  {
+   "id": "fuzz-draft-36",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 101863.95372557756
+  },
+  {
+   "id": "fuzz-draft-37",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 21532.876287271294
+  },
+  {
+   "id": "fuzz-draft-38",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 45083.46932916661
+  },
+  {
+   "id": "fuzz-draft-39",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 49857.91894938597
+  },
+  {
+   "id": "dnc-L-left-in5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 15975.068018844453
+  },
+  {
+   "id": "dnc-L-left-in20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 14316.178594402787
+  },
+  {
+   "id": "dnc-L-left-in30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 13035.898384862245
+  },
+  {
+   "id": "dnc-L-left-in45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-left-in60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-left-in80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-left-out5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 17024.931981155547
+  },
+  {
+   "id": "dnc-L-left-out20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 18683.821405597217
+  },
+  {
+   "id": "dnc-L-left-out30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 19964.101615137755
+  },
+  {
+   "id": "dnc-L-left-out45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 22500
+  },
+  {
+   "id": "dnc-L-left-out60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 26892.304845413262
+  },
+  {
+   "id": "dnc-L-left-out80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 50527.69091770623
+  },
+  {
+   "id": "dnc-L-front-in5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 15800.09069179261
+  },
+  {
+   "id": "dnc-L-front-in20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 13588.238125870383
+  },
+  {
+   "id": "dnc-L-front-in30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11881.197846482995
+  },
+  {
+   "id": "dnc-L-front-in45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-front-in60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-front-in80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-front-out5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 17199.909308207396
+  },
+  {
+   "id": "dnc-L-front-out20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 19411.761874129617
+  },
+  {
+   "id": "dnc-L-front-out30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 21118.80215351701
+  },
+  {
+   "id": "dnc-L-front-out45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 24500
+  },
+  {
+   "id": "dnc-L-front-out60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 30356.40646055101
+  },
+  {
+   "id": "dnc-L-front-out80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 61870.254556941654
+  },
+  {
+   "id": "dnc-L-right-in5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 16237.534009422221
+  },
+  {
+   "id": "dnc-L-right-in20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 15408.089297201392
+  },
+  {
+   "id": "dnc-L-right-in30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 14767.949192431122
+  },
+  {
+   "id": "dnc-L-right-in45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 13500.000000000005
+  },
+  {
+   "id": "dnc-L-right-in60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-right-in80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-right-out5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 16762.465990577777
+  },
+  {
+   "id": "dnc-L-right-out20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 17591.910702798607
+  },
+  {
+   "id": "dnc-L-right-out30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 18232.050807568874
+  },
+  {
+   "id": "dnc-L-right-out45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 19500
+  },
+  {
+   "id": "dnc-L-right-out60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 21696.15242270663
+  },
+  {
+   "id": "dnc-L-right-out80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 33513.84545885312
+  },
+  {
+   "id": "dnc-L-back-in5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 16237.534009422227
+  },
+  {
+   "id": "dnc-L-back-in20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 15408.089297201392
+  },
+  {
+   "id": "dnc-L-back-in30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 14767.949192431122
+  },
+  {
+   "id": "dnc-L-back-in45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-back-in60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-back-in80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-back-out5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 16762.465990577773
+  },
+  {
+   "id": "dnc-L-back-out20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 17591.910702798607
+  },
+  {
+   "id": "dnc-L-back-out30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 18232.050807568878
+  },
+  {
+   "id": "dnc-L-back-out45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 19500
+  },
+  {
+   "id": "dnc-L-back-out60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 21696.152422706626
+  },
+  {
+   "id": "dnc-L-back-out80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 33513.845458853124
+  },
+  {
+   "id": "dnc-T-left-in5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11825.022672948151
+  },
+  {
+   "id": "dnc-T-left-in20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11272.059531467596
+  },
+  {
+   "id": "dnc-T-left-in45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-left-in60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-left-in80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-right-in5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11825.02267294815
+  },
+  {
+   "id": "dnc-T-right-in20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11272.059531467594
+  },
+  {
+   "id": "dnc-T-right-in45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-right-in60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-right-in80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-front-in5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11650.045345896304
+  },
+  {
+   "id": "dnc-T-front-in20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 10544.119062935191
+  },
+  {
+   "id": "dnc-T-front-in45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-front-in60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-front-in80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-back-in5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11300.09069179261
+  },
+  {
+   "id": "dnc-T-back-in20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 9088.23812587038
+  },
+  {
+   "id": "dnc-T-back-in45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-back-in60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-back-in80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-front-out20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 13455.880937064809
+  },
+  {
+   "id": "dnc-T-front-out60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 18928.20323027551
+  },
+  {
+   "id": "dnc-T-left-out60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 15464.10161513775
+  },
+  {
+   "id": "dnc-join-right-in45",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 10000.000000000004
+  },
+  {
+   "id": "dnc-join-right-in60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 8535.898384862248
+  },
+  {
+   "id": "dnc-join-right-in70",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-join-right-in80",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-join-back-in45",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 11000.000000000002
+  },
+  {
+   "id": "dnc-join-back-in60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 10267.949192431124
+  },
+  {
+   "id": "dnc-join-back-in70",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-join-back-in80",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-join-left-in60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 10267.949192431124
+  },
+  {
+   "id": "dnc-join-left-in70",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-join-front-in60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 8535.898384862245
+  },
+  {
+   "id": "dnc-join-front-in70",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-join-right-out60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 15464.101615137755
+  },
+  {
+   "id": "dnc-join-back-out80",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 17671.28181961771
+  },
+  {
+   "id": "dnc-slot-right-in5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 26500.090691792608
+  },
+  {
+   "id": "dnc-slot-right-in20",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 24288.238125870383
+  },
+  {
+   "id": "dnc-slot-right-in30",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 22581.197846483
+  },
+  {
+   "id": "dnc-slot-right-in45",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-slot-right-in60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-slot-right-in80",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-slot-right-out20",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 30111.761874129617
+  },
+  {
+   "id": "dnc-slot-right-out60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 41056.40646055101
+  },
+  {
+   "id": "dnc-slot-right-out80",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 72570.2545569417
+  },
+  {
+   "id": "dnc-slot-left-in30",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 22581.197846483
+  },
+  {
+   "id": "dnc-slot-left-in45",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-slot-left-out60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 41056.406460551014
+  },
+  {
+   "id": "dnc-pocket-right-in5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built",
+   "guards": [],
+   "volume": 11468.767004711111
+  },
+  {
+   "id": "dnc-pocket-right-in10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built",
+   "guards": [],
+   "volume": 11335.509528937298
+  },
+  {
+   "id": "dnc-pocket-right-in20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-pocket-right-in45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-pocket-right-in80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-pocket-right-out20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built",
+   "guards": [],
+   "volume": 12145.955351399301
+  },
+  {
+   "id": "dnc-pocket-right-out80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built",
+   "guards": [],
+   "volume": 20106.922729426555
+  },
+  {
+   "id": "dnc-boss-right-in45",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-boss-right-in60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-boss-right-in70",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-boss-right-in80",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-boss-right-out60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 20464.101615137755
+  },
+  {
+   "id": "dnc-notch-right-in5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 30300.090691792604
+  },
+  {
+   "id": "dnc-notch-right-in10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 29589.38415433228
+  },
+  {
+   "id": "dnc-notch-right-in20",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-notch-right-in45",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-notch-right-in80",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-notch-left-in20",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 28088.23812587038
+  },
+  {
+   "id": "dnc-notch-left-in45",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 23000.00000000001
+  },
+  {
+   "id": "dnc-notch-left-in60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-notch-back-in45",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 23000.00000000001
+  },
+  {
+   "id": "dnc-notch-back-in60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 17143.59353944899
+  },
+  {
+   "id": "dnc-notch-back-in80",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-notch-right-out45",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 39000
+  },
+  {
+   "id": "dnc-hole-right-in5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 30734.697943568262
+  },
+  {
+   "id": "dnc-hole-right-in10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 30023.991406107933
+  },
+  {
+   "id": "dnc-hole-right-in20",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 28522.845377646037
+  },
+  {
+   "id": "dnc-hole-right-in25",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-hole-right-in30",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-hole-right-in45",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-hole-right-in60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-hole-right-in80",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-hole-right-out20",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 34346.369125905265
+  },
+  {
+   "id": "dnc-hole-right-out60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 45291.01371232667
+  },
+  {
+   "id": "dnc-L-seq-two-20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-seq-two-30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-seq-three-30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,refused,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-seq-fbopp-30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,built",
+   "guards": [],
+   "volume": 10149.147038914116
+  },
+  {
+   "id": "dnc-L-seq-mixed-in-out",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,built",
+   "guards": [],
+   "volume": 14767.949192431124
+  },
+  {
+   "id": "dnc-L-seq-four-10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,refused,refused,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-seq-four-22",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,refused,refused,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-seq-four-30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,refused,refused,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-seq-four-36",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,refused,refused,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-seq-four-40",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused,refused,refused,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-seq-four-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused,refused,refused,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-seq-four-60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused,refused,refused,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-seq-four-80",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused,refused,refused,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-seq-first-bad",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-L-seq-second-bad",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-seq-four-10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,built,built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-seq-four-22",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,built,built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-seq-four-26",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,built,built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-seq-four-30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused,refused,refused,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-seq-four-40",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused,refused,refused,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-seq-four-60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused,refused,refused,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-T-seq-lr-22",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,built",
+   "guards": [],
+   "volume": 10383.895096659373
+  },
+  {
+   "id": "dnc-T-seq-lr-40",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-join-seq-four-30",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built,refused,refused,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-join-seq-four-60",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built,refused,refused,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-join-seq-four-70",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused,refused,refused,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dnc-slot-seq-lr-30",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built,built",
+   "guards": [],
+   "volume": 17962.39569296599
+  },
+  {
+   "id": "dnc-slot-seq-lr-30-45",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built,refused",
+   "guards": [
+    "G-REACH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dbox-two-n-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 14022.048973567995
+  },
+  {
+   "id": "dbox-four-n-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built,built",
+   "guards": [],
+   "volume": 13535.749701088404
+  },
+  {
+   "id": "dbox-two-n0",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 14211.024486784001
+  },
+  {
+   "id": "dbox-four-n0",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built,built",
+   "guards": [],
+   "volume": 13966.772636204836
+  },
+  {
+   "id": "dbox-two-n3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 14399.999999999998
+  },
+  {
+   "id": "dbox-four-n3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built,built",
+   "guards": [],
+   "volume": 14404.408857357406
+  },
+  {
+   "id": "hollow-band-9",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 21096
+  },
+  {
+   "id": "hollow-band-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 22000
+  },
+  {
+   "id": "hollow-band-12",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 23232
+  },
+  {
+   "id": "hollow-band-14",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 23856
+  },
+  {
+   "id": "hollow-band-14.9",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 23989.596
+  },
+  {
+   "id": "hollow-band-14.99",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 23998.995995999994
+  },
+  {
+   "id": "hollow-slit-15",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-slit-15-depth",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-mitre-L40x15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-mitre-L40x10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-mitre-T",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-blind-6",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-BLIND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-blind-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-BLIND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-blind-14",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-BLIND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-blind-16",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-BLIND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hollow-blind-17.9",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-BLIND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-box",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9024
+  },
+  {
+   "id": "hc2-box-offcentre",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6912
+  },
+  {
+   "id": "hc2-box-cube",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5255.999999999999
+  },
+  {
+   "id": "hc2-box-thin",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10927.65599999995
+  },
+  {
+   "id": "hc2-box-thick",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 23769
+  },
+  {
+   "id": "hc2-box-scale-0.01",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 0.009023999999999997
+  },
+  {
+   "id": "hc2-box-scale-100",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9024000000
+  },
+  {
+   "id": "hc2-box-moved",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9024
+  },
+  {
+   "id": "hc2-box-turned",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6911.999999999995
+  },
+  {
+   "id": "hc2-box-wall-limit",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-box-wall-over",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-cylinder",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5402.973244177137
+  },
+  {
+   "id": "hc2-cylinder-offcentre",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5402.973244177115
+  },
+  {
+   "id": "hc2-cylinder-wall4",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9147.391572062972
+  },
+  {
+   "id": "hc2-cylinder-flat",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4676.8095227273725
+  },
+  {
+   "id": "hc2-cylinder-wall-limit",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-THICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-cylinder-moved",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5402.973244177135
+  },
+  {
+   "id": "hc2-sphere",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4934.12648336568
+  },
+  {
+   "id": "hc2-sphere-offcentre",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6898.5751423508855
+  },
+  {
+   "id": "hc2-prism3",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 3330.7337029549476
+  },
+  {
+   "id": "hc2-prism4",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4259.29003975634
+  },
+  {
+   "id": "hc2-prism5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4728.752763706246
+  },
+  {
+   "id": "hc2-prism6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4996.566086849164
+  },
+  {
+   "id": "hc2-prism8",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5272.5158289004285
+  },
+  {
+   "id": "hc2-prism12",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5475.810419793922
+  },
+  {
+   "id": "hc2-prism6-moved",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4996.566086849149
+  },
+  {
+   "id": "hc2-wedge",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CLOSED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-cone",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CLOSED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-extrude",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-CLOSED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-box-joined",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-CLOSED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-box-hole",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CLOSED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-box-rounded",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CLOSED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-then-hollow",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-TWICE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-then-hollow-open",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-TWICE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-then-draft",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-VOID"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-then-hole",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-VOID"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-then-join",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-VOID"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-then-round",
+   "excluded": [
+    "fillet"
+   ]
+  },
+  {
+   "id": "hc2-then-move",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9024
+  },
+  {
+   "id": "hc2-then-turn",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9024
+  },
+  {
+   "id": "hc2-cyl-then-move",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5402.973244177127
+  },
+  {
+   "id": "hc2-cyl-chamfer",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CLOSED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-box-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14312.333589487762
+  },
+  {
+   "id": "dw2-box-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13966.772636204856
+  },
+  {
+   "id": "dw2-box-20",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 12699.124145381582
+  },
+  {
+   "id": "dw2-box-45",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10368
+  },
+  {
+   "id": "dw2-box--5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14848.658364546172
+  },
+  {
+   "id": "dw2-box--20",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 16367.944106784902
+  },
+  {
+   "id": "dw2-box--45",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 20447.999999999993
+  },
+  {
+   "id": "dw2-box-option",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13966.772636204856
+  },
+  {
+   "id": "dw2-box-option-only",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13711.583933128537
+  },
+  {
+   "id": "dw2-box-from-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13535.749701088433
+  },
+  {
+   "id": "dw2-box-from-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 15299.521157771065
+  },
+  {
+   "id": "dw2-box-from-top-neg",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13197.066841603379
+  },
+  {
+   "id": "dw2-box-neutral",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14404.408857357434
+  },
+  {
+   "id": "dw2-box-neutral-far",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6731.58394838309
+  },
+  {
+   "id": "dw2-box-pull-x",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6641.136545340724
+  },
+  {
+   "id": "dw2-box-pull-x-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 25529.82472934213
+  },
+  {
+   "id": "dw2-box-pull-y",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9878.810199314512
+  },
+  {
+   "id": "dw2-box-pull-y-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9878.810199314512
+  },
+  {
+   "id": "dw2-box-small",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14399.91203571274
+  },
+  {
+   "id": "dw2-box-tiny2",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14399.999912035395
+  },
+  {
+   "id": "dw2-box-moved",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-FROM"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-box-moved-neutral",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 14404.408857357439
+  },
+  {
+   "id": "dw2-box-turned-z30",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13966.772636204856
+  },
+  {
+   "id": "dw2-box-turned-z45",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 18209.7660256111
+  },
+  {
+   "id": "dw2-box-turned-x90",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13658.261113152512
+  },
+  {
+   "id": "dw2-box-vanish-60",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-box-vanish-70",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-box-vanish-78",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-box-vanish-neg",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 112818.35795553657
+  },
+  {
+   "id": "dw2-box-89",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-box-90",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-ANGLE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-box-0",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14400
+  },
+  {
+   "id": "dw2-prism3-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5872.186631608872
+  },
+  {
+   "id": "dw2-prism3--6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 7637.154695963512
+  },
+  {
+   "id": "dw2-prism4-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9020.411376654802
+  },
+  {
+   "id": "dw2-prism4--6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10901.511622595215
+  },
+  {
+   "id": "dw2-prism5-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10717.922974814042
+  },
+  {
+   "id": "dw2-prism5--6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 12659.76129625787
+  },
+  {
+   "id": "dw2-prism6-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11709.019721799194
+  },
+  {
+   "id": "dw2-prism6--6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13685.266079392852
+  },
+  {
+   "id": "dw2-prism7-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 12331.047650502245
+  },
+  {
+   "id": "dw2-prism7--6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14328.477556515245
+  },
+  {
+   "id": "dw2-prism8-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 12744.831399432098
+  },
+  {
+   "id": "dw2-prism8--6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14756.177790560818
+  },
+  {
+   "id": "dw2-prism12-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13516.40763567318
+  },
+  {
+   "id": "dw2-prism12--6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 15553.334658359434
+  },
+  {
+   "id": "dw2-wedge-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4513.285326833785
+  },
+  {
+   "id": "dw2-wedge--5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4513.285326833784
+  },
+  {
+   "id": "dw2-wedge-12",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2755.8612186629593
+  },
+  {
+   "id": "dw2-extrude-rect",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11397.785043645928
+  },
+  {
+   "id": "dw2-extrude-rect-front",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 8338.5637261733
+  },
+  {
+   "id": "dw2-extrude-tri",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 5590.218646396101
+  },
+  {
+   "id": "dw2-extrude-circle",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 6663.705237203611
+  },
+  {
+   "id": "dw2-cylinder-5-0",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13624.44685473536
+  },
+  {
+   "id": "dw2-cylinder--5-0",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13624.44682245264
+  },
+  {
+   "id": "dw2-cylinder-5--15",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10818.615553672156
+  },
+  {
+   "id": "dw2-cylinder-20-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 18935.64723107086
+  },
+  {
+   "id": "dw2-cylinder--10-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 8467.296786448669
+  },
+  {
+   "id": "dw2-cylinder-moved",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 13624.446854735366
+  },
+  {
+   "id": "dw2-cylinder-from-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10818.615553672156
+  },
+  {
+   "id": "dw2-cylinder-vanish",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-cylinder-pull-x",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-WHOLE-AXIS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-prism-pull-x",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-WHOLE-AXIS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-box-turned-x45",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-WHOLE-AXIS"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-cone",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-FLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-sphere",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-FLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-ring",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-WHOLE-SHAPE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-after-join",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-WHOLE-HISTORY"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-after-hole",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-WHOLE-HISTORY"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-after-round",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-WHOLE-HISTORY"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-after-face-draft",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-TWICE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-face-draft-after-whole",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-after-mirror",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-WHOLE-HISTORY"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-after-turn-step",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-WHOLE-HOLLOW"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-twice",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-TWICE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-L-2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 15535.226029077952
+  },
+  {
+   "id": "dw2-L-5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 14131.962927893348
+  },
+  {
+   "id": "dw2-L-10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11894.484050837784
+  },
+  {
+   "id": "dw2-L--5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 19031.328085345103
+  },
+  {
+   "id": "dw2-L--10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 21768.794970511826
+  },
+  {
+   "id": "dw2-L--25",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 31876.004636915954
+  },
+  {
+   "id": "dw2-L-steep-15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 9763.254822323137
+  },
+  {
+   "id": "dw2-L-steep-30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-L-steep-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-L-steep-60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-L-neutral-top",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 20645.828451334637
+  },
+  {
+   "id": "dw2-T-2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11174.909107044943
+  },
+  {
+   "id": "dw2-T-5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 9981.917581997048
+  },
+  {
+   "id": "dw2-T-10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 8099.791973671649
+  },
+  {
+   "id": "dw2-T--5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 14181.373431241404
+  },
+  {
+   "id": "dw2-T--10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 16563.48704767797
+  },
+  {
+   "id": "dw2-T--25",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 25510.77400429596
+  },
+  {
+   "id": "dw2-T-steep-15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-T-steep-30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-T-steep-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-T-steep-60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-T-neutral-top",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 15583.66511252507
+  },
+  {
+   "id": "dw2-U-2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 13282.08534923174
+  },
+  {
+   "id": "dw2-U-5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 12106.06369175175
+  },
+  {
+   "id": "dw2-U-10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 10187.225793942463
+  },
+  {
+   "id": "dw2-U--5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 16137.541307026338
+  },
+  {
+   "id": "dw2-U--10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 18312.373064988536
+  },
+  {
+   "id": "dw2-U--25",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 26011.256230682073
+  },
+  {
+   "id": "dw2-U-steep-15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 8298.556698108954
+  },
+  {
+   "id": "dw2-U-steep-30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-U-steep-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-U-steep-60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-U-neutral-top",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 17425.931592332945
+  },
+  {
+   "id": "dw2-Lthin-2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 6715.226029077952
+  },
+  {
+   "id": "dw2-Lthin-5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 5311.962927893349
+  },
+  {
+   "id": "dw2-Lthin-10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-Lthin--5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 10211.328085345101
+  },
+  {
+   "id": "dw2-Lthin--10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 12948.794970511828
+  },
+  {
+   "id": "dw2-Lthin--25",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 23056.004636915954
+  },
+  {
+   "id": "dw2-Lthin-steep-15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-Lthin-steep-30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-Lthin-steep-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-Lthin-steep-60",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-Lthin-neutral-top",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11825.828451334637
+  },
+  {
+   "id": "dw2-outline-overlap",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-OUTLINE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-outline-bowtie",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-OUTLINE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-0",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 925019.831115514
+  },
+  {
+   "id": "dw2-fuzz-box-1",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-2",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 53969.062105732
+  },
+  {
+   "id": "dw2-fuzz-box-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 21977.28538614992
+  },
+  {
+   "id": "dw2-fuzz-box-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13286.796065645283
+  },
+  {
+   "id": "dw2-fuzz-box-6",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-7",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 17252.673134649915
+  },
+  {
+   "id": "dw2-fuzz-box-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 17834.532994044104
+  },
+  {
+   "id": "dw2-fuzz-box-9",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2796.862769427411
+  },
+  {
+   "id": "dw2-fuzz-box-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 37013.31181235186
+  },
+  {
+   "id": "dw2-fuzz-box-11",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 27423.27845716788
+  },
+  {
+   "id": "dw2-fuzz-box-12",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-13",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 389519.58138676354
+  },
+  {
+   "id": "dw2-fuzz-box-14",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 99815.5072100819
+  },
+  {
+   "id": "dw2-fuzz-box-16",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-17",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 3448.788899177392
+  },
+  {
+   "id": "dw2-fuzz-box-18",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 426067.5846111818
+  },
+  {
+   "id": "dw2-fuzz-box-19",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11712.891818221045
+  },
+  {
+   "id": "dw2-fuzz-box-20",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-21",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-22",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-23",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 16668.956777394582
+  },
+  {
+   "id": "dw2-fuzz-box-24",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-25",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 17915.220243891657
+  },
+  {
+   "id": "dw2-fuzz-box-26",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-27",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 229298.52179405387
+  },
+  {
+   "id": "dw2-fuzz-box-28",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 25992.79898433373
+  },
+  {
+   "id": "dw2-fuzz-box-29",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 68319.84316175884
+  },
+  {
+   "id": "dw2-fuzz-box-30",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11618.958892346503
+  },
+  {
+   "id": "dw2-fuzz-box-31",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 129430.672336224
+  },
+  {
+   "id": "dw2-fuzz-box-32",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 46691.83809456521
+  },
+  {
+   "id": "dw2-fuzz-box-33",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-34",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 42409.5106947833
+  },
+  {
+   "id": "dw2-fuzz-box-35",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 14955.081755738378
+  },
+  {
+   "id": "dw2-fuzz-box-36",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-VANISH"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-box-37",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 223414.58565459587
+  },
+  {
+   "id": "dw2-fuzz-box-38",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 187360.16736993846
+  },
+  {
+   "id": "dw2-fuzz-box-39",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 54763.23946204202
+  },
+  {
+   "id": "dw2-fuzz-prism-0",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9101.3741977765
+  },
+  {
+   "id": "dw2-fuzz-prism-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 7286.1374097986545
+  },
+  {
+   "id": "dw2-fuzz-prism-2",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10282.955112953232
+  },
+  {
+   "id": "dw2-fuzz-prism-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 20866.49193739051
+  },
+  {
+   "id": "dw2-fuzz-prism-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 16488.434215671365
+  },
+  {
+   "id": "dw2-fuzz-prism-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 29030.715451310156
+  },
+  {
+   "id": "dw2-fuzz-prism-6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10717.70621207501
+  },
+  {
+   "id": "dw2-fuzz-prism-7",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 35665.003316189475
+  },
+  {
+   "id": "dw2-fuzz-prism-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 19989.0315900999
+  },
+  {
+   "id": "dw2-fuzz-prism-9",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 37702.295964490935
+  },
+  {
+   "id": "dw2-fuzz-prism-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 10757.879273998122
+  },
+  {
+   "id": "dw2-fuzz-prism-11",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 7441.395313525155
+  },
+  {
+   "id": "dw2-fuzz-prism-12",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 27168.802914300923
+  },
+  {
+   "id": "dw2-fuzz-prism-13",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 55097.78595632781
+  },
+  {
+   "id": "dw2-fuzz-prism-14",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 16773.75378769638
+  },
+  {
+   "id": "dw2-fuzz-prism-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 37492.110269659875
+  },
+  {
+   "id": "dw2-fuzz-prism-16",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5618.032184638866
+  },
+  {
+   "id": "dw2-fuzz-prism-17",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 47136.51284768831
+  },
+  {
+   "id": "dw2-fuzz-prism-18",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 11511.423537309072
+  },
+  {
+   "id": "dw2-fuzz-prism-19",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 25932.810410055725
+  },
+  {
+   "id": "dw2-fuzz-poly-0",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 11781.249513894412
+  },
+  {
+   "id": "dw2-fuzz-poly-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 4594.602978285838
+  },
+  {
+   "id": "dw2-fuzz-poly-2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 6238.695317697533
+  },
+  {
+   "id": "dw2-fuzz-poly-3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-4",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 10676.442763088779
+  },
+  {
+   "id": "dw2-fuzz-poly-5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-6",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 22508.792694195246
+  },
+  {
+   "id": "dw2-fuzz-poly-7",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 25013.005969754773
+  },
+  {
+   "id": "dw2-fuzz-poly-8",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-9",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 34880.084374098915
+  },
+  {
+   "id": "dw2-fuzz-poly-10",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 29511.75334495278
+  },
+  {
+   "id": "dw2-fuzz-poly-11",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 44799.234609611296
+  },
+  {
+   "id": "dw2-fuzz-poly-12",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-13",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-14",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 29703.00127688982
+  },
+  {
+   "id": "dw2-fuzz-poly-15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 34556.51059377887
+  },
+  {
+   "id": "dw2-fuzz-poly-16",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 51556.978941567766
+  },
+  {
+   "id": "dw2-fuzz-poly-17",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-18",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 90738.65494946654
+  },
+  {
+   "id": "dw2-fuzz-poly-19",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 27417.017790953618
+  },
+  {
+   "id": "dw2-fuzz-poly-20",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-21",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-22",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-23",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 21797.029280460138
+  },
+  {
+   "id": "dw2-fuzz-poly-24",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 8016.606130714856
+  },
+  {
+   "id": "dw2-fuzz-poly-25",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-26",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-27",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-28",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 28888.492200352382
+  },
+  {
+   "id": "dw2-fuzz-poly-29",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-30",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 13243.04417835782
+  },
+  {
+   "id": "dw2-fuzz-poly-31",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-32",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-33",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 18532.042374415087
+  },
+  {
+   "id": "dw2-fuzz-poly-34",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 33085.75861362217
+  },
+  {
+   "id": "dw2-fuzz-poly-35",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-fuzz-poly-36",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 23026.078317777243
+  },
+  {
+   "id": "dw2-fuzz-poly-37",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 9732.192520665476
+  },
+  {
+   "id": "dw2-fuzz-poly-38",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 21007.93838611814
+  },
+  {
+   "id": "dw2-fuzz-poly-39",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 8382.39096643313
+  },
+  {
+   "id": "hd2-right-w2-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 7047.269610430696
+  },
+  {
+   "id": "hd2-right-w2-2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6942.4753830495165
+  },
+  {
+   "id": "hd2-right-w2-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6837.55332430175
+  },
+  {
+   "id": "hd2-right-w2-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6732.4391283389405
+  },
+  {
+   "id": "hd2-right-w2-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6627.068018844456
+  },
+  {
+   "id": "hd2-right-w2-6",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-right-w2-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-right-w2-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-right-w2-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-left-w2-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 7047.269610430696
+  },
+  {
+   "id": "hd2-left-w2-2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6942.475383049514
+  },
+  {
+   "id": "hd2-left-w2-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6837.55332430175
+  },
+  {
+   "id": "hd2-left-w2-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6732.4391283389405
+  },
+  {
+   "id": "hd2-left-w2-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6627.068018844456
+  },
+  {
+   "id": "hd2-left-w2-6",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-left-w2-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-left-w2-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-left-w2-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-front-w2-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 7012.359480574259
+  },
+  {
+   "id": "hd2-front-w2-2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6872.633844066017
+  },
+  {
+   "id": "hd2-front-w2-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6732.73776573567
+  },
+  {
+   "id": "hd2-front-w2-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6592.585504451919
+  },
+  {
+   "id": "hd2-front-w2-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6452.090691792604
+  },
+  {
+   "id": "hd2-front-w2-6",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-front-w2-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-front-w2-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-front-w2-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-back-w2-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 7012.359480574258
+  },
+  {
+   "id": "hd2-back-w2-2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6872.633844066018
+  },
+  {
+   "id": "hd2-back-w2-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6732.73776573567
+  },
+  {
+   "id": "hd2-back-w2-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6592.585504451919
+  },
+  {
+   "id": "hd2-back-w2-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6452.090691792608
+  },
+  {
+   "id": "hd2-back-w2-6",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-back-w2-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-back-w2-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-back-w2-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-right-w3-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 10023.269610430696
+  },
+  {
+   "id": "hd2-right-w3-2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9918.475383049516
+  },
+  {
+   "id": "hd2-right-w3-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9813.55332430175
+  },
+  {
+   "id": "hd2-right-w3-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9708.43912833894
+  },
+  {
+   "id": "hd2-right-w3-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9603.068018844457
+  },
+  {
+   "id": "hd2-right-w3-6",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9497.374588405944
+  },
+  {
+   "id": "hd2-right-w3-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9284.754991785652
+  },
+  {
+   "id": "hd2-right-w3-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-right-w3-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-left-w3-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 10023.269610430696
+  },
+  {
+   "id": "hd2-left-w3-2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9918.475383049514
+  },
+  {
+   "id": "hd2-left-w3-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9813.55332430175
+  },
+  {
+   "id": "hd2-left-w3-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9708.43912833894
+  },
+  {
+   "id": "hd2-left-w3-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9603.068018844457
+  },
+  {
+   "id": "hd2-left-w3-6",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9497.374588405944
+  },
+  {
+   "id": "hd2-left-w3-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9284.754991785652
+  },
+  {
+   "id": "hd2-left-w3-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-left-w3-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-front-w3-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9988.35948057426
+  },
+  {
+   "id": "hd2-front-w3-2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9848.633844066017
+  },
+  {
+   "id": "hd2-front-w3-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9708.73776573567
+  },
+  {
+   "id": "hd2-front-w3-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9568.58550445192
+  },
+  {
+   "id": "hd2-front-w3-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9428.090691792606
+  },
+  {
+   "id": "hd2-front-w3-6",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9287.166117874587
+  },
+  {
+   "id": "hd2-front-w3-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9003.673322380871
+  },
+  {
+   "id": "hd2-front-w3-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-front-w3-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-back-w3-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9988.35948057426
+  },
+  {
+   "id": "hd2-back-w3-2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9848.633844066017
+  },
+  {
+   "id": "hd2-back-w3-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9708.73776573567
+  },
+  {
+   "id": "hd2-back-w3-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9568.58550445192
+  },
+  {
+   "id": "hd2-back-w3-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9428.090691792608
+  },
+  {
+   "id": "hd2-back-w3-6",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9287.166117874589
+  },
+  {
+   "id": "hd2-back-w3-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9003.673322380871
+  },
+  {
+   "id": "hd2-back-w3-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-back-w3-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-edge-w2--0.01",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6555.000051640185
+  },
+  {
+   "id": "hd2-edge-w2--0.001",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6552.299968136092
+  },
+  {
+   "id": "hd2-edge-w2-0",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6552.000010018455
+  },
+  {
+   "id": "hd2-edge-w2-0.001",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-edge-w2-0.01",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-edge-w3--0.01",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9231.00000651607
+  },
+  {
+   "id": "hd2-edge-w3--0.001",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9228.299982845621
+  },
+  {
+   "id": "hd2-edge-w3-0",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-edge-w3-0.001",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-edge-w3-0.01",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-SWEEP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-right-out8",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 7995.245008214347
+  },
+  {
+   "id": "hd2-right-out20",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9335.821405597215
+  },
+  {
+   "id": "hd2-left-out10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 8209.96188425079
+  },
+  {
+   "id": "hd2-front-out12",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 8852.452493360177
+  },
+  {
+   "id": "hd2-right-top-neutral",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 7782.6254115940565
+  },
+  {
+   "id": "hd2-contract-case",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4945.5122433920005
+  },
+  {
+   "id": "hd2-whole-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-WHOLE-HOLLOW"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-whole-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-WHOLE-HOLLOW"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-whole-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-WHOLE-HOLLOW"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hd2-whole-closed",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-VOID"
+   ],
+   "volume": null
+  },
+  {
+   "id": "ha2-top-3-w2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5039.259679182331
+  },
+  {
+   "id": "ha2-top-5-w2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5042.523234148345
+  },
+  {
+   "id": "ha2-top--5-w2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5056.949186688874
+  },
+  {
+   "id": "ha2-bottom-4-w2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4869.504269260045
+  },
+  {
+   "id": "ha2-top-5-w3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 7037.988599217206
+  },
+  {
+   "id": "ha2-right-8-w2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hm2-mirror-lr-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5631.999999999997
+  },
+  {
+   "id": "hm2-mirror-lr-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5631.999999999999
+  },
+  {
+   "id": "hm2-mirror-lr-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5632
+  },
+  {
+   "id": "hm2-mirror-lr-back",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5632
+  },
+  {
+   "id": "hm2-mirror-lr-right",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6271.999999999994
+  },
+  {
+   "id": "hm2-mirror-lr-left",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-PICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hm2-mirror-fb-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4640
+  },
+  {
+   "id": "hm2-mirror-tb-front",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4512
+  },
+  {
+   "id": "hm2-mirror-moved",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 5632
+  },
+  {
+   "id": "hm2-mirror-tb-top",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4512
+  },
+  {
+   "id": "hm2-mirror-tb-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-PICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hm2-mirror-offset",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9040
+  },
+  {
+   "id": "hm2-join-adjacent",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "guards": [],
+   "volume": 5631.999999999997
+  },
+  {
+   "id": "hm2-mirror-twice-L",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-box-c1-w2",
+   "same": true,
+   "retried": false,
+   "status": "refused,refused",
+   "guards": [
+    "G-CHAMFER"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-box-c1.5-w2",
+   "same": true,
+   "retried": false,
+   "status": "refused,refused",
+   "guards": [
+    "G-CHAMFER"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-box-c2-w3",
+   "same": true,
+   "retried": false,
+   "status": "refused,refused",
+   "guards": [
+    "G-CHAMFER"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-box-c3-w2",
+   "same": true,
+   "retried": false,
+   "status": "refused,refused",
+   "guards": [
+    "G-CHAMFER"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-box-c2-w2",
+   "same": true,
+   "retried": false,
+   "status": "refused,refused",
+   "guards": [
+    "G-CHAMFER"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-box-only",
+   "same": true,
+   "retried": false,
+   "status": "refused",
+   "guards": [
+    "G-CHAMFER"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-cyl-c1-w2-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CHAMFER"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-cyl-c1-w2-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CHAMFER"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-cyl-c0.5-w2-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CHAMFER"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-cyl-c2-w2-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CHAMFER"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-cyl-c3-w2-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CHAMFER"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-box-round3-w2",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-ROUND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hb2-cyl-round1-w2",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 4743.460800318421
+  },
+  {
+   "id": "hb2-cyl-round3-w2",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-ROUND"
+   ],
+   "volume": null
+  },
+  {
+   "id": "sn2-draft-sphere-face",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-FLAT"
+   ],
+   "volume": null
+  },
+  {
+   "id": "sn2-draft-cap-from-right",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "sn2-draft-cap-top",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "sn2-draft-cap-top-from-bottom",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "sn2-draft-cap-front-from-back",
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-CAP"
+   ],
+   "volume": null
+  },
+  {
+   "id": "sn2-hollow-open-drafted",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "engine"
+   ],
+   "volume": null
+  },
+  {
+   "id": "sn2-hollow-twice",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-TWICE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-fuzz-0",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 31702.352000000014
+  },
+  {
+   "id": "hc2-fuzz-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 25357.136
+  },
+  {
+   "id": "hc2-fuzz-2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 27201.747841023123
+  },
+  {
+   "id": "hc2-fuzz-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 2124.704878897431
+  },
+  {
+   "id": "hc2-fuzz-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 18682.999999999996
+  },
+  {
+   "id": "hc2-fuzz-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 103251.62399999995
+  },
+  {
+   "id": "hc2-fuzz-6",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 13995.58410128621
+  },
+  {
+   "id": "hc2-fuzz-7",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,refused",
+   "guards": [
+    "G-CLOSED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-fuzz-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 23548.896000000008
+  },
+  {
+   "id": "hc2-fuzz-9",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 47704.176
+  },
+  {
+   "id": "hc2-fuzz-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 61874.836318815585
+  },
+  {
+   "id": "hc2-fuzz-11",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 32930.395817350385
+  },
+  {
+   "id": "hc2-fuzz-12",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 2739.55199999998
+  },
+  {
+   "id": "hc2-fuzz-13",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 11189.808000000005
+  },
+  {
+   "id": "hc2-fuzz-14",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9542.848800239419
+  },
+  {
+   "id": "hc2-fuzz-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6613.052517643952
+  },
+  {
+   "id": "hc2-fuzz-16",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 36303.167999999976
+  },
+  {
+   "id": "hc2-fuzz-17",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 57652.99200000003
+  },
+  {
+   "id": "hc2-fuzz-18",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 20908.3476473361
+  },
+  {
+   "id": "hc2-fuzz-19",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 11209.597267675928
+  },
+  {
+   "id": "hc2-fuzz-20",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 15729.055999999999
+  },
+  {
+   "id": "hc2-fuzz-21",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6397.34399999999
+  },
+  {
+   "id": "hc2-fuzz-22",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 6861.167783531581
+  },
+  {
+   "id": "hc2-fuzz-23",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 46577.359207895825
+  },
+  {
+   "id": "hc2-fuzz-24",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 9917.952000000003
+  },
+  {
+   "id": "hc2-fuzz-25",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 27058.304000000004
+  },
+  {
+   "id": "hc2-fuzz-26",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 2077.6242178671596
+  },
+  {
+   "id": "hc2-fuzz-27",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 780.5733343996886
+  },
+  {
+   "id": "hc2-fuzz-28",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 7731.023999999998
+  },
+  {
+   "id": "hc2-fuzz-29",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 37821.78400000001
+  },
+  {
+   "id": "hc2-fuzz-30",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 52500.04457181936
+  },
+  {
+   "id": "hc2-fuzz-31",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CLOSED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hc2-fuzz-32",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 5680.7519999999995
+  },
+  {
+   "id": "hc2-fuzz-33",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 41427.408
+  },
+  {
+   "id": "hc2-fuzz-34",
+   "same": true,
+   "retried": false,
+   "status": "built,built",
+   "guards": [],
+   "volume": 22439.88895289619
+  },
+  {
+   "id": "hc2-fuzz-35",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CLOSED"
+   ],
+   "volume": null
+  },
+  {
+   "id": "dw2-front-rect-pull-y",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 12248.74436255372
+  },
+  {
+   "id": "dw2-right-rect-pull-x",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 7460.734184045582
+  },
+  {
+   "id": "dw2-front-rect-pull-z",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 7017.432501629574
+  },
+  {
+   "id": "dw2-right-rect-pull-z",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built",
+   "guards": [],
+   "volume": 6238.964580930823
+  },
+  {
+   "id": "ha3-prism6-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4294.3265627794035
+  },
+  {
+   "id": "ha3-prism4--4",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 3589.3192541081203
+  },
+  {
+   "id": "ha3-prism8-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 3259.292205755515
+  },
+  {
+   "id": "ha3-prism3-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 1711.1347449931707
+  },
+  {
+   "id": "ha3-prism6-face",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4118.975901290017
+  },
+  {
+   "id": "ha3-cylinder-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CONE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "ha3-extrude-circle",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,refused",
+   "guards": [
+    "G-CONE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "ha3-cylinder-neg",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-CONE"
+   ],
+   "volume": null
+  },
+  {
+   "id": "ha3-extrude-rect",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,built",
+   "guards": [],
+   "volume": 4427.713556323302
+  },
+  {
+   "id": "ha3-extrude-L",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,built,refused",
+   "guards": [
+    "G-CONVEX"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hm2-fuzz-0",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 12880.764000000003
+  },
+  {
+   "id": "hm2-fuzz-1",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 5187
+  },
+  {
+   "id": "hm2-fuzz-2",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 18360
+  },
+  {
+   "id": "hm2-fuzz-3",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9942.911999999998
+  },
+  {
+   "id": "hm2-fuzz-4",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 24598.524
+  },
+  {
+   "id": "hm2-fuzz-5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 12705
+  },
+  {
+   "id": "hm2-fuzz-6",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 14998.015999999998
+  },
+  {
+   "id": "hm2-fuzz-7",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 41256.124
+  },
+  {
+   "id": "hm2-fuzz-8",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 26259.967999999993
+  },
+  {
+   "id": "hm2-fuzz-9",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6577.911999999997
+  },
+  {
+   "id": "hm2-fuzz-10",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 27580.096
+  },
+  {
+   "id": "hm2-fuzz-11",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 15640.127999999997
+  },
+  {
+   "id": "hm2-fuzz-12",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 8697.5
+  },
+  {
+   "id": "hm2-fuzz-13",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 17954.064000000002
+  },
+  {
+   "id": "hm2-fuzz-14",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4048.0440000000017
+  },
+  {
+   "id": "hm2-fuzz-15",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-PICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hm2-fuzz-16",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 63983.80800000002
+  },
+  {
+   "id": "hm2-fuzz-17",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 19638.528000000006
+  },
+  {
+   "id": "hm2-fuzz-18",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-PICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hm2-fuzz-19",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 14486.555999999991
+  },
+  {
+   "id": "hm2-fuzz-20",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 47804
+  },
+  {
+   "id": "hm2-fuzz-21",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4592
+  },
+  {
+   "id": "hm2-fuzz-22",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 3468.0000000000073
+  },
+  {
+   "id": "hm2-fuzz-23",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 2994.8880000000026
+  },
+  {
+   "id": "hm2-fuzz-24",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-PICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hm2-fuzz-25",
+   "same": true,
+   "retried": false,
+   "status": "built,built,refused",
+   "guards": [
+    "G-PICK"
+   ],
+   "volume": null
+  },
+  {
+   "id": "hm2-fuzz-26",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 18151.232
+  },
+  {
+   "id": "hm2-fuzz-27",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 4598.528000000001
+  },
+  {
+   "id": "hm2-fuzz-28",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 6897.4079999999985
+  },
+  {
+   "id": "hm2-fuzz-29",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 9646.727999999992
+  },
+  {
+   "id": "hm2-fuzz-30",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 37350
+  },
+  {
+   "id": "hm2-fuzz-31",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 11753.471999999996
+  },
+  {
+   "id": "hm2-fuzz-32",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 19035.967999999997
+  },
+  {
+   "id": "hm2-fuzz-33",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 88155
+  },
+  {
+   "id": "hm2-fuzz-34",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 8934.744000000004
+  },
+  {
+   "id": "hm2-fuzz-35",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "guards": [],
+   "volume": 30051
+  }
+ ]
+}
