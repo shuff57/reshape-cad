@@ -40,16 +40,20 @@
       "next": "owner decision: (1) pick path B for the pane: host-supplied primitive-frame resolver, or teach the base resolver to follow a move; (2) composition guard loss: make guards composable (run every set's guards, not only the owner's) before wiring combined sets; then fold the remaining groups."
     },
     "patterns-mirror": {
-      "state": "todo"
+      "state": "folded-fake-only",
+      "note": "folded (fake-engine differential identical to the original, 4306 comparisons; PM-MIRCONTACT refuses when its probe fails: owner-approved named exception). No 0.21.0 baseline for this group. Real-kernel replay: in unified replay2, not yet finished."
     },
     "booleans": {
-      "state": "todo"
+      "state": "folded-fake-only",
+      "note": "folded (fake-engine differential identical, 10001 comparisons; 45 s budget advice only; known guard holes ported on purpose, see packages/layer/NOTES.md Fold 5). Owner: booleans owns combine in unified, EP join checks at cheap. No 0.21.0 baseline."
     },
     "revolve-groove": {
-      "state": "todo"
+      "state": "folded-fake-only",
+      "note": "folded (fake-engine differential identical, 15902 comparisons; fail-open without ctx.mt fixed, owner-approved named exception; known holes ported, see NOTES Fold 6). No 0.21.0 baseline."
     },
     "rest": {
-      "state": "todo"
+      "state": "todo",
+      "note": "Not scoped. The remaining pure-guard modules (primitives, outline, blend-loft, sketch-geometry, fillet-chamfer, sketch-constraints, picks-naming-params, sketch-dof) need an owner scoping decision before a pass."
     }
   },
   "resolver_follow_moves": {
@@ -58,5 +62,8 @@
     "proof": "real kernel (SolidCraft 0.21.0): 254 cases vs closed forms (volume, bbox, centre of mass; planar 1e-9, curved 3e-4): 221 built and right, 27 refused as expected, 6 refused unexpectedly (safe), 0 built-and-wrong. Re-run independently by the lead 2026-10-25: same counts. Fake engine: flag off identical; flag on equals the original's path A on 57 of 78 moved named-pick docs, the 21 others are refusals by one side (1 a capability the group had: hm2-mirror-moved). brep-rs is NOT a usable oracle for moved drafts or turned primitives (disagrees on 38 of 221).",
     "needs": "the stock rig wasm cannot return topology; the proof used a wasm built from phase2/wrapper2 (SOLIDCRAFT_TOPOLOGY_PKG). The PANE needs a host-side adapter from upstream window.solidcraft.execute('model.faces'|'model.edges',{body}) to topologyOf (test/topology-upstream.mjs is the test-only version); upstream has no centroid_hit, the adapter trusts upstream's face `point`. Not built yet. Hollow walls were capped at a third of the smallest dimension, so t-to-2t shell guards are untested here; one seed.",
     "evidence": "packages/layer/test/evidence/live-moved-picks-0.21.0.json; script packages/layer/test/live-moved-picks.mjs"
+  },
+  "unified": {
+    "state": "six sets, safety 0 violations of 99439 (fake), in-domain 51858 equal; accepted classes PM-WEB/PM-SNAPCUT (38 docs), EP-JOIN cheap (2 docs). Live replay of five sets running."
   }
 }
