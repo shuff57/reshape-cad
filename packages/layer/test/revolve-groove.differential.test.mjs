@@ -47,6 +47,7 @@ const CONFIGS = [
   { name: 'boxBool+rgModel, the bridge dies on every 7th call (bridge error path), mt', fake: { boxBool: true, rgModel: true, throwWhen: (cmds, k) => k % 7 === 0 }, useMt: true, throws: true },
 ];
 
+const same = (x, y) => { try { assert.deepStrictEqual(x, y); return true; } catch { return false; } };
 const errOf = (e) => `${e?.constructor?.name}: ${e?.message}`;
 const norm = (x) => JSON.parse(JSON.stringify(x === undefined ? null : x));
 
@@ -161,7 +162,7 @@ const aimedDocs = aimed.map(([name, features]) => ({ name: `aimed ${name}`, doc:
 
 const tally = {
   cases: 0, identical: 0, thrown: 0, built: {}, refused: {}, guards: {}, sentences: new Set(), calls: 0, side: { neg: 0, pos: 0 }, nudge: 0, split: 0,
-  p4: { docs: 0 }, p0: { compared: 0, docs: 0 }, excluded: { docs: 0, kinds: {}, differ: 0, agree: 0, trapRuns: 0, trapDiffer: 0, trapAgree: 0 }, byCorpus: {}, grooveRuns: 0, otherRuns: 0, optsBad: [],
+  noMt: { runs: 0, docs: new Set(), by: {} }, p4: { docs: 0 }, p0: { compared: 0, docs: 0 }, excluded: { docs: 0, kinds: {}, differ: 0, agree: 0, trapRuns: 0, trapDiffer: 0, trapAgree: 0 }, byCorpus: {}, grooveRuns: 0, otherRuns: 0, optsBad: [],
 };
 const bump = (o, k, n = 1) => { o[k] = (o[k] ?? 0) + n; };
 const shape = (s) => String(s).replace(/-?\d+(\.\d+)?(e-?\d+)?/g, '#').replace(/\b(sk|e|p|b|c|s|h|m|r|x|f|d|pk|pa|mi|u|sph|cyl|ghost|t|v|k|n|w|j|z|g)\d*\b/g, '$1');
@@ -202,6 +203,22 @@ async function compareDoc(name, item, cfg, which, extra = {}) {
     return { a, b };
   }
   tally.cases++;
+  // NAMED EXCEPTION (owner decision, NOTES Fold 6): with no ctx.mt the original skips ring-misses, G7, G8, G9 and G10 (a fail-open by a missing input); the port falls back to the base's frame and runs them.
+  // A run without mt may differ from the original ONLY at the first differing feature, and only where the port refuses a groove with one of those guards, or builds it with the sketch plane nudged (G7, full turn),
+  // and the original built it; every feature before it is identical. Everything else must be identical.
+  if (!cfg.useMt && !same([b.result, b.error], [a.result, a.error])) {
+    const af = a.result?.features ?? []; const bf = b.result?.features ?? [];
+    const k = bf.findIndex((x, j) => !same(x, af[j]));
+    const refusedBefore = bf.slice(0, Math.max(k, 0)).filter((x) => x.status === 'refused').length;
+    const code = bf[k]?.status === 'refused' ? b.guards[refusedBefore] : null;
+    const skipped = ['G4', 'G7', 'G8', 'G9', 'G10'];
+    const ok = !a.error && !b.error && k >= 0 && bf[k].kind === 'groove' && (af[k]?.status === 'built' || (cfg.fake.failEvery && af[k]?.status === 'refused')) // (with an injected failure the original's run may have been the one that failed)
+      && ((bf[k].status === 'refused' && skipped.includes(code)) || (bf[k].status === 'built' && bf[k].guard?.nudgeDeg > 0)
+        || (af[k]?.status === bf[k].status && same({ ...bf[k], guard: 0 }, { ...af[k], guard: 0 }))); // (or built the same, only the logged cost features differ: they are computed from the frame now)
+    assert.ok(ok, `${name} [${cfg.name}] (${which}): differs from the original beyond the named missing-mt exception`);
+    tally.noMt.runs++; tally.noMt.docs.add(name); bump(tally.noMt.by, bf[k].status === 'refused' && af[k]?.status !== 'refused' ? code : bf[k].status === 'built' && bf[k].guard?.nudgeDeg > 0 && af[k]?.status === 'built' && !same(bf[k].commands, af[k].commands) ? 'G7 nudge' : 'only the logged guard info');
+    return { a, b };
+  }
   assert.deepStrictEqual(b.error, a.error, `${name} [${cfg.name}] (${which}): thrown error differs`);
   assert.deepStrictEqual(b.result, a.result, `${name} [${cfg.name}] (${which}): translateDoc result differs`);
   assert.deepStrictEqual(b.log, a.log, `${name} [${cfg.name}] (${which}): engine call sequence differs`);
@@ -398,8 +415,10 @@ test('summary', () => {
 # runs with { budgetS }: ${tally.grooveRuns}, runs without: ${tally.otherRuns}
 # distinct refusal sentences (numbers and ids folded): ${tally.sentences.size}
 # p0-excluded docs (phase0 and phase 4 differ on a feature other than a spin / groove): ${tally.excluded.docs} ${JSON.stringify(tally.excluded.kinds)}; of them the port differs from the p0 original on ${tally.excluded.differ}, agrees on ${tally.excluded.agree}
+# NAMED EXCEPTION, no ctx.mt (the original skips G4 ring-misses / G7 / G8 / G9 / G10; the port runs them): ${tally.noMt.runs} runs of ${tally.noMt.docs.size} docs, by the guard that now refuses: ${JSON.stringify(tally.noMt.by)}
 # p0 runs not compared because the bridge threw (WASM TRAP vs bridge error wording): ${tally.excluded.trapRuns}; the port differs on ${tally.excluded.trapDiffer}, agrees on ${tally.excluded.trapAgree}`);
-  assert.ok(tally.identical === tally.cases);
+  assert.ok(tally.noMt.runs > 0, 'the missing-mt exception never fired');
+  assert.ok(tally.identical + tally.noMt.runs === tally.cases);
   assert.deepStrictEqual(tally.optsBad, []);
   assert.deepStrictEqual(missing, [], 'a guard of the group was never reached');
   assert.ok(tally.side.neg > 10 && tally.nudge > 0 && tally.split > 0, 'the -u side, the nudge and the split are all reached');

@@ -21,6 +21,7 @@ import type { Feature } from '@shuff57/reshape-script/model-types';
 import type { ArcApi, Cmd, Frame, V2 } from './types.js';
 import { sampleOutline, selfTouch } from './outline-guard.js';
 import type { GuardOutline } from './outline-guard.js';
+import { frameWithMt } from './translate.js';
 import type { Aggregate, Plan, PlanCtx, Refusal, TranslateState } from './translate.js';
 
 export const MIN_TURN = 1; // degrees. Measured: 0.55 degree and under comes back as flat faces (any radius); 0.6 and over is a cylinder.
@@ -466,7 +467,9 @@ export function guardPlan(raw: RawPlan, fe: Feature, st: TranslateState, ctx: Pl
     const bodies = st.bodies[head];
     if (bodies && bodies.length > 1) return refusal(`${L}${f.into} was left in ${bodies.length} separate pieces, and a groove cuts one piece, so cut before the part is split.`, 'G4');
     const meas = st.measure[head];
-    const fr = ctx.mt?.sketchFrameOf ? ctx.mt.sketchFrameOf(sk) : null;
+    // owner decision (Fold 6): the original reads the frame ONLY from ctx.mt.sketchFrameOf and, without it, skips ring-misses, G7, G8, G9 and G10 (a fail-open by a missing input). The base's frame (the same
+    // computation for named planes and explicit frames) is used instead, so the checks always run.
+    const fr = frameWithMt(sk, ctx.mt);
     const cost = costFeatures(p, sk, ctx.arc, fr, meas, a);
     guard = { cost };
     if (meas && fr && ringMisses(p, fr, meas.bbox)) return refusal(`${L}the ring does not reach the part, so it would cut nothing.`, 'G4', guard);
