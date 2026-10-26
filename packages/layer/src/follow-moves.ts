@@ -18,7 +18,7 @@ import type { V3 } from './types.js';
 type Mat = number[][];
 type Step = { kind: 'move'; t: V3 } | { kind: 'turn'; R: Mat; c: V3; id: string };
 
-interface FView { id: string; kind: string; target?: string; into?: string; offset?: V3; copy?: boolean; angles?: V3 }
+interface FView { id: string; kind: string; target?: string; targets?: string[]; into?: string; offset?: V3; copy?: boolean; angles?: V3 }
 
 const I3: Mat = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
 const mul = (A: Mat, B: Mat): Mat => A.map((r) => [0, 1, 2].map((j) => r[0] * B[0][j] + r[1] * B[1][j] + r[2] * B[2][j]));
@@ -82,14 +82,14 @@ export function followMoves(rr: Resolved, env: FollowEnv): Resolved {
     }
     if (PASS_TARGET.includes(g.kind)) { cur = g.target ?? ''; continue; }
     if (PASS_INTO.includes(g.kind)) { cur = g.into ?? ''; continue; }
-    blocker = g; break;
+    blocker ??= g; // joins, mirrors, patterns and the rest: not followed; keep walking to see whether a move or a turn lies behind it
+    cur = (g.kind === 'combine' ? g.targets?.[0] : g.target) ?? g.into ?? '';
   }
-  if (cur !== root && !back.length) return rr; // never placed, or a history this does not read: the base behaviour, unchanged
-  if (cur !== root) {
+  if (!back.length) return rr; // never placed, or a history this does not read: the base behaviour, unchanged
+  if (cur !== root || blocker) {
     const why = blocker ? `${blocker.id} is a ${blocker.kind}` : 'the history between them cannot be read';
     return fail(`${nm} names a face of ${root}, but the part was moved or turned and then ${why}; a name is carried through a move or a quarter turn only, so nothing is picked`);
   }
-  if (!back.length) return rr;
   // apply in build order: the first transform applied is the one nearest the named feature = the last pushed
   let n = rr.plane.n; let d = rr.plane.d; let pt: V3 | null | undefined = rr.point;
   const trail: string[] = [];
