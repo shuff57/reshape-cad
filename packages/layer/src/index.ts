@@ -26,3 +26,5 @@ export { PM_PROFILE, PM_KINDS, PM_CROSS_KIND_GUARDS, pmStep, cutGuard, toolBoxOf
 export type { PMState, ToolBox, Box3, MirrorAt, CutHit } from './patterns-mirror.js';
 export { preflightScript, PREFLIGHT_SENTENCE, PREFLIGHT_SENTENCE_VAR } from './pm-preflight.js';
 export type { PreflightHit } from './pm-preflight.js';
+export { BOOL_PROFILE, BOOL_KINDS, BOOL_CROSS_KIND_GUARDS, boolStep, execCombine, initBool, BOOLEANS_BUDGET_S, BOOLEANS_SENTENCES, BOOLEANS_SLIVER, guardCombine, afterCombine, plainSentence as booleansPlainSentence, plainPieces, reusedTools, booleansLintSentence, explainCombineArgs, explainFront, describeOperand, obbDepth, booleansSlow } from './booleans.js';
+export type { BoolState, Desc as BooleansDesc, GuardOp as BooleansGuardOp, GuardHit as BooleansGuardHit, CombineView } from './booleans.js';

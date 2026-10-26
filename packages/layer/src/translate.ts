@@ -19,6 +19,7 @@ import { resolveName, pickPoint } from './resolve-names.js';
 import { followMoves } from './follow-moves.js';
 import type { UnifiedDomain } from './unified.js';
 import type { PMState } from './patterns-mirror.js';
+import type { BoolState } from './booleans.js';
 import type { Evidence, Resolved, ResolveEnv, ShapeResult, FaceRes, EdgeRes } from './resolve-names.js';
 
 export const FEATURE_KINDS = ['box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'sketch', 'datum', 'extrude', 'combine',
@@ -70,6 +71,8 @@ export interface TranslateState {
   shellDraft?: { voided: Record<string, true> };
   /** patterns-mirror set only: the group's bookkeeping (analytic boxes, cut history, torus lineage, the refusals' two texts). See patterns-mirror.ts. */
   pm?: PMState;
+  /** booleans set only: the group's bookkeeping (every feature by id, what changes an id in place, the live body list, the last run's CPU). See booleans.ts. */
+  bool?: BoolState;
   /** unified set only: which groups the document uses (decides the style of the loop). See unified.ts. */
   unified?: { domain: UnifiedDomain; maps: { E: { measure: Record<string, Aggregate>; bodies: Record<string, string[]> }; P: { measure: Record<string, Aggregate>; bodies: Record<string, string[]> } } };
 }

@@ -198,7 +198,53 @@ function pmJoin(t, o) {
   return null;
 }
 
-function simulate(commands, boxBool = false, holeModel = false, shellDraft = false, pmModel = false) {
+// boolModel (opt-in, default false; needs boxBool): a crude model of the booleans group's world, on the axis-aligned boxes the fake tracks. It exists so that the group's executor and
+// after-the-build checks run on the fake: keep_tools lets a tool survive; a cut whose tool spans the target on two axes and lies strictly inside it on the third splits the target in two
+// pieces, the second named "<target> (k)" for the smallest k not in use; a cut that removes everything deletes the target and an intersect with nothing in common deletes it too (ok:true both,
+// as the real kernel does); two boxes that coincide on all six faces fail ("coincident faces"); a cut or keep whose tool only touches the target along an edge or at a corner of a CURVED pair
+// fails ("shallow angle"); a tool strictly inside the target adds a shell; a keep with a curved tool that enters by under 15% of its box returns a bounding box that overshoots the operands
+// by 1% (so the group's G19 can fire). It models no real kernel; the default model above is unchanged.
+const coincide = (a, b) => [0, 1, 2].every((i) => a.min[i] === b.min[i] && a.max[i] === b.max[i]);
+function boolCombineModel(bodies, tname, oname, op) {
+  const t = bodies.get(tname); const o = bodies.get(oname);
+  if (coincide(t.bbox, o.bbox)) return 'fake: boolean failed: coincident faces';
+  const gap = gapsOf(t.bbox, o.bbox);
+  const touchingAxes = gap.filter((g) => Math.abs(g) <= 1e-12).length;
+  if (op !== 'join' && touchingAxes >= 2 && Math.max(...gap) <= 1e-12 && (t.curved || o.curved)) return 'fake: boolean failed: curved faces meet at a shallow angle';
+  const ovl = overlapVol(t.bbox, o.bbox);
+  if (op === 'cut') {
+    const fillT = fill(t);
+    // a cut that overlaps the target by under 0.15 mm on some axis is silently ignored (ok:true, nothing removed): the sliver the group's G4b exists for
+    const depthMin = Math.min(...[0, 1, 2].map((i) => Math.min(t.bbox.max[i], o.bbox.max[i]) - Math.max(t.bbox.min[i], o.bbox.min[i])));
+    if (depthMin > 0 && depthMin < 0.15) return null;
+    const spans = [0, 1, 2].map((i) => o.bbox.min[i] <= t.bbox.min[i] && o.bbox.max[i] >= t.bbox.max[i]);
+    const interior = [0, 1, 2].map((i) => o.bbox.min[i] > t.bbox.min[i] && o.bbox.max[i] < t.bbox.max[i]);
+    if (spans.every(Boolean)) { bodies.delete(tname); return null; }
+    const a = [0, 1, 2].find((i) => interior[i] && [0, 1, 2].filter((k) => k !== i).every((k) => spans[k]));
+    if (a !== undefined) {
+      const left = { min: t.bbox.min.slice(), max: t.bbox.max.slice() }; left.max[a] = o.bbox.min[a];
+      const right = { min: t.bbox.min.slice(), max: t.bbox.max.slice() }; right.min[a] = o.bbox.max[a];
+      let k = 1; while (bodies.has(`${tname} (${k})`)) k++;
+      bodies.set(`${tname} (${k})`, { ...t, name: `${tname} (${k})`, bbox: right, volume: fillT * vol(right), shells: 1 });
+      t.bbox = left; t.volume = fillT * vol(left);
+      return null;
+    }
+    t.volume = Math.max(0, t.volume - ovl * fillT);
+    if (strictlyInside(o.bbox, t.bbox)) t.shells = (t.shells ?? 1) + 1;
+    if (t.volume <= 1e-12) bodies.delete(tname);
+    return null;
+  }
+  // intersect
+  if (!(ovl > 0)) { bodies.delete(tname); return null; }
+  const box = { min: t.bbox.min.map((v, a) => Math.max(v, o.bbox.min[a])), max: t.bbox.max.map((v, a) => Math.min(v, o.bbox.max[a])) };
+  t.volume = ovl * fill(t); t.bbox = box;
+  if (o.curved && vol(o.bbox) > 0 && ovl / vol(o.bbox) < 0.15) {
+    t.bbox = { min: box.min.map((v, a) => v - 0.01 * (box.max[a] - box.min[a])), max: box.max.map((v, a) => v + 0.01 * (box.max[a] - box.min[a])) };
+  }
+  return null;
+}
+
+function simulate(commands, boxBool = false, holeModel = false, shellDraft = false, pmModel = false, boolModel = false) {
   const bodies = new Map();
   const sketches = new Map();
   let active = null;
@@ -305,6 +351,13 @@ function simulate(commands, boxBool = false, holeModel = false, shellDraft = fal
       const t = bodies.get(p.target);
       for (const n of p.tools) {
         const o = bodies.get(n);
+        if (boolModel && boxBool && p.operation !== 'join') {
+          const er = boolCombineModel(bodies, p.target, n, p.operation); if (er) return { bodies, sketches, active, ...f(er) };
+          if (!p.keep_tools) bodies.delete(n);
+          if (!bodies.has(p.target)) break;
+          continue;
+        }
+        if (boolModel && boxBool && p.operation === 'join' && coincide(t.bbox, o.bbox)) return { bodies, sketches, active, ...f('fake: boolean failed: coincident faces') };
         if (pmModel && boxBool && p.operation === 'join') { const er = pmJoin(t, o); if (er) return { bodies, sketches, active, ...f(er) }; }
         else if (boxBool && p.operation === 'join') { t.volume = t.volume + o.volume - overlapVol(t.bbox, o.bbox) * Math.min(fill(t), fill(o)); t.bbox = bboxOf([t.bbox.min, t.bbox.max, o.bbox.min, o.bbox.max]); }
         else if (boxBool && p.operation === 'cut') t.volume = Math.max(0, t.volume - overlapVol(t.bbox, o.bbox) * fill(t));
@@ -313,7 +366,7 @@ function simulate(commands, boxBool = false, holeModel = false, shellDraft = fal
         else if (p.operation === 'cut') t.volume = Math.max(1, t.volume - 0.3 * o.volume);
         else t.volume = Math.min(t.volume, o.volume) * 0.5;
         if (shellDraft) { if (p.operation === 'cut') t.nf = facesOfBody(t) + facesOfBody(o); t.compound = true; }
-        bodies.delete(n);
+        if (!(boolModel && p.keep_tools)) bodies.delete(n);
       }
     } else if (k === 'solid.move') {
       const m = need(p.bodies); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
@@ -423,26 +476,28 @@ function topologyOfBody(b) {
 }
 
 /**
- * makeFake({ failEvery, boxBool, holeModel, shellDraft, pmModel, sync, cpuMs }) -> { runSC, topologyOf, log }   (boxBool, holeModel, shellDraft: see the notes above simulate)
+ * makeFake({ failEvery, boxBool, holeModel, shellDraft, pmModel, boolModel, sync, cpuMs }) -> { runSC, topologyOf, log }   (boxBool, holeModel, shellDraft: see the notes above simulate)
  *   failEvery N: every Nth runSC call that simulates cleanly is reported as failing at its last command.
  *   a body_name containing 'ghost' is accepted but never appears; one containing 'boom' makes runSC throw.
  *   sync (opt-in): runSC and topologyOf return their result directly instead of a promise (the holes group's ORIGINAL translator is synchronous).
+ *   throwWhen (opt-in): (commands, callNumber) => boolean; true makes runSC throw (a bridge that dies: the executor's WASM TRAP path).
  *   cpuMs (opt-in): (commands, callNumber) => CPU milliseconds the run is reported to have used (result.cpuMs). When runSC is given { budgetS } and the
  *     cost exceeds it, the run is reported as { ok: false, timedOut: true, cpuMs } (the group's execution budget).
  *   When runSC is called with a second argument it is logged as a third log element; calls without one log exactly as before.
  */
-export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, shellDraft = false, pmModel = false, sync = false, cpuMs = null } = {}) {
+export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, shellDraft = false, pmModel = false, boolModel = false, sync = false, cpuMs = null, throwWhen = null } = {}) {
   let calls = 0;
   const log = [];
   const runOnce = (commands, opts) => {
     calls++;
     log.push(opts === undefined ? ['runSC', JSON.stringify(commands)] : ['runSC', JSON.stringify(commands), JSON.stringify(opts)]);
     if (commands.some((c) => typeof c.params?.body_name === 'string' && c.params.body_name.includes('boom'))) throw new Error('fake: bridge down');
+    if (throwWhen && throwWhen(commands, calls)) throw new Error('fake: unreachable executed');
     const cost = cpuMs ? cpuMs(commands, calls) : undefined;
     if (cost !== undefined && opts && typeof opts.budgetS === 'number' && cost > opts.budgetS * 1000) {
       return { ok: false, timedOut: true, cpuMs: opts.budgetS * 1000, failed: { command: '(budget)', error: `TIME BUDGET: exceeded ${opts.budgetS} s of CPU` } };
     }
-    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel);
+    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel, boolModel);
     const snap = { measure: { bodies: bodyRows(sim.bodies, boxBool, holeModel) }, sketches: sketchRows(sim.sketches), dirty: false, active_sketch: sim.active ? sim.active.name : null };
     let failed = sim.failed;
     if (!failed && failEvery && calls % failEvery === 0 && commands.length) {
@@ -455,7 +510,7 @@ export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, sh
   };
   const topo = (commands) => {
     log.push(['topologyOf', JSON.stringify(commands)]);
-    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel);
+    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel, boolModel);
     if (sim.failed) return { ok: false, failed: sim.failed };
     return { ok: true, topology: { bodies: [...sim.bodies.values()].map(topologyOfBody) }, results: commands.map((_, i) => ({ feature: i + 1 })) };
   };

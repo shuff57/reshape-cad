@@ -2,6 +2,7 @@
 // group's planners, wording and checks (extrude-pocket.ts); 'holes' is base + the holes group's guarded hole planner and loop (holes.ts).
 // 'shell-draft' is base + the shell-draft group's guarded hollow and draft planners and loop (shell-draft.ts).
 // 'patterns-mirror' is base + the patterns-mirror group's guarded pattern and mirror planners and loop (patterns-mirror.ts).
+// 'booleans' is base + the booleans group's guarded combine planner, executor and loop (booleans.ts).
 // 'unified' is base + every group's planners in ONE loop where every group's guards run on every feature they apply to (unified.ts).
 // The default is 'base'. Later folds add their own names here.
 //
@@ -18,10 +19,11 @@ import { EXTRUDE_POCKET_PROFILE } from './extrude-pocket.js';
 import { HOLES_PROFILE } from './holes.js';
 import { SHELL_DRAFT_PROFILE } from './shell-draft.js';
 import { PM_PROFILE } from './patterns-mirror.js';
+import { BOOL_PROFILE } from './booleans.js';
 import { UNIFIED_PROFILE } from './unified.js';
 import type { TranslateCtx } from './types.js';
 
-export type PlannerSet = 'base' | 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror' | 'unified';
+export type PlannerSet = 'base' | 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror' | 'booleans' | 'unified';
 export interface TranslatorOptions { planners?: PlannerSet | PlannerSet[] }
 export interface Translator {
   planners: PlannerSet | PlannerSet[];
@@ -31,7 +33,7 @@ export interface Translator {
   resolveAfter(tr: TranslateResult, doc: { features: Feature[] }, name: TopoName, ctx: TranslateCtx, want?: 'edge' | 'face' | null, targetId?: string | null, beforeId?: string | null): Promise<Resolved>;
 }
 
-export const PROFILES: Record<Exclude<PlannerSet, 'unified'>, Profile> = { base: BASE_PROFILE, 'extrude-pocket': EXTRUDE_POCKET_PROFILE, holes: HOLES_PROFILE, 'shell-draft': SHELL_DRAFT_PROFILE, 'patterns-mirror': PM_PROFILE };
+export const PROFILES: Record<Exclude<PlannerSet, 'unified'>, Profile> = { base: BASE_PROFILE, 'extrude-pocket': EXTRUDE_POCKET_PROFILE, holes: HOLES_PROFILE, 'shell-draft': SHELL_DRAFT_PROFILE, 'patterns-mirror': PM_PROFILE, booleans: BOOL_PROFILE };
 /** PROFILES plus the whole sets that are not members of a composition ('unified'). PROFILES stays the five single sets the compositions and their tests are about. */
 const ALL_PROFILES: Record<PlannerSet, Profile> = { ...PROFILES, unified: UNIFIED_PROFILE };
 
