@@ -735,7 +735,7 @@ function critCoords(id: string, G: SDG, st: TranslateState, ctx: SDCtx, seen: Se
     default: return null;
   }
 }
-const sweepIn = (angle: number, neutral: number, lo: number, hi: number): number => Math.tan(Math.abs(angle) * Math.PI / 180) * (angle * SC_SIGMA < 0 ? Math.max(0, hi - neutral) : Math.max(0, neutral - lo));
+export const sweepIn = (angle: number, neutral: number, lo: number, hi: number): number => Math.tan(Math.abs(angle) * Math.PI / 180) * (angle * SC_SIGMA < 0 ? Math.max(0, hi - neutral) : Math.max(0, neutral - lo));
 /** null = fits; otherwise a reason. `c0` = the face's plane coordinate along its axis. */
 function reachCheck(f: FView, part: string, c0: number, st: TranslateState, ctx: SDCtx, G: SDG): 'unverified' | 'reach' | null {
   const dir = DIRV[part]; if (!dir) return 'unverified';
@@ -782,7 +782,7 @@ function fromGuard(f: FView, m: Aggregate | undefined, G: SDG): SDPlan | null {
  */
 interface WholeFace { n?: V3; pt: V3; planar?: boolean; curved?: boolean }
 interface WholeFaces { kind: string; faces: WholeFace[]; R?: number; axis?: V3; polygon?: number[][]; err?: undefined }
-function wholeFaces(root: FView, byId: Record<string, FView>, ctx: SDCtx): WholeFaces | { err: string } {
+export function wholeFaces(root: FView, byId: Record<string, FView>, ctx: SDCtx): WholeFaces | { err: string } {
   // -> { faces:[{n, pt}], kind, axisOnly?:vec } in the primitive's local frame, then world via rotate+center; or {err}
   const rot = (p: V3): V3 => rotPt(p, root.rotate);
   const c = root.center ?? [0, 0, 0];

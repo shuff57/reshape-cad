@@ -1,7 +1,7 @@
 # @shuff57/reshape-layer
 
 The guard layer, step 1 of Phase 2 (`docs/PHASE2-guard-layer-work-plan.md`, `docs/PHASE2-loop.md`): a behaviour-preserving
-TypeScript port of the phase 4 base translator and its helpers, plus (fold 1) the extrude-pocket group and (fold 2) the holes group, which compose. `createTranslator()` / `translateDoc`
+TypeScript port of the phase 4 base translator and its helpers, plus (fold 1) the extrude-pocket group, (fold 2) the holes group and (fold 3) the shell-draft group, which compose. `createTranslator()` / `translateDoc`
 stay on the 'base' planner set by default.
 
 ## What is ported
@@ -140,3 +140,32 @@ The run prints its counts (comparisons identical, docs excluded and why). Docs o
 - Equality holds only for the inputs fed in; line coverage was not measured. Docs with a named shell/fillet/draft, or a soup pull, are not compared (phase 4 resolves names from the engine's own topology, phase0 asked brep-rs): in those the 'holes' set behaves as the pane does, not as the group measured.
 - **G-BUDGET depends on the host.** The layer passes `{ budgetS }` and honours `timedOut`; a bridge that ignores the option leaves every engine run unbounded. The pane's bridge does not implement it.
 - The 'holes' set is not wired to any caller yet; the default stays 'base'. The 0.21.0 baseline of the holes group has not been measured.
+
+## Fold 3: shell-draft (`createTranslator({ planners: 'shell-draft' })`)
+
+Source: `docs/spikes/solidcraft-referee/contract/shell-draft-translate.mjs` (the file as it is now, the one `shell-draft.json` was regenerated with; it imports `phase0/translate.mjs`; originals untouched). Port: `src/shell-draft.ts` (the sentences, `convexity`, `wordTie`, `draftFromUsage`, the hollow planner with its closed variant, the draft planner with its whole-shape variant, G-CONVEX, G-PICK, G-TIE, G-THICK, G-VANISH, G-SWEEP, G-REACH, G-BLIND, G-FROM, G-CLOSED, G-VOID and the others, and the group's loop as the set's own `step`).
+
+**It is not "base plus a shell case".** Like holes, the group's translator is phase0 with `shell` and `draft` planned in a wrapper, running its own synchronous loop. The 'shell-draft' set is the phase 4 planners for every kind but shell and draft, plus the group's two planners, plus the group's loop (every refusal sanitised to one plain sentence, a closed hollow remembered and refused as a dependency, the post-checks, no execution budget). It equals the original only where phase0 and phase 4 plan every other feature the same (not: a fillet's edge, a constrained-sketch pull / spin / blend); the kind-by-kind table is in `NOTES.md`.
+
+**Where the face comes from (the one structural difference).** The group picks the face a hollow opens or a draft tilts from brep-rs `resolve` (`ctx.resolveAt`, the primitive's own frame) and G-PICK carries the point through the moves of the history. The layer has no such resolver; its base reads a name from the engine's own topology (`ctx.topologyOf`, `resolve-names.ts`), which already gives a point on the part as it is now. The set supports both and chooses per translation: **if the host supplies `ctx.resolveAt`, the group's path runs exactly as in the original** (this is how the differential test proves every named pick of the group); **if not, the point comes from the base's name resolution and is not shifted by the moves**, everything else in G-PICK (a copy, turn, join or mirror in the history is refused, the bounding-box extreme check, the grid of candidate points) is shared. The base's name resolution is not touched. The second path is not the original's and is not proven equal to it: it is run on the same docs and reported (`NOTES.md`). Closed hollows and whole-shape drafts name nothing and are unaffected. The optional context field `ctx.fromUsage` (`draftFromUsage(script)`) feeds G-FROM; a host that does not pass it runs without that guard.
+
+Composes: `planners: ['extrude-pocket', 'holes', 'shell-draft']` (merge rule unchanged; what it costs is listed in `NOTES.md`: the closed-hollow dependency guard G-VOID and the bevelled-box guard G-CHAMFER only apply to kinds the shell-draft set owns, so they are lost for the other sets' kinds). The default stays 'base'. `planFeature` cannot plan a shell or a draft under this set (it throws instead of using the unguarded base planner); use `translateDoc`.
+
+### The shell-draft differential (`test/shell-draft.differential.test.mjs`, a few seconds)
+
+Original `translateDocGuarded` against the port in 'shell-draft' mode, same fake engine (`test/fake-engine.mjs`, extended opt-in only: `shellDraft` = a deliberately crude shell and draft model on bounding boxes, see the comment above `shellModel` in the file; the default model is unchanged), `deepStrictEqual` on the result (features, commands; `_state` removed), the ordered engine calls (the sweep probes included) and thrown errors:
+
+- (a) the 1100 cases of the group (`shell-draft-cases*.mjs`): 1097 become ModelDocs with runScript + the case's patch + solveDoc (3 scripts do not run), 1089 are in the equality set, 8 contain a fillet or a constrained sketch;
+- (b) 420 generated shell / draft docs (`test/sd-docs.mjs`: hollows open on every side with the wall from tiny to past the limit, cylinders / cones / spheres, prisms with 3 to 12 sides, closed hollows with moves / turns / copies and later features, L / notched / boss / pocketed / mirrored / patterned parts, drafts of one face with angles and signs on every pull axis, whole-shape drafts of every root, drafts of compound parts, draft-then-hollow and the reverse, hollows after holes and fillets, turned boxes, malformed docs), 405 in the set; the 59 base hand docs, 46 in the set;
+- 4 engine configurations (shell/draft model + box booleans; the default fake; every 5th call failing without `mt`; shell/draft + hole model with the resolver down), and an asynchronous engine against the synchronous one: 8190 `translateDoc` comparisons, all identical (11 end in the same thrown error), 19675 engine calls compared;
+- the pure parts: every `SENTENCE` builder, `plainEngineText`, `draftFromUsage`, `convexity` and `wordTie` on every feature of every corpus doc (with and without `arc` / `mt`), `SWEEP_TOL`, `SC_SIGMA`;
+- G-SWEEP and G-REACH switched off one at a time (the runner's `SD_OFF`), the composition tests, and negative controls (a different engine, a 1e-9 and a 1e-12 tamper, base mode, one guard off on one side, no resolver on the port) that must be, and are, detected.
+
+### What this fold does NOT cover
+
+- **It does not show the built solids are right.** The fake has no kernel: its shell and draft model decides which guards accept or refuse on boxes, nothing more. Whether truck's volumes are right is what the group's rows measured against OCCT, brep-rs and the closed forms, and the 0.21.0 baseline of this group has not been measured.
+- **The real-kernel replay was written (`test/live-replay-shell-draft.mjs`, `--only=id,id` works) and not run.** It needs the SolidCraft wasm rig and the brep-rs wasm. It replays the resolver path only (the node rig answers with measures, not topology).
+- **The layer's own pick path is not shown equal to the group's.** On the fake engine it agrees with the original on 716 of 1127 named-pick docs; the rest differ for the reasons in `NOTES.md` (a moved part, and the fake's box-only topology). On a real kernel it has not been run at all.
+- **G-FROM only works when the host passes the script's `draft(` usage** (`ctx.fromUsage`); a ModelDoc alone does not say whether `from:` was used.
+- Equality holds only for the inputs fed in; line coverage was not measured. Docs with a fillet or a constrained-sketch pull are not compared (phase0 asked brep-rs, phase 4 reads the topology).
+- The 'shell-draft' set is not wired to any caller yet; the default stays 'base'.

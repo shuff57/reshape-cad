@@ -192,7 +192,7 @@ async function compareDoc(name, item, cfg, off = []) {
   assert.deepStrictEqual(b.result, a.result, `${name} [${cfg.name}]: translateDoc result differs`);
   assert.deepStrictEqual(b.log, a.log, `${name} [${cfg.name}]: engine call sequence differs`);
   tally.identical++; tally.calls += a.log.length;
-  if (a.error) tally.thrown++;
+  if (a.error) { tally.thrown++; bump((tally.errors ??= {}), a.error); }
   note(a);
   return { a, b };
 }
@@ -340,11 +340,12 @@ test('named picks without a resolver (the layer\'s own path): runs on every name
       let cause;
       if (a.error !== b.error) cause = 'a thrown error on one side';
       else if (!x || !y) cause = 'results differ only in a field other than status, sentence, commands and measure';
-      else if (x.status === 'built' && y.status === 'built') cause = 'both built; the pick point (and so the command) or the measure differs';
+      else if (x.status === 'built' && y.status === 'built') cause = JSON.stringify(x.measure) === JSON.stringify(y.measure) ? 'both built with the SAME measure; only the pick point (the command) differs' : 'both built with a DIFFERENT measure (another face was opened or tilted)';
       else if (x.status === 'built' && y.status === 'refused') cause = `original built, topology path refused (${y.guard ?? 'no guard'})`;
       else if (x.status === 'refused' && y.status === 'built') cause = `original refused (${x.guard ?? 'no guard'}), topology path built`;
       else cause = `both refused with a different sentence or guard (${x.guard ?? 'none'} / ${y.guard ?? 'none'})`;
       bump(bk.causes, cause);
+      ((tally.pathB.examples ??= {})[cause] ??= []).length < 4 && tally.pathB.examples[cause].push({ name: item.name, id: x?.id, a: x && { status: x.status, guard: x.guard, refusal: x.refusal, cmd: x.commands?.[0]?.params?.faces, vol: x.measure?.volume }, b: y && { status: y.status, guard: y.guard, refusal: y.refusal, raw: y.raw, cmd: y.commands?.[0]?.params?.faces, vol: y.measure?.volume } });
       // the topology path asks nothing of a resolver that is not there
       assert.ok(b.log.every((l) => l[0] === 'runSC' || l[0] === 'topologyOf'));
     }
@@ -482,23 +483,78 @@ test('convexity and wordTie: identical on every feature of every corpus doc, wit
   for (const root of roots) for (const part of ['+x', '-x', '+y', '-y', '+z', '-z']) assert.deepStrictEqual(attempt(() => port.sd.wordTie(root, part, {}, arc, mt)), attempt(() => orig.sd.wordTie(root, part, {}, arc, mt)), `${root.kind} ${part}`);
 });
 
-test('the pure helpers the port exports (hops, rotPt, polyCentroid, polyConvex, simplePolygon, isPlainBox, onlyBoxJoins) agree with the algorithm in the original on random inputs', () => {
-  // these are not exported by the original; they are checked through the group translator by the differential above. Here: internal consistency on constructed inputs.
-  const sq = [[0, 0], [4, 0], [4, 4], [0, 4]];
-  assert.equal(port.sd.polyConvex(sq, undefined), true);
-  assert.equal(port.sd.polyConvex([[0, 0], [4, 0], [4, 4], [2, 1], [0, 4]], undefined), false);
-  assert.equal(port.sd.polyConvex(sq, { 1: 0.5 }), false);
-  assert.equal(port.sd.simplePolygon(sq), true);
-  assert.equal(port.sd.simplePolygon([[0, 0], [4, 4], [4, 0], [0, 4]]), false); // a bow-tie
-  assert.equal(port.sd.simplePolygon([[0, 0], [4, 0], [4, 4], [0, 4], [2, 0]]), false); // touching itself
-  assert.deepStrictEqual(port.sd.polyCentroid(sq), [2, 2]);
-  const q = port.sd.rotPt([1, 0, 0], [0, 0, 90]); assert.ok(Math.abs(q[0]) < 1e-12 && Math.abs(q[1] - 1) < 1e-12);
-  assert.equal(port.sd.isPlainBox({ faces: 6, faceTypes: { plane: 6 }, bbox: [0, 0, 0, 2, 2, 2], volume: 8 }), true);
-  assert.equal(port.sd.isPlainBox({ faces: 6, faceTypes: { plane: 6 }, bbox: [0, 0, 0, 2, 2, 2], volume: 7 }), false);
-  assert.equal(port.sd.onlyBoxJoins('m1', { m1: { id: 'm1', kind: 'move', target: 'b1' }, b1: { id: 'b1', kind: 'box' } }), true);
-  assert.equal(port.sd.onlyBoxJoins('m1', { m1: { id: 'm1', kind: 'move', target: 'b1', copy: true }, b1: { id: 'b1', kind: 'box' } }), false);
-  assert.deepStrictEqual(port.sd.hops('b1', 'm2', { m2: { id: 'm2', kind: 'move', target: 'm1' }, m1: { id: 'm1', kind: 'move', target: 'b1' }, b1: { id: 'b1', kind: 'box' } }).map((h) => h.id), ['m1', 'm2']);
-  assert.equal(port.sd.hops('zz', 'm2', { m2: { id: 'm2', kind: 'move', target: 'm1' }, m1: { id: 'm1', kind: 'move', target: 'b1' }, b1: { id: 'b1', kind: 'box' } }), null);
+// The original does not export its helpers. They are pure functions of their arguments, so they are compared one-to-one by reading the ORIGINAL file's text, pointing its one
+// relative import at an absolute URL, appending an export list, and importing that copy from a temp directory. The original file on disk is not touched.
+const internals = await (async () => {
+  const fs = await import('node:fs'); const os = await import('node:os');
+  const file = path.join(contract, 'shell-draft-translate.mjs');
+  const text = fs.readFileSync(file, 'utf8').replace("from '../phase0/translate.mjs'", `from '${pathToFileURL(path.join(root, 'docs/spikes/solidcraft-referee/phase0/translate.mjs')).href}'`)
+    + '\nexport { polyConvex, hops, rootOf, rotPt, polyCentroid, simplePolygon, isPlainBox, onlyBoxJoins, tieOf, wholeFaces, sweepIn };\n';
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sd-internals-'));
+  const copy = path.join(dir, 'shell-draft-translate.copy.mjs');
+  fs.writeFileSync(copy, text);
+  try { return await imp(copy); } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+})();
+
+test('the helpers the original does not export (hops, rootOf, rotPt, polyCentroid, polyConvex, simplePolygon, isPlainBox, onlyBoxJoins, wholeFaces, sweepIn), read from a copy of its text, agree with the port on generated inputs', () => {
+  const r = mulberry32(777);
+  const R = (lo, hi) => lo + r() * (hi - lo);
+  const pickR = (a) => a[Math.floor(r() * a.length)];
+  const O = internals; const S = port.sd;
+  assert.equal(typeof O.simplePolygon, 'function');
+  let n = 0;
+  // polygons: convex, concave, bow-tie, collinear, repeated points, too short, with and without bulges
+  const polys = [];
+  for (let i = 0; i < 400; i++) {
+    const k = pickR([2, 3, 4, 5, 6, 8]);
+    const kind = pickR(['convex', 'random', 'star', 'collinear', 'dup']);
+    let P;
+    if (kind === 'convex') P = Array.from({ length: k }, (_, j) => [Math.round(10 * Math.cos(2 * Math.PI * j / k) * 4) / 4, Math.round(10 * Math.sin(2 * Math.PI * j / k) * 4) / 4]);
+    else if (kind === 'star') P = Array.from({ length: k * 2 }, (_, j) => [(j % 2 ? 4 : 10) * Math.cos(Math.PI * j / k), (j % 2 ? 4 : 10) * Math.sin(Math.PI * j / k)]);
+    else if (kind === 'collinear') P = [[0, 0], [5, 0], [10, 0], [10, 10], [0, 10]].slice(0, Math.max(3, k));
+    else if (kind === 'dup') P = [[0, 0], [0, 0], [10, 0], [10, 10]];
+    else P = Array.from({ length: k }, () => [Math.round(R(-10, 10)), Math.round(R(-10, 10))]);
+    polys.push(P);
+  }
+  for (const P of polys) {
+    for (const bulges of [undefined, {}, { 0: 0 }, { 1: 0.4 }]) { assert.deepStrictEqual(attempt(() => S.polyConvex(P, bulges)), attempt(() => O.polyConvex(P, bulges))); n++; }
+    assert.deepStrictEqual(attempt(() => S.simplePolygon(P)), attempt(() => O.simplePolygon(P))); n++;
+    assert.deepStrictEqual(attempt(() => S.polyCentroid(P)), attempt(() => O.polyCentroid(P))); n++;
+  }
+  for (const bad of [undefined, null, [], [[0, 0]], [[0, 0], [1, 1]]]) { assert.deepStrictEqual(attempt(() => S.polyConvex(bad)), attempt(() => O.polyConvex(bad))); assert.deepStrictEqual(attempt(() => S.polyCentroid(bad)), attempt(() => O.polyCentroid(bad))); }
+  for (let i = 0; i < 400; i++) {
+    const p = [R(-20, 20), R(-20, 20), R(-20, 20)];
+    const rot = pickR([undefined, [0, 0, 0], [90, 0, 0], [0, 45, 0], [0, 0, 30], [10, 20, 30], [180, 90, 270], [0.5, 0, -7]]);
+    assert.deepStrictEqual(attempt(() => S.rotPt(p, rot)), attempt(() => O.rotPt(p, rot))); n++;
+    const ang = R(-95, 95); const neutral = R(-10, 10); const lo = R(-20, 0); const hi = lo + R(0, 30);
+    assert.deepStrictEqual(attempt(() => S.sweepIn(ang, neutral, lo, hi)), attempt(() => O.sweepIn(ang, neutral, lo, hi))); n++;
+  }
+  // isPlainBox: random measures
+  for (let i = 0; i < 400; i++) {
+    const bb = [0, 0, 0, R(1, 20), R(1, 20), R(1, 20)]; const bv = (bb[3] - bb[0]) * (bb[4] - bb[1]) * (bb[5] - bb[2]);
+    const m = pickR([undefined, null, { faces: 6, faceTypes: { plane: 6 }, bbox: bb, volume: bv }, { faces: 6, faceTypes: { plane: 6 }, bbox: bb, volume: bv * (1 - 1e-8) }, { faces: 6, faceTypes: { plane: 5 }, bbox: bb, volume: bv }, { faces: 7, faceTypes: { plane: 6 }, bbox: bb, volume: bv }, { faces: 6, bbox: bb, volume: bv }, { faces: 6, faceTypes: { plane: 6 }, bbox: bb, volume: bv * (1 + 1e-12) }]);
+    assert.deepStrictEqual(attempt(() => S.isPlainBox(m)), attempt(() => O.isPlainBox(m))); n++;
+  }
+  // histories and roots: every feature of every corpus doc as the start, and as the end of a hops() walk
+  for (const doc of [...caseDocs.map((c) => c.doc), ...generated.map((g) => g.doc)]) {
+    const byId = byIdOf(doc);
+    const ids = [...doc.features.map((f) => f.id), 'nope', undefined];
+    for (const id of ids) {
+      assert.deepStrictEqual(attempt(() => S.rootOf(id, byId)), attempt(() => O.rootOf(id, byId))); n++;
+      assert.deepStrictEqual(attempt(() => S.onlyBoxJoins(id, byId)), attempt(() => O.onlyBoxJoins(id, byId))); n++;
+      for (const from of [doc.features[0]?.id, 'nope', undefined]) { assert.deepStrictEqual(attempt(() => S.hops(from, id, byId)), attempt(() => O.hops(from, id, byId))); n++; }
+    }
+    for (const f of doc.features) for (const m of [mt, undefined]) {
+      assert.deepStrictEqual(attempt(() => S.wholeFaces(f, byId, { arc, mt: m })), attempt(() => O.wholeFaces(f, byId, { arc, mt: m }))); n++;
+    }
+  }
+  assert.ok(n > 30000, `${n} comparisons`);
+  // a cyclic history terminates identically
+  const loop = { a: { id: 'a', kind: 'move', target: 'b' }, b: { id: 'b', kind: 'move', target: 'a' } };
+  assert.deepStrictEqual(attempt(() => S.hops('zz', 'a', loop)), attempt(() => O.hops('zz', 'a', loop)));
+  assert.deepStrictEqual(attempt(() => S.onlyBoxJoins('a', loop)), attempt(() => O.onlyBoxJoins('a', loop)));
+  assert.deepStrictEqual(attempt(() => S.rootOf('a', loop)), attempt(() => O.rootOf('a', loop)));
+  tally.internals = n;
 });
 
 // ---- composition: the three sets together ----------------------------------------------------------------------------------------------------------------------------
@@ -583,6 +639,7 @@ test('summary', () => {
     `corpus (a): ${tally.cases_?.cases} cases, ${tally.cases_?.docs} become ModelDocs (${tally.cases_?.noDoc} scripts do not run), ${tally.byCorpus.cases.inSet} in the equality set`,
     `corpus (b): ${generated.length} generated docs, ${tally.byCorpus.generated.inSet} in the set; hand docs: ${hand.length}, ${tally.byCorpus.hand.inSet} in the set`,
     `in-set docs ${tally.inSet.docs}, translateDoc comparisons ${tally.cases}, all identical (${tally.identical}); ${tally.thrown} end in the same thrown error; ${tally.calls} engine calls compared`,
+    `thrown errors (same on both sides): ${JSON.stringify(tally.errors ?? {})}`,
     `named picks (a shell's open face, a draft's face) in the equality set: ${tally.picks.named}`,
     `built ${JSON.stringify(sortObj(tally.built))}  refused ${JSON.stringify(sortObj(tally.refused))}`,
     `guards fired (refusals): ${JSON.stringify(sortObj(tally.guards))}`,
@@ -596,11 +653,14 @@ test('summary', () => {
     `composition [extrude-pocket, holes, shell-draft] vs [extrude-pocket, holes]: extrude-pocket corpus ${conflicts.ep.docs} docs (${conflicts.ep.withShellDraft} with a shell or draft), holes corpus ${conflicts.holes.docs} docs (${conflicts.holes.withShellDraft} with a shell or draft); docs without shell/draft identical in full: ${conflicts.plainDocsUnchanged}; changed results of an earlier set in the others: ep ${conflicts.ep.differ.length}, holes ${conflicts.holes.differ.length}`,
     `composition vs shell-draft alone on ${conflicts.sd.docs} shell-draft docs: ${conflicts.sd.shellDraftFeatures} shell/draft features compared, ${conflicts.sd.shellDraftDiffer.length} differ ${JSON.stringify(conflicts.sd.causes)}; features of other kinds whose note differs (first-entry rule): ${conflicts.sd.otherKindsDiffer}, of which a different status or guard: ${conflicts.sd.otherKindsStatusDiffer.length}`,
     `excluded fillet/soup docs: shell and draft decisions (status, guard) agree on ${tally.excluded.sdAgree} of ${tally.excluded.sdChecked}; guards shared there: ${JSON.stringify(tally.excluded.sharedGuards)}`,
+    `pure helpers compared one-to-one: ${tally.internals} comparisons`,
     `sentences seen (shape-normalised): ${tally.sentences.size}`,
   ];
   console.log('\n' + lines.join('\n'));
   for (const [label, c] of [['extrude-pocket', conflicts.ep], ['holes', conflicts.holes]]) for (const d of c.differ) console.log(`CONFLICT in the ${label} corpus: ${d.name}: ${d.why}${d.downstream ? ' [after a shell/draft result that differs]' : ' [DIRECT]'}`);
-  for (const d of conflicts.sd.otherKindsStatusDiffer.slice(0, 40)) console.log(`CONFLICT in the shell-draft corpus: ${d.name}: ${d.id} (${d.kind}) ${d.a} (shell-draft alone) vs ${d.b} (composition)`);
+  if (process.env.SD_SHOW_PATHB) for (const [c, ex] of Object.entries(tally.pathB.examples ?? {})) for (const e of ex) console.log(`PATHB ${c}: ${JSON.stringify(e)}`);
+  for (const d of conflicts.sd.shellDraftDiffer) console.log(`CONFLICT on a shell/draft in the shell-draft corpus: ${d.name}: ${d.id}: ${d.cause}`);
+  for (const d of conflicts.sd.otherKindsStatusDiffer) console.log(`CONFLICT in the shell-draft corpus: ${d.name}: ${d.id} (${d.kind}) ${d.a} (shell-draft alone) vs ${d.b} (composition)`);
   assert.equal(tally.cases, tally.identical);
   assert.ok(N_CATEGORIES > 0);
 });
