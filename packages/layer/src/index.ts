@@ -20,3 +20,5 @@ export { SHELL_DRAFT_PROFILE, shellDraftStep, SENTENCE as SHELL_DRAFT_SENTENCE, 
 export type { FView, SDName, SDPlan, SDG, SDBad, SDPost, SDPostEnv, ShellDraftState, Convex, Tie, FromUse, PickBase } from './shell-draft.js';
 export { followMoves, quarterTurns } from './follow-moves.js';
 export type { FollowEnv } from './follow-moves.js';
+export { UNIFIED_PROFILE, unifiedStep, domainOf, routeOf, isChamferBox, EP_KINDS } from './unified.js';
+export type { UnifiedDomain, UnifiedStyle, Route } from './unified.js';

@@ -1,6 +1,7 @@
 // Selects the planner set. 'base' is exactly the phase 4 base translator (translate.ts); 'extrude-pocket' is base + the extrude-pocket
 // group's planners, wording and checks (extrude-pocket.ts); 'holes' is base + the holes group's guarded hole planner and loop (holes.ts).
 // 'shell-draft' is base + the shell-draft group's guarded hollow and draft planners and loop (shell-draft.ts).
+// 'unified' is base + every group's planners in ONE loop where every group's guards run on every feature they apply to (unified.ts).
 // The default is 'base'. Later folds add their own names here.
 //
 // Sets compose: planners: ['extrude-pocket', 'holes']. Later entries override earlier ones per feature KIND (the owner of a kind is the last
@@ -15,9 +16,10 @@ import { BASE_PROFILE, FEATURE_KINDS, composeProfiles, planFeature, resolveAfter
 import { EXTRUDE_POCKET_PROFILE } from './extrude-pocket.js';
 import { HOLES_PROFILE } from './holes.js';
 import { SHELL_DRAFT_PROFILE } from './shell-draft.js';
+import { UNIFIED_PROFILE } from './unified.js';
 import type { TranslateCtx } from './types.js';
 
-export type PlannerSet = 'base' | 'extrude-pocket' | 'holes' | 'shell-draft';
+export type PlannerSet = 'base' | 'extrude-pocket' | 'holes' | 'shell-draft' | 'unified';
 export interface TranslatorOptions { planners?: PlannerSet | PlannerSet[] }
 export interface Translator {
   planners: PlannerSet | PlannerSet[];
@@ -27,17 +29,20 @@ export interface Translator {
   resolveAfter(tr: TranslateResult, doc: { features: Feature[] }, name: TopoName, ctx: TranslateCtx, want?: 'edge' | 'face' | null, targetId?: string | null, beforeId?: string | null): Promise<Resolved>;
 }
 
-export const PROFILES: Record<PlannerSet, Profile> = { base: BASE_PROFILE, 'extrude-pocket': EXTRUDE_POCKET_PROFILE, holes: HOLES_PROFILE, 'shell-draft': SHELL_DRAFT_PROFILE };
+export const PROFILES: Record<Exclude<PlannerSet, 'unified'>, Profile> = { base: BASE_PROFILE, 'extrude-pocket': EXTRUDE_POCKET_PROFILE, holes: HOLES_PROFILE, 'shell-draft': SHELL_DRAFT_PROFILE };
+/** PROFILES plus the whole sets that are not members of a composition ('unified'). PROFILES stays the four single sets the compositions and their tests are about. */
+const ALL_PROFILES: Record<PlannerSet, Profile> = { ...PROFILES, unified: UNIFIED_PROFILE };
 
 export function createTranslator(options: TranslatorOptions = {}): Translator {
   const planners = options.planners ?? 'base';
   const names = Array.isArray(planners) ? planners : [planners];
   if (!names.length) throw new Error('planners: an empty list of planner sets');
   const members = names.map((n) => {
-    const p = Object.prototype.hasOwnProperty.call(PROFILES, n) ? PROFILES[n] : undefined;
+    const p = Object.prototype.hasOwnProperty.call(ALL_PROFILES, n) ? ALL_PROFILES[n] : undefined;
     if (!p) throw new Error(`unknown planner set '${String(n)}'`);
     return p;
   });
+  if (names.includes('unified') && names.length > 1) throw new Error("planners: 'unified' is a whole set (base + every group, one loop); it is not composed with other sets");
   if (new Set(names).size !== names.length) throw new Error(`planners: a planner set is listed twice (${names.join(', ')})`);
   const profile = composeProfiles(members);
   return {
