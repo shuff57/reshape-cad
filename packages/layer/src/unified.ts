@@ -17,6 +17,9 @@
 //   * the booleans group's combine (join / cut / keep) goes to its step, which ALSO applies the extrude-pocket group's join checks to it (booleans.ts; the booleans group took the kind over from the
 //     extrude-pocket group, whose combine was a by-product of its fork); the booleans group's time limit applies to the runs of a combine;
 //
+//   * the revolve-groove group's spin (revolve) and groove go to its step (the guards that decide a groove from its target's measure, the chain that refuses a later feature on a part whose groove was refused, its
+//     time limit on the runs of a groove); a part another step built is read through the measure of kind E (pieces counted);
+//
 //   * the patterns-mirror group's pattern, mirror and the cut guards on a pocket / hole (a tool almost on an earlier cut, a thin wall) go to its step (`routeOf`); its time limit
 //     applies to every run of a document that has a pattern or a mirror and does not drill;
 //
@@ -32,6 +35,7 @@ import { BUDGET_S, HOLES_PROFILE, aggregateOf, holesStep } from './holes.js';
 import { SHELL_DRAFT_PROFILE, shellDraftStep, voidedDep } from './shell-draft.js';
 import { PM_PROFILE, PM_KINDS, cutGuard, pmStep } from './patterns-mirror.js';
 import { BOOL_PROFILE, BOOL_KINDS, boolStep } from './booleans.js';
+import { RG_PROFILE, RG_KINDS, rgStep } from './revolve-groove.js';
 import type { FView } from './shell-draft.js';
 
 /** The kinds the extrude-pocket group owns here. (Its fork also planned `combine`; in this set the booleans group owns that kind, and the extrude-pocket group's join checks are kept as guards on it.) */
@@ -49,7 +53,7 @@ export const EP_COMBINE_SAFETY = [
 /** The same, for the extrude-pocket group's inclusion-exclusion consistency check of a join: it binds only when ctx.unifiedEpJoinChecks is 'full'. */
 export const EP_COMBINE_CONSISTENCY = [/^\S+: the joined part and the sum of its pieces do not add up/];
 /** Which loop runs the kinds no group lists. */
-export type UnifiedStyle = 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror' | 'booleans';
+export type UnifiedStyle = 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror' | 'booleans' | 'revolve-groove';
 export type Route = UnifiedStyle;
 export interface UnifiedDomain {
   /** the document has an extrude, a pocket or a combine */
@@ -62,6 +66,8 @@ export interface UnifiedDomain {
   pm: boolean;
   /** the document has a join, a cut or a keep */
   bool: boolean;
+  /** the document has a revolve (spin) or a groove */
+  rg: boolean;
   style: UnifiedStyle;
 }
 
@@ -71,17 +77,18 @@ export const isChamferBox = (f: Feature): boolean => f.kind === 'box' && !!FV(f)
 
 /** Which groups a document uses, and so which loop words the kinds no group lists. */
 export function domainOf(doc: { features: Feature[] }): UnifiedDomain {
-  let ep = false; let holes = false; let sd = false; let pm = false; let bool = false;
+  let ep = false; let holes = false; let sd = false; let pm = false; let bool = false; let rg = false;
   for (const f of doc.features) {
     if (EP_KINDS.includes(f.kind)) ep = true;
     else if (f.kind === 'hole') holes = true;
     else if (f.kind === 'shell' || f.kind === 'draft' || isChamferBox(f)) sd = true;
     else if (PM_KINDS.includes(f.kind)) pm = true;
     else if (BOOL_KINDS.includes(f.kind)) bool = true;
+    else if (RG_KINDS.includes(f.kind)) rg = true;
   }
   // no group at all: the extrude-pocket loop too (it words every refusal plainly; the base loop prints the engine's own text)
-  const style: UnifiedStyle = ep ? 'extrude-pocket' : holes ? 'holes' : sd ? 'shell-draft' : pm ? 'patterns-mirror' : bool ? 'booleans' : 'extrude-pocket';
-  return { ep, holes, sd, pm, bool, style };
+  const style: UnifiedStyle = ep ? 'extrude-pocket' : holes ? 'holes' : sd ? 'shell-draft' : pm ? 'patterns-mirror' : bool ? 'booleans' : rg ? 'revolve-groove' : 'extrude-pocket';
+  return { ep, holes, sd, pm, bool, rg, style };
 }
 
 /**
@@ -101,6 +108,7 @@ export function routeOf(f: Feature, st: TranslateState, ctx?: Pick<TranslateCtx,
   if (f.kind === 'hole') return 'holes';
   if (EP_KINDS.includes(f.kind)) return 'extrude-pocket';
   if (BOOL_KINDS.includes(f.kind)) return 'booleans';
+  if (RG_KINDS.includes(f.kind)) return 'revolve-groove';
   return st.unified!.domain.style;
 }
 
@@ -143,12 +151,13 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
   const { st, accepted } = env;
   const route = routeOf(f, st, env.ctx);
   const dom = st.unified!.domain;
-  const mixed = Number(dom.ep) + Number(dom.holes) + Number(dom.sd) + Number(dom.pm) + Number(dom.bool) >= 2;
+  const mixed = Number(dom.ep) + Number(dom.holes) + Number(dom.sd) + Number(dom.pm) + Number(dom.bool) + Number(dom.rg) >= 2;
   const wrap = mixed || (dom.holes && route !== 'holes');
   const seen: Seen = [];
   const env2: LoopEnv = wrap ? { ...env, ctx: wrapped(env.ctx, st, seen, dom.holes, dom.pm) } : env;
   // the measure of the kind this step reads
-  const kind: 'E' | 'P' = route === 'extrude-pocket' ? 'E' : 'P';
+  // (a spin / groove reads the measure of kind E: pieces counted, as its own aggregate counts them)
+  const kind: 'E' | 'P' = route === 'extrude-pocket' || route === 'revolve-groove' ? 'E' : 'P';
   const maps = st.unified!.maps;
   if (mixed) { st.measure = maps[kind].measure; st.bodies = maps[kind].bodies; }
   const before = st.accLen[f.id];
@@ -156,13 +165,14 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
   else if (route === 'shell-draft') await shellDraftStep(f, idx, env2);
   else if (route === 'patterns-mirror') await pmStep(f, idx, env2);
   else if (route === 'booleans') await boolStep(f, idx, env2);
+  else if (route === 'revolve-groove') await rgStep(f, idx, env2);
   else await genericStep(f, idx, env2, EXTRUDE_POCKET_PROFILE);
   if (!mixed) return;
   const m = st.measure[f.id];
   if (st.accLen[f.id] === before || !m) return; // refused or a no-op: nothing to carry over
   const r = seen.find((x) => x.cmds.length === accepted.length && x.cmds.every((c, i) => c === accepted[i]))?.res;
   const other: 'E' | 'P' = kind === 'E' ? 'P' : 'E';
-  if (kind === 'P' && m.shells === undefined) m.shells = toE(m, r).shells; // the shell-draft aggregate has none; the holes guard G-SHELLS reads it
+  if ((kind === 'P' || route === 'revolve-groove') && m.shells === undefined) m.shells = toE(m, r).shells; // the shell-draft and revolve-groove aggregates have none; the holes guard G-SHELLS and the extrude-pocket sealed-cavity check read it
   const o = kind === 'E' ? toP(m, r) : toE(m, r);
   maps[other].measure[f.id] = o;
   maps[other].bodies[f.id] = o.bodies;
@@ -171,7 +181,7 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
 export const UNIFIED_PROFILE: Profile = {
   name: 'unified',
   // claiming every kind a group lists keeps planFeature honest about what this set plans (a hole, a shell and a draft are planned asynchronously by the step)
-  planners: { ...EXTRUDE_POCKET_PROFILE.planners, ...HOLES_PROFILE.planners, ...SHELL_DRAFT_PROFILE.planners, ...PM_PROFILE.planners, ...BOOL_PROFILE.planners },
+  planners: { ...EXTRUDE_POCKET_PROFILE.planners, ...HOLES_PROFILE.planners, ...SHELL_DRAFT_PROFILE.planners, ...PM_PROFILE.planners, ...BOOL_PROFILE.planners, ...RG_PROFILE.planners },
   verifies: true,
   initState(st, doc) {
     EXTRUDE_POCKET_PROFILE.initState(st);
@@ -179,6 +189,7 @@ export const UNIFIED_PROFILE: Profile = {
     SHELL_DRAFT_PROFILE.initState(st);
     PM_PROFILE.initState(st);
     BOOL_PROFILE.initState(st, doc);
+    RG_PROFILE.initState(st);
     st.unified = { domain: domainOf(doc ?? { features: [] }), maps: { E: { measure: {}, bodies: {} }, P: { measure: {}, bodies: {} } } };
   },
   // wording of the synchronous planFeature only (the step chooses the wording of a run by the document's style): the extrude-pocket group's, the first entry
@@ -191,6 +202,7 @@ export const UNIFIED_PROFILE: Profile = {
     HOLES_PROFILE.onAccepted!(st, res, m, plan);
     PM_PROFILE.onAccepted!(st, res, m, plan, acc);
     BOOL_PROFILE.onAccepted!(st, res, m, plan, acc);
+    RG_PROFILE.onAccepted!(st, res, m, plan);
   },
   result: (st) => (st.unified!.domain.holes ? { spentS: st.holes!.spentS } : {}),
   step: unifiedStep,

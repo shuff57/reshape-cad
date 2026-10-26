@@ -172,3 +172,29 @@ export function rgDoc(seed) {
   }
   return { version: 1, features: feats };
 }
+
+// ---- grooves and spins inside the COMBINED documents of the unified test (the other groups' kinds before and after) ----------------------------------------------------------
+import { combinedDoc } from './unified-docs.mjs';
+const SOLID_KINDS = ['box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'extrude', 'combine', 'revolve', 'groove', 'pocket', 'mirror', 'pattern', 'hole', 'shell', 'move', 'rotate', 'fillet', 'draft'];
+/** A combined document (several groups' kinds, seeded) with a groove cut into the part it ends with, and sometimes a spin before and a second groove after. */
+export function rgCombinedDoc(seed) {
+  const r = mulberry32(seed * 104729 + 7);
+  const pick = (a) => a[Math.floor(r() * a.length)];
+  const q = (lo, hi) => Math.round((lo + r() * (hi - lo)) * 4) / 4;
+  const doc = combinedDoc(8000 + seed);
+  const feats = doc.features.slice();
+  const last = () => { for (let i = feats.length - 1; i >= 0; i--) if (SOLID_KINDS.includes(feats[i].kind)) return feats[i].id; return null; };
+  let n = 0;
+  const id = (p) => `${p}z${++n}`;
+  const sk = (points, extra = {}) => { const s = { id: id('sk'), kind: 'sketch', plane: pick(['xy', 'xy', 'xz', 'yz']), offset: pick([0, 0, q(-4, 4)]), points, ...extra }; feats.push(s); return s; };
+  const R = (u0, u1, v0, v1) => [[u0, v0], [u1, v0], [u1, v1], [u0, v1]];
+  if (r() < 0.35) { const s = sk(R(q(3, 9), q(10, 16), q(0, 4), q(6, 14)), { plane: 'xz' }); feats.splice(Math.floor(r() * feats.length), 0, s, { id: id('v'), kind: 'revolve', target: s.id, angle: pick([360, 180, 90]) }); }
+  const into = last();
+  if (into) {
+    const s = sk(R(q(2, 12), q(13, 22), q(-10, 0), q(1, 12)));
+    feats.push({ id: id('g'), kind: 'groove', target: s.id, into, angle: pick([360, 360, 180, 90, 45]) });
+    if (r() < 0.4) { const s2 = sk(R(q(2, 6), q(7, 9), q(-3, 0), q(1, 4))); feats.push({ id: id('g'), kind: 'groove', target: s2.id, into, angle: pick([360, 90]) }); }
+    if (r() < 0.3) feats.push({ id: id('m'), kind: 'move', target: into, offset: [3, 0, 0], copy: false });
+  }
+  return { version: 1, features: feats };
+}

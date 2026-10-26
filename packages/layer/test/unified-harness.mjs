@@ -12,6 +12,7 @@ import { sdDoc, sdFromUsage } from './sd-docs.mjs';
 import { combinedDoc } from './unified-docs.mjs';
 import { pmDoc } from './pm-docs.mjs';
 import { boolDoc } from './bool-docs.mjs';
+import { rgDoc, rgCombinedDoc } from './rg-docs.mjs';
 
 export const here = path.dirname(fileURLToPath(import.meta.url));
 export const root = path.resolve(here, '../../..');
@@ -32,7 +33,7 @@ export const lib = {
 const { runScript } = lib.script;
 const { solveDoc } = lib.codegen;
 
-export const SETS = ['extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans'];
+export const SETS = ['extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans', 'revolve-groove'];
 export const TR = Object.fromEntries([...SETS, 'unified', 'base'].map((p) => [p, lib.tr.createTranslator({ planners: p })]));
 
 // ---- the four engine configurations (as the earlier differentials: the models on, the default fake, a failing engine, a CPU budget) -------------------------------
@@ -48,6 +49,9 @@ export const CONFIGS = [
   // the booleans group's model on top (pieces, keep_tools, coincident faces, a sliver the engine ignores, a keep that overshoots), and a bridge that dies on every 7th call (the executor's WASM TRAP path)
   { name: 'all models + pmModel + boolModel, mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, pmModel: true, boolModel: true }, useMt: true, resolver: fakeResolveAt },
   { name: 'all models + boolModel, the bridge dies on every 7th call, no mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, boolModel: true, throwWhen: (cmds, k) => k % 7 === 0 }, useMt: false, resolver: fakeResolveAt },
+  // the revolve-groove group's model on top (a ring that cuts nothing, a cut that leaves pieces, cylinders and spins with their closed-form volumes), and a groove run that goes past its time limit
+  { name: 'all models + pmModel + boolModel + rgModel, mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, pmModel: true, boolModel: true, rgModel: true }, useMt: true, resolver: fakeResolveAt },
+  { name: 'all models + rgModel, a groove run past its time limit, no mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, boolModel: true, rgModel: true, cpuMs: (cmds) => (cmds[cmds.length - 1].command === 'solid.revolve' && cmds[cmds.length - 1].params?.operation === 'cut' ? 700000 : 10) }, useMt: false, resolver: fakeResolveAt },
 ];
 
 /** which of the extrude-pocket group's join checks unified applies to a combine ('cheap' is the default of the set; UNIFIED_EP_JOIN=full|off measures the other readings) */
@@ -119,6 +123,21 @@ export async function loadCorpora({ combined = 600, only = null } = {}) {
     add('bool-cases', `case ${c.id}`, solveDoc(r.doc));
   }
   for (let i = 0; i < 720; i++) add('bool-generated', `bool seed ${i}`, boolDoc(i));
+  // revolve-groove: its case scripts (all rounds; the rig's own list), 600 generated docs
+  const rigDir = path.join(contract, 'revolve-groove-rig');
+  const { allCases } = await imp(path.join(rigDir, 'rg-cases.mjs'));
+  const rgSrc = [...allCases('/nonexistent-rg-dir', [])];
+  for (const f of ['cases-r3.mjs', 'cases-r3-chainprobe.mjs', 'cases-r3-fuzz.mjs', 'cases-r3-sliver.mjs', 'cases-r3-spinfuzz.mjs', 'cases-r4-graze.mjs', 'cases-r5-regress.mjs', 'cases-r5-wall.mjs']) rgSrc.push(...(await imp(path.join(rigDir, f))).cases);
+  const rSeen = new Set();
+  for (const c of rgSrc) {
+    if (typeof c.src !== 'string') continue;
+    const key = `${c.id}\u0000${c.src}`; if (rSeen.has(key)) continue; rSeen.add(key);
+    const r = runScript(c.src); if (r.errors.length) continue;
+    add('rg-cases', `case ${c.id}`, solveDoc(r.doc));
+  }
+  for (let i = 0; i < 600; i++) add('rg-generated', `rg seed ${i}`, rgDoc(i));
+  // the combined documents (several groups' kinds) with a groove cut into the part they end with, a spin before it, a second groove after
+  for (let i = 0; i < 400; i++) add('rg-combined', `rg combined seed ${i}`, rgCombinedDoc(i));
   // the shared hand docs, the base generator
   for (const [name, doc] of handDocs()) add('hand', `hand ${name}`, doc);
   for (let i = 0; i < 160; i++) add('base-generated', `generated seed ${1000 + i}`, generatedDoc(1000 + i));
@@ -129,11 +148,13 @@ export async function loadCorpora({ combined = 600, only = null } = {}) {
 
 // ---- the two invariants -------------------------------------------------------------------------------------------------------------------------------------
 /** Which kinds each set OWNS (has a planner of its own for). A kind no set owns is a base kind. */
-export const OWNS = { 'extrude-pocket': ['extrude', 'pocket'], holes: ['hole'], 'shell-draft': ['shell', 'draft'], 'patterns-mirror': ['pattern', 'mirror'], booleans: ['combine'] };
+export const OWNS = { 'extrude-pocket': ['extrude', 'pocket'], holes: ['hole'], 'shell-draft': ['shell', 'draft'], 'patterns-mirror': ['pattern', 'mirror'], booleans: ['combine'], 'revolve-groove': ['revolve', 'groove'] };
 const ALL_OWNED = Object.values(OWNS).flat();
-/** The guards that look at kinds their set does not own (the shell-draft loop's G-VOID and G-CHAMFER, the execution budget of the holes and patterns-mirror loops, the patterns-mirror cut guards on a pocket / hole). */
-export const CROSS_KIND_GUARDS = ['G-VOID', 'G-CHAMFER', 'G-BUDGET', 'PM-SNAPCUT', 'PM-WEB'];
+/** The guards that look at kinds their set does not own (the shell-draft loop's G-VOID and G-CHAMFER, the execution budget of the holes and patterns-mirror loops, the patterns-mirror cut guards on a pocket / hole, the revolve-groove chain: a refused groove refuses a later feature on the same part). */
+export const CROSS_KIND_GUARDS = ['G-VOID', 'G-CHAMFER', 'G-BUDGET', 'PM-SNAPCUT', 'PM-WEB', 'RG-CHAIN'];
 
+/** UNIFIED_NO_CHAIN_TAINT=1 measures what the chain taint of bindingRefusals changes (NOTES.md Fold 6) */
+const CHAIN_TAINT = process.env.UNIFIED_NO_CHAIN_TAINT !== '1';
 // the failure can also sit in a guard's probe (the holes group's G-TOP probe re-runs the engine and refuses when the re-run fails)
 const INJECTED = /injected failure on call|fake: unreachable executed/;
 /** Every string a feature mentions except its own id (what it reads). */
@@ -165,9 +186,12 @@ export function bindingRefusals(set, doc, notes) {
     const epJoin = set === 'extrude-pocket' && f.kind === 'combine' && EP_JOIN_LEVEL !== 'off'
       && (lib.un.EP_COMBINE_SAFETY.some((re) => re.test(n.refusal ?? '')) || (EP_JOIN_LEVEL === 'full' && lib.un.EP_COMBINE_CONSISTENCY.some((re) => re.test(n.refusal ?? ''))));
     const own = OWNS[set].includes(f.kind) || !ALL_OWNED.includes(f.kind) || epJoin;
-    if (INJECTED.test(JSON.stringify([n.failed ?? null, n.raw ?? null, n.probe ?? null]))) { taint.add(f.id); injected.push(i); return; }
-    if (dep) { taint.add(f.id); downstream.push(i); return; }
-    if (!own && !CROSS_KIND_GUARDS.includes(n.guard)) { taint.add(f.id); standIn.push(i); return; }
+    // a refused groove leaves its part's handle pointing at itself (the revolve-groove group's chain): what is refused later on that part is refused BECAUSE of it, so when the groove's own refusal does not bind
+    // (an injected failure, a dependency on a stand-in refusal, a kind another set owns) the part is tainted too
+    const mark = () => { taint.add(f.id); if (CHAIN_TAINT && f.kind === 'groove' && typeof f.into === 'string') taint.add(f.into); };
+    if (INJECTED.test(JSON.stringify([n.failed ?? null, n.raw ?? null, n.probe ?? null]))) { mark(); injected.push(i); return; }
+    if (dep) { mark(); downstream.push(i); return; }
+    if (!own && !CROSS_KIND_GUARDS.includes(n.guard)) { mark(); standIn.push(i); return; }
     binding.push(i);
   });
   return { binding, standIn, downstream, injected };

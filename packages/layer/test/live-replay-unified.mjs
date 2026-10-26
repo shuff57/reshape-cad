@@ -2,15 +2,15 @@
 //
 //   ulimit -v 2097152   # 2 GB memory cap (the rig holds the kernel in this process and in the budgeted child processes)
 //   SOLIDCRAFT_REFEREE_PKG=$HOME/.cache/solidcraft-0.21.0-rig/sc-referee-pkg \
-//     node packages/layer/test/live-replay-unified.mjs --out=/path/live-replay-unified.json [--only=id,id] [--corpus=ep,holes,sd,pm,bool,combined] [--combined=600] [--ep-join=cheap|full|off]
+//     node packages/layer/test/live-replay-unified.mjs --out=/path/live-replay-unified.json [--only=id,id] [--corpus=ep,holes,sd,pm,bool,rg,combined,rgcombined] [--combined=600] [--rg-combined=400] [--ep-join=cheap|full|off]
 //   (BREP_PKG=<dir> overrides archive/brep-rs/pkg, the shell-draft group's pick source; without its wasm the replay runs without ctx.resolveAt, as the layer's own pick
 //    path does when the host gives none, and the node rig answers sc.run with measures only, no topology, so a hollow or a draft that NAMES a face is refused by both sides alike.)
 //   Packages sketch, script and layer must be built (dist/). Run one replay at a time. `--only` takes case ids ("hc2-then-join") and combined doc names ("combined seed 57").
 //
-// WHAT IT DOES. Every case of the five groups' committed corpora, as the group's own replay selects it (extrude-pocket-cases*.mjs; holes4/3/1-cases.mjs; the three
+// WHAT IT DOES. Every case of the six groups' committed corpora, as the group's own replay selects it (extrude-pocket-cases*.mjs; holes4/3/1-cases.mjs; the three
 // shell-draft-cases*.mjs; pm-cases*.mjs without the scripts pm-preflight refuses and those with more than 60 copies; boolean-cases*.mjs), plus the COMBINED docs (test/unified-docs.mjs, 600 by default), each run on the SAME kernel and the SAME ModelDoc through
 //   unified            createTranslator({ planners: 'unified' })
-//   the single sets    createTranslator({ planners: 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror' | 'booleans' })
+//   the single sets    createTranslator({ planners: 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror' | 'booleans' | 'revolve-groove' })
 // and checks the two invariants of the unified set (NOTES.md "Unified"):
 //   INVARIANT 2 (in-domain equality): a doc that uses ONE group's feature kinds only (domainOf) must give, through unified, the same translated commands, the same
 //     per-feature status, sentence and guard, and the same scene measure (volume, faces, bodies, bbox) as that group's set. A doc that uses no group's kinds is compared
@@ -40,9 +40,10 @@ const PKG = process.env.SOLIDCRAFT_REFEREE_PKG;
 if (!PKG) { console.error('FATAL: SOLIDCRAFT_REFEREE_PKG is unset'); process.exit(2); }
 const arg = (k) => (process.argv.find((a) => a.startsWith(`--${k}=`)) ?? '').slice(k.length + 3);
 const only = arg('only').split(',').filter(Boolean);
-const corpora = (arg('corpus') || 'ep,holes,sd,pm,bool,combined').split(',');
+const corpora = (arg('corpus') || 'ep,holes,sd,pm,bool,rg,combined,rgcombined').split(',');
 const EP_JOIN = arg('ep-join') || 'cheap';
 const N_COMBINED = Number(arg('combined') || 600);
+const N_RG_COMBINED = Number(arg('rg-combined') || 400);
 const OUT = path.resolve(arg('out') || 'live-replay-unified.json');
 mkdirSync(path.dirname(OUT), { recursive: true });
 for (const k of ['H4_BUDGET_S', 'H4_DOC_BUDGET_S']) if (process.env[k] !== undefined) { console.error(`FATAL: ${k} is set; the layer uses the group's default budget (45 s per run, 180 s per document)`); process.exit(2); }
@@ -56,10 +57,11 @@ const { runScript } = await load('packages/script/dist/reshape-script.js');
 const { solveDoc } = await load('packages/script/dist/model-codegen.js');
 const { createTranslator, domainOf, draftFromUsage } = await load('packages/layer/dist/index.js');
 const { combinedDoc } = await imp(path.join(HERE, 'unified-docs.mjs'));
+const { rgCombinedDoc } = await imp(path.join(HERE, 'rg-docs.mjs'));
 const { bindingRefusals, unifiedCovers } = await imp(path.join(HERE, 'unified-harness.mjs'));
-const SETS = ['extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans'];
+const SETS = ['extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans', 'revolve-groove'];
 const TR = Object.fromEntries([...SETS, 'unified'].map((p) => [p, createTranslator({ planners: p })]));
-const GROUP = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror', bool: 'booleans' };
+const GROUP = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror', bool: 'booleans', rg: 'revolve-groove' };
 const ACCEPTED_GUARDS = ['PM-SNAPCUT', 'PM-WEB', 'EP-JOIN'];
 
 // ---- engines ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -68,7 +70,7 @@ const inProcess = (cmds) => { try { return JSON.parse(sc.run(JSON.stringify({ co
 const { runBudgeted } = await imp(path.join(CONTRACT, 'holes4-sc.mjs'));
 const budgeted = (cmds, opts) => runBudgeted(cmds, opts ?? { budgetS: 60 });
 // the patterns-mirror and booleans corpora hold cases that hang or trap the kernel (their groups ran them in a child process under a time limit): they go through the budgeted engine, one child process per run
-const ENGINE = { ep: inProcess, sd: inProcess, holes: budgeted, pm: budgeted, bool: budgeted, combined: budgeted };
+const ENGINE = { ep: inProcess, sd: inProcess, holes: budgeted, pm: budgeted, bool: budgeted, rg: budgeted, combined: budgeted, rgcombined: budgeted };
 
 // the shell-draft group's pick source, when its (retired) wasm is there
 const brepDir = process.env.BREP_PKG ?? path.join(REPO, 'archive', 'brep-rs', 'pkg');
@@ -133,7 +135,24 @@ if (corpora.includes('bool')) {
     add('bool', c.id, solveDoc(r.doc));
   }
 }
+if (corpora.includes('rg')) {
+  // the revolve-groove group's case scripts (rig/rg-cases.mjs allCases and the extra lists, as test/revolve-groove.differential.test.mjs selects them); every engine call goes through the budgeted child process
+  // (the group's own measurements found grooves that take minutes); a groove run carries { budgetS } in unified and in the revolve-groove set, so the time limit IS exercised here
+  const rigDir = path.join(CONTRACT, 'revolve-groove-rig');
+  const { allCases } = await imp(path.join(rigDir, 'rg-cases.mjs'));
+  const src = [...allCases('/nonexistent-rg-dir', [])];
+  for (const f of ['cases-r3.mjs', 'cases-r3-chainprobe.mjs', 'cases-r3-fuzz.mjs', 'cases-r3-sliver.mjs', 'cases-r3-spinfuzz.mjs', 'cases-r4-graze.mjs', 'cases-r5-regress.mjs', 'cases-r5-wall.mjs']) src.push(...(await imp(path.join(rigDir, f))).cases);
+  const seen = new Set();
+  for (const c of src) {
+    if (typeof c.src !== 'string') continue;
+    const key = `${c.id}\u0000${c.src}`; if (seen.has(key)) continue; seen.add(key);
+    const r = runScript(c.src); if (r.errors.length) continue;
+    add('rg', c.id, solveDoc(r.doc));
+  }
+}
 if (corpora.includes('combined')) for (let i = 0; i < N_COMBINED; i++) add('combined', `combined seed ${i}`, combinedDoc(i));
+// the combined documents with a groove cut into the part they end with (test/rg-docs.mjs rgCombinedDoc)
+if (corpora.includes('rgcombined')) for (let i = 0; i < N_RG_COMBINED; i++) add('rgcombined', `rg combined seed ${i}`, rgCombinedDoc(i));
 
 // ---- one run ---------------------------------------------------------------------------------------------------------------------------------------------
 const feats = (tr) => tr.features.map((x) => ({ id: x.id, kind: x.kind, status: x.status, refusal: x.refusal ?? null, guard: x.guard ?? null }));
@@ -162,12 +181,12 @@ const save = (partial) => writeFileSync(OUT, JSON.stringify({ partial, pkg: PKG,
 for (const it of items) {
   T.docs++;
   const dom = domainOf(it.doc);
-  const present = ['ep', 'holes', 'sd', 'pm', 'bool'].filter((k) => dom[k]);
+  const present = ['ep', 'holes', 'sd', 'pm', 'bool', 'rg'].filter((k) => dom[k]);
   const zone = present.length === 1 ? present[0] : present.length === 0 ? 'none' : 'mixed';
   const ref = zone === 'none' ? 'extrude-pocket' : zone === 'mixed' ? null : GROUP[zone];
-  const own = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror', bool: 'booleans', combined: null }[it.corpus];
+  const own = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror', bool: 'booleans', rg: 'revolve-groove', combined: null, rgcombined: null }[it.corpus];
   const need = new Set([own, ref].filter(Boolean));
-  if (zone === 'mixed' || it.corpus === 'combined') for (const s of SETS) need.add(s); // the safety check reads every set
+  if (zone === 'mixed' || it.corpus === 'combined' || it.corpus === 'rgcombined') for (const s of SETS) need.add(s); // the safety check reads every set
   let u = await outcome('unified', it);
   const single = {}; for (const s of need) single[s] = await outcome(s, it);
   const row = { corpus: it.corpus, id: it.id, zone };
@@ -200,7 +219,7 @@ for (const it of items) {
     row.literal = [...new Set(literal)];
     T.literalBuiltWhereASetRefused += row.literal.length;
     if (violated.length) { row.violated = violated; T.unifiedBuiltWhereASetRefused.push({ id: it.id, features: violated }); }
-    if (it.corpus === 'combined') {
+    if (it.corpus === 'combined' || it.corpus === 'rgcombined') {
       row.unified = { feats: u.feats.map((f) => `${f.id}:${f.status}${f.guard ? `/${f.guard}` : ''}`), scene: u.scene ?? null };
       if (u.scene?.ok) T.combinedBuilt++;
     }

@@ -17,7 +17,7 @@ import { loadCorpora, runSet, CONFIGS, SETS, TR, lib, bindingRefusals, unifiedCo
 import { combinedDoc } from './unified-docs.mjs';
 import { box, shell, move, rotate, hole, pocket, rect, combine, prim } from './docs.mjs';
 
-const GROUP = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror', bool: 'booleans' };
+const GROUP = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror', bool: 'booleans', rg: 'revolve-groove' };
 // UNIFIED_CORPORA=bool-cases,bool-generated runs only those corpora (a development switch: the acceptance run is the whole set)
 const CORPORA = process.env.UNIFIED_CORPORA ? new Set(process.env.UNIFIED_CORPORA.split(',')) : null;
 const items = (await loadCorpora({ combined: 600 })).filter((i) => !CORPORA || CORPORA.has(i.corpus));
@@ -27,7 +27,7 @@ test('createTranslator: unified exists, is not a member of a composition, the de
   const U = lib.tr.createTranslator({ planners: 'unified' });
   assert.equal(U.planners, 'unified');
   assert.equal(lib.tr.createTranslator().planners, 'base');
-  assert.deepStrictEqual(Object.keys(lib.tr.PROFILES), ['base', 'extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans']);
+  assert.deepStrictEqual(Object.keys(lib.tr.PROFILES), ['base', 'extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans', 'revolve-groove']);
   assert.throws(() => lib.tr.createTranslator({ planners: ['unified', 'holes'] }), /not composed/);
   assert.throws(() => lib.tr.createTranslator({ planners: ['holes', 'unified'] }), /not composed/);
   // a hole, a shell and a draft are planned asynchronously by the loop: planFeature cannot do it synchronously and must not fall back to the unguarded planner
@@ -93,14 +93,14 @@ const T = {
   inv2: { inDomain: {}, equal: 0, differ: [], noGroup: 0, mixedDocs: 0, byCorpusMixed: {}, cutGuard: { runs: 0, docs: new Set(), byGuard: {} }, epJoin: { runs: 0, extraCalls: 0, docs: new Set(), byCorpus: {}, byGuard: {} } },
   thrown: { unified: 0, unifiedOnly: [], sets: 0 },
   lint: { refusals: 0, worse: [], epWording: 0 },
-  pureBase: { docs: 0, sameDecisionAs: { holes: 0, 'shell-draft': 0, base: 0, 'extrude-pocket': 0, 'patterns-mirror': 0, booleans: 0 } },
+  pureBase: { docs: 0, sameDecisionAs: { holes: 0, 'shell-draft': 0, base: 0, 'extrude-pocket': 0, 'patterns-mirror': 0, booleans: 0, 'revolve-groove': 0 } },
 };
 for (const it of items) bump(T.byCorpus, it.corpus);
 
 test('invariants 1 and 2, and the sentence lint: every corpus x four engine configurations, unified against each single set', { timeout: 3_000_000 }, async () => {
   for (const it of items) {
     const d = lib.un.domainOf(it.doc);
-    const present = ['ep', 'holes', 'sd', 'pm', 'bool'].filter((k) => d[k]);
+    const present = ['ep', 'holes', 'sd', 'pm', 'bool', 'rg'].filter((k) => d[k]);
     const zone = present.length === 1 ? present[0] : present.length === 0 ? 'none' : 'mixed';
     if (zone === 'mixed') { T.inv2.mixedDocs++; bump(T.inv2.byCorpusMixed, it.corpus); }
     for (const cfg of CONFIGS) {
