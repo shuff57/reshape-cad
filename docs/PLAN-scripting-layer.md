@@ -53,6 +53,7 @@ Never a silently wrong solid. A feature the layer cannot build correctly is refu
 ## Phases
 
 ### 0a. Retire
+STATUS 2026-10-25: DONE, approved by the owner. `docs/replica/freecad` stays in place as reference data by decision (AGENTS.md), so it is not archived. The nine campaign branches are tagged locally as `archive/<name>` on their `origin/*` tips (nothing pushed). `npm test` passes, 292 of 292. `packages/script/test/pocket-rim.test.mjs` still looks for the old `brep-rs/pkg` path but skips the kernel part when it is missing. The list below is the original plan.
 - Commit the uncommitted work locally: spike docs, fuzz, fixes, screenshots, HANDOFF.md, LOOP-PLAN.md, and the campaign edits in `docs/specs/census/defs.mjs` and three `docs/replica/.../refs/*.json`.
 - Archive `docs/replica/freecad`, `docs/specs/census`, `docs/specs/fuzz` and the `SPEC-brep-*` files under `archive/`. Delete the stray untracked symlink `docs/replica/freecad/freecad` (it points at a stale worktree).
 - Move the brep-rs-only tests (about ten in `packages/script/test` and `packages/brep-adapter/test` that read replica fixtures) out of `npm test`.
@@ -128,5 +129,5 @@ Truck patching from `LOOP-PLAN.md` (shell patch rebuilds, upstream bisect B1, sk
 
 1. Front end: DECIDED 2026-10-24 by the owner. SolidCraft-web's UI, driven through upstream `window.solidcraft` from a same-origin host page inside shCode. Our React studio is a proof of concept and is not the student front end. No patch against upstream. Open: the ribbon toggle (phase 3) needs an upstream field or the interim overlay.
 2. Gates: keep `scripts/brep-*` runnable by symlink to the archive, or archive them with brep-rs.
-3. Approve phase 0a (changes what `npm test` covers) and the message text for 0c.
+3. Phase 0a: DECIDED 2026-10-25, done. Still open: the message text for 0c, which the owner sees before anything is sent.
 4. SolidCore swap thresholds (phase 5): DECIDED 2026-10-25 by the owner, as written in phase 5.
