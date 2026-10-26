@@ -22,3 +22,7 @@ export { followMoves, quarterTurns } from './follow-moves.js';
 export type { FollowEnv } from './follow-moves.js';
 export { UNIFIED_PROFILE, unifiedStep, domainOf, routeOf, isChamferBox, EP_KINDS } from './unified.js';
 export type { UnifiedDomain, UnifiedStyle, Route } from './unified.js';
+export { PM_PROFILE, PM_KINDS, PM_CROSS_KIND_GUARDS, pmStep, cutGuard, toolBoxOf, snapCut, webCut, polyDist, analyticBox, aggregatePM, studentSentence as patternsMirrorSentence, SNAP_REL, SLIVER_MM, WEB_REL } from './patterns-mirror.js';
+export type { PMState, ToolBox, Box3, MirrorAt, CutHit } from './patterns-mirror.js';
+export { preflightScript, PREFLIGHT_SENTENCE, PREFLIGHT_SENTENCE_VAR } from './pm-preflight.js';
+export type { PreflightHit } from './pm-preflight.js';

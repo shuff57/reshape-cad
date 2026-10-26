@@ -159,7 +159,46 @@ function draftModel(b, p) {
   return {};
 }
 
-function simulate(commands, boxBool = false, holeModel = false, shellDraft = false) {
+// (a body made by a tapered pull is marked: under pmModel its mirror image meets it along an edge, the case the group's mirror contact guard exists for.)
+// pmModel (opt-in, default false; needs boxBool): a crude geometric model of fusing copies, for the patterns-mirror group's guards, on the axis-aligned boxes the fake tracks.
+//   solid.combine join of target + tools, per tool, by the per-axis overlap ov_i = min(hi) - max(lo) of the two boxes:
+//     a gap above 1e-5 mm on some axis                      -> "fake: boolean failed ... disjoint" (the fallback variant that keeps the copies apart then runs)
+//     a gap in (1e-3, 0.4] on ONE axis with sliver overlaps (<= 5e-4) on the other two (the 'aligned' case) -> joined, volume off by a relative 3e-7 (the group's sum check)
+//     a gap in (0, 1e-5]                                    -> joined into one body, volume = the sum (the closed gap)
+//     touching along two or three axes (edge or point)      -> joined, shells add up, volume = the sum (the group's contact guard)
+//     touching along one axis (a face) or overlapping       -> joined, one shell, union volume (boxBool's rule); an overlap of 0 < d <= 5e-4 mm on one axis is a sliver (the sliver guard)
+//   solid.mirror: the union of the part and its reflection (2V less the overlap); a CURVED part (anything but a cylinder mirrored along its axis) meets its reflection at a point
+//     or a line: the copy stays a second shell (the group's fused guard).
+//   solid.pattern.circular: the copies are the part's box turned about the axis through the origin by 360 deg x (q-1) / count (the box of the turned corners).
+const gapsOf = (a, b) => [0, 1, 2].map((i) => Math.max(a.min[i] - b.max[i], b.min[i] - a.max[i]));
+function turnBox(bb, axis, ang) {
+  const [p, q] = [0, 1, 2].filter((k) => k !== axis);
+  const c = Math.cos(ang); const s = Math.sin(ang);
+  const lo = [Infinity, Infinity, Infinity]; const hi = [-Infinity, -Infinity, -Infinity];
+  for (const x of [bb.min[0], bb.max[0]]) for (const y of [bb.min[1], bb.max[1]]) for (const z of [bb.min[2], bb.max[2]]) {
+    const v = [x, y, z]; const r = v.slice();
+    r[p] = c * v[p] - s * v[q]; r[q] = s * v[p] + c * v[q];
+    for (let i = 0; i < 3; i++) { lo[i] = Math.min(lo[i], r[i]); hi[i] = Math.max(hi[i], r[i]); }
+  }
+  return { min: lo, max: hi };
+}
+function pmJoin(t, o) {
+  const gap = gapsOf(t.bbox, o.bbox); const gmax = Math.max(...gap);
+  const u = { min: t.bbox.min.map((v, a) => Math.min(v, o.bbox.min[a])), max: t.bbox.max.map((v, a) => Math.max(v, o.bbox.max[a])) };
+  const sum = t.volume + o.volume;
+  const aligned = (gp) => gp.filter((g) => g > 1e-3 && g <= 0.4).length === 1 && gp.filter((g) => g < 0 && g >= -5e-4).length === 2;
+  if (gmax > 1e-5) {
+    if (aligned(gap)) { t.volume = sum * (1 + 3e-7); t.bbox = u; t.shells = 1; return null; }
+    return 'fake: boolean failed: the copies are disjoint';
+  }
+  if (gmax > 0) { t.volume = sum; t.bbox = u; t.shells = 1; return null; }
+  const touching = gap.filter((g) => Math.abs(g) <= 1e-12).length;
+  if (touching >= 2) { t.volume = sum; t.bbox = u; t.shells = (t.shells ?? 1) + (o.shells ?? 1); return null; }
+  t.volume = t.volume + o.volume - overlapVol(t.bbox, o.bbox) * Math.min(fill(t), fill(o)); t.bbox = u; t.shells = Math.max(1, (t.shells ?? 1) + (o.shells ?? 1) - 1);
+  return null;
+}
+
+function simulate(commands, boxBool = false, holeModel = false, shellDraft = false, pmModel = false) {
   const bodies = new Map();
   const sketches = new Map();
   let active = null;
@@ -170,7 +209,7 @@ function simulate(commands, boxBool = false, holeModel = false, shellDraft = fal
   };
   const make = (name, bbox, extra = {}) => {
     if (typeof name === 'string' && name.includes('ghost')) return; // accepted, but no body ever appears
-    bodies.set(name, { name, bbox, shells: 1, volume: extra.volume ?? vol(bbox), kind: extra.kind ?? 'solid', curved: !!extra.curved, feature: extra.feature });
+    bodies.set(name, { name, bbox, shells: 1, volume: extra.volume ?? vol(bbox), kind: extra.kind ?? 'solid', curved: !!extra.curved, feature: extra.feature, tapered: !!extra.tapered });
   };
   const cutBoxes = (targets, tool) => {
     for (const t of targets) {
@@ -247,7 +286,7 @@ function simulate(commands, boxBool = false, holeModel = false, shellDraft = fal
         const m = need(p.targets); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
         if (boxBool) cutBoxes(p.targets, bb);
         else for (const t of p.targets) bodies.get(t).volume *= 0.8;
-      } else make(p.body_name, bb, { kind: k === 'solid.extrude' ? 'extrude' : 'revolve', curved: k === 'solid.revolve', feature: i + 1 });
+      } else make(p.body_name, bb, { kind: k === 'solid.extrude' ? 'extrude' : 'revolve', curved: k === 'solid.revolve', feature: i + 1, tapered: !!p.taper });
     } else if (k === 'solid.loft') {
       if (p.sections.length === 3) return { bodies, sketches, active, ...f(FAIL_ERR.loft) };
       const pts = [];
@@ -262,11 +301,12 @@ function simulate(commands, boxBool = false, holeModel = false, shellDraft = fal
       make(p.body_name, bboxOf(pts), { kind: 'loft', curved: true, feature: i + 1 });
     } else if (k === 'solid.combine') {
       const m = need([p.target, ...(p.tools ?? [])]); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
-      if (p.operation === 'join' && p.tools.length >= 3) return { bodies, sketches, active, ...f(FAIL_ERR.join) };
+      if (p.operation === 'join' && p.tools.length >= 3 && !pmModel) return { bodies, sketches, active, ...f(FAIL_ERR.join) };
       const t = bodies.get(p.target);
       for (const n of p.tools) {
         const o = bodies.get(n);
-        if (boxBool && p.operation === 'join') { t.volume = t.volume + o.volume - overlapVol(t.bbox, o.bbox) * Math.min(fill(t), fill(o)); t.bbox = bboxOf([t.bbox.min, t.bbox.max, o.bbox.min, o.bbox.max]); }
+        if (pmModel && boxBool && p.operation === 'join') { const er = pmJoin(t, o); if (er) return { bodies, sketches, active, ...f(er) }; }
+        else if (boxBool && p.operation === 'join') { t.volume = t.volume + o.volume - overlapVol(t.bbox, o.bbox) * Math.min(fill(t), fill(o)); t.bbox = bboxOf([t.bbox.min, t.bbox.max, o.bbox.min, o.bbox.max]); }
         else if (boxBool && p.operation === 'cut') t.volume = Math.max(0, t.volume - overlapVol(t.bbox, o.bbox) * fill(t));
         else if (boxBool) { const ov = overlapVol(t.bbox, o.bbox) * fill(t); t.volume = ov; t.bbox = { min: t.bbox.min.map((v, a) => Math.max(v, o.bbox.min[a])), max: t.bbox.max.map((v, a) => Math.min(v, o.bbox.max[a])) }; }
         else if (p.operation === 'join') { t.volume += o.volume; t.bbox = bboxOf([t.bbox.min, t.bbox.max, o.bbox.min, o.bbox.max]); }
@@ -280,12 +320,26 @@ function simulate(commands, boxBool = false, holeModel = false, shellDraft = fal
       if (p.translate && p.bodies) for (const n of p.bodies) { const b = bodies.get(n); b.bbox = { min: b.bbox.min.map((v, a) => v + p.translate[a]), max: b.bbox.max.map((v, a) => v + p.translate[a]) }; }
     } else if (k === 'solid.mirror') {
       const m = need(p.bodies); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
+      if (pmModel && boxBool) {
+        for (const n of p.bodies) {
+          const b = bodies.get(n); const a = p.plane.normal.findIndex((v) => v); const at = p.plane.origin[a];
+          const refl = { min: b.bbox.min.map((v, x) => (x === a ? 2 * at - b.bbox.max[a] : v)), max: b.bbox.max.map((v, x) => (x === a ? 2 * at - b.bbox.min[a] : v)) };
+          const u = { min: b.bbox.min.map((v, x) => Math.min(v, refl.min[x])), max: b.bbox.max.map((v, x) => Math.max(v, refl.max[x])) };
+          let ovl = overlapVol(b.bbox, refl) * fill(b);
+          if (b.tapered) { const ext = b.bbox.max[a] - b.bbox.min[a]; const dd = Math.min(b.bbox.max[a], refl.max[a]) - Math.max(b.bbox.min[a], refl.min[a]); ovl = ext > 0 ? ovl * Math.max(0, dd) / ext : ovl; } // a tapered pull meets its reflection along an edge: the overlap grows like d squared
+          b.volume = 2 * b.volume - ovl; b.bbox = u;
+          b.shells = b.curved && !(b.kind === 'cylinder' && a === 2) ? (b.shells ?? 1) + 1 : (b.shells ?? 1);
+          if (shellDraft) b.compound = true;
+        }
+        continue;
+      }
       for (const n of p.bodies) { const b = bodies.get(n); if (shellDraft) b.compound = true; b.volume *= 2; const a = p.plane.normal.findIndex((v) => v); const at = p.plane.origin[a]; b.bbox = { min: b.bbox.min.map((v, x) => (x === a ? Math.min(v, 2 * at - b.bbox.max[a]) : v)), max: b.bbox.max.map((v, x) => (x === a ? Math.max(v, 2 * at - b.bbox.min[a]) : v)) }; }
     } else if (k === 'solid.pattern.circular' || k === 'solid.pattern.rectangular') {
       const m = need(p.bodies); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
       const n = p.bodies[0]; const b = bodies.get(n);
       const count = p.count ?? p.count1;
       for (let q = 2; q <= count; q++) {
+        if (pmModel && boxBool && k === 'solid.pattern.circular') { bodies.set(`${n} (${q})`, { ...b, name: `${n} (${q})`, bbox: turnBox(b.bbox, { X: 0, Y: 1, Z: 2 }[p.axis] ?? 2, (2 * Math.PI * (q - 1)) / count) }); continue; }
         const d = k === 'solid.pattern.rectangular' ? p.dir1.map((v) => v * p.spacing1 * (q - 1)) : [7 * (q - 1), 3 * (q - 1), 0];
         bodies.set(`${n} (${q})`, { ...b, name: `${n} (${q})`, bbox: { min: b.bbox.min.map((v, a) => v + d[a]), max: b.bbox.max.map((v, a) => v + d[a]) } });
       }
@@ -369,7 +423,7 @@ function topologyOfBody(b) {
 }
 
 /**
- * makeFake({ failEvery, boxBool, holeModel, shellDraft, sync, cpuMs }) -> { runSC, topologyOf, log }   (boxBool, holeModel, shellDraft: see the notes above simulate)
+ * makeFake({ failEvery, boxBool, holeModel, shellDraft, pmModel, sync, cpuMs }) -> { runSC, topologyOf, log }   (boxBool, holeModel, shellDraft: see the notes above simulate)
  *   failEvery N: every Nth runSC call that simulates cleanly is reported as failing at its last command.
  *   a body_name containing 'ghost' is accepted but never appears; one containing 'boom' makes runSC throw.
  *   sync (opt-in): runSC and topologyOf return their result directly instead of a promise (the holes group's ORIGINAL translator is synchronous).
@@ -377,7 +431,7 @@ function topologyOfBody(b) {
  *     cost exceeds it, the run is reported as { ok: false, timedOut: true, cpuMs } (the group's execution budget).
  *   When runSC is called with a second argument it is logged as a third log element; calls without one log exactly as before.
  */
-export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, shellDraft = false, sync = false, cpuMs = null } = {}) {
+export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, shellDraft = false, pmModel = false, sync = false, cpuMs = null } = {}) {
   let calls = 0;
   const log = [];
   const runOnce = (commands, opts) => {
@@ -388,7 +442,7 @@ export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, sh
     if (cost !== undefined && opts && typeof opts.budgetS === 'number' && cost > opts.budgetS * 1000) {
       return { ok: false, timedOut: true, cpuMs: opts.budgetS * 1000, failed: { command: '(budget)', error: `TIME BUDGET: exceeded ${opts.budgetS} s of CPU` } };
     }
-    const sim = simulate(commands, boxBool, holeModel, shellDraft);
+    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel);
     const snap = { measure: { bodies: bodyRows(sim.bodies, boxBool, holeModel) }, sketches: sketchRows(sim.sketches), dirty: false, active_sketch: sim.active ? sim.active.name : null };
     let failed = sim.failed;
     if (!failed && failEvery && calls % failEvery === 0 && commands.length) {
@@ -401,7 +455,7 @@ export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, sh
   };
   const topo = (commands) => {
     log.push(['topologyOf', JSON.stringify(commands)]);
-    const sim = simulate(commands, boxBool, holeModel, shellDraft);
+    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel);
     if (sim.failed) return { ok: false, failed: sim.failed };
     return { ok: true, topology: { bodies: [...sim.bodies.values()].map(topologyOfBody) }, results: commands.map((_, i) => ({ feature: i + 1 })) };
   };

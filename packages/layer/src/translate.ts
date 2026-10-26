@@ -18,6 +18,7 @@ import { mapSketch } from './sketch-map.js';
 import { resolveName, pickPoint } from './resolve-names.js';
 import { followMoves } from './follow-moves.js';
 import type { UnifiedDomain } from './unified.js';
+import type { PMState } from './patterns-mirror.js';
 import type { Evidence, Resolved, ResolveEnv, ShapeResult, FaceRes, EdgeRes } from './resolve-names.js';
 
 export const FEATURE_KINDS = ['box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'sketch', 'datum', 'extrude', 'combine',
@@ -67,6 +68,8 @@ export interface TranslateState {
   holes?: HolesState;
   /** shell-draft profile only: the closed hollows of the shell-draft group. See shell-draft.ts. */
   shellDraft?: { voided: Record<string, true> };
+  /** patterns-mirror set only: the group's bookkeeping (analytic boxes, cut history, torus lineage, the refusals' two texts). See patterns-mirror.ts. */
+  pm?: PMState;
   /** unified set only: which groups the document uses (decides the style of the loop). See unified.ts. */
   unified?: { domain: UnifiedDomain; maps: { E: { measure: Record<string, Aggregate>; bodies: Record<string, string[]> }; P: { measure: Record<string, Aggregate>; bodies: Record<string, string[]> } } };
 }
@@ -129,7 +132,7 @@ export interface Profile {
    * Optional: bookkeeping that every accepted feature triggers, whichever profile owns its kind (the extrude-pocket scene, the holes body
    * count). `plan` is the plan of a feature run by the generic loop, null when a profile's own step accepted it.
    */
-  onAccepted?(st: TranslateState, res: RunResult, m: Aggregate, plan: Plan | null): void;
+  onAccepted?(st: TranslateState, res: RunResult, m: Aggregate, plan: Plan | null, acc?: AcceptedInfo): void;
   /** Optional: extra fields of the translateDoc result (the holes set reports the CPU seconds it spent as `spentS`). */
   result?(st: TranslateState): Partial<TranslateResult>;
   /**
@@ -141,6 +144,8 @@ export interface Profile {
   members?: Profile[];
   owner?(kind: string): Profile;
 }
+/** Which feature was accepted and with which context: given to onAccepted by every step, so a hook can follow the feature itself (the patterns-mirror group's bookkeeping does). */
+export interface AcceptedInfo { f: Feature; ctx: TranslateCtx }
 /** What a profile's own step gets: the loop's mutable state. */
 export interface LoopEnv {
   doc: { features: Feature[] };
@@ -181,7 +186,7 @@ export function composeProfiles(list: Profile[]): Profile {
     noOutline: (sk, o) => first.noOutline(sk, o),
     plannerError: (f, e) => owner(f.kind).plannerError(f, e),
     kernelRefusal: (f, raw) => owner(f.kind).kernelRefusal(f, raw),
-    onAccepted: (st, res, m, plan) => { for (const p of list) p.onAccepted?.(st, res, m, plan); },
+    onAccepted: (st, res, m, plan, acc) => { for (const p of list) p.onAccepted?.(st, res, m, plan, acc); },
     result: (st) => Object.assign({}, ...list.map((p) => p.result?.(st) ?? {})) as Partial<TranslateResult>,
     members: list,
     owner,
@@ -681,6 +686,9 @@ export interface FeatureResult {
   probe?: unknown;
   unguarded?: unknown;
   cpuMs?: number;
+  /** patterns-mirror set only: where the mirror plane went, and the wall time of the run that built the feature. */
+  mirrorAt?: { axis: number; at: number; how: string };
+  wallMs?: number;
 }
 export interface TranslateResult {
   features: FeatureResult[];
@@ -770,7 +778,7 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
       if (bad) { verifyRefusal = bad; lastErr = null; continue; }
     }
     accepted.push(...variant);
-    for (const mp of membersOf(profileIn)) mp.onAccepted?.(st, res, m, plan);
+    for (const mp of membersOf(profileIn)) mp.onAccepted?.(st, res, m, plan, { f, ctx });
     st.accLen[f.id] = accepted.length;
     st.bodies[f.id] = m.bodies;
     st.measure[f.id] = m;

@@ -227,7 +227,7 @@ test('createTranslator: the shell-draft set exists, the default stays base, unkn
   assert.throws(() => port.tr.createTranslator({ planners: 'nope' }), /unknown planner set/);
   assert.throws(() => port.tr.createTranslator({ planners: ['shell-draft', 'shell-draft'] }), /listed twice/);
   assert.deepStrictEqual(SD.FEATURE_KINDS, orig.p4.FEATURE_KINDS);
-  assert.deepStrictEqual(Object.keys(port.tr.PROFILES).sort(), ['base', 'extrude-pocket', 'holes', 'shell-draft']);
+  assert.deepStrictEqual(Object.keys(port.tr.PROFILES).sort(), ['base', 'extrude-pocket', 'holes', 'patterns-mirror', 'shell-draft']);
   for (const list of [['shell-draft'], ['holes', 'shell-draft'], ['shell-draft', 'holes'], ['extrude-pocket', 'holes', 'shell-draft'], ['extrude-pocket', 'shell-draft']]) {
     assert.deepStrictEqual(port.tr.createTranslator({ planners: list }).planners, list);
   }

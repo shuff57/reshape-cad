@@ -35,6 +35,8 @@ export interface RunResult {
   timedOut?: boolean;
   /** holes set only: CPU milliseconds the run used, when the bridge measures it. */
   cpuMs?: number;
+  /** patterns-mirror set only: wall milliseconds the set measured around the run. */
+  wallMs?: number;
   rejected?: unknown;
   error?: unknown;
   sketch_at_failure?: unknown;
@@ -130,6 +132,9 @@ export interface TranslateCtx {
    * turn, and a join / mirror / pattern in between, in one sentence. Off: the name is looked up where the primitive was built, as before.
    */
   followMoves?: boolean;
+  /** patterns-mirror set only: the time limit of one engine run (ms of NEW work; the replay of what was already accepted gets 2x its own time on top; default 600000) and of the whole model (default 3600000). Safety nets, not status criteria. */
+  pmBudgetMs?: number;
+  pmDocBudgetMs?: number;
   /** shell-draft set only: which `draft(` calls of the script used `from:` and no `neutral:` (draftFromUsage(script)), in order; the original's `opts.fromUsage`. */
   fromUsage?: Array<{ from: string | null; neutral: boolean }>;
 }

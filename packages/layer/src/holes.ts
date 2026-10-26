@@ -311,7 +311,7 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
       hs.chain[f.id] = prev ?? { baseIdx: plan.baseIdx!, baseMeasure: st.measure[h] ?? st.measure[(f as unknown as HoleView).target] };
     }
     accepted.push(...variant);
-    for (const mp of membersOf(env.profile)) mp.onAccepted?.(st, res, m, null);
+    for (const mp of membersOf(env.profile)) mp.onAccepted?.(st, res, m, null, { f, ctx });
     st.accLen[f.id] = accepted.length;
     st.bodies[f.id] = m.bodies; st.measure[f.id] = m;
     for (const c of plan.consumes!) {

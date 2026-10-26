@@ -1046,7 +1046,7 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
       return;
     }
     accepted.push(...variant);
-    for (const mp of membersOf(env.profile)) mp.onAccepted?.(st, res, m, null);
+    for (const mp of membersOf(env.profile)) mp.onAccepted?.(st, res, m, null, { f, ctx });
     st.accLen[f.id] = accepted.length;
     st.bodies[f.id] = m.bodies; st.measure[f.id] = m;
     if (plan.voided) sd.voided[f.id] = true;
