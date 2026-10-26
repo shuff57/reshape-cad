@@ -74,7 +74,7 @@ async function runPort(item, followMoves) {
 const rnd = (v) => (typeof v === 'number' ? (Math.abs(v) < 5e-10 ? 0 : Math.round(v * 1e9) / 1e9) : Array.isArray(v) ? v.map(rnd) : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, rnd(x)])) : v);
 const noFrom = (r) => (r ? rnd({ ...r, features: r.features.map(({ pickedFrom, ...f }) => f) }) : r);
 
-const T = { docs: pool.length, offIdentical: 0, same: 0, differ: 0, causes: {}, examples: {}, builtBothSameMeasure: 0 };
+const T = { docs: pool.length, offIdentical: 0, same: 0, differ: 0, causes: {}, examples: {}, names: {}, builtBothSameMeasure: 0 };
 test('flag OFF (and an explicit false) is identical to no flag on every doc of the pool, and on the base set', async () => {
   assert.ok(pool.length > 60, `pool of ${pool.length}`);
   for (const it of pool) {
@@ -103,7 +103,10 @@ test('flag ON, no host resolver: equals the original (path A, shift by the moves
     let cause;
     const rawOn = String(y?.raw ?? '');
     const primRotated = /is rotated; this demo resolves primitive faces only on unrotated primitives/.test(rawOn);
-    if (primRotated) cause = `flag-ON refused: the NAMED primitive is itself rotated (the base resolver's standing refusal, not a move); original ${x.status}`;
+    const rotatedRoot = (() => { const n = (it.doc.features.find((f) => f.id === (x?.id)) ?? {}); const nm = n.open ?? n.face; const r = it.doc.features.find((f) => f.id === nm?.feature); return !!(r && r.rotate && r.rotate.some((v) => v)); })();
+    const fakeLabel = rotatedRoot && /solidcraft names that face .*, not .* as a (box|cylinder)'s|own parameters put that face/.test(rawOn);
+    if (fakeLabel) cause = `flag-ON refused: the NAMED primitive is turned and the FAKE topology does not model a turned primitive (its labels do not turn with the body and its box is not rotated; the real kernel's do, measured); original ${x.status}`;
+    else if (primRotated) cause = `flag-ON refused: the NAMED primitive is rotated by other than whole quarter turns (the base resolver's standing refusal, not a move); original ${x.status}`;
     else if (a.error !== b.error) cause = 'a thrown error on one side';
     else if (!x || !y) cause = 'results differ only outside status / sentence / commands / measure';
     else if (x.status === 'built' && y.status === 'built') cause = JSON.stringify(rnd(x.measure)) === JSON.stringify(rnd(y.measure)) ? 'both built, SAME measure, only the pick point differs' : 'both built, DIFFERENT measure';
@@ -113,7 +116,7 @@ test('flag ON, no host resolver: equals the original (path A, shift by the moves
     else cause = `both refused, other sentence (${x.guard ?? 'none'} / ${y.guard ?? 'none'}): the flag-ON side's own pick finds no face before the chain check, the original's checks the chain first`;
     const key = `${cause} [doc has: ${fakeLimit.join(', ') || 'only box / cylinder / move / shell / draft'}]`;
     T.causes[key] = (T.causes[key] ?? 0) + 1;
-    (T.examples[key] ??= []).length < 3 && T.examples[key].push({ name: it.name, id: x?.id, orig: x && { status: x.status, guard: x.guard, refusal: x.refusal?.slice(0, 160), faces: x.commands?.[0]?.params?.faces, vol: x.measure?.volume }, on: y && { status: y.status, guard: y.guard, refusal: y.refusal?.slice(0, 160), faces: y.commands?.[0]?.params?.faces, vol: y.measure?.volume } });
+    (T.names[key] ??= []).push(it.name); (T.examples[key] ??= []).length < 3 && T.examples[key].push({ name: it.name, id: x?.id, orig: x && { status: x.status, guard: x.guard, refusal: x.refusal?.slice(0, 160), faces: x.commands?.[0]?.params?.faces, vol: x.measure?.volume }, on: y && { status: y.status, guard: y.guard, refusal: y.refusal?.slice(0, 160), faces: y.commands?.[0]?.params?.faces, vol: y.measure?.volume } });
     if (cause === 'both built, DIFFERENT measure' || cause.startsWith('original refused')) T.builtBothSameMeasure += 0;
   }
   // every doc whose parts are all boxes / cylinders moved by plain moves must be identical: the fake's topology speaks for those
@@ -178,5 +181,6 @@ test.after(() => {
   console.log(`\nMOVED-PICK differential (fake engine): pool ${T.docs} named-pick docs with a move; flag off == no flag on ${T.offIdentical}; flag ON == original on ${T.same}, differs on ${T.differ}`);
   console.log(`plain box / cylinder / move docs: ${T.plain?.docs}, identical ${T.plain?.same}, same features and sentences but another guard name ${T.plain?.sameSentence}`);
   for (const [k, n] of Object.entries(T.causes).sort((a, b) => b[1] - a[1])) console.log(`  ${n}  ${k}`);
+  if (process.env.SHOW_NAMES) console.log(JSON.stringify(T.names, null, 1));
   if (process.env.SHOW_EXAMPLES) console.log(JSON.stringify(T.examples, null, 1));
 });

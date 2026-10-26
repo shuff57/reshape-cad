@@ -8,6 +8,7 @@
 import type { Feature, SketchFeature } from '@shuff57/reshape-script/model-types';
 import type { TopoName } from '@shuff57/reshape-script/topo-name';
 import type { Frame, OutlineLike, TopoEdge, TopoFace, V3 } from './types.js';
+import { quarterTurns } from './follow-moves.js';
 
 const dot = (a: V3, b: V3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const sub = (a: V3, b: V3): V3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
@@ -83,6 +84,8 @@ export interface ResolveEnv {
   shapeOf(featureId: string): Promise<ShapeResult>;
   sketchFrame(sk: SketchFeature): Frame;
   outline(sk: SketchFeature): OutlineLike;
+  /** ctx.followMoves: a primitive turned by whole quarter turns is resolved (its face part is a LOCAL direction, carried by the turn) instead of refused. Default off. */
+  followTurns?: boolean;
 }
 
 export function nameText(n: TopoName | null | undefined): string {
@@ -182,7 +185,10 @@ type NameOf<C extends string> = Extract<TopoName, { cause: C }>;
 async function primitiveFace(name: NameOf<'primitive'>, f: FeatureView, env: ResolveEnv, t: string): Promise<FaceResolved> {
   const part = name.part;
   const isPrim = ['box', 'cylinder', 'prism'].includes(f.kind);
-  if (isPrim && rotated(f)) return fail(`${t}: ${f.id} is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)`);
+  // a primitive's `rotate` turns it about the origin (x, then y, then z) BEFORE it is placed at `center`; its face part is a local direction that the turn carries along
+  // (solidcraft's persistent labels turn with the body: F1:+x stays the local +x face). Only with followTurns, and only by whole quarter turns.
+  const turn = isPrim && rotated(f) && env.followTurns ? quarterTurns(f.rotate!) : null;
+  if (isPrim && rotated(f) && !turn) return fail(`${t}: ${f.id} is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)`);
   if (isPrim && f.round) return fail(`${t}: ${f.id} carries a whole-shape round, which changes its faces and edges; not resolved`);
   if (part === 'side' && f.kind !== 'cylinder') return fail(`${t}: only a cylinder primitive has a 'side' face in this demo`);
   if (part !== 'side' && !AXV[part]) return fail(`${t}: '${part}' is not a face part this demo knows`);
@@ -198,7 +204,8 @@ async function primitiveFace(name: NameOf<'primitive'>, f: FeatureView, env: Res
     // a cylinder's wall is one face in the doc; the engine splits it at the seam into 2.
     return { ok: true, kind: 'faceset', faces: curved, shape, evidence: { name: t, candidates: curved.length, engineFaces: curved.map((x) => x.name), rule: 'every non-planar face of the cylinder primitive' } };
   }
-  const dir = AXV[part];
+  const dirLocal = AXV[part];
+  const dir: V3 = turn ? turn.map((row) => Math.round(row[0] * dirLocal[0] + row[1] * dirLocal[1] + row[2] * dirLocal[2])) : dirLocal; // exact: a quarter turn maps an axis to an axis
   // rule 1 (geometry only): planar, outward normal == dir, centroid extreme along dir
   const planar = shape.faces.filter((x) => x.plane_normal && parallel(x.plane_normal, dir));
   const best = planar.length ? Math.max(...planar.map((x) => dot(x.centroid, dir))) : null;
@@ -207,7 +214,8 @@ async function primitiveFace(name: NameOf<'primitive'>, f: FeatureView, env: Res
   if (cands.length === 1 && isPrim) {
     // rule 2 (the doc alone): the plane the primitive's own parameters put there
     const axis = dir.findIndex((v) => v !== 0);
-    const half = f.kind === 'box' ? f.size![axis] / 2 : f.height! / 2; // box has size, cylinder / prism have height
+    const axisLocal = dirLocal.findIndex((v) => v !== 0); // the half extent is along the LOCAL axis; the plane lies along the world one
+    const half = f.kind === 'box' ? f.size![axisLocal] / 2 : f.height! / 2; // box has size, cylinder / prism have height
     const docOffset = (c[axis] + Math.sign(dir[axis]) * half) * Math.sign(dir[axis]);
     const got = dot(cands[0].centroid, dir);
     const okDoc = Math.abs(got - docOffset) <= 1e-6 * Math.max(1, Math.abs(docOffset));

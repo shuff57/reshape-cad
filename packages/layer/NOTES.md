@@ -187,3 +187,80 @@ The merge rule of fold 2 stands (the owner of a kind is the last listed set that
 35. **The sweep probes cost engine calls**: every accepted draft whose angle is above 3.5 x the probe tilt runs the engine three more times; the differential compares them, nothing bounds them, and the group has no budget to bound them with.
 36. **Dead or unused in the original, not ported:** `AXN`, `bname`, the `role` parameter of the two `dep` helpers, the `runSC` handed to `post` for the closed hollow and the move guard, which ignore their third argument.
 37. **`G-REACH` is conservative by its own header**: it may refuse a draft that would have fit when the nearest coordinate belongs to a feature outside the face's lateral extent. Preserved.
+
+# Moved picks: `ctx.followMoves` (opt-in name resolution through moves and quarter turns)
+
+Decision it implements: the owner chose "teach the base resolver to follow a move" (NOTES fold 3, 'Decision (the STOP rule)'). Default OFF; with the flag off every existing result is byte-identical (checked on the 78-doc pool below, on the base set, and by the unchanged differential suites).
+
+## What SolidCraft's `run` returns, and what upstream topology gives and lacks (measured on the 0.21.0 rig)
+
+- **The stock rig wrapper cannot report topology.** `docs/spikes/solidcraft-referee/wrapper` (the pkg at `$HOME/.cache/solidcraft-0.21.0-rig/sc-referee-pkg`) runs every command but returns only the final `inspect.measure`. `model.faces` / `model.edges` execute (`ok: true`) and their output is thrown away; with a wrong body name they fail ("no body `nope`"). So the node rig answers measures only, as fold 3 said.
+- **The unmodified `phase2/wrapper2` source returns every command's output.** Built exactly like the rig (copy of the rig `wrapper/` Cargo.toml and Cargo.lock with the crate renamed, `lib.rs` from `phase2/wrapper2`, `cargo build --release --target wasm32-unknown-unknown`, `wasm-bindgen --target nodejs`; 1 min): `$HOME/.cache/solidcraft-0.21.0-rig/sc-referee-pkg-topology` (`solidcraft_referee_p2.js`; override with `SOLIDCRAFT_TOPOLOGY_PKG`). Nothing in `docs/spikes/` or upstream was edited; the build lives in the cache dir only.
+- **Per face upstream gives:** `index`, `name` (persistent, `F1:+z`; the label stays with the face through a move AND a turn: after `rotate 90 about z`, `F1:+x` has world normal +y), `area`, `centroid`, `plane_normal` (null when curved), `point` (documented as "a point on the face that picks it"), `exact`, `cylinder` (curved cylinder faces). **Per edge:** `index`, `name` (`A|B`, `~n` when the pair repeats; the form the resolver reads), `start`, `mid`, `end`, `length`. Per command (`results[i].out.feature`) the feature number the resolver's persistent-name rule needs.
+- **What is MISSING and is not invented:** `centroid_hit` (which face a pick AT the centroid lands on) is not reported at all; `inner_point` / `inner_hit` are not reported under those names. `test/topology-upstream.mjs` (test only, not in `src/`) maps upstream's `point` to `inner_point` and sets `inner_hit = {index, dist: 0}` ON UPSTREAM'S OWN CLAIM that `point` picks that face; that claim is not re-measured by the adapter. The resolver (`pickPoint`) therefore never takes the centroid path with this topology; it takes the interior point, and refuses in a sentence ("... no safe pick point ... the topology snapshot has no pick-hit for it") for a face with no `point`, exactly as it refuses when topology is unavailable. The outcome check is the real-kernel test below, which compares the OPENED face with a closed form.
+- `model.faces` reports the centroid "not always on the face"; the resolver never uses a centroid as a pick without a pick-hit, so that is safe.
+
+## What the flag does (`src/follow-moves.ts`, called from `resolveNamesFor` and `resolveAfter`; `resolve-names.ts` for a turned primitive)
+
+A named FACE is first resolved on the own shape of the feature it names, as before. With the flag on, the way from that feature to the target is walked back along `target` links and the SAME rigid transform the translator's commands apply is applied to the resolved PLANE (and to the provisional point): a non-copy `move` is a translation by `offset`; a `rotate` is `p' = R (p - c) + c` about the centre `c` of the bounding box the translator measured for its target (R right-handed, x then y then z, each about the global axis; checked against the kernel's `solid.move` axis/angle). `confirmOnTarget` then looks for the moved plane on the target's own topology: exactly one face, the engine's pick point on it, else a refusal. So the point used is the engine's own point on the target, never an extrapolated one. Passing through shell, draft, hole, fillet (`target`) and pocket, groove (`into`) changes nothing; a chain with no move and no turn is returned unchanged.
+
+Also under the flag: a PRIMITIVE that carries its own `rotate` by whole quarter turns is resolved (its face part is a local direction; the world direction is R times it; the plane offset uses the local half extent; the engine's persistent label check `F<n>:<part>` still applies and is a real second check, because labels turn with the body). Any other `rotate` on a primitive keeps the standing refusal.
+
+Refused, in one sentence, never approximated:
+
+| case | sentence (from `src/follow-moves.ts`; `<n>` is the name text) |
+|---|---|
+| a copying move in the chain | `<n> names a face of <root>, but <move> is a copying move, so which copy the name means is not known; nothing is picked` (the base planner refuses to build a copy at all, so a normal run reports `<shell> (shell): its target <move> was refused (...)` first) |
+| a turn that is not a whole quarter turn | `<n> names a face of <root>, but <turn> turns the part by 0, 0, 45 degrees, and a name is carried only through a turn of whole quarter turns (90, 180 or 270 degrees) about x, y or z; nothing is picked` |
+| a join / mirror / pattern / anything else behind a moved or turned part | `<n> names a face of <root>, but the part was moved or turned and then <id> is a <kind>; a name is carried through a move or a quarter turn only, so nothing is picked` |
+| no measured box for a turn | `... there is no measured bounding box for <target> to turn <turn> about; nothing is picked` |
+| a primitive rotated by other than quarter turns | the base's standing sentence ("... is rotated; this demo resolves primitive faces only on unrotated primitives ...") |
+
+Edges are NOT followed: a fillet's `between` name through a move is still refused by `confirmOnTarget` ("... no longer present whole ..."). Faces of a join, mirror or pattern are not followed (their faces are not a rigid image of the primitive's).
+
+How the two sets use it: the 'base' set's shell / draft / fillet planners read the point `resolveNamesFor` returns, so they follow a move AND a quarter-turn `rotate` feature. The 'shell-draft' set on path B (no `ctx.resolveAt`) takes the same point, but its own G-PICK chain check still refuses a `rotate` (and, for a turned primitive, its extreme-face check reads the LOCAL direction against the WORLD box and refuses when the two axes differ): those refusals are the group's, kept, and show as the "unexpected refusals" below.
+
+## Proof (a): fake engine, against the group's path A (`test/moved-picks.differential.test.mjs`, in `npm test`)
+
+Pool: the 78 docs of the shell-draft corpus (1100 cases + 420 generated, phase0-vs-phase4-different docs excluded as in fold 3) with a NAMED face whose chain holds a non-copy move. Flag on, no resolver, vs the original with its resolver (path A, which shifts by the moves), same fake engine, `pickedFrom` ignored, coordinates to 1e-9:
+
+- flag off == no flag on all 78 (and on the base set, 80 docs). **Flag on == the original on 57 of 78** (before the turned-primitive step it was 46; before the pass-through walk 51 were counted with a rounding fix). 47 of the 78 are plain box / cylinder / move / shell / draft docs: 46 identical, 1 the same features and sentence with another guard name (sd seed 96: original `engine`, flag on `G-PICK`, same words).
+- The 21 that differ, by cause (none is a different build): **11** a turned primitive on the FAKE (its topology does not rotate the box or its labels, so the persistent-name or doc-plane check disagrees and the resolver refuses; the real kernel was measured to do both; `fuzz-hollow-00 02 03 09 15 18 20 26 27 31 39`-style docs: all `case fuzz-hollow-*` / `fuzz-draft-*` with a quarter-turn `rotate` on the primitive, original refused in 10 and built in `fuzz-hollow-17 35 36`); **6** a primitive rotated by other than quarter turns (standing refusal; original refused); **2** `sd seed 271 313`, both refused with different words (a `rotate` feature in the chain: the original's chain check fires first, here the walk's); **1** `hm2-mirror-moved`, original built (a plain box result of a mirror, allowed by the group's `boxResult` rule), flag on refuses (mirror behind a move is not followed): a capability the group had and this does not; **1** sd seed 96 (above, wording).
+- `quarterTurns` and the plane maths are unit-tested (+z turned 90 about x lies along -y; move shifts d by n . t).
+- Not shown by this test: that any built solid is right (that is (b)).
+
+## Proof (b): real kernel (`test/live-moved-picks.mjs`, NOT in `npm test`)
+
+```
+SOLIDCRAFT_REFEREE_PKG=$HOME/.cache/solidcraft-0.21.0-rig/sc-referee-pkg \
+  systemd-run --user --scope -q -p MemoryMax=2G -p MemorySwapMax=0 node packages/layer/test/live-moved-picks.mjs
+```
+(about 2 minutes; evidence `test/evidence/live-moved-picks-0.21.0.json`). 254 generated cases (seeded), followMoves ON, the upstream topology adapter, each BUILT result scored against a closed form computed in the test (not the resolver): volume (planar 1e-9, curved 3e-4), bounding box, AND centre of mass; the centre of mass must also separate the intended open / drafted face from every alternative (the same result is scored against the closed form of each other face and must FAIL: 801 such negative-control comparisons, 0 passed wrongly). The result is also re-measured on the stock rig wrapper (same volume). brep-rs `measure_doc` is a second oracle on volume and bbox where it builds.
+
+**Result: 221 built and right, 27 refused as expected (every one a single sentence), 6 refused UNEXPECTEDLY (closed form says buildable), 0 built and WRONG, 0 built-unverified, 0 thrown.** Deviation of the right ones from the closed form: planar volume 8.7e-14, bbox 7.0e-15, centre of mass 2.1e-15 (bar 1e-9); curved volume 1.1e-4, bbox 2.7e-5, com 3.6e-6 (bar 3e-4).
+
+| kind | cases | right | refused expected | refused unexpected |
+|---|---|---|---|---|
+| hollow of a moved box, every side (0 to 2 moves; shell-draft and base) | 78 | 78 | | |
+| hollow of a moved cylinder, open +z / -z | 24 | 24 | | |
+| hollow of a moved prism (3 to 8 sides), open +z / -z | 24 | 24 | | |
+| draft of a moved box side face (angles -8 to 10, neutral inside / at the ends) | 54 | 54 | | |
+| box with a `rotate` FEATURE (quarter turns, optional move before), hollow | 24 | 16 (base) | 8 (shell-draft: the group refuses a turn in the chain) | |
+| primitive with its own quarter-turn `rotate` (+ 0 to 2 moves), box hollow / box draft / cylinder hollow | 30 + 2 | 24 + 1 | 1 (draft of a face that is parallel to the pull after the turn) | 5 + 1, all the 'shell-draft' set (the group's extreme-face check) |
+| refused kinds: turn by 45, copying move, mirror, join, cylinder `side`, cylinder `+x`, draft of a top face, draft of a cylinder top, wall too thick | 20 | | 20 | |
+
+The refusal sentences are in the evidence file (`sentences`); samples: "shell1 (shell): box1.face[+z] names a face of box1, but turn1 turns the part by 0, 0, 45 degrees, and a name is carried only through a turn of whole quarter turns (90, 180 or 270 degrees) about x, y or z; nothing is picked"; "... but the part was moved or turned and then mirror1 is a mirror; a name is carried through a move or a quarter turn only, so nothing is picked"; "shell1 (hollow): the top face of mirror1 could not be found ..." (the group's wording on the 'shell-draft' set); "Hollowing move1 to 20 thick would collapse it ...".
+
+Same cases with the flag OFF (context, not scored, 205 moved or turned cases): 130 refused, 75 built (a built one is a move that leaves the named plane where it was).
+
+One reference bug was found and fixed during the run: the first closed form for a drafted box had the lateral centre-of-mass term wrong (volume and bounding box agreed with the kernel to 1e-15 and only the centre of mass of 31 drafts disagreed). It was the test's formula, not the layer: the lateral moment of the added slab is `dV * c_b`; after the fix all 54 drafts agree to 2e-15. Recorded here because the first run printed 31 WRONG.
+
+brep-rs as second oracle: agrees with the built result on 172 and disagrees on 38, refuses 11 (it will not hollow a polygon prism or an off-axis cylinder). The disagreements are brep-rs's, not the layer's: on 26 of the moved drafts it draws NO tilt at all (volume and bbox of the plain moved box; probed by hand: a draft of a part moved along the face's axis is a silent no-op in brep-rs), and on 12 turned primitives its own resolver hollows another face (the closed form agrees with the layer on all of them and the negative control separates the faces). So brep-rs is not a usable oracle for moved drafts or turned primitives; the closed form is.
+
+## Gaps
+
+- Edges (fillet `between` names) are not followed; joins, mirrors and patterns behind a move are refused (the group's `boxResult` allowance for a plain box result of a mirror or join is not reproduced: `hm2-mirror-moved`).
+- The 'shell-draft' set still refuses any `rotate` in the chain and, for a primitive turned so that a local axis is not a world axis, refuses in its extreme-face check (5 + 1 real-kernel cases). Lifting that means changing the group's loop, which this step did not do.
+- `inner_hit` rests on upstream's statement about `point`; `centroid_hit` is missing. A host that wants the centroid path needs a wrapper that reports the pick test.
+- The rig for the real-kernel test is a second wasm build (wrapper2); the stock pkg cannot be used for topology. Hollows with the wall near the shell families A and B (a wall or ligament between t and 2t) were not generated (walls are at most a third of the smallest relevant dimension), so the test says nothing about those guards.
+- 254 cases, one seed (20261025, `--seed=N`); not exhaustive.

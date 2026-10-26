@@ -169,3 +169,7 @@ Original `translateDocGuarded` against the port in 'shell-draft' mode, same fake
 - **G-FROM only works when the host passes the script's `draft(` usage** (`ctx.fromUsage`); a ModelDoc alone does not say whether `from:` was used.
 - Equality holds only for the inputs fed in; line coverage was not measured. Docs with a fillet or a constrained-sketch pull are not compared (phase0 asked brep-rs, phase 4 reads the topology).
 - The 'shell-draft' set is not wired to any caller yet; the default stays 'base'.
+
+## Moved picks: `ctx.followMoves` (opt-in, default off)
+
+A named face (`box1.face[+z]`) that the part has since been MOVED or TURNED away from is refused by the base resolver ("no face of ... lies on that plane any more"). With `followMoves: true` in the context the resolver carries the named plane through the non-copy moves and whole-quarter-turn `rotate` features between the named feature and the target (`src/follow-moves.ts`), and a primitive's own quarter-turn `rotate` is resolved; the point is still the engine's own pick point on the target. A copy, a turn that is not a quarter turn, and a join / mirror / pattern behind a moved part are refused in one sentence. Both the 'base' and the 'shell-draft' sets honour it. Proof: `test/moved-picks.differential.test.mjs` (fake engine, in `npm test`) and `test/live-moved-picks.mjs` (real kernel, 254 cases against closed forms, 0 built-and-wrong; needs a wasm that returns topology, see `test/topology-upstream.mjs`). Details, counts and gaps: NOTES.md "Moved picks".

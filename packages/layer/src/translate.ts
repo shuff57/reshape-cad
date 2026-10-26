@@ -632,6 +632,7 @@ function makeEnv(st: TranslateState, accepted: Cmd[], prefix: Feature[], ctx: Tr
     features: prefix,
     sketchFrame: (sk) => frameOf(sk, ctx.mt),
     outline: (sk) => ctx.arc.outlineOf(sk),
+    ...(ctx.followMoves ? { followTurns: true } : {}),
     shapeOf: async (fid): Promise<ShapeResult> => {
       if (st.accLen[fid] === undefined) return { ok: false, sentence: `feature ${fid} was not built (it is a sketch, was refused, or comes later), so there is no shape of it to read the name from` };
       const bodies = st.bodies[fid];
