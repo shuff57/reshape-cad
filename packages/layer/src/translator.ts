@@ -1,5 +1,6 @@
 // Selects the planner set. 'base' is exactly the phase 4 base translator (translate.ts); 'extrude-pocket' is base + the extrude-pocket
 // group's planners, wording and checks (extrude-pocket.ts); 'holes' is base + the holes group's guarded hole planner and loop (holes.ts).
+// 'shell-draft' is base + the shell-draft group's guarded hollow and draft planners and loop (shell-draft.ts).
 // The default is 'base'. Later folds add their own names here.
 //
 // Sets compose: planners: ['extrude-pocket', 'holes']. Later entries override earlier ones per feature KIND (the owner of a kind is the last
@@ -13,9 +14,10 @@ import type { PlanCtx, Plan, Profile, TranslateResult, TranslateState } from './
 import { BASE_PROFILE, FEATURE_KINDS, composeProfiles, planFeature, resolveAfter, translateDoc } from './translate.js';
 import { EXTRUDE_POCKET_PROFILE } from './extrude-pocket.js';
 import { HOLES_PROFILE } from './holes.js';
+import { SHELL_DRAFT_PROFILE } from './shell-draft.js';
 import type { TranslateCtx } from './types.js';
 
-export type PlannerSet = 'base' | 'extrude-pocket' | 'holes';
+export type PlannerSet = 'base' | 'extrude-pocket' | 'holes' | 'shell-draft';
 export interface TranslatorOptions { planners?: PlannerSet | PlannerSet[] }
 export interface Translator {
   planners: PlannerSet | PlannerSet[];
@@ -25,7 +27,7 @@ export interface Translator {
   resolveAfter(tr: TranslateResult, doc: { features: Feature[] }, name: TopoName, ctx: TranslateCtx, want?: 'edge' | 'face' | null, targetId?: string | null, beforeId?: string | null): Promise<Resolved>;
 }
 
-export const PROFILES: Record<PlannerSet, Profile> = { base: BASE_PROFILE, 'extrude-pocket': EXTRUDE_POCKET_PROFILE, holes: HOLES_PROFILE };
+export const PROFILES: Record<PlannerSet, Profile> = { base: BASE_PROFILE, 'extrude-pocket': EXTRUDE_POCKET_PROFILE, holes: HOLES_PROFILE, 'shell-draft': SHELL_DRAFT_PROFILE };
 
 export function createTranslator(options: TranslatorOptions = {}): Translator {
   const planners = options.planners ?? 'base';

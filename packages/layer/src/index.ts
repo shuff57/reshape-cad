@@ -16,3 +16,5 @@ export type { HoleView, RootView, HolePlan, HoleG, PostFn, PostEnv } from './hol
 export { removedVolume, sectionArea, holeProfile } from './holes-volume.js';
 export { composeProfiles, membersOf, ownerOf, resolveNamesFor } from './translate.js';
 export type { LoopEnv, HolesState } from './translate.js';
+export { SHELL_DRAFT_PROFILE, shellDraftStep, SENTENCE as SHELL_DRAFT_SENTENCE, plainEngineText as shellDraftEngineText, convexity, wordTie, draftFromUsage, polyConvex, hops, rotPt, polyCentroid, isPlainBox, onlyBoxJoins, simplePolygon, SWEEP_TOL, SC_SIGMA } from './shell-draft.js';
+export type { FView, SDName, SDPlan, SDG, SDBad, SDPost, SDPostEnv, ShellDraftState, Convex, Tie, FromUse, PickBase } from './shell-draft.js';

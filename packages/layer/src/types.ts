@@ -118,6 +118,14 @@ export interface TranslateCtx {
   unguardedSlant?: boolean;
   /** holes profile only: names of guards to switch OFF (the group's negative controls; ALL_GUARDS lists them). Never set in production. */
   guardsOff?: string[];
+  /**
+   * shell-draft set only: the group's pick source. Resolve a name to a face point in the PRIMITIVE's own frame (before any move of the history; the
+   * original asked brep-rs `resolve` and took `centroid`). When the host supplies it, the set runs the group's G-PICK exactly (it shifts the point by the
+   * moves in the chain); when it does not, the set takes the point from the base's name resolution (ctx.topologyOf), which is already where the part is.
+   */
+  resolveAt?(prefix: Feature[], name: unknown): { kind: string; centroid: V3; length?: number; area?: number } | null | Promise<{ kind: string; centroid: V3; length?: number; area?: number } | null>;
+  /** shell-draft set only: which `draft(` calls of the script used `from:` and no `neutral:` (draftFromUsage(script)), in order; the original's `opts.fromUsage`. */
+  fromUsage?: Array<{ from: string | null; neutral: boolean }>;
 }
 
 export type { Feature, SketchFeature };

@@ -63,6 +63,8 @@ export interface TranslateState {
   curvedSlant?: Set<string>;
   /** holes profile only: the guard bookkeeping of the holes group (hole chains, body count, CPU seconds spent). See holes.ts. */
   holes?: HolesState;
+  /** shell-draft profile only: the closed hollows of the shell-draft group. See shell-draft.ts. */
+  shellDraft?: { voided: Record<string, true> };
 }
 export interface HolesState {
   chain: Record<string, { baseIdx: number; baseMeasure: Aggregate | undefined }>;
