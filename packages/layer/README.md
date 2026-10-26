@@ -215,3 +215,22 @@ Also in the test: the lost guards one by one on constructed docs (G-VOID for a p
 - **It does not show a built solid is right.** The fake has no geometry kernel. Invariant 1 shows no single set's refusal is lost by merging; it says nothing about a solid that every set builds.
 - **The real-kernel replay is `test/live-replay-unified.mjs` and has NOT been run.** `node --check` passes; `--only=id,id` and `--out=` work; a stub kernel (the fake engine behind the rig's `run`) was used to check the script's own logic. To run it (one process, nothing else using the rig): `ulimit -v 2097152; SOLIDCRAFT_REFEREE_PKG=$HOME/.cache/solidcraft-0.21.0-rig/sc-referee-pkg node packages/layer/test/live-replay-unified.mjs --out=/path/live-replay-unified.json` (add `--corpus=ep,holes,sd,combined`, `--combined=600`, `--only=hc2-then-join,combined seed 57`; `BREP_PKG` for the shell-draft pick source, otherwise no `ctx.resolveAt`). It exits 1 on an in-domain difference or a built-where-a-set-refused feature.
 - Equality and the superset hold for the inputs fed in; line coverage was not measured. The superset is defined over the sets run through the same engine; the engine configurations are fakes.
+
+
+## Fold 5: booleans (`createTranslator({ planners: 'booleans' })`)
+
+Port of `contract/bool-translate-r3.mjs` (generated from phase0 + patches; round 6) with `booleans.guard.mjs`, `booleans.slow.mjs` and the piece-collecting executor, as base (phase 4) + the group's guarded `combine` planner, executor, after-the-build checks (`afterCombine`: G4b, G19, G21) and loop (`src/booleans.ts`, `booleans-guard.ts`, `booleans-slow.ts`). A combine's engine runs carry `{ budgetS }` (45 s plus 1.5 x the last run); a `timedOut` reply refuses it with G-BUDGET. **That is advice: a host that ignores `{ budgetS }` leaves runs unbounded.** The group is NOT accepted in Phase 1; its known holes are ported (G7 reads only a box target with a primitive tool; G19 trusts a curved operand's tessellated box; G3b / G21 over-refuse; row 124 stays wrong): NOTES.md "Fold 5".
+
+### The booleans differential (`test/booleans.differential.test.mjs`, seconds)
+
+Original (`bool-translate-r3.mjs`, wired as the group's runner wires it) against the port, same fake engine (`boolModel`, `throwWhen` opt-in): 10001 comparisons identical over 1999 docs x 5 configurations (1158 case docs, aimed docs, hand docs, 160 base-generated, 720 generated), 29926 engine calls; 118 docs with a shell, fillet, draft or constrained sketch are excluded (the port differs on 59). Every guard is reached except K4 and K9b. Pure helpers equal the original on 1500 random operand pairs.
+
+### What this fold does NOT cover
+
+- It does not show a built solid is right (no kernel; no 0.21.0 measurement of the group).
+- `test/live-replay-booleans.mjs` was written and NOT run; it cannot exercise the time limit.
+- PM-MIRCONTACT deviates from the original on purpose (a failed probe refuses instead of skipping the check): NOTES.md.
+
+### Unified, five sets
+
+`'unified'` now includes the booleans group, which OWNS `combine` there. The extrude-pocket group's join checks that need no further engine run (a slanted pull run into another part, blocks that only touch, a flush step a hair thick) stay as guards on a combine (`ctx.unifiedEpJoinChecks`, default `'cheap'`); **its volume-adds-up (inclusion-exclusion) check on joins is NOT applied** (`'full'` applies it: about 296 docs and 1468 extra-engine-run cases of exceptions on the fake). Full run (6432 docs x 8 configurations, 308736 runs): invariant 1 0 violations of 58495; invariant 2 35458 runs equal, 0 unexplained; accepted exceptions: PM-WEB / PM-SNAPCUT 283 runs of 38 docs, EP-JOIN 16 runs of 2 docs, 3 runs where the reference set rejected the document on an injected failure. `test/live-replay-unified.mjs` now covers five sets and the pm and bool corpora (`--ep-join=`), written, not run. Numbers and classes: NOTES.md "Unified, update for the fifth group".
