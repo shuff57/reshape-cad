@@ -16,6 +16,7 @@ import type { TopoName } from '@shuff57/reshape-script/topo-name';
 import type { Cmd, Frame, MtApi, RunResult, TopologyReply, TranslateCtx, TopoBody, V3 } from './types.js';
 import { mapSketch } from './sketch-map.js';
 import { resolveName, pickPoint } from './resolve-names.js';
+import { followMoves } from './follow-moves.js';
 import type { Evidence, Resolved, ResolveEnv, ShapeResult, FaceRes, EdgeRes } from './resolve-names.js';
 
 export const FEATURE_KINDS = ['box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'sketch', 'datum', 'extrude', 'combine',
@@ -701,7 +702,9 @@ export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: 
   if (nameField && nameVal && typeof nameVal === 'object' && ctx.topologyOf) {
     const menv = makeEnv(st, accepted, prefix, ctx, shapeCache);
     let rr = await resolveName(nameVal, menv, nameField === 'edge' ? 'edge' : 'face');
-    rr = await confirmOnTarget(rr, { st, accepted, ctx, targetId: (f as { target: string }).target });
+    const targetId = (f as { target: string }).target;
+    if (ctx.followMoves) rr = followMoves(rr, { features: prefix, bboxOf: (id) => st.measure[id]?.bbox, targetId });
+    rr = await confirmOnTarget(rr, { st, accepted, ctx, targetId });
     if (rr.ok && rr.kind === 'faceset') resolved.set(nameVal, { ok: false, sentence: `${rr.evidence.name} is ${rr.faces.length} faces in solidcraft (${rr.evidence.engineFaces.join(', ')}; a cylinder's wall is split at its seam); a face pick of it would choose one half silently, so nothing is picked` });
     else resolved.set(nameVal, rr);
   }
@@ -781,6 +784,7 @@ export async function resolveAfter(tr: TranslateResult, doc: { features: Feature
     for (let k = 0; k < i; k++) if (st.accLen[doc.features[k].id] !== undefined) len = Math.max(len, st.accLen[doc.features[k].id]);
     accepted = all.slice(0, len);
   }
-  const rr = await resolveName(name, makeEnv(st, accepted, doc.features, ctx, shapeCache), want);
+  let rr = await resolveName(name, makeEnv(st, accepted, doc.features, ctx, shapeCache), want);
+  if (targetId && ctx.followMoves) rr = followMoves(rr, { features: beforeId ? doc.features.slice(0, doc.features.findIndex((x) => x.id === beforeId)) : doc.features, bboxOf: (id) => st.measure[id]?.bbox, targetId });
   return targetId ? confirmOnTarget(rr, { st, accepted, ctx, targetId }) : rr;
 }

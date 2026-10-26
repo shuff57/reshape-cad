@@ -124,6 +124,12 @@ export interface TranslateCtx {
    * moves in the chain); when it does not, the set takes the point from the base's name resolution (ctx.topologyOf), which is already where the part is.
    */
   resolveAt?(prefix: Feature[], name: unknown): { kind: string; centroid: V3; length?: number; area?: number } | null | Promise<{ kind: string; centroid: V3; length?: number; area?: number } | null>;
+  /**
+   * Opt-in, default OFF ('base' and 'shell-draft' sets, anything that resolves a name through resolveNamesFor / resolveAfter): carry a named FACE through
+   * the non-copy moves and whole quarter turns of the part between the feature it was named on and the target (follow-moves.ts); refuse a copy, any other
+   * turn, and a join / mirror / pattern in between, in one sentence. Off: the name is looked up where the primitive was built, as before.
+   */
+  followMoves?: boolean;
   /** shell-draft set only: which `draft(` calls of the script used `from:` and no `neutral:` (draftFromUsage(script)), in order; the original's `opts.fromUsage`. */
   fromUsage?: Array<{ from: string | null; neutral: boolean }>;
 }
