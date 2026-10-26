@@ -51,5 +51,12 @@
     "rest": {
       "state": "todo"
     }
+  },
+  "resolver_follow_moves": {
+    "state": "done-behind-a-flag",
+    "what": "packages/layer ctx.followMoves (default OFF), commits 962e5366, b5d9f28a, 2a7048a8, 931e865a. A named face is carried through plain moves and whole quarter turns; copying moves, non-quarter turns, and a join/mirror/pattern behind a moved part are refused in one sentence. Edges are not followed.",
+    "proof": "real kernel (SolidCraft 0.21.0): 254 cases vs closed forms (volume, bbox, centre of mass; planar 1e-9, curved 3e-4): 221 built and right, 27 refused as expected, 6 refused unexpectedly (safe), 0 built-and-wrong. Re-run independently by the lead 2026-10-25: same counts. Fake engine: flag off identical; flag on equals the original's path A on 57 of 78 moved named-pick docs, the 21 others are refusals by one side (1 a capability the group had: hm2-mirror-moved). brep-rs is NOT a usable oracle for moved drafts or turned primitives (disagrees on 38 of 221).",
+    "needs": "the stock rig wasm cannot return topology; the proof used a wasm built from phase2/wrapper2 (SOLIDCRAFT_TOPOLOGY_PKG). The PANE needs a host-side adapter from upstream window.solidcraft.execute('model.faces'|'model.edges',{body}) to topologyOf (test/topology-upstream.mjs is the test-only version); upstream has no centroid_hit, the adapter trusts upstream's face `point`. Not built yet. Hollow walls were capped at a third of the smallest dimension, so t-to-2t shell guards are untested here; one seed.",
+    "evidence": "packages/layer/test/evidence/live-moved-picks-0.21.0.json; script packages/layer/test/live-moved-picks.mjs"
   }
 }
