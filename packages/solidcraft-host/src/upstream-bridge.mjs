@@ -175,7 +175,8 @@ export function createUpstreamBridge(sc, { prober = null, capS } = {}) {
       if (topology) return topologyOf(commands);
       const gate = await budgetGate(prober, commands, budgetS, capS);
       if (gate && gate.stop) return gate.stop;
-      const stamp = (r) => (gate ? { ...r, cpuMs: gate.cpuMs, probeLoadMs: gate.loadMs } : r);
+      // probeVolume: what the scratch run measured, kept so a check can compare it with the real run (the two are different compilations of the same engine)
+      const stamp = (r) => (gate ? { ...r, cpuMs: gate.cpuMs, probeLoadMs: gate.loadMs, probeVolume: (gate.probeReply?.measure?.bodies ?? []).reduce((a, b) => a + (b.volume_mm3 ?? 0), 0) } : r);
       if (fresh) await sc.execute('file.new', {});
       let batch;
       try {

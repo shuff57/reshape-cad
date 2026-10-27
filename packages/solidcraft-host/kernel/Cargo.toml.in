@@ -1,0 +1,32 @@
+# Template: build.sh fills in @SC_SRC@ (the pinned, UNMODIFIED SolidCraft 0.21.0 source tree). Same wrapper as docs/spikes/solidcraft-referee/wrapper,
+# but built with upstream's own release profile (opt-level 3): the spike's wrapper used opt-level "z", which measured ~15x slower than the web build
+# (44 s against 2.9 s for the same four countersunk holes), too slow to stand in for the page in a time budget. It also lists truck-geometry in [patch],
+# which upstream's root manifest has and the spike's wrapper did not (the spike's referee was therefore built against stock truck-geometry).
+[package]
+name = "solidcraft-referee"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+solidcraft-engine = { path = "@SC_SRC@/crates/engine" }
+solidcraft-doc = { path = "@SC_SRC@/crates/doc" }
+serde_json = "1"
+wasm-bindgen = "=0.2.129"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 16
+
+# [patch] is honoured only from the root manifest: copied from @SC_SRC@/Cargo.toml, otherwise the build silently uses stock upstream truck.
+[patch.crates-io]
+truck-geometry = { path = "@SC_SRC@/vendor/truck-geometry" }
+truck-shapeops = { path = "@SC_SRC@/vendor/truck-shapeops" }
+truck-stepio = { path = "@SC_SRC@/vendor/truck-stepio" }
+truck-meshalgo = { path = "@SC_SRC@/vendor/truck-meshalgo" }
+matext4cgmath = { path = "@SC_SRC@/vendor/matext4cgmath" }
+
+[workspace]

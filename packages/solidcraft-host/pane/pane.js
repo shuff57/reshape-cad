@@ -186,7 +186,7 @@ const probeLog = []; // one row per probe: { cmds, status, wallMs, cpuMs, loadMs
 let kernelModule = null;
 const getModule = () => (kernelModule ??= WebAssembly.compileStreaming(fetch(KERNEL_URL)).catch((e) => { kernelModule = null; throw e; }));
 const rawProber = createProber({ makeWorker: () => new Worker(new URL('../src/probe-worker.mjs', import.meta.url), { type: 'module' }), getModule });
-const prober = params.get('probe') === 'off' ? null : { async probe(cmds, b) { const t0 = performance.now(); const r = await rawProber.probe(cmds, b); probeLog.push({ cmds: cmds.length, budgetS: b, status: r.status, wallMs: Math.round(performance.now() - t0), cpuMs: r.cpuMs ?? null, loadMs: r.loadMs ?? null }); return r; } };
+const prober = params.get('probe') === 'off' ? null : { async probe(cmds, b) { const t0 = performance.now(); const r = await rawProber.probe(cmds, b); probeLog.push({ cmds: cmds.length, budgetS: b, status: r.status, wallMs: Math.round(performance.now() - t0), cpuMs: r.cpuMs ?? null, loadMs: r.loadMs ?? null, vol: r.reply && r.reply.measure ? r.reply.measure.bodies.reduce((a, b) => a + (b.volume_mm3 ?? 0), 0) : null }); return r; } };
 const capS = params.get('budgetCapS') ? Number(params.get('budgetCapS')) : undefined;
 const bridge = createUpstreamBridge(lazySc, { prober, capS });
 let keepNext = false; // kept so the run logic reads unchanged; this build has no stash, so it is never acted on
@@ -313,8 +313,11 @@ async function runSC(cmds, opts) {
     const idx = docProfileIndices(snap.profile_list, truckGeoms(snap, soups[nm].names, soups[nm].geoms));
     if (idx.length && idx.length !== snap.profile_list.length) c.params.profiles = idx;
   }
-  return bridge.execute(cmds, { fresh: true, budgetS: opts && opts.budgetS });
+  const fin = await bridge.execute(cmds, { fresh: true, budgetS: opts && opts.budgetS });
+  if (fin && fin.probeVolume !== undefined && fin.measure) runLog.push({ probe: fin.probeVolume, page: fin.measure.bodies.reduce((a, b) => a + (b.volume_mm3 ?? 0), 0) }); // verification: scratch run vs real run, same commands
+  return fin;
 }
+const runLog = [];
 
 // ---- render --------------------------------------------------------------------------------------------------
 function showFeatures(tr) {
@@ -677,7 +680,7 @@ async function translateRaw(docIn, names = []) {
 }
 // Not a security boundary (this is the page's own JS): hooks for the verification scripts. `run` here never asks.
 window.__host = {
-  run, bridge, probeLog, runSC, evaluate, validDoc, restoreTest, EXAMPLES, translateRaw, restore, refreshUndo,
+  run, bridge, probeLog, runLog, runSC, evaluate, validDoc, restoreTest, EXAMPLES, translateRaw, restore, refreshUndo,
   runExample: async (id, opts) => { load(id); return run({ confirmed: true, ...(opts ?? {}) }); },
   setScript: (code) => { $('src').value = code; $('src').dispatchEvent(new Event('input')); },
   runUnconfirmed: () => run({}),
