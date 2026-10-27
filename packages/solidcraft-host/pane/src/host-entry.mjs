@@ -7,9 +7,8 @@ export * as arc from '../../../sketch/dist/sketch-arc.js';
 import { createTranslator } from '../../../layer/dist/index.js';
 export { docProfileIndices } from '../../../layer/dist/index.js';
 const layer = createTranslator({ planners: 'unified' });
-// Student pilot: kinds whose guards are not folded in yet (Phase 2 "rest": fillet-chamfer, blend-loft) are refused here in one sentence, not built.
+// Student pilot: kinds whose guards are not folded in yet (Phase 2 "rest": blend-loft) are refused here in one sentence, not built.
 const NOT_YET = {
-  fillet: 'rounding an edge is not available in this version yet, so {id} is shown without it.',
   blend: 'a loft between two sketches is not available in this version yet, so {id} is shown without it.',
 };
 export const translateDoc = async (doc, ctx) => {

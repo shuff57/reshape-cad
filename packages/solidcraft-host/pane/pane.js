@@ -544,7 +544,7 @@ async function run({ confirmed = false } = {}) {
     status('translating and building in solidcraft...');
     const t0 = performance.now();
     soups = {};
-    const tr = await translateDoc(doc, { arc, mt, runSC, resolveAt: () => null, soups, topologyOf: (cmds) => bridge.execute(cmds, { fresh: true, topology: true }) });
+    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, topologyOf: (cmds) => bridge.topologyOf(cmds) });
     // Leave the viewport on exactly the accepted commands (the last attempt may have been a refused variant).
     const fin = await runSC(tr.commands);
     keepNext = false;
@@ -650,7 +650,7 @@ async function translateRaw(docIn, names = []) {
   await waitForBridge();
   const doc = solveDoc(docIn);
   soups = {};
-  const ctx = { arc, mt, runSC, resolveAt: () => null, soups, topologyOf: (cmds) => bridge.execute(cmds, { fresh: true, topology: true }) };
+  const ctx = { arc, mt, runSC, soups, followMoves: true, topologyOf: (cmds) => bridge.topologyOf(cmds) };
   const tr = await translateDoc(doc, ctx);
   const fin = await runSC(tr.commands);
   const resolved = [];
