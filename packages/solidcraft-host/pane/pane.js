@@ -3,6 +3,7 @@
 // -> solveDoc -> translator (+ phase 2 sketch mapper) -> window.solidcraft (same page, no postMessage relay) -> viewport.
 // Built by build.sh into bundle/; served same-origin by serve.mjs under /pane/.
 import { createUpstreamBridge } from '../src/upstream-bridge.mjs';
+import { createProber } from '../src/probe-client.mjs';
 import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules } from './bundle/host-lib.js';
 
 const BASE = new URL('.', import.meta.url);
@@ -177,7 +178,17 @@ function markError(line) {
 const scFrame = () => document.getElementById('sc');
 const scApi = () => { const w = scFrame() && scFrame().contentWindow; if (!w || !w.solidcraft) throw new Error('SolidCraft is not ready'); return w.solidcraft; };
 const lazySc = { inspect: (...a) => scApi().inspect(...a), execute: (...a) => scApi().execute(...a), request: (...a) => scApi().request(...a) };
-const bridge = createUpstreamBridge(lazySc);
+// ---- the time budget: probes in a terminable Worker (docs/PLAN-scripting-layer.md, Phase 3 "Kernel in a worker") --------------------------
+// The kernel is the referee wasm of the pinned 0.21.0 engine, served at ../kernel/ (see README). Without it (or with ?probe=off) a budgeted run is NOT
+// limited and the pane says so in the status line; the layer's G-BUDGET then stays advice only.
+const KERNEL_URL = new URL('../kernel/solidcraft_referee_bg.wasm', BASE);
+const probeLog = []; // one row per probe: { cmds, status, wallMs, cpuMs, loadMs }
+let kernelModule = null;
+const getModule = () => (kernelModule ??= WebAssembly.compileStreaming(fetch(KERNEL_URL)).catch((e) => { kernelModule = null; throw e; }));
+const rawProber = createProber({ makeWorker: () => new Worker(new URL('../src/probe-worker.mjs', import.meta.url), { type: 'module' }), getModule });
+const prober = params.get('probe') === 'off' ? null : { async probe(cmds, b) { const t0 = performance.now(); const r = await rawProber.probe(cmds, b); probeLog.push({ cmds: cmds.length, budgetS: b, status: r.status, wallMs: Math.round(performance.now() - t0), cpuMs: r.cpuMs ?? null, loadMs: r.loadMs ?? null }); return r; } };
+const capS = params.get('budgetCapS') ? Number(params.get('budgetCapS')) : undefined;
+const bridge = createUpstreamBridge(lazySc, { prober, capS });
 let keepNext = false; // kept so the run logic reads unchanged; this build has no stash, so it is never acted on
 async function waitForBridge() {
   for (let i = 0; i < 240; i++) {
@@ -288,7 +299,7 @@ let soups = {}; // sketch command name -> { sketchId, geoms, rules, names, notes
  * sketch.finish, read solidcraft's profile list, and set `profiles` to the faces the doc means (even-odd fill of its
  * loops): solidcraft otherwise extrudes every face, which fills a hole (phase 2: washer 10000 vs 9214.6).
  */
-async function runSC(cmds) {
+async function runSC(cmds, opts) {
   for (const c of cmds) {
     const nm = c.params?.sketch;
     if (c.command !== 'solid.extrude' || !nm || !soups[nm] || c.params.profiles !== undefined) continue;
@@ -302,7 +313,7 @@ async function runSC(cmds) {
     const idx = docProfileIndices(snap.profile_list, truckGeoms(snap, soups[nm].names, soups[nm].geoms));
     if (idx.length && idx.length !== snap.profile_list.length) c.params.profiles = idx;
   }
-  return bridge.execute(cmds, { fresh: true });
+  return bridge.execute(cmds, { fresh: true, budgetS: opts && opts.budgetS });
 }
 
 // ---- render --------------------------------------------------------------------------------------------------
@@ -666,7 +677,7 @@ async function translateRaw(docIn, names = []) {
 }
 // Not a security boundary (this is the page's own JS): hooks for the verification scripts. `run` here never asks.
 window.__host = {
-  run, bridge, evaluate, validDoc, restoreTest, EXAMPLES, translateRaw, restore, refreshUndo,
+  run, bridge, probeLog, runSC, evaluate, validDoc, restoreTest, EXAMPLES, translateRaw, restore, refreshUndo,
   runExample: async (id, opts) => { load(id); return run({ confirmed: true, ...(opts ?? {}) }); },
   setScript: (code) => { $('src').value = code; $('src').dispatchEvent(new Event('input')); },
   runUnconfirmed: () => run({}),

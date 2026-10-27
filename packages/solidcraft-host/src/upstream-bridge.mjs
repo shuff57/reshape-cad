@@ -1,3 +1,4 @@
+import { clampBudgetS, timedOutReply } from './probe-client.mjs';
 // The spike's translator/pane expect a patched bridge: execute(commands, {fresh}) -> {ok, failed, measure, sketches, ...}.
 // This gives them that shape on top of UPSTREAM's own window.solidcraft (v0.21.0), with no patch.
 // Pure over the `sc` object it is given (window.solidcraft, or a fake in tests).
@@ -128,7 +129,25 @@ export async function snapshot(sc) {
   return { measure: { bodies: insp.bodies ?? [] }, sketches, dirty: insp.dirty === true, active_sketch: insp.active_sketch ?? null };
 }
 
-export function createUpstreamBridge(sc) {
+/**
+ * The time budget (Phase 3, "kernel in a worker"). Truck runs synchronously inside SolidCraft's page, so nothing can stop a slow boolean there.
+ * With a `prober` (probe-client.mjs) and a `budgetS`, the commands are first replayed on a scratch session in a Worker that is terminated when the
+ * budget runs out; only a run that finished in time is applied in SolidCraft. Returns null when no budget applies.
+ *   timed out        -> { stop: { ok:false, timedOut:true, cpuMs, failed:{command:'(budget)', error} } }, SolidCraft not touched
+ *   probe could not run it (wasm trap, kernel not loadable) -> { stop: { ok:false, probeError:true, failed:{command:'(probe)', error} } }, SolidCraft not touched
+ *   finished in time -> { cpuMs } (the worker's engine time), to be added to the reply of the real run
+ */
+export async function budgetGate(prober, commands, budgetS, capS) {
+  let b = clampBudgetS(budgetS);
+  if (b !== null && Number.isFinite(capS)) b = Math.min(b, capS); // a cap only ever shortens (tests, a classroom setting)
+  if (!prober || b === null) return null;
+  const r = await prober.probe(commands.map((c) => ({ command: c.command, params: c.params ?? {} })), b);
+  if (r.status === 'timedOut') return { stop: timedOutReply(b, r.cpuMs) };
+  if (r.status === 'error') return { stop: { ok: false, probeError: true, failed: { command: '(probe)', error: r.error } } };
+  return { cpuMs: r.cpuMs, loadMs: r.loadMs, probeReply: r.reply };
+}
+
+export function createUpstreamBridge(sc, { prober = null, capS } = {}) {
   /** run `commands` from an empty design, then read faces and edges of every body: the layer's topologyOf() reply. */
   async function topologyOf(commands) {
     try { await sc.execute('file.new', {}); } catch (e) { return { ok: false, error: String((e && e.message) || e) }; }
@@ -152,22 +171,25 @@ export function createUpstreamBridge(sc) {
   return {
     topologyOf,
     /** run `commands`; fresh starts from an empty design. rollback is off so a failure leaves the state to inspect; the next fresh run resets it. */
-    async execute(commands, { fresh = false, topology = false } = {}) {
+    async execute(commands, { fresh = false, topology = false, budgetS } = {}) {
       if (topology) return topologyOf(commands);
+      const gate = await budgetGate(prober, commands, budgetS, capS);
+      if (gate && gate.stop) return gate.stop;
+      const stamp = (r) => (gate ? { ...r, cpuMs: gate.cpuMs, probeLoadMs: gate.loadMs } : r);
       if (fresh) await sc.execute('file.new', {});
       let batch;
       try {
         batch = await sc.request('engine.batch', { commands: commands.map((c) => ({ command: c.command, params: c.params ?? {} })), rollback: false });
       } catch (e) {
-        return { ok: false, failed: { command: null, error: String((e && e.message) || e) } };
+        return stamp({ ok: false, failed: { command: null, error: String((e && e.message) || e) } });
       }
       const snap = await snapshot(sc);
       if (batch.failed) {
         const f = batch.failed;
         const at = snap.active_sketch ? snap.sketches.find((s) => s.name === snap.active_sketch || s.id === snap.active_sketch) : null;
-        return { ok: false, failed: { index: f.index, command: f.command, error: f.error, params: commands[f.index]?.params ?? {} }, ...snap, sketch_at_failure: at ?? null };
+        return stamp({ ok: false, failed: { index: f.index, command: f.command, error: f.error, params: commands[f.index]?.params ?? {} }, ...snap, sketch_at_failure: at ?? null });
       }
-      return { ok: true, completed: batch.completed, ...snap };
+      return stamp({ ok: true, completed: batch.completed, ...snap });
     },
     async inspect() { return { ok: true, ...(await snapshot(sc)) }; },
     async restorePrevious() { return { ok: false, error: 'restoring your previous design is not built on this build' }; },
