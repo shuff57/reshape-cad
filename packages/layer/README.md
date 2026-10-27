@@ -253,3 +253,22 @@ The p4 original and the port, same fake engine (opt-in `rgModel`: pulled circles
 ### Unified, six sets
 
 `'unified'` now includes the revolve-groove group, which OWNS `revolve` and `groove` there (before, they went to the style's loop with the unguarded base planner). The chain is a cross-kind guard (`RG-CHAIN`: a later feature on a part whose groove was refused is refused with a pointer). Full run (8422 docs x 10 engine configurations, 589540 runs): invariant 1 **0 violations of 99439**; invariant 2 **51858 runs equal (revolve-groove 9020), 0 unexplained**; accepted exceptions, no new class: PM-WEB / PM-SNAPCUT 359 runs of 38 docs, EP-JOIN 20 runs of 2 docs, 3 runs where the reference set rejected the document on an injected failure. The test's bookkeeping of a refused groove's part (tainting the part when the groove's own refusal does not bind) weakens invariant 1 slightly and is disclosed in NOTES.md. `test/live-replay-unified.mjs` covers six sets and the `rg` and `rgcombined` corpora, written, not run. Numbers and classes: NOTES.md "Unified, update for the sixth group".
+
+
+## Fold 7: fillet-chamfer (`createTranslator({ planners: 'fillet-chamfer' })`)
+
+Port of `contract/fillet-chamfer-evidence/live/lib/translate-fc.mjs` with `fc-guard.mjs` and `fc-sentences.mjs` (`src/fillet-chamfer.ts`, `fc-guard.ts`, `fc-sentences.ts`): the guard on the real topology of the target body before a round or bevel is sent (size, face extent, a cut next to the edge, plain corners, rims), the grouped blend (consecutive same-size blends are one kernel call per connected component, with crowding and three-bevel-corner rules), the whole-shape round guard of a primitive (the plain primitive stands and the note is a refusal), the knife-edge rim of a hollow, the post-build face count, and one plain sentence per refusal. Accepted group in Phase 1; its holes are ported on purpose (NOTES.md "Fold 7").
+
+### The differential (`test/fillet-chamfer.differential.test.mjs`, about 45 s)
+
+**17759 comparisons, 17075 identical, 684 through one named exception** (2537 docs x 7 configurations, 86811 engine calls incl. topology, 49 thrown errors equal), plus the pure guard against the original on the 705 real truck topologies of the group and 3000 perturbed ones, and 4698 sentence mappings. The exception is the owner-decided fix of a fail-open: the original skips the post-build face count when the topology reply has no measure; the port takes the count from its own measure, or refuses.
+
+### What this fold does NOT cover
+
+- It does not show a built solid is right (no kernel; no 0.21.0 measurement of the group; thresholds are 0.9.0). `test/live-replay-fillet-chamfer.mjs` (needs the topology wasm; scores built results against the cases' closed forms) was written and NOT run.
+- The pane's stock bridge cannot report topology, so every blend is refused there (`FC-NO-TOPOLOGY`) until the host has an adapter.
+- Rims and grouped blends have no post-build check; other holes in NOTES.md.
+
+### Unified, seven sets
+
+`'unified'` now includes the fillet-chamfer group, which owns `fillet` and the refused whole-shape rounds; G-CHAMFER (shell-draft) still decides a bevelled box and G-RIM (shell-draft) the knife-edge rim. Full run (11131 docs x 11 configurations, 979528 runs): invariant 1 **0 violations of 160312**; invariant 2 **71463 runs equal, 0 unexplained**; accepted classes only (PM-WEB / PM-SNAPCUT 397 runs of 38 docs, EP-JOIN 22 runs of 2 docs, 3 injected-failure rejections), no new class.
