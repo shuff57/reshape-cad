@@ -70,6 +70,8 @@ export interface TopoBody {
 /** The reply of ctx.topologyOf(commands). */
 export interface TopologyReply {
   ok: boolean;
+  /** fillet-chamfer set only: the measure of the same run, when the host puts it in the topology reply (the original reads the face count before a blend from it). */
+  measure?: { bodies: BodyMeasure[] };
   topology?: { truncated?: boolean; bodies: TopoBody[] } | null;
   error?: string;
   rejected?: unknown;

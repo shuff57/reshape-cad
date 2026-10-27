@@ -306,7 +306,7 @@ function rgCut(bodies, name, sk, kernelAngle) {
 }
 function polyArea(P) { let a = 0; let cu = 0; for (let i = 0; i < P.length; i++) { const [x0, y0] = P[i]; const [x1, y1] = P[(i + 1) % P.length]; const c = x0 * y1 - x1 * y0; a += c; cu += (x0 + x1) * c; } a /= 2; return { A: Math.abs(a), cu: a === 0 ? 0 : Math.abs(cu / (6 * a)) }; }
 
-function simulate(commands, boxBool = false, holeModel = false, shellDraft = false, pmModel = false, boolModel = false, rgModel = false) {
+function simulate(commands, boxBool = false, holeModel = false, shellDraft = false, pmModel = false, boolModel = false, rgModel = false, fcModel = false) {
   const bodies = new Map();
   const sketches = new Map();
   let active = null;
@@ -471,6 +471,9 @@ function simulate(commands, boxBool = false, holeModel = false, shellDraft = fal
       const m = need([p.body]); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
       if ((p.radius ?? p.distance) > 4) return { bodies, sketches, active, ...f(FAIL_ERR.blend) };
       bodies.get(p.body).volume *= 0.99; bodies.get(p.body).curved = true;
+      // fcModel (opt-in, the fillet-chamfer group): every edge of a blend adds one face to the body (true: what a straight planar edge does on a real kernel); 'noface': the blend adds none (the
+      // kernel's silent no-op the group's post-build net exists for). With either value the topology reply also carries the measure of the same run, as the group's original host did.
+      if (fcModel) { const b = bodies.get(p.body); b.nf = facesOfBody(b) + (fcModel === 'noface' ? 0 : (p.edges?.length ?? 1)); }
     } else if (k === 'solid.shell' && shellDraft) {
       const m = need([p.body]); if (m) return { bodies, sketches, active, ...f(FAIL_ERR.noBody(m)) };
       if (!Array.isArray(p.faces)) return { bodies, sketches, active, ...f('fake: invalid parameters for `solid.shell`: `faces` must be a list of points') };
@@ -547,7 +550,7 @@ function topologyOfBody(b) {
 }
 
 /**
- * makeFake({ failEvery, boxBool, holeModel, shellDraft, pmModel, boolModel, rgModel, sync, cpuMs }) -> { runSC, topologyOf, log }   (boxBool, holeModel, shellDraft: see the notes above simulate)
+ * makeFake({ failEvery, boxBool, holeModel, shellDraft, pmModel, boolModel, rgModel, fcModel, sync, cpuMs }) -> { runSC, topologyOf, log }   (boxBool, holeModel, shellDraft: see the notes above simulate)
  *   failEvery N: every Nth runSC call that simulates cleanly is reported as failing at its last command.
  *   a body_name containing 'ghost' is accepted but never appears; one containing 'boom' makes runSC throw.
  *   sync (opt-in): runSC and topologyOf return their result directly instead of a promise (the holes group's ORIGINAL translator is synchronous).
@@ -556,7 +559,7 @@ function topologyOfBody(b) {
  *     cost exceeds it, the run is reported as { ok: false, timedOut: true, cpuMs } (the group's execution budget).
  *   When runSC is called with a second argument it is logged as a third log element; calls without one log exactly as before.
  */
-export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, shellDraft = false, pmModel = false, boolModel = false, rgModel = false, sync = false, cpuMs = null, throwWhen = null } = {}) {
+export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, shellDraft = false, pmModel = false, boolModel = false, rgModel = false, fcModel = false, sync = false, cpuMs = null, throwWhen = null } = {}) {
   let calls = 0;
   const log = [];
   const runOnce = (commands, opts) => {
@@ -568,7 +571,7 @@ export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, sh
     if (cost !== undefined && opts && typeof opts.budgetS === 'number' && cost > opts.budgetS * 1000) {
       return { ok: false, timedOut: true, cpuMs: opts.budgetS * 1000, failed: { command: '(budget)', error: `TIME BUDGET: exceeded ${opts.budgetS} s of CPU` } };
     }
-    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel, boolModel, rgModel);
+    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel, boolModel, rgModel, fcModel);
     const snap = { measure: { bodies: bodyRows(sim.bodies, boxBool, holeModel) }, sketches: sketchRows(sim.sketches), dirty: false, active_sketch: sim.active ? sim.active.name : null };
     let failed = sim.failed;
     if (!failed && failEvery && calls % failEvery === 0 && commands.length) {
@@ -581,9 +584,9 @@ export function makeFake({ failEvery = 0, boxBool = false, holeModel = false, sh
   };
   const topo = (commands) => {
     log.push(['topologyOf', JSON.stringify(commands)]);
-    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel, boolModel, rgModel);
+    const sim = simulate(commands, boxBool, holeModel, shellDraft, pmModel, boolModel, rgModel, fcModel);
     if (sim.failed) return { ok: false, failed: sim.failed };
-    return { ok: true, topology: { bodies: [...sim.bodies.values()].map(topologyOfBody) }, results: commands.map((_, i) => ({ feature: i + 1 })) };
+    return { ok: true, topology: { bodies: [...sim.bodies.values()].map(topologyOfBody) }, ...(fcModel ? { measure: { bodies: bodyRows(sim.bodies, boxBool, holeModel) } } : {}), results: commands.map((_, i) => ({ feature: i + 1 })) };
   };
   return {
     log,

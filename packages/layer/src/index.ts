@@ -32,3 +32,5 @@ export { RG_PROFILE, RG_KINDS, RG_CROSS_KIND_GUARDS, RG_BUDGET_S, rgStep, aggreg
 export type { RGState } from './revolve-groove.js';
 export { guardPlan as revolveGrooveGuardPlan, profileInfo as revolveGrooveProfileInfo, scriptSentence as revolveGrooveScriptSentence } from './revolve-groove-guard.js';
 export type { RGInfo, RGRefusal, RGPlan, CostFeatures, ProfileInfo as RGProfileInfo } from './revolve-groove-guard.js';
+export { FC_PROFILE, FC_KINDS, FC_CROSS_KIND_GUARDS, FC_PRIMITIVES, fcStep, fcCode, refusalSentence as fcRefusalSentence, fcGuard, fcSentences } from './fillet-chamfer.js';
+export type { FCState } from './fillet-chamfer.js';

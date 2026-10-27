@@ -4,6 +4,7 @@
 // 'patterns-mirror' is base + the patterns-mirror group's guarded pattern and mirror planners and loop (patterns-mirror.ts).
 // 'booleans' is base + the booleans group's guarded combine planner, executor and loop (booleans.ts).
 // 'revolve-groove' is base + the revolve-groove group's guarded spin and groove planners and loop (revolve-groove.ts).
+// 'fillet-chamfer' is base + the fillet-chamfer group's guarded blend loop (fillet-chamfer.ts): the guard on the topology, the grouped blend, the whole-shape round guard, the knife-edge rim, the plain sentences.
 // 'unified' is base + every group's planners in ONE loop where every group's guards run on every feature they apply to (unified.ts).
 // The default is 'base'. Later folds add their own names here.
 //
@@ -22,10 +23,11 @@ import { SHELL_DRAFT_PROFILE } from './shell-draft.js';
 import { PM_PROFILE } from './patterns-mirror.js';
 import { BOOL_PROFILE } from './booleans.js';
 import { RG_PROFILE } from './revolve-groove.js';
+import { FC_PROFILE } from './fillet-chamfer.js';
 import { UNIFIED_PROFILE } from './unified.js';
 import type { TranslateCtx } from './types.js';
 
-export type PlannerSet = 'base' | 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror' | 'booleans' | 'revolve-groove' | 'unified';
+export type PlannerSet = 'base' | 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror' | 'booleans' | 'revolve-groove' | 'fillet-chamfer' | 'unified';
 export interface TranslatorOptions { planners?: PlannerSet | PlannerSet[] }
 export interface Translator {
   planners: PlannerSet | PlannerSet[];
@@ -35,8 +37,8 @@ export interface Translator {
   resolveAfter(tr: TranslateResult, doc: { features: Feature[] }, name: TopoName, ctx: TranslateCtx, want?: 'edge' | 'face' | null, targetId?: string | null, beforeId?: string | null): Promise<Resolved>;
 }
 
-export const PROFILES: Record<Exclude<PlannerSet, 'unified'>, Profile> = { base: BASE_PROFILE, 'extrude-pocket': EXTRUDE_POCKET_PROFILE, holes: HOLES_PROFILE, 'shell-draft': SHELL_DRAFT_PROFILE, 'patterns-mirror': PM_PROFILE, booleans: BOOL_PROFILE, 'revolve-groove': RG_PROFILE };
-/** PROFILES plus the whole sets that are not members of a composition ('unified'). PROFILES stays the six single sets the compositions and their tests are about. */
+export const PROFILES: Record<Exclude<PlannerSet, 'unified'>, Profile> = { base: BASE_PROFILE, 'extrude-pocket': EXTRUDE_POCKET_PROFILE, holes: HOLES_PROFILE, 'shell-draft': SHELL_DRAFT_PROFILE, 'patterns-mirror': PM_PROFILE, booleans: BOOL_PROFILE, 'revolve-groove': RG_PROFILE, 'fillet-chamfer': FC_PROFILE };
+/** PROFILES plus the whole sets that are not members of a composition ('unified'). PROFILES stays the seven single sets the compositions and their tests are about. */
 const ALL_PROFILES: Record<PlannerSet, Profile> = { ...PROFILES, unified: UNIFIED_PROFILE };
 
 export function createTranslator(options: TranslatorOptions = {}): Translator {

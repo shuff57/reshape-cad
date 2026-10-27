@@ -22,6 +22,7 @@ import type { PMState } from './patterns-mirror.js';
 import type { BoolState } from './booleans.js';
 import type { RGState } from './revolve-groove.js';
 import type { RGInfo } from './revolve-groove-guard.js';
+import type { FCState } from './fillet-chamfer.js';
 import type { Evidence, Resolved, ResolveEnv, ShapeResult, FaceRes, EdgeRes } from './resolve-names.js';
 
 export const FEATURE_KINDS = ['box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'sketch', 'datum', 'extrude', 'combine',
@@ -77,6 +78,8 @@ export interface TranslateState {
   bool?: BoolState;
   /** revolve-groove set only: the group's bookkeeping (the grooves that were refused and re-pointed their part's handle). See revolve-groove.ts. */
   rg?: RGState;
+  /** fillet-chamfer set only: the group's bookkeeping (the fillets a grouped blend already handled). See fillet-chamfer.ts. */
+  fc?: FCState;
   /** revolve-groove set only: the commands accepted so far (the guard G10 reads them); the same array as the loop's. */
   accepted?: Cmd[];
   /** unified set only: which groups the document uses (decides the style of the loop). See unified.ts. */
@@ -591,14 +594,14 @@ export function aggregate(res: RunResult, names: string[], pieces = false): Aggr
   };
 }
 
-interface ConfirmArgs { st: TranslateState; accepted: Cmd[]; ctx: TranslateCtx; targetId: string }
+export interface ConfirmArgs { st: TranslateState; accepted: Cmd[]; ctx: TranslateCtx; targetId: string }
 
 /**
  * The name was resolved on the own shape of the feature it names; the pick lands on the TARGET body as it is now. Redo, ON THE
  * TARGET: the candidate count (every face coplanar with the named plane, or every edge matching), the engine's own pick-hit
  * test and the choice of an interior point. More than one candidate, or no safe point, is a refusal with the count.
  */
-async function confirmOnTarget(rr: Resolved, { st, accepted, ctx, targetId }: ConfirmArgs): Promise<Resolved> {
+export async function confirmOnTarget(rr: Resolved, { st, accepted, ctx, targetId }: ConfirmArgs): Promise<Resolved> {
   if (!rr.ok || rr.kind === 'faceset') return rr;
   const headId = (id: string): string => { let h = id; const seen = new Set<string>(); while (st.head[h] && !seen.has(h)) { seen.add(h); h = st.head[h]; } return h; };
   const tb = st.bodies[headId(targetId)];
@@ -646,7 +649,7 @@ async function confirmOnTarget(rr: Resolved, { st, accepted, ctx, targetId }: Co
 export type ShapeCache = Map<string, { cmds: Cmd[]; r: TopologyReply }>;
 
 /** The name-resolution environment: how to read the own shape of a feature that was built (see resolve-names). */
-function makeEnv(st: TranslateState, accepted: Cmd[], prefix: Feature[], ctx: TranslateCtx, shapeCache: ShapeCache): ResolveEnv {
+export function makeEnv(st: TranslateState, accepted: Cmd[], prefix: Feature[], ctx: TranslateCtx, shapeCache: ShapeCache): ResolveEnv {
   return {
     features: prefix,
     sketchFrame: (sk) => frameOf(sk, ctx.mt),
@@ -702,6 +705,12 @@ export interface FeatureResult {
   wallMs?: number;
   /** revolve-groove set only: what the original logs as `guard` on a spin / groove (the cost features and the engine angle); `guard` above is the code. */
   rg?: RGInfo;
+  /** fillet-chamfer set only: the original's `guard` object (code and arguments) behind the layer's `guard` code; the other fields of a grouped blend and of a whole-shape round that was refused (see fillet-chamfer.ts). */
+  fc?: { code: string; args: Record<string, unknown>; ok?: false };
+  group?: string[];
+  groupSize?: number;
+  measureRefused?: Aggregate | null;
+  partial?: true;
 }
 export interface TranslateResult {
   features: FeatureResult[];
