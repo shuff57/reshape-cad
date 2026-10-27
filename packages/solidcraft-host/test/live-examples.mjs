@@ -1,6 +1,6 @@
 // Runs every example of pane/examples.json through the pane in headless Chrome against the real SolidCraft web build (setup as in test/live.mjs).
 //   node test/live-examples.mjs <site folder> <screenshot.png> <out.json>
-// Result of 2026-10-25 on SolidCraft v0.21.0 is in test/examples-0.21.0.json: 38 of 56 pass against the independent references (closed form / brep-rs / OCCT); the 18 that do not are all refusals, see README.
+// Result of 2026-10-25 on SolidCraft v0.21.0 is in test/examples-0.21.0.json: 38 of 56 passed (before the topology adapter; now 46, see README) against the independent references (closed form / brep-rs / OCCT); the 18 that do not are all refusals, see README.
 import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire('/home/shuff57/Documents/GitHub/reshape-cad/package.json');
